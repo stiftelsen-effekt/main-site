@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "ESKlarheitGrotesk";
+  src: url("/fonts/ESKlarheitGrotesk-Regular.woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ESKlarheitGrotesk";
+  src: url("/fonts/ESKlarheitGrotesk-Italic.woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ESKlarheitGrotesk";
+  src: url("/fonts/ESKlarheitGrotesk-Semibold.woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ESKlarheitGrotesk";
+  src: url("/fonts/ESKlarheitGrotesk-SemiboldItalic.woff2");
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ESKlarheitKurrent";
+  src: url("/fonts/ESKlarheitKurrent-Regular.woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "ESKlarheitGrotesk", sans-serif;
+  background: black;
+  color: white;
+  font-weight: 300;
+}
+
+h1, h2, h3, h4 {
+  font-family: "ESKlarheitKurrent", sans-serif;
+  font-weight: 300;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+* {
+  box-sizing: border-box;
+}

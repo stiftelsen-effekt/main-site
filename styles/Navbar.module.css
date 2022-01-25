@@ -1,0 +1,28 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  width: 100%;
+  position: relative;
+  margin-top: 40px;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.links {
+  list-style: none;
+}
+
+.links li {
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.links li:last-child {
+  padding-right: 0px;
+}

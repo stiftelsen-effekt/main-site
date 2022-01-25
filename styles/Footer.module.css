@@ -1,0 +1,36 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+  padding-top: 80px;
+  padding-left: 25%;
+  padding-bottom: 60px;
+}
+
+.category {
+
+}
+
+.category h3 {
+  font-family: "ESKlarheitGrotesk", sans-serif;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.category ul {
+  list-style: none;
+  padding: 0;
+}
+
+.category ul li {
+  margin-bottom: 2px;
+}
+
+.newsletter {
+  background: white;
+  font-family: "ESKlarheitGrotesk", sans-serif;
+  color: black;
+  padding: 14px 18px;
+  border: none;
+  width: 100%;
+}
