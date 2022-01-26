@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import { PortableText } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
-import { fetchAboutUs } from "./about.queries";
 import styles from '../styles/About.module.css'
+import { groq } from "next-sanity";
 
 const About: React.FC<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
@@ -57,5 +57,22 @@ export async function getStaticProps({ preview = false }) {
     },
   }
 }
+
+const fetchAboutUs = groq`
+{
+  "about": *[_type == "about_us"] {
+    content
+  },
+  "people": *[_type == "role"] {
+    title,
+    "members": *[ _type == "contributor" && role._ref == ^._id ] {
+      name,
+      email,
+      subrole,
+      additional
+    }
+  }[count(members) > 0]
+}
+`
 
 export default About

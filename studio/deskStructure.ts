@@ -11,5 +11,5 @@ export default () =>
             .schemaType('about_us')
             .documentId('about_us')
         ),
-      ...S.documentTypeListItems().filter(listItem => !['about_us'].includes(listItem.getId()))
+      ...S.documentTypeListItems().filter(listItem => !['about_us'].includes(listItem.getId() || ''))
     ])
