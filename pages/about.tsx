@@ -1,7 +1,18 @@
-import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import React from "react";
+import { PortableText } from "../lib/sanity";
+import { getClient } from "../lib/sanity.server";
+import { fetchAboutUs } from "./about.queries";
+import styles from '../styles/About.module.css'
 
-const About: NextPage = () => {
+const About: React.FC<{ data: any, preview: boolean }>  = ({ data, preview }) => {
+  const router = useRouter()
+
+  if (!router.isFallback && !data.about) {
+    return <h1>404</h1>
+  }
+
   return (
     <div>
       <Head>
@@ -10,9 +21,41 @@ const About: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h2>About</h2>
+      <h1>Om oss</h1>
+      
+      <div style={{ maxWidth: 800, marginBottom: 80 }}>
+        <PortableText blocks={data.about[0].content}></PortableText>
+      </div>
+
+      {
+        data.people.map((role: any) => (
+          <div key={role._id}>
+            <h2 >{role.title}</h2>
+            <div className={styles.grid}>
+              {role.members.map((member: any) => (
+                <div key={member._id} className={styles.person}>
+                  <strong>{member.name}</strong>
+                  <div>{member.subrole}</div>
+                  <div>{member.additional}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
     </div>
   )
+}
+
+export async function getStaticProps({ preview = false }) {
+  const data = await getClient(preview).fetch(fetchAboutUs)
+
+  return {
+    props: {
+      preview,
+      data,
+    },
+  }
 }
 
 export default About

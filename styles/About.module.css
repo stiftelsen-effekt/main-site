@@ -1,0 +1,11 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+}
+
+.person {
+  border-left: 1px solid white;
+  padding: 20px;
+  line-height: 200%;
+}
