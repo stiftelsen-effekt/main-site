@@ -5,17 +5,20 @@
     "dev": "next dev",
     "prebuild": "echo 'Building Sanity to public/studio' && cd studio && yarn && npx @sanity/cli build ../public/studio -y && echo 'Done'",
     "build": "next build",
-    "sanity": "cd studio && sanity start",
+    "sanity": "cd studio && export NODE_ENV=dev && sanity start",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "12.0.8",
+    "@auth0/auth0-react": "^1.9.0",
+    "luxon": "^2.3.0",
+    "next": "12.0.10",
     "next-sanity": "^0.4.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@types/luxon": "^2.0.9",
     "@types/node": "17.0.12",
     "@types/react": "17.0.38",
     "eslint": "8.7.0",

@@ -1,10 +1,11 @@
 import { NextPage } from "next";
 import React, { ReactElement } from "react";
-import { Footer } from "./footer";
+import { Footer } from "../footer";
 import { Navbar } from "./navbar";
-import styles from '../styles/Layout.module.css'
+import styles from '../../styles/Layout.module.css'
+import { LayoutElement } from "../../types";
 
-export const Layout: React.FC<{ children: ReactElement }> = ({ children }) => {
+export const Layout: LayoutElement = ({ children }) => {
   return (
     <div className={styles.container}>
       <Navbar />

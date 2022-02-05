@@ -6,6 +6,8 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 import role from './role'
 import contributor from './contributor'
 import about from './about'
+import organization from './organization'
+import organizations from './organizations'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -16,6 +18,8 @@ export default createSchema({
   types: schemaTypes.concat([
     role,
     contributor,
-    about
+    about,
+    organization,
+    organizations
   ]),
 })
