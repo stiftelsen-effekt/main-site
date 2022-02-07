@@ -5,11 +5,11 @@ import { Donation } from '../models';
 import { shortDate } from '../util/formatting';
 
 const Donations = () => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, user } = useAuth0();
   const [donations, setDonations] = useState<null | Donation[]>(null);
 
   useApi<Donation[]>(
-    '/donors/27/donations', 
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations`, 
     'read_all_donations', 
     getAccessTokenSilently, 
     (res) => {

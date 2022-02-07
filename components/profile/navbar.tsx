@@ -7,14 +7,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export const Navbar: React.FC = () => {
   const {
-    isLoading,
-    isAuthenticated,
-    loginWithRedirect,
-    logout
+    logout,
+    user
   } = useAuth0();
-
-  if (!isAuthenticated && !isLoading)
-    loginWithRedirect()
 
   return (
     <nav className={styles.navbar}>
@@ -26,6 +21,7 @@ export const Navbar: React.FC = () => {
         alt="Konduit. logo" 
         priority/>
       <ul className={styles.links}>
+        <li>Hei {user ? user["https://konduit.no/user-id"] : "..."}</li>
         <li><Link href="/profile" passHref>Mine donasjoner</Link></li>
         <li><Link href="/profile/agreements" passHref>Mine avtaler</Link></li>
         <li><Link href="/profile/details" passHref>Profil</Link></li>

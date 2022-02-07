@@ -6,6 +6,7 @@ import styles from '../../styles/Layout.module.css'
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import Router from 'next/router';
 import { LayoutElement } from "../../types";
+import { UserWrapper } from "./userwrapper";
 
 const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || '/profile/');
@@ -22,9 +23,11 @@ export const Layout: LayoutElement = ({ children }) => {
       onRedirectCallback={onRedirectCallback}
     >
       <div className={styles.container}>
-        <Navbar />
-        <main className={styles.main}>{children}</main>
-        <Footer />
+        <UserWrapper>
+          <Navbar />
+          <main className={styles.main}>{children}</main>
+          <Footer />
+        </UserWrapper>
       </div>
     </Auth0Provider>
   )
