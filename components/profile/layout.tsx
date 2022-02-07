@@ -17,8 +17,8 @@ export const Layout: LayoutElement = ({ children }) => {
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_DOMAIN || ''}
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ''}
-      audient={'https://data.gieffektivt.no'}
-      scope="read_all_donations"
+      audience='https://data.gieffektivt.no'
+      scope="read:donations read:profile write:profile read:distributions read:agreements write:agreements"
       redirectUri={typeof window !== 'undefined' ? window.location.origin + '/profile/' : undefined}
       onRedirectCallback={onRedirectCallback}
     >
