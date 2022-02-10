@@ -10,7 +10,7 @@ const Donations = () => {
 
   useApi<Donation[]>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations`, 
-    'read_all_donations', 
+    'read:donations', 
     getAccessTokenSilently, 
     (res) => {
       setDonations(res)
