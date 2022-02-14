@@ -1,0 +1,36 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: 30vw 50vw;
+    justify-content: space-between;
+}
+
+.personalInfo {
+    grid-column: 1/2;
+}
+
+.yourData {
+    grid-column: 2/2;
+}
+
+.header {
+    grid-column: 1/3;
+}
+
+.gridContainer2 {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: 70px auto;
+    grid-column-gap: 10%;
+}
+
+.dataHeader{
+    grid-column: 1/3;
+}
+
+.taxSection {
+    grid-column: 1/2;
+}
+
+.privacySection {
+    grid-column: 2/3;
+}
