@@ -8,6 +8,10 @@ import { LayoutPage } from "../../types";
 
 const Home: LayoutPage = () => {
   const { logout, user } = useAuth0();
+
+  function save() {
+    alert("helluuuu");
+  }
   return (
     <>
       <Head>
@@ -16,49 +20,72 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={style.gridContainer}>
-        <h1 className={style.header}>Hei {user ? user["https://konduit.no/user-id"] : "..."}!</h1>
+        <h1 className={style.header}>
+          Hei {user ? user["https://konduit.no/user-id"] : "..."}!
+        </h1>
         <section className={style.personalInfo}>
           <hr />
           Ditt navn <br />
-          <input type="text" value="Test Testesen"/> <br /> <br />
+          <input
+            type="text"
+            value="Test Testesen"
+            className={style.input}
+          />{" "}
+          <br /> <br />
           E-post <br />
-          <input type="email" disabled  value="hallo@hei.no"/> <br /> <br />
+          <input
+            type="email"
+            disabled
+            value="hallo@hei.no"
+            className={style.input}
+          />{" "}
+          <br /> <br />
           Fødselsnummer / Organisasjonsnummer <br />
-          <input type="number" value={34567890}/> <br /> <br />
-          <input type="checkbox" checked/> Send meg nyhetsbrev på
-          e-post <br />
+          <input type="number" value={34567890} className={style.input} />{" "}
+          <br /> <br />
+          <input type="checkbox" /> Send meg nyhetsbrev på e-post <br />
           <br />
-          <button>Lagre</button>
+          <button className={style.button} onClick={save}>
+            Lagre
+          </button>
         </section>
 
         <section className={style.gridContainer2}>
           <section className={style.dataHeader}>
-          <hr />
-          <h2>Om dine data</h2>
+            <hr />
+            <h2>Om dine data</h2>
           </section>
           <section className={style.taxSection}>
             <h3>Skattefradrag</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id dictum lectus, 
-              sit amet ultricies metus. Pellentesque condimentum tortor commodo, laoreet ex sit 
-              amet, auctor nisi. Orci varius natoque penatibus et magnis dis parturient montes, 
-              nascetur ridiculus mus. Phasellus ut risus vel dui vestibulum semper ut ac lorem. 
-              Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut ultricies magna 
-              non finibus tincidunt. Aliquam tincidunt accumsan ligula vitae faucibus. Duis leo 
-              leo, sodales et elit eget, varius rhoncus quam. Maecenas porta efficitur lectus non 
-              eleifend. Donec eu auctor mauris, vitae facilisis augue. Proin maximus, sem at placerat 
-              tristique, lorem.</p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
+              dictum lectus, sit amet ultricies metus. Pellentesque condimentum
+              tortor commodo, laoreet ex sit amet, auctor nisi. Orci varius
+              natoque penatibus et magnis dis parturient montes, nascetur
+              ridiculus mus. Phasellus ut risus vel dui vestibulum semper ut ac
+              lorem. Interdum et malesuada fames ac ante ipsum primis in
+              faucibus. Ut ultricies magna non finibus tincidunt. Aliquam
+              tincidunt accumsan ligula vitae faucibus. Duis leo leo, sodales et
+              elit eget, varius rhoncus quam. Maecenas porta efficitur lectus
+              non eleifend. Donec eu auctor mauris, vitae facilisis augue. Proin
+              maximus, sem at placerat tristique, lorem.
+            </p>
           </section>
           <section className={style.privacySection}>
             <h3>Personvern</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id dictum lectus, 
-              sit amet ultricies metus. Pellentesque condimentum tortor commodo, laoreet ex sit 
-              amet, auctor nisi. Orci varius natoque penatibus et magnis dis parturient montes, 
-              nascetur ridiculus mus. Phasellus ut risus vel dui vestibulum semper ut ac lorem. 
-              Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut ultricies magna 
-              non finibus tincidunt. Aliquam tincidunt accumsan ligula vitae faucibus. Duis leo 
-              leo, sodales et elit eget, varius rhoncus quam. Maecenas porta efficitur lectus non 
-              eleifend. Donec eu auctor mauris, vitae facilisis augue. Proin maximus, sem at placerat 
-              tristique, lorem.</p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
+              dictum lectus, sit amet ultricies metus. Pellentesque condimentum
+              tortor commodo, laoreet ex sit amet, auctor nisi. Orci varius
+              natoque penatibus et magnis dis parturient montes, nascetur
+              ridiculus mus. Phasellus ut risus vel dui vestibulum semper ut ac
+              lorem. Interdum et malesuada fames ac ante ipsum primis in
+              faucibus. Ut ultricies magna non finibus tincidunt. Aliquam
+              tincidunt accumsan ligula vitae faucibus. Duis leo leo, sodales et
+              elit eget, varius rhoncus quam. Maecenas porta efficitur lectus
+              non eleifend. Donec eu auctor mauris, vitae facilisis augue. Proin
+              maximus, sem at placerat tristique, lorem.
+            </p>
           </section>
         </section>
       </div>
