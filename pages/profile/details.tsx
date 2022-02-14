@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import { Layout } from "../../components/profile/layout";
 import styles from "../../styles/Home.module.css";
 import style from "../../styles/Profile.module.css";
@@ -8,6 +9,7 @@ import { LayoutPage } from "../../types";
 
 const Home: LayoutPage = () => {
   const { logout, user } = useAuth0();
+  const [isChecked, setIsChecked] = useState(false);
 
   function save() {
     alert("helluuuu");
@@ -43,7 +45,8 @@ const Home: LayoutPage = () => {
           Fødselsnummer / Organisasjonsnummer <br />
           <input type="number" value={34567890} className={style.input} />{" "}
           <br /> <br />
-          <input type="checkbox" /> Send meg nyhetsbrev på e-post <br />
+          <input type="checkbox" className={isChecked ? style.checkboxActive : style.checkbox} onChange={() => {
+            setIsChecked(!isChecked);}}/> Send meg nyhetsbrev på e-post <br />
           <br />
           <button className={style.button} onClick={save}>
             Lagre

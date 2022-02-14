@@ -47,11 +47,23 @@
 
 .button {
   font-family: "ESKlarheitKurrent", sans-serif;
-  font-weight: 300;
+  font-weight: 600;
   font-size: 16px;
-  background-color: black;
-  color: white;
+  background-color: white;
   border: 2px;
   border-style: solid;
   border-color: white;
+  padding: 10px;
+  width: 100px;
+  float: right;
+}
+
+.checkbox {
+  height: 25px;
+  width: 25px;
+}
+
+.checkboxActive{
+  height: 25px;
+  width: 25px;
 }
