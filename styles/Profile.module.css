@@ -8,15 +8,11 @@
   grid-column: 1/2;
 }
 
-.yourData {
-  grid-column: 2/2;
-}
-
 .header {
   grid-column: 1/3;
 }
 
-.gridContainer2 {
+.dataGrid {
   display: grid;
   grid-template-columns: 45% 45%;
   grid-template-rows: 70px auto;
@@ -27,11 +23,11 @@
   grid-column: 1/3;
 }
 
-.taxSection {
+.tax {
   grid-column: 1/2;
 }
 
-.privacySection {
+.privacy {
   grid-column: 2/3;
 }
 
@@ -58,21 +54,32 @@
   float: right;
 }
 
+.button:hover {
+  border-color: grey;
+}
+
+.button:active {
+  background-color: rgb(230, 230, 230);
+  transform: translateY(2px);
+}
+
 .checkbox {
-  height: 25px;
-  width: 25px;
+  -webkit-transform: scale(2, 2);
+  margin: 10px;
 }
 
-.checkboxActive{
-  height: 25px;
-  width: 25px;
+.checkboxActive {
+  -webkit-transform: scale(2, 2);
+  margin: 10px;
 }
 
-.input[type=number]::-webkit-inner-spin-button, 
-.input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
   margin: 0;
   opacity: 1;
 }
 
-
+.input:disabled {
+  background-color: rgb(187, 187, 187);
+}

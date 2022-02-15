@@ -43,22 +43,30 @@ const Home: LayoutPage = () => {
           />{" "}
           <br /> <br />
           Fødselsnummer / Organisasjonsnummer <br />
-          <input type="number" defaultValue={34567890} className={style.input} />{" "}
+          <input
+            type="number"
+            defaultValue={34567890}
+            className={style.input}
+          />{" "}
           <br /> <br />
-          <input type="checkbox" className={isChecked ? style.checkboxActive : style.checkbox} onChange={() => {
-            setIsChecked(!isChecked);}}/> Send meg nyhetsbrev på e-post <br />
+          <input
+            type="checkbox"
+            className={isChecked ? style.checkboxActive : style.checkbox}
+            onChange={() => {
+              setIsChecked(!isChecked);
+            }}
+          />{" "}
+          Send meg nyhetsbrev på e-post <br />
           <br />
-          <button className={style.button} onClick={save}>
-            Lagre
-          </button>
+          <button className={style.button}>Lagre</button>
         </section>
 
-        <section className={style.gridContainer2}>
+        <section className={style.dataGrid}>
           <section className={style.dataHeader}>
             <hr />
             <h2>Om dine data</h2>
           </section>
-          <section className={style.taxSection}>
+          <section className={style.tax}>
             <h3>Skattefradrag</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
@@ -74,7 +82,7 @@ const Home: LayoutPage = () => {
               maximus, sem at placerat tristique, lorem.
             </p>
           </section>
-          <section className={style.privacySection}>
+          <section className={style.privacy}>
             <h3>Personvern</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
