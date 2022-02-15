@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "../../components/profile/layout";
 import styles from "../../styles/Home.module.css";
 import style from "../../styles/Profile.module.css";
@@ -10,9 +10,15 @@ import { LayoutPage } from "../../types";
 const Home: LayoutPage = () => {
   const { logout, user } = useAuth0();
   const [isChecked, setIsChecked] = useState(false);
+  const [name, setName] = useState("Test Testesen");
+  const [email, setEmail] = useState("hallo@hie.n0");
+  const [ssn, setSsn] = useState(123456789);
+  let inputEmail = "";
 
   function save() {
-    alert("helluuuu");
+    console.log(name);
+    console.log(ssn);
+    console.log(isChecked);
   }
   return (
     <>
@@ -29,24 +35,33 @@ const Home: LayoutPage = () => {
           <hr />
           Ditt navn <br />
           <input
+            id="name"
             type="text"
-            defaultValue="Test Testesen"
+            defaultValue={name ? name : "none"}
             className={style.input}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
           />{" "}
           <br /> <br />
           E-post <br />
           <input
+            id="email"
             type="email"
             disabled
-            value="hallo@hei.no"
+            value={email ? email : "none"}
             className={style.input}
           />{" "}
           <br /> <br />
           Fødselsnummer / Organisasjonsnummer <br />
           <input
+            id="ssn"
             type="number"
-            defaultValue={34567890}
+            defaultValue={ssn ? ssn : 0}
             className={style.input}
+            onChange={(e) => {
+              setSsn(parseInt(e.target.value));
+            }}
           />{" "}
           <br /> <br />
           <input
@@ -58,7 +73,9 @@ const Home: LayoutPage = () => {
           />{" "}
           Send meg nyhetsbrev på e-post <br />
           <br />
-          <button className={style.button}>Lagre</button>
+          <button className={style.button} onClick={save}>
+            Lagre
+          </button>
         </section>
 
         <section className={style.dataGrid}>
