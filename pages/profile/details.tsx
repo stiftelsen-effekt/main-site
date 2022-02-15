@@ -30,7 +30,7 @@ const Home: LayoutPage = () => {
           Ditt navn <br />
           <input
             type="text"
-            value="Test Testesen"
+            defaultValue="Test Testesen"
             className={style.input}
           />{" "}
           <br /> <br />
@@ -43,7 +43,7 @@ const Home: LayoutPage = () => {
           />{" "}
           <br /> <br />
           Fødselsnummer / Organisasjonsnummer <br />
-          <input type="number" value={34567890} className={style.input} />{" "}
+          <input type="number" defaultValue={34567890} className={style.input} />{" "}
           <br /> <br />
           <input type="checkbox" className={isChecked ? style.checkboxActive : style.checkbox} onChange={() => {
             setIsChecked(!isChecked);}}/> Send meg nyhetsbrev på e-post <br />
