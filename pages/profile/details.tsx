@@ -1,25 +1,59 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Layout } from "../../components/profile/layout";
+import { useApi } from "../../hooks/useApi";
+import { Donor } from "../../models";
 import styles from "../../styles/Home.module.css";
 import style from "../../styles/Profile.module.css";
 import { LayoutPage } from "../../types";
 
 const Home: LayoutPage = () => {
-  const { logout, user } = useAuth0();
-  const [isChecked, setIsChecked] = useState(false);
-  const [name, setName] = useState("Test Testesen");
-  const [email, setEmail] = useState("hallo@hie.n0");
-  const [ssn, setSsn] = useState(123456789);
-  let inputEmail = "";
+  const { getAccessTokenSilently, user } = useAuth0();
+  // const { logout, user } = useAuth0();
+  const [name, setName] = useState("Testesen");
+  const [email, setEmail] = useState("test@test.hey");
+  const [ssn, setSsn] = useState("111111");
+  const [newsletter, setNewsletter] = useState(true);
+  const token =
+    "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlRWOGJOYndDSUlHWmdLeEZLUUpHUCJ9.eyJodHRwczovL2tvbmR1aXQubm8vdXNlci1pZCI6MjM0OSwiaXNzIjoiaHR0cHM6Ly9rb25kdWl0LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MjAwZjNkMTEyNDVjODAwNmEyMTU4ZGIiLCJhdWQiOlsiaHR0cHM6Ly9kYXRhLmdpZWZmZWt0aXZ0Lm5vIiwiaHR0cHM6Ly9rb25kdWl0LmV1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NDUwMTkyMjQsImV4cCI6MTY0NTEwNTYyNCwiYXpwIjoiQkozalF6ejQ1RFNoVWNkZEhPVFgyT0lOd2tQek1Pa2MiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIHJlYWQ6ZG9uYXRpb25zIHJlYWQ6cHJvZmlsZSB3cml0ZTpwcm9maWxlIHJlYWQ6ZGlzdHJpYnV0aW9ucyByZWFkOmFncmVlbWVudHMgd3JpdGU6YWdyZWVtZW50cyJ9.qswRmwNjklGIh-C2IZPmRt2WPYA4NUli1U014iiisuFtyKdfHfP-5JQBjKLnczG6-xM_PzUzTeR0IP9DKMVVWYGTH_aJJhbB_Awq3ol9gvJYArBYs-_0sKPHwo5AiAZ-lx9Ehfvsfv5pxrEFa9vK3B-gWbDZGP-x0XUEAN4cSih_HFconVgh_zuKTttC45K_pA6Qubx-yRnODa0PQxBo51fpB78CwOofUt0TOBB-KFATK7WLpzP8nBWE7T38aWqU2BDMxMAts-pjYAtnt-93wUuZp9KnKkyGLJ7qbkLOhlmPGacIqnbko_8MfgGB54-JPoxIfMvbYYZvJ2DwXBdezQ";
+
+  useApi<Donor[]>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
+    "write:profile",
+    getAccessTokenSilently,
+    (res) => {
+      console.log(res);
+    }
+  );
 
   function save() {
-    console.log(name);
-    console.log(ssn);
-    console.log(isChecked);
+    let donor = { name, ssn, newsletter };
+
+    fetch(
+      `http://localhost:5050/donors/${
+        user ? user["https://konduit.no/user-id"] : ""
+      }/`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(donor),
+      }
+    )
+      .then((response) => response.json())
+      .then((donor) => {
+        console.log("Success:", donor);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
+
   return (
     <>
       <Head>
@@ -60,15 +94,16 @@ const Home: LayoutPage = () => {
             defaultValue={ssn ? ssn : 0}
             className={style.input}
             onChange={(e) => {
-              setSsn(parseInt(e.target.value));
+              // setSsn(parseInt(e.target.value));
+              setSsn(e.target.value);
             }}
           />{" "}
           <br /> <br />
           <input
             type="checkbox"
-            className={isChecked ? style.checkboxActive : style.checkbox}
+            className={newsletter ? style.checkboxActive : style.checkbox}
             onChange={() => {
-              setIsChecked(!isChecked);
+              setNewsletter(!newsletter);
             }}
           />{" "}
           Send meg nyhetsbrev på e-post <br />
@@ -122,3 +157,6 @@ const Home: LayoutPage = () => {
 };
 Home.layout = Layout;
 export default Home;
+function componentDidMount(arg0: () => void) {
+  throw new Error("Function not implemented.");
+}
