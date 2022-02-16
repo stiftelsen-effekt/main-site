@@ -1,11 +1,33 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import DonationsChart from '../../components/charts/donations'
 import Donations from '../../components/donations'
 import { Layout } from '../../components/profile/layout'
 import styles from '../../styles/Home.module.css'
 import { LayoutPage } from '../../types'
 
 const Home: LayoutPage = () => {
+  const testData = [{
+    name: "2022",
+    "Givewells tildelingsfond": 2000,
+    "Against Malaria Foundation": 1000,
+    "Drift": 400
+  },
+  {
+    name: "2021",
+    "Givewells tildelingsfond": 2000,
+    "Against Malaria Foundation": 1000,
+    "Drift": 400,
+    "Schistosomiasis Control Initiative": 400,
+    "Malaria Consortium": 400
+  },
+  {
+    name: "2020",
+    "Givewells tildelingsfond": 2000,
+    "Against Malaria Foundation": 1000,
+    "Drift": 400
+  }]
+
   return (
     <>
       <Head>
@@ -16,7 +38,10 @@ const Home: LayoutPage = () => {
 
       <h1>Mine donasjoner</h1>
 
-      <Donations />
+      <div style={{ height: 450 }}>
+        <DonationsChart data={testData} />
+      </div>
+      {/* <Donations /> */}
     </>
   )
 }
