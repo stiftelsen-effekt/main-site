@@ -11,25 +11,26 @@ import { LayoutPage } from "../../types";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
-  // const { logout, user } = useAuth0();
-  const [name, setName] = useState("Testesen");
-  const [email, setEmail] = useState("test@test.hey");
-  const [ssn, setSsn] = useState("111111");
-  const [newsletter, setNewsletter] = useState(true);
-  const token =
-    "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlRWOGJOYndDSUlHWmdLeEZLUUpHUCJ9.eyJodHRwczovL2tvbmR1aXQubm8vdXNlci1pZCI6MjM0OSwiaXNzIjoiaHR0cHM6Ly9rb25kdWl0LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MjAwZjNkMTEyNDVjODAwNmEyMTU4ZGIiLCJhdWQiOlsiaHR0cHM6Ly9kYXRhLmdpZWZmZWt0aXZ0Lm5vIiwiaHR0cHM6Ly9rb25kdWl0LmV1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NDUwMTkyMjQsImV4cCI6MTY0NTEwNTYyNCwiYXpwIjoiQkozalF6ejQ1RFNoVWNkZEhPVFgyT0lOd2tQek1Pa2MiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIHJlYWQ6ZG9uYXRpb25zIHJlYWQ6cHJvZmlsZSB3cml0ZTpwcm9maWxlIHJlYWQ6ZGlzdHJpYnV0aW9ucyByZWFkOmFncmVlbWVudHMgd3JpdGU6YWdyZWVtZW50cyJ9.qswRmwNjklGIh-C2IZPmRt2WPYA4NUli1U014iiisuFtyKdfHfP-5JQBjKLnczG6-xM_PzUzTeR0IP9DKMVVWYGTH_aJJhbB_Awq3ol9gvJYArBYs-_0sKPHwo5AiAZ-lx9Ehfvsfv5pxrEFa9vK3B-gWbDZGP-x0XUEAN4cSih_HFconVgh_zuKTttC45K_pA6Qubx-yRnODa0PQxBo51fpB78CwOofUt0TOBB-KFATK7WLpzP8nBWE7T38aWqU2BDMxMAts-pjYAtnt-93wUuZp9KnKkyGLJ7qbkLOhlmPGacIqnbko_8MfgGB54-JPoxIfMvbYYZvJ2DwXBdezQ";
 
-  useApi<Donor[]>(
+  const [donor, setDonor] = useState<null | Donor>(null);
+
+  useApi<Donor>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
-    "write:profile",
+    "GET",
+    "read:donations",
     getAccessTokenSilently,
     (res) => {
-      console.log(res);
+      setDonor(res);
     }
   );
 
-  function save() {
-    let donor = { name, ssn, newsletter };
+  if (donor === null) {
+    return <div>Loading...</div>;
+  }
+
+  async function save() {
+    const token = await getAccessTokenSilently();
+    // let donor = { name, ssn, newsletter };
 
     fetch(
       `http://localhost:5050/donors/${
@@ -71,10 +72,10 @@ const Home: LayoutPage = () => {
           <input
             id="name"
             type="text"
-            defaultValue={name ? name : "none"}
+            defaultValue={donor.name}
             className={style.input}
             onChange={(e) => {
-              setName(e.target.value);
+              setDonor({ ...donor, name: e.target.value });
             }}
           />{" "}
           <br /> <br />
@@ -83,27 +84,27 @@ const Home: LayoutPage = () => {
             id="email"
             type="email"
             disabled
-            value={email ? email : "none"}
+            value={donor.email}
             className={style.input}
           />{" "}
           <br /> <br />
           Fødselsnummer / Organisasjonsnummer <br />
           <input
             id="ssn"
-            type="number"
-            defaultValue={ssn ? ssn : 0}
+            type="text"
+            defaultValue={donor.ssn}
             className={style.input}
             onChange={(e) => {
-              // setSsn(parseInt(e.target.value));
-              setSsn(e.target.value);
+              setDonor({ ...donor, ssn: e.target.value });
             }}
           />{" "}
           <br /> <br />
           <input
             type="checkbox"
-            className={newsletter ? style.checkboxActive : style.checkbox}
+            className={donor.newsletter ? style.checkboxActive : style.checkbox}
+            checked={donor.newsletter}
             onChange={() => {
-              setNewsletter(!newsletter);
+              setDonor({ ...donor, newsletter: !donor.newsletter });
             }}
           />{" "}
           Send meg nyhetsbrev på e-post <br />
