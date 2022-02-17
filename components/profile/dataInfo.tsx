@@ -1,7 +1,4 @@
-import { groq } from "next-sanity";
-import { useRouter } from "next/router";
 import { PortableText } from "../../lib/sanity";
-import { getClient } from "../../lib/sanity.server";
 import style from "../../styles/Profile.module.css";
 
 export const DataInfo: React.FC<{ data: any }> = ({ data }) => {
