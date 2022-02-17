@@ -5,7 +5,6 @@ import { PortableText } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
 import styles from '../styles/About.module.css'
 import { groq } from "next-sanity";
-import { NextPage } from "next";
 import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 

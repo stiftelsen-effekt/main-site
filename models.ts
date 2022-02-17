@@ -1,11 +1,19 @@
 export type Donation = {
-  KID: string,
-  donor: string,
-  donorId: number,
-  email: string,
-  id: number,
-  paymentMethod: string,
-  sum: string,
-  timestamp: string,
-  transactionCost: string
-}
+  KID: string;
+  donor: string;
+  donorId: number;
+  email: string;
+  id: number;
+  paymentMethod: string;
+  sum: string;
+  timestamp: string;
+  transactionCost: string;
+};
+
+export type Donor = {
+  id: string;
+  name: string;
+  email: string;
+  ssn: string;
+  newsletter: boolean;
+};
