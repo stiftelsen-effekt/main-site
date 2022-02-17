@@ -1,60 +1,11 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
 import { Layout } from "../../components/profile/layout";
-import { useApi } from "../../hooks/useApi";
-import { Donor } from "../../models";
-import styles from "../../styles/Home.module.css";
+import { ProfileInfo } from "../../components/profile/profileInfo";
+import { DataInfo } from "../../components/profile/dataInfo";
 import style from "../../styles/Profile.module.css";
 import { LayoutPage } from "../../types";
 
 const Home: LayoutPage = () => {
-  const { getAccessTokenSilently, user } = useAuth0();
-
-  const [donor, setDonor] = useState<null | Donor>(null);
-
-  useApi<Donor>(
-    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently,
-    (res) => {
-      setDonor(res);
-    }
-  );
-
-  if (donor === null) {
-    return <div>Loading...</div>;
-  }
-
-  async function save() {
-    const token = await getAccessTokenSilently();
-    // let donor = { name, ssn, newsletter };
-
-    fetch(
-      `http://localhost:5050/donors/${
-        user ? user["https://konduit.no/user-id"] : ""
-      }/`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(donor),
-      }
-    )
-      .then((response) => response.json())
-      .then((donor) => {
-        console.log("Success:", donor);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-
   return (
     <>
       <Head>
@@ -63,101 +14,11 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={style.gridContainer}>
-        <h1 className={style.header}>
-          Hei {user ? user["https://konduit.no/user-id"] : "..."}!
-        </h1>
-        <section className={style.personalInfo}>
-          <hr />
-          Ditt navn <br />
-          <input
-            id="name"
-            type="text"
-            defaultValue={donor.name}
-            className={style.input}
-            onChange={(e) => {
-              setDonor({ ...donor, name: e.target.value });
-            }}
-          />{" "}
-          <br /> <br />
-          E-post <br />
-          <input
-            id="email"
-            type="email"
-            disabled
-            value={donor.email}
-            className={style.input}
-          />{" "}
-          <br /> <br />
-          Fødselsnummer / Organisasjonsnummer <br />
-          <input
-            id="ssn"
-            type="text"
-            defaultValue={donor.ssn}
-            className={style.input}
-            onChange={(e) => {
-              setDonor({ ...donor, ssn: e.target.value });
-            }}
-          />{" "}
-          <br /> <br />
-          <input
-            type="checkbox"
-            className={donor.newsletter ? style.checkboxActive : style.checkbox}
-            checked={donor.newsletter}
-            onChange={() => {
-              setDonor({ ...donor, newsletter: !donor.newsletter });
-            }}
-          />{" "}
-          Send meg nyhetsbrev på e-post <br />
-          <br />
-          <button className={style.button} onClick={save}>
-            Lagre
-          </button>
-        </section>
-
-        <section className={style.dataGrid}>
-          <section className={style.dataHeader}>
-            <hr />
-            <h2>Om dine data</h2>
-          </section>
-          <section className={style.tax}>
-            <h3>Skattefradrag</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
-              dictum lectus, sit amet ultricies metus. Pellentesque condimentum
-              tortor commodo, laoreet ex sit amet, auctor nisi. Orci varius
-              natoque penatibus et magnis dis parturient montes, nascetur
-              ridiculus mus. Phasellus ut risus vel dui vestibulum semper ut ac
-              lorem. Interdum et malesuada fames ac ante ipsum primis in
-              faucibus. Ut ultricies magna non finibus tincidunt. Aliquam
-              tincidunt accumsan ligula vitae faucibus. Duis leo leo, sodales et
-              elit eget, varius rhoncus quam. Maecenas porta efficitur lectus
-              non eleifend. Donec eu auctor mauris, vitae facilisis augue. Proin
-              maximus, sem at placerat tristique, lorem.
-            </p>
-          </section>
-          <section className={style.privacy}>
-            <h3>Personvern</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
-              dictum lectus, sit amet ultricies metus. Pellentesque condimentum
-              tortor commodo, laoreet ex sit amet, auctor nisi. Orci varius
-              natoque penatibus et magnis dis parturient montes, nascetur
-              ridiculus mus. Phasellus ut risus vel dui vestibulum semper ut ac
-              lorem. Interdum et malesuada fames ac ante ipsum primis in
-              faucibus. Ut ultricies magna non finibus tincidunt. Aliquam
-              tincidunt accumsan ligula vitae faucibus. Duis leo leo, sodales et
-              elit eget, varius rhoncus quam. Maecenas porta efficitur lectus
-              non eleifend. Donec eu auctor mauris, vitae facilisis augue. Proin
-              maximus, sem at placerat tristique, lorem.
-            </p>
-          </section>
-        </section>
+        <ProfileInfo />
+        <DataInfo />
       </div>
     </>
   );
 };
 Home.layout = Layout;
 export default Home;
-function componentDidMount(arg0: () => void) {
-  throw new Error("Function not implemented.");
-}
