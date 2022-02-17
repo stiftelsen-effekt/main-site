@@ -9,7 +9,7 @@ export const ProfileInfo: React.FC = () => {
   const successToast = () =>
     toast.success("Endringene dine er lagret", {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -19,16 +19,28 @@ export const ProfileInfo: React.FC = () => {
   const failureToast = () =>
     toast.error("Noe gikk galt, prøv på nytt", {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
     });
+  const warningToast = () =>
+    toast.warn("Du har ikke lagt inn noen endringer", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
   const { getAccessTokenSilently, user } = useAuth0();
 
   const [donor, setDonor] = useState<null | Donor>(null);
+  const [originalDonor, setOriginalDonor] = useState<null | Donor>(null);
 
   useApi<Donor>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
@@ -37,6 +49,7 @@ export const ProfileInfo: React.FC = () => {
     getAccessTokenSilently,
     (res) => {
       setDonor(res);
+      setOriginalDonor(res);
     }
   );
 
@@ -45,32 +58,35 @@ export const ProfileInfo: React.FC = () => {
   }
 
   async function save() {
-    const token = await getAccessTokenSilently();
-    // let donor = { name, ssn, newsletter };
+    if (originalDonor == donor) {
+      warningToast();
+    } else {
+      const token = await getAccessTokenSilently();
+      // let donor = { name, ssn, newsletter };
 
-    fetch(
-      `http://localhost:5050/donors/${
-        user ? user["https://konduit.no/user-id"] : ""
-      }/`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(donor),
-      }
-    )
-      .then((response) => response.json())
-      .then((donor) => {
-        console.log("Success:", donor);
-        successToast();
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        failureToast();
-      });
+      fetch(
+        `http://localhost:5050/donors/${
+          user ? user["https://konduit.no/user-id"] : ""
+        }/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "same-origin",
+          body: JSON.stringify(donor),
+        }
+      )
+        .then((response) => response.json())
+        .then((donor) => {
+          successToast();
+        })
+        .catch((error) => {
+          failureToast();
+        });
+      setOriginalDonor(donor);
+    }
   }
   return (
     <>
@@ -124,7 +140,7 @@ export const ProfileInfo: React.FC = () => {
         <ToastContainer
           theme="dark"
           position="top-right"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -132,6 +148,7 @@ export const ProfileInfo: React.FC = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          limit={2}
         />
       </section>
     </>
