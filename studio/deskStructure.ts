@@ -19,6 +19,6 @@ export default () =>
             .documentId('organizations')
         ),
       ...S.documentTypeListItems().filter(listItem => 
-        !['about_us'].includes(listItem.getId()) &&
-        !['organizations'].includes(listItem.getId()))
+        !['about_us'].includes(listItem.getId() || '') &&
+        !['organizations'].includes(listItem.getId() || ''))
     ])

@@ -62,10 +62,10 @@ export const ProfileInfo: React.FC = () => {
       warningToast();
     } else {
       const token = await getAccessTokenSilently();
-      // let donor = { name, ssn, newsletter };
+      const api = process.env.NEXT_PUBLIC_EFFEKT_API || 'http://localhost:5050'
 
       fetch(
-        `http://localhost:5050/donors/${
+        `${api}/donors/${
           user ? user["https://konduit.no/user-id"] : ""
         }/`,
         {

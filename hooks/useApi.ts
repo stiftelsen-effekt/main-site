@@ -30,12 +30,13 @@ export const useApi = <T>(
 ) =>
   useEffect(() => {
     (async () => {
+      const api = process.env.NEXT_PUBLIC_EFFEKT_API || 'http://localhost:5050'
       try {
         const token = await getToken({
           audience: "https://data.gieffektivt.no",
           scope: scope,
         });
-        const response = await fetch("http://localhost:5050" + endpoint, {
+        const response = await fetch(api + endpoint, {
           method: method,
           headers: {
             Authorization: `Bearer ${token}`,

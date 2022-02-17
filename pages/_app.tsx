@@ -1,13 +1,15 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { LayoutPage } from '../types'
+import { Layout } from '../components/main/layout'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const Layout = (Component as LayoutPage).layout
+  // Gets the page layout from the component, defaults to the main layout
+  const PageLayout = (Component as LayoutPage).layout || Layout
   return (
-    <Layout>
+    <PageLayout>
       <Component {...pageProps} />
-    </Layout>
+    </PageLayout>
   )
 }
 
