@@ -1,10 +1,31 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { useApi } from "../../hooks/useApi";
 import { Donor } from "../../models";
 import style from "../../styles/Profile.module.css";
 
 export const ProfileInfo: React.FC = () => {
+  const successToast = () =>
+    toast.success("Endringene dine er lagret", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  const failureToast = () =>
+    toast.error("Noe gikk galt, prøv på nytt", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   const { getAccessTokenSilently, user } = useAuth0();
 
   const [donor, setDonor] = useState<null | Donor>(null);
@@ -44,9 +65,11 @@ export const ProfileInfo: React.FC = () => {
       .then((response) => response.json())
       .then((donor) => {
         console.log("Success:", donor);
+        successToast();
       })
       .catch((error) => {
         console.error("Error:", error);
+        failureToast();
       });
   }
   return (
@@ -98,6 +121,18 @@ export const ProfileInfo: React.FC = () => {
         <button className={style.button} onClick={save}>
           Lagre
         </button>
+        <ToastContainer
+          theme="dark"
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </section>
     </>
   );

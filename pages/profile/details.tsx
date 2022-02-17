@@ -4,6 +4,8 @@ import { ProfileInfo } from "../../components/profile/profileInfo";
 import { DataInfo } from "../../components/profile/dataInfo";
 import style from "../../styles/Profile.module.css";
 import { LayoutPage } from "../../types";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home: LayoutPage = () => {
   return (
