@@ -34,8 +34,6 @@ const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) =>
 export async function getStaticProps({ preview = false }) {
   const data = await getClient(preview).fetch(fetchProfilePage)
 
-  console.log(data)
-
   return {
     props: {
       preview,
