@@ -1,5 +1,4 @@
 @startuml
-!theme plain
 skinparam componentStyle rectangle
 
 database MySQL
@@ -14,6 +13,7 @@ package "main-site" {
 }
 
 [public-page] <--> sanity
+[profile-page] <--> sanity
 [profile-page] <--> Auth0
 [profile-page] <--> API
 API <--> MySQL
