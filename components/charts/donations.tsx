@@ -1,90 +1,55 @@
-import React, { PureComponent } from "react"
-import { Bar, BarChart, Label, LabelList, ResponsiveContainer, XAxis } from "recharts"
+import React from "react"
+import style from "../../styles/DonationChart.module.css";
+import { thousandize } from "../../util/formatting";
+
 
 const DonationsChart: React.FC<{data: any[]}> = ({data}) => {
-  const organizations = getOrganizationsFromData(data)
-
-  return (<ResponsiveContainer>
-    <BarChart 
-      data={data}
-      margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-      barSize={90}
-      barGap={0}>
-      <XAxis 
-        dataKey={"name"}
-        stroke={"white"}
-        padding={{left: 0}}>
-      </XAxis>
-      {
-        organizations.map((org: string, i: number) => (
-          <Bar 
-            dataKey={org} 
-            stackId={"a"} 
-            fill={"#ffffff"} 
-            key={i}
-            spacing={100}
-            shape={(props) => barWithBorder(props, 1, "black")}
-            isAnimationActive={false}>
-            <LabelList 
-              dataKey={org} 
-              position={"right"} 
-              fill={"#ffffff"}
-              content={(props) => chartLabel(props, org)}/>
-          </Bar>
-        ))
-      }
-    </BarChart>
-  </ResponsiveContainer>)
-}
-
-const chartLabel: React.FC<any> = (props, org) => {
-  const { x, y, width, height, value } = props
-
-  if (!value) return <></>
+  const maxSum = getMaxYearSum(data)
 
   return (
-    <foreignObject
-      width={200}
-      height={height}
-      transform={`translate(${x + width}, ${y})`}>
-      <div style={{ 
-        color: "white", 
-        height: "100%", 
-        display: "flex", 
-        justifyContent: "flex-end", 
-        flexDirection: "column",
-        paddingBottom: 4,
-        paddingLeft: 10 }}>
-        <div style={{ fontSize: 12 }}>{org}</div>
-        <div style={{ fontSize: 10 }}>{value}</div>
+    <div className={style.wrapper}>
+      <div className={style["bars-wrapper"]}>
+        {
+          data.map((el) => {
+            const constituents = getBarConstituents(el)
+            const yearSum = getYearSum(el)
+            return (
+            <div className={style["bar-wrapper"]} 
+              style={{
+                height: (yearSum / maxSum)*100 + "%"
+              }} 
+              key={el.name}>
+              {
+                constituents.map((constituent) => (
+                  <div className={style.bar} 
+                    key={constituent.org}
+                    style={{ height: (constituent.value / yearSum)*100 + "%" }}>
+
+                  </div>
+                ))
+              }
+            </div>)
+          })
+        }
       </div>
-    </foreignObject>
+      <div className={style.axis}>
+        {
+          data.map((el) => {
+            const yearSum = getYearSum(el)
+            const year = el.name
+
+            return (
+              <div className={style.label} key={year}>
+                <div className={style.labelyear}>{year}</div>
+                <div className={style.labelsum}>{thousandize(yearSum) + " kr"}</div>
+              </div>
+            )
+          })
+        }
+      </div>
+    </div>
   )
 }
-
-class CustomizedAxisTick extends PureComponent<any> {
-  render() {
-    const { x, y, stroke, payload } = this.props;
-
-    return (
-      <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-          {payload.value}
-        </text>
-      </g>
-    );
-  }
-}
-
-const barWithBorder = (props: any, borderHeight: number, borderColor: string) => {
-  const { fill, x, y, width, height } = props
-  return (
-    <g>
-      <rect x={x} y={y} width={width} height={height} stroke="none" fill={fill} />
-      <rect x={x} y={y} width={width} height={borderHeight} stroke="none" fill={borderColor} />
-    </g>
-  );
-};
 
 /**
  * Looks through all the keys on every data array element
@@ -108,6 +73,52 @@ const getOrganizationsFromData = (data: any[]): string[] => {
   // Filter out the name key, this is used as the x axis determinant
   orgs = orgs.filter(org => org != "name")
   return orgs
+}
+
+const getMaxYearSum = (data: any[]): number => {
+  const max = data.reduce((acc, el) => {
+    const sum = getYearSum(el)
+    if (sum > acc) {
+      return sum
+    } else {
+      return acc
+    }
+  }, 0)
+  return max
+}
+
+const getYearSum = (data: any): number => { 
+  let sum = 0
+  for (const key in data) {
+    if (key === "name")
+      continue
+
+    sum += data[key]
+  }
+  
+  return sum
+}
+
+const getYears = (data: any[]) => {
+  const years: any[] = []
+  data.forEach((el) => {
+    years.push(el.name)
+  })
+  return years
+}
+
+const getBarConstituents = (data: any) => {
+  const constituents: {org: string, value: number}[] = []
+  for (const key in data) {
+    if (key === "name")
+      continue
+
+    constituents.push({
+      org: key,
+      value: data[key]
+    })
+  }
+  return constituents
 }
 
 export default DonationsChart

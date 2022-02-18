@@ -17,3 +17,15 @@ export type Donor = {
   ssn: string;
   newsletter: boolean;
 };
+
+export type AggregatedDonations = {
+  abbriv: string;
+  organization: string;
+  organizationId: number;
+  value: string;
+  year: number;
+}
+
+export type DonationGraphData = {
+  name: string
+}

@@ -1,32 +1,45 @@
+import { useAuth0 } from '@auth0/auth0-react'
+import { resolveSoa } from 'dns'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 import DonationsChart from '../../components/charts/donations'
-import Donations from '../../components/donations'
 import { Layout } from '../../components/profile/layout'
-import styles from '../../styles/Home.module.css'
+import { useApi } from '../../hooks/useApi'
+import { AggregatedDonations, DonationGraphData } from '../../models'
 import { LayoutPage } from '../../types'
 
 const Home: LayoutPage = () => {
-  const testData = [{
-    name: "2022",
-    "Givewells tildelingsfond": 2000,
-    "Against Malaria Foundation": 1000,
-    "Drift": 400
-  },
-  {
-    name: "2021",
-    "Givewells tildelingsfond": 2000,
-    "Against Malaria Foundation": 1000,
-    "Drift": 400,
-    "Schistosomiasis Control Initiative": 400,
-    "Malaria Consortium": 400
-  },
-  {
-    name: "2020",
-    "Givewells tildelingsfond": 2000,
-    "Against Malaria Foundation": 1000,
-    "Drift": 400
-  }]
+  const { getAccessTokenSilently, user } = useAuth0();
+  const [graphData, setGraphData] = useState<null | any[]>(null);
+
+  useApi<AggregatedDonations[]>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/aggregated`,
+    "GET",
+    "read:donations",
+    getAccessTokenSilently,
+    (res) => {
+      let data: any[] = []
+      res = res.sort((a, b) => b.year - a.year)
+      for (let i = 0; i < res.length; i++) {
+        if (i == 0 || (data[data.length-1].name != res[i].year)) {
+          let obj: any = {}
+
+          obj["name"] = res[i].year
+          obj[res[i].organization] = parseFloat(res[i].value)
+
+          data.push(obj)
+        } else {
+          data[data.length-1][res[i].organization] = parseFloat(res[i].value)
+        }
+      }
+      console.log(data)
+      setGraphData(data)
+    }
+  );
+
+  if (!graphData)
+    return <></>
 
   return (
     <>
@@ -36,10 +49,10 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Mine donasjoner</h1>
+      <h1>Donasjoner</h1>
 
       <div style={{ height: 450 }}>
-        <DonationsChart data={testData} />
+        <DonationsChart data={graphData} />
       </div>
       {/* <Donations /> */}
     </>
