@@ -1,0 +1,17 @@
+.center-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.konduit-button {
+  border: none;
+  background: white;
+  padding: 14px 26px;
+  font-family: "ESKlarheitGrotesk";
+  cursor: pointer;
+}
