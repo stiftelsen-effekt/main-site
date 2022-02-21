@@ -154,3 +154,7 @@ export const ProfileInfo: React.FC = () => {
     </>
   );
 };
+
+export const simpleFunc = () => {
+  return "hello!";
+};
