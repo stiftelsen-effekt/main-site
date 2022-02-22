@@ -7,13 +7,27 @@
 	xmlns:xlink="http://www.w3.org/1999/xlink" 
 	x="0px" y="0px"
 	viewBox="0 0 1000 500" 
+	style="enable-background:new 0 0 1000 500;" 
 	xml:space="preserve">
 <style type="text/css">
-	.st0{color:#000000;}
+	.st0{fill:#000000;}
 	@media (prefers-color-scheme: dark) {
-		.st0{color:#ffffff;}
+		.st0{fill:#ffffff;}
+	}
+
+	.st1{fill:#ffffff;}
+	@media (prefers-color-scheme: dark) {
+		.st1{fill:#000000;}
 	}
 </style>
+<g>
+	<rect
+		x="0"
+		y="0"
+		width="1000" 
+		height="500" 
+		class="st1"></rect>
+</g>
 <g>
 	<path class="st0" d="M290.256,215.822c-31,0-55.2,22.4-55.2,55.199c0,32.6,24.2,55,55.2,55s55.4-22.4,55.4-55
 		C345.656,238.222,321.256,215.822,290.256,215.822z M290.256,310.821c-22,0-38.4-15.8-38.4-39.8c0-24.199,16-40,38.4-40
