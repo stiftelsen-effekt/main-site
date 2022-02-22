@@ -1,7 +1,7 @@
 
-<div style="text-align: center; padding-bottom: 40px;">
+<p align="center">
   <img src="docs/logo.svg" width="240" alt="Konduit. logo" />
-</div>
+</p>
 
 # Homepage
 
@@ -9,9 +9,9 @@ This is the repository for the main Konduit site. [Next.js](https://nextjs.org) 
 
 Authentification is handled with [Auth0](https://auth0.com), and the API used for data fetching and mutation is found in the [backend repository](https://github.com/stiftelsen-effekt/effekt-backend).
 
-<div style="text-align: center">
+<p align="center">
   <img src="docs/overview.svg" width="420" alt="Architecture Overview Diagram" />
-</div>
+</p>
 
 ## Getting started ⚡
 
