@@ -42,21 +42,22 @@ export const ProfileInfo: React.FC = () => {
   const [donor, setDonor] = useState<null | Donor>(null);
   const [originalDonor, setOriginalDonor] = useState<null | Donor>(null);
 
-  useApi<Donor>(
+  const { loading, error, data } = useApi<Donor>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
     "GET",
     "read:donations",
     getAccessTokenSilently,
-    (res) => {
-      setDonor(res);
-      setOriginalDonor(res);
-    }
   );
 
-  if (donor === null) {
+  if (loading)  {
     return <div>Loading...</div>;
-  }
-
+  } else if (error) {
+    return <div>Noe gikk galt </div>
+  } else if (!donor) {
+    setDonor(data)
+    return <div>Loading...</div>;
+  };
+  
   async function save() {
     if (originalDonor == donor) {
       warningToast();

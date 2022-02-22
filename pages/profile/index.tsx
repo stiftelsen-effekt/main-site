@@ -13,33 +13,21 @@ const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
   const [graphData, setGraphData] = useState<null | any[]>(null);
 
-  useApi<AggregatedDonations[]>(
+  const {loading, data, error} = useApi<AggregatedDonations[]>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/aggregated`,
     "GET",
     "read:donations",
     getAccessTokenSilently,
-    (res) => {
-      let data: any[] = []
-      res = res.sort((a, b) => b.year - a.year)
-      for (let i = 0; i < res.length; i++) {
-        if (i == 0 || (data[data.length-1].name != res[i].year)) {
-          let obj: any = {}
 
-          obj["name"] = res[i].year
-          obj[res[i].organization] = parseFloat(res[i].value)
-
-          data.push(obj)
-        } else {
-          data[data.length-1][res[i].organization] = parseFloat(res[i].value)
-        }
-      }
-      console.log(data)
-      setGraphData(data)
-    }
   );
 
-  if (!graphData)
+  if (loading)
     return <></>
+
+  if (!graphData) {
+    setGraphData(transformData(data));
+    return <></>
+  }
 
   return (
     <>
@@ -60,3 +48,21 @@ const Home: LayoutPage = () => {
 }
 Home.layout = Layout
 export default Home
+
+const transformData = (res: any) => {
+  let data: any[] = []
+  res = res.sort((a: any, b: any) => b.year - a.year)
+  for (let i = 0; i < res.length; i++) {
+    if (i == 0 || (data[data.length-1].name != res[i].year)) {
+      let obj: any = {}
+
+      obj["name"] = res[i].year
+      obj[res[i].organization] = parseFloat(res[i].value)
+
+      data.push(obj)
+    } else {
+      data[data.length-1][res[i].organization] = parseFloat(res[i].value)
+    }
+  }
+  return data;
+}

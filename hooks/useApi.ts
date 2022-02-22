@@ -4,7 +4,7 @@ import {
   useAuth0,
 } from "@auth0/auth0-react";
 import { GetTokenSilentlyVerboseResponse } from "@auth0/auth0-spa-js";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 /**
  * Imported from the auth0 type definitions
@@ -21,13 +21,15 @@ type getAccessTokenSilently = {
   >;
 };
 
+export interface apiResult<T> {loading: boolean, error: any | null, data:T | null};
+
 export const useApi = <T>(
   endpoint: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
   scope: string,
-  getToken: getAccessTokenSilently,
-  cb: (res: T) => void
-) =>
+  getToken: getAccessTokenSilently
+): apiResult<T> => {
+  const [result, setResult] = useState<apiResult<T>>({loading: true, data: null, error: null})
   useEffect(() => {
     (async () => {
       const api = process.env.NEXT_PUBLIC_EFFEKT_API || 'http://localhost:5050'
@@ -42,10 +44,13 @@ export const useApi = <T>(
             Authorization: `Bearer ${token}`,
           },
         });
-        cb((await response.json()).content);
+        const data = (await response.json()).content;
+        setResult({loading: false, error: null, data: data});
       } catch (e) {
-        console.error(e);
+        setResult({loading: false, error: e, data: null});
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getToken, scope, endpoint]);
+  }, []);
+  return result;
+}
