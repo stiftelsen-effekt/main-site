@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="docs/logo.svg" width="240" alt="Konduit. logo" />
+  <img src="docs/logo.svg" width="320" alt="Konduit. logo" />
 </p>
 
 # Homepage
