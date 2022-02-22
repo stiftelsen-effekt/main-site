@@ -3,7 +3,20 @@
   <img src="docs/logo.svg" width="320" alt="Konduit. logo" />
 </p>
 
-# Homepage
+Table of Contents
+=================
+
+* [Getting started <g-emoji class="g-emoji" alias="zap" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png">⚡</g-emoji>](#getting-started-)
+* [Project structure](#project-structure)
+  * [Pages](#pages)
+  * [Components](#components)
+* [Sanity (Content Managment System) <g-emoji class="g-emoji" alias="book" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d6.png">📖</g-emoji>](#sanity-content-managment-system-)
+* [Profile page <g-emoji class="g-emoji" alias="people_holding_hands" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f91d-1f9d1.png">🧑‍🤝‍🧑</g-emoji>](#profile-page-)
+  * [Fetching and mutating data via the API](#fetching-and-mutating-data-via-the-api)
+* [Build and deployment <g-emoji class="g-emoji" alias="gear" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2699.png">⚙️</g-emoji>](#build-and-deployment-️)
+* [Testing <g-emoji class="g-emoji" alias="boom" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a5.png">💥</g-emoji>](#testing-)
+
+---
 
 This is the repository for the main Konduit site. [Next.js](https://nextjs.org) is the react based frontend framework. It's created using a combination of static site generation for the public facing pages with [sanity.io](https://sanity.io) as the cms, as well as client side logic and data fetching on the protected profile pages.
 
