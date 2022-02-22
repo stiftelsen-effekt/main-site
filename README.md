@@ -23,7 +23,19 @@ To start the development server run
 
 ``` npm run dev ```
 
-The content managment panel is not strictly needed to run the main site. 
+Navigating to `localhost:3000/` in your browser should yield something like this
+
+<img src="docs/frontpage.png" width="420" alt="Konduit front page" />
+
+The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, run 
+
+``` npm run sanity ```
+
+> To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
+
+This will make sanity studio available at `localhost:3000/studio/`. It should look something like this
+
+<img src="docs/sanity.png" width="420" alt="Konduit front page" />
 
 ## Project structure
 
@@ -45,14 +57,85 @@ Reusable components not tied to a concrete page, are located in the `/components
 
 ## Sanity (Content Managment System) 📖
 
-We use Sanity as our content managment system. Sanity provides us with a nice API to fetch data 
+We use Sanity as our content managment system. Sanity provides us with a nice API to fetch data when rendering statically generated content. Next uses a special function called `getStaticProps` to fetch data used for static site generation, which is then provided as props to the page in question. 
+
+To fetch data from sanity, we make use of the [next-sanity](https://github.com/sanity-io/next-sanity) SDK To query our data in sanity, we make use of the [groq](https://www.sanity.io/docs/groq) query language.
+
+Let's have a look at an example.
+
+```typescript
+import Head from "next/head";
+import { useRouter } from "next/router";
+import React from "react";
+import { PortableText } from "../lib/sanity";
+import { getClient } from "../lib/sanity.server";
+import { groq } from "next-sanity";
+import { LayoutPage } from "../types";
+import { Layout } from "../components/main/layout";
+
+const ExamplePage: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
+  const router = useRouter()
+
+  if (!router.isFallback && !data.about) {
+    return <h1>404</h1>
+  }
+
+  return (
+    <>
+      <Head>
+        <title>Konduit. - Example Page</title>
+        <meta name="description" content="Konduit example page" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <h1>Example page</h1>
+      
+      <PortableText blocks={data.about[0].content}></PortableText>
+    </>
+  )
+}
+
+export async function getStaticProps({ preview = false }) {
+  const data = await getClient(preview).fetch(fetchAboutUs)
+
+  return {
+    props: {
+      preview,
+      data,
+    },
+  }
+}
+
+const fetchAboutUs = groq`
+{
+  "about": *[_type == "about_us"] {
+    content
+  }
+}
+`
+
+ExamplePage.layout = Layout
+export default ExamplePage
+```
+
+In this example page, we use the publicly available main layout for the page. We fetch the data we are interested in on site generation, using the `getStaticProps` method, a sanity client and a groq query. If no data was found, we render a 404 message.
 
 ## Profile page 🧑‍🤝‍🧑
+
+We utilize Auth0 as our identity provider. Under `components/profile/layout` we wrap the profile page with the [Auth0 react SDK](https://github.com/auth0/auth0-react) provider. When querying the [API](https://github.com/stiftelsen-effekt/effekt-backend) for data, we provide the access token from Auth0. Depending on whether the resource accessed is a protected resource, the backend API validates the token, and returns the data. The following diagram illustrates the process.
 
 <div style="text-align: center">
   <img src="docs/profilepageflow.svg" width="420" alt="Profile Page Flow Diagram" />
 </div>
 
+### Fetching and mutating data via the API
+
+
+
 ## Build and deployment ⚙️
+
+This repository is connected to the [vercel edge cdn](https://vercel.com/). On any commit to the `main` branch, the application as automatically built, tested and deployed.
+
+When editing content in sanity for the `production` dataset, a webhook triggers a build of the most recent version of the main branch. This generates static sites with the most recent content. Building typically takes somewhere in the range of 4 minutes.
 
 ## Testing 💥
