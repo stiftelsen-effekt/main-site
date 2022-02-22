@@ -63,6 +63,9 @@ To fetch data from sanity, we make use of the [next-sanity](https://github.com/s
 
 Let's have a look at an example.
 
+<Details>
+<Summary>Example page</Summary>
+
 ```typescript
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -117,7 +120,8 @@ const fetchAboutUs = groq`
 ExamplePage.layout = Layout
 export default ExamplePage
 ```
-
+</Details>
+<br>
 In this example page, we use the publicly available main layout for the page. We fetch the data we are interested in on site generation, using the `getStaticProps` method, a sanity client and a groq query. If no data was found, we render a 404 message.
 
 ## Profile page 🧑‍🤝‍🧑
@@ -129,6 +133,31 @@ We utilize Auth0 as our identity provider. Under `components/profile/layout` we 
 </div>
 
 ### Fetching and mutating data via the API
+
+For convenience, we have created a custom hook for fetching data from the API. The `useApi` hook is located under `hooks/useApi.ts`. This will a HTTP REST request **once** on the initial component mounting.
+
+You provide the API route, method, required scopes and the auth0 SDK's getAccessTokenSilently method to the hook.
+
+```typescript
+const { getAccessTokenSilently, user } = useAuth0();
+
+if (!user)
+  // User is not logged in, handle in an apropriate way
+
+const { loading, error, data } = useApi<Donor>(
+  `/donors/${user["https://konduit.no/user-id"]}/`,
+  "GET",
+  "read:profile",
+  getAccessTokenSilently,
+);
+```
+
+> ⚠️ The donor id used for the backend API is not the same as the id of the auth0 user. The donor id used in the backend api is available on the user object as the `https://konduit.no/user-id` property.
+
+The hook functions can be viewed as a finite state machine.
+
+<img src="docs/useapi.svg" width="220" alt="useApi FSM" />
+
 
 
 
