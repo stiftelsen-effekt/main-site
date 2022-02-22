@@ -23,6 +23,20 @@
   padding: 10px 20px;
 }
 
+.links li a {
+  text-decoration: none;
+}
+
 .links li:last-child {
   padding-right: 0px;
+}
+
+.btnlogout {
+  background: none;
+  box-shadow: none;
+  color: white;
+  font-family: "ESKlarheitGrotesk";
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
 }

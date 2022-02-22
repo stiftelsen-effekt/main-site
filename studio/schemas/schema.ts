@@ -8,6 +8,7 @@ import contributor from './contributor'
 import about from './about'
 import organization from './organization'
 import organizations from './organizations'
+import profile from './profile'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -20,6 +21,7 @@ export default createSchema({
     contributor,
     about,
     organization,
-    organizations
+    organizations,
+    profile
   ]),
 })

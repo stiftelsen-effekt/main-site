@@ -1,0 +1,55 @@
+.wrapper {
+  width: 100%;
+  height: 450px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.bars-wrapper {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bar-wrapper {
+  display: flex;
+  background: rebeccapurple;
+  width: 100px;
+  flex-direction: column;
+}
+
+.bar {
+  width: 100px;
+  background: #fff;
+  border-top: 1px solid black;
+}
+
+.axis {
+  border-top: 1px solid #fff;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.label {
+  width: 100px;
+  height: 200px;
+  padding-top: 10px;
+}
+
+.labelyear {
+  font-size: 20px;
+  font-family: "ESKlarheitKurrent";
+  font-weight: 600;
+}
+
+.labelsum {
+  font-size: 14px;
+}

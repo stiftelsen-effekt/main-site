@@ -18,7 +18,15 @@ export default () =>
             .schemaType('organizations')
             .documentId('organizations')
         ),
+      S.listItem()
+        .title('Profile page')
+        .child(
+          S.document()
+            .schemaType('profile')
+            .documentId('profile')
+        ),
       ...S.documentTypeListItems().filter(listItem => 
-        !['about_us'].includes(listItem.getId()) &&
-        !['organizations'].includes(listItem.getId()))
+        !['about_us'].includes(listItem.getId() || '') &&
+        !['organizations'].includes(listItem.getId() || '') &&
+        !['profile'].includes(listItem.getId() || ''))
     ])

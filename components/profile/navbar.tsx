@@ -21,12 +21,9 @@ export const Navbar: React.FC = () => {
         alt="Konduit. logo" 
         priority/>
       <ul className={styles.links}>
-        <li>Hei {user ? user["https://konduit.no/user-id"] : "..."}</li>
         <li><Link href="/profile" passHref>Mine donasjoner</Link></li>
-        <li><Link href="/profile/agreements" passHref>Mine avtaler</Link></li>
         <li><Link href="/profile/details" passHref>Profil</Link></li>
-        <li><Link href="/donate" passHref>Doner</Link></li>
-        <li><button onClick={() => logout()}>Log ut</button></li>
+        <li><button className={styles.btnlogout} onClick={() => logout()}>Log ut</button></li>
       </ul>
     </nav>
   )
