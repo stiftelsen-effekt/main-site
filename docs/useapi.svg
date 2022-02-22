@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="254px" preserveAspectRatio="none" style="width:282px;height:254px;background:#FFFFFF;" version="1.1" viewBox="0 0 282 254" width="282px" zoomAndPan="magnify"><defs/><g><g id="Fetch"><rect fill="#FFFFFF" height="88.0586" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="111" x="87.5" y="12"/><line style="stroke:#000000;stroke-width:1.5;" x1="87.5" x2="198.5" y1="39.0146" y2="39.0146"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="38" x="124" y="31.0752">Fetch</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="91" x="92.5" y="58.0898">loading: true</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="68" x="92.5" y="75.1045">data: null</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="71" x="92.5" y="92.1191">error: null</text></g><g id="Success"><rect fill="#FFFFFF" height="88.0586" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="114" x="12" y="160"/><line style="stroke:#000000;stroke-width:1.5;" x1="12" x2="126" y1="187.0146" y2="187.0146"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="55" x="41.5" y="179.0752">Success</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="94" x="17" y="206.0898">loading: false</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="75" x="17" y="223.1045">data: Data</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="71" x="17" y="240.1191">error: null</text></g><g id="Failed"><rect fill="#FFFFFF" height="88.0586" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="114" x="161" y="160"/><line style="stroke:#000000;stroke-width:1.5;" x1="161" x2="275" y1="187.0146" y2="187.0146"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="41" x="197.5" y="179.0752">Failed</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="94" x="166" y="206.0898">loading: false</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="68" x="166" y="223.1045">data: null</text><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="80" x="166" y="240.1191">error: Error</text></g><!--MD5=[2b9eccf8772085cffe2ba35b36b689a7]
+link Fetch to Success--><path d="M121.2,100.02 C112.39,117.38 102.2,137.5 93.17,155.31 " fill="none" id="Fetch-to-Success" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="90.9,159.79,98.5346,153.568,93.1589,155.3294,91.3975,149.9537,90.9,159.79" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[9520294a46341d8699056eefc18a282e]
+link Fetch to Failed--><path d="M165.1,100.02 C174.02,117.38 184.35,137.5 193.5,155.31 " fill="none" id="Fetch-to-Failed" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="195.8,159.79,195.2396,149.9571,193.5126,155.3439,188.1258,153.6169,195.8,159.79" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[fe56c7611b6d11455444d76bacc22131]
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+state Fetch
+Fetch : loading: true
+Fetch : data: null
+Fetch : error: null
+state Success
+Success : loading: false
+Success : data: Data
+Success : error: null
+state Failed
+Failed : loading: false
+Failed : data: null
+Failed : error: Error
+
+Fetch - -> Success
+Fetch - -> Failed
+
+@enduml
+
+@startuml
+
+
+
+
+
+
+
+<style>
+  root {
+    BackgroundColor white
+    FontColor black
+    FontName Verdana
+    HyperLinkColor blue
+    LineColor black
+    LineThickness 1
+    Margin 5
+  }
+  caption {
+    LineThickness 0
+  }
+  footer {
+    LineThickness 0
+  }
+  header {
+    LineThickness 0
+  }
+  node {
+    MaximumWidth 300
+  }
+  title {
+    FontSize 22
+    LineThickness 0
+  }
+</style>
+
+skinparam ArrowLollipopColor black
+skinparam BackgroundColor white
+skinparam DefaultFontName Verdana
+skinparam DefaultMonospacedFontName Courier
+skinparam LifelineStrategy nosolid
+skinparam ParticipantPadding 10
+skinparam SequenceLifeLineBorderColor black
+skinparam Shadowing false
+skinparam UseBetaStyle true
+
+skinparam Activity {
+  BackgroundColor white
+  BarColor black
+  BorderColor black
+  FontColor black
+  FontName Verdana
+}
+skinparam Boundary {
+  FontColor black
+}
+skinparam Box {
+  Padding 5
+}
+skinparam CircledCharacter {
+  FontColor black
+  FontName Courier
+  Radius 9
+}
+skinparam Class {
+  BackgroundColor white
+  BorderColor black
+  FontColor black
+  FontName Verdana
+}
+skinparam ClassAttribute {
+  FontColor black
+  FontName Verdana
+}
+skinparam ClassStereotype {
+  FontColor black
+  FontName Verdana
+}
+skinparam Footer {
+  FontColor black
+  FontName Verdana
+}
+skinparam Header {
+  FontColor black
+  FontName Verdana
+}
+skinparam Hyperlink {
+  Color blue
+}
+skinparam IconPackage {
+  Color black
+  BackgroundColor white
+}
+skinparam IconPrivate {
+  Color black
+  BackgroundColor white
+}
+skinparam IconProtected {
+  Color black
+  BackgroundColor white
+}
+skinparam IconPublic {
+  Color black
+  BackgroundColor white
+}
+skinparam Note {
+  FontColor black
+  FontName Verdana
+}
+skinparam Object {
+  BorderColor black
+}
+skinparam Package {
+  BorderColor black
+  FontColor black
+  FontName Verdana
+}
+skinparam State {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeA {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeC {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeE {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeI {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeN {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam UseCaseStereoType {
+  FontColor black
+  FontName Verdana
+}
+skinparam componentStyle rectangle
+
+state Fetch
+Fetch : loading: true
+Fetch : data: null
+Fetch : error: null
+state Success
+Success : loading: false
+Success : data: Data
+Success : error: null
+state Failed
+Failed : loading: false
+Failed : data: null
+Failed : error: Error
+
+Fetch - -> Success
+Fetch - -> Failed
+
+@enduml
+
+PlantUML version 1.2022.0(Tue Jan 11 17:16:42 CET 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

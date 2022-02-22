@@ -1,0 +1,21 @@
+@startuml
+skinparam componentStyle rectangle
+
+database MySQL
+
+[sanity]
+[Auth0]
+[API]
+
+package "main-site" {
+  [public-page]
+  [profile-page]
+}
+
+[public-page] <--> sanity
+[profile-page] <--> sanity
+[profile-page] <--> Auth0
+[profile-page] <--> API
+API <--> MySQL
+
+@enduml

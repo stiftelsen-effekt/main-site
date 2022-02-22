@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+state Fetch
+Fetch : loading: true
+Fetch : data: null
+Fetch : error: null
+state Success
+Success : loading: false
+Success : data: Data
+Success : error: null
+state Failed
+Failed : loading: false
+Failed : data: null
+Failed : error: Error
+
+Fetch --> Success
+Fetch --> Failed
+
+@enduml

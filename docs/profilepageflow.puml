@@ -1,0 +1,15 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+profile -> Auth0 : Login
+Auth0 -> profile : Return access token
+profile -> api : REST HTTP request
+note right
+Access token is verified
+end note
+api -> DB : MySQL query
+DB -> api : Return query result
+api -> profile : Return data as JSON
+
+@enduml

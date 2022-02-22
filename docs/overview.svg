@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="285px" preserveAspectRatio="none" style="width:339px;height:285px;background:#FFFFFF;" version="1.1" viewBox="0 0 339 285" width="339px" zoomAndPan="magnify"><defs><filter height="300%" id="flvf0kcza135s" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[a8a1e5803fae7cc48e30da8bfb56cf9c]
+cluster main-site--><polygon fill="#FFFFFF" filter="url(#flvf0kcza135s)" points="16,6,94,6,101,28.4883,295,28.4883,295,93,16,93,16,6" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="16" x2="101" y1="28.4883" y2="28.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="72" x="20" y="21.5352">main-site</text><!--MD5=[84426b58c88db05184126af8dfeeef4f]
+entity public-page--><rect fill="#FEFECE" filter="url(#flvf0kcza135s)" height="36.4883" style="stroke:#000000;stroke-width:1.5;" width="104" x="32" y="41"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84" x="42" y="64.5352">public-page</text><!--MD5=[40cb07ad812813a375a5c732df8cb7ed]
+entity profile-page--><rect fill="#FEFECE" filter="url(#flvf0kcza135s)" height="36.4883" style="stroke:#000000;stroke-width:1.5;" width="107" x="171.5" y="41"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="181.5" y="64.5352">profile-page</text><!--MD5=[993e0d4fdeccee87e9dafe04241cdfbd]
+entity MySQL--><path d="M267.5,243 C267.5,233 300,233 300,233 C300,233 332.5,233 332.5,243 L332.5,268.4883 C332.5,278.4883 300,278.4883 300,278.4883 C300,278.4883 267.5,278.4883 267.5,268.4883 L267.5,243 " fill="#FEFECE" filter="url(#flvf0kcza135s)" style="stroke:#000000;stroke-width:1.5;"/><path d="M267.5,243 C267.5,253 300,253 300,253 C300,253 332.5,253 332.5,243 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45" x="277.5" y="270.5352">MySQL</text><!--MD5=[3c192b75ae70093d2d02a2a65517a5ba]
+entity sanity--><rect fill="#FEFECE" filter="url(#flvf0kcza135s)" height="36.4883" style="stroke:#000000;stroke-width:1.5;" width="60" x="76" y="137"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="86" y="160.5352">sanity</text><!--MD5=[031b45bc4b16005b8fb2ce0f270abe18]
+entity Auth0--><rect fill="#FEFECE" filter="url(#flvf0kcza135s)" height="36.4883" style="stroke:#000000;stroke-width:1.5;" width="62" x="182" y="137"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="42" x="192" y="160.5352">Auth0</text><!--MD5=[645d8587175d8f7ad110cd370775931d]
+entity API--><rect fill="#FEFECE" filter="url(#flvf0kcza135s)" height="36.4883" style="stroke:#000000;stroke-width:1.5;" width="42" x="279" y="137"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="22" x="289" y="160.5352">API</text><!--MD5=[45b0eadca74944c3f36f13baf211a2d4]
+link public-page to sanity--><path d="M89.2,82.23 C92.72,97.25 97.34,117.01 100.85,131.99 " fill="none" id="public-page-sanity" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="101.99,136.87,103.8223,127.1931,100.8448,132.0029,96.035,129.0254,101.99,136.87" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="88.04,77.24,86.2014,86.9157,89.182,82.1078,93.9899,85.0885,88.04,77.24" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b16abd42957334990af1caca38a600bc]
+link profile-page to sanity--><path d="M199.3,80.3 C179.39,96.03 151.91,117.73 131.94,133.51 " fill="none" id="profile-page-sanity" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="127.79,136.79,137.3331,134.355,131.7151,133.6927,132.3774,128.0748,127.79,136.79" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="203.45,77.02,193.9069,79.455,199.5249,80.1173,198.8626,85.7352,203.45,77.02" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[44c97ba35081f4b5477b237b5a1b12fe]
+link profile-page to Auth0--><path d="M222.16,82.23 C220.26,97.12 217.77,116.66 215.86,131.59 " fill="none" id="profile-page-Auth0" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="215.19,136.87,220.2873,128.4428,215.8172,131.9095,212.3505,127.4393,215.19,136.87" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="222.8,77.24,217.6996,85.6653,222.171,82.2003,225.6361,86.6717,222.8,77.24" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[8116ee8e6bfe8845cf7b4c035f7a7d53]
+link profile-page to API--><path d="M242.05,81.37 C254.3,96.73 270.75,117.34 283,132.69 " fill="none" id="profile-page-API" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="286.33,136.87,283.8567,127.3367,283.217,132.9573,277.5964,132.3176,286.33,136.87" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="238.76,77.24,241.2503,86.7688,241.88,81.1471,247.5017,81.7769,238.76,77.24" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[89a44b422ab51d404e81e365f825c80c]
+link API to MySQL--><path d="M300,178.44 C300,193.06 300,212.21 300,227.64 " fill="none" id="API-MySQL" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="300,232.72,304,223.72,300,227.72,296,223.72,300,232.72" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="300,173.16,296,182.16,300,178.16,304,182.16,300,173.16" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ebc2cd20d098674c9fb220442298e16a]
+@startuml
+skinparam componentStyle rectangle
+
+database MySQL
+
+[sanity]
+[Auth0]
+[API]
+
+package "main-site" {
+  [public-page]
+  [profile-page]
+}
+
+[public-page] <- -> sanity
+[profile-page] <- -> sanity
+[profile-page] <- -> Auth0
+[profile-page] <- -> API
+API <- -> MySQL
+
+@enduml
+
+PlantUML version 1.2022.0(Tue Jan 11 17:16:42 CET 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>
