@@ -1,11 +1,9 @@
 
 <p align="center">
   <img 
-    src="docs/logo_light.svg"
-    srcset="docs/logo_light.svg 320w, docs/logo_dark.svg 321w"
-    sizes="(prefers-color-scheme: light) 320px,
-           321px"
-    alt="Konduit. logo" />
+    src="docs/logo.svg"
+    alt="Konduit. logo"
+    width="340" />
 </p>
 
 Table of Contents
