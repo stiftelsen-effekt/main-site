@@ -88,21 +88,21 @@ export const ProfileInfo: React.FC = () => {
           Lagre
         </button>
         <ToastContainer
-          theme="dark"
           position="top-right"
           autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
+          hideProgressBar={true}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          style={{width: "200px"}}
         />
       </section>
     </>
   );
 };
 
-const successToast = () => toast.success("Endringene dine er lagret");
+const successToast = () => toast.success("Lagret");
 const failureToast = () => toast.error("Noe gikk galt, prøv på nytt");

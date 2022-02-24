@@ -84,7 +84,7 @@ describe("Profile info component", () => {
     
     fireEvent.click(screen.getByRole(/submit/i))
     await waitFor(() => expect(mockedSaveQuery).toHaveBeenCalled())
-    await waitFor(() => expect(screen.findByText("Endringene dine er lagret")).not.toEqual(null))
+    await waitFor(() => expect(screen.findByText("Lagret")).not.toEqual(null))
   });
 
   it('Fail sending save request when button is clicked', async () => {
