@@ -1,10 +1,6 @@
-import {
-  Auth0ContextInterface,
-  GetTokenSilentlyOptions,
-  useAuth0,
-} from "@auth0/auth0-react";
+import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 import { GetTokenSilentlyVerboseResponse } from "@auth0/auth0-spa-js";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Imported from the auth0 type definitions
