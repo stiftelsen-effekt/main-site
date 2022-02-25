@@ -4,90 +4,40 @@ import { toast, ToastContainer } from "react-toastify";
 import { useApi } from "../../hooks/useApi";
 import { Donor } from "../../models";
 import style from "../../styles/Profile.module.css";
+import { save } from "./_queries";
 
 export const ProfileInfo: React.FC = () => {
-  const successToast = () =>
-    toast.success("Endringene dine er lagret", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  const failureToast = () =>
-    toast.error("Noe gikk galt, prøv på nytt", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  const warningToast = () =>
-    toast.warn("Du har ikke lagt inn noen endringer", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
   const { getAccessTokenSilently, user } = useAuth0();
 
   const [donor, setDonor] = useState<null | Donor>(null);
-  const [originalDonor, setOriginalDonor] = useState<null | Donor>(null);
 
-  useApi<Donor>(
+  const { loading, error, data } = useApi<Donor>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
     "GET",
     "read:donations",
     getAccessTokenSilently,
-    (res) => {
-      setDonor(res);
-      setOriginalDonor(res);
-    }
   );
 
-  if (donor === null) {
+  if (loading || !user)  {
     return <div>Loading...</div>;
-  }
+  } else if (error) {
+    return <div>Noe gikk galt </div>
+  } else if (!donor) {
+    setDonor(data)
+    return <div>Loading...</div>;
+  };
+  
+ const saveDonor = async () => {
+   const token = await getAccessTokenSilently();
+   const result = await save(donor, user, token)
+   if (result === null) {
+     failureToast();
+   } else {
+     successToast();
+     setDonor(donor);
+   }
+ }
 
-  async function save() {
-    if (originalDonor == donor) {
-      warningToast();
-    } else {
-      const token = await getAccessTokenSilently();
-      const api = process.env.NEXT_PUBLIC_EFFEKT_API || 'http://localhost:5050'
-
-      fetch(
-        `${api}/donors/${
-          user ? user["https://konduit.no/user-id"] : ""
-        }/`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "same-origin",
-          body: JSON.stringify(donor),
-        }
-      )
-        .then((response) => response.json())
-        .then((donor) => {
-          successToast();
-        })
-        .catch((error) => {
-          failureToast();
-        });
-      setOriginalDonor(donor);
-    }
-  }
   return (
     <>
       <h1 className={style.header}>Hei {donor.name}!</h1>
@@ -134,23 +84,25 @@ export const ProfileInfo: React.FC = () => {
         />{" "}
         Send meg nyhetsbrev på e-post <br />
         <br />
-        <button className={style.button} onClick={save}>
+        <button role={"submit"} className={style.button} onClick={saveDonor}>
           Lagre
         </button>
         <ToastContainer
-          theme="dark"
           position="top-right"
           autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
+          hideProgressBar={true}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          limit={2}
+          style={{width: "200px"}}
         />
       </section>
     </>
   );
 };
+
+const successToast = () => toast.success("Lagret");
+const failureToast = () => toast.error("Noe gikk galt, prøv på nytt");
