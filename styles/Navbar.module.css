@@ -40,3 +40,56 @@
   font-size: 1em;
   cursor: pointer;
 }
+
+.navbar a.icon {
+  display: none;
+}
+
+@media only screen and (max-width: 900px) {
+  .navbar {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* Hide the links inside the navigation menu (except for logo/home) */
+  .navbar .links {
+    display: none;
+  }
+  .navbar .showlinks {
+    display: block;
+  }
+  /* Style navigation menu links */
+  .navbar Link {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+  }
+
+  .navbar ul {
+    list-style-type: none;
+    text-decoration: none;
+  }
+
+  .navbar a {
+    text-decoration: none;
+  }
+
+  
+  /* Style the hamburger menu */
+  .navbar a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  /* Style the active link (or home/logo) */
+  .active {
+    background-color: #04AA6D;
+    color: white;
+  }
+
+}
