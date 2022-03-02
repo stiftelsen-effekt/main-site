@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import DonationsChart from '../../components/charts/donations'
+import { DonationList } from '../../components/lists/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
 import { AggregatedDonations, DonationGraphData } from '../../models'
@@ -42,6 +43,7 @@ const Home: LayoutPage = () => {
       <div style={{ height: 450 }}>
         <DonationsChart data={graphData} />
       </div>
+      <DonationList />
       {/* <Donations /> */}
     </>
   )

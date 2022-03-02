@@ -1,0 +1,30 @@
+.table {
+  width: 100%;
+  float: right;
+  justify-content: space-between;
+}
+
+.table tr {
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: 30% 20% 30% 20%;
+}
+
+.table th {
+  padding-bottom: 0.5rem;
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: 30% 20% 30% 20%;
+}
+
+.table td {
+  margin-left: 0px;
+  text-align: left;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 20% 70%;
+  justify-content: space-between;
+  word-break:keep-all;
+}
