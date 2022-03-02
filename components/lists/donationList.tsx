@@ -1,5 +1,6 @@
 import style from "../../styles/Lists.module.css";
 import { Donation } from "../../models";
+import { useState } from "react";
 
 // export type Donation = {
 //     KID: string;
@@ -14,6 +15,7 @@ import { Donation } from "../../models";
 //   };
 
 export const DonationList: React.FC = () => {
+  const [arrowClick, setArrowClick] = useState(false);
   let donationlist = {
     donations: [
       {
@@ -82,6 +84,10 @@ export const DonationList: React.FC = () => {
     });
     return years;
   }
+  
+  function showRecipt() {
+
+  }
 
   function tableGenerator(year: number) {
     let listAttributes: JSX.Element[] = [];
@@ -94,6 +100,28 @@ export const DonationList: React.FC = () => {
             <td>{donation.sum}kr</td>
             <td>{donation.paymentMethod}</td>
             <td>{donation.KID}</td>
+            <div>
+            <td>
+              <i
+                className={style.arrowdown}
+                onClick={(e) =>
+                  e.currentTarget.className == style.arrowup
+                    ? (e.currentTarget.className = style.arrowdown)
+                    : (e.currentTarget.className = style.arrowup)
+                }
+              ></i>
+            </td>
+            <td
+              className={style.norecipt}
+              onClick={(e) =>
+                e.currentTarget.className == style.norecipt
+                  ? (e.currentTarget.className = style.recipt)
+                  : (e.currentTarget.className = style.norecipt)
+              }
+            >
+              Kvittering
+            </td>
+            </div>
           </tr>
         );
       }
@@ -114,24 +142,27 @@ export const DonationList: React.FC = () => {
   let allYears = getYears();
   allYears.sort().reverse();
   return (
-      <div>
-        {allYears.map((year: number) => {
-          return (
-            <div className={style.gridContainer}>
-              <section>
-                <hr />
-                <br />
-                <h2>{year}</h2>
-                <p>Dine donasjoner i {year} kvalifiserte deg for XXXXX kroner i skattefradrag</p>
-              </section>
-              <section>
-                <hr /> 
-                <br /> 
-                {tableGenerator(year)}
-              </section>
-            </div>
-          );
-        })}
-      </div>
+    <div>
+      {allYears.map((year: number) => {
+        return (
+          <div className={style.gridContainer}>
+            <section>
+              <hr />
+              <br />
+              <h2>{year}</h2>
+              <p>
+                Dine donasjoner i {year} kvalifiserte deg for XXXXX kroner i
+                skattefradrag
+              </p>
+            </section>
+            <section>
+              <hr />
+              <br />
+              {tableGenerator(year)}
+            </section>
+          </div>
+        );
+      })}
+    </div>
   );
 };

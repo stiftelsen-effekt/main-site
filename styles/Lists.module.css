@@ -7,14 +7,14 @@
 .table tr {
   width: 100%;
   display: inline-grid;
-  grid-template-columns: 30% 20% 30% 20%;
+  grid-template-columns: 25% 20% 25% 20% 10%;
 }
 
 .table th {
   padding-bottom: 0.5rem;
   width: 100%;
   display: inline-grid;
-  grid-template-columns: 30% 20% 30% 20%;
+  grid-template-columns: 25% 20% 25% 20% 10%;
 }
 
 .table td {
@@ -27,4 +27,32 @@
   grid-template-columns: 20% 70%;
   justify-content: space-between;
   word-break:keep-all;
+}
+
+.arrowdown {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.arrowup {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.recipt{
+  display: grid;
+  grid-column: 4/5;
+  text-decoration: underline;
+}
+
+.norecipt {
+  display: none;
 }
