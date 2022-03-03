@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "../../styles/Lists.module.css";
 import { Donation } from "../../models";
 import { ChevronDown, FileText } from "react-feather"
+import { shortDate, thousandize } from "../../util/formatting"
 
 const DonationListRow: React.FC<{donation: Donation}> = ({ donation }) => {
   const [expanded, setExpanded] = useState<boolean>();
@@ -9,8 +10,8 @@ const DonationListRow: React.FC<{donation: Donation}> = ({ donation }) => {
   return (
     <tbody>
       <tr key={donation.id}>
-        <td>{donation.timestamp}</td>
-        <td>{donation.sum}kr</td>
+        <td>{shortDate(donation.timestamp)}</td>
+        <td>{thousandize(Math.round(parseFloat(donation.sum)))} kr</td>
         <td>{donation.paymentMethod}</td>
         <td>{donation.KID}</td>
         <td onClick={() => setExpanded(!expanded)} >

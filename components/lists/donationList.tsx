@@ -13,6 +13,7 @@ export const DonationList: React.FC<{ donations: Donation[] }> = ({ donations })
       {years.map((year: number) => {
         const donationsInYear = donations
           .filter(donation => new Date(donation.timestamp).getFullYear() == year)
+          .sort((a,b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
         let taxDeductions = donationsInYear
           .reduce((acc, curr) => acc + parseFloat(curr.sum),0)
 

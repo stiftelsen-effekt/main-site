@@ -8,30 +8,31 @@ const DonationYearMenu: React.FC<{years: number[], selected: string}> = ({ years
   return (
     <div className={style.menu}>
       <ul>
-        <li className={selected == "total" ? style["menu-selected"] : ""}>
+        <Link 
+          href={{
+            pathname: "/profile/"
+          }}
+          scroll={false}
+          passHref >
+          <li className={selected == "total" ? style["menu-selected"] : ""}>
+            <span>Totalt</span>
+          </li>
+        </Link>
+        {years.map((year) => (
           <Link 
+            key={year} 
             href={{
-              pathname: "/profile/"
+              pathname: "/profile/",
+              query: {
+                year
+              },
             }}
             scroll={false}
             passHref >
-            <span>Totalt</span>
+            <li className={selected == year.toString() ? style["menu-selected"] : ""} >
+                <span>{year}</span>
+            </li>
           </Link>
-        </li>
-        {years.map((year) => (
-          <li key={year} className={selected == year.toString() ? style["menu-selected"] : ""} >
-            <Link 
-              href={{
-                pathname: "/profile/",
-                query: {
-                  year
-                },
-              }}
-              scroll={false}
-              passHref >
-              <span>{year}</span>
-            </Link>
-          </li>
         ))}
       </ul>
     </div>
