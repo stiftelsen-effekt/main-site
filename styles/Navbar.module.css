@@ -2,32 +2,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100px;
   width: 100%;
   position: relative;
-  margin-top: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: black;
 }
 
-.logo {
-  
-}
-
-.links {
+.navbar ul {
   list-style: none;
+  padding: 0;
 }
 
-.links li {
+.navbar ul li {
   display: inline-block;
   text-decoration: none;
   cursor: pointer;
   padding: 10px 20px;
 }
 
-.links li a {
+.navbar ul li a {
   text-decoration: none;
 }
 
-.links li:last-child {
+.navbar ul li:last-child {
   padding-right: 0px;
 }
 
@@ -39,51 +37,57 @@
   border: none;
   font-size: 1em;
   cursor: pointer;
+  padding: 0;
 }
 
 .navbar a.icon {
   display: none;
 }
 
+.expandBtn {
+  display: none;
+}
+
 @media only screen and (max-width: 900px) {
   .navbar {
     overflow: hidden;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 20px 5vw;
   }
-  
-  /* Hide the links inside the navigation menu (except for logo/home) */
-  .navbar .links {
-    display: none;
-  }
-  .navbar .showlinks {
+
+  .expandBtn {
     display: block;
   }
+
+  .navbar .logoWrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+
+  .navbar ul li {
+    display: block;
+    font-size: 28px;
+  }
+  
   /* Style navigation menu links */
   .navbar Link {
     color: white;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 28px;
     display: block;
-  }
-
-  .navbar ul {
-    list-style-type: none;
-    text-decoration: none;
-  }
-
-  .navbar a {
-    text-decoration: none;
-  }
-
-  
-  /* Style the hamburger menu */
-  .navbar a.icon {
-    background: black;
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
   }
   
   /* Style the active link (or home/logo) */
@@ -92,4 +96,24 @@
     color: white;
   }
 
+  .close {
+    font-size: 46px;
+    font-weight: bold;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .navbarExpanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .navbarExpanded ul {
+    display: block;
+  }
 }

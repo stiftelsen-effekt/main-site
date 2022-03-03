@@ -62,3 +62,14 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@media only screen and (max-width: 900px) {
+  body {
+    padding-top: 120px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-top: 18px;
+  }
+}
