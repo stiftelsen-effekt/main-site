@@ -5,6 +5,7 @@ import { useState } from 'react'
 import DonationsChart from '../../components/profile/donations/donationsChart'
 import DonationsTotals from '../../components/profile/donations/donationsTotal'
 import DonationYearMenu from '../../components/profile/donations/yearMenu'
+import { DonationList } from '../../components/lists/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
 import { AggregatedDonations, DonationGraphData } from '../../models'
@@ -75,6 +76,7 @@ const Home: LayoutPage = () => {
         <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
         <DonationsTotals sum={sum} period={periodText} comparison={"Det er 234% så mye som en gjennomsnittlig giver"} />
       </div>
+      <DonationList />
       {/* <Donations /> */}
     </>
   )
