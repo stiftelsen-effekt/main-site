@@ -8,13 +8,15 @@ import { useAuth0 } from "@auth0/auth0-react";
 export const Navbar: React.FC = () => {
   return (
     <nav className={styles.navbar}>
-      <Image src={logo} 
-        className={styles.logo} 
-        layout="intrinsic" 
-        width={140} 
-        height={80}
-        alt="Konduit. logo" 
-        priority/>      
+      <Link href="/" passHref>
+        <Image src={logo} 
+          className={styles.logo} 
+          layout="intrinsic" 
+          width={140} 
+          height={80}
+          alt="Konduit. logo" 
+          priority/>
+      </Link>
       <ul className={styles.links}>
         <li><Link href="/organizations" passHref>Anbefalte organisasjoner</Link></li>
         <li><Link href="/method" passHref>Metode</Link></li>
