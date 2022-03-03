@@ -23,7 +23,8 @@ export const Navbar: React.FC = () => {
           priority/>
       </Link>
       <ul className={styles.links}>
-        <li><Link href="/profile" passHref>Mine donasjoner</Link></li>
+        <li><Link href="/profile" passHref>Donasjoner</Link></li>
+        <li><Link href="/profile/agreements" passHref>Avtaler</Link></li>
         <li><Link href="/profile/details" passHref>Profil</Link></li>
         <li><button className={styles.btnlogout} onClick={() => logout()}>Log ut</button></li>
       </ul>
