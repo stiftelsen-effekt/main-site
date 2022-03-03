@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import styles from "../../styles/Navbar.module.css"
-import logo from "../../public/logo.svg"
+import logo from "../../public/logo-cropped.svg"
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -11,7 +11,7 @@ export const Navbar: React.FC = () => {
       <Image src={logo} 
         className={styles.logo} 
         layout="intrinsic" 
-        width={160} 
+        width={140} 
         height={80}
         alt="Konduit. logo" 
         priority/>      
