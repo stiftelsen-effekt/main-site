@@ -26,7 +26,10 @@ export const Navbar: React.FC = () => {
         <li><Link href="/profile" passHref>Donasjoner</Link></li>
         <li><Link href="/profile/agreements" passHref>Avtaler</Link></li>
         <li><Link href="/profile/details" passHref>Profil</Link></li>
-        <li><button className={styles.btnlogout} onClick={() => logout()}>Log ut</button></li>
+        <li><button className={styles.btnlogout} onClick={() => logout({ returnTo: (
+          process.env.NEXT_PUBLIC_ENVIRONMENT === "production" ?
+          "https://konduit.no/" : undefined
+        ) })}>Log ut</button></li>
       </ul>
     </nav>
   )
