@@ -1,20 +1,10 @@
 .table {
   width: 100%;
-  float: right;
-  justify-content: space-between;
-}
-
-.table tr {
-  width: 100%;
-  display: inline-grid;
-  grid-template-columns: 25% 20% 25% 20% 10%;
+  font-size: 14px;
 }
 
 .table th {
-  padding-bottom: 0.5rem;
-  width: 100%;
-  display: inline-grid;
-  grid-template-columns: 25% 20% 25% 20% 10%;
+  text-align: left;
 }
 
 .table td {
@@ -22,37 +12,88 @@
   text-align: left;
 }
 
+.table td:last-child {
+  text-align: right;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: 20% 70%;
   justify-content: space-between;
   word-break:keep-all;
+  margin-bottom: 100px;
 }
 
-.arrowdown {
-  border: solid white;
-  border-width: 0 3px 3px 0;
+.gridContainer section {
+  border-top: 1px solid white;
+  padding-top: 16px;
+}
+
+.gridContainer section.header h2 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.gridContainer section.header p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.gridContainer section.header p div {
   display: inline-block;
-  padding: 3px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
 }
 
-.arrowup {
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
+table td.collapsed, table td.expanded { 
+  transition: all 300ms ease-in-out;
+  overflow: hidden;
+  position: relative;
 }
 
-.recipt{
+table td.collapsed {
+  height: 0;
+  padding: 0;
+  opacity: 0;
+}
+
+table td.expanded {
+  height: 200px;
+  opacity: 1;
+}
+
+table td svg.iconChevronUp {
+  cursor: pointer;
+  transition: transform 200ms ease-in-out;
+  transform: rotate(180deg);
+  user-select: none;
+}
+
+table td svg.iconChevronDown {
+  cursor: pointer;
+  transition: transform 200ms ease-in-out;
+  user-select: none;
+}
+
+.expanderContent {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: grid;
-  grid-column: 4/5;
-  text-decoration: underline;
+  grid-template-columns: 1fr 1fr;
 }
 
-.norecipt {
-  display: none;
+.expanderContent .contextMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.expanderContent .contextMenu a {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.expanderContent .contextMenu a svg {
+  margin-right: 5px;
 }

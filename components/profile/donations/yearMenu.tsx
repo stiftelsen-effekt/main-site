@@ -13,6 +13,7 @@ const DonationYearMenu: React.FC<{years: number[], selected: string}> = ({ years
             href={{
               pathname: "/profile/"
             }}
+            scroll={false}
             passHref >
             <span>Totalt</span>
           </Link>
@@ -26,6 +27,7 @@ const DonationYearMenu: React.FC<{years: number[], selected: string}> = ({ years
                   year
                 },
               }}
+              scroll={false}
               passHref >
               <span>{year}</span>
             </Link>
