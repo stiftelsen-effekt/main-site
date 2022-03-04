@@ -1,9 +1,8 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import styles from "../../styles/Navbar.module.css"
-import logo from "../../public/logo.svg"
+import logo from "../../public/logo-cropped.svg"
 import Link from "next/link";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, X } from "react-feather";
 
 export const Navbar: React.FC = () => {

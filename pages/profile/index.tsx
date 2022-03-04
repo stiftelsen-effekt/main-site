@@ -1,33 +1,52 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { resolveSoa } from 'dns'
-import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import DonationsChart from '../../components/charts/donations'
+import DonationsChart from '../../components/profile/donations/donationsChart'
+import DonationsTotals from '../../components/profile/donations/donationsTotal'
+import DonationYearMenu from '../../components/profile/donations/yearMenu'
+import { DonationList } from '../../components/lists/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
-import { AggregatedDonations, DonationGraphData } from '../../models'
+import { AggregatedDonations, Donation } from '../../models'
 import { LayoutPage } from '../../types'
+import style from "../../styles/Donations.module.css";
+import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
+import { Spinner } from '../../components/elements/spinner'
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
-  const [graphData, setGraphData] = useState<null | any[]>(null);
+  const router = useRouter()
 
-  const {loading, data, error} = useApi<AggregatedDonations[]>(
+  const { loading: aggregatedLoading, data: aggregatedDonations, error: aggregatedError } = useApi<AggregatedDonations[]>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/aggregated`,
     "GET",
     "read:donations",
-    getAccessTokenSilently,
-
+    getAccessTokenSilently
   );
 
-  if (loading)
-    return <></>
+  const { loading: donationsLoading, data: donations, error: donationsError } = useApi<Donation[]>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/`,
+    "GET",
+    "read:donations",
+    getAccessTokenSilently
+  )
 
-  if (!graphData) {
-    setGraphData(transformData(data));
-    return <></>
-  }
+  if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations)
+    return <Spinner />
+
+  const years = new Set<number>()
+  aggregatedDonations.forEach(el => years.add(el.year))
+  const firstYear = Math.min(...Array.from(years))
+  const sum = aggregatedDonations.reduce((acc, curr) => router.query.year === curr.year.toString() || !router.query.year ? acc + parseFloat(curr.value) : acc,0)
+
+  const periodText = typeof router.query.year !== "undefined" ?
+    `I ${router.query.year} har du gitt` :
+    `Siden ${firstYear} har du gitt`
+
+  let distribution = typeof router.query.year !== "undefined" ?
+    getYearlyDistribution(aggregatedDonations, parseInt(router.query.year as string)) :
+    getTotalDistribution(aggregatedDonations)
 
   return (
     <>
@@ -39,30 +58,47 @@ const Home: LayoutPage = () => {
 
       <h1>Donasjoner</h1>
 
-      <div style={{ height: 450 }}>
-        <DonationsChart data={graphData} />
+      <DonationYearMenu years={Array.from(years)} selected={(router.query.year as string) || "total"} />
+
+      <DonationsChart distribution={distribution}></DonationsChart>
+
+      <div className={style.details}>
+        <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
+        <DonationsTotals sum={sum} period={periodText} comparison={"Det er 234% så mye som en gjennomsnittlig giver"} />
       </div>
+      <DonationList donations={(typeof router.query.year !== "undefined" ?
+        donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string)) :
+        donations )}/>
       {/* <Donations /> */}
     </>
   )
 }
+
 Home.layout = Layout
 export default Home
 
-const transformData = (res: any) => {
-  let data: any[] = []
-  res = res.sort((a: any, b: any) => b.year - a.year)
-  for (let i = 0; i < res.length; i++) {
-    if (i == 0 || (data[data.length-1].name != res[i].year)) {
-      let obj: any = {}
-
-      obj["name"] = res[i].year
-      obj[res[i].organization] = parseFloat(res[i].value)
-
-      data.push(obj)
-    } else {
-      data[data.length-1][res[i].organization] = parseFloat(res[i].value)
-    }
+const getTotalDistribution = (aggregated: AggregatedDonations[]): { org: string, sum: number }[] => {
+  const distribution = []
+  
+  const summed = aggregated
+    .reduce((acc: { [key: string]: number }, curr) => {
+      if (curr.organization in acc) {
+        acc[curr.organization] += parseFloat(curr.value)
+      } else {
+        acc[curr.organization] = parseFloat(curr.value)
+      }
+      return acc
+    }, { })
+  
+  for (const key in summed) {
+    distribution.push({ org: key, sum: summed[key] })
   }
-  return data;
+
+  return distribution
+}
+
+const getYearlyDistribution = (aggregated: AggregatedDonations[], year: number): { org: string, sum: number }[] => {
+  return aggregated
+    .filter(el => el.year === year)
+    .map(el => ({ org: el.organization, sum: parseFloat(el.value) }))
 }
