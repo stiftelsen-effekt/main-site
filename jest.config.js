@@ -19,6 +19,7 @@ module.exports = {
   },
   //additional prop from a github issue: https://github.com/zeit/next.js/issues/8663
   preset: "ts-jest",
+  modulePathIgnorePatterns: ["studio", "public", "docs", ".next", "config", "coverage"],
   testEnvironment: "jsdom",
   globals: {
     // we must specify a custom tsconfig for tests because we need the typescript transform

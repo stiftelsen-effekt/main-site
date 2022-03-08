@@ -42,7 +42,6 @@ it('Displays the tax deduction text', () => {
     <DataInfo data={testData} />,
   );
 
-  console.log(queryByText(/SKATTEFRADRAG AVSNITT/i));
   expect(queryByText(/SKATTEFRADRAG AVSNITT/i)).toBeTruthy();
 })
 
@@ -52,6 +51,5 @@ it('Displays the data policy text', () => {
     <DataInfo data={testData} />,
   );
 
-  console.log(queryByText(/DATA POLICY AVSNITT/i));
   expect(queryByText(/DATA POLICY AVSNITT/i)).toBeTruthy();
 })

@@ -8,7 +8,8 @@
     "sanity": "cd studio && export NODE_ENV=dev && sanity start",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
