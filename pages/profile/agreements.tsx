@@ -8,8 +8,37 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
+import { AgreementList } from "../../components/lists/agreementList/agreementList";
+import { AvtaleGiroAgreement, VippsAgreement } from "../../models";
 
 const Agreements: LayoutPage = () => {
+  const agreements: (AvtaleGiroAgreement | VippsAgreement)[] = [{
+      ID: 18,
+      active: true,
+      amount: 100000,
+      KID: "0000123",
+      payment_date: 5,
+      created: "string",
+      cancelled: "string",
+      last_updated: "string",
+      notice: true,
+      full_name: "Håkon Harnes"
+    },
+    {
+      ID: 15,
+      status: true,
+      donorID: 27,
+      full_name: "Håkon Harnes",
+      KID: "0001213",
+      timestamp_created: "string",
+      monthly_charge_day: 10,
+      force_charge_date: true, 
+      paused_until_date: "string",
+      amount: 5000,
+      agreement_url_code: "string"
+    }
+  ]
+
   return (
     <>
       <Head>
@@ -19,6 +48,8 @@ const Agreements: LayoutPage = () => {
       </Head>
       <div>
         <h1>Faste avtaler</h1>
+
+        <AgreementList title={"Aktive"} agreements={agreements} />
       </div>
     </>
   );
