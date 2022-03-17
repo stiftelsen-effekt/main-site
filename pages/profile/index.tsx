@@ -33,15 +33,15 @@ const Home: LayoutPage = () => {
   )
 
   const kids = new Set<string>();
-  donations?.map((donation) => kids.add(donation.KID))
+  donations?.map((donation) => kids.add(donation.KID));
 
   const { loading: distributionsLoading, data: distributions, error: distributionsError } = useApi<Distribution[]>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/distributions/?kids=${encodeURIComponent(Array.from(kids).join(','))}`,
     "GET",
     "read:donations",
     getAccessTokenSilently,
-    typeof donations !== "undefined"
-  )
+    !donationsLoading
+  );
 
   if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations || distributionsLoading || !distributions)
     return <Spinner />
