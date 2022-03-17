@@ -17,7 +17,6 @@ export type AvtaleGiroAgreement = {
   KID: string;
   payment_date: number;
   created: string;
-  cancelled: string;
   last_updated: string;
   notice: boolean;
   full_name: string;

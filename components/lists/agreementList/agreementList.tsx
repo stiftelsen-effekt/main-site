@@ -2,7 +2,7 @@ import { AvtaleGiroAgreement, Donation, VippsAgreement } from "../../../models";
 import { shortDate, thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 
-export const AgreementList: React.FC<{ agreements: (AvtaleGiroAgreement | VippsAgreement)[], title: string }> = ({ agreements, title }) => {
+export const AgreementList: React.FC<{ agreements: (AvtaleGiroAgreement | VippsAgreement)[], title: string, supplemental: string}> = ({ agreements, title, supplemental }) => {
   const headers = ["Type", "Dato", "Sum", "KID"];
 
   const rows: ListRow[] = agreements.map(agreement => ({
@@ -16,7 +16,7 @@ export const AgreementList: React.FC<{ agreements: (AvtaleGiroAgreement | VippsA
 
   return (
     <GenericList title={title}
-      supplementalInformation={"Suppplemental"}
+      supplementalInformation={supplemental}
       headers={headers}
       rows={rows} />
   );
