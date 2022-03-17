@@ -2,13 +2,18 @@ import { AvtaleGiroAgreement, Donation, VippsAgreement } from "../../../models";
 import { shortDate, thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 
-// type AgreementRow {
-
-// }
+type AgreementRow = {
+  ID: number;
+  status: boolean;
+  KID: string;
+  date: number; 
+  amount: number;
+  type: string
+ }
 
 export const AgreementList: React.FC<{
-  // agreements: agreementrow[];
-  agreements: (AvtaleGiroAgreement | VippsAgreement)[];
+  agreements: AgreementRow[];
+  // agreements: (AvtaleGiroAgreement | VippsAgreement)[];
   title: string;
   supplemental: string;
 }> = ({ agreements, title, supplemental }) => {
@@ -17,12 +22,11 @@ export const AgreementList: React.FC<{
   const rows: ListRow[] = agreements.map((agreement) => ({
     id: agreement.ID.toString(),
     cells: [
-      "TYPE",
-      // agreement.type.toString(),
+      agreement.type,
       "Den " +
         (
-          (agreement as AvtaleGiroAgreement).payment_date ||
-          (agreement as VippsAgreement).monthly_charge_day
+          // agreement.payment_date ||
+          agreement.date
         ).toString() +
         ". hver måned",
       thousandize(agreement.amount) + " kr",

@@ -13,14 +13,15 @@ import { AvtaleGiroAgreement, Donation, VippsAgreement } from "../../models";
 import { useApi } from "../../hooks/useApi";
 import { Spinner } from "../../components/elements/spinner";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ssrEntries } from "next/dist/build/webpack/plugins/middleware-plugin";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   const {
-    loading: avtalegiroLoading,
-    data: avtalegiro,
-    error: avtalegiroError,
+    loading: avtaleGiroLoading,
+    data: avtaleGiro,
+    error: avtaleGiroError,
   } = useApi<AvtaleGiroAgreement[]>(
     `/donors/${
       user ? user["https://konduit.no/user-id"] : ""
@@ -43,12 +44,27 @@ const Agreements: LayoutPage = () => {
     getAccessTokenSilently
   );
 
-  if (vippsLoading || avtalegiroLoading || !vipps || !avtalegiro)
+  if (vippsLoading || avtaleGiroLoading || !vipps || !avtaleGiro)
     return <Spinner />;
 
-  let vippsType = vipps.map((entry) => Object.assign(entry, { type: "Vipps" }));
-  let giroType = avtalegiro.map((entry) =>
-    Object.assign(entry, { type: "AvtaleGiro" })
+  let vippsType = vipps.map((entry) => ({
+    ID: entry.ID,
+    status: entry.status,
+    KID: entry.KID,
+    date: entry.monthly_charge_day,
+    amount: entry.amount,
+    type: "Vipps"
+  }));
+
+  console.log(avtaleGiro)
+  let giroType = avtaleGiro.map((entry) =>({
+    ID: entry.ID,
+    status: entry.active,
+    KID: entry.KID,
+    date: entry.payment_date,
+    amount: entry.amount,
+    type: "AvtaleGiro"
+  })
   );
 
   return (
