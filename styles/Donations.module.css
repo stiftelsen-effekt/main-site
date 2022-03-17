@@ -118,7 +118,7 @@
     left: 0;
     width: 100vw;
     border-bottom: 1px solid white;
-    padding-left: 5vw;
+    padding-left: 30px;
     box-sizing: border-box;
     padding-bottom: 0;
   }
@@ -142,13 +142,13 @@
   .totals {
     text-align: left;
     align-items: flex-start;
-    margin-top: 40px;
+    margin-top: 50px;
   }
 
   .details {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   /* Re-arrange divs */

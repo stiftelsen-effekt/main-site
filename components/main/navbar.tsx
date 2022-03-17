@@ -19,8 +19,8 @@ export const Navbar: React.FC = () => {
         priority/>
         <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
-            <X width={36} color={"white"} /> :
-            <Menu width={36} color={"white"} />
+            <X size={32} color={"white"} /> :
+            <Menu size={32} color={"white"} />
           }
           </div>   
         </div>   
