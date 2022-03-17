@@ -2,22 +2,45 @@ import { AvtaleGiroAgreement, Donation, VippsAgreement } from "../../../models";
 import { shortDate, thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 
-export const AgreementList: React.FC<{ agreements: (AvtaleGiroAgreement | VippsAgreement)[], title: string }> = ({ agreements, title }) => {
+type AgreementRow = {
+  ID: number;
+  status: boolean;
+  KID: string;
+  date: number; 
+  amount: number;
+  type: string
+ }
+
+export const AgreementList: React.FC<{
+  agreements: AgreementRow[];
+  // agreements: (AvtaleGiroAgreement | VippsAgreement)[];
+  title: string;
+  supplemental: string;
+}> = ({ agreements, title, supplemental }) => {
   const headers = ["Type", "Dato", "Sum", "KID"];
 
-  const rows: ListRow[] = agreements.map(agreement => ({
+  const rows: ListRow[] = agreements.map((agreement) => ({
     id: agreement.ID.toString(),
-    cells: ["TYPE", 
-      "Den " + ((agreement as AvtaleGiroAgreement).payment_date || (agreement as VippsAgreement).monthly_charge_day).toString() + ". hver måned",
+    cells: [
+      agreement.type,
+      "Den " +
+        (
+          // agreement.payment_date ||
+          agreement.date
+        ).toString() +
+        ". hver måned",
       thousandize(agreement.amount) + " kr",
-      agreement.KID],
-    details: <></>
-  }))
+      agreement.KID,
+    ],
+    details: <></>,
+  }));
 
   return (
-    <GenericList title={title}
-      supplementalInformation={"Suppplemental"}
+    <GenericList
+      title={title}
+      supplementalInformation={supplemental}
       headers={headers}
-      rows={rows} />
+      rows={rows}
+    />
   );
-}
+};
