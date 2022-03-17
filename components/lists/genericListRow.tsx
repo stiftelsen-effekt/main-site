@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "../../styles/Lists.module.css";
 import { ListRow } from "./genericList";
 import { ChevronDown } from "react-feather";
+import AnimateHeight from "react-animate-height";
 
 const GenericListRow: React.FC<{row: ListRow}> = ({ row }) => {
   const [expanded, setExpanded] = useState<boolean>();
@@ -15,8 +16,10 @@ const GenericListRow: React.FC<{row: ListRow}> = ({ row }) => {
         </td>
       </tr>
       <tr>
-        <td colSpan={Number.MAX_SAFE_INTEGER} className={(expanded ? style.expanded : style.collapsed)}>
-          {row.details}
+        <td colSpan={Number.MAX_SAFE_INTEGER} >
+          <AnimateHeight height={expanded ? 'auto' : 0} animateOpacity={true}>
+            {row.details}
+          </AnimateHeight>
         </td>
       </tr>
     </tbody>

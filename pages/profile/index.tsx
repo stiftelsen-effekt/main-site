@@ -8,7 +8,7 @@ import DonationYearMenu from '../../components/profile/donations/yearMenu'
 import { DonationList } from '../../components/lists/donationList/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
-import { AggregatedDonations, Donation, Donor } from '../../models'
+import { AggregatedDonations, Distribution, Donation, Donor } from '../../models'
 import { LayoutPage } from '../../types'
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
@@ -17,9 +17,14 @@ import { Spinner } from '../../components/elements/spinner'
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
   const router = useRouter()
-  const [donor, setDonor] = useState<null | Donor>(null);
-  const year = new Date().getFullYear();
-  const registeredYear = parseInt(donor?.registered.split("-")[0]!)
+  
+
+  const { loading: donorLoading, error: donorError, data: donor } = useApi<Donor>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
+    "GET",
+    "read:donations",
+    getAccessTokenSilently,
+  );
 
   const { loading: aggregatedLoading, data: aggregatedDonations, error: aggregatedError } = useApi<AggregatedDonations[]>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/aggregated`,
@@ -35,34 +40,30 @@ const Home: LayoutPage = () => {
     getAccessTokenSilently
   )
 
-  const { loading, error, data } = useApi<Donor>(
-    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
+  const kids = new Set<string>();
+  donations?.map((donation) => kids.add(donation.KID));
+
+  const { loading: distributionsLoading, data: distributions, error: distributionsError } = useApi<Distribution[]>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/distributions/?kids=${encodeURIComponent(Array.from(kids).join(','))}`,
     "GET",
     "read:donations",
     getAccessTokenSilently,
+    !donationsLoading
   );
 
-  if (loading || !user)  {
-    return <div>Loading...</div>;
-  } else if (error) {
-    return <div>Noe gikk galt </div>
-  } else if (!donor) {
-    setDonor(data)
-    return <div>Loading...</div>;
-  };
-
-  if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations)
+  if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations || distributionsLoading || !distributions || donorLoading || !donor)
     return <Spinner />
 
-  const yearsSet = new Set<number>()
-  let yearCount = registeredYear;
-  while(yearCount <= year){
-    yearsSet.add(yearCount)
-    yearCount ++;
+  const registeredYear = new Date(donor?.registered).getFullYear()
+  const currentYear = new Date().getFullYear();
+  const years: number[] = []
+  for(let i = registeredYear; i <= currentYear; i++){
+    years.push(i)
   }
-  const years = Array.from(yearsSet)
   const firstYear = Math.min(...years)
   const sum = aggregatedDonations.reduce((acc, curr) => router.query.year === curr.year.toString() || !router.query.year ? acc + parseFloat(curr.value) : acc,0)
+  const distributionsMap = new Map<string, Distribution>()
+  distributions.map(dist => distributionsMap.set(dist.kid, dist))
 
   const periodText = typeof router.query.year !== "undefined" ?
     `I ${router.query.year} har du gitt` :
@@ -82,7 +83,7 @@ const Home: LayoutPage = () => {
 
       <h1>Donasjoner</h1>
 
-      <DonationYearMenu years={Array.from(years)} selected={(router.query.year as string) || "total"} />
+      <DonationYearMenu years={years} selected={(router.query.year as string) || "total"} />
 
       <DonationsChart distribution={distribution}></DonationsChart>
 
@@ -94,11 +95,13 @@ const Home: LayoutPage = () => {
         typeof router.query.year !== "undefined" ?
         <DonationList 
           donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+          distributions={distributionsMap}
           year={router.query.year as string} /> :
-        years.sort((a,b) => b-a).map(year => 
+        years.map(year => 
           (<DonationList 
-            donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
             key={year}
+            donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
+            distributions={distributionsMap}
             year={year.toString()} />)
         )
       }
