@@ -43,23 +43,6 @@
   display: inline-block;
 }
 
-table td.collapsed, table td.expanded { 
-  transition: all 120ms ease-in-out;
-  overflow: hidden;
-  position: relative;
-}
-
-table td.collapsed {
-  height: 0;
-  padding: 0;
-  opacity: 0;
-}
-
-table td.expanded {
-  height: 200px;
-  opacity: 1;
-}
-
 table td svg.iconChevronUp {
   cursor: pointer;
   transition: transform 120ms ease-in-out;
@@ -96,4 +79,39 @@ table td svg.iconChevronDown {
 
 .expanderContent .contextMenu a svg {
   margin-right: 5px;
+}
+
+@media only screen and (max-width: 900px) { 
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .gridContainer section {
+    border-top: none;
+  }
+
+  .gridContainer section.header {
+    display: none;
+  }
+
+  .gridContainer tr th {
+    padding-bottom: 16px;
+  }
+
+  .gridContainer tr td {
+    padding-bottom: 4px;
+  }
+
+  /* Display only the three first columns */
+  .gridContainer tr th, .gridContainer tr td {
+    display: none;
+  }
+
+  .gridContainer tr th:nth-child(-n+3), .gridContainer tr td:nth-child(-n+3) {
+    display: table-cell;
+  }
+
+  .gridContainer tr td:last-child {
+    display: table-cell;
+  }
 }

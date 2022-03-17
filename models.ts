@@ -36,12 +36,22 @@ export type VippsAgreement = {
   agreement_url_code: string;
 }
 
+export type Distribution = {
+  kid: string;
+  organizations: {
+    id: number;
+    name: string;
+    share: string;
+  }[]
+}
+
 export type Donor = {
   id: string;
   name: string;
   email: string;
   ssn: string;
   newsletter: boolean;
+  registered: string;
 };
 
 export type AggregatedDonations = {

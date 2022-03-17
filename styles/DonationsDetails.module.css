@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.graph {
+
+}
+
+.actions {
+  
+}
+
+.actions ul {
+  list-style: none;
+  margin: 0;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.actions ul li span {
+  vertical-align: middle;
+}
+
+.actions ul li svg {
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.actions ul li a {
+  text-decoration: none;
+}
+
+.actions ul li span {
+  text-decoration: underline;
+}

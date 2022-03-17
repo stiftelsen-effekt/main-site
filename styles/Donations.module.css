@@ -1,12 +1,3 @@
-.wrapper {
-  width: 100%;
-  height: 450px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  flex-direction: column;
-}
-
 .menu {
   margin-bottom: 12px;
 }
@@ -60,17 +51,21 @@
   margin-bottom: 100px;
 }
 
-table.distribution {
+.distributionHeader { 
+  display: none;
+}
+
+.distribution table {
   width: 100%;
   max-width: 420px;
 }
 
-.distribution tr td {
+.distribution table tr td {
   padding: 6px 0;
   font-size: 14px;
 }
 
-.distribution tr td:last-child {
+.distribution table tr td:last-child {
   text-align: right;
 }
 
@@ -107,4 +102,86 @@ table.distribution {
 
 .graph div:last-child {
   border-right: none;
+}
+
+@media only screen and (max-width: 900px) { 
+  .header {
+    display: none;
+  }
+
+  .menu {
+    overflow-x: scroll;
+    white-space: nowrap;
+    position: fixed;
+    background: black;
+    top: 120px;
+    left: 0;
+    width: 100vw;
+    border-bottom: 1px solid white;
+    padding-left: 30px;
+    box-sizing: border-box;
+    padding-bottom: 0;
+  }
+
+  .menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu ul {
+    margin: 0;
+  }
+
+  .menu-selected {
+    border-bottom-width: 2px;
+  }
+
+  .graph {
+    display: none;
+  }
+
+  .totals {
+    text-align: left;
+    align-items: flex-start;
+    margin-top: 50px;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+
+  /* Re-arrange divs */
+  .details > div:last-child {
+    order: 1;
+    margin-bottom: 50px;
+  }
+
+  .details > div:first-child {
+    order: 2;
+  }
+
+  .distributionHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 14px 0;
+  }
+  
+  .distributionHeader svg {
+    transition: transform 200ms;
+  }
+
+  .distributionHeader svg.chevronRotated {
+    transform: rotate(180deg);
+  }
+
+  .distribution {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+  }
+
+  .distribution table {
+    margin-bottom: 16px;
+  }
 }
