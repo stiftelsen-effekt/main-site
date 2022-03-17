@@ -70,7 +70,7 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Donasjoner</h1>
+      <h1 className={style.header}>Donasjoner</h1>
 
       <DonationYearMenu years={Array.from(years)} selected={(router.query.year as string) || "total"} />
 
