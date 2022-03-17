@@ -52,6 +52,7 @@ export type Donor = {
   email: string;
   ssn: string;
   newsletter: boolean;
+  registered: string;
 };
 
 export type AggregatedDonations = {
