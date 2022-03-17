@@ -13,7 +13,7 @@ export const Navbar: React.FC = () => {
       <Image src={logo} 
         className={styles.logo} 
         layout="intrinsic" 
-        width={160} 
+        width={140} 
         height={80}
         alt="Konduit. logo" 
         priority/>

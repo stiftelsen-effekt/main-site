@@ -123,8 +123,16 @@
     padding-bottom: 0;
   }
 
+  .menu::-webkit-scrollbar {
+    display: none;
+  }
+
   .menu ul {
     margin: 0;
+  }
+
+  .menu-selected {
+    border-bottom-width: 2px;
   }
 
   .graph {

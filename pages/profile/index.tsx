@@ -13,6 +13,7 @@ import { LayoutPage } from '../../types'
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
 import { Spinner } from '../../components/elements/spinner'
+import { DonationsYearlyGraph } from '../../components/profile/donations/donationsYearlyChart'
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -46,6 +47,8 @@ const Home: LayoutPage = () => {
   if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations || distributionsLoading || !distributions)
     return <Spinner />
 
+  const isTotal = typeof router.query.year === "undefined"
+
   const yearsSet = new Set<number>()
   aggregatedDonations.forEach(el => yearsSet.add(el.year))
   const years = Array.from(yearsSet)
@@ -54,13 +57,26 @@ const Home: LayoutPage = () => {
   const distributionsMap = new Map<string, Distribution>()
   distributions.map(dist => distributionsMap.set(dist.kid, dist))
 
-  const periodText = typeof router.query.year !== "undefined" ?
+  const periodText = !isTotal ?
     `I ${router.query.year} har du gitt` :
     `Siden ${firstYear} har du gitt`
 
-  let distribution = typeof router.query.year !== "undefined" ?
+  let distribution = !isTotal ?
     getYearlyDistribution(aggregatedDonations, parseInt(router.query.year as string)) :
     getTotalDistribution(aggregatedDonations)
+
+  const donationList = !isTotal ?
+    <DonationList 
+      donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+      distributions={distributionsMap}
+      year={router.query.year as string} /> :
+    years.sort((a,b) => b-a).map(year => 
+      (<DonationList 
+        key={year}
+        donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
+        distributions={distributionsMap}
+        year={year.toString()} />)
+    )
 
   return (
     <>
@@ -81,18 +97,9 @@ const Home: LayoutPage = () => {
         <DonationsTotals sum={sum} period={periodText} comparison={"Det er 234% så mye som en gjennomsnittlig giver"} />
       </div>
       {
-        typeof router.query.year !== "undefined" ?
-        <DonationList 
-          donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
-          distributions={distributionsMap}
-          year={router.query.year as string} /> :
-        years.sort((a,b) => b-a).map(year => 
-          (<DonationList 
-            key={year}
-            donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
-            distributions={distributionsMap}
-            year={year.toString()} />)
-        )
+        isTotal && window.innerWidth < 900 ?
+        <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} /> :
+        donationList
       }
       {/* <Donations /> */}
     </>
@@ -126,4 +133,11 @@ const getYearlyDistribution = (aggregated: AggregatedDonations[], year: number):
   return aggregated
     .filter(el => el.year === year)
     .map(el => ({ org: el.organization, sum: parseFloat(el.value) }))
+}
+
+const getYearlySum = (aggregated: AggregatedDonations[], years: number[]): { year: string, sum: number }[] => {
+  return years.map((year) => ({
+    year: year.toString(),
+    sum: aggregated.reduce((acc,curr) => curr.year == year ? acc + parseFloat(curr.value) : acc, 0)
+  }))
 }
