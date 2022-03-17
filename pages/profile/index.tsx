@@ -5,7 +5,7 @@ import { useState } from 'react'
 import DonationsChart from '../../components/profile/donations/donationsChart'
 import DonationsTotals from '../../components/profile/donations/donationsTotal'
 import DonationYearMenu from '../../components/profile/donations/yearMenu'
-import { DonationList } from '../../components/lists/donationList'
+import { DonationList } from '../../components/lists/donationList/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
 import { AggregatedDonations, Donation } from '../../models'
@@ -35,9 +35,10 @@ const Home: LayoutPage = () => {
   if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations)
     return <Spinner />
 
-  const years = new Set<number>()
-  aggregatedDonations.forEach(el => years.add(el.year))
-  const firstYear = Math.min(...Array.from(years))
+  const yearsSet = new Set<number>()
+  aggregatedDonations.forEach(el => yearsSet.add(el.year))
+  const years = Array.from(yearsSet)
+  const firstYear = Math.min(...years)
   const sum = aggregatedDonations.reduce((acc, curr) => router.query.year === curr.year.toString() || !router.query.year ? acc + parseFloat(curr.value) : acc,0)
 
   const periodText = typeof router.query.year !== "undefined" ?
@@ -66,9 +67,18 @@ const Home: LayoutPage = () => {
         <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
         <DonationsTotals sum={sum} period={periodText} comparison={"Det er 234% så mye som en gjennomsnittlig giver"} />
       </div>
-      <DonationList donations={(typeof router.query.year !== "undefined" ?
-        donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string)) :
-        donations )}/>
+      {
+        typeof router.query.year !== "undefined" ?
+        <DonationList 
+          donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+          year={router.query.year as string} /> :
+        years.sort((a,b) => b-a).map(year => 
+          (<DonationList 
+            donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
+            key={year}
+            year={year.toString()} />)
+        )
+      }
       {/* <Donations /> */}
     </>
   )
