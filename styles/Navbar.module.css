@@ -58,7 +58,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 20px 5vw;
+    padding: 20px 30px;
   }
 
   .expandBtn {
@@ -76,9 +76,21 @@
     display: none;
   }
 
+  .navbarExpanded ul {
+    padding: 0;
+    flex-grow: 1;
+    width: 100%;
+    font-weight: normal;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding-bottom: 100px;
+  }
+
   .navbar ul li {
     display: block;
     font-size: 28px;
+    padding: 0;
   }
   
   /* Style navigation menu links */
@@ -111,9 +123,5 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-  }
-
-  .navbarExpanded ul {
-    display: block;
   }
 }

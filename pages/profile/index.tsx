@@ -16,8 +16,9 @@ import {
 } from "../../models";
 import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
-import DonationsDistributionTable from "../../components/profile/donations/donationsDistributionTable";
-import { Spinner } from "../../components/elements/spinner";
+import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
+import { Spinner } from '../../components/elements/spinner'
+import { DonationsYearlyGraph } from '../../components/profile/donations/donationsYearlyChart'
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -87,6 +88,8 @@ const Home: LayoutPage = () => {
   )
     return <Spinner />;
 
+  const isTotal = typeof router.query.year === "undefined"
+
   const registeredYear = new Date(donor?.registered).getFullYear();
   const currentYear = new Date().getFullYear();
   const years: number[] = [];
@@ -105,17 +108,30 @@ const Home: LayoutPage = () => {
   distributions.map((dist) => distributionsMap.set(dist.kid, dist));
 
   const periodText =
-    typeof router.query.year !== "undefined"
+    !isTotal
       ? `I ${router.query.year} har du gitt`
       : `Siden ${firstYear} har du gitt`;
 
   let distribution =
-    typeof router.query.year !== "undefined"
+    !isTotal
       ? getYearlyDistribution(
           aggregatedDonations,
           parseInt(router.query.year as string)
         )
       : getTotalDistribution(aggregatedDonations);
+
+  const donationList = !isTotal ?
+    <DonationList 
+      donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+      distributions={distributionsMap}
+      year={router.query.year as string} /> :
+    years.sort((a,b) => b-a).map(year => 
+      (<DonationList 
+        key={year}
+        donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
+        distributions={distributionsMap}
+        year={year.toString()} />)
+    )
 
   return (
     <>
@@ -125,7 +141,7 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Donasjoner</h1>
+      <h1 className={style.header}>Donasjoner</h1>
 
       <DonationYearMenu
         years={years}
@@ -144,31 +160,11 @@ const Home: LayoutPage = () => {
           comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
         />
       </div>
-      {typeof router.query.year !== "undefined" ? (
-        <DonationList
-          donations={donations.filter(
-            (donation) =>
-              new Date(donation.timestamp).getFullYear() ===
-              parseInt(router.query.year as string)
-          )}
-          distributions={distributionsMap}
-          year={router.query.year as string}
-        />
-      ) : (
-        years
-          .sort((a, b) => b - a)
-          .map((year) => (
-            <DonationList
-              key={year}
-              donations={donations.filter(
-                (donation) =>
-                  new Date(donation.timestamp).getFullYear() === year
-              )}
-              distributions={distributionsMap}
-              year={year.toString()}
-            />
-          ))
-      )}
+      {
+        isTotal && window.innerWidth < 900 ?
+        <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} /> :
+        donationList
+      }
       {/* <Donations /> */}
     </>
   );
@@ -203,6 +199,13 @@ const getYearlyDistribution = (
   year: number
 ): { org: string; sum: number }[] => {
   return aggregated
-    .filter((el) => el.year === year)
-    .map((el) => ({ org: el.organization, sum: parseFloat(el.value) }));
-};
+    .filter(el => el.year === year)
+    .map(el => ({ org: el.organization, sum: parseFloat(el.value) }))
+}
+
+const getYearlySum = (aggregated: AggregatedDonations[], years: number[]): { year: string, sum: number }[] => {
+  return years.map((year) => ({
+    year: year.toString(),
+    sum: aggregated.reduce((acc,curr) => curr.year == year ? acc + parseFloat(curr.value) : acc, 0)
+  }))
+}

@@ -18,15 +18,15 @@ export const Navbar: React.FC = () => {
             src={logo}
             className={styles.logo}
             layout="intrinsic"
-            width={160}
+            width={140}
             height={80}
             alt="Konduit. logo"
             priority
           />
           <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
-            <X width={36} color={"white"} /> :
-            <Menu width={36} color={"white"} />
+            <X size={32} color={"white"} /> :
+            <Menu size={32} color={"white"} />
           }
           </div>
         </div>
