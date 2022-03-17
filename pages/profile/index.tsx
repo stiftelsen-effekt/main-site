@@ -8,7 +8,7 @@ import DonationYearMenu from '../../components/profile/donations/yearMenu'
 import { DonationList } from '../../components/lists/donationList/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
-import { AggregatedDonations, Donation } from '../../models'
+import { AggregatedDonations, Donation, Donor } from '../../models'
 import { LayoutPage } from '../../types'
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
@@ -17,6 +17,9 @@ import { Spinner } from '../../components/elements/spinner'
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
   const router = useRouter()
+  const [donor, setDonor] = useState<null | Donor>(null);
+  const year = new Date().getFullYear();
+  const registeredYear = parseInt(donor?.registered.split("-")[0]!)
 
   const { loading: aggregatedLoading, data: aggregatedDonations, error: aggregatedError } = useApi<AggregatedDonations[]>(
     `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/aggregated`,
@@ -32,11 +35,31 @@ const Home: LayoutPage = () => {
     getAccessTokenSilently
   )
 
+  const { loading, error, data } = useApi<Donor>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
+    "GET",
+    "read:donations",
+    getAccessTokenSilently,
+  );
+
+  if (loading || !user)  {
+    return <div>Loading...</div>;
+  } else if (error) {
+    return <div>Noe gikk galt </div>
+  } else if (!donor) {
+    setDonor(data)
+    return <div>Loading...</div>;
+  };
+
   if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations)
     return <Spinner />
 
   const yearsSet = new Set<number>()
-  aggregatedDonations.forEach(el => yearsSet.add(el.year))
+  let yearCount = registeredYear;
+  while(yearCount <= year){
+    yearsSet.add(yearCount)
+    yearCount ++;
+  }
   const years = Array.from(yearsSet)
   const firstYear = Math.min(...years)
   const sum = aggregatedDonations.reduce((acc, curr) => router.query.year === curr.year.toString() || !router.query.year ? acc + parseFloat(curr.value) : acc,0)
