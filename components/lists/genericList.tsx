@@ -1,5 +1,5 @@
 import style from "../../styles/Lists.module.css";
-import DonationListRow from "./genericListRow";
+import GenericListRow from "./genericListRow";
 import { ReactElement } from "react";
 
 export type ListRow = {
@@ -27,11 +27,13 @@ export const GenericList: React.FC<{
       <section>
         <table className={style.table}>
           <thead>
-            {headers.map(header => <th key={header}>{header}</th>)}
+            <tr>
+              {headers.map(header => <th key={header}>{header}</th>)}
+            </tr>
           </thead>
           {rows
             .map(row => (
-              <DonationListRow key={row.id} row={row}></DonationListRow>
+              <GenericListRow key={row.id} row={row}></GenericListRow>
             ))}
         </table>
       </section>

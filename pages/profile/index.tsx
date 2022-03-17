@@ -8,7 +8,7 @@ import DonationYearMenu from '../../components/profile/donations/yearMenu'
 import { DonationList } from '../../components/lists/donationList/donationList'
 import { Layout } from '../../components/profile/layout'
 import { useApi } from '../../hooks/useApi'
-import { AggregatedDonations, Donation } from '../../models'
+import { AggregatedDonations, Distribution, Donation } from '../../models'
 import { LayoutPage } from '../../types'
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
@@ -32,7 +32,18 @@ const Home: LayoutPage = () => {
     getAccessTokenSilently
   )
 
-  if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations)
+  const kids = new Set<string>();
+  donations?.map((donation) => kids.add(donation.KID))
+
+  const { loading: distributionsLoading, data: distributions, error: distributionsError } = useApi<Distribution[]>(
+    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/distributions/?kids=${encodeURIComponent(Array.from(kids).join(','))}`,
+    "GET",
+    "read:donations",
+    getAccessTokenSilently,
+    typeof donations !== "undefined"
+  )
+
+  if (aggregatedLoading || !aggregatedDonations || donationsLoading || !donations || distributionsLoading || !distributions)
     return <Spinner />
 
   const yearsSet = new Set<number>()
@@ -40,6 +51,8 @@ const Home: LayoutPage = () => {
   const years = Array.from(yearsSet)
   const firstYear = Math.min(...years)
   const sum = aggregatedDonations.reduce((acc, curr) => router.query.year === curr.year.toString() || !router.query.year ? acc + parseFloat(curr.value) : acc,0)
+  const distributionsMap = new Map<string, Distribution>()
+  distributions.map(dist => distributionsMap.set(dist.kid, dist))
 
   const periodText = typeof router.query.year !== "undefined" ?
     `I ${router.query.year} har du gitt` :
@@ -71,11 +84,13 @@ const Home: LayoutPage = () => {
         typeof router.query.year !== "undefined" ?
         <DonationList 
           donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+          distributions={distributionsMap}
           year={router.query.year as string} /> :
         years.sort((a,b) => b-a).map(year => 
           (<DonationList 
-            donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
             key={year}
+            donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
+            distributions={distributionsMap}
             year={year.toString()} />)
         )
       }

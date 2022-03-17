@@ -11,12 +11,14 @@ const DonationsDistributionTable: React.FC<{ distribution: {org: string, sum: nu
   return (
     <div>
       <table className={style.distribution}>
-        {distribution.map((row) => (
-          <tr key={row.org}>
-            <td>{row.org}</td>
-            <td>{thousandize(row.sum)} kr</td>
-          </tr>
-        ))}
+        <tbody>
+          {distribution.map((row) => (
+            <tr key={row.org}>
+              <td>{row.org}</td>
+              <td>{thousandize(row.sum)} kr</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   )
