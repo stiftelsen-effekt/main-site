@@ -17,5 +17,5 @@ export default {
 
 export const Picker = ({...args}) => {
   const [selected, setSelected] = useState<number | undefined>()
-  return <DatePicker selected={selected} onChange={(selected) => { setSelected(selected) }}/>
+  return <DatePicker selected={selected} onChange={(selected) => { setSelected(selected) }} onClickOutside={() => {}}/>
 }
