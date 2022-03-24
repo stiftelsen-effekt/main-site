@@ -14,6 +14,10 @@ import { useApi } from "../../hooks/useApi";
 import { Spinner } from "../../components/elements/spinner";
 import { useAuth0 } from "@auth0/auth0-react";
 import { ssrEntries } from "next/dist/build/webpack/plugins/middleware-plugin";
+import {
+  Children,
+  Lightbox,
+} from "../../components/profile/agreements/lightbox";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -53,19 +57,29 @@ const Agreements: LayoutPage = () => {
     KID: entry.KID,
     date: entry.monthly_charge_day,
     amount: entry.amount,
-    type: "Vipps"
+    type: "Vipps",
   }));
 
-  console.log(avtaleGiro)
-  let giroType = avtaleGiro.map((entry) =>({
+  console.log(avtaleGiro);
+  let giroType = avtaleGiro.map((entry) => ({
     ID: entry.ID,
     status: entry.active,
     KID: entry.KID,
     date: entry.payment_date,
     amount: entry.amount,
-    type: "AvtaleGiro"
-  })
-  );
+    type: "AvtaleGiro",
+  }));
+
+  const lightboxChildren: Children = {
+    button: "Avslutt",
+    heading: "Avslutt avtale",
+    paragraph: [
+      `Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.`,
+      `Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager tilbake i tid 
+    har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i 
+    registrering av trekk hos bankene. Om du ønsker refusjon ppå denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no`,
+    ],
+  };
 
   return (
     <>
@@ -76,7 +90,7 @@ const Agreements: LayoutPage = () => {
       </Head>
       <div>
         <h1>Faste avtaler</h1>
-
+        <Lightbox children={lightboxChildren} />
         <AgreementList
           title={"Aktive"}
           agreements={[...giroType, ...vippsType]}
