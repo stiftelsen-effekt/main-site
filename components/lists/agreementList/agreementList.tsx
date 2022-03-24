@@ -56,8 +56,14 @@ export const AgreementList: React.FC<{
     details: <></>,
   }));
 
+  const emptyPlaceholder = <div>
+    <div>Vi har ikke registrert noen aktive faste donasjonsavtaler på deg..</div>
+    <div>Mangler det avtaler vi ikke har registrert? Ta kontakt på <a href={'mailto: donasjon@gieffektivt.no'}>donasjon@gieffektivt.no</a>.</div>
+  </div>
+
   return (
     <GenericList
+      emptyPlaceholder={emptyPlaceholder}
       title={title}
       supplementalInformation={supplemental}
       headers={headers}
