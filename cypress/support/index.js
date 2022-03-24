@@ -17,7 +17,6 @@
 // import "../support/commands";
 import "./commands";
 import "./profile";
-import "cypress-nextjs-auth0";
 import "cypress-localstorage-commands";
 
 // Alternatively you can use CommonJS syntax:

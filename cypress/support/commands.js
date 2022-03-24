@@ -26,9 +26,12 @@ Cypress.Commands.add("login", (overrides = {}) => {
       return resp.body;
     })
     .then((body) => {
+      cy.visit(Cypress.env("auth_url"));
       const { access_token } = body;
       cy.setLocalStorage("<token>", JSON.stringify(access_token));
-      cy.visit(Cypress.env("auth_url"));
       cy.get('a[href="/profile"]').click();
+      cy.get("#username").type(Cypress.env("auth_username"));
+      cy.get("#password").type(Cypress.env("auth_password"));
+      cy.get('button[type="submit"]').click();
     });
 });
