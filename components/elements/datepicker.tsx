@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useClickOutsideAlerter } from "../../hooks/useClickOutsideAlerter";
 import style from "../../styles/Elements.module.css";
 
-export const DatePicker: React.FC<{ selected?: number, onChange: (selected: number) => void }> = ({ selected, onChange }) => {
+export const DatePicker: React.FC<{ selected?: number, onChange: (selected: number) => void, onClickOutside: () => void }> = ({ selected, onChange, onClickOutside }) => {
   const dates = [...Array.from(Array(29).keys()).map(x => x.toString())].slice(1, 29)
 
-  return <div className={style["datepicker-wrapper"]}>
+  const datepickerContainerRef = useRef<HTMLDivElement>(null)
+  useClickOutsideAlerter(datepickerContainerRef, onClickOutside)
+
+  return <div className={style["datepicker-wrapper"]} ref={datepickerContainerRef} >
     {dates.map(date => <div 
       key={date} 
       onClick={() => onChange(parseInt(date))}

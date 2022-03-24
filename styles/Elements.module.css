@@ -16,6 +16,31 @@
   cursor: pointer;
 }
 
+.datepicker-input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.datepicker-input-wrapper input {
+  padding: 12px 16px;
+  border: none;
+  background: white;
+  color: black;
+  font-size: 12px;
+  user-select: none;
+  font-family: "ESKlarheitGrotesk";
+  min-width: 200px;
+  cursor: pointer;
+  outline: none;
+}
+
+.datepicker-container {
+  position: absolute;
+  top: -240px;
+  left: 50%;
+  margin-left: calc(-280px / 2);
+}
+
 .datepicker-wrapper {
   width: 280px;
   height: 220px;
@@ -70,4 +95,23 @@
 .datepicker-button-last--selected {
   background: black;
   color: white;
+}
+
+@media only screen and (max-width: 900px) {  
+  .datepicker-input-wrapper {
+    position: static;
+  }
+
+  .datepicker-container {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.5);
+  }
 }
