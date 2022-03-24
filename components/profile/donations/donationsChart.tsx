@@ -10,7 +10,7 @@ const DonationsChart: React.FC<{ distribution: {org: string, sum: number }[] }> 
   distribution = distribution.sort((a,b) => b.sum - a.sum)
 
   return (
-    <div className={style.graph}>
+    <div className={style.graph + ' ' + (distribution.length == 0 ? style.empty : '')}>
       {distribution.map((dist, i) => (
         <div 
           key={dist.org} 
