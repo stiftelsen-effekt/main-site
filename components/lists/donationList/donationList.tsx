@@ -14,6 +14,7 @@ export const DonationList: React.FC<{ donations: Donation[], distributions: Map<
   const headers = ["Dato", "Sum", "Betalingskanal", "KID"];
 
   const rows: ListRow[] = donations.map(donation => {
+    console.log(donation.KID)
     return ({
       id: donation.id.toString(),
       cells: [shortDate(donation.timestamp), 
@@ -24,10 +25,16 @@ export const DonationList: React.FC<{ donations: Donation[], distributions: Map<
     })
   })
 
+  const emptyPlaceholder = <div>
+    <div>Vi har ikke registrert noen donasjoner fra deg i {year}.</div>
+    <div>Mangler det donasjoner vi ikke har registrert? Ta kontakt på <a href={'mailto: donasjon@gieffektivt.no'}>donasjon@gieffektivt.no</a>.</div>
+  </div>
+
   return (
     <GenericList title={year}
-      supplementalInformation={taxDeductionText}
+      supplementalInformation={donations.length > 0 ? taxDeductionText : ''}
       headers={headers}
-      rows={rows} />
+      rows={rows}
+      emptyPlaceholder={emptyPlaceholder} />
   );
 }
