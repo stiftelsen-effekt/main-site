@@ -16,7 +16,7 @@ export default {
   }
 }
 
-export const Picker = ({...args}) => {
+export const PickerInput = ({...args}) => {
   const [selected, setSelected] = useState<number | undefined>()
   return <div className={style["input-wrapper"]}>
     <DatePickerInput selected={selected} onChange={(selected) => { setSelected(selected) }}/>

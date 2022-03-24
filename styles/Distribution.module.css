@@ -1,0 +1,80 @@
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 30px;
+  row-gap: 10px;
+  width: 100%;
+}
+
+.share-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.share-wrapper > div {
+  position: relative;
+}
+
+.share-wrapper > div span {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #393939;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.share-wrapper span {
+  font-size: 12px;
+}
+
+.share-wrapper input {
+  font-family: "ESKlarheitGrotesk";
+  padding-left: 10px;
+  padding-right: 24px;
+  border: none;
+  background: white;
+  font-size: 12px;
+  width: 50px;
+  height: 35px;
+  text-align: right;
+}
+
+.warning-box {
+  font-size: 12px;
+  height: 30px;
+  padding: 0px 14px;
+  margin-top: 20px;
+  color: black;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.warning-box span {
+  border-left: 1px solid black;
+  display: flex;
+  padding-left: 10px;
+  height: 100%;
+  align-items: center;
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 900px) {  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

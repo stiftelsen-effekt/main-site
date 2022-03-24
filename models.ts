@@ -65,3 +65,12 @@ export type AggregatedDonations = {
 export type DonationGraphData = {
   name: string
 }
+
+export type Organization = {
+  id: number,
+  name: string,
+  abbriv: string,
+  shortDesc: string,
+  standardShare: number,
+  infoUrl: string
+}
