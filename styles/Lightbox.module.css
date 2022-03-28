@@ -1,37 +1,44 @@
+.lightboxWrapper {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
 .lightbox {
-    background-color: white;
-    color: black;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 50vw;
-    min-height: 50vh;
-    margin-top: -25vh;
-    margin-left: -50vh;
-    padding: 5px 20px 20px 20px;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  margin: 0 5vw;
+  max-height: 100vh;
+  max-width: 600px;
+  padding: 5px 20px 20px 20px;
+  overflow-y: auto;
+  z-index: 2;
 }
 
 .button {
-    background: black;
-    box-shadow: none;
-    color: white;
-    font-family: "ESKlarheitGrotesk";
-    border: none;
-    font-size: 1em;
-    cursor: pointer;
-    padding: 5px;
-    margin: 10px;
-    width: 130px;
+  background: black;
+  box-shadow: none;
+  color: white;
+  font-family: "ESKlarheitGrotesk";
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 5px;
+  margin: 10px;
+  width: 130px;
 }
 
-.button1 {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-.button2 {
-    position: absolute;
-    right: 150px;
-    bottom: 0;
+.buttonWrapper {
+    padding-top: 8px;
+    display: flex;
+    justify-content: flex-end;
 }

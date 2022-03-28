@@ -23,20 +23,19 @@ export const Lightbox: React.FC<{ children: Children }> = (children) => {
     <div>
       <div onClick={toggleIsOpen}>{children.children.button}</div>
       {isOpen ? (
-        <div className={style.lightbox}>
-          <h2>{children.children.heading}</h2>
-          {children.children.paragraph.map((string) => {
-            return <p>{string}</p>;
-          })}
-          <button className={style.button + " " + style.button1}>
-            Bekreft
-          </button>
-          <button
-            className={style.button + " " + style.button2}
-            onClick={cancelAgreement}
-          >
-            Avbryt
-          </button>
+        <div className={style.lightboxWrapper}>
+          <div className={style.lightbox}>
+            <h2>{children.children.heading}</h2>
+            {children.children.paragraph.map((string) => {
+              return <p>{string}</p>;
+            })}
+            <div className={style.buttonWrapper}>
+              <button className={style.button}>Bekreft</button>
+              <button className={style.button} onClick={cancelAgreement}>
+                Avbryt
+              </button>
+            </div>
+          </div>
         </div>
       ) : null}
     </div>
