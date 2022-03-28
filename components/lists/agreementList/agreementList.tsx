@@ -1,5 +1,5 @@
 import { AvtaleGiroAgreement, Distribution, Donation, VippsAgreement } from "../../../models";
-import { shortDate, thousandize } from "../../../util/formatting";
+import { thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 import { AgreementDetails } from "./agreementDetails";
 
@@ -9,7 +9,8 @@ type AgreementRow = {
   KID: string;
   date: number; 
   amount: number;
-  type: string
+  type: "vipps" | "avtalegiro";
+  endpoint: string;
  }
 
 export const AgreementList: React.FC<{
@@ -21,24 +22,25 @@ export const AgreementList: React.FC<{
 }> = ({ avtalegiro, vipps, title, supplemental, distributions }) => {
   const headers = ["Type", "Dato", "Sum", "KID"];
 
-  let vippsType = vipps.map((entry) => ({
+  let vippsType = vipps.map((entry): AgreementRow => ({
     ID: entry.ID,
     status: entry.status,
     KID: entry.KID,
     date: entry.monthly_charge_day,
     amount: entry.amount,
-    type: "Vipps"
+    type: "vipps",
+    endpoint: entry.agreement_url_code
   }));
 
-  let giroType = avtalegiro.map((entry: AvtaleGiroAgreement) =>({
+  let giroType = avtalegiro.map((entry: AvtaleGiroAgreement): AgreementRow =>({
     ID: entry.ID,
     status: entry.active,
     KID: entry.KID,
     date: entry.payment_date,
     amount: parseFloat(entry.amount),
-    type: "AvtaleGiro"
-  })
-  );
+    type: "avtalegiro",
+    endpoint: entry.KID
+  }));
 
   let rowData: AgreementRow[] = [...vippsType, ...giroType]
 
@@ -46,16 +48,18 @@ export const AgreementList: React.FC<{
     id: agreement.ID.toString(),
     cells: [
       agreement.type,
+      agreement.date > 0 ? 
       "Den " +
         (
           // agreement.payment_date ||
           agreement.date
         ).toString() +
-        ". hver måned",
+        ". hver måned" :
+      "Siste dagen i måneden",
       thousandize(agreement.amount) + " kr",
       agreement.KID,
     ],
-    details: <AgreementDetails inputDistribution={distributions.get(agreement.KID) as Distribution} inputSum={agreement.amount} inputDate={agreement.date} />,
+    details: <AgreementDetails type={agreement.type} endpoint={agreement.endpoint} inputDistribution={distributions.get(agreement.KID) as Distribution} inputSum={agreement.amount} inputDate={agreement.date} />,
   }));
 
   const emptyPlaceholder = <div>
