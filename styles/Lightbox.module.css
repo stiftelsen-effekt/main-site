@@ -1,0 +1,44 @@
+.lightboxWrapper {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox {
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  margin: 0 5vw;
+  max-height: 100vh;
+  max-width: 600px;
+  padding: 5px 20px 20px 20px;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.button {
+  background: black;
+  box-shadow: none;
+  color: white;
+  font-family: "ESKlarheitGrotesk";
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 5px;
+  margin: 10px;
+  width: 130px;
+}
+
+.buttonWrapper {
+    padding-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
