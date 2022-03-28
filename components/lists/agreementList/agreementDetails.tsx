@@ -30,7 +30,7 @@ export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum
     } else if (type == 'avtalegiro') {
       const savedDistributionKID = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token)
       const updatedDate = await updateAvtaleagreementPaymentDay(endpoint, day, token)
-      const updatedSum = await updateAvtaleagreementAmount(endpoint, parseFloat(sum), token)
+      const updatedSum = await updateAvtaleagreementAmount(endpoint, parseFloat(sum)*100, token)
       if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
         successToast()
         mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`)

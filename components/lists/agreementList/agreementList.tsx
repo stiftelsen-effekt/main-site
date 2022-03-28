@@ -48,12 +48,14 @@ export const AgreementList: React.FC<{
     id: agreement.ID.toString(),
     cells: [
       agreement.type,
+      agreement.date > 0 ? 
       "Den " +
         (
           // agreement.payment_date ||
           agreement.date
         ).toString() +
-        ". hver måned",
+        ". hver måned" :
+      "Siste dagen i måneden",
       thousandize(agreement.amount) + " kr",
       agreement.KID,
     ],
