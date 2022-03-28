@@ -1,0 +1,194 @@
+.menu {
+  margin-bottom: 12px;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  cursor: pointer;
+  width: 60px;
+  text-align: center;
+  padding-bottom: 2px;
+  margin-right: 20px;
+}
+
+.menu-selected {
+  font-weight: 600;
+  border-bottom: 1px solid white;
+}
+
+.totals {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column;
+  align-items: flex-start;
+  text-align: right;
+}
+
+.totals .period {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.totals h2 {
+  font-size: 64px;
+  margin: 0 8px;
+}
+
+.totals h4 {
+  font-size: 14px;
+  margin: 0 0;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
+.distributionHeader { 
+  display: none;
+}
+
+.distribution table {
+  width: 100%;
+  max-width: 420px;
+}
+
+.distribution table tr td {
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.distribution table tr td:last-child {
+  text-align: right;
+}
+
+.graph {
+  display: flex;
+  height: 30px;
+  background: white;
+}
+
+.empty {
+  border-bottom: 28px solid black;
+}
+
+.graph div {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 11px;
+  align-items: flex-end;
+  border-right: 1px solid black;
+  height: 100%;
+  text-align: right;
+  white-space: nowrap;
+  position: relative;
+}
+
+.graph div span {
+  opacity: 0;
+  margin-right: 6px;
+  transition: opacity 180ms;
+  user-select: none;
+}
+
+.graph div:hover span {
+  opacity: 1;
+}
+
+.graph div:last-child {
+  border-right: none;
+}
+
+@media only screen and (max-width: 900px) { 
+  .header {
+    display: none;
+  }
+
+  .menu {
+    overflow-x: scroll;
+    white-space: nowrap;
+    position: fixed;
+    background: black;
+    top: 120px;
+    left: 0;
+    width: 100vw;
+    border-bottom: 1px solid white;
+    padding-left: 30px;
+    box-sizing: border-box;
+    padding-bottom: 0;
+  }
+
+  .menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu ul {
+    margin: 0;
+  }
+
+  .menu-selected {
+    border-bottom-width: 2px;
+  }
+
+  .graph {
+    display: none;
+  }
+
+  .totals {
+    margin-top: 50px;
+    align-items: flex-end;
+  }
+
+  .totals h2 {
+    font-size: 10vw;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+
+  /* Re-arrange divs */
+  .details > div:last-child {
+    order: 1;
+    margin-bottom: 50px;
+  }
+
+  .details > div:first-child {
+    order: 2;
+  }
+
+  .distributionHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 14px 0;
+  }
+  
+  .distributionHeader svg {
+    transition: transform 200ms;
+  }
+
+  .distributionHeader svg.chevronRotated {
+    transform: rotate(180deg);
+  }
+
+  .distribution {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+  }
+
+  .distribution table {
+    margin-bottom: 16px;
+  }
+}

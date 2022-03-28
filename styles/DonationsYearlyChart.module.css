@@ -1,0 +1,42 @@
+.wrapper {
+  margin-top: 60px;
+  min-width: 90vw;
+  margin-bottom: 50px;
+}
+
+.bars {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 140px;
+  border-bottom: 1px solid white;;
+}
+
+.bar {
+  background: white;
+  width: 50px;
+}
+
+.labels {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.label {
+  width: 50px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.label span:first-child {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.label span:last-child {
+  font-size: 11px;
+}

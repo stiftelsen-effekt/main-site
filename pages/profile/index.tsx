@@ -1,68 +1,195 @@
-import { useAuth0 } from '@auth0/auth0-react'
-import { resolveSoa } from 'dns'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { useState } from 'react'
-import DonationsChart from '../../components/charts/donations'
-import { Layout } from '../../components/profile/layout'
-import { useApi } from '../../hooks/useApi'
-import { AggregatedDonations, DonationGraphData } from '../../models'
-import { LayoutPage } from '../../types'
+import { useAuth0, User } from "@auth0/auth0-react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import DonationsChart from "../../components/profile/donations/donationsChart";
+import DonationsTotals from "../../components/profile/donations/donationsTotal";
+import DonationYearMenu from "../../components/profile/donations/yearMenu";
+import { DonationList } from "../../components/lists/donationList/donationList";
+import { Layout } from "../../components/profile/layout";
+import { useApi } from "../../hooks/useApi";
+import {
+  AggregatedDonations,
+  Distribution,
+  Donation,
+  Donor
+} from "../../models";
+import { LayoutPage } from "../../types";
+import style from "../../styles/Donations.module.css";
+import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
+import { Spinner } from '../../components/elements/spinner'
+import { DonationsYearlyGraph } from '../../components/profile/donations/donationsYearlyChart'
+import { DonorContext } from "../../components/profile/donorProvider";
+import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
+import { ActivityContext } from "../../components/profile/activityProvider";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
-  const [graphData, setGraphData] = useState<null | any[]>(null);
+  const router = useRouter();
+  const { donor } = useContext(DonorContext);
+  const { setActivity } = useContext(ActivityContext);
 
-  const {loading, data, error} = useApi<AggregatedDonations[]>(
-    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/aggregated`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently,
+  const {
+    loading: aggregatedLoading,
+    data: aggregatedDonations,
+    isValidating: aggregatedDonationsValidating,
+    error: aggregatedError
+  } = useAggregatedDonations(user as User, getAccessTokenSilently);
 
-  );
+  const {
+    loading: donationsLoading,
+    data: donations,
+    isValidating: donationsIsValidating,
+    error: donationsError,
+  } = useDonations(user as User, getAccessTokenSilently);
 
-  if (loading)
-    return <></>
+  const kids = new Set<string>();
+  donations?.map((donation: Donation) => kids.add(donation.KID));
 
-  if (!graphData) {
-    setGraphData(transformData(data));
-    return <></>
-  }
+  const {
+    loading: distributionsLoading,
+    data: distributions,
+    isValidating: distributionsValidating,
+    error: distributionsError,
+  } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids))
+
+  const dataAvailable = donations && distributions && aggregatedDonations && donor
+  const loading = aggregatedLoading || donationsLoading || distributionsLoading
+  const validating = aggregatedDonationsValidating || donationsIsValidating || distributionsValidating
+  if (!dataAvailable || loading)
+    return <><h1 className={style.header}>Donasjoner</h1><Spinner /></>;
+
+  if (validating)
+    setActivity(true)
+  else
+    setActivity(false)
+
+  const isTotal = typeof router.query.year === "undefined"
+  const years = getYears(donor)
+  const firstYear = Math.min(...years);
+  const sum = getDonationSum(aggregatedDonations, router.query.year as string);
+  const distributionsMap = new Map<string, Distribution>();
+  distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
+
+  const periodText =
+    !isTotal
+      ? `I ${router.query.year} har du gitt`
+      : `Siden ${firstYear} har du gitt`;
+
+  let distribution =
+    !isTotal
+      ? getYearlyDistribution(
+          aggregatedDonations,
+          parseInt(router.query.year as string)
+        )
+      : getTotalDistribution(aggregatedDonations);
+
+  const donationList = !isTotal ?
+    <DonationList 
+      donations={donations.filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+      distributions={distributionsMap}
+      year={router.query.year as string} /> :
+    years.sort((a,b) => b-a).map(year => 
+      (<DonationList 
+        key={year}
+        donations={donations.filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)}
+        distributions={distributionsMap}
+        year={year.toString()} />)
+    )
 
   return (
     <>
       <Head>
-        <title>Konduit. - Profil</title>
+        <title>Konduit. - Donasjoner</title>
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Donasjoner</h1>
+      <h1 className={style.header}>Donasjoner</h1>
 
-      <div style={{ height: 450 }}>
-        <DonationsChart data={graphData} />
+      <DonationYearMenu
+        years={years}
+        selected={(router.query.year as string) || "total"}
+      />
+
+      <DonationsChart distribution={distribution}></DonationsChart>
+
+      <div className={style.details}>
+        <DonationsDistributionTable
+          distribution={distribution}
+        ></DonationsDistributionTable>
+        <DonationsTotals
+          sum={sum}
+          period={periodText}
+          comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
+        />
       </div>
+      {
+        isTotal && window.innerWidth < 900 ?
+        <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} /> :
+        donationList
+      }
       {/* <Donations /> */}
     </>
-  )
-}
-Home.layout = Layout
-export default Home
+  );
+};
 
-const transformData = (res: any) => {
-  let data: any[] = []
-  res = res.sort((a: any, b: any) => b.year - a.year)
-  for (let i = 0; i < res.length; i++) {
-    if (i == 0 || (data[data.length-1].name != res[i].year)) {
-      let obj: any = {}
+Home.layout = Layout;
+export default Home;
 
-      obj["name"] = res[i].year
-      obj[res[i].organization] = parseFloat(res[i].value)
+const getTotalDistribution = (
+  aggregated: AggregatedDonations[]
+): { org: string; sum: number }[] => {
+  const distribution = [];
 
-      data.push(obj)
+  const summed = aggregated.reduce((acc: { [key: string]: number }, curr) => {
+    if (curr.organization in acc) {
+      acc[curr.organization] += parseFloat(curr.value);
     } else {
-      data[data.length-1][res[i].organization] = parseFloat(res[i].value)
+      acc[curr.organization] = parseFloat(curr.value);
     }
+    return acc;
+  }, {});
+
+  for (const key in summed) {
+    distribution.push({ org: key, sum: summed[key] });
   }
-  return data;
+
+  return distribution;
+};
+
+const getYearlyDistribution = (
+  aggregated: AggregatedDonations[],
+  year: number
+): { org: string; sum: number }[] => {
+  return aggregated
+    .filter(el => el.year === year)
+    .map(el => ({ org: el.organization, sum: parseFloat(el.value) }))
+}
+
+const getYearlySum = (aggregated: AggregatedDonations[], years: number[]): { year: string, sum: number }[] => {
+  return years.map((year) => ({
+    year: year.toString(),
+    sum: aggregated.reduce((acc,curr) => curr.year == year ? acc + parseFloat(curr.value) : acc, 0)
+  }))
+}
+
+const getYears = (donor: Donor) => {
+  const registeredYear = new Date(donor.registered).getFullYear();
+  const currentYear = new Date().getFullYear();
+  const years: number[] = [];
+  for (let i = registeredYear; i <= currentYear; i++) {
+    years.push(i);
+  }
+  return years
+}
+
+const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: string) => {
+  return aggregatedDonations.reduce(
+    (acc, curr) =>
+      year === curr.year.toString() || !year
+        ? acc + parseFloat(curr.value)
+        : acc,
+    0
+  );
 }

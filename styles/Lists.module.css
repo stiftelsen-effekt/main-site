@@ -1,0 +1,117 @@
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+
+.table th {
+  text-align: left;
+}
+
+.table td {
+  margin-left: 0px;
+  text-align: left;
+}
+
+.table td:last-child {
+  text-align: right;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 20% 70%;
+  justify-content: space-between;
+  word-break:keep-all;
+  margin-bottom: 100px;
+}
+
+.gridContainer section {
+  border-top: 1px solid white;
+  padding-top: 16px;
+}
+
+.gridContainer section.header h2 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.gridContainer section.header p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.gridContainer section.header p div {
+  display: inline-block;
+}
+
+table td svg.iconChevronUp {
+  cursor: pointer;
+  transition: transform 120ms ease-in-out;
+  transform: rotate(180deg);
+  user-select: none;
+}
+
+table td svg.iconChevronDown {
+  cursor: pointer;
+  transition: transform 120ms ease-in-out;
+  user-select: none;
+}
+
+.expanderContent {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.expanderContent .contextMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.expanderContent .contextMenu a {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.expanderContent .contextMenu a svg {
+  margin-right: 5px;
+}
+
+@media only screen and (max-width: 900px) { 
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .gridContainer section {
+    border-top: none;
+  }
+
+  .gridContainer section.header {
+    display: none;
+  }
+
+  .gridContainer tr th {
+    padding-bottom: 16px;
+  }
+
+  .gridContainer tr td {
+    padding-bottom: 4px;
+  }
+
+  /* Display only the three first columns */
+  .gridContainer tr th, .gridContainer tr td {
+    display: none;
+  }
+
+  .gridContainer tr th:nth-child(-n+3), .gridContainer tr td:nth-child(-n+3) {
+    display: table-cell;
+  }
+
+  .gridContainer tr td:last-child {
+    display: table-cell;
+  }
+}

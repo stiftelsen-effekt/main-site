@@ -7,10 +7,6 @@
   padding-bottom: 60px;
 }
 
-.category {
-
-}
-
 .category h3 {
   font-family: "ESKlarheitGrotesk", sans-serif;
   font-weight: 600;
@@ -33,4 +29,10 @@
   padding: 14px 18px;
   border: none;
   width: 100%;
+}
+
+@media only screen and (max-width: 900px) {
+  .grid {
+    display: none;
+  }
 }

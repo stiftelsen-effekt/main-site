@@ -3,7 +3,7 @@ import React, { ReactChildren } from "react";
 import { Spinner } from "../elements/spinner";
 import { LoginError } from "./loginError";
 
-export const UserWrapper: React.FC<{ children: React.ReactNode[] }> = ({ children }) => {
+export const UserWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const {
     isLoading,
     isAuthenticated,
