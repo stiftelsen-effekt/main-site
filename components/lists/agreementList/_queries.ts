@@ -100,7 +100,7 @@ export const updateAvtalegiroAgreementDistribution = async (kid: string, distrib
     const response = await fetch(
       `${api}/avtalegiro/${kid}/distribution`,
       {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
