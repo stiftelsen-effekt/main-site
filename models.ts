@@ -13,7 +13,7 @@ export type Donation = {
 export type AvtaleGiroAgreement = {
   ID: number;
   active: boolean;
-  amount: number;
+  amount: string;
   KID: string;
   payment_date: number;
   created: string;
@@ -64,4 +64,13 @@ export type AggregatedDonations = {
 
 export type DonationGraphData = {
   name: string
+}
+
+export type Organization = {
+  id: number,
+  name: string,
+  abbriv: string,
+  shortDesc: string,
+  standardShare: number,
+  infoUrl: string
 }

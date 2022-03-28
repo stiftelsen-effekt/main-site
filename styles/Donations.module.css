@@ -75,6 +75,10 @@
   background: white;
 }
 
+.empty {
+  border-bottom: 28px solid black;
+}
+
 .graph div {
   color: black;
   display: flex;
