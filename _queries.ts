@@ -1,4 +1,5 @@
 import { User } from "@auth0/auth0-react";
+import useSWR from "swr";
 import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
 import { AggregatedDonations, AvtaleGiroAgreement, Distribution, Donation, Organization, VippsAgreement } from "./models";
 
@@ -6,178 +7,133 @@ export interface Query<T> {
   (user: User, fetchToken: getAccessTokenSilently, condition?: boolean, ...args: any[]): apiResult<T> & { refreshing: boolean }
 };
 
-export const useAggregatedDonations:Query<AggregatedDonations[]> = (user, fetchToken) => {
+const fetcher = async (url: string, fetchToken: getAccessTokenSilently, method: "GET" | "POST" | "PUT" | "DELETE" = "GET") => {
+  const token = await fetchToken()
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || 'http://localhost:5050'
+  const response = await fetch(api + url, {
+    method: method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  return (await response.json()).content
+} 
+
+export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const {
+    data, 
+    error,
+    isValidating
+  } = useSWR(`/donors/${user["https://konduit.no/user-id"]}/donations/aggregated`, url => fetcher(url, fetchToken))
+
+  const loading = !data && !error
+
+  return {
     loading,
-    data,
+    isValidating,
+    data, 
     error
-  } = useApi<AggregatedDonations[]>(
-    `/donors/${user["https://konduit.no/user-id"]}/donations/aggregated`,
-    "GET",
-    "read:donations",
-    fetchToken
-  );
-
-  const cacheKey = "aggregatedDonationsCache"
-  let cache = localStorage.getItem(cacheKey)
-
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
-
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
-
-  return { loading, data, refreshing: false, error };
+  }
 }
 
-export const useDonations: Query<Donation[]> = (user, fetchToken) => {
+export const useDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const {
-    loading,
-    data,
+    data, 
     error,
-  } = useApi<Donation[]>(
-    `/donors/${user["https://konduit.no/user-id"]}/donations/`,
-    "GET",
-    "read:donations",
-    fetchToken
-  );
+    isValidating
+  } = useSWR(`/donors/${user["https://konduit.no/user-id"]}/donations/`, url => fetcher(url, fetchToken))
 
-  const cacheKey = "donationsCache"
-  let cache = localStorage.getItem(cacheKey)
+  const loading = !data && !error
 
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
-
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
-
-  return { loading, data, refreshing: false, error };
-}
-
-export const useDistributions: Query<Distribution[]> = (user, fetchToken, condition, kids: string[]) => {
-  const {
+  return {
     loading,
-    data,
+    isValidating,
+    data, 
     error
-  } = useApi<Distribution[]>(
-    `/donors/${
-      user ? user["https://konduit.no/user-id"] : ""
-    }/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}`,
-    "GET",
-    "read:donations",
-    fetchToken,
-    condition
-  );
-
-  const cacheKey = "distributionsCache"
-  let cache = localStorage.getItem(cacheKey)
-
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
-
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
-
-  return { loading, data, refreshing: false, error }
+  }
 }
 
-export const useAgreementsDistributions: Query<Distribution[]> = (user, fetchToken, condition, kids: string[]) => {
+export const useDistributions = (user: User, fetchToken: getAccessTokenSilently, condition: boolean, kids: string[]) => {
   const {
+    data, 
+    error,
+    isValidating
+  } = useSWR(condition ? `/donors/${user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}` : null, url => fetcher(url, fetchToken))
+
+  const loading = !data && !error
+
+  return {
     loading,
-    data,
+    isValidating,
+    data, 
     error
-  } = useApi<Distribution[]>(
-    `/donors/${ user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}`,
-    "GET",
-    "read:donations",
-    fetchToken,
-    condition
-  );
-
-  const cacheKey = "agreementsDistributionsCache"
-  let cache = localStorage.getItem(cacheKey)
-
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
-
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
-
-  return { loading, data, refreshing: false, error }
+  }
 }
 
-export const useAvtalegiroAgreements: Query<AvtaleGiroAgreement[]> = (user, fetchToken) => {
+export const useAgreementsDistributions = (user: User, fetchToken: getAccessTokenSilently, condition: boolean, kids: string[]) => {
   const {
-    loading,
-    data,
+    data, 
     error,
-  } = useApi<AvtaleGiroAgreement[]>(
-    `/donors/${
-      user ? user["https://konduit.no/user-id"] : ""
-    }/recurring/avtalegiro/`,
-    "GET",
-    "read:donations",
-    fetchToken
-  );
+    isValidating
+  } = useSWR(condition ? `/donors/${user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}` : null, url => fetcher(url, fetchToken))
 
-  const cacheKey = "avtalegiroAgreementsCache"
-  let cache = localStorage.getItem(cacheKey)
+  const loading = !data && !error
 
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
-
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
-
-  return { loading, data, refreshing: false, error }
+  return {
+    loading,
+    isValidating,
+    data, 
+    error
+  }
 }
 
-export const useVippsAgreements: Query<VippsAgreement[]> = (user, fetchToken) => {
+export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const {
-    loading,
-    data,
+    data, 
     error,
-  } = useApi<VippsAgreement[]>(
-    `/donors/${
-      user ? user["https://konduit.no/user-id"] : ""
-    }/recurring/vipps/`,
-    "GET",
-    "read:donations",
-    fetchToken
-  );
+    isValidating
+  } = useSWR(`/donors/${user["https://konduit.no/user-id"]}/recurring/avtalegiro/`, url => fetcher(url, fetchToken))
 
-  const cacheKey = "vippsAgreementsCache"
-  let cache = localStorage.getItem(cacheKey)
+  const loading = !data && !error
 
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
-
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
-
-  return { loading, data, refreshing: false, error }
+  return {
+    loading,
+    isValidating,
+    data, 
+    error
+  }
 }
 
-export const useOrganizations: Query<Organization[]> = (user, fetchToken) => {
+export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const {
-    loading,
-    data,
+    data, 
     error,
-  } = useApi<Organization[]>(
-    `/organizations/active/`,
-    "GET",
-    "read:donations",
-    fetchToken
-  );
+    isValidating
+  } = useSWR(`/donors/${user["https://konduit.no/user-id"]}/recurring/vipps/`, url => fetcher(url, fetchToken))
 
-  const cacheKey = "organizationsCache"
-  let cache = localStorage.getItem(cacheKey)
+  const loading = !data && !error
 
-  if (cache && loading)
-    return { loading: false, data: JSON.parse(cache), refreshing: true, error }
+  return {
+    loading,
+    isValidating,
+    data, 
+    error
+  }
+}
 
-  if (!loading && data)
-    localStorage.setItem(cacheKey, JSON.stringify(data))
+export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
+  const {
+    data, 
+    error,
+    isValidating
+  } = useSWR(`/organizations/active/`, url => fetcher(url, fetchToken))
 
-  return { loading, data, refreshing: false, error }
+  const loading = !data && !error
+
+  return {
+    loading,
+    isValidating,
+    data, 
+    error
+  }
 }

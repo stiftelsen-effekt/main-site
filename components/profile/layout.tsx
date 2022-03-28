@@ -10,6 +10,8 @@ import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
 import { ActivityIndicator } from "../elements/activityindicator";
 import { ActivityProvider } from "./activityProvider";
+import { ToastContainer } from "react-toastify";
+import { SWRConfig } from "swr";
 
 const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || '/profile/');
@@ -26,15 +28,31 @@ export const Layout: LayoutElement = ({ children }) => {
       onRedirectCallback={onRedirectCallback}
     >
       <div className={styles.container}>
-        <UserWrapper>
-          <DonorProvider>
-            <ActivityProvider>
-              <Navbar />
-              <main className={styles.main}>{children}</main>
-              <Footer />
-            </ActivityProvider>
-          </DonorProvider>
-        </UserWrapper>
+        <SWRConfig value={{ revalidateOnFocus: false }}>
+          <UserWrapper>
+            <DonorProvider>
+              <ActivityProvider>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={3000}
+                  hideProgressBar={true}
+                  newestOnTop={true}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  closeButton={false}
+                  style={{ maxWidth:200 }}
+                  toastStyle={{ borderRadius: 0, background: 'white', color: 'black' }}
+                  />
+                <Navbar />
+                <main className={styles.main}>{children}</main>
+                <Footer />
+              </ActivityProvider>
+            </DonorProvider>
+          </UserWrapper>
+        </SWRConfig>
       </div>
     </Auth0Provider>
   )

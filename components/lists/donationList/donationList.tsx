@@ -14,7 +14,6 @@ export const DonationList: React.FC<{ donations: Donation[], distributions: Map<
   const headers = ["Dato", "Sum", "Betalingskanal", "KID"];
 
   const rows: ListRow[] = donations.map(donation => {
-    console.log(donation.KID)
     return ({
       id: donation.id.toString(),
       cells: [shortDate(donation.timestamp), 

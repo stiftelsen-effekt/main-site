@@ -3,8 +3,7 @@ import { Layout } from "../../components/profile/layout";
 import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { AgreementList } from "../../components/lists/agreementList/agreementList";
-import { Distribution, Organization } from "../../models";
-import { useApi } from "../../hooks/useApi";
+import { AvtaleGiroAgreement, Distribution, Organization, VippsAgreement } from "../../models";
 import { Spinner } from "../../components/elements/spinner";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useAgreementsDistributions, useAvtalegiroAgreements, useOrganizations, useVippsAgreements } from "../../_queries";
@@ -19,32 +18,32 @@ const Agreements: LayoutPage = () => {
   const {
     loading: avtaleGiroLoading,
     data: avtaleGiro,
-    refreshing: avtaleGiroRefreshing,
+    isValidating: avtaleGiroRefreshing,
     error: avtaleGiroError,
   } = useAvtalegiroAgreements(user as User, getAccessTokenSilently)
 
   const {
     loading: vippsLoading,
     data: vipps,
-    refreshing: vippsRefreshing,
+    isValidating: vippsRefreshing,
     error: vippsError,
   } = useVippsAgreements(user as User, getAccessTokenSilently);
 
   const {
     loading: organizationsLoading,
     data: organizations,
-    refreshing: organizationsRefreshing,
+    isValidating: organizationsRefreshing,
     error: organizationsError,
   } = useOrganizations(user as User, getAccessTokenSilently);
 
   const kids = new Set<string>();
   if (vipps && avtaleGiro)
-    [...vipps?.map(a => a.KID), ...avtaleGiro?.map(a => a.KID)].map((kid) => kids.add(kid));
+    [...vipps?.map((a: VippsAgreement) => a.KID), ...avtaleGiro?.map((a: AvtaleGiroAgreement) => a.KID)].map((kid) => kids.add(kid));
 
   const {
     loading: distributionsLoading,
     data: distributions,
-    refreshing: distributionsRefreshing,
+    isValidating: distributionsRefreshing,
     error: distributionsError,
   } = useAgreementsDistributions(user as User, getAccessTokenSilently, !vippsLoading && !avtaleGiroLoading, Array.from(kids))
 
@@ -110,8 +109,6 @@ const getDistributionMap = (distributions: Distribution[], organizations: Organi
   
   for (let i = 0; i < distributions.length; i++) {
     let dist = distributions[i]
-    
-    console.log(dist.kid, organizations)
 
     let newDist = { kid: "", organizations: organizations.map(org => ({
       id: org.id,
@@ -122,7 +119,6 @@ const getDistributionMap = (distributions: Distribution[], organizations: Organi
     for (let j = 0; j < dist.organizations.length; j++) {
       let org = dist.organizations[j]
       let index = newDist.organizations.map(o => o.id).indexOf(org.id)
-      console.log(index)
       newDist.organizations[index].share = org.share
     }
 

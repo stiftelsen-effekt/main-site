@@ -11,6 +11,7 @@ import { useApi } from "../../hooks/useApi";
 import {
   AggregatedDonations,
   Distribution,
+  Donation,
   Donor
 } from "../../models";
 import { LayoutPage } from "../../types";
@@ -31,34 +32,34 @@ const Home: LayoutPage = () => {
   const {
     loading: aggregatedLoading,
     data: aggregatedDonations,
-    refreshing: aggregatedRefreshing,
+    isValidating: aggregatedDonationsValidating,
     error: aggregatedError
   } = useAggregatedDonations(user as User, getAccessTokenSilently);
 
   const {
     loading: donationsLoading,
     data: donations,
-    refreshing: donationsRefreshing,
+    isValidating: donationsIsValidating,
     error: donationsError,
   } = useDonations(user as User, getAccessTokenSilently);
 
   const kids = new Set<string>();
-  donations?.map((donation) => kids.add(donation.KID));
+  donations?.map((donation: Donation) => kids.add(donation.KID));
 
   const {
     loading: distributionsLoading,
     data: distributions,
-    refreshing: distributionsRefreshing,
+    isValidating: distributionsValidating,
     error: distributionsError,
   } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids))
 
-  const loading = aggregatedLoading || donationsLoading || distributionsLoading || !donations || !distributions || !aggregatedDonations || !donor
-  const refreshing = aggregatedRefreshing || donationsRefreshing || distributionsRefreshing
-
-  if (loading)
+  const dataAvailable = donations && distributions && aggregatedDonations && donor
+  const loading = aggregatedLoading || donationsLoading || distributionsLoading
+  const validating = aggregatedDonationsValidating || donationsIsValidating || distributionsValidating
+  if (!dataAvailable || loading)
     return <><h1 className={style.header}>Donasjoner</h1><Spinner /></>;
 
-  if (refreshing)
+  if (validating)
     setActivity(true)
   else
     setActivity(false)
@@ -68,7 +69,7 @@ const Home: LayoutPage = () => {
   const firstYear = Math.min(...years);
   const sum = getDonationSum(aggregatedDonations, router.query.year as string);
   const distributionsMap = new Map<string, Distribution>();
-  distributions.map((dist) => distributionsMap.set(dist.kid, dist));
+  distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
   const periodText =
     !isTotal
@@ -85,13 +86,13 @@ const Home: LayoutPage = () => {
 
   const donationList = !isTotal ?
     <DonationList 
-      donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+      donations={donations.filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
       distributions={distributionsMap}
       year={router.query.year as string} /> :
     years.sort((a,b) => b-a).map(year => 
       (<DonationList 
         key={year}
-        donations={donations.filter(donation => new Date(donation.timestamp).getFullYear() === year)}
+        donations={donations.filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)}
         distributions={distributionsMap}
         year={year.toString()} />)
     )
