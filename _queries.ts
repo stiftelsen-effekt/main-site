@@ -1,6 +1,6 @@
 import { User } from "@auth0/auth0-react";
-import { apiResult, getAccessTokenSilently, useApi } from "../../hooks/useApi";
-import { AggregatedDonations, AvtaleGiroAgreement, Distribution, Donation, Organization, VippsAgreement } from "../../models";
+import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
+import { AggregatedDonations, AvtaleGiroAgreement, Distribution, Donation, Organization, VippsAgreement } from "./models";
 
 export interface Query<T> {
   (user: User, fetchToken: getAccessTokenSilently, condition?: boolean, ...args: any[]): apiResult<T> & { refreshing: boolean }

@@ -19,7 +19,7 @@ import DonationsDistributionTable from '../../components/profile/donations/donat
 import { Spinner } from '../../components/elements/spinner'
 import { DonationsYearlyGraph } from '../../components/profile/donations/donationsYearlyChart'
 import { DonorContext } from "../../components/profile/donorProvider";
-import { useAggregatedDonations, useDistributions, useDonations } from "./_queries";
+import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
 import { ActivityContext } from "../../components/profile/activityProvider";
 
 const Home: LayoutPage = () => {

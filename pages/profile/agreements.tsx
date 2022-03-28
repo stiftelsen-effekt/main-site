@@ -7,7 +7,7 @@ import { Distribution, Organization } from "../../models";
 import { useApi } from "../../hooks/useApi";
 import { Spinner } from "../../components/elements/spinner";
 import { useAuth0, User } from "@auth0/auth0-react";
-import { useAgreementsDistributions, useAvtalegiroAgreements, useOrganizations, useVippsAgreements } from "./_queries";
+import { useAgreementsDistributions, useAvtalegiroAgreements, useOrganizations, useVippsAgreements } from "../../_queries";
 import { useContext } from "react";
 import { ActivityContext } from "../../components/profile/activityProvider";
 
