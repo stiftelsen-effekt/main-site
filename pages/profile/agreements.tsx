@@ -9,7 +9,7 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import { useAgreementsDistributions, useAvtalegiroAgreements, useOrganizations, useVippsAgreements } from "../../_queries";
 import { useContext } from "react";
 import { ActivityContext } from "../../components/profile/activityProvider";
-import { Children, Lightbox } from "../../components/profile/agreements/lightbox";
+import { Children, Lightbox } from "../../components/elements/lightbox";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -79,7 +79,7 @@ const Agreements: LayoutPage = () => {
       </Head>
       <div>
         <h1>Faste avtaler</h1>
-        <Lightbox children={lightboxChildren} />
+        <Lightbox>{lightboxChildren}</Lightbox>
         <AgreementList
           title={"Aktive"}
           vipps={vipps}

@@ -1,5 +1,5 @@
 import React, { HtmlHTMLAttributes, useState } from "react";
-import style from "../../../styles/Lightbox.module.css";
+import style from "../../styles/Lightbox.module.css";
 
 export type Children = {
   button: string;
@@ -26,8 +26,8 @@ export const Lightbox: React.FC<{ children: Children }> = (children) => {
         <div className={style.lightboxWrapper}>
           <div className={style.lightbox}>
             <h2>{children.children.heading}</h2>
-            {children.children.paragraph.map((string) => {
-              return <p>{string}</p>;
+            {children.children.paragraph.map((string, i) => {
+              return <p key={i}>{string}</p>;
             })}
             <div className={style.buttonWrapper}>
               <button className={style.button}>Bekreft</button>
