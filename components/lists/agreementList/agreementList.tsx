@@ -30,12 +30,12 @@ export const AgreementList: React.FC<{
     type: "Vipps"
   }));
 
-  let giroType = avtalegiro.map((entry) =>({
+  let giroType = avtalegiro.map((entry: AvtaleGiroAgreement) =>({
     ID: entry.ID,
     status: entry.active,
     KID: entry.KID,
     date: entry.payment_date,
-    amount: entry.amount,
+    amount: parseFloat(entry.amount),
     type: "AvtaleGiro"
   })
   );
