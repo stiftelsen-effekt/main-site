@@ -1,7 +1,7 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import DonationsChart from "../../components/profile/donations/donationsChart";
 import DonationsTotals from "../../components/profile/donations/donationsTotal";
 import DonationYearMenu from "../../components/profile/donations/yearMenu";
@@ -11,53 +11,36 @@ import { useApi } from "../../hooks/useApi";
 import {
   AggregatedDonations,
   Distribution,
-  Donation,
-  Donor,
+  Donor
 } from "../../models";
 import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
 import { Spinner } from '../../components/elements/spinner'
 import { DonationsYearlyGraph } from '../../components/profile/donations/donationsYearlyChart'
+import { DonorContext } from "../../components/profile/donorProvider";
+import { useAggregatedDonations, useDistributions, useDonations } from "./_queries";
+import { ActivityContext } from "../../components/profile/activityProvider";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
   const router = useRouter();
-
-  const {
-    loading: donorLoading,
-    error: donorError,
-    data: donor,
-  } = useApi<Donor>(
-    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently
-  );
+  const { donor } = useContext(DonorContext);
+  const { setActivity } = useContext(ActivityContext);
 
   const {
     loading: aggregatedLoading,
     data: aggregatedDonations,
-    error: aggregatedError,
-  } = useApi<AggregatedDonations[]>(
-    `/donors/${
-      user ? user["https://konduit.no/user-id"] : ""
-    }/donations/aggregated`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently
-  );
+    refreshing: aggregatedRefreshing,
+    error: aggregatedError
+  } = useAggregatedDonations(user as User, getAccessTokenSilently);
 
   const {
     loading: donationsLoading,
     data: donations,
+    refreshing: donationsRefreshing,
     error: donationsError,
-  } = useApi<Donation[]>(
-    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/donations/`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently
-  );
+  } = useDonations(user as User, getAccessTokenSilently);
 
   const kids = new Set<string>();
   donations?.map((donation) => kids.add(donation.KID));
@@ -65,45 +48,25 @@ const Home: LayoutPage = () => {
   const {
     loading: distributionsLoading,
     data: distributions,
+    refreshing: distributionsRefreshing,
     error: distributionsError,
-  } = useApi<Distribution[]>(
-    `/donors/${
-      user ? user["https://konduit.no/user-id"] : ""
-    }/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently,
-    !donationsLoading
-  );
+  } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids))
 
-  if (
-    aggregatedLoading ||
-    !aggregatedDonations ||
-    donationsLoading ||
-    !donations ||
-    distributionsLoading ||
-    !distributions ||
-    donorLoading ||
-    !donor
-  )
-    return <Spinner />;
+  const loading = aggregatedLoading || donationsLoading || distributionsLoading || !donations || !distributions || !aggregatedDonations || !donor
+  const refreshing = aggregatedRefreshing || donationsRefreshing || distributionsRefreshing
+
+  if (loading)
+    return <><h1 className={style.header}>Donasjoner</h1><Spinner /></>;
+
+  if (refreshing)
+    setActivity(true)
+  else
+    setActivity(false)
 
   const isTotal = typeof router.query.year === "undefined"
-
-  const registeredYear = new Date(donor?.registered).getFullYear();
-  const currentYear = new Date().getFullYear();
-  const years: number[] = [];
-  for (let i = registeredYear; i <= currentYear; i++) {
-    years.push(i);
-  }
+  const years = getYears(donor)
   const firstYear = Math.min(...years);
-  const sum = aggregatedDonations.reduce(
-    (acc, curr) =>
-      router.query.year === curr.year.toString() || !router.query.year
-        ? acc + parseFloat(curr.value)
-        : acc,
-    0
-  );
+  const sum = getDonationSum(aggregatedDonations, router.query.year as string);
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist) => distributionsMap.set(dist.kid, dist));
 
@@ -208,4 +171,24 @@ const getYearlySum = (aggregated: AggregatedDonations[], years: number[]): { yea
     year: year.toString(),
     sum: aggregated.reduce((acc,curr) => curr.year == year ? acc + parseFloat(curr.value) : acc, 0)
   }))
+}
+
+const getYears = (donor: Donor) => {
+  const registeredYear = new Date(donor.registered).getFullYear();
+  const currentYear = new Date().getFullYear();
+  const years: number[] = [];
+  for (let i = registeredYear; i <= currentYear; i++) {
+    years.push(i);
+  }
+  return years
+}
+
+const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: string) => {
+  return aggregatedDonations.reduce(
+    (acc, curr) =>
+      year === curr.year.toString() || !year
+        ? acc + parseFloat(curr.value)
+        : acc,
+    0
+  );
 }

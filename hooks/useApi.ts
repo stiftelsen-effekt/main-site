@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
  * This may break when the library updates
  */
 
-type getAccessTokenSilently = {
+export type getAccessTokenSilently = {
   (
     options: GetTokenSilentlyOptions & { detailedResponse: true }
   ): Promise<GetTokenSilentlyVerboseResponse>;

@@ -8,7 +8,7 @@ export const DatePickerInput: React.FC<{ selected?: number, onChange: (selected:
   
   let textValue = ''
   if (typeof selected !== "undefined")
-    textValue = `Den ${selected === 0 ? 'siste dagen' : selected + '.'} månedlig`
+    textValue = `${selected === 0 ? 'Siste dag i måneden' : selected + '. månedlig'}`
 
   return <div className={style["datepicker-input-wrapper"]}>
     <div 

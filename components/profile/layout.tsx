@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { Footer } from "../footer";
 import { Navbar } from "./navbar";
 import styles from '../../styles/Layout.module.css'
@@ -7,6 +7,9 @@ import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import Router from 'next/router';
 import { LayoutElement } from "../../types";
 import { UserWrapper } from "./userwrapper";
+import { DonorProvider } from "./donorProvider";
+import { ActivityIndicator } from "../elements/activityindicator";
+import { ActivityProvider } from "./activityProvider";
 
 const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || '/profile/');
@@ -24,9 +27,13 @@ export const Layout: LayoutElement = ({ children }) => {
     >
       <div className={styles.container}>
         <UserWrapper>
-          <Navbar />
-          <main className={styles.main}>{children}</main>
-          <Footer />
+          <DonorProvider>
+            <ActivityProvider>
+              <Navbar />
+              <main className={styles.main}>{children}</main>
+              <Footer />
+            </ActivityProvider>
+          </DonorProvider>
         </UserWrapper>
       </div>
     </Auth0Provider>
