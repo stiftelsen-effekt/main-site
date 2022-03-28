@@ -62,7 +62,7 @@ distributions.set('123456789', { kid: '123456789',
 const avtalegiro: AvtaleGiroAgreement[] = [{
   ID: 1,
   active: true,
-  amount: 10000,
+  amount: "10000.00",
   KID: '123456789',
   payment_date: 14,
   created: "2022-03-21T03:00:20.000Z",
