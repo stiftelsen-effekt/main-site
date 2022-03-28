@@ -1,19 +1,12 @@
 import Head from "next/head";
 import { Layout } from "../../components/profile/layout";
-import { ProfileInfo } from "../../components/profile/profileInfo";
-import { DataInfo } from "../../components/profile/dataInfo";
-import style from "../../styles/Profile.module.css";
 import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/router";
-import { getClient } from "../../lib/sanity.server";
-import { groq } from "next-sanity";
 import { AgreementList } from "../../components/lists/agreementList/agreementList";
 import { AvtaleGiroAgreement, Donation, VippsAgreement } from "../../models";
 import { useApi } from "../../hooks/useApi";
 import { Spinner } from "../../components/elements/spinner";
 import { useAuth0 } from "@auth0/auth0-react";
-import { ssrEntries } from "next/dist/build/webpack/plugins/middleware-plugin";
 import {
   Children,
   Lightbox,
@@ -77,7 +70,7 @@ const Agreements: LayoutPage = () => {
       `Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.`,
       `Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager tilbake i tid 
     har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i 
-    registrering av trekk hos bankene. Om du ønsker refusjon ppå denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no`,
+    registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no`,
     ],
   };
 
