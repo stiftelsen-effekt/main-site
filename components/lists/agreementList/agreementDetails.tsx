@@ -3,10 +3,11 @@ import style from "../../../styles/AgreementDetails.module.css"
 import { Distribution } from "../../../models";
 import { DistributionController } from "../../elements/distribution";
 import { DatePickerInput } from "../../elements/datepickerinput";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { updateAvtaleagreementAmount, updateAvtaleagreementPaymentDay, updateAvtalegiroAgreementDistribution, updateVippsAgreementDay, updateVippsAgreementDistribution, updateVippsAgreementPrice } from "./_queries";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
+import { AlertCircle, Check } from "react-feather";
 
 export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum: number, inputDate: number, inputDistribution: Distribution, endpoint: string }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0()
@@ -53,21 +54,9 @@ export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum
         <button className={style.button}>Avslutt avtale</button>
         <button className={style.button} onClick={() => save()}>Lagre</button>
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        style={{width: "200px"}}
-        />
     </div>
   )
 }
 
-const successToast = () => toast.success("Lagret");
-const failureToast = () => toast.error("Noe gikk galt, prøv på nytt");
+const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={'black'}/> });
+const failureToast = () => toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={'black'}/> });

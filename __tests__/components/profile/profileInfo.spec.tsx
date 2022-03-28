@@ -95,6 +95,6 @@ describe("Profile info component", () => {
     
     fireEvent.click(screen.getByRole(/submit/i))
     await waitFor(() => expect(mockedSaveQuery).toHaveBeenCalled())
-    await waitFor(() => expect(screen.findByText("Noe gikk galt, prøv på nytt")).not.toEqual(null))
+    await waitFor(() => expect(screen.findByText("Noe gikk galt")).not.toEqual(null))
   });
 })

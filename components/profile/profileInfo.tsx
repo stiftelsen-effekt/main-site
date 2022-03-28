@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { AlertCircle, Check } from "react-feather";
+import { toast } from "react-toastify";
 import { useApi } from "../../hooks/useApi";
 import { Donor } from "../../models";
 import style from "../../styles/Profile.module.css";
@@ -76,22 +77,10 @@ export const ProfileInfo: React.FC = () => {
         <button role={"submit"} className={style.button} onClick={saveDonor}>
           Lagre
         </button>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={true}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          style={{width: "200px"}}
-        />
       </section>
     </>
   );
 };
 
-const successToast = () => toast.success("Lagret");
-const failureToast = () => toast.error("Noe gikk galt, prøv på nytt");
+const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={'black'}/> });
+const failureToast = () => toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={'black'}/> });
