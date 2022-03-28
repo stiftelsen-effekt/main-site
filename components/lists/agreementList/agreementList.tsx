@@ -1,6 +1,7 @@
-import { AvtaleGiroAgreement, Donation, VippsAgreement } from "../../../models";
+import { AvtaleGiroAgreement, Distribution, Donation, VippsAgreement } from "../../../models";
 import { shortDate, thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
+import { AgreementDetails } from "./agreementDetails";
 
 type AgreementRow = {
   ID: number;
@@ -16,7 +17,8 @@ export const AgreementList: React.FC<{
   vipps: VippsAgreement[];
   title: string;
   supplemental: string;
-}> = ({ avtalegiro, vipps, title, supplemental }) => {
+  distributions: Map<string, Distribution>;
+}> = ({ avtalegiro, vipps, title, supplemental, distributions }) => {
   const headers = ["Type", "Dato", "Sum", "KID"];
 
   let vippsType = vipps.map((entry) => ({
@@ -53,7 +55,7 @@ export const AgreementList: React.FC<{
       thousandize(agreement.amount) + " kr",
       agreement.KID,
     ],
-    details: <></>,
+    details: <AgreementDetails inputDistribution={distributions.get(agreement.KID) as Distribution} inputSum={agreement.amount} inputDate={agreement.date} />,
   }));
 
   const emptyPlaceholder = <div>

@@ -1,42 +1,31 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useApi } from "../../hooks/useApi";
 import { Donor } from "../../models";
 import style from "../../styles/Profile.module.css";
+import { DonorContext } from "./donorProvider";
 import { save } from "./_queries";
 
 export const ProfileInfo: React.FC = () => {
   const { getAccessTokenSilently, user } = useAuth0();
 
-  const [donor, setDonor] = useState<null | Donor>(null);
+  const { donor: initialDonor, setDonor: setGlobalDonor } = useContext(DonorContext);
+  const [donor, setDonor] = useState<Donor | null>(initialDonor);
 
-  const { loading, error, data } = useApi<Donor>(
-    `/donors/${user ? user["https://konduit.no/user-id"] : ""}/`,
-    "GET",
-    "read:donations",
-    getAccessTokenSilently,
-  );
+  if (!donor || !user)
+    return <div>Whaaat..</div>
 
-  if (loading || !user)  {
-    return <div>Loading...</div>;
-  } else if (error) {
-    return <div>Noe gikk galt </div>
-  } else if (!donor) {
-    setDonor(data)
-    return <div>Loading...</div>;
-  };
-  
- const saveDonor = async () => {
-   const token = await getAccessTokenSilently();
-   const result = await save(donor, user, token)
-   if (result === null) {
-     failureToast();
-   } else {
-     successToast();
-     setDonor(donor);
-   }
- }
+  const saveDonor = async () => {
+    const token = await getAccessTokenSilently();
+    const result = await save(donor, user, token)
+    if (result === null) {
+      failureToast();
+    } else {
+      successToast();
+      setGlobalDonor(donor);
+    }
+  }
 
   return (
     <>
