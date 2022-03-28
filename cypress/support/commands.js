@@ -29,9 +29,17 @@ Cypress.Commands.add("login", (overrides = {}) => {
       cy.visit(Cypress.env("auth_url"));
       const { access_token } = body;
       cy.setLocalStorage("<token>", JSON.stringify(access_token));
-      cy.get('a[href="/profile"]').click();
-      cy.get("#username").type(Cypress.env("auth_username"));
-      cy.get("#password").type(Cypress.env("auth_password"));
-      cy.get('button[type="submit"]').click();
+
+      if (cy.contains('[href="/profile"]', "Min side").should("exist")) {
+        cy.get('a[href="/profile"]').click();
+        cy.get("body").then(($body) => {
+          if ($body.find('h1[class="c0e35cb40 c79dbc5fc"]').length > 0) {
+            cy.get("#username").type(Cypress.env("auth_username"));
+            cy.get("#password").type(Cypress.env("auth_password"));
+            cy.get('button[type="submit"]').click();
+          }
+        });
+        cy.get('h1[class="Donations_header__oe9QR"]').contains("Donasjoner");
+      }
     });
 });
