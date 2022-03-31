@@ -20,21 +20,21 @@ export type AvtaleGiroAgreement = {
   last_updated: string;
   notice: boolean;
   full_name: string;
-}
+};
 
 export type VippsAgreement = {
   ID: number;
-  status: boolean;
+  status: "EXPIRED" | "PENDING" | "ACTIVE" | "STOPPED";
   donorID: number;
   full_name: string;
   KID: string;
   timestamp_created: string;
-  monthly_charge_day: number; 
-  force_charge_date: boolean; 
+  monthly_charge_day: number;
+  force_charge_date: boolean;
   paused_until_date: string;
   amount: number;
   agreement_url_code: string;
-}
+};
 
 export type Distribution = {
   kid: string;
@@ -42,8 +42,8 @@ export type Distribution = {
     id: number;
     name: string;
     share: string;
-  }[]
-}
+  }[];
+};
 
 export type Donor = {
   id: string;
@@ -60,17 +60,17 @@ export type AggregatedDonations = {
   organizationId: number;
   value: string;
   year: number;
-}
+};
 
 export type DonationGraphData = {
-  name: string
-}
+  name: string;
+};
 
 export type Organization = {
-  id: number,
-  name: string,
-  abbriv: string,
-  shortDesc: string,
-  standardShare: number,
-  infoUrl: string
-}
+  id: number;
+  name: string;
+  abbriv: string;
+  shortDesc: string;
+  standardShare: number;
+  infoUrl: string;
+};
