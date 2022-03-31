@@ -1,14 +1,12 @@
-import { NextPage } from "next";
-import React, { ReactElement, useState } from "react";
+import React from "react";
 import { Footer } from "../footer";
 import { Navbar } from "./navbar";
 import styles from '../../styles/Layout.module.css'
-import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+import { Auth0Provider } from "@auth0/auth0-react";
 import Router from 'next/router';
 import { LayoutElement } from "../../types";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
-import { ActivityIndicator } from "../elements/activityindicator";
 import { ActivityProvider } from "./activityProvider";
 import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
@@ -23,9 +21,10 @@ export const Layout: LayoutElement = ({ children }) => {
       domain={process.env.NEXT_PUBLIC_DOMAIN || ''}
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ''}
       audience='https://data.gieffektivt.no'
-      scope="read:donations read:profile write:profile read:distributions read:agreements write:agreements"
+      scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
       redirectUri={typeof window !== 'undefined' ? window.location.origin + '/profile/' : undefined}
       onRedirectCallback={onRedirectCallback}
+      cacheLocation={typeof window !== 'undefined' ? ((window as any).Cypress ? 'localstorage' : 'memory') : undefined}
     >
       <div className={styles.container}>
         <SWRConfig value={{ revalidateOnFocus: false }}>

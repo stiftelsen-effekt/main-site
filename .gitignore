@@ -8,6 +8,7 @@
 
 # testing
 /coverage
+cypress.env.json
 
 # next.js
 /.next/
@@ -39,3 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 .next
+cypress.env.json
+cypress.env.json
