@@ -7,17 +7,19 @@ describe("Login with Auth0", () => {
     cy.get("#name")
       .invoke("val")
       .then((currentName) => {
-        cy.get('h1[class="Profile_header__lcWeF"]').contains(currentName);
+        cy.get('h1').contains(currentName);
       });
   }
 
   it("Check that profile information is correct", () => {
+    cy.visit('http://localhost:3000/profile/details/')
     cy.get('a[href="/profile/details"]').click();
     compareName();
     cy.get("#email").should("have.value", Cypress.env("auth_username"));
   });
 
   it("Update profile information", () => {
+    cy.visit('http://localhost:3000/profile/details/')
     const newName = "Keef";
     cy.get('a[href="/profile/details"]').click();
     cy.get("#name").clear().type(newName);
