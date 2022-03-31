@@ -25,7 +25,7 @@
   display: flex;
   justify-content: flex-start;
   flex-flow: column;
-  align-items: flex-start;
+  align-items: flex-end;
   text-align: right;
 }
 
@@ -51,7 +51,7 @@
   margin-bottom: 100px;
 }
 
-.distributionHeader { 
+.distributionHeader {
   display: none;
 }
 
@@ -108,7 +108,7 @@
   border-right: none;
 }
 
-@media only screen and (max-width: 900px) { 
+@media only screen and (max-width: 900px) {
   .header {
     display: none;
   }
@@ -174,7 +174,7 @@
     justify-content: space-between;
     padding: 14px 0;
   }
-  
+
   .distributionHeader svg {
     transition: transform 200ms;
   }
