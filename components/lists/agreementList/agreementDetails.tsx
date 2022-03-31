@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "../../../styles/AgreementDetails.module.css"
+import styles from "../../../styles/Lightbox.module.css"
 import { Distribution } from "../../../models";
 import { DistributionController } from "../../elements/distribution";
 import { DatePickerInput } from "../../elements/datepickerinput";
@@ -8,6 +9,7 @@ import { updateAvtaleagreementAmount, updateAvtaleagreementPaymentDay, updateAvt
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
 import { AlertCircle, Check } from "react-feather";
+import { Lightbox } from "../../elements/lightbox";
 
 export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum: number, inputDate: number, inputDistribution: Distribution, endpoint: string }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0()
@@ -15,6 +17,10 @@ export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum
   const [distribution, setDistribution] = useState<Distribution>(inputDistribution)
   const [day, setDay] = useState(inputDate)
   const [sum, setSum] = useState(inputSum.toFixed(0))
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+const onCancel = () => {setLightboxOpen(false)};
+const onConfirm = () => {setLightboxOpen(false)};
 
   const save = async () => {
     const token = await getAccessTokenSilently()
@@ -49,9 +55,16 @@ export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum
       <div className={style.values}>
         <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
         <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)} />
+        <Lightbox open={lightboxOpen} onConfirm={onConfirm} onCancel={onCancel}>
+          <div className={styles.textWrapper}>
+          <h2>Avslutt avtale</h2>
+            <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
+            <p>Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager frem i tid har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no</p>
+            </div>
+        </Lightbox>
       </div>
       <div className={style.actions}>
-        <button className={style.button}>Avslutt avtale</button>
+        <button className={style.button} onClick={() => setLightboxOpen(true)}>Avslutt avtale</button>
         <button className={style.button} onClick={() => save()}>Lagre</button>
       </div>
     </div>

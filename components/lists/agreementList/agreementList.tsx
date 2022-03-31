@@ -1,4 +1,4 @@
-import { AvtaleGiroAgreement, Distribution, Donation, VippsAgreement } from "../../../models";
+import { AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../../models";
 import { thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 import { AgreementDetails } from "./agreementDetails";
