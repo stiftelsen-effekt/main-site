@@ -44,6 +44,10 @@ export const AgreementList: React.FC<{
 
   let rowData: AgreementRow[] = [...vippsType, ...giroType]
 
+
+/**
+ * Maps agreements into rows in the agreement table. 
+ */
   const rows: ListRow[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
     cells: [

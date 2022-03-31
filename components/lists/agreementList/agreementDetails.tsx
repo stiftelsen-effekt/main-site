@@ -18,10 +18,22 @@ export const AgreementDetails: React.FC<{ type: 'vipps' | 'avtalegiro', inputSum
   const [day, setDay] = useState(inputDate)
   const [sum, setSum] = useState(inputSum.toFixed(0))
 
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+const [lightboxOpen, setLightboxOpen] = useState(false);
+
+/**
+ * Closes the lightbox.
+ */
 const onCancel = () => {setLightboxOpen(false)};
+
+/**
+ * Closes the lightbox.
+ */
 const onConfirm = () => {setLightboxOpen(false)};
 
+/**
+ * Saves an agreement if any changes have been made. 
+ * @returns a toast indicating whether the changes are saved or not.
+ */
   const save = async () => {
     const token = await getAccessTokenSilently()
     if (type == 'vipps') {
@@ -57,10 +69,10 @@ const onConfirm = () => {setLightboxOpen(false)};
         <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)} />
         <Lightbox open={lightboxOpen} onConfirm={onConfirm} onCancel={onCancel}>
           <div className={styles.textWrapper}>
-          <h2>Avslutt avtale</h2>
+            <h2>Avslutt avtale</h2>
             <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
             <p>Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager frem i tid har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no</p>
-            </div>
+          </div>
         </Lightbox>
       </div>
       <div className={style.actions}>
@@ -71,5 +83,14 @@ const onConfirm = () => {setLightboxOpen(false)};
   )
 }
 
+/**
+ * 
+ * @returns a toast to confirm that the changes are saved.
+ */
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={'black'}/> });
+
+/**
+ * 
+ * @returns a toast to warn that the changes are not saved, something went wrong. 
+ */
 const failureToast = () => toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={'black'}/> });
