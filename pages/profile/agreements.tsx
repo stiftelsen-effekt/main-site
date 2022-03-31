@@ -19,7 +19,6 @@ import {
 } from "../../_queries";
 import { useContext } from "react";
 import { ActivityContext } from "../../components/profile/activityProvider";
-import { Children, Lightbox } from "../../components/elements/lightbox";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -90,17 +89,6 @@ const Agreements: LayoutPage = () => {
 
   const distributionsMap = getDistributionMap(distributions, organizations);
 
-  const lightboxChildren: Children = {
-    button: "Avslutt",
-    heading: "Avslutt avtale",
-    paragraph: [
-      `Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.`,
-      `Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager tilbake i tid 
-    har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i 
-    registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no`,
-    ],
-  };
-
   return (
     <>
       <Head>
@@ -110,7 +98,6 @@ const Agreements: LayoutPage = () => {
       </Head>
       <div>
         <h1>Faste avtaler</h1>
-        <Lightbox>{lightboxChildren}</Lightbox>
         <AgreementList
           title={"Aktive"}
           vipps={vipps.filter(
