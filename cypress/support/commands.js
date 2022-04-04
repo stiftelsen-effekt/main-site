@@ -7,16 +7,16 @@ Cypress.Commands.add("login", (overrides = {}) => {
     name: "loginAuth0",
   });
 
-  const client_id = Cypress.env("auth_client_id")
-  const client_secret = Cypress.env("auth_client_secret")
-  const audience = Cypress.env("auth_audience")
-  const scope = Cypress.env("auth_scope")
-  const username = Cypress.env("auth_username")
-  const password = Cypress.env("auth_password")
+  const client_id = Cypress.env("AUTH_CLIENT_ID")
+  const client_secret = Cypress.env("AUTH_CLIENT_SECRET")
+  const audience = Cypress.env("AUTH_AUDIENCE")
+  const scope = 'openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements'
+  const username = Cypress.env("AUTH_USERNAME")
+  const password = Cypress.env("AUTH_PASSWORD")
 
   const options = {
     method: "POST",
-    url: `https://${Cypress.env('auth0_domain')}/oauth/token`,
+    url: `https://${Cypress.env('AUTH_DOMAIN')}/oauth/token`,
     failOnStatusCode: false,
     body: {
       grant_type: 'http://auth0.com/oauth/grant-type/password-realm',
