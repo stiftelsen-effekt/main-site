@@ -6,14 +6,6 @@
   
 }
 
-.distribtion {
-
-}
-
-.values {
-
-}
-
 .values input {
   height: 35px;
   padding-left: 16px;
@@ -52,4 +44,19 @@
   margin-left: 10px;
   font-size: 12px;
   box-sizing: border-box;
+}
+
+.values > div {
+  position: relative;
+}
+
+.values > div span {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #393939;
+  height: 100%;
+  display: flex;
+  align-items: center; 
+  padding-right: 10px; 
 }

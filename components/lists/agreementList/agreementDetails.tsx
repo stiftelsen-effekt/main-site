@@ -90,7 +90,7 @@ const onConfirm = () => {setLightboxOpen(false)};
       const updatedSum = await updateAvtaleagreementAmount(
         endpoint,
         parseFloat(sum) * 100,
-        token
+        token 
       );
       if (
         savedDistributionKID != null &&
@@ -119,7 +119,10 @@ const onConfirm = () => {setLightboxOpen(false)};
       </div>
       <div className={style.values}>
         <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
-        <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)} />
+        <div>
+        <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)}/>
+        <span>kr</span>
+        </div>
         <Lightbox open={lightboxOpen} onConfirm={onConfirm} onCancel={onCancel}>
           <div className={styles.textWrapper}>
             <h2>Avslutt avtale</h2>
