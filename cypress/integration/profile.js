@@ -1,7 +1,7 @@
 describe("Details page", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(`${Cypress.env('BASE_URL') || 'http://localhost:3000'}/profile/details/`);
+    cy.visit(`/profile/details/`);
   });
 
   it("Should display correct profile information", () => {
