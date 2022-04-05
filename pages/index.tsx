@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Layout } from '../components/main/layout'
+import { Stepwize } from '../components/stepwize/stepwize'
 import styles from '../styles/Home.module.css'
 import { LayoutPage } from '../types'
 
@@ -14,31 +15,32 @@ const Home: LayoutPage = () => {
       </Head>
 
       <div className={styles.grid}>
-        <div className={styles.hero}><h1>Nordmenn gir i snitt 0,52% av sin inntekt.</h1></div>
-        <div className={styles.action}>Se hvor mye du har råd til å gi med vår <a href="/calculator">rikdomskalkulator.</a></div>
-
-        <div className={styles.info}>
-          Enkelt.<br/>
-          Uavhengig.<br/>
-          Gebyrfritt.<br/>
+        <div className={styles.hero}>
+          <h1>Nordmenn gir i snitt 0,52% av sin inntekt.</h1>
         </div>
-        <div className={styles.info}>
-          Hvordan du donerer
-        </div>
-        <div className={styles.info}>
-          Hvem finansierer oss?
+        <div className={styles.action}>
+          Se hvor mye du har råd til å gi med vår{' '}
+          <a href="/calculator">rikdomskalkulator.</a>
         </div>
 
         <div className={styles.info}>
-          Våre anbefalte organisasjoner
+          Enkelt.
+          <br />
+          Uavhengig.
+          <br />
+          Gebyrfritt.
+          <br />
         </div>
+        <div className={styles.info}>Hvordan du donerer</div>
+        <div className={styles.info}>Hvem finansierer oss?</div>
+
+        <div className={styles.info}>Våre anbefalte organisasjoner</div>
         <div className={styles.info}>
           Hvordan du trekker fra ditt bidrag på skatten
         </div>
-        <div className={styles.info}>
-          Vår metode
-        </div>
+        <div className={styles.info}>Vår metode</div>
       </div>
+      <Stepwize />
     </>
   )
 }
