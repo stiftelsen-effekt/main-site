@@ -34,13 +34,18 @@
   font-display: swap;
 }
 
+:root {
+  --primary: black;
+  --secondary: white;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: "ESKlarheitGrotesk", sans-serif;
-  background: black;
-  color: white;
+  background: var(--secondary);
+  color: var(--primary);
   font-weight: 300;
 }
 

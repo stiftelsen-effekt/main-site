@@ -28,7 +28,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  color: #393939;
+  color: var(--secondary);
   height: 100%;
   display: flex;
   align-items: center;
@@ -45,7 +45,8 @@
   padding-left: 10px;
   padding-right: 24px;
   border: none;
-  background: white;
+  color: var(--secondary);
+  background: var(--primary);
   font-size: 12px;
   width: 50px;
   height: 35px;
@@ -57,8 +58,8 @@
   height: 30px;
   padding: 0px 14px;
   margin-top: 20px;
-  color: black;
-  background: white;
+  color: var(--primary);
+  background: var(--secondary);
   border-radius: 5px;
   display: flex;
   flex-direction: row;
@@ -66,7 +67,7 @@
 }
 
 .warning-box span {
-  border-left: 1px solid black;
+  border-left: 1px solid var(--primary);
   display: flex;
   padding-left: 10px;
   height: 100%;
@@ -78,5 +79,6 @@
 @media only screen and (max-width: 900px) {  
   .grid {
     grid-template-columns: 1fr;
+    grid-auto-flow: row;
   }
 }

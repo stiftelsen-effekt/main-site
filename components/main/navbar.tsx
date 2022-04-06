@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   return (
     <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)}>
-       <div className={styles.logoWrapper}>
+      <div className={styles.logoWrapper}>
       <Image src={logo} 
         className={styles.logo} 
         layout="intrinsic" 
@@ -19,8 +19,8 @@ export const Navbar: React.FC = () => {
         priority/>
         <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
-            <X size={32} color={"white"} /> :
-            <Menu size={32} color={"white"} />
+            <X size={32} color={"black"} /> :
+            <Menu size={32} color={"black"} />
           }
           </div>   
         </div>   

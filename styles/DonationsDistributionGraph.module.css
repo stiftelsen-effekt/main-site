@@ -12,7 +12,7 @@
 
 .bar {
   height: 36px;
-  background: white;
+  background: var(--primary);
   position: relative;
   margin-bottom: 20px;
 }
