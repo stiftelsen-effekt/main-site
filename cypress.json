@@ -1,0 +1,4 @@
+{
+  "supportFile": "cypress/support/commands.js",
+  "chromeWebSecurity": false
+}
