@@ -19,6 +19,9 @@ import {
 } from "../../_queries";
 import { useContext } from "react";
 import { ActivityContext } from "../../components/profile/activityProvider";
+import { InfoBox } from "../../components/elements/infobox";
+import { Clock } from "react-feather";
+import style from "../../styles/Infobox.module.css";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -89,6 +92,11 @@ const Agreements: LayoutPage = () => {
 
   const distributionsMap = getDistributionMap(distributions, organizations);
 
+  const vippsPending = vipps.filter(
+    (agreement: VippsAgreement) => agreement.status === "PENDING"
+  );
+  const pendingCount = vippsPending.length;
+
   return (
     <>
       <Head>
@@ -97,6 +105,17 @@ const Agreements: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
+        <InfoBox>
+          <div className={style.infoBox}></div>
+          <h2>
+            <Clock size={24} color={"black"} /> {pendingCount} avtaler bekreftes
+          </h2>
+          <p>
+            Vi har registrert en ny avtale på deg. Bankene bruker noen dager på
+            å bekrefte opprettelse før avtalen din blir aktivert.
+          </p>
+        </InfoBox>
+
         <h1>Faste avtaler</h1>
         <AgreementList
           title={"Aktive"}
