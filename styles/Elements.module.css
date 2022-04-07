@@ -10,7 +10,8 @@
 
 .konduit-button {
   border: none;
-  background: var(--secondary);
+  background: var(--primary);
+  color: var(--secondary);
   padding: 14px 26px;
   font-family: "ESKlarheitGrotesk";
   cursor: pointer;
@@ -45,21 +46,21 @@
 .datepicker-wrapper {
   width: 280px;
   height: 220px;
-  background: var(--secondary);
+  background: var(--primary);
   display: block;
-  color: var(--primary);
+  color: var(--secondary);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   padding: 30px 20px 20px 20px;
   box-sizing: border-box;
-  box-shadow: 0 0 3px 3px rgba(0,0,0,.5);
+  box-shadow: 0 0 5px 0px rgba(0,0,0,.3);
 }
 
 .datepicker-button {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  color: var(--primary);
+  color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,8 +70,8 @@
 }
 
 .datepicker-button--selected {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
 }
 
 .datepicker-last-row {
@@ -83,7 +84,7 @@
 
 .datepicker-button-last {
   height: 26px;
-  color: var(--primary);
+  color: var(--secondary);
   font-size: 12px;
   user-select: none;
   cursor: pointer;
@@ -95,8 +96,8 @@
 }
 
 .datepicker-button-last--selected {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
 }
 
 .activity-indicator-wrapper {
