@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Layout } from '../components/main/layout'
 import { Stepwize } from '../components/stepwize/stepwize'
+import { Testemonial } from '../components/testemonial'
 import styles from '../styles/Home.module.css'
 import { LayoutPage } from '../types'
 
@@ -19,10 +20,17 @@ const Home: LayoutPage = () => {
           <h1>Verdens mest effektivt bidrag.</h1>
         </div>
         <div className={styles.action}>
-          Kostnadsfri videreformidling av donasjoner til de mest effektive tiltakene →
+          Kostnadsfri videreformidling av donasjoner til de mest effektive
+          tiltakene →
         </div>
       </div>
       <Stepwize />
+      <Testemonial
+        quote="
+      Fordi de mest effektive bistandstiltakene er 100 ganger så effektive som median-organisasjonen. Med Konduit får jeg maksimal uttelling for det jeg gir."
+        quotee="Aksel Braanen Sterri"
+        quoteeBackground="Filosof"
+      />
     </>
   )
 }
