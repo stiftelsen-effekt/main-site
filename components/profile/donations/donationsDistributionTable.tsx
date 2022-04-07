@@ -13,7 +13,7 @@ const DonationsDistributionTable: React.FC<{ distribution: {org: string, sum: nu
   const [expanded, setExpanded] = useState(true)
   
   return (
-    <div className={style.distribution}>
+    <div className={style.distribution} data-cy="aggregated-distribution-table">
       <div className={style.distributionHeader} onClick={() => setExpanded(!expanded)}>
         <span>Fordeling</span>
         <ChevronDown size={24} color={'white'} className={expanded ? style.chevronRotated : ''} />
