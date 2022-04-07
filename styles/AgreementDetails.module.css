@@ -2,8 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 150px;
   column-gap: 30px;
-  padding: 30px 0;
-  
+  padding: 30px 0;  
 }
 
 .values input {
@@ -15,9 +14,9 @@
   font-size: 12px;
   font-family: "ESKlarheitGrotesk";
   min-width: 150px;
-  margin-bottom: 10px;
   box-sizing: border-box;
   width: 150px;
+  
 }
 
 .actions {
@@ -46,8 +45,16 @@
   box-sizing: border-box;
 }
 
+.values {
+  display: grid;
+  grid-template-rows: 20px;
+  row-gap: 25px;
+  box-sizing: border-box;
+} 
+
 .values > div {
   position: relative;
+  /* margin-bottom: 10px; */
 }
 
 .values > div span {
@@ -57,6 +64,10 @@
   color: #393939;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center; 
   padding-right: 10px; 
+  margin-top: 10px;
+  font-size: 12px;
+
 }
