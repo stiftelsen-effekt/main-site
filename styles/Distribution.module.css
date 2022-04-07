@@ -58,8 +58,8 @@
   height: 30px;
   padding: 0px 14px;
   margin-top: 20px;
-  color: var(--primary);
-  background: var(--secondary);
+  color: var(--secondary);
+  background: var(--primary);
   border-radius: 5px;
   display: flex;
   flex-direction: row;
@@ -67,7 +67,7 @@
 }
 
 .warning-box span {
-  border-left: 1px solid var(--primary);
+  border-left: 1px solid var(--secondary);
   display: flex;
   padding-left: 10px;
   height: 100%;
@@ -80,5 +80,10 @@
   .grid {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
+  }
+
+  .warning-box {
+    width: 100%;
+    justify-content: space-between;
   }
 }
