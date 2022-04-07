@@ -1,11 +1,11 @@
 describe("Details page", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit('http://localhost:3000/profile/details/');
+    cy.visit(`/profile/details/`);
   });
 
   it("Should display correct profile information", () => {
-    cy.get("#email").should("have.value", Cypress.env("auth_username"));
+    cy.get("#email").should("have.value", Cypress.env("AUTH_USERNAME"));
   });
 
   it("Should update profile information correctly", () => {

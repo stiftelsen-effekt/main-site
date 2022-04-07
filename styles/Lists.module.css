@@ -25,7 +25,7 @@
 }
 
 .gridContainer section {
-  border-top: 1px solid white;
+  border-top: 1px solid var(--primary);
   padding-top: 16px;
 }
 
@@ -48,12 +48,14 @@ table td svg.iconChevronUp {
   transition: transform 120ms ease-in-out;
   transform: rotate(180deg);
   user-select: none;
+  filter: var(--primary-filter);
 }
 
 table td svg.iconChevronDown {
   cursor: pointer;
   transition: transform 120ms ease-in-out;
   user-select: none;
+  filter: var(--primary-filter);
 }
 
 .expanderContent {

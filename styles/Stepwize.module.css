@@ -1,0 +1,40 @@
+/** Several rules are hard coded to px units. 
+This will need a review.*/
+
+.stepwize__container {
+  display: flex;
+  flex-direction: row;
+  font-family: 'ESKlarheitKurrent';
+  font-style: normal;
+  font-weight: 400;
+}
+
+.step {
+  max-width: 320px;
+  min-width: 250px;
+  margin: 0 20px;
+}
+
+.step__heading {
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: var(--secondary) solid 2px;
+  font-size: 120px;
+  line-height: 110%;
+  /* or 132px */
+}
+
+.step__subheading {
+  font-size: 36px;
+  margin: 20px 0;
+}
+
+.step__description {
+  font-size: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .stepwize__container {
+    flex-direction: column;
+  }
+}
