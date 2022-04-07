@@ -12,7 +12,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} >
+      <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} data-cy="navbar">
         <div className={styles.logoWrapper}>
           <Link href="/" passHref>
             <Image

@@ -2,6 +2,7 @@ describe("Details page", () => {
   before(() => {
     cy.login();
     cy.visit(`/profile/`);
+    cy.get("[data-cy=navbar]", { timeout: 15000 }).should("exist");
   });
 
   it("Should display a menu for selection donation year", () => {
