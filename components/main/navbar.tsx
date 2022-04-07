@@ -22,7 +22,7 @@ export const Navbar: React.FC = () => {
         </Link>
         <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
-            <X size={32} color={"white"} /> :
+            <X size={32} color={"black"} /> :
             <Menu size={32} color={"black"} />
           }
           </div>   

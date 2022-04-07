@@ -13,7 +13,7 @@ export const DonationDetails: React.FC<{ sum: string, distribution: Distribution
       
       <div className={style.actions}>
         <ul>
-          <li><a href="#"><FileText size={16} color={'white'} /> <span>Kvittering</span></a></li>
+          <li><a href="#"><FileText size={16} color={'black'} /> <span>Kvittering</span></a></li>
         </ul>
       </div>
     </div>
