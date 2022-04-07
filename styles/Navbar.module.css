@@ -82,6 +82,16 @@
     padding: 20px 30px;
   }
 
+  .navbarExpanded {
+    background: var(--primary);
+    color: var(--secondary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
   .expandBtn {
     display: block;
   }
@@ -110,7 +120,7 @@
 
   .navbar ul li {
     display: block;
-    font-size: 28px;
+    font-size: 20px;
     padding: 0;
   }
   
@@ -137,11 +147,11 @@
     display: none;
   }
 
-  .navbarExpanded {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+  .navbar ul li.btnlogin {
+    margin-left: 0;
+    background: var(--secondary);
+    color: var(--primary);
+    padding: 10px 20px;
+    border-radius: 30px;
   }
 }
