@@ -1,5 +1,5 @@
 describe("Details page", () => {
-  before(() => {
+  beforeEach(() => {
     cy.login();
     cy.visit(`/profile/details/`);
     cy.get("[data-cy=navbar]", { timeout: 15000 }).should("exist");
