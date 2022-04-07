@@ -37,6 +37,7 @@
 :root {
   --primary: black;
   --secondary: white;
+  --primary-filter: brightness(0);
 }
 
 html,

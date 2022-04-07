@@ -14,15 +14,17 @@ export const Navbar: React.FC = () => {
     <>
       <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} >
         <div className={styles.logoWrapper}>
-          <Image
-            src={logo}
-            className={styles.logo}
-            layout="intrinsic"
-            width={140}
-            height={80}
-            alt="Konduit. logo"
-            priority
-          />
+          <Link href="/" passHref>
+            <Image
+              src={logo}
+              className={styles.logo}
+              layout="intrinsic"
+              width={140}
+              height={80}
+              alt="Konduit. logo"
+              priority
+            />
+          </Link>
           <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
             <X size={32} color={"white"} /> :

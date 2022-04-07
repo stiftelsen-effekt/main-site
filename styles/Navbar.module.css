@@ -19,25 +19,37 @@
   text-decoration: none;
   cursor: pointer;
   padding: 10px 20px;
+  font-size: 14px;
 }
 
 .navbar ul li a {
   text-decoration: none;
 }
 
-.navbar ul li:last-child {
-  padding-right: 0px;
-}
-
 .btnlogout {
   background: none;
   box-shadow: none;
-  color: var(--primary);
+  color: var(--secondary);
+  background: var(--primary);
   font-family: "ESKlarheitGrotesk";
   border: none;
   font-size: 1em;
   cursor: pointer;
-  padding: 0;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
+.btnlogin {
+  background: none;
+  box-shadow: none;
+  color: var(--secondary);
+  background: var(--primary);
+  font-family: "ESKlarheitGrotesk";
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-left: 20px;
 }
 
 .navbar a.icon {
@@ -50,6 +62,7 @@
 
 .navbar .logoWrapper {
   color: var(--primary);
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 900px) {
