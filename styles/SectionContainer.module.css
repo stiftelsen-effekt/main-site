@@ -1,7 +1,6 @@
 .section__container {
-  border-top: solid black 2px;
+  border-top: solid black 1px;
   width: 100%;
-  padding: 0 2em;
 }
 
 .section__heading {
