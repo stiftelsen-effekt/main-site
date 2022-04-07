@@ -8,10 +8,11 @@
     "sanity": "cd studio && export NODE_ENV=dev && sanity start",
     "start": "next start",
     "lint": "next lint",
+    "cypress": "./node_modules/.bin/cypress open",
     "coverage": "jest --coverage",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest --transformIgnorePatterns \"node_modules/(?!@toolz/allow)/\" --env=jsdom"
+    "test": "jest --transformIgnorePatterns \"node_modules/(?!@toolz/allow)/\" --env=jsdom --watch"
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
@@ -21,9 +22,6 @@
     "auth0": "^2.40.0",
     "auth0-js": "^9.19.0",
     "babel-jest": "^27.5.1",
-    "cypress": "^9.5.0",
-    "cypress-next-auth0-commands": "^0.2.1",
-    "cypress-nextjs-auth0": "^2.1.0",
     "identity-obj-proxy": "^3.0.0",
     "jwt-decode": "^3.1.2",
     "luxon": "^2.3.0",
@@ -62,6 +60,10 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.2",
+    "cypress": "8.4.1",
+    "cypress-dotenv": "^2.0.0",
+    "cypress-localstorage-commands": "^1.7.0",
+    "dotenv": "^16.0.0",
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.8",
     "eslint-plugin-storybook": "^0.5.7",

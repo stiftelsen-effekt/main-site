@@ -12,8 +12,8 @@
 }
 
 .lightbox {
-  background-color: white;
-  color: black;
+  background-color: var(--secondary);
+  color: var(--primary);
   display: flex;
   flex-direction: column;
   margin: 0 5vw;
@@ -25,9 +25,9 @@
 }
 
 .button {
-  background: black;
+  background: var(--primary);
   box-shadow: none;
-  color: white;
+  color: var(--secondary);
   font-family: "ESKlarheitGrotesk";
   border: none;
   font-size: 1em;

@@ -11,9 +11,21 @@
 }
 
 .meta {
-  border-top: 1px solid white;
+  border-top: 1px solid var(--primary);
 }
 
 .description {
-  border-top: 1px solid white;
+  border-top: 1px solid var(--primary);
+}
+
+@media only screen and (max-width: 900px) { 
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .organization {
+    display: flex;
+    flex-direction: column;
+  }
 }

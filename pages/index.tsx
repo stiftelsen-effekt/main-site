@@ -14,31 +14,13 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.grid}>
-        <div className={styles.hero}>
-          <h1>Nordmenn gir i snitt 0,52% av sin inntekt.</h1>
+      <div className={styles.hero}>
+        <div className={styles.header}>
+          <h1>Verdens mest effektivt bidrag.</h1>
         </div>
         <div className={styles.action}>
-          Se hvor mye du har råd til å gi med vår{' '}
-          <a href="/calculator">rikdomskalkulator.</a>
+          Kostnadsfri videreformidling av donasjoner til de mest effektive tiltakene →
         </div>
-
-        <div className={styles.info}>
-          Enkelt.
-          <br />
-          Uavhengig.
-          <br />
-          Gebyrfritt.
-          <br />
-        </div>
-        <div className={styles.info}>Hvordan du donerer</div>
-        <div className={styles.info}>Hvem finansierer oss?</div>
-
-        <div className={styles.info}>Våre anbefalte organisasjoner</div>
-        <div className={styles.info}>
-          Hvordan du trekker fra ditt bidrag på skatten
-        </div>
-        <div className={styles.info}>Vår metode</div>
       </div>
       <Stepwize />
     </>
