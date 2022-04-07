@@ -6,6 +6,8 @@ import { DistributionController } from "../../elements/distribution";
 import { DatePickerInput } from "../../elements/datepickerinput";
 import { toast } from "react-toastify";
 import {
+  cancelAvtaleGiroAgreement,
+  cancelVippsAgreement,
   updateAvtaleagreementAmount,
   updateAvtaleagreementPaymentDay,
   updateAvtalegiroAgreementDistribution,
@@ -33,16 +35,6 @@ export const AgreementDetails: React.FC<{
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
 const [lightboxOpen, setLightboxOpen] = useState(false);
-
-/**
- * Closes the lightbox.
- */
-const onCancel = () => {setLightboxOpen(false)};
-
-/**
- * Closes the lightbox.
- */
-const onConfirm = () => {setLightboxOpen(false)};
 
 /**
  * Saves an agreement if any changes have been made. 
@@ -109,6 +101,36 @@ const onConfirm = () => {setLightboxOpen(false)};
     }
   };
 
+  const cancel = async () => {
+    setLightboxOpen(false);
+    const token = await getAccessTokenSilently();
+    if (type === "Vipps") {
+      const cancelled = await cancelVippsAgreement(endpoint, token)
+      if (cancelled) {
+        successToast()
+        mutate(
+          `/donors/${
+            (user as User)["https://konduit.no/user-id"]
+          }/recurring/vipps/`
+        );
+      } else {
+        failureToast()
+      }
+    } else if (type === "AvtaleGiro") {
+      const cancelled = await cancelAvtaleGiroAgreement(endpoint, token)
+      if (cancelled) {
+        successToast()
+        mutate(
+          `/donors/${
+            (user as User)["https://konduit.no/user-id"]
+          }/recurring/avtalegiro/`
+        );
+      } else {
+        failureToast()
+      }
+    }
+  }
+
   return (
     <div className={style.wrapper}>
       <div className={style.distribution}>
@@ -128,7 +150,7 @@ const onConfirm = () => {setLightboxOpen(false)};
         <button className={style.button} onClick={() => setLightboxOpen(true)}>Avslutt avtale</button>
         <button className={style.button} onClick={() => save()}>Lagre</button>
       </div>
-      <Lightbox open={lightboxOpen} onConfirm={onConfirm} onCancel={onCancel}>
+      <Lightbox open={lightboxOpen} onConfirm={() => cancel()} onCancel={() => setLightboxOpen(false)}>
         <div className={styles.textWrapper}>
           <h2>Avslutt avtale</h2>
           <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>

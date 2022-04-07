@@ -93,6 +93,33 @@ export const updateVippsAgreementDay = async (urlCode: string, day: number, toke
   }
 };
 
+export const cancelVippsAgreement = async (urlCode: string, token: string) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(
+      `${api}/vipps/agreement/${urlCode}/cancel`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "same-origin",
+      }
+    );
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
 export const updateAvtalegiroAgreementDistribution = async (kid: string, distribution: Distribution, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
@@ -185,3 +212,34 @@ export const updateAvtaleagreementAmount = async (kid: string, sum: number, toke
     return null;
   }
 };
+
+export const cancelAvtaleGiroAgreement = async (kid: string, token: string) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(
+      `${api}/avtalegiro/${kid}/status`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          active: 0
+        })
+      }
+    );
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
