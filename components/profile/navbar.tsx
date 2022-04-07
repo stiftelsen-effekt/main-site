@@ -48,8 +48,8 @@ export const Navbar: React.FC = () => {
               Profil
             </Link>
           </li>
-          <li onClick={() => setExpandMenu(false)}>
-            <button className={styles.btnlogout} onClick={() => logout()}>
+          <li className={styles.btnlogout} onClick={() => setExpandMenu(false)}>
+            <button onClick={() => logout()}>
               Logg ut
             </button>
           </li>

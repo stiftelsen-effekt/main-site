@@ -26,17 +26,21 @@
   text-decoration: none;
 }
 
-.btnlogout {
-  background: none;
-  box-shadow: none;
-  color: var(--secondary);
-  background: var(--primary);
-  font-family: "ESKlarheitGrotesk";
-  border: none;
-  font-size: 1em;
+.navbar ul li.btnlogout {
+  padding: 0;
+  margin-left: 20px;
+}
+
+.btnlogout button {
   cursor: pointer;
   padding: 10px 20px;
   border-radius: 20px;
+  color: var(--secondary);
+  background: var(--primary);
+  box-shadow: none;
+  font-family: "ESKlarheitGrotesk";
+  border: none;
+  font-size: 1em;
 }
 
 .btnlogin {
