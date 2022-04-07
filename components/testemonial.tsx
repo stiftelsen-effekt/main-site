@@ -5,19 +5,27 @@ interface Testemony {
   quotee: string
   quoteeBackground: string
   quote: string
+  source?: string
 }
 
 export const Testemonial: React.FC<Testemony> = ({
   quotee,
   quote,
   quoteeBackground,
+  source,
 }) => {
   return (
-    <section>
-      <h2 className="testemonial__quote">
-        <span>Testemonial</span>
+    <section className={styles.testemonial}>
+      <h2 className={styles.testemonial__quote}>
+        <q>{quote}</q>
       </h2>
-      <div className={styles.round}></div>
+      <div className={styles.testemonial__image}>
+        <img src={source} alt={quotee} />
+      </div>
+      <div className={styles.testemonial__bio}>
+        <p>{quotee}</p>
+        <p> &#x21b3; {quoteeBackground}</p>
+      </div>
     </section>
   )
 }
