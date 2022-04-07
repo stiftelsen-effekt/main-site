@@ -109,10 +109,9 @@
   margin-left: -24px;
   width: 48px;
   height: 48px;
-  background: var(--secondary);
+  background: var(--primary);
   border-radius: 50%;
   z-index: 100;
-  box-shadow: 0px 0px 3px 3px rgba(0,0,0,.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,8 +128,8 @@
 }
 
 .activity-indicator-wrapper > div:after {
-  border-color: var(--primary) transparent var(--primary) transparent;
-  margin: 6px;
+  border-color: var(--secondary) transparent var(--secondary) transparent;
+  margin: 2px;
 }
 
 @media only screen and (max-width: 900px) {  
