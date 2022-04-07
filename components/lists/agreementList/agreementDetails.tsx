@@ -34,6 +34,31 @@ export const AgreementDetails: React.FC<{
 
 const [lightboxOpen, setLightboxOpen] = useState(false);
 
+function daysInMonth(month:number, year:number) {
+  return new Date(year, month, 0).getDate()
+}
+
+
+function checkPaymentDate() {
+  let today = new Date()
+  let paymentDate;
+  let daysMonth: number = daysInMonth(today.getMonth() + 1 , today.getFullYear())
+  let todaysDate = today.getDate()
+  if(day == 0){
+    paymentDate = daysMonth
+  } else {
+    paymentDate = day
+  }
+
+  let daysBetween = paymentDate - todaysDate
+  if(daysBetween >= 0){
+    return (daysBetween <= 6) ? true : false
+  } else {
+    return (daysMonth - todaysDate + paymentDate <= 6) ? true : false
+  }
+}
+
+
 /**
  * Closes the lightbox.
  */
@@ -132,7 +157,7 @@ const onConfirm = () => {setLightboxOpen(false)};
         <div className={styles.textWrapper}>
           <h2>Avslutt avtale</h2>
           <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
-          <p>Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager frem i tid har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no</p>
+          {checkPaymentDate() ? <p>Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager frem i tid har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no</p> : null }
         </div>
       </Lightbox>
     </div>
