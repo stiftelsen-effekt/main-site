@@ -10,3 +10,8 @@
     overflow-y: auto;
     z-index: 2;
   }
+
+
+  .infoBoxHidden {
+    display: none;
+  }

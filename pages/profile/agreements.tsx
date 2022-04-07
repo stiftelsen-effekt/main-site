@@ -96,7 +96,6 @@ const Agreements: LayoutPage = () => {
     (agreement: VippsAgreement) => agreement.status === "PENDING"
   );
   const pendingCount = vippsPending.length;
-
   return (
     <>
       <Head>
@@ -105,14 +104,14 @@ const Agreements: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <InfoBox>
-          <div className={style.infoBox}></div>
+        <InfoBox style={pendingCount > 0 ? style.infoBox : style.infoBoxHidden}>
           <h2>
-            <Clock size={24} color={"black"} /> {pendingCount} avtaler bekreftes
+            <Clock size={24} color={"black"} /> {pendingCount} avtale(r)
+            bekreftes
           </h2>
           <p>
-            Vi har registrert en ny avtale på deg. Bankene bruker noen dager på
-            å bekrefte opprettelse før avtalen din blir aktivert.
+            Vi har registrert {pendingCount} ny avtale på deg. Bankene bruker
+            noen dager på å bekrefte opprettelse før avtalen din blir aktivert.
           </p>
         </InfoBox>
 
