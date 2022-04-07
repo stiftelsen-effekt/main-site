@@ -1,5 +1,5 @@
-import style from "../../../styles/AgreementDetails.module.css"
-import styles from "../../../styles/Lightbox.module.css"
+import style from "../../../styles/AgreementDetails.module.css";
+import styles from "../../../styles/Lightbox.module.css";
 import React, { useContext, useEffect, useState } from "react";
 import { Distribution } from "../../../models";
 import { DistributionController } from "../../elements/distribution";
@@ -18,26 +18,40 @@ import { useSWRConfig } from "swr";
 import { AlertCircle, Check } from "react-feather";
 import { Lightbox } from "../../elements/lightbox";
 
-
-export function daysInMonth(month:number, year:number) {
-  return new Date(year, month, 0).getDate()
+/**
+ * Gets the number of days in a month in a year
+ * @param {number} month - The month to check number of days of, january = 1
+ * @param {number} year - The year to check days of month
+ * @returns {number} The number of days in given month for given year
+ */
+export function daysInMonth(month: number, year: number) {
+  return new Date(year, month, 0).getDate();
 }
 
+/**
+ * Checks if paymentdate is within 6 days from now
+ * @param {Date} today - Todays date
+ * @param {number} currentPaymentDate - The paymentDate registered on agreement
+ * @returns {boolean} true if paymentdate is within 6 days from today, false if not
+ */
 export function checkPaymentDate(today: Date, currentPaymentDate: number) {
   let paymentDate;
-  let daysMonth: number = daysInMonth(today.getMonth() + 1 , today.getFullYear())
-  let todaysDate = today.getDate()
-  if(currentPaymentDate == 0){
-    paymentDate = daysMonth
+  let daysMonth: number = daysInMonth(
+    today.getMonth() + 1,
+    today.getFullYear()
+  );
+  let todaysDate = today.getDate();
+  if (currentPaymentDate == 0) {
+    paymentDate = daysMonth;
   } else {
-    paymentDate = currentPaymentDate
+    paymentDate = currentPaymentDate;
   }
 
-  let daysBetween = paymentDate - todaysDate
-  if(daysBetween >= 0){
-    return (daysBetween <= 6) ? true : false
+  let daysBetween = paymentDate - todaysDate;
+  if (daysBetween >= 0) {
+    return daysBetween <= 6 ? true : false;
   } else {
-    return (daysMonth - todaysDate + paymentDate <= 6) ? true : false
+    return daysMonth - todaysDate + paymentDate <= 6 ? true : false;
   }
 }
 
@@ -55,23 +69,26 @@ export const AgreementDetails: React.FC<{
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
-const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  /**
+   * Closes the lightbox.
+   */
+  const onCancel = () => {
+    setLightboxOpen(false);
+  };
 
-/**
- * Closes the lightbox.
- */
-const onCancel = () => {setLightboxOpen(false)};
+  /**
+   * Closes the lightbox.
+   */
+  const onConfirm = () => {
+    setLightboxOpen(false);
+  };
 
-/**
- * Closes the lightbox.
- */
-const onConfirm = () => {setLightboxOpen(false)};
-
-/**
- * Saves an agreement if any changes have been made. 
- * @returns a toast indicating whether the changes are saved or not.
- */
+  /**
+   * Saves an agreement if any changes have been made.
+   * @returns a toast indicating whether the changes are saved or not.
+   */
   const save = async () => {
     const token = await getAccessTokenSilently();
     if (type == "Vipps") {
@@ -114,7 +131,7 @@ const onConfirm = () => {setLightboxOpen(false)};
       const updatedSum = await updateAvtaleagreementAmount(
         endpoint,
         parseFloat(sum) * 100,
-        token 
+        token
       );
       if (
         savedDistributionKID != null &&
@@ -144,19 +161,38 @@ const onConfirm = () => {setLightboxOpen(false)};
       <div className={style.values}>
         <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
         <div>
-        <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)}/>
-        <span>kr</span>
+          <input
+            type="text"
+            defaultValue={sum}
+            onChange={(e) => setSum(e.target.value)}
+          />
+          <span>kr</span>
         </div>
       </div>
       <div className={style.actions}>
-        <button className={style.button} onClick={() => setLightboxOpen(true)}>Avslutt avtale</button>
-        <button className={style.button} onClick={() => save()}>Lagre</button>
+        <button className={style.button} onClick={() => setLightboxOpen(true)}>
+          Avslutt avtale
+        </button>
+        <button className={style.button} onClick={() => save()}>
+          Lagre
+        </button>
       </div>
       <Lightbox open={lightboxOpen} onConfirm={onConfirm} onCancel={onCancel}>
         <div className={styles.textWrapper}>
           <h2>Avslutt avtale</h2>
-          <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
-          {checkPaymentDate(new Date(), day) ? <p>Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager frem i tid har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no</p> : null }
+          <p>
+            Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke
+            deg.
+          </p>
+          {checkPaymentDate(new Date(), day) ? (
+            <p>
+              Dersom du har en avtalegiro avtale og den har trekkdato nærmere
+              enn 6 dager frem i tid har vi allerede sendt melding til
+              banksystemene om å trekke deg. Dette skyldes tregheter i
+              registrering av trekk hos bankene. Om du ønsker refusjon på denne
+              donasjonen kan du ta kontakt på donasjon@gieffektivt.no
+            </p>
+          ) : null}
         </div>
       </Lightbox>
     </div>
