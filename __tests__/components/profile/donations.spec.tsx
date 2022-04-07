@@ -3,10 +3,13 @@ import { useApi } from "../../../hooks/useApi";
 import { Donor } from "../../../models";
 import { mocked } from "jest-mock";
 import DonationsTotals from "../../../components/profile/donations/donationsTotal";
-import Enzyme, { configure, mount, shallow } from "enzyme";
+import { configure, shallow, ShallowWrapper } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import DonationYearMenu from "../../../components/profile/donations/yearMenu";
+import DonationsDistributionTable from "../../../components/profile/donations/donationsDistributionTable";
 import Home from "../../../pages/profile/index";
+import { thousandize } from "../../../util/formatting";
+import DonationsChart from "../../../components/profile/donations/donationsChart";
 
 jest.mock("../../../hooks/useApi");
 jest.mock("@auth0/auth0-react");
@@ -20,7 +23,7 @@ const donor: Donor = {
   name: "Keith Charlene Tan Esmena",
   newsletter: false,
   ssn: "987654321",
-  registered: "2018-02-07T11:25:59.000Z",
+  registered: "2020-02-07T11:25:59.000Z",
 };
 
 const user = {
@@ -65,22 +68,18 @@ const donations = [
   },
 ];
 
-const aggregated = [
+const distributions = [
   {
-    organizationId: 12,
-    organization: "GiveWells tildelingsfond",
-    abbriv: "GiveWell",
-    value: "419836.780000000000000000",
-    year: 2022,
+    org: "GiveWells tildelingsfond",
+    sum: 5000.0,
   },
   {
-    organizationId: 1,
-    organization: "Against Malaria Foundation",
-    abbriv: "AMF",
-    value: "406094.000000000000000000",
-    year: 2022,
+    org: "Against Malaria Foundation",
+    sum: 2500.0,
   },
 ];
+
+const years = [2022, 2021, 2020];
 
 const userApiReturn = {
   loading: false,
@@ -107,31 +106,65 @@ describe("Overview over donation history", () => {
   });
 
   configure({ adapter: new Adapter() });
-  // Enzyme.configure({ adapter: new Adapter() });
-  it("Check that the year menu is correct", () => {
-    // const home = require("../../../pages/profile/index");
-    // const home = mount(<Home />);
-    // const years = jest.spyOn(home, "getYears");
-    // expect(years).toHaveBeenCalled();
-    // const yearMenu = shallow(
-    //   <DonationYearMenu years={years} selected={"total"} />
-    // );
-    // console.log(yearMenu.text());
-    // years.mockRestore();
+
+  it("Check that all years show in the menu", () => {
+    mockedUseApi.mockReturnValue(userApiReturn);
+
+    const menu = shallow(
+      <DonationYearMenu years={years} selected={"2020"}></DonationYearMenu>
+    );
+    years.forEach((year) =>
+      expect(menu.html().includes(year.toString())).toBeTruthy()
+    );
+    expect(menu.find(".menu-selected").text()).toBe("2020");
+
+    const menuTotal = shallow(
+      <DonationYearMenu years={years} selected={"total"}></DonationYearMenu>
+    );
+    expect(menuTotal.find(".menu-selected").text()).toBe("Totalt");
   });
 
   it("Distribution table should be correct", () => {
-    // const distTable = shallow(<DonationsDistributionTable distributions={}/>);
-    // DonationsDistributionTable
+    mockedUseApi.mockReturnValue(userApiReturn);
+    const distTable = shallow(
+      <DonationsDistributionTable
+        distribution={distributions}
+      ></DonationsDistributionTable>
+    );
+
+    const table = distTable.find("table");
+    expect(table.find("tbody").text()).not.toBe("");
+    const rows = table.find("tr");
+    expect(rows).toHaveLength(distributions.length);
+
+    /**
+     * Checks if the content in the table rows matches the distributions
+     *
+     * @param {ShallowWrapper} row - Total sum donated to certain organization in table
+     */
+    function check(row: ShallowWrapper) {
+      const rowText = row.text();
+      const result = distributions.find(
+        (distr) =>
+          rowText.includes(distr.org) &&
+          rowText.includes(thousandize(distr.sum))
+      );
+      expect(result).toBeDefined();
+    }
+    rows.forEach((row) => check(row));
   });
 
-  it("Check that DonationsTotals is correct", () => {
-    const sum = 0;
-    const periodText = "lol";
+  it("Check that total donations is correct", () => {
+    mockedUseApi.mockReturnValue(userApiReturn);
+    let sum = 0;
+    distributions.forEach((distribution) => (sum += distribution.sum));
+    const periodText = `Siden ${years.pop()} har du gitt `;
     const donationsTotal = shallow(
       <DonationsTotals sum={sum} period={periodText} comparison={""} />
     );
 
-    expect(donationsTotal.text().includes("lol")).toBe(true);
+    expect(
+      donationsTotal.text().includes("Siden 2020 har du gitt 7 500 kr")
+    ).toBeTruthy();
   });
 });
