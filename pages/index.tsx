@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Layout } from '../components/main/layout'
 import { Stepwize } from '../components/stepwize/stepwize'
+import { Testemonial } from '../components/testemonial'
 import { SectionContainer } from '../components/sectionContainer'
 import styles from '../styles/Home.module.css'
 import { LayoutPage } from '../types'
@@ -24,9 +25,16 @@ const Home: LayoutPage = () => {
           tiltakene →
         </div>
       </div>
-
       <SectionContainer heading="Slik fungerer det">
         <Stepwize />
+      </SectionContainer>
+      <SectionContainer heading="Hva folk sier om oss">
+        <Testemonial
+          quote="
+        Fordi de mest effektive bistandstiltakene er 100 ganger så effektive som median-organisasjonen. Med Konduit får jeg maksimal uttelling for det jeg gir."
+          quotee="Aksel Braanen Sterri"
+          quoteeBackground="Filosof"
+        />
       </SectionContainer>
     </>
   )
