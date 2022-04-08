@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Layout } from '../components/main/layout'
 import { Stepwize } from '../components/stepwize/stepwize'
+import { SectionContainer } from '../components/sectionContainer'
 import styles from '../styles/Home.module.css'
 import { LayoutPage } from '../types'
 
@@ -19,10 +20,14 @@ const Home: LayoutPage = () => {
           <h1>Verdens mest effektivt bidrag.</h1>
         </div>
         <div className={styles.action}>
-          Kostnadsfri videreformidling av donasjoner til de mest effektive tiltakene →
+          Kostnadsfri videreformidling av donasjoner til de mest effektive
+          tiltakene →
         </div>
       </div>
-      <Stepwize />
+
+      <SectionContainer heading="Slik fungerer det">
+        <Stepwize />
+      </SectionContainer>
     </>
   )
 }
