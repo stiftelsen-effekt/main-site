@@ -22,7 +22,7 @@ import { Lightbox } from "../../elements/lightbox";
  * Gets the number of days in a month in a year
  * @param {number} month - The month to check number of days of, january = 1
  * @param {number} year - The year to check days of month
- * @returns {number} The number of days in given month for given year
+ * @returns {number} The number of days in given month in given year
  */
 export function daysInMonth(month: number, year: number) {
   return new Date(year, month, 0).getDate();
