@@ -108,6 +108,22 @@
   border-right: none;
 }
 
+.noDonations h1 {
+  margin-bottom: 0px;
+}
+
+.noDonations button {
+  cursor: pointer;
+  padding: 0px 10px;
+  border: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  color: var(--primary);
+  background: var(--secondary);
+  font-family: "ESKlarheitGrotesk";
+  font-size: 1em;
+}
+
 @media only screen and (max-width: 900px) {
   .header {
     display: none;

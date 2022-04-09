@@ -12,15 +12,19 @@ import {
   AggregatedDonations,
   Distribution,
   Donation,
-  Donor
+  Donor,
 } from "../../models";
 import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
-import DonationsDistributionTable from '../../components/profile/donations/donationsDistributionTable'
-import { Spinner } from '../../components/elements/spinner'
-import { DonationsYearlyGraph } from '../../components/profile/donations/donationsYearlyChart'
+import DonationsDistributionTable from "../../components/profile/donations/donationsDistributionTable";
+import { Spinner } from "../../components/elements/spinner";
+import { DonationsYearlyGraph } from "../../components/profile/donations/donationsYearlyChart";
 import { DonorContext } from "../../components/profile/donorProvider";
-import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
+import {
+  useAggregatedDonations,
+  useDistributions,
+  useDonations,
+} from "../../_queries";
 import { ActivityContext } from "../../components/profile/activityProvider";
 
 const Home: LayoutPage = () => {
@@ -33,7 +37,7 @@ const Home: LayoutPage = () => {
     loading: aggregatedLoading,
     data: aggregatedDonations,
     isValidating: aggregatedDonationsValidating,
-    error: aggregatedError
+    error: aggregatedError,
   } = useAggregatedDonations(user as User, getAccessTokenSilently);
 
   const {
@@ -51,53 +55,78 @@ const Home: LayoutPage = () => {
     data: distributions,
     isValidating: distributionsValidating,
     error: distributionsError,
-  } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids))
+  } = useDistributions(
+    user as User,
+    getAccessTokenSilently,
+    !donationsLoading,
+    Array.from(kids)
+  );
 
-  const dataAvailable = donations && distributions && aggregatedDonations && donor
-  const loading = aggregatedLoading || donationsLoading || distributionsLoading
-  const validating = aggregatedDonationsValidating || donationsIsValidating || distributionsValidating
+  const dataAvailable =
+    donations && distributions && aggregatedDonations && donor;
+  const loading = aggregatedLoading || donationsLoading || distributionsLoading;
+  const validating =
+    aggregatedDonationsValidating ||
+    donationsIsValidating ||
+    distributionsValidating;
   if (!dataAvailable || loading)
-    return <><h1 className={style.header}>Donasjoner</h1><Spinner /></>;
+    return (
+      <>
+        <h1 className={style.header}>Donasjoner</h1>
+        <Spinner />
+      </>
+    );
 
-  if (validating)
-    setActivity(true)
-  else
-    setActivity(false)
+  if (validating) setActivity(true);
+  else setActivity(false);
 
-  const isTotal = typeof router.query.year === "undefined"
-  const years = getYears(donor)
+  const isTotal = typeof router.query.year === "undefined";
+  const years = getYears(donor);
   const firstYear = Math.min(...years);
   const sum = getDonationSum(aggregatedDonations, router.query.year as string);
   const distributionsMap = new Map<string, Distribution>();
-  distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
+  distributions.map((dist: Distribution) =>
+    distributionsMap.set(dist.kid, dist)
+  );
 
-  const periodText =
-    !isTotal
-      ? `I ${router.query.year} har du gitt`
-      : `Siden ${firstYear} har du gitt`;
+  const periodText = !isTotal
+    ? `I ${router.query.year} har du gitt`
+    : `Siden ${firstYear} har du gitt`;
 
-  let distribution =
-    !isTotal
-      ? getYearlyDistribution(
-          aggregatedDonations,
+  let distribution = !isTotal
+    ? getYearlyDistribution(
+        aggregatedDonations,
+        parseInt(router.query.year as string)
+      )
+    : getTotalDistribution(aggregatedDonations);
+
+  const donationList = !isTotal ? (
+    <DonationList
+      donations={donations.filter(
+        (donation: Donation) =>
+          new Date(donation.timestamp).getFullYear() ===
           parseInt(router.query.year as string)
-        )
-      : getTotalDistribution(aggregatedDonations);
-
-  const donationList = !isTotal ?
-    <DonationList 
-      donations={donations.filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string))}
+      )}
       distributions={distributionsMap}
-      year={router.query.year as string} /> :
-    years.sort((a,b) => b-a).map(year => 
-      (<DonationList 
-        key={year}
-        donations={donations.filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)}
-        distributions={distributionsMap}
-        year={year.toString()} />)
-    )
+      year={router.query.year as string}
+    />
+  ) : (
+    years
+      .sort((a, b) => b - a)
+      .map((year) => (
+        <DonationList
+          key={year}
+          donations={donations.filter(
+            (donation: Donation) =>
+              new Date(donation.timestamp).getFullYear() === year
+          )}
+          distributions={distributionsMap}
+          year={year.toString()}
+        />
+      ))
+  );
 
-  return (
+  return donations.length > 0 ? (
     <>
       <Head>
         <title>Konduit. - Donasjoner</title>
@@ -124,12 +153,38 @@ const Home: LayoutPage = () => {
           comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
         />
       </div>
-      {
-        isTotal && window.innerWidth < 900 ?
-        <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} /> :
+      {isTotal && window.innerWidth < 900 ? (
+        <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />
+      ) : (
         donationList
-      }
+      )}
       {/* <Donations /> */}
+    </>
+  ) : (
+    <>
+      <Head>
+        <title>Konduit. - Donasjoner</title>
+        <meta name="description" content="Generated by create next app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <h1 className={style.header}>Donasjoner</h1>
+
+      <div className={style.noDonations}>
+        <h1>Hei {donor.name.split(" ")[0]}!</h1>
+        <p>Så langt har vi ikke motatt noen donasjoner fra deg.</p>
+        <p>
+          Du kan støtte våre anbefalte organisasjoner gjennom enkeltdonasjoner
+          og faste donasjonsavtaler {<button>her</button>}
+        </p>
+        <p>
+          Mangler det donasjoner vi ikke har registrert? Ta kontakt på{" "}
+          <a href={"mailto: donasjon@gieffektivt.no"}>
+            donasjon@gieffektivt.no
+          </a>
+          .
+        </p>
+      </div>
     </>
   );
 };
@@ -163,16 +218,22 @@ const getYearlyDistribution = (
   year: number
 ): { org: string; sum: number }[] => {
   return aggregated
-    .filter(el => el.year === year)
-    .map(el => ({ org: el.organization, sum: parseFloat(el.value) }))
-}
+    .filter((el) => el.year === year)
+    .map((el) => ({ org: el.organization, sum: parseFloat(el.value) }));
+};
 
-const getYearlySum = (aggregated: AggregatedDonations[], years: number[]): { year: string, sum: number }[] => {
+const getYearlySum = (
+  aggregated: AggregatedDonations[],
+  years: number[]
+): { year: string; sum: number }[] => {
   return years.map((year) => ({
     year: year.toString(),
-    sum: aggregated.reduce((acc,curr) => curr.year == year ? acc + parseFloat(curr.value) : acc, 0)
-  }))
-}
+    sum: aggregated.reduce(
+      (acc, curr) => (curr.year == year ? acc + parseFloat(curr.value) : acc),
+      0
+    ),
+  }));
+};
 
 const getYears = (donor: Donor) => {
   const registeredYear = new Date(donor.registered).getFullYear();
@@ -181,10 +242,13 @@ const getYears = (donor: Donor) => {
   for (let i = registeredYear; i <= currentYear; i++) {
     years.push(i);
   }
-  return years
-}
+  return years;
+};
 
-const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: string) => {
+const getDonationSum = (
+  aggregatedDonations: AggregatedDonations[],
+  year?: string
+) => {
   return aggregatedDonations.reduce(
     (acc, curr) =>
       year === curr.year.toString() || !year
@@ -192,4 +256,4 @@ const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: strin
         : acc,
     0
   );
-}
+};
