@@ -1,6 +1,47 @@
 describe("Details page", () => {
   before(() => {
     cy.login();
+
+    cy.fixture('donor').then((donor) => {
+      cy.intercept("GET", "/donors/27/", { 
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: donor
+        }
+      })
+    })
+
+    cy.fixture('donations').then((donations) => {
+      cy.intercept("GET", "/donors/27/donations", { 
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: donations
+        }
+      })
+    })
+
+    cy.fixture('aggregated').then((aggregateddonations) => {
+      cy.intercept("GET", "/donors/27/donations/aggregated", { 
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: aggregateddonations
+        }
+      })
+    })
+
+    cy.fixture('kids_donations').then((kids) => {
+      cy.intercept("GET", "/donors/27/distributions/*", { 
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: kids
+        }
+      })
+    })
+
     cy.visit(`/profile/`);
     cy.get("[data-cy=navbar]", { timeout: 15000 }).should("exist");
   });
