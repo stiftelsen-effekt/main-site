@@ -4,13 +4,24 @@ import Link from 'next/link'
 
 interface giBtn {
   url: string
+  darkMode?: boolean
 }
 
-export const GiButton: React.FC<giBtn> = ({ url }) => {
+export const GiButton: React.FC<giBtn> = ({ url, darkMode }) => {
+  let color = 'white'
+  let bg = 'black'
+
+  function colorSwap(forground: string, background: string) {
+    color = forground
+    bg = background
+  }
+
+  darkMode == true ? colorSwap('black', 'white') : null
+
   return (
     <Link href={url} passHref>
       <div className={styles.gibutton}>
-        <svg viewBox="0 0 100 100" fill="black">
+        <svg viewBox="0 0 100 100" fill={bg}>
           <g>
             <circle cx="50%" cy="50%" r="49.5" />
             <text
@@ -19,7 +30,7 @@ export const GiButton: React.FC<giBtn> = ({ url }) => {
               y="65%"
               textAnchor="middle"
               alignment-baseline="central"
-              fill="white"
+              fill={color}
             >
               Gi.
             </text>
