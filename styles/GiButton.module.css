@@ -1,0 +1,31 @@
+.gibutton {
+  cursor: pointer;
+  position: fixed;
+  right: 1em;
+  top: 50vh;
+  position: fixed;
+}
+
+.gibutton:hover svg,
+.gibutton:focus svg {
+  fill: salmon;
+}
+
+.gibutton svg {
+  width: 50px;
+  height: auto;
+  mix-blend-mode: difference;
+}
+
+.gibutton__text {
+  font-family: 'ESKlarheitGrotesk', sans-serif;
+  font-size: 43px;
+  color: white;
+  position: absolute;
+}
+
+@media screen and (min-width: 900px) {
+  .gibutton svg {
+    width: 100px;
+  }
+}
