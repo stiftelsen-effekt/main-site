@@ -2,7 +2,7 @@
   cursor: pointer;
   position: fixed;
   right: 1em;
-  top: 50vh;
+  top: 88vh;
   position: fixed;
 }
 
@@ -15,6 +15,7 @@
   width: 50px;
   height: auto;
   mix-blend-mode: difference;
+  isolation: isolate;
 }
 
 .gibutton__text {
