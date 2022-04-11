@@ -7,7 +7,7 @@ import { GiButton } from '../give-now-button/gi-button'
 export const Layout: LayoutElement = ({ children }) => {
   return (
     <div className={styles.container}>
-      <GiButton url="/donations" darkMode={true} />
+      <GiButton url="/donations" darkMode={false} />
       <Navbar />
       <main className={styles.main}>{children}</main>
       <Footer />
