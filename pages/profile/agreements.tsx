@@ -130,7 +130,7 @@ const Agreements: LayoutPage = () => {
         <AgreementList
           title={"Inaktive"}
           vipps={vipps.filter(
-            (agreement: VippsAgreement) => agreement.status !== "ACTIVE"
+            (agreement: VippsAgreement) => agreement.status !== "EXPIRED"
           )}
           avtalegiro={avtaleGiro.filter(
             (agreement: AvtaleGiroAgreement) => !agreement.active
