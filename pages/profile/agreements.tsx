@@ -104,13 +104,23 @@ const Agreements: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <InfoBox style={pendingCount > 0 ? style.infoBox : style.infoBoxHidden}>
+        <InfoBox style={pendingCount === 1 ? style.infoBox : style.infoBoxHidden}>
           <h2>
-            <Clock size={24} color={"black"} /> {pendingCount} avtale(r)
+            <Clock size={24} color={"black"} /> {pendingCount} avtale
             bekreftes
           </h2>
           <p>
             Vi har registrert {pendingCount} ny avtale på deg. Bankene bruker
+            noen dager på å bekrefte opprettelse før avtalen din blir aktivert.
+          </p>
+        </InfoBox>
+        <InfoBox style={pendingCount > 1 ? style.infoBox : style.infoBoxHidden}>
+          <h2>
+            <Clock size={24} color={"black"} /> {pendingCount} avtaler
+            bekreftes
+          </h2>
+          <p>
+            Vi har registrert {pendingCount} nye avtaler på deg. Bankene bruker
             noen dager på å bekrefte opprettelse før avtalen din blir aktivert.
           </p>
         </InfoBox>
