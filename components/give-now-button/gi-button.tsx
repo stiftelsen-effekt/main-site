@@ -29,7 +29,7 @@ export const GiButton: React.FC<giBtn> = ({ url, darkMode }) => {
               x="52%"
               y="65%"
               textAnchor="middle"
-              alignment-baseline="central"
+              alignmentBaseline="central"
               fill={color}
             >
               Gi.
