@@ -21,7 +21,6 @@ import { useContext, useState } from "react";
 import { ActivityContext } from "../../components/profile/activityProvider";
 import { InfoBox } from "../../components/elements/infobox";
 import { Clock } from "react-feather";
-import style from "../../styles/Infobox.module.css";
 import AgreementsMenu from "../../components/profile/agreements/agreementsMenu";
 import styles from "../../styles/Agreements.module.css";
 
@@ -114,11 +113,10 @@ const Agreements: LayoutPage = () => {
 
         {
           pendingCount >= 1 ?
-          <InfoBox style={style.infoBox}>
-            <h2>
-              <Clock size={24} color={"black"} />{pendingCount} {pendingCount === 1 ? 'avtale' : 'avtaler'}
-              bekreftes
-            </h2>
+          <InfoBox>
+            <header>
+              <Clock size={24} color={"white"} />{pendingCount} {pendingCount === 1 ? 'avtale' : 'avtaler'} bekreftes
+            </header>
             <p>
               Vi har registrert {pendingCount} {pendingCount === 1 ? 'ny' : 'nye'} avtaler på deg. Bankene bruker
               noen dager på å bekrefte opprettelse før avtalen din blir aktivert.
