@@ -1,0 +1,37 @@
+.infoBox {
+  background-color: var(--primary);
+  color: var(--secondary);
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  max-width: 600px;
+  padding: 28px;
+  overflow-y: auto;
+  z-index: 2;
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.infoBox header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.infoBox header svg {
+  margin-right: 12px;
+}
+
+.infoBox p {
+  margin: 0;
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 900px) { 
+  .infoBox { 
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+}
