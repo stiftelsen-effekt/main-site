@@ -10,14 +10,15 @@ const DonationsChart: React.FC<{ distribution: {org: string, sum: number }[] }> 
   distribution = distribution.sort((a,b) => b.sum - a.sum)
 
   return (
-    <div className={style.graph + ' ' + (distribution.length == 0 ? style.empty : '')}>
+    <div className={style.graph + ' ' + (distribution.length == 0 ? style.empty : '')} data-cy="aggregated-donations-distribution-graph">
       {distribution.map((dist, i) => (
         <div 
           key={dist.org} 
           style={{ 
             width: `${(dist.sum / total) * 100}%`,
             zIndex: distribution.length - i 
-          }}>
+          }}
+          data-cy="aggregated-donations-distribution-graph-bar">
             <span>{dist.org}</span>
             <span>{thousandize(Math.floor(dist.sum)) + " kr"}</span>
         </div>

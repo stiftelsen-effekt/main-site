@@ -16,7 +16,6 @@
 // Import commands.js using ES2015 syntax:
 // import "../support/commands";
 import "./commands";
-import "./profile";
 import "cypress-localstorage-commands";
 
 // Alternatively you can use CommonJS syntax:
