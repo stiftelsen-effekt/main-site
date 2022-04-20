@@ -11,7 +11,7 @@ const GenericListRow: React.FC<{row: ListRow}> = ({ row }) => {
     <tbody>
       <tr key={row.id}>
         {row.cells.map((val, i) => <td key={i}>{val}</td>)}
-        <td onClick={() => setExpanded(!expanded)} >
+        <td onClick={() => setExpanded(!expanded)} data-cy="generic-list-row-expand">
           <ChevronDown className={(expanded ? style.iconChevronUp : style.iconChevronDown)} color={"white"} width={24} />
         </td>
       </tr>

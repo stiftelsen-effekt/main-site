@@ -21,14 +21,14 @@ export const GenericList: React.FC<{
     rows,
     emptyPlaceholder }) => {
   return (
-    <div className={style.gridContainer} key={title}>
-      <section className={style.header}>
+    <div className={style.gridContainer} key={title} data-cy="generic-list">
+      <section className={style.header} data-cy="generic-list-header">
         <h2>{title}</h2>
         <p>{supplementalInformation}</p>
       </section>
       <section>
         {rows.length > 0 ?
-          <table className={style.table}>
+          <table className={style.table} data-cy="generic-list-table">
             <thead>
               <tr>
                 {headers.map(header => <th key={header}>{header}</th>)}

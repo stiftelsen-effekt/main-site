@@ -1,0 +1,137 @@
+[
+  {
+      "kid": "51615227",
+      "organizations": [
+          {
+              "id": 1,
+              "name": "Against Malaria Foundation",
+              "share": "70.000000000000"
+          },
+          {
+              "id": 2,
+              "name": "Schistosomiasis Control Initiative",
+              "share": "30.000000000000"
+          }
+      ]
+  },
+  {
+      "kid": "16753477",
+      "organizations": [
+          {
+              "id": 12,
+              "name": "GiveWells tildelingsfond",
+              "share": "20.000000000000"
+          },
+          {
+              "id": 10,
+              "name": "Hellen Keller International",
+              "share": "30.000000000000"
+          },
+          {
+              "id": 2,
+              "name": "Schistosomiasis Control Initiative",
+              "share": "50.000000000000"
+          }
+      ]
+  },
+  {
+      "kid": "95231965",
+      "organizations": [
+          {
+              "id": 12,
+              "name": "GiveWells tildelingsfond",
+              "share": "30.000000000000"
+          },
+          {
+              "id": 1,
+              "name": "Against Malaria Foundation",
+              "share": "15.000000000000"
+          },
+          {
+              "id": 10,
+              "name": "Hellen Keller International",
+              "share": "25.000000000000"
+          },
+          {
+              "id": 4,
+              "name": "Malaria Consortium",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 2,
+              "name": "Schistosomiasis Control Initiative",
+              "share": "30.000000000000"
+          },
+          {
+              "id": 7,
+              "name": "GiveDirectly",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 13,
+              "name": "GiveDirectly Borgerlønn",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 14,
+              "name": "New Incentives",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 11,
+              "name": "Drift av gieffektivt.no",
+              "share": "0.000000000000"
+          }
+      ]
+  },
+  {
+      "kid": "000027848912260",
+      "organizations": [
+          {
+              "id": 12,
+              "name": "GiveWells tildelingsfond",
+              "share": "10.000000000000"
+          },
+          {
+              "id": 1,
+              "name": "Against Malaria Foundation",
+              "share": "90.000000000000"
+          },
+          {
+              "id": 10,
+              "name": "Hellen Keller International",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 4,
+              "name": "Malaria Consortium",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 2,
+              "name": "Schistosomiasis Control Initiative",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 7,
+              "name": "GiveDirectly",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 13,
+              "name": "GiveDirectly Borgerlønn",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 14,
+              "name": "New Incentives",
+              "share": "0.000000000000"
+          },
+          {
+              "id": 11,
+              "name": "Drift av gieffektivt.no",
+              "share": "0.000000000000"
+          }
+      ]
+  }
+]

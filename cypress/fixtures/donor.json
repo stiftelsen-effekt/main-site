@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "name": "Test user",
+  "email": "account@harnes.me",
+  "registered": "2018-03-30T01:00:00.000Z",
+  "ssn": "01129955131",
+  "newsletter": 0,
+  "trash": null
+}
