@@ -16,11 +16,12 @@ export const DistributionController: React.FC<{ distribution: Distribution, onCh
             const newDistribution: Distribution = {...distribution}
             newDistribution.organizations[index].share = e.target.value
             onChange(newDistribution)
-          }} />
+          }} 
+          data-cy="distribution-input"/>
           <span>%</span>
         </div>
       </div>)}
     </div>
-    {sum !== 100 ? <div className={style["warning-box"]}>Fordeling må summere til 100 <span>{sum} / 100</span></div> : null}
+    {sum !== 100 ? <div className={style["warning-box"]} data-cy="distribution-warning">Fordeling må summere til 100 <span>{sum} / 100</span></div> : null}
   </div>
 }

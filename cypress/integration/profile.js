@@ -13,7 +13,7 @@ describe("Details page", () => {
     })
     
     cy.visit(`/profile/details/`);
-    cy.get("[data-cy=navbar]", { timeout: 15000 }).should("exist");
+    cy.get("[data-cy=navbar]", { timeout: 30000 }).should("exist");
   });
 
   it("Should display correct profile information", () => {
