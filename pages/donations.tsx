@@ -5,6 +5,7 @@ import { getClient } from '../lib/sanity.server'
 import { groq } from 'next-sanity'
 import { LayoutPage } from '../types'
 import { Layout } from '../components/main/layout'
+import { GiveWidgetDummy } from '../components/giveWidgetDummy/giveWidgetDummy'
 
 const Method: LayoutPage<{ data: any; preview: boolean }> = ({
   data,
@@ -21,6 +22,7 @@ const Method: LayoutPage<{ data: any; preview: boolean }> = ({
       </Head>
 
       <h1>Donations</h1>
+      <GiveWidgetDummy />
     </>
   )
 }
