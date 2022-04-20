@@ -1,4 +1,4 @@
-describe("Details page", () => {
+describe("Agreements page", () => {
   beforeEach(() => {
     cy.login()
 
