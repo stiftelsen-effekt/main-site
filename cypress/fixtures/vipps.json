@@ -1,0 +1,41 @@
+[
+  {
+      "ID": "agr_58LgZZM",
+      "status": "ACTIVE",
+      "donorID": 27,
+      "full_name": "Keef",
+      "KID": "95231965",
+      "timestamp_created": "2021-05-14T18:19:49.000Z",
+      "monthly_charge_day": 10,
+      "force_charge_date": null,
+      "paused_until_date": null,
+      "amount": 100,
+      "agreement_url_code": "1ijd9n1f0asd"
+  },
+  {
+      "ID": "agr_AwyNSFs",
+      "status": "PENDING",
+      "donorID": 27,
+      "full_name": "Keef",
+      "KID": "16753477",
+      "timestamp_created": "2021-05-14T18:46:31.000Z",
+      "monthly_charge_day": 11,
+      "force_charge_date": null,
+      "paused_until_date": null,
+      "amount": 400,
+      "agreement_url_code": "asfj18fn190"
+  },
+  {
+      "ID": "agr_qucArF2",
+      "status": "ACTIVE",
+      "donorID": 27,
+      "full_name": "Keef",
+      "KID": "51615227",
+      "timestamp_created": "2021-05-20T18:28:56.000Z",
+      "monthly_charge_day": 20,
+      "force_charge_date": null,
+      "paused_until_date": null,
+      "amount": 100,
+      "agreement_url_code": "asfijo1j89nf"
+  }
+]

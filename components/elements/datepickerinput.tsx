@@ -16,6 +16,6 @@ export const DatePickerInput: React.FC<{ selected?: number, onChange: (selected:
       style={{ display: pickerOpen ? undefined : 'none' }}>
       <DatePicker selected={selected} onChange={(selected) => { onChange(selected); setPickerOpen(false); }} onClickOutside={() => setPickerOpen(false)}/>
     </div>
-    <input readOnly={true} type={"text"} value={textValue} onClick={() => setPickerOpen(true)}/>
+    <input readOnly={true} type={"text"} value={textValue} onClick={() => setPickerOpen(true)} data-cy="date-picker-input" />
   </div>
 }

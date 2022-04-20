@@ -71,7 +71,7 @@ Cypress.Commands.add("login", (overrides = {}) => {
           `@@auth0spajs@@::${client_id}::${audience}::${scope}`,
           JSON.stringify(item)
         );
-        cy.reload();
+        // cy.reload();
       })
     })
 });
