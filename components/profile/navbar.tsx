@@ -12,9 +12,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} >
+      <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} data-cy="navbar">
         <div className={styles.logoWrapper}>
           <Link href="/" passHref>
+            <a>
             <Image
               src={logo}
               className={styles.logo}
@@ -24,6 +25,7 @@ export const Navbar: React.FC = () => {
               alt="Konduit. logo"
               priority
             />
+            </a>
           </Link>
           <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?

@@ -81,7 +81,7 @@ export const AgreementList: React.FC<{
   }));
 
   const emptyPlaceholder = (
-    <div>
+    <div data-cy="agreement-list-empty-placeholder">
       <div>
         Vi har ikke registrert noen aktive faste donasjonsavtaler på deg..
       </div>

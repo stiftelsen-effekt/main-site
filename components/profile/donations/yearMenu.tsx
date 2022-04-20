@@ -6,7 +6,7 @@ const DonationYearMenu: React.FC<{years: number[], selected: string}> = ({ years
   years = years.sort((a,b) => b-a)
 
   return (
-    <div className={style.menu}>
+    <div className={style.menu} data-cy="year-menu">
       <ul>
         <Link 
           href={{
