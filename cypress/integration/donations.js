@@ -10,7 +10,7 @@ describe("Donations page", () => {
           content: donor
         }
       })
-    })
+    }).as('getDonor')
 
     cy.fixture('donations').then((donations) => {
       cy.intercept("GET", "/donors/27/donations", { 
@@ -20,7 +20,7 @@ describe("Donations page", () => {
           content: donations
         }
       })
-    })
+    }).as('getDonations')
 
     cy.fixture('aggregated').then((aggregateddonations) => {
       cy.intercept("GET", "/donors/27/donations/aggregated", { 
@@ -30,7 +30,7 @@ describe("Donations page", () => {
           content: aggregateddonations
         }
       })
-    })
+    }).as('getAggregated')
 
     cy.fixture('kids_donations').then((kids) => {
       cy.intercept("GET", "/donors/27/distributions/*", { 
@@ -40,10 +40,14 @@ describe("Donations page", () => {
           content: kids
         }
       })
-    })
+    }).as('getDistribution')
 
     cy.visit(`/profile/`);
-    cy.get("[data-cy=navbar]", { timeout: 30000 }).should("exist");
+
+    /**
+     * Wait for initial data load
+     */
+    cy.wait(['@getDonor', '@getDonations', '@getAggregated', '@getDistribution'], { timeout: 30000 })
   });
 
   it("Should display a menu for selection donation year", () => {

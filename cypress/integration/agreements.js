@@ -53,12 +53,11 @@ describe("Agreements page", () => {
     })
 
     cy.visit(`/profile/agreements/`);
-    cy.get("[data-cy=navbar]", { timeout: 30000 }).should("exist");
 
     /**
      * Wait for initial data load
      */
-    cy.wait(['@getDonor', '@getOrganizations', '@getVipps', '@getAvtalegiro', '@getDistribution'])
+    cy.wait(['@getDonor', '@getOrganizations', '@getVipps', '@getAvtalegiro', '@getDistribution'], { timeout: 30000 })
   });
 
   it("Should display a list of active and inactive agreements", () => {
