@@ -1,0 +1,128 @@
+[
+  {
+      "organizationId": 12,
+      "organization": "GiveWells tildelingsfond",
+      "abbriv": "GiveWell",
+      "value": "1204.500000000000000000",
+      "year": 2019
+  },
+  {
+      "organizationId": 1,
+      "organization": "Against Malaria Foundation",
+      "abbriv": "AMF",
+      "value": "14.500000000000000000",
+      "year": 2019
+  },
+  {
+      "organizationId": 2,
+      "organization": "Schistosomiasis Control Initiative",
+      "abbriv": "SCI",
+      "value": "6.000000000000000000",
+      "year": 2019
+  },
+  {
+      "organizationId": 3,
+      "organization": "The End Fund",
+      "abbriv": "End",
+      "value": "3.000000000000000000",
+      "year": 2019
+  },
+  {
+      "organizationId": 4,
+      "organization": "Malaria Consortium",
+      "abbriv": "MC",
+      "value": "6.000000000000000000",
+      "year": 2019
+  },
+  {
+      "organizationId": 11,
+      "organization": "Drift av gieffektivt.no",
+      "abbriv": "Drift",
+      "value": "6.000000000000000000",
+      "year": 2019
+  },
+  {
+      "organizationId": 12,
+      "organization": "GiveWells tildelingsfond",
+      "abbriv": "GiveWell",
+      "value": "5212.200000000000000000",
+      "year": 2020
+  },
+  {
+      "organizationId": 1,
+      "organization": "Against Malaria Foundation",
+      "abbriv": "AMF",
+      "value": "532.300000000000000000",
+      "year": 2020
+  },
+  {
+      "organizationId": 6,
+      "organization": "Sightsavers",
+      "abbriv": "Sight",
+      "value": "12.500000000000000000",
+      "year": 2020
+  },
+  {
+      "organizationId": 2,
+      "organization": "Schistosomiasis Control Initiative",
+      "abbriv": "SCI",
+      "value": "2.000000000000000000",
+      "year": 2020
+  },
+  {
+      "organizationId": 3,
+      "organization": "The End Fund",
+      "abbriv": "End",
+      "value": "2.000000000000000000",
+      "year": 2020
+  },
+  {
+      "organizationId": 11,
+      "organization": "Drift av gieffektivt.no",
+      "abbriv": "Drift",
+      "value": "6.000000000000000000",
+      "year": 2020
+  },
+  {
+      "organizationId": 1,
+      "organization": "Against Malaria Foundation",
+      "abbriv": "AMF",
+      "value": "82514.000000000000000000",
+      "year": 2021
+  },
+  {
+      "organizationId": 12,
+      "organization": "GiveWells tildelingsfond",
+      "abbriv": "GiveWell",
+      "value": "60.000000000000000000",
+      "year": 2021
+  },
+  {
+      "organizationId": 1,
+      "organization": "Against Malaria Foundation",
+      "abbriv": "AMF",
+      "value": "540000.000000000000000000",
+      "year": 2022
+  },
+  {
+      "organizationId": 7,
+      "organization": "GiveDirectly",
+      "abbriv": "GD",
+      "value": "10400.000000000000000000",
+      "year": 2021
+  },
+  {
+      "organizationId": 14,
+      "organization": "New Incentives",
+      "abbriv": "NI",
+      "value": "15600.000000000000000000",
+      "year": 2021
+  },
+  {
+      "organizationId": 2,
+      "organization": "Schistosomiasis Control Initiative",
+      "abbriv": "SCI",
+      "value": "500000.000000000000000000",
+      "year": 2022
+  }
+]

@@ -137,3 +137,20 @@ export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently)
     error
   }
 }
+
+export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
+  const {
+    data, 
+    error,
+    isValidating
+  } = useSWR(`/donors/${user["https://konduit.no/user-id"]}/`, url => fetcher(url, fetchToken))
+
+  const loading = !data && !error
+
+  return {
+    loading,
+    isValidating,
+    data, 
+    error
+  }
+}

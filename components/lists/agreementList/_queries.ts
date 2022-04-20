@@ -52,11 +52,11 @@ export const updateVippsAgreementPrice = async (urlCode: string, sum: number, to
       }
     );
 
-    const result = await response.json();
+    //const result = await response.json();
     if (response.status !== 200) {
       return null;
     } else {
-      return result.content;
+      return true;
     }
   } catch (e) {
     return null;
@@ -86,7 +86,7 @@ export const updateVippsAgreementDay = async (urlCode: string, day: number, toke
     if (response.status !== 200) {
       return null;
     } else {
-      return result.content;
+      return true;
     }
   } catch (e) {
     return null;

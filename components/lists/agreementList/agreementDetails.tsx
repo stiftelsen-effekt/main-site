@@ -132,7 +132,7 @@ const [lightboxOpen, setLightboxOpen] = useState(false);
   }
 
   return (
-    <div className={style.wrapper}>
+    <div className={style.wrapper} data-cy="agreement-list-details">
       <div className={style.distribution}>
         <DistributionController
           distribution={distribution}
@@ -142,13 +142,13 @@ const [lightboxOpen, setLightboxOpen] = useState(false);
       <div className={style.values}>
         <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
         <div>
-        <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)}/>
+        <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)} data-cy="agreement-list-amount-input"/>
         <span>kr</span>
         </div>
       </div>
       <div className={style.actions}>
-        <button className={style.button} onClick={() => setLightboxOpen(true)}>Avslutt avtale</button>
-        <button className={style.button} onClick={() => save()}>Lagre</button>
+        <button className={style.button} onClick={() => setLightboxOpen(true)} data-cy="btn-cancel-agreement">Avslutt avtale</button>
+        <button className={style.button} onClick={() => save()} data-cy="btn-save-agreement">Lagre</button>
       </div>
       <Lightbox open={lightboxOpen} onConfirm={() => cancel()} onCancel={() => setLightboxOpen(false)}>
         <div className={styles.textWrapper}>
