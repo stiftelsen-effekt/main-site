@@ -5,7 +5,18 @@
 }
 
 .person {
-  border-left: 1px solid white;
+  border-left: 1px solid var(--primary);
   padding: 20px;
   line-height: 200%;
+}
+
+@media only screen and (max-width: 900px) {  
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .person {
+    margin-bottom: 20px;
+  }
 }

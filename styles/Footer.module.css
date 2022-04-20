@@ -23,9 +23,9 @@
 }
 
 .newsletter {
-  background: white;
+  background: var(--secondary);
   font-family: "ESKlarheitGrotesk", sans-serif;
-  color: black;
+  color: var(--primary);
   padding: 14px 18px;
   border: none;
   width: 100%;

@@ -9,18 +9,21 @@ export const Navbar: React.FC = () => {
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   return (
     <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)}>
-       <div className={styles.logoWrapper}>
-      <Image src={logo} 
-        className={styles.logo} 
-        layout="intrinsic" 
-        width={140} 
-        height={80}
-        alt="Konduit. logo" 
-        priority/>
+      <div className={styles.logoWrapper}>
+        <Link href="/" passHref>
+          <Image src={logo} 
+            className={styles.logo} 
+            layout="intrinsic" 
+            width={140} 
+            height={80}
+            alt="Konduit. logo"
+            onClick={() => setExpandMenu(false)}
+            priority/>
+        </Link>
         <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
-            <X size={32} color={"white"} /> :
-            <Menu size={32} color={"white"} />
+            <X size={32} color={"black"} /> :
+            <Menu size={32} color={"black"} />
           }
           </div>   
         </div>   
@@ -28,8 +31,8 @@ export const Navbar: React.FC = () => {
         <li onClick={() => setExpandMenu(false)}><Link href="/organizations" passHref>Anbefalte organisasjoner</Link></li>
         <li onClick={() => setExpandMenu(false)}><Link href="/method" passHref>Metode</Link></li>
         <li onClick={() => setExpandMenu(false)}><Link href="/about" passHref>Om oss</Link></li>
-        <li onClick={() => setExpandMenu(false)}><Link href="/FAQ" passHref>FAQ</Link></li>
-        <li onClick={() => setExpandMenu(false)}><Link href="/profile" passHref>Min side</Link></li>
+        <li onClick={() => setExpandMenu(false)}><Link href="/faq" passHref>FAQ</Link></li>
+        <li onClick={() => setExpandMenu(false)} className={styles.btnlogin}><Link href="/profile" passHref>Logg inn</Link></li>
       </ul>
     </nav>
   )

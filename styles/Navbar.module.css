@@ -6,7 +6,7 @@
   position: relative;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: black;
+  background-color: var(--secondary);
 }
 
 .navbar ul {
@@ -19,25 +19,41 @@
   text-decoration: none;
   cursor: pointer;
   padding: 10px 20px;
+  font-size: 14px;
 }
 
 .navbar ul li a {
   text-decoration: none;
 }
 
-.navbar ul li:last-child {
-  padding-right: 0px;
+.navbar ul li.btnlogout {
+  padding: 0;
+  margin-left: 20px;
 }
 
-.btnlogout {
+.btnlogout button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: var(--secondary);
+  background: var(--primary);
+  box-shadow: none;
+  font-family: "ESKlarheitGrotesk";
+  border: none;
+  font-size: 1em;
+}
+
+.btnlogin {
   background: none;
   box-shadow: none;
-  color: white;
+  color: var(--secondary);
+  background: var(--primary);
   font-family: "ESKlarheitGrotesk";
   border: none;
   font-size: 1em;
   cursor: pointer;
-  padding: 0;
+  border-radius: 20px;
+  margin-left: 20px;
 }
 
 .navbar a.icon {
@@ -48,17 +64,34 @@
   display: none;
 }
 
+.navbar .logoWrapper {
+  color: var(--primary);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 @media only screen and (max-width: 900px) {
   .navbar {
     overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 1000;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     padding: 20px 30px;
+  }
+
+  .navbarExpanded {
+    background: var(--primary);
+    color: var(--secondary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
   }
 
   .expandBtn {
@@ -87,15 +120,19 @@
     padding-bottom: 100px;
   }
 
+  .navbarExpanded .logoWrapper {
+    filter: invert(1);
+  }
+
   .navbar ul li {
     display: block;
-    font-size: 28px;
+    font-size: 20px;
     padding: 0;
   }
   
   /* Style navigation menu links */
   .navbar Link {
-    color: white;
+    color: var(--primary);
     padding: 14px 16px;
     text-decoration: none;
     font-size: 28px;
@@ -104,8 +141,7 @@
   
   /* Style the active link (or home/logo) */
   .active {
-    background-color: #04AA6D;
-    color: white;
+    color: var(--primary);
   }
 
   .close {
@@ -117,11 +153,24 @@
     display: none;
   }
 
-  .navbarExpanded {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+  .navbar ul li.btnlogin {
+    margin-left: 0;
+    background: var(--secondary);
+    color: var(--primary);
+    padding: 10px 20px;
+    border-radius: 30px;
+  }
+
+  .navbarExpanded ul li.btnlogout {
+    margin-left: 0;
+  }
+
+  .navbarExpanded ul li.btnlogout button {
+    border-radius: 24px;
+  }
+
+  .navbarExpanded ul li.btnlogout button {
+    background: var(--secondary);
+    color: var(--primary);
   }
 }

@@ -26,7 +26,7 @@ export const Layout: LayoutElement = ({ children }) => {
       onRedirectCallback={onRedirectCallback}
       cacheLocation={typeof window !== 'undefined' ? ((window as any).Cypress ? 'localstorage' : 'memory') : undefined}
     >
-      <div className={styles.container}>
+      <div className={styles.container + ' ' + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false }}>
           <UserWrapper>
             <DonorProvider>
