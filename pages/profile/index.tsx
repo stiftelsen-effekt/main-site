@@ -7,7 +7,6 @@ import DonationsTotals from "../../components/profile/donations/donationsTotal";
 import DonationYearMenu from "../../components/profile/donations/yearMenu";
 import { DonationList } from "../../components/lists/donationList/donationList";
 import { Layout } from "../../components/profile/layout";
-import { useApi } from "../../hooks/useApi";
 import {
   AggregatedDonations,
   Distribution,

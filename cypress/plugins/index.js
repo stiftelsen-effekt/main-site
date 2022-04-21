@@ -22,7 +22,10 @@ const dotenvPlugin = require('cypress-dotenv');
 
 module.exports = (on, config) => {
   config = dotenvPlugin(config, {
-    path: path.join(__dirname, "../../.env.local"),
+    path: path.join(__dirname, "../../.env.test"),
   })
+
+  require('@cypress/code-coverage/task')(on, config)
+  // on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'))
   return config
 }

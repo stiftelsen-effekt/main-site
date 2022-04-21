@@ -1,10 +1,11 @@
-
 <p align="center">
   <img 
     src="docs/logo.svg"
     alt="Konduit. logo"
     width="340" />
 </p>
+
+![check-code-coverage](https://img.shields.io/badge/code--coverage-72.4%25-yellow)
 
 Table of Contents
 =================
