@@ -1,10 +1,11 @@
 .donations__widget {
-  width: 450px;
+  width: 400px;
   border: solid 1px black;
   padding: 2em;
 }
 
 .donations__widget button {
+  position: relative;
   background-color: transparent;
   font-size: 2em;
   padding: 0.5em 1.5em;
@@ -13,13 +14,34 @@
   border: solid 1px black;
 }
 
+.donations__widget button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background-image: url('.../../../public/arrow.svg');
+  background-repeat: no-repeat;
+  width: 10%;
+  height: 100%;
+  transform-origin: center;
+  transform: translateY(27%);
+}
+
+.donations__widget button:hover,
+.donations__widget button:focus {
+  outline: solid 3px salmon;
+}
+
+.donationtype {
+  margin-bottom: 1em;
+}
+
 .donations__widget input[type='radio'] {
-  /* Add if not using autoprefixer */
   -webkit-appearance: none;
   appearance: none;
-  /* For iOS < 15 to remove gradient background */
   background-color: #fff;
-  /* Not removed via appearance */
+
   margin: 0 0.5em 0 0;
   cursor: pointer;
   color: black;
@@ -33,10 +55,8 @@
 
 .donations__widget label {
   font-size: 1.6em;
-}
-
-.donationtype {
-  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
 }
 
 .paymethod {
@@ -45,12 +65,25 @@
 }
 
 .paymethod__btn {
-  min-height: 70px;
+  min-height: 2.5em;
 }
 
-.bank::after {
+.bank {
+  position: relative;
+}
+.bank:after {
   content: '';
-  background-image: url('https://storage.googleapis.com/effekt-widget/assets/logos/vipps.png');
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 150px;
+  top: 0;
+  background-image: url('.../../../public/avtalegiro.91a76318.jpeg');
+  background-size: 120px;
+  background-repeat: no-repeat;
+  background-position: 0 0px;
+  transform: translate(20px, 27px);
+  transform-origin: center;
 }
 .vipps {
   background-image: url('https://storage.googleapis.com/effekt-widget/assets/logos/vipps.png');
@@ -59,8 +92,24 @@
   background-position: 1.3em 25px;
 }
 .paypal {
+  position: relative;
   background-image: url('https://storage.googleapis.com/effekt-widget/assets/logos/PayPal.png');
   background-size: 120px;
   background-repeat: no-repeat;
   background-position: 1.3em 25px;
+}
+
+.paypal:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 150px;
+  top: 0;
+  background-image: url('.../../../public/accepted_cards.926b29f5.jpeg');
+  background-size: 150px;
+  background-repeat: no-repeat;
+  background-position: 0 0px;
+  transform: translate(20px, 6px);
+  transform-origin: right;
 }
