@@ -6,6 +6,8 @@ import { DistributionController } from "../../elements/distribution";
 import { DatePickerInput } from "../../elements/datepickerinput";
 import { toast } from "react-toastify";
 import {
+  cancelAvtaleGiroAgreement,
+  cancelVippsAgreement,
   updateAvtaleagreementAmount,
   updateAvtaleagreementPaymentDay,
   updateAvtalegiroAgreementDistribution,
@@ -72,19 +74,9 @@ export const AgreementDetails: React.FC<{
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   /**
-   * Closes the lightbox.
+   * Saves an agreement if any changes have been made.
+   * @returns a toast indicating whether the changes are saved or not.
    */
-  const onCancel = () => {
-    setLightboxOpen(false);
-  };
-
-  /**
-   * Closes the lightbox.
-   */
-  const onConfirm = () => {
-    setLightboxOpen(false);
-  };
-
   /**
    * Saves an agreement if any changes have been made.
    * @returns a toast indicating whether the changes are saved or not.
@@ -150,8 +142,38 @@ export const AgreementDetails: React.FC<{
     }
   };
 
+  const cancel = async () => {
+    setLightboxOpen(false);
+    const token = await getAccessTokenSilently();
+    if (type === "Vipps") {
+      const cancelled = await cancelVippsAgreement(endpoint, token);
+      if (cancelled) {
+        successToast();
+        mutate(
+          `/donors/${
+            (user as User)["https://konduit.no/user-id"]
+          }/recurring/vipps/`
+        );
+      } else {
+        failureToast();
+      }
+    } else if (type === "AvtaleGiro") {
+      const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
+      if (cancelled) {
+        successToast();
+        mutate(
+          `/donors/${
+            (user as User)["https://konduit.no/user-id"]
+          }/recurring/avtalegiro/`
+        );
+      } else {
+        failureToast();
+      }
+    }
+  };
+
   return (
-    <div className={style.wrapper}>
+    <div className={style.wrapper} data-cy="agreement-list-details">
       <div className={style.distribution}>
         <DistributionController
           distribution={distribution}
@@ -165,19 +187,32 @@ export const AgreementDetails: React.FC<{
             type="text"
             defaultValue={sum}
             onChange={(e) => setSum(e.target.value)}
+            data-cy="agreement-list-amount-input"
           />
           <span>kr</span>
         </div>
       </div>
       <div className={style.actions}>
-        <button className={style.button} onClick={() => setLightboxOpen(true)}>
+        <button
+          className={style.button}
+          onClick={() => setLightboxOpen(true)}
+          data-cy="btn-cancel-agreement"
+        >
           Avslutt avtale
         </button>
-        <button className={style.button} onClick={() => save()}>
+        <button
+          className={style.button}
+          onClick={() => save()}
+          data-cy="btn-save-agreement"
+        >
           Lagre
         </button>
       </div>
-      <Lightbox open={lightboxOpen} onConfirm={onConfirm} onCancel={onCancel}>
+      <Lightbox
+        open={lightboxOpen}
+        onConfirm={() => cancel()}
+        onCancel={() => setLightboxOpen(false)}
+      >
         <div className={styles.textWrapper}>
           <h2>Avslutt avtale</h2>
           <p>

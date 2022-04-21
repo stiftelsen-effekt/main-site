@@ -8,7 +8,7 @@ import { Menu, X } from "react-feather";
 export const Navbar: React.FC = () => {
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   return (
-    <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)}>
+    <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} data-cy="navbar">
       <div className={styles.logoWrapper}>
         <Link href="/" passHref>
           <Image src={logo} 
@@ -22,7 +22,7 @@ export const Navbar: React.FC = () => {
         </Link>
         <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
-            <X size={32} color={"white"} /> :
+            <X size={32} color={"black"} /> :
             <Menu size={32} color={"black"} />
           }
           </div>   

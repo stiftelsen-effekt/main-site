@@ -24,6 +24,5 @@ module.exports = (on, config) => {
   config = dotenvPlugin(config, {
     path: path.join(__dirname, "../../.env.local"),
   })
-  console.log(config)
   return config
 }

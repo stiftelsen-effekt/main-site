@@ -20,8 +20,8 @@ export const Lightbox: React.FC<{
       <div className={style.lightbox}>
         {children}
         <div className={style.buttonWrapper}>
-          <button className={style.button} onClick={onConfirm}>Bekreft</button>
-          <button className={style.button} onClick={onCancel}>
+          <button className={style.button} onClick={onConfirm} data-cy="lightbox-confirm">Bekreft</button>
+          <button className={style.button} onClick={onCancel} data-cy="lightbox-cancel">
             Avbryt
           </button>
         </div>

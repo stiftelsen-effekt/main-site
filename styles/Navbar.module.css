@@ -67,6 +67,8 @@
 .navbar .logoWrapper {
   color: var(--primary);
   cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media only screen and (max-width: 900px) {
@@ -75,7 +77,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 1000;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -118,6 +120,10 @@
     padding-bottom: 100px;
   }
 
+  .navbarExpanded .logoWrapper {
+    filter: invert(1);
+  }
+
   .navbar ul li {
     display: block;
     font-size: 20px;
@@ -153,5 +159,18 @@
     color: var(--primary);
     padding: 10px 20px;
     border-radius: 30px;
+  }
+
+  .navbarExpanded ul li.btnlogout {
+    margin-left: 0;
+  }
+
+  .navbarExpanded ul li.btnlogout button {
+    border-radius: 24px;
+  }
+
+  .navbarExpanded ul li.btnlogout button {
+    background: var(--secondary);
+    color: var(--primary);
   }
 }
