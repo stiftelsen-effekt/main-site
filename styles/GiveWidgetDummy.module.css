@@ -1,0 +1,66 @@
+.donations__widget {
+  width: 450px;
+  border: solid 1px black;
+  padding: 2em;
+}
+
+.donations__widget button {
+  background-color: transparent;
+  font-size: 2em;
+  padding: 0.5em 1.5em;
+  text-align: left;
+  margin-bottom: 0.2em;
+  border: solid 1px black;
+}
+
+.donations__widget input[type='radio'] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0 0.5em 0 0;
+  cursor: pointer;
+  color: black;
+  font: inherit;
+  color: black;
+  width: 1em;
+  height: 1em;
+  border: 3px solid black;
+  border-radius: 50%;
+}
+
+.donations__widget label {
+  font-size: 1.6em;
+}
+
+.donationtype {
+  margin-bottom: 1em;
+}
+
+.paymethod {
+  display: flex;
+  flex-direction: column;
+}
+
+.paymethod__btn {
+  min-height: 70px;
+}
+
+.bank::after {
+  content: '';
+  background-image: url('https://storage.googleapis.com/effekt-widget/assets/logos/vipps.png');
+}
+.vipps {
+  background-image: url('https://storage.googleapis.com/effekt-widget/assets/logos/vipps.png');
+  background-size: 120px;
+  background-repeat: no-repeat;
+  background-position: 1.3em 25px;
+}
+.paypal {
+  background-image: url('https://storage.googleapis.com/effekt-widget/assets/logos/PayPal.png');
+  background-size: 120px;
+  background-repeat: no-repeat;
+  background-position: 1.3em 25px;
+}
