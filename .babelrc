@@ -15,7 +15,8 @@
             "plugins": [["inline-dotenv",{
                 "path": ".env.test"
             }], ["istanbul", {
-                "include": ["/pages/**/*", "components/**/*"]
+                "include": ["pages/**/*", "components/**/*"],
+                "exclude": ["components/profile/navbar.tsx", "components/main/navbar.tsx", "components/profile/loginError.tsx"]
             }]]
         }
     }
