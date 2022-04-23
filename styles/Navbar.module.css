@@ -4,8 +4,7 @@
   justify-content: space-between;
   width: 100%;
   position: relative;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px 5vw;
   background-color: var(--secondary);
 }
 
@@ -38,7 +37,7 @@
   color: var(--secondary);
   background: var(--primary);
   box-shadow: none;
-  font-family: "ESKlarheitGrotesk";
+  font-family: 'ESKlarheitGrotesk';
   border: none;
   font-size: 1em;
 }
@@ -48,7 +47,7 @@
   box-shadow: none;
   color: var(--secondary);
   background: var(--primary);
-  font-family: "ESKlarheitGrotesk";
+  font-family: 'ESKlarheitGrotesk';
   border: none;
   font-size: 1em;
   cursor: pointer;
@@ -129,7 +128,7 @@
     font-size: 20px;
     padding: 0;
   }
-  
+
   /* Style navigation menu links */
   .navbar Link {
     color: var(--primary);
@@ -138,7 +137,7 @@
     font-size: 28px;
     display: block;
   }
-  
+
   /* Style the active link (or home/logo) */
   .active {
     color: var(--primary);
