@@ -33,7 +33,7 @@ This will need a review.*/
   font-size: 20px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
   .stepwize__container {
     flex-direction: column;
   }
