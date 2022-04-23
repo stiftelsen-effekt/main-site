@@ -28,7 +28,7 @@ const Home: LayoutPage = () => {
       <SectionContainer heading="Slik fungerer det" inverted>
         <Stepwize />
       </SectionContainer>
-      <SectionContainer heading="Hva folk sier om oss">
+      <SectionContainer heading="Hva folk sier om oss" nodivider>
         <Testemonial
           quote="
         Fordi de mest effektive bistandstiltakene er 100 ganger så effektive som median-organisasjonen. Med Konduit får jeg maksimal uttelling for det jeg gir."
