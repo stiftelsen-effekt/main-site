@@ -25,7 +25,7 @@ const Home: LayoutPage = () => {
           tiltakene →
         </div>
       </div>
-      <SectionContainer heading="Slik fungerer det">
+      <SectionContainer heading="Slik fungerer det" inverted>
         <Stepwize />
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">

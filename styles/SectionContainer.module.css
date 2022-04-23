@@ -1,3 +1,7 @@
+.bg__black {
+  background-color: black;
+}
+
 .section__container {
   border-top: solid black 1px;
   width: 100%;
