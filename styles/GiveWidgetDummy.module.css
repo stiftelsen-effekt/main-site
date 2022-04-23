@@ -1,17 +1,22 @@
 .donations__widget {
+  background-color: black;
   width: 400px;
-  border: solid 1px black;
+  /* border: solid 1px black; */
+  border: solid 1px var(--primary);
+
   padding: 2em;
 }
 
 .donations__widget button {
   position: relative;
-  background-color: transparent;
+  background-color: black;
+  color: #fff;
   font-size: 2em;
   padding: 0.5em 1.5em;
   text-align: left;
   margin-bottom: 0.2em;
-  border: solid 1px black;
+  /* border: solid 1px black; */
+  border: solid 1px white;
 }
 
 .donations__widget button:before {
@@ -20,7 +25,7 @@
   top: 0;
   right: 0;
   z-index: 10;
-  background-image: url('.../../../public/arrow.svg');
+  background-image: url('.../../../public/arrowwhite.svg');
   background-repeat: no-repeat;
   width: 10%;
   height: 100%;
@@ -30,7 +35,9 @@
 
 .donations__widget button:hover,
 .donations__widget button:focus {
-  outline: solid 3px salmon;
+  /* outline: solid 3px salmon; */
+  background-color: #333333;
+  cursor: pointer;
 }
 
 .donationtype {
@@ -57,6 +64,7 @@
   font-size: 1.6em;
   display: flex;
   align-items: center;
+  color: #fff;
 }
 
 .paymethod {
@@ -106,7 +114,7 @@
   height: 100%;
   left: 150px;
   top: 0;
-  background-image: url('.../../../public/accepted_cards.926b29f5.jpeg');
+  /* background-image: url('.../../../public/accepted_cards.926b29f5.jpeg'); */
   background-size: 150px;
   background-repeat: no-repeat;
   background-position: 0 0px;
