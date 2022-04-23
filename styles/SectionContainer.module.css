@@ -8,9 +8,13 @@
   padding: 0 5vw;
 }
 
+.divider {
+  border-top: solid black 1px;
+}
+
 .section__heading {
   font-size: 16px;
-  border-top: solid black 1px;
+  margin: 0;
   padding-top: 2rem;
 }
 
