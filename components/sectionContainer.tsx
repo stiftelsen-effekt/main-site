@@ -8,7 +8,10 @@ interface Section {
 export const SectionContainer: React.FC<Section> = ({ heading, children }) => {
   return (
     <section className={styles.section__container}>
-      <h4 className={styles.section__heading}>{heading}</h4>
+      <header>
+        <h2 className={styles.section__heading}>{heading}</h2>
+      </header>
+
       <div className={styles.section__content}>{children}</div>
     </section>
   )
