@@ -5,6 +5,7 @@
   justify-content: center;
   box-sizing: border-box;
   padding-bottom: 10vh;
+  margin: 0 5vw;
 }
 
 .header h1 {
@@ -22,7 +23,7 @@
   font-weight: 400;
 }
 
-@media only screen and (max-width: 900px) { 
+@media only screen and (max-width: 900px) {
   .hero {
     height: calc(100vh - 120px);
     justify-content: flex-end;
