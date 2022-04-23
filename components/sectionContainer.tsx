@@ -16,7 +16,7 @@ export const SectionContainer: React.FC<Section> = ({
 
   return (
     <section className={styles.section__container + ' ' + background}>
-      <h4 className={styles.section__heading}>{heading}</h4>
+      <h2 className={styles.section__heading}>{heading}</h2>
       <div className={styles.section__content}>{children}</div>
     </section>
   )
