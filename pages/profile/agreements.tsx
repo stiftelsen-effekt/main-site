@@ -159,6 +159,7 @@ const Agreements: LayoutPage = () => {
               supplemental={
                 "Dette er tidligere faste betalingsavtaler du har hatt med oss, som vi ikke lenger trekker deg for"
               }
+              expandable={false}
             /> :
             null
           }
