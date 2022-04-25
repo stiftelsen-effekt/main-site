@@ -196,13 +196,13 @@ export const AgreementDetails: React.FC<{
       <div className={style.actions}>
         <EffektButton
           onClick={() => setLightboxOpen(true)}
-          data-cy="btn-cancel-agreement"
+          cy="btn-cancel-agreement"
         >
           Avslutt avtale
         </EffektButton>
         <EffektButton
           onClick={() => save()}
-          data-cy="btn-save-agreement"
+          cy="btn-save-agreement"
         >
           Lagre
         </EffektButton>
