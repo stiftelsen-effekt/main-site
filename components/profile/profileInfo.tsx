@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useApi } from "../../hooks/useApi";
 import { Donor } from "../../models";
 import style from "../../styles/Profile.module.css";
+import { EffektButton } from "../elements/effektbutton";
 import { DonorContext } from "./donorProvider";
 import { save } from "./_queries";
 
@@ -74,9 +75,9 @@ export const ProfileInfo: React.FC = () => {
         />{" "}
         Send meg nyhetsbrev på e-post <br />
         <br />
-        <button role={"submit"} className={style.button} onClick={saveDonor}>
+        <EffektButton role={"submit"} onClick={saveDonor}>
           Lagre
-        </button>
+        </EffektButton>
       </section>
     </>
   );

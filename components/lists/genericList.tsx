@@ -13,13 +13,15 @@ export const GenericList: React.FC<{
     supplementalInformation: string,
     headers: string[], 
     rows: ListRow[],
-    emptyPlaceholder: JSX.Element
+    emptyPlaceholder: JSX.Element,
+    expandable?: boolean
      }> = ({ 
     headers, 
     title, 
     supplementalInformation,
     rows,
-    emptyPlaceholder }) => {
+    emptyPlaceholder,
+    expandable }) => {
   return (
     <div className={style.gridContainer} key={title} data-cy="generic-list">
       <section className={style.header} data-cy="generic-list-header">
@@ -36,7 +38,7 @@ export const GenericList: React.FC<{
             </thead>
             {rows
               .map(row => (
-                <GenericListRow key={row.id} row={row}></GenericListRow>
+                <GenericListRow key={row.id} row={row} expandable={expandable}></GenericListRow>
               ))}
           </table> :
           emptyPlaceholder

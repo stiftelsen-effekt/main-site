@@ -22,6 +22,7 @@ import { DonationsYearlyGraph } from '../../components/profile/donations/donatio
 import { DonorContext } from "../../components/profile/donorProvider";
 import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
 import { ActivityContext } from "../../components/profile/activityProvider";
+import { PageContent } from "../../components/elements/pagecontent";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -57,7 +58,7 @@ const Home: LayoutPage = () => {
   const loading = aggregatedLoading || donationsLoading || distributionsLoading
   const validating = aggregatedDonationsValidating || donationsIsValidating || distributionsValidating
   if (!dataAvailable || loading)
-    return <><h1 className={style.header}>Donasjoner</h1><Spinner /></>;
+    return <><PageContent><h1 className={style.header}>Donasjoner</h1><Spinner /></PageContent></>;
 
   if (validating)
     setActivity(true)
@@ -105,31 +106,32 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className={style.header}>Donasjoner</h1>
+      <PageContent>
+        <h1 className={style.header}>Donasjoner</h1>
 
-      <DonationYearMenu
-        years={years}
-        selected={(router.query.year as string) || "total"}
-      />
-
-      <DonationsChart distribution={distribution}></DonationsChart>
-
-      <div className={style.details}>
-        <DonationsDistributionTable
-          distribution={distribution}
-        ></DonationsDistributionTable>
-        <DonationsTotals
-          sum={sum}
-          period={periodText}
-          comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
+        <DonationYearMenu
+          years={years}
+          selected={(router.query.year as string) || "total"}
         />
-      </div>
-      {
-        isTotal && window.innerWidth < 900 ?
-        <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} /> :
-        donationList
-      }
-      {/* <Donations /> */}
+
+        <DonationsChart distribution={distribution}></DonationsChart>
+
+        <div className={style.details}>
+          <DonationsDistributionTable
+            distribution={distribution}
+          ></DonationsDistributionTable>
+          <DonationsTotals
+            sum={sum}
+            period={periodText}
+            comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
+          />
+        </div>
+        {
+          isTotal && window.innerWidth < 900 ?
+          <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} /> :
+          donationList
+        }
+      </PageContent>
     </>
   );
 };

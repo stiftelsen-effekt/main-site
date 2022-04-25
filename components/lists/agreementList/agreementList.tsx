@@ -23,7 +23,8 @@ export const AgreementList: React.FC<{
   title: string;
   supplemental: string;
   distributions: Map<string, Distribution>;
-}> = ({ avtalegiro, vipps, title, supplemental, distributions }) => {
+  expandable?: boolean;
+}> = ({ avtalegiro, vipps, title, supplemental, distributions, expandable }) => {
   const headers = ["Type", "Dato", "Sum", "KID"];
 
   let vippsType = vipps.map(
@@ -99,6 +100,7 @@ export const AgreementList: React.FC<{
       supplementalInformation={supplemental}
       headers={headers}
       rows={rows}
+      expandable={expandable}
     />
   );
 };
