@@ -152,3 +152,7 @@
     z-index: 10000;
   }
 }
+
+.pageContent {
+  padding: 0 5vw;
+}
