@@ -33,7 +33,6 @@ export const ProfileInfo: React.FC = () => {
     <>
       <h1 className={style.header}>Hei {donor.name.split(" ")[0]}!</h1>
       <section className={style.personalInfo}>
-        <hr />
         Ditt navn <br />
         <input
           id="name"
