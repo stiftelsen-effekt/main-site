@@ -21,8 +21,8 @@ export const Lightbox: React.FC<{
       <div className={style.lightbox}>
         {children}
         <div className={style.buttonWrapper}>
-          <EffektButton onClick={onConfirm} data-cy="lightbox-confirm">Bekreft</EffektButton>
-          <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} data-cy="lightbox-cancel">
+          <EffektButton onClick={onConfirm} cy="lightbox-confirm">Bekreft</EffektButton>
+          <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} cy="lightbox-cancel">
             Avbryt
           </EffektButton>
         </div>

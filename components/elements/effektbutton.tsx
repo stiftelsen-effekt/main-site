@@ -7,11 +7,12 @@ export const EffektButtonType = {
   TERTIARY: elements.buttontertiary
 }
 
-export const EffektButton: React.FC<{ onClick: () => void, role?: string, type?: string, children: React.ReactNode }> = ({ onClick, role, type = EffektButtonType.PRIMARY, children }) => {
+export const EffektButton: React.FC<{ onClick: () => void, role?: string, type?: string, children: React.ReactNode, cy: string }> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy }) => {
   return <button 
     className={elements.button + " " + type} 
     onClick={onClick} 
-    role={role}>
+    role={role}
+    data-cy={cy}>
       {children}
     </button>
 }

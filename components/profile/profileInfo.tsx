@@ -75,7 +75,7 @@ export const ProfileInfo: React.FC = () => {
         />{" "}
         Send meg nyhetsbrev på e-post <br />
         <br />
-        <EffektButton role={"submit"} onClick={saveDonor}>
+        <EffektButton role={"submit"} onClick={saveDonor} cy="btn-save">
           Lagre
         </EffektButton>
       </section>

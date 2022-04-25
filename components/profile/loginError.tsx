@@ -10,6 +10,6 @@ export const LoginError: React.FC<{ message: string }> = ({ message }) => {
 
   return <div className={elements["center-wrapper"]}>
     <p>{message}</p>
-    <EffektButton onClick={loginWithRedirect}>Logg in</EffektButton>
+    <EffektButton onClick={loginWithRedirect} cy="btn-login">Logg in</EffektButton>
   </div>
 }
