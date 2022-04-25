@@ -19,6 +19,7 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
 import { AlertCircle, Check } from "react-feather";
 import { Lightbox } from "../../elements/lightbox";
+import { EffektButton } from "../../elements/effektbutton";
 
 /**
  * Gets the number of days in a month in a year
@@ -193,20 +194,18 @@ export const AgreementDetails: React.FC<{
         </div>
       </div>
       <div className={style.actions}>
-        <button
-          className={style.button}
+        <EffektButton
           onClick={() => setLightboxOpen(true)}
           data-cy="btn-cancel-agreement"
         >
           Avslutt avtale
-        </button>
-        <button
-          className={style.button}
+        </EffektButton>
+        <EffektButton
           onClick={() => save()}
           data-cy="btn-save-agreement"
         >
           Lagre
-        </button>
+        </EffektButton>
       </div>
       <Lightbox
         open={lightboxOpen}
@@ -221,8 +220,8 @@ export const AgreementDetails: React.FC<{
           </p>
           {checkPaymentDate(new Date(), day) ? (
             <p>
-              Dersom du har en avtalegiro avtale og den har trekkdato nærmere
-              enn 6 dager frem i tid har vi allerede sendt melding til
+              Denne avtalegiro avtalen har trekkdato nærmere
+              enn 6 dager frem i tid. Vi allerede sendt melding til
               banksystemene om å trekke deg. Dette skyldes tregheter i
               registrering av trekk hos bankene. Om du ønsker refusjon på denne
               donasjonen kan du ta kontakt på donasjon@gieffektivt.no
