@@ -40,14 +40,17 @@
 }
 
 .input {
-  background: var(--primary);
+  background: var(--secondary);
   font-family: "ESKlarheitGrotesk", sans-serif;
   font-size: 16px;
-  color: var(--secondary);
-  padding: 16px;
+  color: var(--primary);
+  padding: 14px 18px;
   border: none;
   width: 100%;
   max-width: 280px;
+  border-radius: 40px;
+  border: 1px solid var(--primary);
+  margin-top: 4px;
 }
 
 .checkbox {
