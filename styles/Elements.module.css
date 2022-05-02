@@ -163,6 +163,26 @@
   border: 1px solid rgba(0,0,0,.5);
 }
 
+.teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 450px;
+}
+
+.teaserimage {
+  background: var(--primary);
+}
+
+.teasertext {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: space-between;
+}
+
 @media only screen and (max-width: 900px) {  
   .datepicker-input-wrapper {
     position: static;

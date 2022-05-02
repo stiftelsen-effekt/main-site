@@ -6,6 +6,7 @@ import { Testemonial } from '../components/testemonial'
 import { SectionContainer } from '../components/sectionContainer'
 import styles from '../styles/Home.module.css'
 import { LayoutPage } from '../types'
+import { Teaser } from '../components/elements/teaser'
 
 const Home: LayoutPage = () => {
   return (
@@ -27,6 +28,13 @@ const Home: LayoutPage = () => {
       </div>
       <SectionContainer heading="Slik fungerer det">
         <Stepwize />
+      </SectionContainer>
+      <SectionContainer heading=''>
+        <div className={styles.teasers}>
+          <Teaser title='Maks impact.' paragraph='asodk' link='https://google.com/' imageurl='https://cdn.sanity.io/images/zp7mbokg/production/G3i4emG6B8JnTmGoN0UjgAp8-300x450.jpg'></Teaser>
+          <Teaser title='Full oversikt.' paragraph='asodk' link='https://google.com/' imageurl='https://cdn.sanity.io/images/zp7mbokg/production/G3i4emG6B8JnTmGoN0UjgAp8-300x450.jpg'></Teaser>
+          <Teaser title='Skattefradrag.' paragraph='asodk' link='https://google.com' imageurl='https://cdn.sanity.io/images/zp7mbokg/production/G3i4emG6B8JnTmGoN0UjgAp8-300x450.jpg'></Teaser>
+        </div>
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         <Testemonial
