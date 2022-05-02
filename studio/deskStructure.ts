@@ -5,6 +5,13 @@ export default () =>
     .title('Base')
     .items([
       S.listItem()
+        .title('Frontpage')
+        .child(
+          S.document()
+            .schemaType('frontpage')
+            .documentId('frontpage')
+        ),
+      S.listItem()
         .title('About us page')
         .child(
           S.document()
@@ -26,6 +33,7 @@ export default () =>
             .documentId('profile')
         ),
       ...S.documentTypeListItems().filter(listItem => 
+        !['frontpage'].includes(listItem.getId() || '') &&
         !['about_us'].includes(listItem.getId() || '') &&
         !['organizations'].includes(listItem.getId() || '') &&
         !['profile'].includes(listItem.getId() || ''))

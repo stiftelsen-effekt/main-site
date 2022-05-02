@@ -2,13 +2,16 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Layout } from '../components/main/layout'
 import { Stepwize } from '../components/stepwize/stepwize'
-import { Testemonial } from '../components/testemonial'
+import { Testimonial, Testimony } from '../components/testimonial'
 import { SectionContainer } from '../components/sectionContainer'
 import styles from '../styles/Home.module.css'
 import { LayoutPage } from '../types'
 import { Teaser } from '../components/elements/teaser'
+import { groq } from 'next-sanity'
+import { getClient } from '../lib/sanity.server'
+import Link from 'next/link'
 
-const Home: LayoutPage = () => {
+const Home: LayoutPage<{ data: any }> = ({ data }) => {
   return (
     <>
       <Head>
@@ -19,13 +22,14 @@ const Home: LayoutPage = () => {
 
       <div className={styles.hero}>
         <div className={styles.header}>
-          <h1>Verdens mest effektivt bidrag.</h1>
+          <h1>{data.frontpage[0].main_heading}</h1>
         </div>
         <div className={styles.action}>
-          Kostnadsfri videreformidling av donasjoner til de mest effektive
-          tiltakene →
+          <Link href={data.frontpage[0].sub_heading_link_target} passHref>{data.frontpage[0].sub_heading}</Link>
         </div>
       </div>
+
+      <pre>{data.frontpage[0].key_points[0].body}</pre>
       <SectionContainer heading="Slik fungerer det">
         <Stepwize />
       </SectionContainer>
@@ -37,16 +41,43 @@ const Home: LayoutPage = () => {
         </div>
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
-        <Testemonial
-          quote="
-        Fordi de mest effektive bistandstiltakene er 100 ganger så effektive som median-organisasjonen. Med Konduit får jeg maksimal uttelling for det jeg gir."
-          quotee="Aksel Braanen Sterri"
-          quoteeBackground="Filosof"
-        />
+        {data.frontpage[0].testimonials.map(
+          ({ quote, quotee, quoteeBackground }: Testimony) =>
+            <Testimonial
+              key={quotee}
+              quote={quote}
+              quotee={quotee}
+              quoteeBackground={quoteeBackground}
+            />)
+        }
       </SectionContainer>
     </>
   )
 }
+
+
+export async function getStaticProps({ preview = false }) {
+  const data = await getClient(preview).fetch(fetchFrontpage)
+
+  return {
+    props: {
+      preview,
+      data,
+    },
+  }
+}
+
+const fetchFrontpage = groq`
+{
+  "frontpage": *[_type == "frontpage"] {
+    main_heading,
+    sub_heading,
+    sub_heading_link_target,
+    key_points,
+    testimonials,
+  },
+}
+`
 
 Home.layout = Layout
 export default Home

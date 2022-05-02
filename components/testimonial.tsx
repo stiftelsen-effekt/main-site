@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from '../styles/Testemonial.module.css'
 
-interface Testemony {
+export interface Testimony {
   quotee: string
   quoteeBackground: string
   quote: string
   source?: string
 }
 
-export const Testemonial: React.FC<Testemony> = ({
+export const Testimonial: React.FC<Testimony> = ({
   quotee,
   quote,
   quoteeBackground,
