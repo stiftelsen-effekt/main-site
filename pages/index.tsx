@@ -29,7 +29,6 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </div>
 
-      <pre>{data.frontpage[0].key_points[0].body}</pre>
       <SectionContainer heading="Slik fungerer det">
         <Stepwize />
       </SectionContainer>
@@ -42,12 +41,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         {data.frontpage[0].testimonials.map(
-          ({ quote, quotee, quoteeBackground }: Testimony) =>
+          ({ quote, quotee, quoteeBackground, imageUrl }: Testimony) =>
             <Testimonial
               key={quotee}
               quote={quote}
               quotee={quotee}
               quoteeBackground={quoteeBackground}
+              imageUrl={imageUrl}
             />)
         }
       </SectionContainer>
@@ -74,7 +74,12 @@ const fetchFrontpage = groq`
     sub_heading,
     sub_heading_link_target,
     key_points,
-    testimonials,
+    testimonials[] {
+      quote,
+      quotee,
+      quotee_background,
+      "imageUrl": image.asset->url
+    }
   },
 }
 `

@@ -1,18 +1,19 @@
 import React from 'react'
 import styles from '../styles/Testemonial.module.css'
+import Image from 'next/image'
 
 export interface Testimony {
   quotee: string
   quoteeBackground: string
   quote: string
-  source?: string
+  imageUrl: string
 }
 
 export const Testimonial: React.FC<Testimony> = ({
   quotee,
   quote,
   quoteeBackground,
-  source,
+  imageUrl,
 }) => {
   return (
     <section className={styles.testemonial}>
@@ -20,7 +21,7 @@ export const Testimonial: React.FC<Testimony> = ({
         <q>{quote}</q>
       </h2>
       <div className={styles.testemonial__image}>
-        <img src={source} alt={quotee} />
+        <Image src={imageUrl} alt={quotee} width={140} height={140} />
       </div>
       <div className={styles.testemonial__bio}>
         <p>{quotee}</p>
