@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import elements from "../../styles/Elements.module.css";
+import { EffektButton } from "../elements/effektbutton";
 
 export const LoginError: React.FC<{ message: string }> = ({ message }) => {
   const {
@@ -9,8 +10,6 @@ export const LoginError: React.FC<{ message: string }> = ({ message }) => {
 
   return <div className={elements["center-wrapper"]}>
     <p>{message}</p>
-    <button 
-      className={elements["konduit-button"]}
-      onClick={loginWithRedirect}>Logg in</button>
+    <EffektButton onClick={loginWithRedirect} cy="btn-login">Logg in</EffektButton>
   </div>
 }

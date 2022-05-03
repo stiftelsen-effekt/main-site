@@ -1,5 +1,5 @@
-import style from "../../../styles/AgreementDetails.module.css"
-import styles from "../../../styles/Lightbox.module.css"
+import style from "../../../styles/AgreementDetails.module.css";
+import styles from "../../../styles/Lightbox.module.css";
 import React, { useContext, useEffect, useState } from "react";
 import { Distribution } from "../../../models";
 import { DistributionController } from "../../elements/distribution";
@@ -19,6 +19,44 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
 import { AlertCircle, Check } from "react-feather";
 import { Lightbox } from "../../elements/lightbox";
+import { EffektButton } from "../../elements/effektbutton";
+
+/**
+ * Gets the number of days in a month in a year
+ * @param {number} month - The month to check number of days of, january = 1
+ * @param {number} year - The year to check days of month
+ * @returns {number} The number of days in given month in given year
+ */
+export function daysInMonth(month: number, year: number) {
+  return new Date(year, month, 0).getDate();
+}
+
+/**
+ * Checks if paymentdate is within 6 days from now
+ * @param {Date} today - Todays date
+ * @param {number} currentPaymentDate - The paymentDate registered on agreement
+ * @returns {boolean} true if paymentdate is within 6 days from today, false if not
+ */
+export function checkPaymentDate(today: Date, currentPaymentDate: number) {
+  let paymentDate;
+  let daysMonth: number = daysInMonth(
+    today.getMonth() + 1,
+    today.getFullYear()
+  );
+  let todaysDate = today.getDate();
+  if (currentPaymentDate == 0) {
+    paymentDate = daysMonth;
+  } else {
+    paymentDate = currentPaymentDate;
+  }
+
+  let daysBetween = paymentDate - todaysDate;
+  if (daysBetween >= 0) {
+    return daysBetween <= 6 ? true : false;
+  } else {
+    return daysMonth - todaysDate + paymentDate <= 6 ? true : false;
+  }
+}
 
 export const AgreementDetails: React.FC<{
   type: "Vipps" | "AvtaleGiro";
@@ -34,12 +72,16 @@ export const AgreementDetails: React.FC<{
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
-const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-/**
- * Saves an agreement if any changes have been made. 
- * @returns a toast indicating whether the changes are saved or not.
- */
+  /**
+   * Saves an agreement if any changes have been made.
+   * @returns a toast indicating whether the changes are saved or not.
+   */
+  /**
+   * Saves an agreement if any changes have been made.
+   * @returns a toast indicating whether the changes are saved or not.
+   */
   const save = async () => {
     const token = await getAccessTokenSilently();
     if (type == "Vipps") {
@@ -82,7 +124,7 @@ const [lightboxOpen, setLightboxOpen] = useState(false);
       const updatedSum = await updateAvtaleagreementAmount(
         endpoint,
         parseFloat(sum) * 100,
-        token 
+        token
       );
       if (
         savedDistributionKID != null &&
@@ -105,31 +147,31 @@ const [lightboxOpen, setLightboxOpen] = useState(false);
     setLightboxOpen(false);
     const token = await getAccessTokenSilently();
     if (type === "Vipps") {
-      const cancelled = await cancelVippsAgreement(endpoint, token)
+      const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
-        successToast()
+        successToast();
         mutate(
           `/donors/${
             (user as User)["https://konduit.no/user-id"]
           }/recurring/vipps/`
         );
       } else {
-        failureToast()
+        failureToast();
       }
     } else if (type === "AvtaleGiro") {
-      const cancelled = await cancelAvtaleGiroAgreement(endpoint, token)
+      const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
-        successToast()
+        successToast();
         mutate(
           `/donors/${
             (user as User)["https://konduit.no/user-id"]
           }/recurring/avtalegiro/`
         );
       } else {
-        failureToast()
+        failureToast();
       }
     }
-  }
+  };
 
   return (
     <div className={style.wrapper} data-cy="agreement-list-details">
@@ -142,19 +184,49 @@ const [lightboxOpen, setLightboxOpen] = useState(false);
       <div className={style.values}>
         <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
         <div>
-        <input type="text" defaultValue={sum} onChange={(e) => setSum(e.target.value)} data-cy="agreement-list-amount-input"/>
-        <span>kr</span>
+          <input
+            type="text"
+            defaultValue={sum}
+            onChange={(e) => setSum(e.target.value)}
+            data-cy="agreement-list-amount-input"
+          />
+          <span>kr</span>
         </div>
       </div>
       <div className={style.actions}>
-        <button className={style.button} onClick={() => setLightboxOpen(true)} data-cy="btn-cancel-agreement">Avslutt avtale</button>
-        <button className={style.button} onClick={() => save()} data-cy="btn-save-agreement">Lagre</button>
+        <EffektButton
+          onClick={() => setLightboxOpen(true)}
+          cy="btn-cancel-agreement"
+        >
+          Avslutt avtale
+        </EffektButton>
+        <EffektButton
+          onClick={() => save()}
+          cy="btn-save-agreement"
+        >
+          Lagre
+        </EffektButton>
       </div>
-      <Lightbox open={lightboxOpen} onConfirm={() => cancel()} onCancel={() => setLightboxOpen(false)}>
+      <Lightbox
+        open={lightboxOpen}
+        onConfirm={() => cancel()}
+        onCancel={() => setLightboxOpen(false)}
+      >
         <div className={styles.textWrapper}>
           <h2>Avslutt avtale</h2>
-          <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
-          <p>Dersom du har en avtalegiro avtale og den har trekkdato nærmere enn 6 dager frem i tid har vi allerede sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta kontakt på donasjon@gieffektivt.no</p>
+          <p>
+            Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke
+            deg.
+          </p>
+          {checkPaymentDate(new Date(), day) ? (
+            <p>
+              Denne avtalegiro avtalen har trekkdato nærmere
+              enn 6 dager frem i tid. Vi allerede sendt melding til
+              banksystemene om å trekke deg. Dette skyldes tregheter i
+              registrering av trekk hos bankene. Om du ønsker refusjon på denne
+              donasjonen kan du ta kontakt på donasjon@gieffektivt.no
+            </p>
+          ) : null}
         </div>
       </Lightbox>
     </div>

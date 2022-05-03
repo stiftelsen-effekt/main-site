@@ -10,9 +10,14 @@ describe("Profile page", () => {
           content: donor
         }
       })
-    })
+    }).as('getDonor')
     
     cy.visit(`/profile/details/`);
+
+    /**
+     * Wait for initial data load
+     */
+    cy.wait(['@getDonor'], { timeout: 30000 })
     cy.get("[data-cy=navbar]", { timeout: 30000 }).should("exist");
   });
 

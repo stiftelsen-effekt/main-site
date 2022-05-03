@@ -28,7 +28,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  color: var(--secondary);
+  color: var(--primary);
   height: 100%;
   display: flex;
   align-items: center;
@@ -45,12 +45,14 @@
   padding-left: 10px;
   padding-right: 24px;
   border: none;
-  color: var(--secondary);
-  background: var(--primary);
+  color: var(--primary);
+  background: var(--secondary);
   font-size: 12px;
   width: 50px;
   height: 35px;
   text-align: right;
+  border-radius: 28px;
+  border: 1px solid var(--primary);
 }
 
 .warning-box {

@@ -9,13 +9,15 @@
   height: 35px;
   padding-left: 16px;
   border: none;
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
   font-size: 12px;
   font-family: "ESKlarheitGrotesk";
   min-width: 150px;
   box-sizing: border-box;
   width: 150px;
+  border-radius: 30px;
+  border: 1px solid var(--primary);
 }
 
 .actions {
@@ -61,12 +63,12 @@
   position: absolute;
   right: 0;
   top: 0;
-  color: var(--secondary);
+  color: var(--primary);
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center; 
-  padding-right: 10px; 
+  padding-right: 20px; 
   margin-top: 10px;
   font-size: 12px;
 }

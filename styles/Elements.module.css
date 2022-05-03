@@ -25,8 +25,8 @@
 .datepicker-input-wrapper input {
   padding: 12px 16px;
   border: none;
-  background: var(--secondary);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--secondary);
   font-size: 12px;
   user-select: none;
   font-family: "ESKlarheitGrotesk";
@@ -46,9 +46,9 @@
 .datepicker-wrapper {
   width: 280px;
   height: 220px;
-  background: var(--primary);
+  background: var(--secondary);
   display: block;
-  color: var(--secondary);
+  color: var(--primary);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   padding: 30px 20px 20px 20px;
@@ -60,7 +60,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  color: var(--secondary);
+  color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,8 +70,8 @@
 }
 
 .datepicker-button--selected {
-  background: var(--secondary);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--secondary);
 }
 
 .datepicker-last-row {
@@ -84,7 +84,7 @@
 
 .datepicker-button-last {
   height: 26px;
-  color: var(--secondary);
+  color: var(--primary);
   font-size: 12px;
   user-select: none;
   cursor: pointer;
@@ -96,8 +96,8 @@
 }
 
 .datepicker-button-last--selected {
-  background: var(--secondary);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--secondary);
 }
 
 .activity-indicator-wrapper {
@@ -133,6 +133,36 @@
   margin: 2px;
 }
 
+.button {
+  border: none;
+  border-radius: 48px;
+  font-family: "ESKlarheitGrotesk";
+  font-size: 14px;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+
+.buttonprimary {
+  background: var(--primary);
+  color: var(--secondary);
+}
+
+.buttonprimary:hover, .buttonprimary:active {
+  background: rgba(0,0,0,.8);
+}
+
+.buttonsecondary {
+  color: var(--primary);
+  background: var(--secondary);
+  border: 1px solid var(--primary);
+}
+
+.buttonsecondary:hover, .buttonsecondary:active {
+  border: 1px solid rgba(0,0,0,.5);
+}
+
 @media only screen and (max-width: 900px) {  
   .datepicker-input-wrapper {
     position: static;
@@ -151,4 +181,8 @@
     background: rgba(0,0,0,.5);
     z-index: 10000;
   }
+}
+
+.pageContent {
+  padding: 0 5vw;
 }

@@ -12,10 +12,6 @@
   text-align: left;
 }
 
-.table td:last-child {
-  text-align: right;
-}
-
 .gridContainer {
   display: grid;
   grid-template-columns: 20% 70%;
@@ -43,19 +39,20 @@
   display: inline-block;
 }
 
-table td svg.iconChevronUp {
+table td svg.iconChevronUp, table td svg.iconChevronDown {
   cursor: pointer;
   transition: transform 120ms ease-in-out;
-  transform: rotate(180deg);
   user-select: none;
   filter: var(--primary-filter);
+  float: right;
+}
+
+table td svg.iconChevronUp {
+  transform: rotate(180deg);
 }
 
 table td svg.iconChevronDown {
-  cursor: pointer;
   transition: transform 120ms ease-in-out;
-  user-select: none;
-  filter: var(--primary-filter);
 }
 
 .expanderContent {
