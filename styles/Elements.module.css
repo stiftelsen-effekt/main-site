@@ -13,7 +13,7 @@
   background: var(--primary);
   color: var(--secondary);
   padding: 14px 26px;
-  font-family: "ESKlarheitGrotesk";
+  font-family: 'ESKlarheitGrotesk';
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
   color: var(--secondary);
   font-size: 12px;
   user-select: none;
-  font-family: "ESKlarheitGrotesk";
+  font-family: 'ESKlarheitGrotesk';
   min-width: 150px;
   cursor: pointer;
   outline: none;
@@ -53,7 +53,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   padding: 30px 20px 20px 20px;
   box-sizing: border-box;
-  box-shadow: 0 0 5px 0px rgba(0,0,0,.3);
+  box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.3);
 }
 
 .datepicker-button {
@@ -136,7 +136,7 @@
 .button {
   border: none;
   border-radius: 48px;
-  font-family: "ESKlarheitGrotesk";
+  font-family: 'ESKlarheitGrotesk';
   font-size: 14px;
   padding: 14px 28px;
   cursor: pointer;
@@ -147,10 +147,12 @@
 .buttonprimary {
   background: var(--primary);
   color: var(--secondary);
+  outline-offset: -1px;
 }
 
-.buttonprimary:hover, .buttonprimary:active {
-  background: rgba(0,0,0,.8);
+.buttonprimary:hover,
+.buttonprimary:active {
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .buttonsecondary {
@@ -159,11 +161,111 @@
   border: 1px solid var(--primary);
 }
 
-.buttonsecondary:hover, .buttonsecondary:active {
-  border: 1px solid rgba(0,0,0,.5);
+.buttonsecondary:hover,
+.buttonsecondary:active {
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-@media only screen and (max-width: 900px) {  
+.buttontertiary {
+  border: none;
+  background-color: transparent;
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  outline: 2px dashed black;
+  outline-offset: -1px;
+}
+
+.buttontertiary:hover {
+  outline-color: rgba(0, 0, 0, 0.5);
+}
+
+.buttontertiary:focus,
+.buttonprimary:focus,
+.buttonsecondary:focus {
+  outline-color: var(--focus);
+}
+
+.teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 520px;
+}
+
+.teaserimage {
+  background: var(--primary);
+  position: relative;
+}
+
+.teasertext {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: space-between;
+  max-width: 90%;
+}
+
+.teasertext h2 {
+  font-size: 36px;
+}
+
+.teasertext p {
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 180%;
+}
+
+.salespitchwrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.salespitchitem {
+  border-top: 1px solid black;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 18px;
+  padding-right: 20%;
+}
+
+.introsection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: left;
+  width: 100%;
+  padding: 80px 0;
+}
+
+.introsection p {
+  white-space: pre-wrap;
+  padding-right: 20%;
+}
+
+.introsection h2 {
+  margin-top: 0;
+  font-size: 46px;
+  white-space: pre-wrap;
+}
+
+.calculatorteaser {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.calculatorteaser h2 {
+  font-size: 48px;
+}
+
+.calculatorteaser p {
+  font-size: 20px;
+}
+
+@media only screen and (max-width: 900px) {
   .datepicker-input-wrapper {
     position: static;
   }
@@ -178,8 +280,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 10000;
+  }
+
+  .teaser {
+    height: auto;
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: max-content max-content;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .teaserimage {
+    grid-row: 1;
+  }
+
+  .teasertext {
+    padding: 20px 0px;
+    max-width: auto;
+    grid-row: 2;
+  }
+
+  .salespitchwrapper {
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .introsection {
+    grid-template-columns: auto;
+    grid-template-rows: max-content 1fr;
+    padding: 40px 0;
+  }
+
+  .introsection p {
+    padding-right: 0;
+    line-height: 200%;
   }
 }
 
