@@ -55,6 +55,10 @@
   margin-left: 20px;
 }
 
+.navbar ul li.btnlogin:hover {
+  background: var(--primary-hover);
+}
+
 .navbar a.icon {
   display: none;
 }
