@@ -163,6 +163,86 @@
   border: 1px solid rgba(0,0,0,.5);
 }
 
+.teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 520px;
+}
+
+.teaserimage {
+  background: var(--primary);
+  position: relative;
+}
+
+.teasertext {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: space-between;
+  max-width: 90%;
+}
+
+.teasertext h2 {
+  font-size: 36px;
+}
+
+.teasertext p {
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 180%;
+}
+
+.salespitchwrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.salespitchitem {
+  border-top: 1px solid black;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 18px;
+  padding-right: 20%;
+}
+
+.introsection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: left;
+  width: 100%;
+  padding: 80px 0;
+}
+
+.introsection p {
+  white-space: pre-wrap;
+  padding-right: 20%;
+}
+
+.introsection h2 {
+  margin-top: 0;
+  font-size: 46px;
+  white-space: pre-wrap;
+}
+
+.calculatorteaser {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.calculatorteaser h2 {
+  font-size: 48px;
+}
+
+.calculatorteaser p {
+  font-size: 20px;
+}
+
 @media only screen and (max-width: 900px) {  
   .datepicker-input-wrapper {
     position: static;
@@ -180,6 +260,45 @@
     align-items: center;
     background: rgba(0,0,0,.5);
     z-index: 10000;
+  }
+
+  .teaser {
+    height: auto;
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: max-content max-content;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .teaserimage {
+    grid-row: 1;
+  }
+
+  .teasertext {
+    padding: 20px 0px;
+    max-width: auto;
+    grid-row: 2;
+  }
+
+  .salespitchwrapper {
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .introsection {
+    grid-template-columns: auto;
+    grid-template-rows: max-content 1fr;
+    padding: 40px 0;
+  }
+
+  .introsection p {
+    padding-right: 0;
+    line-height: 200%;
   }
 }
 

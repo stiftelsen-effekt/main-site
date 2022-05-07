@@ -10,6 +10,9 @@ const STUDIO_REWRITE = {
 const nextConfig = {
   reactStrictMode: true,
   rewrites: () => [STUDIO_REWRITE],
+  images: {
+    domains: ['cdn.sanity.io']
+  }
 }
 
 module.exports = nextConfig

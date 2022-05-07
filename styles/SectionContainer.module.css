@@ -1,11 +1,14 @@
 .inverted {
-  background-color: var(--primary);
-  color: var(--secondary);
+  --primary: #fff;
+  --secondary: #000;
+  background-color: var(--secondary);
+  color: var(--primary);
 }
 
 .section__container {
   width: 100%;
   padding: 0 5vw;
+  margin-bottom: 50px;
 }
 
 .divider {
