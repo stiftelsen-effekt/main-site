@@ -200,7 +200,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 20px;
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
 .salespitchitem {
@@ -247,6 +247,15 @@
     padding: 20px 0px;
     max-width: auto;
     grid-row: 2;
+  }
+
+  .salespitchwrapper {
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
   }
 }
 
