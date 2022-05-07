@@ -16,7 +16,7 @@ export const Teaser: React.FC<Teaser> = ({ title, paragraph, link, imageurl }) =
   return (
     <div className={elements.teaser}>
       <div className={elements.teaserimage}>
-        <Image src={imageurl} alt={title} layout={'fill'} />
+        <Image src={imageurl} alt={title} layout={'responsive'} width={400} height={300} />
       </div>
       <div className={elements.teasertext}>
         <div>

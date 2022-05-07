@@ -213,6 +213,25 @@
     background: rgba(0,0,0,.5);
     z-index: 10000;
   }
+
+  .teaser {
+    height: auto;
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: max-content max-content;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .teaserimage {
+    grid-row: 1;
+  }
+
+  .teasertext {
+    padding: 20px 0px;
+    max-width: auto;
+    grid-row: 2;
+  }
 }
 
 .pageContent {

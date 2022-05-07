@@ -54,4 +54,14 @@
     font-size: 24px;
     font-weight: 400;
   }
+
+  .teasers div:nth-child(2n) > div:nth-child(1) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  
+  .teasers div:nth-child(2n) > div:nth-child(2) {
+    grid-column: auto;
+    grid-row: auto;
+  }
 }
