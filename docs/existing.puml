@@ -1,0 +1,26 @@
+@startuml
+skinparam componentStyle rectangle
+
+
+
+component frontend {
+  component admin.gieffektivt.no {
+    [admin-panel]
+  }
+  component gieffektivt.no {
+    [donation-widget]
+  }
+}
+
+component backend {
+  database MySQL
+  component data.gieffektivt.no {
+    [API]
+  }
+}
+
+[API] <-up-> MySQL
+[API] <-down-> [donation-widget]
+[API] <-down-> [admin-panel]
+
+@enduml

@@ -50,6 +50,9 @@ body {
   background: var(--secondary);
   color: var(--primary);
   font-weight: 300;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss10' on, 'ss08' on;
 }
 
 h1,
