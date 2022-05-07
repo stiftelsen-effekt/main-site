@@ -211,6 +211,38 @@
   padding-right: 20%;
 }
 
+.introsection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: left;
+  width: 100%;
+  padding: 80px 0;
+}
+
+.introsection p {
+  white-space: pre-wrap;
+  padding-right: 20%;
+}
+
+.introsection h2 {
+  margin-top: 0;
+  font-size: 46px;
+  white-space: pre-wrap;
+}
+
+.calculatorteaser {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.calculatorteaser h2 {
+  font-size: 48px;
+}
+
+.calculatorteaser p {
+  font-size: 20px;
+}
+
 @media only screen and (max-width: 900px) {  
   .datepicker-input-wrapper {
     position: static;
@@ -256,6 +288,17 @@
     row-gap: 20px;
     width: 100%;
     margin-bottom: 30px;
+  }
+
+  .introsection {
+    grid-template-columns: auto;
+    grid-template-rows: max-content 1fr;
+    padding: 40px 0;
+  }
+
+  .introsection p {
+    padding-right: 0;
+    line-height: 200%;
   }
 }
 

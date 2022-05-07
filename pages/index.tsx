@@ -12,6 +12,8 @@ import { getClient } from '../lib/sanity.server'
 import Link from 'next/link'
 import { SalesPitch } from '../components/elements/salespitch'
 import { SalesPitchPoint } from '../components/elements/salespitchitem'
+import { IntroSection } from '../components/elements/introsection'
+import { CalculatorTeaser } from '../components/elements/calculatorteaser'
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   return (
@@ -37,6 +39,17 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
           heading: pitch.heading,
           paragraph: pitch.paragraph
         }))}></SalesPitch>
+      </SectionContainer>
+
+      <SectionContainer nodivider inverted>
+        <IntroSection 
+          heading={data.frontpage[0].introsection.heading} 
+          paragraph={data.frontpage[0].introsection.paragraph} 
+          slug={data.frontpage[0].introsection.slug}></IntroSection>
+      </SectionContainer>
+
+      <SectionContainer>
+        <CalculatorTeaser></CalculatorTeaser>
       </SectionContainer>
       
       <SectionContainer heading=''>
@@ -90,6 +103,7 @@ const fetchFrontpage = groq`
     sub_heading,
     sub_heading_link_target,
     salespitch,
+    introsection,
     key_points,
     testimonials[] {
       ...,

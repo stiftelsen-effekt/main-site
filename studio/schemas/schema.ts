@@ -14,6 +14,7 @@ import role from './role'
 import testimonial from './testimonial'
 import teaser from './teaser'
 import salespitch from './salespitchpoint'
+import introsection from './introsection'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -32,6 +33,7 @@ export default createSchema({
     profile,
     role,
     testimonial,
-    teaser
+    teaser,
+    introsection
   ]),
 })

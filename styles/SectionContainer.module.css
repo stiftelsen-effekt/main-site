@@ -1,6 +1,8 @@
 .inverted {
-  background-color: var(--primary);
-  color: var(--secondary);
+  --primary: #fff;
+  --secondary: #000;
+  background-color: var(--secondary);
+  color: var(--primary);
 }
 
 .section__container {

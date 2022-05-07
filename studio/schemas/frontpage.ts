@@ -19,6 +19,11 @@ export default {
       title: 'Sub heading link target'
     },
     {
+      name: 'introsection',
+      type: 'introsection',
+      title: 'Intro section'
+    },
+    {
       name: 'salespitch',
       type: 'array',
       title: 'Salespitch',
