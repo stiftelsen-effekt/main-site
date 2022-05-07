@@ -6,14 +6,14 @@ export interface Testimony {
   quotee: string
   quoteeBackground: string
   quote: string
-  imageUrl: string
+  imageurl: string
 }
 
 export const Testimonial: React.FC<Testimony> = ({
   quotee,
   quote,
   quoteeBackground,
-  imageUrl,
+  imageurl,
 }) => {
   return (
     <section className={styles.testemonial}>
@@ -21,7 +21,7 @@ export const Testimonial: React.FC<Testimony> = ({
         <q>{quote}</q>
       </h2>
       <div className={styles.testemonial__image}>
-        <Image src={imageUrl} alt={quotee} width={140} height={140} />
+        <Image src={imageurl} alt={quotee} width={140} height={140} />
       </div>
       <div className={styles.testemonial__bio}>
         <p>{quotee}</p>

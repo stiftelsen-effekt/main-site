@@ -29,25 +29,32 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </div>
 
+      
+      <SectionContainer heading=''>
+        <div className={styles.teasers}>
+          {data.frontpage[0].teasers.map(
+            ({ _key, title, paragraph, link, imageurl }: Teaser & { _key: string }) =>
+            <Teaser 
+              key={_key}
+              title={title}
+              paragraph={paragraph}
+              link={link}
+              imageurl={imageurl}></Teaser>)
+          }
+        </div>
+      </SectionContainer>
       <SectionContainer heading="Slik fungerer det">
         <Stepwize />
       </SectionContainer>
-      <SectionContainer heading=''>
-        <div className={styles.teasers}>
-          <Teaser title='Maks impact.' paragraph='asodk' link='https://google.com/' imageurl='https://cdn.sanity.io/images/zp7mbokg/production/G3i4emG6B8JnTmGoN0UjgAp8-300x450.jpg'></Teaser>
-          <Teaser title='Full oversikt.' paragraph='asodk' link='https://google.com/' imageurl='https://cdn.sanity.io/images/zp7mbokg/production/G3i4emG6B8JnTmGoN0UjgAp8-300x450.jpg'></Teaser>
-          <Teaser title='Skattefradrag.' paragraph='asodk' link='https://google.com' imageurl='https://cdn.sanity.io/images/zp7mbokg/production/G3i4emG6B8JnTmGoN0UjgAp8-300x450.jpg'></Teaser>
-        </div>
-      </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         {data.frontpage[0].testimonials.map(
-          ({ quote, quotee, quoteeBackground, imageUrl }: Testimony) =>
+          ({ _key, quote, quotee, quoteeBackground, imageurl }: Testimony & { _key: string }) =>
             <Testimonial
-              key={quotee}
+              key={_key}
               quote={quote}
               quotee={quotee}
               quoteeBackground={quoteeBackground}
-              imageUrl={imageUrl}
+              imageurl={imageurl}
             />)
         }
       </SectionContainer>
@@ -75,11 +82,13 @@ const fetchFrontpage = groq`
     sub_heading_link_target,
     key_points,
     testimonials[] {
-      quote,
-      quotee,
-      quotee_background,
-      "imageUrl": image.asset->url
-    }
+      ...,
+      "imageurl": image.asset->url
+    },
+    teasers[] {
+      ...,
+      "imageurl": image.asset->url
+    },
   },
 }
 `

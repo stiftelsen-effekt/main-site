@@ -12,6 +12,7 @@ import organizations from './organizations'
 import profile from './profile'
 import role from './role'
 import testimonial from './testimonial'
+import teaser from './teaser'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -29,5 +30,6 @@ export default createSchema({
     profile,
     role,
     testimonial,
+    teaser
   ]),
 })

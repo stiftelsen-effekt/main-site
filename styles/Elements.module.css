@@ -167,11 +167,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 100%;
-  height: 450px;
+  height: 520px;
 }
 
 .teaserimage {
   background: var(--primary);
+  position: relative;
 }
 
 .teasertext {
@@ -181,6 +182,17 @@
   flex-grow: 1;
   height: 100%;
   justify-content: space-between;
+  max-width: 90%;
+}
+
+.teasertext h2 {
+  font-size: 36px;
+}
+
+.teasertext p {
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 180%;
 }
 
 @media only screen and (max-width: 900px) {  

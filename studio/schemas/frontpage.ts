@@ -19,6 +19,12 @@ export default {
       title: 'Sub heading link target'
     },
     {
+      name: 'teasers',
+      type: 'array',
+      title: 'Teasers',
+      of: [{ type: 'teaser' }],
+    },
+    {
       name: 'key_points',
       type: 'array',
       title: 'Key points',
