@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles/SectionContainer.module.css'
 
 interface Section {
-  heading: string
+  heading?: string
   inverted?: boolean
   nodivider?: boolean
 }
