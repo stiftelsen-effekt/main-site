@@ -10,6 +10,8 @@ import { Teaser } from '../components/elements/teaser'
 import { groq } from 'next-sanity'
 import { getClient } from '../lib/sanity.server'
 import Link from 'next/link'
+import { SalesPitch } from '../components/elements/salespitch'
+import { SalesPitchPoint } from '../components/elements/salespitchitem'
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   return (
@@ -29,6 +31,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </div>
 
+      <SectionContainer heading=''>
+        <SalesPitch points={data.frontpage[0].salespitch.map((pitch: SalesPitchPoint, i: number) => ({
+          number: i+1,
+          heading: pitch.heading,
+          paragraph: pitch.paragraph
+        }))}></SalesPitch>
+      </SectionContainer>
       
       <SectionContainer heading=''>
         <div className={styles.teasers}>
@@ -80,6 +89,7 @@ const fetchFrontpage = groq`
     main_heading,
     sub_heading,
     sub_heading_link_target,
+    salespitch,
     key_points,
     testimonials[] {
       ...,

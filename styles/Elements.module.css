@@ -195,6 +195,22 @@
   line-height: 180%;
 }
 
+.salespitchwrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+  width: 100%;
+  margin-bottom: 80px;
+}
+
+.salespitchitem {
+  border-top: 1px solid black;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 18px;
+  padding-right: 20%;
+}
+
 @media only screen and (max-width: 900px) {  
   .datepicker-input-wrapper {
     position: static;

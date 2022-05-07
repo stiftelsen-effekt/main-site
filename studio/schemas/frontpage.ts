@@ -19,6 +19,12 @@ export default {
       title: 'Sub heading link target'
     },
     {
+      name: 'salespitch',
+      type: 'array',
+      title: 'Salespitch',
+      of: [{ type: 'salespitchpoint' }]
+    },
+    {
       name: 'teasers',
       type: 'array',
       title: 'Teasers',
