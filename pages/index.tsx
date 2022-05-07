@@ -31,7 +31,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </div>
 
-      <SectionContainer heading=''>
+      <SectionContainer nodivider>
         <SalesPitch points={data.frontpage[0].salespitch.map((pitch: SalesPitchPoint, i: number) => ({
           number: i+1,
           heading: pitch.heading,
