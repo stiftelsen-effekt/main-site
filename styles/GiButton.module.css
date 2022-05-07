@@ -4,11 +4,12 @@
   right: 1em;
   top: 88vh;
   position: fixed;
+  z-index: 100;
 }
 
 .gibutton:hover svg,
 .gibutton:focus svg {
-  fill: salmon;
+  fill: var(--primary-hover);
 }
 
 .gibutton svg {
@@ -16,6 +17,10 @@
   height: auto;
   mix-blend-mode: difference;
   isolation: isolate;
+}
+
+.gibutton svg circle {
+  stroke-width: 2px;
 }
 
 .gibutton__text {
