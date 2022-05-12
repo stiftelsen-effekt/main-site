@@ -2,8 +2,8 @@
   cursor: pointer;
   position: fixed;
   right: 1em;
-  top: 88vh;
-  position: fixed;
+  top: 90%;
+
   z-index: 100;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .gibutton svg circle {
-  stroke-width: 2px;
+  stroke-width: 4px;
 }
 
 .gibutton__text {
@@ -31,7 +31,16 @@
 }
 
 @media screen and (min-width: 900px) {
+  .gibutton {
+    position: fixed;
+    top: 70%;
+  }
+
   .gibutton svg {
     width: 100px;
+  }
+
+  .gibutton svg circle {
+    stroke-width: 2px;
   }
 }
