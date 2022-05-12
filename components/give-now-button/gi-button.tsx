@@ -21,9 +21,9 @@ export const GiButton: React.FC<giBtn> = ({ url, darkMode }) => {
   return (
     <Link href={url} passHref>
       <div className={styles.gibutton}>
-        <svg viewBox="0 0 100 100" fill={bg} stroke={color}>
+        <svg viewBox="0 0 104 104" fill={bg} stroke={color}>
           <g>
-            <circle cx="50%" cy="50%" r="49.5" />
+            <circle cx="50%" cy="50%" r="50" />
             <text
               className={styles.gibutton__text}
               x="52%"
