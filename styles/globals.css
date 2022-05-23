@@ -71,7 +71,7 @@ h1 {
 
 a {
   color: inherit;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 a:hover {

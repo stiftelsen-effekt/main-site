@@ -7,6 +7,10 @@ import styles from '../styles/Organizations.module.css'
 import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
+import { SectionContainer } from "../components/sectionContainer";
+import { PageHeader } from "../components/elements/pageheader";
+import Link from "next/link";
+import { ResponsiveImage } from "../components/elements/responsiveimage";
 
 const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
@@ -23,30 +27,39 @@ const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, pre
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Våre anbefalte<br /> organisasjoner</h1>
-      
-      <div className={styles.grid}>
-        {/** Description */}
-        <div>
-          <PortableText blocks={data.description[0].description}></PortableText>
-        </div>
-        {/** Organizations */}
-        <div>
+      <PageHeader title="Topplista." />
+      <SectionContainer>
+        <div className={styles.organizationWrapper}>
           {
             data.organizations.map((organization: any) => <>
               <div key={organization._id} className={styles.organization}>
                 <div className={styles.meta}>
-                  <h2>{organization.name}</h2>
-                  <h3>{organization.subtitle}</h3>
+                  <div>
+                    <h2>{organization.name}</h2>
+                    <h3>{organization.subtitle}</h3>
+                  </div>
+                  <div className={styles.logo}>
+                    {organization.logo ? <ResponsiveImage image={organization.logo} /> : null}
+                  </div>
                 </div>
                 <div className={styles.description}>
+                  <h2 className={styles.oneliner}>{organization.oneliner}</h2>
                   <PortableText blocks={organization.content}></PortableText>
+
+                  <h2>Les mer:</h2>
+                  <ul className={styles.links}>
+                    {organization.links.map((link: {_key: string, url: string, title: string}) => (
+                      <li key={link._key}>
+                        <Link href={link.url} passHref>{`→ ${link.title}`}</Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </>)
           }
         </div>
-      </div>
+      </SectionContainer>
     </>
   )
 }
@@ -71,10 +84,17 @@ const fetchOrganizationsPage = groq`
     _id,
     name,
     subtitle,
-    content
+    oneliner,
+    logo,
+    content,
+    links
   }
 }
 `
 
 Organizations.layout = Layout
 export default Organizations
+
+function useNextSanityImage(configuredSanityClient: any, image: any) {
+  throw new Error("Function not implemented.");
+}
