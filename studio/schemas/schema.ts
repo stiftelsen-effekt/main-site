@@ -16,6 +16,7 @@ import teaser from './teaser'
 import salespitch from './salespitchpoint'
 import introsection from './introsection'
 import siteSettings from './siteSettings'
+import link from './link'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -29,6 +30,8 @@ export default createSchema({
     frontpage,
     introsection,
     keyPoint,
+    salespitch,
+    link,
     organization,
     organizations,
     profile,

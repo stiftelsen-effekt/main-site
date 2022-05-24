@@ -265,6 +265,24 @@
   font-size: 20px;
 }
 
+.pageheader {
+  padding: 0 5vw;
+  min-height: 50vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.pageheader div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.pageheader h1 {
+  font-size: 96px;
+  
+}
+
 @media only screen and (max-width: 900px) {
   .datepicker-input-wrapper {
     position: static;
@@ -321,6 +339,14 @@
   .introsection p {
     padding-right: 0;
     line-height: 200%;
+  }
+
+  .pageheader {
+    min-height: 70vh;
+  }
+
+  .pageheader h1 {
+    font-size: 48px;
   }
 }
 

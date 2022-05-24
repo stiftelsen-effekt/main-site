@@ -18,7 +18,7 @@
 .section__heading {
   font-size: 16px;
   margin: 0;
-  padding-top: 2rem;
+  padding-top: 1rem;
 }
 
 .section__content {
@@ -27,4 +27,5 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 1rem;
 }
