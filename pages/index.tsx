@@ -100,7 +100,7 @@ const fetchFrontpage = groq`
 {
   "frontpage": *[_type == "frontpage"] {
     main_heading,
-    sub_heading,
+    sub_heading, 
     sub_heading_link_target,
     salespitch,
     introsection,
