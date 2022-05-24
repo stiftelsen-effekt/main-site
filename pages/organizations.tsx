@@ -31,7 +31,7 @@ const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, pre
       <SectionContainer>
         <div className={styles.organizationWrapper}>
           {
-            data.organizations.map((organization: any) => <>
+            data.organizations.map((organization: any) => 
               <div key={organization._id} className={styles.organization}>
                 <div className={styles.meta}>
                   <div>
@@ -56,7 +56,7 @@ const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, pre
                   </ul>
                 </div>
               </div>
-            </>)
+            )
           }
         </div>
       </SectionContainer>

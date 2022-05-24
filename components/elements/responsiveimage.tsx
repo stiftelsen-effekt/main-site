@@ -10,5 +10,5 @@ export const ResponsiveImage: React.FC<{ image: SanityImageSource }> = ({ image 
 		image
 	);
 
-  return (<Image {...imageProps} layout="responsive" sizes="(max-width: 800px) 100vw, 800px" alt="Image" />)
+  return (<Image {...imageProps} layout="fill" objectFit="contain" sizes="(max-width: 800px) 100vw, 800px" alt="Image" />)
 }

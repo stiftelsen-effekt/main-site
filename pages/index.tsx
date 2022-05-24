@@ -55,13 +55,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       <SectionContainer heading=''>
         <div className={styles.teasers}>
           {data.frontpage[0].teasers.map(
-            ({ _key, title, paragraph, link, imageurl }: Teaser & { _key: string }) =>
+            ({ _key, title, paragraph, link, image }: Teaser & { _key: string }) =>
             <Teaser 
               key={_key}
               title={title}
               paragraph={paragraph}
               link={link}
-              imageurl={imageurl}></Teaser>)
+              image={image}></Teaser>)
           }
         </div>
       </SectionContainer>
@@ -70,13 +70,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         {data.frontpage[0].testimonials.map(
-          ({ _key, quote, quotee, quoteeBackground, imageurl }: Testimony & { _key: string }) =>
+          ({ _key, quote, quotee, quotee_background: quoteeBackground, image }: Testimony & { _key: string, quotee_background: string }) =>
             <Testimonial
               key={_key}
               quote={quote}
               quotee={quotee}
               quoteeBackground={quoteeBackground}
-              imageurl={imageurl}
+              image={image}
             />)
         }
       </SectionContainer>
@@ -105,14 +105,8 @@ const fetchFrontpage = groq`
     salespitch,
     introsection,
     key_points,
-    testimonials[] {
-      ...,
-      "imageurl": image.asset->url
-    },
-    teasers[] {
-      ...,
-      "imageurl": image.asset->url
-    },
+    testimonials,
+    teasers
   },
 }
 `
