@@ -1,4 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
+import { Book, Settings } from 'react-feather'
 
 export default () =>
   S.list()
@@ -6,6 +7,7 @@ export default () =>
     .items([
       S.listItem()
         .title('Pages')
+        .icon(Book)
         .child(
           S.list().title('pages').items([
             S.listItem()
@@ -28,18 +30,11 @@ export default () =>
             S.listItem()
               .title('Profile page')
               .child(S.document().schemaType('profile').documentId('profile')),
-            ...S.documentTypeListItems().filter(
-              (listItem) =>
-                !['frontpage'].includes(listItem.getId() || '') &&
-                !['about_us'].includes(listItem.getId() || '') &&
-                !['organizations'].includes(listItem.getId() || '') &&
-                !['profile'].includes(listItem.getId() || '') &&
-                !['siteSettings'].includes(listItem.getId() || '')
-            ),
           ])
         ),
       S.listItem()
         .title('Settings')
+        .icon(Settings)
         .child(
           S.document().schemaType('siteSettings').documentId('siteSettings')
         ),

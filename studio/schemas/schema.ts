@@ -3,20 +3,39 @@ import createSchema from 'part:@sanity/base/schema-creator'
 
 // Then import schema types from any plugins that might expose them
 import schemaTypes from 'all:part:@sanity/base/schema-type'
-import about from './about'
-import contributor from './contributor'
-import frontpage from './frontpage'
-import keyPoint from './key-point'
-import organization from './organization'
-import organizations from './organizations'
-import profile from './profile'
-import role from './role'
-import testimonial from './testimonial'
-import teaser from './teaser'
-import salespitch from './salespitchpoint'
-import introsection from './introsection'
+import about from './pages/about'
+import contributor from './types/contributor'
+import frontpage from './pages/frontpage'
+import keyPoint from './types/key-point'
+import organization from './types/organization'
+import organizations from './pages/organizations'
+import profile from './pages/profile'
+import role from './types/role'
+import testimonial from './types/testimonial'
+import teaser from './types/teaser'
+import salespitch from './types/salespitchpoint'
+import introsection from './types/introsection'
 import siteSettings from './siteSettings'
-import link from './link'
+import link from './types/link'
+
+const pages = [
+  frontpage,
+  organizations,
+  about,
+  profile,
+]
+
+const types = [
+  teaser,
+  testimonial,
+  contributor,
+  introsection,
+  keyPoint,
+  salespitch,
+  link,
+  organization,
+  role,
+]
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,21 +43,7 @@ export default createSchema({
   name: 'default',
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
-  types: schemaTypes.concat([
-    about,
-    contributor,
-    frontpage,
-    introsection,
-    keyPoint,
-    salespitch,
-    link,
-    organization,
-    organizations,
-    profile,
-    role,
-    salespitch,
+  types: schemaTypes.concat(pages, types, [
     siteSettings,
-    teaser,
-    testimonial,
   ]),
 })
