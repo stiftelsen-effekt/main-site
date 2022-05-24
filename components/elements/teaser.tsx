@@ -3,20 +3,22 @@ import { useRouter } from "next/router";
 import React from "react";
 import elements from "../../styles/Elements.module.css";
 import { EffektButton } from "./effektbutton";
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { ResponsiveImage } from "./responsiveimage";
 
 export interface Teaser { 
   title: string, 
   paragraph: string, 
   link: string, 
-  imageurl: string 
+  image: SanityImageSource
 }
-export const Teaser: React.FC<Teaser> = ({ title, paragraph, link, imageurl }) => {
+export const Teaser: React.FC<Teaser> = ({ title, paragraph, link, image }) => {
   const router = useRouter()
   
   return (
     <div className={elements.teaser}>
       <div className={elements.teaserimage}>
-        <Image src={imageurl} alt={title} layout={'responsive'} width={400} height={300} />
+        <ResponsiveImage image={image} />
       </div>
       <div className={elements.teasertext}>
         <div>

@@ -9,19 +9,19 @@ export default {
       title: 'Name'
     },
     {
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string'
+    },
+    {
       name: 'abbriviation',
       type: 'string',
       title: 'Abbriviation'
     },
     {
-      name: 'homepage',
+      name: 'oneliner',
       type: 'string',
-      title: 'Homepage'
-    },
-    {
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string'
+      title: 'Oneliner'
     },
     {
       name: 'content',
@@ -33,6 +33,12 @@ export default {
       name: 'logo',
       title: 'Logo',
       type: 'image',
+    },
+    {
+      name: 'links',
+      title: 'Links',
+      type: 'array',
+      of: [{ type: 'link' }]
     },
     {
       name: 'active',
