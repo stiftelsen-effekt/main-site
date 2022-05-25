@@ -36,6 +36,6 @@ export default () =>
         .title('Settings')
         .icon(Settings)
         .child(
-          S.document().schemaType('siteSettings').documentId('siteSettings')
+          S.document().schemaType('site_settings').documentId('site_settings')
         ),
     ]);

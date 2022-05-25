@@ -11,6 +11,7 @@ import { SectionContainer } from "../components/sectionContainer";
 import { PageHeader } from "../components/elements/pageheader";
 import Link from "next/link";
 import { ResponsiveImage } from "../components/elements/responsiveimage";
+import { Navbar } from "../components/main/navbar";
 
 const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
@@ -26,6 +27,8 @@ const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, pre
         <meta name="description" content="Konduit. - Organizations" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Navbar elements={data.settings[0]["main_navigation"]} />
 
       <PageHeader title="Topplista." />
       <SectionContainer>
@@ -77,6 +80,25 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchOrganizationsPage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
+  },
   "description": *[_type == "organizations"] {
     description
   },

@@ -1,5 +1,7 @@
+import { pages } from "./schema";
+
 export default {
-  name: 'siteSettings',
+  name: 'site_settings',
   title: 'Site Settings',
   type: 'document',
   fields: [
@@ -15,21 +17,10 @@ export default {
     },
     {
       title: 'Main Navigation',
-      name: 'mainNav',
+      name: 'main_navigation',
       description: 'Select pages for the top menu',
       type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [
-            { type: 'about_us' },
-            { type: 'frontpage' },
-            { type: 'organizations' },
-            { type: 'profile' },
-            { type: 'contributor'}
-          ],
-        },
-      ],
+      of: [{ type: 'navitem' }, { type: 'navgroup' }],
     },
   ],
 };

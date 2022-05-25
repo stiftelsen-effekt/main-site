@@ -17,15 +17,17 @@ import salespitch from './types/salespitchpoint'
 import introsection from './types/introsection'
 import siteSettings from './siteSettings'
 import link from './types/link'
+import navitem from './types/navitem'
+import navgroup from './types/navgroup'
 
-const pages = [
+export const pages = [
   frontpage,
   organizations,
   about,
   profile,
 ]
 
-const types = [
+export const types = [
   teaser,
   testimonial,
   contributor,
@@ -35,6 +37,8 @@ const types = [
   link,
   organization,
   role,
+  navitem,
+  navgroup
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity
