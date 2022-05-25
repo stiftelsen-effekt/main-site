@@ -7,6 +7,9 @@ import styles from '../styles/About.module.css'
 import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
+import { Navbar } from "../components/main/navbar";
+import { PageHeader } from "../components/elements/pageheader";
+import { SectionContainer } from "../components/sectionContainer";
 
 const About: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
@@ -23,26 +26,29 @@ const About: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) 
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Om oss</h1>
-      
-      <PortableText blocks={data.about[0].content}></PortableText>
+      <Navbar elements={data.settings[0]["main_navigation"]} />
 
-      {
-        data.people.map((role: any) => (
-          <div key={role._id}>
-            <h2 >{role.title}</h2>
-            <div className={styles.grid}>
-              {role.members.map((member: any) => (
-                <div key={member._id} className={styles.person}>
-                  <strong>{member.name}</strong>
-                  <div>{member.subrole}</div>
-                  <div>{member.additional}</div>
-                </div>
-              ))}
+      <PageHeader title={"Om oss"}></PageHeader>
+      
+      <SectionContainer>
+        <PortableText blocks={data.about[0].content}></PortableText>
+        {
+          data.people.map((role: any) => (
+            <div key={role._id}>
+              <h2 >{role.title}</h2>
+              <div className={styles.grid}>
+                {role.members.map((member: any) => (
+                  <div key={member._id} className={styles.person}>
+                    <strong>{member.name}</strong>
+                    <div>{member.subrole}</div>
+                    <div>{member.additional}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))
-      }
+          ))
+        }
+      </SectionContainer>
     </>
   )
 }
@@ -60,6 +66,25 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchAboutUs = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
+  },
   "about": *[_type == "about_us"] {
     content
   },

@@ -9,5 +9,12 @@ export default {
       type: 'array',
       of: [{type: 'block'}]
     },
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      readOnly: true,
+      initialValue: '/organizations'
+    }
   ] 
 }

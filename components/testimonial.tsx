@@ -20,7 +20,7 @@ export const Testimonial: React.FC<Testimony> = ({
     <section className={styles.testimonial}>
       <p className={styles.testemonial__quote}>“{quote}”</p>
       <div className={styles.testemonial__image}>
-        <ResponsiveImage image={image} />
+        <ResponsiveImage image={image} /> 
       </div>
       <div className={styles.testimonial__bio}>
         <p>{quotee}</p>

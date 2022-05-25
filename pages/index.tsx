@@ -14,6 +14,7 @@ import { SalesPitch } from '../components/elements/salespitch'
 import { SalesPitchPoint } from '../components/elements/salespitchitem'
 import { IntroSection } from '../components/elements/introsection'
 import { CalculatorTeaser } from '../components/elements/calculatorteaser'
+import { Navbar } from '../components/main/navbar'
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   return (
@@ -23,6 +24,8 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <meta name="description" content="Effektiv bistand" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Navbar elements={data.settings[0]["main_navigation"]} />
 
       <div className={styles.hero}>
         <div className={styles.header}>
@@ -98,6 +101,25 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchFrontpage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
+  },
   "frontpage": *[_type == "frontpage"] {
     main_heading,
     sub_heading, 
