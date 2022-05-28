@@ -19,7 +19,7 @@ export default {
       title: 'Slug',
       type: 'slug',
       options: {
-        source: (doc, options) => doc.header.title,
+        source: (doc: { header: { title: string } }, options: any) => doc.header.title,
       }
     }
   ],
