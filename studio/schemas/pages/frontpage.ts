@@ -54,5 +54,10 @@ export default {
       readOnly: true,
       initialValue: '/'
     }
-  ]
+  ],
+  preview: {
+    select: {
+      title: 'main_heading'
+    }
+  }
 }

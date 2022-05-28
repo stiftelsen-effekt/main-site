@@ -4,9 +4,9 @@ export default {
   type: 'document',
   fields: [
     {
-      name: 'surprise',
-      title: 'Surprise',
-      type: 'text'
+      name: 'header',
+      title: 'Header',
+      type: 'pageheader'
     },
     {
       name: 'content',
@@ -21,5 +21,10 @@ export default {
       readOnly: true,
       initialValue: '/about'
     }
-  ]
+  ],
+  preview: {
+    select: {
+      title: 'header.title'
+    }
+  }
 }

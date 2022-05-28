@@ -22,5 +22,14 @@ export default {
       type: 'array',
       of: [{ type: 'navitem' }, { type: 'navgroup' }],
     },
+    {
+      name: 'contact',
+      title: 'Contact info',
+      type: 'reference',
+      to: [{ type: 'contactinfo' }],
+      options: {
+        disableNew: true
+      }
+    }
   ],
 };
