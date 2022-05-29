@@ -1,42 +1,10 @@
 import React from 'react'
 import styles from '../../styles/GiButton.module.css'
-import Link from 'next/link'
 
-interface giBtn {
-  url: string
-  darkMode?: boolean
-}
-
-export const GiButton: React.FC<giBtn> = ({ url, darkMode }) => {
-  let color = 'white'
-  let bg = 'black'
-
-  function colorSwap(forground: string, background: string) {
-    color = forground
-    bg = background
-  }
-
-  darkMode == true ? colorSwap('black', 'white') : null
-
+export const GiButton: React.FC<{ inverted: boolean, onClick: () => void }> = ({ inverted, onClick }) => {
   return (
-    <Link href={url} passHref>
-      <div className={styles.gibutton}>
-        <svg viewBox="0 0 104 104" fill={bg} stroke={color}>
-          <g>
-            <circle cx="50%" cy="50%" r="50" />
-            <text
-              className={styles.gibutton__text}
-              x="52%"
-              y="65%"
-              textAnchor="middle"
-              alignmentBaseline="central"
-              fill={color}
-            >
-              Gi.
-            </text>
-          </g>
-        </svg>
-      </div>
-    </Link>
+    <div className={`${styles.gibutton} ${inverted ? styles.gibuttoninverted : null}`} onClick={onClick}>
+      Gi.
+    </div>
   )
 }
