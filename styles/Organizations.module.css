@@ -27,11 +27,6 @@
   position: relative;
 }
 
-.links {
-  list-style: none;
-  padding-left: 0;
-}
-
 @media only screen and (max-width: 900px) { 
   .grid {
     display: flex;

@@ -41,14 +41,16 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
     <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} data-cy="navbar">
       <div className={styles.logoWrapper}>
         <Link href="/" passHref>
-          <Image src={logo} 
-            className={styles.logo} 
-            layout="intrinsic" 
-            width={140} 
-            height={80}
-            alt="Konduit. logo"
-            onClick={() => setExpandMenu(false)}
-            priority/>
+          <div>
+            <Image src={logo} 
+              className={styles.logo} 
+              layout="intrinsic" 
+              width={140} 
+              height={80}
+              alt="Konduit. logo"
+              onClick={() => setExpandMenu(false)}
+              priority/>
+          </div>
         </Link>
         <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ?
@@ -67,7 +69,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
                   {
                     el.items.map(subel => (
                       <li key={subel.title} onClick={() => setExpandMenu(false)}>
-                        <Link href={subel.slug} passHref>{subel.title}</Link>
+                        <Link href={`/${subel.slug}`} passHref>{subel.title}</Link>
                       </li>
                     ))
                   }
@@ -76,8 +78,8 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
             </AnimateHeight>
           </li> 
           :
-          <li onClick={() => setExpandMenu(false)}>
-            <Link href={el.slug} passHref>{el.title}</Link>
+          <li key={el._key} onClick={() => setExpandMenu(false)}>
+            <Link href={`/${el.slug}`} passHref>{el.title}</Link>
           </li>
         )}
         <li onClick={() => setExpandMenu(false)} className={styles.btnlogin}><Link href="/profile" passHref>Logg inn</Link></li>

@@ -86,11 +86,14 @@ const fetchAboutUs = groq`
     }
   },
   "about": *[_type == "about_us"] {
+    header,
     content
   },
   "people": *[_type == "role"] {
+    _id,
     title,
     "members": *[ _type == "contributor" && role._ref == ^._id ] {
+      _id,
       name,
       email,
       subrole,

@@ -12,11 +12,12 @@ import { PageHeader } from "../components/elements/pageheader";
 import Link from "next/link";
 import { ResponsiveImage } from "../components/elements/responsiveimage";
 import { Navbar } from "../components/main/navbar";
+import { Links } from "../components/elements/links";
 
 const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
 
-  if (!router.isFallback && !data.description) {
+  if (router.isFallback) {
     return <h1>404</h1>
   }
 
@@ -30,7 +31,7 @@ const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, pre
 
       <Navbar elements={data.settings[0]["main_navigation"]} />
 
-      <PageHeader title="Topplista." />
+      <PageHeader title={data.page[0].header.title} />
       <SectionContainer>
         <div className={styles.organizationWrapper}>
           {
@@ -50,13 +51,7 @@ const Organizations: LayoutPage<{ data: any, preview: boolean }>  = ({ data, pre
                   <PortableText blocks={organization.content}></PortableText>
 
                   <h2>Les mer:</h2>
-                  <ul className={styles.links}>
-                    {organization.links.map((link: {_key: string, url: string, title: string}) => (
-                      <li key={link._key}>
-                        <Link href={link.url} passHref>{`→ ${link.title}`}</Link>
-                      </li>
-                    ))}
-                  </ul>
+                  <Links links={organization.links} />
                 </div>
               </div>
             )
@@ -99,8 +94,8 @@ const fetchOrganizationsPage = groq`
       },
     }
   },
-  "description": *[_type == "organizations"] {
-    description
+  "page": *[_type == "organizations"] {
+    header
   },
   "organizations": *[_type == "organization"] {
     _id,

@@ -1,7 +1,7 @@
 export default {
-  name: 'organizations',
+  title: 'Generic page', 
+  name: 'generic_page',
   type: 'document',
-  title: 'Organizations page',
   fields: [
     {
       name: 'header',
@@ -9,11 +9,18 @@ export default {
       type: 'pageheader'
     },
     {
+      name: 'content',
+      title: 'Content',
+      type: 'array',
+      of: [{type: 'block'}]
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: false,
-      initialValue: 'organizations'
+      options: {
+        source: (doc: { header: { title: string } }, options: any) => doc.header.title,
+      }
     }
   ],
   preview: {
