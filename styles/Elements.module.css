@@ -152,7 +152,7 @@
 
 .buttonprimary:hover,
 .buttonprimary:active {
-  background: rgba(0, 0, 0, 0.8);
+  background: #222;
 }
 
 .buttonsecondary {
@@ -330,6 +330,38 @@
 
 .links li {
   padding: 4px 0px;
+}
+
+.widgetPane {
+  width: 40vw;
+  min-width: 600px;
+  background: var(--primary);
+  border-left: 1px solid var(--secondary);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateX(40vw) translateX(50px);
+  transition: transform 500ms cubic-bezier( 0.25, 0.72, 0.24, 1 );
+  z-index: 1000;
+  color: var(--secondary);
+  padding: 50px;
+  padding-top: 40px;
+}
+
+.widgetPaneOpen {
+  transform: translateX(0);
+}
+
+.widgetCloseBtn {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  cursor: pointer;
+}
+
+.widgetCloseBtn:hover {
+  opacity: 0.8;
 }
 
 @media only screen and (max-width: 900px) {
