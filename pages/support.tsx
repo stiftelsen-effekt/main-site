@@ -11,7 +11,7 @@ import { SectionContainer } from "../components/sectionContainer";
 import { Expander } from "../components/elements/expander";
 import styles from '../styles/Support.module.css'
 
-const Faq: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
+const Support: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
 
   const header = data.page[0].header
@@ -29,12 +29,12 @@ const Faq: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) =>
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 
       <SectionContainer>
-      {data.page[0].questionandanswergroups.map((group: any) => <div className={styles.grid}>
+      {data.page[0].questionandanswergroups.map((group: any) => <div className={styles.grid} key={group._key}>
         <div className={styles.groupheader}>
           <h2>{group.title}</h2>
         </div>
         <div className={styles.groupanswers}>
-          {group.answers.map((answer: any) => <Expander title={answer.question} content={answer.answer} links={answer.links} />)}
+          {group.answers.map((answer: any) => <Expander key={answer._key} title={answer.question} content={answer.answer} links={answer.links} />)}
         </div>
       </div>)}
       </SectionContainer>
@@ -43,7 +43,7 @@ const Faq: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) =>
 }
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchFaq)
+  const data = await getClient(preview).fetch(fetchSupport)
 
   return {
     props: {
@@ -53,7 +53,7 @@ export async function getStaticProps({ preview = false }) {
   }
 }
 
-const fetchFaq = groq`
+const fetchSupport = groq`
 {
   "settings": *[_type == "site_settings"] {
     main_navigation[] {
@@ -81,5 +81,5 @@ const fetchFaq = groq`
 }
 `
 
-Faq.layout = Layout
-export default Faq
+Support.layout = Layout
+export default Support

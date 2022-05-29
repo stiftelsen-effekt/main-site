@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/studio' && cd studio && yarn && npx @sanity/cli build ../public/studio -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/studio' && cd studio && npm i && npx @sanity/cli build ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "cd studio && export NODE_ENV=dev && sanity start",
     "start": "next start",

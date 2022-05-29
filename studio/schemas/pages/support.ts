@@ -29,8 +29,8 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: true,
-      initialValue: '/support'
+      readOnly: false,
+      initialValue: 'support'
     },
   ],
   preview: {

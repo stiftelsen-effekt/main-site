@@ -10,7 +10,7 @@ import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
 import { PortableText } from "../lib/sanity";
 
-const Faq: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
+const GenericPage: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
   const router = useRouter()
 
   const header = data.page[0].header
@@ -29,7 +29,7 @@ const Faq: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) =>
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 
       <SectionContainer>
-        <PortableText blocks={content} />
+        <PortableText blocks={content || []} />
       </SectionContainer>
     </>
   )
@@ -37,7 +37,7 @@ const Faq: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) =>
 
 export async function getStaticProps(context: any) {
   const { slug = "" } = context.params
-  const data = await getClient(false).fetch(fetchFaq, { slug })
+  const data = await getClient(false).fetch(fetchGenericPage, { slug })
 
   return {
     props: {
@@ -66,7 +66,7 @@ const fetchGenericPages = groq`
 }
 `
 
-const fetchFaq = groq`
+const fetchGenericPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     main_navigation[] {
@@ -94,5 +94,5 @@ const fetchFaq = groq`
 }
 `
 
-Faq.layout = Layout
-export default Faq
+GenericPage.layout = Layout
+export default GenericPage

@@ -12,8 +12,8 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: true,
-      initialValue: '/organizations'
+      readOnly: false,
+      initialValue: 'organizations'
     }
   ],
   preview: {

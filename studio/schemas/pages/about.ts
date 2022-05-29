@@ -18,8 +18,8 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: true,
-      initialValue: '/about'
+      readOnly: false,
+      initialValue: 'about'
     }
   ],
   preview: {

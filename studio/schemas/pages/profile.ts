@@ -19,8 +19,8 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: true,
-      initialValue: '/profile/details'
+      readOnly: false,
+      initialValue: 'profile/details'
     }
   ]
 }

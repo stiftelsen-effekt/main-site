@@ -51,8 +51,8 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: true,
-      initialValue: '/'
+      readOnly: false,
+      initialValue: ''
     }
   ],
   preview: {
