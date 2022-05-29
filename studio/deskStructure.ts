@@ -1,40 +1,62 @@
-import S from '@sanity/desk-tool/structure-builder'
+import S from '@sanity/desk-tool/structure-builder';
+import { Book, Briefcase, HelpCircle, Settings, User, Users, Zap } from 'react-feather'
 
 export default () =>
   S.list()
-    .title('Base')
+    .title('GiEffektivt.no')
     .items([
       S.listItem()
-        .title('Frontpage')
+        .title('Custom pages')
+        .icon(Book)
         .child(
-          S.document()
-            .schemaType('frontpage')
-            .documentId('frontpage')
+          S.list().title('Pages').items([
+            S.listItem()
+              .title('Frontpage')
+              .icon(Zap)
+              .child(
+                S.document().schemaType('frontpage').documentId('frontpage')
+              ),
+            S.listItem()
+              .title('About us')
+              .icon(Users)
+              .child(
+                S.document().schemaType('about_us').documentId('about_us')
+              ),
+            S.listItem()
+              .title('Organizations')
+              .icon(Briefcase)
+              .child(
+                S.document()
+                  .schemaType('organizations')
+                  .documentId('organizations')
+              ),
+            S.listItem()
+              .title('Support')
+              .icon(HelpCircle)
+              .child(
+                S.document().schemaType('support').documentId('support')
+              ),
+            S.listItem()
+              .title('Profile')
+              .icon(User)
+              .child(S.document().schemaType('profile').documentId('profile')),
+            S.divider(),
+          ])
         ),
       S.listItem()
-        .title('About us page')
+        .schemaType('generic_page')
+        .title('Generic pages')
+        .icon(Book)
         .child(
-          S.document()
-            .schemaType('about_us')
-            .documentId('about_us')
+          S.documentList()
+            .title('Pages')
+            .schemaType('generic_page')
+            .filter('_type == "generic_page"')
         ),
       S.listItem()
-        .title('Organizations page')
+        .title('Settings')
+        .icon(Settings)
         .child(
-          S.document()
-            .schemaType('organizations')
-            .documentId('organizations')
+          S.document().schemaType('site_settings').documentId('site_settings')
         ),
-      S.listItem()
-        .title('Profile page')
-        .child(
-          S.document()
-            .schemaType('profile')
-            .documentId('profile')
-        ),
-      ...S.documentTypeListItems().filter(listItem => 
-        !['frontpage'].includes(listItem.getId() || '') &&
-        !['about_us'].includes(listItem.getId() || '') &&
-        !['organizations'].includes(listItem.getId() || '') &&
-        !['profile'].includes(listItem.getId() || ''))
-    ])
+    ]);

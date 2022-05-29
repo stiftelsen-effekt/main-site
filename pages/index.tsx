@@ -14,6 +14,7 @@ import { SalesPitch } from '../components/elements/salespitch'
 import { SalesPitchPoint } from '../components/elements/salespitchitem'
 import { IntroSection } from '../components/elements/introsection'
 import { CalculatorTeaser } from '../components/elements/calculatorteaser'
+import { Navbar } from '../components/main/navbar'
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   return (
@@ -23,6 +24,8 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <meta name="description" content="Effektiv bistand" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Navbar elements={data.settings[0]["main_navigation"]} />
 
       <div className={styles.hero}>
         <div className={styles.header}>
@@ -55,13 +58,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       <SectionContainer heading=''>
         <div className={styles.teasers}>
           {data.frontpage[0].teasers.map(
-            ({ _key, title, paragraph, link, imageurl }: Teaser & { _key: string }) =>
+            ({ _key, title, paragraph, link, image }: Teaser & { _key: string }) =>
             <Teaser 
               key={_key}
               title={title}
               paragraph={paragraph}
               link={link}
-              imageurl={imageurl}></Teaser>)
+              image={image}></Teaser>)
           }
         </div>
       </SectionContainer>
@@ -70,13 +73,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         {data.frontpage[0].testimonials.map(
-          ({ _key, quote, quotee, quoteeBackground, imageurl }: Testimony & { _key: string }) =>
+          ({ _key, quote, quotee, quotee_background: quoteeBackground, image }: Testimony & { _key: string, quotee_background: string }) =>
             <Testimonial
               key={_key}
               quote={quote}
               quotee={quotee}
               quoteeBackground={quoteeBackground}
-              imageurl={imageurl}
+              image={image}
             />)
         }
       </SectionContainer>
@@ -98,21 +101,34 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchFrontpage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
+  },
   "frontpage": *[_type == "frontpage"] {
     main_heading,
-    sub_heading,
+    sub_heading, 
     sub_heading_link_target,
     salespitch,
     introsection,
     key_points,
-    testimonials[] {
-      ...,
-      "imageurl": image.asset->url
-    },
-    teasers[] {
-      ...,
-      "imageurl": image.asset->url
-    },
+    testimonials,
+    teasers
   },
 }
 `

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/studio' && cd studio && yarn && npx @sanity/cli build ../public/studio -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/studio' && cd studio && npm i && npx @sanity/cli build ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "cd studio && export NODE_ENV=dev && sanity start",
     "start": "next start",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
     "@babel/preset-typescript": "^7.16.7",
-    "@sanity/cli": "^2.29.5",
+    "@sanity/cli": "^2.30.0",
     "auth0": "^2.40.0",
     "auth0-js": "^9.19.0",
     "babel-jest": "^27.5.1",
@@ -26,6 +26,7 @@
     "luxon": "^2.3.0",
     "next": "12.0.10",
     "next-sanity": "^0.4.0",
+    "next-sanity-image": "^3.2.1",
     "react": "17.0.2",
     "react-animate-height": "^2.0.23",
     "react-dom": "17.0.2",

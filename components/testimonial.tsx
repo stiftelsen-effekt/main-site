@@ -1,29 +1,28 @@
 import React from 'react'
 import styles from '../styles/Testemonial.module.css'
-import Image from 'next/image'
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { ResponsiveImage } from "./elements/responsiveimage"
 
 export interface Testimony {
   quotee: string
   quoteeBackground: string
   quote: string
-  imageurl: string
+  image: SanityImageSource
 }
 
 export const Testimonial: React.FC<Testimony> = ({
   quotee,
   quote,
   quoteeBackground,
-  imageurl,
+  image,
 }) => {
   return (
-    <section className={styles.testemonial}>
-      <h2 className={styles.testemonial__quote}>
-        <q>{quote}</q>
-      </h2>
+    <section className={styles.testimonial}>
+      <p className={styles.testemonial__quote}>“{quote}”</p>
       <div className={styles.testemonial__image}>
-        <Image src={imageurl} alt={quotee} width={140} height={140} />
+        <ResponsiveImage image={image} /> 
       </div>
-      <div className={styles.testemonial__bio}>
+      <div className={styles.testimonial__bio}>
         <p>{quotee}</p>
         <p> &#x21b3; {quoteeBackground}</p>
       </div>

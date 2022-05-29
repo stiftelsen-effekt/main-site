@@ -47,5 +47,17 @@ export default {
       title: 'Testimonials',
       of: [{ type: 'testimonial' }],
     },
-  ]
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      readOnly: false,
+      initialValue: ''
+    }
+  ],
+  preview: {
+    select: {
+      title: 'main_heading'
+    }
+  }
 }
