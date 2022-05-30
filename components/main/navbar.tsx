@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Navbar.module.css"
 import logo from "../../public/logo-cropped.svg"
 import Link from "next/link";
@@ -29,7 +29,21 @@ export type MainNavbarProps = {
 
 export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
-  const [expandedSubmenu, setExpandedSubmenu] = useState<Dictionary<boolean>>(elements.reduce((a,v) => ({ ...a, [v._key]: true }), {}))
+  const [expandedSubmenu, setExpandedSubmenu] = useState<Dictionary<boolean>>(elements.reduce((a,v) => ({ ...a, [v._key]: false }), {}))
+  const [rerender, setRerender] = useState(false)
+
+  const setExpanded = (expanded: boolean) => {
+    if (expanded && window.innerWidth < 900)
+      document.documentElement.style.overflow = 'hidden'
+    else if (typeof document !== "undefined")
+      document.documentElement.style.overflow = 'auto'
+
+    setExpandMenu(expanded)
+  }
+
+  let navbarShrinked = false
+  if (typeof window !== "undefined" && window.scrollY > 0)
+    navbarShrinked = true
 
   const toggleExpanded = (key: string) => {
     const expanded = { ...expandedSubmenu }
@@ -37,8 +51,13 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
     setExpandedSubmenu(expanded)
   }
 
+  useEffect(() => {
+    setTimeout(() => setRerender(!rerender), 1000)
+  }, [rerender])
+  
+
   return (
-    <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} data-cy="navbar">
+    <nav className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ''} ${navbarShrinked ? styles.navbarShrinked : ''}`} data-cy="navbar">
       <div className={styles.logoWrapper}>
         <Link href="/" passHref>
           <div>
@@ -48,11 +67,11 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
               width={140} 
               height={80}
               alt="Konduit. logo"
-              onClick={() => setExpandMenu(false)}
+              onClick={() => setExpanded(false)}
               priority/>
           </div>
         </Link>
-        <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
+        <div className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
           {expandMenu ?
             <X size={32} color={"black"} /> :
             <Menu size={32} color={"black"} />
@@ -68,7 +87,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
                 <ul>
                   {
                     el.items.map(subel => (
-                      <li key={subel.title} onClick={() => setExpandMenu(false)}>
+                      <li key={subel.title} onClick={() => setExpanded(false)}>
                         <Link href={`/${subel.slug}`} passHref>{subel.title}</Link>
                       </li>
                     ))
@@ -78,11 +97,11 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
             </AnimateHeight>
           </li> 
           :
-          <li key={el._key} onClick={() => setExpandMenu(false)}>
+          <li key={el._key} onClick={() => setExpanded(false)}>
             <Link href={`/${el.slug}`} passHref>{el.title}</Link>
           </li>
         )}
-        <li onClick={() => setExpandMenu(false)} className={styles.btnlogin}><Link href="/profile" passHref>Logg inn</Link></li>
+        <li onClick={() => setExpanded(false)} className={styles.btnlogin}><Link href="/profile" passHref>Logg inn</Link></li>
       </ul>
     </nav>
   )
