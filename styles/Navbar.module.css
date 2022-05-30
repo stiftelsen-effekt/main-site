@@ -1,11 +1,19 @@
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  position: relative;
   padding: 40px 5vw;
   background-color: var(--secondary);
+  transition: padding 200ms ease-in-out;
+}
+
+.navbarShrinked {
+  padding: 4px 5vw;
 }
 
 .navbar ul {
@@ -107,15 +115,9 @@
 
 @media only screen and (max-width: 900px) {
   .navbar {
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 20px 30px;
   }
 
   .navbarExpanded {
