@@ -442,7 +442,7 @@
     font-size: 48px;
   }
 
-  .pageheader {
+  .pageheader, .pageheader.pageheadermeta {
     padding: 0 5vw;
     min-height: 500px;
     display: grid;
