@@ -9,28 +9,30 @@ import { useEffect, useState } from "react";
 
 export type getAccessTokenSilently = {
   (
-    options: GetTokenSilentlyOptions & { detailedResponse: true }
+    options: GetTokenSilentlyOptions & { detailedResponse: true },
   ): Promise<GetTokenSilentlyVerboseResponse>;
   (options?: GetTokenSilentlyOptions): Promise<string>;
-  (options: GetTokenSilentlyOptions): Promise<
-    GetTokenSilentlyVerboseResponse | string
-  >;
+  (options: GetTokenSilentlyOptions): Promise<GetTokenSilentlyVerboseResponse | string>;
 };
 
-export interface apiResult<T> {loading: boolean, error: any | null, data:T | null};
+export interface apiResult<T> {
+  loading: boolean;
+  error: any | null;
+  data: T | null;
+}
 
 export const useApi = <T>(
   endpoint: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
   scope: string,
   getToken: getAccessTokenSilently,
-  condition?: boolean
+  condition?: boolean,
 ): apiResult<T> => {
-  const [result, setResult] = useState<apiResult<T>>({loading: true, data: null, error: null})
+  const [result, setResult] = useState<apiResult<T>>({ loading: true, data: null, error: null });
   useEffect(() => {
     (async () => {
       if (condition || typeof condition === "undefined") {
-        const api = process.env.NEXT_PUBLIC_EFFEKT_API || 'http://localhost:5050'
+        const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
         try {
           const token = await getToken({
             audience: "https://data.gieffektivt.no",
@@ -43,13 +45,13 @@ export const useApi = <T>(
             },
           });
           const data = (await response.json()).content;
-          setResult({loading: false, error: null, data: data});
+          setResult({ loading: false, error: null, data: data });
         } catch (e) {
-          setResult({loading: false, error: e, data: null});
+          setResult({ loading: false, error: e, data: null });
         }
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [condition]);
   return result;
-}
+};

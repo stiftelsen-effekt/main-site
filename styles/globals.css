@@ -1,34 +1,34 @@
 @font-face {
-  font-family: 'ESKlarheitGrotesk';
-  src: url('../public/fonts/ESKlarheitGrotesk-Regular.woff2');
+  font-family: "ESKlarheitGrotesk";
+  src: url("../public/fonts/ESKlarheitGrotesk-Regular.woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
-  font-family: 'ESKlarheitGrotesk';
-  src: url('../public/fonts/ESKlarheitGrotesk-Italic.woff2');
+  font-family: "ESKlarheitGrotesk";
+  src: url("../public/fonts/ESKlarheitGrotesk-Italic.woff2");
   font-style: italic;
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
-  font-family: 'ESKlarheitGrotesk';
-  src: url('../public/fonts/ESKlarheitGrotesk-Semibold.woff2');
+  font-family: "ESKlarheitGrotesk";
+  src: url("../public/fonts/ESKlarheitGrotesk-Semibold.woff2");
   font-style: normal;
   font-weight: 600;
   font-display: swap;
 }
 @font-face {
-  font-family: 'ESKlarheitGrotesk';
-  src: url('../public/fonts/ESKlarheitGrotesk-SemiboldItalic.woff2');
+  font-family: "ESKlarheitGrotesk";
+  src: url("../public/fonts/ESKlarheitGrotesk-SemiboldItalic.woff2");
   font-style: italic;
   font-weight: 600;
   font-display: swap;
 }
 @font-face {
-  font-family: 'ESKlarheitKurrent';
-  src: url('../public/fonts/ESKlarheitKurrent-Regular.woff2');
+  font-family: "ESKlarheitKurrent";
+  src: url("../public/fonts/ESKlarheitKurrent-Regular.woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -46,20 +46,20 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'ESKlarheitGrotesk', sans-serif;
+  font-family: "ESKlarheitGrotesk", sans-serif;
   background: var(--secondary);
   color: var(--primary);
   font-weight: 300;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-feature-settings: 'ss10' on, 'ss08' on;
+  font-feature-settings: "ss10" on, "ss08" on;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: 'ESKlarheitKurrent', sans-serif;
+  font-family: "ESKlarheitKurrent", sans-serif;
   font-weight: 300;
 }
 

@@ -10,11 +10,11 @@ import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
 import { PageContent } from "../../components/elements/pagecontent";
 
-const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) => {
-  const router = useRouter()
+const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const router = useRouter();
 
   if (!router.isFallback && !data) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -36,14 +36,14 @@ const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) =>
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchProfilePage)
+  const data = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
       preview,
       data,
     },
-  }
+  };
 }
 
 const fetchProfilePage = groq`
@@ -51,7 +51,7 @@ const fetchProfilePage = groq`
   tax,
   data
 }
-`
+`;
 
 Home.layout = Layout;
 export default Home;

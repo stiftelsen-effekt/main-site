@@ -59,7 +59,7 @@
     grid-column: auto;
     grid-row: auto;
   }
-  
+
   .teasers div:nth-child(2n) > div:nth-child(2) {
     grid-column: auto;
     grid-row: auto;

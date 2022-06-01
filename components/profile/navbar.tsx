@@ -12,31 +12,31 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className={(expandMenu ? styles.navbar +" "+ styles.navbarExpanded: styles.navbar)} data-cy="navbar">
+      <nav
+        className={expandMenu ? styles.navbar + " " + styles.navbarExpanded : styles.navbar}
+        data-cy="navbar"
+      >
         <div className={styles.logoWrapper}>
           <Link href="/" passHref>
             <a>
-            <Image
-              src={logo}
-              className={styles.logo}
-              layout="intrinsic"
-              width={140}
-              height={80}
-              alt="Konduit. logo"
-              priority
-            />
+              <Image
+                src={logo}
+                className={styles.logo}
+                layout="intrinsic"
+                width={140}
+                height={80}
+                alt="Konduit. logo"
+                priority
+              />
             </a>
           </Link>
           <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
-          {expandMenu ?
-            <X size={32} color={"black"} /> :
-            <Menu size={32} color={"black"} />
-          }
+            {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
           </div>
         </div>
         <ul>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile"  passHref>
+            <Link href="/profile" passHref>
               Donasjoner
             </Link>
           </li>
@@ -51,9 +51,7 @@ export const Navbar: React.FC = () => {
             </Link>
           </li>
           <li className={styles.btnlogout} onClick={() => setExpandMenu(false)}>
-            <button onClick={() => logout()}>
-              Logg ut
-            </button>
+            <button onClick={() => logout()}>Logg ut</button>
           </li>
         </ul>
       </nav>

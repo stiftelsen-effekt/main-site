@@ -39,10 +39,7 @@ export function daysInMonth(month: number, year: number) {
  */
 export function checkPaymentDate(today: Date, currentPaymentDate: number) {
   let paymentDate;
-  let daysMonth: number = daysInMonth(
-    today.getMonth() + 1,
-    today.getFullYear()
-  );
+  let daysMonth: number = daysInMonth(today.getMonth() + 1, today.getFullYear());
   let todaysDate = today.getDate();
   if (currentPaymentDate == 0) {
     paymentDate = daysMonth;
@@ -67,8 +64,7 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
-  const [distribution, setDistribution] =
-    useState<Distribution>(inputDistribution);
+  const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
@@ -88,25 +84,13 @@ export const AgreementDetails: React.FC<{
       const savedDistributionKID = await updateVippsAgreementDistribution(
         endpoint,
         distribution,
-        token
+        token,
       );
       const updatedDate = await updateVippsAgreementDay(endpoint, day, token);
-      const updatedSum = await updateVippsAgreementPrice(
-        endpoint,
-        parseFloat(sum),
-        token
-      );
-      if (
-        savedDistributionKID != null &&
-        updatedDate !== null &&
-        updatedSum !== null
-      ) {
+      const updatedSum = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
+      if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
         successToast();
-        mutate(
-          `/donors/${
-            (user as User)["https://konduit.no/user-id"]
-          }/recurring/vipps/`
-        );
+        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
       } else {
         failureToast();
       }
@@ -114,29 +98,13 @@ export const AgreementDetails: React.FC<{
       const savedDistributionKID = await updateAvtalegiroAgreementDistribution(
         endpoint,
         distribution,
-        token
+        token,
       );
-      const updatedDate = await updateAvtaleagreementPaymentDay(
-        endpoint,
-        day,
-        token
-      );
-      const updatedSum = await updateAvtaleagreementAmount(
-        endpoint,
-        parseFloat(sum) * 100,
-        token
-      );
-      if (
-        savedDistributionKID != null &&
-        updatedDate !== null &&
-        updatedSum !== null
-      ) {
+      const updatedDate = await updateAvtaleagreementPaymentDay(endpoint, day, token);
+      const updatedSum = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
+      if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
         successToast();
-        mutate(
-          `/donors/${
-            (user as User)["https://konduit.no/user-id"]
-          }/recurring/avtalegiro/`
-        );
+        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`);
       } else {
         failureToast();
       }
@@ -150,11 +118,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(
-          `/donors/${
-            (user as User)["https://konduit.no/user-id"]
-          }/recurring/vipps/`
-        );
+        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
       } else {
         failureToast();
       }
@@ -162,11 +126,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(
-          `/donors/${
-            (user as User)["https://konduit.no/user-id"]
-          }/recurring/avtalegiro/`
-        );
+        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`);
       } else {
         failureToast();
       }
@@ -194,16 +154,10 @@ export const AgreementDetails: React.FC<{
         </div>
       </div>
       <div className={style.actions}>
-        <EffektButton
-          onClick={() => setLightboxOpen(true)}
-          cy="btn-cancel-agreement"
-        >
+        <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
           Avslutt avtale
         </EffektButton>
-        <EffektButton
-          onClick={() => save()}
-          cy="btn-save-agreement"
-        >
+        <EffektButton onClick={() => save()} cy="btn-save-agreement">
           Lagre
         </EffektButton>
       </div>
@@ -214,17 +168,13 @@ export const AgreementDetails: React.FC<{
       >
         <div className={styles.textWrapper}>
           <h2>Avslutt avtale</h2>
-          <p>
-            Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke
-            deg.
-          </p>
+          <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
           {checkPaymentDate(new Date(), day) ? (
             <p>
-              Denne avtalegiro avtalen har trekkdato nærmere
-              enn 6 dager frem i tid. Vi allerede sendt melding til
-              banksystemene om å trekke deg. Dette skyldes tregheter i
-              registrering av trekk hos bankene. Om du ønsker refusjon på denne
-              donasjonen kan du ta kontakt på donasjon@gieffektivt.no
+              Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
+              sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i
+              registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta
+              kontakt på donasjon@gieffektivt.no
             </p>
           ) : null}
         </div>
@@ -233,8 +183,7 @@ export const AgreementDetails: React.FC<{
   );
 };
 
-const successToast = () =>
-  toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
+const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
 const failureToast = () =>
   toast.error("Noe gikk galt", {
     icon: <AlertCircle size={24} color={"black"} />,

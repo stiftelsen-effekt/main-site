@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/Footer.module.css"
+import styles from "../styles/Footer.module.css";
 
 export const Footer: React.FC = () => {
   return (
@@ -56,5 +56,5 @@ export const Footer: React.FC = () => {
         <div>Til toppen av siden</div>
       </div>
     </footer>
-  )
-}
+  );
+};

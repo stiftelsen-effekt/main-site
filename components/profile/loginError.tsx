@@ -4,12 +4,14 @@ import elements from "../../styles/Elements.module.css";
 import { EffektButton } from "../elements/effektbutton";
 
 export const LoginError: React.FC<{ message: string }> = ({ message }) => {
-  const {
-    loginWithRedirect
-  } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
-  return <div className={elements["center-wrapper"]}>
-    <p>{message}</p>
-    <EffektButton onClick={loginWithRedirect} cy="btn-login">Logg in</EffektButton>
-  </div>
-}
+  return (
+    <div className={elements["center-wrapper"]}>
+      <p>{message}</p>
+      <EffektButton onClick={loginWithRedirect} cy="btn-login">
+        Logg in
+      </EffektButton>
+    </div>
+  );
+};

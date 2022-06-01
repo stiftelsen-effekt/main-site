@@ -7,8 +7,8 @@ import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 import { Navbar } from "../components/main/navbar";
 
-const Method: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
-  const router = useRouter()
+const Method: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const router = useRouter();
 
   return (
     <>
@@ -22,18 +22,18 @@ const Method: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview })
 
       <h1>Metode</h1>
     </>
-  )
-}
+  );
+};
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchMethod)
+  const data = await getClient(preview).fetch(fetchMethod);
 
   return {
     props: {
       preview,
       data,
     },
-  }
+  };
 }
 
 const fetchMethod = groq`
@@ -58,7 +58,7 @@ const fetchMethod = groq`
     }
   },
 }
-`
+`;
 
-Method.layout = Layout
-export default Method
+Method.layout = Layout;
+export default Method;

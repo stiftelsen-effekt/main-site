@@ -10,11 +10,11 @@ import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
 import { PortableText } from "../lib/sanity";
 
-const GenericPage: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
-  const router = useRouter()
+const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const router = useRouter();
 
-  const header = data.page[0].header
-  const content = data.page[0].content
+  const header = data.page[0].header;
+  const content = data.page[0].content;
 
   return (
     <>
@@ -32,29 +32,29 @@ const GenericPage: LayoutPage<{ data: any, preview: boolean }>  = ({ data, previ
         <PortableText blocks={content || []} />
       </SectionContainer>
     </>
-  )
-}
+  );
+};
 
 export async function getStaticProps(context: any) {
-  const { slug = "" } = context.params
-  const data = await getClient(false).fetch(fetchGenericPage, { slug })
+  const { slug = "" } = context.params;
+  const data = await getClient(false).fetch(fetchGenericPage, { slug });
 
   return {
     props: {
       preview: false,
       data,
     },
-  }
+  };
 }
 
 export async function getStaticPaths() {
-  const data = await getClient(false).fetch(fetchGenericPages)
+  const data = await getClient(false).fetch(fetchGenericPages);
 
   return {
-    paths: data.pages.map((page: { slug: { current: string } }) => (
-        { params: { slug: page.slug.current } }
-    )),
-    fallback: false
+    paths: data.pages.map((page: { slug: { current: string } }) => ({
+      params: { slug: page.slug.current },
+    })),
+    fallback: false,
   };
 }
 
@@ -64,7 +64,7 @@ const fetchGenericPages = groq`
     slug { current }
   }
 }
-`
+`;
 
 const fetchGenericPage = groq`
 {
@@ -92,7 +92,7 @@ const fetchGenericPage = groq`
     content
   },
 }
-`
+`;
 
-GenericPage.layout = Layout
-export default GenericPage
+GenericPage.layout = Layout;
+export default GenericPage;

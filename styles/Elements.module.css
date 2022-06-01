@@ -13,7 +13,7 @@
   background: var(--primary);
   color: var(--secondary);
   padding: 14px 26px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
   color: var(--secondary);
   font-size: 12px;
   user-select: none;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   min-width: 150px;
   cursor: pointer;
   outline: none;
@@ -136,7 +136,7 @@
 .button {
   border: none;
   border-radius: 48px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   font-size: 14px;
   padding: 14px 28px;
   cursor: pointer;

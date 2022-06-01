@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import { Footer } from '../footer'
-import styles from '../../styles/Layout.module.css'
-import { LayoutElement } from '../../types'
-import { GiButton } from '../give-now-button/gi-button'
-import { WidgetPane } from '../elements/widgetpane'
+import React, { useState } from "react";
+import { Footer } from "../footer";
+import styles from "../../styles/Layout.module.css";
+import { LayoutElement } from "../../types";
+import { GiButton } from "../give-now-button/gi-button";
+import { WidgetPane } from "../elements/widgetpane";
 export const Layout: LayoutElement = ({ children }) => {
-  const [widgetOpen, setWidgetOpen] = useState(false)
+  const [widgetOpen, setWidgetOpen] = useState(false);
 
   if (widgetOpen && window.innerWidth < 900) {
-    document.documentElement.style.overflow = 'hidden'
+    document.documentElement.style.overflow = "hidden";
   } else if (typeof document !== "undefined") {
-    document.documentElement.style.overflow = 'auto'
+    document.documentElement.style.overflow = "auto";
   }
 
   return (
@@ -20,5 +20,5 @@ export const Layout: LayoutElement = ({ children }) => {
       <main className={styles.main}>{children}</main>
       <Footer />
     </div>
-  )
-}
+  );
+};
