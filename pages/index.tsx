@@ -10,13 +10,15 @@ import { Teaser } from '../components/elements/teaser'
 import { groq } from 'next-sanity'
 import { getClient } from '../lib/sanity.server'
 import Link from 'next/link'
-import { SalesPitch } from '../components/elements/salespitch'
-import { SalesPitchPoint } from '../components/elements/salespitchitem'
+import { PointList } from '../components/elements/pointlist'
+import { PointListPointProps } from '../components/elements/pointlistpoint'
 import { IntroSection } from '../components/elements/introsection'
 import { CalculatorTeaser } from '../components/elements/calculatorteaser'
 import { Navbar } from '../components/main/navbar'
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
+  const salespitch = data.frontpage[0].salespitch
+
   return (
     <>
       <Head>
@@ -37,11 +39,11 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </div>
 
       <SectionContainer nodivider>
-        <SalesPitch points={data.frontpage[0].salespitch.map((pitch: SalesPitchPoint, i: number) => ({
-          number: i+1,
+        <PointList points={salespitch.points.map((pitch: PointListPointProps, i: number) => ({
+          number: salespitch.numbered ? i+1 : null,
           heading: pitch.heading,
           paragraph: pitch.paragraph
-        }))}></SalesPitch>
+        }))}></PointList>
       </SectionContainer>
 
       <SectionContainer nodivider inverted>

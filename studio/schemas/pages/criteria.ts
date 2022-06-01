@@ -1,7 +1,7 @@
 export default {
-  title: 'Generic page', 
-  name: 'generic_page',
+  name: 'criteria',
   type: 'document',
+  title: 'Criteria',
   fields: [
     {
       name: 'header',
@@ -10,17 +10,16 @@ export default {
     },
     {
       name: 'content',
-      title: 'Content',
       type: 'array',
-      of: [{type: 'contentsection'}]
+      title: 'Content',
+      of: [{ type: 'contentsection' }]
     },
     {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {
-        source: (doc: { header: { title: string } }, options: any) => doc.header.title,
-      }
+      readOnly: false,
+      initialValue: 'criteria'
     }
   ],
   preview: {

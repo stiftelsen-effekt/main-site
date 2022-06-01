@@ -1,9 +1,9 @@
 import { Star } from "react-feather";
 
 export default {
-  name: 'salespitchpoint',
+  name: 'pointlistpoint',
   type: 'object',
-  title: 'Salespitch point',
+  title: 'Pointlist point',
   icon: Star,
   fields: [
     {
