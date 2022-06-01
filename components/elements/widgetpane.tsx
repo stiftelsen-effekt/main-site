@@ -44,9 +44,9 @@ export const WidgetPane: React.FC<{ open: boolean; onClose: () => void }> = ({ o
         }}
       >
         <h2>Donasjonswidget</h2>
-        <div className={elements.widgetCloseBtn} onClick={onClose}>
+        <button className={elements.widgetCloseBtn} onClick={onClose}>
           <X width={36} height={36} color={"white"} />
-        </div>
+        </button>
       </div>
       <div className={elements.widgetPaneContent}></div>
     </div>
