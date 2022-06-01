@@ -85,6 +85,9 @@ a:hover {
 button {
   background: transparent;
   border: none;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
 }
 
 * {

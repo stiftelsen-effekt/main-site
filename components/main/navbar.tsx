@@ -45,9 +45,11 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
   if (typeof window !== "undefined" && window.scrollY > 0) navbarShrinked = true;
 
   const toggleExpanded = (key: string) => {
+    console.log(expandedSubmenu);
     const expanded = { ...expandedSubmenu };
     expanded[key] = !expandedSubmenu[key];
     setExpandedSubmenu(expanded);
+    console.log(expanded);
   };
 
   useEffect(() => {
@@ -112,7 +114,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
             </li>
           ),
         )}
-        <li onClick={() => setExpanded(false)}>
+        <li className={styles.btnLoginWrapper} onClick={() => setExpanded(false)}>
           <Link href="/profile">
             <a className={styles.btnlogin}>Logg inn</a>
           </Link>

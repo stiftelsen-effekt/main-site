@@ -30,9 +30,9 @@ export const Navbar: React.FC = () => {
               />
             </a>
           </Link>
-          <div className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
+          <button className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
             {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
-          </div>
+          </button>
         </div>
         <ul>
           <li onClick={() => setExpandMenu(false)}>
@@ -50,8 +50,10 @@ export const Navbar: React.FC = () => {
               Profil
             </Link>
           </li>
-          <li className={styles.btnlogout} onClick={() => setExpandMenu(false)}>
-            <button onClick={() => logout()}>Logg ut</button>
+          <li className={styles.btnloginWrapper} onClick={() => setExpandMenu(false)}>
+            <button className={styles.btnlogin} onClick={() => logout()}>
+              Logg ut
+            </button>
           </li>
         </ul>
       </nav>
