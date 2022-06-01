@@ -78,6 +78,15 @@ a:hover {
   border-bottom: 1px solid black;
 }
 
+:focus {
+  outline: 2px solid rgb(31, 166, 184);
+}
+
+button {
+  background: transparent;
+  border: none;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -87,4 +96,13 @@ a:hover {
     font-size: 24px;
     margin-top: 18px;
   }
+}
+
+/* Use when you have an element that needs to accessible for screen readers only */
+.sr-only {
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
 }

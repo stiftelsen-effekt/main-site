@@ -59,8 +59,8 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
   return (
     <nav className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ''} ${navbarShrinked ? styles.navbarShrinked : ''}`} data-cy="navbar">
       <div className={styles.logoWrapper}>
-        <Link href="/" passHref>
-          <div>
+        <Link href="/" >
+          <a>
             <Image src={logo} 
               className={styles.logo} 
               layout="intrinsic" 
@@ -69,19 +69,19 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
               alt="Konduit. logo"
               onClick={() => setExpanded(false)}
               priority/>
-          </div>
+          </a>
         </Link>
-        <div className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
+        <button className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
           {expandMenu ?
             <X size={32} color={"black"} /> :
             <Menu size={32} color={"black"} />
           }
-          </div>   
-        </div>   
+          </button>   
+      </div>   
       <ul>
         {elements.map(el => el._type === 'navgroup' ?
           <li key={el._key} className={expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu}>
-            <span onClick={() => toggleExpanded(el._key)}>{el.title}</span>
+            <button onClick={() => toggleExpanded(el._key)}>{el.title}</button>
             <AnimateHeight height={expandedSubmenu[el._key] ? 'auto' : '0%'} animateOpacity>
               <div className={styles.submenu}>
                 <ul>
@@ -101,7 +101,12 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
             <Link href={`/${el.slug}`} passHref>{el.title}</Link>
           </li>
         )}
-        <li onClick={() => setExpanded(false)} className={styles.btnlogin}><Link href="/profile" passHref>Logg inn</Link></li>
+        <li onClick={() => setExpanded(false)} >
+          <Link href="/profile" >
+            <a className={styles.btnlogin}>
+              Logg inn
+            </a>
+          </Link></li>
       </ul>
     </nav>
   )

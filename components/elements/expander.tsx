@@ -16,10 +16,11 @@ export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => 
 
   return (
     <div className={`${elements.expanderWrapper} ${expanded ? elements.expanderWrapperOpen : undefined}`}>
-      <div className={elements.expanderHeader} onClick={() => setExpanded(!expanded)}>
+      <label className={elements.expanderHeader} >
+        <button className="sr-only" onClick={() => setExpanded(!expanded)}></button>
         <h2>{title}</h2>
         {expanded ? <Minus size={28}/> : <Plus size={28} />}
-      </div>
+      </label>
       <div className={elements.expanderContent}>
         <AnimateHeight height={expanded ? 'auto' : '0%'} animateOpacity>
           <p>

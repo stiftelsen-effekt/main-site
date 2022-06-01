@@ -290,7 +290,6 @@
   margin-top: 120px;
 }
 
-
 .pageheader h1 {
   font-size: 96px;
 }
@@ -319,6 +318,11 @@
   align-items: center;
 }
 
+.expanderHeader:focus-within,
+.expanderHeader:focus-within {
+  outline: 2px solid black;
+}
+
 .expanderHeader h2 {
   margin: 0;
 }
@@ -342,7 +346,7 @@
   top: 0;
   right: 0;
   transform: translateX(40vw) translateX(50px);
-  transition: transform 500ms cubic-bezier( 0.25, 0.72, 0.24, 1 );
+  transition: transform 500ms cubic-bezier(0.25, 0.72, 0.24, 1);
   z-index: 10000;
   color: var(--secondary);
 }
@@ -442,7 +446,8 @@
     font-size: 48px;
   }
 
-  .pageheader, .pageheader.pageheadermeta {
+  .pageheader,
+  .pageheader.pageheadermeta {
     padding: 0 5vw;
     min-height: 500px;
     display: grid;

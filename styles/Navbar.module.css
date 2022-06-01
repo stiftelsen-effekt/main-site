@@ -68,6 +68,7 @@
 .btnlogin {
   background: none;
   box-shadow: none;
+  padding: 10px 20px;
   color: var(--secondary);
   background: var(--primary);
   font-family: 'ESKlarheitGrotesk';
