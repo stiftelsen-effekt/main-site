@@ -65,11 +65,13 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
       data-cy="navbar"
     >
       <div className={styles.logoWrapper}>
-        <Link href="/">
-          <a>
-            <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
-          </a>
-        </Link>
+        <div className={styles.logoWrapperImage}>
+          <Link href="/">
+            <a>
+              <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
+            </a>
+          </Link>
+        </div>
         <button className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
           {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
         </button>
