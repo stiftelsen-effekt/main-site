@@ -16,6 +16,11 @@ export default {
       type: 'text',
     },
     {
+      name: 'logo',
+      title: 'Site Logo',
+      type: 'image',
+    },
+    {
       title: 'Main Navigation',
       name: 'main_navigation',
       description: 'Select pages for the top menu',

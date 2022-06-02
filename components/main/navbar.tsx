@@ -1,11 +1,11 @@
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Navbar.module.css";
-import logo from "../../public/logo-cropped.svg";
 import Link from "next/link";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { Dictionary } from "lodash";
+import { ResponsiveImage } from "../elements/responsiveimage";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 export type MainNavbarLink = {
   _type: "navitem";
@@ -24,10 +24,11 @@ export type MainNavbarGroup = {
 export type MainNavbarItem = MainNavbarLink | MainNavbarGroup;
 
 export type MainNavbarProps = {
+  logo: SanityImageSource;
   elements: MainNavbarItem[];
 };
 
-export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
+export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<Dictionary<boolean>>(
     elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
@@ -64,20 +65,13 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements }) => {
       data-cy="navbar"
     >
       <div className={styles.logoWrapper}>
-        <Link href="/">
-          <a>
-            <Image
-              src={logo}
-              className={styles.logo}
-              layout="intrinsic"
-              width={140}
-              height={80}
-              alt="Konduit. logo"
-              onClick={() => setExpanded(false)}
-              priority
-            />
-          </a>
-        </Link>
+        <div className={styles.logoWrapperImage}>
+          <Link href="/">
+            <a>
+              <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
+            </a>
+          </Link>
+        </div>
         <button className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
           {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
         </button>

@@ -84,6 +84,9 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  height: 80px;
+  width: 180px;
+  position: relative;
 }
 
 .navbar ul li.expandedSubmenu button::after {
@@ -103,6 +106,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    height: auto;
   }
 
   .navbarExpanded {
@@ -115,15 +119,26 @@
     height: 100vh;
   }
 
+  .navbarShrinked {
+    padding: 20px 5vw;
+  }
+
   .expandBtn {
-    display: block;
+    display: flex;
   }
 
   .navbar .logoWrapper {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: auto;
     align-items: center;
+  }
+
+  .navbar .logoWrapperImage {
+    height: 25px;
+    width: 160px;
+    position: relative;
   }
 
   .navbar ul {

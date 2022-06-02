@@ -13,10 +13,9 @@ import styles from "../styles/Support.module.css";
 import { ContactInfo } from "../components/elements/contact-info";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const router = useRouter();
-
   const header = data.page[0].header;
   const contactinfo = data.page[0].contact;
+  const settings = data.settings[0];
 
   return (
     <>
@@ -26,7 +25,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar elements={data.settings[0]["main_navigation"]} />
+      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 
@@ -76,6 +75,7 @@ export async function getStaticProps({ preview = false }) {
 const fetchSupport = groq`
 {
   "settings": *[_type == "site_settings"] {
+    logo,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
