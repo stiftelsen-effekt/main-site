@@ -398,7 +398,7 @@
   width: 100%;
 }
 
-.videocontainer iframe { 
+.videocontainer iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
 }

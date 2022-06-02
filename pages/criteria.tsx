@@ -14,9 +14,9 @@ import { Links } from "../components/elements/links";
 import { ContactInfo } from "../components/elements/contact-info";
 import { Paragraph } from "../components/elements/paragraph";
 
-const Method: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
-  const header = data.page[0].header
-  const content = data.page[0].content
+const Method: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const header = data.page[0].header;
+  const content = data.page[0].content;
 
   return (
     <>
@@ -29,58 +29,66 @@ const Method: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview })
       <Navbar elements={data.settings[0]["main_navigation"]} />
 
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
-      {
-        content.map((section: SectionContainerProps & { _key: string, blocks: any }) => <SectionContainer 
+      {content.map((section: SectionContainerProps & { _key: string; blocks: any }) => (
+        <SectionContainer
           key={section._key}
-          heading={section.heading} 
-          inverted={section.inverted} 
-          nodivider={section.nodivider}>
-          {
-            section.blocks.map((block: any) => {
-              switch (block._type) {
-                case "paragraph":
-                  return <Paragraph key={block._key} title={block.title} blocks={block.blocks} />
-                case "videoembed":
-                  return <VideoEmbed key={block._key} id={block.url} />
-                case "pointlist":
-                  return <PointList key={block._key} points={block.points.map((point: PointListPointProps, i: number) => ({
-                    number: block.numbered ? i+1 : null,
-                    heading: point.heading,
-                    paragraph: point.paragraph
-                  }))}></PointList>
-                case "links":
-                  return <div key={block._key} style={{ width: '100%', maxWidth: '660px' }}>
+          heading={section.heading}
+          inverted={section.inverted}
+          nodivider={section.nodivider}
+        >
+          {section.blocks.map((block: any) => {
+            switch (block._type) {
+              case "paragraph":
+                return <Paragraph key={block._key} title={block.title} blocks={block.content} />;
+              case "videoembed":
+                return <VideoEmbed key={block._key} id={block.url} />;
+              case "pointlist":
+                return (
+                  <PointList
+                    key={block._key}
+                    points={block.points.map((point: PointListPointProps, i: number) => ({
+                      number: block.numbered ? i + 1 : null,
+                      heading: point.heading,
+                      paragraph: point.paragraph,
+                    }))}
+                  ></PointList>
+                );
+              case "links":
+                return (
+                  <div key={block._key} style={{ width: "100%", maxWidth: "660px" }}>
                     <h2>Les mer:</h2>
                     <Links links={block.links}></Links>
                   </div>
-                case "contactinfo":
-                  return <ContactInfo
+                );
+              case "contactinfo":
+                return (
+                  <ContactInfo
                     key={block._key || block._id}
-                    title={block.title} 
-                    description={block.description} 
+                    title={block.title}
+                    description={block.description}
                     phone={block.phone}
                     email={block.email}
-                    />
-                default:
-                  return null
-              }
-            })
-          }
-        </SectionContainer>)
-      }
+                  />
+                );
+              default:
+                return null;
+            }
+          })}
+        </SectionContainer>
+      ))}
     </>
-  )
-}
+  );
+};
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchMethod)
+  const data = await getClient(preview).fetch(fetchMethod);
 
   return {
     props: {
       preview,
       data,
     },
-  }
+  };
 }
 
 const fetchMethod = groq`
@@ -115,7 +123,7 @@ const fetchMethod = groq`
     }
   },
 }
-`
+`;
 
-Method.layout = Layout
-export default Method
+Method.layout = Layout;
+export default Method;
