@@ -17,6 +17,7 @@ import { Navbar } from "../components/main/navbar";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.frontpage[0].salespitch;
+  const settings = data.settings[0];
 
   return (
     <>
@@ -26,7 +27,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar elements={data.settings[0]["main_navigation"]} />
+      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
       <div className={styles.hero}>
         <div className={styles.header}>
@@ -116,6 +117,7 @@ export async function getStaticProps({ preview = false }) {
 const fetchFrontpage = groq`
 {
   "settings": *[_type == "site_settings"] {
+    logo,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,

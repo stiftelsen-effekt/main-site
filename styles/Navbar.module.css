@@ -84,6 +84,9 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  height: 80px;
+  width: 180px;
+  position: relative;
 }
 
 .navbar ul li.expandedSubmenu button::after {

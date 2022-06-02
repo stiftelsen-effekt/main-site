@@ -17,6 +17,7 @@ import { Paragraph } from "../components/elements/paragraph";
 const Method: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
   const content = data.page[0].content;
+  const settings = data.settings[0];
 
   return (
     <>
@@ -26,7 +27,7 @@ const Method: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) 
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar elements={data.settings[0]["main_navigation"]} />
+      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
       {content.map((section: SectionContainerProps & { _key: string; blocks: any }) => (
@@ -94,6 +95,7 @@ export async function getStaticProps({ preview = false }) {
 const fetchMethod = groq`
 {
   "settings": *[_type == "site_settings"] {
+    logo,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,

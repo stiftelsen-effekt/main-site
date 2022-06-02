@@ -15,11 +15,7 @@ import { Navbar } from "../components/main/navbar";
 import { Links } from "../components/elements/links";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const router = useRouter();
-
-  if (router.isFallback) {
-    return <h1>404</h1>;
-  }
+  const settings = data.settings[0];
 
   return (
     <>
@@ -29,7 +25,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar elements={data.settings[0]["main_navigation"]} />
+      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
       <PageHeader title={data.page[0].header.title} />
       <SectionContainer>
@@ -74,6 +70,7 @@ export async function getStaticProps({ preview = false }) {
 const fetchOrganizationsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
+    logo,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,

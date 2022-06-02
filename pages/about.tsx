@@ -12,11 +12,7 @@ import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const router = useRouter();
-
-  if (!router.isFallback && !data.about) {
-    return <h1>404</h1>;
-  }
+  const settings = data.settings[0];
 
   return (
     <>
@@ -26,7 +22,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar elements={data.settings[0]["main_navigation"]} />
+      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
       <PageHeader title={"Om oss"}></PageHeader>
 
@@ -65,6 +61,7 @@ export async function getStaticProps({ preview = false }) {
 const fetchAboutUs = groq`
 {
   "settings": *[_type == "site_settings"] {
+    logo,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
