@@ -24,7 +24,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jwt-decode": "^3.1.2",
     "luxon": "^2.3.0",
-    "next": "12.0.10",
+    "next": "^12.1.6",
     "next-sanity": "^0.4.0",
     "next-sanity-image": "^3.2.1",
     "react": "17.0.2",
