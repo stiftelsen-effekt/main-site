@@ -1,13 +1,13 @@
 import React from 'react'
 import styles from '../styles/SectionContainer.module.css'
 
-interface Section {
+export type SectionContainerProps = {
   heading?: string
   inverted?: boolean
   nodivider?: boolean
 }
 
-export const SectionContainer: React.FC<Section> = ({
+export const SectionContainer: React.FC<SectionContainerProps> = ({
   heading,
   inverted,
   nodivider,
