@@ -1,14 +1,19 @@
 .grid {
+  border-top: solid 1px black;
+  margin: 5vw;
+  font-family: 'ESKlarheitGrotesk', sans-serif;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 10vh);
   column-gap: 50px;
   padding-top: 80px;
-  padding-left: 25%;
-  padding-bottom: 60px;
+  /* padding-left: 25%; */
+  /* padding-bottom: 20px; */
+  position: relative;
 }
 
 .category h3 {
-  font-family: "ESKlarheitGrotesk", sans-serif;
+  font-family: 'ESKlarheitGrotesk', sans-serif;
   font-weight: 600;
   margin-bottom: 40px;
 }
@@ -16,17 +21,118 @@
 .category ul {
   list-style: none;
   padding: 0;
+  margin-top: 0;
 }
 
-.category ul li {
+.category ul li,
+.category ul li a {
   margin-bottom: 2px;
+  font-size: 18px;
 }
+
+.logo__bottom figure {
+  padding-right: 20px;
+  margin: 0;
+}
+
+.logo__bottom figure p {
+  font-size: 20vw;
+  margin: 0;
+  transform: translateY(-120px);
+  /* scale(0.8);  */
+
+  /* 
+  position: absolute;
+  top: 0; */
+}
+
+/**----- Placment listed sitemap links in the footer grid*/
+
+.logo_bottom {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row: 1;
+}
+
+.primary__links {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 2;
+}
+
+.secoundary__links {
+  grid-row: 1;
+  grid-row-end: 3;
+  grid-column-start: 3;
+}
+
+.tertiary__links {
+  grid-row: 1;
+  grid-row-end: 3;
+  grid-column-start: 4;
+}
+
+.utillity {
+  grid-row: 1;
+  grid-column-start: 5;
+}
+
+.newsletter__position {
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row: 3;
+}
+
+/** -----News Letter Signup--------*/
 
 .newsletter {
+  border: none;
+  padding: 0;
+}
+.newsletter_label {
+  font-size: 18px;
+}
+
+.input__inlinebutton {
+  margin-top: 14px;
+  border: solid 1px var(--primary);
+  display: flex;
+  justify-content: space-around;
+  border-radius: 50px;
+  min-width: 400px;
+}
+.input__inlinebutton input,
+.input__inlinebutton button {
+  font-size: 14px;
+  border: none;
+  background-color: white;
+  text-transform: uppercase;
+}
+
+.input__inlinebutton input {
+  margin: 14px 0 14px 0px;
+}
+
+.input__inlinebutton button {
+  margin: 14px 0px 14px 0;
+  padding: 0 0 0 20px;
+}
+
+.input__inlinebutton button:hover {
+  color: var(--primary-hover);
+  border-bottom: 1px solid var(--primary-hover);
+}
+
+.newsletter div input[type='text'] {
   background: var(--secondary);
-  font-family: "ESKlarheitGrotesk", sans-serif;
   color: var(--primary);
-  padding: 14px 18px;
+  font-family: 'ESKlarheitGrotesk', sans-serif;
+}
+
+.newsletter__input {
+  background: var(--secondary);
+  font-family: 'ESKlarheitGrotesk', sans-serif;
+  color: var(--primary);
   border: none;
   width: 100%;
 }

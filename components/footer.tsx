@@ -4,56 +4,85 @@ import styles from "../styles/Footer.module.css";
 export const Footer: React.FC = () => {
   return (
     <footer className={styles.grid}>
-      <div className={styles.category}>
-        <h3>Konduit.</h3>
+      <div className={`${styles.category} ${styles.logo__bottom}`}>
+        <figure>
+          <p>G</p>
+        </figure>
+      </div>
+
+      <div className={`${styles.category} ${styles.primary__links}`}>
+        {/* <h3>Konduit.</h3> */}
 
         <ul>
-          <li>Doner</li>
-          <li>Presse</li>
-          <li>Scorecard</li>
-          <li>Gavekort</li>
-          <li>The pledge</li>
+          <li>
+            <a href="#">Om oss</a>
+          </li>
+          <li>
+            <a href="#">Medieomtale</a>
+          </li>
+          <li>
+            <a href="#">Resultater</a>
+          </li>
+          {/* <li>Gavekort</li>
+          <li>The pledge</li> */}
         </ul>
       </div>
 
-      <div className={styles.category}>
-        <h3>Hjelp</h3>
+      <div className={`${styles.category} ${styles.secondary__links}`}>
+        {/* <h3>Hjelp</h3> */}
 
         <ul>
-          <li>Kontakt</li>
+          <li>
+            <a href="#">Hvorfor Gi Effektivt?</a>
+          </li>
+          <li>
+            <a href="#">Blogg</a>
+          </li>
+          <li>
+            <a href="#">Support</a>
+          </li>
+          {/* <li>Kontakt</li>
           <li>FAQ</li>
           <li>Min donasjonshistorikk</li>
           <li>Vilkår og betingelser</li>
-          <li>Personvernserklæring</li>
+          <li>Personvernserklæring</li> */}
         </ul>
       </div>
 
-      <div className={styles.category}>
-        <h3>Social</h3>
-
+      <div className={`${styles.category} ${styles.tertiary__links}`}>
         <ul>
-          <li>Facebook</li>
-          <li>Twitter</li>
-          <li>Youtube</li>
-          <li>Linkedin</li>
-          <li>Blog</li>
+          <li>
+            <a href="#">Facebook</a>
+          </li>
+          <li>
+            <a href="#">Twitter</a>
+          </li>
+          <li>
+            <a href="#">Youtube</a>
+          </li>
+          <li>
+            <a href="#">Linkedin</a>
+          </li>
         </ul>
       </div>
 
-      <div className={styles.category}>
-        <h3>Meld meg på nyhetsbrevet</h3>
+      <form className={`${styles.category} ${styles.newsletter__position}`}>
+        <fieldset className={styles.newsletter}>
+          <label className={styles.newsletter__label} htmlFor="nyhetsbrev">
+            Meld meg på nyhetsbrevet
+          </label>
 
-        <input type="text" className={styles.newsletter} placeholder="E-post" />
-      </div>
+          <div className={styles.input__inlinebutton}>
+            <input type="text" name="nyhetbrev" placeholder="E-post" />
+            <button aria-label="send e-post">SEND&nbsp;→</button>
+          </div>
+        </fieldset>
+      </form>
 
-      <div className={styles.category}>
-        <h3>&nbsp;</h3>
-        <span>Personvern</span>
-      </div>
-
-      <div className={styles.category}>
-        <h3>&nbsp;</h3>
-        <div>Til toppen av siden</div>
+      <div className={`${styles.category} ${styles.utillity}`}>
+        <a href="#">Personvern</a>
+        <p> &#169; 2022 Gi Effektivt</p>
+        <a href="#top">Til toppen &uarr;</a>
       </div>
     </footer>
   );
