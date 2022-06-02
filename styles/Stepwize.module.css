@@ -4,7 +4,7 @@ This will need a review.*/
 .stepwize__container {
   display: flex;
   flex-direction: row;
-  font-family: 'ESKlarheitKurrent';
+  font-family: "ESKlarheitKurrent";
   font-style: normal;
   font-weight: 400;
 }

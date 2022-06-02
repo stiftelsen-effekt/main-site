@@ -1,4 +1,3 @@
-
 <p align="center">
   <img 
     src="docs/logo.svg"
@@ -6,18 +5,17 @@
     width="340" />
 </p>
 
-Table of Contents
-=================
+# Table of Contents
 
-* [Getting started <g-emoji class="g-emoji" alias="zap" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png">⚡</g-emoji>](#getting-started-)
-* [Project structure](#project-structure)
-  * [Pages](#pages)
-  * [Components](#components)
-* [Sanity (Content Managment System) <g-emoji class="g-emoji" alias="book" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d6.png">📖</g-emoji>](#sanity-content-managment-system-)
-* [Profile page <g-emoji class="g-emoji" alias="people_holding_hands" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f91d-1f9d1.png">🧑‍🤝‍🧑</g-emoji>](#profile-page-)
-  * [Fetching and mutating data via the API](#fetching-and-mutating-data-via-the-api)
-* [Build and deployment <g-emoji class="g-emoji" alias="gear" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2699.png">⚙️</g-emoji>](#build-and-deployment-️)
-* [Testing <g-emoji class="g-emoji" alias="boom" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a5.png">💥</g-emoji>](#testing-)
+- [Getting started <g-emoji class="g-emoji" alias="zap" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png">⚡</g-emoji>](#getting-started-)
+- [Project structure](#project-structure)
+  - [Pages](#pages)
+  - [Components](#components)
+- [Sanity (Content Managment System) <g-emoji class="g-emoji" alias="book" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d6.png">📖</g-emoji>](#sanity-content-managment-system-)
+- [Profile page <g-emoji class="g-emoji" alias="people_holding_hands" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f91d-1f9d1.png">🧑‍🤝‍🧑</g-emoji>](#profile-page-)
+  - [Fetching and mutating data via the API](#fetching-and-mutating-data-via-the-api)
+- [Build and deployment <g-emoji class="g-emoji" alias="gear" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2699.png">⚙️</g-emoji>](#build-and-deployment-️)
+- [Testing <g-emoji class="g-emoji" alias="boom" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a5.png">💥</g-emoji>](#testing-)
 
 ---
 
@@ -33,19 +31,19 @@ Authentification is handled with [Auth0](https://auth0.com), and the API used fo
 
 To get started, install the packages using npm.
 
-``` npm install ```
+`npm install`
 
 To start the development server run
 
-``` npm run dev ```
+`npm run dev`
 
 Navigating to `localhost:3000/` in your browser should yield something like this
 
 <img src="docs/frontpage.png" width="420" alt="Konduit front page" />
 
-The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, run 
+The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, run
 
-``` npm run sanity ```
+`npm run sanity`
 
 > To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
 
@@ -73,7 +71,7 @@ Reusable components not tied to a concrete page, are located in the `/components
 
 ## Sanity (Content Managment System) 📖
 
-We use Sanity as our content managment system. Sanity provides us with a nice API to fetch data when rendering statically generated content. Next uses a special function called `getStaticProps` to fetch data used for static site generation, which is then provided as props to the page in question. 
+We use Sanity as our content managment system. Sanity provides us with a nice API to fetch data when rendering statically generated content. Next uses a special function called `getStaticProps` to fetch data used for static site generation, which is then provided as props to the page in question.
 
 To fetch data from sanity, we make use of the [next-sanity](https://github.com/sanity-io/next-sanity) SDK To query our data in sanity, we make use of the [groq](https://www.sanity.io/docs/groq) query language.
 
@@ -92,11 +90,11 @@ import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 
-const ExamplePage: LayoutPage<{ data: any, preview: boolean }>  = ({ data, preview }) => {
-  const router = useRouter()
+const ExamplePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const router = useRouter();
 
   if (!router.isFallback && !data.about) {
-    return <h1>404</h1>
+    return <h1>404</h1>;
   }
 
   return (
@@ -108,21 +106,21 @@ const ExamplePage: LayoutPage<{ data: any, preview: boolean }>  = ({ data, previ
       </Head>
 
       <h1>Example page</h1>
-      
+
       <PortableText blocks={data.about[0].content}></PortableText>
     </>
-  )
-}
+  );
+};
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchAboutUs)
+  const data = await getClient(preview).fetch(fetchAboutUs);
 
   return {
     props: {
       preview,
       data,
     },
-  }
+  };
 }
 
 const fetchAboutUs = groq`
@@ -131,11 +129,12 @@ const fetchAboutUs = groq`
     content
   }
 }
-`
+`;
 
-ExamplePage.layout = Layout
-export default ExamplePage
+ExamplePage.layout = Layout;
+export default ExamplePage;
 ```
+
 </Details>
 <br>
 In this example page, we use the publicly available main layout for the page. We fetch the data we are interested in on site generation, using the `getStaticProps` method, a sanity client and a groq query. If no data was found, we render a 404 message.
@@ -160,12 +159,12 @@ const { getAccessTokenSilently, user } = useAuth0();
 if (!user)
   // User is not logged in, handle in an apropriate way
 
-const { loading, error, data } = useApi<Donor>(
-  `/donors/${user["https://konduit.no/user-id"]}/`,
-  "GET",
-  "read:profile",
-  getAccessTokenSilently,
-);
+  const { loading, error, data } = useApi<Donor>(
+    `/donors/${user["https://konduit.no/user-id"]}/`,
+    "GET",
+    "read:profile",
+    getAccessTokenSilently,
+  );
 ```
 
 > ⚠️ The donor id used for the backend API is not the same as the id of the auth0 user. The donor id used in the backend api is available on the user object as the `https://konduit.no/user-id` property.
@@ -173,9 +172,6 @@ const { loading, error, data } = useApi<Donor>(
 The hook functions can be viewed as a finite state machine.
 
 <img src="docs/useapi.svg" width="220" alt="useApi FSM" />
-
-
-
 
 ## Build and deployment ⚙️
 

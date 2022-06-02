@@ -13,7 +13,7 @@
   background: var(--primary);
   color: var(--secondary);
   padding: 14px 26px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
   color: var(--secondary);
   font-size: 12px;
   user-select: none;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   min-width: 150px;
   cursor: pointer;
   outline: none;
@@ -136,7 +136,7 @@
 .button {
   border: none;
   border-radius: 48px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   font-size: 14px;
   padding: 14px 28px;
   cursor: pointer;
@@ -217,20 +217,24 @@
   line-height: 180%;
 }
 
-.salespitchwrapper {
+.pointlistwrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   column-gap: 20px;
   width: 100%;
-  margin-bottom: 30px;
+  margin: 100px 0;
 }
 
-.salespitchitem {
+.pointlistpoint {
   border-top: 1px solid black;
-  display: grid;
-  grid-template-columns: max-content 1fr;
+  display: flex;
   column-gap: 18px;
   padding-right: 20%;
+}
+
+.pointlistpoint div:nth-child(2) {
+  flex-grow: 1;
 }
 
 .introsection {
@@ -290,7 +294,6 @@
   margin-top: 120px;
 }
 
-
 .pageheader h1 {
   font-size: 96px;
 }
@@ -319,6 +322,11 @@
   align-items: center;
 }
 
+.expanderHeader:focus-within,
+.expanderHeader:focus-within {
+  outline: 2px solid black;
+}
+
 .expanderHeader h2 {
   margin: 0;
 }
@@ -334,15 +342,14 @@
 
 .widgetPane {
   width: 40vw;
-  min-width: 600px;
   background: var(--primary);
   border-left: 1px solid var(--secondary);
   height: 100vh;
   position: fixed;
   top: 0;
   right: 0;
-  transform: translateX(40vw) translateX(50px);
-  transition: transform 500ms cubic-bezier( 0.25, 0.72, 0.24, 1 );
+  transform: translateX(40vw) translateX(250px);
+  transition: transform 500ms cubic-bezier(0.25, 0.72, 0.24, 1);
   z-index: 10000;
   color: var(--secondary);
 }
@@ -373,6 +380,27 @@
 
 .pageContent {
   padding: 0 5vw;
+}
+
+.paragraphwrapper {
+  padding-top: 40px;
+  max-width: 660px;
+  line-height: 180%;
+  font-size: 16px;
+}
+
+.paragraphwrapper h2 {
+  margin-bottom: 45px;
+}
+
+.videocontainer {
+  margin-top: 100px;
+  width: 100%;
+}
+
+.videocontainer iframe {
+  aspect-ratio: 16 / 9;
+  width: 100%;
 }
 
 @media only screen and (max-width: 900px) {
@@ -413,10 +441,9 @@
     grid-row: 2;
   }
 
-  .salespitchwrapper {
+  .pointlistwrapper {
     display: grid;
-    grid-template-columns: none;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-auto-flow: row;
     row-gap: 20px;
     width: 100%;
     margin-bottom: 30px;
@@ -442,7 +469,8 @@
     font-size: 48px;
   }
 
-  .pageheader, .pageheader.pageheadermeta {
+  .pageheader,
+  .pageheader.pageheadermeta {
     padding: 0 5vw;
     min-height: 500px;
     display: grid;
@@ -466,6 +494,7 @@
   .widgetPane {
     min-width: auto;
     width: 100vw;
+    max-width: 100vw;
     transform: translateX(0);
     transform: translateY(100vh);
     border-width: 0;

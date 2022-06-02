@@ -8,13 +8,15 @@ export interface Query<T> {
     fetchToken: getAccessTokenSilently,
     condition?: boolean,
     ...args: any[]
-  ): apiResult<T> & { refreshing: boolean };
+  ): apiResult<T> & {
+    refreshing: boolean;
+  };
 }
 
 const fetcher = async (
   url: string,
   fetchToken: getAccessTokenSilently,
-  method: "GET" | "POST" | "PUT" | "DELETE" = "GET"
+  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
 ) => {
   const token = await fetchToken();
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
@@ -33,13 +35,10 @@ const fetcher = async (
  * @param {User} user - Which user's data to fetch
  * @param {String} fetchToken - Access token
  */
-export const useAggregatedDonations = (
-  user: User,
-  fetchToken: getAccessTokenSilently
-) => {
+export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     `/donors/${user["https://konduit.no/user-id"]}/donations/aggregated`,
-    (url) => fetcher(url, fetchToken)
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -58,13 +57,10 @@ export const useAggregatedDonations = (
  * @param {User} user - Which user's data to fetch
  * @param {String} getAccessTokenSilently - Retrieves access token
  * */
-export const useDonations = (
-  user: User,
-  fetchToken: getAccessTokenSilently
-) => {
+export const useDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     `/donors/${user["https://konduit.no/user-id"]}/donations/`,
-    (url) => fetcher(url, fetchToken)
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -89,15 +85,15 @@ export const useDistributions = (
   user: User,
   fetchToken: getAccessTokenSilently,
   condition: boolean,
-  kids: string[]
+  kids: string[],
 ) => {
   const { data, error, isValidating } = useSWR(
     condition
-      ? `/donors/${
-          user["https://konduit.no/user-id"]
-        }/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}`
+      ? `/donors/${user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(
+          Array.from(kids).join(","),
+        )}`
       : null,
-    (url) => fetcher(url, fetchToken)
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -114,15 +110,15 @@ export const useAgreementsDistributions = (
   user: User,
   fetchToken: getAccessTokenSilently,
   condition: boolean,
-  kids: string[]
+  kids: string[],
 ) => {
   const { data, error, isValidating } = useSWR(
     condition
-      ? `/donors/${
-          user["https://konduit.no/user-id"]
-        }/distributions/?kids=${encodeURIComponent(Array.from(kids).join(","))}`
+      ? `/donors/${user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(
+          Array.from(kids).join(","),
+        )}`
       : null,
-    (url) => fetcher(url, fetchToken)
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -135,13 +131,10 @@ export const useAgreementsDistributions = (
   };
 };
 
-export const useAvtalegiroAgreements = (
-  user: User,
-  fetchToken: getAccessTokenSilently
-) => {
+export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     `/donors/${user["https://konduit.no/user-id"]}/recurring/avtalegiro/`,
-    (url) => fetcher(url, fetchToken)
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -154,13 +147,10 @@ export const useAvtalegiroAgreements = (
   };
 };
 
-export const useVippsAgreements = (
-  user: User,
-  fetchToken: getAccessTokenSilently
-) => {
+export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     `/donors/${user["https://konduit.no/user-id"]}/recurring/vipps/`,
-    (url) => fetcher(url, fetchToken)
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -173,13 +163,9 @@ export const useVippsAgreements = (
   };
 };
 
-export const useOrganizations = (
-  user: User,
-  fetchToken: getAccessTokenSilently
-) => {
-  const { data, error, isValidating } = useSWR(
-    `/organizations/active/`,
-    (url) => fetcher(url, fetchToken)
+export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(`/organizations/active/`, (url) =>
+    fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -187,24 +173,23 @@ export const useOrganizations = (
   return {
     loading,
     isValidating,
-    data, 
-    error
-  }
-}
+    data,
+    error,
+  };
+};
 
 export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
-  const {
-    data, 
-    error,
-    isValidating
-  } = useSWR(`/donors/${user["https://konduit.no/user-id"]}/`, url => fetcher(url, fetchToken))
+  const { data, error, isValidating } = useSWR(
+    `/donors/${user["https://konduit.no/user-id"]}/`,
+    (url) => fetcher(url, fetchToken),
+  );
 
-  const loading = !data && !error
+  const loading = !data && !error;
 
   return {
     loading,
     isValidating,
-    data, 
-    error
-  }
-}
+    data,
+    error,
+  };
+};

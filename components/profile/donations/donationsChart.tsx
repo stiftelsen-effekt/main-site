@@ -1,30 +1,35 @@
 import { doesNotThrow } from "assert";
-import React from "react"
+import React from "react";
 import style from "../../../styles/Donations.module.css";
 import { thousandize } from "../../../util/formatting";
 
+const DonationsChart: React.FC<{ distribution: { org: string; sum: number }[] }> = ({
+  distribution,
+}) => {
+  const total = distribution.reduce((acc, curr) => acc + curr.sum, 0);
 
-const DonationsChart: React.FC<{ distribution: {org: string, sum: number }[] }> = ({ distribution }) => {
-  const total = distribution.reduce((acc, curr) => acc + curr.sum, 0)
-
-  distribution = distribution.sort((a,b) => b.sum - a.sum)
+  distribution = distribution.sort((a, b) => b.sum - a.sum);
 
   return (
-    <div className={style.graph + ' ' + (distribution.length == 0 ? style.empty : '')} data-cy="aggregated-donations-distribution-graph">
+    <div
+      className={style.graph + " " + (distribution.length == 0 ? style.empty : "")}
+      data-cy="aggregated-donations-distribution-graph"
+    >
       {distribution.map((dist, i) => (
-        <div 
-          key={dist.org} 
-          style={{ 
+        <div
+          key={dist.org}
+          style={{
             width: `${(dist.sum / total) * 100}%`,
-            zIndex: distribution.length - i 
+            zIndex: distribution.length - i,
           }}
-          data-cy="aggregated-donations-distribution-graph-bar">
-            <span>{dist.org}</span>
-            <span>{thousandize(Math.floor(dist.sum)) + " kr"}</span>
+          data-cy="aggregated-donations-distribution-graph-bar"
+        >
+          <span>{dist.org}</span>
+          <span>{thousandize(Math.floor(dist.sum)) + " kr"}</span>
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default DonationsChart
+export default DonationsChart;

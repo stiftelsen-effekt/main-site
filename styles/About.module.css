@@ -10,7 +10,7 @@
   line-height: 200%;
 }
 
-@media only screen and (max-width: 900px) {  
+@media only screen and (max-width: 900px) {
   .grid {
     display: flex;
     flex-direction: column;

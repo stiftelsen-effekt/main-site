@@ -1,6 +1,5 @@
-import { style } from 'd3'
-import React from 'react'
-import styles from '../styles/Footer.module.css'
+import React from "react";
+import styles from "../styles/Footer.module.css";
 
 export const Footer: React.FC = () => {
   return (
@@ -37,10 +36,10 @@ export const Footer: React.FC = () => {
             <a href="#">Hvorfor Gi Effektivt?</a>
           </li>
           <li>
-            <a href="/blog">Blogg</a>
+            <a href="#">Blogg</a>
           </li>
           <li>
-            <a href="/Support">Support</a>
+            <a href="#">Support</a>
           </li>
           {/* <li>Kontakt</li>
           <li>FAQ</li>
@@ -81,10 +80,10 @@ export const Footer: React.FC = () => {
       </form>
 
       <div className={`${styles.category} ${styles.utillity}`}>
-        <a href="/personvern">Personvern</a>
+        <a href="#">Personvern</a>
         <p> &#169; 2022 Gi Effektivt</p>
         <a href="#top">Til toppen &uarr;</a>
       </div>
     </footer>
-  )
-}
+  );
+};

@@ -7,7 +7,7 @@
   background: var(--primary);
   border: 1px solid var(--secondary);
   font-size: 38px;
-  font-family: 'ESKlarheitKurrent';
+  font-family: "ESKlarheitKurrent";
   font-weight: 400;
   color: var(--secondary);
   padding: 16px;
@@ -15,6 +15,7 @@
   user-select: none;
 }
 
-.gibutton:hover, .gibutton:active {
+.gibutton:hover,
+.gibutton:active {
   background: #222;
 }

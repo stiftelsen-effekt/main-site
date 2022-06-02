@@ -19,7 +19,7 @@
   border-bottom: 1px solid var(--primary);
 }
 
-@media only screen and (max-width: 900px) { 
+@media only screen and (max-width: 900px) {
   .grid {
     grid-template-columns: auto;
   }

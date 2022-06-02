@@ -16,7 +16,7 @@
   display: grid;
   grid-template-columns: 20% 70%;
   justify-content: space-between;
-  word-break:keep-all;
+  word-break: keep-all;
   margin-bottom: 100px;
 }
 
@@ -39,7 +39,8 @@
   display: inline-block;
 }
 
-table td svg.iconChevronUp, table td svg.iconChevronDown {
+table td svg.iconChevronUp,
+table td svg.iconChevronDown {
   cursor: pointer;
   transition: transform 120ms ease-in-out;
   user-select: none;
@@ -80,7 +81,7 @@ table td svg.iconChevronDown {
   margin-right: 5px;
 }
 
-@media only screen and (max-width: 900px) { 
+@media only screen and (max-width: 900px) {
   .gridContainer {
     grid-template-columns: 1fr;
   }
@@ -102,11 +103,13 @@ table td svg.iconChevronDown {
   }
 
   /* Display only the three first columns */
-  .gridContainer tr th, .gridContainer tr td {
+  .gridContainer tr th,
+  .gridContainer tr td {
     display: none;
   }
 
-  .gridContainer tr th:nth-child(-n+3), .gridContainer tr td:nth-child(-n+3) {
+  .gridContainer tr th:nth-child(-n + 3),
+  .gridContainer tr td:nth-child(-n + 3) {
     display: table-cell;
   }
 
