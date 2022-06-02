@@ -5,12 +5,14 @@ import { PointListPoint, PointListPointProps } from "./pointlistpoint";
 export const PointList: React.FC<{ points: PointListPointProps[] }> = ({ points }) => {
   return (
     <div className={elements.pointlistwrapper}>
-      {points.map(point => <PointListPoint 
-        key={point.number || point.heading} 
-        number={point.number}
-        heading={point.heading}
-        paragraph={point.paragraph}
-      />)}
+      {points.map((point) => (
+        <PointListPoint
+          key={point.number || point.heading}
+          number={point.number}
+          heading={point.heading}
+          paragraph={point.paragraph}
+        />
+      ))}
     </div>
-  )
-}
+  );
+};

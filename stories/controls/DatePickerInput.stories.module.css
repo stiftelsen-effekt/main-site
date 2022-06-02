@@ -3,7 +3,7 @@
   margin-left: 100px;
 }
 
-@media only screen and (max-width: 900px) {  
+@media only screen and (max-width: 900px) {
   .input-wrapper {
     margin: 0;
   }

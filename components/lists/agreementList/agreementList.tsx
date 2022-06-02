@@ -1,8 +1,4 @@
-import {
-  AvtaleGiroAgreement,
-  Distribution,
-  VippsAgreement,
-} from "../../../models";
+import { AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../../models";
 import { thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 import { AgreementDetails } from "./agreementDetails";
@@ -36,7 +32,7 @@ export const AgreementList: React.FC<{
       amount: entry.amount,
       type: "Vipps",
       endpoint: entry.agreement_url_code,
-    })
+    }),
   );
 
   let giroType = avtalegiro.map(
@@ -48,15 +44,14 @@ export const AgreementList: React.FC<{
       amount: parseFloat(entry.amount),
       type: "AvtaleGiro",
       endpoint: entry.KID,
-    })
+    }),
   );
 
   let rowData: AgreementRow[] = [...vippsType, ...giroType];
 
-
-/**
- * Maps agreements into rows in the agreement table. 
- */
+  /**
+   * Maps agreements into rows in the agreement table.
+   */
   const rows: ListRow[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
     cells: [
@@ -83,9 +78,7 @@ export const AgreementList: React.FC<{
 
   const emptyPlaceholder = (
     <div data-cy="agreement-list-empty-placeholder">
-      <div>
-        Vi har ikke registrert noen aktive faste donasjonsavtaler på deg..
-      </div>
+      <div>Vi har ikke registrert noen aktive faste donasjonsavtaler på deg..</div>
       <div>
         Mangler det avtaler vi ikke har registrert? Ta kontakt på{" "}
         <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.

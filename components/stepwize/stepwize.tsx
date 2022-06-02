@@ -1,6 +1,6 @@
-import React from 'react'
-import { Step } from './step'
-import styles from '../../styles/Stepwize.module.css'
+import React from "react";
+import { Step } from "./step";
+import styles from "../../styles/Stepwize.module.css";
 
 export const Stepwize: React.FC = () => {
   return (
@@ -22,5 +22,5 @@ export const Stepwize: React.FC = () => {
         description="Utfører mer effektiv bistand som ikke ville skjedd uten ditt bidrag."
       />
     </div>
-  )
-}
+  );
+};

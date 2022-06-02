@@ -1,16 +1,13 @@
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { getClient } from '../lib/sanity.server'
-import { groq } from 'next-sanity'
-import { LayoutPage } from '../types'
-import { Layout } from '../components/main/layout'
+import Head from "next/head";
+import { useRouter } from "next/router";
+import React from "react";
+import { getClient } from "../lib/sanity.server";
+import { groq } from "next-sanity";
+import { LayoutPage } from "../types";
+import { Layout } from "../components/main/layout";
 
-const Method: LayoutPage<{ data: any; preview: boolean }> = ({
-  data,
-  preview,
-}) => {
-  const router = useRouter()
+const Method: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const router = useRouter();
 
   return (
     <>
@@ -22,25 +19,25 @@ const Method: LayoutPage<{ data: any; preview: boolean }> = ({
 
       <h1>Donations</h1>
     </>
-  )
-}
+  );
+};
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchMethod)
+  const data = await getClient(preview).fetch(fetchMethod);
 
   return {
     props: {
       preview,
       data,
     },
-  }
+  };
 }
 
 const fetchMethod = groq`
 {
 
 }
-`
+`;
 
-Method.layout = Layout
-export default Method
+Method.layout = Layout;
+export default Method;

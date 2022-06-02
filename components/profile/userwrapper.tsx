@@ -4,22 +4,13 @@ import { Spinner } from "../elements/spinner";
 import { LoginError } from "./loginError";
 
 export const UserWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const {
-    isLoading,
-    isAuthenticated,
-    loginWithRedirect,
-    user,
-    error
-  } = useAuth0();
+  const { isLoading, isAuthenticated, loginWithRedirect, user, error } = useAuth0();
 
-  if (!isAuthenticated && !isLoading && !error)
-    loginWithRedirect()
+  if (!isAuthenticated && !isLoading && !error) loginWithRedirect();
 
-  if (error)
-    return <LoginError message={error.message}></LoginError>
+  if (error) return <LoginError message={error.message}></LoginError>;
 
-  if (!user)
-    return <Spinner /> // In the process of redirecting
+  if (!user) return <Spinner />; // In the process of redirecting
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};

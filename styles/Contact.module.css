@@ -29,7 +29,7 @@
   border-radius: 34px;
 }
 
-@media only screen and (max-width: 900px) { 
+@media only screen and (max-width: 900px) {
   .container .channels {
     flex-direction: column;
   }

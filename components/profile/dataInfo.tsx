@@ -18,4 +18,3 @@ export const DataInfo: React.FC<{ data: any }> = ({ data }) => {
     </section>
   );
 };
-

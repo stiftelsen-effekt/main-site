@@ -39,11 +39,11 @@
 }
 
 .buttonWrapper {
-    padding-top: 8px;
-    display: flex;
-    justify-content: flex-end;
+  padding-top: 8px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .textWrapper {
   text-align: left;
-} 
+}

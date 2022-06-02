@@ -1,5 +1,5 @@
-const path = require('path');
-const dotenvPlugin = require('cypress-dotenv');
+const path = require("path");
+const dotenvPlugin = require("cypress-dotenv");
 
 /// <reference types="cypress" />
 // ***********************************************************
@@ -23,6 +23,6 @@ const dotenvPlugin = require('cypress-dotenv');
 module.exports = (on, config) => {
   config = dotenvPlugin(config, {
     path: path.join(__dirname, "../../.env.local"),
-  })
-  return config
-}
+  });
+  return config;
+};

@@ -13,7 +13,7 @@
   background: var(--primary);
   color: var(--secondary);
   padding: 14px 26px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
   color: var(--secondary);
   font-size: 12px;
   user-select: none;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   min-width: 150px;
   cursor: pointer;
   outline: none;
@@ -136,7 +136,7 @@
 .button {
   border: none;
   border-radius: 48px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   font-size: 14px;
   padding: 14px 28px;
   cursor: pointer;
@@ -294,7 +294,6 @@
   margin-top: 120px;
 }
 
-
 .pageheader h1 {
   font-size: 96px;
 }
@@ -323,6 +322,11 @@
   align-items: center;
 }
 
+.expanderHeader:focus-within,
+.expanderHeader:focus-within {
+  outline: 2px solid black;
+}
+
 .expanderHeader h2 {
   margin: 0;
 }
@@ -344,8 +348,8 @@
   position: fixed;
   top: 0;
   right: 0;
-  transform: translateX(40vw) translateX(50px);
-  transition: transform 500ms cubic-bezier( 0.25, 0.72, 0.24, 1 );
+  transform: translateX(40vw) translateX(250px);
+  transition: transform 500ms cubic-bezier(0.25, 0.72, 0.24, 1);
   z-index: 10000;
   color: var(--secondary);
 }
@@ -394,7 +398,7 @@
   width: 100%;
 }
 
-.videocontainer iframe { 
+.videocontainer iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
 }
@@ -465,7 +469,8 @@
     font-size: 48px;
   }
 
-  .pageheader, .pageheader.pageheadermeta {
+  .pageheader,
+  .pageheader.pageheadermeta {
     padding: 0 5vw;
     min-height: 500px;
     display: grid;

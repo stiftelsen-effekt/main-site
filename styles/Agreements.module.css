@@ -32,12 +32,12 @@
     list-style: none;
     padding: 0;
   }
-  
+
   .menu-selected {
     font-weight: 600;
     border-bottom: 1px solid var(--primary);
   }
-  
+
   .menu li {
     display: inline-block;
     cursor: pointer;

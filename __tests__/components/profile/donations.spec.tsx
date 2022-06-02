@@ -1,7 +1,6 @@
 import DonationYearMenu from "../../../components/profile/donations/yearMenu";
 import { render } from "@testing-library/react";
 
-
 const donations = [
   {
     id: 68310,
@@ -58,26 +57,20 @@ const userApiReturn = {
 };
 
 describe("Overview over donation history", () => {
-  beforeEach(() => {
-
-  });
+  beforeEach(() => {});
 
   it("Should display all years supplied in donation year meny", () => {
     const { queryByText } = render(
-      <DonationYearMenu years={years} selected={"2020"}></DonationYearMenu>
+      <DonationYearMenu years={years} selected={"2020"}></DonationYearMenu>,
     );
-    years.forEach((year) =>
-      expect(queryByText(new RegExp(year.toString()))).toBeTruthy()
-    );
+    years.forEach((year) => expect(queryByText(new RegExp(year.toString()))).toBeTruthy());
     //expect(menu.find(".menu-selected").text()).toBe("2020");
-
-    
   });
 
-  it('Should display total as selected when selected', () => {
+  it("Should display total as selected when selected", () => {
     const { queryByText } = render(
-      <DonationYearMenu years={years} selected={"total"}></DonationYearMenu>
+      <DonationYearMenu years={years} selected={"total"}></DonationYearMenu>,
     );
-    expect(queryByText(new RegExp("Totalt"))).toBeTruthy()
-  })
+    expect(queryByText(new RegExp("Totalt"))).toBeTruthy();
+  });
 });

@@ -15,19 +15,18 @@ export const ProfileInfo: React.FC = () => {
   const { donor: initialDonor, setDonor: setGlobalDonor } = useContext(DonorContext);
   const [donor, setDonor] = useState<Donor | null>(initialDonor);
 
-  if (!donor || !user)
-    return <div>Whaaat..</div>
+  if (!donor || !user) return <div>Whaaat..</div>;
 
   const saveDonor = async () => {
     const token = await getAccessTokenSilently();
-    const result = await save(donor, user, token)
+    const result = await save(donor, user, token);
     if (result === null) {
       failureToast();
     } else {
       successToast();
       setGlobalDonor(donor);
     }
-  }
+  };
 
   return (
     <>
@@ -45,13 +44,7 @@ export const ProfileInfo: React.FC = () => {
         />{" "}
         <br /> <br />
         E-post <br />
-        <input
-          id="email"
-          type="email"
-          disabled
-          value={donor.email}
-          className={style.input}
-        />{" "}
+        <input id="email" type="email" disabled value={donor.email} className={style.input} />{" "}
         <br /> <br />
         Fødselsnummer / Organisasjonsnummer <br />
         <input
@@ -82,5 +75,6 @@ export const ProfileInfo: React.FC = () => {
   );
 };
 
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={'black'}/> });
-const failureToast = () => toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={'black'}/> });
+const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
+const failureToast = () =>
+  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
