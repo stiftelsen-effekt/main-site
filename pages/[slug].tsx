@@ -7,7 +7,6 @@ import { Layout } from "../components/main/layout";
 import { Navbar } from "../components/main/navbar";
 import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer, SectionContainerProps } from "../components/sectionContainer";
-import { PortableText } from "../lib/sanity";
 import { VideoEmbed } from "../components/elements/videoembed";
 import { PointListPointProps } from "../components/elements/pointlistpoint";
 import { PointList } from "../components/elements/pointlist";
