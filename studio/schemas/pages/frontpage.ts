@@ -25,9 +25,8 @@ export default {
     },
     {
       name: 'salespitch',
-      type: 'array',
+      type: 'pointlist',
       title: 'Salespitch',
-      of: [{ type: 'salespitchpoint' }]
     },
     {
       name: 'teasers',

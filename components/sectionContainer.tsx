@@ -1,15 +1,20 @@
 import React from "react";
 import styles from "../styles/SectionContainer.module.css";
 
-interface Section {
-  heading?: string;
-  inverted?: boolean;
-  nodivider?: boolean;
+export type SectionContainerProps = {
+  heading?: string
+  inverted?: boolean
+  nodivider?: boolean
 }
 
-export const SectionContainer: React.FC<Section> = ({ heading, inverted, nodivider, children }) => {
-  let background;
-  let dividerLine = styles.divider;
+export const SectionContainer: React.FC<SectionContainerProps> = ({
+  heading,
+  inverted,
+  nodivider,
+  children,
+}) => {
+  let background
+  let dividerLine = styles.divider
 
   inverted ? (background = styles.inverted) : null;
   nodivider ? (dividerLine = "") : null;

@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { Book, Briefcase, HelpCircle, Settings, User, Users, Zap } from 'react-feather'
+import { Book, Briefcase, Filter, HelpCircle, Settings, User, Users, Zap } from 'react-feather'
 
 export default () =>
   S.list()
@@ -15,6 +15,12 @@ export default () =>
               .icon(Zap)
               .child(
                 S.document().schemaType('frontpage').documentId('frontpage')
+              ),
+            S.listItem()
+              .title('Criteria')
+              .icon(Filter)
+              .child(
+                S.document().schemaType('criteria').documentId('criteria')
               ),
             S.listItem()
               .title('About us')

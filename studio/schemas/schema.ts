@@ -9,7 +9,7 @@ import organization from './types/organization'
 import role from './types/role'
 import testimonial from './types/testimonial'
 import teaser from './types/teaser'
-import salespitch from './types/salespitchpoint'
+import pointlist from './types/pointlist'
 import introsection from './types/introsection'
 import siteSettings from './siteSettings'
 import link from './types/link'
@@ -25,6 +25,12 @@ import profile from './pages/profile'
 import support from './pages/support'
 import generic from './pages/generic'
 import contactinfo from './types/contactinfo'
+import videoembed from './types/videoembed'
+import contentsection from './types/contentsection'
+import criteria from './pages/criteria'
+import paragraph from './types/paragraph'
+import pointlistpoint from './types/pointlistpoint'
+import links from './types/links'
 
 export const pages = [
   generic,
@@ -32,7 +38,8 @@ export const pages = [
   organizations,
   about,
   profile,
-  support
+  support,
+  criteria
 ]
 
 export const types = [
@@ -41,8 +48,10 @@ export const types = [
   contributor,
   introsection,
   keyPoint,
-  salespitch,
+  pointlist,
+  pointlistpoint,
   link,
+  links,
   organization,
   role,
   navitem,
@@ -50,7 +59,10 @@ export const types = [
   pageheader,
   questionandanswer,
   questionandanswergroup,
-  contactinfo
+  contactinfo,
+  videoembed,
+  contentsection,
+  paragraph
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity

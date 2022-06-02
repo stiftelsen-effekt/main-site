@@ -1,13 +1,13 @@
 .navbar {
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: 40px 5vw;
+  max-width: 2100px;
   background-color: var(--secondary);
   transition: padding 200ms ease-in-out;
 }
