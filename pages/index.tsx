@@ -39,7 +39,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </div>
 
       <SectionContainer nodivider>
-        <PointList points={salespitch.points.map((pitch: PointListPointProps, i: number) => ({
+        <PointList points={salespitch.map((pitch: PointListPointProps, i: number) => ({
           number: salespitch.numbered ? i+1 : null,
           heading: pitch.heading,
           paragraph: pitch.paragraph
