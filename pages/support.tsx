@@ -29,7 +29,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
 
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 
-      <SectionContainer>
+      <SectionContainer padded={true}>
         {data.page[0].questionandanswergroups.map((group: any) => (
           <div className={styles.grid} key={group._key}>
             <div className={styles.groupheader}>

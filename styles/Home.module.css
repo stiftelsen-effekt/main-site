@@ -1,5 +1,5 @@
 .hero {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 165px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,6 +23,10 @@
   font-weight: 400;
 }
 
+.salespitchWrapper {
+  padding: 0 5vw;
+}
+
 .teasers {
   width: 100%;
 }
@@ -39,7 +43,7 @@
 
 @media only screen and (max-width: 900px) {
   .hero {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 165px);
     justify-content: flex-end;
   }
 

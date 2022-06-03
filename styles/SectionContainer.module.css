@@ -27,8 +27,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.padded {
   padding-left: 5vw;
   padding-right: 5vw;
 }

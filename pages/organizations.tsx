@@ -28,7 +28,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
       <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
       <PageHeader title={data.page[0].header.title} />
-      <SectionContainer>
+      <SectionContainer padded={true}>
         <div className={styles.organizationWrapper}>
           {data.organizations.map((organization: any) => (
             <div key={organization._id} className={styles.organization}>

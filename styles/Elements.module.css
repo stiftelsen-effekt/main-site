@@ -223,7 +223,7 @@
   grid-auto-columns: 1fr;
   column-gap: 20px;
   width: 100%;
-  margin: 100px 0;
+  margin: 80px 0;
 }
 
 .pointlistpoint {
@@ -242,7 +242,6 @@
   grid-template-columns: 1fr 1fr;
   text-align: left;
   width: 100%;
-  padding: 80px 0;
 }
 
 .introsection p {
@@ -258,7 +257,6 @@
 
 .calculatorteaser {
   text-align: center;
-  padding: 40px 0;
 }
 
 .calculatorteaser h2 {
@@ -383,7 +381,6 @@
 }
 
 .paragraphwrapper {
-  padding-top: 40px;
   max-width: 660px;
   line-height: 180%;
   font-size: 16px;

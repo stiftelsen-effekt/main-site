@@ -22,6 +22,11 @@ export default {
       title: 'Inverted'
     },
     {
+      name: 'padded',
+      type: 'boolean',
+      title: 'Left right padded'
+    },
+    {
       name: 'blocks',
       type: 'array',
       title: 'Content',
