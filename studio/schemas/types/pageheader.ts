@@ -1,4 +1,5 @@
 import { Sunset } from "react-feather";
+import HeaderLayoutSelector from '../../components/pointlistPeview';
 
 export default {
   name: 'pageheader',
@@ -21,6 +22,7 @@ export default {
       name: 'centered',
       title: 'Centered',
       type: 'boolean',
+      inputComponent: HeaderLayoutSelector
     },
     {
       name: 'links',

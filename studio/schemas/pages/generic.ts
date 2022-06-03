@@ -10,7 +10,7 @@ export default {
     },
     {
       name: 'content',
-      title: 'Content',
+      title: 'Sections',
       type: 'array',
       of: [{type: 'contentsection'}]
     },

@@ -1,3 +1,5 @@
+import { ContactPreview } from "../../components/contactPreview";
+
 export default {
   name: 'contactinfo',
   type: 'document',
@@ -23,5 +25,12 @@ export default {
       type: 'string',
       title: 'Email'
     }
-  ]
+  ],
+  preview: {
+    select: {
+      phone: 'phone',
+      email: 'email'
+    },
+    component: ContactPreview
+  }
 }
