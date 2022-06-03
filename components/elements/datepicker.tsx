@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useClickOutsideAlerter } from "../../hooks/useClickOutsideAlerter";
 import style from "../../styles/Elements.module.css";
 
