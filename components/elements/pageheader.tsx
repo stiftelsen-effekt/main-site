@@ -5,12 +5,17 @@ import { Links } from "./links";
 export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
+  centered?: boolean;
   links?: { _key: string; title: string; url: string }[];
-}> = ({ title, inngress, links }) => {
+}> = ({ title, inngress, links, centered }) => {
   const hasmetacontent = inngress || links;
 
   return (
-    <section className={`${style.pageheader} ${hasmetacontent ? style.pageheadermeta : null}`}>
+    <section
+      className={`${style.pageheader} ${hasmetacontent ? style.pageheadermeta : null} ${
+        centered ? style.centered : null
+      }`}
+    >
       <div>
         <h1>{title}</h1>
       </div>
