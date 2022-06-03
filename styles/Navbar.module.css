@@ -1,7 +1,11 @@
-.navbar {
+.container {
   position: fixed;
   top: 0;
   z-index: 1000;
+  width: 100%;
+}
+
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,6 +32,11 @@
   padding: 10px 20px;
   font-size: 14px;
   position: relative;
+}
+
+.navbar ul li:last-child {
+  margin-right: 0;
+  padding-right: 0;
 }
 
 .navbar ul li .submenu {

@@ -1,0 +1,33 @@
+.container {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 2100px;
+  margin: 0 auto;
+  align-items: center;
+  padding: 0 5vw;
+  width: 100%;
+}
+
+.content > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.content > div span {
+  margin-right: 60px;
+}
+
+.content button {
+  text-decoration: underline;
+  cursor: pointer;
+}
