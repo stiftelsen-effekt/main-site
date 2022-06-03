@@ -1,7 +1,7 @@
 .grid {
   border-top: solid 1px black;
   margin: 5vw;
-  font-family: 'ESKlarheitGrotesk', sans-serif;
+  font-family: "ESKlarheitGrotesk", sans-serif;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 10vh);
@@ -13,7 +13,7 @@
 }
 
 .category h3 {
-  font-family: 'ESKlarheitGrotesk', sans-serif;
+  font-family: "ESKlarheitGrotesk", sans-serif;
   font-weight: 600;
   margin-bottom: 40px;
 }
@@ -123,15 +123,15 @@
   border-bottom: 1px solid var(--primary-hover);
 }
 
-.newsletter div input[type='text'] {
+.newsletter div input[type="text"] {
   background: var(--secondary);
   color: var(--primary);
-  font-family: 'ESKlarheitGrotesk', sans-serif;
+  font-family: "ESKlarheitGrotesk", sans-serif;
 }
 
 .newsletter__input {
   background: var(--secondary);
-  font-family: 'ESKlarheitGrotesk', sans-serif;
+  font-family: "ESKlarheitGrotesk", sans-serif;
   color: var(--primary);
   border: none;
   width: 100%;
@@ -140,5 +140,15 @@
 @media only screen and (max-width: 900px) {
   .grid {
     display: none;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .grid {
+    max-width: 1714px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

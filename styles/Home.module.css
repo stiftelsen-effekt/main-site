@@ -1,11 +1,12 @@
 .hero {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 165px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  padding: 0 5vw;
   padding-bottom: 10vh;
-  margin: 0 5vw;
+  margin: 0 auto;
 }
 
 .header h1 {
@@ -21,6 +22,12 @@
   width: 380px;
   font-size: 24px;
   font-weight: 400;
+}
+
+.salespitchWrapper {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 5vw;
 }
 
 .teasers {
@@ -39,7 +46,7 @@
 
 @media only screen and (max-width: 900px) {
   .hero {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 165px);
     justify-content: flex-end;
   }
 
@@ -63,5 +70,23 @@
   .teasers div:nth-child(2n) > div:nth-child(2) {
     grid-column: auto;
     grid-row: auto;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .hero {
+    max-width: 1714px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .salespitchWrapper {
+    max-width: 1714px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

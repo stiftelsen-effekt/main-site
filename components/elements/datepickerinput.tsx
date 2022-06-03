@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import { useClickOutsideAlerter } from "../../hooks/useClickOutsideAlerter";
+import React, { useState } from "react";
 import style from "../../styles/Elements.module.css";
 import { DatePicker } from "./datepicker";
 

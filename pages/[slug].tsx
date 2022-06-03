@@ -37,6 +37,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
           heading={section.heading}
           inverted={section.inverted}
           nodivider={section.nodivider}
+          padded={section.padded}
         >
           {section.blocks.map((block: any) => {
             switch (block._type) {

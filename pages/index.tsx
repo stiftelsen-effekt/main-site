@@ -40,15 +40,15 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </div>
 
-      <SectionContainer nodivider>
+      <div className={styles.salespitchWrapper}>
         <PointList
-          points={salespitch.map((pitch: PointListPointProps, i: number) => ({
+          points={salespitch.points.map((pitch: PointListPointProps, i: number) => ({
             number: salespitch.numbered ? i + 1 : null,
             heading: pitch.heading,
             paragraph: pitch.paragraph,
           }))}
         ></PointList>
-      </SectionContainer>
+      </div>
 
       <SectionContainer nodivider inverted>
         <IntroSection

@@ -17,12 +17,6 @@ export default () =>
                 S.document().schemaType('frontpage').documentId('frontpage')
               ),
             S.listItem()
-              .title('Criteria')
-              .icon(Filter)
-              .child(
-                S.document().schemaType('criteria').documentId('criteria')
-              ),
-            S.listItem()
               .title('About us')
               .icon(Users)
               .child(
