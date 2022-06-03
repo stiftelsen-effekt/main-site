@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../../styles/Elements.module.css";
+import style from "../../styles/PageHeader.module.css";
 import { Links } from "./links";
 
 export const PageHeader: React.FC<{

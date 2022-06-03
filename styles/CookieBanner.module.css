@@ -31,3 +31,13 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+@media only screen and (min-width: 1920px) {
+  .content {
+    max-width: 1714px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
