@@ -18,6 +18,11 @@ export default {
       rows: 3
     },
     {
+      name: 'centered',
+      title: 'Centered',
+      type: 'boolean',
+    },
+    {
       name: 'links',
       title: 'Links',
       type: 'array',

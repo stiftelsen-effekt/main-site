@@ -29,7 +29,12 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
 
       <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
-      <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
+      <PageHeader
+        title={header.title}
+        inngress={header.inngress}
+        links={header.links}
+        centered={header.centered}
+      />
 
       {content.map((section: SectionContainerProps & { _key: string; blocks: any }) => (
         <SectionContainer
