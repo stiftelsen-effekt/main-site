@@ -4,6 +4,9 @@ import { List } from 'react-feather'
 // These are react components
 
 export const PointlistPreview = React.forwardRef((props, ref) => {
+    if (!props.value.points)
+      return <Text>{JSON.stringify(props.value)}</Text>
+
     const maxcharacters = 64
     const npoints = props.value.points.length
     const subtitlelength = Math.round(maxcharacters / npoints)

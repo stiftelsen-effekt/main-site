@@ -1,5 +1,5 @@
 import { FileText, Phone } from "react-feather";
-import { SectionPreview } from "../../components/sectionPreview";
+import { ContentSectionPreview } from "../../components/contentSectionPreview";
 
 export default {
   name: 'contentsection',
@@ -45,7 +45,10 @@ export default {
   preview: {
     select: {
       title: 'heading',
+      inverted: 'inverted',
+      nodivider: 'nodivider',
+      blocks: 'blocks'
     },
-    component: SectionPreview
+    component: ContentSectionPreview
   }
 }
