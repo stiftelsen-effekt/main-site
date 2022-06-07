@@ -56,7 +56,9 @@
   margin-bottom: 6px;
 }
 @media only screen and (max-width: 900px) {
-  .pageheader {
+  .pageheader.centered,
+  .pageheader.pageheadermeta.centered {
+    padding-top: 0;
     min-height: 70vh;
   }
 
@@ -74,16 +76,14 @@
     grid-template-rows: auto;
   }
 
-  .pageheader div {
-    justify-content: flex-start;
-  }
-
   .pageheader div p {
     margin-top: 0;
-    margin-bottom: 100px;
+    margin-bottom: 0px;
+    font-size: 20px;
   }
 
-  .pageheader div:last-child {
+  .pageheader div:last-child,
+  .pageheader.pageheadermeta div:last-child {
     margin-bottom: 10px;
   }
 
