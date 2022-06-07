@@ -14,7 +14,7 @@ export const IntroSection: React.FC<{ heading: string; paragraph: string; slug: 
       </div>
       <div>
         <p>{paragraph}</p>
-        <EffektButton onClick={() => {}}>Les mer</EffektButton>
+        {/*<EffektButton onClick={() => {}}>Les mer</EffektButton>*/}
       </div>
     </div>
   );
