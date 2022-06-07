@@ -16,6 +16,7 @@ import { Links } from "../components/elements/links";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
+  const header = data.page[0].header;
 
   return (
     <>
@@ -27,7 +28,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
 
       <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
-      <PageHeader title={data.page[0].header.title} />
+      <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
       <SectionContainer padded={true}>
         <div className={styles.organizationWrapper}>
           {data.organizations.map((organization: any) => (
