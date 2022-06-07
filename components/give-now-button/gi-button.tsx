@@ -11,7 +11,7 @@ export const GiButton: React.FC<{ inverted: boolean; onClick: () => void }> = ({
       title="Trykk for å åpne donasjonspanelet"
       onClick={onClick}
     >
-      Gi.
+      Doner.
     </button>
   );
 };
