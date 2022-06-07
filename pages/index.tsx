@@ -14,6 +14,7 @@ import { PointListPointProps } from "../components/elements/pointlistpoint";
 import { IntroSection } from "../components/elements/introsection";
 import { CalculatorTeaser } from "../components/elements/calculatorteaser";
 import { Navbar } from "../components/main/navbar";
+import { GiveBlock } from "../components/elements/giveblock";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.frontpage[0].salespitch;
@@ -58,11 +59,14 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         ></IntroSection>
       </SectionContainer>
 
-      <SectionContainer>
+      {/** 
+       * <SectionContainer>
         <CalculatorTeaser></CalculatorTeaser>
       </SectionContainer>
+       * 
+      */}
 
-      <SectionContainer heading="">
+      <SectionContainer heading="" nodivider>
         <div className={styles.teasers}>
           {data.frontpage[0].teasers.map(
             ({ _key, title, paragraph, link, image }: Teaser & { _key: string }) => (
@@ -98,6 +102,9 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
             />
           ),
         )}
+      </SectionContainer>
+      <SectionContainer inverted nodivider>
+        <GiveBlock></GiveBlock>
       </SectionContainer>
     </>
   );

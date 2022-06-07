@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container h2 {
+  font-size: 52px;
+  max-width: 60%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.button {
+  background: var(--primary);
+  color: var(--secondary);
+  font-size: 38px;
+  font-family: "ESKlarheitKurrent";
+  font-weight: 400;
+  padding: 16px;
+  border-radius: 50%;
+  margin-top: 60px;
+  cursor: pointer;
+}
