@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { Footer } from "../footer";
 import styles from "../../styles/Layout.module.css";
 import { LayoutElement } from "../../types";
 import { GiButton } from "../give-now-button/gi-button";
 import { WidgetPane } from "../elements/widgetpane";
+
+export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
+
 export const Layout: LayoutElement = ({ children }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
 
@@ -17,7 +20,9 @@ export const Layout: LayoutElement = ({ children }) => {
     <div className={`${styles.container}`}>
       <GiButton inverted={false} onClick={() => setWidgetOpen(true)} />
       <WidgetPane open={widgetOpen} onClose={() => setWidgetOpen(false)} />
-      <main className={styles.main}>{children}</main>
+      <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
+        <main className={styles.main}>{children}</main>
+      </WidgetContext.Provider>
       <Footer />
     </div>
   );
