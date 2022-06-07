@@ -48,7 +48,7 @@
   font-size: 96px;
 }
 
-.pageheader div:last-child {
+.pageheader.pageheadermeta div:last-child {
   margin-bottom: 70px;
 }
 
