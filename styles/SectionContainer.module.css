@@ -12,7 +12,7 @@
 }
 
 .divider {
-  border-top: solid black 1px;
+  border-top: solid var(--primary) 1px;
 
   margin: 0 auto;
   max-width: 1920px;

@@ -20,7 +20,7 @@ export default {
     {
       name: 'centered',
       title: 'Centered',
-      type: 'boolean',
+      type: 'boolean'
     },
     {
       name: 'links',

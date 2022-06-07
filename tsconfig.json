@@ -19,7 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "studio/node_modules/@sanity/base/types/**/*.ts"
-  ],
+    "studio/node_modules/@sanity/base/types/**/*.ts", 
+    "studio/components/pointlistPeview.jsx"  ],
   "exclude": ["node_modules"]
 }

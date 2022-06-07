@@ -16,5 +16,11 @@ export default {
       type: 'string',
       title: 'Url'
     }
-  ]
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'url'
+    }
+  }
 }

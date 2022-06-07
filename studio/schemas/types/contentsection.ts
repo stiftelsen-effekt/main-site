@@ -1,9 +1,10 @@
-import { FileText } from "react-feather";
+import { FileText, Phone } from "react-feather";
+import { ContentSectionPreview } from "../../components/contentSectionPreview";
 
 export default {
   name: 'contentsection',
   type: 'document',
-  title: 'Content section',
+  title: 'Section',
   icon: FileText,
   fields: [
     {
@@ -31,14 +32,23 @@ export default {
       type: 'array',
       title: 'Content',
       of: [
-        { type: 'questionandanswergroup' }, 
-        { type: 'videoembed' },
-        { type: 'introsection' }, 
         { type: 'paragraph' },
         { type: 'pointlist' },
         { type: 'links' },
-        { type: 'reference', to: [{ type: 'contactinfo' }]}
+        { type: 'questionandanswergroup' },
+        { type: 'introsection' }, 
+        { type: 'videoembed' },
+        { type: 'reference', to: [{ type: 'contactinfo' }], icon: Phone}
       ]
     }
-  ]
+  ],
+  preview: {
+    select: {
+      title: 'heading',
+      inverted: 'inverted',
+      nodivider: 'nodivider',
+      blocks: 'blocks'
+    },
+    component: ContentSectionPreview
+  }
 }

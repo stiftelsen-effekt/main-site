@@ -20,7 +20,8 @@ export default {
   ],
   preview: {
     select: {
-      title: 'title'
+      title: 'title',
+      subtitle: 'content.0.children.0.text'
     }
   }
 }
