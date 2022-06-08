@@ -74,8 +74,14 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
         </ul>
       </div>
 
-      <form className={`${styles.category} ${styles.newsletter__position}`}>
-        <fieldset className={styles.newsletter}>
+      <div className={`${styles.category} ${styles.utillity}`}>
+        <a href="#">Personvern</a>
+        <p> &#169; 2022 Gi Effektivt</p>
+        <a href="#top">Til toppen &uarr;</a>
+      </div>
+
+      <form className={`${styles.category} ${styles.newsletter}`}>
+        <fieldset>
           <label className={styles.newsletter__label} htmlFor="nyhetsbrev">
             Meld meg på nyhetsbrevet
           </label>
@@ -86,12 +92,6 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           </div>
         </fieldset>
       </form>
-
-      <div className={`${styles.category} ${styles.utillity}`}>
-        <a href="#">Personvern</a>
-        <p> &#169; {new Date().getFullYear()} Gi Effektivt</p>
-        <a href="#top">Til toppen &uarr;</a>
-      </div>
     </footer>
   );
 }

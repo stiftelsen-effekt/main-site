@@ -14,6 +14,7 @@
   padding: 40px 5vw;
   max-width: 1920px;
   background-color: var(--secondary);
+  color: var(--primary);
   transition: padding 200ms ease-in-out;
   margin: 0 auto;
 }
@@ -91,13 +92,13 @@
 }
 
 .navbar .logoWrapper {
-  color: var(--primary);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   height: 80px;
   width: 180px;
   position: relative;
+  filter: var(--primary-filter);
 }
 
 .navbar ul li.expandedSubmenu button::after {
@@ -167,7 +168,7 @@
   }
 
   .navbarExpanded .logoWrapper {
-    filter: invert(1);
+    filter: var(--primary-filter) invert(1);
   }
 
   .navbar ul li {
