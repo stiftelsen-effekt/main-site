@@ -1,13 +1,12 @@
 import { useAuth0, User } from "@auth0/auth0-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import DonationsChart from "../../components/profile/donations/donationsChart";
 import DonationsTotals from "../../components/profile/donations/donationsTotal";
 import DonationYearMenu from "../../components/profile/donations/yearMenu";
 import { DonationList } from "../../components/lists/donationList/donationList";
 import { Layout } from "../../components/profile/layout";
-import { useApi } from "../../hooks/useApi";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
 import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
@@ -18,6 +17,9 @@ import { DonorContext } from "../../components/profile/donorProvider";
 import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
 import { ActivityContext } from "../../components/profile/activityProvider";
 import { PageContent } from "../../components/elements/pagecontent";
+import { getClient } from "../../lib/sanity.server";
+import { groq } from "next-sanity";
+import { footerQuery } from "../../components/footer";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -139,6 +141,24 @@ const Home: LayoutPage = () => {
 };
 
 Home.layout = Layout;
+
+export async function getStaticProps({ preview = false }) {
+  const data = await getClient(preview).fetch(fetchProfilePage);
+
+  return {
+    props: {
+      preview,
+      data,
+    },
+  };
+}
+
+const fetchProfilePage = groq`
+{
+  ${footerQuery}
+}
+`;
+
 export default Home;
 
 const getTotalDistribution = (

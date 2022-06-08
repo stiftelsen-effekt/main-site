@@ -1,5 +1,5 @@
 import React from "react";
-import { Footer } from "../footer";
+import Footer from "../footer";
 import { Navbar } from "./navbar";
 import styles from "../../styles/Layout.module.css";
 import { Auth0Provider } from "@auth0/auth0-react";
@@ -15,7 +15,7 @@ const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || "/profile/");
 };
 
-export const Layout: LayoutElement = ({ children }) => {
+export const Layout: LayoutElement = ({ children, footerData }) => {
   return (
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_DOMAIN || ""}
@@ -53,7 +53,7 @@ export const Layout: LayoutElement = ({ children }) => {
                 />
                 <Navbar />
                 <main className={styles.main}>{children}</main>
-                <Footer />
+                <Footer {...footerData} />
               </ActivityProvider>
             </DonorProvider>
           </UserWrapper>

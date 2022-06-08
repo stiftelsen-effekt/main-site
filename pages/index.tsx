@@ -12,9 +12,9 @@ import Link from "next/link";
 import { PointList } from "../components/elements/pointlist";
 import { PointListPointProps } from "../components/elements/pointlistpoint";
 import { IntroSection } from "../components/elements/introsection";
-import { CalculatorTeaser } from "../components/elements/calculatorteaser";
 import { Navbar } from "../components/main/navbar";
 import { GiveBlock } from "../components/elements/giveblock";
+import { footerQuery } from "../components/footer";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.frontpage[0].salespitch;
@@ -34,11 +34,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <div className={styles.header}>
           <h1>{data.frontpage[0].main_heading}</h1>
         </div>
-        <div className={styles.action}>
-          <Link href={data.frontpage[0].sub_heading_link_target} passHref>
-            {data.frontpage[0].sub_heading}
-          </Link>
-        </div>
+        <div className={styles.subheading}>{data.frontpage[0].sub_heading}</div>
       </div>
 
       <div className={styles.salespitchWrapper}>
@@ -82,7 +78,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </SectionContainer>
       <SectionContainer heading="Slik fungerer det">
-        <Stepwize />
+        <Stepwize steps={data.frontpage[0].key_points.map((p: any) => p)} />
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         {data.frontpage[0].testimonials.map(
@@ -141,8 +137,9 @@ const fetchFrontpage = groq`
         title,
         "slug": page->slug.current
       },
-    }
+    },
   },
+  ${footerQuery}
   "frontpage": *[_type == "frontpage"] {
     main_heading,
     sub_heading, 

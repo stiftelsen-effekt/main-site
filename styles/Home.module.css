@@ -18,7 +18,7 @@
   font-weight: 400;
 }
 
-.action {
+.subheading {
   width: 380px;
   font-size: 24px;
   font-weight: 400;
@@ -56,7 +56,7 @@
     margin-bottom: 16px;
   }
 
-  .action {
+  .subheading {
     width: 100%;
     font-size: 24px;
     font-weight: 400;

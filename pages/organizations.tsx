@@ -9,10 +9,10 @@ import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 import { SectionContainer } from "../components/sectionContainer";
 import { PageHeader } from "../components/elements/pageheader";
-import Link from "next/link";
 import { ResponsiveImage } from "../components/elements/responsiveimage";
 import { Navbar } from "../components/main/navbar";
 import { Links } from "../components/elements/links";
+import { footerQuery } from "../components/footer";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -48,8 +48,12 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
                   <h2 className={styles.oneliner}>{organization.oneliner}</h2>
                   <PortableText blocks={organization.content}></PortableText>
 
-                  <h2>Les mer:</h2>
-                  <Links links={organization.links} />
+                  {organization.links && (
+                    <>
+                      <h2>Les mer:</h2>
+                      <Links links={organization.links} />
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -92,6 +96,7 @@ const fetchOrganizationsPage = groq`
       },
     }
   },
+  ${footerQuery}
   "page": *[_type == "organizations"] {
     header,
     organizations[] -> {
@@ -103,7 +108,3 @@ const fetchOrganizationsPage = groq`
 
 Organizations.layout = Layout;
 export default Organizations;
-
-function useNextSanityImage(configuredSanityClient: any, image: any) {
-  throw new Error("Function not implemented.");
-}

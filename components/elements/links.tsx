@@ -9,11 +9,12 @@ export type LinksProps = {
 export const Links: React.FC<LinksProps> = ({ links }) => {
   return (
     <ul className={elements.links}>
-      {links.map((link: { _key: string; url: string; title: string }) => (
-        <li key={link._key}>
-          <Link href={link.url} passHref>{`→ ${link.title}`}</Link>
-        </li>
-      ))}
+      {links &&
+        links.map((link: { _key: string; url: string; title: string }) => (
+          <li key={link._key}>
+            <Link href={link.url} passHref>{`→ ${link.title}`}</Link>
+          </li>
+        ))}
     </ul>
   );
 };

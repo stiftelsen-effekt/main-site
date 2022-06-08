@@ -4,6 +4,12 @@ export default {
   name: 'site_settings',
   title: 'Site Settings',
   type: 'document',
+  groups: [
+    {
+      name: 'footer',
+      title: 'Footer',
+    }
+  ],
   fields: [
     {
       name: 'title',
@@ -35,6 +41,30 @@ export default {
       options: {
         disableNew: true
       }
-    }
+    },
+    {
+      title: 'Footer column 1',
+      name: 'footer_column_1',
+      description: 'Select links for the first footer column',
+      type: 'array',
+      group: 'footer',
+      of: [{ type: 'navitem' }, { type: 'link' }],
+    },
+    {
+      title: 'Footer column 2',
+      name: 'footer_column_2',
+      description: 'Select links for the second footer column',
+      type: 'array',
+      group: 'footer',
+      of: [{ type: 'navitem' }, { type: 'link' }],
+    },
+    {
+      title: 'Footer column 3',
+      name: 'footer_column_3',
+      description: 'Select links for the third footer column',
+      type: 'array',
+      group: 'footer',
+      of: [{ type: 'navitem' }, { type: 'link' }],
+    },
   ],
 };
