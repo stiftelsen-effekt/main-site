@@ -14,11 +14,6 @@ export default {
       title: 'Sub heading'
     },
     {
-      name: 'sub_heading_link_target',
-      type: 'string',
-      title: 'Sub heading link target'
-    },
-    {
       name: 'introsection',
       type: 'introsection',
       title: 'Intro section'
