@@ -37,54 +37,55 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         centered={header.centered}
       />
 
-      {content.map((section: SectionContainerProps & { _key: string; blocks: any }) => (
-        <SectionContainer
-          key={section._key}
-          heading={section.heading}
-          inverted={section.inverted}
-          nodivider={section.nodivider}
-          padded={section.padded}
-        >
-          {section.blocks.map((block: any) => {
-            switch (block._type) {
-              case "paragraph":
-                return <Paragraph key={block._key} title={block.title} blocks={block.content} />;
-              case "videoembed":
-                return <VideoEmbed key={block._key} id={block.url} />;
-              case "pointlist":
-                return (
-                  <PointList
-                    key={block._key}
-                    points={block.points.map((point: PointListPointProps, i: number) => ({
-                      number: block.numbered ? i + 1 : null,
-                      heading: point.heading,
-                      paragraph: point.paragraph,
-                    }))}
-                  ></PointList>
-                );
-              case "links":
-                return (
-                  <div key={block._key} style={{ width: "100%", maxWidth: "660px" }}>
-                    <h2>Les mer:</h2>
-                    <Links links={block.links}></Links>
-                  </div>
-                );
-              case "contactinfo":
-                return (
-                  <ContactInfo
-                    key={block._key || block._id}
-                    title={block.title}
-                    description={block.description}
-                    phone={block.phone}
-                    email={block.email}
-                  />
-                );
-              default:
-                return null;
-            }
-          })}
-        </SectionContainer>
-      ))}
+      {content &&
+        content.map((section: SectionContainerProps & { _key: string; blocks: any }) => (
+          <SectionContainer
+            key={section._key}
+            heading={section.heading}
+            inverted={section.inverted}
+            nodivider={section.nodivider}
+            padded={section.padded}
+          >
+            {section.blocks.map((block: any) => {
+              switch (block._type) {
+                case "paragraph":
+                  return <Paragraph key={block._key} title={block.title} blocks={block.content} />;
+                case "videoembed":
+                  return <VideoEmbed key={block._key} id={block.url} />;
+                case "pointlist":
+                  return (
+                    <PointList
+                      key={block._key}
+                      points={block.points.map((point: PointListPointProps, i: number) => ({
+                        number: block.numbered ? i + 1 : null,
+                        heading: point.heading,
+                        paragraph: point.paragraph,
+                      }))}
+                    ></PointList>
+                  );
+                case "links":
+                  return (
+                    <div key={block._key} style={{ width: "100%", maxWidth: "660px" }}>
+                      <h2>Les mer:</h2>
+                      <Links links={block.links}></Links>
+                    </div>
+                  );
+                case "contactinfo":
+                  return (
+                    <ContactInfo
+                      key={block._key || block._id}
+                      title={block.title}
+                      description={block.description}
+                      phone={block.phone}
+                      email={block.email}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            })}
+          </SectionContainer>
+        ))}
     </>
   );
 };

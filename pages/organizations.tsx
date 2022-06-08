@@ -9,7 +9,6 @@ import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 import { SectionContainer } from "../components/sectionContainer";
 import { PageHeader } from "../components/elements/pageheader";
-import Link from "next/link";
 import { ResponsiveImage } from "../components/elements/responsiveimage";
 import { Navbar } from "../components/main/navbar";
 import { Links } from "../components/elements/links";
@@ -105,7 +104,3 @@ const fetchOrganizationsPage = groq`
 
 Organizations.layout = Layout;
 export default Organizations;
-
-function useNextSanityImage(configuredSanityClient: any, image: any) {
-  throw new Error("Function not implemented.");
-}
