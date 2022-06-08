@@ -32,7 +32,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
       <SectionContainer padded={true}>
         <div className={styles.organizationWrapper}>
-          {data.organizations.map((organization: any) => (
+          {data.page[0].organizations.map((organization: any) => (
             <div key={organization._id} className={styles.organization}>
               <div className={styles.meta}>
                 <div>
@@ -93,16 +93,10 @@ const fetchOrganizationsPage = groq`
   },
   ${footerQuery}
   "page": *[_type == "organizations"] {
-    header
-  },
-  "organizations": *[_type == "organization"] {
-    _id,
-    name,
-    subtitle,
-    oneliner,
-    logo,
-    content,
-    links
+    header,
+    organizations[] -> {
+      ...
+    } 
   }
 }
 `;
