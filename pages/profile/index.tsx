@@ -1,13 +1,12 @@
 import { useAuth0, User } from "@auth0/auth0-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import DonationsChart from "../../components/profile/donations/donationsChart";
 import DonationsTotals from "../../components/profile/donations/donationsTotal";
 import DonationYearMenu from "../../components/profile/donations/yearMenu";
 import { DonationList } from "../../components/lists/donationList/donationList";
 import { Layout } from "../../components/profile/layout";
-import { useApi } from "../../hooks/useApi";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
 import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";

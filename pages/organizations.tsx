@@ -13,6 +13,7 @@ import Link from "next/link";
 import { ResponsiveImage } from "../components/elements/responsiveimage";
 import { Navbar } from "../components/main/navbar";
 import { Links } from "../components/elements/links";
+import { footerQuery } from "../components/footer";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -90,6 +91,7 @@ const fetchOrganizationsPage = groq`
       },
     }
   },
+  ${footerQuery}
   "page": *[_type == "organizations"] {
     header
   },

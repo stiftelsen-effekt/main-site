@@ -13,6 +13,7 @@ import { PointList } from "../components/elements/pointlist";
 import { Links } from "../components/elements/links";
 import { ContactInfo } from "../components/elements/contact-info";
 import { Paragraph } from "../components/elements/paragraph";
+import { footerQuery } from "../components/footer";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -141,6 +142,7 @@ const fetchGenericPage = groq`
       },
     }
   },
+  ${footerQuery}
   "page": *[_type == "generic_page"  && slug.current == $slug] {
     header,
     content[] {

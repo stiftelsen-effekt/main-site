@@ -1,7 +1,23 @@
+import Link from "next/link";
 import React from "react";
 import styles from "../styles/Footer.module.css";
+import { MainNavbarLink } from "./main/navbar";
 
-export const Footer: React.FC = () => {
+type FooterLink = {
+  _type: "link";
+  _key: string;
+  title: string;
+  url: string;
+};
+
+export type FooterItem = MainNavbarLink | FooterLink;
+export type FooterProps = {
+  footer_column_1: FooterItem[];
+  footer_column_2: FooterItem[];
+  footer_column_3: FooterItem[];
+};
+
+export default function Footer({ footer_column_1, footer_column_2, footer_column_3 }: FooterProps) {
   return (
     <footer className={styles.grid}>
       <div className={`${styles.category} ${styles.logo__bottom}`}>
@@ -11,58 +27,50 @@ export const Footer: React.FC = () => {
       </div>
 
       <div className={`${styles.category} ${styles.primary__links}`}>
-        {/* <h3>Konduit.</h3> */}
-
         <ul>
-          <li>
-            <a href="#">Om oss</a>
-          </li>
-          <li>
-            <a href="#">Medieomtale</a>
-          </li>
-          <li>
-            <a href="#">Resultater</a>
-          </li>
-          {/* <li>Gavekort</li>
-          <li>The pledge</li> */}
+          {footer_column_1?.map((footerItem) => {
+            return (
+              <li key={footerItem._key}>
+                <Link
+                  href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                >
+                  {footerItem.title}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
       <div className={`${styles.category} ${styles.secondary__links}`}>
-        {/* <h3>Hjelp</h3> */}
-
         <ul>
-          <li>
-            <a href="#">Hvorfor Gi Effektivt?</a>
-          </li>
-          <li>
-            <a href="#">Blogg</a>
-          </li>
-          <li>
-            <a href="#">Support</a>
-          </li>
-          {/* <li>Kontakt</li>
-          <li>FAQ</li>
-          <li>Min donasjonshistorikk</li>
-          <li>Vilkår og betingelser</li>
-          <li>Personvernserklæring</li> */}
+          {footer_column_2?.map((footerItem) => {
+            return (
+              <li key={footerItem._key}>
+                <Link
+                  href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                >
+                  {footerItem.title}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
       <div className={`${styles.category} ${styles.tertiary__links}`}>
         <ul>
-          <li>
-            <a href="#">Facebook</a>
-          </li>
-          <li>
-            <a href="#">Twitter</a>
-          </li>
-          <li>
-            <a href="#">Youtube</a>
-          </li>
-          <li>
-            <a href="#">Linkedin</a>
-          </li>
+          {footer_column_3?.map((footerItem) => {
+            return (
+              <li key={footerItem._key}>
+                <Link
+                  href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                >
+                  {footerItem.title}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
@@ -81,9 +89,56 @@ export const Footer: React.FC = () => {
 
       <div className={`${styles.category} ${styles.utillity}`}>
         <a href="#">Personvern</a>
-        <p> &#169; 2022 Gi Effektivt</p>
+        <p> &#169; {new Date().getFullYear()} Gi Effektivt</p>
         <a href="#top">Til toppen &uarr;</a>
       </div>
     </footer>
   );
-};
+}
+
+export const footerQuery = `
+  "footer": *[_type == "site_settings"] {
+    footer_column_1[] {
+      _type == 'navitem' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+      _type == 'link' => @ {
+        _type,
+        _key,
+        title,
+        "url": url
+      },
+    },
+    footer_column_2[] {
+      _type == 'navitem' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+      _type == 'link' => @ {
+        _type,
+        _key,
+        title,
+        "url": url
+      },
+    },
+    footer_column_3[] {
+      _type == 'navitem' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+      _type == 'link' => @ {
+        _type,
+        _key,
+        title,
+        "url": url
+      },
+    }
+  },
+`;

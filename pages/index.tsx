@@ -12,9 +12,9 @@ import Link from "next/link";
 import { PointList } from "../components/elements/pointlist";
 import { PointListPointProps } from "../components/elements/pointlistpoint";
 import { IntroSection } from "../components/elements/introsection";
-import { CalculatorTeaser } from "../components/elements/calculatorteaser";
 import { Navbar } from "../components/main/navbar";
 import { GiveBlock } from "../components/elements/giveblock";
+import { footerQuery } from "../components/footer";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.frontpage[0].salespitch;
@@ -141,8 +141,9 @@ const fetchFrontpage = groq`
         title,
         "slug": page->slug.current
       },
-    }
+    },
   },
+  ${footerQuery}
   "frontpage": *[_type == "frontpage"] {
     main_heading,
     sub_heading, 
