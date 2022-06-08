@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
 import { PageContent } from "../../components/elements/pagecontent";
+import { footerQuery } from "../../components/footer";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       <PageContent>
         <div className={style.gridContainer}>
           <ProfileInfo />
-          <DataInfo data={data} />
+          <DataInfo data={data.page} />
         </div>
       </PageContent>
     </>
@@ -47,9 +48,12 @@ export async function getStaticProps({ preview = false }) {
 }
 
 const fetchProfilePage = groq`
-*[_type == "profile"] {
-  tax,
-  data
+{
+  "page": *[_type == "profile"] {
+    tax,
+    data
+  },
+  ${footerQuery}
 }
 `;
 
