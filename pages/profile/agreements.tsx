@@ -19,6 +19,9 @@ import { Clock } from "react-feather";
 import AgreementsMenu from "../../components/profile/agreements/agreementsMenu";
 import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/elements/pagecontent";
+import { getClient } from "../../lib/sanity.server";
+import { groq } from "next-sanity";
+import { footerQuery } from "../../components/footer";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -144,6 +147,23 @@ const Agreements: LayoutPage = () => {
     </>
   );
 };
+
+export async function getStaticProps({ preview = false }) {
+  const data = await getClient(preview).fetch(fetchProfilePage);
+
+  return {
+    props: {
+      preview,
+      data,
+    },
+  };
+}
+
+const fetchProfilePage = groq`
+{
+  ${footerQuery}
+}
+`;
 
 Agreements.layout = Layout;
 export default Agreements;

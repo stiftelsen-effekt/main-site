@@ -10,6 +10,7 @@ import { Layout } from "../components/main/layout";
 import { Navbar } from "../components/main/navbar";
 import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
+import { footerQuery } from "../components/footer";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -80,6 +81,7 @@ const fetchAboutUs = groq`
       },
     }
   },
+  ${footerQuery}
   "about": *[_type == "about_us"] {
     header,
     content

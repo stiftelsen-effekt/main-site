@@ -11,6 +11,7 @@ import { SectionContainer } from "../components/sectionContainer";
 import { Expander } from "../components/elements/expander";
 import styles from "../styles/Support.module.css";
 import { ContactInfo } from "../components/elements/contact-info";
+import { footerQuery } from "../components/footer";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -94,6 +95,7 @@ const fetchSupport = groq`
       },
     }
   },
+  ${footerQuery}
   "page": *[_type == "support"] {
     header,
     questionandanswergroups,

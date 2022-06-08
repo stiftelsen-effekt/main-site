@@ -9,14 +9,15 @@ import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 import { SectionContainer } from "../components/sectionContainer";
 import { PageHeader } from "../components/elements/pageheader";
-import Link from "next/link";
 import { ResponsiveImage } from "../components/elements/responsiveimage";
 import { Navbar } from "../components/main/navbar";
 import { Links } from "../components/elements/links";
+import { footerQuery } from "../components/footer";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
   const header = data.page[0].header;
+  const organizations = data.page[0].organizations;
 
   return (
     <>
@@ -31,26 +32,31 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
       <SectionContainer padded={true}>
         <div className={styles.organizationWrapper}>
-          {data.organizations.map((organization: any) => (
-            <div key={organization._id} className={styles.organization}>
-              <div className={styles.meta}>
-                <div>
-                  <h2>{organization.name}</h2>
-                  <h3>{organization.subtitle}</h3>
+          {organizations &&
+            organizations.map((organization: any) => (
+              <div key={organization._id} className={styles.organization}>
+                <div className={styles.meta}>
+                  <div>
+                    <h2>{organization.name}</h2>
+                    <h3>{organization.subtitle}</h3>
+                  </div>
+                  <div className={styles.logo}>
+                    {organization.logo ? <ResponsiveImage image={organization.logo} /> : null}
+                  </div>
                 </div>
-                <div className={styles.logo}>
-                  {organization.logo ? <ResponsiveImage image={organization.logo} /> : null}
-                </div>
-              </div>
-              <div className={styles.description}>
-                <h2 className={styles.oneliner}>{organization.oneliner}</h2>
-                <PortableText blocks={organization.content}></PortableText>
+                <div className={styles.description}>
+                  <h2 className={styles.oneliner}>{organization.oneliner}</h2>
+                  <PortableText blocks={organization.content}></PortableText>
 
-                <h2>Les mer:</h2>
-                <Links links={organization.links} />
+                  {organization.links && (
+                    <>
+                      <h2>Les mer:</h2>
+                      <Links links={organization.links} />
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </SectionContainer>
     </>
@@ -90,24 +96,15 @@ const fetchOrganizationsPage = groq`
       },
     }
   },
+  ${footerQuery}
   "page": *[_type == "organizations"] {
-    header
-  },
-  "organizations": *[_type == "organization"] {
-    _id,
-    name,
-    subtitle,
-    oneliner,
-    logo,
-    content,
-    links
+    header,
+    organizations[] -> {
+      ...
+    } 
   }
 }
 `;
 
 Organizations.layout = Layout;
 export default Organizations;
-
-function useNextSanityImage(configuredSanityClient: any, image: any) {
-  throw new Error("Function not implemented.");
-}

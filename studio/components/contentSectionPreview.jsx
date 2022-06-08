@@ -32,7 +32,7 @@ export const ContentSectionPreview = React.forwardRef((props, ref) => {
             </Stack> : 
             null
           }
-          {props.value.blocks.map(b => renderBlockPreview(b))}
+          {props.value.blocks ? props.value.blocks.map(b => renderBlockPreview(b)) : null}
         </Stack>
       </Card>
     </ThemeProvider>
