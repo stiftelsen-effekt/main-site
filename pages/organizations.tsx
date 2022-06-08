@@ -43,6 +43,21 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
                   <div className={styles.logo}>
                     {organization.logo ? <ResponsiveImage image={organization.logo} /> : null}
                   </div>
+<<<<<<< Updated upstream
+=======
+=======
+          {data.page[0].organizations.map((organization: any) => (
+>>>>>>> Stashed changes
+            <div key={organization._id} className={styles.organization}>
+              <div className={styles.meta}>
+                <div>
+                  <h2>{organization.name}</h2>
+                  <h3>{organization.subtitle}</h3>
+<<<<<<< Updated upstream
+=======
+>>>>>>> 8c9e3e8 (Adds a reference to organizations on page)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                 </div>
                 <div className={styles.description}>
                   <h2 className={styles.oneliner}>{organization.oneliner}</h2>
@@ -107,4 +122,8 @@ const fetchOrganizationsPage = groq`
 `;
 
 Organizations.layout = Layout;
+<<<<<<< Updated upstream
 export default Organizations;
+=======
+export default Organizations;
+>>>>>>> Stashed changes
