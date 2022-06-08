@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import style from "../../styles/PageHeader.module.css";
 import { Links } from "./links";
 
@@ -6,8 +6,10 @@ export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
   centered?: boolean;
+  children?: ReactNode;
+
   links?: { _key: string; title: string; url: string }[];
-}> = ({ title, inngress, links, centered }) => {
+}> = ({ children, title, inngress, links, centered }) => {
   const hasmetacontent = inngress || links;
 
   return (
@@ -18,6 +20,7 @@ export const PageHeader: React.FC<{
     >
       <div>
         <h1>{title}</h1>
+        {children}
       </div>
       {hasmetacontent ? (
         <div>
