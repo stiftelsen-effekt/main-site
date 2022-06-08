@@ -12,9 +12,9 @@ type FooterLink = {
 
 export type FooterItem = MainNavbarLink | FooterLink;
 export type FooterProps = {
-  footer_column_1: FooterItem[];
-  footer_column_2: FooterItem[];
-  footer_column_3: FooterItem[];
+  footer_column_1?: FooterItem[];
+  footer_column_2?: FooterItem[];
+  footer_column_3?: FooterItem[];
 };
 
 export default function Footer({ footer_column_1, footer_column_2, footer_column_3 }: FooterProps) {
@@ -28,49 +28,52 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
 
       <div className={`${styles.category} ${styles.primary__links}`}>
         <ul>
-          {footer_column_1?.map((footerItem) => {
-            return (
-              <li key={footerItem._key}>
-                <Link
-                  href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
-                >
-                  {footerItem.title}
-                </Link>
-              </li>
-            );
-          })}
+          {footer_column_1 &&
+            footer_column_1.map((footerItem) => {
+              return (
+                <li key={footerItem._key}>
+                  <Link
+                    href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                  >
+                    {footerItem.title}
+                  </Link>
+                </li>
+              );
+            })}
         </ul>
       </div>
 
       <div className={`${styles.category} ${styles.secondary__links}`}>
         <ul>
-          {footer_column_2?.map((footerItem) => {
-            return (
-              <li key={footerItem._key}>
-                <Link
-                  href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
-                >
-                  {footerItem.title}
-                </Link>
-              </li>
-            );
-          })}
+          {footer_column_2 &&
+            footer_column_2.map((footerItem) => {
+              return (
+                <li key={footerItem._key}>
+                  <Link
+                    href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                  >
+                    {footerItem.title}
+                  </Link>
+                </li>
+              );
+            })}
         </ul>
       </div>
 
       <div className={`${styles.category} ${styles.tertiary__links}`}>
         <ul>
-          {footer_column_3?.map((footerItem) => {
-            return (
-              <li key={footerItem._key}>
-                <Link
-                  href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
-                >
-                  {footerItem.title}
-                </Link>
-              </li>
-            );
-          })}
+          {footer_column_3 &&
+            footer_column_3.map((footerItem) => {
+              return (
+                <li key={footerItem._key}>
+                  <Link
+                    href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                  >
+                    {footerItem.title}
+                  </Link>
+                </li>
+              );
+            })}
         </ul>
       </div>
 
