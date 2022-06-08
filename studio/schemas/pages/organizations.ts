@@ -9,6 +9,12 @@ export default {
       type: 'pageheader'
     },
     {
+      name: 'organizations',
+      title: 'Organizations',
+      type: 'array',
+      of: [{ type: 'reference', to: [{type: 'organization'}] }]
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
