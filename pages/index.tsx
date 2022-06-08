@@ -34,11 +34,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <div className={styles.header}>
           <h1>{data.frontpage[0].main_heading}</h1>
         </div>
-        <div className={styles.action}>
-          <Link href={data.frontpage[0].sub_heading_link_target} passHref>
-            {data.frontpage[0].sub_heading}
-          </Link>
-        </div>
+        <div className={styles.subheading}>{data.frontpage[0].sub_heading}</div>
       </div>
 
       <div className={styles.salespitchWrapper}>
@@ -82,7 +78,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </SectionContainer>
       <SectionContainer heading="Slik fungerer det">
-        <Stepwize />
+        <Stepwize steps={data.frontpage[0].key_points.map((p: any) => p)} />
       </SectionContainer>
       <SectionContainer heading="Hva folk sier om oss">
         {data.frontpage[0].testimonials.map(
