@@ -17,6 +17,9 @@ import { DonorContext } from "../../components/profile/donorProvider";
 import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
 import { ActivityContext } from "../../components/profile/activityProvider";
 import { PageContent } from "../../components/elements/pagecontent";
+import { getClient } from "../../lib/sanity.server";
+import { groq } from "next-sanity";
+import { footerQuery } from "../../components/footer";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -138,6 +141,24 @@ const Home: LayoutPage = () => {
 };
 
 Home.layout = Layout;
+
+export async function getStaticProps({ preview = false }) {
+  const data = await getClient(preview).fetch(fetchProfilePage);
+
+  return {
+    props: {
+      preview,
+      data,
+    },
+  };
+}
+
+const fetchProfilePage = groq`
+{
+  ${footerQuery}
+}
+`;
+
 export default Home;
 
 const getTotalDistribution = (
