@@ -24,6 +24,7 @@ export const Navbar: React.FC = () => {
         className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ""} ${
           navbarShrinked ? styles.navbarShrinked : ""
         }`}
+        data-cy="navbar"
       >
         <div className={styles.logoWrapper}>
           <Link href="/" passHref>
