@@ -5,12 +5,12 @@ import style from "../../styles/Elements.module.css";
 export const DatePicker: React.FC<{
   selected?: number;
   onChange: (selected: number) => void;
-  onClickOutside: () => void;
+  onClickOutside?: () => void;
 }> = ({ selected, onChange, onClickOutside }) => {
   const dates = [...Array.from(Array(29).keys()).map((x) => x.toString())].slice(1, 29);
 
   const datepickerContainerRef = useRef<HTMLDivElement>(null);
-  useClickOutsideAlerter(datepickerContainerRef, onClickOutside);
+  useClickOutsideAlerter(datepickerContainerRef, onClickOutside ? onClickOutside : () => {});
 
   return (
     <div className={style["datepicker-wrapper"]} ref={datepickerContainerRef} data-cy="date-picker">

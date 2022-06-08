@@ -13,6 +13,10 @@ const nextConfig = {
   images: {
     domains: ["cdn.sanity.io"],
   },
+  compiler: {
+    // ssr and displayName are configured by default
+    styledComponents: true,
+  },
 };
 
 module.exports = nextConfig;

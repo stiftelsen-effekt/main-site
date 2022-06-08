@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X } from "react-feather";
 import elements from "../../styles/Elements.module.css";
+import { Widget } from "../widget/components/Widget";
 
 export const WidgetPane: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
   const followThreshold = 20;
@@ -43,12 +44,13 @@ export const WidgetPane: React.FC<{ open: boolean; onClose: () => void }> = ({ o
           setCurrentY(0);
         }}
       >
-        <h2>Donasjonswidget</h2>
         <button className={elements.widgetCloseBtn} onClick={onClose}>
           <X width={36} height={36} color={"white"} />
         </button>
       </div>
-      <div className={elements.widgetPaneContent}></div>
+      <div className={elements.widgetPaneContent}>
+        <Widget />
+      </div>
     </div>
   );
 };

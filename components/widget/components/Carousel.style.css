@@ -1,0 +1,35 @@
+
+#center-widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#widget {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 1vw;
+  width: 100vw;
+  max-width: 460px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,.2);
+}
+
+#carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#carousel {
+  white-space: nowrap;
+  transition: all 200ms;
+}
+
+.pane {
+  width: 100%;
+  display: inline-block;
+  vertical-align: top;
+}

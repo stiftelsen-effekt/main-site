@@ -1,0 +1,48 @@
+.radiobutton {
+  opacity: 0;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+.radiobuttonlabel {
+  padding-left: 24px;
+  position: relative;
+  cursor: pointer;
+}
+
+.radiobuttonlabel::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--primary);
+  background: var(--secondary);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.radiobutton + .radiobuttonlabel:after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: all 100ms;
+}
+
+.radiobutton:checked + .radiobuttonlabel:after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.radiobuttongroup {
+  display: flex;
+  flex-direction: row;
+}

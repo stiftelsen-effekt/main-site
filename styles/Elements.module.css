@@ -138,7 +138,7 @@
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
   font-size: 14px;
-  padding: 14px 28px;
+  padding: 8px 28px;
   cursor: pointer;
   box-sizing: border-box;
   margin-left: 10px;
@@ -171,7 +171,7 @@
   background-color: transparent;
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
-  outline: 2px dashed black;
+  outline: 2px dashed var(--primary);
   outline-offset: -1px;
 }
 
@@ -336,6 +336,8 @@
 }
 
 .widgetPaneContent {
+  --primary: white;
+  --secondary: black;
   padding: 20px;
 }
 

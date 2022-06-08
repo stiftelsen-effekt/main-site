@@ -8,7 +8,7 @@ export const EffektButtonType = {
 };
 
 export const EffektButton: React.FC<{
-  onClick: () => void;
+  onClick: (e?: any) => void;
   role?: string;
   type?: string;
   children: React.ReactNode;
