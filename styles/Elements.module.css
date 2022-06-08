@@ -25,8 +25,8 @@
 .datepicker-input-wrapper input {
   padding: 12px 16px;
   border: none;
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
   font-size: 12px;
   user-select: none;
   font-family: "ESKlarheitGrotesk";
@@ -46,9 +46,9 @@
 .datepicker-wrapper {
   width: 280px;
   height: 220px;
-  background: var(--secondary);
+  background: var(--primary);
   display: block;
-  color: var(--primary);
+  color: var(--secondary);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   padding: 30px 20px 20px 20px;
@@ -60,7 +60,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  color: var(--primary);
+  color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,8 +70,8 @@
 }
 
 .datepicker-button--selected {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
 }
 
 .datepicker-last-row {
@@ -84,7 +84,7 @@
 
 .datepicker-button-last {
   height: 26px;
-  color: var(--primary);
+  color: var(--secondary);
   font-size: 12px;
   user-select: none;
   cursor: pointer;
@@ -96,8 +96,8 @@
 }
 
 .datepicker-button-last--selected {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
 }
 
 .activity-indicator-wrapper {
@@ -152,7 +152,7 @@
 
 .buttonprimary:hover,
 .buttonprimary:active {
-  background: #222;
+  background: var(--primary-hover);
 }
 
 .buttonsecondary {
@@ -163,7 +163,7 @@
 
 .buttonsecondary:hover,
 .buttonsecondary:active {
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary-hover);
 }
 
 .buttontertiary {
@@ -171,12 +171,12 @@
   background-color: transparent;
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
-  outline: 2px dashed black;
+  outline: 2px dashed var(--primary);
   outline-offset: -1px;
 }
 
 .buttontertiary:hover {
-  outline-color: rgba(0, 0, 0, 0.5);
+  outline-color: var(--primary-hover);
 }
 
 .buttontertiary:focus,
@@ -435,5 +435,15 @@
 
   .widgetPaneHeader {
     padding: 20px 5vw;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .pageContent {
+    max-width: 1714px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

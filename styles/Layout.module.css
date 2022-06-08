@@ -10,4 +10,14 @@
 
 .main {
   min-height: 60vh;
+  color: var(--primary);
+  background: var(--secondary);
+}
+
+.dark {
+  --primary: white;
+  --secondary: black;
+  --primary-filter: invert(1);
+  --primary-hover: #ccc;
+  background: var(--secondary);
 }

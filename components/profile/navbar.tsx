@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Navbar.module.css";
 import logo from "../../public/logo-cropped.svg";
 import Link from "next/link";
@@ -10,10 +10,20 @@ export const Navbar: React.FC = () => {
   const { logout } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
 
+  const [rerender, setRerender] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setRerender(!rerender), 1000);
+  }, [rerender]);
+
+  let navbarShrinked = false;
+  if (typeof window !== "undefined" && window.scrollY > 0) navbarShrinked = true;
+
   return (
-    <>
+    <div className={styles.container}>
       <nav
-        className={expandMenu ? styles.navbar + " " + styles.navbarExpanded : styles.navbar}
+        className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ""} ${
+          navbarShrinked ? styles.navbarShrinked : ""
+        }`}
         data-cy="navbar"
       >
         <div className={styles.logoWrapper}>
@@ -57,6 +67,6 @@ export const Navbar: React.FC = () => {
           </li>
         </ul>
       </nav>
-    </>
+    </div>
   );
 };
