@@ -1,26 +1,8 @@
 import styled from "styled-components";
-import { gray20, orange15 } from "../../../config/colors";
+import { EffektButton } from "../../../../elements/effektbutton";
 
-export const NextButton = styled.button`
-  height: 45px;
-  background: ${(props: NextButtonProps) => (props.disabled ? gray20 : "#000")};
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 30px;
-  width: 100%;
-  border: none;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-    box-shadow: 0px 0px 0px 3px ${orange15};
-  }
+export const NextButton = styled(EffektButton)`
+  font-size: 25px;
+  padding: 18px 68px;
+  border-radius: 60px;
 `;
-
-interface NextButtonProps {
-  disabled?: boolean;
-}

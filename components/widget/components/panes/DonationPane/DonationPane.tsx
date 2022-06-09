@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validator from "validator";
-import {
-  registerDonationAction,
-  setSum,
-  setShareType,
-  setRecurring,
-} from "../../../store/donation/actions";
-import { Pane, PaneContainer } from "../Panes.style";
+import { setSum, setShareType, setRecurring } from "../../../store/donation/actions";
+import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { State } from "../../../store/state";
 import { RecurringDonation, ShareType } from "../../../types/Enums";
 import { SharesSelection } from "./ShareSelection";
-import { TextInput } from "../../shared/Input/TextInput";
 import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
 import { SharesSum } from "./SharesSum";
 import { nextPane } from "../../../store/layout/actions";
 import { EffektButton, EffektButtonType } from "../../../../elements/effektbutton";
 import { RadioButtonGroup } from "../../../../elements/radiobuttongroup";
+import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
 
 export const DonationPane: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,7 +27,7 @@ export const DonationPane: React.FC = () => {
     <Pane>
       <PaneContainer>
         <div>
-          <h3>Hvor mye ønsker du å Gi Effektivt?</h3>
+          <PaneTitle>Hvor mye ønsker du å Gi Effektivt?</PaneTitle>
           <RadioButtonGroup
             options={[
               { title: "Gi månedlig", value: RecurringDonation.RECURRING },
@@ -94,15 +89,14 @@ export const DonationPane: React.FC = () => {
         </div>
 
         <ActionBar>
-          <EffektButton
+          <NextButton
             onClick={(e: any) => {
               onSubmit();
             }}
           >
-            {" "}
             {/* disabled={!donation.isValid} */}
             Neste
-          </EffektButton>
+          </NextButton>
         </ActionBar>
       </PaneContainer>
     </Pane>

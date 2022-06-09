@@ -334,7 +334,6 @@
 }
 
 .widgetPaneHeader {
-  padding: 30px 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -344,7 +343,8 @@
 .widgetPaneContent {
   --primary: white;
   --secondary: black;
-  padding: 20px;
+  --primary-hover: #aaa;
+  height: 100%;
 }
 
 .pageContent {

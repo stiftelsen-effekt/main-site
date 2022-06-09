@@ -40,6 +40,7 @@
   --primary-filter: brightness(0);
   --primary-hover: #333333;
   --focus: blue;
+  --widget-panel-width: calc(40vw - 40px);
 }
 
 html,
@@ -103,30 +104,34 @@ button {
 
 #widget {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
-  margin-top: 1vw;
-  width: 100vw;
-  max-width: 460px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  flex-grow: 1;
+  width: 576px;
+  transform-origin: top left;
+  overflow-y: auto;
 }
 
 #carousel-wrapper {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: visible;
 }
 
 #carousel {
   white-space: nowrap;
   transition: all 200ms;
+  height: 100%;
 }
 
 .pane {
   width: 100%;
   display: inline-block;
   vertical-align: top;
+  height: 100%;
 }
 
 @media only screen and (max-width: 900px) {

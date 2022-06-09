@@ -1,13 +1,14 @@
+import Link from "next/link";
 import React from "react";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import {
   CheckBoxLabel,
   CheckBoxLabelWrapper,
+  CheckBoxWrapper,
   CheckMark,
   ComputerLabel,
   CustomCheckBoxWrapper,
   MobileLabel,
-  OrangeLink,
   StyledInput,
 } from "./CustomCheckBox.style";
 
@@ -35,7 +36,10 @@ export const CustomCheckBox: React.FC<CheckBoxProps> = ({
 }) => (
   <CustomCheckBoxWrapper>
     <StyledInput type="checkbox" tabIndex={-1} checked={checked} readOnly />
-    <CheckMark checked={checked} className="checkmark" />
+    <CheckBoxWrapper>
+      <CheckMark className="checkmark">✓</CheckMark>
+    </CheckBoxWrapper>
+
     <CheckBoxLabelWrapper>
       <CheckBoxLabel>
         <ComputerLabel>
@@ -47,9 +51,9 @@ export const CustomCheckBox: React.FC<CheckBoxProps> = ({
           &nbsp;
         </MobileLabel>
         {hyperlink && (
-          <OrangeLink target="_blank" href={hyperlink.url}>
-            {`${hyperlink.text}`}
-          </OrangeLink>
+          <Link target="_blank" href={hyperlink.url}>
+            {`${hyperlink.text} ↗`}
+          </Link>
         )}
       </CheckBoxLabel>
       {showTooltip && tooltipText && <ToolTip text={tooltipText} />}

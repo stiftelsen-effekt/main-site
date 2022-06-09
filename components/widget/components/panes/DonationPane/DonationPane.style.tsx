@@ -6,14 +6,14 @@ export const SumWrapper = styled.div`
   margin-bottom: 30px;
 
   label {
-    font-size: 14px;
+    font-size: 18px;
     margin-bottom: 6px;
   }
 
   span {
     position: relative;
     display: inline-flex;
-    max-width: 180px;
+    max-width: 260px;
 
     input {
       background: var(--secondary);
@@ -21,8 +21,8 @@ export const SumWrapper = styled.div`
       border-radius: 10px;
       border: 1px solid var(--primary);
       color: var(--primary);
-      font-size: 16px;
-      max-width: 180px;
+      font-size: 28px;
+      max-width: 260px;
     }
 
     &:after {
@@ -35,6 +35,7 @@ export const SumWrapper = styled.div`
       align-items: center;
       justify-content: center;
       height: 100%;
+      font-size: 28px;
     }
   }
 `;
@@ -54,11 +55,12 @@ export const SumButtonsWrapper = styled.div`
     button {
       margin: 0;
       border-radius: 10px;
+      font-size: 28px;
     }
 
     i {
       margin-top: 2px;
-      font-size: 11px;
+      font-size: 14px;
     }
   }
 `;
@@ -68,4 +70,7 @@ export const ActionBar = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  align-self: flex-end;
+  justify-self: ;
+  padding-top: 30px;
 `;

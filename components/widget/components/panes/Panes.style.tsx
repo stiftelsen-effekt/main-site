@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Pane = styled.div`
-  padding: 20px;
   padding-top: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 export const PaneContainer = styled.div`
@@ -13,15 +13,18 @@ export const PaneContainer = styled.div`
   min-height: 500px;
   display: grid;
   grid-template-rows: 1fr max-content;
+  height: 100%;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
 `;
 
-export const PaneTitle = styled.p`
-  font-size: 25px;
-  margin-top: 0;
-  margin-bottom: 10px;
-  margin-left: 5px;
-  align-self: center;
-  font-family: Arial, Helvetica, sans-serif;
+export const PaneTitle = styled.h2`
+  font-family: "Es Klarheit Kurrent";
+  font-size: 27px;
+  font-weight: normal;@
+  margin-top: 0px;
+  margin-bottom: 40px;
 `;
 
 export const BoldTitle = styled.p`

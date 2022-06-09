@@ -1,12 +1,22 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { WidgetContext } from "../../../../main/layout";
+import { prevPane } from "../../../store/layout/actions";
 import { State } from "../../../store/state";
-import { ProgressContainer, ProgressCircle, ProgressLine } from "./ProgressBar.style";
+import {
+  ProgressContainer,
+  ProgressCircle,
+  ProgressLine,
+  HeaderContainer,
+  ActionButton,
+} from "./ProgressBar.style";
 
 export const ProgressBar: React.FC = () => {
-  const paneNumber = useSelector((state: State) => state.layout.paneNumber);
   const numberOfPanes = 3;
+  const dispatch = useDispatch();
+  const paneNumber = useSelector((state: State) => state.layout.paneNumber);
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const progressPercentage = paneNumber * 25 + (hasAnswerredReferral ? 25 : 0);
 
@@ -16,9 +26,15 @@ export const ProgressBar: React.FC = () => {
   }
 
   return (
-    <ProgressContainer>
-      {points.map((p) => p)}
-      <ProgressLine />
-    </ProgressContainer>
+    <HeaderContainer>
+      <ActionButton active={paneNumber === 0} onClick={() => dispatch(prevPane())}>
+        ←
+      </ActionButton>
+      <ProgressContainer>
+        {points.map((p) => p)}
+        <ProgressLine />
+      </ProgressContainer>
+      <ActionButton onClick={() => setWidgetOpen(false)}>✕</ActionButton>
+    </HeaderContainer>
   );
 };

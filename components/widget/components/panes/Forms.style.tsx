@@ -26,7 +26,6 @@ export const TextField = styled.input`
 
 export const CheckBoxWrapper = styled.div`
   display: block;
-  height: 40px;
 `;
 
 export const HiddenCheckBox = styled.input`

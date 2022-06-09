@@ -13,9 +13,15 @@ export const EffektButton: React.FC<{
   type?: string;
   children: React.ReactNode;
   cy?: string;
-}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy }) => {
+  className?: string;
+}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className }) => {
   return (
-    <button className={elements.button + " " + type} onClick={onClick} role={role} data-cy={cy}>
+    <button
+      className={[elements.button, type, className].join(" ")}
+      onClick={onClick}
+      role={role}
+      data-cy={cy}
+    >
       {children}
     </button>
   );

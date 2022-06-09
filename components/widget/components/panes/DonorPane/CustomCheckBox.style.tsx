@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { orange20 } from "../../../config/colors";
 
 export const CustomCheckBoxWrapper = styled.span`
-  position: absolute;
   cursor: pointer;
   margin-top: 5px;
   -webkit-user-select: none;
@@ -11,36 +9,26 @@ export const CustomCheckBoxWrapper = styled.span`
   user-select: none;
   pointer-events: none;
   z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CheckBoxWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--primary);
 `;
 
 export const CheckMark = styled.span`
-  position: absolute;
-  top: 0;
-  left: 1px;
-  height: 25px;
-  width: 25px;
-  border: 1px solid #b9b9b9;
-  border-radius: 5px;
+  font-size: 12px;
+  color: var(--primary);
+  display: none;
 
-  box-shadow: ${(props: CheckMarkProps) => props.checked && "none"} !important;
-
-  &&:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-
-  &&::after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
+  font-weight: bold;
 `;
 
 export const StyledInput = styled.input`
@@ -50,26 +38,22 @@ export const StyledInput = styled.input`
   height: 0;
   width: 0;
 
-  &&:checked ~ ${CheckMark} {
-    background-color: #ffaa2b;
-    border: 1px solid #ffaa2b;
-  }
-
-  &&:checked ~ ${CheckMark}:after {
+  &&:checked ~ ${CheckBoxWrapper} ${CheckMark} {
     display: block;
   }
 `;
 
-export const CheckBoxLabelWrapper = styled.div`
-  padding-top: 3px;
-`;
+export const CheckBoxLabelWrapper = styled.div``;
 
 export const CheckBoxLabel = styled.p`
   display: inline-block;
   font-size: 14px;
   margin: 0;
-  padding-left: 35px;
-  padding-right: 0px;
+  margin-left: 10px;
+
+  a:link {
+    text-decoration: underline;
+  }
 `;
 
 export const ComputerLabel = styled.span`
@@ -89,25 +73,3 @@ export const MobileLabel = styled.span`
     display: inline-block;
   }
 `;
-
-export const OrangeLink = styled.a`
-  color: ${orange20};
-  pointer-events: all;
-
-  &&:visited {
-    color: ${orange20};
-  }
-
-  &&:hover {
-    opacity: 0.5;
-  }
-
-  @media only screen and (max-width: 350px) {
-    display: inline-block;
-    font-size: 12px;
-  }
-`;
-
-interface CheckMarkProps {
-  checked: boolean;
-}

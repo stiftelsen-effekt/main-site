@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { X } from "react-feather";
 import elements from "../../styles/Elements.module.css";
+import { WidgetContext } from "../main/layout";
 import { Widget } from "../widget/components/Widget";
 
-export const WidgetPane: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+export const WidgetPane: React.FC = () => {
   const followThreshold = 20;
   const closeThreshold = 140;
   const [initialY, setInitialY] = useState(0);
   const [currentY, setCurrentY] = useState(0);
   const [dragging, setDragging] = useState(false);
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const delta = currentY - initialY;
 
   let style = {};
-  if (open && dragging)
+  if (widgetOpen && dragging)
     style = {
       transform: `translateY(${Math.max(delta - followThreshold, 0)}px)`,
       transition: "none",
@@ -21,7 +23,7 @@ export const WidgetPane: React.FC<{ open: boolean; onClose: () => void }> = ({ o
 
   return (
     <div
-      className={`${elements.widgetPane} ${open ? elements.widgetPaneOpen : null}`}
+      className={`${elements.widgetPane} ${widgetOpen ? elements.widgetPaneOpen : null}`}
       style={style}
     >
       <div
@@ -38,16 +40,12 @@ export const WidgetPane: React.FC<{ open: boolean; onClose: () => void }> = ({ o
         onTouchEnd={(e) => {
           setDragging(false);
           if (delta > closeThreshold) {
-            onClose();
+            setWidgetOpen(false);
           }
           setInitialY(0);
           setCurrentY(0);
         }}
-      >
-        <button className={elements.widgetCloseBtn} onClick={onClose}>
-          <X width={36} height={36} color={"white"} />
-        </button>
-      </div>
+      ></div>
       <div className={elements.widgetPaneContent}>
         <Widget />
       </div>

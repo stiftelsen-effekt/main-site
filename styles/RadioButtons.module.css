@@ -1,20 +1,39 @@
+.radiobuttonwrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .radiobutton {
   opacity: 0;
   position: relative;
   width: 0;
   height: 0;
+  margin: 0;
 }
 
 .radiobuttonlabel {
-  padding-left: 24px;
+  padding-left: 34px;
+  padding-top: 2px;
   position: relative;
   cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 16px;
+  line-height: 100%;
+  font-size: 18px;
 }
 
 .radiobuttonlabel::before {
   content: "";
-  width: 14px;
-  height: 14px;
+  width: 22px;
+  height: 22px;
   border: 1px solid var(--primary);
   background: var(--secondary);
   border-radius: 50%;
@@ -25,12 +44,12 @@
 
 .radiobutton + .radiobuttonlabel:after {
   content: "";
-  width: 10px;
-  height: 10px;
+  width: 16px;
+  height: 16px;
   background: var(--primary);
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 4px;
+  left: 4px;
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.7);
@@ -45,4 +64,5 @@
 .radiobuttongroup {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
