@@ -3,13 +3,15 @@ import { useRouter } from "next/router";
 import React from "react";
 import { PortableText } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
-import styles from "../styles/About.module.css";
+import styles from "../styles/Articles.module.css";
 import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
 import { Layout } from "../components/main/layout";
 import { Navbar } from "../components/main/navbar";
 import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
+import { Links } from "../components/elements/links";
+import { EffektButton } from "../components/elements/effektbutton";
 
 const Articles: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -24,8 +26,28 @@ const Articles: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }
 
       <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
 
-      <PageHeader title={"Artikler"}>
-        <h2>This is here</h2>
+      <PageHeader title={"Artikler."} custom__class={"grid"}>
+        {/* <div className={`${styles.article__nav}`}> */}
+        <section className={styles.search_field}>
+          <input type="text" />
+          <button>søk</button>
+        </section>
+        <div className={styles.article_filter}>
+          <section>
+            <a href="#">Alle Artikler</a>
+            <a href="#">Nyheter</a>
+            <a href="#">Dypdykk</a>
+          </section>
+
+          <section className={styles.article_filter__topic}>
+            <a href="#">Global ulikhet</a>
+            <a href="#">Organisajonene</a>
+            <a href="#">Bistandsmyter</a>
+
+            <a href="#">+</a>
+          </section>
+        </div>
+        {/* </div> */}
       </PageHeader>
 
       <SectionContainer>
