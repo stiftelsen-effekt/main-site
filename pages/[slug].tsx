@@ -14,6 +14,7 @@ import { Links } from "../components/elements/links";
 import { ContactInfo } from "../components/elements/contact-info";
 import { Paragraph } from "../components/elements/paragraph";
 import { footerQuery } from "../components/footer";
+import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -80,8 +81,10 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       email={block.email}
                     />
                   );
+                case "questionandanswergroup":
+                  return <QuestionsAndAnswersGroup group={block} />;
                 default:
-                  return null;
+                  return block._type;
               }
             })}
           </SectionContainer>
