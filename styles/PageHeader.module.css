@@ -24,9 +24,9 @@
 }
 
 .pageheader div {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-end; */
 }
 
 .pageheader div p {
@@ -45,7 +45,14 @@
 }
 
 .pageheader h1 {
-  font-size: 96px;
+  /* font-size: 96px; */
+}
+
+.pageheader__title {
+  /* margin-top: 100px; */
+  font-size: 138px;
+  grid-row-start: 5;
+  margin: 0;
 }
 
 .pageheader.pageheadermeta div:last-child {
@@ -62,10 +69,10 @@
     min-height: 70vh;
   }
 
-  .pageheader h1 {
+  /* .pageheader h1 {
     margin-top: 100px;
     font-size: 48px;
-  }
+  } */
 
   .pageheader,
   .pageheader.pageheadermeta {
