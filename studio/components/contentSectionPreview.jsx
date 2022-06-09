@@ -14,7 +14,7 @@ export const ContentSectionPreview = React.forwardRef((props, ref) => {
       case 'pointlist':
         return <PointlistPreview value={{ points: b.points }}/>
       case 'paragraph':
-        return <ParagraphPreview value={{ title: b.title, subtitle: b.content[0].children[0].text }} />
+        return <ParagraphPreview value={{ title: b.title, subtitle: b.content ? b.content[0] ? b.content[0].children[0] ? b.content[0].children[0].text : '...' : '...' : '...' }} />
       case 'links':
         return <LinksPreview value={{ links: b.links }} />
       default:
