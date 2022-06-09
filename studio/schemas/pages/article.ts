@@ -1,6 +1,6 @@
 export default {
-  title: "Generic page",
-  name: "generic_page",
+  title: "Article",
+  name: "article",
   type: "document",
   fields: [
     {
