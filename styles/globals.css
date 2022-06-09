@@ -110,3 +110,11 @@ button {
   position: absolute;
   width: 1px;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 6vw);
+  grid-template-rows: repeat(10, 48px);
+  column-gap: 1rem;
+  /* gap: 1rem; */
+}
