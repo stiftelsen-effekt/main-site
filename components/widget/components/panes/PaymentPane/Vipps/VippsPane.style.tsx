@@ -6,7 +6,7 @@ export const VippsButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${gray18};
+  padding-bottom: 30px;
   border-radius: 5px;
 `;
 

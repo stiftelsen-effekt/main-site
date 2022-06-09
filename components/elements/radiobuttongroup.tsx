@@ -7,7 +7,11 @@ export const RadioButtonGroup: React.FC<{
   selected: number | undefined;
   onSelect: (value: number) => void;
 }> = ({ options, selected, onSelect }) => {
-  const [name, setName] = useState<string>(`radio-button-group-${Math.random()}`);
+  const [name, setName] = useState<string>(
+    `radio-button-group-${options
+      .map((o) => o.title.toLowerCase().trim().split(" ").join())
+      .join("_")}`,
+  );
   return (
     <div className={styles.radiobuttongroup}>
       {options.map((option) => (

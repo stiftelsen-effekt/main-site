@@ -1,5 +1,8 @@
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { DatePicker } from "../../../../../elements/datepicker";
+import { RadioButtonGroup } from "../../../../../elements/radiobuttongroup";
 import { setDueDay } from "../../../../store/donation/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
@@ -30,42 +33,43 @@ export const ResultPane: React.FC = () => {
   return (
     <Pane>
       <PaneContainer>
-        <PaneTitle>Tusen takk!</PaneTitle>
-        <UnderTitle>Du kan nå overføre til oss</UnderTitle>
-
         {donation.recurring === RecurringDonation.RECURRING && (
-          <div>
-            <RichSelect
-              selected={chooseChargeDay}
-              onChange={(value: number) => {
-                setChooseChargeDay(value);
-              }}
-            >
-              <RichSelectOption
-                label="Begynn tidligst mulig"
-                sublabel={formatChargeDay(getEarliestPossibleChargeDate())}
-                value={0}
-              />
-              <RichSelectOption
-                label="Velg annen trekkdag"
-                sublabel="Velg startdato og månedlig trekkdag"
-                value={1}
-              >
-                <AvtaleGiroDatePicker />
-              </RichSelectOption>
-            </RichSelect>
-            <RecurringBankDonationForm donation={donation} />
-          </div>
+          <>
+            <div>
+              <PaneTitle>Opprett AvtaleGiro avtale</PaneTitle>
+              <div style={{ paddingTop: 20 }}>
+                <RadioButtonGroup
+                  options={[
+                    { title: "Begynn tidligst mulig", value: 0 },
+                    { title: "Velg annen trekkdag", value: 1 },
+                  ]}
+                  selected={chooseChargeDay}
+                  onSelect={(option) => setChooseChargeDay(option)}
+                />
+              </div>
+              <div style={{ paddingTop: 40 }}>
+                {chooseChargeDay === 0 && (
+                  <span>{formatChargeDay(getEarliestPossibleChargeDate())}</span>
+                )}
+                {chooseChargeDay === 1 && <AvtaleGiroDatePicker />}
+              </div>
+            </div>
+            <div>
+              <RecurringBankDonationForm donation={donation} />
+            </div>
+          </>
         )}
 
         {donation.recurring === RecurringDonation.NON_RECURRING && (
           <div>
+            <PaneTitle>Tusen takk!</PaneTitle>
+            <UnderTitle>Du kan nå overføre til oss</UnderTitle>
             <PaymentInformation donation={donation} />
             <InfoText>
               {`Hvis du ønsker å donere med samme fordeling senere kan du bruke samme KID-nummer igjen. Dersom du har noen spørsmål eller tilbakemeldinger kan du alltid ta kontakt med oss ved å sende en mail til `}
-              <OrangeLink href="mailto:donasjon@gieffektivt.no">
+              <Link href="mailto:donasjon@gieffektivt.no" passHref target={"_blank"}>
                 donasjon@gieffektivt.no
-              </OrangeLink>
+              </Link>
             </InfoText>
           </div>
         )}

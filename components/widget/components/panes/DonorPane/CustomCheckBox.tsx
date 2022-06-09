@@ -6,9 +6,7 @@ import {
   CheckBoxLabelWrapper,
   CheckBoxWrapper,
   CheckMark,
-  ComputerLabel,
   CustomCheckBoxWrapper,
-  MobileLabel,
   StyledInput,
 } from "./CustomCheckBox.style";
 
@@ -42,16 +40,9 @@ export const CustomCheckBox: React.FC<CheckBoxProps> = ({
 
     <CheckBoxLabelWrapper>
       <CheckBoxLabel>
-        <ComputerLabel>
-          {`${label}`}
-          &nbsp;
-        </ComputerLabel>
-        <MobileLabel>
-          {`${mobileLabel || label}`}
-          &nbsp;
-        </MobileLabel>
+        {`${label} `}
         {hyperlink && (
-          <Link target="_blank" href={hyperlink.url}>
+          <Link target="_blank" href={hyperlink.url} passHref>
             {`${hyperlink.text} ↗`}
           </Link>
         )}

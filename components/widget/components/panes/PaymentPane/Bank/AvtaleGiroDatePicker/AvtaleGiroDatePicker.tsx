@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { DatePicker } from "../../../../../../elements/datepicker";
 import { orange20 } from "../../../../../config/colors";
 import { setDueDay } from "../../../../../store/donation/actions";
 import { State } from "../../../../../store/state";
+import { ScaledDatePicker } from "../../../../shared/Input/ScaledDatePicker.style";
 import { ToolTip } from "../../../../shared/ToolTip/ToolTip";
 import {
   Datebox,
@@ -27,41 +29,16 @@ export const AvtaleGiroDatePicker: React.FC = () => {
     dispatch(setDueDay(selectedDueDay));
   }, [selectedDueDay]);
 
-  const dateBoxes: JSX.Element[] = [];
-  for (let i = 1; i <= 28; i += 1) {
-    dateBoxes.push(
-      <Datebox
-        key={i}
-        style={{
-          backgroundColor: selectedDueDay === i ? orange20 : "white",
-        }}
-        onClick={() => {
-          setSelectedDueDay(i);
-        }}
-      >
-        {i}
-      </Datebox>,
-    );
-  }
-
   return (
     <Wrapper>
       <DateBoxWrapper>
-        {dateBoxes.map((box) => {
-          return box;
-        })}
-        <Datebox
-          key="0"
-          style={{
-            backgroundColor: selectedDueDay === 0 ? orange20 : "white",
-            width: "120px",
+        <ScaledDatePicker
+          selected={dueDay}
+          onChange={(date) => {
+            setSelectedDueDay(date);
           }}
-          onClick={() => {
-            setSelectedDueDay(0);
-          }}
-        >
-          Siste hver måned
-        </Datebox>
+          onClickOutside={() => {}}
+        />
       </DateBoxWrapper>
       <DateTextWrapper>
         <DateText>

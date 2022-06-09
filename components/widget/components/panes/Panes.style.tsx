@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Pane = styled.div`
-  padding-top: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -22,8 +21,9 @@ export const PaneContainer = styled.div`
 export const PaneTitle = styled.h2`
   font-family: "Es Klarheit Kurrent";
   font-size: 27px;
-  font-weight: normal;@
+  font-weight: normal;
   margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 40px;
 `;
 
@@ -39,6 +39,7 @@ export const UnderTitle = styled.p`
   margin-left: 5px;
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
+  color: var(--primary);
 `;
 
 export const OrangeLink = styled.a`

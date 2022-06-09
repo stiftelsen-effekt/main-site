@@ -4,7 +4,7 @@ import { orange10, orange20 } from "../../../../../config/colors";
 export const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 export const DateBoxWrapper = styled.div`
@@ -41,11 +41,10 @@ export const Datebox = styled.button`
 export const DateText = styled.p`
   display: inline-block;
   margin: 0;
-  font-size: 13px;
+  font-size: 18px;
   font-family: "Roboto", Arial, sans-serif;
-  padding-left: 3px;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 15px;
+  margin-top: 25px;
   white-space: pre-wrap;
   line-height: 14px;
 `;

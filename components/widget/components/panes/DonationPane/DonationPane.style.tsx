@@ -73,4 +73,5 @@ export const ActionBar = styled.div`
   align-self: flex-end;
   justify-self: ;
   padding-top: 30px;
+  padding-bottom: 30px;
 `;

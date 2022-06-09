@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../styles/Navbar.module.css";
 import Link from "next/link";
 import { Menu, X } from "react-feather";
@@ -8,6 +8,8 @@ import { ResponsiveImage } from "../elements/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { CookieBanner } from "../elements/cookiebanner";
 import { useRouter } from "next/router";
+import { EffektButton } from "../elements/effektbutton";
+import { WidgetContext } from "./layout";
 
 export type MainNavbarLink = {
   _type: "navitem";
@@ -38,6 +40,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
     elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
   const [rerender, setRerender] = useState(false);
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const setExpanded = (expanded: boolean) => {
     if (expanded && window.innerWidth < 900) document.documentElement.style.overflow = "hidden";
@@ -139,6 +142,9 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             <Link href="/profile">
               <a className={styles.btnlogin}>Logg inn</a>
             </Link>
+          </li>
+          <li onClick={() => setExpanded(false)}>
+            <EffektButton onClick={() => setWidgetOpen(true)}>Send bidrag</EffektButton>
           </li>
         </ul>
       </nav>

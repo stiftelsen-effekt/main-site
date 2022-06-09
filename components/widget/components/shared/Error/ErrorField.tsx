@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 export const ErrorWrapper = styled.div`
-  position: relative;
-  left: 8px;
   margin-top: 0px;
   margin-bottom: 5px;
 `;
@@ -11,7 +9,7 @@ export const ErrorWrapper = styled.div`
 export const ErrorMessage = styled.div`
   margin-left: 5px;
   font-size: 12px;
-  color: red;
+  color: var(--primary);
   display: inline;
   position: relative;
   bottom: 1px;

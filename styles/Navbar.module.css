@@ -20,7 +20,7 @@
 }
 
 .navbarShrinked {
-  padding: 4px 5vw;
+  padding: 0px 5vw;
 }
 
 .navbar ul {
@@ -34,12 +34,15 @@
   text-decoration: none;
   padding: 10px 20px;
   font-size: 14px;
+  height: 40px;
   position: relative;
 }
 
 .navbar ul li:last-child {
   margin-right: 0;
+  margin-left: 0;
   padding-right: 0;
+  padding-left: 0px;
 }
 
 .navbar ul li .submenu {
@@ -62,13 +65,12 @@
 }
 
 .btnlogin {
-  background: none;
+  background: var(--secondary);
   box-shadow: none;
-  padding: 10px 20px;
-  color: var(--secondary);
-  background: var(--primary);
+  padding: 8px 18px;
+  color: var(--primary);
   font-family: "ESKlarheitGrotesk";
-  border: none;
+  border: 1px solid var(--primary);
   font-size: 1em;
   cursor: pointer;
   border-radius: 20px;

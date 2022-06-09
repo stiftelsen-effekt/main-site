@@ -13,7 +13,7 @@ export const ShareInputContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr max-content;
   min-width: 0;
-  align-items: center;
+  align-items: flex-end;
 
   label {
     white-space: normal;

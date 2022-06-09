@@ -6,14 +6,19 @@ export const DatePicker: React.FC<{
   selected?: number;
   onChange: (selected: number) => void;
   onClickOutside?: () => void;
-}> = ({ selected, onChange, onClickOutside }) => {
+  className?: string;
+}> = ({ selected, onChange, onClickOutside, className }) => {
   const dates = [...Array.from(Array(29).keys()).map((x) => x.toString())].slice(1, 29);
 
   const datepickerContainerRef = useRef<HTMLDivElement>(null);
   useClickOutsideAlerter(datepickerContainerRef, onClickOutside ? onClickOutside : () => {});
 
   return (
-    <div className={style["datepicker-wrapper"]} ref={datepickerContainerRef} data-cy="date-picker">
+    <div
+      className={[style["datepicker-wrapper"], className].join(" ")}
+      ref={datepickerContainerRef}
+      data-cy="date-picker"
+    >
       {dates.map((date) => (
         <div
           key={date}

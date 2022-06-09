@@ -55,8 +55,7 @@ export const DonationPane: React.FC = () => {
                 name="sum"
                 type="tel"
                 placeholder="0"
-                defaultValue={donation.sum && donation.sum > 1 ? donation.sum : ""}
-                value={donation.sum?.toString()}
+                value={donation.sum && donation.sum > 0 ? donation.sum : ""}
                 autoComplete="off"
                 onChange={(e) => {
                   if (Validator.isInt(e.target.value) === true && parseInt(e.target.value) > 0) {
@@ -90,11 +89,11 @@ export const DonationPane: React.FC = () => {
 
         <ActionBar>
           <NextButton
-            onClick={(e: any) => {
+            disabled={!donation.isValid}
+            onClick={() => {
               onSubmit();
             }}
           >
-            {/* disabled={!donation.isValid} */}
             Neste
           </NextButton>
         </ActionBar>

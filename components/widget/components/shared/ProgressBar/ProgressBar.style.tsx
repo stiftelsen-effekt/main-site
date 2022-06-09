@@ -8,6 +8,7 @@ export const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 30px 40px;
+  padding-bottom: 10px;
 `;
 
 export const ProgressContainer = styled.div`
@@ -55,6 +56,7 @@ export const ActionButton = styled.button`
   transform: ${(props: ActionButtonProps) => (props.active ? `translateX(-50%)` : `translateX(0)`)};
   opacity: ${(props: ActionButtonProps) => (props.active ? `0` : `1`)};
   cursor: pointer;
+  outline: none;
 `;
 
 interface ActionButtonProps {

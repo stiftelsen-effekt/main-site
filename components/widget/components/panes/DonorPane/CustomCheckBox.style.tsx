@@ -47,29 +47,11 @@ export const CheckBoxLabelWrapper = styled.div``;
 
 export const CheckBoxLabel = styled.p`
   display: inline-block;
-  font-size: 14px;
+  font-size: 18px;
   margin: 0;
   margin-left: 10px;
 
   a:link {
     text-decoration: underline;
-  }
-`;
-
-export const ComputerLabel = styled.span`
-  display: inline-block;
-  margin: 0;
-  font-size: 14px;
-  @media only screen and (max-width: 350px) {
-    display: none;
-  }
-`;
-
-export const MobileLabel = styled.span`
-  display: none;
-  margin: 0;
-  font-size: 12px;
-  @media only screen and (max-width: 350px) {
-    display: inline-block;
   }
 `;

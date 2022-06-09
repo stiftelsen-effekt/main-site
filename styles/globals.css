@@ -103,13 +103,16 @@ button {
 }
 
 #widget {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  flex-grow: 1;
+  display: grid;
+  grid-template-rows: max-content max-content;
   width: 576px;
   transform-origin: top left;
   overflow-y: auto;
+}
+
+#widget::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }
 
 #carousel-wrapper {

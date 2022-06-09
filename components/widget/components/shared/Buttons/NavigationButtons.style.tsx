@@ -6,3 +6,9 @@ export const NextButton = styled(EffektButton)`
   padding: 18px 68px;
   border-radius: 60px;
 `;
+
+export const SubmitButton = styled(EffektButton)`
+  font-size: 25px;
+  padding: 18px 68px;
+  border-radius: 60px;
+`;

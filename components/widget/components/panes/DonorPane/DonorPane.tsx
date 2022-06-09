@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
 import { validateSsn, validateOrg } from "@ssfbank/norwegian-id-validators";
 import { useForm } from "react-hook-form";
-import { Pane } from "../Panes.style";
+import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { DonorInput, State } from "../../../store/state";
 import {
   registerDonationAction,
@@ -11,7 +11,7 @@ import {
   submitDonorInfo,
 } from "../../../store/donation/actions";
 import { InputFieldWrapper, HiddenCheckBox, CheckBoxWrapper } from "../Forms.style";
-import { DonorForm } from "./DonorPane.style";
+import { DonorForm, ActionBar, CheckBoxGroupWrapper } from "./DonorPane.style";
 import { DonorType } from "../../../types/Temp";
 import { selectPrivacyPolicy } from "../../../store/layout/actions";
 import { CustomCheckBox } from "./CustomCheckBox";
@@ -19,7 +19,6 @@ import { ErrorField } from "../../shared/Error/ErrorField";
 import { RadioButtonGroup } from "../../../../elements/radiobuttongroup";
 import { PaymentMethod } from "../../../types/Enums";
 import { EffektButton } from "../../../../elements/effektbutton";
-import { ActionBar } from "../DonationPane/DonationPane.style";
 import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
 
 interface DonorFormValues extends DonorInput {
@@ -88,8 +87,15 @@ export const DonorPane: React.FC = () => {
       setNextDisabled(false);
     } else {
       setNextDisabled(true);
+      return;
     }
-  }, [donorType, dispatch, errors, watchAllFields]);
+
+    if (typeof method === "undefined") {
+      setNextDisabled(true);
+    } else {
+      setNextDisabled(false);
+    }
+  }, [donorType, method, dispatch, errors, watchAllFields]);
 
   const paneSubmitted = (data: DonorFormValues) => {
     dispatch(
@@ -103,7 +109,7 @@ export const DonorPane: React.FC = () => {
     );
     dispatch(selectPrivacyPolicy(watchAllFields.privacyPolicy));
 
-    if (donation.isValid) {
+    if (donation.isValid && !nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
     } else {
       alert("Donation invalid");
@@ -122,7 +128,7 @@ export const DonorPane: React.FC = () => {
     );
     dispatch(selectPrivacyPolicy(watchAllFields.privacyPolicy));
 
-    if (donation.isValid) {
+    if (!nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
     } else {
       alert("Donation invalid");
@@ -132,139 +138,172 @@ export const DonorPane: React.FC = () => {
   return (
     <Pane>
       <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
-        <h2>Info om giver</h2>
-        <InputFieldWrapper>
-          <input
-            name="name"
-            type="text"
-            placeholder="Navn"
-            defaultValue={donor?.name === "Anonym Giver" ? "" : donor?.name}
-            ref={register({ required: true, minLength: 3 })}
-          />
-          {nameErrorAnimation && <ErrorField text="Ugyldig navn" />}
-          <input
-            name="email"
-            type="text"
-            placeholder="Epost"
-            defaultValue={donor?.email === "anon@gieffektivt.no" ? "" : donor?.email}
-            ref={register({
-              required: true,
-              validate: (val) => {
-                const trimmed = val.trim();
-                return Validate.isEmail(trimmed);
-              },
-            })}
-          />
-          {emailErrorAnimation && <ErrorField text="Ugyldig epost" />}
-        </InputFieldWrapper>
-        <div>
+        <PaneContainer>
           <div>
-            <CheckBoxWrapper>
-              <HiddenCheckBox
-                data-cy="checkboxTaxDeduction"
-                name="taxDeduction"
-                type="checkbox"
-                ref={register}
-                onChange={(e) => {
-                  !e.target.checked && clearErrors(["ssn"]);
-                  setTaxDeductionChecked(!taxDeductionChecked);
-                  (document.activeElement as HTMLElement).blur();
-                }}
-              />
-              <CustomCheckBox
-                label="Jeg ønsker skattefradrag"
-                checked={taxDeductionChecked}
-                showTooltip={taxDeductionChecked}
-                tooltipText={tooltipText}
-              />
-            </CheckBoxWrapper>
-            {watchAllFields.taxDeduction && (
+            <PaneTitle>Info om giver</PaneTitle>
+
+            <div style={{ marginBottom: "20px" }}>
+              <CheckBoxWrapper>
+                <HiddenCheckBox
+                  data-cy="checkboxAnonymousDonor"
+                  name="anonymousDonor"
+                  type="checkbox"
+                  ref={register}
+                  onChange={(e) => {
+                    if (!e.target.checked) setDonorType(DonorType.ANONYMOUS);
+                    else setDonorType(DonorType.DONOR);
+                    (document.activeElement as HTMLElement).blur();
+                  }}
+                />
+                <CustomCheckBox label="Doner anonymt" checked={donorType === DonorType.ANONYMOUS} />
+              </CheckBoxWrapper>
+            </div>
+
+            <div style={{ display: donorType === DonorType.ANONYMOUS ? "none" : "block" }}>
               <InputFieldWrapper>
                 <input
-                  name="ssn"
+                  name="name"
                   type="text"
-                  inputMode="numeric"
-                  placeholder="Fødselsnummer eller org.nr."
-                  defaultValue={
-                    // Hide SSN if anonymous donor
-                    donor?.ssn === "12345678910" ? "" : donor?.ssn
-                  }
+                  placeholder="Navn"
+                  defaultValue={donor?.name === "Anonym Giver" ? "" : donor?.name}
+                  ref={register({ required: true, minLength: 3 })}
+                />
+                {nameErrorAnimation && <ErrorField text="Ugyldig navn" />}
+                <input
+                  name="email"
+                  type="text"
+                  placeholder="Epost"
+                  defaultValue={donor?.email === "anon@gieffektivt.no" ? "" : donor?.email}
                   ref={register({
-                    required: false,
+                    required: true,
                     validate: (val) => {
-                      const trimmed = val.toString().trim();
-                      return (
-                        !watchAllFields.taxDeduction ||
-                        (Validate.isInt(trimmed) &&
-                          // Check if valid norwegian org or SSN (Social security number) based on check sum
-                          // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
-                          ((trimmed.length === 9 && validateOrg(trimmed)) ||
-                            (trimmed.length === 11 && validateSsn(trimmed))))
-                      );
+                      const trimmed = val.trim();
+                      return Validate.isEmail(trimmed);
                     },
                   })}
                 />
-                {ssnErrorAnimation && <ErrorField text="Ugyldig fødselsnummer eller org.nr." />}
+                {emailErrorAnimation && <ErrorField text="Ugyldig epost" />}
               </InputFieldWrapper>
-            )}
-          </div>
-          <CheckBoxWrapper>
-            <HiddenCheckBox
-              data-cy="checkboxNewsletter"
-              name="newsletter"
-              type="checkbox"
-              ref={register}
-              onChange={() => {
-                (document.activeElement as HTMLElement).blur();
-                setNewsletterChecked(!newsletterChecked);
-              }}
-            />
-            <CustomCheckBox
-              label="Jeg ønsker å melde meg på nyhetsbrevet"
-              mobileLabel="Jeg vil melde meg på nyhetsbrevet"
-              checked={newsletterChecked}
-            />
-          </CheckBoxWrapper>
-          <div>
-            <CheckBoxWrapper>
-              <HiddenCheckBox
-                data-cy="checkboxPrivacyPolicy"
-                name="privacyPolicy"
-                type="checkbox"
-                ref={register({ required: true })}
-                onChange={() => {
-                  (document.activeElement as HTMLElement).blur();
-                  setPrivacyPolicyChecked(!privacyPolicyChecked);
-                }}
-              />
-              <CustomCheckBox
-                label="Jeg godtar"
-                checked={privacyPolicyChecked}
-                hyperlink={{
-                  text: "personvernerklæringen",
-                  url: "https://gieffektivt.no/samarbeid-drift#personvern",
-                }}
-              />
-            </CheckBoxWrapper>
-            {privacyPolicyErrorAnimation && <ErrorField text="Du må godta personvernerklæringen" />}
-          </div>
-        </div>
+              <CheckBoxGroupWrapper>
+                <div>
+                  <CheckBoxWrapper>
+                    <HiddenCheckBox
+                      data-cy="checkboxTaxDeduction"
+                      name="taxDeduction"
+                      type="checkbox"
+                      ref={register}
+                      onChange={(e) => {
+                        !e.target.checked && clearErrors(["ssn"]);
+                        setTaxDeductionChecked(!taxDeductionChecked);
+                        (document.activeElement as HTMLElement).blur();
+                      }}
+                    />
+                    <CustomCheckBox
+                      label="Jeg ønsker skattefradrag"
+                      checked={taxDeductionChecked}
+                      showTooltip={taxDeductionChecked}
+                      tooltipText={tooltipText}
+                    />
+                  </CheckBoxWrapper>
+                  {watchAllFields.taxDeduction && (
+                    <InputFieldWrapper>
+                      <input
+                        name="ssn"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Fødselsnummer eller org.nr."
+                        defaultValue={
+                          // Hide SSN if anonymous donor
+                          donor?.ssn === "12345678910" ? "" : donor?.ssn
+                        }
+                        ref={register({
+                          required: false,
+                          validate: (val) => {
+                            const trimmed = val.toString().trim();
+                            return (
+                              !watchAllFields.taxDeduction ||
+                              (Validate.isInt(trimmed) &&
+                                // Check if valid norwegian org or SSN (Social security number) based on check sum
+                                // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
+                                ((trimmed.length === 9 && validateOrg(trimmed)) ||
+                                  (trimmed.length === 11 && validateSsn(trimmed))))
+                            );
+                          },
+                        })}
+                      />
+                      {ssnErrorAnimation && (
+                        <ErrorField text="Ugyldig fødselsnummer eller org.nr." />
+                      )}
+                    </InputFieldWrapper>
+                  )}
+                </div>
+                <CheckBoxWrapper>
+                  <HiddenCheckBox
+                    data-cy="checkboxNewsletter"
+                    name="newsletter"
+                    type="checkbox"
+                    ref={register}
+                    onChange={() => {
+                      (document.activeElement as HTMLElement).blur();
+                      setNewsletterChecked(!newsletterChecked);
+                    }}
+                  />
+                  <CustomCheckBox
+                    label="Jeg ønsker å melde meg på nyhetsbrevet"
+                    mobileLabel="Jeg vil melde meg på nyhetsbrevet"
+                    checked={newsletterChecked}
+                  />
+                </CheckBoxWrapper>
+                <div>
+                  <CheckBoxWrapper>
+                    <HiddenCheckBox
+                      data-cy="checkboxPrivacyPolicy"
+                      name="privacyPolicy"
+                      type="checkbox"
+                      ref={register({ required: true })}
+                      onChange={() => {
+                        (document.activeElement as HTMLElement).blur();
+                        setPrivacyPolicyChecked(!privacyPolicyChecked);
+                      }}
+                    />
+                    <CustomCheckBox
+                      label="Jeg godtar"
+                      checked={privacyPolicyChecked}
+                      hyperlink={{
+                        text: "personvernerklæringen",
+                        url: "https://gieffektivt.no/samarbeid-drift#personvern",
+                      }}
+                    />
+                  </CheckBoxWrapper>
+                  {privacyPolicyErrorAnimation && (
+                    <ErrorField text="Du må godta personvernerklæringen" />
+                  )}
+                </div>
+              </CheckBoxGroupWrapper>
+            </div>
 
-        <RadioButtonGroup
-          options={[
-            { title: "Gi med bank", value: PaymentMethod.BANK },
-            { title: "Gi med vipps", value: PaymentMethod.VIPPS },
-          ]}
-          selected={method}
-          onSelect={(option) => dispatch(selectPaymentMethod(option))}
-        />
-
-        <ActionBar>
-          {donorType === DonorType.DONOR ? <NextButton onClick={() => {}}>Neste</NextButton> : null}
-          {donorType === DonorType.ANONYMOUS ? (
-            <NextButton onClick={submitAnonymous}>Neste</NextButton>
-          ) : null}
-        </ActionBar>
+            <RadioButtonGroup
+              options={[
+                { title: "Gi med bank", value: PaymentMethod.BANK },
+                { title: "Gi med vipps", value: PaymentMethod.VIPPS },
+              ]}
+              selected={method}
+              onSelect={(option) => dispatch(selectPaymentMethod(option))}
+            />
+          </div>
+          <ActionBar>
+            {donorType === DonorType.DONOR ? (
+              <NextButton disabled={nextDisabled} onClick={() => {}}>
+                Neste
+              </NextButton>
+            ) : null}
+            {donorType === DonorType.ANONYMOUS ? (
+              <NextButton disabled={nextDisabled} onClick={submitAnonymous}>
+                Neste
+              </NextButton>
+            ) : null}
+          </ActionBar>
+        </PaneContainer>
       </DonorForm>
     </Pane>
   );

@@ -144,6 +144,11 @@
   margin-left: 10px;
 }
 
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .buttonprimary {
   background: var(--primary);
   color: var(--secondary);
@@ -444,7 +449,7 @@
   }
 
   .widgetPaneHeader {
-    padding: 20px 5vw;
+    /* padding: 20px 5vw; */
   }
 }
 

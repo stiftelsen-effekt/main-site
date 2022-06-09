@@ -5,6 +5,8 @@ import AvtaleGiroLogo from "../../../../assets/avtalegiro.jpeg";
 import { AvtaleGiroButton } from "./RecurringForm.style";
 import { API_URL } from "../../../../config/api";
 import { draftAvtaleGiroAction } from "../../../../store/donation/actions";
+import { EffektButton } from "../../../../../elements/effektbutton";
+import { SubmitButton } from "../../../shared/Buttons/NavigationButtons.style";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;
@@ -18,6 +20,7 @@ export const RecurringBankDonationForm: React.FC<{
         action="https://pvu.nets.no/ecsa/start"
         method="post"
         target="_parent"
+        style={{ paddingBottom: 30, display: "flex", justifyContent: "center" }}
       >
         <input type="hidden" name="companyName" id="companyName" value="Effektiv Altruisme Norge" />
         <input type="hidden" name="companyAccountNo" id="companyAccountNo" value="15062995960" />
@@ -35,12 +38,9 @@ export const RecurringBankDonationForm: React.FC<{
           value={`${API_URL}/donations/status`}
         />
         <input type="hidden" name="notificationDisabled" id="notificationDisabled" value="false" />
-        <AvtaleGiroButton
-          type="button"
-          onClick={() => dispatch(draftAvtaleGiroAction.started(undefined))}
-        >
+        <SubmitButton onClick={() => dispatch(draftAvtaleGiroAction.started(undefined))}>
           Opprett avtale
-        </AvtaleGiroButton>
+        </SubmitButton>
       </form>
     </div>
   );

@@ -5,9 +5,10 @@ import { State } from "../store/state";
 
 interface ICarouselProps {
   children: React.ReactNode[];
+  minHeight: number;
 }
 
-export const Carousel: React.FC<ICarouselProps> = ({ children }) => {
+export const Carousel: React.FC<ICarouselProps> = ({ children, minHeight }) => {
   const [currentPaneNumber, setCurrentPaneNumber] = useState(0); // get from redux global state
   const reduxPaneNumber = useSelector((state: State) => state.layout.paneNumber);
   const [renderedPanes, setRenderedPanes] = useState([1]);
@@ -56,7 +57,7 @@ export const Carousel: React.FC<ICarouselProps> = ({ children }) => {
   */
 
   return (
-    <div id="carousel-wrapper">
+    <div id="carousel-wrapper" style={{ minHeight: `${minHeight}px` }}>
       <div
         id="carousel"
         style={{

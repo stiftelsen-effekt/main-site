@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
@@ -9,30 +9,31 @@ import { fetchOrganizationsAction } from "../store/layout/actions";
 import { State } from "../store/state";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
+import { WidgetContext } from "../../main/layout";
 
 export const Widget: React.FC = () => {
   const dispatch = useDispatch();
   const answeredReferral = useSelector((state: State) => state.layout.answeredReferral);
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [scalingFactor, setScalingFactor] = useState(1);
+  const [scaledHeight, setScaledHeight] = useState(979);
 
   const [rerender, setRerender] = React.useState(false);
   useEffect(() => {
-    setTimeout(() => {
-      setRerender(!rerender);
-    }, 1000);
-  }, [rerender]);
-  useEffect(() => {
-    setTimeout(() => {
-      setRerender(!rerender);
-    }, 1000);
-  }, []);
+    setRerender((r) => !r);
+  }, [widgetOpen]);
 
   useEffect(() => {
     dispatch(fetchOrganizationsAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
-  }, []);
+  }, [dispatch]);
 
-  const scalingFactor = typeof window !== "undefined" ? (window.innerWidth * 0.4) / 576 : 1;
-  const scaledHeight = typeof window !== "undefined" ? window.innerHeight / scalingFactor : 978;
+  useEffect(() => {
+    setScalingFactor(
+      (window.innerWidth >= 900 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) / 576,
+    );
+    setScaledHeight(window.innerHeight / scalingFactor);
+  }, [rerender]);
 
   return (
     <div
@@ -44,7 +45,7 @@ export const Widget: React.FC = () => {
       }}
     >
       <ProgressBar />
-      <Carousel>
+      <Carousel minHeight={scaledHeight - 116}>
         <DonationPane />
         <DonorPane />
         {/* answeredReferral !== true && <ReferralPane /> */}

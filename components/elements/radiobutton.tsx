@@ -15,6 +15,7 @@ export const RadioButton: React.FC<{
         title={title}
         className={styles.radiobutton}
         checked={selected}
+        onChange={onSelect}
       />
       <label className={styles.radiobuttonlabel} htmlFor={title} onClick={onSelect}>
         {title}
