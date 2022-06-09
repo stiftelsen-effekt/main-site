@@ -158,12 +158,17 @@
 .buttonsecondary {
   color: var(--primary);
   background: var(--secondary);
-  border: 1px solid var(--primary);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 2px solid var(--primary);
 }
 
 .buttonsecondary:hover,
 .buttonsecondary:active {
-  border: 1px solid var(--primary-hover);
+  color: var(--secondary-hover);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 2px solid var(--secondary-hover);
 }
 
 .buttontertiary {
@@ -176,13 +181,20 @@
 }
 
 .buttontertiary:hover {
-  outline-color: var(--primary-hover);
+  border: none;
+  outline: 2px dashed #555;
+  color: var(--secondary-hover);
 }
 
 .buttontertiary:focus,
 .buttonprimary:focus,
 .buttonsecondary:focus {
+  border: none;
   outline-color: var(--focus);
+}
+
+.button__squared {
+  border-radius: 3px;
 }
 
 .teaser {
