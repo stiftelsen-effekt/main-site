@@ -12,6 +12,7 @@ import { Expander } from "../components/elements/expander";
 import styles from "../styles/Support.module.css";
 import { ContactInfo } from "../components/elements/contact-info";
 import { footerQuery } from "../components/footer";
+import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -32,21 +33,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
 
       <SectionContainer padded={true}>
         {data.page[0].questionandanswergroups.map((group: any) => (
-          <div className={styles.grid} key={group._key}>
-            <div className={styles.groupheader}>
-              <h2>{group.title}</h2>
-            </div>
-            <div className={styles.groupanswers}>
-              {group.answers.map((answer: any) => (
-                <Expander
-                  key={answer._key}
-                  title={answer.question}
-                  content={answer.answer}
-                  links={answer.links}
-                />
-              ))}
-            </div>
-          </div>
+          <QuestionsAndAnswersGroup key={group._key} group={group} />
         ))}
       </SectionContainer>
 
