@@ -31,9 +31,18 @@ import criteria from "./pages/criteria";
 import paragraph from "./types/paragraph";
 import pointlistpoint from "./types/pointlistpoint";
 import links from "./types/links";
-import article from "./types/article";
+import article from "./pages/article";
 
-export const pages = [generic, frontpage, organizations, about, profile, support, criteria];
+export const pages = [
+  generic,
+  frontpage,
+  organizations,
+  about,
+  profile,
+  support,
+  criteria,
+  article,
+];
 
 export const types = [
   teaser,
@@ -56,7 +65,6 @@ export const types = [
   videoembed,
   contentsection,
   paragraph,
-  article,
 ];
 
 // Then we give our schema to the builder and provide the result to Sanity
