@@ -20,7 +20,7 @@
 }
 
 .navbarShrinked {
-  padding: 4px 5vw;
+  padding: 0px 5vw;
 }
 
 .navbar ul {
@@ -32,8 +32,8 @@
   cursor: default;
   display: inline-block;
   text-decoration: none;
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 10px 25px;
+  font-size: 18px;
   position: relative;
 }
 
@@ -95,7 +95,7 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  height: 80px;
+  height: 35px;
   width: 180px;
   position: relative;
   filter: var(--primary-filter);

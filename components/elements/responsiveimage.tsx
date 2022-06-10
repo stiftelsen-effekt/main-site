@@ -9,14 +9,15 @@ export const ResponsiveImage: React.FC<{
   alt?: string;
   onClick?: () => void;
   priority?: boolean;
-}> = ({ image, alt, onClick, priority }) => {
+  layout?: "intrinsic" | "fill" | "responsive";
+}> = ({ image, alt, onClick, priority, layout = "fill" }) => {
   const imageProps = useNextSanityImage({ clientConfig: config }, image);
 
   return (
     <Image
       {...imageProps}
-      layout="fill"
-      objectFit="contain"
+      layout={layout}
+      objectFit={layout === "fill" ? "contain" : "cover"}
       sizes="(max-width: 800px) 100vw, 800px"
       alt={alt || "Image"}
       onClick={onClick}

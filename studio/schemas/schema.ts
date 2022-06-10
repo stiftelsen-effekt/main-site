@@ -31,6 +31,10 @@ import criteria from './pages/criteria'
 import paragraph from './types/paragraph'
 import pointlistpoint from './types/pointlistpoint'
 import links from './types/links'
+import splitview from './types/splitview'
+import fullimage from './types/fullimage'
+import column from './types/column'
+import columns from './types/columns'
 
 export const pages = [
   generic,
@@ -62,7 +66,11 @@ export const types = [
   contactinfo,
   videoembed,
   contentsection,
-  paragraph
+  paragraph,
+  splitview,
+  fullimage,
+  column,
+  columns
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity

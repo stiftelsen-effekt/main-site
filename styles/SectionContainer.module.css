@@ -1,5 +1,5 @@
 .inverted {
-  --primary: #fff;
+  --primary: #fafafa;
   --secondary: #000;
   background-color: var(--secondary);
   color: var(--primary);

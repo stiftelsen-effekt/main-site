@@ -15,7 +15,7 @@
 }
 
 .dark {
-  --primary: white;
+  --primary: #fafafa;
   --secondary: black;
   --primary-filter: invert(1);
   --primary-hover: #ccc;
