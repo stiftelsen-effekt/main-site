@@ -35,6 +35,8 @@ import splitview from './types/splitview'
 import fullimage from './types/fullimage'
 import column from './types/column'
 import columns from './types/columns'
+import intervention from './types/intervention'
+import interventionwidget from './types/interventionwidget'
 
 export const pages = [
   generic,
@@ -70,7 +72,9 @@ export const types = [
   splitview,
   fullimage,
   column,
-  columns
+  columns,
+  intervention,
+  interventionwidget
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity
