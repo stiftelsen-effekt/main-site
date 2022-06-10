@@ -40,8 +40,14 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
                     <h2>{organization.name}</h2>
                     <h3>{organization.subtitle}</h3>
                   </div>
-                  <div className={styles.logo}>
-                    {organization.logo ? <ResponsiveImage image={organization.logo} /> : null}
+                  <div className={styles.intervention}>
+                    <span className={styles.interventionType}>
+                      {organization.intervention_type}
+                    </span>
+                    <strong>{organization.invervention_cost}</strong>
+                    <span className={styles.interventionEffect}>
+                      {organization.intervention_effect}
+                    </span>
                   </div>
                 </div>
                 <div className={styles.description}>

@@ -2,6 +2,12 @@ export default {
   name: 'organization',
   type: 'document',
   title: 'Organization',
+  groups: [
+    {
+      name: 'intervention',
+      title: 'Intervention',
+    }
+  ],
   fields: [
     {
       name: 'name',
@@ -28,6 +34,24 @@ export default {
       title: 'Content',
       type: 'array',
       of: [{type: 'block'}]
+    },
+    {
+      name: 'intervention_type',
+      title: 'Intervention type',
+      type: 'string',
+      group: 'intervention'
+    },
+    {
+      name: 'invervention_cost',
+      title: 'Intervention cost',
+      type: 'string',
+      group: 'intervention'
+    },
+    {
+      name: 'intervention_effect',
+      title: 'Intervention effect',
+      type: 'string',
+      group: 'intervention'
     },
     {
       name: 'logo',
