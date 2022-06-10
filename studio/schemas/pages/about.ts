@@ -20,7 +20,7 @@ export default {
       type: 'slug',
       readOnly: false,
       initialValue: 'about'
-    }
+    },
   ],
   preview: {
     select: {

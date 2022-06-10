@@ -13,10 +13,21 @@ import { SectionContainer } from "../components/sectionContainer";
 import { footerQuery } from "../components/footer";
 import { MainHeader } from "../components/main/header";
 import { CookieBanner } from "../components/elements/cookiebanner";
+import { Contributor, ContributorType } from "../components/elements/contributor";
+
+type Role = {
+  title: string;
+  id: "boardmembers" | "volunteers" | "employees";
+  contributors: ContributorType[];
+};
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
-
+  console.log(data);
+  const roles: Role[] = data.roles;
+  const boardMembers = roles.find((role: Role) => role.id === "boardmembers");
+  const employees = roles.find((role: Role) => role.id === "employees");
+  const volunteers = roles.find((role: Role) => role.id === "volunteers");
   return (
     <>
       <Head>
@@ -34,19 +45,20 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
 
       <SectionContainer>
         <PortableText blocks={data.about[0].content}></PortableText>
-        {data.people.map((role: any) => (
-          <div key={role._id}>
-            <h2>{role.title}</h2>
-            <div className={styles.grid}>
-              {role.members.map((member: any) => (
-                <div key={member._id} className={styles.person}>
-                  <strong>{member.name}</strong>
-                  <div>{member.subrole}</div>
-                  <div>{member.additional}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+
+        <h2>{boardMembers?.title}</h2>
+        {boardMembers?.contributors.map((member) => (
+          <Contributor key={member._id} {...member} />
+        ))}
+
+        <h2>{employees?.title}</h2>
+        {employees?.contributors.map((member) => (
+          <Contributor key={member._id} {...member} />
+        ))}
+
+        <h2>{volunteers?.title}</h2>
+        {volunteers?.contributors.map((member) => (
+          <Contributor key={member._id} {...member} />
         ))}
       </SectionContainer>
     </>
@@ -91,17 +103,19 @@ const fetchAboutUs = groq`
     header,
     content
   },
-  "people": *[_type == "role"] {
+  "roles": *[_type == "role"] {
     _id,
     title,
-    "members": *[ _type == "contributor" && role._ref == ^._id ] {
+    id,
+    "contributors": *[ _type == "contributor" && role._ref == ^._id ] {
       _id,
+      image,
       name,
       email,
       subrole,
       additional
     }
-  }[count(members) > 0]
+  }[count(contributors) > 0]
 }
 `;
 
