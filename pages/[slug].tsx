@@ -91,6 +91,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                 case "splitview":
                   return (
                     <SplitView
+                      key={block._key || block._id}
                       title={block.title}
                       swapped={block.swapped}
                       paragraph={block.paragraph}
@@ -99,9 +100,11 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                     />
                   );
                 case "fullimage":
-                  return <FullImage image={block.image} alt={block.alt} />;
+                  return (
+                    <FullImage key={block._key || block._id} image={block.image} alt={block.alt} />
+                  );
                 case "columns":
-                  return <Columns columns={block.columns} />;
+                  return <Columns key={block._key || block._id} columns={block.columns} />;
                 default:
                   return block._type;
               }
