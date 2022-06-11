@@ -283,9 +283,9 @@
   padding: 20px 0;
   cursor: pointer;
   user-select: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  column-gap: 20px;
   align-items: center;
 }
 
@@ -296,6 +296,10 @@
 
 .expanderHeader h2 {
   margin: 0;
+}
+
+.expanderWrapper div p {
+  white-space: pre-wrap;
 }
 
 .links {
