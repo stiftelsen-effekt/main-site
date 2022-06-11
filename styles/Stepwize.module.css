@@ -34,7 +34,29 @@ This will need a review.*/
 }
 
 @media screen and (max-width: 900px) {
+  .step {
+    margin: 0;
+    max-width: auto;
+    width: 100%;
+  }
+
+  .step__heading {
+    font-size: 80px;
+    border-bottom: 1px solid var(--primary);
+    width: 120px;
+  }
+
+  .step__subheading {
+    font-size: 24px;
+  }
+
+  .step__description {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
   .stepwize__container {
+    width: 100%;
     flex-direction: column;
   }
 }

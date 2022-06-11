@@ -51,14 +51,14 @@
   }
 
   .header h1 {
-    font-size: 60px;
+    font-size: 48px;
     max-width: 100%;
     margin-bottom: 16px;
   }
 
   .subheading {
-    width: 100%;
-    font-size: 24px;
+    width: 60%;
+    font-size: 16px;
     font-weight: 400;
   }
 
