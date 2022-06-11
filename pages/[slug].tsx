@@ -92,7 +92,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                     />
                   );
                 case "questionandanswergroup":
-                  return <QuestionsAndAnswersGroup group={block} />;
+                  return <QuestionsAndAnswersGroup key={block._key} group={block} />;
                 case "splitview":
                   return (
                     <SplitView
