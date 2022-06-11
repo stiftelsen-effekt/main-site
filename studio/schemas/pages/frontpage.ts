@@ -19,6 +19,11 @@ export default {
       title: 'Intro section'
     },
     {
+      name: 'intervention_widget',
+      type: 'interventionwidget',
+      title: 'Intervention widget'
+    },
+    {
       name: 'salespitch',
       type: 'pointlist',
       title: 'Salespitch',

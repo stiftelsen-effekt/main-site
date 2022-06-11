@@ -1,11 +1,3 @@
-.container {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
-  background-color: var(--secondary);
-}
-
 .navbar {
   display: flex;
   align-items: center;
@@ -17,10 +9,6 @@
   color: var(--primary);
   transition: padding 200ms ease-in-out;
   margin: 0 auto;
-}
-
-.navbarShrinked {
-  padding: 0px 5vw;
 }
 
 .navbar ul {
