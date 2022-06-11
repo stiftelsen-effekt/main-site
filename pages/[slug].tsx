@@ -15,6 +15,13 @@ import { ContactInfo } from "../components/elements/contact-info";
 import { Paragraph } from "../components/elements/paragraph";
 import { footerQuery } from "../components/footer";
 import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
+import Splitview from "../studio/schemas/types/splitview";
+import { SplitView } from "../components/elements/splitview";
+import Fullimage from "../studio/schemas/types/fullimage";
+import { FullImage } from "../components/elements/fullimage";
+import { Columns } from "../components/elements/columns";
+import { MainHeader } from "../components/main/header";
+import { CookieBanner } from "../components/elements/cookiebanner";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -29,7 +36,10 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      <MainHeader>
+        <CookieBanner />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      </MainHeader>
 
       <PageHeader
         title={header.title}
@@ -82,7 +92,24 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                     />
                   );
                 case "questionandanswergroup":
-                  return <QuestionsAndAnswersGroup group={block} />;
+                  return <QuestionsAndAnswersGroup key={block._key} group={block} />;
+                case "splitview":
+                  return (
+                    <SplitView
+                      key={block._key || block._id}
+                      title={block.title}
+                      swapped={block.swapped}
+                      paragraph={block.paragraph}
+                      link={block.link}
+                      image={block.image}
+                    />
+                  );
+                case "fullimage":
+                  return (
+                    <FullImage key={block._key || block._id} image={block.image} alt={block.alt} />
+                  );
+                case "columns":
+                  return <Columns key={block._key || block._id} columns={block.columns} />;
                 default:
                   return block._type;
               }

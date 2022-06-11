@@ -13,6 +13,8 @@ import styles from "../styles/Support.module.css";
 import { ContactInfo } from "../components/elements/contact-info";
 import { footerQuery } from "../components/footer";
 import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
+import { MainHeader } from "../components/main/header";
+import { CookieBanner } from "../components/elements/cookiebanner";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -27,7 +29,10 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      <MainHeader>
+        <CookieBanner />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      </MainHeader>
 
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 

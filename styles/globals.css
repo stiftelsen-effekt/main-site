@@ -36,7 +36,7 @@
 
 :root {
   --primary: black;
-  --secondary: white;
+  --secondary: #fafafa;
   --primary-filter: brightness(0);
   --primary-hover: #333333;
   --secondary-hover: #555555;
@@ -52,6 +52,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss10" on, "ss08" on;
+  background: var(--secondary);
 }
 
 h1,
@@ -79,6 +80,10 @@ a:hover {
 
 :focus {
   outline: 2px solid rgb(31, 166, 184);
+}
+
+strong {
+  font-weight: bold;
 }
 
 button {

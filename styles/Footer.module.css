@@ -55,7 +55,7 @@
 
 /** -----News Letter Signup--------*/
 .newsletter {
-  grid-column: 2 / 4;
+  grid-column: 2 / 5;
 }
 
 .newsletter fieldset {
@@ -72,15 +72,13 @@
   max-width: 340px;
   position: relative;
 }
-.input__inlinebutton input,
-.input__inlinebutton button {
+.input__inlinebutton input {
   font-size: 14px;
   border: none;
-  text-transform: uppercase;
 }
 
-.input__inlinebutton input {
-  padding: 14px 30px;
+.input__inlinebutton input[type="email"] {
+  padding: 1rem 6rem 1rem 2rem;
   box-sizing: border-box;
   border-radius: 50px;
   width: 100%;
@@ -98,11 +96,11 @@
   cursor: pointer;
 }
 
-.input__inlinebutton button:hover {
+.input__inlinebutton input[type="submit"]:hover {
   color: var(--primary-hover);
 }
 
-.newsletter div input[type="text"] {
+.newsletter input[type="email"] {
   background: var(--secondary);
   color: var(--primary);
   font-family: "ESKlarheitGrotesk", sans-serif;

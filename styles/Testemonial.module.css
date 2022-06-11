@@ -42,7 +42,7 @@
 
 .testimonial__image img::before {
   position: absolute;
-  color: white;
+  color: var(--secondary);
   top: 100px;
   left: 50px;
 }
