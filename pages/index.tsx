@@ -50,7 +50,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         setInterventionCosts(costs);
       });
     });
-  }, []);
+  }, [interventionWidget.interventions]);
 
   return (
     <>
