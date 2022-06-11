@@ -1,3 +1,24 @@
+.testimonialtrack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.testimonialtrackinner {
+  display: grid;
+  grid-auto-columns: 100%;
+  width: 100%;
+  grid-auto-flow: column;
+  white-space: nowrap;
+  transition: transform 380ms ease-in-out;
+}
+
 .testimonial {
   width: 100%;
   display: flex;
@@ -6,6 +27,7 @@
   align-items: center;
   position: relative;
   justify-content: center;
+  white-space: normal;
 }
 
 .testemonial__quote {
@@ -45,6 +67,17 @@
   color: var(--secondary);
   top: 100px;
   left: 50px;
+}
+
+.testimonial__arrows {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.testimonial__arrow {
+  font-size: 56px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {
