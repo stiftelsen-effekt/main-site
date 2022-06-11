@@ -17,7 +17,6 @@ export const ImpactWidget: React.FC<{
   interventions: Intervention[];
   buttonText: string;
 }> = ({ title, defaultSum, interventions, buttonText }) => {
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const [sum, setSum] = useState(defaultSum);
   const [selectedIntervention, setSelectedIntervention] = useState<string>(interventions[0].title);
 
@@ -81,7 +80,6 @@ export const ImpactWidget: React.FC<{
               </p>
             </div>
           )}
-          <EffektButton onClick={() => setWidgetOpen(true)}>{buttonText}</EffektButton>
         </div>
       </div>
     </div>

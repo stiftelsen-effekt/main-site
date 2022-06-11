@@ -114,11 +114,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       <SectionContainer heading="" nodivider>
         <div className={styles.teasers}>
           {data.frontpage[0].teasers.map(
-            ({ _key, title, paragraph, link, image }: Teaser & { _key: string }) => (
+            ({ _key, title, paragraph, disclaimer, link, image }: Teaser & { _key: string }) => (
               <Teaser
                 key={_key}
                 title={title}
                 paragraph={paragraph}
+                disclaimer={disclaimer}
                 link={link}
                 image={image}
               ></Teaser>

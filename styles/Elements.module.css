@@ -200,13 +200,15 @@
 .teaser {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: center;
   width: 100%;
-  min-height: 520px;
 }
 
 .teaserimage {
   background: var(--primary);
   position: relative;
+  width: 100%;
+  aspect-ratio: 12/ 9;
 }
 
 .teasertext {
@@ -233,6 +235,10 @@
 
 .teasertext button {
   margin-left: 0;
+}
+
+.teasertext .teaserdisclaimer {
+  font-size: 16px;
 }
 
 .pointlistwrapper {
@@ -295,9 +301,9 @@
   padding: 20px 0;
   cursor: pointer;
   user-select: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  column-gap: 20px;
   align-items: center;
 }
 
@@ -308,6 +314,10 @@
 
 .expanderHeader h2 {
   margin: 0;
+}
+
+.expanderWrapper div p {
+  white-space: pre-wrap;
 }
 
 .links {
