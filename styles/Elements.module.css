@@ -420,15 +420,21 @@
     margin-bottom: 40px;
   }
 
+  .teaser:last-child {
+    margin-bottom: 0;
+  }
+
   .teaserimage {
     grid-row: 1;
     aspect-ratio: 4 / 3;
   }
 
   .teasertext {
+    font-size: 16px;
     padding: 20px 0px;
     max-width: auto;
     grid-row: 2;
+    margin-bottom: 20px;
   }
 
   .pointlistwrapper {

@@ -43,6 +43,19 @@
 }
 
 @media only screen and (max-width: 900px) {
+  .section__heading {
+    font-size: 14px;
+  }
+
+  .section__container {
+    margin-bottom: 0;
+  }
+
+  .section__content {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
   .padded {
     padding-left: 0;
     padding-right: 0;
