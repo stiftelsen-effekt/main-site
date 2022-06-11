@@ -225,6 +225,10 @@
   margin-left: 0;
 }
 
+.teasertext .teaserdisclaimer {
+  font-size: 16px;
+}
+
 .pointlistwrapper {
   display: grid;
   grid-auto-flow: column;

@@ -8,10 +8,11 @@ import { ResponsiveImage } from "./responsiveimage";
 export interface Teaser {
   title: string;
   paragraph: string;
+  disclaimer?: string;
   link: string;
   image: SanityImageSource;
 }
-export const Teaser: React.FC<Teaser> = ({ title, paragraph, link, image }) => {
+export const Teaser: React.FC<Teaser> = ({ title, paragraph, disclaimer, link, image }) => {
   const router = useRouter();
 
   return (
@@ -24,13 +25,16 @@ export const Teaser: React.FC<Teaser> = ({ title, paragraph, link, image }) => {
           <h2>{title}</h2>
           <p>{paragraph}</p>
         </div>
-        <EffektButton
-          onClick={() => {
-            router.push(link);
-          }}
-        >
-          Les mer
-        </EffektButton>
+        <div>
+          {disclaimer && <p className={elements.teaserdisclaimer}>{disclaimer}</p>}
+          <EffektButton
+            onClick={() => {
+              router.push(link);
+            }}
+          >
+            Les mer
+          </EffektButton>
+        </div>
       </div>
     </div>
   );
