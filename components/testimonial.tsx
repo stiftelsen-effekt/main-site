@@ -24,7 +24,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             <div className={styles.testimonial} key={quotee}>
               <p className={styles.testemonial__quote}>“{quote}”</p>
               <div className={styles.testemonial__image}>
-                <ResponsiveImage image={image} />
+                {image && <ResponsiveImage image={image} />}
               </div>
               <div className={styles.testimonial__bio}>
                 <p>{quotee}</p>

@@ -44,7 +44,7 @@ export default {
       name: 'testimonials',
       type: 'array',
       title: 'Testimonials',
-      of: [{ type: 'testimonial' }],
+      of: [{ type: 'reference', to: { type: 'testimonial' }}],
     },
     {
       name: 'slug',

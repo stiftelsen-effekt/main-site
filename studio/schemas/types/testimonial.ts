@@ -1,11 +1,11 @@
 export default {
   name: 'testimonial',
-  type: 'object',
+  type: 'document',
   title: 'Testimonial',
   preview: {
     select: {
-      title: 'name',
-      subtitle: 'title',
+      title: 'quotee',
+      subtitle: 'quotee_background',
       media: 'image'
     }
   },
