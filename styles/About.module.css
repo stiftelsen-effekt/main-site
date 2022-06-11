@@ -1,22 +1,36 @@
-.grid {
+.ingress__container {
+  border-top: solid 0.5px var(--primary);
+  padding-top: 8.375rem;
+  margin-bottom: 8.375rem;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 50px;
+  grid-template-columns: 1fr 2fr 1fr;
+  column-gap: 2rem;
 }
 
-.person {
-  border-left: 1px solid var(--primary);
-  padding: 20px;
-  line-height: 200%;
+.links {
+  grid-column: 1 / span 1;
 }
 
-@media only screen and (max-width: 900px) {
-  .grid {
-    display: flex;
-    flex-direction: column;
+.ingress,
+.maincontent {
+  grid-column: 2 / span 1;
+}
+
+.ingress {
+  font-size: 1.75rem;
+}
+
+@media (max-width: 37.25rem) {
+  .ingress__container {
+    grid-template-columns: 1fr;
   }
 
-  .person {
-    margin-bottom: 20px;
+  .links {
+    grid-column: 1 / span 1;
+  }
+
+  .ingress,
+  .maincontent {
+    grid-column: 1 / span 1;
   }
 }
