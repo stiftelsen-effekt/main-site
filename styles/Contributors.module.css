@@ -13,8 +13,26 @@
 
 .contributors__list {
   padding: 0;
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: auto;
   gap: 3rem;
   width: 100%;
+}
+@media (max-width: 56.25rem) {
+  .contributors__list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 37.25rem) {
+  .contributors__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 25rem) {
+  .contributors__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

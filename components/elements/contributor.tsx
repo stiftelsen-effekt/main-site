@@ -28,7 +28,7 @@ export const Contributor: React.FC<ContributorType> = ({
     <li className={styles.contributor}>
       <div className={styles.contributor__image}>
         {image != null && (
-          <ResponsiveImage layout="fixed" image={image} urlBuilder={contributorImageBuilder} />
+          <ResponsiveImage layout="responsive" image={image} urlBuilder={contributorImageBuilder} />
         )}
       </div>
       <h3 className={styles.contributor__title}>{name}</h3>

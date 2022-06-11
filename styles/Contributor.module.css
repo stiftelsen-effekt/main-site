@@ -1,13 +1,11 @@
 .contributor {
   display: flex;
   flex-direction: column;
-  max-width: 15rem;
 }
 
 .contributor__image {
-  width: 15rem;
-  height: 19.375rem;
-  background-color: grey;
+  width: 100%;
+  aspect-ratio: 24/31;
 }
 
 .contributor__title {
