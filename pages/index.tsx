@@ -131,7 +131,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <Stepwize steps={data.frontpage[0].key_points.map((p: any) => p)} />
       </SectionContainer>
 
-      {data.frontpage[0].testimonials.length > 0 && (
+      {data.frontpage[0].testimonials && (
         <SectionContainer heading="Hva folk sier om oss">
           <Testimonial testimonies={data.frontpage[0].testimonials} />
         </SectionContainer>
