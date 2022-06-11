@@ -1,0 +1,20 @@
+.contributors {
+  border-top: solid 1px var(--primary);
+  padding-top: 4.625rem;
+  margin-bottom: 4rem;
+  width: 100%;
+}
+
+.contributors__title {
+  align-self: flex-start;
+  font-size: 2.25rem;
+  line-height: 1.278;
+}
+
+.contributors__list {
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+  width: 100%;
+}

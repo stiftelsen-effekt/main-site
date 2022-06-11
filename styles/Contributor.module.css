@@ -1,0 +1,30 @@
+.contributor {
+  display: flex;
+  flex-direction: column;
+  max-width: 15rem;
+}
+
+.contributor__image {
+  width: 15rem;
+  height: 19.375rem;
+  background-color: grey;
+}
+
+.contributor__title {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-top: 0.9375rem;
+  margin-bottom: 0.375rem;
+}
+.contributor__subrole,
+.contributor__additional {
+  font-size: 0.875rem;
+  line-height: 1.357;
+  letter-spacing: 0.07rem;
+  text-transform: uppercase;
+  min-height: 1.357rem;
+}
+
+.contributor__email {
+  line-height: 1.625;
+}

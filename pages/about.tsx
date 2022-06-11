@@ -13,21 +13,15 @@ import { SectionContainer } from "../components/sectionContainer";
 import { footerQuery } from "../components/footer";
 import { MainHeader } from "../components/main/header";
 import { CookieBanner } from "../components/elements/cookiebanner";
-import { Contributor, ContributorType } from "../components/elements/contributor";
-
-type Role = {
-  title: string;
-  id: "boardmembers" | "volunteers" | "employees";
-  contributors: ContributorType[];
-};
+import { Contributors, Role } from "../components/elements/contributors";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
   console.log(data);
   const roles: Role[] = data.roles;
-  const boardMembers = roles.find((role: Role) => role.id === "boardmembers");
-  const employees = roles.find((role: Role) => role.id === "employees");
-  const volunteers = roles.find((role: Role) => role.id === "volunteers");
+  const boardMembers = roles.find((role: Role) => role.id === "boardmembers")!;
+  const employees = roles.find((role: Role) => role.id === "employees")!;
+  const volunteers = roles.find((role: Role) => role.id === "volunteers")!;
   return (
     <>
       <Head>
@@ -46,20 +40,9 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
       <SectionContainer>
         <PortableText blocks={data.about[0].content}></PortableText>
 
-        <h2>{boardMembers?.title}</h2>
-        {boardMembers?.contributors.map((member) => (
-          <Contributor key={member._id} {...member} />
-        ))}
-
-        <h2>{employees?.title}</h2>
-        {employees?.contributors.map((member) => (
-          <Contributor key={member._id} {...member} />
-        ))}
-
-        <h2>{volunteers?.title}</h2>
-        {volunteers?.contributors.map((member) => (
-          <Contributor key={member._id} {...member} />
-        ))}
+        <Contributors {...boardMembers} />
+        <Contributors {...employees} />
+        <Contributors {...volunteers} />
       </SectionContainer>
     </>
   );
