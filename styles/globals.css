@@ -39,6 +39,7 @@
   --secondary: #fafafa;
   --primary-filter: brightness(0);
   --primary-hover: #333333;
+  --secondary-hover: #555555;
   --focus: blue;
 }
 
