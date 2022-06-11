@@ -16,6 +16,8 @@ import { GiveBlock } from "../components/elements/giveblock";
 import { footerQuery } from "../components/footer";
 import { ImpactWidget } from "../components/elements/impactwidget";
 import { useEffect, useState } from "react";
+import { MainHeader } from "../components/main/header";
+import { CookieBanner } from "../components/elements/cookiebanner";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.frontpage[0].salespitch;
@@ -34,15 +36,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         const costs = new Map();
         const evaluations = data.evaluations;
         interventions.forEach((i: any) => {
-          console.log(evaluations);
           // For each intervention, filter the evaluations for a given charity
           const filtered = evaluations.filter(
             (e: any) => e.charity.abbreviation === i.abbreviation,
           );
-          console.log(filtered);
           // Then order the list to get the most recent
           const ordered = filtered.sort((a: any, b: any) => a.start_year - b.start_year);
-          console.log(ordered);
           // Get the most recent evaluation
           const evaluation = ordered[0];
           // Set the cost to the most recent evaluation converted cost (cost in NOK per output)
@@ -61,7 +60,10 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      <MainHeader>
+        <CookieBanner />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      </MainHeader>
 
       <div className={styles.hero}>
         <div className={styles.header}>

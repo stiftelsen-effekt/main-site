@@ -10,6 +10,7 @@ import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
 import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
+import { MainHeader } from "../main/header";
 
 const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || "/profile/");
@@ -51,7 +52,9 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
                   style={{ maxWidth: 200 }}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
-                <Navbar />
+                <MainHeader>
+                  <Navbar />
+                </MainHeader>
                 <main className={styles.main}>{children}</main>
                 <Footer {...footerData} />
               </ActivityProvider>
