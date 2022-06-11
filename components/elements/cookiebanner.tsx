@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/CookieBanner.module.css";
 
 export const CookieBanner: React.FC = () => {
-  const [cookiesAccepted, setCookiesAccepted] = useState(
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("gieffektivt-cookies-accepted")
-      : "false",
+  const [cookiesAccepted, setCookiesAccepted] = useState<null | string>("false");
+
+  useEffect(
+    () =>
+      setCookiesAccepted(
+        typeof window !== "undefined"
+          ? window.localStorage.getItem("gieffektivt-cookies-accepted")
+          : "false",
+      ),
+    [],
   );
 
   useEffect(() => {

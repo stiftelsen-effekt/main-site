@@ -457,6 +457,10 @@
     line-height: 200%;
   }
 
+  .videocontainer {
+    margin-top: 30px;
+  }
+
   .widgetPane {
     min-width: auto;
     width: 100vw;

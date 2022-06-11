@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { Book, Briefcase, Filter, HelpCircle, Settings, User, Users, Zap } from 'react-feather'
+import { Book, Briefcase, Filter, HelpCircle, Paperclip, Settings, User, Users, Zap } from 'react-feather'
 
 export default () =>
   S.list()
@@ -52,6 +52,16 @@ export default () =>
             .title('Pages')
             .schemaType('generic_page')
             .filter('_type == "generic_page"')
+        ),
+      S.listItem()
+        .schemaType('article_page')
+        .title('Articles')
+        .icon(Paperclip)
+        .child(
+          S.documentList()
+            .title('Articles')
+            .schemaType('article_page')
+            .filter('_type == "article_page"')
         ),
       S.listItem()
         .title('Settings')

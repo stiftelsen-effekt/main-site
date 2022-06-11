@@ -38,6 +38,8 @@ import columns from './types/columns'
 import intervention from './types/intervention'
 import interventionwidget from './types/interventionwidget'
 import testimonials from './types/testimonials'
+import articleheader from './types/articleheader'
+import article from './pages/article'
 
 export const pages = [
   generic,
@@ -46,7 +48,8 @@ export const pages = [
   about,
   profile,
   support,
-  criteria
+  criteria,
+  article
 ]
 
 export const types = [
@@ -64,6 +67,7 @@ export const types = [
   navitem,
   navgroup,
   pageheader,
+  articleheader,
   questionandanswer,
   questionandanswergroup,
   contactinfo,
