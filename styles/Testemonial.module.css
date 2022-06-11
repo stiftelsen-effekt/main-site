@@ -1,3 +1,7 @@
+.wrapper {
+  position: relative;
+}
+
 .testimonialtrack {
   display: flex;
   flex-direction: row;
@@ -8,6 +12,7 @@
   margin: 0;
   list-style: none;
   overflow: hidden;
+  position: relative;
 }
 
 .testimonialtrackinner {
@@ -69,20 +74,40 @@
   left: 50px;
 }
 
-.testimonial__arrows {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 .testimonial__arrow {
   font-size: 56px;
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  outline: none;
+}
+
+.testimonial__arrow__backward {
+  left: 0;
+}
+
+.testimonial__arrow__forward {
+  right: 0;
 }
 
 @media screen and (max-width: 900px) {
+  .testimonialtrack {
+    width: calc(100vw - 10vw);
+  }
+
   .testimonial__quote {
     font-size: 22px;
     /* font-weight: bold; */
+  }
+
+  .testimonial__arrow {
+    top: auto;
+    bottom: 30px;
+    height: 56px;
   }
 }

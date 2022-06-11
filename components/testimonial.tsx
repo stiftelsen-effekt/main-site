@@ -15,6 +15,12 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
 
   return (
     <section className={styles.wrapper}>
+      <button
+        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__backward}`}
+        onClick={() => setCurrentTestimony(Math.max(0, currentTestimony - 1))}
+      >
+        ←
+      </button>
       <div className={styles.testimonialtrack}>
         <div
           className={styles.testimonialtrackinner}
@@ -34,22 +40,13 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
           ))}
         </div>
       </div>
-      <div className={styles.testimonial__arrows}>
-        <button
-          className={styles.testimonial__arrow}
-          onClick={() => setCurrentTestimony(Math.max(0, currentTestimony - 1))}
-        >
-          ←
-        </button>
-        <button
-          className={styles.testimonial__arrow}
-          onClick={() =>
-            setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1))
-          }
-        >
-          →
-        </button>
-      </div>
+
+      <button
+        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__forward}`}
+        onClick={() => setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1))}
+      >
+        →
+      </button>
     </section>
   );
 };
