@@ -11,6 +11,8 @@ import { Navbar } from "../components/main/navbar";
 import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
 import { footerQuery } from "../components/footer";
+import { MainHeader } from "../components/main/header";
+import { CookieBanner } from "../components/elements/cookiebanner";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -23,7 +25,10 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      <MainHeader>
+        <CookieBanner />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      </MainHeader>
 
       <PageHeader title={"Om oss"}></PageHeader>
 
