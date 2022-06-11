@@ -37,6 +37,7 @@ import column from './types/column'
 import columns from './types/columns'
 import intervention from './types/intervention'
 import interventionwidget from './types/interventionwidget'
+import testimonials from './types/testimonials'
 
 export const pages = [
   generic,
@@ -74,7 +75,8 @@ export const types = [
   column,
   columns,
   intervention,
-  interventionwidget
+  interventionwidget,
+  testimonials
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity

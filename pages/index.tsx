@@ -130,25 +130,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       <SectionContainer heading="Slik fungerer det">
         <Stepwize steps={data.frontpage[0].key_points.map((p: any) => p)} />
       </SectionContainer>
-      <SectionContainer heading="Hva folk sier om oss">
-        {data.frontpage[0].testimonials.map(
-          ({
-            _key,
-            quote,
-            quotee,
-            quotee_background: quoteeBackground,
-            image,
-          }: Testimony & { _key: string; quotee_background: string }) => (
-            <Testimonial
-              key={_key}
-              quote={quote}
-              quotee={quotee}
-              quoteeBackground={quoteeBackground}
-              image={image}
-            />
-          ),
-        )}
-      </SectionContainer>
+
+      {data.frontpage[0].testimonials && (
+        <SectionContainer heading="Hva folk sier om oss">
+          <Testimonial testimonies={data.frontpage[0].testimonials} />
+        </SectionContainer>
+      )}
+
       <SectionContainer inverted nodivider>
         <GiveBlock></GiveBlock>
       </SectionContainer>
@@ -198,7 +186,7 @@ const fetchFrontpage = groq`
     introsection,
     intervention_widget,
     key_points,
-    testimonials,
+    testimonials[]->,
     teasers
   },
 }

@@ -1,3 +1,29 @@
+.wrapper {
+  position: relative;
+}
+
+.testimonialtrack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonialtrackinner {
+  display: grid;
+  grid-auto-columns: 100%;
+  width: 100%;
+  grid-auto-flow: column;
+  white-space: nowrap;
+  transition: transform 380ms ease-in-out;
+}
+
 .testimonial {
   width: 100%;
   display: flex;
@@ -6,6 +32,7 @@
   align-items: center;
   position: relative;
   justify-content: center;
+  white-space: normal;
 }
 
 .testemonial__quote {
@@ -47,9 +74,40 @@
   left: 50px;
 }
 
+.testimonial__arrow {
+  font-size: 56px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  outline: none;
+}
+
+.testimonial__arrow__backward {
+  left: 0;
+}
+
+.testimonial__arrow__forward {
+  right: 0;
+}
+
 @media screen and (max-width: 900px) {
+  .testimonialtrack {
+    width: calc(100vw - 10vw);
+  }
+
   .testimonial__quote {
     font-size: 22px;
     /* font-weight: bold; */
+  }
+
+  .testimonial__arrow {
+    top: auto;
+    bottom: 30px;
+    height: 56px;
   }
 }
