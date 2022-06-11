@@ -19,3 +19,9 @@
 .gibutton:active {
   background: #222;
 }
+
+@media only screen and (max-width: 900px) {
+  .gibutton {
+    font-size: 16px;
+  }
+}
