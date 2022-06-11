@@ -195,6 +195,8 @@
 .teaserimage {
   background: var(--primary);
   position: relative;
+  width: 100%;
+  aspect-ratio: 12/ 9;
 }
 
 .teasertext {
