@@ -115,7 +115,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
   }
 
@@ -213,11 +213,15 @@
     display: none;
   }
 
+  .navbar ul li.btnLogoutWrapper {
+    justify-self: flex-end;
+    margin-top: auto;
+  }
+
   .navbar ul li.btnLoginWrapper {
     margin-left: 0;
     align-self: flex-start;
-    position: absolute;
-    bottom: 50px;
+    margin-top: auto;
   }
 
   .navbar ul li .btnlogin {
@@ -225,6 +229,9 @@
     color: var(--primary);
     padding: 10px 20px;
     border-radius: 30px;
+    margin-left: 0;
+    align-self: flex-end;
+    justify-self: flex-end;
   }
 }
 

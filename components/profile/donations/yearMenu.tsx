@@ -2,11 +2,15 @@ import Link from "next/link";
 import React from "react";
 import style from "../../../styles/Donations.module.css";
 
-const DonationYearMenu: React.FC<{ years: number[]; selected: string }> = ({ years, selected }) => {
+const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: boolean }> = ({
+  years,
+  selected,
+  mobile,
+}) => {
   years = years.sort((a, b) => b - a);
 
   return (
-    <div className={style.menu} data-cy="year-menu">
+    <div className={`${style.menu} ${mobile ? style.menumobile : ""}`} data-cy="year-menu">
       <ul>
         <Link
           href={{

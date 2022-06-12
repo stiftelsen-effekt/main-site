@@ -52,9 +52,6 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
                   style={{ maxWidth: 200 }}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
-                <MainHeader>
-                  <Navbar />
-                </MainHeader>
                 <main className={styles.main}>{children}</main>
                 <Footer {...footerData} />
               </ActivityProvider>
