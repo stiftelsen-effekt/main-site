@@ -3,6 +3,8 @@ import React, { createContext, useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Donor } from "../../models";
 import { useDonor } from "../../_queries";
+import { FullPageError } from "../elements/fullpageerror";
+import { FullPageSpinner } from "../elements/fullpagespinner";
 import { Spinner } from "../elements/spinner";
 
 export const DonorContext = createContext<{
@@ -17,9 +19,9 @@ export const DonorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const { loading, error, data } = useDonor(user as User, getAccessTokenSilently);
 
   if (loading) {
-    return <Spinner />;
+    return <FullPageSpinner />;
   } else if (error) {
-    return <div>Noe gikk galt </div>;
+    return <FullPageError />;
   } else if (!donor) {
     setDonor(data);
   }

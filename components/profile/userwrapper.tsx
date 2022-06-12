@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { ReactChildren } from "react";
+import { FullPageSpinner } from "../elements/fullpagespinner";
 import { Spinner } from "../elements/spinner";
 import { LoginError } from "./loginError";
 
@@ -10,7 +11,7 @@ export const UserWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
 
   if (error) return <LoginError message={error.message}></LoginError>;
 
-  if (!user) return <Spinner />; // In the process of redirecting
+  if (!user) return <FullPageSpinner />; // In the process of redirecting
 
   return <>{children}</>;
 };

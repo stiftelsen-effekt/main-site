@@ -78,7 +78,9 @@ const Agreements: LayoutPage = () => {
       <>
         <PageContent>
           <h1>Faste avtaler</h1>
-          <Spinner />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Spinner />
+          </div>
         </PageContent>
       </>
     );
