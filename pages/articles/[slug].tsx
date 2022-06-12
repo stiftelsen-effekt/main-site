@@ -62,19 +62,21 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                   return <VideoEmbed key={block._key} id={block.url} />;
                 case "pointlist":
                   return (
-                    <PointList
-                      key={block._key}
-                      points={block.points.map((point: PointListPointProps, i: number) => ({
-                        number: block.numbered ? i + 1 : null,
-                        heading: point.heading,
-                        paragraph: point.paragraph,
-                      }))}
-                    ></PointList>
+                    <div style={{ marginTop: "80px", width: "100%" }}>
+                      <PointList
+                        key={block._key}
+                        points={block.points.map((point: PointListPointProps, i: number) => ({
+                          number: block.numbered ? i + 1 : null,
+                          heading: point.heading,
+                          paragraph: point.paragraph,
+                        }))}
+                      ></PointList>
+                    </div>
                   );
                 case "links":
                   return (
-                    <div key={block._key} style={{ width: "100%", maxWidth: "660px" }}>
-                      <h2>Les mer:</h2>
+                    <div key={block._key} style={{ width: "100%", maxWidth: "760px" }}>
+                      <p className="inngress">Les mer:</p>
                       <Links links={block.links}></Links>
                     </div>
                   );

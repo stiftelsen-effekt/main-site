@@ -36,7 +36,9 @@ export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = 
                 <li className={styles.article}>
                   {article.header.published && (
                     <div className={styles.article__meta}>
-                      {new Date(article.header.published).toLocaleDateString()}
+                      <span className="detailheader">
+                        {new Date(article.header.published).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                   <h5>{article.header.title}</h5>

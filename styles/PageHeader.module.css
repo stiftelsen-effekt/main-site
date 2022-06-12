@@ -1,9 +1,10 @@
 .pageheader {
   padding: 0 5vw;
-  min-height: 500px;
+  min-height: calc(100vh - 300px);
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 80px;
+  padding-bottom: 80px;
 }
 
 .pageheader.pageheadermeta {
@@ -33,7 +34,7 @@
   max-width: 560px;
   font-size: 28px;
   margin-bottom: 0;
-  margin-top: 120px;
+  margin-top: 220px;
   white-space: pre-wrap;
 }
 
@@ -46,11 +47,12 @@
 }
 
 .pageheader h1 {
-  font-size: 96px;
+  font-size: 120px;
+  line-height: 136px;
 }
 
 .pageheader.pageheadermeta div:last-child {
-  margin-bottom: 70px;
+  margin-bottom: 20px;
 }
 
 .pageheaderlinks li {

@@ -42,26 +42,22 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
               <div key={organization._id} className={styles.organization}>
                 <div className={styles.meta}>
                   <div>
-                    <h2>{organization.name}</h2>
-                    <h3>{organization.subtitle}</h3>
+                    <p className="inngress">{organization.name}</p>
+                    <p className="inngress">{organization.subtitle}</p>
                   </div>
                   <div className={styles.intervention}>
-                    <span className={styles.interventionType}>
-                      {organization.intervention_type}
-                    </span>
-                    <strong>{organization.invervention_cost}</strong>
-                    <span className={styles.interventionEffect}>
-                      {organization.intervention_effect}
-                    </span>
+                    <span className="detailheader">{organization.intervention_type}</span>
+                    <h1>{organization.invervention_cost}</h1>
+                    <span>{organization.intervention_effect}</span>
                   </div>
                 </div>
                 <div className={styles.description}>
-                  <h2 className={styles.oneliner}>{organization.oneliner}</h2>
+                  <p className="inngress">{organization.oneliner}</p>
                   <PortableText blocks={organization.content}></PortableText>
 
                   {organization.links && (
                     <>
-                      <h2>Les mer:</h2>
+                      <p className="inngress">Les mer:</p>
                       <Links links={organization.links} />
                     </>
                   )}

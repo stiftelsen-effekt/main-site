@@ -13,7 +13,7 @@ export const Columns: React.FC<Columns> = ({ columns }) => {
       {columns.map((column) => (
         <div className={styles.column} key={column._key}>
           <div>
-            <h2>{column.title}</h2>
+            <h5>{column.title}</h5>
             <p>{column.paragraph}</p>
           </div>
           {column.link && (

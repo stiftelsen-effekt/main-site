@@ -8,8 +8,6 @@ import { Layout } from "../components/main/layout";
 import { Navbar } from "../components/main/navbar";
 import { PageHeader } from "../components/elements/pageheader";
 import { SectionContainer } from "../components/sectionContainer";
-import { Expander } from "../components/elements/expander";
-import styles from "../styles/Support.module.css";
 import { ContactInfo } from "../components/elements/contact-info";
 import { footerQuery } from "../components/footer";
 import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
@@ -42,7 +40,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
         ))}
       </SectionContainer>
 
-      <SectionContainer inverted>
+      <SectionContainer>
         <ContactInfo
           title={contactinfo.title}
           description={contactinfo.description}

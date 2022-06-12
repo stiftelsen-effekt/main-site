@@ -10,7 +10,7 @@ export type ParagraphProps = {
 export const Paragraph: React.FC<ParagraphProps> = ({ title, blocks }) => {
   return (
     <div className={elements.paragraphwrapper}>
-      <h2>{title}</h2>
+      <p className="inngress">{title}</p>
       <PortableText blocks={blocks || []}></PortableText>
     </div>
   );

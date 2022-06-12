@@ -97,6 +97,12 @@ p.inngress {
   line-height: 40px;
 }
 
+span.detailheader {
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
 .bodyheader {
   font-size: 20px;
   line-height: 30px;

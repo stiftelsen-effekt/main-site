@@ -29,3 +29,9 @@
     font-size: 16px;
   }
 }
+
+@media only screen and (min-width: 1920px) {
+  .gibutton {
+    right: calc((100vw - 1714px) / 2);
+  }
+}
