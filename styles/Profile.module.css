@@ -1,6 +1,7 @@
 .gridContainer {
   display: grid;
-  grid-template-columns: 30vw 50vw;
+  grid-template-columns: 1fr 2fr;
+  column-gap: 100px;
   justify-content: space-between;
 }
 
@@ -12,31 +13,6 @@
 
 .personalInfo button {
   float: right;
-}
-
-.header {
-  grid-column: 1/3;
-}
-
-.dataGrid {
-  display: grid;
-  grid-template-columns: 45% 45%;
-  grid-template-rows: 70px auto;
-  justify-content: space-between;
-  border-top: 1px solid black;
-  padding-top: 30px;
-}
-
-.dataHeader {
-  grid-column: 1/3;
-}
-
-.tax {
-  grid-column: 1/2;
-}
-
-.privacy {
-  grid-column: 2/3;
 }
 
 .input {
@@ -71,37 +47,34 @@
 }
 
 .input:disabled {
-  background-color: rgb(187, 187, 187);
+  background-color: rgb(90, 90, 90);
+}
+
+.columnswrapper {
+  border-top: 1px solid var(--primary);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 100px;
+}
+
+.columns p {
+  line-height: 200%;
 }
 
 /* Mobile view */
 @media only screen and (max-width: 900px) {
   .gridContainer {
-    grid-template-columns: 100%;
-    row-gap: 20px;
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+    row-gap: 40px;
   }
 
-  .dataGrid {
-    grid-template-columns: auto;
-  }
-
-  .personalInfo {
-    grid-column: 1/1;
-  }
-
-  .header {
-    grid-column: 1/1;
-  }
-
-  .dataHeader {
-    grid-column: 1/1;
-  }
-
-  .tax {
-    grid-column: 1/1;
-  }
-
-  .privacy {
-    grid-column: 1/1;
+  .columns {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content;
+    row-gap: 60px;
   }
 }

@@ -49,7 +49,7 @@ export const Navbar: React.FC = () => {
             Profil
           </Link>
         </li>
-        <li className={styles.btnloginWrapper} onClick={() => setExpandMenu(false)}>
+        <li className={styles.btnLogoutWrapper} onClick={() => setExpandMenu(false)}>
           <button className={styles.btnlogin} onClick={() => logout()}>
             Logg ut
           </button>

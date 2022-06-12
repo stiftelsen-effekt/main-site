@@ -20,6 +20,8 @@ import { PageContent } from "../../components/elements/pagecontent";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
 import { footerQuery } from "../../components/footer";
+import { MainHeader } from "../../components/main/header";
+import { Navbar } from "../../components/profile/navbar";
 
 const Home: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -117,6 +119,15 @@ const Home: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <MainHeader>
+        <Navbar />
+        <DonationYearMenu
+          years={years}
+          selected={(router.query.year as string) || "total"}
+          mobile
+        />
+      </MainHeader>
+
       <PageContent>
         <h1 className={style.header}>Donasjoner</h1>
 
@@ -126,11 +137,7 @@ const Home: LayoutPage = () => {
 
         <div className={style.details}>
           <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
-          <DonationsTotals
-            sum={sum}
-            period={periodText}
-            comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
-          />
+          <DonationsTotals sum={sum} period={periodText} />
         </div>
         {isTotal && window.innerWidth < 900 ? (
           <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />

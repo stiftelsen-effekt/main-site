@@ -22,6 +22,8 @@ import { PageContent } from "../../components/elements/pagecontent";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
 import { footerQuery } from "../../components/footer";
+import { MainHeader } from "../../components/main/header";
+import { Navbar } from "../../components/profile/navbar";
 
 const Agreements: LayoutPage = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -100,14 +102,17 @@ const Agreements: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <MainHeader>
+        <Navbar />
+        <AgreementsMenu
+          selected={selected}
+          onChange={(selected) => setSelected(selected)}
+        ></AgreementsMenu>
+      </MainHeader>
+
       <PageContent>
         <div className={styles.container}>
           <h1 className={styles.header}>Faste avtaler</h1>
-
-          <AgreementsMenu
-            selected={selected}
-            onChange={(selected) => setSelected(selected)}
-          ></AgreementsMenu>
 
           {pendingCount >= 1 ? (
             <InfoBox>

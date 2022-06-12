@@ -39,6 +39,10 @@
 
 @media only screen and (max-width: 900px) {
   .wrapper {
-    display: none;
+    width: 100%;
+  }
+
+  .label {
+    max-width: calc(100vw - 10vw - 120px);
   }
 }

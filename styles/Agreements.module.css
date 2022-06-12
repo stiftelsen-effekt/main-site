@@ -16,10 +16,7 @@
     display: block;
     overflow-x: scroll;
     white-space: nowrap;
-    position: fixed;
     background: var(--secondary);
-    top: 120px;
-    left: 0;
     width: 100vw;
     border-bottom: 1px solid var(--primary);
     padding-left: 30px;
