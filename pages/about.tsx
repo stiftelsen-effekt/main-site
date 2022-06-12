@@ -49,15 +49,23 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
           </div>
         </div>
       </SectionContainer>
-      <SectionContainer padded>
-        <Contributors {...boardMembers} />
-      </SectionContainer>
-      <SectionContainer padded>
-        <Contributors {...employees} />
-      </SectionContainer>
-      <SectionContainer padded>
-        <Contributors {...volunteers} />
-      </SectionContainer>
+
+      {boardMembers && boardMembers.contributors && (
+        <SectionContainer padded>
+          <Contributors {...boardMembers} />
+        </SectionContainer>
+      )}
+      {employees && employees.contributors && (
+        <SectionContainer padded>
+          <Contributors {...employees} />
+        </SectionContainer>
+      )}
+      {volunteers && volunteers.contributors && (
+        <SectionContainer padded>
+          <Contributors {...volunteers} />
+        </SectionContainer>
+      )}
+
       <SectionContainer inverted nodivider>
         <GiveBlock />
       </SectionContainer>
