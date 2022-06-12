@@ -78,9 +78,19 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
       </div>
 
       <div className={`${styles.category} ${styles.utillity}`}>
-        <a href="#">Personvern</a>
-        <p> &#169; 2022 Gi Effektivt</p>
-        <a href="#top">Til toppen &uarr;</a>
+        <ul>
+          <li>
+            {" "}
+            <Link href="/personvern" passHref>
+              Personvern
+            </Link>
+          </li>
+          <li>&#169; 2022 Gi Effektivt</li>
+          <li>&nbsp;</li>
+          <li>
+            <a href="#top">Til toppen &uarr;</a>
+          </li>
+        </ul>
       </div>
       {/* This is a modified version of mailchimps embedded subscribe-element
     see docs/mailchimp.html for the original version */}
@@ -94,7 +104,7 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
         noValidate
       >
         <fieldset>
-          <label className={styles.newsletter__label} htmlFor="mce-EMAIL">
+          <label className={styles.newsletter_label} htmlFor="mce-EMAIL">
             Meld meg på nyhetsbrevet
           </label>
 

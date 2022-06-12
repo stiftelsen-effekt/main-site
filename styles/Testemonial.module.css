@@ -1,5 +1,6 @@
 .wrapper {
   position: relative;
+  margin-bottom: 10px;
 }
 
 .testimonialtrack {
@@ -36,9 +37,8 @@
 }
 
 .testemonial__quote {
-  font-size: 36px;
-  max-width: 960px;
-  margin: 80px 0;
+  max-width: 1036px;
+  margin: 70px 0;
   text-align: center;
   white-space: normal;
 }
@@ -50,6 +50,7 @@
   justify-content: center;
   text-align: center;
   font-size: 20px;
+  margin-bottom: 80px;
 }
 
 .testimonial__bio p {

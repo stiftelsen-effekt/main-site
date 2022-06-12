@@ -1,10 +1,11 @@
 .wrapper {
   border-radius: 5px;
   width: 100%;
+  margin-bottom: 30px;
 }
 
-.wrapper h2 {
-  font-size: 46px;
+.wrapper h3 {
+  margin-top: 50px;
   margin-bottom: 55px;
   text-align: center;
 }
@@ -82,9 +83,11 @@
 }
 
 .spinnerWrapper {
-  height: 110px;
+  width: 100%;
+  margin-top: 20px;
+  height: 166px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 }
 

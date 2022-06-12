@@ -22,7 +22,7 @@ export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => 
     >
       <label className={elements.expanderHeader}>
         <button className="sr-only" onClick={() => setExpanded(!expanded)}></button>
-        <h2>{title}</h2>
+        <p className="inngress">{title}</p>
         {expanded ? <Minus size={28} /> : <Plus size={28} />}
       </label>
       <div className={elements.expanderContent}>
@@ -30,7 +30,7 @@ export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => 
           <p>{content}</p>
           {links ? (
             <>
-              <h2>Les mer:</h2>
+              <p className="paragraph">Les mer:</p>
               <Links links={links} />
             </>
           ) : null}

@@ -42,10 +42,14 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
 
       <SectionContainer padded>
         <div className={styles.ingress__container}>
-          <Links links={header.links} />
-          <p className={styles.ingress}>{header.inngress}</p>
-          <div className={styles.maincontent}>
-            <PortableText blocks={data.about[0].content}></PortableText>
+          <div className={styles.links}>
+            <Links links={header.links} />
+          </div>
+          <div>
+            <p className="inngress">{header.inngress}</p>
+            <div className={styles.maincontent}>
+              <PortableText blocks={data.about[0].content}></PortableText>
+            </div>
           </div>
         </div>
       </SectionContainer>

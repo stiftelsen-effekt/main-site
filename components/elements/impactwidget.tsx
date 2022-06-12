@@ -37,7 +37,7 @@ export const ImpactWidget: React.FC<{
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h2>{title}</h2>
+        <h3>{title}</h3>
       </div>
       <div className={styles.grid}>
         <div className={styles.input}>

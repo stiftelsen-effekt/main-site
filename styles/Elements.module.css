@@ -137,8 +137,8 @@
   border: none;
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
-  font-size: 14px;
-  padding: 14px 28px;
+  font-size: 20x;
+  padding: 10px 30px;
   cursor: pointer;
   box-sizing: border-box;
   margin-left: 10px;
@@ -213,12 +213,14 @@
 
 .teasertext {
   padding: 40px;
+  padding-left: 100px;
+  padding-right: 140px;
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
   justify-content: space-between;
-  max-width: 90%;
   align-items: flex-start;
 }
 
@@ -227,9 +229,7 @@
 }
 
 .teasertext p {
-  font-size: 20px;
-  font-weight: normal;
-  line-height: 180%;
+  margin-top: 60px;
   white-space: pre-wrap;
 }
 
@@ -238,23 +238,23 @@
 }
 
 .teasertext .teaserdisclaimer {
+  margin-top: 20px;
   font-size: 16px;
 }
 
 .pointlistwrapper {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  column-gap: 20px;
+  grid-auto-columns: minmax(0, 1fr);
+  column-gap: 40px;
   width: 100%;
-  margin: 80px 0;
+  margin-bottom: 110px;
 }
 
 .pointlistpoint {
   border-top: 1px solid black;
   display: flex;
-  column-gap: 18px;
-  padding-right: 20%;
+  column-gap: 25px;
 }
 
 .pointlistpoint div:nth-child(2) {
@@ -264,8 +264,10 @@
 .introsection {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
   text-align: left;
   width: 100%;
+  padding: 65px 0;
 }
 
 .introsection p {
@@ -273,10 +275,9 @@
   padding-right: 20%;
 }
 
-.introsection h2 {
-  margin-top: 0;
-  font-size: 46px;
+.introsection h3 {
   white-space: pre-wrap;
+  margin: 0 auto;
 }
 
 .calculatorteaser {
@@ -312,7 +313,7 @@
   outline: 2px solid black;
 }
 
-.expanderHeader h2 {
+.expanderHeader p {
   margin: 0;
 }
 
@@ -372,9 +373,8 @@
 }
 
 .paragraphwrapper {
-  max-width: 660px;
-  line-height: 180%;
-  font-size: 16px;
+  max-width: 760px;
+  margin-bottom: 50px;
 }
 
 .paragraphwrapper h2 {
@@ -383,12 +383,23 @@
 
 .videocontainer {
   margin-top: 100px;
+  margin-bottom: 50px;
   width: 100%;
 }
 
 .videocontainer iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
+}
+
+@media only screen and (max-width: 1440px) {
+  .pointlistwrapper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+    justify-content: center;
+    row-gap: 60px;
+  }
 }
 
 @media only screen and (max-width: 900px) {

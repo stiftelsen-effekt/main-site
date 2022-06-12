@@ -22,8 +22,8 @@ export const Teaser: React.FC<Teaser> = ({ title, paragraph, disclaimer, link, i
       </div>
       <div className={elements.teasertext}>
         <div>
-          <h2>{title}</h2>
-          <p>{paragraph}</p>
+          <h4>{title}</h4>
+          <p className="inngress">{paragraph}</p>
         </div>
         <div>
           {disclaimer && <p className={elements.teaserdisclaimer}>{disclaimer}</p>}

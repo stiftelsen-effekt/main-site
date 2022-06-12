@@ -11,7 +11,7 @@ export type Role = {
 export const Contributors: React.FC<Role> = ({ title, contributors }) => {
   return (
     <div className={styles.contributors}>
-      <h2 className={styles.contributors__title}>{title}</h2>
+      <h5 className={styles.contributors__title}>{title}</h5>
       <ul className={styles.contributors__list}>
         {contributors.map((member) => (
           <Contributor key={member._id} {...member} />

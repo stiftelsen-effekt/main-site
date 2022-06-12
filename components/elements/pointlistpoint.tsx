@@ -15,11 +15,11 @@ export const PointListPoint: React.FC<PointListPointProps> = ({
     <div className={elements.pointlistpoint}>
       {number !== null ? (
         <div>
-          <h2>{number}</h2>
+          <h5>{number}</h5>
         </div>
       ) : null}
       <div>
-        <h2>{heading}</h2>
+        <h5>{heading}</h5>
         <p>{paragraph}</p>
       </div>
     </div>

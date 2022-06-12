@@ -6,13 +6,17 @@
   z-index: 100;
   background: var(--primary);
   border: 1px solid var(--secondary);
-  font-size: 38px;
+  font-size: 43px;
   font-family: "ESKlarheitKurrent";
   font-weight: 400;
   color: var(--secondary);
-  padding: 16px;
   border-radius: 50%;
   user-select: none;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gibutton:hover,
@@ -23,5 +27,11 @@
 @media only screen and (max-width: 900px) {
   .gibutton {
     font-size: 16px;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .gibutton {
+    right: calc((100vw - 1714px) / 2);
   }
 }

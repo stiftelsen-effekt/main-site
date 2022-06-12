@@ -3,7 +3,7 @@
   margin-top: 60px;
   font-family: "ESKlarheitGrotesk", sans-serif;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   grid-template-rows: repeat(2, max-content);
   column-gap: 50px;
   padding-top: 80px;
@@ -28,7 +28,7 @@
 
 .category ul li,
 .category ul li a {
-  margin-bottom: 8px;
+  line-height: 28px;
   font-size: 18px;
 }
 
@@ -69,7 +69,7 @@
 
 .input__inlinebutton {
   margin-top: 14px;
-  max-width: 340px;
+  max-width: 360px;
   position: relative;
 }
 .input__inlinebutton input {
@@ -78,7 +78,7 @@
 }
 
 .input__inlinebutton input[type="email"] {
-  padding: 1rem 6rem 1rem 2rem;
+  padding: 14px 22px;
   box-sizing: border-box;
   border-radius: 50px;
   width: 100%;
@@ -90,10 +90,11 @@
   position: absolute;
   letter-spacing: 1px;
   height: 100%;
-  padding: 0px 18px;
+  padding: 0px 22px;
   right: 0;
   top: 0;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .input__inlinebutton input[type="submit"]:hover {
