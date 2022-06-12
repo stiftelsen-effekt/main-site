@@ -10,7 +10,10 @@ const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: b
   years = years.sort((a, b) => b - a);
 
   return (
-    <div className={`${style.menu} ${mobile ? style.menumobile : ""}`} data-cy="year-menu">
+    <div
+      className={`${style.menu} ${mobile ? style.menumobile : ""}`}
+      data-cy={mobile ? "" : "year-menu"}
+    >
       <ul>
         <Link
           href={{
