@@ -97,7 +97,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
        * 
       */}
       {interventionWidget.interventions && (
-        <SectionContainer>
+        <SectionContainer nodivider>
           <ImpactWidget
             title={interventionWidget.title}
             defaultSum={interventionWidget.default_sum}

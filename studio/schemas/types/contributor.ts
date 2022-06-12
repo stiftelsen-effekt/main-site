@@ -4,9 +4,15 @@ export default {
   title: 'Contributors',
   fields: [
     {
+      name: 'image',
+      type: 'image',
+      title: 'Image',
+    },
+    {
       name: 'name',
       type: 'string',
-      title: 'Name'
+      title: 'Name',
+      validation: (Rule: any) => Rule.required()
     },
     {
       name: 'email',

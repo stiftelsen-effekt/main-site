@@ -1,5 +1,3 @@
-import { pages } from "./schema";
-
 export default {
   name: 'site_settings',
   title: 'Site Settings',
