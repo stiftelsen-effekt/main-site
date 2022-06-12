@@ -39,6 +39,7 @@
 .container p {
   margin: 70px 0;
   max-width: 700px;
+  white-space: pre-wrap;
 }
 
 .container .channels {
