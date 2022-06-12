@@ -10,7 +10,7 @@ export const IntroSection: React.FC<{ heading: string; paragraph: string; slug: 
   return (
     <div className={elements.introsection}>
       <div>
-        <h2>{heading}</h2>
+        <h3>{heading}</h3>
       </div>
       <div>
         <p>{paragraph}</p>

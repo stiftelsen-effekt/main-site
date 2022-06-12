@@ -7,8 +7,8 @@ export const GiveBlock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Maksimer effekten av det du gir.</h2>
-      <span>Bruk Gi Effektivt.</span>
+      <h3>Maksimer effekten av det du gir.</h3>
+      <p className="inngress">Bruk Gi Effektivt.</p>
       <button className={styles.button} onClick={() => setWidgetOpen(true)}>
         Gi.
       </button>

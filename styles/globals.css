@@ -53,20 +53,53 @@ body {
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss10" on, "ss08" on;
   background: var(--secondary);
+  font-size: 20px;
+  line-height: 32px;
 }
 
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5 {
   font-family: "ESKlarheitKurrent", sans-serif;
   font-weight: 300;
+  margin: 20px 0;
 }
 
 h1 {
+  font-size: 120px;
+  line-height: 110%;
+}
+
+h2 {
+  font-size: 95px;
+  line-height: 105px;
+}
+
+h3 {
+  font-size: 70px;
+  line-height: 80px;
+}
+
+h4 {
+  font-size: 48px;
+  line-height: 62px;
+}
+
+h5 {
   font-size: 36px;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  line-height: 46px;
+}
+
+p.inngress {
+  font-size: 30px;
+  line-height: 40px;
+}
+
+.bodyheader {
+  font-size: 20px;
+  line-height: 30px;
 }
 
 a {

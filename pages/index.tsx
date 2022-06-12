@@ -97,21 +97,23 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
        * 
       */}
       {interventionWidget.interventions && (
-        <SectionContainer nodivider>
-          <ImpactWidget
-            title={interventionWidget.title}
-            defaultSum={interventionWidget.default_sum}
-            interventions={interventionWidget.interventions.map((i: any) => ({
-              title: i.title,
-              pricePerOutput: interventionCosts.get(i.abbreviation),
-              outputStringTemplate: i.template_string,
-            }))}
-            buttonText={interventionWidget.button_text}
-          ></ImpactWidget>
-        </SectionContainer>
+        <div style={{ marginTop: "45px" }}>
+          <SectionContainer>
+            <ImpactWidget
+              title={interventionWidget.title}
+              defaultSum={interventionWidget.default_sum}
+              interventions={interventionWidget.interventions.map((i: any) => ({
+                title: i.title,
+                pricePerOutput: interventionCosts.get(i.abbreviation),
+                outputStringTemplate: i.template_string,
+              }))}
+              buttonText={interventionWidget.button_text}
+            ></ImpactWidget>
+          </SectionContainer>
+        </div>
       )}
 
-      <SectionContainer heading="" nodivider>
+      <SectionContainer heading="">
         <div className={styles.teasers}>
           {data.frontpage[0].teasers.map(
             ({ _key, title, paragraph, disclaimer, link, image }: Teaser & { _key: string }) => (
@@ -127,7 +129,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
           )}
         </div>
       </SectionContainer>
-      <SectionContainer heading="Slik fungerer det">
+      <SectionContainer heading="Slik fungerer det" padded>
         <Stepwize steps={data.frontpage[0].key_points.map((p: any) => p)} />
       </SectionContainer>
 

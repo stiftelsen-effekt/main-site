@@ -18,9 +18,10 @@
 }
 
 .section__heading {
-  font-size: 16px;
+  font-size: 20px;
+  line-height: 32px;
   margin: 0 auto;
-  padding-top: 1rem;
+  padding-top: 28px;
   max-width: 1920px;
 }
 
@@ -30,8 +31,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 45px;
+  padding-bottom: 45px;
   margin: 0 auto;
   max-width: 1920px;
 }
