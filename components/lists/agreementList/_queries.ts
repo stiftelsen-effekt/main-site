@@ -46,7 +46,7 @@ export const updateVippsAgreementPrice = async (urlCode: string, sum: number, to
       },
       credentials: "same-origin",
       body: JSON.stringify({
-        price: sum,
+        price: sum*100,
       }),
     });
 

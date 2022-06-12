@@ -60,7 +60,9 @@ const Home: LayoutPage = () => {
       <>
         <PageContent>
           <h1 className={style.header}>Donasjoner</h1>
-          <Spinner />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Spinner />
+          </div>
         </PageContent>
       </>
     );
