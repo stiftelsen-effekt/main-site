@@ -30,7 +30,7 @@ export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => 
           <p>{content}</p>
           {links ? (
             <>
-              <p className="paragraph">Les mer:</p>
+              <p className="inngress">Les mer:</p>
               <Links links={links} />
             </>
           ) : null}

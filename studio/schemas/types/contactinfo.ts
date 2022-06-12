@@ -12,7 +12,8 @@ export default {
     },
     {
       name: 'description',
-      type: 'string',
+      type: 'text',
+      rows: 2,
       title: 'Description'
     },
     {
