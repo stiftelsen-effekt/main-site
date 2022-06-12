@@ -1,4 +1,4 @@
-import { Distribution, Donation } from "../../../models";
+import { Distribution, Donation, META_OWNER } from "../../../models";
 import { shortDate, thousandize } from "../../../util/formatting";
 import { GenericList, ListRow } from "../genericList";
 import { DonationDetails } from "./donationDetails";
@@ -8,14 +8,22 @@ export const DonationList: React.FC<{
   distributions: Map<string, Distribution>;
   year: string;
 }> = ({ donations, distributions, year }) => {
-  let taxDeductions = donations.reduce((acc, curr) => acc + parseFloat(curr.sum), 0);
+  let taxEligableSum = donations
+    .filter((d) => d.metaOwnerId === META_OWNER.EAN || d.metaOwnerId === META_OWNER.EFFEKTANDEAN)
+    .reduce((acc, curr) => acc + parseFloat(curr.sum), 0);
 
-  taxDeductions = Math.min(taxDeductions, 50000);
+  taxEligableSum = Math.min(taxEligableSum, year === "2022" ? 25000 : 50000);
 
-  const taxDeductionText = `Dine donasjoner i ${year} kvalifiserte deg for ${thousandize(
-    taxDeductions,
-  )} kroner i
-  skattefradrag`;
+  let taxDeductionText = "";
+
+  if (taxEligableSum > 500 && parseInt(year) >= 2019) {
+    const taxDeductions = Math.round(taxEligableSum * 0.22);
+    taxDeductionText = `Dine donasjoner i ${year} ${
+      year === "2022" ? "kvalifiserer deg for" : "ga deg"
+    } ${thousandize(taxDeductions)} kroner i
+    skattefradrag`;
+  }
+
   const headers = ["Dato", "Sum", "Betalingskanal", "KID"];
 
   const rows: ListRow[] = donations.map((donation) => {
@@ -50,7 +58,7 @@ export const DonationList: React.FC<{
   return (
     <GenericList
       title={year}
-      supplementalInformation={donations.length > 0 ? taxDeductionText : ""}
+      supplementalInformation={taxDeductionText}
       headers={headers}
       rows={rows}
       emptyPlaceholder={emptyPlaceholder}

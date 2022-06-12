@@ -126,11 +126,7 @@ const Home: LayoutPage = () => {
 
         <div className={style.details}>
           <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
-          <DonationsTotals
-            sum={sum}
-            period={periodText}
-            comparison={"Det er 234% så mye som en gjennomsnittlig giver"}
-          />
+          <DonationsTotals sum={sum} period={periodText} />
         </div>
         {isTotal && window.innerWidth < 900 ? (
           <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />

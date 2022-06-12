@@ -1,3 +1,9 @@
+export enum META_OWNER {
+  EFFEKT = 1,
+  EAN = 2,
+  EFFEKTANDEAN = 3,
+}
+
 export type Donation = {
   KID: string;
   donor: string;
@@ -8,6 +14,7 @@ export type Donation = {
   sum: string;
   timestamp: string;
   transactionCost: string;
+  metaOwnerId: META_OWNER;
 };
 
 export type AvtaleGiroAgreement = {
