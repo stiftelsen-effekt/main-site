@@ -1,10 +1,9 @@
 .ingress__container {
-  border-top: solid 0.5px var(--primary);
-  padding-top: 8.375rem;
-  margin-bottom: 8.375rem;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   column-gap: 2rem;
+  margin-bottom: 100px;
+  margin-top: 50px;
 }
 
 .links {
@@ -18,11 +17,18 @@
 
 .ingress {
   font-size: 1.75rem;
+  line-height: 150%;
+}
+
+.maincontent {
+  line-height: 200%;
 }
 
 @media (max-width: 37.25rem) {
   .ingress__container {
     grid-template-columns: 1fr;
+    margin-bottom: 20px;
+    margin-top: 0px;
   }
 
   .links {
@@ -32,5 +38,13 @@
   .ingress,
   .maincontent {
     grid-column: 1 / span 1;
+  }
+
+  .ingress {
+    font-size: 22px;
+  }
+
+  .maincontent  {
+    font-size: 16px;
   }
 }

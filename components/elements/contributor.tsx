@@ -26,11 +26,11 @@ export const Contributor: React.FC<ContributorType> = ({
 }) => {
   return (
     <li className={styles.contributor}>
-      <div className={styles.contributor__image}>
-        {image != null && (
-          <ResponsiveImage layout="responsive" image={image} urlBuilder={contributorImageBuilder} />
-        )}
-      </div>
+      {image != null && (
+        <div className={styles.contributor__image}>
+          <ResponsiveImage layout="fill" image={image} urlBuilder={contributorImageBuilder} />
+        </div>
+      )}
       <h3 className={styles.contributor__title}>{name}</h3>
       <div className={styles.contributor__subrole}>{subrole ?? ""}</div>
       <div className={styles.contributor__additional}>{additional ?? ""}</div>

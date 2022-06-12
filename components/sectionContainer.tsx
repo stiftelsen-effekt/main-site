@@ -25,7 +25,12 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
 
   return (
     <section className={styles.section__container + " " + background}>
-      <h2 className={styles.section__heading + " " + dividerLine}>{heading}</h2>
+      <h2
+        className={styles.section__heading + " " + dividerLine}
+        style={heading ? {} : { paddingTop: "0px" }}
+      >
+        {heading}
+      </h2>
       <div className={styles.section__content + " " + paddedClass}>{children}</div>
     </section>
   );

@@ -1,6 +1,6 @@
 .grid {
   border-top: solid 1px var(--primary);
-  margin-top: 200px;
+  margin-top: 60px;
   font-family: "ESKlarheitGrotesk", sans-serif;
   display: grid;
   grid-template-columns: repeat(5, 1fr);

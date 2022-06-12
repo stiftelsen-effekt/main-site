@@ -14,6 +14,7 @@ import { MainHeader } from "../components/main/header";
 import { CookieBanner } from "../components/elements/cookiebanner";
 import { Contributors, Role } from "../components/elements/contributors";
 import { Links } from "../components/elements/links";
+import { GiveBlock } from "../components/elements/giveblock";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -39,7 +40,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
 
       <PageHeader title={header.title} />
 
-      <SectionContainer>
+      <SectionContainer padded>
         <div className={styles.ingress__container}>
           <Links links={header.links} />
           <p className={styles.ingress}>{header.inngress}</p>
@@ -47,10 +48,18 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
             <PortableText blocks={data.about[0].content}></PortableText>
           </div>
         </div>
-
+      </SectionContainer>
+      <SectionContainer padded>
         <Contributors {...boardMembers} />
+      </SectionContainer>
+      <SectionContainer padded>
         <Contributors {...employees} />
+      </SectionContainer>
+      <SectionContainer padded>
         <Contributors {...volunteers} />
+      </SectionContainer>
+      <SectionContainer inverted nodivider>
+        <GiveBlock />
       </SectionContainer>
     </>
   );
