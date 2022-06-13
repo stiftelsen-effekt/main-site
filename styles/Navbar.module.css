@@ -47,7 +47,10 @@
 .navbar ul li .submenu ul li {
   padding-top: 0px;
   padding-bottom: 0px;
+  padding-left: 25px;
+  padding-right: 25px;
   font-size: 16px;
+  display: block;
 }
 
 .btnlogin {
