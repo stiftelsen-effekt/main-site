@@ -35,6 +35,13 @@ This will need a review.*/
 }
 
 @media screen and (max-width: 900px) {
+  .stepwize__container {
+    grid-template-columns: auto;
+    grid-auto-flow: row;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .step {
     margin: 0;
     max-width: auto;

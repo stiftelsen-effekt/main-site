@@ -57,15 +57,16 @@
   }
 
   .header h1 {
-    font-size: 48px;
-    max-width: 100%;
+    max-width: 300px;
     margin-bottom: 16px;
+    font-size: 48px;
+    line-height: 56px;
   }
 
   .subheading {
-    width: 60%;
     font-size: 16px;
-    font-weight: 400;
+    line-height: 26px;
+    max-width: 230px;
   }
 
   .teasers div:nth-child(2n) > div:nth-child(1) {
@@ -76,6 +77,11 @@
   .teasers div:nth-child(2n) > div:nth-child(2) {
     grid-column: auto;
     grid-row: auto;
+  }
+
+  .teasers > div:nth-child(2n) > div:nth-child(2) {
+    padding: 0;
+    padding-top: 20px;
   }
 }
 

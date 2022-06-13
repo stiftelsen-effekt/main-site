@@ -138,6 +138,7 @@
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
   font-size: 20x;
+  font-size: 14px;
   padding: 10px 30px;
   cursor: pointer;
   box-sizing: border-box;
@@ -441,15 +442,20 @@
   }
 
   .teasertext {
-    font-size: 16px;
     padding: 20px 0px;
     max-width: auto;
     grid-row: 2;
     margin-bottom: 20px;
   }
 
+  .teasertext p {
+    margin-top: 0;
+    font-size: 16px;
+  }
+
   .pointlistwrapper {
     display: grid;
+    grid-template-columns: auto;
     grid-auto-flow: row;
     row-gap: 20px;
     width: 100%;
@@ -487,6 +493,10 @@
 
   .widgetPaneHeader {
     padding: 20px 5vw;
+  }
+
+  .paragraphwrapper {
+    margin-bottom: 20px;
   }
 }
 
