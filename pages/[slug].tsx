@@ -21,6 +21,7 @@ import { Columns } from "../components/elements/columns";
 import { MainHeader } from "../components/main/header";
 import { CookieBanner } from "../components/elements/cookiebanner";
 import { Testimonial } from "../components/testimonial";
+import { PointListSectionWrapper } from "../components/elements/pointlistsectionwrapper";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -64,7 +65,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                   return <VideoEmbed key={block._key} id={block.url} />;
                 case "pointlist":
                   return (
-                    <div style={{ marginTop: "80px", width: "100%" }}>
+                    <PointListSectionWrapper>
                       <PointList
                         key={block._key}
                         points={block.points.map((point: PointListPointProps, i: number) => ({
@@ -73,7 +74,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                           paragraph: point.paragraph,
                         }))}
                       ></PointList>
-                    </div>
+                    </PointListSectionWrapper>
                   );
                 case "links":
                   return (

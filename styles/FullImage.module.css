@@ -3,3 +3,10 @@
   max-width: 1920px;
   margin: 80px 0;
 }
+
+@media only screen and (max-width: 900px) {
+  .wrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}

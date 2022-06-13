@@ -45,6 +45,7 @@
 @media only screen and (max-width: 900px) {
   .section__heading {
     font-size: 14px;
+    padding-top: 4px;
   }
 
   .section__container {

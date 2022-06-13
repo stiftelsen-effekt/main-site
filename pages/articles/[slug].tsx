@@ -23,6 +23,7 @@ import { CookieBanner } from "../../components/elements/cookiebanner";
 import { Testimonial } from "../../components/testimonial";
 import { ArticleHeader } from "../../components/elements/articleheader";
 import { RelatedArticles } from "../../components/elements/relatedarticles";
+import { PointListSectionWrapper } from "../../components/elements/pointlistsectionwrapper";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -62,7 +63,7 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                   return <VideoEmbed key={block._key} id={block.url} />;
                 case "pointlist":
                   return (
-                    <div style={{ marginTop: "80px", width: "100%" }}>
+                    <PointListSectionWrapper>
                       <PointList
                         key={block._key}
                         points={block.points.map((point: PointListPointProps, i: number) => ({
@@ -71,7 +72,7 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                           paragraph: point.paragraph,
                         }))}
                       ></PointList>
-                    </div>
+                    </PointListSectionWrapper>
                   );
                 case "links":
                   return (
