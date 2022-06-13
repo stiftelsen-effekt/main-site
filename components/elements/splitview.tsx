@@ -22,7 +22,7 @@ export const SplitView: React.FC<SplitView> = ({ title, swapped, paragraph, link
     <div className={classes.join(" ")}>
       <div className={styles.splitviewtext}>
         <div>
-          <h2>{title}</h2>
+          <h5>{title}</h5>
           <p>{paragraph}</p>
         </div>
         {link && (
