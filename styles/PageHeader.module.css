@@ -74,7 +74,7 @@
   .pageheader,
   .pageheader.pageheadermeta {
     padding: 0 5vw;
-    min-height: 500px;
+    min-height: 340px;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
