@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "../../styles/RelatedArticles.module.css";
+import { ArticlePreview } from "./articlepreview";
 
 export type ArticleHeader = {
   title: string;
@@ -32,18 +33,7 @@ export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = 
         {relatedArticles && (
           <ul className={styles.list}>
             {relatedArticles.map((article, i) => (
-              <Link key={article.slug} href={`/articles/${article.slug}`} passHref>
-                <li className={styles.article}>
-                  {article.header.published && (
-                    <div className={styles.article__meta}>
-                      <span className="detailheader">
-                        {new Date(article.header.published).toLocaleDateString()}
-                      </span>
-                    </div>
-                  )}
-                  <h5>{article.header.title}</h5>
-                </li>
-              </Link>
+              <ArticlePreview key={article.slug} header={article.header} slug={article.slug} />
             ))}
           </ul>
         )}

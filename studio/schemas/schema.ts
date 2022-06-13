@@ -40,6 +40,7 @@ import interventionwidget from './types/interventionwidget'
 import testimonials from './types/testimonials'
 import articleheader from './types/articleheader'
 import article from './pages/article'
+import articles from './pages/articles'
 
 export const pages = [
   generic,
@@ -49,7 +50,8 @@ export const pages = [
   profile,
   support,
   criteria,
-  article
+  article,
+  articles
 ]
 
 export const types = [

@@ -37,6 +37,12 @@ export default () =>
                 S.document().schemaType('support').documentId('support')
               ),
             S.listItem()
+              .title('Articles')
+              .icon(Paperclip)
+              .child(
+                S.document().schemaType('articles').documentId('articles')
+              ),
+            S.listItem()
               .title('Profile')
               .icon(User)
               .child(S.document().schemaType('profile').documentId('profile')),
