@@ -97,12 +97,10 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             </li>
           ),
         )}
-        <li className={styles.btnLoginWrapper} onClick={() => setExpanded(false)}>
+        <li className={styles.buttonsWrapper}>
           <Link href="/profile">
             <a className={styles.btnlogin}>Logg inn</a>
           </Link>
-        </li>
-        <li className={styles.btnGiveWrapper} onClick={() => setExpanded(false)}>
           <EffektButton onClick={() => setWidgetOpen(true)}>Send donasjon</EffektButton>
         </li>
       </ul>
