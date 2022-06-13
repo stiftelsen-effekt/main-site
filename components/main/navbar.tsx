@@ -52,11 +52,8 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <nav
-        className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ""}`}
-        data-cy="navbar"
-      >
+    <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
+      <nav className={`${styles.navbar}`} data-cy="navbar">
         <div className={styles.logoWrapper}>
           <div className={styles.logoWrapperImage}>
             <Link href="/">

@@ -15,7 +15,7 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[] }> = ({ ch
   }, [setNavbarShrinked]);
 
   useEffect(() => {
-    setInterval(navBarCheck, 1000);
+    setInterval(navBarCheck, 100);
   }, [navBarCheck]);
   useEffect(navBarCheck, [router.query.sluq, navBarCheck]);
 
