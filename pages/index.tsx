@@ -61,7 +61,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </Head>
 
       <MainHeader>
-        <CookieBanner />
+        {/*<CookieBanner />*/}
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 

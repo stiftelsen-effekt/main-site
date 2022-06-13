@@ -28,7 +28,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
       </Head>
 
       <MainHeader>
-        <CookieBanner />
+        {/*<CookieBanner />*/}
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 

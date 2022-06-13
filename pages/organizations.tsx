@@ -30,7 +30,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
       </Head>
 
       <MainHeader>
-        <CookieBanner />
+        {/*<CookieBanner />*/}
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 

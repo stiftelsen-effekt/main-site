@@ -40,7 +40,7 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
       </Head>
 
       <MainHeader>
-        <CookieBanner />
+        {/*<CookieBanner />*/}
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 
