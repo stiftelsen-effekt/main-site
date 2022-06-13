@@ -381,11 +381,20 @@
 
 .paragraphwrapper {
   max-width: 760px;
+  width: 100%;
   margin-bottom: 50px;
 }
 
 .paragraphwrapper h2 {
   margin-bottom: 45px;
+}
+
+.paragraphwrapper a {
+  text-decoration: underline;
+}
+
+.paragraphwrapper a::after {
+  content: " ↗";
 }
 
 .videocontainer {
