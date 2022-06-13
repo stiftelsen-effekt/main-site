@@ -1,7 +1,7 @@
 let apiUrl;
 
-if (process.env.REACT_APP_EFFEKT_API_URL) {
-  apiUrl = process.env.REACT_APP_EFFEKT_API_URL;
+if (process.env.NEXT_PUBLIC_EFFEKT_API) {
+  apiUrl = process.env.NEXT_PUBLIC_EFFEKT_API;
 } else {
   apiUrl = "https://dev.data.gieffektivt.no";
 }
