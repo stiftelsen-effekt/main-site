@@ -7,11 +7,14 @@ export const ScaledDatePicker = styled(DatePicker)`
   row-gap: 10px;
   column-gap: 10px;
   height: auto;
+  --primary: #000;
+  --secondary: #fafafa;
+  padding-left: 0;
 
   div {
     width: 100%;
     height: 100%;
-    font-size: 18px;
+    font-size: 20px;
   }
 
   div:last-child {

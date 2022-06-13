@@ -13,8 +13,9 @@ export const HorizontalLine = styled.div`
 `;
 
 export const TextWrapper = styled.div`
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   display: flex;
   justify-content: space-between;
+  font-size: 28px;
 `;

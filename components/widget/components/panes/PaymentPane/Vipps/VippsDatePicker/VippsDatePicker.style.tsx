@@ -41,10 +41,9 @@ export const Datebox = styled.button`
 export const DateText = styled.p`
   display: inline-block;
   margin: 0;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "Roboto", Arial, sans-serif;
-  margin-bottom: 15px;
-  margin-top: 25px;
+
   white-space: pre-wrap;
   line-height: 14px;
 `;
