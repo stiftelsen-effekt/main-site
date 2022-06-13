@@ -19,8 +19,3 @@ export const Paragraph = styled.p`
     line-height: 20px;
   }
 `;
-
-export const OrangeLink = styled.a`
-  color: #fb8f29;
-  text-decoration: none;
-`;
