@@ -41,6 +41,7 @@
   --primary-hover: #333333;
   --secondary-hover: #555555;
   --focus: blue;
+  --widget-panel-width: calc(40vw - 40px);
 }
 
 html,
@@ -136,6 +137,49 @@ button {
 
 * {
   box-sizing: border-box;
+}
+
+/* Move later */
+#center-widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#widget {
+  display: grid;
+  grid-template-rows: max-content max-content;
+  width: 576px;
+  transform-origin: top left;
+  overflow-y: auto;
+}
+
+#widget::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+#carousel-wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+#carousel {
+  white-space: nowrap;
+  transition: all 200ms;
+  height: 100%;
+}
+
+.pane {
+  width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
 }
 
 @media only screen and (max-width: 900px) {

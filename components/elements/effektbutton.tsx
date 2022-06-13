@@ -8,14 +8,22 @@ export const EffektButtonType = {
 };
 
 export const EffektButton: React.FC<{
-  onClick: () => void;
+  onClick: (e?: any) => void;
   role?: string;
   type?: string;
   children: React.ReactNode;
   cy?: string;
-}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy }) => {
+  className?: string;
+  disabled?: boolean;
+}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled }) => {
   return (
-    <button className={elements.button + " " + type} onClick={onClick} role={role} data-cy={cy}>
+    <button
+      className={[elements.button, type, className].join(" ")}
+      onClick={onClick}
+      role={role}
+      data-cy={cy}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

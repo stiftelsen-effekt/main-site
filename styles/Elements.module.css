@@ -138,11 +138,15 @@
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
   font-size: 20x;
-  font-size: 14px;
-  padding: 10px 30px;
+  padding: 8px 18px;
   cursor: pointer;
   box-sizing: border-box;
   margin-left: 10px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .buttonprimary {
@@ -358,7 +362,6 @@
 }
 
 .widgetPaneHeader {
-  padding: 30px 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -366,7 +369,10 @@
 }
 
 .widgetPaneContent {
-  padding: 20px;
+  --primary: white;
+  --secondary: black;
+  --primary-hover: #aaa;
+  height: 100%;
 }
 
 .pageContent {
@@ -492,11 +498,15 @@
   }
 
   .widgetPaneHeader {
-    padding: 20px 5vw;
+    /* padding: 20px 5vw; */
   }
 
   .paragraphwrapper {
     margin-bottom: 20px;
+  }
+
+  .button {
+    font-size: 14px;
   }
 }
 

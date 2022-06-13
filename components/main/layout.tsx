@@ -19,8 +19,8 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
   return (
     <div className={`${styles.container}`}>
       <GiButton inverted={false} onClick={() => setWidgetOpen(true)} />
-      <WidgetPane open={widgetOpen} onClose={() => setWidgetOpen(false)} />
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
+        <WidgetPane />
         <main className={styles.main}>{children}</main>
       </WidgetContext.Provider>
       <Footer {...footerData} />

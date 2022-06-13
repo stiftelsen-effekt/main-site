@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../styles/Navbar.module.css";
 import Link from "next/link";
 import { Menu, X } from "react-feather";
@@ -6,6 +6,8 @@ import AnimateHeight from "react-animate-height";
 import { Dictionary } from "lodash";
 import { ResponsiveImage } from "../elements/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { EffektButton } from "../elements/effektbutton";
+import { WidgetContext } from "./layout";
 
 export type MainNavbarLink = {
   _type: "navitem";
@@ -29,6 +31,8 @@ export type MainNavbarProps = {
 };
 
 export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<Dictionary<boolean>>(
     elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
@@ -93,10 +97,11 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             </li>
           ),
         )}
-        <li className={styles.btnLoginWrapper} onClick={() => setExpanded(false)}>
+        <li className={styles.buttonsWrapper}>
           <Link href="/profile">
             <a className={styles.btnlogin}>Logg inn</a>
           </Link>
+          <EffektButton onClick={() => setWidgetOpen(true)}>Send donasjon</EffektButton>
         </li>
       </ul>
     </nav>
