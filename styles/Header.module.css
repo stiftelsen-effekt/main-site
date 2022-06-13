@@ -4,10 +4,15 @@
   z-index: 1000;
   width: 100%;
   background-color: var(--secondary);
+  transition: transform 0.3s ease-in-out;
 }
 
 .container.navbarShrinked nav {
   padding: 0 0;
+}
+
+.container.navbarHidden {
+  transform: translateY(-100%);
 }
 
 @media only screen and (max-width: 900px) {
