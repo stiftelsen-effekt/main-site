@@ -26,9 +26,12 @@
 
 @media only screen and (max-width: 900px) {
   .gibutton {
+    display: none;
+    /*
     font-size: 16px;
     width: 50px;
     height: 50px;
+    */
   }
 }
 
