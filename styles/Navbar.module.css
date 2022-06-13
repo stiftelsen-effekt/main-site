@@ -1,12 +1,16 @@
+.container {
+  width: 100%;
+  padding: 0px 5vw;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 40px 5vw;
-  max-width: 1920px;
   transition: padding 200ms ease-in-out;
-  margin: 0 auto;
+  padding: 40px 0;
 }
 
 .navbar ul {
@@ -106,13 +110,6 @@
 }
 
 @media only screen and (max-width: 900px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: auto;
-  }
-
   .navbarExpanded {
     --primary: #fafafa;
     --secondary: #000;
@@ -126,8 +123,12 @@
     touch-action: none;
   }
 
-  .navbarShrinked {
-    padding: 20px 5vw;
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+    height: 100%;
   }
 
   .expandBtn {
@@ -152,7 +153,7 @@
     display: none;
   }
 
-  .navbarExpanded > ul {
+  .navbarExpanded .navbar > ul {
     padding: 0;
     flex-grow: 1;
     width: 100%;
@@ -259,7 +260,7 @@
 }
 
 @media only screen and (min-width: 1920px) {
-  .navbar {
+  .container {
     max-width: 1714px;
     padding-left: 0;
     padding-right: 0;
