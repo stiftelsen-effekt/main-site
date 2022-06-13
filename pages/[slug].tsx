@@ -65,9 +65,8 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                   return <VideoEmbed key={block._key} id={block.url} />;
                 case "pointlist":
                   return (
-                    <PointListSectionWrapper>
+                    <PointListSectionWrapper key={block._key}>
                       <PointList
-                        key={block._key}
                         points={block.points.map((point: PointListPointProps, i: number) => ({
                           number: block.numbered ? i + 1 : null,
                           heading: point.heading,
