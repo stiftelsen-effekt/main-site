@@ -16,14 +16,16 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
 
   return (
     <section className={styles.wrapper}>
-      <button
-        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__backward} ${
-          currentTestimony === 0 ? styles.testimonial__arrow__hidden : ""
-        }`}
-        onClick={() => setCurrentTestimony(Math.max(0, currentTestimony - 1))}
-      >
-        ←
-      </button>
+      {testimonies.length > 1 && (
+        <button
+          className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__backward} ${
+            currentTestimony === 0 ? styles.testimonial__arrow__hidden : ""
+          }`}
+          onClick={() => setCurrentTestimony(Math.max(0, currentTestimony - 1))}
+        >
+          ←
+        </button>
+      )}
       <div className={styles.testimonialtrack}>
         <div
           className={styles.testimonialtrackinner}
@@ -43,15 +45,18 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
           ))}
         </div>
       </div>
-
-      <button
-        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__forward} ${
-          currentTestimony === testimonies.length - 1 ? styles.testimonial__arrow__hidden : ""
-        }`}
-        onClick={() => setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1))}
-      >
-        →
-      </button>
+      {testimonies.length > 1 && (
+        <button
+          className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__forward} ${
+            currentTestimony === testimonies.length - 1 ? styles.testimonial__arrow__hidden : ""
+          }`}
+          onClick={() =>
+            setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1))
+          }
+        >
+          →
+        </button>
+      )}
     </section>
   );
 };

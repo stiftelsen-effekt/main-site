@@ -2,11 +2,11 @@ import styled from "styled-components";
 import { blue10, blue20, gray18 } from "../../../config/colors";
 
 export const RoundedBorder = styled.div`
-  width: 92%;
-  border: 1px solid ${gray18};
-  border-radius: 5px;
-  padding-left: 4%;
-  padding-right: 4%;
+  border: 1px solid var(--primary);
+  border-radius: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
 `;
 
 export const InfoBox = styled(RoundedBorder)`

@@ -1,14 +1,10 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DatePicker } from "../../../../../elements/datepicker";
 import { RadioButtonGroup } from "../../../../../elements/radiobuttongroup";
 import { setDueDay } from "../../../../store/donation/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
-import { RichSelect } from "../../../shared/RichSelect/RichSelect";
-import { RichSelectOption } from "../../../shared/RichSelect/RichSelectOption";
-import { OrangeLink } from "../../../Widget.style";
 import { Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
 import { InfoText } from "../PaymentPane.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
@@ -63,13 +59,13 @@ export const ResultPane: React.FC = () => {
         {donation.recurring === RecurringDonation.NON_RECURRING && (
           <div>
             <PaneTitle>Tusen takk!</PaneTitle>
-            <UnderTitle>Du kan nå overføre til oss</UnderTitle>
             <PaymentInformation donation={donation} />
             <InfoText>
               {`Hvis du ønsker å donere med samme fordeling senere kan du bruke samme KID-nummer igjen. Dersom du har noen spørsmål eller tilbakemeldinger kan du alltid ta kontakt med oss ved å sende en mail til `}
               <Link href="mailto:donasjon@gieffektivt.no" passHref target={"_blank"}>
                 donasjon@gieffektivt.no
               </Link>
+              .
             </InfoText>
           </div>
         )}

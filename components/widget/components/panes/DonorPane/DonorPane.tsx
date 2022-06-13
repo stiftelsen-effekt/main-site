@@ -13,17 +13,14 @@ import {
 import { InputFieldWrapper, HiddenCheckBox, CheckBoxWrapper } from "../Forms.style";
 import { DonorForm, ActionBar, CheckBoxGroupWrapper } from "./DonorPane.style";
 import { DonorType } from "../../../types/Temp";
-import { selectPrivacyPolicy } from "../../../store/layout/actions";
 import { CustomCheckBox } from "./CustomCheckBox";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { RadioButtonGroup } from "../../../../elements/radiobuttongroup";
 import { PaymentMethod } from "../../../types/Enums";
-import { EffektButton } from "../../../../elements/effektbutton";
 import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
+import Link from "next/link";
 
-interface DonorFormValues extends DonorInput {
-  privacyPolicy: boolean;
-}
+interface DonorFormValues extends DonorInput {}
 
 const tooltipText =
   "Gjelder donasjoner mellom 500 og 25 000 kr per år. Vi rapporterer direkte til Skatteetaten og trenger derfor fødsel- eller organisasjonsnummer til donor.";
@@ -34,7 +31,6 @@ const anonDonor: DonorFormValues = {
   taxDeduction: false,
   ssn: "12345678910",
   newsletter: false,
-  privacyPolicy: true,
 };
 
 // Capitalizes each first letter of all first, middle and last names
@@ -52,7 +48,6 @@ export const DonorPane: React.FC = () => {
   const [nameErrorAnimation, setNameErrorAnimation] = useState(false);
   const [emailErrorAnimation, setEmailErrorAnimation] = useState(false);
   const [ssnErrorAnimation, setSsnErrorAnimation] = useState(false);
-  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(layoutState.privacyPolicy);
   const [newsletterChecked, setNewsletterChecked] = useState(
     donor?.newsletter ? donor.newsletter : false,
   );
@@ -62,7 +57,6 @@ export const DonorPane: React.FC = () => {
   const [donorType, setDonorType] = useState<DonorType>(
     donor?.email === "anon@gieffektivt.no" ? DonorType.ANONYMOUS : DonorType.DONOR,
   );
-  const [privacyPolicyErrorAnimation, setPrivacyPolicyErrorAnimation] = useState(false);
   const { register, watch, errors, handleSubmit, clearErrors, setValue } =
     useForm<DonorFormValues>();
   const watchAllFields = watch();
@@ -70,16 +64,12 @@ export const DonorPane: React.FC = () => {
   useEffect(() => {
     setValue("taxDeduction", donor?.taxDeduction);
     setValue("newsletter", donor?.newsletter);
-    setValue("privacyPolicy", layoutState.privacyPolicy);
   }, []);
 
   useEffect(() => {
     errors.name ? setNameErrorAnimation(true) : setNameErrorAnimation(false);
     errors.email ? setEmailErrorAnimation(true) : setEmailErrorAnimation(false);
     errors.ssn ? setSsnErrorAnimation(true) : setSsnErrorAnimation(false);
-    errors.privacyPolicy
-      ? setPrivacyPolicyErrorAnimation(true)
-      : setPrivacyPolicyErrorAnimation(false);
 
     if (donorType === DonorType.ANONYMOUS) {
       setNextDisabled(false);
@@ -107,7 +97,6 @@ export const DonorPane: React.FC = () => {
         data.newsletter ? data.newsletter : false,
       ),
     );
-    dispatch(selectPrivacyPolicy(watchAllFields.privacyPolicy));
 
     if (donation.isValid && !nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
@@ -126,7 +115,6 @@ export const DonorPane: React.FC = () => {
         anonDonor.newsletter ? anonDonor.newsletter : false,
       ),
     );
-    dispatch(selectPrivacyPolicy(watchAllFields.privacyPolicy));
 
     if (!nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
@@ -140,7 +128,7 @@ export const DonorPane: React.FC = () => {
       <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
         <PaneContainer>
           <div>
-            <PaneTitle>Info om giver</PaneTitle>
+            <PaneTitle>Om deg</PaneTitle>
 
             <div style={{ marginBottom: "20px" }}>
               <CheckBoxWrapper>
@@ -150,7 +138,7 @@ export const DonorPane: React.FC = () => {
                   type="checkbox"
                   ref={register}
                   onChange={(e) => {
-                    if (!e.target.checked) setDonorType(DonorType.ANONYMOUS);
+                    if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
                     else setDonorType(DonorType.DONOR);
                     (document.activeElement as HTMLElement).blur();
                   }}
@@ -254,38 +242,21 @@ export const DonorPane: React.FC = () => {
                     checked={newsletterChecked}
                   />
                 </CheckBoxWrapper>
-                <div>
-                  <CheckBoxWrapper>
-                    <HiddenCheckBox
-                      data-cy="checkboxPrivacyPolicy"
-                      name="privacyPolicy"
-                      type="checkbox"
-                      ref={register({ required: true })}
-                      onChange={() => {
-                        (document.activeElement as HTMLElement).blur();
-                        setPrivacyPolicyChecked(!privacyPolicyChecked);
-                      }}
-                    />
-                    <CustomCheckBox
-                      label="Jeg godtar"
-                      checked={privacyPolicyChecked}
-                      hyperlink={{
-                        text: "personvernerklæringen",
-                        url: "https://gieffektivt.no/samarbeid-drift#personvern",
-                      }}
-                    />
-                  </CheckBoxWrapper>
-                  {privacyPolicyErrorAnimation && (
-                    <ErrorField text="Du må godta personvernerklæringen" />
-                  )}
-                </div>
+                <span>
+                  Her finner du vår{" "}
+                  <Link href={"/personvern"} passHref>
+                    <a style={{ textDecoration: "underline" }} target={"_blank"}>
+                      personvernserklering ↗
+                    </a>
+                  </Link>
+                </span>
               </CheckBoxGroupWrapper>
             </div>
 
             <RadioButtonGroup
               options={[
                 { title: "Gi med bank", value: PaymentMethod.BANK },
-                { title: "Gi med vipps", value: PaymentMethod.VIPPS },
+                { title: "Gi med Vipps", value: PaymentMethod.VIPPS },
               ]}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}

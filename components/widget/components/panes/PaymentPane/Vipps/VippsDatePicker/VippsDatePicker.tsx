@@ -42,18 +42,6 @@ export const VippsDatePicker: React.FC = () => {
 
   return (
     <Wrapper>
-      <DateBoxWrapper>
-        <ScaledDatePicker
-          selected={vippsAgreement?.monthlyChargeDay}
-          onClickOutside={() => {}}
-          onChange={(date) => {
-            if (!showCheckBox(date)) {
-              setinitialCharge(false);
-            }
-            setSelectedChargeDay(date);
-          }}
-        />
-      </DateBoxWrapper>
       <DateTextWrapper>
         <DateText>
           {vippsAgreement.initialCharge &&
@@ -82,6 +70,18 @@ export const VippsDatePicker: React.FC = () => {
           </CheckBoxWrapper>
         )}
       </DateTextWrapper>
+      <DateBoxWrapper>
+        <ScaledDatePicker
+          selected={vippsAgreement?.monthlyChargeDay}
+          onClickOutside={() => {}}
+          onChange={(date) => {
+            if (!showCheckBox(date)) {
+              setinitialCharge(false);
+            }
+            setSelectedChargeDay(date);
+          }}
+        />
+      </DateBoxWrapper>
     </Wrapper>
   );
 };

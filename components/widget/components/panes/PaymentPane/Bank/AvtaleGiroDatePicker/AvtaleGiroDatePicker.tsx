@@ -31,15 +31,6 @@ export const AvtaleGiroDatePicker: React.FC = () => {
 
   return (
     <Wrapper>
-      <DateBoxWrapper>
-        <ScaledDatePicker
-          selected={dueDay}
-          onChange={(date) => {
-            setSelectedDueDay(date);
-          }}
-          onClickOutside={() => {}}
-        />
-      </DateBoxWrapper>
       <DateTextWrapper>
         <DateText>
           Første trekk blir
@@ -49,6 +40,15 @@ export const AvtaleGiroDatePicker: React.FC = () => {
         </DateText>
         {isIrregularChargeDay(selectedDueDay) && <ToolTip text={tooltipText} />}
       </DateTextWrapper>
+      <DateBoxWrapper>
+        <ScaledDatePicker
+          selected={dueDay}
+          onChange={(date) => {
+            setSelectedDueDay(date);
+          }}
+          onClickOutside={() => {}}
+        />
+      </DateBoxWrapper>
     </Wrapper>
   );
 };

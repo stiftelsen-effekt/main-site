@@ -10,7 +10,6 @@ export interface State {
 }
 
 export interface Layout {
-  privacyPolicy: boolean;
   paneNumber: number;
   answeredReferral?: boolean;
   height: number;
