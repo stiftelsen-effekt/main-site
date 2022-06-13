@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DatePicker } from "../../../../../elements/datepicker";
 import { RadioButtonGroup } from "../../../../../elements/radiobuttongroup";
 import { draftAgreementAction, setVippsAgreement } from "../../../../store/donation/actions";
-import { setLoading } from "../../../../store/layout/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { SubmitButton } from "../../../shared/Buttons/NavigationButtons.style";
 import { ErrorField } from "../../../shared/Error/ErrorField";
-import { LoadingCircle } from "../../../shared/LoadingCircle/LoadingCircle";
-import { RichSelect } from "../../../shared/RichSelect/RichSelect";
-import { RichSelectOption } from "../../../shared/RichSelect/RichSelectOption";
-import { OrangeLink } from "../../../Widget.style";
-import { CenterDiv, Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
-import { InfoText } from "../PaymentPane.style";
+import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
-import { VippsButton, VippsButtonWrapper } from "./VippsPane.style";
+import { VippsButtonWrapper } from "./VippsPane.style";
 
 export const VippsPane: React.FC = () => {
   const dispatch = useDispatch();
