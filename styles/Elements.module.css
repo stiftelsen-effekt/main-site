@@ -138,8 +138,7 @@
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
   font-size: 20x;
-  font-size: 14px;
-  padding: 10px 30px;
+  padding: 8px 18px;
   cursor: pointer;
   box-sizing: border-box;
   margin-left: 10px;
@@ -504,6 +503,10 @@
 
   .paragraphwrapper {
     margin-bottom: 20px;
+  }
+
+  .button {
+    font-size: 14px;
   }
 }
 
