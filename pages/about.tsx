@@ -70,7 +70,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         </SectionContainer>
       )}
 
-      <SectionContainer inverted nodivider>
+      <SectionContainer nodivider>
         <GiveBlock />
       </SectionContainer>
     </>

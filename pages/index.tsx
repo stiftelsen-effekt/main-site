@@ -139,7 +139,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </SectionContainer>
       )}
 
-      <SectionContainer inverted nodivider>
+      <SectionContainer nodivider>
         <GiveBlock></GiveBlock>
       </SectionContainer>
     </>
