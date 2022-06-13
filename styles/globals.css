@@ -102,7 +102,7 @@ a:hover {
 }
 
 :focus {
-  outline: 2px solid rgb(31, 166, 184);
+  outline: none;
 }
 
 strong {
@@ -120,6 +120,8 @@ button {
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Move later */
