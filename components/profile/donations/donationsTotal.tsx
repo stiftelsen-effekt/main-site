@@ -2,7 +2,7 @@ import React from "react";
 import style from "../../../styles/Donations.module.css";
 import { thousandize } from "../../../util/formatting";
 
-const DonationsTotals: React.FC<{ sum: number; period: string; comparison: string }> = ({
+const DonationsTotals: React.FC<{ sum: number; period: string; comparison?: string }> = ({
   sum,
   period,
   comparison,
@@ -11,7 +11,7 @@ const DonationsTotals: React.FC<{ sum: number; period: string; comparison: strin
     <div className={style.totals} data-cy="aggregated-donation-totals">
       <span className={style.period}>{period}</span>
       <h2>{thousandize(sum)} kr</h2>
-      <h4>{comparison}</h4>
+      {comparison && <h4>{comparison}</h4>}
     </div>
   );
 };

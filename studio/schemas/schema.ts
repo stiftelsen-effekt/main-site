@@ -31,6 +31,15 @@ import criteria from './pages/criteria'
 import paragraph from './types/paragraph'
 import pointlistpoint from './types/pointlistpoint'
 import links from './types/links'
+import splitview from './types/splitview'
+import fullimage from './types/fullimage'
+import column from './types/column'
+import columns from './types/columns'
+import intervention from './types/intervention'
+import interventionwidget from './types/interventionwidget'
+import testimonials from './types/testimonials'
+import articleheader from './types/articleheader'
+import article from './pages/article'
 
 export const pages = [
   generic,
@@ -39,7 +48,8 @@ export const pages = [
   about,
   profile,
   support,
-  criteria
+  criteria,
+  article
 ]
 
 export const types = [
@@ -57,12 +67,20 @@ export const types = [
   navitem,
   navgroup,
   pageheader,
+  articleheader,
   questionandanswer,
   questionandanswergroup,
   contactinfo,
   videoembed,
   contentsection,
-  paragraph
+  paragraph,
+  splitview,
+  fullimage,
+  column,
+  columns,
+  intervention,
+  interventionwidget,
+  testimonials
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity

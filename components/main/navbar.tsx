@@ -6,10 +6,6 @@ import AnimateHeight from "react-animate-height";
 import { Dictionary } from "lodash";
 import { ResponsiveImage } from "../elements/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { CookieBanner } from "../elements/cookiebanner";
-import { useRouter } from "next/router";
-import { EffektButton } from "../elements/effektbutton";
-import { WidgetContext } from "./layout";
 
 export type MainNavbarLink = {
   _type: "navitem";
@@ -33,14 +29,10 @@ export type MainNavbarProps = {
 };
 
 export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
-  const router = useRouter();
-
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<Dictionary<boolean>>(
     elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
-  const [rerender, setRerender] = useState(false);
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const setExpanded = (expanded: boolean) => {
     if (expanded && window.innerWidth < 900) document.documentElement.style.overflow = "hidden";
@@ -49,105 +41,64 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
     setExpandMenu(expanded);
   };
 
-  let navbarShrinked = false;
-  if (typeof window !== "undefined" && window.scrollY > 0) navbarShrinked = true;
-
   const toggleExpanded = (key: string) => {
     const expanded = { ...expandedSubmenu };
     expanded[key] = !expandedSubmenu[key];
     setExpandedSubmenu(expanded);
   };
 
-  useEffect(() => {
-    setTimeout(() => setRerender(!rerender), 1000);
-  }, [rerender]);
-
-  useEffect(() => {
-    setRerender((r) => !r);
-  }, [router.query.sluq]);
-
-  const [cookiesAccepted, setCookiesAccepted] = useState(
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("gieffektivt-cookies-accepted")
-      : "false",
-  );
-
-  useEffect(() => {
-    if (cookiesAccepted === "true") {
-      console.log("Cookies accepted");
-    }
-  }, [cookiesAccepted]);
-
   return (
-    <div className={styles.container}>
-      {cookiesAccepted !== "true" ? (
-        <CookieBanner
-          onAccept={() => {
-            window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
-            setCookiesAccepted("true");
-          }}
-        />
-      ) : null}
-      <nav
-        className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ""} ${
-          navbarShrinked ? styles.navbarShrinked : ""
-        }`}
-        data-cy="navbar"
-      >
-        <div className={styles.logoWrapper}>
-          <div className={styles.logoWrapperImage}>
-            <Link href="/">
-              <a>
-                <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
-              </a>
-            </Link>
-          </div>
-          <button className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
-            {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
-          </button>
+    <nav className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ""}`} data-cy="navbar">
+      <div className={styles.logoWrapper}>
+        <div className={styles.logoWrapperImage}>
+          <Link href="/">
+            <a>
+              <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
+            </a>
+          </Link>
         </div>
-        <ul>
-          {elements.map((el) =>
-            el._type === "navgroup" ? (
-              <li
-                key={el._key}
-                className={
-                  expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
-                }
-              >
-                <button onClick={() => toggleExpanded(el._key)}>{el.title}</button>
-                <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
-                  <div className={styles.submenu}>
-                    <ul>
-                      {el.items.map((subel) => (
-                        <li key={subel.title} onClick={() => setExpanded(false)}>
-                          <Link href={`/${subel.slug}`} passHref>
-                            {subel.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </AnimateHeight>
-              </li>
-            ) : (
-              <li key={el._key} onClick={() => setExpanded(false)}>
-                <Link href={`/${el.slug}`} passHref>
-                  {el.title}
-                </Link>
-              </li>
-            ),
-          )}
-          <li className={styles.btnLoginWrapper} onClick={() => setExpanded(false)}>
-            <Link href="/profile">
-              <a className={styles.btnlogin}>Logg inn</a>
-            </Link>
-          </li>
-          <li onClick={() => setExpanded(false)}>
-            <EffektButton onClick={() => setWidgetOpen(true)}>Send bidrag</EffektButton>
-          </li>
-        </ul>
-      </nav>
-    </div>
+        <button className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
+          {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
+        </button>
+      </div>
+      <ul>
+        {elements.map((el) =>
+          el._type === "navgroup" ? (
+            <li
+              key={el._key}
+              className={
+                expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
+              }
+            >
+              <button onClick={() => toggleExpanded(el._key)}>{el.title}</button>
+              <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
+                <div className={styles.submenu}>
+                  <ul>
+                    {el.items.map((subel) => (
+                      <li key={subel.title} onClick={() => setExpanded(false)}>
+                        <Link href={`/${subel.slug}`} passHref>
+                          {subel.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </AnimateHeight>
+            </li>
+          ) : (
+            <li key={el._key} onClick={() => setExpanded(false)}>
+              <Link href={`/${el.slug}`} passHref>
+                {el.title}
+              </Link>
+            </li>
+          ),
+        )}
+        <li className={styles.btnLoginWrapper} onClick={() => setExpanded(false)}>
+          <Link href="/profile">
+            <a className={styles.btnlogin}>Logg inn</a>
+          </Link>
+        </li>
+      </ul>
+    </nav>
   );
 };

@@ -1,0 +1,17 @@
+.fullpagewrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--secondary);
+  color: var(--primary);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.fullpagewrapper button {
+  margin-left: 0;
+}

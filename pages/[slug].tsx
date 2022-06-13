@@ -14,6 +14,14 @@ import { Links } from "../components/elements/links";
 import { ContactInfo } from "../components/elements/contact-info";
 import { Paragraph } from "../components/elements/paragraph";
 import { footerQuery } from "../components/footer";
+import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
+import { SplitView } from "../components/elements/splitview";
+import { FullImage } from "../components/elements/fullimage";
+import { Columns } from "../components/elements/columns";
+import { MainHeader } from "../components/main/header";
+import { CookieBanner } from "../components/elements/cookiebanner";
+import { Testimonial } from "../components/testimonial";
+import { PointListSectionWrapper } from "../components/elements/pointlistsectionwrapper";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -28,7 +36,10 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      <MainHeader>
+        <CookieBanner />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      </MainHeader>
 
       <PageHeader
         title={header.title}
@@ -54,19 +65,21 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                   return <VideoEmbed key={block._key} id={block.url} />;
                 case "pointlist":
                   return (
-                    <PointList
-                      key={block._key}
-                      points={block.points.map((point: PointListPointProps, i: number) => ({
-                        number: block.numbered ? i + 1 : null,
-                        heading: point.heading,
-                        paragraph: point.paragraph,
-                      }))}
-                    ></PointList>
+                    <PointListSectionWrapper>
+                      <PointList
+                        key={block._key}
+                        points={block.points.map((point: PointListPointProps, i: number) => ({
+                          number: block.numbered ? i + 1 : null,
+                          heading: point.heading,
+                          paragraph: point.paragraph,
+                        }))}
+                      ></PointList>
+                    </PointListSectionWrapper>
                   );
                 case "links":
                   return (
-                    <div key={block._key} style={{ width: "100%", maxWidth: "660px" }}>
-                      <h2>Les mer:</h2>
+                    <div key={block._key} style={{ width: "100%", maxWidth: "760px" }}>
+                      <p className="inngress">Les mer:</p>
                       <Links links={block.links}></Links>
                     </div>
                   );
@@ -80,8 +93,31 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       email={block.email}
                     />
                   );
+                case "questionandanswergroup":
+                  return <QuestionsAndAnswersGroup key={block._key} group={block} />;
+                case "splitview":
+                  return (
+                    <SplitView
+                      key={block._key || block._id}
+                      title={block.title}
+                      swapped={block.swapped}
+                      paragraph={block.paragraph}
+                      link={block.link}
+                      image={block.image}
+                    />
+                  );
+                case "fullimage":
+                  return (
+                    <FullImage key={block._key || block._id} image={block.image} alt={block.alt} />
+                  );
+                case "columns":
+                  return <Columns key={block._key || block._id} columns={block.columns} />;
+                case "testimonials":
+                  return (
+                    <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
+                  );
                 default:
-                  return null;
+                  return block._type;
               }
             })}
           </SectionContainer>
@@ -150,7 +186,11 @@ const fetchGenericPage = groq`
       ...,
       blocks[] {
         _type == 'reference' => @->,
-        _type != 'reference' => @,
+        _type == 'testimonials' =>  {
+          ...,
+          testimonials[]->,
+        },
+        _type != 'reference' && _type != 'testimonials' => @,
       }
     }
   },

@@ -1,11 +1,3 @@
-.container {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
-  background-color: var(--secondary);
-}
-
 .navbar {
   display: flex;
   align-items: center;
@@ -19,10 +11,6 @@
   margin: 0 auto;
 }
 
-.navbarShrinked {
-  padding: 0px 5vw;
-}
-
 .navbar ul {
   list-style: none;
   padding: 0;
@@ -32,9 +20,8 @@
   cursor: default;
   display: inline-block;
   text-decoration: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  height: 40px;
+  padding: 10px 25px;
+  font-size: 18px;
   position: relative;
 }
 
@@ -60,8 +47,9 @@
 }
 
 .navbar ul li .submenu ul li {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-size: 16px;
 }
 
 .btnlogin {
@@ -97,8 +85,8 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  height: 80px;
-  width: 180px;
+  height: 35px;
+  width: 250px;
   position: relative;
   filter: var(--primary-filter);
 }
@@ -129,7 +117,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
   }
 
@@ -166,7 +154,7 @@
     font-weight: normal;
     display: flex;
     flex-direction: column;
-    padding-bottom: 100px;
+    padding-bottom: 30px;
   }
 
   .navbarExpanded .logoWrapper {
@@ -227,11 +215,15 @@
     display: none;
   }
 
+  .navbar ul li.btnLogoutWrapper {
+    justify-self: flex-end;
+    margin-top: auto;
+  }
+
   .navbar ul li.btnLoginWrapper {
     margin-left: 0;
     align-self: flex-start;
-    position: absolute;
-    bottom: 50px;
+    margin-top: auto;
   }
 
   .navbar ul li .btnlogin {
@@ -239,6 +231,9 @@
     color: var(--primary);
     padding: 10px 20px;
     border-radius: 30px;
+    margin-left: 0;
+    align-self: flex-end;
+    justify-self: flex-end;
   }
 }
 

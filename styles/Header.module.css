@@ -1,0 +1,23 @@
+.container {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background-color: var(--secondary);
+}
+
+.container.navbarShrinked nav {
+  padding: 0 5vw;
+}
+
+@media only screen and (max-width: 900px) {
+  .container.navbarShrinked nav {
+    padding: 20px 5vw;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .container.navbarShrinked nav {
+    padding: 0;
+  }
+}

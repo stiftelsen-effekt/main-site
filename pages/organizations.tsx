@@ -13,6 +13,8 @@ import { ResponsiveImage } from "../components/elements/responsiveimage";
 import { Navbar } from "../components/main/navbar";
 import { Links } from "../components/elements/links";
 import { footerQuery } from "../components/footer";
+import { MainHeader } from "../components/main/header";
+import { CookieBanner } from "../components/elements/cookiebanner";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -27,7 +29,10 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      <MainHeader>
+        <CookieBanner />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+      </MainHeader>
 
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
       <SectionContainer padded={true}>
@@ -37,20 +42,22 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
               <div key={organization._id} className={styles.organization}>
                 <div className={styles.meta}>
                   <div>
-                    <h2>{organization.name}</h2>
-                    <h3>{organization.subtitle}</h3>
+                    <p className="inngress">{organization.name}</p>
+                    <p className="inngress">{organization.subtitle}</p>
                   </div>
-                  <div className={styles.logo}>
-                    {organization.logo ? <ResponsiveImage image={organization.logo} /> : null}
+                  <div className={styles.intervention}>
+                    <span className="detailheader">{organization.intervention_type}</span>
+                    <h1>{organization.invervention_cost}</h1>
+                    <span>{organization.intervention_effect}</span>
                   </div>
                 </div>
                 <div className={styles.description}>
-                  <h2 className={styles.oneliner}>{organization.oneliner}</h2>
+                  <p className="inngress">{organization.oneliner}</p>
                   <PortableText blocks={organization.content}></PortableText>
 
                   {organization.links && (
                     <>
-                      <h2>Les mer:</h2>
+                      <p className="inngress">Les mer:</p>
                       <Links links={organization.links} />
                     </>
                   )}

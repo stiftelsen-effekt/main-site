@@ -5,21 +5,34 @@
   align-items: center;
 }
 
-.container h2 {
-  font-size: 52px;
-  max-width: 60%;
+.container h3 {
+  max-width: 690px;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 90px;
+  margin-bottom: 50px;
 }
 
 .button {
   background: var(--primary);
   color: var(--secondary);
-  font-size: 38px;
+  font-size: 43px;
   font-family: "ESKlarheitKurrent";
   font-weight: 400;
-  padding: 16px;
   border-radius: 50%;
   margin-top: 60px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 900px) {
+  .button {
+    font-size: 16px;
+    width: 50px;
+    height: 50px;
+  }
 }

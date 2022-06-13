@@ -36,9 +36,10 @@
 
 :root {
   --primary: black;
-  --secondary: white;
+  --secondary: #fafafa;
   --primary-filter: brightness(0);
   --primary-hover: #333333;
+  --secondary-hover: #555555;
   --focus: blue;
   --widget-panel-width: calc(40vw - 40px);
 }
@@ -52,20 +53,60 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss10" on, "ss08" on;
+  background: var(--secondary);
+  font-size: 20px;
+  line-height: 32px;
 }
 
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5 {
   font-family: "ESKlarheitKurrent", sans-serif;
   font-weight: 300;
+  margin: 20px 0;
 }
 
 h1 {
+  font-size: 120px;
+  line-height: 110%;
+}
+
+h2 {
+  font-size: 95px;
+  line-height: 105px;
+}
+
+h3 {
+  font-size: 70px;
+  line-height: 80px;
+}
+
+h4 {
+  font-size: 48px;
+  line-height: 62px;
+}
+
+h5 {
   font-size: 36px;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  line-height: 46px;
+}
+
+p.inngress {
+  font-size: 30px;
+  line-height: 40px;
+}
+
+span.detailheader {
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+.bodyheader {
+  font-size: 20px;
+  line-height: 30px;
 }
 
 a {
@@ -79,6 +120,10 @@ a:hover {
 
 :focus {
   outline: 2px solid rgb(31, 166, 184);
+}
+
+strong {
+  font-weight: bold;
 }
 
 button {
@@ -138,9 +183,46 @@ button {
 }
 
 @media only screen and (max-width: 900px) {
+  html,
+  body {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
   h1 {
+    font-size: 70px;
+    line-height: 80px;
+  }
+
+  h2 {
+    font-size: 48px;
+    line-height: 58px;
+  }
+
+  h3 {
+    font-size: 40px;
+    line-height: 50px;
+  }
+
+  h4 {
+    font-size: 30px;
+    line-height: 34px;
+  }
+
+  h5 {
     font-size: 24px;
-    margin-top: 18px;
+    line-height: 32px;
+  }
+
+  p.inngress {
+    font-size: 22px;
+    line-height: 32px;
+  }
+
+  span.detailheader {
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase;
   }
 }
 

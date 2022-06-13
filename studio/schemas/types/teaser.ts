@@ -21,6 +21,12 @@ export default {
       title: 'Paragraph'
     },
     {
+      name: 'disclaimer',
+      type: 'text',
+      rows: 2,
+      title: 'Disclaimer'
+    },
+    {
       name: 'image',
       type: 'image',
       title: 'Image'

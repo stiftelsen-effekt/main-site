@@ -3,6 +3,10 @@
   margin-bottom: 12px;
 }
 
+.menu.menumobile {
+  display: none;
+}
+
 .menu ul {
   list-style: none;
   padding: 0;
@@ -115,18 +119,21 @@
   }
 
   .menu {
+    display: none;
+  }
+
+  .menu.menumobile {
+    display: block;
     overflow-x: scroll;
     white-space: nowrap;
-    position: fixed;
     background: var(--secondary);
-    top: 112px;
-    left: 0;
     width: 100vw;
     border-bottom: 1px solid var(--primary);
     padding-left: 30px;
     box-sizing: border-box;
     padding-bottom: 0;
     z-index: 10;
+    margin: 0;
   }
 
   .menu::-webkit-scrollbar {
@@ -135,6 +142,7 @@
 
   .menu ul {
     margin: 0;
+    padding: 0;
   }
 
   .menu-selected {
@@ -193,5 +201,6 @@
 
   .distribution table {
     margin-bottom: 16px;
+    max-width: initial;
   }
 }

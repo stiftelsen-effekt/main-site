@@ -1,9 +1,9 @@
 .grid {
   border-top: solid 1px var(--primary);
-  margin-top: 200px;
+  margin-top: 60px;
   font-family: "ESKlarheitGrotesk", sans-serif;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   grid-template-rows: repeat(2, max-content);
   column-gap: 50px;
   padding-top: 80px;
@@ -28,8 +28,8 @@
 
 .category ul li,
 .category ul li a {
-  margin-bottom: 8px;
-  font-size: 16px;
+  line-height: 28px;
+  font-size: 18px;
 }
 
 .category ul li a:hover {
@@ -55,7 +55,7 @@
 
 /** -----News Letter Signup--------*/
 .newsletter {
-  grid-column: 2 / 4;
+  grid-column: 2 / 5;
 }
 
 .newsletter fieldset {
@@ -69,18 +69,16 @@
 
 .input__inlinebutton {
   margin-top: 14px;
-  max-width: 340px;
+  max-width: 360px;
   position: relative;
 }
-.input__inlinebutton input,
-.input__inlinebutton button {
+.input__inlinebutton input {
   font-size: 14px;
   border: none;
-  text-transform: uppercase;
 }
 
-.input__inlinebutton input {
-  padding: 14px 30px;
+.input__inlinebutton input[type="email"] {
+  padding: 14px 22px;
   box-sizing: border-box;
   border-radius: 50px;
   width: 100%;
@@ -92,17 +90,18 @@
   position: absolute;
   letter-spacing: 1px;
   height: 100%;
-  padding: 0px 18px;
+  padding: 0px 22px;
   right: 0;
   top: 0;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.input__inlinebutton button:hover {
+.input__inlinebutton input[type="submit"]:hover {
   color: var(--primary-hover);
 }
 
-.newsletter div input[type="text"] {
+.newsletter input[type="email"] {
   background: var(--secondary);
   color: var(--primary);
   font-family: "ESKlarheitGrotesk", sans-serif;
@@ -120,8 +119,16 @@
   .grid {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(4, max-content);
+    column-gap: 10px;
     grid-row-gap: 50px;
     padding-top: 60px;
+    margin-top: 50px;
+    font-size: 18px;
+    padding-bottom: 200px;
+  }
+
+  .category {
+    font-size: 18px;
   }
 
   .newsletter {

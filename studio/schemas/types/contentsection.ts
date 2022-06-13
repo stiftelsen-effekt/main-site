@@ -33,11 +33,15 @@ export default {
       title: 'Content',
       of: [
         { type: 'paragraph' },
-        { type: 'pointlist' },
+        { type: 'splitview' },
+        { type: 'columns' },
         { type: 'links' },
-        { type: 'questionandanswergroup' },
         { type: 'introsection' }, 
+        { type: 'fullimage' },
+        { type: 'questionandanswergroup' },
+        { type: 'pointlist' },
         { type: 'videoembed' },
+        { type: 'testimonials' },
         { type: 'reference', to: [{ type: 'contactinfo' }], icon: Phone}
       ]
     }

@@ -1,29 +1,57 @@
 .container {
   text-align: center;
-  padding-bottom: 40px;
+  padding-top: 120px;
+  padding-bottom: 110px;
+  background: var(--primary);
+  color: var(--secondary);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
 }
 
-.container h2 {
-  font-size: 46px;
+.container::before {
+  content: "";
+  position: absolute;
+  top: -45px;
+  left: 0;
+  width: 100%;
+  height: 45px;
+  background: var(--primary);
+}
+
+.container::after {
+  content: "";
+  position: absolute;
+  bottom: -45px;
+  left: 0;
+  width: 100%;
+  height: 45px;
+  background: var(--primary);
+}
+
+.container h3 {
   margin-top: 0;
 }
 
 .container p {
-  font-size: 24px;
-  max-width: 650px;
+  margin: 70px 0;
+  max-width: 700px;
+  white-space: pre-wrap;
 }
 
 .container .channels {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
 }
 
 .container .channels div {
   margin: 0px 20px;
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
   padding: 8px 20px;
   border-radius: 34px;
 }
@@ -31,6 +59,12 @@
 @media only screen and (max-width: 900px) {
   .container .channels {
     flex-direction: column;
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+  }
+
+  .container p {
+    max-width: 80%;
   }
 
   .container .channels div {

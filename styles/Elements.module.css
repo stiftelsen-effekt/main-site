@@ -137,8 +137,9 @@
   border: none;
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
+  font-size: 20x;
   font-size: 14px;
-  padding: 8px 28px;
+  padding: 10px 30px;
   cursor: pointer;
   box-sizing: border-box;
   margin-left: 10px;
@@ -163,12 +164,17 @@
 .buttonsecondary {
   color: var(--primary);
   background: var(--secondary);
-  border: 1px solid var(--primary);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 2px solid var(--primary);
 }
 
 .buttonsecondary:hover,
 .buttonsecondary:active {
-  border: 1px solid var(--primary-hover);
+  color: var(--secondary-hover);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 2px solid var(--secondary-hover);
 }
 
 .buttontertiary {
@@ -181,35 +187,46 @@
 }
 
 .buttontertiary:hover {
-  outline-color: var(--primary-hover);
+  border: none;
+  outline: 2px dashed #555;
+  color: var(--secondary-hover);
 }
 
 .buttontertiary:focus,
 .buttonprimary:focus,
 .buttonsecondary:focus {
+  border: none;
   outline-color: var(--focus);
+}
+
+.button__squared {
+  border-radius: 3px;
 }
 
 .teaser {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: center;
   width: 100%;
-  min-height: 520px;
 }
 
 .teaserimage {
   background: var(--primary);
   position: relative;
+  width: 100%;
+  aspect-ratio: 12/ 9;
 }
 
 .teasertext {
   padding: 40px;
+  padding-left: 100px;
+  padding-right: 140px;
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
   justify-content: space-between;
-  max-width: 90%;
   align-items: flex-start;
 }
 
@@ -218,9 +235,7 @@
 }
 
 .teasertext p {
-  font-size: 20px;
-  font-weight: normal;
-  line-height: 180%;
+  margin-top: 60px;
   white-space: pre-wrap;
 }
 
@@ -228,20 +243,24 @@
   margin-left: 0;
 }
 
+.teasertext .teaserdisclaimer {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
 .pointlistwrapper {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  column-gap: 20px;
+  grid-auto-columns: minmax(0, 1fr);
+  column-gap: 40px;
   width: 100%;
-  margin: 80px 0;
+  margin-bottom: 110px;
 }
 
 .pointlistpoint {
   border-top: 1px solid black;
   display: flex;
-  column-gap: 18px;
-  padding-right: 20%;
+  column-gap: 25px;
 }
 
 .pointlistpoint div:nth-child(2) {
@@ -251,8 +270,10 @@
 .introsection {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
   text-align: left;
   width: 100%;
+  padding: 65px 0;
 }
 
 .introsection p {
@@ -260,10 +281,9 @@
   padding-right: 20%;
 }
 
-.introsection h2 {
-  margin-top: 0;
-  font-size: 46px;
+.introsection h3 {
   white-space: pre-wrap;
+  margin: 0 auto;
 }
 
 .calculatorteaser {
@@ -288,9 +308,9 @@
   padding: 20px 0;
   cursor: pointer;
   user-select: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  column-gap: 20px;
   align-items: center;
 }
 
@@ -299,8 +319,12 @@
   outline: 2px solid black;
 }
 
-.expanderHeader h2 {
+.expanderHeader p {
   margin: 0;
+}
+
+.expanderWrapper div p {
+  white-space: pre-wrap;
 }
 
 .links {
@@ -357,9 +381,8 @@
 }
 
 .paragraphwrapper {
-  max-width: 660px;
-  line-height: 180%;
-  font-size: 16px;
+  max-width: 760px;
+  margin-bottom: 50px;
 }
 
 .paragraphwrapper h2 {
@@ -368,12 +391,23 @@
 
 .videocontainer {
   margin-top: 100px;
+  margin-bottom: 50px;
   width: 100%;
 }
 
 .videocontainer iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
+}
+
+@media only screen and (max-width: 1440px) {
+  .pointlistwrapper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+    justify-content: center;
+    row-gap: 60px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -405,6 +439,10 @@
     margin-bottom: 40px;
   }
 
+  .teaser:last-child {
+    margin-bottom: 0;
+  }
+
   .teaserimage {
     grid-row: 1;
     aspect-ratio: 4 / 3;
@@ -414,14 +452,22 @@
     padding: 20px 0px;
     max-width: auto;
     grid-row: 2;
+    margin-bottom: 20px;
+  }
+
+  .teasertext p {
+    margin-top: 0;
+    font-size: 16px;
   }
 
   .pointlistwrapper {
     display: grid;
+    grid-template-columns: auto;
     grid-auto-flow: row;
     row-gap: 20px;
     width: 100%;
     margin-bottom: 30px;
+    margin-top: 0;
   }
 
   .introsection {
@@ -433,6 +479,10 @@
   .introsection p {
     padding-right: 0;
     line-height: 200%;
+  }
+
+  .videocontainer {
+    margin-top: 30px;
   }
 
   .widgetPane {
@@ -450,6 +500,10 @@
 
   .widgetPaneHeader {
     /* padding: 20px 5vw; */
+  }
+
+  .paragraphwrapper {
+    margin-bottom: 20px;
   }
 }
 

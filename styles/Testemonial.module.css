@@ -1,3 +1,30 @@
+.wrapper {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.testimonialtrack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonialtrackinner {
+  display: grid;
+  grid-auto-columns: 100%;
+  width: 100%;
+  grid-auto-flow: column;
+  white-space: nowrap;
+  transition: transform 380ms ease-in-out;
+}
+
 .testimonial {
   width: 100%;
   display: flex;
@@ -5,14 +32,15 @@
 
   align-items: center;
   position: relative;
-  justify-content: center;
+  justify-content: flex-end;
+  white-space: normal;
 }
 
 .testemonial__quote {
-  font-size: 36px;
-  max-width: 960px;
-  margin: 80px 0;
+  max-width: 1036px;
+  margin: 70px 0;
   text-align: center;
+  white-space: normal;
 }
 
 .testimonial__bio {
@@ -22,6 +50,7 @@
   justify-content: center;
   text-align: center;
   font-size: 20px;
+  margin-bottom: 80px;
 }
 
 .testimonial__bio p {
@@ -31,25 +60,64 @@
 }
 
 .testemonial__image {
-  background-color: rgb(34, 32, 32);
+  background-color: var(--primary);
   border-radius: 50%;
   overflow: hidden;
-  width: 200px;
-  height: 200px;
+  width: 170px;
+  height: 170px;
   position: relative;
   margin-bottom: 2em;
 }
 
-.testimonial__image img::before {
+.testimonial__arrow {
+  font-size: 56px;
+  cursor: pointer;
   position: absolute;
-  color: white;
-  top: 100px;
-  left: 50px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  outline: none;
+}
+
+.testimonial__arrow__backward {
+  left: 0;
+}
+
+.testimonial__arrow__forward {
+  right: 0;
 }
 
 @media screen and (max-width: 900px) {
-  .testimonial__quote {
+  .testimonial {
+  }
+
+  .testimonialtrack {
+    width: calc(100vw - 10vw);
+  }
+
+  .testemonial__quote {
     font-size: 22px;
-    /* font-weight: bold; */
+    margin-top: 0px;
+    margin-bottom: 50px;
+  }
+
+  .testemonial__image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .testimonial__arrow {
+    top: auto;
+    font-size: 30px;
+    bottom: 0px;
+    height: 56px;
+  }
+
+  .testimonial__bio {
+    font-size: 16px;
+    margin-bottom: 0;
   }
 }

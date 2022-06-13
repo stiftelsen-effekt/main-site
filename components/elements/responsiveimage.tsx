@@ -1,5 +1,5 @@
 import React from "react";
-import { useNextSanityImage } from "next-sanity-image";
+import { useNextSanityImage, UseNextSanityImageBuilder } from "next-sanity-image";
 import { config } from "../../lib/config";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image";
@@ -9,14 +9,18 @@ export const ResponsiveImage: React.FC<{
   alt?: string;
   onClick?: () => void;
   priority?: boolean;
-}> = ({ image, alt, onClick, priority }) => {
-  const imageProps = useNextSanityImage({ clientConfig: config }, image);
+  layout?: "intrinsic" | "fill" | "responsive" | "fixed";
+  urlBuilder?: UseNextSanityImageBuilder;
+}> = ({ image, alt, onClick, priority, layout = "fill", urlBuilder }) => {
+  const imageProps = useNextSanityImage({ clientConfig: config }, image, {
+    imageBuilder: urlBuilder,
+  });
 
   return (
     <Image
       {...imageProps}
-      layout="fill"
-      objectFit="contain"
+      layout={layout}
+      objectFit={layout === "fill" ? "contain" : "cover"}
       sizes="(max-width: 800px) 100vw, 800px"
       alt={alt || "Image"}
       onClick={onClick}

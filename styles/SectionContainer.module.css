@@ -1,5 +1,5 @@
 .inverted {
-  --primary: #fff;
+  --primary: #fafafa;
   --secondary: #000;
   background-color: var(--secondary);
   color: var(--primary);
@@ -8,7 +8,6 @@
 .section__container {
   width: 100%;
   padding: 0 5vw;
-  margin-bottom: 50px;
 }
 
 .divider {
@@ -19,9 +18,10 @@
 }
 
 .section__heading {
-  font-size: 16px;
+  font-size: 20px;
+  line-height: 32px;
   margin: 0 auto;
-  padding-top: 1rem;
+  padding-top: 28px;
   max-width: 1920px;
 }
 
@@ -31,8 +31,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 45px;
+  padding-bottom: 45px;
   margin: 0 auto;
   max-width: 1920px;
 }
@@ -43,6 +43,20 @@
 }
 
 @media only screen and (max-width: 900px) {
+  .section__heading {
+    font-size: 14px;
+    padding-top: 4px;
+  }
+
+  .section__container {
+    margin-bottom: 0;
+  }
+
+  .section__content {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
   .padded {
     padding-left: 0;
     padding-right: 0;

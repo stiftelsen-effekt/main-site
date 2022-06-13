@@ -21,7 +21,7 @@ export const PageHeader: React.FC<{
       </div>
       {hasmetacontent ? (
         <div>
-          {inngress ? <p>{inngress}</p> : null}
+          {inngress ? <p className="inngress">{inngress}</p> : null}
           {links ? <Links links={links} /> : null}
         </div>
       ) : null}

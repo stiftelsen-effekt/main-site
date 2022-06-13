@@ -19,6 +19,11 @@ export default {
       title: 'Intro section'
     },
     {
+      name: 'intervention_widget',
+      type: 'interventionwidget',
+      title: 'Intervention widget'
+    },
+    {
       name: 'salespitch',
       type: 'pointlist',
       title: 'Salespitch',
@@ -39,7 +44,7 @@ export default {
       name: 'testimonials',
       type: 'array',
       title: 'Testimonials',
-      of: [{ type: 'testimonial' }],
+      of: [{ type: 'reference', to: { type: 'testimonial' }}],
     },
     {
       name: 'slug',
