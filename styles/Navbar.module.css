@@ -1,12 +1,16 @@
+.container {
+  width: 100%;
+  padding: 0px 5vw;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 40px 5vw;
-  max-width: 1920px;
   transition: padding 200ms ease-in-out;
-  margin: 0 auto;
+  padding: 40px 0;
 }
 
 .navbar ul {
