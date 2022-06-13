@@ -7,7 +7,10 @@
 .wrapper h3 {
   margin-top: 50px;
   margin-bottom: 55px;
-  text-align: center;
+  text-align: left;
+  max-width: 575px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .grid {
@@ -34,7 +37,6 @@
   border-bottom: 1px solid var(--primary);
   background: var(--secondary);
   position: relative;
-  font-style: italic;
   width: 140px;
   text-align: right;
   padding-right: 34px;
@@ -49,6 +51,7 @@
   content: "kr";
   position: absolute;
   right: 6px;
+  bottom: 3px;
   font-size: 25px;
 }
 
@@ -126,6 +129,10 @@
 @media only screen and (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .wrapper h3 {
+    text-align: center;
   }
 
   .select {
