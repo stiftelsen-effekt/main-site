@@ -24,7 +24,7 @@ export const PaneTitle = styled.h2`
   font-weight: normal;
   margin-top: 0px;
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 export const BoldTitle = styled.p`
@@ -42,24 +42,9 @@ export const UnderTitle = styled.p`
   color: var(--primary);
 `;
 
-export const OrangeLink = styled.a`
-  margin-left: -368px;
-  top: -12px;
-  color: #ffaa2b;
-  display: inline;
-  text-decoration-color: #ffaa2b;
-  font-size: 15px;
-  position: relative;
-  bottom: 2px;
-
-  &:hover {
-    opacity: 0.5;
-  }
-`;
-
 export const HorizontalLine = styled.div`
   height: 1px;
-  background-color: #ffaa2b;
+  background-color: white;
   margin-top: 10px;
   margin-bottom: 10px;
   width: 100%;

@@ -6,13 +6,6 @@ export const SET_ANSWERED_REFERRAL = "SET_ANSWERRED_REFERRAL";
 export const SET_HEIGHT = "SET_HEIGHT";
 export const SET_LOADING = "SET_LOADING";
 
-interface SelectPrivacyPolicy {
-  type: typeof SELECT_PRIVACY_POLICY;
-  payload: {
-    privacyPolicy: boolean;
-  };
-}
-
 interface SetPaneNumber {
   type: typeof SET_PANE_NUMBER;
   payload: {
@@ -48,7 +41,6 @@ interface SetLoading {
 }
 
 export type LayoutActionTypes =
-  | SelectPrivacyPolicy
   | SetPaneNumber
   | IncrementCurrentPane
   | DecrementCurrentPane

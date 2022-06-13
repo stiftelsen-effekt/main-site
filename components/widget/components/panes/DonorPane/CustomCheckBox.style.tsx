@@ -18,13 +18,13 @@ export const CheckBoxWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
   border: 1px solid var(--primary);
 `;
 
 export const CheckMark = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   color: var(--primary);
   display: none;
 

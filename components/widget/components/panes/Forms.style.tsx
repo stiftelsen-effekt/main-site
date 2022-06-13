@@ -41,7 +41,6 @@ export const HiddenCheckBox = styled.input`
     cursor: pointer;
   }
   &:focus + span > span {
-    box-shadow: 0px 0px 0px 1.5px ${orange15};
   }
 `;
 

@@ -4,22 +4,12 @@ import {
   DECREMENT_CURRENT_PANE,
   INCREMENT_CURRENT_PANE,
   LayoutActionTypes,
-  SELECT_PRIVACY_POLICY,
   SET_ANSWERED_REFERRAL,
   SET_LOADING,
   SET_PANE_NUMBER,
 } from "./types";
 
 const actionCreator = actionCreatorFactory();
-
-export function selectPrivacyPolicy(privacyPolicy: boolean): LayoutActionTypes {
-  return {
-    type: SELECT_PRIVACY_POLICY,
-    payload: {
-      privacyPolicy,
-    },
-  };
-}
 
 export function setPaneNumber(paneNumber: number): LayoutActionTypes {
   return {
