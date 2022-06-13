@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../styles/Testemonial.module.css";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "./elements/responsiveimage";
+import testimonials from "../studio/schemas/types/testimonials";
 
 export interface Testimony {
   quotee: string;
@@ -16,7 +17,9 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
   return (
     <section className={styles.wrapper}>
       <button
-        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__backward}`}
+        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__backward} ${
+          currentTestimony === 0 ? styles.testimonial__arrow__hidden : ""
+        }`}
         onClick={() => setCurrentTestimony(Math.max(0, currentTestimony - 1))}
       >
         ←
@@ -42,7 +45,9 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
       </div>
 
       <button
-        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__forward}`}
+        className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__forward} ${
+          currentTestimony === testimonies.length - 1 ? styles.testimonial__arrow__hidden : ""
+        }`}
         onClick={() => setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1))}
       >
         →

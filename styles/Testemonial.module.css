@@ -80,6 +80,11 @@
   align-items: center;
   z-index: 10;
   outline: none;
+  transition: all 200ms;
+}
+
+.testimonial__arrow__hidden {
+  opacity: 0.3;
 }
 
 .testimonial__arrow__backward {
