@@ -25,8 +25,9 @@ export const DonorForm = styled.form`
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px var(--secondary) inset !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--secondary) inset !important;
     -webkit-text-fill-color: var(--primary) !important;
+    background-clip: content-box !important;
   }
 `;
 
