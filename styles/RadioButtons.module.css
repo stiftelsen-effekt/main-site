@@ -30,6 +30,12 @@
   font-size: 18px;
 }
 
+@media only screen and (max-width: 768px) {
+  .radiobuttonlabel {
+    font-size: 22px;
+  }
+}
+
 .radiobuttonlabel::before {
   content: "";
   width: 22px;

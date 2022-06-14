@@ -75,3 +75,19 @@ export const ActionBar = styled.div`
   padding-top: 30px;
   padding-bottom: 30px;
 `;
+
+export const InfoParagraph = styled.p`
+  margin-top: 30px;
+  white-space: normal;
+  font-size: 18px;
+  line-height: 30px;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 20px;
+    line-height: 30px;
+  }
+`;
+
+export const ShareSelectionWrapper = styled.div`
+  margin-top: 60px;
+`;

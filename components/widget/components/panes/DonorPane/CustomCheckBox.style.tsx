@@ -54,4 +54,9 @@ export const CheckBoxLabel = styled.p`
   a:link {
     text-decoration: underline;
   }
+
+  @media only screen and (max-width: 768px) {
+    font-size: 22px;
+    line-height: 30px;
+  }
 `;
