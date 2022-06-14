@@ -246,7 +246,7 @@ export const DonorPane: React.FC = () => {
                   Her finner du vår{" "}
                   <Link href={"/personvern"} passHref>
                     <a style={{ textDecoration: "underline" }} target={"_blank"}>
-                      personvernserklering ↗
+                      personvernserklæring ↗
                     </a>
                   </Link>
                 </span>
