@@ -18,7 +18,7 @@ export const DonorForm = styled.form`
     max-width: 380px;
     margin-bottom: 10px;
     outline: none;
-    font-family: "ES Klarheit Grotesk";
+    font-family: "ESKlarheitGrotesk";
   }
 
   input:-webkit-autofill,

@@ -108,7 +108,7 @@
 }
 
 .output .paragraphWrapper .paragraphNumber {
-  font-family: "ES Klarheit Kurrent";
+  font-family: "ESKlarheitKurrent";
   font-size: 128px;
   line-height: 110px;
   margin-right: 20px;
@@ -129,10 +129,6 @@
 @media only screen and (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
-  }
-
-  .wrapper h3 {
-    text-align: center;
   }
 
   .select {

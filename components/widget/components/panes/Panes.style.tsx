@@ -19,9 +19,8 @@ export const PaneContainer = styled.div`
 `;
 
 export const PaneTitle = styled.h2`
-  font-family: "ES Klarheit Kurrent";
+  font-family: "ESKlarheitKurrent";
   font-size: 27px;
-  font-weight: normal;
   margin-top: 0px;
   margin-top: 20px;
   margin-bottom: 20px;
