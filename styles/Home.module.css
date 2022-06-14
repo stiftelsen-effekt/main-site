@@ -1,5 +1,5 @@
 .hero {
-  height: calc(100vh - 165px);
+  height: calc(100vh - 300px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,7 +52,7 @@
 
 @media only screen and (max-width: 900px) {
   .hero {
-    height: calc(100vh - 165px);
+    height: calc(100vh - 240px);
     justify-content: flex-end;
   }
 
