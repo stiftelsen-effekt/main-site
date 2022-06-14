@@ -19,6 +19,7 @@ import { RadioButtonGroup } from "../../../../elements/radiobuttongroup";
 import { PaymentMethod } from "../../../types/Enums";
 import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
 import Link from "next/link";
+import { ToolTip } from "../../shared/ToolTip/ToolTip";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -43,7 +44,6 @@ export const DonorPane: React.FC = () => {
   const donor = useSelector((state: State) => state.donation.donor);
   const method = useSelector((state: State) => state.donation.method);
   const donation = useSelector((state: State) => state.donation);
-  const layoutState = useSelector((state: State) => state.layout);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [nameErrorAnimation, setNameErrorAnimation] = useState(false);
   const [emailErrorAnimation, setEmailErrorAnimation] = useState(false);
@@ -157,6 +157,8 @@ export const DonorPane: React.FC = () => {
                   ref={register({ required: true, minLength: 3 })}
                 />
                 {nameErrorAnimation && <ErrorField text="Ugyldig navn" />}
+              </InputFieldWrapper>
+              <InputFieldWrapper>
                 <input
                   name="email"
                   type="text"
@@ -189,10 +191,9 @@ export const DonorPane: React.FC = () => {
                     <CustomCheckBox
                       label="Jeg ønsker skattefradrag"
                       checked={taxDeductionChecked}
-                      showTooltip={taxDeductionChecked}
-                      tooltipText={tooltipText}
                     />
                   </CheckBoxWrapper>
+                  {taxDeductionChecked && <ToolTip text={tooltipText} />}
                   {watchAllFields.taxDeduction && (
                     <InputFieldWrapper>
                       <input
@@ -242,14 +243,14 @@ export const DonorPane: React.FC = () => {
                     checked={newsletterChecked}
                   />
                 </CheckBoxWrapper>
-                <span>
+                <div style={{ marginTop: "10px" }}>
                   Her finner du vår{" "}
                   <Link href={"/personvern"} passHref>
                     <a style={{ textDecoration: "underline" }} target={"_blank"}>
-                      personvernserklering ↗
+                      personvernserklæring ↗
                     </a>
                   </Link>
-                </span>
+                </div>
               </CheckBoxGroupWrapper>
             </div>
 

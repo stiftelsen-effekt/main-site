@@ -40,12 +40,9 @@ export const Datebox = styled.button`
 
 export const DateText = styled.p`
   display: inline-block;
-  margin: 0;
+  vertical-align: middle;
+  padding-bottom: 12px;
   font-size: 20px;
-  font-family: "Roboto", Arial, sans-serif;
-
-  white-space: pre-wrap;
-  line-height: 14px;
 `;
 
 export const DateTextWrapper = styled.div`

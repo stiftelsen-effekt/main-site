@@ -7,6 +7,7 @@ import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
 import { InfoText } from "../PaymentPane.style";
+import { DateText } from "../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
 import {
   formatChargeDay,
@@ -36,7 +37,7 @@ export const ResultPane: React.FC = () => {
               <div style={{ paddingTop: 20 }}>
                 <RadioButtonGroup
                   options={[
-                    { title: "Begynn tidligst mulig", value: 0 },
+                    { title: "Tidligst mulig", value: 0 },
                     { title: "Velg annen trekkdag", value: 1 },
                   ]}
                   selected={chooseChargeDay}
@@ -45,7 +46,7 @@ export const ResultPane: React.FC = () => {
               </div>
               <div style={{ paddingTop: 40 }}>
                 {chooseChargeDay === 0 && (
-                  <span>{formatChargeDay(getEarliestPossibleChargeDate())}</span>
+                  <DateText>{formatChargeDay(getEarliestPossibleChargeDate())}</DateText>
                 )}
                 {chooseChargeDay === 1 && <AvtaleGiroDatePicker />}
               </div>

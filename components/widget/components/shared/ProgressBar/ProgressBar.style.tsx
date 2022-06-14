@@ -59,6 +59,19 @@ export const ActionButton = styled.button`
   outline: none;
 `;
 
+export const TooltipWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: var(--secondary);
+  padding: 40px;
+  z-index: 100;
+  font-size: 18px;
+  border-radius: 10px;
+`;
+
 interface ActionButtonProps {
   active?: boolean;
 }

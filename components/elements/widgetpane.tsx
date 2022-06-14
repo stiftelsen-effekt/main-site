@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { X } from "react-feather";
-import elements from "../../styles/Elements.module.css";
+import styles from "../../styles/WidgetPane.module.css";
 import { WidgetContext } from "../main/layout";
 import { Widget } from "../widget/components/Widget";
 
@@ -28,11 +27,11 @@ export const WidgetPane: React.FC = () => {
 
   return (
     <div
-      className={`${elements.widgetPane} ${widgetOpen ? elements.widgetPaneOpen : null}`}
+      className={`${styles.widgetPane} ${widgetOpen ? styles.widgetPaneOpen : null}`}
       style={paneStyle}
     >
       <div
-        className={elements.widgetPaneHeader}
+        className={styles.widgetPaneHeader}
         onTouchStart={(e) => {
           setInitialY(e.touches[0].clientY);
           setCurrentY(e.touches[0].clientY);
@@ -51,7 +50,7 @@ export const WidgetPane: React.FC = () => {
           setCurrentY(0);
         }}
       ></div>
-      <div className={elements.widgetPaneContent}>
+      <div className={styles.widgetPaneContent}>
         <Widget />
       </div>
     </div>

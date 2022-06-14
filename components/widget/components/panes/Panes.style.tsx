@@ -57,8 +57,7 @@ export const VerticalLine = styled.div`
 `;
 
 export const ErrorMessage = styled.div`
-  font-size: 12px;
-  color: red;
+  font-size: 20px;
   padding-left: 2px;
 `;
 

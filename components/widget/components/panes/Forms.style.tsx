@@ -12,7 +12,7 @@ export const Form = styled.form`
 export const InputFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 export const TextField = styled.input`
@@ -26,8 +26,10 @@ export const TextField = styled.input`
 `;
 
 export const CheckBoxWrapper = styled.div`
-  display: block;
+  display: inline-flex;
+  vertical-align: middle;
   margin-bottom: 12px;
+  position: relative;
 `;
 
 export const HiddenCheckBox = styled.input`

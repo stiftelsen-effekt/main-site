@@ -54,4 +54,20 @@ export const CheckBoxLabel = styled.p`
   a:link {
     text-decoration: underline;
   }
+
+  @media only screen and (max-width: 768px) {
+    font-size: 22px;
+    line-height: 30px;
+  }
+`;
+
+export const InputWrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+`;
+
+export const ToolTipWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
 `;

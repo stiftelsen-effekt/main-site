@@ -43,19 +43,21 @@ export const VippsDatePicker: React.FC = () => {
   return (
     <Wrapper>
       <DateTextWrapper>
-        <DateText>
-          {vippsAgreement.initialCharge &&
-            `Første trekk blir i dag, deretter den ${
-              selectedChargeDay === 0 ? "siste" : `${selectedChargeDay}.`
-            } hver måned `}
-          {!vippsAgreement.initialCharge && nextChargeDate && "Første trekk blir "}
-          {!vippsAgreement.initialCharge && isIrregularChargeDay(selectedChargeDay)
-            ? nextChargeDate && <strong>{`${formatDateText(nextChargeDate)} `}</strong>
-            : !vippsAgreement.initialCharge &&
-              nextChargeDate &&
-              `${formatDateText(nextChargeDate)} `}
-        </DateText>
-        {isIrregularChargeDay(selectedChargeDay) && <ToolTip text={tooltipText} />}
+        <div>
+          <DateText>
+            {vippsAgreement.initialCharge &&
+              `Første trekk blir i dag, deretter den ${
+                selectedChargeDay === 0 ? "siste" : `${selectedChargeDay}.`
+              } hver måned `}
+            {!vippsAgreement.initialCharge && nextChargeDate && "Første trekk blir "}
+            {!vippsAgreement.initialCharge && isIrregularChargeDay(selectedChargeDay)
+              ? nextChargeDate && <strong>{`${formatDateText(nextChargeDate)} `}</strong>
+              : !vippsAgreement.initialCharge &&
+                nextChargeDate &&
+                `${formatDateText(nextChargeDate)} `}
+          </DateText>
+          {isIrregularChargeDay(selectedChargeDay) && <ToolTip text={tooltipText} />}
+        </div>
         {showCheckBox(selectedChargeDay) && (
           <CheckBoxWrapper>
             <HiddenCheckBox

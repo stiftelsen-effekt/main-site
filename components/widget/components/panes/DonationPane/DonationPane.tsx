@@ -6,7 +6,13 @@ import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { State } from "../../../store/state";
 import { RecurringDonation, ShareType } from "../../../types/Enums";
 import { SharesSelection } from "./ShareSelection";
-import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
+import {
+  ActionBar,
+  InfoParagraph,
+  ShareSelectionWrapper,
+  SumButtonsWrapper,
+  SumWrapper,
+} from "./DonationPane.style";
 import { SharesSum } from "./SharesSum";
 import { nextPane } from "../../../store/layout/actions";
 import { EffektButton, EffektButtonType } from "../../../../elements/effektbutton";
@@ -68,17 +74,27 @@ export const DonationPane: React.FC = () => {
             </span>
           </SumWrapper>
 
-          <RadioButtonGroup
-            options={[
-              { title: "Bruk anbefalt fordeling", value: ShareType.STANDARD },
-              { title: "Jeg vil velge selv", value: ShareType.CUSTOM },
-            ]}
-            selected={donation.shareType}
-            onSelect={(option) => {
-              dispatch(setShareType(option as ShareType));
-            }}
-          />
+          <ShareSelectionWrapper>
+            <RadioButtonGroup
+              options={[
+                { title: "Smart fordeling", value: ShareType.STANDARD },
+                { title: "Jeg vil velge selv", value: ShareType.CUSTOM },
+              ]}
+              selected={donation.shareType}
+              onSelect={(option) => {
+                dispatch(setShareType(option as ShareType));
+              }}
+            />
+          </ShareSelectionWrapper>
 
+          {donation.shareType === ShareType.STANDARD && (
+            <div>
+              <InfoParagraph>
+                Smart fordeling sørger for at du kontinuerlig benytter deg av de aller siste og mest
+                oppdaterte tallene for hvordan du kan få størst mulig effekt av donasjonen din.{" "}
+              </InfoParagraph>
+            </div>
+          )}
           {donation.shareType === ShareType.CUSTOM && (
             <div>
               <SharesSelection />
