@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
@@ -11,6 +11,8 @@ import { fetchReferralsAction } from "../store/referrals/actions";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { WidgetContext } from "../../main/layout";
 import { useDebouncedCallback } from "use-debounce";
+
+export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
 
 export const Widget: React.FC = () => {
   const dispatch = useDispatch();
@@ -53,6 +55,8 @@ export const Widget: React.FC = () => {
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
+  const [tooltip, setTooltip] = useState<string | null>(null);
+
   return (
     <div
       id="widget"
@@ -63,13 +67,15 @@ export const Widget: React.FC = () => {
         flexBasis: `${scaledHeight}px`,
       }}
     >
-      <ProgressBar />
-      <Carousel minHeight={scaledHeight - 116}>
-        <DonationPane />
-        <DonorPane />
-        {/* answeredReferral !== true && <ReferralPane /> */}
-        <PaymentPane />
-      </Carousel>
+      <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
+        <ProgressBar />
+        <Carousel minHeight={scaledHeight - 116}>
+          <DonationPane />
+          <DonorPane />
+          {/* answeredReferral !== true && <ReferralPane /> */}
+          <PaymentPane />
+        </Carousel>
+      </WidgetTooltipContext.Provider>
     </div>
   );
 };

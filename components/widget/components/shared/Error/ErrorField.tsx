@@ -5,9 +5,6 @@ export const ErrorWrapper = styled.div`
   padding-top: 12px;
   padding-bottom: 8px;
   margin-bottom: 10px;
-  background: var(--primary);
-  color: var(--secondary);
-  padding-left: 20px;
 `;
 
 export const ErrorMessage = styled.div`

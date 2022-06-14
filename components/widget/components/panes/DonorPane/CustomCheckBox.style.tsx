@@ -60,3 +60,14 @@ export const CheckBoxLabel = styled.p`
     line-height: 30px;
   }
 `;
+
+export const InputWrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+`;
+
+export const ToolTipWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;

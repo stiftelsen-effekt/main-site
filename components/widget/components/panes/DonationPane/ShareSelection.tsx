@@ -22,7 +22,6 @@ export const SharesSelection: React.FC = () => {
           </label>
           <input
             name={share.id.toString()}
-            type="number"
             placeholder="0"
             value={share.split.toString()}
             onChange={(e) => {
