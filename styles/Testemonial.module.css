@@ -97,6 +97,7 @@
 
 @media screen and (max-width: 900px) {
   .testimonial {
+    padding-bottom: 60px;
   }
 
   .testimonialtrack {
