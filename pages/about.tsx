@@ -45,7 +45,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
           <div className={styles.links}>
             <Links links={header.links} />
           </div>
-          <div>
+          <div className={styles.intro}>
             <p className="inngress">{header.inngress}</p>
             <div className={styles.maincontent}>
               <PortableText blocks={data.about[0].content}></PortableText>
