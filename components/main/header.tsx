@@ -28,11 +28,15 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[] }> = ({ ch
     }
   }, [lastScrollPosition, setNavBarVisible]);
 
-  const debounced = useDebouncedCallback(() => {
-    navBarCheck();
-    navBarVisibleCheck();
-    setLastScrollPosition(window.scrollY);
-  }, 250);
+  const debounced = useDebouncedCallback(
+    () => {
+      navBarCheck();
+      navBarVisibleCheck();
+      setLastScrollPosition(window.scrollY);
+    },
+    250,
+    { maxWait: 250 },
+  );
   useEffect(navBarCheck, [router.query.sluq, navBarCheck]);
 
   useEffect(() => {
