@@ -23,6 +23,7 @@
 .contributor__email {
   margin-top: auto;
   justify-self: flex-end;
+  word-break: break-word;
 }
 
 @media (max-width: 900px) {
