@@ -96,7 +96,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "40 000kr");
+      .should("contain.text", "40 000 kr");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
