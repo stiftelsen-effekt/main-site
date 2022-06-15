@@ -15,12 +15,14 @@
 }
 .contributor__subrole,
 .contributor__additional {
-  min-height: 1.357rem;
+  margin-top: 4px;
   word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .contributor__email {
-  margin-top: 14px;
+  margin-top: auto;
+  justify-self: flex-end;
 }
 
 @media (max-width: 900px) {
@@ -31,5 +33,7 @@
   }
 
   .contributor__email {
+    /* Mobile smallsize */
+    font-size: 12px;
   }
 }

@@ -27,7 +27,8 @@ export default {
     },
     {
       name: 'subrole',
-      type: 'string',
+      type: 'text',
+      rows: 3,
       title: 'Sub-role'
     },
     {
