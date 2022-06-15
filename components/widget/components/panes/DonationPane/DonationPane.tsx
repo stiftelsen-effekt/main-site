@@ -17,7 +17,7 @@ import { SharesSum } from "./SharesSum";
 import { nextPane } from "../../../store/layout/actions";
 import { EffektButton, EffektButtonType } from "../../../../elements/effektbutton";
 import { RadioButtonGroup } from "../../../../elements/radiobuttongroup";
-import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
 
 export const DonationPane: React.FC = () => {
   const dispatch = useDispatch();

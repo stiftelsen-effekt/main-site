@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
-import {
-  ReferralButton,
-  ReferralsWrapper,
-  ReferralButtonsWrapper,
-} from "./ReferralPane.style";
+import { ReferralButton, ReferralsWrapper, ReferralButtonsWrapper } from "./ReferralPane.style";
 import { submitReferralAction } from "../../../store/referrals/actions";
-import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { nextPane } from "../../../store/layout/actions";
 import { TextInput } from "../../shared/Input/TextInput";
 import { LoadingCircle } from "../../shared/LoadingCircle/LoadingCircle";
@@ -34,7 +30,7 @@ export const ReferralPane: React.FC = () => {
                       dispatch(
                         submitReferralAction.started({
                           referralID: ref.id,
-                        })
+                        }),
                       );
                     }}
                   >
@@ -68,7 +64,7 @@ export const ReferralPane: React.FC = () => {
                     submitReferralAction.started({
                       referralID: 10,
                       comment: otherInputValue,
-                    })
+                    }),
                   );
                 }}
               >
