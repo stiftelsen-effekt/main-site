@@ -1,16 +1,30 @@
 .wrapper {
   margin-top: 60px;
-  min-width: 90vw;
+  min-width: 100vw;
   margin-bottom: 50px;
+  overflow-x: auto;
+  position: relative;
+  left: -5vw;
+  padding-left: 5vw;
 }
 
 .bars {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-auto-columns: minmax(80px, 120px);
   align-items: flex-end;
+  grid-auto-flow: column;
   height: 140px;
-  border-bottom: 1px solid var(--primary);
+  position: relative;
+}
+
+.bars::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: -5vw;
+  height: 1px;
+  width: 5vw;
+  background: var(--primary);
 }
 
 .bar {
@@ -19,24 +33,28 @@
 }
 
 .labels {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-auto-columns: minmax(80px, 120px);
+  align-items: flex-end;
+  grid-auto-flow: column;
 }
 
 .label {
-  width: 50px;
   white-space: nowrap;
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--primary);
 }
 
 .label span:first-child {
   font-weight: 600;
   font-size: 14px;
+  line-height: 20px;
 }
 
 .label span:last-child {
   font-size: 11px;
+  line-height: 16px;
+  margin-bottom: 8px;
 }

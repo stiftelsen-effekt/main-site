@@ -22,7 +22,7 @@ export const DonationsYearlyGraph: React.FC<{ data: { year: string; sum: number 
         {data.map((el) => (
           <div key={el.year} className={style.label}>
             <span>{el.year}</span>
-            <span>{thousandize(el.sum)} kr</span>
+            <span>{thousandize(Math.round(el.sum))} kr</span>
           </div>
         ))}
       </div>

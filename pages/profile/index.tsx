@@ -74,7 +74,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
   else setActivity(false);
 
   const isTotal = typeof router.query.year === "undefined";
-  const years = getYears(donor);
+  const years = getYears(donor, donations);
   const firstYear = Math.min(...years);
   const sum = getDonationSum(aggregatedDonations, router.query.year as string);
   const distributionsMap = new Map<string, Distribution>();
@@ -217,19 +217,25 @@ const getYearlySum = (
   }));
 };
 
-const getYears = (donor: Donor) => {
+const getYears = (donor: Donor, donations: Donation[]) => {
   const registeredYear = new Date(donor.registered).getFullYear();
+  const minimumDonationYear = Math.min(
+    ...donations.map((donation) => new Date(donation.timestamp).getFullYear()),
+  );
+  const minYear = Math.min(registeredYear, minimumDonationYear);
   const currentYear = new Date().getFullYear();
   const years: number[] = [];
-  for (let i = registeredYear; i <= currentYear; i++) {
+  for (let i = minYear; i <= currentYear; i++) {
     years.push(i);
   }
   return years;
 };
 
 const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: string) => {
-  return aggregatedDonations.reduce(
-    (acc, curr) => (year === curr.year.toString() || !year ? acc + parseFloat(curr.value) : acc),
-    0,
+  return Math.round(
+    aggregatedDonations.reduce(
+      (acc, curr) => (year === curr.year.toString() || !year ? acc + parseFloat(curr.value) : acc),
+      0,
+    ),
   );
 };
