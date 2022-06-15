@@ -6,6 +6,11 @@ import { Link } from 'react-feather'
 export const LinksPreview = React.forwardRef((props, ref) => {
     const links = props.value.links
 
+    if (!links)
+      return (<Flex direction={'row'} align={'center'}>
+      <Link size={24} />
+      </Flex>)
+
     return <Flex direction={'row'} align={'center'}>
         <Link size={24} />
         <Stack rows={links.length} space={3} marginLeft={3}>
