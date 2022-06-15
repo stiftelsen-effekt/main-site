@@ -132,7 +132,7 @@
     background: var(--secondary);
     width: 100vw;
     border-bottom: 1px solid var(--primary);
-    padding-left: 30px;
+    padding-left: 5vw;
     box-sizing: border-box;
     padding-bottom: 0;
     z-index: 10;
@@ -148,6 +148,11 @@
     padding: 0;
   }
 
+  .menu ul li {
+    font-size: 18px;
+    width: 60px;
+  }
+
   .menu-selected {
     border-bottom-width: 2px;
   }
@@ -157,7 +162,6 @@
   }
 
   .totals {
-    margin-top: 50px;
     align-items: flex-end;
   }
 

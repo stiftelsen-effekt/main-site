@@ -10,7 +10,6 @@
 
 @media only screen and (max-width: 900px) {
   .container {
-    padding-top: 40px;
   }
 
   .header {
@@ -24,7 +23,7 @@
     background: var(--secondary);
     width: 100vw;
     border-bottom: 1px solid var(--primary);
-    padding-left: 30px;
+    padding-left: 5vw;
     box-sizing: border-box;
     padding-bottom: 0;
     z-index: 10;
