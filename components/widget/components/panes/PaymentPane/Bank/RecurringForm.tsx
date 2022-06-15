@@ -6,7 +6,7 @@ import { AvtaleGiroButton } from "./RecurringForm.style";
 import { API_URL } from "../../../../config/api";
 import { draftAvtaleGiroAction } from "../../../../store/donation/actions";
 import { EffektButton } from "../../../../../elements/effektbutton";
-import { SubmitButton } from "../../../shared/Buttons/NavigationButtons.style";
+import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;

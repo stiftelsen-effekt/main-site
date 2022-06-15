@@ -17,7 +17,7 @@ import { CustomCheckBox } from "./CustomCheckBox";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { RadioButtonGroup } from "../../../../elements/radiobuttongroup";
 import { PaymentMethod } from "../../../types/Enums";
-import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import Link from "next/link";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 
