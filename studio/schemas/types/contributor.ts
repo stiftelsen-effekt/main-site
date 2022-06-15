@@ -32,6 +32,11 @@ export default {
       title: 'Sub-role'
     },
     {
+      name: 'order',
+      type: 'number',
+      title: 'Order',
+    },
+    {
       name: 'additional',
       type: 'string',
       title: 'Additional info'

@@ -121,7 +121,7 @@ const fetchAboutUs = groq`
     _id,
     title,
     id,
-    "contributors": *[ _type == "contributor" && role._ref == ^._id ] {
+    "contributors": *[ _type == "contributor" && role._ref == ^._id ] | order(order desc) {
       _id,
       image,
       name,

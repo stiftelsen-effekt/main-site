@@ -13,7 +13,7 @@ export const Contributors: React.FC<Role> = ({ title, contributors }) => {
     <div className={styles.contributors}>
       <h5 className={styles.contributors__title}>{title}</h5>
       <div className={styles.contributors__list}>
-        {[...contributors, ...contributors, ...contributors].map((member) => (
+        {contributors.map((member) => (
           <Contributor key={member._id} {...member} />
         ))}
       </div>
