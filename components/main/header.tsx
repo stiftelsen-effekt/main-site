@@ -22,7 +22,7 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
 
   const navBarVisibleCheck = useCallback(() => {
     if (typeof window !== "undefined") {
-      if (window.scrollY > lastScrollPosition) {
+      if (window.scrollY > lastScrollPosition && window.scrollY > 160) {
         setNavBarVisible(false);
       } else if (window.scrollY == lastScrollPosition) {
       } else {
