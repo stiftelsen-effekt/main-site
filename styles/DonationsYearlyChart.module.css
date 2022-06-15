@@ -50,8 +50,11 @@
 .label span:first-child {
   font-weight: 600;
   font-size: 14px;
+  line-height: 20px;
 }
 
 .label span:last-child {
   font-size: 11px;
+  line-height: 16px;
+  margin-bottom: 8px;
 }
