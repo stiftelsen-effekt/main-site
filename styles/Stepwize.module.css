@@ -29,7 +29,7 @@ This will need a review.*/
   margin-bottom: 0;
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1440px) and (min-width: 901px) {
   .step__subheading {
     margin-bottom: 20px;
   }

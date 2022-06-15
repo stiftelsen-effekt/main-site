@@ -95,7 +95,7 @@
   right: 0;
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1440px) and (min-width: 901px) {
   .testemonial__quote {
     max-width: 860px;
   }

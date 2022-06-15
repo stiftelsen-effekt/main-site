@@ -248,7 +248,7 @@
   }
 }
 
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: 1440px) and (min-width: 901px) {
   .navbar .logoWrapper {
     width: 200px;
   }

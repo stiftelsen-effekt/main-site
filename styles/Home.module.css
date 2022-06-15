@@ -61,8 +61,10 @@
     line-height: 56px;
   }
 
-  .subheading {
+  p.subheading {
     max-width: 230px;
+    font-size: 16px;
+    line-height: 26px;
   }
 
   .teasers div:nth-child(2n) > div:nth-child(1) {
@@ -81,7 +83,7 @@
   }
 }
 
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: 1440px) and (min-width: 901px) {
   .header h1 {
     font-size: 80px;
     line-height: 110%;
