@@ -87,6 +87,7 @@
     line-height: 110%;
     max-width: 700px;
     margin-bottom: 0;
+    margin-top: 80px;
   }
 
   .teasers > div:nth-child(2n) > div:nth-child(2) {
