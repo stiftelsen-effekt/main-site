@@ -21,7 +21,7 @@ export const ResponsiveImage: React.FC<{
       {...imageProps}
       layout={layout}
       objectFit={layout === "fill" ? "contain" : "cover"}
-      sizes="(max-width: 800px) 100vw, 800px"
+      sizes="100vw, 1920px, 1440px, 800px, 400px"
       alt={alt || "Image"}
       onClick={onClick}
       priority={priority}
