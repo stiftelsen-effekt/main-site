@@ -23,7 +23,9 @@ export const DonationsDistributionGraph: React.FC<{ sum: string; distribution: D
           >
             <div key={dist.name} className={style.label}>
               <div>{dist.name}</div>
-              <div>{thousandize((parseFloat(dist.share) / 100) * parseFloat(sum))} kr</div>
+              <div>
+                {thousandize(Math.round((parseFloat(dist.share) / 100) * parseFloat(sum)))} kr
+              </div>
             </div>
           </div>
         ))}

@@ -31,7 +31,7 @@ export const DonationList: React.FC<{
       id: donation.id.toString(),
       cells: [
         shortDate(donation.timestamp),
-        thousandize(Math.round(parseFloat(donation.sum))) + "kr",
+        thousandize(Math.round(parseFloat(donation.sum))) + " kr",
         donation.paymentMethod,
         donation.KID,
       ],
