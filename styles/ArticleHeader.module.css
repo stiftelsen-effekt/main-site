@@ -23,7 +23,6 @@
   max-width: 740px;
   margin-top: 10px;
   margin-bottom: 190px;
-  font-size: 24px;
 }
 
 .articleheader div span {
@@ -38,6 +37,18 @@
 
 .articleheader.pageheadermeta div:last-child {
   margin-bottom: 70px;
+}
+
+@media only screen and (max-width: 1440px) and (min-width: 901px) {
+  .articleheader div p {
+    margin-bottom: 40px;
+  }
+
+  .articleheader h1 {
+    font-size: 72px;
+    line-height: 110%;
+    margin-bottom: 50px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -59,6 +70,8 @@
     margin-bottom: 20px;
     text-align: left;
     word-break: break-word;
+    font-size: 48px;
+    line-height: 58px;
   }
 
   .articleheader {
@@ -72,13 +85,13 @@
   .articleheader div p {
     margin-top: 0;
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   .articleheader div span {
     margin-top: 0;
     font-size: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     text-align: left;
   }
 }
