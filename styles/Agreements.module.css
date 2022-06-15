@@ -1,3 +1,8 @@
+.header {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
 .menu {
   display: none;
   margin-bottom: 12px;

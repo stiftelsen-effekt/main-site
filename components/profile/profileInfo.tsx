@@ -15,7 +15,7 @@ export const ProfileInfo: React.FC = () => {
   const { donor: initialDonor, setDonor: setGlobalDonor } = useContext(DonorContext);
   const [donor, setDonor] = useState<Donor | null>(initialDonor);
 
-  if (!donor || !user) return <div>Whaaat..</div>;
+  if (!donor || !user) return <div>Noe gikk galt.</div>;
 
   const saveDonor = async () => {
     const token = await getAccessTokenSilently();
@@ -30,7 +30,7 @@ export const ProfileInfo: React.FC = () => {
 
   return (
     <>
-      <h1 className={style.header}>Hei {donor.name.split(" ")[0]}!</h1>
+      <h3 className={style.header}>Hei {donor.name.split(" ")[0]}!</h3>
       <section className={style.personalInfo}>
         Ditt navn <br />
         <input

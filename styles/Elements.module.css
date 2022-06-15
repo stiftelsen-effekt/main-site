@@ -112,7 +112,7 @@
   height: 48px;
   background: var(--primary);
   border-radius: 50%;
-  z-index: 100;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;

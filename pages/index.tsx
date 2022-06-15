@@ -60,7 +60,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <MainHeader>
+      <MainHeader hideOnScroll={true}>
         {/*<CookieBanner />*/}
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>

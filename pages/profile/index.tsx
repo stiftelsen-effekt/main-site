@@ -120,7 +120,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <MainHeader>
+      <MainHeader hideOnScroll={false}>
         <Navbar logo={settings.logo} />
         <DonationYearMenu
           years={years}

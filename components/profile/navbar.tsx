@@ -15,14 +15,13 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
 
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
-      <nav
-        className={`${styles.navbar} ${expandMenu ? styles.navbarExpanded : ""} `}
-        data-cy="navbar"
-      >
+      <nav className={`${styles.navbar}`} data-cy="navbar">
         <div className={styles.logoWrapper}>
-          <Link href="/" passHref>
-            <ResponsiveImage image={logo} onClick={() => setExpandMenu(false)} priority />
-          </Link>
+          <div className={styles.logoWrapperImage}>
+            <Link href="/" passHref>
+              <ResponsiveImage image={logo} onClick={() => setExpandMenu(false)} priority />
+            </Link>
+          </div>
           <button className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
             {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
           </button>

@@ -25,10 +25,11 @@ import { footerQuery } from "../../components/footer";
 import { MainHeader } from "../../components/main/header";
 import { Navbar } from "../../components/profile/navbar";
 
-const Agreements: LayoutPage = () => {
+const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
+  const settings = data.settings[0];
 
   const {
     loading: avtaleGiroLoading,
@@ -79,7 +80,7 @@ const Agreements: LayoutPage = () => {
     return (
       <>
         <PageContent>
-          <h1>Faste avtaler</h1>
+          <h3>Faste avtaler</h3>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Spinner />
           </div>
@@ -102,8 +103,8 @@ const Agreements: LayoutPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <MainHeader>
-        <Navbar />
+      <MainHeader hideOnScroll={false}>
+        <Navbar logo={settings.logo} />
         <AgreementsMenu
           selected={selected}
           onChange={(selected) => setSelected(selected)}
@@ -112,7 +113,7 @@ const Agreements: LayoutPage = () => {
 
       <PageContent>
         <div className={styles.container}>
-          <h1 className={styles.header}>Faste avtaler</h1>
+          <h3 className={styles.header}>Faste avtaler</h3>
 
           {pendingCount >= 1 ? (
             <InfoBox>
@@ -168,6 +169,9 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchProfilePage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    logo,
+  },
   ${footerQuery}
 }
 `;
