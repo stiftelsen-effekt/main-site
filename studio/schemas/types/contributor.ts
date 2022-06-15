@@ -38,7 +38,8 @@ export default {
     },
     {
       name: 'additional',
-      type: 'string',
+      type: 'text',
+      rows: 3,
       title: 'Additional info'
     }
   ]

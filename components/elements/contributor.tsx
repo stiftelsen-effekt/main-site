@@ -34,7 +34,7 @@ export const Contributor: React.FC<ContributorType> = ({
       <span className={styles.contributor__title}>{name}</span>
       <span className={styles.contributor__subrole + " detailheader"}>{subrole ?? ""}</span>
       <span className={styles.contributor__additional + " detailheader"}>{additional ?? ""}</span>
-      <div className={styles.contributor__email}>{email ?? ""}</div>
+      <span className={styles.contributor__email + " caption"}>{email ?? ""}</span>
     </div>
   );
 };
