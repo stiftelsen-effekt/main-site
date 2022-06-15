@@ -23,9 +23,10 @@ import { footerQuery } from "../../components/footer";
 import { MainHeader } from "../../components/main/header";
 import { Navbar } from "../../components/profile/navbar";
 
-const Home: LayoutPage = () => {
+const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const router = useRouter();
+  const settings = data.settings[0];
   const { donor } = useContext(DonorContext);
   const { setActivity } = useContext(ActivityContext);
 
@@ -61,7 +62,7 @@ const Home: LayoutPage = () => {
     return (
       <>
         <PageContent>
-          <h1 className={style.header}>Donasjoner</h1>
+          <h3 className={style.header}>Donasjoner</h3>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Spinner />
           </div>
@@ -120,7 +121,7 @@ const Home: LayoutPage = () => {
       </Head>
 
       <MainHeader>
-        <Navbar />
+        <Navbar logo={settings.logo} />
         <DonationYearMenu
           years={years}
           selected={(router.query.year as string) || "total"}
@@ -129,7 +130,7 @@ const Home: LayoutPage = () => {
       </MainHeader>
 
       <PageContent>
-        <h1 className={style.header}>Donasjoner</h1>
+        <h3 className={style.header}>Donasjoner</h3>
 
         <DonationYearMenu years={years} selected={(router.query.year as string) || "total"} />
 
@@ -164,6 +165,9 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchProfilePage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    logo,
+  },
   ${footerQuery}
 }
 `;

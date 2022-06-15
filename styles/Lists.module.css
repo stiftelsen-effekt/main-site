@@ -1,6 +1,5 @@
 .table {
   width: 100%;
-  font-size: 14px;
 }
 
 .table th {
@@ -27,12 +26,10 @@
 
 .gridContainer section.header h2 {
   margin: 0;
-  font-size: 36px;
 }
 
 .gridContainer section.header p {
   margin: 0;
-  font-size: 12px;
 }
 
 .gridContainer section.header p div {

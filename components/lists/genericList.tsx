@@ -19,7 +19,7 @@ export const GenericList: React.FC<{
   return (
     <div className={style.gridContainer} key={title} data-cy="generic-list">
       <section className={style.header} data-cy="generic-list-header">
-        <h2>{title}</h2>
+        <h3>{title}</h3>
         <p>{supplementalInformation}</p>
       </section>
       <section>
