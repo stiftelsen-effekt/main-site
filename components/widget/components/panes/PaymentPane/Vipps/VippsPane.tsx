@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButtonGroup } from "../../../../../elements/radiobuttongroup";
+import { WidgetContext } from "../../../../../main/layout";
 import { draftAgreementAction, setVippsAgreement } from "../../../../store/donation/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
-import { SubmitButton } from "../../../shared/Buttons/NavigationButtons.style";
+import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 import { ErrorField } from "../../../shared/Error/ErrorField";
 import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
@@ -16,6 +17,7 @@ export const VippsPane: React.FC = () => {
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
   const [draftError, setDraftError] = useState(false);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   return (
     <Pane>

@@ -1,5 +1,6 @@
 import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
+import { registerDonationAction } from "../donation/actions";
 import { Layout } from "../state";
 import { fetchOrganizationsAction } from "./actions";
 import {
@@ -50,6 +51,12 @@ export const layoutReducer: Reducer<Layout, LayoutActionTypes> = (
       return { ...state, height: action.payload.height };
     case SET_LOADING:
       return { ...state, loading: action.payload };
+    case registerDonationAction.started.type:
+      return { ...state, loading: true };
+    case registerDonationAction.done.type:
+      return { ...state, loading: false };
+    case registerDonationAction.failed.type:
+      return { ...state, loading: false };
     default:
       return state;
   }
