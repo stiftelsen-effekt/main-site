@@ -41,6 +41,7 @@ import testimonials from './types/testimonials'
 import articleheader from './types/articleheader'
 import article from './pages/article'
 import articles from './pages/articles'
+import normalimage from './types/normalimage'
 
 export const pages = [
   generic,
@@ -78,6 +79,7 @@ export const types = [
   paragraph,
   splitview,
   fullimage,
+  normalimage,
   column,
   columns,
   intervention,

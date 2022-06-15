@@ -38,6 +38,7 @@ export default {
         { type: 'links' },
         { type: 'introsection' }, 
         { type: 'fullimage' },
+        { type: 'normalimage' },
         { type: 'questionandanswergroup' },
         { type: 'pointlist' },
         { type: 'videoembed' },
