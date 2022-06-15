@@ -85,7 +85,12 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
               Personvern
             </Link>
           </li>
-          <li>&#169; 2022 Gi Effektivt</li>
+          <li>
+            {" "}
+            <Link href="/betingelser" passHref>
+              Vilkår
+            </Link>
+          </li>
           <li>&nbsp;</li>
           <li>
             <a href="#top">Til toppen &uarr;</a>
