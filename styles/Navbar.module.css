@@ -248,6 +248,30 @@
   }
 }
 
+@media only screen and (max-width: 1440px) {
+  .navbar .logoWrapper {
+    width: 200px;
+  }
+
+  .navbar ul li {
+    font-size: 15px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .navbar ul li .submenu ul li {
+    font-size: 15px;
+    padding-left: 18px;
+    padding-right: 18px;
+    margin-top: 6px;
+  }
+
+  .navbar ul li .btnlogin {
+    margin-right: 15px;
+    margin-left: 30px;
+  }
+}
+
 @media only screen and (min-width: 900px) {
   .navbar ul li > div {
     height: auto !important;

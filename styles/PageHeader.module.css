@@ -32,7 +32,6 @@
 
 .pageheader div p {
   max-width: 560px;
-  font-size: 28px;
   margin-bottom: 0;
   margin-top: 220px;
   white-space: pre-wrap;
@@ -43,12 +42,6 @@
   max-width: 740px;
   margin-top: 20px;
   margin-bottom: 80px;
-  font-size: 24px;
-}
-
-.pageheader h1 {
-  font-size: 120px;
-  line-height: 136px;
 }
 
 .pageheader.pageheadermeta div:last-child {
@@ -95,6 +88,17 @@
   .pageheader.pageheadermeta.centered div {
     align-items: flex-start;
     text-align: left;
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  .pageheader {
+    padding-bottom: 20px;
+  }
+
+  .pageheader h1 {
+    font-size: 72px;
+    line-height: 110%;
   }
 }
 

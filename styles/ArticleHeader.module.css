@@ -17,7 +17,6 @@
 
 .articleheader div p {
   max-width: 560px;
-  font-size: 30px;
   margin-bottom: 0;
   margin-top: 120px;
   white-space: pre-wrap;
@@ -34,7 +33,6 @@
 }
 
 .articleheader h1 {
-  font-size: 95px;
   margin-bottom: 100px;
 }
 
@@ -59,7 +57,6 @@
   .articleheader h1 {
     margin-top: 0px;
     margin-bottom: 20px;
-    font-size: 48px;
     text-align: left;
     word-break: break-word;
   }
@@ -74,7 +71,6 @@
 
   .articleheader div p {
     margin-top: 0;
-    font-size: 22px;
     text-align: left;
     margin-bottom: 20px;
   }

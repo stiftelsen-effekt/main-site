@@ -205,8 +205,52 @@ button {
   }
 
   span.detailheader {
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 12x;
+    line-height: 16px;
+    text-transform: uppercase;
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  html,
+  body {
+    font-size: 16px;
+    line-height: 165%;
+  }
+
+  h1 {
+    font-size: 90px;
+    line-height: 110%;
+  }
+
+  h2 {
+    font-size: 60px;
+    line-height: 120%;
+  }
+
+  h3 {
+    font-size: 48px;
+    line-height: 125%;
+  }
+
+  h4 {
+    font-size: 36px;
+    line-height: 135%;
+  }
+
+  h5 {
+    font-size: 25px;
+    line-height: 140%;
+  }
+
+  p.inngress {
+    font-size: 22px;
+    line-height: 150%;
+  }
+
+  span.detailheader {
+    font-size: 12px;
+    line-height: 110%;
     text-transform: uppercase;
   }
 }

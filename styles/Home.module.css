@@ -20,8 +20,6 @@
 
 .subheading {
   width: 430px;
-  font-size: 30px;
-  line-height: 40px;
   font-weight: 400;
 }
 
@@ -64,8 +62,6 @@
   }
 
   .subheading {
-    font-size: 16px;
-    line-height: 26px;
     max-width: 230px;
   }
 
@@ -82,6 +78,20 @@
   .teasers > div:nth-child(2n) > div:nth-child(2) {
     padding: 0;
     padding-top: 20px;
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  .header h1 {
+    font-size: 80px;
+    line-height: 110%;
+    max-width: 700px;
+    margin-bottom: 0;
+    margin-top: 80px;
+  }
+
+  .teasers > div:nth-child(2n) > div:nth-child(2) {
+    padding-right: 160px;
   }
 }
 
