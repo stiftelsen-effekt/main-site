@@ -75,8 +75,8 @@ export const VippsPane: React.FC = () => {
               <VippsButtonWrapper>
                 <SubmitButton
                   onClick={async () => {
-                    if (recurring === RecurringDonation.NON_RECURRING) {
-                      window.open(paymentProviderURL);
+                    if (recurring === RecurringDonation.NON_RECURRING && paymentProviderURL) {
+                      window.location.href = paymentProviderURL;
                     }
                     (document.activeElement as HTMLElement).blur();
                   }}
