@@ -39,6 +39,18 @@
   margin-bottom: 70px;
 }
 
+@media only screen and (max-width: 1440px) and (min-width: 901px) {
+  .articleheader div p {
+    margin-bottom: 40px;
+  }
+
+  .articleheader h1 {
+    font-size: 72px;
+    line-height: 110%;
+    margin-bottom: 50px;
+  }
+}
+
 @media only screen and (max-width: 900px) {
   .articleheader {
     padding-top: 0;
