@@ -31,9 +31,9 @@ export const Contributor: React.FC<ContributorType> = ({
           <ResponsiveImage layout="fill" image={image} urlBuilder={contributorImageBuilder} />
         </div>
       )}
-      <h3 className={styles.contributor__title}>{name}</h3>
-      <div className={styles.contributor__subrole}>{subrole ?? ""}</div>
-      <div className={styles.contributor__additional}>{additional ?? ""}</div>
+      <span className={styles.contributor__title}>{name}</span>
+      <span className={styles.contributor__subrole + " detailheader"}>{subrole ?? ""}</span>
+      <span className={styles.contributor__additional + " detailheader"}>{additional ?? ""}</span>
       <div className={styles.contributor__email}>{email ?? ""}</div>
     </li>
   );

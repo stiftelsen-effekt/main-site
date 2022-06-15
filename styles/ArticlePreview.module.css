@@ -24,6 +24,12 @@
   }
 }
 
+@media only screen and (max-width: 1440px) {
+  .article h5 {
+    margin-top: 20px;
+  }
+}
+
 @media only screen and (min-width: 1920px) {
   .wrapper {
     max-width: 1714px;

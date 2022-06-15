@@ -226,10 +226,6 @@
   align-items: flex-start;
 }
 
-.teasertext h2 {
-  font-size: 36px;
-}
-
 .teasertext p {
   margin-top: 60px;
   white-space: pre-wrap;
@@ -373,6 +369,14 @@
     justify-content: center;
     row-gap: 60px;
   }
+
+  .teasertext {
+    padding-left: 60px;
+  }
+
+  .teasertext p {
+    margin-top: 30px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -456,6 +460,16 @@
 
   .button {
     font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  .button {
+    font-size: 14px;
+  }
+
+  .paragraphwrapper {
+    max-width: 640px;
   }
 }
 

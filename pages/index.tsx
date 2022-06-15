@@ -69,7 +69,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <div className={styles.header}>
           <h1>{data.frontpage[0].main_heading}</h1>
         </div>
-        <div className={styles.subheading}>{data.frontpage[0].sub_heading}</div>
+        <p className={styles.subheading + " inngress"}>{data.frontpage[0].sub_heading}</p>
       </div>
 
       <div className={styles.salespitchWrapper}>

@@ -95,6 +95,12 @@
   right: 0;
 }
 
+@media screen and (max-width: 1440px) {
+  .testemonial__quote {
+    max-width: 860px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .testimonial {
     padding-bottom: 60px;
