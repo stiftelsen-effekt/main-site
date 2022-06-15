@@ -1,12 +1,12 @@
-import { style } from "d3";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import AnimateHeight from "react-animate-height";
 import styles from "../../styles/ImpactWidget.module.css";
-import { WidgetContext } from "../main/layout";
-import { EffektButton } from "./effektbutton";
+import { Links } from "./links";
 import { Spinner } from "./spinner";
 
 export type Intervention = {
   title: string;
+  organizationName: string;
   pricePerOutput?: number;
   outputStringTemplate: string;
 };
@@ -19,6 +19,7 @@ export const ImpactWidget: React.FC<{
 }> = ({ title, defaultSum, interventions, buttonText }) => {
   const [sum, setSum] = useState(defaultSum);
   const [selectedIntervention, setSelectedIntervention] = useState<string>(interventions[0].title);
+  const [contextExpanded, setContextExpanded] = useState(false);
 
   const currentIntervention = interventions.find(
     (i) => i.title === selectedIntervention,
@@ -45,9 +46,9 @@ export const ImpactWidget: React.FC<{
             <label htmlFor="sum">Donasjon:</label>
             <div className={styles.inputWrapper}>
               <input
-                type="number"
+                type="tel"
                 value={sum}
-                onChange={(e) => setSum(parseInt(e.target.value))}
+                onChange={(e) => setSum(parseInt(e.target.value) || 0)}
                 name="sum"
               />
             </div>
@@ -65,20 +66,55 @@ export const ImpactWidget: React.FC<{
           </div>
         </div>
         <div className={styles.output}>
-          <strong>=</strong>
           {loading && (
             <div className={styles.spinnerWrapper}>
               <Spinner />
             </div>
           )}
           {!loading && (
-            <div className={styles.paragraphWrapper}>
-              <span className={styles.paragraphNumber}>{outputString}</span>
-              <p>
-                <span className={styles.innerParagraphNumber}>{outputString}&nbsp;</span>
-                {currentIntervention.outputStringTemplate}
-              </p>
-            </div>
+            <>
+              <span className="detailheader">{currentIntervention.organizationName}</span>
+              <div className={styles.paragraphWrapper}>
+                <span className={styles.paragraphNumber}>{outputString}</span>
+                <div className={styles.explanatory}>
+                  <p>
+                    <span className={styles.innerParagraphNumber}>{outputString}&nbsp;</span>
+                    {currentIntervention.outputStringTemplate}
+                  </p>
+                  <span
+                    className={contextExpanded ? styles.captionopen : ""}
+                    onClick={() => setContextExpanded(!contextExpanded)}
+                  >
+                    Hvordan er dette sammenlignet med andre organisasjoner?&nbsp;&nbsp;
+                  </span>
+                </div>
+              </div>
+              <AnimateHeight duration={300} height={contextExpanded ? "auto" : 0} animateOpacity>
+                <div className={styles.context}>
+                  Tallene er basert på analysene til GiveWell. De gir et omtrentlig bilde på hva
+                  våre anbefalte organisasjoner får ut av pengene. Alle tre tiltak er topp anbefalt
+                  som de mest kostnadseffektive måtene å redde liv eller forbedre den økonomiske
+                  situasjonen til ekstremt fattige. Mange bistandsorganisasjoner viser til
+                  overdrevne og misvisende tall i sin markedsføring. Bak våre tall ligger tusenvis
+                  av timer med undersøkelser og inkluderer alle kostnader, inkludert planlegging,
+                  innkjøp, distribusjon, opplæring og kontroll.
+                </div>
+                <Links
+                  links={[
+                    {
+                      _key: "givewell",
+                      title: "GiveWell's analyser",
+                      url: "https://www.givewell.org/impact-estimates",
+                    },
+                    {
+                      _key: "organiasjoner",
+                      title: "Anbefalte organisasjoner",
+                      url: "/organizations",
+                    },
+                  ]}
+                ></Links>
+              </AnimateHeight>
+            </>
           )}
         </div>
       </div>

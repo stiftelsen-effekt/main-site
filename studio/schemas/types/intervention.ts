@@ -9,6 +9,11 @@ export default {
       title: 'Title'
     },
     {
+      name: 'organization_name',
+      type: 'string',
+      title: 'Organization name'
+    },
+    {
       name: 'abbreviation',
       type: 'string',
       title: 'Abbreviation'

@@ -8,7 +8,7 @@
   margin-top: 50px;
   margin-bottom: 55px;
   text-align: left;
-  max-width: 575px;
+  max-width: 740px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -20,7 +20,7 @@
   margin: 0 auto;
   justify-content: center;
   width: 100%;
-  max-width: 560px;
+  max-width: 740px;
 }
 
 .input {
@@ -40,6 +40,7 @@
   width: 140px;
   text-align: right;
   padding-right: 34px;
+  height: 32px;
 }
 
 .inputWrapper {
@@ -51,8 +52,10 @@
   content: "kr";
   position: absolute;
   right: 6px;
-  bottom: 3px;
+  bottom: 0px;
   font-size: 25px;
+  line-height: 32px;
+  touch-action: none;
 }
 
 .select {
@@ -78,13 +81,6 @@
   color: var(--secondary);
 }
 
-.output {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-}
-
 .spinnerWrapper {
   width: 100%;
   margin-top: 20px;
@@ -94,17 +90,17 @@
   align-items: center;
 }
 
-.output strong {
-  display: none;
+.output {
+  padding-top: 50px;
 }
 
 .output .paragraphWrapper {
-  margin-top: 60px;
+  margin-top: 15px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 560px;
 }
 
 .output .paragraphWrapper .paragraphNumber {
@@ -114,21 +110,52 @@
   margin-right: 20px;
 }
 
+.output .explanatory {
+  flex: 1 1 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100px;
+}
+
 .output .paragraphWrapper .innerParagraphNumber {
   display: none;
 }
 
 .output p {
-  max-width: 400px;
   text-align: left;
-  margin: 30px 0;
-  margin-top: 0px;
   font-size: 18px;
+  margin-top: 0px;
+  margin-bottom: 0;
+}
+
+.output .paragraphWrapper div > span {
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.output .paragraphWrapper div > span::after {
+  content: "↓";
+  display: inline-block;
+  transition: all 100ms;
+  transform: rotate(0deg);
+}
+
+.output .paragraphWrapper div > .captionopen::after {
+  transform: rotate(180deg);
+}
+
+.output .context {
+  padding-top: 30px;
+  font-size: 16px;
 }
 
 @media only screen and (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
+    margin-bottom: 30px;
   }
 
   .select {
@@ -146,13 +173,7 @@
   .output {
     align-items: center;
     justify-content: center;
-  }
-
-  .output strong {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 40px;
+    padding-top: 30px;
   }
 
   .output .paragraphWrapper {
@@ -169,7 +190,15 @@
   }
 
   .output .paragraphWrapper p {
-    text-align: center;
+    margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .output .paragraphWrapper div > span {
+    margin-top: 10px;
+  }
+
+  .output .context {
+    padding-top: 10px;
   }
 }

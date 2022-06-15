@@ -106,6 +106,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
                 title: i.title,
                 pricePerOutput: interventionCosts.get(i.abbreviation),
                 outputStringTemplate: i.template_string,
+                organizationName: i.organization_name,
               }))}
               buttonText={interventionWidget.button_text}
             ></ImpactWidget>
