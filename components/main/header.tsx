@@ -3,7 +3,10 @@ import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "../../styles/Header.module.css";
 
-export const MainHeader: React.FC<{ children: ReactNode | ReactNode[] }> = ({ children }) => {
+export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScroll: boolean }> = ({
+  children,
+  hideOnScroll,
+}) => {
   const router = useRouter();
 
   const [navbarShrinked, setNavbarShrinked] = useState(false);
@@ -31,7 +34,7 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[] }> = ({ ch
   const debounced = useDebouncedCallback(
     () => {
       navBarCheck();
-      navBarVisibleCheck();
+      if (hideOnScroll) navBarVisibleCheck();
       setLastScrollPosition(window.scrollY);
     },
     250,

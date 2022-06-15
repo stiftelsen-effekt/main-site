@@ -1,3 +1,8 @@
+.header {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -52,6 +57,11 @@
 
 .columnswrapper {
   border-top: 1px solid var(--primary);
+}
+
+.columnswrapper h5 {
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .columns {

@@ -15,6 +15,7 @@ import { Navbar } from "../../components/profile/navbar";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
+  const settings = data.settings[0];
 
   if (!router.isFallback && !data) {
     return <div>Loading...</div>;
@@ -28,8 +29,8 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <MainHeader>
-        <Navbar />
+      <MainHeader hideOnScroll={false}>
+        <Navbar logo={settings.logo} />
       </MainHeader>
 
       <PageContent>
@@ -55,6 +56,9 @@ export async function getStaticProps({ preview = false }) {
 
 const fetchProfilePage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    logo,
+  },
   "page": *[_type == "profile"] {
     tax,
     data

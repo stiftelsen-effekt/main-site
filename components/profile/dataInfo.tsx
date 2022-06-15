@@ -5,7 +5,7 @@ import style from "../../styles/Profile.module.css";
 export const DataInfo: React.FC<{ data: any }> = ({ data }) => {
   return (
     <section className={style.columnswrapper}>
-      <h2>Om dine data</h2>
+      <h5>Om dine data</h5>
       <div className={style.columns}>
         <section className={style.tax}>
           <strong>Skattefradrag</strong>

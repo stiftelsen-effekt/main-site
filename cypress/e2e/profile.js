@@ -40,7 +40,7 @@ describe("Profile page", () => {
     cy.get("#name").clear().type(newName);
     cy.get('button[role="submit"]').click();
     cy.get(".Toastify").contains("Lagret");
-    cy.get("h1").should("contain.text", newName);
+    cy.get("h3").should("contain.text", newName);
 
     cy.fixture("donor").then((donor) => {
       cy.intercept("GET", "/donors/*/", {
@@ -55,7 +55,7 @@ describe("Profile page", () => {
       });
     });
     cy.reload();
-    cy.get("h1").should("contain.text", newName);
+    cy.get("h3").should("contain.text", newName);
     cy.get("#name").should("have.value", newName);
   });
 

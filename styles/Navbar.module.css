@@ -114,6 +114,7 @@
   .navbarExpanded {
     --primary: #fafafa;
     --secondary: #000;
+    --primary-filter: invert(0);
     background: var(--secondary);
     color: var(--primary);
     position: fixed;
