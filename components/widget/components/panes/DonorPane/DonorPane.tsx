@@ -161,7 +161,7 @@ export const DonorPane: React.FC = () => {
               <InputFieldWrapper>
                 <input
                   name="email"
-                  type="text"
+                  type="email"
                   placeholder="Epost"
                   defaultValue={donor?.email === "anon@gieffektivt.no" ? "" : donor?.email}
                   ref={register({

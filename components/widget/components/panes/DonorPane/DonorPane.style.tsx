@@ -9,7 +9,8 @@ export const DonorForm = styled.form`
   min-height: 100%;
   font-size: 18px;
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="email"] {
     background: var(--secondary);
     color: var(--primary);
     border: none;
@@ -19,6 +20,7 @@ export const DonorForm = styled.form`
     width: 100%;
     outline: none;
     font-family: "ESKlarheitGrotesk";
+    border-radius: 0px;
   }
 
   input:-webkit-autofill,
