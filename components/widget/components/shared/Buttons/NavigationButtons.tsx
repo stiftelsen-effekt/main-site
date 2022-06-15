@@ -6,7 +6,7 @@ import { StyledNextButton, StyledSpinner, StyledSubmitButton } from "./Navigatio
 export const NextButton: React.FC<{
   children: React.ReactNode;
   onClick: () => void;
-  disabled: boolean;
+  disabled?: boolean;
 }> = ({ children, disabled, onClick }) => {
   const loading = useSelector((state: State) => state.layout.loading);
   return (
