@@ -24,6 +24,7 @@ import { Testimonial } from "../../components/testimonial";
 import { ArticleHeader } from "../../components/elements/articleheader";
 import { RelatedArticles } from "../../components/elements/relatedarticles";
 import { PointListSectionWrapper } from "../../components/elements/pointlistsectionwrapper";
+import { NormalImage } from "../../components/elements/normalimage";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -106,6 +107,15 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                 case "fullimage":
                   return (
                     <FullImage key={block._key || block._id} image={block.image} alt={block.alt} />
+                  );
+                case "normalimage":
+                  return (
+                    <NormalImage
+                      key={block._key || block._id}
+                      image={block.image}
+                      alt={block.alt}
+                      caption={block.caption}
+                    />
                   );
                 case "columns":
                   return <Columns key={block._key || block._id} columns={block.columns} />;
