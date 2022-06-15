@@ -124,7 +124,7 @@
     padding-top: 60px;
     margin-top: 50px;
     font-size: 18px;
-    padding-bottom: 200px;
+    padding-bottom: 100px;
   }
 
   .category {
@@ -132,6 +132,7 @@
   }
 
   .newsletter {
+    grid-row: 1;
     grid-column: 1 / 3;
   }
 
@@ -144,9 +145,14 @@
     grid-column: 1 / 3;
   }
 
+  .logo__bottom {
+    grid-row: 4;
+  }
+
   .logo__bottom figure p {
     font-size: 180px;
     line-height: 140px;
+    text-align: center;
   }
 }
 
