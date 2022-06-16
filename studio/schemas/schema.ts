@@ -42,6 +42,7 @@ import articleheader from './types/articleheader'
 import article from './pages/article'
 import articles from './pages/articles'
 import normalimage from './types/normalimage'
+import fullvideo from './types/fullvideo'
 
 export const pages = [
   generic,
@@ -84,7 +85,8 @@ export const types = [
   columns,
   intervention,
   interventionwidget,
-  testimonials
+  testimonials,
+  fullvideo
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity
