@@ -44,7 +44,8 @@ export default {
         { type: 'videoembed' },
         { type: 'fullvideo' },
         { type: 'testimonials' },
-        { type: 'reference', to: [{ type: 'contactinfo' }], icon: Phone}
+        { type: 'reference', to: [{ type: 'contactinfo' }], icon: Phone},
+        { type: 'htmlembed' },
       ]
     }
   ],

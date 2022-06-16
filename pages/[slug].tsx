@@ -24,6 +24,7 @@ import { PointListSectionWrapper } from "../components/elements/pointlistsection
 import { NormalImage } from "../components/elements/normalimage";
 import { FullVideo } from "../components/elements/fullvideo";
 import { SEO } from "../components/seo/Seo";
+import { HTMLEmbed } from "../components/elements/htmlembed";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -118,6 +119,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       key={block._key || block._id}
                       image={block.image}
                       alt={block.alt}
+                      grayscale={block.grayscale}
                       caption={block.caption}
                     />
                   );
@@ -127,6 +129,14 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       key={block._key || block._id}
                       video={block.video.asset}
                       alt={block.alt}
+                    />
+                  );
+                case "htmlembed":
+                  return (
+                    <HTMLEmbed
+                      key={block._key || block._id}
+                      code={block.code}
+                      grayscale={block.grayscale}
                     />
                   );
                 case "columns":

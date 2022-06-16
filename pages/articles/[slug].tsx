@@ -26,6 +26,8 @@ import { RelatedArticles } from "../../components/elements/relatedarticles";
 import { PointListSectionWrapper } from "../../components/elements/pointlistsectionwrapper";
 import { NormalImage } from "../../components/elements/normalimage";
 import { SEO } from "../../components/seo/Seo";
+import { HTMLEmbed } from "../../components/elements/htmlembed";
+import { FullVideo } from "../../components/elements/fullvideo";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -117,7 +119,24 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       key={block._key || block._id}
                       image={block.image}
                       alt={block.alt}
+                      grayscale={block.grayscale}
                       caption={block.caption}
+                    />
+                  );
+                case "fullvideo":
+                  return (
+                    <FullVideo
+                      key={block._key || block._id}
+                      video={block.video.asset}
+                      alt={block.alt}
+                    />
+                  );
+                case "htmlembed":
+                  return (
+                    <HTMLEmbed
+                      key={block._key || block._id}
+                      code={block.htmlcode}
+                      grayscale={block.grayscale}
                     />
                   );
                 case "columns":

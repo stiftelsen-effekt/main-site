@@ -26,6 +26,11 @@ export default {
       name: 'caption',
       type: 'string',
       title: 'Caption'
+    },
+    {
+      name: 'grayscale',
+      type: 'boolean',
+      title: 'Grayscale'
     }
   ]
 }
