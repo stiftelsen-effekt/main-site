@@ -103,13 +103,16 @@ export const ImpactWidget: React.FC<{
                   links={[
                     {
                       _key: "givewell",
+                      _type: "link",
                       title: "GiveWell's analyser",
                       url: "https://www.givewell.org/impact-estimates",
+                      newtab: true,
                     },
                     {
                       _key: "organiasjoner",
+                      _type: "navitem",
                       title: "Anbefalte organisasjoner",
-                      url: "/organizations",
+                      slug: "organizations",
                     },
                   ]}
                 ></Links>
