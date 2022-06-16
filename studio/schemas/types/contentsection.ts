@@ -42,6 +42,7 @@ export default {
         { type: 'questionandanswergroup' },
         { type: 'pointlist' },
         { type: 'videoembed' },
+        { type: 'fullvideo' },
         { type: 'testimonials' },
         { type: 'reference', to: [{ type: 'contactinfo' }], icon: Phone}
       ]
