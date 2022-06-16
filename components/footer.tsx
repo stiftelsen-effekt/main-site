@@ -90,7 +90,7 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           </li>
           <li>
             {" "}
-            <Link href="/betingelser" passHref>
+            <Link href="/vilkar" passHref>
               Vilkår
             </Link>
           </li>
