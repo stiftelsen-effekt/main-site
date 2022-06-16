@@ -1,3 +1,5 @@
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+
 export enum META_OWNER {
   EFFEKT = 1,
   EAN = 2,
@@ -81,3 +83,10 @@ export type Organization = {
   standardShare: number;
   infoUrl: string;
 };
+
+export type SEOMeta = {
+  title: string,
+  description: string,
+  twitterCard: 'summary' | 'summary_large_image',
+  image: SanityImageSource
+}

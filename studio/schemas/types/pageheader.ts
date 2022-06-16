@@ -5,6 +5,12 @@ export default {
   type: 'document',
   title: 'Page header',
   icon: Sunset,
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     {
       name: 'title',
@@ -28,5 +34,9 @@ export default {
       type: 'array',
       of: [{ type: 'link' }]
     },
+    {name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo'},
+    {name: 'seoKeywords', title: 'Keywords', type: 'tags', group: 'seo'},
+    {name: 'seoSlug', title: 'Slug', type: 'slug', group: 'seo'},
+    {name: 'seoImage', title: 'Image', type: 'image', group: 'seo'},
   ]
 }
