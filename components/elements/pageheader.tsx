@@ -1,12 +1,13 @@
 import React from "react";
 import style from "../../styles/PageHeader.module.css";
-import { Links } from "./links";
+import { NavLink } from "../main/navbar";
+import { Links, LinkType } from "./links";
 
 export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
   centered?: boolean;
-  links?: { _key: string; title: string; url: string }[];
+  links?: (LinkType | NavLink)[];
 }> = ({ title, inngress, links, centered }) => {
   const hasmetacontent = inngress || links;
 

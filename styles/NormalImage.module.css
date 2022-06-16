@@ -4,13 +4,13 @@
   margin: 20px 0;
 }
 
-@media only screen and (max-width: 1440px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .wrapper {
     max-width: 640px;
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .wrapper {
     max-width: auto;
   }

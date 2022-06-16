@@ -95,13 +95,13 @@
   right: 0;
 }
 
-@media screen and (max-width: 1440px) and (min-width: 901px) {
+@media screen and (max-width: 1520px) and (min-width: 1181px) {
   .testemonial__quote {
     max-width: 860px;
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1180px) {
   .testimonial {
     padding-bottom: 60px;
   }

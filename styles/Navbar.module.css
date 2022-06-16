@@ -110,7 +110,7 @@
   margin-left: 10px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .navbarExpanded {
     --primary: #fafafa;
     --secondary: #000;
@@ -248,7 +248,7 @@
   }
 }
 
-@media only screen and (max-width: 1440px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .navbar .logoWrapper {
     width: 200px;
   }
@@ -272,7 +272,7 @@
   }
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 1180px) {
   .navbar ul li > div {
     height: auto !important;
     opacity: 1 !important;

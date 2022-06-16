@@ -22,10 +22,10 @@ export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = 
         <h4>Relaterte artikler</h4>
         <div className={styles.viewall}>
           <Link href="/articles" passHref>
-            <>
+            <a>
               <span>Se alle</span>
               <div>→</div>
-            </>
+            </a>
           </Link>
         </div>
       </div>

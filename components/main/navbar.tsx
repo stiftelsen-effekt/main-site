@@ -9,7 +9,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { EffektButton } from "../elements/effektbutton";
 import { WidgetContext } from "./layout";
 
-export type MainNavbarLink = {
+export type NavLink = {
   _type: "navitem";
   _key: string;
   title: string;
@@ -20,10 +20,10 @@ export type MainNavbarGroup = {
   _type: "navgroup";
   _key: string;
   title: string;
-  items: MainNavbarLink[];
+  items: NavLink[];
 };
 
-export type MainNavbarItem = MainNavbarLink | MainNavbarGroup;
+export type MainNavbarItem = NavLink | MainNavbarGroup;
 
 export type MainNavbarProps = {
   logo: SanityImageSource;
@@ -39,7 +39,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
   );
 
   const setExpanded = (expanded: boolean) => {
-    if (expanded && window.innerWidth < 900) document.body.style.overflow = "hidden";
+    if (expanded && window.innerWidth < 1180) document.body.style.overflow = "hidden";
     else if (typeof document !== "undefined") document.body.style.overflow = "auto";
 
     setExpandMenu(expanded);
@@ -99,8 +99,10 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             ),
           )}
           <li className={styles.buttonsWrapper}>
-            <Link href="/profile">
-              <a className={styles.btnlogin}>Logg inn</a>
+            <Link href="/profile" passHref>
+              <a onClick={() => setExpanded(false)} className={styles.btnlogin}>
+                Logg inn
+              </a>
             </Link>
             <EffektButton onClick={() => setWidgetOpen(true)}>Send donasjon</EffektButton>
           </li>

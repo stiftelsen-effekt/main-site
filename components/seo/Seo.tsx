@@ -28,7 +28,7 @@ export const SEO: React.FC<SEOMeta> = ({
         title: title,
         description: description,
         images: images,
-        site_name: "GiEffektivt.",
+        site_name: "Gi Effektivt.",
       }}
       twitter={{
         site: "@gieffektivt",

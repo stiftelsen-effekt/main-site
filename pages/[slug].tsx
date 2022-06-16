@@ -205,6 +205,15 @@ const fetchGenericPage = groq`
       seoImage{
         asset->,
       },
+      links[] {
+        _type == 'navitem' => @ {
+          ...,
+          "slug": page->slug.current
+        },
+        _type == 'link' => @ {
+          ...
+        },
+      }
     },
     content[] {
       ...,

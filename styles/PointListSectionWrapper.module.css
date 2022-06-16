@@ -3,7 +3,7 @@
   margin-top: 80px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1180px) {
   .pointlistsectionwrapper {
     margin: 0;
   }

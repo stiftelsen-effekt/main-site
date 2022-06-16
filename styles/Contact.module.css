@@ -56,7 +56,7 @@
   border-radius: 34px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .container {
     padding-top: 20px;
     padding-bottom: 20px;

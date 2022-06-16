@@ -11,7 +11,7 @@ export default {
       name: 'links',
       title: 'Links',
       type: 'array',
-      of: [{ type: 'link' }]
+      of: [{ type: 'link' }, { type: 'navitem' }] 
     },
   ],
   preview: {

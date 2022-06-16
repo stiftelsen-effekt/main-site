@@ -33,13 +33,14 @@
 
 .articleheader h1 {
   margin-bottom: 100px;
+  word-break: break-word;
 }
 
 .articleheader.pageheadermeta div:last-child {
   margin-bottom: 70px;
 }
 
-@media only screen and (max-width: 1440px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .articleheader div p {
     margin-bottom: 40px;
   }
@@ -51,7 +52,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .articleheader {
     padding-top: 0;
     min-height: 70vh;
@@ -70,8 +71,8 @@
     margin-bottom: 20px;
     text-align: left;
     word-break: break-word;
-    font-size: 48px;
-    line-height: 58px;
+    font-size: 34px;
+    line-height: 46px;
   }
 
   .articleheader {

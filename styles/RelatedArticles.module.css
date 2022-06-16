@@ -17,19 +17,23 @@
   margin-bottom: 0;
 }
 
-.header .viewall {
+.header .viewall a {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.header .viewall span {
+.header .viewall a:hover {
+  border: none;
+}
+
+.header .viewall a span {
   font-size: 14px;
   text-transform: uppercase;
   margin-right: 20px;
 }
 
-.header .viewall div {
+.header .viewall a div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +82,7 @@
   word-break: break-word;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .header {
     padding-top: 40px;
     flex-direction: column;
@@ -91,7 +95,7 @@
     width: auto;
   }
 
-  .header .viewall {
+  .header .viewall a {
     margin-top: 15px;
   }
 
