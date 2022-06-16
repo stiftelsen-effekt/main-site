@@ -40,7 +40,12 @@
   width: 140px;
   text-align: right;
   padding-right: 34px;
-  height: 32px;
+  height: 33px;
+  padding-bottom: 0px;
+  padding-top: 0;
+  border-radius: 0;
+  font-family: "ESKlarheitGrotesk";
+  line-height: 33px;
 }
 
 .inputWrapper {
@@ -56,6 +61,8 @@
   font-size: 25px;
   line-height: 32px;
   touch-action: none;
+  height: 31px;
+  bottom: 1px;
 }
 
 .select {
