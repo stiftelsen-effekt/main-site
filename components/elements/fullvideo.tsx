@@ -30,12 +30,12 @@ export const FullVideo: React.FC<{ video: SanityAsset; alt: string }> = ({ video
 
         <VideoProgress videoPlayerRef={videoPlayerRef} playing={playing}></VideoProgress>
         <video
-          controls={false}
           ref={videoPlayerRef}
           onEnded={() => {
             (videoPlayerRef.current as any).currentTime = 0;
             setPlaying(false);
           }}
+          playsInline
         >
           <source src={video.url} type={"video/mp4"}></source>
         </video>
