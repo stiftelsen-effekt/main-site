@@ -24,6 +24,7 @@ import { Testimonial } from "../components/testimonial";
 import { PointListSectionWrapper } from "../components/elements/pointlistsectionwrapper";
 import Normalimage from "../studio/schemas/types/normalimage";
 import { NormalImage } from "../components/elements/normalimage";
+import { FullVideo } from "../components/elements/fullvideo";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
@@ -120,6 +121,14 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       caption={block.caption}
                     />
                   );
+                case "fullvideo":
+                  return (
+                    <FullVideo
+                      key={block._key || block._id}
+                      video={block.video.asset}
+                      alt={block.alt}
+                    />
+                  );
                 case "columns":
                   return <Columns key={block._key || block._id} columns={block.columns} />;
                 case "testimonials":
@@ -200,7 +209,13 @@ const fetchGenericPage = groq`
           ...,
           testimonials[]->,
         },
-        _type != 'reference' && _type != 'testimonials' => @,
+        _type == 'fullvideo' =>  {
+          ...,
+          video{
+            asset->,
+          },
+        },
+        _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
       }
     }
   },
