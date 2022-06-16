@@ -33,6 +33,7 @@
 
 .articleheader h1 {
   margin-bottom: 100px;
+  word-break: break-word;
 }
 
 .articleheader.pageheadermeta div:last-child {
