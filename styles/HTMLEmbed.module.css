@@ -1,0 +1,21 @@
+.wrapper {
+  width: 100%;
+  max-width: 760px;
+  margin: 20px 0;
+}
+
+.grayscale {
+  filter: grayscale(1);
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .wrapper {
+    max-width: auto;
+  }
+}
