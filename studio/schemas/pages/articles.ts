@@ -9,10 +9,17 @@ export default {
       type: 'pageheader'
     },
     {
+      title: 'Sitemap priority',
+      name: 'sitemap_priority',
+      type: 'number',
+      validation: Rule => Rule.required().min(0).max(1)
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       readOnly: false,
+      validation: (Rule: any) => Rule.required()
     },
   ],
   preview: {

@@ -20,7 +20,8 @@ export default {
       type: 'slug',
       options: {
         source: (doc: { header: { title: string } }, options: any) => doc.header.title,
-      }
+      },
+      validation: (Rule: any) => Rule.required()
     }
   ],
   preview: {

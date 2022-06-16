@@ -56,10 +56,16 @@ export default {
       of: [{ type: 'reference', to: { type: 'testimonial' }}],
     },
     {
+      title: 'Sitemap priority',
+      name: 'sitemap_priority',
+      type: 'number',
+      validation: Rule => Rule.required().min(0).max(1)
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: false,
+      readOnly: true,
       initialValue: ''
     }
   ],
