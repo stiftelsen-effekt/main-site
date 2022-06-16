@@ -11,6 +11,7 @@ import { SectionContainer } from "../components/sectionContainer";
 import { getClient } from "../lib/sanity.server";
 import { LayoutPage } from "../types";
 import styles from "../styles/Articles.module.css";
+import { SEO } from "../components/seo/Seo";
 
 const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
   const settings = data.settings[0];
@@ -19,11 +20,17 @@ const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
 
   return (
     <>
-      <Head>
-        <title>Konduit.</title>
-        <meta name="description" content="Effektiv bistand" />
+      <SEO
+        title={header.seoTitle || header.title}
+        description={header.seoDescription || header.inngress}
+        imageAsset={header.seoImage ? header.seoImage.asset : undefined}
+        canonicalurl={`https://gieffektivt.no/articles`}
+      />
+      {/**
+     *       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+     */}
 
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
@@ -86,7 +93,12 @@ const fethcArticles = groq`
   },
   ${footerQuery}
   "page": *[_type == "articles"] {
-    header,
+    header {
+      ...,
+      seoImage{
+        asset->
+      },
+    },
   },
   "articles": *[_type == "article_page"] | order(date desc) {
     header,

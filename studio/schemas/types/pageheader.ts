@@ -35,8 +35,7 @@ export default {
       of: [{ type: 'link' }]
     },
     {name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo'},
-    {name: 'seoKeywords', title: 'Keywords', type: 'tags', group: 'seo'},
-    {name: 'seoSlug', title: 'Slug', type: 'slug', group: 'seo'},
-    {name: 'seoImage', title: 'Image', type: 'image', group: 'seo'},
+    {name: 'seoDescription', title: 'SEO description', type: 'text', rows: 3, group: 'seo'},
+    {name: 'seoImage', title: 'SEO Image', type: 'image', group: 'seo'},
   ]
 }

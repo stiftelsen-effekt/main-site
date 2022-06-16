@@ -1,4 +1,4 @@
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityAsset } from "@sanity/image-url/lib/types/types";
 
 export enum META_OWNER {
   EFFEKT = 1,
@@ -86,7 +86,8 @@ export type Organization = {
 
 export type SEOMeta = {
   title: string,
+  titleTemplate?: string,
   description: string,
-  twitterCard: 'summary' | 'summary_large_image',
-  image: SanityImageSource
+  imageAsset: SanityAsset,
+  canonicalurl: string
 }

@@ -15,6 +15,7 @@ import { CookieBanner } from "../components/elements/cookiebanner";
 import { Contributors, Role } from "../components/elements/contributors";
 import { Links } from "../components/elements/links";
 import { GiveBlock } from "../components/elements/giveblock";
+import { SEO } from "../components/seo/Seo";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -25,13 +26,17 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
   const volunteers = roles.find((role: Role) => role.id === "volunteers")!;
   return (
     <>
-      <Head>
-        <title>
-          {settings.title} - {header.title}
-        </title>
-        <meta name="description" content={settings.description} />
+      <SEO
+        title={header.seoTitle || header.title}
+        description={header.seoDescription || header.inngress}
+        imageAsset={header.seoImage ? header.seoImage.asset : undefined}
+        canonicalurl={`https://gieffektivt.no/about`}
+      />
+      {/**
+     *       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+     */}
 
       <MainHeader hideOnScroll={true}>
         {/*<CookieBanner />*/}
@@ -114,7 +119,12 @@ const fetchAboutUs = groq`
   },
   ${footerQuery}
   "about": *[_type == "about_us"] {
-    header,
+    header {
+      ...,
+      seoImage{
+        asset->
+      },
+    },
     content
   },
   "roles": *[_type == "role"] {
