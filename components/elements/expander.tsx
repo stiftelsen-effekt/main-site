@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { Minus, Plus } from "react-feather";
 import elements from "../../styles/Elements.module.css";
-import { Links } from "./links";
+import { NavLink } from "../main/navbar";
+import { Links, LinkType } from "./links";
 
 export type ExpanderProps = {
   title: string;
   content: string;
-  links: { _key: string; title: string; url: string }[];
+  links: (NavLink | LinkType)[];
 };
 
 export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => {
