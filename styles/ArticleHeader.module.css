@@ -39,7 +39,7 @@
   margin-bottom: 70px;
 }
 
-@media only screen and (max-width: 1440px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 901px) {
   .articleheader div p {
     margin-bottom: 40px;
   }

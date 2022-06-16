@@ -42,7 +42,7 @@
   padding-right: 5vw;
 }
 
-@media only screen and (max-width: 1440px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 901px) {
   .section__heading {
     padding-top: 18px;
   }
