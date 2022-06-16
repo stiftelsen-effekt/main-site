@@ -15,6 +15,11 @@ export default {
       name: 'url',
       type: 'string',
       title: 'Url'
+    },
+    {
+      name: 'newtab',
+      type: 'boolean',
+      title: 'Open in new tab',
     }
   ],
   preview: {

@@ -1,16 +1,10 @@
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Footer.module.css";
-import { MainNavbarLink } from "./main/navbar";
+import { LinkType } from "./elements/links";
+import { NavLink } from "./main/navbar";
 
-type FooterLink = {
-  _type: "link";
-  _key: string;
-  title: string;
-  url: string;
-};
-
-export type FooterItem = MainNavbarLink | FooterLink;
+export type FooterItem = NavLink | LinkType;
 export type FooterProps = {
   footer_column_1?: FooterItem[];
   footer_column_2?: FooterItem[];
@@ -34,8 +28,11 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
                 <li key={footerItem._key}>
                   <Link
                     href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                    passHref
                   >
-                    {footerItem.title}
+                    <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>
+                      {footerItem.title}
+                    </a>
                   </Link>
                 </li>
               );
@@ -51,8 +48,11 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
                 <li key={footerItem._key}>
                   <Link
                     href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                    passHref
                   >
-                    {footerItem.title}
+                    <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>
+                      {footerItem.title}
+                    </a>
                   </Link>
                 </li>
               );
@@ -68,8 +68,11 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
                 <li key={footerItem._key}>
                   <Link
                     href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                    passHref
                   >
-                    {footerItem.title}
+                    <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>
+                      {footerItem.title}
+                    </a>
                   </Link>
                 </li>
               );
@@ -143,44 +146,29 @@ export const footerQuery = `
   "footer": *[_type == "site_settings"] {
     footer_column_1[] {
       _type == 'navitem' => @ {
-        _type,
-        _key,
-        title,
+        ...,
         "slug": page->slug.current
       },
       _type == 'link' => @ {
-        _type,
-        _key,
-        title,
-        "url": url
+        ...
       },
     },
     footer_column_2[] {
       _type == 'navitem' => @ {
-        _type,
-        _key,
-        title,
+        ...,
         "slug": page->slug.current
       },
       _type == 'link' => @ {
-        _type,
-        _key,
-        title,
-        "url": url
+        ...
       },
     },
     footer_column_3[] {
       _type == 'navitem' => @ {
-        _type,
-        _key,
-        title,
+        ...,
         "slug": page->slug.current
       },
       _type == 'link' => @ {
-        _type,
-        _key,
-        title,
-        "url": url
+        ...
       },
     }
   },

@@ -32,7 +32,7 @@ export default {
       name: 'links',
       title: 'Links',
       type: 'array',
-      of: [{ type: 'link' }]
+      of: [{ type: 'link' }, { type: 'navitem' }]
     },
     {name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo'},
     {name: 'seoDescription', title: 'SEO description', type: 'text', rows: 3, group: 'seo'},

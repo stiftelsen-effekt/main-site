@@ -98,6 +98,15 @@ const fethcArticles = groq`
       seoImage{
         asset->
       },
+      links[] {
+        _type == 'navitem' => @ {
+          ...,
+          "slug": page->slug.current
+        },
+        _type == 'link' => @ {
+          ...
+        },
+      }
     },
   },
   "articles": *[_type == "article_page"] | order(date desc) {
