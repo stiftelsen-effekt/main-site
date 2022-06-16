@@ -115,7 +115,7 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .grid {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(4, max-content);

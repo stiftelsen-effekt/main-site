@@ -16,7 +16,7 @@
   word-break: break-word;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .article h5 {
     font-size: 24px;
     margin-top: 6px;
@@ -24,7 +24,7 @@
   }
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .article h5 {
     margin-top: 20px;
   }

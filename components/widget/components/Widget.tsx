@@ -25,7 +25,8 @@ export const Widget: React.FC = () => {
 
   const scaleWidget = useCallback(() => {
     setScalingFactor(
-      (window.innerWidth >= 900 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) / 576,
+      (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
+        576,
     );
     setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
     if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {

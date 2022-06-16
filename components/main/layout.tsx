@@ -10,7 +10,7 @@ export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
 export const Layout: LayoutElement = ({ children, footerData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
 
-  if (widgetOpen && window.innerWidth < 900) {
+  if (widgetOpen && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
   } else if (typeof document !== "undefined") {
     document.body.style.overflow = "auto";

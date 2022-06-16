@@ -27,7 +27,7 @@
   margin: 0;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .grid {
     display: flex;
     flex-direction: column;

@@ -13,7 +13,7 @@ export const Paragraph = styled.p`
   font-family: "Roboto";
   max-width: 850px;
   word-wrap: normal;
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 1180px) {
     font-size: 22px;
     line-height: 30px;
   }

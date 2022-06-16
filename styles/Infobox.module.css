@@ -29,7 +29,7 @@
   font-size: 14px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .infoBox {
     margin-top: 20px;
     margin-bottom: 30px;

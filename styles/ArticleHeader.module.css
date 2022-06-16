@@ -40,7 +40,7 @@
   margin-bottom: 70px;
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .articleheader div p {
     margin-bottom: 40px;
   }
@@ -52,7 +52,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .articleheader {
     padding-top: 0;
     min-height: 70vh;

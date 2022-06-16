@@ -15,7 +15,7 @@
   transform: translateY(-100%);
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .container.navbarShrinked nav {
     padding: 20px 0;
   }

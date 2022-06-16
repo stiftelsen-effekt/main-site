@@ -48,7 +48,7 @@
   padding-right: 260px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .hero {
     height: calc(100vh - 240px);
     justify-content: flex-end;
@@ -83,7 +83,7 @@
   }
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .header h1 {
     font-size: 80px;
     line-height: 110%;

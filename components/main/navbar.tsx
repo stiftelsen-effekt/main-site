@@ -39,7 +39,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
   );
 
   const setExpanded = (expanded: boolean) => {
-    if (expanded && window.innerWidth < 900) document.body.style.overflow = "hidden";
+    if (expanded && window.innerWidth < 1180) document.body.style.overflow = "hidden";
     else if (typeof document !== "undefined") document.body.style.overflow = "auto";
 
     setExpandMenu(expanded);

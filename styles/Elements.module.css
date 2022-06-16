@@ -361,7 +361,7 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .pointlistwrapper {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-flow: row;
@@ -379,7 +379,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .datepicker-input-wrapper {
     position: static;
   }
@@ -463,7 +463,7 @@
   }
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 901px) {
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .button {
     font-size: 14px;
   }

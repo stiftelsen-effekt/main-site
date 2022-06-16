@@ -159,7 +159,7 @@
   font-size: 16px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .grid {
     grid-template-columns: 1fr;
     margin-bottom: 30px;

@@ -82,7 +82,7 @@
   word-break: break-word;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .header {
     padding-top: 40px;
     flex-direction: column;

@@ -128,7 +128,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
             </InfoBox>
           ) : null}
 
-          {window.innerWidth > 900 || selected === "Aktive avtaler" ? (
+          {window.innerWidth > 1180 || selected === "Aktive avtaler" ? (
             <AgreementList
               title={"Aktive"}
               vipps={vipps.filter((agreement: VippsAgreement) => agreement.status === "ACTIVE")}
@@ -138,7 +138,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
             />
           ) : null}
 
-          {window.innerWidth > 900 || selected === "Inaktive avtaler" ? (
+          {window.innerWidth > 1180 || selected === "Inaktive avtaler" ? (
             <AgreementList
               title={"Inaktive"}
               vipps={vipps.filter((agreement: VippsAgreement) => agreement.status !== "ACTIVE")}

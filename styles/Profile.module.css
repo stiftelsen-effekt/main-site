@@ -75,7 +75,7 @@
 }
 
 /* Mobile view */
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1180px) {
   .gridContainer {
     grid-template-columns: 1fr;
     grid-auto-rows: max-content;

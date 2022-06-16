@@ -140,7 +140,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
           <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
           <DonationsTotals sum={sum} period={periodText} />
         </div>
-        {isTotal && window.innerWidth < 900 ? (
+        {isTotal && window.innerWidth < 1180 ? (
           <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />
         ) : (
           donationList
