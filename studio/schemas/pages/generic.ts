@@ -15,12 +15,19 @@ export default {
       of: [{type: 'contentsection'}]
     },
     {
+      title: 'Sitemap priority',
+      name: 'sitemap_priority',
+      type: 'number',
+      validation: (Rule: any) => Rule.required().min(0).max(1)
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
         source: (doc: { header: { title: string } }, options: any) => doc.header.title,
-      }
+      },
+      validation: (Rule: any) => Rule.required()
     }
   ],
   preview: {

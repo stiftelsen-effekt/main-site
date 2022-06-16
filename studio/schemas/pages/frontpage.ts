@@ -2,6 +2,12 @@ export default {
   name: 'frontpage',
   type: 'document',
   title: 'Frontpage',
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     {
       name: 'main_heading',
@@ -13,6 +19,9 @@ export default {
       type: 'string',
       title: 'Sub heading'
     },
+    {name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo'},
+    {name: 'seoDescription', title: 'SEO description', type: 'text', rows: 3, group: 'seo'},
+    {name: 'seoImage', title: 'SEO Image', type: 'image', group: 'seo'},
     {
       name: 'introsection',
       type: 'introsection',
@@ -47,10 +56,16 @@ export default {
       of: [{ type: 'reference', to: { type: 'testimonial' }}],
     },
     {
+      title: 'Sitemap priority',
+      name: 'sitemap_priority',
+      type: 'number',
+      validation: (Rule: any) => Rule.required().min(0).max(1)
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      readOnly: false,
+      readOnly: true,
       initialValue: ''
     }
   ],

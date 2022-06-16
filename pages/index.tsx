@@ -18,11 +18,13 @@ import { ImpactWidget } from "../components/elements/impactwidget";
 import { useEffect, useState } from "react";
 import { MainHeader } from "../components/main/header";
 import { CookieBanner } from "../components/elements/cookiebanner";
+import { SEO } from "../components/seo/Seo";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.frontpage[0].salespitch;
   const settings = data.settings[0];
   const interventionWidget = data.frontpage[0].intervention_widget;
+  const { seoTitle, seoDescription, seoImage } = data.frontpage[0];
 
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
   useEffect(() => {
@@ -54,11 +56,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
   return (
     <>
-      <Head>
-        <title>Konduit.</title>
-        <meta name="description" content="Effektiv bistand" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO
+        title={seoTitle || data.frontpage[0].main_heading}
+        description={seoDescription || data.frontpage[0].sub_heading}
+        imageAsset={seoImage ? seoImage.asset : undefined}
+        canonicalurl={`https://gieffektivt.no/`}
+      />
 
       <MainHeader hideOnScroll={true}>
         {/*<CookieBanner />*/}

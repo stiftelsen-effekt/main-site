@@ -15,6 +15,7 @@ import { Links } from "../components/elements/links";
 import { footerQuery } from "../components/footer";
 import { MainHeader } from "../components/main/header";
 import { CookieBanner } from "../components/elements/cookiebanner";
+import { SEO } from "../components/seo/Seo";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -23,11 +24,12 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
 
   return (
     <>
-      <Head>
-        <title>Konduit. - Organizations</title>
-        <meta name="description" content="Konduit. - Organizations" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO
+        title={header.seoTitle || header.title}
+        description={header.seoDescription || header.inngress}
+        imageAsset={header.seoImage ? header.seoImage.asset : undefined}
+        canonicalurl={`https://gieffektivt.no/organizations`}
+      />
 
       <MainHeader hideOnScroll={true}>
         {/*<CookieBanner />*/}
@@ -105,7 +107,12 @@ const fetchOrganizationsPage = groq`
   },
   ${footerQuery}
   "page": *[_type == "organizations"] {
-    header,
+    header {
+      ...,
+      seoImage{
+        asset->
+      },
+    },
     organizations[] -> {
       ...
     } 
