@@ -75,9 +75,11 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         </SectionContainer>
       )}
 
-      <SectionContainer nodivider>
-        <GiveBlock />
-      </SectionContainer>
+      <div style={{ marginTop: "40px" }}>
+        <SectionContainer nodivider>
+          <GiveBlock />
+        </SectionContainer>
+      </div>
     </>
   );
 };
