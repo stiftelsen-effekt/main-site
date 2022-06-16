@@ -8,12 +8,16 @@ export interface NormalImage {
   alt: string;
   image: SanityImageSource;
   caption: string;
+  grayscale?: boolean;
 }
-export const NormalImage: React.FC<NormalImage> = ({ alt, image, caption }) => {
+export const NormalImage: React.FC<NormalImage> = ({ alt, image, caption, grayscale }) => {
   const router = useRouter();
 
+  const classNames = [styles.wrapper];
+  if (grayscale) classNames.push(styles.grayscale);
+
   return (
-    <div className={styles.wrapper}>
+    <div className={classNames.join(" ")}>
       <ResponsiveImage image={image} alt={alt} layout={"responsive"} />
       <span className="caption">{caption}</span>
     </div>

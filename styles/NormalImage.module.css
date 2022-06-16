@@ -4,6 +4,10 @@
   margin: 20px 0;
 }
 
+.grayscale {
+  filter: grayscale(1);
+}
+
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .wrapper {
     max-width: 640px;

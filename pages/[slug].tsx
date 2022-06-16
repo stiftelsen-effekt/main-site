@@ -118,6 +118,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
                       key={block._key || block._id}
                       image={block.image}
                       alt={block.alt}
+                      grayscale={block.grayscale}
                       caption={block.caption}
                     />
                   );
