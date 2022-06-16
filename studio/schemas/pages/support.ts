@@ -29,7 +29,7 @@ export default {
       title: 'Sitemap priority',
       name: 'sitemap_priority',
       type: 'number',
-      validation: Rule => Rule.required().min(0).max(1)
+      validation: (Rule: any) => Rule.required().min(0).max(1)
     },
     {
       name: 'slug',
