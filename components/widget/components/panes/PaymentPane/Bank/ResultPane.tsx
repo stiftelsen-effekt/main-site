@@ -66,7 +66,7 @@ export const ResultPane: React.FC = () => {
               <Link href="mailto:donasjon@gieffektivt.no" passHref target={"_blank"}>
                 donasjon@gieffektivt.no
               </Link>
-              .
+              . Takk for at du støtter effektiv bistand.
             </InfoText>
           </div>
         )}
