@@ -21,7 +21,7 @@ export type Donation = {
 
 export type AvtaleGiroAgreement = {
   ID: number;
-  active: boolean;
+  active: number;
   amount: string;
   KID: string;
   payment_date: number;
@@ -29,6 +29,7 @@ export type AvtaleGiroAgreement = {
   last_updated: string;
   notice: boolean;
   full_name: string;
+  cancelled: string;
 };
 
 export type VippsAgreement = {

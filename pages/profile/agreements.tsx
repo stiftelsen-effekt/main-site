@@ -94,7 +94,10 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
   const distributionsMap = getDistributionMap(distributions, organizations);
 
   const vippsPending = vipps.filter((agreement: VippsAgreement) => agreement.status === "PENDING");
-  const pendingCount = vippsPending.length;
+  const avtalegiroPending = avtaleGiro.filter(
+    (agreement: AvtaleGiroAgreement) => agreement.active === 0 && agreement.cancelled === null,
+  );
+  const pendingCount = vippsPending.length + avtalegiroPending.length;
   return (
     <>
       <Head>
@@ -118,7 +121,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
           {pendingCount >= 1 ? (
             <InfoBox>
               <header>
-                <Clock size={24} color={"white"} />
+                <Clock size={24} color={"black"} />
                 {pendingCount} {pendingCount === 1 ? "avtale" : "avtaler"} bekreftes
               </header>
               <p>
@@ -142,7 +145,9 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
             <AgreementList
               title={"Inaktive"}
               vipps={vipps.filter((agreement: VippsAgreement) => agreement.status !== "ACTIVE")}
-              avtalegiro={avtaleGiro.filter((agreement: AvtaleGiroAgreement) => !agreement.active)}
+              avtalegiro={avtaleGiro.filter(
+                (agreement: AvtaleGiroAgreement) => agreement.cancelled !== null,
+              )}
               distributions={distributionsMap}
               supplemental={
                 "Dette er tidligere faste betalingsavtaler du har hatt med oss, som vi ikke lenger trekker deg for"
