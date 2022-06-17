@@ -55,7 +55,6 @@ export const VippsPane: React.FC = () => {
                   onClick={async () => {
                     if (recurring === RecurringDonation.RECURRING) {
                       dispatch(draftAgreementAction.started(undefined));
-                      setDraftError(true);
                     }
                     (document.activeElement as HTMLElement).blur();
                   }}
