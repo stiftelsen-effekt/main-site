@@ -38,7 +38,7 @@ export const AgreementList: React.FC<{
   let giroType = avtalegiro.map(
     (entry: AvtaleGiroAgreement): AgreementRow => ({
       ID: entry.ID,
-      status: entry.active,
+      status: entry.active == 1,
       KID: entry.KID,
       date: entry.payment_date,
       amount: parseFloat(entry.amount),
