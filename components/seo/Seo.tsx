@@ -4,7 +4,7 @@ import { SEOMeta } from "../../models";
 
 export const SEO: React.FC<SEOMeta> = ({
   title,
-  titleTemplate = "GiEffektivt. | %s",
+  titleTemplate = "Gi Effektivt. | %s",
   description,
   canonicalurl,
   imageAsset,
