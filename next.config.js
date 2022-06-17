@@ -109,6 +109,51 @@ const nextConfig = {
         destination: '/articles/frp-forstar-ikke-effektivitet',
         permanent: true,
       },
+      {
+        source: '/the-pledge',
+        destination: '/kommer-snart',
+        permanent: true,
+      },
+      {
+        source: '/bistandsmyter',
+        destination: '/kommer-snart',
+        permanent: true,
+      },
+      {
+        source: '/hvor-rik-er-jeg',
+        destination: '/kommer-snart',
+        permanent: true,
+      },
+      {
+        source: '/aarsrapport21',
+        destination: 'https://stiftelseneffekt.no/aarsrapport21',
+        permanent: true,
+      },
+      {
+        source: '/aarsrapport20',
+        destination: 'https://stiftelseneffekt.no/aarsrapport20',
+        permanent: true,
+      },
+      {
+        source: '/aarsrapport19',
+        destination: 'https://stiftelseneffekt.no/aarsrapport19',
+        permanent: true,
+      },
+      {
+        source: '/aarsrapport18',
+        destination: 'https://stiftelseneffekt.no/aarsrapport18',
+        permanent: true,
+      },
+      {
+        source: '/fb-skattefradrag',
+        destination: '/skattefradrag',
+        permanent: true,
+      },
+      {
+        source: '/gi',
+        destination: '/',
+        permanent: true,
+      },
     ]
   },
 };
