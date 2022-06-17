@@ -59,7 +59,7 @@ export const ResultPane: React.FC = () => {
 
         {donation.recurring === RecurringDonation.NON_RECURRING && (
           <div>
-            <PaneTitle>Tusen takk!</PaneTitle>
+            <PaneTitle>Du kan nå overføre til oss</PaneTitle>
             <PaymentInformation donation={donation} />
             <InfoText>
               {`Hvis du ønsker å donere med samme fordeling senere kan du bruke samme KID-nummer igjen. Dersom du har noen spørsmål eller tilbakemeldinger kan du alltid ta kontakt med oss ved å sende en mail til `}

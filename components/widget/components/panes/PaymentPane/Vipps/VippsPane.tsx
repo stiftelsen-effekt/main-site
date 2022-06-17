@@ -69,7 +69,7 @@ export const VippsPane: React.FC = () => {
         {recurring === RecurringDonation.NON_RECURRING && (
           <>
             <div>
-              <PaneTitle>Tusen takk!</PaneTitle>
+              <PaneTitle>Du kan nå overføre til oss</PaneTitle>
             </div>
             <CenterDiv>
               <VippsButtonWrapper>
