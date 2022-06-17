@@ -185,6 +185,11 @@ const fetchFrontpage = groq`
   },
   ${footerQuery}
   "frontpage": *[_type == "frontpage"] {
+    seoTitle, 
+    seoDescription, 
+    seoImage{
+      asset->
+    },
     main_heading,
     sub_heading, 
     sub_heading_link_target,
