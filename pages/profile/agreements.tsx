@@ -135,7 +135,9 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
             <AgreementList
               title={"Aktive"}
               vipps={vipps.filter((agreement: VippsAgreement) => agreement.status === "ACTIVE")}
-              avtalegiro={avtaleGiro.filter((agreement: AvtaleGiroAgreement) => agreement.active)}
+              avtalegiro={avtaleGiro.filter(
+                (agreement: AvtaleGiroAgreement) => agreement.active === 1,
+              )}
               distributions={distributionsMap}
               supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
             />

@@ -63,7 +63,7 @@ distributions.set("123456789", {
 const avtalegiro: AvtaleGiroAgreement[] = [
   {
     ID: 1,
-    active: true,
+    active: 1,
     amount: "10000.00",
     KID: "123456789",
     payment_date: 14,
@@ -71,6 +71,7 @@ const avtalegiro: AvtaleGiroAgreement[] = [
     last_updated: "2022-03-21T03:00:20.000Z",
     notice: false,
     full_name: "Jack Torrence",
+    cancelled: "",
   },
 ];
 
