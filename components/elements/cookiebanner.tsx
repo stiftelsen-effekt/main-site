@@ -1,25 +1,26 @@
 import Head from "next/head";
 import Script from "next/script";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../styles/CookieBanner.module.css";
+import { CookiesAccepted } from "../main/layout";
 
 export const CookieBanner: React.FC = () => {
-  const [cookiesAccepted, setCookiesAccepted] = useState<null | string>("false");
+  const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   useEffect(
     () =>
       setCookiesAccepted(
         typeof window !== "undefined"
-          ? window.localStorage.getItem("gieffektivt-cookies-accepted")
-          : "false",
+          ? window.localStorage.getItem("gieffektivt-cookies-accepted") === "true"
+          : false,
       ),
     [],
   );
 
   return (
     <>
-      {cookiesAccepted === "true" && typeof window !== "undefined" && (
+      {cookiesAccepted && typeof window !== "undefined" && (
         <>
           <Script
             strategy="afterInteractive"
@@ -37,10 +38,7 @@ export const CookieBanner: React.FC = () => {
           </Script>
         </>
       )}
-      <div
-        className={styles.container}
-        style={{ display: cookiesAccepted === "true" ? "none" : "flex" }}
-      >
+      <div className={styles.container} style={{ display: cookiesAccepted ? "none" : "flex" }}>
         <div className={styles.content}>
           <div>
             <span>Cookies</span>
@@ -52,7 +50,7 @@ export const CookieBanner: React.FC = () => {
           <button
             onClick={() => {
               window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
-              setCookiesAccepted("true");
+              setCookiesAccepted(true);
             }}
           >
             Aksepter

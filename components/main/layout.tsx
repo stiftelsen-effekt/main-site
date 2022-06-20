@@ -6,9 +6,11 @@ import { GiButton } from "../give-now-button/gi-button";
 import { WidgetPane } from "../elements/widgetpane";
 
 export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
+export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
 
 export const Layout: LayoutElement = ({ children, footerData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
+  const [cookiesAccepted, setCookiesAccepted] = useState(false);
 
   if (widgetOpen && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
@@ -16,12 +18,17 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
     document.body.style.overflow = "auto";
   }
 
+  const containerClasses = [styles.container];
+  if (!cookiesAccepted) containerClasses.push(styles.containerCookieBanner);
+
   return (
-    <div className={`${styles.container}`}>
+    <div className={containerClasses.join(" ")}>
       <GiButton inverted={false} onClick={() => setWidgetOpen(true)} />
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
-        <WidgetPane />
-        <main className={styles.main}>{children}</main>
+        <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
+          <WidgetPane />
+          <main className={styles.main}>{children}</main>
+        </CookiesAccepted.Provider>
       </WidgetContext.Provider>
       <Footer {...footerData} />
     </div>
