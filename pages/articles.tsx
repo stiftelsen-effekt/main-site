@@ -34,7 +34,7 @@ const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
 
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
-          {/*<CookieBanner />*/}
+          <CookieBanner />
           <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
         </MainHeader>
 
