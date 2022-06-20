@@ -67,7 +67,7 @@ describe("Agreements page", () => {
     cy.get("[data-cy=generic-list-header]").last().should("contain.text", "Inaktive");
 
     cy.get("[data-cy=generic-list-table]").first().find("tbody").should("have.length", 2);
-    cy.get("[data-cy=generic-list-table]").last().find("tbody").should("have.length", 2);
+    cy.get("[data-cy=generic-list-table]").last().find("tbody").should("have.length", 1);
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -612,6 +612,6 @@ describe("Agreements page", () => {
 
     cy.get("[data-cy=generic-list-table]").first().find("tbody").should("have.length", 1);
 
-    cy.get("[data-cy=generic-list-table]").last().find("tbody").should("have.length", 3);
+    cy.get("[data-cy=generic-list-table]").last().find("tbody").should("have.length", 2);
   });
 });
