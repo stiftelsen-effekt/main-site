@@ -25,6 +25,7 @@ import { NormalImage } from "../components/elements/normalimage";
 import { FullVideo } from "../components/elements/fullvideo";
 import { SEO } from "../components/seo/Seo";
 import { HTMLEmbed } from "../components/elements/htmlembed";
+import { CookieBanner } from "../components/elements/cookiebanner";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;
