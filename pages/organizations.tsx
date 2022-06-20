@@ -32,7 +32,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
       />
 
       <MainHeader hideOnScroll={true}>
-        {/*<CookieBanner />*/}
+        <CookieBanner />
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 

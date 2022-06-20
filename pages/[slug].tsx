@@ -41,7 +41,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
       />
 
       <MainHeader hideOnScroll={true}>
-        {/*<CookieBanner />*/}
+        <CookieBanner />
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 

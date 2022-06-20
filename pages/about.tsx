@@ -39,7 +39,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
      */}
 
       <MainHeader hideOnScroll={true}>
-        {/*<CookieBanner />*/}
+        <CookieBanner />
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 
