@@ -69,6 +69,7 @@ export const AgreementDetails: React.FC<{
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [loadingChanges, setLoadingChanges] = useState(false);
 
   /**
    * Saves an agreement if any changes have been made.
@@ -80,19 +81,35 @@ export const AgreementDetails: React.FC<{
    */
   const save = async () => {
     const token = await getAccessTokenSilently();
+
+    setLoadingChanges(true)
+
     if (type == "Vipps") {
-      const savedDistributionKID = await updateVippsAgreementDistribution(
-        endpoint,
-        distribution,
-        token,
-      );
-      const updatedDate = await updateVippsAgreementDay(endpoint, day, token);
-      const updatedSum = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
-      if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
+      let result = null
+
+      if (distribution != inputDistribution) {
+        result = await updateVippsAgreementDistribution(
+          endpoint,
+          distribution,
+          token,
+        );
+      }
+
+      if (day != inputDate) {
+        result = await updateVippsAgreementDay(endpoint, day, token);
+      }
+
+      if (parseFloat(sum) != inputSum) {
+        result = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
+      }
+
+      if (result != null) {
         successToast();
         mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
+        setLoadingChanges(false)
       } else {
         failureToast();
+        setLoadingChanges(false)
       }
     } else if (type == "AvtaleGiro") {
       const savedDistributionKID = await updateAvtalegiroAgreementDistribution(
@@ -157,8 +174,8 @@ export const AgreementDetails: React.FC<{
         <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
           Avslutt avtale
         </EffektButton>
-        <EffektButton onClick={() => save()} cy="btn-save-agreement">
-          Lagre
+        <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
+          {!loadingChanges ? "Lagre" : "Laster..."}
         </EffektButton>
       </div>
       <Lightbox
