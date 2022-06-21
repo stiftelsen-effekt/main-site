@@ -85,7 +85,7 @@ export const AgreementDetails: React.FC<{
     setLoadingChanges(true)
 
     if (type == "Vipps") {
-      let result = null
+      let result = null;
 
       if (distribution != inputDistribution) {
         result = await updateVippsAgreementDistribution(
@@ -112,18 +112,31 @@ export const AgreementDetails: React.FC<{
         setLoadingChanges(false)
       }
     } else if (type == "AvtaleGiro") {
-      const savedDistributionKID = await updateAvtalegiroAgreementDistribution(
-        endpoint,
-        distribution,
-        token,
-      );
-      const updatedDate = await updateAvtaleagreementPaymentDay(endpoint, day, token);
-      const updatedSum = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
-      if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
+      let result = null;
+
+      if (distribution != inputDistribution) {
+        result = await updateAvtalegiroAgreementDistribution(
+          endpoint,
+          distribution,
+          token,
+        );
+      }
+
+      if (day != inputDate) {
+        result = await updateAvtaleagreementPaymentDay(endpoint, day, token);
+      }
+
+      if (parseFloat(sum) != inputSum) {
+        result = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
+      }
+
+      if (result !== null) {
         successToast();
         mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`);
+        setLoadingChanges(false)
       } else {
         failureToast();
+        setLoadingChanges(false)
       }
     }
   };
