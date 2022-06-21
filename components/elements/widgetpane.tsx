@@ -1,7 +1,7 @@
+import dynamic from "next/dynamic";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../styles/WidgetPane.module.css";
 import { WidgetContext } from "../main/layout";
-import { Widget } from "../widget/components/Widget";
 
 export const WidgetPane: React.FC = () => {
   const followThreshold = 20;
@@ -10,6 +10,12 @@ export const WidgetPane: React.FC = () => {
   const [currentY, setCurrentY] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const Widget = dynamic<{}>(
+    () => import("../widget/components/Widget").then((mod) => mod.Widget),
+    {
+      ssr: false,
+    },
+  );
 
   // On initial load, have no animation
   // Then reset on render
