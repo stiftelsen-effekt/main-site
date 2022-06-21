@@ -3,9 +3,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButtonGroup } from "../../../../../elements/radiobuttongroup";
 import { setDueDay } from "../../../../store/donation/actions";
+import { submitReferralAction } from "../../../../store/referrals/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
+import { TextInput } from "../../../shared/Input/TextInput";
 import { Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
+import { ReferralsWrapper, ReferralButtonsWrapper, ReferralButton } from "../../ReferralPane/ReferralPane.style";
 import { InfoText } from "../PaymentPane.style";
 import { DateText } from "../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
@@ -18,7 +21,9 @@ import { RecurringBankDonationForm } from "./RecurringForm";
 
 export const ResultPane: React.FC = () => {
   const donation = useSelector((state: State) => state.donation);
+  const referrals = useSelector((state: State) => state.referrals.referrals);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
+  const [otherInputValue, setOtherInputValue] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,6 +80,33 @@ export const ResultPane: React.FC = () => {
           donation.donor?.email !== "anon@gieffektivt.no" && (
             <InfoText>{`Vi har også sendt en mail til ${donation.donor?.email} med informasjon om din donasjon. Sjekk søppelpost-mappen om du ikke har mottatt eposten i løpet av noen minutter.`}</InfoText>
           )}
+
+        <ReferralsWrapper>
+          <PaneTitle>Hvor hørte du om oss?</PaneTitle>
+          <ReferralButtonsWrapper>
+            {referrals?.map((ref) => (
+              <ReferralButton
+                key={ref.id}
+                onClick={() => {
+                  dispatch(
+                    submitReferralAction.started({
+                      referralID: ref.id,
+                    }),
+                  );
+                }}
+              >
+                {ref.name}
+              </ReferralButton>
+            ))}
+          </ReferralButtonsWrapper>
+          <TextInput
+            label="Annet"
+            value={otherInputValue}
+            type="text"
+            placeholder="Skriv inn"
+            onChange={(e) => setOtherInputValue(e.target.value)}
+          />
+        </ReferralsWrapper>
       </PaneContainer>
     </Pane>
   );

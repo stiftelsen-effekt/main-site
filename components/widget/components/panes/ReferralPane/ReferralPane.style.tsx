@@ -28,11 +28,11 @@ export const ReferralButton = styled.button`
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 0px 1.5px ${orange15};
+    opacity: 0.5;
   }
 
   &:focus {
-    box-shadow: 0px 0px 0px 1.5px ${orange15};
+    opacity: 0.5;
     outline: none;
   }
 `;

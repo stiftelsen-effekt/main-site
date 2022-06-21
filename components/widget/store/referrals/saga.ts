@@ -64,6 +64,4 @@ export function* submitReferral(
       submitReferralAction.failed({ params: action.payload, error: ex as Error })
     );
   }
-
-  yield put(nextPane());
 }
