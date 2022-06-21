@@ -1,10 +1,24 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../styles/CookieBanner.module.css";
 import { CookiesAccepted } from "../main/layout";
 
 export const CookieBanner: React.FC = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      (window as any).gtag("event", "page_view");
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    router.events.on("hashChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+      router.events.off("hashChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
