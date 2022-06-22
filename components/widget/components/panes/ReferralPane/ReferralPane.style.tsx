@@ -4,35 +4,47 @@ import { gray18, orange15 } from "../../../config/colors";
 export const ReferralsWrapper = styled.div``;
 
 export const ReferralButtonsWrapper = styled.div`
-  margin-top: 20px;
-  white-space: normal;
-  columns: 2;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
-export const ReferralButton = styled.button`
-  width: 100%;
-  height: 70px;
-  padding-top: 19px;
-  padding-bottom: 19px;
-  padding-left: 15px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  background-color: white;
-  font-size: 14px;
-  color: black;
-  border: 1px solid ${gray18};
-  border-radius: 5px;
-  box-shadow: 3px;
-  box-shadow: 0 0 5px lightgray;
-  text-align: start;
+interface Props {
+  selected: boolean;
+}
+
+export const ReferralButton = styled.button<Props>`
+  padding: 10px 10px 10px 10px;
+  margin: 5px;
+  font-size: 16px;
+  background-color: ${props => props.selected ? "white" : "black"};
+  color: ${props => props.selected ? "black" : "white"};
+  border: 1px solid white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     cursor: pointer;
-    opacity: 0.5;
+    text-decoration: underline;
   }
 
   &:focus {
-    opacity: 0.5;
-    outline: none;
+    text-decoration: underline;
+  }
+`;
+
+export const ReferralTextInput = styled.input`
+  padding: 10px 10px 10px 10px;
+  margin: 1%;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 98%;
+
+  &:hover {
+    cursor: text;
   }
 `;

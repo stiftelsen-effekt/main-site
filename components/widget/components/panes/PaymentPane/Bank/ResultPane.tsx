@@ -8,7 +8,7 @@ import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { TextInput } from "../../../shared/Input/TextInput";
 import { Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
-import { ReferralsWrapper, ReferralButtonsWrapper, ReferralButton } from "../../ReferralPane/ReferralPane.style";
+import { ReferralsWrapper, ReferralButtonsWrapper, ReferralButton, ReferralTextInput } from "../../ReferralPane/ReferralPane.style";
 import { InfoText } from "../PaymentPane.style";
 import { DateText } from "../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
@@ -23,7 +23,7 @@ export const ResultPane: React.FC = () => {
   const donation = useSelector((state: State) => state.donation);
   const referrals = useSelector((state: State) => state.referrals.referrals);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
-  const [otherInputValue, setOtherInputValue] = useState("");
+  const [selectedReferral, setSelectedReferral] = useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -87,25 +87,38 @@ export const ResultPane: React.FC = () => {
             {referrals?.map((ref) => (
               <ReferralButton
                 key={ref.id}
+                selected={ref.id == selectedReferral}
                 onClick={() => {
+                  setSelectedReferral(ref.id);
+                  /*
                   dispatch(
                     submitReferralAction.started({
                       referralID: ref.id,
                     }),
                   );
+                  */
                 }}
               >
                 {ref.name}
               </ReferralButton>
             ))}
           </ReferralButtonsWrapper>
-          <TextInput
-            label="Annet"
-            value={otherInputValue}
-            type="text"
-            placeholder="Skriv inn"
-            onChange={(e) => setOtherInputValue(e.target.value)}
-          />
+          {selectedReferral == 10 &&
+            <ReferralTextInput
+              type="text"
+              placeholder="Skriv inn"
+              onChange={(e) => {
+                console.log(e.target.value)
+                /*
+                  dispatch(
+                    submitReferralAction.started({
+                      referralID: ref.id,
+                    }),
+                  );
+                */
+              }}
+            />
+          }
         </ReferralsWrapper>
       </PaneContainer>
     </Pane>
