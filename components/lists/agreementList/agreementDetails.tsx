@@ -17,7 +17,7 @@ import {
 } from "./_queries";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
-import { AlertCircle, Check } from "react-feather";
+import { AlertCircle, Check, Info } from "react-feather";
 import { Lightbox } from "../../elements/lightbox";
 import { EffektButton } from "../../elements/effektbutton";
 
@@ -81,13 +81,21 @@ export const AgreementDetails: React.FC<{
    */
   const save = async () => {
     const token = await getAccessTokenSilently();
+    const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution)
+    const sumChanged = parseFloat(sum) !== inputSum
+    const dayChanged = day !== inputDate
+
+    if(!distributionChanged && !dayChanged && !sumChanged) {
+      noChangesToast();
+      return
+    }
 
     setLoadingChanges(true)
 
     if (type == "Vipps") {
       let result = null;
 
-      if (distribution != inputDistribution) {
+      if (distributionChanged) {
         result = await updateVippsAgreementDistribution(
           endpoint,
           distribution,
@@ -95,26 +103,26 @@ export const AgreementDetails: React.FC<{
         );
       }
 
-      if (day != inputDate) {
+      if (dayChanged) {
         result = await updateVippsAgreementDay(endpoint, day, token);
       }
 
-      if (parseFloat(sum) != inputSum) {
+      if (sumChanged) {
         result = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
       }
 
       if (result != null) {
         successToast();
         mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
-        setLoadingChanges(false)
+        setLoadingChanges(false);
       } else {
         failureToast();
-        setLoadingChanges(false)
+        setLoadingChanges(false);
       }
     } else if (type == "AvtaleGiro") {
       let result = null;
 
-      if (distribution != inputDistribution) {
+      if (distributionChanged) {
         result = await updateAvtalegiroAgreementDistribution(
           endpoint,
           distribution,
@@ -122,11 +130,11 @@ export const AgreementDetails: React.FC<{
         );
       }
 
-      if (day != inputDate) {
+      if (dayChanged) {
         result = await updateAvtaleagreementPaymentDay(endpoint, day, token);
       }
 
-      if (parseFloat(sum) != inputSum) {
+      if (sumChanged) {
         result = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
       }
 
@@ -176,7 +184,7 @@ export const AgreementDetails: React.FC<{
         <div>
           <input
             type="text"
-            defaultValue={sum}
+            defaultValue={inputSum}
             onChange={(e) => setSum(e.target.value)}
             data-cy="agreement-list-amount-input"
           />
@@ -217,4 +225,8 @@ const successToast = () => toast.success("Lagret", { icon: <Check size={24} colo
 const failureToast = () =>
   toast.error("Noe gikk galt", {
     icon: <AlertCircle size={24} color={"black"} />,
+  });
+const noChangesToast = () =>
+  toast.error("Ingen endringer", {
+    icon: <Info size={24} color={"black"} />,
   });
