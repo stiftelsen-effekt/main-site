@@ -64,7 +64,7 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
-  const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
+  const [distribution, setDistribution] = useState<Distribution>(JSON.parse(JSON.stringify(inputDistribution)));
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
@@ -84,6 +84,12 @@ export const AgreementDetails: React.FC<{
     const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution)
     const sumChanged = parseFloat(sum) !== inputSum
     const dayChanged = day !== inputDate
+    const distSum = distribution.organizations.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
+
+    if(distSum !== 100 || parseFloat(sum) < 1) {
+      invalidInputToast();
+      return
+    }
 
     if(!distributionChanged && !dayChanged && !sumChanged) {
       noChangesToast();
@@ -230,3 +236,7 @@ const noChangesToast = () =>
   toast.error("Ingen endringer", {
     icon: <Info size={24} color={"black"} />,
   });
+  const invalidInputToast = () =>
+    toast.error("Ugyldig data inntastet", {
+      icon: <AlertCircle size={24} color={"black"} />,
+    });
