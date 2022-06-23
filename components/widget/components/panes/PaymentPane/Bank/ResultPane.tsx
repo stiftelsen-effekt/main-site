@@ -22,8 +22,11 @@ import { RecurringBankDonationForm } from "./RecurringForm";
 export const ResultPane: React.FC = () => {
   const donation = useSelector((state: State) => state.donation);
   const referrals = useSelector((state: State) => state.referrals.referrals);
+  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
+  const donorID = useSelector((state: State) => state.donation.donor?.donorID); 
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
   const [selectedReferral, setSelectedReferral] = useState(0);
+  const [otherInput, setOtherInput] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -81,45 +84,46 @@ export const ResultPane: React.FC = () => {
             <InfoText>{`Vi har også sendt en mail til ${donation.donor?.email} med informasjon om din donasjon. Sjekk søppelpost-mappen om du ikke har mottatt eposten i løpet av noen minutter.`}</InfoText>
           )}
 
-        <ReferralsWrapper>
-          <PaneTitle>Hvor hørte du om oss?</PaneTitle>
-          <ReferralButtonsWrapper>
-            {referrals?.map((ref) => (
-              <ReferralButton
-                key={ref.id}
-                selected={ref.id == selectedReferral}
-                onClick={() => {
-                  setSelectedReferral(ref.id);
-                  /*
+        {/* Always show referrals for anonymous donors (ID 1464) */}
+        {(!hasAnswerredReferral || donorID == 1464) &&
+          <ReferralsWrapper>
+            <PaneTitle>Hvor hørte du om oss?</PaneTitle>
+            <ReferralButtonsWrapper>
+              {referrals?.map((ref) => (
+                <ReferralButton
+                  key={ref.id}
+                  selected={ref.id == selectedReferral}
+                  onClick={() => {
+                    setSelectedReferral(ref.id);
+                    dispatch(
+                      submitReferralAction.started({
+                        referralID: ref.id,
+                        comment: otherInput
+                      }),
+                    );
+                  }}
+                >
+                  {ref.name}
+                </ReferralButton>
+              ))}
+            </ReferralButtonsWrapper>
+            {selectedReferral == 10 &&
+              <ReferralTextInput
+                type="text"
+                placeholder="Skriv inn"
+                onChange={(e) => {
+                  setOtherInput(e.target.value)
                   dispatch(
                     submitReferralAction.started({
-                      referralID: ref.id,
+                      referralID: 10,
+                      comment: e.target.value
                     }),
                   );
-                  */
                 }}
-              >
-                {ref.name}
-              </ReferralButton>
-            ))}
-          </ReferralButtonsWrapper>
-          {selectedReferral == 10 &&
-            <ReferralTextInput
-              type="text"
-              placeholder="Skriv inn"
-              onChange={(e) => {
-                console.log(e.target.value)
-                /*
-                  dispatch(
-                    submitReferralAction.started({
-                      referralID: ref.id,
-                    }),
-                  );
-                */
-              }}
-            />
-          }
-        </ReferralsWrapper>
+              />
+            }
+          </ReferralsWrapper>
+        }
       </PaneContainer>
     </Pane>
   );

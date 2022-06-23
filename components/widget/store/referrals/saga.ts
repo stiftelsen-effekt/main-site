@@ -32,12 +32,14 @@ export function* submitReferral(
   action: Action<ReferralData>
 ): SagaIterator<void> {
   const donorID = yield select((state: State) => state.donation.donor?.donorID);
+  const websiteSession = yield select((state: State) => state.referrals.websiteSession);
 
   try {
     const data = {
       referralID: action.payload.referralID,
       donorID,
       comment: action.payload.comment,
+      websiteSession
     };
 
     const request = yield call(fetch, `${API_URL}/referrals/`, {
