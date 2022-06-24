@@ -110,11 +110,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/the-pledge',
-        destination: '/kommer-snart',
-        permanent: true,
-      },
-      {
         source: '/bistandsmyter',
         destination: '/kommer-snart',
         permanent: true,
