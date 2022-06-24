@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { gray18, orange15 } from "../../../config/colors";
+import { gray18, orange15 } from "../../../../config/colors";
 
 export const ReferralsWrapper = styled.div``;
 
@@ -8,11 +8,11 @@ export const ReferralButtonsWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-interface Props {
+interface ButtonProps {
   selected: boolean;
 }
 
-export const ReferralButton = styled.button<Props>`
+export const ReferralButton = styled.button<ButtonProps>`
   padding: 10px 10px 10px 10px;
   margin: 5px;
   font-size: 16px;
