@@ -10,6 +10,7 @@ export const GiButton: React.FC<{ inverted: boolean; onClick: () => void }> = ({
       className={`${styles.gibutton} ${inverted ? styles.gibuttoninverted : null}`}
       title="Trykk for å åpne donasjonspanelet"
       onClick={onClick}
+      data-cy="gi-button"
     >
       Gi.
     </button>

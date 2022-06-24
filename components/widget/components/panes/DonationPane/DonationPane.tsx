@@ -63,6 +63,7 @@ export const DonationPane: React.FC = () => {
                 placeholder="0"
                 value={donation.sum && donation.sum > 0 ? donation.sum : ""}
                 autoComplete="off"
+                data-cy="donation-sum-input"
                 onChange={(e) => {
                   if (Validator.isInt(e.target.value) === true && parseInt(e.target.value) > 0) {
                     dispatch(setSum(parseInt(e.target.value)));
@@ -103,7 +104,7 @@ export const DonationPane: React.FC = () => {
           )}
         </div>
 
-        <ActionBar>
+        <ActionBar data-cy="next-button-div">
           <NextButton
             disabled={!donation.isValid}
             onClick={() => {

@@ -4,6 +4,7 @@ import { State } from "../../../store/state";
 import { StyledNextButton, StyledSpinner, StyledSubmitButton } from "./NavigationButtons.style";
 
 export const NextButton: React.FC<{
+  id?: string;
   children: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
