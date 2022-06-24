@@ -17,7 +17,7 @@ import {
 } from "./_queries";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
-import { AlertCircle, Check } from "react-feather";
+import { AlertCircle, Check, Info } from "react-feather";
 import { Lightbox } from "../../elements/lightbox";
 import { EffektButton } from "../../elements/effektbutton";
 
@@ -64,11 +64,12 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
-  const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
+  const [distribution, setDistribution] = useState<Distribution>(JSON.parse(JSON.stringify(inputDistribution)));
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [loadingChanges, setLoadingChanges] = useState(false);
 
   /**
    * Saves an agreement if any changes have been made.
@@ -80,33 +81,76 @@ export const AgreementDetails: React.FC<{
    */
   const save = async () => {
     const token = await getAccessTokenSilently();
+    const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution)
+    const sumChanged = parseFloat(sum) !== inputSum
+    const dayChanged = day !== inputDate
+    const distSum = distribution.organizations.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
+
+    if(distSum !== 100 || parseFloat(sum) < 1) {
+      invalidInputToast();
+      return
+    }
+
+    if(!distributionChanged && !dayChanged && !sumChanged) {
+      noChangesToast();
+      return
+    }
+
+    setLoadingChanges(true)
+
     if (type == "Vipps") {
-      const savedDistributionKID = await updateVippsAgreementDistribution(
-        endpoint,
-        distribution,
-        token,
-      );
-      const updatedDate = await updateVippsAgreementDay(endpoint, day, token);
-      const updatedSum = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
-      if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
+      let result = null;
+
+      if (distributionChanged) {
+        result = await updateVippsAgreementDistribution(
+          endpoint,
+          distribution,
+          token,
+        );
+      }
+
+      if (dayChanged) {
+        result = await updateVippsAgreementDay(endpoint, day, token);
+      }
+
+      if (sumChanged) {
+        result = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
+      }
+
+      if (result != null) {
         successToast();
         mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
+        setLoadingChanges(false);
       } else {
         failureToast();
+        setLoadingChanges(false);
       }
     } else if (type == "AvtaleGiro") {
-      const savedDistributionKID = await updateAvtalegiroAgreementDistribution(
-        endpoint,
-        distribution,
-        token,
-      );
-      const updatedDate = await updateAvtaleagreementPaymentDay(endpoint, day, token);
-      const updatedSum = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
-      if (savedDistributionKID != null && updatedDate !== null && updatedSum !== null) {
+      let result = null;
+
+      if (distributionChanged) {
+        result = await updateAvtalegiroAgreementDistribution(
+          endpoint,
+          distribution,
+          token,
+        );
+      }
+
+      if (dayChanged) {
+        result = await updateAvtaleagreementPaymentDay(endpoint, day, token);
+      }
+
+      if (sumChanged) {
+        result = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
+      }
+
+      if (result !== null) {
         successToast();
         mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`);
+        setLoadingChanges(false)
       } else {
         failureToast();
+        setLoadingChanges(false)
       }
     }
   };
@@ -146,7 +190,7 @@ export const AgreementDetails: React.FC<{
         <div>
           <input
             type="text"
-            defaultValue={sum}
+            defaultValue={inputSum}
             onChange={(e) => setSum(e.target.value)}
             data-cy="agreement-list-amount-input"
           />
@@ -157,8 +201,8 @@ export const AgreementDetails: React.FC<{
         <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
           Avslutt avtale
         </EffektButton>
-        <EffektButton onClick={() => save()} cy="btn-save-agreement">
-          Lagre
+        <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
+          {!loadingChanges ? "Lagre" : "Laster..."}
         </EffektButton>
       </div>
       <Lightbox
@@ -188,3 +232,11 @@ const failureToast = () =>
   toast.error("Noe gikk galt", {
     icon: <AlertCircle size={24} color={"black"} />,
   });
+const noChangesToast = () =>
+  toast.error("Ingen endringer", {
+    icon: <Info size={24} color={"black"} />,
+  });
+  const invalidInputToast = () =>
+    toast.error("Ugyldig data inntastet", {
+      icon: <AlertCircle size={24} color={"black"} />,
+    });

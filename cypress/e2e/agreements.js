@@ -234,7 +234,7 @@ describe("Agreements page", () => {
       .find("[data-cy=btn-save-agreement]")
       .click();
 
-    cy.get(".Toastify").contains("Noe gikk galt");
+    cy.get(".Toastify").contains("Ugyldig data inntastet");
   });
 
   it("Should be possible to change the agreement distribution", () => {
