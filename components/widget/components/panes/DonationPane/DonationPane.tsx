@@ -36,8 +36,8 @@ export const DonationPane: React.FC = () => {
           <PaneTitle>Hvor mye ønsker du å Gi Effektivt?</PaneTitle>
           <RadioButtonGroup
             options={[
-              { title: "Gi månedlig", value: RecurringDonation.RECURRING },
-              { title: "Engangsbeløp", value: RecurringDonation.NON_RECURRING },
+              { title: "Gi månedlig", value: RecurringDonation.RECURRING, data_cy: "radio-recurring" },
+              { title: "Engangsbeløp", value: RecurringDonation.NON_RECURRING, data_cy: "radio-single" },
             ]}
             selected={donation.recurring}
             onSelect={(option) => dispatch(setRecurring(option as RecurringDonation))}
@@ -78,8 +78,8 @@ export const DonationPane: React.FC = () => {
           <ShareSelectionWrapper>
             <RadioButtonGroup
               options={[
-                { title: "Smart fordeling", value: ShareType.STANDARD },
-                { title: "Jeg vil velge selv", value: ShareType.CUSTOM },
+                { title: "Smart fordeling", value: ShareType.STANDARD, data_cy: "radio-smart-share" },
+                { title: "Jeg vil velge selv", value: ShareType.CUSTOM, data_cy: "radio-custom-share" },
               ]}
               selected={donation.shareType}
               onSelect={(option) => {

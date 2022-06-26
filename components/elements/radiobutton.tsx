@@ -5,11 +5,13 @@ export const RadioButton: React.FC<{
   selected: boolean;
   name: string;
   title: string;
+  data_cy: string;
   onSelect: () => void;
-}> = ({ selected, name, title, onSelect }) => {
+}> = ({ selected, name, title, data_cy, onSelect }) => {
   return (
     <div className={styles.radiobuttonwrapper}>
       <input
+        data-cy={data_cy}
         type={"radio"}
         name={name}
         title={title}

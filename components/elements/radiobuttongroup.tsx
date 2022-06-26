@@ -3,7 +3,7 @@ import styles from "../../styles/RadioButtons.module.css";
 import { RadioButton } from "./radiobutton";
 
 export const RadioButtonGroup: React.FC<{
-  options: { title: string; value: number }[];
+  options: { title: string; value: number; data_cy: string }[];
   selected: number | undefined;
   onSelect: (value: number) => void;
 }> = ({ options, selected, onSelect }) => {
@@ -16,6 +16,7 @@ export const RadioButtonGroup: React.FC<{
     <div className={styles.radiobuttongroup}>
       {options.map((option) => (
         <RadioButton
+          data_cy={option.data_cy}
           name={name}
           key={option.value}
           title={option.title}

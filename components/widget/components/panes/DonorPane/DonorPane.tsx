@@ -131,9 +131,9 @@ export const DonorPane: React.FC = () => {
             <PaneTitle>Om deg</PaneTitle>
 
             <div style={{ marginBottom: "20px" }}>
-              <CheckBoxWrapper>
+              <CheckBoxWrapper data-cy="anon-button-div">
                 <HiddenCheckBox
-                  data-cy="checkboxAnonymousDonor"
+                  data-cy="anon-checkbox"
                   name="anonymousDonor"
                   type="checkbox"
                   ref={register}
@@ -256,14 +256,14 @@ export const DonorPane: React.FC = () => {
 
             <RadioButtonGroup
               options={[
-                { title: "Gi med bank", value: PaymentMethod.BANK },
-                { title: "Gi med Vipps", value: PaymentMethod.VIPPS },
+                { title: "Gi med bank", value: PaymentMethod.BANK, data_cy: "bank-method" },
+                { title: "Gi med Vipps", value: PaymentMethod.VIPPS, data_cy: "vipps-method" },
               ]}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}
             />
           </div>
-          <ActionBar>
+          <ActionBar data-cy="next-button-div">
             {donorType === DonorType.DONOR ? (
               <NextButton disabled={nextDisabled} onClick={() => {}}>
                 Neste
