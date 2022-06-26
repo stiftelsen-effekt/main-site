@@ -67,21 +67,28 @@ Cypress.Commands.add("login", (overrides = {}) => {
 
 const getState = () => cy.window().its("store").invoke("getState");
 
-const pickRecurring = (recurring) => {
-  cy.react("RadioButton", {
-    props: { value: recurring ? 1 : 0 },
-  }).click();
+const nextWidgetPane = () => {
+  cy.get("[data-cy=next-button-div]").within(() => {
+    cy.get('button').click();
+  })
 };
 
-const pickMethod = (methodName) => {
-  cy.react("MethodButton", { props: { className: methodName } }).click();
-  cy.wait(500);
+const pickRecurringDonation = () => {
+  cy.get("[data-cy=radio-recurring]").click({ force: true });
+};
+
+const pickSingleDonation = () => {
+  cy.get("[data-cy=radio-single]").click({ force: true });
+};
+
+const pickMethod = () => {
+  cy.get("[data-cy=bank-method]").within(() => {
+    cy.get("input").click({ multiple: true });
+  })
 };
 
 const pickAnonymous = () => {
-  cy.react("RichSelectOption", {
-    props: { value: DonorType.ANONYMOUS },
-  }).click();
+  cy.get("[data-cy=anon-checkbox]").click();
 };
 
 // TODO: Use this in a test
@@ -99,7 +106,9 @@ const inputDonorValues = () => {
 };
 
 Cypress.Commands.add("getState", getState);
-Cypress.Commands.add("pickRecurring", pickRecurring);
+Cypress.Commands.add("nextWidgetPane", nextWidgetPane);
+Cypress.Commands.add("pickRecurringDonation", pickRecurringDonation);
+Cypress.Commands.add("pickSingleDonation", pickSingleDonation);
 Cypress.Commands.add("pickMethod", pickMethod);
 Cypress.Commands.add("pickAnonymous", pickAnonymous);
 Cypress.Commands.add("inputDonorValues", inputDonorValues);
