@@ -1,6 +1,6 @@
 context("Window", () => {
     before(() => {
-        cy.visit("http://localhost:3000");
+        cy.visit("/");
     });
 
     it("End-2-End single bank donation", () => {
@@ -44,7 +44,7 @@ context("Window", () => {
 
 context("Window", () => {
     before(() => {
-        cy.visit("http://localhost:3000");
+        cy.visit("/");
     });
 
     it("End-2-End recurring bank donation", () => {
@@ -86,7 +86,7 @@ context("Window", () => {
 
 context("Window", () => {
     before(() => {
-        cy.visit("http://localhost:3000");
+        cy.visit("/");
     });
 
     it("End-2-End single vipps donation", () => {
@@ -122,7 +122,7 @@ context("Window", () => {
 
 context("Window", () => {
     before(() => {
-        cy.visit("http://localhost:3000");
+        cy.visit("/");
     });
 
     it("End-2-End recurring vipps donation", () => {
@@ -168,7 +168,7 @@ context("Window", () => {
 
 context("Window", () => {
   before(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
   });
 
   it("End-2-End shared donation", () => {
@@ -207,7 +207,7 @@ context("Window", () => {
 
 context("Window", () => {
     before(() => {
-      cy.visit("http://localhost:3000");
+      cy.visit("/");
     });
   
     it("End-2-End for all input fields", () => {
