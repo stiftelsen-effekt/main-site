@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { gray18, orange15 } from "../../../../config/colors";
 
-export const ReferralsWrapper = styled.div``;
-
 export const ReferralButtonsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;

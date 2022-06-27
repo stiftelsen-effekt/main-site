@@ -283,8 +283,3 @@ export const DonorPane: React.FC = () => {
     </Pane>
   );
 };
-
-/**
- * type="submit" on donor button
- * disabled={nextDisabled}
- */
