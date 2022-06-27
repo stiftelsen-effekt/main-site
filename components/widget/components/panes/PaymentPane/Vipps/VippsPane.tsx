@@ -1,13 +1,17 @@
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { EffektButton, EffektButtonType } from "../../../../../elements/effektbutton";
 import { RadioButtonGroup } from "../../../../../elements/radiobuttongroup";
 import { WidgetContext } from "../../../../../main/layout";
 import { draftAgreementAction, setVippsAgreement } from "../../../../store/donation/actions";
+import { submitReferralAction } from "../../../../store/referrals/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 import { ErrorField } from "../../../shared/Error/ErrorField";
+import { Referrals } from "../../../shared/Referrals/Referrals";
 import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
+import { ReferralsWrapper, ReferralButtonsWrapper, ReferralTextInput } from "../Bank/ReferralPane.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
 import { VippsButtonWrapper } from "./VippsPane.style";
 
@@ -17,7 +21,12 @@ export const VippsPane: React.FC = () => {
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
   const [draftError, setDraftError] = useState(false);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
+  const donorID = useSelector((state: State) => state.donation.donor?.donorID); 
+  const referrals = useSelector((state: State) => state.referrals.referrals);
+  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [selectedReferral, setSelectedReferral] = useState(0);
+  const [otherInput, setOtherInput] = useState("");
 
   return (
     <Pane>
@@ -86,6 +95,10 @@ export const VippsPane: React.FC = () => {
             </CenterDiv>
           </>
         )}
+         {/* Always show referrals for anonymous donors (ID 1464) */}
+         {(!hasAnswerredReferral || donorID == 1464) &&
+          <Referrals />
+        }
       </PaneContainer>
     </Pane>
   );

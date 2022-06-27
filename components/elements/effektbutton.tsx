@@ -15,10 +15,16 @@ export const EffektButton: React.FC<{
   cy?: string;
   className?: string;
   disabled?: boolean;
-}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled }) => {
+  selected?: boolean;
+}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected }) => {
+  const styleClasses = [elements.button, type, className]
+  if (selected) {
+    styleClasses.push(elements.selected)
+  }
+  
   return (
     <button
-      className={[elements.button, type, className].join(" ")}
+      className={styleClasses.join(" ")}
       onClick={onClick}
       role={role}
       data-cy={cy}

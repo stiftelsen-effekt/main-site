@@ -7,8 +7,8 @@ import { submitReferralAction } from "../../../../store/referrals/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { TextInput } from "../../../shared/Input/TextInput";
-import { Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
-import { ReferralsWrapper, ReferralButtonsWrapper, ReferralButton, ReferralTextInput } from "./ReferralPane.style";
+import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
+import { ReferralsWrapper, ReferralButtonsWrapper, ReferralTextInput } from "./ReferralPane.style";
 import { InfoText } from "../PaymentPane.style";
 import { DateText } from "../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
@@ -18,6 +18,7 @@ import {
 } from "./AvtaleGiroDatePicker/avtalegirodates";
 import { PaymentInformation } from "./PaymentInformation";
 import { RecurringBankDonationForm } from "./RecurringForm";
+import { Referrals } from "../../../shared/Referrals/Referrals";
 
 export const ResultPane: React.FC = () => {
   const donation = useSelector((state: State) => state.donation);
@@ -86,45 +87,7 @@ export const ResultPane: React.FC = () => {
 
         {/* Always show referrals for anonymous donors (ID 1464) */}
         {(!hasAnswerredReferral || donorID == 1464) &&
-          <ReferralsWrapper>
-            <PaneTitle>Hvor hørte du om oss?</PaneTitle>
-            <ReferralButtonsWrapper>
-              {referrals?.map((ref) => (
-                <ReferralButton
-                  data-cy={`referral-button-${ref.id}`}
-                  key={ref.id}
-                  selected={ref.id == selectedReferral}
-                  onClick={() => {
-                    setSelectedReferral(ref.id);
-                    dispatch(
-                      submitReferralAction.started({
-                        referralID: ref.id,
-                        comment: otherInput
-                      }),
-                    );
-                  }}
-                >
-                  {ref.name}
-                </ReferralButton>
-              ))}
-            </ReferralButtonsWrapper>
-            {selectedReferral == 10 &&
-              <ReferralTextInput
-                data-cy="referral-text-input"
-                type="text"
-                placeholder="Skriv inn"
-                onChange={(e) => {
-                  setOtherInput(e.target.value)
-                  dispatch(
-                    submitReferralAction.started({
-                      referralID: 10,
-                      comment: e.target.value
-                    }),
-                  );
-                }}
-              />
-            }
-          </ReferralsWrapper>
+          <Referrals />
         }
       </PaneContainer>
     </Pane>
