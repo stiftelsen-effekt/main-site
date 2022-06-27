@@ -50,7 +50,7 @@ export const VippsPane: React.FC = () => {
               {draftError && <ErrorField text="Det har skjedd en feil, vennligst prøv på nytt" />}
             </div>
             <CenterDiv>
-              <div style={{ marginBottom: 30 }}>
+              <div data-cy="vipps-recurring-button" style={{ marginBottom: 30 }}>
                 <SubmitButton
                   onClick={async () => {
                     if (recurring === RecurringDonation.RECURRING) {
@@ -71,7 +71,7 @@ export const VippsPane: React.FC = () => {
               <PaneTitle>Du kan nå overføre til oss</PaneTitle>
             </div>
             <CenterDiv>
-              <VippsButtonWrapper>
+              <VippsButtonWrapper data-cy="vipps-single-button">
                 <SubmitButton
                   onClick={async () => {
                     if (recurring === RecurringDonation.NON_RECURRING && paymentProviderURL) {

@@ -150,6 +150,7 @@ export const DonorPane: React.FC = () => {
             <div style={{ display: donorType === DonorType.ANONYMOUS ? "none" : "block" }}>
               <InputFieldWrapper>
                 <input
+                  data-cy="name-input"
                   name="name"
                   type="text"
                   placeholder="Navn"
@@ -160,6 +161,7 @@ export const DonorPane: React.FC = () => {
               </InputFieldWrapper>
               <InputFieldWrapper>
                 <input
+                  data-cy="email-input"
                   name="email"
                   type="email"
                   placeholder="Epost"
@@ -178,7 +180,7 @@ export const DonorPane: React.FC = () => {
                 <div>
                   <CheckBoxWrapper>
                     <HiddenCheckBox
-                      data-cy="checkboxTaxDeduction"
+                      data-cy="tax-deduction-checkbox"
                       name="taxDeduction"
                       type="checkbox"
                       ref={register}
@@ -197,6 +199,7 @@ export const DonorPane: React.FC = () => {
                   {watchAllFields.taxDeduction && (
                     <InputFieldWrapper>
                       <input
+                        data-cy="ssn-input"
                         name="ssn"
                         type="text"
                         inputMode="numeric"
@@ -228,7 +231,7 @@ export const DonorPane: React.FC = () => {
                 </div>
                 <CheckBoxWrapper>
                   <HiddenCheckBox
-                    data-cy="checkboxNewsletter"
+                    data-cy="newsletter-checkbox"
                     name="newsletter"
                     type="checkbox"
                     ref={register}

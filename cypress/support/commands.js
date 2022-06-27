@@ -81,12 +81,6 @@ const pickSingleDonation = () => {
   cy.get("[data-cy=radio-single]").click({ force: true });
 };
 
-const pickMethod = () => {
-  cy.get("[data-cy=bank-method]").within(() => {
-    cy.get("input").click({ multiple: true });
-  })
-};
-
 const pickAnonymous = () => {
   cy.get("[data-cy=anon-checkbox]").click();
 };
@@ -109,7 +103,6 @@ Cypress.Commands.add("getState", getState);
 Cypress.Commands.add("nextWidgetPane", nextWidgetPane);
 Cypress.Commands.add("pickRecurringDonation", pickRecurringDonation);
 Cypress.Commands.add("pickSingleDonation", pickSingleDonation);
-Cypress.Commands.add("pickMethod", pickMethod);
 Cypress.Commands.add("pickAnonymous", pickAnonymous);
 Cypress.Commands.add("inputDonorValues", inputDonorValues);
 

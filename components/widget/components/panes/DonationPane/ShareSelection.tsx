@@ -21,6 +21,7 @@ export const SharesSelection: React.FC = () => {
             {organizations.filter((org) => org.id === share.id)[0].name}
           </label>
           <input
+            data-cy={`org-${share.id}`}
             name={share.id.toString()}
             placeholder="0"
             value={share.split.toString()}

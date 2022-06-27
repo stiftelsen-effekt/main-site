@@ -41,6 +41,6 @@ context("Window", () => {
       .its("paymentProviderURL")
       .should((url: string) => {
         expect(url).to.have.string("vipps.no");
-      });
+    });
   });
 });

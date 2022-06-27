@@ -37,8 +37,8 @@ context("Window", () => {
     cy.react("RichSelectOption", {
       props: { value: ShareType.CUSTOM },
     }).click();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cy.get("@getOrganizations").then((req: any) => {
+
+    cy.get("@getOrganizations").then((req) => {
       const organizations = req.response.body.content;
       for (let i = 0; i < 4; i += 1) {
         cy.get(`input[label="${organizations[i].name}"]`).type("25", {
