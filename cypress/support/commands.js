@@ -73,9 +73,34 @@ const nextWidgetPane = () => {
   })
 };
 
+const prevWidgetPane = () => {
+  cy.get("[data-cy=back-button]").click();
+};
+
+const checkNextIsDisabled = (isDisabled) => {
+  cy.get("[data-cy=next-button-div]").within(() => {
+    cy.get('button').should("have.attr", "disabled");
+  })
+}
+
 const pickRecurringDonation = () => {
   cy.get("[data-cy=radio-recurring]").click({ force: true });
 };
+
+const registerDonationStub = () => {
+  cy.intercept("POST", "/donations/register", {
+    statusCode: 200,
+    body: {
+        status: 200,
+        content: {
+            KID: "87397824",
+            donorID: 973,
+            hasAnsweredReferral: false,
+            paymentProviderUrl: ""
+        },
+    },
+  }).as("registerDonation");
+}
 
 const pickSingleDonation = () => {
   cy.get("[data-cy=radio-single]").click({ force: true });
@@ -101,6 +126,8 @@ const inputDonorValues = () => {
 
 Cypress.Commands.add("getState", getState);
 Cypress.Commands.add("nextWidgetPane", nextWidgetPane);
+Cypress.Commands.add("prevWidgetPane", prevWidgetPane);
+Cypress.Commands.add("checkNextIsDisabled", checkNextIsDisabled);
 Cypress.Commands.add("pickRecurringDonation", pickRecurringDonation);
 Cypress.Commands.add("pickSingleDonation", pickSingleDonation);
 Cypress.Commands.add("pickAnonymous", pickAnonymous);

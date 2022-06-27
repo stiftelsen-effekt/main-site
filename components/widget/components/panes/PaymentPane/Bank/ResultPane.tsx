@@ -91,6 +91,7 @@ export const ResultPane: React.FC = () => {
             <ReferralButtonsWrapper>
               {referrals?.map((ref) => (
                 <ReferralButton
+                  data-cy={`referral-button-${ref.id}`}
                   key={ref.id}
                   selected={ref.id == selectedReferral}
                   onClick={() => {
@@ -109,6 +110,7 @@ export const ResultPane: React.FC = () => {
             </ReferralButtonsWrapper>
             {selectedReferral == 10 &&
               <ReferralTextInput
+                data-cy="referral-text-input"
                 type="text"
                 placeholder="Skriv inn"
                 onChange={(e) => {

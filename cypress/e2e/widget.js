@@ -167,13 +167,13 @@ context("Window", () => {
 
 
 context("Window", () => {
-    before(() => {
-      cy.visit("http://localhost:3000");
-    });
-  
-    it("End-2-End shared donation", () => {
-      const randomSum = Math.floor(Math.random() * 1000) + 100;
-      cy.get("[data-cy=gi-button]").click();
+  before(() => {
+    cy.visit("http://localhost:3000");
+  });
+
+  it("End-2-End shared donation", () => {
+    const randomSum = Math.floor(Math.random() * 1000) + 100;
+    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.get("[data-cy=radio-custom-share]").click({ force: true });
@@ -203,7 +203,7 @@ context("Window", () => {
         expect(kid).to.be.length(8);
         });
     });
-  });
+});
 
 context("Window", () => {
     before(() => {
@@ -213,33 +213,70 @@ context("Window", () => {
     it("End-2-End for all input fields", () => {
       const randomSum = Math.floor(Math.random() * 1000) + 100;
       cy.get("[data-cy=gi-button]").click();
-    cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.nextWidgetPane();
+      cy.checkNextIsDisabled();
+      cy.pickSingleDonation();
+      cy.checkNextIsDisabled();
+      cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+      cy.nextWidgetPane();
 
-    cy.get("[data-cy=name-input]").type("Donor Name");
-    cy.get("[data-cy=email-input]").type("donor@email.com");
-    cy.get("[data-cy=tax-deduction-checkbox]").click();
-    cy.get("[data-cy=ssn-input]").type("916741057");
-    cy.get("[data-cy=newsletter-checkbox]").click();
-    cy.get("[data-cy=bank-method]").click({ force: true });
-    cy.intercept("POST", "/donations/register", {
-        statusCode: 200,
-        body: {
-            status: 200,
-            content: {
-                KID: "87397824",
-                donorID: 973,
-                hasAnsweredReferral: false,
-                paymentProviderUrl: ""
-            },
-        },
-    }).as("registerDonation");
-    cy.nextWidgetPane();
+      cy.prevWidgetPane();
+      cy.get("[data-cy=donation-sum-input]").clear();
+      cy.get("[data-cy=donation-sum-input]").type(0);
+      cy.checkNextIsDisabled();
+      cy.get("[data-cy=donation-sum-input]").type(1);
+      cy.nextWidgetPane();
 
-    cy.get("[data-cy=kidNumber]").should(($kid) => {
+      cy.wait(500)
+      cy.checkNextIsDisabled();
+      cy.get("[data-cy=name-input]").type("Donor Name");
+      cy.get("[data-cy=email-input]").type("donor@email.com");
+      cy.get("[data-cy=tax-deduction-checkbox]").click();
+      cy.get("[data-cy=ssn-input]").type("916741057"); // Check 9 digit organization number
+      cy.get("[data-cy=newsletter-checkbox]").click();
+      cy.get("[data-cy=bank-method]").click({ force: true }); 
+      cy.intercept("POST", "/donations/register", {
+          statusCode: 200,
+          body: {
+              status: 200,
+              content: {
+                  KID: "87397824",
+                  donorID: 973,
+                  hasAnsweredReferral: false,
+                  paymentProviderUrl: ""
+              },
+          },
+      }).as("registerDonation");
+      cy.nextWidgetPane();
+
+      cy.prevWidgetPane();
+      cy.get("[data-cy=ssn-input]").clear();
+      cy.get("[data-cy=ssn-input]").type("1234567890"); // 10 digits invalid snn
+      cy.checkNextIsDisabled();
+
+      cy.get("[data-cy=ssn-input]").clear();
+      cy.get("[data-cy=ssn-input]").type("10915596784"); // 11 digits valid ssn
+      cy.get("[data-cy=email-input]").clear();
+      cy.get("[data-cy=email-input]").type("incorrect email");
+      cy.checkNextIsDisabled();
+
+      cy.get("[data-cy=email-input]").clear();
+      cy.get("[data-cy=email-input]").type("donor@email.com");
+      cy.nextWidgetPane();
+
+      cy.get("[data-cy=kidNumber]").should(($kid) => {
         const kid = $kid.text();
         expect(kid).to.be.length(8);
-        });
-    });
+      });
+
+      cy.intercept("POST", "/referrals", {
+        statusCode: 200,
+        body: {
+            status: 200
+        },
+      }).as("postReferrals");
+
+      cy.get("[data-cy=referral-button-1]").click();
+      cy.get("[data-cy=referral-button-10]").click();
+      cy.get("[data-cy=referral-text-input]").type("Referral text");
+      });
   });

@@ -31,7 +31,7 @@ export const ProgressBar: React.FC = () => {
   return (
     <HeaderContainer>
       {tooltip !== null && <TooltipWrapper>{tooltip}</TooltipWrapper>}
-      <ActionButton active={paneNumber === 0} onClick={() => dispatch(prevPane())}>
+      <ActionButton data-cy="back-button" active={paneNumber === 0} onClick={() => dispatch(prevPane())}>
         ←
       </ActionButton>
       <ProgressContainer>
