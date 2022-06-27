@@ -27,8 +27,6 @@ export const CheckMark = styled.span`
   font-size: 14px;
   color: var(--primary);
   display: none;
-
-  font-weight: bold;
 `;
 
 export const StyledInput = styled.input`
