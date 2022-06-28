@@ -1,17 +1,16 @@
 import { groq } from "next-sanity";
-import Head from "next/head";
-import { ArticlePreview } from "../components/elements/articlepreview";
-import { CookieBanner } from "../components/elements/cookiebanner";
-import { PageHeader } from "../components/elements/pageheader";
-import { footerQuery } from "../components/footer";
-import { MainHeader } from "../components/main/header";
-import { Layout } from "../components/main/layout";
-import { Navbar } from "../components/main/navbar";
-import { SectionContainer } from "../components/sectionContainer";
 import { getClient } from "../lib/sanity.server";
 import { LayoutPage } from "../types";
 import styles from "../styles/Articles.module.css";
-import { SEO } from "../components/seo/Seo";
+import { SEO } from "../components/shared/seo/Seo";
+import { Navbar } from "../components/main/layout/navbar";
+import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { Layout } from "../components/main/layout/layout";
 
 const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
   const settings = data.settings[0];

@@ -1,4 +1,4 @@
-import { DonationsDistributionGraph } from "../../components/profile/donations/donationsDistributionGraph";
+import { DonationsDistributionGraph } from "../../components/profile/donations/DonationsDistributionGraph/DonationsDistributionGraph";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {

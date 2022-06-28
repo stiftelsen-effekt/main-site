@@ -1,0 +1,26 @@
+.columnswrapper {
+  border-top: 1px solid var(--primary);
+}
+
+.columnswrapper h5 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 100px;
+}
+
+.columns p {
+  line-height: 200%;
+}
+
+@media only screen and (max-width: 1180px) { 
+  .columns {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content;
+    row-gap: 60px;
+  }
+}

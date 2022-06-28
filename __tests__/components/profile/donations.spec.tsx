@@ -1,4 +1,4 @@
-import DonationYearMenu from "../../../components/profile/donations/yearMenu";
+import DonationYearMenu from "../../../components/profile/donations/YearMenu/YearMenu";
 import { render } from "@testing-library/react";
 
 const donations = [

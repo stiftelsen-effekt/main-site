@@ -1,0 +1,9 @@
+.pointlistpoint {
+  border-top: 1px solid black;
+  display: flex;
+  column-gap: 25px;
+}
+
+.pointlistpoint div:nth-child(2) {
+  flex-grow: 1;
+}

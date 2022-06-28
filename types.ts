@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { ReactElement } from "react";
-import { FooterProps } from "./components/footer";
+import { FooterProps } from "./components/shared/footer";
 
 export type LayoutPage<P = {}> = NextPage<P> & { layout: LayoutElement };
 export type LayoutElement = React.FC<{ children: ReactElement, footerData: FooterProps }>;

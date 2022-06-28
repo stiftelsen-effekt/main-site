@@ -1,0 +1,122 @@
+.teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.teaserimage {
+  background: var(--primary);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 12/ 9;
+}
+
+.teasertext {
+  padding: 40px;
+  padding-left: 100px;
+  padding-right: 140px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.teasertext p {
+  margin-top: 60px;
+  white-space: pre-wrap;
+}
+
+.teasertext button {
+  margin-left: 0;
+}
+
+.teasertext .teaserdisclaimer {
+  margin-top: 20px;
+  font-size: 16px;
+}.teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.teaserimage {
+  background: var(--primary);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 12/ 9;
+}
+
+.teasertext {
+  padding: 40px;
+  padding-left: 100px;
+  padding-right: 140px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.teasertext p {
+  margin-top: 60px;
+  white-space: pre-wrap;
+}
+
+.teasertext button {
+  margin-left: 0;
+}
+
+.teasertext .teaserdisclaimer {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 1180px) {
+  .teaser {
+    height: auto;
+    min-height: auto;
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: max-content max-content;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .teaser:last-child {
+    margin-bottom: 0;
+  }
+
+  .teaserimage {
+    grid-row: 1;
+    aspect-ratio: 4 / 3;
+  }
+
+  .teasertext {
+    padding: 20px 0px;
+    max-width: auto;
+    grid-row: 2;
+    margin-bottom: 20px;
+  }
+
+  .teasertext p {
+    margin-top: 0;
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .teasertext {
+    padding-left: 60px;
+  }
+
+  .teasertext p {
+    margin-top: 30px;
+  }
+}

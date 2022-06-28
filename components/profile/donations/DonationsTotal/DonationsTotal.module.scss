@@ -1,0 +1,28 @@
+.totals {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.totals .period {
+  margin-bottom: 4px;
+}
+
+.totals h2 {
+  margin: 0 8px;
+}
+
+.totals h4 {
+  margin: 0 0;
+}
+@media only screen and (max-width: 1180px) {
+  .totals {
+    align-items: flex-end;
+  }
+
+  .totals h2 {
+    font-size: 10vw;
+  }
+}

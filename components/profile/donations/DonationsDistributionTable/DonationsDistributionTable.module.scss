@@ -1,0 +1,44 @@
+.distributionHeader {
+  display: none;
+}
+
+.distribution table {
+  width: 100%;
+  max-width: 420px;
+}
+
+.distribution table tr td {
+  padding: 6px 0;
+}
+
+.distribution table tr td:last-child {
+  text-align: right;
+}
+
+@media only screen and (max-width: 1180px) {
+  .distributionHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 14px 0;
+  }
+
+  .distributionHeader svg {
+    filter: var(--primary-filter);
+    transition: transform 200ms;
+  }
+
+  .distributionHeader svg.chevronRotated {
+    transform: rotate(180deg);
+  }
+
+  .distribution {
+    border-top: 1px solid var(--primary);
+    border-bottom: 1px solid var(--primary);
+  }
+
+  .distribution table {
+    margin-bottom: 16px;
+    max-width: initial;
+  }
+}
