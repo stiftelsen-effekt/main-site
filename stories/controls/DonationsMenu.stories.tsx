@@ -1,4 +1,4 @@
-import DonationYearMenu from "../../components/profile/donations/yearMenu";
+import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
 
 const years = [2022, 2021, 2020, 2019, 2018];
 

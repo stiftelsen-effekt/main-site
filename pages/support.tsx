@@ -1,19 +1,17 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
 import React from "react";
 import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
-import { Layout } from "../components/main/layout";
-import { Navbar } from "../components/main/navbar";
-import { PageHeader } from "../components/elements/pageheader";
-import { SectionContainer } from "../components/sectionContainer";
-import { ContactInfo } from "../components/elements/contact-info";
-import { footerQuery } from "../components/footer";
-import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
-import { MainHeader } from "../components/main/header";
-import { CookieBanner } from "../components/elements/cookiebanner";
-import { SEO } from "../components/seo/Seo";
+import { SEO } from "../components/shared/seo/Seo";
+import { ContactInfo } from "../components/main/blocks/Contact/Contact";
+import { QuestionsAndAnswersGroup } from "../components/main/blocks/QuestionAndAnswers/QuestionAndAnswers";
+import { Navbar } from "../components/main/layout/navbar";
+import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { Layout } from "../components/main/layout/layout";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;

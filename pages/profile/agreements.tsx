@@ -1,10 +1,9 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout";
+import { Layout } from "../../components/profile/layout/layout";
 import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
-import { AgreementList } from "../../components/lists/agreementList/agreementList";
+import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
 import { AvtaleGiroAgreement, Distribution, Organization, VippsAgreement } from "../../models";
-import { Spinner } from "../../components/elements/spinner";
 import { useAuth0, User } from "@auth0/auth0-react";
 import {
   useAgreementsDistributions,
@@ -13,17 +12,18 @@ import {
   useVippsAgreements,
 } from "../../_queries";
 import { useContext, useState } from "react";
-import { ActivityContext } from "../../components/profile/activityProvider";
-import { InfoBox } from "../../components/elements/infobox";
+import { ActivityContext } from "../../components/profile/layout/activityProvider";
+import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Clock } from "react-feather";
-import AgreementsMenu from "../../components/profile/agreements/agreementsMenu";
+import AgreementsMenu from "../../components/profile/agreements/AgreementsMenu/AgreementsMenu";
 import styles from "../../styles/Agreements.module.css";
-import { PageContent } from "../../components/elements/pagecontent";
+import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
-import { footerQuery } from "../../components/footer";
-import { MainHeader } from "../../components/main/header";
-import { Navbar } from "../../components/profile/navbar";
+import { Navbar } from "../../components/profile/layout/navbar";
+import { Spinner } from "../../components/shared/components/Spinner/Spinner";
+import { footerQuery } from "../../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../../components/shared/layout/Header/Header";
 
 const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { getAccessTokenSilently, user } = useAuth0();

@@ -3,60 +3,12 @@
   margin-bottom: 100px;
 }
 
-.menu {
-  display: none;
-  margin-bottom: 12px;
-}
-
 @media only screen and (max-width: 1180px) {
   .container {
+    padding-top: 40px;
   }
 
   .header {
     display: none;
-  }
-
-  .menu {
-    display: block;
-    overflow-x: scroll;
-    white-space: nowrap;
-    background: var(--secondary);
-    width: 100vw;
-    border-bottom: 1px solid var(--primary);
-    padding-left: 5vw;
-    box-sizing: border-box;
-    padding-bottom: 0;
-    z-index: 10;
-  }
-
-  .menu ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .menu-selected {
-    font-weight: 600;
-    border-bottom: 1px solid var(--primary);
-  }
-
-  .menu li {
-    display: inline-block;
-    cursor: pointer;
-    width: 128px;
-    text-align: center;
-    padding-bottom: 2px;
-    margin-right: 20px;
-  }
-
-  .menu::-webkit-scrollbar {
-    display: none;
-  }
-
-  .menu ul {
-    margin: 0;
-  }
-
-  .menu-selected {
-    border-bottom-width: 2px;
   }
 }

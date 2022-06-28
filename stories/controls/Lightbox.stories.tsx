@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Lightbox } from "../../components/elements/lightbox";
+import { Lightbox } from "../../components/shared/components/Lightbox/Lightbox";
 
 export default {
   title: "Controls/Lightbox",

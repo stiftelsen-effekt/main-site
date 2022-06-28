@@ -1,0 +1,36 @@
+.introsection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+  text-align: left;
+  width: 100%;
+  padding: 65px 0;
+}
+
+.introsection p {
+  white-space: pre-wrap;
+  padding-right: 20%;
+}
+
+.introsection h3 {
+  white-space: pre-wrap;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 1180px) {
+  .introsection {
+    grid-template-columns: auto;
+    grid-template-rows: max-content 1fr;
+    padding: 40px 0;
+  }
+
+  .introsection p {
+    padding-right: 0;
+    line-height: 200%;
+  }
+
+  .videocontainer {
+    margin-top: 30px;
+  }
+
+}

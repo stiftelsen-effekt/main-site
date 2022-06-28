@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DatePicker } from "../../components/elements/datepicker";
+import { DatePicker } from "../../components/shared/components/DatePicker/DatePicker";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {

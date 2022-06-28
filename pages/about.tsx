@@ -5,17 +5,17 @@ import { getClient } from "../lib/sanity.server";
 import styles from "../styles/About.module.css";
 import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
-import { Layout } from "../components/main/layout";
-import { Navbar } from "../components/main/navbar";
-import { PageHeader } from "../components/elements/pageheader";
-import { SectionContainer } from "../components/sectionContainer";
-import { footerQuery } from "../components/footer";
-import { MainHeader } from "../components/main/header";
-import { CookieBanner } from "../components/elements/cookiebanner";
-import { Contributors, Role } from "../components/elements/contributors";
-import { Links } from "../components/elements/links";
-import { GiveBlock } from "../components/elements/giveblock";
-import { SEO } from "../components/seo/Seo";
+import { SEO } from "../components/shared/seo/Seo";
+import { Role, Contributors } from "../components/main/blocks/Contributors/Contributors";
+import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
+import { Navbar } from "../components/main/layout/navbar";
+import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { Links } from "../components/main/blocks/Links/Links";
+import { Layout } from "../components/main/layout/layout";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const settings = data.settings[0];
@@ -32,11 +32,6 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/about`}
       />
-      {/**
-     *       <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-     */}
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />

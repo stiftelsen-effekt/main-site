@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DistributionController } from "../../components/elements/distribution";
+import { DistributionController } from "../../components/profile/shared/Distribution";
 import { Distribution } from "../../models";
 
 // eslint-disable-next-line import/no-anonymous-default-export

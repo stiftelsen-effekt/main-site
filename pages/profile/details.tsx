@@ -1,17 +1,17 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout";
-import { ProfileInfo } from "../../components/profile/profileInfo";
-import { DataInfo } from "../../components/profile/dataInfo";
+import { Layout } from "../../components/profile/layout/layout";
+import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
 import style from "../../styles/Profile.module.css";
 import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
-import { PageContent } from "../../components/elements/pagecontent";
-import { footerQuery } from "../../components/footer";
-import { MainHeader } from "../../components/main/header";
-import { Navbar } from "../../components/profile/navbar";
+import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
+import { Navbar } from "../../components/profile/layout/navbar";
+import { ProfileInfo } from "../../components/profile/details/ProfileInfo/ProfileInfo";
+import { footerQuery } from "../../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../../components/shared/layout/Header/Header";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();

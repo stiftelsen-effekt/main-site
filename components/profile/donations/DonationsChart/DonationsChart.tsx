@@ -1,0 +1,34 @@
+import React from "react";
+import style from "./DonationsChart.module.scss";
+import { thousandize } from "../../../../util/formatting";
+
+const DonationsChart: React.FC<{ distribution: { org: string; sum: number }[] }> = ({
+  distribution,
+}) => {
+  const total = distribution.reduce((acc, curr) => acc + curr.sum, 0);
+
+  distribution = distribution.sort((a, b) => b.sum - a.sum);
+
+  return (
+    <div
+      className={style.graph + " " + (distribution.length == 0 ? style.empty : "")}
+      data-cy="aggregated-donations-distribution-graph"
+    >
+      {distribution.map((dist, i) => (
+        <div
+          key={dist.org}
+          style={{
+            width: `${(dist.sum / total) * 100}%`,
+            zIndex: distribution.length - i,
+          }}
+          data-cy="aggregated-donations-distribution-graph-bar"
+        >
+          <span>{dist.org}</span>
+          <span>{thousandize(Math.floor(dist.sum)) + " kr"}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default DonationsChart;
