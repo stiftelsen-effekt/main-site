@@ -3,55 +3,6 @@
   margin-bottom: 100px;
 }
 
-.menu {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-.menu.menumobile {
-  display: none;
-}
-
-.menu ul {
-  list-style: none;
-  padding: 0;
-}
-
-.menu li {
-  display: inline-block;
-  cursor: pointer;
-  width: 72px;
-  text-align: center;
-  padding-bottom: 2px;
-  margin-right: 20px;
-  font-size: 24px;
-}
-
-.menu-selected {
-  font-weight: 600;
-  border-bottom: 1px solid var(--primary);
-}
-
-.totals {
-  display: flex;
-  justify-content: flex-start;
-  flex-flow: column;
-  align-items: flex-end;
-  text-align: right;
-}
-
-.totals .period {
-  margin-bottom: 4px;
-}
-
-.totals h2 {
-  margin: 0 8px;
-}
-
-.totals h4 {
-  margin: 0 0;
-}
-
 .details {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -59,61 +10,8 @@
   margin-bottom: 100px;
 }
 
-.distributionHeader {
-  display: none;
-}
-
-.distribution table {
-  width: 100%;
-  max-width: 420px;
-}
-
-.distribution table tr td {
-  padding: 6px 0;
-}
-
-.distribution table tr td:last-child {
-  text-align: right;
-}
-
-.graph {
-  display: flex;
-  height: 30px;
-  background: var(--primary);
-}
-
 .empty {
   border-bottom: 28px solid var(--secondary);
-}
-
-.graph div {
-  color: var(--secondary);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 11px;
-  align-items: flex-end;
-  border-right: 1px solid var(--secondary);
-  height: 100%;
-  text-align: right;
-  white-space: nowrap;
-  position: relative;
-}
-
-.graph div span {
-  opacity: 0;
-  margin-right: 6px;
-  line-height: 14px;
-  transition: opacity 180ms;
-  user-select: none;
-}
-
-.graph div:hover span {
-  opacity: 1;
-}
-
-.graph div:last-child {
-  border-right: none;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -121,93 +19,20 @@
     display: none;
   }
 
-  .menu {
-    display: none;
-  }
-
-  .menu.menumobile {
-    display: block;
-    overflow-x: scroll;
-    white-space: nowrap;
-    background: var(--secondary);
-    width: 100vw;
-    border-bottom: 1px solid var(--primary);
-    padding-left: 5vw;
-    box-sizing: border-box;
-    padding-bottom: 0;
-    z-index: 10;
-    margin: 0;
-  }
-
-  .menu::-webkit-scrollbar {
-    display: none;
-  }
-
-  .menu ul {
-    margin: 0;
-    padding: 0;
-  }
-
-  .menu ul li {
-    font-size: 18px;
-    width: 60px;
-  }
-
-  .menu-selected {
-    border-bottom-width: 2px;
-  }
-
-  .graph {
-    display: none;
-  }
-
-  .totals {
-    align-items: flex-end;
-  }
-
-  .totals h2 {
-    font-size: 10vw;
-  }
-
   .details {
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
+    margin-top: 70px;
+    margin-bottom: 30px;
   }
 
   /* Re-arrange divs */
   .details > div:last-child {
     order: 1;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 
   .details > div:first-child {
     order: 2;
-  }
-
-  .distributionHeader {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 14px 0;
-  }
-
-  .distributionHeader svg {
-    filter: var(--primary-filter);
-    transition: transform 200ms;
-  }
-
-  .distributionHeader svg.chevronRotated {
-    transform: rotate(180deg);
-  }
-
-  .distribution {
-    border-top: 1px solid var(--primary);
-    border-bottom: 1px solid var(--primary);
-  }
-
-  .distribution table {
-    margin-bottom: 16px;
-    max-width: initial;
   }
 }

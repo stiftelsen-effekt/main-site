@@ -1,7 +1,7 @@
 import {
   checkPaymentDate,
   daysInMonth,
-} from "../../../components/lists/agreementList/agreementDetails";
+} from "../../../components/profile/shared/lists/agreementList/AgreementDetails";
 
 describe("Check that daysInMonth() works", () => {
   it("if daysInMonth will return 28 when date is february 2022", () => {

@@ -1,0 +1,56 @@
+.header {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.personalInfo {
+  padding-top: 40px;
+  border-top: 1px solid var(--primary);
+  grid-column: 1/2;
+}
+
+.personalInfo button {
+  float: right;
+}
+
+.input {
+  background: var(--secondary);
+  font-family: "ESKlarheitGrotesk", sans-serif;
+  font-size: 16px;
+  color: var(--primary);
+  padding: 14px 18px;
+  border: none;
+  width: 100%;
+  max-width: 280px;
+  border-radius: 40px;
+  border: 1px solid var(--primary);
+  margin-top: 4px;
+}
+
+.checkbox {
+  -webkit-transform: scale(2, 2);
+  margin: 10px;
+}
+
+.checkboxActive {
+  -webkit-transform: scale(2, 2);
+  margin: 10px;
+}
+
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  opacity: 1;
+}
+
+.input:disabled {
+  background-color: rgb(90, 90, 90);
+}
+
+@media only screen and (max-width: 1180px) {  
+  .header {
+    margin-top: 40px;
+    margin-bottom: 0px;
+  }
+}

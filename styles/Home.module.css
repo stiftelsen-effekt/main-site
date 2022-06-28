@@ -1,5 +1,5 @@
 .hero {
-  height: calc(100vh - 300px);
+  min-height: calc(100vh - 300px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,7 +10,7 @@
 }
 
 .header h1 {
-  margin-top: 0;
+  margin-top: 100px;
   font-size: 120px;
   max-width: 1000px;
   margin-bottom: 22px;
@@ -48,9 +48,23 @@
   padding-right: 260px;
 }
 
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .header h1 {
+    font-size: 80px;
+    line-height: 110%;
+    max-width: 700px;
+    margin-bottom: 0;
+    margin-top: 80px;
+  }
+
+  .teasers > div:nth-child(2n) > div:nth-child(2) {
+    padding-right: 160px;
+  }
+}
+
 @media only screen and (max-width: 1180px) {
   .hero {
-    height: calc(100vh - 240px);
+    min-height: calc(100vh - 240px);
     justify-content: flex-end;
   }
 
@@ -80,20 +94,6 @@
   .teasers > div:nth-child(2n) > div:nth-child(2) {
     padding: 0;
     padding-top: 20px;
-  }
-}
-
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .header h1 {
-    font-size: 80px;
-    line-height: 110%;
-    max-width: 700px;
-    margin-bottom: 0;
-    margin-top: 80px;
-  }
-
-  .teasers > div:nth-child(2n) > div:nth-child(2) {
-    padding-right: 160px;
   }
 }
 

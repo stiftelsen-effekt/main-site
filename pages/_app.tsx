@@ -1,19 +1,18 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { LayoutPage } from "../types";
-import { Layout } from "../components/main/layout";
-
 import React from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { State } from "../components/widget/store/state";
-import { donationReducer } from "../components/widget/store/donation/reducer";
-import { layoutReducer } from "../components/widget/store/layout/reducer";
-import { errorReducer } from "../components/widget/store/error/reducer";
-import { watchAll } from "../components/widget/store/root.saga";
-import { referralReducer } from "../components/widget/store/referrals/reducer";
+import { State } from "../components/main/widget/store/state";
+import { donationReducer } from "../components/main/widget/store/donation/reducer";
+import { layoutReducer } from "../components/main/widget/store/layout/reducer";
+import { errorReducer } from "../components/main/widget/store/error/reducer";
+import { watchAll } from "../components/main/widget/store/root.saga";
+import { referralReducer } from "../components/main/widget/store/referrals/reducer";
+import { Layout } from "../components/main/layout/layout";
 
 const rootReducer = combineReducers<State>({
   donation: donationReducer,

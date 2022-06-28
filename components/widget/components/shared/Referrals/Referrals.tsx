@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EffektButton } from "../../../../elements/effektbutton";
-import { submitReferralAction } from "../../../store/referrals/actions";
-import { State } from "../../../store/state";
-import { PaneTitle } from "../../panes/Panes.style";
+import { PaneTitle } from "../../../../main/widget/components/panes/Panes.style";
+import { submitReferralAction } from "../../../../main/widget/store/referrals/actions";
+import { State } from "../../../../main/widget/store/state";
+import { EffektButton } from "../../../../shared/components/EffektButton/EffektButton";
 import { ReferralButtonsWrapper, ReferralTextInput } from "../../panes/PaymentPane/Bank/ReferralPane.style";
 
 export const Referrals: React.FC = () => {

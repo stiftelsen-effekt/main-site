@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { DataInfo } from "../../../components/profile/dataInfo";
+import { DataInfo } from "../../../components/profile/details/DataInfo/DataInfo";
 const testData = [
   {
     data: [

@@ -1,0 +1,39 @@
+.givebutton {
+  cursor: pointer;
+  position: fixed;
+  right: 5vw;
+  bottom: 60px;
+  z-index: 100;
+  background: var(--primary);
+  border: 1px solid var(--secondary);
+  font-size: 43px;
+  font-family: "ESKlarheitKurrent";
+  font-weight: 400;
+  color: var(--secondary);
+  border-radius: 50%;
+  user-select: none;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.givebutton:hover,
+.givebutton:active {
+  background: #222;
+}
+
+@media only screen and (max-width: 1180px) {
+  .givebutton {
+    font-size: 16px;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .givebutton {
+    right: calc((100vw - 1714px) / 2);
+  }
+}

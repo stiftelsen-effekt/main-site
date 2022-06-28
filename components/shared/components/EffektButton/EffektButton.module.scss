@@ -1,0 +1,74 @@
+.button {
+  border: none;
+  border-radius: 48px;
+  font-family: "ESKlarheitGrotesk";
+  font-size: 20x;
+  padding: 8px 18px;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.buttonprimary {
+  background: var(--primary);
+  color: var(--secondary);
+  outline-offset: -1px;
+}
+
+.buttonprimary:hover,
+.buttonprimary:active {
+  background: var(--primary-hover);
+}
+
+.buttonsecondary {
+  color: var(--primary);
+  background: var(--secondary);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 1px solid var(--primary);
+}
+
+.buttonsecondary:hover,
+.buttonsecondary:active {
+  color: var(--secondary-hover);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 1px solid var(--secondary-hover);
+  outline: none;
+}
+
+.buttontertiary {
+  border: none;
+  background-color: transparent;
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  outline: 2px dashed var(--primary);
+  outline-offset: -1px;
+}
+
+.buttontertiary:hover {
+  border: none;
+  outline: 2px dashed #555;
+  color: var(--secondary-hover);
+}
+
+.button__squared {
+  border-radius: 3px;
+}
+
+@media only screen and (max-width: 1180px) {
+  .button {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .button {
+    font-size: 14px;
+  }
+}

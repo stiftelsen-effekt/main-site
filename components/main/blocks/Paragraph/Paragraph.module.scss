@@ -1,0 +1,30 @@
+.paragraphwrapper {
+  max-width: 760px;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.paragraphwrapper h2 {
+  margin-bottom: 45px;
+}
+
+.paragraphwrapper a {
+  text-decoration: underline;
+}
+
+.paragraphwrapper a::after {
+  content: " ↗";
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) { 
+  .paragraphwrapper {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .paragraphwrapper {
+    margin-bottom: 20px;
+  }
+}
+

@@ -1,31 +1,33 @@
-import Head from "next/head";
 import React from "react";
 import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
-import { Layout } from "../components/main/layout";
-import { Navbar } from "../components/main/navbar";
-import { PageHeader } from "../components/elements/pageheader";
-import { SectionContainer, SectionContainerProps } from "../components/sectionContainer";
-import { VideoEmbed } from "../components/elements/videoembed";
-import { PointListPointProps } from "../components/elements/pointlistpoint";
-import { PointList } from "../components/elements/pointlist";
-import { Links } from "../components/elements/links";
-import { ContactInfo } from "../components/elements/contact-info";
-import { Paragraph } from "../components/elements/paragraph";
-import { footerQuery } from "../components/footer";
-import { QuestionsAndAnswersGroup } from "../components/elements/questionsandanswers";
-import { SplitView } from "../components/elements/splitview";
-import { FullImage } from "../components/elements/fullimage";
-import { Columns } from "../components/elements/columns";
-import { MainHeader } from "../components/main/header";
-import { Testimonial } from "../components/testimonial";
-import { PointListSectionWrapper } from "../components/elements/pointlistsectionwrapper";
-import { NormalImage } from "../components/elements/normalimage";
-import { FullVideo } from "../components/elements/fullvideo";
-import { SEO } from "../components/seo/Seo";
-import { HTMLEmbed } from "../components/elements/htmlembed";
-import { CookieBanner } from "../components/elements/cookiebanner";
+import { Links } from "../components/main/blocks/Links/Links";
+import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
+import { Testimonial } from "../components/main/blocks/Testemonial/Testemonial";
+import { ContactInfo } from "../components/main/blocks/Contact/Contact";
+import { FullImage } from "../components/main/blocks/FullImage/FullImage";
+import { FullVideo } from "../components/main/blocks/FullVideo/FullVideo";
+import { HTMLEmbed } from "../components/main/blocks/HTMLEmbed/HTMLEmbed";
+import { NormalImage } from "../components/main/blocks/NormalImage/NormalImage";
+import { PointList } from "../components/main/blocks/PointList/PointList";
+import { PointListPointProps } from "../components/main/blocks/PointList/PointListPoint";
+import { PointListSectionWrapper } from "../components/main/blocks/PointList/PointListSectionWrapper";
+import { QuestionsAndAnswersGroup } from "../components/main/blocks/QuestionAndAnswers/QuestionAndAnswers";
+import { SplitView } from "../components/main/blocks/SplitView/SplitView";
+import { VideoEmbed } from "../components/main/blocks/VideoEmbed/VideoEmbed";
+import { Navbar } from "../components/main/layout/navbar";
+import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import {
+  SectionContainerProps,
+  SectionContainer,
+} from "../components/main/layout/SectionContainer/sectionContainer";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { SEO } from "../components/shared/seo/Seo";
+import { Columns } from "../components/main/blocks/Columns/Columns";
+import { Layout } from "../components/main/layout/layout";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const header = data.page[0].header;

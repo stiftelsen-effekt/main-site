@@ -1,0 +1,28 @@
+.expanderWrapper {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+
+.expanderHeader {
+  padding: 20px 0;
+  cursor: pointer;
+  user-select: none;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  column-gap: 20px;
+  align-items: center;
+}
+
+.expanderHeader:focus-within,
+.expanderHeader:focus-within {
+  outline: 2px solid black;
+}
+
+.expanderHeader p {
+  margin: 0;
+}
+
+.expanderWrapper div p {
+  white-space: pre-wrap;
+}
