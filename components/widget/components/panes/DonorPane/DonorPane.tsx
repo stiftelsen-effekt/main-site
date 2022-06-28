@@ -20,6 +20,7 @@ import { PaymentMethod } from "../../../types/Enums";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import Link from "next/link";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
+import { EffektButton, EffektButtonType } from "../../../../elements/effektbutton";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -268,14 +269,22 @@ export const DonorPane: React.FC = () => {
           </div>
           <ActionBar data-cy="next-button-div">
             {donorType === DonorType.DONOR ? (
-              <NextButton disabled={nextDisabled} onClick={() => {}}>
+              <EffektButton 
+                type={EffektButtonType.SECONDARY}
+                disabled={nextDisabled} 
+                onClick={() => {}}
+              >
                 Neste
-              </NextButton>
+              </EffektButton>
             ) : null}
             {donorType === DonorType.ANONYMOUS ? (
-              <NextButton disabled={nextDisabled} onClick={submitAnonymous}>
+              <EffektButton
+                type={EffektButtonType.SECONDARY}
+                disabled={nextDisabled} 
+                onClick={submitAnonymous}
+              >
                 Neste
-              </NextButton>
+              </EffektButton>
             ) : null}
           </ActionBar>
         </PaneContainer>

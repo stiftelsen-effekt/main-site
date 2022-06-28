@@ -6,7 +6,7 @@ import AnimateHeight from "react-animate-height";
 import { Dictionary } from "lodash";
 import { ResponsiveImage } from "../elements/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { EffektButton } from "../elements/effektbutton";
+import { EffektButton, EffektButtonType } from "../elements/effektbutton";
 import { WidgetContext } from "./layout";
 
 export type NavLink = {
@@ -100,9 +100,12 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           )}
           <li className={styles.buttonsWrapper}>
             <Link href="/profile" passHref>
-              <a onClick={() => setExpanded(false)} className={styles.btnlogin}>
+              <EffektButton
+                type={EffektButtonType.SECONDARY}
+                onClick={() => setExpanded(false)}
+              >
                 Logg inn
-              </a>
+              </EffektButton>
             </Link>
             <EffektButton onClick={() => setWidgetOpen(true)}>Send donasjon</EffektButton>
           </li>
