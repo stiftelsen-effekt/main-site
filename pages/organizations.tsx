@@ -17,9 +17,9 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const settings = data.settings[0];
-  const header = data.page[0].header;
-  const organizations = data.page[0].organizations;
+  const settings = data.result.settings[0];
+  const header = data.result.page[0].header;
+  const organizations = data.result.page[0].organizations;
 
   return (
     <>
@@ -72,12 +72,16 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchOrganizationsPage);
+  const result = await getClient(preview).fetch(fetchOrganizationsPage);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchOrganizationsPage,
+        queryParams: {},
+      },
     },
   };
 }

@@ -20,10 +20,10 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
-  const salespitch = data.frontpage[0].salespitch;
-  const settings = data.settings[0];
-  const interventionWidget = data.frontpage[0].intervention_widget;
-  const { seoTitle, seoDescription, seoImage } = data.frontpage[0];
+  const salespitch = data.result.frontpage[0].salespitch;
+  const settings = data.result.settings[0];
+  const interventionWidget = data.result.frontpage[0].intervention_widget;
+  const { seoTitle, seoDescription, seoImage } = data.result.frontpage[0];
 
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
   useEffect(() => {
@@ -56,8 +56,8 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
   return (
     <>
       <SEO
-        title={seoTitle || data.frontpage[0].main_heading}
-        description={seoDescription || data.frontpage[0].sub_heading}
+        title={seoTitle || data.result.frontpage[0].main_heading}
+        description={seoDescription || data.result.frontpage[0].sub_heading}
         imageAsset={seoImage ? seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/`}
       />
@@ -69,9 +69,9 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <div className={styles.hero}>
         <div className={styles.header}>
-          <h1>{data.frontpage[0].main_heading}</h1>
+          <h1>{data.result.frontpage[0].main_heading}</h1>
         </div>
-        <p className={styles.subheading + " inngress"}>{data.frontpage[0].sub_heading}</p>
+        <p className={styles.subheading + " inngress"}>{data.result.frontpage[0].sub_heading}</p>
       </div>
 
       <div className={styles.salespitchWrapper}>
@@ -86,9 +86,9 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <SectionContainer nodivider inverted>
         <IntroSection
-          heading={data.frontpage[0].introsection.heading}
-          paragraph={data.frontpage[0].introsection.paragraph}
-          slug={data.frontpage[0].introsection.slug}
+          heading={data.result.frontpage[0].introsection.heading}
+          paragraph={data.result.frontpage[0].introsection.paragraph}
+          slug={data.result.frontpage[0].introsection.slug}
         ></IntroSection>
       </SectionContainer>
 
@@ -118,7 +118,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <SectionContainer heading="">
         <div className={styles.teasers}>
-          {data.frontpage[0].teasers.map(
+          {data.result.frontpage[0].teasers.map(
             ({ _key, title, paragraph, disclaimer, link, image }: Teaser & { _key: string }) => (
               <Teaser
                 key={_key}
@@ -133,12 +133,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </SectionContainer>
       <SectionContainer heading="Slik fungerer det" padded>
-        <Stepwize steps={data.frontpage[0].key_points.map((p: any) => p)} />
+        <Stepwize steps={data.result.frontpage[0].key_points.map((p: any) => p)} />
       </SectionContainer>
 
-      {data.frontpage[0].testimonials && (
+      {data.result.frontpage[0].testimonials && (
         <SectionContainer heading="Hva folk sier om oss">
-          <Testimonial testimonies={data.frontpage[0].testimonials} />
+          <Testimonial testimonies={data.result.frontpage[0].testimonials} />
         </SectionContainer>
       )}
 
@@ -150,12 +150,16 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchFrontpage);
+  const result = await getClient(preview).fetch(fetchFrontpage);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchFrontpage,
+        queryParams: {},
+      },
     },
   };
 }

@@ -28,11 +28,20 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { Columns } from "../components/main/blocks/Columns/Columns";
 import { Layout } from "../components/main/layout/layout";
+import { usePreviewSubscription } from "../lib/sanity";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const header = data.page[0].header;
-  const content = data.page[0].content;
-  const settings = data.settings[0];
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    initialData: data?.result,
+    enabled: preview,
+  });
+
+  const page = filterPageToSingleItem(previewData, preview);
+
+  const header = page.header;
+  const content = page.content;
+  const settings = previewData.settings[0];
 
   return (
     <>
@@ -158,14 +167,19 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
   );
 };
 
-export async function getStaticProps(context: any) {
-  const { slug = "" } = context.params;
-  const data = await getClient(false).fetch(fetchGenericPage, { slug });
+export async function getStaticProps({ preview = false, params = { slug: "" } }) {
+  const { slug } = params;
+  let result = await getClient(preview).fetch(fetchGenericPage, { slug });
+  result = { ...result, page: filterPageToSingleItem(result.page, preview) };
 
   return {
     props: {
-      preview: false,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchGenericPage,
+        queryParams: { slug },
+      },
     },
   };
 }
@@ -212,7 +226,7 @@ const fetchGenericPage = groq`
     }
   },
   ${footerQuery}
-  "page": *[_type == "generic_page"  && slug.current == $slug] {
+  "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,
       seoImage{
@@ -248,6 +262,22 @@ const fetchGenericPage = groq`
   },
 }
 `;
+
+const filterPageToSingleItem = (data: any, preview: boolean) => {
+  if (!Array.isArray(data.page)) {
+    return data;
+  }
+
+  if (data.page.length === 1) {
+    return data.page[0];
+  }
+
+  if (preview) {
+    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
+  }
+
+  return data.page[0];
+};
 
 GenericPage.layout = Layout;
 export default GenericPage;

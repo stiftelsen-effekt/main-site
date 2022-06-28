@@ -31,10 +31,10 @@ import { Columns } from "../../components/main/blocks/Columns/Columns";
 import { Layout } from "../../components/main/layout/layout";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const header = data.page[0].header;
-  const content = data.page[0].content;
-  const settings = data.settings[0];
-  const relatedArticles = data.relatedArticles;
+  const header = data.result.page[0].header;
+  const content = data.result.page[0].content;
+  const settings = data.result.settings[0];
+  const relatedArticles = data.result.relatedArticles;
 
   return (
     <>
@@ -157,14 +157,18 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
   );
 };
 
-export async function getStaticProps(context: any) {
-  const { slug = "" } = context.params;
-  const data = await getClient(false).fetch(fetchArticle, { slug });
+export async function getStaticProps({ preview = false, params = { slug: "" } }) {
+  const { slug } = params;
+  const result = await getClient(preview).fetch(fetchArticle, { slug });
 
   return {
     props: {
-      preview: false,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchArticle,
+        queryParams: { slug },
+      },
     },
   };
 }

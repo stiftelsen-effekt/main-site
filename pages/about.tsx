@@ -18,9 +18,9 @@ import { Links } from "../components/main/blocks/Links/Links";
 import { Layout } from "../components/main/layout/layout";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const settings = data.settings[0];
-  const header = data.about[0].header;
-  const roles: Role[] = data.roles;
+  const settings = data.result.settings[0];
+  const header = data.result.about[0].header;
+  const roles: Role[] = data.result.roles;
   const boardMembers = roles.find((role: Role) => role.id === "boardmembers")!;
   const employees = roles.find((role: Role) => role.id === "employees")!;
   const volunteers = roles.find((role: Role) => role.id === "volunteers")!;
@@ -48,7 +48,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
           <div className={styles.intro}>
             <p className="inngress">{header.inngress}</p>
             <div className={styles.maincontent}>
-              <PortableText blocks={data.about[0].content}></PortableText>
+              <PortableText blocks={data.result.about[0].content}></PortableText>
             </div>
           </div>
         </div>
@@ -80,12 +80,16 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchAboutUs);
+  const result = await getClient(preview).fetch(fetchAboutUs);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchAboutUs,
+        queryParams: {},
+      },
     },
   };
 }

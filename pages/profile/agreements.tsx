@@ -29,7 +29,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
-  const settings = data.settings[0];
+  const settings = data.result.settings[0];
 
   const {
     loading: avtaleGiroLoading,
@@ -164,12 +164,16 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchProfilePage);
+  const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
+      },
     },
   };
 }
