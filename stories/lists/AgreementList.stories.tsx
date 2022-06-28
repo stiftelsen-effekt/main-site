@@ -1,5 +1,4 @@
 import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
-import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
 import { AvtaleGiroAgreement, Distribution, Donation } from "../../models";
 
 // eslint-disable-next-line import/no-anonymous-default-export
