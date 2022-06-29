@@ -17,12 +17,16 @@
 .buttonprimary {
   background: var(--primary);
   color: var(--secondary);
-  outline-offset: -1px;
+  border: 1px solid var(--secondary);
 }
 
 .buttonprimary:hover,
-.buttonprimary:active {
-  background: var(--primary-hover);
+.buttonprimary:active,
+.buttonprimary:focus {
+  color: var(--primary);
+  background-color: var(--secondary);
+  border: 1px solid var(--primary);
+  outline: none;
 }
 
 .buttonsecondary {
@@ -34,27 +38,33 @@
 }
 
 .buttonsecondary:hover,
-.buttonsecondary:active {
-  color: var(--secondary-hover);
+.buttonsecondary:active,
+.buttonsecondary:focus {
+  color: var(--secondary);
+  background-color: var(--primary);
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
-  border: 1px solid var(--secondary-hover);
+  border: 1px solid var(--secondary);
   outline: none;
 }
 
 .buttontertiary {
-  border: none;
-  background-color: transparent;
+  color: var(--secondary);
+  background-color: var(--primary);
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
-  outline: 2px dashed var(--primary);
-  outline-offset: -1px;
+  border: 1px dashed var(--secondary);
+  outline: none;
 }
 
-.buttontertiary:hover {
-  border: none;
-  outline: 2px dashed #555;
-  color: var(--secondary-hover);
+.buttontertiary:hover,
+.buttontertiary:active,
+.buttontertiary:focus {
+  color: var(--primary);
+  background-color: var(--secondary);
+  /* !! dashed 1px is too small value 
+  to match the aperance in the design criteria */
+  border: 1px dashed var(--primary);
 }
 
 .button__squared {

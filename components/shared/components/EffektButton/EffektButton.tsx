@@ -16,16 +16,21 @@ export const EffektButton: React.FC<{
   className?: string;
   disabled?: boolean;
   selected?: boolean;
+
 }> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected }) => {
   const styleClasses = [elements.button, type, className]
   if (selected) {
     styleClasses.push(elements.selected)
   }
+  const styleClassesName = styleClasses.join(" ")
   
   return (
     <button
-      className={styleClasses.join(" ")}
-      onClick={onClick}
+      className={styleClassesName}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick();
+        e.currentTarget.blur();
+      }}
       role={role}
       data-cy={cy}
       disabled={disabled}
