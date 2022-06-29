@@ -42,7 +42,11 @@ export const HiddenCheckBox = styled.input`
   &:hover {
     cursor: pointer;
   }
-  &:focus + span > span {
+  &:focus + span > div > span {
+    outline: 2px solid var(--primary);
+  }
+  &:active + span > div > span {
+    outline: none;
   }
 `;
 

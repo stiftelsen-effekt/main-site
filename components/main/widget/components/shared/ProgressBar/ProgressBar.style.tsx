@@ -57,6 +57,15 @@ export const ActionButton = styled.button`
   opacity: ${(props: ActionButtonProps) => (props.active ? `0` : `1`)};
   cursor: pointer;
   outline: none;
+
+  &:focus {
+    transition: none;
+    outline: 2px solid var(--primary);
+  }
+
+  &:active {
+    outline: none;
+  }
 `;
 
 export const TooltipWrapper = styled.div`
