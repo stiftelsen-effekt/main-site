@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/studio' && printenv && export SANITY_STUDIO_VERCEL_URL=$VERCEL_URL && echo $VERCEL_URL && echo $SANITY_STUDIO_VERCEL_URL && echo $NEXT_PUBLIC_VERCEL_URL && cd studio && npm i && npx @sanity/cli build ../public/studio -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/studio' && export SANITY_STUDIO_VERCEL_URL=$VERCEL_URL && cd studio && npm i && npx @sanity/cli build ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "cd studio && export NODE_ENV=dev && sanity start",
     "start": "next start",
