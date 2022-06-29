@@ -26,7 +26,7 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const router = useRouter();
-  const settings = data.settings[0];
+  const settings = data.result.settings[0];
   const { donor } = useContext(DonorContext);
   const { setActivity } = useContext(ActivityContext);
 
@@ -153,12 +153,16 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 Home.layout = Layout;
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchProfilePage);
+  const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
+      },
     },
   };
 }

@@ -14,9 +14,9 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const header = data.page[0].header;
-  const contactinfo = data.page[0].contact;
-  const settings = data.settings[0];
+  const header = data.result.page[0].header;
+  const contactinfo = data.result.page[0].contact;
+  const settings = data.result.settings[0];
 
   return (
     <>
@@ -35,7 +35,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 
       <SectionContainer padded={true}>
-        {data.page[0].questionandanswergroups.map((group: any) => (
+        {data.result.page[0].questionandanswergroups.map((group: any) => (
           <QuestionsAndAnswersGroup key={group._key} group={group} />
         ))}
       </SectionContainer>
@@ -53,12 +53,16 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchSupport);
+  const result = await getClient(preview).fetch(fetchSupport);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchSupport,
+        queryParams: {},
+      },
     },
   };
 }
