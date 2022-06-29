@@ -21,12 +21,16 @@
 }
 
 .buttonprimary:hover,
-.buttonprimary:active,
-.buttonprimary:focus {
+.buttonprimary:active {
   color: var(--primary);
   background-color: var(--secondary);
   border: 1px solid var(--primary);
   outline: none;
+}
+
+.buttonprimary:focus {
+  border: 1px solid var(--secondary);
+  outline: 2px solid var(--primary);
 }
 
 .buttonsecondary {

@@ -19,9 +19,19 @@
   align-items: center;
 }
 
-.givebutton:hover,
+.givebutton:hover {
+  color: var(--primary);
+  background: var(--secondary);
+  border: 1px solid var(--primary);
+}
+
+.givebutton:focus {
+  outline: 2px solid var(--secondary);
+}
+
 .givebutton:active {
-  background: #222;
+  color: var(--primary);
+  background: var(--secondary);
 }
 
 @media only screen and (max-width: 1180px) {
