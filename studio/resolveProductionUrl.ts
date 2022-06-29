@@ -1,4 +1,4 @@
-export default function resolveProductionUrl(doc) {
+export default function resolveProductionUrl(doc: any) {
   const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000' 
 
   const previewUrl = new URL(baseUrl)

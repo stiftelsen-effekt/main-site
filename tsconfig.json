@@ -17,9 +17,12 @@
   },
   "include": [
     "next-env.d.ts",
+    "additional.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "studio/node_modules/@sanity/base/types/**/*.ts", 
-    "studio/components/pointlistPeview.jsx", "studio/resolveProductionUrl.ts"  ],
+    "studio/node_modules/@sanity/base/types/**/*.ts",
+    "studio/components/pointlistPeview.jsx",
+    "studio/resolveProductionUrl.ts"
+  ],
   "exclude": ["node_modules"]
 }

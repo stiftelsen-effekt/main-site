@@ -69,7 +69,7 @@ export default () =>
                   S.view
                   .component(Iframe)
                   .options({
-                    url: (doc) => resolveProductionUrl(doc),
+                    url: (doc: any) => resolveProductionUrl(doc),
                   })
                   .title('Preview'),
                 ]))
@@ -92,7 +92,7 @@ export default () =>
                   S.view
                   .component(Iframe)
                   .options({
-                    url: (doc) => resolveProductionUrl(doc),
+                    url: (doc: any) => resolveProductionUrl(doc),
                   })
                   .title('Preview'),
                 ]))
