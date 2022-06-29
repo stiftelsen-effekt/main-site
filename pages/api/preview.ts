@@ -21,7 +21,17 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
 
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  res.writeHead(307, {Location: `/${req?.query?.slug}` ?? `/`})
+  switch (req.query.type) {
+    case 'generic_page':
+      res.writeHead(307, {Location: `/${req?.query?.slug}` ?? `/`})
+      break
+    case 'article_page':
+      res.writeHead(307, {Location: `/articles/${req?.query?.slug}` ?? `/`})
+      break
+    default:
+      return res.status(400).json({message: 'Preview not supported for page'})
+  }
+  
 
   return res.end()
 }

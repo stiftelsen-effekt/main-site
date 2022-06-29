@@ -83,6 +83,19 @@ export default () =>
             .title('Articles')
             .schemaType('article_page')
             .filter('_type == "article_page"')
+            .child(id => 
+              S.document()
+                .schemaType("article_page")
+                .documentId(id)
+                .views([
+                  S.view.form(),
+                  S.view
+                  .component(Iframe)
+                  .options({
+                    url: (doc) => resolveProductionUrl(doc),
+                  })
+                  .title('Preview'),
+                ]))
         ),
       S.listItem()
         .schemaType('contributor')
