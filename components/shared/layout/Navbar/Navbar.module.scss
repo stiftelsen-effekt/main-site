@@ -53,6 +53,7 @@
 .navbar ul li:focus .submenu,
 .navbar ul li.expandedSubmenu .submenu {
   display: block;
+  top: auto;
 }
 
 .navbar ul li .submenu ul li {

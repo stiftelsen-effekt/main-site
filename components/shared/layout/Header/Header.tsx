@@ -13,6 +13,16 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
+  useEffect(() => {
+    document.addEventListener('keydown', detectKeyDown, true);
+  }, [])
+
+  const detectKeyDown = (e: KeyboardEvent) => {
+    if (e.key == "Tab") {
+      setNavBarVisible(true);
+    }
+  }
+
   const navBarCheck = useCallback(() => {
     if (typeof window !== "undefined") {
       if (window.scrollY > 0) setNavbarShrinked(true);
