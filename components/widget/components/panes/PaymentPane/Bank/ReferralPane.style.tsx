@@ -1,9 +1,13 @@
 import styled from "styled-components";
-import { gray18, orange15 } from "../../../../config/colors";
 
 export const ReferralButtonsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+
+  button {
+    margin-bottom: 15px;
+    margin-right: 5px;
+  }
 `;
 
 export const ReferralTextInput = styled.input`

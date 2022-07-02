@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PaneTitle } from "../../../../main/widget/components/panes/Panes.style";
 import { submitReferralAction } from "../../../../main/widget/store/referrals/actions";
 import { State } from "../../../../main/widget/store/state";
-import { EffektButton } from "../../../../shared/components/EffektButton/EffektButton";
+import { EffektButton, EffektButtonType } from "../../../../shared/components/EffektButton/EffektButton";
 import { ReferralButtonsWrapper, ReferralTextInput } from "../../panes/PaymentPane/Bank/ReferralPane.style";
 
 export const Referrals: React.FC = () => {
@@ -26,20 +26,21 @@ export const Referrals: React.FC = () => {
             <ReferralButtonsWrapper>
             {referrals?.map((ref) => (
                 <EffektButton
-                cy={`referral-button-${ref.id}`}
-                key={ref.id}
-                selected={ref.id == selectedReferral}
-                onClick={() => {
-                    setSelectedReferral(ref.id);
-                    dispatch(
-                    submitReferralAction.started({
-                        referralID: ref.id,
-                        comment: otherInput
-                    }),
-                    );
-                }}
-                >
-                {ref.name}
+                    type={EffektButtonType.SECONDARY}
+                    cy={`referral-button-${ref.id}`}
+                    key={ref.id}
+                    selected={ref.id == selectedReferral}
+                    onClick={() => {
+                        setSelectedReferral(ref.id);
+                        dispatch(
+                        submitReferralAction.started({
+                            referralID: ref.id,
+                            comment: otherInput
+                        }),
+                        );
+                    }}
+                    >
+                    {ref.name}
                 </EffektButton>
             ))}
             </ReferralButtonsWrapper>

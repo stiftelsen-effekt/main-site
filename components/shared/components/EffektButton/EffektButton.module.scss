@@ -20,17 +20,17 @@
   border: 1px solid var(--secondary);
 }
 
+.buttonprimary:focus {
+  border: 1px solid var(--primary);
+  outline: 2px solid var(--primary);
+}
+
 .buttonprimary:hover,
 .buttonprimary:active {
   color: var(--primary);
   background-color: var(--secondary);
   border: 1px solid var(--primary);
   outline: none;
-}
-
-.buttonprimary:focus {
-  border: 1px solid var(--secondary);
-  outline: 2px solid var(--primary);
 }
 
 .buttonsecondary {
@@ -41,9 +41,13 @@
   border: 1px solid var(--primary);
 }
 
-.buttonsecondary:hover,
-.buttonsecondary:active,
 .buttonsecondary:focus {
+  border: 1px solid var(--primary);
+  outline: 2px solid var(--primary);
+}
+
+.buttonsecondary:hover,
+.buttonsecondary:active {
   color: var(--secondary);
   background-color: var(--primary);
   /* !! dashed 1px is too small value 
@@ -51,6 +55,12 @@
   border: 1px solid var(--secondary);
   outline: none;
 }
+
+.buttonsecondary--selected {
+  color: var(--secondary);
+  background-color: var(--primary);
+}
+
 
 .buttontertiary {
   color: var(--secondary);
@@ -69,6 +79,12 @@
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
   border: 1px dashed var(--primary);
+}
+
+.selected {
+  color: var(--secondary);
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
 }
 
 .button__squared {

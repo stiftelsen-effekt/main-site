@@ -28,8 +28,8 @@ export const EffektButton: React.FC<{
     <button
       className={styleClassesName}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-        onClick();
         e.currentTarget.blur();
+        onClick();
       }}
       role={role}
       data-cy={cy}
