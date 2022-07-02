@@ -17,6 +17,10 @@ const TooltipIconButton = styled.button.attrs({
     cursor: pointer;
     opacity: 0.8;
   }
+
+  &:focus > div {
+    outline: 2px solid var(--primary);
+  }
 `;
 
 const TooltipInnerIcon = styled.div`
@@ -33,12 +37,16 @@ const TooltipInnerIcon = styled.div`
 interface ToolIconProps {
   handleTouch: () => void;
   handleHover: (open: boolean) => void;
+  handleFocus: () => void;
+  handleBlur: () => void;
 }
-export function ToolTipIcon({ handleTouch, handleHover }: ToolIconProps) {
+export function ToolTipIcon({ handleTouch, handleHover, handleFocus, handleBlur }: ToolIconProps) {
   return (
     <TooltipIconButton
       onMouseEnter={() => handleHover(true)}
       onMouseLeave={() => handleHover(false)}
+      onFocus={() => handleFocus()}
+      onBlur={() => handleBlur()}
     >
       <TooltipInnerIcon>?</TooltipInnerIcon>
     </TooltipIconButton>

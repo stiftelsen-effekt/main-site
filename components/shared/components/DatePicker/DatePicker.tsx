@@ -20,9 +20,13 @@ export const DatePicker: React.FC<{
       data-cy="date-picker"
     >
       {dates.map((date) => (
-        <div
+        <button
           key={date}
-          onClick={() => onChange(parseInt(date))}
+          tabIndex={0}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.currentTarget.blur();
+            onChange(parseInt(date));
+          }}
           className={
             style["datepicker-button"] +
             " " +
@@ -31,10 +35,11 @@ export const DatePicker: React.FC<{
           data-cy={`date-picker-button-${date}`}
         >
           {date}
-        </div>
+        </button>
       ))}
       <div className={style["datepicker-last-row"]}>
-        <div
+        <button
+          tabIndex={0}
           className={
             style["datepicker-button-last"] +
             " " +
@@ -44,7 +49,7 @@ export const DatePicker: React.FC<{
           data-cy="date-picker-button-last"
         >
           Siste dag i måneden
-        </div>
+        </button>
       </div>
     </div>
   );

@@ -18,6 +18,8 @@ export const ToolTip: React.FC<{ text: string }> = ({ text }) => {
       <ToolTipIcon
         handleTouch={() => setTooltip(tooltip === null ? setTooltip(text) : setTooltip(null))}
         handleHover={(state: boolean) => (state ? setTooltip(text) : setTooltip(null))}
+        handleFocus={() => setTooltip(text)}
+        handleBlur={() => setTooltip(null)}
       />
     </ToolTipWrapper>
   );

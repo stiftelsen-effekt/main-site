@@ -83,9 +83,23 @@
   cursor: pointer;
 }
 
+.select button:hover {
+  color: var(--secondary);
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  outline: none;
+}
+
 .select button:focus {
   border: 1px solid var(--secondary);
   outline: 2px solid var(--primary);
+}
+
+.select button:active {
+  color: var(--secondary);
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  outline: none;
 }
 
 .select .selected {
