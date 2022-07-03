@@ -74,16 +74,15 @@
 }
 
 .datepicker-button-last {
-  height: 26px;
+  padding: 14px 40px;
   color: var(--secondary);
-  font-size: 12px;
+  font-size: 20px;
   user-select: none;
   cursor: pointer;
-  padding: 8px;
   margin-right: 6px;
   display: flex;
   align-items: center;
-  border-radius: 13px;
+  border-radius: 30px;
 }
 
 .datepicker-button-last--selected {
@@ -91,12 +90,12 @@
   color: var(--primary);
 }
 
-.datepicker-button-last:active {
-  outline: none;
-}
-
 .datepicker-button-last:focus {
   outline: 2px solid var(--secondary);
+}
+
+.datepicker-button-last:active {
+  outline: none;
 }
 
 @media only screen and (max-width: 1180px) {

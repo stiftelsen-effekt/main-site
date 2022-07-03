@@ -45,7 +45,10 @@ export const DatePicker: React.FC<{
             " " +
             (selected === 0 ? style["datepicker-button-last--selected"] : "")
           }
-          onClick={() => onChange(0)}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.currentTarget.blur();
+            onChange(0);
+          }}
           data-cy="date-picker-button-last"
         >
           Siste dag i måneden
