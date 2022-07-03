@@ -26,11 +26,13 @@ export const Referrals: React.FC = () => {
             <ReferralButtonsWrapper>
             {referrals?.map((ref) => (
                 <EffektButton
+                    squared
                     type={EffektButtonType.SECONDARY}
                     cy={`referral-button-${ref.id}`}
                     key={ref.id}
                     selected={ref.id == selectedReferral}
-                    onClick={() => {
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.currentTarget.blur();
                         setSelectedReferral(ref.id);
                         dispatch(
                         submitReferralAction.started({
@@ -50,13 +52,13 @@ export const Referrals: React.FC = () => {
                 type="text"
                 placeholder="Skriv inn"
                 onChange={(e) => {
-                setOtherInput(e.target.value)
-                dispatch(
-                    submitReferralAction.started({
-                    referralID: 10,
-                    comment: e.target.value
-                    }),
-                );
+                    setOtherInput(e.target.value)
+                    dispatch(
+                        submitReferralAction.started({
+                        referralID: 10,
+                        comment: e.target.value
+                        }),
+                    );
                 }}
             />
             }

@@ -6,19 +6,19 @@ export const ReferralButtonsWrapper = styled.div`
 
   button {
     margin-bottom: 15px;
-    margin-right: 5px;
+    margin-right: 15px;
   }
 `;
 
 export const ReferralTextInput = styled.input`
   padding: 10px 10px 10px 10px;
-  margin: 1%;
+  margin: 0;
   font-size: 16px;
-  background-color: black;
-  color: white;
+  background-color: var(--primary);
+  color: var(--secondary);
   border: 1px solid white;
   border-radius: 10px;
-  width: 98%;
+  width: 100%;
 
   &:hover {
     cursor: text;
