@@ -16,11 +16,14 @@ export const EffektButton: React.FC<{
   className?: string;
   disabled?: boolean;
   selected?: boolean;
-
-}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected }) => {
+  squared?: boolean;
+}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected, squared }) => {
   const styleClasses = [elements.button, type, className]
   if (selected) {
     styleClasses.push(elements.selected)
+  }
+  if (squared) {
+    styleClasses.push(elements.button__squared)
   }
   const styleClassesName = styleClasses.join(" ")
   
@@ -29,7 +32,7 @@ export const EffektButton: React.FC<{
       className={styleClassesName}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.currentTarget.blur();
-        onClick();
+        onClick(e);
       }}
       role={role}
       data-cy={cy}

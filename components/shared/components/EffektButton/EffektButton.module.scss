@@ -6,7 +6,6 @@
   padding: 8px 18px;
   cursor: pointer;
   box-sizing: border-box;
-  margin-left: 10px;
 }
 
 .button:disabled {
@@ -88,7 +87,7 @@
 }
 
 .button__squared {
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 @media only screen and (max-width: 1180px) {
