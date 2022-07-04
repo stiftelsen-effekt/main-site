@@ -8,7 +8,6 @@ import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { TextInput } from "../../../shared/Input/TextInput";
 import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
-import { ReferralsWrapper, ReferralButtonsWrapper, ReferralTextInput } from "./ReferralPane.style";
 import { InfoText } from "../PaymentPane.style";
 import { DateText } from "../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
