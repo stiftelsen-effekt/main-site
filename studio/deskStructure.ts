@@ -1,5 +1,7 @@
 import S from '@sanity/desk-tool/structure-builder';
 import { Book, Briefcase, Filter, HelpCircle, Paperclip, Settings, User, Users, Zap } from 'react-feather'
+import Iframe from 'sanity-plugin-iframe-pane'
+import resolveProductionUrl from './resolveProductionUrl'
 
 export default () =>
   S.list()
@@ -58,6 +60,19 @@ export default () =>
             .title('Pages')
             .schemaType('generic_page')
             .filter('_type == "generic_page"')
+            .child(id => 
+              S.document()
+                .schemaType("generic_page")
+                .documentId(id)
+                .views([
+                  S.view.form(),
+                  S.view
+                  .component(Iframe)
+                  .options({
+                    url: (doc: any) => resolveProductionUrl(doc),
+                  })
+                  .title('Preview'),
+                ]))
         ),
       S.listItem()
         .schemaType('article_page')
@@ -68,6 +83,19 @@ export default () =>
             .title('Articles')
             .schemaType('article_page')
             .filter('_type == "article_page"')
+            .child(id => 
+              S.document()
+                .schemaType("article_page")
+                .documentId(id)
+                .views([
+                  S.view.form(),
+                  S.view
+                  .component(Iframe)
+                  .options({
+                    url: (doc: any) => resolveProductionUrl(doc),
+                  })
+                  .title('Preview'),
+                ]))
         ),
       S.listItem()
         .schemaType('contributor')

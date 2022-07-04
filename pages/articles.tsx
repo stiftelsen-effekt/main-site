@@ -13,9 +13,9 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 
 const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
-  const settings = data.settings[0];
-  const header = data.page[0].header;
-  const articles = data.articles;
+  const settings = data.result.settings[0];
+  const header = data.result.page[0].header;
+  const articles = data.result.articles;
 
   return (
     <>
@@ -58,12 +58,16 @@ const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fethcArticles);
+  const result = await getClient(preview).fetch(fethcArticles);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fethcArticles,
+        queryParams: {},
+      },
     },
   };
 }

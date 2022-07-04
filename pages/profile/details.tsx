@@ -15,7 +15,7 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
-  const settings = data.settings[0];
+  const settings = data.result.settings[0];
 
   if (!router.isFallback && !data) {
     return <div>Loading...</div>;
@@ -36,7 +36,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       <PageContent>
         <div className={style.gridContainer}>
           <ProfileInfo />
-          <DataInfo data={data.page} />
+          <DataInfo data={data.result.page} />
         </div>
       </PageContent>
     </>
@@ -44,12 +44,16 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
 };
 
 export async function getStaticProps({ preview = false }) {
-  const data = await getClient(preview).fetch(fetchProfilePage);
+  const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
-      preview,
-      data,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
+      },
     },
   };
 }
