@@ -410,7 +410,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=date-picker-button-13]")
-      .click();
+      .click({force: true});
 
     cy.get("[data-cy=generic-list-table]")
       .first()
