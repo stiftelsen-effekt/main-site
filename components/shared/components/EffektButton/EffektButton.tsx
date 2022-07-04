@@ -17,13 +17,17 @@ export const EffektButton: React.FC<{
   disabled?: boolean;
   selected?: boolean;
   squared?: boolean;
-}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected, squared }) => {
+  extraMargin?: boolean;
+}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected, squared, extraMargin }) => {
   const styleClasses = [elements.button, type, className]
   if (selected) {
     styleClasses.push(elements.selected)
   }
   if (squared) {
     styleClasses.push(elements.button__squared)
+  }
+  if (extraMargin) {
+    styleClasses.push(elements.extraMargin)
   }
   const styleClassesName = styleClasses.join(" ")
   

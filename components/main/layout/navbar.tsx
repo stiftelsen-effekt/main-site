@@ -75,7 +75,13 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                   expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
                 }
               >
-                <button onClick={() => toggleExpanded(el._key)}>{el.title}</button>
+                <button
+                  onBlur={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
+                  onMouseLeave={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
+                  onClick={() => toggleExpanded(el._key)}
+                >
+                  {el.title}
+                </button>
                 <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
                   <div className={styles.submenu}>
                     <ul>
@@ -101,13 +107,19 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           <li className={styles.buttonsWrapper}>
             <Link href="/profile" passHref>
               <EffektButton
+                extraMargin={true}
                 type={EffektButtonType.SECONDARY}
                 onClick={() => setExpanded(false)}
               >
                 Logg inn
               </EffektButton>
             </Link>
-            <EffektButton onClick={() => setWidgetOpen(true)}>Send donasjon</EffektButton>
+            <EffektButton
+              extraMargin={true} 
+              onClick={() => setWidgetOpen(true)}
+            >
+              Send donasjon
+            </EffektButton>
           </li>
         </ul>
       </nav>
