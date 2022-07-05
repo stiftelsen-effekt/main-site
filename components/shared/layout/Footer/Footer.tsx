@@ -127,6 +127,9 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
               SEND&nbsp;→
             </button>
           </div>
+
+          <br />
+          <a href="https://www.sanity.io">Structured content powered by Sanity.io</a>
         </fieldset>
         {/* This input seems to be for making sure robots do not subscribe to our newsletter */}
         <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
