@@ -77,9 +77,9 @@ const prevWidgetPane = () => {
   cy.get("[data-cy=back-button]").click();
 };
 
-const checkNextIsDisabled = (isDisabled) => {
+const checkNextIsDisabled = () => {
   cy.get("[data-cy=next-button-div]").within(() => {
-    cy.get('button').should("have.attr", "disabled");
+    cy.get('button').should('have.css', 'opacity', '0.5')
   })
 }
 
