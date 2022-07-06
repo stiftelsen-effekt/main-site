@@ -137,11 +137,19 @@ export const DonorPane: React.FC = () => {
                   data-cy="anon-checkbox"
                   name="anonymousDonor"
                   type="checkbox"
+                  checked={donorType === DonorType.ANONYMOUS ? true : false}
                   ref={register}
-                  onChange={(e) => {
+                  onChange={() => {
                     if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
-                    else setDonorType(DonorType.DONOR);
+                      else setDonorType(DonorType.DONOR);
                     (document.activeElement as HTMLElement).blur();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
+                      else setDonorType(DonorType.DONOR);
+                      e.preventDefault();
+                    }
                   }}
                 />
                 <CustomCheckBox label="Doner anonymt" checked={donorType === DonorType.ANONYMOUS} />
@@ -185,10 +193,17 @@ export const DonorPane: React.FC = () => {
                       name="taxDeduction"
                       type="checkbox"
                       ref={register}
-                      onChange={(e) => {
-                        !e.target.checked && clearErrors(["ssn"]);
+                      onChange={() => {
+                        if (!taxDeductionChecked) clearErrors(["ssn"]);
                         setTaxDeductionChecked(!taxDeductionChecked);
                         (document.activeElement as HTMLElement).blur();
+                      }}
+                      onKeyDown={(e) => {
+                        if (!taxDeductionChecked) clearErrors(["ssn"]);
+                        if (e.key === "Enter" || e.key === " ") {
+                          setTaxDeductionChecked(!taxDeductionChecked);
+                          e.preventDefault();
+                        }
                       }}
                     />
                     <CustomCheckBox
@@ -239,6 +254,12 @@ export const DonorPane: React.FC = () => {
                     onChange={() => {
                       (document.activeElement as HTMLElement).blur();
                       setNewsletterChecked(!newsletterChecked);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setNewsletterChecked(!newsletterChecked);
+                        e.preventDefault();
+                      }
                     }}
                   />
                   <CustomCheckBox
