@@ -13,6 +13,7 @@ export const RecurringBankDonationForm: React.FC<{
   return (
     <div>
       <form
+        data-cy="avtalegiro-form"
         id="avtalegiro-form"
         action="https://pvu.nets.no/ecsa/start"
         method="post"

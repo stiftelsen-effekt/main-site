@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
-import { ReferralPane } from "./panes/ReferralPane/ReferralPane";
 import { Carousel } from "./Carousel";
 import { fetchOrganizationsAction } from "../store/layout/actions";
 import { State } from "../store/state";
@@ -73,7 +72,6 @@ export const Widget: React.FC = () => {
         <Carousel minHeight={scaledHeight - 116}>
           <DonationPane />
           <DonorPane />
-          {/* answeredReferral !== true && <ReferralPane /> */}
           <PaymentPane />
         </Carousel>
       </WidgetTooltipContext.Provider>

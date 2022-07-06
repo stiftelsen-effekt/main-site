@@ -39,8 +39,8 @@ export const DonationPane: React.FC = () => {
           <PaneTitle>Hvor mye ønsker du å Gi Effektivt?</PaneTitle>
           <RadioButtonGroup
             options={[
-              { title: "Gi månedlig", value: RecurringDonation.RECURRING },
-              { title: "Engangsbeløp", value: RecurringDonation.NON_RECURRING },
+              { title: "Gi månedlig", value: RecurringDonation.RECURRING, data_cy: "radio-recurring" },
+              { title: "Engangsbeløp", value: RecurringDonation.NON_RECURRING, data_cy: "radio-single" },
             ]}
             selected={donation.recurring}
             onSelect={(option) => dispatch(setRecurring(option as RecurringDonation))}
@@ -66,6 +66,7 @@ export const DonationPane: React.FC = () => {
                 placeholder="0"
                 value={donation.sum && donation.sum > 0 ? donation.sum : ""}
                 autoComplete="off"
+                data-cy="donation-sum-input"
                 onChange={(e) => {
                   if (Validator.isInt(e.target.value) === true && parseInt(e.target.value) > 0) {
                     dispatch(setSum(parseInt(e.target.value)));
@@ -80,8 +81,8 @@ export const DonationPane: React.FC = () => {
           <ShareSelectionWrapper>
             <RadioButtonGroup
               options={[
-                { title: "Smart fordeling", value: ShareType.STANDARD },
-                { title: "Jeg vil velge selv", value: ShareType.CUSTOM },
+                { title: "Smart fordeling", value: ShareType.STANDARD, data_cy: "radio-smart-share" },
+                { title: "Jeg vil velge selv", value: ShareType.CUSTOM, data_cy: "radio-custom-share" },
               ]}
               selected={donation.shareType}
               onSelect={(option) => {
@@ -106,15 +107,16 @@ export const DonationPane: React.FC = () => {
           )}
         </div>
 
-        <ActionBar>
-          <NextButton
+        <ActionBar data-cy="next-button-div">
+          <EffektButton
+            type={EffektButtonType.PRIMARY}
             disabled={!donation.isValid}
             onClick={() => {
               onSubmit();
             }}
           >
             Neste
-          </NextButton>
+          </EffektButton>
         </ActionBar>
       </PaneContainer>
     </Pane>

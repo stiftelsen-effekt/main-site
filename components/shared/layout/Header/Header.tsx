@@ -13,6 +13,17 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
+  useEffect(() => {
+    document.addEventListener('keydown', detectKeyDown, true);
+  }, [])
+
+  const detectKeyDown = (e: KeyboardEvent) => {
+    // Open the NavBar when shift is pressed to allow backwards tabbing into the navbar
+    if (e.key == "Shift") {
+      setNavBarVisible(true);
+    }
+  }
+
   const navBarCheck = useCallback(() => {
     if (typeof window !== "undefined") {
       if (window.scrollY > 0) setNavbarShrinked(true);

@@ -24,6 +24,7 @@ export const PaneTitle = styled.h2`
   margin-top: 0px;
   margin-top: 20px;
   margin-bottom: 20px;
+  line-height: normal;
 `;
 
 export const BoldTitle = styled.p`

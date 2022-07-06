@@ -20,6 +20,7 @@ import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import Link from "next/link";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { RadioButtonGroup } from "../../../../../shared/components/RadioButton/RadioButtonGroup";
+import { EffektButton, EffektButtonType } from "../../../../../shared/components/EffektButton/EffektButton";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -131,16 +132,24 @@ export const DonorPane: React.FC = () => {
             <PaneTitle>Om deg</PaneTitle>
 
             <div style={{ marginBottom: "20px" }}>
-              <CheckBoxWrapper>
+              <CheckBoxWrapper data-cy="anon-button-div">
                 <HiddenCheckBox
-                  data-cy="checkboxAnonymousDonor"
+                  data-cy="anon-checkbox"
                   name="anonymousDonor"
                   type="checkbox"
+                  checked={donorType === DonorType.ANONYMOUS ? true : false}
                   ref={register}
-                  onChange={(e) => {
+                  onChange={() => {
                     if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
-                    else setDonorType(DonorType.DONOR);
+                      else setDonorType(DonorType.DONOR);
                     (document.activeElement as HTMLElement).blur();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
+                      else setDonorType(DonorType.DONOR);
+                      e.preventDefault();
+                    }
                   }}
                 />
                 <CustomCheckBox label="Doner anonymt" checked={donorType === DonorType.ANONYMOUS} />
@@ -150,6 +159,7 @@ export const DonorPane: React.FC = () => {
             <div style={{ display: donorType === DonorType.ANONYMOUS ? "none" : "block" }}>
               <InputFieldWrapper>
                 <input
+                  data-cy="name-input"
                   name="name"
                   type="text"
                   placeholder="Navn"
@@ -160,6 +170,7 @@ export const DonorPane: React.FC = () => {
               </InputFieldWrapper>
               <InputFieldWrapper>
                 <input
+                  data-cy="email-input"
                   name="email"
                   type="email"
                   placeholder="Epost"
@@ -178,14 +189,21 @@ export const DonorPane: React.FC = () => {
                 <div>
                   <CheckBoxWrapper>
                     <HiddenCheckBox
-                      data-cy="checkboxTaxDeduction"
+                      data-cy="tax-deduction-checkbox"
                       name="taxDeduction"
                       type="checkbox"
                       ref={register}
-                      onChange={(e) => {
-                        !e.target.checked && clearErrors(["ssn"]);
+                      onChange={() => {
+                        if (!taxDeductionChecked) clearErrors(["ssn"]);
                         setTaxDeductionChecked(!taxDeductionChecked);
                         (document.activeElement as HTMLElement).blur();
+                      }}
+                      onKeyDown={(e) => {
+                        if (!taxDeductionChecked) clearErrors(["ssn"]);
+                        if (e.key === "Enter" || e.key === " ") {
+                          setTaxDeductionChecked(!taxDeductionChecked);
+                          e.preventDefault();
+                        }
                       }}
                     />
                     <CustomCheckBox
@@ -197,6 +215,7 @@ export const DonorPane: React.FC = () => {
                   {watchAllFields.taxDeduction && (
                     <InputFieldWrapper>
                       <input
+                        data-cy="ssn-input"
                         name="ssn"
                         type="text"
                         inputMode="numeric"
@@ -228,13 +247,19 @@ export const DonorPane: React.FC = () => {
                 </div>
                 <CheckBoxWrapper>
                   <HiddenCheckBox
-                    data-cy="checkboxNewsletter"
+                    data-cy="newsletter-checkbox"
                     name="newsletter"
                     type="checkbox"
                     ref={register}
                     onChange={() => {
                       (document.activeElement as HTMLElement).blur();
                       setNewsletterChecked(!newsletterChecked);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setNewsletterChecked(!newsletterChecked);
+                        e.preventDefault();
+                      }
                     }}
                   />
                   <CustomCheckBox
@@ -256,23 +281,31 @@ export const DonorPane: React.FC = () => {
 
             <RadioButtonGroup
               options={[
-                { title: "Gi med bank", value: PaymentMethod.BANK },
-                { title: "Gi med Vipps", value: PaymentMethod.VIPPS },
+                { title: "Gi med bank", value: PaymentMethod.BANK, data_cy: "bank-method" },
+                { title: "Gi med Vipps", value: PaymentMethod.VIPPS, data_cy: "vipps-method" },
               ]}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}
             />
           </div>
-          <ActionBar>
+          <ActionBar data-cy="next-button-div">
             {donorType === DonorType.DONOR ? (
-              <NextButton disabled={nextDisabled} onClick={() => {}}>
+              <EffektButton 
+                type={EffektButtonType.SECONDARY}
+                disabled={nextDisabled} 
+                onClick={() => {}}
+              >
                 Neste
-              </NextButton>
+              </EffektButton>
             ) : null}
             {donorType === DonorType.ANONYMOUS ? (
-              <NextButton disabled={nextDisabled} onClick={submitAnonymous}>
+              <EffektButton
+                type={EffektButtonType.SECONDARY}
+                disabled={nextDisabled} 
+                onClick={submitAnonymous}
+              >
                 Neste
-              </NextButton>
+              </EffektButton>
             ) : null}
           </ActionBar>
         </PaneContainer>
@@ -280,8 +313,3 @@ export const DonorPane: React.FC = () => {
     </Pane>
   );
 };
-
-/**
- * type="submit" on donor button
- * disabled={nextDisabled}
- */

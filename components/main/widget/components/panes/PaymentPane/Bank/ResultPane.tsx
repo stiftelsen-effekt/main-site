@@ -5,7 +5,7 @@ import { RadioButtonGroup } from "../../../../../../shared/components/RadioButto
 import { setDueDay } from "../../../../store/donation/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
-import { Pane, PaneContainer, PaneTitle, UnderTitle } from "../../Panes.style";
+import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { InfoText } from "../PaymentPane.style";
 import { DateText } from "../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { AvtaleGiroDatePicker } from "./AvtaleGiroDatePicker/AvtaleGiroDatePicker";
@@ -15,10 +15,16 @@ import {
 } from "./AvtaleGiroDatePicker/avtalegirodates";
 import { PaymentInformation } from "./PaymentInformation";
 import { RecurringBankDonationForm } from "./RecurringForm";
+import { Referrals } from "../../../../../../widget/components/shared/Referrals/Referrals";
 
 export const ResultPane: React.FC = () => {
   const donation = useSelector((state: State) => state.donation);
+  const referrals = useSelector((state: State) => state.referrals.referrals);
+  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
+  const donorID = useSelector((state: State) => state.donation.donor?.donorID); 
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
+  const [selectedReferral, setSelectedReferral] = useState(0);
+  const [otherInput, setOtherInput] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,6 +81,11 @@ export const ResultPane: React.FC = () => {
           donation.donor?.email !== "anon@gieffektivt.no" && (
             <InfoText>{`Vi har også sendt en mail til ${donation.donor?.email} med informasjon om din donasjon. Sjekk søppelpost-mappen om du ikke har mottatt eposten i løpet av noen minutter.`}</InfoText>
           )}
+
+        {/* Always show referrals for anonymous donors (ID 1464) */}
+        {(!hasAnswerredReferral || donorID == 1464) &&
+          <Referrals />
+        }
       </PaneContainer>
     </Pane>
   );

@@ -57,7 +57,10 @@ export const ImpactWidget: React.FC<{
             {interventions.map((i) => (
               <button
                 key={i.title}
-                onClick={() => setSelectedIntervention(i.title)}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.currentTarget.blur();
+                  setSelectedIntervention(i.title);
+                }}
                 className={i.title === selectedIntervention ? styles.selected : ""}
               >
                 {i.title}

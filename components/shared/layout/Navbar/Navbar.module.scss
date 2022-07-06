@@ -40,13 +40,20 @@
   top: 100%;
   left: 0;
   background: var(--secondary);
-  display: none;
+  top: -1000px;
   padding-bottom: 20px;
 }
 
+.navbar ul li .submenu:focus-within {
+  top: auto;
+  display: block;
+}
+
 .navbar ul li:hover .submenu,
+.navbar ul li:focus .submenu,
 .navbar ul li.expandedSubmenu .submenu {
   display: block;
+  top: auto;
 }
 
 .navbar ul li .submenu ul li {
@@ -108,6 +115,14 @@
   content: "↓";
   display: inline-block;
   margin-left: 10px;
+}
+
+.navbar ul li button:focus {
+  border-bottom: 1px solid var(--primary);
+}
+
+.navbar ul li button:focus + div .submenu {
+  display: block;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -245,6 +260,7 @@
     border-radius: 30px;
     font-size: 14px;
     margin-left: 0;
+    margin-right: 20px;
   }
 }
 

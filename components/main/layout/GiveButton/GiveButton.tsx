@@ -10,6 +10,7 @@ export const GiveButton: React.FC<{ inverted: boolean; onClick: () => void }> = 
       className={`${styles.givebutton} ${inverted ? styles.givebuttoninverted : null}`}
       title="Trykk for å åpne donasjonspanelet"
       onClick={onClick}
+      data-cy="gi-button"
     >
       Gi.
     </button>

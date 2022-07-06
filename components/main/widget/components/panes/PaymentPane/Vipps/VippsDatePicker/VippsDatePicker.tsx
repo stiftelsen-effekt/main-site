@@ -67,6 +67,12 @@ export const VippsDatePicker: React.FC = () => {
                 (document.activeElement as HTMLElement).blur();
                 setinitialCharge(!initialCharge);
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setinitialCharge(!initialCharge);
+                  e.preventDefault();
+                }
+              }}
             />
             <CustomCheckBox label="Trekk meg for denne måneden også" checked={initialCharge} />
           </CheckBoxWrapper>

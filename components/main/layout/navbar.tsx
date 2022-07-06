@@ -6,7 +6,7 @@ import AnimateHeight from "react-animate-height";
 import { Dictionary } from "lodash";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { WidgetContext } from "./layout";
-import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
+import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
 import { ResponsiveImage } from "../../shared/responsiveimage";
 
 export type NavLink = {
@@ -75,7 +75,13 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                   expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
                 }
               >
-                <button onClick={() => toggleExpanded(el._key)}>{el.title}</button>
+                <button
+                  onBlur={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
+                  onMouseLeave={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
+                  onClick={() => toggleExpanded(el._key)}
+                >
+                  {el.title}
+                </button>
                 <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
                   <div className={styles.submenu}>
                     <ul>
@@ -100,11 +106,20 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           )}
           <li className={styles.buttonsWrapper}>
             <Link href="/profile" passHref>
-              <a onClick={() => setExpanded(false)} className={styles.btnlogin}>
+              <EffektButton
+                extraMargin={true}
+                type={EffektButtonType.SECONDARY}
+                onClick={() => setExpanded(false)}
+              >
                 Logg inn
-              </a>
+              </EffektButton>
             </Link>
-            <EffektButton onClick={() => setWidgetOpen(true)}>Send donasjon</EffektButton>
+            <EffektButton
+              extraMargin={true} 
+              onClick={() => setWidgetOpen(true)}
+            >
+              Send donasjon
+            </EffektButton>
           </li>
         </ul>
       </nav>

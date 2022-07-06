@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButtonGroup } from "../../../../../../shared/components/RadioButton/RadioButtonGroup";
+import { Referrals } from "../../../../../../widget/components/shared/Referrals/Referrals";
 import { WidgetContext } from "../../../../../layout/layout";
 import { draftAgreementAction, setVippsAgreement } from "../../../../store/donation/actions";
+import { submitReferralAction } from "../../../../store/referrals/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
@@ -17,7 +19,12 @@ export const VippsPane: React.FC = () => {
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
   const [draftError, setDraftError] = useState(false);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
+  const donorID = useSelector((state: State) => state.donation.donor?.donorID); 
+  const referrals = useSelector((state: State) => state.referrals.referrals);
+  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [selectedReferral, setSelectedReferral] = useState(0);
+  const [otherInput, setOtherInput] = useState("");
 
   return (
     <Pane>
@@ -50,7 +57,7 @@ export const VippsPane: React.FC = () => {
               {draftError && <ErrorField text="Det har skjedd en feil, vennligst prøv på nytt" />}
             </div>
             <CenterDiv>
-              <div style={{ marginBottom: 30 }}>
+              <div data-cy="vipps-recurring-button" style={{ marginBottom: 30 }}>
                 <SubmitButton
                   onClick={async () => {
                     if (recurring === RecurringDonation.RECURRING) {
@@ -71,7 +78,7 @@ export const VippsPane: React.FC = () => {
               <PaneTitle>Du kan nå overføre til oss</PaneTitle>
             </div>
             <CenterDiv>
-              <VippsButtonWrapper>
+              <VippsButtonWrapper data-cy="vipps-single-button">
                 <SubmitButton
                   onClick={async () => {
                     if (recurring === RecurringDonation.NON_RECURRING && paymentProviderURL) {
@@ -86,6 +93,10 @@ export const VippsPane: React.FC = () => {
             </CenterDiv>
           </>
         )}
+         {/* Always show referrals for anonymous donors (ID 1464) */}
+         {(!hasAnswerredReferral || donorID == 1464) &&
+          <Referrals />
+        }
       </PaneContainer>
     </Pane>
   );

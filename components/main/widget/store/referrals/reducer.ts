@@ -4,7 +4,9 @@ import { Referrals } from "../state";
 import { fetchReferralsAction } from "./actions";
 import { ReferralActionTypes } from "./types";
 
-const initialState: Referrals = {};
+const initialState: Referrals = {
+  websiteSession: new Date().getTime().toString()
+};
 
 /**
  * The reducer is a pure function that takes in the previous state,
