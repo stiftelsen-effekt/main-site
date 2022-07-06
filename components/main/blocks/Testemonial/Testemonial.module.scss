@@ -95,6 +95,10 @@
   right: 0;
 }
 
+.testimonial__arrow__backward:focus > div, .testimonial__arrow__forward:focus > div {
+  outline: 2px solid var(--primary);
+}
+
 @media screen and (max-width: 1520px) and (min-width: 1181px) {
   .testemonial__quote {
     max-width: 860px;

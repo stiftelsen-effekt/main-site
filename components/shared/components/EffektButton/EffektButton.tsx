@@ -29,6 +29,9 @@ export const EffektButton: React.FC<{
   if (extraMargin) {
     styleClasses.push(elements.extraMargin)
   }
+  if (disabled) {
+    styleClasses.push(elements.disabledBtn)
+  }
   const styleClassesName = styleClasses.join(" ")
   
   return (
@@ -36,11 +39,10 @@ export const EffektButton: React.FC<{
       className={styleClassesName}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.currentTarget.blur();
-        onClick(e);
+        if (!disabled) onClick(e);
       }}
       role={role}
       data-cy={cy}
-      disabled={disabled}
     >
       {children}
     </button>

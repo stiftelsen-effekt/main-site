@@ -20,9 +20,12 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
           className={`${styles.testimonial__arrow} ${styles.testimonial__arrow__backward} ${
             currentTestimony === 0 ? styles.testimonial__arrow__hidden : ""
           }`}
-          onClick={() => setCurrentTestimony(Math.max(0, currentTestimony - 1))}
-        >
-          ←
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.currentTarget.blur();
+            setCurrentTestimony(Math.max(0, currentTestimony - 1));
+          }}
+        >   
+          <div>←</div>
         </button>
       )}
       <div className={styles.testimonialtrack}>
@@ -53,7 +56,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1))
           }
         >
-          →
+         <div>→</div>
         </button>
       )}
     </section>

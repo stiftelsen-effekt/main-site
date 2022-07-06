@@ -20,7 +20,7 @@
 }
 
 .buttonprimary:focus {
-  border: 1px solid var(--primary);
+  border: 1px solid var(--secondary) !important;
   outline: 2px solid var(--primary);
 }
 
@@ -28,7 +28,7 @@
 .buttonprimary:active {
   color: var(--primary);
   background-color: var(--secondary);
-  border: 1px solid var(--primary);
+  border: 1px solid var(--primary) !important;
   outline: none;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .buttonsecondary:focus {
-  border: 1px solid var(--primary);
+  border: 1px solid var(--secondary) !important;
   outline: 2px solid var(--primary);
 }
 
@@ -51,7 +51,7 @@
   background-color: var(--primary);
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
-  border: 1px solid var(--secondary);
+  border: 1px solid var(--secondary) !important;
   outline: none;
 }
 
@@ -92,6 +92,10 @@
 
 .extraMargin {
   margin-left: 25px;
+}
+
+.disabledBtn {
+  opacity: 0.5;
 }
 
 @media only screen and (max-width: 1180px) {
