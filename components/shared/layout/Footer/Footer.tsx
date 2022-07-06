@@ -138,6 +138,12 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           />
         </div>
       </form>
+      <div className={`${styles.category} ${styles.sanity}`}>
+        Structured content powered by{" "}
+        <a href="https://www.sanity.io/" target="_blank" rel="noreferrer">
+          Sanity.io
+        </a>
+      </div>
     </footer>
   );
 }

@@ -55,7 +55,7 @@
 
 /** -----News Letter Signup--------*/
 .newsletter {
-  grid-column: 2 / 5;
+  grid-column: 2 / 4;
 }
 
 .newsletter fieldset {
@@ -115,6 +115,16 @@
   width: 100%;
 }
 
+/** ----- Sanity link --------*/
+.sanity {
+  grid-column: 4 / 6;
+  font-size: 18px;
+}
+
+.sanity a:link {
+  border-bottom: 1px solid var(--primary);
+}
+
 @media only screen and (max-width: 1180px) {
   .grid {
     grid-template-columns: 1fr 1fr;
@@ -140,13 +150,19 @@
     max-width: initial;
   }
 
+  .sanity {
+    grid-row: 4;
+    grid-column: 1 / 3;
+    font-size: 18px;
+  }
+
   .logo__bottom {
     grid-row: auto;
     grid-column: 1 / 3;
   }
 
   .logo__bottom {
-    grid-row: 4;
+    grid-row: 5;
   }
 
   .logo__bottom figure p {
