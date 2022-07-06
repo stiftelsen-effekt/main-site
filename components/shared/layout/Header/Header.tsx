@@ -18,7 +18,8 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   }, [])
 
   const detectKeyDown = (e: KeyboardEvent) => {
-    if (e.key == "Tab") {
+    // Open the NavBar when shift is pressed to allow backwards tabbing into the navbar
+    if (e.key == "Shift") {
       setNavBarVisible(true);
     }
   }
