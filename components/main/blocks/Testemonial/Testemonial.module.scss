@@ -99,6 +99,10 @@
   outline: 2px solid var(--primary);
 }
 
+.testimonial__arrow__backward:active > div, .testimonial__arrow__forward:active > div {
+  outline: none;
+}
+
 @media screen and (max-width: 1520px) and (min-width: 1181px) {
   .testemonial__quote {
     max-width: 860px;
