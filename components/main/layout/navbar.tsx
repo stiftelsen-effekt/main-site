@@ -77,7 +77,9 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
               >
                 <button
                   onBlur={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
-                  onMouseLeave={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
+                  onMouseLeave={() => { 
+                    if (window.screen.width > 1180) expandedSubmenu[el._key] && toggleExpanded(el._key);
+                  }} 
                   onClick={() => toggleExpanded(el._key)}
                 >
                   {el.title}
