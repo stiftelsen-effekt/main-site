@@ -10,7 +10,8 @@ export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
 
 export const Layout: LayoutElement = ({ children, footerData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
-  const [cookiesAccepted, setCookiesAccepted] = useState(false);
+  // Set true as default to prevent flashing on first render
+  const [cookiesAccepted, setCookiesAccepted] = useState(true);
 
   if (widgetOpen && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
