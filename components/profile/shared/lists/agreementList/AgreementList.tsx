@@ -18,9 +18,10 @@ export const AgreementList: React.FC<{
   vipps: VippsAgreement[];
   title: string;
   supplemental: string;
+  emptyString: string;
   distributions: Map<string, Distribution>;
   expandable?: boolean;
-}> = ({ avtalegiro, vipps, title, supplemental, distributions, expandable }) => {
+}> = ({ avtalegiro, vipps, title, supplemental, emptyString, distributions, expandable }) => {
   const headers = ["Type", "Dato", "Sum", "KID"];
 
   let vippsType = vipps.map(
@@ -78,7 +79,7 @@ export const AgreementList: React.FC<{
 
   const emptyPlaceholder = (
     <div data-cy="agreement-list-empty-placeholder">
-      <div>Vi har ikke registrert noen aktive faste donasjonsavtaler på deg..</div>
+      <div>{emptyString}</div>
       <div>
         Mangler det avtaler vi ikke har registrert? Ta kontakt på{" "}
         <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.

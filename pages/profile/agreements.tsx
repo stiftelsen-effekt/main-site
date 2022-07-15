@@ -140,6 +140,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
               )}
               distributions={distributionsMap}
               supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
+              emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
             />
           ) : null}
 
@@ -154,6 +155,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
               supplemental={
                 "Dette er tidligere faste betalingsavtaler du har hatt med oss, som vi ikke lenger trekker deg for"
               }
+              emptyString={"Vi har ikke registrert noen tidligere donasjonsavtaler på deg."}
               expandable={false}
             />
           ) : null}
