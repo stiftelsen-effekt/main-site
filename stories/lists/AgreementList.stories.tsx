@@ -81,6 +81,7 @@ export const List = () => (
     vipps={[]}
     title={"Aktive"}
     supplemental={""}
+    emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
   />
 );
 
@@ -91,5 +92,6 @@ export const Empty = () => (
     vipps={[]}
     title={"Aktive"}
     supplemental={""}
+    emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
   />
 );
