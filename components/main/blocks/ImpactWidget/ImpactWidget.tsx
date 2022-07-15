@@ -59,7 +59,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
   }, [interventionWidget.interventions]);
 
   const currentIntervention = interventions.find(
-    (i) => i.title === selectedIntervention,
+    (i: any) => i.title === selectedIntervention,
   ) as Intervention;
   const output = currentIntervention.pricePerOutput
     ? Math.round(sum / currentIntervention.pricePerOutput)
@@ -93,7 +93,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
             </div>
           </div>
           <div className={styles.select}>
-            {interventions.map((i) => (
+            {interventions.map((i: any) => (
               <button
                 key={i.title}
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
