@@ -1,12 +1,11 @@
-import { Testimonial, Testimony } from "../components/main/blocks/Testemonial/Testemonial";
+import { Testimonial } from "../components/main/blocks/Testemonial/Testemonial";
 import styles from "../styles/Home.module.css";
 import { LayoutPage } from "../types";
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.server";
-import { useEffect, useState } from "react";
+import dynamic from 'next/dynamic'
 import { SEO } from "../components/shared/seo/Seo";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
-import { ImpactWidget } from "../components/main/blocks/ImpactWidget/ImpactWidget";
 import { IntroSection } from "../components/main/blocks/IntroSection/IntroSection";
 import { PointList } from "../components/main/blocks/PointList/PointList";
 import { PointListPointProps } from "../components/main/blocks/PointList/PointListPoint";
@@ -18,40 +17,20 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
+import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
+
+const ImpactWidget = dynamic<ImpactWidgetProps>(
+  () => import("../components/main/blocks/ImpactWidget/ImpactWidget").then((mod) => mod.ImpactWidget),
+  {
+    ssr: false,
+  },
+);
 
 const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const salespitch = data.result.frontpage[0].salespitch;
   const settings = data.result.settings[0];
   const interventionWidget = data.result.frontpage[0].intervention_widget;
   const { seoTitle, seoDescription, seoImage } = data.result.frontpage[0];
-
-  const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
-  useEffect(() => {
-    const interventions = interventionWidget.interventions;
-    const url = `https://impact.gieffektivt.no/api/evaluations?${interventions
-      .map((i: any) => `charity_abbreviation=${i.abbreviation}&`)
-      .join("")}currency=NOK`;
-    console.log(url);
-    fetch(url).then((res) => {
-      res.json().then((data) => {
-        const costs = new Map();
-        const evaluations = data.evaluations;
-        interventions.forEach((i: any) => {
-          // For each intervention, filter the evaluations for a given charity
-          const filtered = evaluations.filter(
-            (e: any) => e.charity.abbreviation === i.abbreviation,
-          );
-          // Then order the list to get the most recent
-          const ordered = filtered.sort((a: any, b: any) => a.start_year - b.start_year);
-          // Get the most recent evaluation
-          const evaluation = ordered[0];
-          // Set the cost to the most recent evaluation converted cost (cost in NOK per output)
-          costs.set(i.abbreviation, evaluation.converted_cost_per_output);
-        });
-        setInterventionCosts(costs);
-      });
-    });
-  }, [interventionWidget.interventions]);
 
   return (
     <>
@@ -101,17 +80,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       {interventionWidget.interventions && (
         <div style={{ marginTop: "45px" }}>
           <SectionContainer>
-            <ImpactWidget
-              title={interventionWidget.title}
-              defaultSum={interventionWidget.default_sum}
-              interventions={interventionWidget.interventions.map((i: any) => ({
-                title: i.title,
-                pricePerOutput: interventionCosts.get(i.abbreviation),
-                outputStringTemplate: i.template_string,
-                organizationName: i.organization_name,
-              }))}
-              buttonText={interventionWidget.button_text}
-            ></ImpactWidget>
+            <ImpactWidget data={data} />
           </SectionContainer>
         </div>
       )}

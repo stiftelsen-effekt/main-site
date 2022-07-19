@@ -1,25 +1,27 @@
 import Script from "next/script";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CookiesAccepted } from "../../../main/layout/layout";
 import styles from "./CookieBanner.module.scss";
 
 export const CookieBanner: React.FC = () => {
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
+  const [localStorageLoaded, setLocalStorageLoaded] = useState(false);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
-  useEffect(
-    () =>
-      setCookiesAccepted(
-        typeof window !== "undefined"
-          ? window.localStorage.getItem("gieffektivt-cookies-accepted") === "true"
-          : false,
-      ),
-    [],
+  useEffect(() => {
+    setCookiesAccepted(
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("gieffektivt-cookies-accepted") === "true"
+        : false,
+    )
+    setLocalStorageLoaded(true);
+    },
+    []
   );
 
   return (
     <>
-      {cookiesAccepted && typeof window !== "undefined" && (
+      {cookiesAccepted && localStorageLoaded && typeof window !== "undefined" && (
         <>
           <Script
             strategy="afterInteractive"
