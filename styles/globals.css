@@ -103,11 +103,11 @@ a {
 }
 
 a:hover {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--primary);
 }
 
 a:focus {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--primary);
 }
 
 :focus {

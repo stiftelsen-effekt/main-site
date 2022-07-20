@@ -117,10 +117,6 @@
   margin-left: 10px;
 }
 
-.navbar ul li button:focus {
-  border-bottom: 1px solid var(--primary);
-}
-
 .navbar ul li button:focus + div .submenu {
   display: block;
 }
@@ -191,6 +187,15 @@
     margin-top: 14px;
   }
 
+  .navbar ul li a { 
+    display: inline-block;
+    width: 100%;
+  }
+
+  .navbar ul li a:hover {
+    border-bottom: none;
+  }
+
   .navbar ul li .submenu {
     display: block;
     position: static;
@@ -203,6 +208,11 @@
 
   .navbarExpanded ul li .submenu ul {
     display: block;
+  }
+
+  .navbarExpanded ul li .submenu ul a {
+    display: inline-block;
+    width: 100%;
   }
 
   .navbar ul li.expandedSubmenu button::after {
