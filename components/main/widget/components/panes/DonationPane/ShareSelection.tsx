@@ -4,7 +4,7 @@ import Validator from "validator";
 import { setShares } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { TextInput } from "../../shared/Input/TextInput";
-import { ShareContainer, ShareInputContainer } from "./ShareSelection.style";
+import { ShareContainer, ShareInputContainer, ShareLink } from "./ShareSelection.style";
 
 export const SharesSelection: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,9 +17,11 @@ export const SharesSelection: React.FC = () => {
     <ShareContainer>
       {shareState.map((share) => (
         <ShareInputContainer key={share.id}>
-          <label htmlFor={share.id.toString()}>
-            {organizations.filter((org) => org.id === share.id)[0].name}
-          </label>
+          <ShareLink href={`https://gieffektivt.no/organizations/#${organizations.filter((org) => org.id === share.id)[0].name.replace(/ /g,"_")}`}>
+            <label htmlFor={share.id.toString()}>
+              {organizations.filter((org) => org.id === share.id)[0].name}
+            </label>
+          </ShareLink>
           <input
             data-cy={`org-${share.id}`}
             name={share.id.toString()}
