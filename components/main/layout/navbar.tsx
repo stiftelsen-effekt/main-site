@@ -46,9 +46,11 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
   };
 
   const toggleExpanded = (key: string) => {
-    const expanded = { ...expandedSubmenu };
-    expanded[key] = !expandedSubmenu[key];
-    setExpandedSubmenu(expanded);
+    if (expandMenu) {
+      const expanded = { ...expandedSubmenu };
+      expanded[key] = !expandedSubmenu[key];
+      setExpandedSubmenu(expanded);
+    }
   };
 
   return (
@@ -76,11 +78,8 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                 }
               >
                 <button
-                  onBlur={() => expandedSubmenu[el._key] && toggleExpanded(el._key)} 
-                  onMouseLeave={() => { 
-                    if (window.screen.width > 1180) expandedSubmenu[el._key] && toggleExpanded(el._key);
-                  }} 
                   onClick={() => toggleExpanded(el._key)}
+                  tabIndex={-1}
                 >
                   {el.title}
                 </button>
@@ -88,9 +87,9 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                   <div className={styles.submenu}>
                     <ul>
                       {el.items.map((subel) => (
-                        <li key={subel.title} onClick={() => setExpanded(false)}>
+                        <li key={subel.title}>
                           <Link href={`/${subel.slug}`} passHref>
-                            {subel.title}
+                            <a onClick={(e) => { e.currentTarget.blur(); setExpanded(false); }}>{subel.title}</a>
                           </Link>
                         </li>
                       ))}
@@ -99,9 +98,9 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                 </AnimateHeight>
               </li>
             ) : (
-              <li key={el._key} onClick={() => setExpanded(false)}>
+              <li key={el._key}>
                 <Link href={`/${el.slug}`} passHref>
-                  {el.title}
+                  <a onClick={() => setExpanded(false)}>{el.title}</a>
                 </Link>
               </li>
             ),
