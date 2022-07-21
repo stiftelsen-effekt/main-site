@@ -54,7 +54,7 @@ export const ActionButton = styled.button`
   border: none;
   transition: all 200ms ease-in-out;
   transform: ${(props: ActionButtonProps) => (props.active ? `translateX(-50%)` : `translateX(0)`)};
-  display: ${(props: ActionButtonProps) => (props.active ? "none" : "block")};
+  opacity: ${(props: ActionButtonProps) => (props.active ? "0" : "1")};
   cursor: pointer;
   outline: none;
 
