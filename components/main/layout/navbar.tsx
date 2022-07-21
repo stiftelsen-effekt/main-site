@@ -98,7 +98,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                 </AnimateHeight>
               </li>
             ) : (
-              <li key={el._key}>
+              <li key={el._key} data-cy={`${el.slug}-link`}>
                 <Link href={`/${el.slug}`} passHref>
                   <a onClick={() => setExpanded(false)}>{el.title}</a>
                 </Link>
