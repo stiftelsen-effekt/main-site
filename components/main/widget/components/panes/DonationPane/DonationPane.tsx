@@ -108,15 +108,14 @@ export const DonationPane: React.FC = () => {
         </div>
 
         <ActionBar data-cy="next-button-div">
-          <EffektButton
-            type={EffektButtonType.PRIMARY}
+          <NextButton
             disabled={!donation.isValid}
             onClick={() => {
               onSubmit();
             }}
           >
             Neste
-          </EffektButton>
+          </NextButton>
         </ActionBar>
       </PaneContainer>
     </Pane>
