@@ -10,6 +10,15 @@ export const ShareContainer = styled.div`
   align-items: flex-end;
 `;
 
+export const ShareLink = styled.a`
+  border: none !important;
+  
+  &:hover > label {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
+
 export const ShareInputContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr max-content;
