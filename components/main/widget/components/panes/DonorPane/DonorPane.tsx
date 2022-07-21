@@ -290,22 +290,20 @@ export const DonorPane: React.FC = () => {
           </div>
           <ActionBar data-cy="next-button-div">
             {donorType === DonorType.DONOR ? (
-              <EffektButton 
-                type={EffektButtonType.SECONDARY}
+              <NextButton
                 disabled={nextDisabled} 
                 onClick={() => {}}
               >
                 Neste
-              </EffektButton>
+              </NextButton>
             ) : null}
             {donorType === DonorType.ANONYMOUS ? (
-              <EffektButton
-                type={EffektButtonType.SECONDARY}
-                disabled={nextDisabled} 
+              <NextButton
+                disabled={nextDisabled}
                 onClick={submitAnonymous}
               >
                 Neste
-              </EffektButton>
+              </NextButton>
             ) : null}
           </ActionBar>
         </PaneContainer>
