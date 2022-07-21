@@ -40,7 +40,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
         <div className={styles.organizationWrapper}>
           {organizations &&
             organizations.map((organization: any) => (
-              <div key={organization._id} className={styles.organization}>
+              <div key={organization._id} id={organization.name.replace(/ /g,"_")} className={styles.organization}>
                 <div className={styles.meta}>
                   <div>
                     <p className="inngress">{organization.name}</p>
