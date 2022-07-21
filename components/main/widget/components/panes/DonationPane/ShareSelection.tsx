@@ -17,7 +17,11 @@ export const SharesSelection: React.FC = () => {
     <ShareContainer>
       {shareState.map((share) => (
         <ShareInputContainer key={share.id}>
-          <ShareLink href={`https://gieffektivt.no/organizations/#${organizations.filter((org) => org.id === share.id)[0].name.replace(/ /g,"_")}`}>
+          <ShareLink href={
+            organizations.filter((org) => org.id === share.id)[0].id === 12 ? 
+            "https://gieffektivt.no/smart-fordeling" :
+            `https://gieffektivt.no/organizations/#${organizations.filter((org) => org.id === share.id)[0].name.replace(/ /g,"_")}`
+            }>
             <label htmlFor={share.id.toString()}>
               {organizations.filter((org) => org.id === share.id)[0].name}
             </label>
