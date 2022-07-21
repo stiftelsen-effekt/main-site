@@ -129,7 +129,7 @@ export const DonorPane: React.FC = () => {
       <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
         <PaneContainer>
           <div>
-            <PaneTitle>Om deg</PaneTitle>
+            <PaneTitle><wbr /></PaneTitle>
 
             <div style={{ marginBottom: "20px" }}>
               <CheckBoxWrapper data-cy="anon-button-div">
