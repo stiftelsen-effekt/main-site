@@ -120,7 +120,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
                 <span className={styles.paragraphNumber}>{thousandize(parseInt(outputString))}</span>
                 <div className={styles.explanatory}>
                   <p>
-                    <span className={styles.innerParagraphNumber}>{outputString}47&nbsp;</span>
+                    <span className={styles.innerParagraphNumber}>{outputString}</span>
                     {currentIntervention.outputStringTemplate}
                   </p>
                   <span
