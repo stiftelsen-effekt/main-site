@@ -1,4 +1,4 @@
-describe("Navigation tests", () => {
+describe("Navigation", () => {
     before(() => {
         cy.visit(`/`)
     });
@@ -38,30 +38,11 @@ describe("Navigation tests", () => {
             cy.get("a").click({force: true})
         })
         cy.url().should('include', '/full-oversikt')
-    
+
         cy.get("[data-cy=FAQ-link]").within(() => {
             cy.get("a").click({force: true})
         })
         cy.url().should('include', '/support')
-    
-         // Widget should be closed
-        cy.get('[data-cy=widget-pane]')
-            .invoke('css', 'transform')
-            .should('equal', 'matrix(1, 0, 0, 1, 762, 0)')
-    
-        cy.get("[data-cy=send-donation-button]").click()
-
-         // Widget should be open
-        cy.get('[data-cy=widget-pane]')
-            .invoke('css', 'transform')
-            .should('equal', 'matrix(1, 0, 0, 1, 0, 0)')
-
-        cy.get("[data-cy=close-widget]").click()
-
-        // Widget should be closed
-        cy.get('[data-cy=widget-pane]')
-            .invoke('css', 'transform')
-            .should('equal', 'matrix(1, 0, 0, 1, 762, 0)')
 
         // CookieBanner should be visible
         cy.get('[data-cy=cookiebanner-container]')
@@ -74,5 +55,62 @@ describe("Navigation tests", () => {
         cy.get('[data-cy=cookiebanner-container]')
             .invoke('css', 'display')
             .should('equal', 'none')
+        
+        // NavBar should be visible
+        cy.get('[data-cy=header]')
+            .invoke('css', 'transform')
+            .should('equal', 'none')
+
+        cy.scrollTo(0, 500)
+        cy.wait(100)
+
+        // Navbar should be hidden
+        cy.get('[data-cy=header]')
+            .invoke('css', 'transform')
+            .should('equal', 'matrix(1, 0, 0, 1, 0, -89.3333)')
+
+        cy.scrollTo(0, 0)
+        cy.wait(100)
+
+        // NavBar should be visible
+        cy.get('[data-cy=header]')
+        .invoke('css', 'transform')
+        .should('equal', 'none')
     });
+
+
+    it("Tests buttons for opening and closing Widget", () => {
+        // Widget should be closed
+        cy.get('[data-cy=widget-pane]')
+            .invoke('css', 'transform')
+            .should('equal', 'matrix(1, 0, 0, 1, 762, 0)')
+
+        cy.get("[data-cy=send-donation-button]").click()
+
+        // Widget should be open
+        cy.get('[data-cy=widget-pane]')
+            .invoke('css', 'transform')
+            .should('equal', 'matrix(1, 0, 0, 1, 0, 0)')
+
+        cy.get("[data-cy=close-widget]").click()
+
+        // Widget should be closed
+        cy.get('[data-cy=widget-pane]')
+            .invoke('css', 'transform')
+            .should('equal', 'matrix(1, 0, 0, 1, 762, 0)')
+    
+        cy.get("[data-cy=gi-button]").click()
+
+        // Widget should be open
+        cy.get('[data-cy=widget-pane]')
+            .invoke('css', 'transform')
+            .should('equal', 'matrix(1, 0, 0, 1, 0, 0)')
+
+        cy.get("[data-cy=close-widget]").click()
+
+        // Widget should be closed
+        cy.get('[data-cy=widget-pane]')
+            .invoke('css', 'transform')
+            .should('equal', 'matrix(1, 0, 0, 1, 762, 0)')
+    })
 });
