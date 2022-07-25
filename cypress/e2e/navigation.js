@@ -131,6 +131,7 @@ describe("Navigation", () => {
     });
 
     it("Tests newsletter signup", () => {
+        cy.get("[data-cy=newsletter-input]").scrollIntoView()
         cy.get("[data-cy=newsletter-input]").type("test@gieffektivt.no")
         cy.get('[data-cy=newsletter-input]').should('have.value', 'test@gieffektivt.no')
         cy.get("[data-cy=newsletter-submit]").click()
