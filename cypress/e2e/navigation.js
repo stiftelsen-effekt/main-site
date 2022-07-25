@@ -15,6 +15,23 @@ describe("Navigation", () => {
         cy.get('[data-cy=cookiebanner-container]')
             .invoke('css', 'display')
             .should('equal', 'none')
+
+        cy.get("[data-cy=Maks-effekt-link]").within(() => {
+            cy.get("a").click({force: true})
+        })
+        cy.url().should('include', '/maks-effekt')
+
+        // CookieBanner should still be hidden after changing page
+        cy.get('[data-cy=cookiebanner-container]')
+            .invoke('css', 'display')
+            .should('equal', 'none')
+
+        cy.reload()
+
+        // CookieBanner should still be hidden after reloading
+        cy.get('[data-cy=cookiebanner-container]')
+            .invoke('css', 'display')
+            .should('equal', 'none')
     });
 
     it("Tests if NavBar and scrolling works correctly", () => {
@@ -92,7 +109,7 @@ describe("Navigation", () => {
             .should('equal', 'matrix(1, 0, 0, 1, 762, 0)')
     })
 
-    it("Tests navigation between pages", () => {
+    it("Tests links in the NavBar", () => {
         cy.get("[data-cy=articles-link]").within(() => {
             cy.get("a").click({ force: true })
         })
@@ -121,7 +138,7 @@ describe("Navigation", () => {
         cy.get("[data-cy=Smart-fordeling-link]").within(() => {
             cy.get("a").click({force: true})
         })
-        cy.url().should('include', '/maks-effekt')
+        cy.url().should('include', '/smart-fordeling')
 
         cy.get("[data-cy=Full-oversikt-link]").within(() => {
             cy.get("a").click({force: true})
@@ -134,9 +151,16 @@ describe("Navigation", () => {
         cy.url().should('include', '/support')
     });
 
+    it("Tests links in the Footer", () => {
+        cy.get("[data-cy=articles-link]").within(() => {
+            cy.get("a").click({ force: true })
+        })
+        cy.url().should('include', '/articles')
+    });
+
     it("Tests newsletter signup", () => {
         cy.get("[data-cy=newsletter-input]").type("test@gieffektivt.no")
-        cy.get('[data-cy=newsletter-input]').invoke('text').should('equal', "test@gieffektivt.no")
+        cy.get('[data-cy=newsletter-input]').should('have.value', 'test@gieffektivt.no')
         cy.get("[data-cy=newsletter-submit]").click()
     });
 });
