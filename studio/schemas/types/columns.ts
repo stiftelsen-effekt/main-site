@@ -1,4 +1,5 @@
 import { Columns } from "react-feather";
+import { ColumnsPreview } from "../../components/columnsPreview";
 
 export default {
   name: 'columns',
@@ -11,5 +12,11 @@ export default {
       type: 'array',
       of: [{ type: 'column' }]
     }
-  ]
+  ],
+  preview: {
+    select: {
+      columns: 'columns'
+    },
+    component: ColumnsPreview,
+  }
 }
