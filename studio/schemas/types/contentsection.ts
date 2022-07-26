@@ -1,4 +1,4 @@
-import { FileText, Phone } from "react-feather";
+import { FileText } from "react-feather";
 import { ContentSectionPreview } from "../../components/contentSectionPreview";
 
 export default {
@@ -44,9 +44,14 @@ export default {
         { type: 'videoembed' },
         { type: 'fullvideo' },
         { type: 'testimonials' },
-        { type: 'reference', to: [{ type: 'contactinfo' }], icon: Phone},
+        { type: 'reference', 
+          to: [{ type: 'contactinfo' }],
+        },
         { type: 'htmlembed' },
-      ]
+      ],
+      options: {
+        editModal: 'fullscreen'
+      }
     }
   ],
   preview: {

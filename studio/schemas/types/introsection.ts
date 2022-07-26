@@ -5,6 +5,12 @@ export default {
   type: 'object',
   title: 'Intro section',
   icon: AlignLeft,
+  preview: {
+    select: {
+      title: 'heading',
+      subtitle: 'paragraph'
+    }
+  },
   fields: [
     {
       name: 'heading',

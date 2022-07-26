@@ -8,7 +8,8 @@ export default {
   preview: {
     select: {
       title: 'title',
-      media: 'image'
+      media: 'image',
+      subtitle: 'paragraph'
     }
   },
   fields: [
