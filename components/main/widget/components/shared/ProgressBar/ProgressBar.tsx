@@ -35,7 +35,7 @@ export const ProgressBar: React.FC = () => {
         {points.map((p) => p)}
         <ProgressLine />
       </ProgressContainer>
-      <ActionButton onClick={() => setWidgetOpen(false)}>✕</ActionButton>
+      <ActionButton data-cy="close-widget" onClick={() => setWidgetOpen(false)}>✕</ActionButton>
     </HeaderContainer>
   );
 };

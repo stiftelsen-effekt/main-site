@@ -87,7 +87,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                   <div className={styles.submenu}>
                     <ul>
                       {el.items.map((subel) => (
-                        <li key={subel.title}>
+                        <li key={subel.title} data-cy={(`${subel.title}-link`).replace(/ /g,"-")}>
                           <Link href={`/${subel.slug}`} passHref>
                             <a onClick={(e) => { e.currentTarget.blur(); setExpanded(false); }}>{subel.title}</a>
                           </Link>
@@ -98,7 +98,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                 </AnimateHeight>
               </li>
             ) : (
-              <li key={el._key}>
+              <li key={el._key} data-cy={`${el.slug}-link`}>
                 <Link href={`/${el.slug}`} passHref>
                   <a onClick={() => setExpanded(false)}>{el.title}</a>
                 </Link>
@@ -116,6 +116,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
               </EffektButton>
             </Link>
             <EffektButton
+              cy="send-donation-button"
               extraMargin={true} 
               onClick={() => setWidgetOpen(true)}
             >

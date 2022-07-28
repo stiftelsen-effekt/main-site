@@ -63,5 +63,5 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   if (navbarShrinked) classes.push(styles.navbarShrinked);
   if (!navBarVisible) classes.push(styles.navbarHidden);
 
-  return <div className={classes.join(" ")}>{children}</div>;
+  return <div data-cy="header" className={classes.join(" ")}>{children}</div>;
 };

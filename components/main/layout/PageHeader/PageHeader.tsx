@@ -17,7 +17,7 @@ export const PageHeader: React.FC<{
         centered ? style.centered : null
       }`}
     >
-      <div>
+      <div data-cy="header-container">
         <h1>{title}</h1>
       </div>
       {hasmetacontent ? (
