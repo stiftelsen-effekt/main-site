@@ -1,4 +1,5 @@
 import { HelpCircle } from "react-feather";
+import { QuestionAndAnswerGroupPreview } from "../../components/questionAndAnswerGroupPreview";
 
 export default {
   name: 'questionandanswergroup',
@@ -17,5 +18,12 @@ export default {
       type: 'array',
       of: [{ type: 'questionandanswer' }]
     },
-  ]
+  ],
+  preview: { 
+    select: {
+      title: 'title',
+      answers: 'answers'
+    },
+    component: QuestionAndAnswerGroupPreview
+  }
 }
