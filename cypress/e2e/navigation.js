@@ -134,6 +134,7 @@ describe("Navigation", () => {
         cy.get("[data-cy=newsletter-input]").scrollIntoView()
         cy.get("[data-cy=newsletter-input]").type("test@gieffektivt.no")
         cy.get('[data-cy=newsletter-input]').should('have.value', 'test@gieffektivt.no')
-        cy.get("[data-cy=newsletter-submit]").click()
+        cy.get("[data-cy=newsletter-submit]").should('be.visible')
+        cy.get("[data-cy=newsletter-submit]").should('not.be.disabled')
     });
 });
