@@ -83,6 +83,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
             <label htmlFor="sum">Donasjon:</label>
             <div className={styles.inputWrapper}>
               <input
+                data-cy="impact-input"
                 type="tel"
                 value={sum}
                 onChange={(e) => {
@@ -95,6 +96,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
           <div className={styles.select}>
             {interventions.map((i: any) => (
               <button
+                data-cy={`${i.title}-button`}
                 key={i.title}
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.currentTarget.blur();
@@ -117,7 +119,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
             <>
               <span className="detailheader">{currentIntervention.organizationName}</span>
               <div className={styles.paragraphWrapper}>
-                <span className={styles.paragraphNumber}>{thousandize(parseInt(outputString))}</span>
+                <span data-cy="impact-output" className={styles.paragraphNumber}>{thousandize(parseInt(outputString))}</span>
                 <div className={styles.explanatory}>
                   <p>
                     <span className={styles.innerParagraphNumber}>{outputString}</span>

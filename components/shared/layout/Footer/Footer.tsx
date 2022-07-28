@@ -96,7 +96,7 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           </li>
           <li>&nbsp;</li>
           <li>
-            <a href="#top">Til toppen &uarr;</a>
+            <a data-cy="navigate-to-top" href="#top">Til toppen &uarr;</a>
           </li>
         </ul>
       </div>
@@ -117,8 +117,9 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           </label>
 
           <div className={styles.input__inlinebutton}>
-            <input type="email" name="EMAIL" placeholder="E-POST" id="mce-EMAIL" />
+            <input data-cy="newsletter-input" type="email" name="EMAIL" placeholder="E-POST" id="mce-EMAIL" />
             <button
+              data-cy="newsletter-submit"
               type="submit"
               name="subscribe"
               id="mc-embedded-subscribe"

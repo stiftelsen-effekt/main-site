@@ -33,6 +33,7 @@ export const WidgetPane: React.FC = () => {
 
   return (
     <div
+      data-cy="widget-pane"
       className={`${styles.widgetPane} ${widgetOpen ? styles.widgetPaneOpen : null}`}
       style={paneStyle}
     >

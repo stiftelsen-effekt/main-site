@@ -39,7 +39,7 @@ export const CookieBanner: React.FC = () => {
           </Script>
         </>
       )}
-      <div className={styles.container} style={{ display: cookiesAccepted ? "none" : "flex" }}>
+      <div data-cy="cookiebanner-container" className={styles.container} style={{ display: cookiesAccepted ? "none" : "flex" }}>
         <div className={styles.content}>
           <div>
             <span>Cookies</span>
@@ -49,6 +49,7 @@ export const CookieBanner: React.FC = () => {
             </p>
           </div>
           <button
+            data-cy="accept-cookies"
             onClick={() => {
               window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
               setCookiesAccepted(true);
