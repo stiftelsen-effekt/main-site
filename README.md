@@ -1,9 +1,14 @@
 <p align="center">
   <img 
     src="docs/logo.svg"
-    alt="Konduit. logo"
+    alt="Gi Effektivt logo"
     width="340" />
 </p>
+
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=main-site-qeprf4g0x-effective-altruism-norway)](https://gieffektivt.no)
+[![Main site](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/wfkg9n&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/wfkg9n/runs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 
 # Table of Contents
 
@@ -19,7 +24,7 @@
 
 ---
 
-This is the repository for the main Konduit site. [Next.js](https://nextjs.org) is the react based frontend framework. It's created using a combination of static site generation for the public facing pages with [sanity.io](https://sanity.io) as the cms, as well as client side logic and data fetching on the protected profile pages.
+This is the repository for the main Gi Effektivt site. [Next.js](https://nextjs.org) is the react based frontend framework. It's created using a combination of static site generation for the public facing pages with [sanity.io](https://sanity.io) as the cms, as well as client side logic and data fetching on the protected profile pages.
 
 Authentification is handled with [Auth0](https://auth0.com), and the API used for data fetching and mutation is found in the [backend repository](https://github.com/stiftelsen-effekt/effekt-backend).
 
@@ -39,7 +44,7 @@ To start the development server run
 
 Navigating to `localhost:3000/` in your browser should yield something like this
 
-<img src="docs/frontpage.png" width="420" alt="Konduit front page" />
+<img src="docs/frontpage.png" width="420" alt="Gi Effektivt front page" />
 
 The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, run
 
@@ -47,9 +52,9 @@ The content managment panel is not strictly needed to run the main site. However
 
 > To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
 
-This will make sanity studio available at `localhost:3000/studio/`. It should look something like this
+This will make sanity studio available at `localhost:3333/`. It should look something like this
 
-<img src="docs/sanity.png" width="420" alt="Konduit front page" />
+<img src="docs/sanity.png" width="420" alt="Gi Effektivt front page" />
 
 ## Project structure
 
@@ -100,8 +105,8 @@ const ExamplePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
   return (
     <>
       <Head>
-        <title>Konduit. - Example Page</title>
-        <meta name="description" content="Konduit example page" />
+        <title>Gi Effektivt. | Example Page</title>
+        <meta name="description" content="Gi Effektivt example page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -160,14 +165,14 @@ if (!user)
   // User is not logged in, handle in an apropriate way
 
   const { loading, error, data } = useApi<Donor>(
-    `/donors/${user["https://konduit.no/user-id"]}/`,
+    `/donors/${user["https://gieffektivt.no/user-id"]}/`,
     "GET",
     "read:profile",
     getAccessTokenSilently,
   );
 ```
 
-> ⚠️ The donor id used for the backend API is not the same as the id of the auth0 user. The donor id used in the backend api is available on the user object as the `https://konduit.no/user-id` property.
+> ⚠️ The donor id used for the backend API is not the same as the id of the auth0 user. The donor id used in the backend api is available on the user object as the `https://gieffektivt.no/user-id` property.
 
 The hook functions can be viewed as a finite state machine.
 
