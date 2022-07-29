@@ -149,6 +149,31 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/scorecard',
+        destination: 'https://docs.google.com/spreadsheets/d/1kcDz-2eU5gOgdbxdbTdX1Bpztm6t5LjLD1_KsN89-ds/',
+        permanent: false,
+      },
+      {
+        source: '/resultater',
+        destination: 'https://docs.google.com/spreadsheets/d/1kcDz-2eU5gOgdbxdbTdX1Bpztm6t5LjLD1_KsN89-ds/',
+        permanent: false,
+      },
+      {
+        source: '/aarsrapport',
+        destination: 'https://stiftelseneffekt.no/aarsrapport21',
+        permanent: false,
+      },
+      {
+        source: '/filantropi',
+        destination: '/kommer-snart',
+        permanent: false,
+      },
+      {
+        source: '/onepager',
+        destination: 'https://drive.google.com/file/d/18qWoVYVhFpDilNssxbXfBQY_snSCxFkV/view?usp=sharing',
+        permanent: true,
+      },
     ]
   },
 };
