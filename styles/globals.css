@@ -37,8 +37,11 @@ body {
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss10" on, "ss08" on;
   background: var(--secondary);
-  font-size: 20px;
-  line-height: 32px;
+  line-height: 3.2rem;
+}
+
+html {
+  font-size: 62.5%;
 }
 
 h1,
@@ -52,49 +55,57 @@ h5 {
 }
 
 h1 {
-  font-size: 120px;
-  line-height: 110%;
+  font-size: 12rem;
+  line-height: 12rem;
 }
 
 h2 {
-  font-size: 95px;
-  line-height: 105px;
+  font-size: 9.5rem;
+  line-height: 10.5rem;
 }
 
 h3 {
-  font-size: 70px;
-  line-height: 80px;
+  font-size: 7rem;
+  line-height: 8rem;
 }
 
 h4 {
-  font-size: 48px;
-  line-height: 62px;
+  font-size: 4.8rem;
+  line-height: 6.2rem;
 }
 
 h5 {
-  font-size: 36px;
-  line-height: 46px;
+  font-size: 3.6rem;
+  line-height: 4.6rem;
+}
+
+p {
+  font-size: 1.6rem;
 }
 
 p.inngress {
-  font-size: 30px;
-  line-height: 40px;
+  font-size: 3rem;
+  line-height: 4rem;
+}
+
+span {
+  font-size: 1.6rem;
 }
 
 span.detailheader {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 1.4rem;
+  line-height: 2rem;
   text-transform: uppercase;
 }
 
 span.caption {
-  font-size: 16px;
-  line-height: 26px;
+  font-size: 1.6rem;
+  line-height: 2.6rem;
 }
 
 .bodyheader {
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 2rem;
+  line-height: 3rem;
 }
 
 a {
@@ -122,9 +133,16 @@ button {
   background: transparent;
   border: none;
   color: inherit;
-  font-size: inherit;
   padding: 0;
   font-family: "ESKlarheitGrotesk";
+}
+
+th {
+  font-size: 1.6rem;
+}
+
+td {
+  font-size: 1.6rem;
 }
 
 * {
@@ -179,98 +197,108 @@ button {
 @media only screen and (max-width: 1180px) {
   html,
   body {
-    font-size: 16px;
-    line-height: 26px;
+    line-height: 2.6rem;
   }
 
   h1 {
-    font-size: 70px;
-    line-height: 80px;
+    font-size: 7rem;
+    line-height: 8rem;
   }
 
   h2 {
-    font-size: 48px;
-    line-height: 58px;
+    font-size: 4.8rem;
+    line-height: 5.8rem;
   }
 
   h3 {
-    font-size: 40px;
-    line-height: 50px;
+    font-size: 4rem;
+    line-height: 5rem;
   }
 
   h4 {
-    font-size: 30px;
-    line-height: 34px;
+    font-size: 3rem;
+    line-height: 3.4rem;
   }
 
   h5 {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 2.4rem;
+    line-height: 3.2rem;
+  }
+
+  p {
+    font-size: 1.6rem;
   }
 
   p.inngress {
-    font-size: 22px;
-    line-height: 32px;
+    font-size: 2.2rem;
+    line-height: 3.2rem;
+  }
+
+  span {
+    font-size: 1.8rem;
   }
 
   span.detailheader {
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
     text-transform: uppercase;
   }
 
   span.caption {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 1.4rem;
+    line-height: 2.2rem;
+  }
+
+  button {
+    font-size: 1.6rem;
   }
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   html,
   body {
-    font-size: 16px;
-    line-height: 165%;
+    line-height: 2.6rem;
   }
 
   h1 {
-    font-size: 90px;
+    font-size: 9rem;
     line-height: 110%;
   }
 
   h2 {
-    font-size: 60px;
+    font-size: 6rem;
     line-height: 120%;
   }
 
   h3 {
-    font-size: 48px;
+    font-size: 4.8rem;
     line-height: 125%;
   }
 
   h4 {
-    font-size: 36px;
+    font-size: 3.6rem;
     line-height: 135%;
   }
 
   h5 {
-    font-size: 25px;
+    font-size: 2.5rem;
     line-height: 140%;
   }
 
   p.inngress {
-    font-size: 22px;
+    font-size: 2.2rem;
     line-height: 150%;
   }
 
   span.detailheader {
-    font-size: 12px;
+    font-size: 1.2rem;
     line-height: 110%;
     text-transform: uppercase;
   }
 
   span.caption {
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 1.2rem;
+    line-height: 2rem;
   }
 }
 

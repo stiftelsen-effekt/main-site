@@ -31,7 +31,7 @@ const TooltipInnerIcon = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 2rem;
 `;
 
 interface ToolIconProps {

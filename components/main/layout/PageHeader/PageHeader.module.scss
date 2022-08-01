@@ -24,6 +24,10 @@
   text-align: center;
 }
 
+.pageheader h1 {
+  font-size: 7.2rem;
+}
+
 .pageheader div {
   display: flex;
   flex-direction: column;
@@ -59,8 +63,8 @@
 
   .pageheader h1 {
     margin-top: 180px;
-    font-size: 40px;
-    line-height: 50px;
+    line-height: 5rem;
+    font-size: 4rem;
   }
 
   .pageheader,
@@ -102,7 +106,6 @@
   }
 
   .pageheader h1 {
-    font-size: 72px;
     line-height: 110%;
   }
 }

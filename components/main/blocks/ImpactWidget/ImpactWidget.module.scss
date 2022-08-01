@@ -24,7 +24,7 @@
 }
 
 .input {
-  font-size: 25px;
+  font-size: 2.5rem;
 }
 
 .input label {
@@ -32,7 +32,7 @@
 }
 
 .input input {
-  font-size: 25px;
+  font-size: inherit;
   border: none;
   border-bottom: 1px solid var(--primary);
   background: var(--secondary);
@@ -45,7 +45,7 @@
   padding-top: 0;
   border-radius: 0;
   font-family: "ESKlarheitGrotesk";
-  line-height: 33px;
+  line-height: 3.3rem;
 }
 
 .inputWrapper {
@@ -58,8 +58,8 @@
   position: absolute;
   right: 6px;
   bottom: 0px;
-  font-size: 25px;
-  line-height: 32px;
+  font-size: inherit;
+  line-height: 3.2rem;
   touch-action: none;
   height: 31px;
   bottom: 1px;
@@ -75,7 +75,7 @@
 
 .select button {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.6rem;
   padding: 10px 20px;
   border: 1px solid var(--primary);
   border-radius: 10px;
@@ -130,8 +130,8 @@
 
 .output .paragraphWrapper .paragraphNumber {
   font-family: "ESKlarheitKurrent";
-  font-size: 128px;
-  line-height: 110px;
+  font-size: 12.8rem;
+  line-height: 11rem;
   margin-right: 20px;
 }
 
@@ -149,7 +149,7 @@
 
 .output p {
   text-align: left;
-  font-size: 18px;
+  font-size: 1.8rem;
   margin-top: 0px;
   margin-bottom: 0;
 }
@@ -157,7 +157,7 @@
 .output .paragraphWrapper div > span {
   cursor: pointer;
   user-select: none;
-  font-size: 14px;
+  font-size: 1.4rem;
   display: inline-block;
 }
 
@@ -174,7 +174,7 @@
 
 .output .context {
   padding-top: 30px;
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -191,7 +191,7 @@
   }
 
   .select button {
-    font-size: 14px;
+    font-size: 1.4rem;
     padding: 10px 18px;
   }
 

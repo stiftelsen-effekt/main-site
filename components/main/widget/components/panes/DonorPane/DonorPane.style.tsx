@@ -7,7 +7,7 @@ export const DonorForm = styled.form`
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  font-size: 18px;
+  font-size: 1.8rem;
 
   input[type="text"],
   input[type="email"] {
@@ -15,7 +15,7 @@ export const DonorForm = styled.form`
     color: var(--primary);
     border: none;
     border-bottom: 1px solid var(--primary);
-    font-size: 24px;
+    font-size: 2.4rem;
     padding: 10px 0px;
     width: 100%;
     outline: none;
@@ -34,7 +34,7 @@ export const DonorForm = styled.form`
   }
 
   @media only screen and (max-width: 768px) {
-    font-size: 22px;
+    font-size: 2.2rem;
   }
 `;
 

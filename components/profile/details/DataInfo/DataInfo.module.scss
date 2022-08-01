@@ -13,8 +13,17 @@
   column-gap: 100px;
 }
 
+.columns section strong {
+  font-size: 1.6rem;
+}
+
+.columns section a {
+  font-size: 1.6rem;
+}
+
 .columns p {
-  line-height: 200%;
+  font-size: 1.6rem;
+  line-height: 3.2rem;
 }
 
 @media only screen and (max-width: 1180px) { 

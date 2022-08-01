@@ -17,5 +17,5 @@ export const TextWrapper = styled.div`
   padding-bottom: 16px;
   display: flex;
   justify-content: space-between;
-  font-size: 28px;
+  font-size: 2.8rem;
 `;

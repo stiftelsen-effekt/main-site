@@ -25,7 +25,7 @@ export interface TextInputWrapperProps {
 export const TextInputWrapper = styled.div`
   display: block;
   margin-bottom: 5px;
-  font-size: 15px;
+  font-size: 1.5rem;
   border: 1px solid ${gray18};
   border-radius: 5px;
   box-sizing: border-box;
@@ -84,7 +84,6 @@ export const TextInputWrapper = styled.div`
 
 export const TextInputField = styled.input`
   z-index: 1;
-  font-size: inherit;
   padding: 20px;
   ${(props: TextInputProps) => {
     if (props.denomination) {
@@ -118,7 +117,7 @@ export const ComputerInputLabel = styled.p`
   font-weight: bold;
 
   @media only screen and (max-width: 385px) {
-    font-size: 13px;
+    font-size: 1.3rem;
     padding-top: 10px;
   }
 
@@ -133,7 +132,7 @@ export const MobileInputLabel = styled.p`
   padding-left: 15px;
   font-weight: bold;
   padding-top: 10px;
-  font-size: 14px;
+  font-size: 1.4rem;
   display: none;
 
   @media only screen and (max-width: 355px) {
@@ -142,7 +141,7 @@ export const MobileInputLabel = styled.p`
 
   @media only screen and (max-width: 355px) {
     display: inline-block;
-    font-size: 11px;
+    font-size: 1.1rem;
     padding-top: 12px;
   }
 `;

@@ -14,13 +14,13 @@ export const ScaledDatePicker = styled(DatePicker)`
   div {
     width: 100%;
     height: 100%;
-    font-size: 20px;
+    font-size: 2rem;
   }
 
   div:last-child {
     width: auto;
     height: 100%;
-    font-size: 18px;
+    font-size: 1.8rem;
     border-radius: 500px;
 
     div {

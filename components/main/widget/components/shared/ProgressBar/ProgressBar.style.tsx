@@ -46,8 +46,8 @@ export const ProgressLine = styled.div`
 `;
 
 export const ActionButton = styled.button`
-  font-size: 40px;
-  line-height: 40px;
+  font-size: 4rem;
+  line-height: 4rem;
   padding: 8px;
   background: none;
   color: var(--primary);
@@ -77,7 +77,7 @@ export const TooltipWrapper = styled.div`
   color: var(--secondary);
   padding: 40px;
   z-index: 100;
-  font-size: 18px;
+  font-size: 1.8rem;
   border-radius: 10px;
 `;
 

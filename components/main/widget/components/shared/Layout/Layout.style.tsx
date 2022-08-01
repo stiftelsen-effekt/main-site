@@ -14,7 +14,7 @@ export const InfoBox = styled(RoundedBorder)`
   border-color: ${blue20};
   padding: 15px;
   white-space: normal;
-  font-size: 13px;
+  font-size: 1.3rem;
   margin-bottom: 12px;
-  line-height: 150%;
+  line-height: 2rem;
 `;

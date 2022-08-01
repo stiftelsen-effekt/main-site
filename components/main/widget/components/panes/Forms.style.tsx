@@ -19,7 +19,6 @@ export const TextField = styled.input`
   padding: 20px;
   display: block;
   margin: 5px;
-  font-size: 15px;
   border: 1px solid ${gray18};
   border-radius: 5px;
   box-sizing: border-box;
@@ -62,7 +61,6 @@ export const RadioButton = styled.input`
 export const InputLabel = styled.p`
   position: absolute;
   align-self: start;
-  font-size: 15px;
   margin-left: 5px;
   display: inline-block;
   pointer-events: none;

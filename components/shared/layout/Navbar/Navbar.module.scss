@@ -11,6 +11,7 @@
   justify-content: space-between;
   transition: padding 200ms ease-in-out;
   padding: 40px 0;
+  font-size: 1.5rem;
 }
 
 .navbar ul {
@@ -23,7 +24,6 @@
   display: inline-block;
   text-decoration: none;
   padding: 10px 25px;
-  font-size: 18px;
   position: relative;
 }
 
@@ -61,7 +61,6 @@
   padding-bottom: 0px;
   padding-left: 25px;
   padding-right: 25px;
-  font-size: 16px;
   display: block;
 }
 
@@ -72,11 +71,11 @@
   color: var(--primary);
   font-family: "ESKlarheitGrotesk";
   border: 1px solid var(--primary);
-  font-size: 1em;
   cursor: pointer;
   border-radius: 20px;
   margin-left: 20px;
   margin-right: 30px;
+  font-size: 1.5rem;
 }
 
 .navbar ul li.btnlogin:hover {
@@ -182,9 +181,9 @@
 
   .navbar ul li {
     display: block;
-    font-size: 20px;
     padding: 0;
     margin-top: 14px;
+    font-size: 2rem;
   }
 
   .navbar ul li a { 
@@ -230,7 +229,6 @@
     color: var(--primary);
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 28px;
     display: block;
   }
 
@@ -240,7 +238,6 @@
   }
 
   .close {
-    font-size: 46px;
     font-weight: bold;
   }
 
@@ -268,7 +265,6 @@
     color: var(--primary);
     padding: 8px 18px;
     border-radius: 30px;
-    font-size: 14px;
     margin-left: 0;
     margin-right: 20px;
   }
@@ -280,13 +276,11 @@
   }
 
   .navbar ul li {
-    font-size: 15px;
     padding-left: 18px;
     padding-right: 18px;
   }
 
   .navbar ul li .submenu ul li {
-    font-size: 15px;
     padding-left: 18px;
     padding-right: 18px;
     margin-top: 6px;

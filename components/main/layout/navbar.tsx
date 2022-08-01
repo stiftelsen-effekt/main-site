@@ -64,9 +64,9 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
               </a>
             </Link>
           </div>
-          <button className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
+          <div className={styles.expandBtn} onClick={() => setExpanded(!expandMenu)}>
             {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
-          </button>
+          </div>
         </div>
         <ul>
           {elements.map((el) =>
@@ -77,12 +77,12 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                   expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
                 }
               >
-                <button
+                <div
                   onClick={() => toggleExpanded(el._key)}
                   tabIndex={-1}
                 >
                   {el.title}
-                </button>
+                </div>
                 <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
                   <div className={styles.submenu}>
                     <ul>

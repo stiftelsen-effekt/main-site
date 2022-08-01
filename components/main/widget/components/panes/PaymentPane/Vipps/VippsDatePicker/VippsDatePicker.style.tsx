@@ -42,7 +42,7 @@ export const DateText = styled.p`
   display: inline-block;
   vertical-align: middle;
   padding-bottom: 12px;
-  font-size: 20px;
+  font-size: 2rem;
 `;
 
 export const DateTextWrapper = styled.div`

@@ -10,7 +10,7 @@ const RedFont = styled.p`
   margin-left: 7px;
 
   @media only screen and (max-width: 350px) {
-    font-size: 14px;
+    font-size: 1.4rem;
   }
 `;
 

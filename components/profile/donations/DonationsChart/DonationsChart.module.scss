@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 11px;
   align-items: flex-end;
   border-right: 1px solid var(--secondary);
   height: 100%;
@@ -21,7 +20,7 @@
 .graph div span {
   opacity: 0;
   margin-right: 6px;
-  line-height: 14px;
+  line-height: 1.4rem;
   transition: opacity 180ms;
   user-select: none;
 }

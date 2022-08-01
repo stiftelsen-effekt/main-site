@@ -28,13 +28,13 @@ export const ShareInputContainer = styled.div`
 
   label {
     white-space: normal;
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 
   input {
     width: 60px;
     height: 36px;
-    font-size: 22px;
+    font-size: 2.2rem;
     background: none;
     border: none;
     border-bottom: 1px solid var(--primary);
@@ -48,9 +48,9 @@ export const ShareInputContainer = styled.div`
     content: "%";
     position: absolute;
     right: 0;
-    line-height: 1;
-    font-size: 22px;
-    line-height: 36px;
+    line-height: 1rem;
+    font-size: 2.2rem;
+    line-height: 3.6rem;
     pointer-events: none;
   }
 `;

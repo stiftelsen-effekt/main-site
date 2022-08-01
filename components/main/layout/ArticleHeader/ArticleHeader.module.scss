@@ -26,7 +26,6 @@
 }
 
 .articleheader div span {
-  font-size: 14px;
   text-transform: uppercase;
   margin-bottom: 35px;
 }
@@ -46,8 +45,7 @@
   }
 
   .articleheader h1 {
-    font-size: 72px;
-    line-height: 110%;
+    line-height: 4.6rem;
     margin-bottom: 50px;
   }
 }
@@ -71,8 +69,7 @@
     margin-bottom: 20px;
     text-align: left;
     word-break: break-word;
-    font-size: 34px;
-    line-height: 46px;
+    line-height: 4.6rem;
   }
 
   .articleheader {
@@ -91,7 +88,6 @@
 
   .articleheader div span {
     margin-top: 0;
-    font-size: 12px;
     margin-bottom: 16px;
     text-align: left;
   }

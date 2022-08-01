@@ -24,7 +24,7 @@ export const CheckBoxWrapper = styled.span`
 `;
 
 export const CheckMark = styled.span`
-  font-size: 14px;
+  font-size: 1.4rem;
   color: var(--primary);
   display: none;
 `;
@@ -45,7 +45,7 @@ export const CheckBoxLabelWrapper = styled.div``;
 
 export const CheckBoxLabel = styled.p`
   display: inline-block;
-  font-size: 18px;
+  font-size: 1.8rem;
   margin: 0;
   margin-left: 10px;
 
@@ -54,8 +54,8 @@ export const CheckBoxLabel = styled.p`
   }
 
   @media only screen and (max-width: 768px) {
-    font-size: 22px;
-    line-height: 30px;
+    font-size: 2.2rem;
+    line-height: 3rem;
   }
 `;
 

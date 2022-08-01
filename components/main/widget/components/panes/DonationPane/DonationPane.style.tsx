@@ -6,7 +6,7 @@ export const SumWrapper = styled.div`
   margin-bottom: 30px;
 
   label {
-    font-size: 18px;
+    font-size: 1.8rem;
     margin-bottom: 6px;
   }
 
@@ -21,7 +21,7 @@ export const SumWrapper = styled.div`
       border-radius: 10px;
       border: 1px solid var(--primary);
       color: var(--primary);
-      font-size: 28px;
+      font-size: 2.8rem;
       max-width: 260px;
     }
 
@@ -35,7 +35,7 @@ export const SumWrapper = styled.div`
       align-items: center;
       justify-content: center;
       height: 100%;
-      font-size: 28px;
+      font-size: 2.8rem;
     }
   }
 `;
@@ -55,12 +55,12 @@ export const SumButtonsWrapper = styled.div`
     button {
       margin: 0;
       border-radius: 10px;
-      font-size: 28px;
+      font-size: 2.8rem;
     }
 
     i {
       margin-top: 2px;
-      font-size: 14px;
+      font-size: 1.4rem;
     }
   }
 `;
@@ -79,12 +79,12 @@ export const ActionBar = styled.div`
 export const InfoParagraph = styled.p`
   margin-top: 30px;
   white-space: normal;
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 1.8rem;
+  line-height: 3rem;
 
   @media only screen and (max-width: 768px) {
-    font-size: 20px;
-    line-height: 30px;
+    font-size: 2rem;
+    line-height: 3rem;
   }
 `;
 

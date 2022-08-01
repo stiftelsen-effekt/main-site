@@ -16,7 +16,7 @@ export const AvtaleGiroButton = styled.button`
   color: white;
   font-family: "Roboto";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.6rem;
   cursor: pointer;
 
   &:hover {

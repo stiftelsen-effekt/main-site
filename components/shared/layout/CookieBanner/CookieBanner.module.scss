@@ -3,7 +3,7 @@
   color: #fafafa;
   text-align: center;
   padding: 6px 0;
-  font-size: 12px;
+  font-size: 1.2rem;
 }
 
 .content {
@@ -29,7 +29,16 @@
 
 .content button {
   text-decoration: underline;
+  font-size: inherit;
   cursor: pointer;
+}
+
+.content p {
+  font-size: inherit;
+}
+
+.content span {
+  font-size: inherit;
 }
 
 @media only screen and (max-width: 1180px) {

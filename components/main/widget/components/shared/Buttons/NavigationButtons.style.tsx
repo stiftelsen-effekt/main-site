@@ -3,13 +3,13 @@ import { EffektButton } from "../../../../../shared/components/EffektButton/Effe
 import { Spinner } from "../../../../../shared/components/Spinner/Spinner";
 
 export const StyledNextButton = styled(EffektButton)`
-  font-size: 20px;
+  font-size: 2rem;
   padding: 14px 40px;
   border-radius: 45px;
   min-width: 140px;
 
   @media only screen and (max-width: 768px) {
-    font-size: 25px;
+    font-size: 2.5rem;
     padding: 18px 68px;
     border-radius: 60px;
     min-width: 210px;
@@ -17,13 +17,13 @@ export const StyledNextButton = styled(EffektButton)`
 `;
 
 export const StyledSubmitButton = styled(EffektButton)`
-  font-size: 20px;
+  font-size: 2rem;
   padding: 14px 40px;
   border-radius: 45px;
   min-width: 140px;
 
   @media only screen and (max-width: 768px) {
-    font-size: 25px;
+    font-size: 2.5rem;
     padding: 18px 68px;
     border-radius: 60px;
     min-width: 210px;

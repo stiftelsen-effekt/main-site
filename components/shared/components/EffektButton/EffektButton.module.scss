@@ -2,7 +2,7 @@
   border: none;
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
-  font-size: 20x;
+  font-size: 1.8rem;
   padding: 8px 18px;
   cursor: pointer;
   box-sizing: border-box;
@@ -100,12 +100,12 @@
 
 @media only screen and (max-width: 1180px) {
   .button {
-    font-size: 14px;
+    font-size: 1.4rem;
   }
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .button {
-    font-size: 14px;
+    font-size: 1.4rem;
   }
 }

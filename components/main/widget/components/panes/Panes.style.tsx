@@ -20,16 +20,15 @@ export const PaneContainer = styled.div`
 
 export const PaneTitle = styled.h2`
   font-family: "ESKlarheitKurrent";
-  font-size: 27px;
   margin-top: 0px;
   margin-top: 20px;
   margin-bottom: 20px;
   line-height: normal;
+  font-size: 2.7rem;
 `;
 
 export const BoldTitle = styled.p`
   margin: 0;
-  font-size: 20px;
   font-weight: bold;
   margin-left: 5px;
 `;
@@ -37,7 +36,6 @@ export const BoldTitle = styled.p`
 export const UnderTitle = styled.p`
   margin: 15px;
   margin-left: 5px;
-  font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--primary);
 `;
@@ -58,7 +56,6 @@ export const VerticalLine = styled.div`
 `;
 
 export const ErrorMessage = styled.div`
-  font-size: 20px;
   padding-left: 2px;
 `;
 

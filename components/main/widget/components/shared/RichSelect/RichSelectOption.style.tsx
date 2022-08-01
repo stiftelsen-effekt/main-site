@@ -6,14 +6,14 @@ export const Wrapper = styled.div`
 
   h2 {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 1.4rem;
     margin: 0;
     margin-bottom: 4px;
     white-space: normal;
   }
 
   h3 {
-    font-size: 11px;
+    font-size: 1.1rem;
     color: ${gray20};
     font-weight: 300;
     margin: 0;
