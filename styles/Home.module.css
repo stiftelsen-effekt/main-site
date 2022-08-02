@@ -14,7 +14,6 @@
   font-size: 12rem;
   max-width: 1000px;
   margin-bottom: 22px;
-  line-height: 110%;
   font-weight: 400;
 }
 
@@ -51,7 +50,6 @@
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .header h1 {
     font-size: 8rem;
-    line-height: 110%;
     max-width: 700px;
     margin-bottom: 0;
     margin-top: 80px;

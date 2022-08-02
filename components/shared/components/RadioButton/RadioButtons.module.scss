@@ -35,12 +35,13 @@
   display: inline-block;
   vertical-align: top;
   margin-right: 16px;
-  line-height: 100%;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
 }
 
 @media only screen and (max-width: 768px) {
   .radiobuttonlabel {
+    font-size: 2.2rem;
   }
 }
 

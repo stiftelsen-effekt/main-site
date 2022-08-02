@@ -25,13 +25,14 @@
   margin-bottom: 20px;
   padding-left: 12px;
   text-align: left;
+  font-size: 1.4rem;
 }
 
 .label div {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 135%;
+  line-height: 1.8rem;
 }
 
 .label div:last-child {
