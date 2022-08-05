@@ -18,6 +18,7 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
+import { usePreviewSubscription } from "../lib/sanity";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
   () => import("../components/main/blocks/ImpactWidget/ImpactWidget").then((mod) => mod.ImpactWidget),
@@ -26,17 +27,25 @@ const ImpactWidget = dynamic<ImpactWidgetProps>(
   },
 );
 
-const Home: LayoutPage<{ data: any }> = ({ data }) => {
-  const salespitch = data.result.frontpage[0].salespitch;
+const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) => {
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    initialData: data?.result,
+    enabled: preview,
+  });
+
+  const frontpage = filterPageToSingleItem(previewData, preview);
+
+  const salespitch = frontpage.salespitch;
   const settings = data.result.settings[0];
-  const interventionWidget = data.result.frontpage[0].intervention_widget;
-  const { seoTitle, seoDescription, seoImage } = data.result.frontpage[0];
+  const interventionWidget = frontpage.intervention_widget;
+  const { seoTitle, seoDescription, seoImage } = frontpage;
 
   return (
     <>
       <SEO
-        title={seoTitle || data.result.frontpage[0].main_heading}
-        description={seoDescription || data.result.frontpage[0].sub_heading}
+        title={seoTitle || frontpage.main_heading}
+        description={seoDescription || frontpage.sub_heading}
         imageAsset={seoImage ? seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/`}
       />
@@ -48,9 +57,9 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <div className={styles.hero}>
         <div className={styles.header}>
-          <h1>{data.result.frontpage[0].main_heading}</h1>
+          <h1>{frontpage.main_heading}</h1>
         </div>
-        <p className={styles.subheading + " inngress"}>{data.result.frontpage[0].sub_heading}</p>
+        <p className={styles.subheading + " inngress"}>{frontpage.sub_heading}</p>
       </div>
 
       <div className={styles.salespitchWrapper}>
@@ -65,9 +74,9 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <SectionContainer nodivider inverted>
         <IntroSection
-          heading={data.result.frontpage[0].introsection.heading}
-          paragraph={data.result.frontpage[0].introsection.paragraph}
-          slug={data.result.frontpage[0].introsection.slug}
+          heading={frontpage.introsection.heading}
+          paragraph={frontpage.introsection.paragraph}
+          slug={frontpage.introsection.slug}
         ></IntroSection>
       </SectionContainer>
 
@@ -80,14 +89,14 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       {interventionWidget.interventions && (
         <div style={{ marginTop: "45px" }}>
           <SectionContainer>
-            <ImpactWidget data={data} />
+            <ImpactWidget frontpage={frontpage} />
           </SectionContainer>
         </div>
       )}
 
       <SectionContainer heading="">
         <div className={styles.teasers}>
-          {data.result.frontpage[0].teasers.map(
+          {frontpage.teasers.map(
             ({ _key, title, paragraph, disclaimer, link, image }: Teaser & { _key: string }) => (
               <Teaser
                 key={_key}
@@ -102,12 +111,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </div>
       </SectionContainer>
       <SectionContainer heading="Slik fungerer det" padded>
-        <Stepwize steps={data.result.frontpage[0].key_points.map((p: any) => p)} />
+        <Stepwize steps={frontpage.key_points.map((p: any) => p)} />
       </SectionContainer>
 
-      {data.result.frontpage[0].testimonials && (
+      {frontpage.testimonials && (
         <SectionContainer heading="Hva folk sier om oss">
-          <Testimonial testimonies={data.result.frontpage[0].testimonials} />
+          <Testimonial testimonies={frontpage.testimonials} />
         </SectionContainer>
       )}
 
@@ -119,7 +128,8 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 };
 
 export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchFrontpage);
+  let result = await getClient(preview).fetch(fetchFrontpage);
+  result = { ...result, frontpage: filterPageToSingleItem(result.frontpage, preview) };
 
   return {
     props: {
@@ -174,6 +184,22 @@ const fetchFrontpage = groq`
   },
 }
 `;
+
+const filterPageToSingleItem = (data: any, preview: boolean) => {
+  if (!Array.isArray(data.frontpage)) {
+    return data;
+  }
+
+  if (data.frontpage.length === 1) {
+    return data.frontpage[0];
+  }
+
+  if (preview) {
+    return data.frontpage.find((item: any) => item._id.startsWith("drafts.")) || data.frontpage[0];
+  }
+
+  return data.frontpage[0];
+};
 
 Home.layout = Layout;
 export default Home;
