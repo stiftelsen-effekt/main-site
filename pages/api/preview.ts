@@ -29,6 +29,8 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
       res.writeHead(307, {Location: `/organizations` })
     case 'support':
       res.writeHead(307, {Location: `/support` })
+    case 'articles':
+      res.writeHead(307, {Location: `/articles` })
     case 'generic_page':
       res.writeHead(307, {Location: `/${req?.query?.slug}` ?? `/`})
       break

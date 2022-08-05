@@ -90,15 +90,7 @@ export default () =>
             S.listItem()
               .title('Profile')
               .icon(User)
-              .child(S.document().schemaType('profile').documentId('profile').views([
-                S.view.form(),
-                S.view
-                .component(Iframe)
-                .options({
-                  url: (doc: any) => resolveProductionUrl(doc),
-                })
-                .title('Preview'),
-              ])),
+              .child(S.document().schemaType('profile').documentId('profile')),
             S.divider(),
           ])
         ),
