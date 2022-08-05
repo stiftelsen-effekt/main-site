@@ -187,7 +187,7 @@ const fetchFrontpage = groq`
 
 const filterPageToSingleItem = (data: any, preview: boolean) => {
   if (!Array.isArray(data.frontpage)) {
-    return data;
+    return data.frontpage;
   }
 
   if (data.frontpage.length === 1) {

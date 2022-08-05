@@ -23,6 +23,8 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
   switch (req.query.type) {
     case 'frontpage':
       res.writeHead(307, {Location: `/` })
+    case 'about_us':
+      res.writeHead(307, {Location: `/about` })
     case 'generic_page':
       res.writeHead(307, {Location: `/${req?.query?.slug}` ?? `/`})
       break

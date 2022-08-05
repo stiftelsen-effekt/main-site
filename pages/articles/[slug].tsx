@@ -136,7 +136,7 @@ const fetchArticle = groq`
 
 const filterPageToSingleItem = (data: any, preview: boolean) => {
   if (!Array.isArray(data.page)) {
-    return data;
+    return data.page;
   }
 
   if (data.page.length === 1) {
