@@ -5,7 +5,7 @@ Cypress.Commands.add("login", (overrides = {}) => {
   cy.clearLocalStorage();
   Cypress.log({
     name: "loginAuth0",
-  });
+  }); 
 
   const client_id = Cypress.env("AUTH_CLIENT_ID");
   const client_secret = Cypress.env("AUTH_CLIENT_SECRET");
