@@ -5,7 +5,7 @@ export const save = async (data: Donor, user: User, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(`${api}/donors/${user["https://konduit.no/user-id"]}/`, {
+    const response = await fetch(`${api}/donors/${user["https://gieffektivt.no/user-id"]}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
