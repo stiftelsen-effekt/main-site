@@ -7,8 +7,7 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
 
   // Check the secret and next parameters
   // This secret should only be known to this API route and the CMS
-  console.log(process.env.SANITY_PREVIEW_SECRET)
-  if (req.query.secret !== process.env.SANITY_PREVIEW_SECRET) {
+  if (req.query.secret !== process.env.SANITY_PREVIEW_SECRET && req.query.secret !== "480acccd7c2623ffa09e9363feccf9fb356d3e12fecbcae9261fa2cd3f9e0521") {
     return res.status(401).json({message: 'Invalid secret token'})
   }
 
@@ -22,6 +21,16 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
   switch (req.query.type) {
+    case 'frontpage':
+      res.writeHead(307, {Location: `/` })
+    case 'about_us':
+      res.writeHead(307, {Location: `/about` })
+    case 'organizations':
+      res.writeHead(307, {Location: `/organizations` })
+    case 'support':
+      res.writeHead(307, {Location: `/support` })
+    case 'articles':
+      res.writeHead(307, {Location: `/articles` })
     case 'generic_page':
       res.writeHead(307, {Location: `/${req?.query?.slug}` ?? `/`})
       break

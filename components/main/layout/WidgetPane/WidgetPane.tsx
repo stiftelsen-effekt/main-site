@@ -3,6 +3,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { WidgetContext } from "../layout";
 import styles from "./WidgetPane.module.scss";
 
+const Widget = dynamic<{}>(
+  () => import("../../widget/components/Widget").then((mod) => mod.Widget),
+  {
+    ssr: false,
+  },
+);
+
 export const WidgetPane: React.FC = () => {
   const followThreshold = 20;
   const closeThreshold = 140;
@@ -10,12 +17,6 @@ export const WidgetPane: React.FC = () => {
   const [currentY, setCurrentY] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
-  const Widget = dynamic<{}>(
-    () => import("../../widget/components/Widget").then((mod) => mod.Widget),
-    {
-      ssr: false,
-    },
-  );
 
   // On initial load, have no animation
   // Then reset on render

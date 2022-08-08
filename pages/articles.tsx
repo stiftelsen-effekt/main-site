@@ -11,10 +11,19 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
+import { usePreviewSubscription } from "../lib/sanity";
 
-const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
+const ArticlesPage: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) => {
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    initialData: data?.result,
+    enabled: preview,
+  });
+
+  const page = filterPageToSingleItem(previewData, preview);
+
   const settings = data.result.settings[0];
-  const header = data.result.page[0].header;
+  const header = page.header;
   const articles = data.result.articles;
 
   return (
@@ -25,11 +34,6 @@ const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/articles`}
       />
-      {/**
-     *       <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-     */}
 
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
@@ -58,7 +62,8 @@ const ArticlesPage: LayoutPage<{ data: any }> = ({ data }) => {
 };
 
 export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fethcArticles);
+  let result = await getClient(preview).fetch(fethcArticles);
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
@@ -118,6 +123,22 @@ const fethcArticles = groq`
   }
 }
 `;
+
+const filterPageToSingleItem = (data: any, preview: boolean) => {
+  if (!Array.isArray(data.page)) {
+    return data.page;
+  }
+
+  if (data.page.length === 1) {
+    return data.page[0];
+  }
+
+  if (preview) {
+    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
+  }
+
+  return data.page[0];
+};
 
 ArticlesPage.layout = Layout;
 export default ArticlesPage;

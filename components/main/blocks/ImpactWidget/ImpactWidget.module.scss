@@ -214,6 +214,10 @@
     display: inline;
   }
 
+  .output .paragraphWrapper .innerParagraphNumber::after {
+    content: " ";
+  }
+
   .output .paragraphWrapper p {
     margin-top: 10px;
     margin-bottom: 10px;

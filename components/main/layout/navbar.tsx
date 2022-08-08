@@ -112,7 +112,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                 type={EffektButtonType.SECONDARY}
                 onClick={() => setExpanded(false)}
               >
-                Logg inn
+                Min side
               </EffektButton>
             </Link>
             <EffektButton
