@@ -119,7 +119,7 @@ export const AgreementDetails: React.FC<{
 
       if (result != null) {
         successToast();
-        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
+        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/vipps/`);
         setLoadingChanges(false);
       } else {
         failureToast();
@@ -142,7 +142,7 @@ export const AgreementDetails: React.FC<{
 
       if (result !== null) {
         successToast();
-        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`);
+        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`);
         setLoadingChanges(false);
       } else {
         failureToast();
@@ -158,7 +158,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/vipps/`);
+        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/vipps/`);
       } else {
         failureToast();
       }
@@ -166,7 +166,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(`/donors/${(user as User)["https://konduit.no/user-id"]}/recurring/avtalegiro/`);
+        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`);
       } else {
         failureToast();
       }

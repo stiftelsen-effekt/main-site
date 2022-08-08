@@ -37,7 +37,7 @@ const fetcher = async (
  */
 export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://konduit.no/user-id"]}/donations/aggregated`,
+    `/donors/${user["https://gieffektivt.no/user-id"]}/donations/aggregated`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -59,7 +59,7 @@ export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSil
  * */
 export const useDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://konduit.no/user-id"]}/donations/`,
+    `/donors/${user["https://gieffektivt.no/user-id"]}/donations/`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -89,7 +89,7 @@ export const useDistributions = (
 ) => {
   const { data, error, isValidating } = useSWR(
     condition
-      ? `/donors/${user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(
+      ? `/donors/${user["https://gieffektivt.no/user-id"]}/distributions/?kids=${encodeURIComponent(
           Array.from(kids).join(","),
         )}`
       : null,
@@ -114,7 +114,7 @@ export const useAgreementsDistributions = (
 ) => {
   const { data, error, isValidating } = useSWR(
     condition
-      ? `/donors/${user["https://konduit.no/user-id"]}/distributions/?kids=${encodeURIComponent(
+      ? `/donors/${user["https://gieffektivt.no/user-id"]}/distributions/?kids=${encodeURIComponent(
           Array.from(kids).join(","),
         )}`
       : null,
@@ -133,7 +133,7 @@ export const useAgreementsDistributions = (
 
 export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://konduit.no/user-id"]}/recurring/avtalegiro/`,
+    `/donors/${user["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -149,7 +149,7 @@ export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSi
 
 export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://konduit.no/user-id"]}/recurring/vipps/`,
+    `/donors/${user["https://gieffektivt.no/user-id"]}/recurring/vipps/`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -180,7 +180,7 @@ export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently)
 
 export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://konduit.no/user-id"]}/`,
+    `/donors/${user["https://gieffektivt.no/user-id"]}/`,
     (url) => fetcher(url, fetchToken),
   );
 
