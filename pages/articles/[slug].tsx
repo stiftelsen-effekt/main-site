@@ -52,7 +52,8 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
 
 export async function getStaticProps({ preview = false, params = { slug: "" } }) {
   const { slug } = params;
-  const result = await getClient(preview).fetch(fetchArticle, { slug });
+  let result = await getClient(preview).fetch(fetchArticle, { slug });
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {

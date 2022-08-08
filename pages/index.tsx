@@ -129,7 +129,7 @@ const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) =>
 
 export async function getStaticProps({ preview = false }) {
   let result = await getClient(preview).fetch(fetchFrontpage);
-  result = { ...result, frontpage: filterPageToSingleItem(result.frontpage, preview) };
+  result = { ...result, frontpage: filterPageToSingleItem(result, preview) };
 
   return {
     props: {

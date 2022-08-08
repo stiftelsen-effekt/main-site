@@ -26,8 +26,6 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
 
   const about = filterPageToSingleItem(previewData, preview);
 
-  console.log(about);
-
   const settings = data.result.settings[0];
   const header = about.header;
   const roles: Role[] = data.result.roles;
