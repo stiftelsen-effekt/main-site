@@ -19,6 +19,10 @@ import { DatePickerInput } from "../../../../shared/components/DatePicker/DatePi
 import style from "./AgreementDetails.module.scss";
 import { EffektButton } from "../../../../shared/components/EffektButton/EffektButton";
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
+import { RadioButton } from "../../../../main/widget/components/panes/Forms.style";
+import { ShareType } from "../../../../main/widget/types/Enums";
+import { InfoParagraph } from "../../../../main/widget/components/panes/DonationPane/DonationPane.style";
+import { RadioButtonGroup } from "../../../../shared/components/RadioButton/RadioButtonGroup";
 
 /**
  * Gets the number of days in a month in a year
@@ -72,6 +76,8 @@ export const AgreementDetails: React.FC<{
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [loadingChanges, setLoadingChanges] = useState(false);
 
+  const [shareType, setShareType] = useState<ShareType>(ShareType.CUSTOM);
+
   /**
    * Saves an agreement if any changes have been made.
    * @returns a toast indicating whether the changes are saved or not.
@@ -90,7 +96,7 @@ export const AgreementDetails: React.FC<{
       0,
     );
 
-    if (distSum !== 100 || parseFloat(sum) < 1) {
+    if ((distSum !== 100 || parseFloat(sum) < 1) && shareType == ShareType.CUSTOM) {
       invalidInputToast();
       return;
     }
@@ -106,7 +112,15 @@ export const AgreementDetails: React.FC<{
       let result = null;
 
       if (distributionChanged) {
-        result = await updateVippsAgreementDistribution(endpoint, distribution, token);
+        if (shareType == ShareType.STANDARD) {
+          result = await updateVippsAgreementDistribution(
+            endpoint,
+            { kid: distribution.kid, organizations: [] },
+            token,
+          );
+        } else {
+          result = await updateVippsAgreementDistribution(endpoint, distribution, token);
+        }
       }
 
       if (dayChanged) {
@@ -129,7 +143,15 @@ export const AgreementDetails: React.FC<{
       let result = null;
 
       if (distributionChanged) {
-        result = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token);
+        if (shareType == ShareType.STANDARD) {
+          result = await updateAvtalegiroAgreementDistribution(
+            endpoint,
+            { kid: distribution.kid, organizations: [] },
+            token,
+          );
+        } else {
+          result = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token);
+        }
       }
 
       if (dayChanged) {
@@ -176,10 +198,32 @@ export const AgreementDetails: React.FC<{
   return (
     <div className={style.wrapper} data-cy="agreement-list-details">
       <div className={style.distribution}>
-        <DistributionController
-          distribution={distribution}
-          onChange={(dist) => setDistribution(dist)}
+        <RadioButtonGroup
+          options={[
+            { title: "Smart fordeling", value: ShareType.STANDARD, data_cy: "radio-smart-share" },
+            {
+              title: "Velg fordeling selv",
+              value: ShareType.CUSTOM,
+              data_cy: "radio-custom-share",
+            },
+          ]}
+          selected={shareType}
+          onSelect={(option) => {
+            setShareType(option as ShareType);
+          }}
         />
+        {shareType === ShareType.STANDARD && (
+          <InfoParagraph>
+            Smart fordeling sørger for at du kontinuerlig benytter deg av de aller siste og mest
+            oppdaterte tallene for hvordan du kan få størst mulig effekt av donasjonen din.
+          </InfoParagraph>
+        )}
+        {shareType === ShareType.CUSTOM && (
+          <DistributionController
+            distribution={distribution}
+            onChange={(dist) => setDistribution(dist)}
+          />
+        )}
       </div>
       <div className={style.values}>
         <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
