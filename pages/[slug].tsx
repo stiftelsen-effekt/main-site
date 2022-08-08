@@ -54,7 +54,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
 export async function getStaticProps({ preview = false, params = { slug: "" } }) {
   const { slug } = params;
   let result = await getClient(preview).fetch(fetchGenericPage, { slug });
-  result = { ...result, page: filterPageToSingleItem(result.page, preview) };
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
@@ -149,7 +149,7 @@ const fetchGenericPage = groq`
 
 const filterPageToSingleItem = (data: any, preview: boolean) => {
   if (!Array.isArray(data.page)) {
-    return data;
+    return data.page;
   }
 
   if (data.page.length === 1) {
