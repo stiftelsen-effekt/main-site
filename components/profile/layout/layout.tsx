@@ -59,7 +59,7 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
                 <main className={styles.main}>{children}</main>
                 <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
                 <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-                    <WidgetPane />
+                    <WidgetPane darkMode={true}/>
                     <main className={styles.main}>{children}</main>
                   </CookiesAccepted.Provider>
                 </WidgetContext.Provider>
