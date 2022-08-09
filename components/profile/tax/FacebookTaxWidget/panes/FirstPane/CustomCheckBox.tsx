@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/destructuring-assignment */
 import React from "react";
-import { ToolTip } from "../../shared/ToolTip/ToolTip";
+import { ToolTip } from "../../../../../main/widget/components/shared/ToolTip/ToolTip";
 import {
   CheckBoxLabel,
   CheckBoxLabelWrapper,

@@ -1,6 +1,4 @@
 import React from "react";
-import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
-import { OrangeLink } from "../../Widget.style";
 import { BlackTitle, InfoText } from "../FirstPane/MethodPane.style";
 import { Pane } from "../Panes.style";
 import { LinkWrapper } from "./ResultPane.style";
@@ -13,9 +11,9 @@ export const ResultPane: React.FC = () => {
       </BlackTitle>
       <InfoText>
         {`Hvis du ønsker å se hvor mye du har donert hittil, gå til `}
-        <OrangeLink href="https://gieffektivt.no/historikk" target="_blank">
+        <a href="https://gieffektivt.no/historikk" rel="noreferrer" target="_blank">
           https://gieffektivt.no/historikk
-        </OrangeLink>
+        </a>
         {` og tast inn eposten din, så mottar du straks en oversikt over alle dine donasjoner.`}
         <br />
         <br />
@@ -23,7 +21,7 @@ export const ResultPane: React.FC = () => {
       </InfoText>
 
       <LinkWrapper href="https://gieffektivt.no" rel="noreferrer">
-        <NextButton>Tilbake til forsiden</NextButton>
+        <button>Tilbake til forsiden</button>
       </LinkWrapper>
     </Pane>
   );

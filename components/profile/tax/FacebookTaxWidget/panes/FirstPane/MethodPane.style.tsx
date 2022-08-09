@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { gray20 } from "../../../config/colors";
 
 export const MethodWrapper = styled.div`
   display: flex;
@@ -26,7 +25,7 @@ export const InfoText = styled.p`
   white-space: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${gray20};
+  color: black;
   margin: 0;
 `;
 

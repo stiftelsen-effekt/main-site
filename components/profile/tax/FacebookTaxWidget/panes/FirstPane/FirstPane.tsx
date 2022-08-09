@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-curly-newline */
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,17 +7,19 @@ import { Pane } from "../Panes.style";
 import {
   CheckBoxWrapper,
   HiddenCheckBox,
-  InputFieldWrapper,
 } from "../Forms.style";
 import { DonorForm } from "../SecondPane/DonorPane.style";
-import { NextButton } from "../../shared/Buttons/NavigationButtons.style";
-import { nextPane } from "../../../store/layout/actions";
-import { TextInput } from "../../shared/Input/TextInput";
-import { ErrorField } from "../../shared/Error/ErrorField";
+import { CustomCheckBox } from "./CustomCheckBox";
+import { NextButton } from "../../../../../main/widget/components/shared/Buttons/NavigationButtons";
+import { ErrorField } from "../../../../../main/widget/components/shared/Error/ErrorField";
+import { TextInput } from "../../../../../main/widget/components/shared/Input/TextInput";
+import { LoadingCircle } from "../../../../../main/widget/components/shared/LoadingCircle/LoadingCircle";
+import { nextPane } from "../../../../../main/widget/store/layout/actions";
 import { InfoText } from "./MethodPane.style";
 import { registerPaymentAction } from "../../../store/paymentInfo/actions";
-import { LoadingCircle } from "../../shared/LoadingCircle/LoadingCircle";
-import { CustomCheckBox } from "./CustomCheckBox";
+import { TextInputWrapper } from "../../../../../main/widget/components/shared/Input/TextInput.style";
+import { EffektButton, EffektButtonType } from "../../../../../shared/components/EffektButton/EffektButton";
+import { InputFieldWrapper } from "../../../../../main/widget/components/panes/Forms.style";
 
 interface FormValues {
   email: string;
@@ -76,11 +77,11 @@ export const FirstPane: React.FC = () => {
       {!loadingAnimation && (
         <DonorForm onSubmit={handleSubmit(paneSubmitted)}>
           <InputFieldWrapper>
-            <TextInput
+            <input
               name="name"
               type="text"
               placeholder="Navn"
-              innerRef={register({
+              ref={register({
                 required: true,
                 validate: (val: string) => {
                   const trimmed = val.trim();
@@ -88,74 +89,62 @@ export const FirstPane: React.FC = () => {
                 },
               })}
             />
+            </InputFieldWrapper>
             {nameError && <ErrorField text="Ugyldig navn" />}
-            <TextInput
-              name="email"
-              type="text"
-              placeholder="Epost"
-              innerRef={register({
-                required: true,
-                validate: (val: string) => {
-                  const trimmed = val.trim();
-                  return Validate.isEmail(trimmed);
-                },
-              })}
-            />
+            <InputFieldWrapper>
+              <input
+                name="email"
+                type="text"
+                placeholder="Epost"
+                ref={register({
+                  required: true,
+                  validate: (val: string) => {
+                    const trimmed = val.trim();
+                    return Validate.isEmail(trimmed);
+                  },
+                })}
+              />
+            </InputFieldWrapper>
             {emailError && <ErrorField text="Ugyldig epost" />}
-            <TextInput
-              name="ssn"
-              type="number"
-              inputMode="numeric"
-              placeholder="Fødselsnummer eller org.nr."
-              innerRef={register({
-                required: false,
-                validate: (val: string) => {
-                  const trimmed = val.toString().trim();
-                  if (Validate.isInt(trimmed)) {
-                    return trimmed.length === 9 || trimmed.length === 11;
-                  }
-                  return false;
-                },
-              })}
-            />
+            <InputFieldWrapper>
+              <input
+                name="ssn"
+                type="number"
+                inputMode="numeric"
+                placeholder="Fødselsnummer eller org.nr."
+                ref={register({
+                  required: false,
+                  validate: (val: string) => {
+                    const trimmed = val.toString().trim();
+                    if (Validate.isInt(trimmed)) {
+                      return trimmed.length === 9 || trimmed.length === 11;
+                    }
+                    return false;
+                  },
+                })}
+              />
+            </InputFieldWrapper>
             {ssnError && (
               <ErrorField text="Må være 11 (f.nr.) eller 9 (org.nr.) siffer" />
             )}
-            <TextInput
-              name="paymentID"
-              type="number"
-              placeholder="Betalings-ID (Facebook)"
-              innerRef={register({
-                required: true,
-                minLength: 16,
-                maxLength: 16,
-              })}
-            />
+            <InputFieldWrapper>
+              <input
+                name="paymentID"
+                type="number"
+                placeholder="Betalings-ID (Facebook)"
+                ref={register({
+                  required: true,
+                  minLength: 16,
+                  maxLength: 16,
+                })}
+              />
+            </InputFieldWrapper>
             {paymentIDError && (
               <ErrorField text="Betalings-ID må være 16 siffer" />
             )}
-          </InputFieldWrapper>
-          <CheckBoxWrapper>
-            <HiddenCheckBox
-              data-cy="checkboxNewsletter"
-              name="newsletter"
-              type="checkbox"
-              ref={register}
-              onChange={() => {
-                setNewsletterChecked(!newsletterChecked);
-                (document.activeElement as HTMLElement).blur();
-              }}
-            />
-            <CustomCheckBox
-              label="Jeg ønsker å melde meg på nyhetsbrevet"
-              mobileLabel="Jeg vil melde meg på nyhetsbrevet"
-              checked={newsletterChecked}
-            />
-          </CheckBoxWrapper>
-
-          <NextButton type="submit" disabled={nextDisabled}>
+          <EffektButton type={EffektButtonType.PRIMARY} onClick={paneSubmitted} disabled={nextDisabled}>
             Neste
-          </NextButton>
+          </EffektButton>
         </DonorForm>
       )}
       {loadingAnimation && <LoadingCircle />}

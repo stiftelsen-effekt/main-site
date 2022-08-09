@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { gray18, orange15 } from "../../config/colors";
 
 export const Form = styled.form`
   display: flex;
@@ -19,7 +18,7 @@ export const TextField = styled.input`
   display: block;
   margin: 5px;
   font-size: 15px;
-  border: 1px solid ${gray18};
+  border: 1px solid black;
   border-radius: 5px;
   box-sizing: border-box;
 `;
@@ -40,7 +39,7 @@ export const HiddenCheckBox = styled.input`
     cursor: pointer;
   }
   &:focus + span > span {
-    box-shadow: 0px 0px 0px 1.5px ${orange15};
+    box-shadow: 0px 0px 0px 1.5px black;
   }
 `;
 

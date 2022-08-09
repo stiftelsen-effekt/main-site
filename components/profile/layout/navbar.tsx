@@ -42,6 +42,11 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
               Profil
             </Link>
           </li>
+          <li onClick={() => setExpandMenu(false)}>
+            <Link href="/profile/skatt" passHref>
+              Skatt
+            </Link>
+          </li>
           <li className={styles.btnLogoutWrapper} onClick={() => setExpandMenu(false)}>
             <button
               className={styles.btnlogin}

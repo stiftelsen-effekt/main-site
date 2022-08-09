@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DatePicker } from "../../../../../../../shared/components/DatePicker/DatePicker";
-import { orange20 } from "../../../../../config/colors";
 import { setDueDay } from "../../../../../store/donation/actions";
 import { State } from "../../../../../store/state";
 import { ScaledDatePicker } from "../../../../shared/Input/ScaledDatePicker.style";

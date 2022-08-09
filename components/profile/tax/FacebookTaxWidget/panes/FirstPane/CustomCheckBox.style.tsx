@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { orange20 } from "../../../config/colors";
 
 export const CustomCheckBoxWrapper = styled.span`
   position: absolute;
@@ -51,8 +50,8 @@ export const StyledInput = styled.input`
   width: 0;
 
   &&:checked ~ ${CheckMark} {
-    background-color: #ffaa2b;
-    border: 1px solid #ffaa2b;
+    background-color: black;
+    border: 1px solid black;
   }
 
   &&:checked ~ ${CheckMark}:after {
@@ -87,24 +86,6 @@ export const MobileLabel = styled.span`
   font-size: 12px;
   @media only screen and (max-width: 350px) {
     display: inline-block;
-  }
-`;
-
-export const OrangeLink = styled.a`
-  color: ${orange20};
-  pointer-events: all;
-
-  &&:visited {
-    color: ${orange20};
-  }
-
-  &&:hover {
-    opacity: 0.5;
-  }
-
-  @media only screen and (max-width: 350px) {
-    display: inline-block;
-    font-size: 12px;
   }
 `;
 
