@@ -18,7 +18,6 @@ describe("ImpactWidget", () => {
         cy.wait("@getImpactEvaluations")
             .its("response.statusCode")
             .should("be.oneOf", [200, 304]);
-        cy.wait(500);
 
         cy.get('[data-cy=impact-input]').scrollIntoView()
         cy.get('[data-cy=impact-output]').invoke('text').then(parseFloat).should('be.gt', 0)
