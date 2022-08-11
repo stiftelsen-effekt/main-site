@@ -1,0 +1,344 @@
+[
+    {
+        "id": 1,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 48.26252271006813,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 5,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 45.46739591218773,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 53,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 41.647389288417855,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2016,
+        "start_month": 6,
+        "cents_per_output": 447,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 54,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 49.38057342922029,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2015,
+        "start_month": 11,
+        "cents_per_output": 530,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 30,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 45.18788323239969,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2016,
+        "start_month": 11,
+        "cents_per_output": 485,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 31,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 39.318116956850865,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2017,
+        "start_month": 11,
+        "cents_per_output": 422,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 32,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 42.206414647993945,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2018,
+        "start_month": 11,
+        "cents_per_output": 453,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 33,
+        "intervention": {
+            "long_description": "Insecticide treated bednets delivered to households",
+            "short_description": "Bednet",
+            "id": 2
+        },
+        "converted_cost_per_output": 42.3927564345193,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2019,
+        "start_month": 11,
+        "cents_per_output": 455,
+        "charity": {
+            "id": 1,
+            "charity_name": "Against Malaria Foundation",
+            "abbreviation": "AMF"
+        }
+    },
+    {
+        "id": 41,
+        "intervention": {
+            "long_description": "Number of children who received a year's worth of deworming medication",
+            "short_description": "Deworming treatment",
+            "id": 4
+        },
+        "converted_cost_per_output": 10.900994511733535,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2015,
+        "start_month": 4,
+        "cents_per_output": 117,
+        "charity": {
+            "id": 2,
+            "charity_name": "SCI Foundation",
+            "abbreviation": "SCI"
+        }
+    },
+    {
+        "id": 42,
+        "intervention": {
+            "long_description": "Number of children who received a year's worth of deworming medication",
+            "short_description": "Deworming treatment",
+            "id": 4
+        },
+        "converted_cost_per_output": 8.47855128690386,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2016,
+        "start_month": 4,
+        "cents_per_output": 91,
+        "charity": {
+            "id": 2,
+            "charity_name": "SCI Foundation",
+            "abbreviation": "SCI"
+        }
+    },
+    {
+        "id": 43,
+        "intervention": {
+            "long_description": "Number of children who received a year's worth of deworming medication",
+            "short_description": "Deworming treatment",
+            "id": 4
+        },
+        "converted_cost_per_output": 10.062456472369417,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2017,
+        "start_month": 4,
+        "cents_per_output": 108,
+        "charity": {
+            "id": 2,
+            "charity_name": "SCI Foundation",
+            "abbreviation": "SCI"
+        }
+    },
+    {
+        "id": 44,
+        "intervention": {
+            "long_description": "Number of children who received a year's worth of deworming medication",
+            "short_description": "Deworming treatment",
+            "id": 4
+        },
+        "converted_cost_per_output": 9.41026021953066,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2018,
+        "start_month": 4,
+        "cents_per_output": 101,
+        "charity": {
+            "id": 2,
+            "charity_name": "SCI Foundation",
+            "abbreviation": "SCI"
+        }
+    },
+    {
+        "id": 45,
+        "intervention": {
+            "long_description": "Number of children who received a year's worth of deworming medication",
+            "short_description": "Deworming treatment",
+            "id": 4
+        },
+        "converted_cost_per_output": 9.596602006056019,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2019,
+        "start_month": 4,
+        "cents_per_output": 103,
+        "charity": {
+            "id": 2,
+            "charity_name": "SCI Foundation",
+            "abbreviation": "SCI"
+        }
+    },
+    {
+        "id": 3,
+        "intervention": {
+            "long_description": "Children receiving vitamin-A supplements",
+            "short_description": "Vitamin A supplement",
+            "id": 3
+        },
+        "converted_cost_per_output": 10.621481831945495,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 114,
+        "charity": {
+            "id": 3,
+            "charity_name": "Helen Keller International",
+            "abbreviation": "HKI"
+        }
+    },
+    {
+        "id": 4,
+        "intervention": {
+            "long_description": "Children receiving vitamin-A supplements",
+            "short_description": "Vitamin A supplement",
+            "id": 3
+        },
+        "converted_cost_per_output": 10.248798258894777,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 110,
+        "charity": {
+            "id": 3,
+            "charity_name": "Helen Keller International",
+            "abbreviation": "HKI"
+        }
+    },
+    {
+        "id": 57,
+        "intervention": {
+            "long_description": "Children receiving vitamin-A supplements",
+            "short_description": "Vitamin A supplement",
+            "id": 3
+        },
+        "converted_cost_per_output": 6.987816994700983,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2017,
+        "start_month": 11,
+        "cents_per_output": 75,
+        "charity": {
+            "id": 3,
+            "charity_name": "Helen Keller International",
+            "abbreviation": "HKI"
+        }
+    },
+    {
+        "id": 56,
+        "intervention": {
+            "long_description": "Children receiving vitamin-A supplements",
+            "short_description": "Vitamin A supplement",
+            "id": 3
+        },
+        "converted_cost_per_output": 12.57807059046177,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2018,
+        "start_month": 11,
+        "cents_per_output": 135,
+        "charity": {
+            "id": 3,
+            "charity_name": "Helen Keller International",
+            "abbreviation": "HKI"
+        }
+    },
+    {
+        "id": 55,
+        "intervention": {
+            "long_description": "Children receiving vitamin-A supplements",
+            "short_description": "Vitamin A supplement",
+            "id": 3
+        },
+        "converted_cost_per_output": 11.460019871309612,
+        "currency": "NOK",
+        "language": "en",
+        "start_year": 2019,
+        "start_month": 11,
+        "cents_per_output": 123,
+        "charity": {
+            "id": 3,
+            "charity_name": "Helen Keller International",
+            "abbreviation": "HKI"
+        }
+    }
+]

@@ -13,12 +13,10 @@ context("Window", () => {
         cy.pickAnonymous();
         cy.get("[data-cy=bank-method]").click({ force: true });
         cy.wait(500);
-
     
         cy.intercept("POST", "/donations/register", {
           statusCode: 200,
           body: {
-            status: 200,
             content: {
                 KID: "87397824",
                 donorID: 1464,
