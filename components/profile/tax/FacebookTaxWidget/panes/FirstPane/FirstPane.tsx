@@ -57,13 +57,13 @@ export const FirstPane: React.FC = () => {
 
   const paneSubmitted = () => {
     setLoadingAnimation(true);
+    console.log("hey")
     dispatch(
       registerPaymentAction.started({
         paymentID: watchAllFields.paymentID,
         email: watchAllFields.email,
         full_name: watchAllFields.name,
         ssn: watchAllFields.ssn,
-        newsletter: watchAllFields.newsletter === true ? "1" : "0",
       })
     );
     dispatch(nextPane());
@@ -142,9 +142,9 @@ export const FirstPane: React.FC = () => {
             {paymentIDError && (
               <ErrorField text="Betalings-ID må være 16 siffer" />
             )}
-          <EffektButton type={EffektButtonType.PRIMARY} onClick={paneSubmitted} disabled={nextDisabled}>
+          <button type="submit" disabled={nextDisabled}>
             Neste
-          </EffektButton>
+          </button>
         </DonorForm>
       )}
       {loadingAnimation && <LoadingCircle />}

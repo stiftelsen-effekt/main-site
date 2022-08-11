@@ -1,7 +1,7 @@
 import { SagaIterator } from "redux-saga";
 import { call, put } from "redux-saga/effects";
 import { Action } from "typescript-fsa";
-import { API_URL } from "../../config/api";
+import { API_URL } from "../../../../main/widget/config/api";
 import { IServerResponse, RegisterPaymentData } from "../../types/Temp";
 import { registerPaymentAction } from "./actions";
 
@@ -14,7 +14,6 @@ export function* registerPaymentFB(
       email: action.payload.email,
       full_name: action.payload.full_name,
       ssn: action.payload.ssn,
-      newsletter: action.payload.newsletter,
     };
 
     const request = yield call(fetch, `${API_URL}/facebook/register/payment`, {
