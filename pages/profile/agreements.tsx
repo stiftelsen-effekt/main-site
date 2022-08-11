@@ -125,8 +125,9 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
                 {pendingCount} {pendingCount === 1 ? "avtale" : "avtaler"} bekreftes
               </header>
               <p>
-                Vi har registrert {pendingCount} {pendingCount === 1 ? "ny" : "nye"} avtaler på deg.
-                Bankene bruker noen dager på å bekrefte opprettelse før avtalen din blir aktivert.
+                Vi har registrert {pendingCount} {pendingCount === 1 ? "ny avtale" : "nye avtaler"}{" "}
+                på deg. Bankene bruker noen dager på å bekrefte opprettelse før avtalen din blir
+                aktivert.
               </p>
             </InfoBox>
           ) : null}

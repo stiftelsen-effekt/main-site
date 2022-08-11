@@ -112,11 +112,15 @@ export const AgreementDetails: React.FC<{
       let result = null;
 
       if (distributionChanged) {
-        result = await updateVippsAgreementDistribution(
-          endpoint,
-          { kid: distribution.kid, organizations: [] },
-          token,
-        );
+        if (shareType == ShareType.STANDARD) {
+          result = await updateVippsAgreementDistribution(
+            endpoint,
+            { kid: distribution.kid, organizations: [] },
+            token,
+          );
+        } else {
+          result = await updateVippsAgreementDistribution(endpoint, distribution, token);
+        }
       }
 
       if (dayChanged) {
@@ -139,11 +143,15 @@ export const AgreementDetails: React.FC<{
       let result = null;
 
       if (distributionChanged) {
-        result = await updateAvtalegiroAgreementDistribution(
-          endpoint,
-          { kid: distribution.kid, organizations: [] },
-          token,
-        );
+        if (shareType == ShareType.STANDARD) {
+          result = await updateAvtalegiroAgreementDistribution(
+            endpoint,
+            { kid: distribution.kid, organizations: [] },
+            token,
+          );
+        } else {
+          result = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token);
+        }
       }
 
       if (dayChanged) {
