@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import { PortableText } from "../lib/sanity";
+import { PortableText, usePreviewSubscription } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
 import styles from "../styles/About.module.css";
 import { groq } from "next-sanity";
@@ -18,8 +18,16 @@ import { Links } from "../components/main/blocks/Links/Links";
 import { Layout } from "../components/main/layout/layout";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    initialData: data?.result,
+    enabled: preview,
+  });
+
+  const about = filterPageToSingleItem(previewData, preview);
+
   const settings = data.result.settings[0];
-  const header = data.result.about[0].header;
+  const header = about.header;
   const roles: Role[] = data.result.roles;
   const boardMembers = roles.find((role: Role) => role.id === "boardmembers")!;
   const employees = roles.find((role: Role) => role.id === "employees")!;
@@ -48,7 +56,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
           <div className={styles.intro}>
             <p className="inngress">{header.inngress}</p>
             <div className={styles.maincontent}>
-              <PortableText blocks={data.result.about[0].content}></PortableText>
+              <PortableText blocks={about.content}></PortableText>
             </div>
           </div>
         </div>
@@ -80,7 +88,8 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
 };
 
 export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchAboutUs);
+  let result = await getClient(preview).fetch(fetchAboutUs);
+  result = { ...result, about: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
@@ -152,6 +161,22 @@ const fetchAboutUs = groq`
   }[count(contributors) > 0]
 }
 `;
+
+const filterPageToSingleItem = (data: any, preview: boolean) => {
+  if (!Array.isArray(data.about)) {
+    return data.about;
+  }
+
+  if (data.about.length === 1) {
+    return data.about[0];
+  }
+
+  if (preview) {
+    return data.about.find((item: any) => item._id.startsWith("drafts.")) || data.about[0];
+  }
+
+  return data.about[0];
+};
 
 About.layout = Layout;
 export default About;

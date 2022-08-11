@@ -12,10 +12,19 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
+import { usePreviewSubscription } from "../lib/sanity";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const header = data.result.page[0].header;
-  const contactinfo = data.result.page[0].contact;
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    initialData: data?.result,
+    enabled: preview,
+  });
+
+  const page = filterPageToSingleItem(previewData, preview);
+
+  const header = page.header;
+  const contactinfo = page.contact;
   const settings = data.result.settings[0];
 
   return (
@@ -35,7 +44,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
       <PageHeader title={header.title} inngress={header.inngress} links={header.links} />
 
       <SectionContainer padded={true}>
-        {data.result.page[0].questionandanswergroups.map((group: any) => (
+        {page.questionandanswergroups.map((group: any) => (
           <QuestionsAndAnswersGroup key={group._key} group={group} />
         ))}
       </SectionContainer>
@@ -53,7 +62,8 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
 };
 
 export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchSupport);
+  let result = await getClient(preview).fetch(fetchSupport);
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
@@ -111,6 +121,22 @@ const fetchSupport = groq`
   },
 }
 `;
+
+const filterPageToSingleItem = (data: any, preview: boolean) => {
+  if (!Array.isArray(data.page)) {
+    return data.page;
+  }
+
+  if (data.page.length === 1) {
+    return data.page[0];
+  }
+
+  if (preview) {
+    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
+  }
+
+  return data.page[0];
+};
 
 Support.layout = Layout;
 export default Support;
