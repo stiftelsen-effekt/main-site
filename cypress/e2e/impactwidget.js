@@ -2,7 +2,7 @@ describe("ImpactWidget", () => {
     before(() => {
         cy.fixture("impact_evaluations")
             .then((impactEvaluations) => {
-                cy.intercept("GET", "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=AMF&charity_abbreviation=HKI&charity_abbreviation=SCI&currency=NOK", {
+                cy.intercept("GET", "https://impact.gieffektivt.no/api/evaluations*", {
                 statusCode: 200,
                 body: {
                     evaluations: impactEvaluations
