@@ -12,11 +12,11 @@ context("Window", () => {
 
         cy.pickAnonymous();
         cy.get("[data-cy=bank-method]").click({ force: true });
-        cy.wait(500);
     
         cy.intercept("POST", "/donations/register", {
           statusCode: 200,
           body: {
+            status: 200,
             content: {
                 KID: "87397824",
                 donorID: 1464,
@@ -34,11 +34,6 @@ context("Window", () => {
         }).as("bankPending");
 
         cy.nextWidgetPane();
-
-        cy.wait("@registerDonation")
-            .its("response.statusCode")
-            .should("be.oneOf", [200, 304]);
-        cy.wait(500);
 
         cy.get("[data-cy=kidNumber]").should(($kid) => {
             const kid = $kid.text();
