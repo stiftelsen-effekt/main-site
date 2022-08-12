@@ -4,7 +4,7 @@ describe("Donations page", () => {
 
     cy.fixture("donor")
       .then((donor) => {
-        cy.intercept("GET", "/donors/27/", {
+        cy.intercept("GET", "/donors/14649/", {
           statusCode: 200,
           body: {
             status: 200,
@@ -16,7 +16,7 @@ describe("Donations page", () => {
 
     cy.fixture("donations")
       .then((donations) => {
-        cy.intercept("GET", "/donors/27/donations", {
+        cy.intercept("GET", "/donors/14649/donations", {
           statusCode: 200,
           body: {
             status: 200,
@@ -28,7 +28,7 @@ describe("Donations page", () => {
 
     cy.fixture("aggregated")
       .then((aggregateddonations) => {
-        cy.intercept("GET", "/donors/27/donations/aggregated", {
+        cy.intercept("GET", "/donors/14649/donations/aggregated", {
           statusCode: 200,
           body: {
             status: 200,
@@ -40,7 +40,7 @@ describe("Donations page", () => {
 
     cy.fixture("kids_donations")
       .then((kids) => {
-        cy.intercept("GET", "/donors/27/distributions/*", {
+        cy.intercept("GET", "/donors/14649/distributions/*", {
           statusCode: 200,
           body: {
             status: 200,
