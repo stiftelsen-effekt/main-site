@@ -26,6 +26,13 @@ context("Window", () => {
           },
         }).as("registerDonation");
 
+        cy.intercept("POST", "donations/bank/pending", {
+          statusCode: 200,
+          body: {
+              status: 200, content: "OK" 
+          },
+        }).as("bankPending");
+
         cy.nextWidgetPane();
 
         cy.wait("@registerDonation")
@@ -55,6 +62,7 @@ context("Window", () => {
         cy.pickAnonymous();
         cy.get("[data-cy=bank-method]").click({ force: true });
         cy.wait(500);
+        
         cy.intercept("POST", "/donations/register", {
             statusCode: 200,
             body: {
@@ -97,6 +105,7 @@ context("Window", () => {
         cy.pickAnonymous();
         cy.get("[data-cy=vipps-method]").click({ force: true });
         cy.wait(500);
+
         cy.intercept("POST", "/donations/register", {
             statusCode: 200,
             body: {
@@ -133,6 +142,7 @@ context("Window", () => {
         cy.pickAnonymous();
         cy.get("[data-cy=vipps-method]").click({ force: true });
         cy.wait(500);
+
         cy.intercept("POST", "/donations/register", {
             statusCode: 200,
             body: {
@@ -182,6 +192,7 @@ context("Window", () => {
 
     cy.pickAnonymous();
     cy.get("[data-cy=bank-method]").click({ force: true });
+
     cy.intercept("POST", "/donations/register", {
         statusCode: 200,
         body: {
@@ -194,6 +205,14 @@ context("Window", () => {
             },
         },
     }).as("registerDonation");
+
+    cy.intercept("POST", "donations/bank/pending", {
+        statusCode: 200,
+        body: {
+            status: 200, content: "OK" 
+        },
+    }).as("bankPending");
+
     cy.nextWidgetPane();
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
@@ -232,6 +251,7 @@ context("Window", () => {
       cy.get("[data-cy=ssn-input]").type("916741057"); // Check 9 digit organization number
       cy.get("[data-cy=newsletter-checkbox]").click();
       cy.get("[data-cy=bank-method]").click({ force: true }); 
+
       cy.intercept("POST", "/donations/register", {
           statusCode: 200,
           body: {
@@ -244,6 +264,14 @@ context("Window", () => {
               },
           },
       }).as("registerDonation");
+
+      cy.intercept("POST", "donations/bank/pending", {
+          statusCode: 200,
+          body: {
+              status: 200, content: "OK" 
+          },
+      }).as("bankPending");
+
       cy.nextWidgetPane();
 
       cy.prevWidgetPane();
