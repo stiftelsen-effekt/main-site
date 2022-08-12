@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-left: 1px solid var(--primary);
+  padding-left: 20px;
+  margin: 20px 0;
+}
+
+.chosenEvaluation {
+  font-size: 14px;
+  color: #ccc;
+
+  span {
+    margin-right: 10px;
+  }
+}
+
+.impact {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  
+  h3 {
+    margin-right: 10px;
+  }
+}

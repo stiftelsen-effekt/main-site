@@ -40,6 +40,7 @@ export const DonationList: React.FC<{
           key={donation.id}
           sum={donation.sum}
           distribution={distributions.get(donation.KID) as Distribution}
+          timestamp={new Date(donation.timestamp)}
         />
       ),
     };
