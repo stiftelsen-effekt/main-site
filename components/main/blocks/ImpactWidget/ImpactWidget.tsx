@@ -17,18 +17,18 @@ export interface ImpactWidgetProps {
 }
 
 export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
-  const [sum, setSum] = useState(400);
+  const [sum, setSum] = useState(frontpage.intervention_widget.default_sum);
   const [contextExpanded, setContextExpanded] = useState(false);
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
 
   const interventionWidget = frontpage.intervention_widget;
-  const interventions= interventionWidget.interventions.map((i: any) => ({
+  const interventions = interventionWidget.interventions.map((i: any) => ({
     title: i.title,
     pricePerOutput: interventionCosts.get(i.abbreviation),
     outputStringTemplate: i.template_string,
     organizationName: i.organization_name,
-  }))
-  
+  }));
+
   const [selectedIntervention, setSelectedIntervention] = useState<string>(interventions[0].title);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
   ) as Intervention;
 
   if (!currentIntervention) {
-    setSelectedIntervention(interventions[0].title)
+    setSelectedIntervention(interventions[0].title);
     return <Spinner />;
   }
 
@@ -92,7 +92,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
                 type="tel"
                 value={sum}
                 onChange={(e) => {
-                  if(e.target.value.length <= 9) setSum(parseInt(e.target.value) || 0)
+                  if (e.target.value.length <= 9) setSum(parseInt(e.target.value) || 0);
                 }}
                 name="sum"
               />
@@ -124,7 +124,9 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
             <>
               <span className="detailheader">{currentIntervention.organizationName}</span>
               <div className={styles.paragraphWrapper}>
-                <span data-cy="impact-output" className={styles.paragraphNumber}>{thousandize(parseInt(outputString))}</span>
+                <span data-cy="impact-output" className={styles.paragraphNumber}>
+                  {thousandize(parseInt(outputString))}
+                </span>
                 <div className={styles.explanatory}>
                   <p>
                     <span className={styles.innerParagraphNumber}>{outputString}</span>
