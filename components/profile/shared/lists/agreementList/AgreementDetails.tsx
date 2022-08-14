@@ -96,7 +96,7 @@ export const AgreementDetails: React.FC<{
       0,
     );
 
-    if (distSum !== 100 || parseFloat(sum) < 1) {
+    if ((distSum !== 100 || parseFloat(sum) < 1) && shareType == ShareType.CUSTOM) {
       invalidInputToast();
       return;
     }
@@ -215,7 +215,7 @@ export const AgreementDetails: React.FC<{
         {shareType === ShareType.STANDARD && (
           <InfoParagraph>
             Smart fordeling sørger for at du kontinuerlig benytter deg av de aller siste og mest
-            oppdaterte tallene for hvordan du kan få størst mulig effekt av donasjonen din.{" "}
+            oppdaterte tallene for hvordan du kan få størst mulig effekt av donasjonen din.
           </InfoParagraph>
         )}
         {shareType === ShareType.CUSTOM && (
