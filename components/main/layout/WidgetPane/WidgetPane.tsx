@@ -10,7 +10,11 @@ const Widget = dynamic<{}>(
   },
 );
 
-export const WidgetPane: React.FC = () => {
+interface Props {
+  darkMode?: boolean;
+}
+
+export const WidgetPane: React.FC<Props> = ({ darkMode }) => {
   const followThreshold = 20;
   const closeThreshold = 140;
   const [initialY, setInitialY] = useState(0);
@@ -58,7 +62,7 @@ export const WidgetPane: React.FC = () => {
           setCurrentY(0);
         }}
       ></div>
-      <div className={styles.widgetPaneContent}>
+      <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
         <Widget />
       </div>
     </div>
