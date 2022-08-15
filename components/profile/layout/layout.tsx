@@ -56,10 +56,9 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
                   style={{ maxWidth: 200 }}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
-                <main className={styles.main}>{children}</main>
                 <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
-                <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-                    <WidgetPane darkMode={true}/>
+                  <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
+                    <WidgetPane darkMode={true} />
                     <main className={styles.main}>{children}</main>
                   </CookiesAccepted.Provider>
                 </WidgetContext.Provider>
