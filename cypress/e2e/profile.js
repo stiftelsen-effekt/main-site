@@ -4,7 +4,7 @@ describe("Profile page", () => {
 
     cy.fixture("donor")
       .then((donor) => {
-        cy.intercept("GET", "/donors/27/", {
+        cy.intercept("GET", "/donors/*/", {
           statusCode: 200,
           body: {
             status: 200,
