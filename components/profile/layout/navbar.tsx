@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../../shared/layout/Navbar/Navbar.module.scss";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, X } from "react-feather";
 import { ResponsiveImage } from "../../shared/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
+import { WidgetContext } from "../../main/layout/layout";
 
 export type ProfileNavbarProps = {
   logo: SanityImageSource;
@@ -12,6 +14,7 @@ export type ProfileNavbarProps = {
 export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
   const { logout } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
@@ -47,13 +50,18 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
               Skatt
             </Link>
           </li>
-          <li className={styles.btnLogoutWrapper} onClick={() => setExpandMenu(false)}>
-            <button
-              className={styles.btnlogin}
+          <li onClick={() => setExpandMenu(false)}>
+            <EffektButton
+              type={EffektButtonType.SECONDARY}
               onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
             >
               Logg ut
-            </button>
+            </EffektButton>
+          </li>
+          <li>
+            <EffektButton cy="send-donation-button" onClick={() => setWidgetOpen(true)}>
+              Send donasjon
+            </EffektButton>
           </li>
         </ul>
       </nav>

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
-import { PortableText } from "../lib/sanity";
+import { PortableText, usePreviewSubscription } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
 import styles from "../styles/Organizations.module.css";
 import { groq } from "next-sanity";
@@ -17,9 +17,17 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    initialData: data?.result,
+    enabled: preview,
+  });
+
+  const page = filterPageToSingleItem(previewData, preview);
+
   const settings = data.result.settings[0];
-  const header = data.result.page[0].header;
-  const organizations = data.result.page[0].organizations;
+  const header = page.header;
+  const organizations = page.organizations;
 
   return (
     <>
@@ -72,7 +80,8 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
 };
 
 export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchOrganizationsPage);
+  let result = await getClient(preview).fetch(fetchOrganizationsPage);
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
@@ -131,6 +140,22 @@ const fetchOrganizationsPage = groq`
   }
 }
 `;
+
+const filterPageToSingleItem = (data: any, preview: boolean) => {
+  if (!Array.isArray(data.page)) {
+    return data.page;
+  }
+
+  if (data.page.length === 1) {
+    return data.page[0];
+  }
+
+  if (preview) {
+    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
+  }
+
+  return data.page[0];
+};
 
 Organizations.layout = Layout;
 export default Organizations;

@@ -9,6 +9,14 @@ export const DonorForm = styled.form`
   min-height: 100%;
   font-size: 18px;
 
+  a:focus {
+    outline: 2px solid var(--primary);
+  }
+
+  a:active {
+    outline: none;
+  }
+
   input[type="text"],
   input[type="email"] {
     background: var(--secondary);

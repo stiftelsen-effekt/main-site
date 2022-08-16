@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
 import { validateSsn, validateOrg } from "@ssfbank/norwegian-id-validators";
@@ -21,6 +21,8 @@ import Link from "next/link";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { RadioButtonGroup } from "../../../../../shared/components/RadioButton/RadioButtonGroup";
 import { EffektButton, EffektButtonType } from "../../../../../shared/components/EffektButton/EffektButton";
+import { Donor } from "../../../../../../models";
+import { DonorContext } from "../../../../../profile/layout/donorProvider";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -45,6 +47,9 @@ export const DonorPane: React.FC = () => {
   const donor = useSelector((state: State) => state.donation.donor);
   const method = useSelector((state: State) => state.donation.method);
   const donation = useSelector((state: State) => state.donation);
+  const { donor: initialDonor } = useContext(DonorContext);
+  const [profileDonor] = useState<Donor | null>(initialDonor);
+
   const [nextDisabled, setNextDisabled] = useState(true);
   const [nameErrorAnimation, setNameErrorAnimation] = useState(false);
   const [emailErrorAnimation, setEmailErrorAnimation] = useState(false);
@@ -163,7 +168,7 @@ export const DonorPane: React.FC = () => {
                   name="name"
                   type="text"
                   placeholder="Navn"
-                  defaultValue={donor?.name === "Anonym Giver" ? "" : donor?.name}
+                  defaultValue={donor?.name === "Anonym Giver" ? "" : (profileDonor?.name ? profileDonor?.name : donor?.name)}
                   ref={register({ required: true, minLength: 3 })}
                 />
                 {nameErrorAnimation && <ErrorField text="Ugyldig navn" />}
@@ -174,7 +179,7 @@ export const DonorPane: React.FC = () => {
                   name="email"
                   type="email"
                   placeholder="Epost"
-                  defaultValue={donor?.email === "anon@gieffektivt.no" ? "" : donor?.email}
+                  defaultValue={donor?.email === "anon@gieffektivt.no" ? "" : (profileDonor?.email ? profileDonor?.email : donor?.email)}
                   ref={register({
                     required: true,
                     validate: (val) => {
@@ -222,7 +227,7 @@ export const DonorPane: React.FC = () => {
                         placeholder="Fødselsnummer eller org.nr."
                         defaultValue={
                           // Hide SSN if anonymous donor
-                          donor?.ssn === "12345678910" ? "" : donor?.ssn
+                          donor?.ssn === "12345678910" ? "" : (profileDonor?.ssn ? profileDonor?.ssn : donor?.ssn)
                         }
                         ref={register({
                           required: false,

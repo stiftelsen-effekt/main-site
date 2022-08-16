@@ -13,22 +13,22 @@ export type Intervention = {
 };
 
 export interface ImpactWidgetProps {
-  data: any;
+  frontpage: any;
 }
 
-export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
-  const [sum, setSum] = useState(400);
+export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
+  const [sum, setSum] = useState(frontpage.intervention_widget.default_sum);
   const [contextExpanded, setContextExpanded] = useState(false);
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
 
-  const interventionWidget = data.result.frontpage[0].intervention_widget;
-  const interventions= interventionWidget.interventions.map((i: any) => ({
+  const interventionWidget = frontpage.intervention_widget;
+  const interventions = interventionWidget.interventions.map((i: any) => ({
     title: i.title,
     pricePerOutput: interventionCosts.get(i.abbreviation),
     outputStringTemplate: i.template_string,
     organizationName: i.organization_name,
-  }))
-  
+  }));
+
   const [selectedIntervention, setSelectedIntervention] = useState<string>(interventions[0].title);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
     const url = `https://impact.gieffektivt.no/api/evaluations?${interventions
       .map((i: any) => `charity_abbreviation=${i.abbreviation}&`)
       .join("")}currency=NOK`;
-    console.log(url);
     fetch(url).then((res) => {
       res.json().then((data) => {
         const costs = new Map();
@@ -61,6 +60,12 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
   const currentIntervention = interventions.find(
     (i: any) => i.title === selectedIntervention,
   ) as Intervention;
+
+  if (!currentIntervention) {
+    setSelectedIntervention(interventions[0].title);
+    return <Spinner />;
+  }
+
   const output = currentIntervention.pricePerOutput
     ? Math.round(sum / currentIntervention.pricePerOutput)
     : 0;
@@ -87,7 +92,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
                 type="tel"
                 value={sum}
                 onChange={(e) => {
-                  if(e.target.value.length <= 9) setSum(parseInt(e.target.value) || 0)
+                  if (e.target.value.length <= 9) setSum(parseInt(e.target.value) || 0);
                 }}
                 name="sum"
               />
@@ -119,7 +124,9 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ data }) => {
             <>
               <span className="detailheader">{currentIntervention.organizationName}</span>
               <div className={styles.paragraphWrapper}>
-                <span data-cy="impact-output" className={styles.paragraphNumber}>{thousandize(parseInt(outputString))}</span>
+                <span data-cy="impact-output" className={styles.paragraphNumber}>
+                  {thousandize(parseInt(outputString))}
+                </span>
                 <div className={styles.explanatory}>
                   <p>
                     <span className={styles.innerParagraphNumber}>{outputString}</span>
