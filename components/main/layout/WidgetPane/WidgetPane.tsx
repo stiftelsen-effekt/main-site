@@ -4,7 +4,7 @@ import { WidgetContext } from "../layout";
 import styles from "./WidgetPane.module.scss";
 
 const Widget = dynamic<{}>(
-  () => import("../../widget/components/Widget").then((mod) => mod.Widget),
+  () => import("../../../shared/components/Widget/components/Widget").then((mod) => mod.Widget),
   {
     ssr: false,
   },

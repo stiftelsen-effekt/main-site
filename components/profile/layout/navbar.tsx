@@ -41,13 +41,13 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile/details" passHref>
-              Profil
+            <Link href="/profile/tax" passHref>
+              Skatt
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile/skatt" passHref>
-              Skatt
+            <Link href="/profile/details" passHref>
+              Profil
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>

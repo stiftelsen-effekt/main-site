@@ -6,12 +6,12 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { State } from "../components/main/widget/store/state";
-import { donationReducer } from "../components/main/widget/store/donation/reducer";
-import { layoutReducer } from "../components/main/widget/store/layout/reducer";
-import { errorReducer } from "../components/main/widget/store/error/reducer";
-import { watchAll } from "../components/main/widget/store/root.saga";
-import { referralReducer } from "../components/main/widget/store/referrals/reducer";
+import { State } from "../components/shared/components/Widget/store/state";
+import { donationReducer } from "../components/shared/components/Widget/store/donation/reducer";
+import { layoutReducer } from "../components/shared/components/Widget/store/layout/reducer";
+import { errorReducer } from "../components/shared/components/Widget/store/error/reducer";
+import { watchAll } from "../components/shared/components/Widget/store/root.saga";
+import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
 import { Layout } from "../components/main/layout/layout";
 
 const rootReducer = combineReducers<State>({
