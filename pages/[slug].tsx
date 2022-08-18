@@ -31,7 +31,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/about`}
+        canonicalurl={`https://gieffektivt.no/${page.slug.current}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -124,7 +124,8 @@ const fetchGenericPage = groq`
         _type == 'link' => @ {
           ...
         },
-      }
+      },
+      slug { current },
     },
     content[] {
       ...,

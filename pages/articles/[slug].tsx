@@ -34,7 +34,7 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         titleTemplate={"%s | GiEffektivt."}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/articles`}
+        canonicalurl={`https://gieffektivt.no/articles/${page.slug.current}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -126,7 +126,8 @@ const fetchArticle = groq`
         },
         _type != 'reference' && _type != 'testimonials' => @,
       }
-    }
+    },
+    slug { current },
   },
   "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {
     header,
