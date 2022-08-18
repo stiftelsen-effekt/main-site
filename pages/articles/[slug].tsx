@@ -12,6 +12,7 @@ import { SEO } from "../../components/shared/seo/Seo";
 import { Layout } from "../../components/main/layout/layout";
 import { BlockContentRenderer } from "../../components/main/blocks/BlockContentRenderer";
 import { usePreviewSubscription } from "../../lib/sanity";
+import { pageContentQuery } from "../../_queries";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { data: previewData } = usePreviewSubscription(data?.query, {
@@ -116,17 +117,7 @@ const fetchArticle = groq`
         asset->
       },
     },
-    content[] {
-      ...,
-      blocks[] {
-        _type == 'reference' => @->,
-        _type == 'testimonials' =>  {
-          ...,
-          testimonials[]->,
-        },
-        _type != 'reference' && _type != 'testimonials' => @,
-      }
-    },
+    ${pageContentQuery}
     slug { current },
   },
   "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {

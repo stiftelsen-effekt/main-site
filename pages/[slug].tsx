@@ -11,6 +11,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
+import { linksContentQuery, pageContentQuery } from "../_queries";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { data: previewData } = usePreviewSubscription(data?.query, {
@@ -116,33 +117,9 @@ const fetchGenericPage = groq`
       seoImage{
         asset->,
       },
-      links[] {
-        _type == 'navitem' => @ {
-          ...,
-          "slug": page->slug.current
-        },
-        _type == 'link' => @ {
-          ...
-        },
-      },
+      ${linksContentQuery}
     },
-    content[] {
-      ...,
-      blocks[] {
-        _type == 'reference' => @->,
-        _type == 'testimonials' =>  {
-          ...,
-          testimonials[]->,
-        },
-        _type == 'fullvideo' =>  {
-          ...,
-          video{
-            asset->,
-          },
-        },
-        _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
-      }
-    },
+    ${pageContentQuery}
     slug { current },
   },
 }
