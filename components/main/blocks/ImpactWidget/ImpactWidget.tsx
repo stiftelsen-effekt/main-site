@@ -163,6 +163,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
                       _key: "organiasjoner",
                       _type: "navitem",
                       title: "Anbefalte organisasjoner",
+                      pagetype: "organizations",
                       slug: "organizations",
                     },
                   ]}
