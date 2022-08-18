@@ -128,7 +128,7 @@ const fetchArticle = groq`
       }
     }
   },
-  "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(date desc) [0..3] {
+  "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {
     header,
     "slug": slug.current,
   }

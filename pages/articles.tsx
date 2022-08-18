@@ -13,7 +13,7 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
 
-const ArticlesPage: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) => {
+const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { data: previewData } = usePreviewSubscription(data?.query, {
     params: data?.queryParams ?? {},
     initialData: data?.result,
@@ -117,7 +117,7 @@ const fethcArticles = groq`
       }
     },
   },
-  "articles": *[_type == "article_page"] | order(date desc) {
+  "articles": *[_type == "article_page"] | order(header.published desc) {
     header,
     "slug": slug.current,
   }
