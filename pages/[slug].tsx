@@ -125,7 +125,6 @@ const fetchGenericPage = groq`
           ...
         },
       },
-      slug { current },
     },
     content[] {
       ...,
@@ -143,7 +142,8 @@ const fetchGenericPage = groq`
         },
         _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
       }
-    }
+    },
+    slug { current },
   },
 }
 `;
