@@ -52,8 +52,13 @@ const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previ
       <SectionContainer nodivider>
         <div className={styles.articles}>
           {articles &&
-            articles.map((article: any) => (
-              <ArticlePreview key={article._key} header={article.header} slug={article.slug} />
+            articles.map((article: any, i: number) => (
+              <ArticlePreview
+                key={article._key}
+                header={article.header}
+                inngress={i === 0 ? article.header.inngress : undefined}
+                slug={article.slug}
+              />
             ))}
         </div>
       </SectionContainer>
