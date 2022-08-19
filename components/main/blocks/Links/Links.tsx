@@ -21,7 +21,16 @@ export const Links: React.FC<LinksProps> = ({ links }) => {
       {links &&
         links.map((link) => (
           <li key={link._key}>
-            <Link href={link._type === "navitem" ? `/${link.slug}` : link.url} passHref>
+            <Link
+              href={
+                link._type === "navitem"
+                  ? link.pagetype === "article_page"
+                    ? `/articles/${link.slug}`
+                    : `/${link.slug}`
+                  : link.url
+              }
+              passHref
+            >
               <a
                 target={link._type === "link" && link.newtab ? "_blank" : ""}
               >{`→ ${link.title}`}</a>

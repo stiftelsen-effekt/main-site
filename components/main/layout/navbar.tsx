@@ -13,6 +13,7 @@ export type NavLink = {
   _type: "navitem";
   _key: string;
   title: string;
+  pagetype: string;
   slug: string;
 };
 
@@ -77,19 +78,23 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                   expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
                 }
               >
-                <button
-                  onClick={() => toggleExpanded(el._key)}
-                  tabIndex={-1}
-                >
+                <button onClick={() => toggleExpanded(el._key)} tabIndex={-1}>
                   {el.title}
                 </button>
                 <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
                   <div className={styles.submenu}>
                     <ul>
                       {el.items.map((subel) => (
-                        <li key={subel.title} data-cy={(`${subel.title}-link`).replace(/ /g,"-")}>
+                        <li key={subel.title} data-cy={`${subel.title}-link`.replace(/ /g, "-")}>
                           <Link href={`/${subel.slug}`} passHref>
-                            <a onClick={(e) => { e.currentTarget.blur(); setExpanded(false); }}>{subel.title}</a>
+                            <a
+                              onClick={(e) => {
+                                e.currentTarget.blur();
+                                setExpanded(false);
+                              }}
+                            >
+                              {subel.title}
+                            </a>
                           </Link>
                         </li>
                       ))}
@@ -117,7 +122,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             </Link>
             <EffektButton
               cy="send-donation-button"
-              extraMargin={true} 
+              extraMargin={true}
               onClick={() => setWidgetOpen(true)}
             >
               Send donasjon

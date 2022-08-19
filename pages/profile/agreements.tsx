@@ -14,7 +14,7 @@ import {
 import { useContext, useState } from "react";
 import { ActivityContext } from "../../components/profile/layout/activityProvider";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
-import { Clock } from "react-feather";
+import { AlertTriangle, Clock } from "react-feather";
 import AgreementsMenu from "../../components/profile/agreements/AgreementsMenu/AgreementsMenu";
 import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
@@ -24,6 +24,7 @@ import { Navbar } from "../../components/profile/layout/navbar";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
+import Link from "next/link";
 
 const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -91,6 +92,14 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
   if (refreshing) setActivity(true);
   else setActivity(false);
 
+  const activeAvtalegiroAgreements: AvtaleGiroAgreement[] = avtaleGiro.filter(
+    (agreement: AvtaleGiroAgreement) => agreement.active === 1,
+  );
+
+  const activeVippsAgreements: VippsAgreement[] = vipps.filter(
+    (agreement: VippsAgreement) => agreement.status === "ACTIVE",
+  );
+
   const distributionsMap = getDistributionMap(distributions, organizations);
 
   const vippsPending = vipps.filter((agreement: VippsAgreement) => agreement.status === "PENDING");
@@ -98,6 +107,16 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
     (agreement: AvtaleGiroAgreement) => agreement.active === 0 && agreement.cancelled === null,
   );
   const pendingCount = vippsPending.length + avtalegiroPending.length;
+
+  const sciOrgId = 2;
+  const hasDistributionWithSCI = [...activeAvtalegiroAgreements, ...activeVippsAgreements]
+    .map((agreement) => distributionsMap.get(agreement.KID))
+    .some(
+      (distribution: Distribution | undefined) =>
+        distribution &&
+        distribution.organizations.some((org) => org.id === sciOrgId && parseFloat(org.share) > 0),
+    );
+
   return (
     <>
       <Head>
@@ -118,7 +137,35 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
         <div className={styles.container}>
           <h3 className={styles.header}>Faste avtaler</h3>
 
-          {pendingCount >= 1 ? (
+          {hasDistributionWithSCI && (
+            <InfoBox>
+              <header>
+                <AlertTriangle size={24} color={"black"} />
+                SCI Foundation utgår som anbefalt organisasjon
+              </header>
+              <p>
+                Du har en aktiv donasjonsavtale til SCI Foundation. Vi anbefaler ikke lenger
+                donasjoner til SCI Foundation gjeldende fra 18.08.22 og vil slutte å tildele penger
+                til dem 31. oktober 2022. Les mer om denne endringen på{" "}
+                <Link href={"/articles/nye-evalueringskriterier-for-topplista"} passHref>
+                  <a style={{ textDecoration: "underline" }}>bloggen vår</a>
+                </Link>
+                .
+              </p>
+              <br />
+              <p>
+                Donasjoner øremerket SCI Foundation blir fra og med 1. november 2022 i stedet følge{" "}
+                <Link href={"/smart-fordeling"} passHref>
+                  <a style={{ textDecoration: "underline" }}>Smart fordeling</a>
+                </Link>
+                . Om du ønsker en annen fordeling kan du oppdatere fordelingen på din faste
+                donasjon, eller fylle ut donasjonsskjemaet for en ny donasjon. Ta kontakt om du har
+                noen spørsmål.
+              </p>
+            </InfoBox>
+          )}
+
+          {pendingCount >= 1 && (
             <InfoBox>
               <header>
                 <Clock size={24} color={"black"} />
@@ -129,15 +176,13 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
                 Bankene bruker noen dager på å bekrefte opprettelse før avtalen din blir aktivert.
               </p>
             </InfoBox>
-          ) : null}
+          )}
 
           {window.innerWidth > 1180 || selected === "Aktive avtaler" ? (
             <AgreementList
               title={"Aktive"}
-              vipps={vipps.filter((agreement: VippsAgreement) => agreement.status === "ACTIVE")}
-              avtalegiro={avtaleGiro.filter(
-                (agreement: AvtaleGiroAgreement) => agreement.active === 1,
-              )}
+              vipps={activeVippsAgreements}
+              avtalegiro={activeAvtalegiroAgreements}
               distributions={distributionsMap}
               supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
               emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
