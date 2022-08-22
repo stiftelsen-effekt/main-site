@@ -41,6 +41,11 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>
+            <Link href="/profile/tax" passHref>
+              Skatt
+            </Link>
+          </li>
+          <li onClick={() => setExpandMenu(false)}>
             <Link href="/profile/details" passHref>
               Profil
             </Link>
@@ -54,10 +59,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
             </EffektButton>
           </li>
           <li>
-            <EffektButton
-              cy="send-donation-button"
-              onClick={() => setWidgetOpen(true)}
-            >
+            <EffektButton cy="send-donation-button" onClick={() => setWidgetOpen(true)}>
               Send donasjon
             </EffektButton>
           </li>

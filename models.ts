@@ -86,9 +86,17 @@ export type Organization = {
 };
 
 export type SEOMeta = {
-  title: string,
-  titleTemplate?: string,
-  description: string,
-  imageAsset: SanityAsset,
-  canonicalurl: string
-}
+  title: string;
+  titleTemplate?: string;
+  description: string;
+  imageAsset: SanityAsset;
+  canonicalurl: string;
+};
+
+export type FacebookDonationRegistration = {
+  email: string;
+  paymentID: string;
+  name: string;
+  ssn: string;
+  newsletter: boolean;
+};
