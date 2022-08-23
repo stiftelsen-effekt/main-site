@@ -10,10 +10,11 @@ import { fetchReferralsAction } from "../store/referrals/actions";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { useDebouncedCallback } from "use-debounce";
 import { WidgetContext } from "../../../../main/layout/layout";
+import { WidgetProps } from "../types/WidgetProps";
 
 export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
 
-export const Widget: React.FC = () => {
+export const Widget: React.FC<{ text: WidgetProps }> = ({ text }) => {
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
@@ -70,7 +71,19 @@ export const Widget: React.FC = () => {
       <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
         <ProgressBar />
         <Carousel minHeight={scaledHeight - 116}>
-          <DonationPane />
+          <DonationPane
+            text={{
+              single_donation_text: text.single_donation_text,
+              monthly_donation_text: text.monthly_donation_text,
+              preset_donation_amount_1: text.preset_donation_amount_1,
+              preset_donation_amount_2: text.preset_donation_amount_2,
+              preset_donation_amount_3: text.preset_donation_amount_3,
+              smart_fordeling_text: text.smart_fordeling_text,
+              smart_fordeling_description: text.smart_fordeling_description,
+              choose_your_own_text: text.choose_your_own_text,
+              button_text: text.button_text,
+            }}
+          />
           <DonorPane />
           <PaymentPane />
         </Carousel>

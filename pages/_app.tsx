@@ -30,7 +30,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   const PageLayout = (Component as LayoutPage).layout || Layout;
   return pageProps.data ? (
     <Provider store={store}>
-      <PageLayout footerData={pageProps.data.result.footer[0]}>
+      <PageLayout
+        footerData={pageProps.data.result.footer[0]}
+        widgetData={pageProps.data.result.widget[0]}
+      >
         <Component {...pageProps} />
       </PageLayout>
     </Provider>

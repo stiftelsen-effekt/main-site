@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import { LayoutPage } from "../types";
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.server";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import { SEO } from "../components/shared/seo/Seo";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { IntroSection } from "../components/main/blocks/IntroSection/IntroSection";
@@ -16,18 +16,19 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { Layout } from "../components/main/layout/layout";
+import { Layout, widgetQuery } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
 import { usePreviewSubscription } from "../lib/sanity";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
-  () => import("../components/main/blocks/ImpactWidget/ImpactWidget").then((mod) => mod.ImpactWidget),
+  () =>
+    import("../components/main/blocks/ImpactWidget/ImpactWidget").then((mod) => mod.ImpactWidget),
   {
     ssr: false,
   },
 );
 
-const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) => {
+const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { data: previewData } = usePreviewSubscription(data?.query, {
     params: data?.queryParams ?? {},
     initialData: data?.result,
@@ -166,6 +167,7 @@ const fetchFrontpage = groq`
     },
   },
   ${footerQuery}
+  ${widgetQuery}
   "frontpage": *[_type == "frontpage"] {
     seoTitle, 
     seoDescription, 
