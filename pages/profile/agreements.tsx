@@ -255,7 +255,7 @@ const getDistributionMap = (distributions: Distribution[], organizations: Organi
     for (let j = 0; j < dist.organizations.length; j++) {
       let org = dist.organizations[j];
       let index = newDist.organizations.map((o) => o.id).indexOf(org.id);
-      newDist.organizations[index].share = org.share;
+      if (newDist.organizations[index]) newDist.organizations[index].share = org.share;
     }
 
     map.set(dist.kid, { ...newDist });
