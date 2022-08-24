@@ -46,17 +46,6 @@ export const ProfileInfo: React.FC = () => {
         E-post <br />
         <input id="email" type="email" disabled value={donor.email} className={style.input} />{" "}
         <br /> <br />
-        Fødselsnummer / Organisasjonsnummer <br />
-        <input
-          id="ssn"
-          type="text"
-          defaultValue={donor.ssn}
-          className={style.input}
-          onChange={(e) => {
-            setDonor({ ...donor, ssn: e.target.value });
-          }}
-        />{" "}
-        <br /> <br />
         <input
           type="checkbox"
           className={donor.newsletter ? style.checkboxActive : style.checkbox}

@@ -59,7 +59,6 @@ export type Donor = {
   id: string;
   name: string;
   email: string;
-  ssn: string;
   newsletter: boolean;
   registered: string;
 };
