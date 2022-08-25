@@ -30,28 +30,30 @@ function MyApp({ Component, pageProps }: AppProps) {
   // Gets the page layout from the component, defaults to the main layout
   const PageLayout = (Component as LayoutPage).layout || Layout;
 
-  const propsData = pageProps.data;
-  const { data: previewData } = usePreviewSubscription(propsData?.query, {
-    params: propsData?.queryParams ?? {},
-    initialData: propsData?.result,
-    enabled: pageProps.preview,
-  });
-  pageProps.data.result = previewData;
+  if (pageProps.data) {
+    const propsData = pageProps.data;
+    const { data: previewData } = usePreviewSubscription(propsData?.query, {
+      params: propsData?.queryParams ?? {},
+      initialData: propsData?.result,
+      enabled: pageProps.preview,
+    });
+    pageProps.data.result = previewData;
 
-  const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
-  if ((Component as LayoutPage).filterPage) {
-    pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
+    const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
+    if ((Component as LayoutPage).filterPage) {
+      pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
+    }
+
+    return (
+      <Provider store={store}>
+        <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
+          <Component {...pageProps} />
+        </PageLayout>
+      </Provider>
+    );
+  } else {
+    return <Component {...pageProps} />;
   }
-
-  return pageProps.data ? (
-    <Provider store={store}>
-      <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
-        <Component {...pageProps} />
-      </PageLayout>
-    </Provider>
-  ) : (
-    <Component {...pageProps} />
-  );
 }
 
 export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
