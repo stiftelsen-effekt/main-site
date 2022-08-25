@@ -131,7 +131,7 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
               onSubmit();
             }}
           >
-            {text.button_text}
+            {text.pane1_button_text}
           </NextButton>
         </ActionBar>
       </PaneContainer>

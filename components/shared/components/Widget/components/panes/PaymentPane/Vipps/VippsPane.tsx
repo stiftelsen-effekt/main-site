@@ -4,7 +4,6 @@ import { RadioButtonGroup } from "../../../../../RadioButton/RadioButtonGroup";
 import { Referrals } from "../../../shared/Referrals/Referrals";
 import { WidgetContext } from "../../../../../../../main/layout/layout";
 import { draftAgreementAction, setVippsAgreement } from "../../../../store/donation/actions";
-import { submitReferralAction } from "../../../../store/referrals/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
 import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
@@ -12,19 +11,22 @@ import { ErrorField } from "../../../shared/Error/ErrorField";
 import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
 import { VippsButtonWrapper } from "./VippsPane.style";
+import {
+  WidgetPane3ReferralsProps,
+  WidgetPane3VippsRecurringProps,
+  WidgetPane3VippsSingleProps,
+} from "../../../../types/WidgetProps";
 
-export const VippsPane: React.FC = () => {
+export const VippsPane: React.FC<{
+  text: WidgetPane3VippsSingleProps & WidgetPane3VippsRecurringProps & WidgetPane3ReferralsProps;
+}> = ({ text }) => {
   const dispatch = useDispatch();
   const donationState = useSelector((state: State) => state.donation);
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
   const [draftError, setDraftError] = useState(false);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
   const donorID = useSelector((state: State) => state.donation.donor?.donorID);
-  const referrals = useSelector((state: State) => state.referrals.referrals);
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
-  const [selectedReferral, setSelectedReferral] = useState(0);
-  const [otherInput, setOtherInput] = useState("");
 
   return (
     <Pane>
@@ -32,12 +34,12 @@ export const VippsPane: React.FC = () => {
         {recurring === RecurringDonation.RECURRING && (
           <>
             <div>
-              <PaneTitle>Opprett Vipps avtale</PaneTitle>
+              <PaneTitle>{text.pane3_vipps_recurring_title}</PaneTitle>
               <div style={{ paddingTop: 20, marginBottom: 30 }}>
                 <RadioButtonGroup
                   options={[
-                    { title: "Begynn i dag", value: 0 },
-                    { title: "Velg annen trekkdag", value: 1 },
+                    { title: text.pane3_vipps_recurring_selector_earliest_text, value: 0 },
+                    { title: text.pane3_vipps_recurring_selector_choose_date_text, value: 1 },
                   ]}
                   selected={chooseChargeDay}
                   onSelect={(option: number) => {
@@ -66,7 +68,7 @@ export const VippsPane: React.FC = () => {
                     (document.activeElement as HTMLElement).blur();
                   }}
                 >
-                  Opprett avtale
+                  {text.pane3_vipps_recurring_button_text}
                 </SubmitButton>
               </div>
             </CenterDiv>
@@ -75,7 +77,7 @@ export const VippsPane: React.FC = () => {
         {recurring === RecurringDonation.NON_RECURRING && (
           <>
             <div>
-              <PaneTitle>Du kan nå overføre til oss</PaneTitle>
+              <PaneTitle>{text.pane3_vipps_single_title}</PaneTitle>
             </div>
             <CenterDiv>
               <VippsButtonWrapper data-cy="vipps-single-button">
@@ -87,14 +89,20 @@ export const VippsPane: React.FC = () => {
                     (document.activeElement as HTMLElement).blur();
                   }}
                 >
-                  Betal med Vipps
+                  {text.pane3_vipps_single_button_text}
                 </SubmitButton>
               </VippsButtonWrapper>
             </CenterDiv>
           </>
         )}
         {/* Always show referrals for anonymous donors (ID 1464) */}
-        {(!hasAnswerredReferral || donorID == 1464) && <Referrals />}
+        {(!hasAnswerredReferral || donorID == 1464) && (
+          <Referrals
+            text={{
+              pane3_referrals_title: text.pane3_referrals_title,
+            }}
+          />
+        )}
       </PaneContainer>
     </Pane>
   );

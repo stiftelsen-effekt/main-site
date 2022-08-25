@@ -81,11 +81,47 @@ export const Widget: React.FC<{ text: WidgetProps }> = ({ text }) => {
               smart_fordeling_text: text.smart_fordeling_text,
               smart_fordeling_description: text.smart_fordeling_description,
               choose_your_own_text: text.choose_your_own_text,
-              button_text: text.button_text,
+              pane1_button_text: text.pane1_button_text,
             }}
           />
-          <DonorPane />
-          <PaymentPane />
+          <DonorPane
+            text={{
+              anon_button_text: text.anon_button_text,
+              name_placeholder: text.name_placeholder,
+              email_placeholder: text.email_placeholder,
+              tax_deduction_selector_text: text.tax_deduction_selector_text,
+              tax_deduction_ssn_placeholder: text.tax_deduction_ssn_placeholder,
+              tax_deduction_tooltip_text: text.tax_deduction_tooltip_text,
+              newsletter_selector_text: text.newsletter_selector_text,
+              privacy_policy_text: text.privacy_policy_text,
+              payment_method_selector_bank_text: text.payment_method_selector_bank_text,
+              payment_method_selector_vipps_text: text.payment_method_selector_vipps_text,
+              pane2_button_text: text.pane2_button_text,
+            }}
+          />
+          <PaymentPane
+            text={{
+              pane3_bank_recurring_title: text.pane3_bank_recurring_title,
+              pane3_bank_recurring_selector_earliest_text:
+                text.pane3_bank_recurring_selector_earliest_text,
+              pane3_bank_recurring_selector_choose_date_text:
+                text.pane3_bank_recurring_selector_choose_date_text,
+              pane3_bank_recurring_button_text: text.pane3_bank_recurring_button_text,
+              pane3_bank_single_title: text.pane3_bank_single_title,
+              pane3_bank_single_kontonr_title: text.pane3_bank_single_kontonr_title,
+              pane3_bank_single_kid_title: text.pane3_bank_single_kid_title,
+              pane3_bank_single_explanatory_text: text.pane3_bank_single_explanatory_text,
+              pane3_vipps_single_title: text.pane3_vipps_single_title,
+              pane3_vipps_single_button_text: text.pane3_vipps_single_button_text,
+              pane3_vipps_recurring_title: text.pane3_vipps_recurring_title,
+              pane3_vipps_recurring_selector_earliest_text:
+                text.pane3_vipps_recurring_selector_earliest_text,
+              pane3_vipps_recurring_selector_choose_date_text:
+                text.pane3_vipps_recurring_selector_choose_date_text,
+              pane3_vipps_recurring_button_text: text.pane3_vipps_recurring_button_text,
+              pane3_referrals_title: text.pane3_referrals_title,
+            }}
+          />
         </Carousel>
       </WidgetTooltipContext.Provider>
     </div>

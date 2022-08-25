@@ -40,12 +40,14 @@ export default {
       title: 'Single donation option text',
       type: 'string',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     {
       name: 'monthly_donation_text',
       title: 'Monthly donation option text',
       type: 'string',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     // 3 Preset donation amount values
     {
@@ -53,18 +55,21 @@ export default {
       title: 'Preset donation amount 1',
       type: 'number',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     {
       name: 'preset_donation_amount_2',
       title: 'Preset donation amount 2',
       type: 'number',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     {
       name: 'preset_donation_amount_3',
       title: 'Preset donation amount 3',
       type: 'number',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     //Smart fordeling / Choose your own text
     {
@@ -72,12 +77,14 @@ export default {
       title: 'Smart fordeling text',
       type: 'string',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     {
       name: 'choose_your_own_text',
       title: 'Choose your own text',
       type: 'string',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     {
       name: 'smart_fordeling_description',
@@ -85,13 +92,219 @@ export default {
       type: 'text',
       rows: 3,
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
     },
     //Button text
     {
-      name: 'button_text',
+      name: 'pane1_button_text',
       title: 'Button text',
       type: 'string',
       group: 'pane1',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Anon button text pane 2
+    {
+      name: 'anon_button_text',
+      title: 'Anon button text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Placeholders on name and email pane 2
+    {
+      name: 'name_placeholder',
+      title: 'Name placeholder',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'email_placeholder',
+      title: 'Email placeholder',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Tax deduction selector text pane 2
+    {
+      name: 'tax_deduction_selector_text',
+      title: 'Tax deduction selector text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'tax_deduction_ssn_placeholder',
+      title: 'Tax deduction ssn placeholder',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'tax_deduction_tooltip_text',
+      title: 'Tax deduction tooltip text',
+      type: 'text',
+      rows: 3,
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Newsletter selector text pane 2
+    {
+      name: 'newsletter_selector_text',
+      title: 'Newsletter selector text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Privacy policy text pane 2
+    {
+      name: 'privacy_policy_text',
+      title: 'Privacy policy text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Payment method selector text pane 2
+    {
+      name: 'payment_method_selector_bank_text',
+      title: 'Payment method selector bank text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'payment_method_selector_vipps_text',
+      title: 'Payment method selector vipps text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Button text pane 2
+    {
+      name: 'pane2_button_text',
+      title: 'Button text',
+      type: 'string',
+      group: 'pane2',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Title pane 3 bank recurring
+    {
+      name: 'pane3_bank_recurring_title',
+      title: 'Title',
+      type: 'string',
+      group: 'pane3_bank_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Selector text pane 3 bank recurring
+    {
+      name: 'pane3_bank_recurring_selector_earliest_text',
+      title: 'Selector earliest text',
+      type: 'string',
+      group: 'pane3_bank_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'pane3_bank_recurring_selector_choose_date_text',
+      title: 'Selector choose date text',
+      type: 'string',
+      group: 'pane3_bank_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Button text pane 3 bank recurring
+    {
+      name: 'pane3_bank_recurring_button_text',
+      title: 'Button text',
+      type: 'string',
+      group: 'pane3_bank_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Title pane 3 bank single
+    {
+      name: 'pane3_bank_single_title',
+      title: 'Title',
+      type: 'string',
+      group: 'pane3_bank_single',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Kontonr title pane 3 bank single
+    {
+      name: 'pane3_bank_single_kontonr_title',
+      title: 'Kontonr title',
+      type: 'string',
+      group: 'pane3_bank_single',
+      validation: (Rule: any) => Rule.required()
+    },
+    // KID title pane 3 bank single
+    {
+      name: 'pane3_bank_single_kid_title',
+      title: 'KID title',
+      type: 'string',
+      group: 'pane3_bank_single',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Explanatory text pane 3 bank single
+    {
+      name: 'pane3_bank_single_explanatory_text',
+      title: 'Explanatory text',
+      type: 'text',
+      rows: 3,
+      group: 'pane3_bank_single',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Title pane 3 vipps recurring
+    {
+      name: 'pane3_vipps_recurring_title',
+      title: 'Title',
+      type: 'string',
+      group: 'pane3_vipps_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Selector text pane 3 vipps recurring
+    {
+      name: 'pane3_vipps_recurring_selector_earliest_text',
+      title: 'Selector earliest text',
+      type: 'string',
+      group: 'pane3_vipps_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'pane3_vipps_recurring_selector_choose_date_text',
+      title: 'Selector choose date text',
+      type: 'string',
+      group: 'pane3_vipps_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Button text pane 3 vipps recurring
+    {
+      name: 'pane3_vipps_recurring_button_text',
+      title: 'Button text',
+      type: 'string',
+      group: 'pane3_vipps_recurring',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Title pane 3 vipps single
+    {
+      name: 'pane3_vipps_single_title',
+      title: 'Title',
+      type: 'string',
+      group: 'pane3_vipps_single',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Button text pane 3 vipps single
+    {
+      name: 'pane3_vipps_single_button_text',
+      title: 'Button text',
+      type: 'string',
+      group: 'pane3_vipps_single',
+      validation: (Rule: any) => Rule.required()
+    },
+    // Referrals header pane 3 
+    {
+      name: 'pane3_referrals_title',
+      title: 'Referrals header',
+      type: 'string',
+      group: 'referrals',
+      validation: (Rule: any) => Rule.required()
     },
   ]
 }
