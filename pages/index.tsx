@@ -16,9 +16,10 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { Layout, widgetQuery } from "../components/main/layout/layout";
+import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
-import { usePreviewSubscription } from "../lib/sanity";
+import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
+import { widgetQuery } from "../_queries";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
   () =>
@@ -29,13 +30,7 @@ const ImpactWidget = dynamic<ImpactWidgetProps>(
 );
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const frontpage = filterPageToSingleItem(previewData, preview);
+  const frontpage = data.result.page;
 
   const salespitch = frontpage.salespitch;
   const settings = data.result.settings[0];
@@ -130,7 +125,12 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
 
 export async function getStaticProps({ preview = false }) {
   let result = await getClient(preview).fetch(fetchFrontpage);
-  result = { ...result, frontpage: filterPageToSingleItem(result, preview) };
+
+  result = {
+    ...result,
+    frontpage: filterPageToSingleItem(result, preview),
+    widget: filterWidgetToSingleItem(result, preview),
+  };
 
   return {
     props: {
@@ -168,7 +168,7 @@ const fetchFrontpage = groq`
   },
   ${footerQuery}
   ${widgetQuery}
-  "frontpage": *[_type == "frontpage"] {
+  "page": *[_type == "frontpage"] {
     seoTitle, 
     seoDescription, 
     seoImage{
@@ -187,21 +187,6 @@ const fetchFrontpage = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.frontpage)) {
-    return data.frontpage;
-  }
-
-  if (data.frontpage.length === 1) {
-    return data.frontpage[0];
-  }
-
-  if (preview) {
-    return data.frontpage.find((item: any) => item._id.startsWith("drafts.")) || data.frontpage[0];
-  }
-
-  return data.frontpage[0];
-};
-
 Home.layout = Layout;
+Home.filterPage = true;
 export default Home;

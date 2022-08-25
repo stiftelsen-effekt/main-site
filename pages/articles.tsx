@@ -11,16 +11,11 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
-import { usePreviewSubscription } from "../lib/sanity";
+import { filterPageToSingleItem } from "./_app";
+import { widgetQuery } from "../_queries";
 
 const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const page = filterPageToSingleItem(previewData, preview);
+  const page = data.result.page;
 
   const settings = data.result.settings[0];
   const header = page.header;
@@ -105,6 +100,7 @@ const fethcArticles = groq`
     },
   },
   ${footerQuery}
+  ${widgetQuery}
   "page": *[_type == "articles"] {
     header {
       ...,
@@ -129,21 +125,6 @@ const fethcArticles = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.page)) {
-    return data.page;
-  }
-
-  if (data.page.length === 1) {
-    return data.page[0];
-  }
-
-  if (preview) {
-    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
-  }
-
-  return data.page[0];
-};
-
 ArticlesPage.layout = Layout;
+ArticlesPage.filterPage = true;
 export default ArticlesPage;

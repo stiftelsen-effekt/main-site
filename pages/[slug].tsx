@@ -11,20 +11,15 @@ import { SEO } from "../components/shared/seo/Seo";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { linksContentQuery, pageContentQuery } from "../_queries";
+import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
+import { filterPageToSingleItem } from "./_app";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const page = filterPageToSingleItem(previewData, preview);
+  const page = data.result.page;
 
   const header = page.header;
   const content = page.content;
-  const settings = previewData.settings[0];
+  const settings = data.result.settings[0];
 
   return (
     <>
@@ -110,6 +105,7 @@ const fetchGenericPage = groq`
       },
     }
   },
+  ${widgetQuery}
   ${footerQuery}
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
@@ -125,21 +121,6 @@ const fetchGenericPage = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.page)) {
-    return data.page;
-  }
-
-  if (data.page.length === 1) {
-    return data.page[0];
-  }
-
-  if (preview) {
-    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
-  }
-
-  return data.page[0];
-};
-
 GenericPage.layout = Layout;
+GenericPage.filterPage = true;
 export default GenericPage;

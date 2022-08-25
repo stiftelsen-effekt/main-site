@@ -35,9 +35,3 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
     </div>
   );
 };
-
-export const widgetQuery = `
-  "widget": *[_type == "donationwidget"] {
-    ...
-  },
-`;

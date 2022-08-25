@@ -15,15 +15,11 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
+import { widgetQuery } from "../_queries";
+import { filterPageToSingleItem } from "./_app";
 
 const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const page = filterPageToSingleItem(previewData, preview);
+  const page = data.result.page;
 
   const settings = data.result.settings[0];
   const header = page.header;
@@ -48,7 +44,11 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
         <div className={styles.organizationWrapper}>
           {organizations &&
             organizations.map((organization: any) => (
-              <div key={organization._id} id={organization.name.replace(/ /g,"_")} className={styles.organization}>
+              <div
+                key={organization._id}
+                id={organization.name.replace(/ /g, "_")}
+                className={styles.organization}
+              >
                 <div className={styles.meta}>
                   <div>
                     <p className="inngress">{organization.name}</p>
@@ -117,6 +117,7 @@ const fetchOrganizationsPage = groq`
       },
     }
   },
+  ${widgetQuery}
   ${footerQuery}
   "page": *[_type == "organizations"] {
     header {
@@ -141,21 +142,6 @@ const fetchOrganizationsPage = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.page)) {
-    return data.page;
-  }
-
-  if (data.page.length === 1) {
-    return data.page[0];
-  }
-
-  if (preview) {
-    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
-  }
-
-  return data.page[0];
-};
-
 Organizations.layout = Layout;
+Organizations.filterPage = true;
 export default Organizations;

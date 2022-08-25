@@ -16,15 +16,11 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Links } from "../components/main/blocks/Links/Links";
 import { Layout } from "../components/main/layout/layout";
+import { widgetQuery } from "../_queries";
+import { filterPageToSingleItem } from "./_app";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const about = filterPageToSingleItem(previewData, preview);
+  const about = data.result.page;
 
   const settings = data.result.settings[0];
   const header = about.header;
@@ -128,7 +124,8 @@ const fetchAboutUs = groq`
     }
   },
   ${footerQuery}
-  "about": *[_type == "about_us"] {
+  ${widgetQuery}
+  "page": *[_type == "about_us"] {
     header {
       ...,
       seoImage{
@@ -162,21 +159,6 @@ const fetchAboutUs = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.about)) {
-    return data.about;
-  }
-
-  if (data.about.length === 1) {
-    return data.about[0];
-  }
-
-  if (preview) {
-    return data.about.find((item: any) => item._id.startsWith("drafts.")) || data.about[0];
-  }
-
-  return data.about[0];
-};
-
 About.layout = Layout;
+About.filterPage = true;
 export default About;
