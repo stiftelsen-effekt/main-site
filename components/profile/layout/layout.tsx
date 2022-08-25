@@ -16,7 +16,7 @@ const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || "/profile/");
 };
 
-export const Layout: LayoutElement = ({ children, footerData }) => {
+export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
@@ -58,7 +58,7 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
                 />
                 <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-                    <WidgetPane darkMode={true} />
+                    <WidgetPane darkMode={true} text={widgetData} />
                     <main className={styles.main}>{children}</main>
                   </CookiesAccepted.Provider>
                 </WidgetContext.Provider>
