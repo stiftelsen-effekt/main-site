@@ -1,0 +1,34 @@
+.container {
+  max-width: 760px;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.quote {
+  position: relative;
+}
+
+.offsetLeft {
+  left: -10%;
+}
+
+.offsetRight {
+  right: -10%;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) { 
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .offsetLeft {
+    left: 0;
+  }
+  
+  .offsetRight {
+    right: 0;
+  }
+}
+

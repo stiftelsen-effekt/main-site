@@ -33,6 +33,7 @@ export default {
       title: 'Content',
       of: [
         { type: 'paragraph' },
+        { type: 'quote' },
         { type: 'splitview' },
         { type: 'columns' },
         { type: 'links' },

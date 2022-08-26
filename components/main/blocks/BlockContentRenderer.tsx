@@ -15,6 +15,7 @@ import { PointList } from "./PointList/PointList";
 import { PointListPointProps } from "./PointList/PointListPoint";
 import { PointListSectionWrapper } from "./PointList/PointListSectionWrapper";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
+import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
@@ -114,6 +115,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                 case "testimonials":
                   return (
                     <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
+                  );
+                case "quote":
+                  return (
+                    <Quote
+                      key={block._key || block._id}
+                      quote={block.quote}
+                      offset={block.offset}
+                      quotationMarks={block.quotation_marks}
+                    />
                   );
                 default:
                   return block._type;
