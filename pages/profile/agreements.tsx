@@ -10,6 +10,7 @@ import {
   useAvtalegiroAgreements,
   useOrganizations,
   useVippsAgreements,
+  widgetQuery,
 } from "../../_queries";
 import { useContext, useState } from "react";
 import { ActivityContext } from "../../components/profile/layout/activityProvider";
@@ -231,6 +232,7 @@ const fetchProfilePage = groq`
     logo,
   },
   ${footerQuery}
+  ${widgetQuery}
 }
 `;
 

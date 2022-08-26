@@ -30,13 +30,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   // Gets the page layout from the component, defaults to the main layout
   const PageLayout = (Component as LayoutPage).layout || Layout;
 
+  const propsData = pageProps.data;
+  const { data: previewData } = usePreviewSubscription(propsData?.query, {
+    params: propsData?.queryParams ?? {},
+    initialData: propsData?.result,
+    enabled: pageProps.preview,
+  });
+
   if (pageProps.data) {
-    const propsData = pageProps.data;
-    const { data: previewData } = usePreviewSubscription(propsData?.query, {
-      params: propsData?.queryParams ?? {},
-      initialData: propsData?.result,
-      enabled: pageProps.preview,
-    });
     pageProps.data.result = previewData;
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
