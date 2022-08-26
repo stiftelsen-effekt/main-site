@@ -4,19 +4,21 @@ import { RoundedBorder } from "../../../shared/Layout/Layout.style";
 import { TextWrapper } from "./ResultPane.style";
 
 export const PaymentInformation: React.FC<{
+  accountTitle: string;
+  kidTitle: string;
   donation: Donation;
-}> = ({ donation }) => {
+}> = ({ donation, accountTitle, kidTitle }) => {
   return (
     <>
       <RoundedBorder>
         <TextWrapper>
-          <span>Kontonr</span>
+          <span>{accountTitle}</span>
           <span>1506 29 95960</span>
         </TextWrapper>
       </RoundedBorder>
       <RoundedBorder>
         <TextWrapper>
-          <span>KID</span>
+          <span>{kidTitle}</span>
           <span data-cy="kidNumber">{donation.kid}</span>
         </TextWrapper>
       </RoundedBorder>

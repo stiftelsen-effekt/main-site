@@ -7,7 +7,8 @@ import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;
-}> = ({ donation }) => {
+  buttonText: string;
+}> = ({ donation, buttonText }) => {
   const dispatch = useDispatch();
 
   return (
@@ -37,7 +38,7 @@ export const RecurringBankDonationForm: React.FC<{
         />
         <input type="hidden" name="notificationDisabled" id="notificationDisabled" value="false" />
         <SubmitButton onClick={() => dispatch(draftAvtaleGiroAction.started(undefined))}>
-          Opprett avtale
+          {buttonText}
         </SubmitButton>
       </form>
     </div>

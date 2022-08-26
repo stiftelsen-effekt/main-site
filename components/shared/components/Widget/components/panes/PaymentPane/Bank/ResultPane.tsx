@@ -16,15 +16,19 @@ import {
 import { PaymentInformation } from "./PaymentInformation";
 import { RecurringBankDonationForm } from "./RecurringForm";
 import { Referrals } from "../../../shared/Referrals/Referrals";
+import {
+  WidgetPane3BankRecurringProps,
+  WidgetPane3BankSingleProps,
+  WidgetPane3ReferralsProps,
+} from "../../../../types/WidgetProps";
 
-export const ResultPane: React.FC = () => {
+export const ResultPane: React.FC<{
+  text: WidgetPane3BankRecurringProps & WidgetPane3BankSingleProps & WidgetPane3ReferralsProps;
+}> = ({ text }) => {
   const donation = useSelector((state: State) => state.donation);
-  const referrals = useSelector((state: State) => state.referrals.referrals);
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const donorID = useSelector((state: State) => state.donation.donor?.donorID);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
-  const [selectedReferral, setSelectedReferral] = useState(0);
-  const [otherInput, setOtherInput] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,12 +43,12 @@ export const ResultPane: React.FC = () => {
         {donation.recurring === RecurringDonation.RECURRING && (
           <>
             <div>
-              <PaneTitle>Opprett AvtaleGiro avtale</PaneTitle>
+              <PaneTitle>{text.pane3_bank_recurring_title}</PaneTitle>
               <div style={{ paddingTop: 20 }}>
                 <RadioButtonGroup
                   options={[
-                    { title: "Tidligst mulig", value: 0 },
-                    { title: "Velg annen trekkdag", value: 1 },
+                    { title: text.pane3_bank_recurring_selector_earliest_text, value: 0 },
+                    { title: text.pane3_bank_recurring_selector_choose_date_text, value: 1 },
                   ]}
                   selected={chooseChargeDay}
                   onSelect={(option) => setChooseChargeDay(option)}
@@ -58,22 +62,23 @@ export const ResultPane: React.FC = () => {
               </div>
             </div>
             <div>
-              <RecurringBankDonationForm donation={donation} />
+              <RecurringBankDonationForm
+                donation={donation}
+                buttonText={text.pane3_bank_recurring_button_text}
+              />
             </div>
           </>
         )}
 
         {donation.recurring === RecurringDonation.NON_RECURRING && (
           <div>
-            <PaneTitle>Du kan nå overføre til oss</PaneTitle>
-            <PaymentInformation donation={donation} />
-            <InfoText>
-              {`Hvis du ønsker å donere med samme fordeling senere kan du bruke samme KID-nummer igjen. Dersom du har noen spørsmål eller tilbakemeldinger kan du alltid ta kontakt med oss ved å sende en mail til `}
-              <Link href="mailto:donasjon@gieffektivt.no" passHref target={"_blank"}>
-                donasjon@gieffektivt.no
-              </Link>
-              . Takk for at du støtter effektiv bistand.
-            </InfoText>
+            <PaneTitle>{text.pane3_bank_single_title}</PaneTitle>
+            <PaymentInformation
+              donation={donation}
+              accountTitle={text.pane3_bank_single_kontonr_title}
+              kidTitle={text.pane3_bank_single_kid_title}
+            />
+            <InfoText>{text.pane3_bank_single_explanatory_text}</InfoText>
           </div>
         )}
 
@@ -83,7 +88,13 @@ export const ResultPane: React.FC = () => {
           )}
 
         {/* Always show referrals for anonymous donors (ID 1464) */}
-        {(!hasAnswerredReferral || donorID == 1464) && <Referrals />}
+        {(!hasAnswerredReferral || donorID == 1464) && (
+          <Referrals
+            text={{
+              pane3_referrals_title: text.pane3_referrals_title,
+            }}
+          />
+        )}
       </PaneContainer>
     </Pane>
   );

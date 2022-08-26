@@ -12,6 +12,7 @@ import { Navbar } from "../../components/profile/layout/navbar";
 import { ProfileInfo } from "../../components/profile/details/ProfileInfo/ProfileInfo";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
+import { widgetQuery } from "../../_queries";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
@@ -68,6 +69,7 @@ const fetchProfilePage = groq`
     data
   },
   ${footerQuery}
+  ${widgetQuery}
 }
 `;
 

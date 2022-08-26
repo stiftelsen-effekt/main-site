@@ -12,7 +12,12 @@ import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from "../../components/profile/donations/DonationsDistributionTable/DonationsDistributionTable";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
-import { useAggregatedDonations, useDistributions, useDonations } from "../../_queries";
+import {
+  useAggregatedDonations,
+  useDistributions,
+  useDonations,
+  widgetQuery,
+} from "../../_queries";
 import { ActivityContext } from "../../components/profile/layout/activityProvider";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { getClient } from "../../lib/sanity.server";
@@ -173,6 +178,7 @@ const fetchProfilePage = groq`
     logo,
   },
   ${footerQuery}
+  ${widgetQuery}
 }
 `;
 

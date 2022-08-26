@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import { LayoutPage } from "../types";
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.server";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import { SEO } from "../components/shared/seo/Seo";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { IntroSection } from "../components/main/blocks/IntroSection/IntroSection";
@@ -18,23 +18,19 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
-import { usePreviewSubscription } from "../lib/sanity";
+import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
+import { widgetQuery } from "../_queries";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
-  () => import("../components/main/blocks/ImpactWidget/ImpactWidget").then((mod) => mod.ImpactWidget),
+  () =>
+    import("../components/main/blocks/ImpactWidget/ImpactWidget").then((mod) => mod.ImpactWidget),
   {
     ssr: false,
   },
 );
 
-const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const frontpage = filterPageToSingleItem(previewData, preview);
+const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+  const frontpage = data.result.page;
 
   const salespitch = frontpage.salespitch;
   const settings = data.result.settings[0];
@@ -129,7 +125,12 @@ const Home: LayoutPage<{ data: any, preview: boolean }> = ({ data, preview }) =>
 
 export async function getStaticProps({ preview = false }) {
   let result = await getClient(preview).fetch(fetchFrontpage);
-  result = { ...result, frontpage: filterPageToSingleItem(result, preview) };
+
+  result = {
+    ...result,
+    frontpage: filterPageToSingleItem(result, preview),
+    widget: filterWidgetToSingleItem(result, preview),
+  };
 
   return {
     props: {
@@ -166,7 +167,8 @@ const fetchFrontpage = groq`
     },
   },
   ${footerQuery}
-  "frontpage": *[_type == "frontpage"] {
+  ${widgetQuery}
+  "page": *[_type == "frontpage"] {
     seoTitle, 
     seoDescription, 
     seoImage{
@@ -185,21 +187,6 @@ const fetchFrontpage = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.frontpage)) {
-    return data.frontpage;
-  }
-
-  if (data.frontpage.length === 1) {
-    return data.frontpage[0];
-  }
-
-  if (preview) {
-    return data.frontpage.find((item: any) => item._id.startsWith("drafts.")) || data.frontpage[0];
-  }
-
-  return data.frontpage[0];
-};
-
 Home.layout = Layout;
+Home.filterPage = true;
 export default Home;

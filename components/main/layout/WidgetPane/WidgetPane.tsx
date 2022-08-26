@@ -1,9 +1,10 @@
 import dynamic from "next/dynamic";
 import React, { useContext, useEffect, useState } from "react";
+import { WidgetProps } from "../../../shared/components/Widget/types/WidgetProps";
 import { WidgetContext } from "../layout";
 import styles from "./WidgetPane.module.scss";
 
-const Widget = dynamic<{}>(
+const Widget = dynamic<Props>(
   () => import("../../../shared/components/Widget/components/Widget").then((mod) => mod.Widget),
   {
     ssr: false,
@@ -12,9 +13,10 @@ const Widget = dynamic<{}>(
 
 interface Props {
   darkMode?: boolean;
+  text: WidgetProps;
 }
 
-export const WidgetPane: React.FC<Props> = ({ darkMode }) => {
+export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
   const followThreshold = 20;
   const closeThreshold = 140;
   const [initialY, setInitialY] = useState(0);
@@ -63,7 +65,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode }) => {
         }}
       ></div>
       <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
-        <Widget />
+        <Widget text={text} />
       </div>
     </div>
   );

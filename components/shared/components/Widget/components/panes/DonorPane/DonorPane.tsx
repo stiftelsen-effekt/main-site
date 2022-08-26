@@ -23,11 +23,9 @@ import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { Donor } from "../../../../../../../models";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
+import { WidgetPane2Props } from "../../../types/WidgetProps";
 
 interface DonorFormValues extends DonorInput {}
-
-const tooltipText =
-  "Gjelder donasjoner mellom 500 og 25 000 kr per år. Vi rapporterer direkte til Skatteetaten og trenger derfor fødsel- eller organisasjonsnummer til donor.";
 
 const anonDonor: DonorFormValues = {
   name: "Anonym Giver",
@@ -42,7 +40,7 @@ const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
 
-export const DonorPane: React.FC = () => {
+export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
   const method = useSelector((state: State) => state.donation.method);
@@ -159,7 +157,10 @@ export const DonorPane: React.FC = () => {
                     }
                   }}
                 />
-                <CustomCheckBox label="Doner anonymt" checked={donorType === DonorType.ANONYMOUS} />
+                <CustomCheckBox
+                  label={text.anon_button_text}
+                  checked={donorType === DonorType.ANONYMOUS}
+                />
               </CheckBoxWrapper>
             </div>
 
@@ -169,7 +170,7 @@ export const DonorPane: React.FC = () => {
                   data-cy="name-input"
                   name="name"
                   type="text"
-                  placeholder="Navn"
+                  placeholder={text.name_placeholder}
                   defaultValue={
                     donor?.name === "Anonym Giver"
                       ? ""
@@ -186,7 +187,7 @@ export const DonorPane: React.FC = () => {
                   data-cy="email-input"
                   name="email"
                   type="email"
-                  placeholder="Epost"
+                  placeholder={text.email_placeholder}
                   defaultValue={
                     donor?.email === "anon@gieffektivt.no"
                       ? ""
@@ -226,11 +227,11 @@ export const DonorPane: React.FC = () => {
                       }}
                     />
                     <CustomCheckBox
-                      label="Jeg ønsker skattefradrag"
+                      label={text.tax_deduction_selector_text}
                       checked={taxDeductionChecked}
                     />
                   </CheckBoxWrapper>
-                  {taxDeductionChecked && <ToolTip text={tooltipText} />}
+                  {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
                   {watchAllFields.taxDeduction && (
                     <InputFieldWrapper>
                       <input
@@ -238,7 +239,7 @@ export const DonorPane: React.FC = () => {
                         name="ssn"
                         type="text"
                         inputMode="numeric"
-                        placeholder="Fødselsnummer eller org.nr."
+                        placeholder={text.tax_deduction_ssn_placeholder}
                         defaultValue={
                           // Hide SSN if anonymous donor
                           donor?.ssn === "12345678910" ? "" : donor?.ssn
@@ -282,13 +283,13 @@ export const DonorPane: React.FC = () => {
                     }}
                   />
                   <CustomCheckBox
-                    label="Jeg ønsker å melde meg på nyhetsbrevet"
-                    mobileLabel="Jeg vil melde meg på nyhetsbrevet"
+                    label={text.newsletter_selector_text}
+                    mobileLabel={text.newsletter_selector_text}
                     checked={newsletterChecked}
                   />
                 </CheckBoxWrapper>
                 <div style={{ marginTop: "10px" }}>
-                  Her finner du vår{" "}
+                  {text.privacy_policy_text}{" "}
                   <Link href={"/personvern"} passHref>
                     <a style={{ textDecoration: "underline" }} target={"_blank"}>
                       personvernserklæring ↗
@@ -300,8 +301,16 @@ export const DonorPane: React.FC = () => {
 
             <RadioButtonGroup
               options={[
-                { title: "Gi med bank", value: PaymentMethod.BANK, data_cy: "bank-method" },
-                { title: "Gi med Vipps", value: PaymentMethod.VIPPS, data_cy: "vipps-method" },
+                {
+                  title: text.payment_method_selector_bank_text,
+                  value: PaymentMethod.BANK,
+                  data_cy: "bank-method",
+                },
+                {
+                  title: text.payment_method_selector_vipps_text,
+                  value: PaymentMethod.VIPPS,
+                  data_cy: "vipps-method",
+                },
               ]}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}
@@ -310,12 +319,12 @@ export const DonorPane: React.FC = () => {
           <ActionBar data-cy="next-button-div">
             {donorType === DonorType.DONOR ? (
               <NextButton disabled={nextDisabled} onClick={() => {}}>
-                Neste
+                {text.pane2_button_text}
               </NextButton>
             ) : null}
             {donorType === DonorType.ANONYMOUS ? (
               <NextButton disabled={nextDisabled} onClick={submitAnonymous}>
-                Neste
+                {text.pane2_button_text}
               </NextButton>
             ) : null}
           </ActionBar>

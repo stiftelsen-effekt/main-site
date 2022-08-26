@@ -18,12 +18,17 @@ import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
+import { WidgetPane1Props } from "../../../types/WidgetProps";
 
-export const DonationPane: React.FC = () => {
+export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
 
-  const suggestedSums = [350, 500, 850];
+  const suggestedSums = [
+    text.preset_donation_amount_1,
+    text.preset_donation_amount_2,
+    text.preset_donation_amount_3,
+  ];
 
   function onSubmit() {
     dispatch(nextPane());
@@ -39,12 +44,12 @@ export const DonationPane: React.FC = () => {
           <RadioButtonGroup
             options={[
               {
-                title: "Gi månedlig",
+                title: text.monthly_donation_text,
                 value: RecurringDonation.RECURRING,
                 data_cy: "radio-recurring",
               },
               {
-                title: "Gi én gang",
+                title: text.single_donation_text,
                 value: RecurringDonation.NON_RECURRING,
                 data_cy: "radio-single",
               },
@@ -89,12 +94,12 @@ export const DonationPane: React.FC = () => {
             <RadioButtonGroup
               options={[
                 {
-                  title: "Smart fordeling",
+                  title: text.smart_fordeling_text,
                   value: ShareType.STANDARD,
                   data_cy: "radio-smart-share",
                 },
                 {
-                  title: "Velg fordeling selv",
+                  title: text.choose_your_own_text,
                   value: ShareType.CUSTOM,
                   data_cy: "radio-custom-share",
                 },
@@ -108,10 +113,7 @@ export const DonationPane: React.FC = () => {
 
           {donation.shareType === ShareType.STANDARD && (
             <div>
-              <InfoParagraph>
-                Smart fordeling sørger for at du kontinuerlig benytter deg av de aller siste og mest
-                oppdaterte tallene for hvordan du kan få størst mulig effekt av donasjonen din.{" "}
-              </InfoParagraph>
+              <InfoParagraph>{text.smart_fordeling_description}</InfoParagraph>
             </div>
           )}
           {donation.shareType === ShareType.CUSTOM && (
@@ -129,7 +131,7 @@ export const DonationPane: React.FC = () => {
               onSubmit();
             }}
           >
-            Neste
+            {text.pane1_button_text}
           </NextButton>
         </ActionBar>
       </PaneContainer>

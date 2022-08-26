@@ -15,6 +15,7 @@ import { useContext } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import { PortableText } from "../../lib/sanity";
 import Link from "next/link";
+import { widgetQuery } from "../../_queries";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
@@ -85,6 +86,7 @@ const fetchProfilePage = groq`
     tax
   },
   ${footerQuery}
+  ${widgetQuery}
 }
 `;
 

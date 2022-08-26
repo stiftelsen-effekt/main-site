@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { submitReferralAction } from "../../../store/referrals/actions";
 import { State } from "../../../store/state";
+import { WidgetPane3ReferralsProps } from "../../../types/WidgetProps";
 import { PaneTitle } from "../../panes/Panes.style";
 import {
   ReferralButtonsWrapper,
   ReferralTextInput,
 } from "../../panes/PaymentPane/Bank/ReferralPane.style";
 
-export const Referrals: React.FC = () => {
+export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text }) => {
   const referrals = useSelector((state: State) => state.referrals.referrals);
   const [selectedReferral, setSelectedReferral] = useState(0);
   const [otherInput, setOtherInput] = useState("");
@@ -25,7 +26,7 @@ export const Referrals: React.FC = () => {
           Sorry, your browser does not support inline SVG.
         </svg>
       </div>
-      <PaneTitle>Hvor hørte du om oss?</PaneTitle>
+      <PaneTitle>{text.pane3_referrals_title}</PaneTitle>
       <ReferralButtonsWrapper>
         {referrals?.map((ref) => (
           <EffektButton

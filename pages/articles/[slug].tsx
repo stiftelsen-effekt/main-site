@@ -12,16 +12,11 @@ import { SEO } from "../../components/shared/seo/Seo";
 import { Layout } from "../../components/main/layout/layout";
 import { BlockContentRenderer } from "../../components/main/blocks/BlockContentRenderer";
 import { usePreviewSubscription } from "../../lib/sanity";
-import { pageContentQuery } from "../../_queries";
+import { pageContentQuery, widgetQuery } from "../../_queries";
+import { filterPageToSingleItem } from "../_app";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const page = filterPageToSingleItem(previewData, preview);
+  const page = data.result.page;
 
   const header = page.header;
   const content = page.content;
@@ -110,6 +105,7 @@ const fetchArticle = groq`
     }
   },
   ${footerQuery}
+  ${widgetQuery}
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,
@@ -127,21 +123,6 @@ const fetchArticle = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.page)) {
-    return data.page;
-  }
-
-  if (data.page.length === 1) {
-    return data.page[0];
-  }
-
-  if (preview) {
-    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
-  }
-
-  return data.page[0];
-};
-
 ArticlePage.layout = Layout;
+ArticlePage.filterPage = true;
 export default ArticlePage;
