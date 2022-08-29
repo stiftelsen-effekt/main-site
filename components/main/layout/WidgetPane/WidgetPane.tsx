@@ -39,7 +39,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
     });
 
   return (
-    <div
+    <aside
       data-cy="widget-pane"
       className={`${styles.widgetPane} ${widgetOpen ? styles.widgetPaneOpen : null}`}
       style={paneStyle}
@@ -67,6 +67,6 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
       <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
         <Widget text={text} />
       </div>
-    </div>
+    </aside>
   );
 };
