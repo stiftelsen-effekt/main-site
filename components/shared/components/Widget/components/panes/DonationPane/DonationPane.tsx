@@ -24,11 +24,17 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
 
-  const suggestedSums = [
-    text.preset_donation_amount_1,
-    text.preset_donation_amount_2,
-    text.preset_donation_amount_3,
-  ];
+  const suggestedSums = donation.recurring
+    ? [
+        text.preset_donation_amount_1_recurring,
+        text.preset_donation_amount_2_recurring,
+        text.preset_donation_amount_3_recurring,
+      ]
+    : [
+        text.preset_donation_amount_1_single,
+        text.preset_donation_amount_2_single,
+        text.preset_donation_amount_3_single,
+      ];
 
   function onSubmit() {
     dispatch(nextPane());
