@@ -1,4 +1,5 @@
 import React from "react";
+import links from "./Links/Links.module.scss";
 import {
   SectionContainerProps,
   SectionContainer,
@@ -52,7 +53,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                   );
                 case "links":
                   return (
-                    <div key={block._key} style={{ width: "100%", maxWidth: "760px" }}>
+                    <div key={block._key} className={links.linksWrapper}>
                       <p className="inngress">Les mer:</p>
                       <Links links={block.links}></Links>
                     </div>
