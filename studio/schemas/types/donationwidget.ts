@@ -51,22 +51,43 @@ export default {
     },
     // 3 Preset donation amount values
     {
-      name: 'preset_donation_amount_1',
-      title: 'Preset donation amount 1',
+      name: 'preset_donation_amount_1_recurring',
+      title: 'Preset donation amount 1 (recurring)',
       type: 'number',
       group: 'pane1',
       validation: (Rule: any) => Rule.required()
     },
     {
-      name: 'preset_donation_amount_2',
-      title: 'Preset donation amount 2',
+      name: 'preset_donation_amount_2_recurring',
+      title: 'Preset donation amount 2 (recurring)',
       type: 'number',
       group: 'pane1',
       validation: (Rule: any) => Rule.required()
     },
     {
-      name: 'preset_donation_amount_3',
-      title: 'Preset donation amount 3',
+      name: 'preset_donation_amount_3_recurring',
+      title: 'Preset donation amount 3 (recurring)',
+      type: 'number',
+      group: 'pane1',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'preset_donation_amount_1_single',
+      title: 'Preset donation amount 1 (single)',
+      type: 'number',
+      group: 'pane1',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'preset_donation_amount_2_single',
+      title: 'Preset donation amount 2 (single)',
+      type: 'number',
+      group: 'pane1',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
+      name: 'preset_donation_amount_3_single',
+      title: 'Preset donation amount 3 (single)',
       type: 'number',
       group: 'pane1',
       validation: (Rule: any) => Rule.required()
