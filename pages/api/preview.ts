@@ -26,14 +26,19 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
   switch (req.query.type) {
     case "frontpage":
       res.writeHead(307, { Location: `/` });
+      break;
     case "about_us":
       res.writeHead(307, { Location: `/about` });
+      break;
     case "organizations":
       res.writeHead(307, { Location: `/organizations` });
+      break;
     case "support":
       res.writeHead(307, { Location: `/support` });
+      break;
     case "articles":
       res.writeHead(307, { Location: `/articles` });
+      break;
     case "generic_page":
       res.writeHead(307, { Location: `/${req?.query?.slug}` ?? `/` });
       break;
@@ -42,6 +47,7 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
       break;
     case "donationwidget":
       res.writeHead(307, { Location: `/` });
+      break;
     default:
       return res.status(400).json({ message: "Preview not supported for page" });
   }

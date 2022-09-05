@@ -51,46 +51,54 @@ export default {
     },
     // 3 Preset donation amount values
     {
-      name: 'preset_donation_amount_1_recurring',
-      title: 'Preset donation amount 1 (recurring)',
-      type: 'number',
+      name: 'preset_amounts_recurring',
+      title: 'Preset amounts for recurring donations',
+      type: 'array',
       group: 'pane1',
-      validation: (Rule: any) => Rule.required()
+      of: [{type: 'object',
+      fields: [
+        {
+          title: 'Value',
+          name: 'amount',
+          type: 'number'
+        },
+        {
+          title: 'Subtext',
+          name: 'subtext',
+          type: 'string'
+        },
+      ],
+      preview: {
+        select: {
+          title: 'amount',
+          subtitle: 'subtext'
+        }
+      }}],
     },
     {
-      name: 'preset_donation_amount_2_recurring',
-      title: 'Preset donation amount 2 (recurring)',
-      type: 'number',
+      name: 'preset_amounts_single',
+      title: 'Preset amounts for single donations',
+      type: 'array',
       group: 'pane1',
-      validation: (Rule: any) => Rule.required()
-    },
-    {
-      name: 'preset_donation_amount_3_recurring',
-      title: 'Preset donation amount 3 (recurring)',
-      type: 'number',
-      group: 'pane1',
-      validation: (Rule: any) => Rule.required()
-    },
-    {
-      name: 'preset_donation_amount_1_single',
-      title: 'Preset donation amount 1 (single)',
-      type: 'number',
-      group: 'pane1',
-      validation: (Rule: any) => Rule.required()
-    },
-    {
-      name: 'preset_donation_amount_2_single',
-      title: 'Preset donation amount 2 (single)',
-      type: 'number',
-      group: 'pane1',
-      validation: (Rule: any) => Rule.required()
-    },
-    {
-      name: 'preset_donation_amount_3_single',
-      title: 'Preset donation amount 3 (single)',
-      type: 'number',
-      group: 'pane1',
-      validation: (Rule: any) => Rule.required()
+      of: [{type: 'object',
+      fields: [
+        {
+          title: 'Value',
+          name: 'amount',
+          type: 'number'
+        },
+        {
+          title: 'Subtext',
+          name: 'subtext',
+          type: 'string'
+        },
+      ],
+      preview: {
+        select: {
+          title: 'amount',
+          subtitle: 'subtext'
+        }
+      }}],
     },
     //Smart fordeling / Choose your own text
     {

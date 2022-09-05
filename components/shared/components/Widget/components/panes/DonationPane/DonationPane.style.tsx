@@ -4,6 +4,7 @@ export const SumWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
+  margin-top: 10px;
 
   label {
     font-size: 18px;
