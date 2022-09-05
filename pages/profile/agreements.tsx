@@ -26,6 +26,7 @@ import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
+import { DateTime } from "luxon";
 
 const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -103,9 +104,16 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
 
   const distributionsMap = getDistributionMap(distributions, organizations);
 
-  const vippsPending = vipps.filter((agreement: VippsAgreement) => agreement.status === "PENDING");
+  const vippsPending = vipps.filter(
+    (agreement: VippsAgreement) =>
+      agreement.status === "PENDING" &&
+      DateTime.fromISO(agreement.timestamp_created).diff(DateTime.now(), "days").days > -7,
+  );
   const avtalegiroPending = avtaleGiro.filter(
-    (agreement: AvtaleGiroAgreement) => agreement.active === 0 && agreement.cancelled === null,
+    (agreement: AvtaleGiroAgreement) =>
+      agreement.active === 0 &&
+      agreement.cancelled === null &&
+      DateTime.fromISO(agreement.created).diff(DateTime.now(), "days").days > -7,
   );
   const pendingCount = vippsPending.length + avtalegiroPending.length;
 
