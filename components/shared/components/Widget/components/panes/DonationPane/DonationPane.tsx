@@ -19,22 +19,15 @@ import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
+import { thousandize } from "../../../../../../../util/formatting";
 
 export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
 
   const suggestedSums = donation.recurring
-    ? [
-        text.preset_donation_amount_1_recurring,
-        text.preset_donation_amount_2_recurring,
-        text.preset_donation_amount_3_recurring,
-      ]
-    : [
-        text.preset_donation_amount_1_single,
-        text.preset_donation_amount_2_single,
-        text.preset_donation_amount_3_single,
-      ];
+    ? text.preset_amounts_recurring
+    : text.preset_amounts_single;
 
   function onSubmit() {
     dispatch(nextPane());
@@ -65,13 +58,14 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
           />
 
           <SumButtonsWrapper>
-            {suggestedSums.map((sum) => (
-              <div key={sum}>
+            {suggestedSums.map((suggested) => (
+              <div key={suggested.amount}>
                 <EffektButton
                   type={EffektButtonType.SECONDARY}
-                  onClick={() => dispatch(setSum(sum))}
-                >{`${sum} kr`}</EffektButton>
-                {sum == suggestedSums[suggestedSums.length - 1] && <i>Snittdonasjon</i>}
+                  selected={donation.sum === suggested.amount}
+                  onClick={() => dispatch(setSum(suggested.amount))}
+                >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
+                {suggested.subtext && <i>{suggested.subtext}</i>}
               </div>
             ))}
           </SumButtonsWrapper>
