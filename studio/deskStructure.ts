@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { Book, Briefcase, Filter, HelpCircle, Paperclip, Settings, User, Users, Zap } from 'react-feather'
+import { Book, Briefcase, DollarSign, Filter, HelpCircle, Paperclip, Settings, User, Users, Zap } from 'react-feather'
 import Iframe from 'sanity-plugin-iframe-pane'
 import resolveProductionUrl from './resolveProductionUrl'
 
@@ -139,6 +139,21 @@ export default () =>
                   })
                   .title('Preview'),
                 ]))
+        ),
+      S.listItem()
+        .schemaType('donationwidget')
+        .title('Donation widget')
+        .icon(DollarSign)
+        .child(
+          S.document().schemaType('donationwidget').documentId('donationwidget').views([
+            S.view.form(),
+            S.view
+            .component(Iframe)
+            .options({
+              url: (doc: any) => resolveProductionUrl(doc),
+            })
+            .title('Preview'),
+          ])
         ),
       S.listItem()
         .schemaType('contributor')

@@ -1,4 +1,5 @@
 import React from "react";
+import links from "./Links/Links.module.scss";
 import {
   SectionContainerProps,
   SectionContainer,
@@ -15,6 +16,7 @@ import { PointList } from "./PointList/PointList";
 import { PointListPointProps } from "./PointList/PointListPoint";
 import { PointListSectionWrapper } from "./PointList/PointListSectionWrapper";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
+import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
@@ -51,7 +53,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                   );
                 case "links":
                   return (
-                    <div key={block._key} style={{ width: "100%", maxWidth: "760px" }}>
+                    <div key={block._key} className={links.linksWrapper}>
                       <p className="inngress">Les mer:</p>
                       <Links links={block.links}></Links>
                     </div>
@@ -114,6 +116,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                 case "testimonials":
                   return (
                     <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
+                  );
+                case "quote":
+                  return (
+                    <Quote
+                      key={block._key || block._id}
+                      quote={block.quote}
+                      offset={block.offset}
+                      quotationMarks={block.quotation_marks}
+                    />
                   );
                 default:
                   return block._type;

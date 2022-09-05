@@ -9,7 +9,7 @@ export const RadioButtonGroup: React.FC<{
 }> = ({ options, selected, onSelect }) => {
   const [name, setName] = useState<string>(
     `radio-button-group-${options
-      .map((o) => o.title.toLowerCase().trim().split(" ").join())
+      .map((o) => (o.title || "").toLowerCase().trim().split(" ").join())
       .join("_")}`,
   );
   return (

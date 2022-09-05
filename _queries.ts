@@ -193,3 +193,41 @@ export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
     error,
   };
 };
+
+export const linksContentQuery = `links[] {
+  _type == 'navitem' => @ {
+    ...,
+    "slug": page->slug.current,
+    "pagetype": page->_type,
+  },
+  _type == 'link' => @ {
+    ...
+  },
+}`;
+
+export const pageContentQuery = `content[] {
+  ...,
+  blocks[] {
+    _type == 'reference' => @->,
+    _type == 'testimonials' =>  {
+      ...,
+      testimonials[]->,
+    },
+    _type == 'fullvideo' =>  {
+      ...,
+      video{
+        asset->,
+      },
+    },
+    _type == 'links' => {
+      ...,
+      ${linksContentQuery}
+    },
+    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
+  }
+},
+`;
+
+export const widgetQuery = `
+  "widget": *[_type == "donationwidget"],
+`;

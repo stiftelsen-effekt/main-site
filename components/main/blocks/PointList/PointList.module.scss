@@ -1,3 +1,6 @@
+@use "sass:math";
+
+
 .pointlistwrapper {
   display: grid;
   grid-auto-flow: column;
@@ -7,23 +10,59 @@
   margin-bottom: 110px;
 }
 
-@media only screen and (max-width: 1720px) and (min-width: 1181px) {
-  .pointlistwrapper div:first-child:nth-last-child(4) {
-    grid-row: 1;
-  }
+@media only screen and (min-width: 1520px) {
+  @for $i from 4 through 12 {
+    $columns-per-row: null;
+    @if $i % 4 == 0 {
+      $columns-per-row: 4;
+    } @else {
+      @if $i % 3 == 0 {
+        $columns-per-row: 3;
+      } @else {
+        @if $i % 4 > $i % 3 {
+          $columns-per-row: 4;
+        } @else {
+          $columns-per-row: 3;
+        }
+      }
+    }
 
-  .pointlistwrapper div:first-child:nth-last-child(4) ~ div:nth-child(2){
-    grid-row: 1;
-  }
+    @for $j from $i through 1 {
+      $row: math.ceil(math.div($j, $columns-per-row));
 
-  .pointlistwrapper div:first-child:nth-last-child(4) ~ div:nth-child(3){
-    grid-row: 2;
-    grid-column: 1;
+      .pointlistwrapper div:first-child:nth-last-child(#{$i}) ~ div:nth-child(#{$j}){
+        grid-row: $row;
+        grid-column: $j % $columns-per-row;
+      }
+    }
   }
+}
 
-  .pointlistwrapper div:first-child:nth-last-child(4) ~ div:nth-child(4){
-    grid-row: 2;
-    grid-column: 2;
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  @for $i from 3 through 12 {
+    $columns-per-row: null;
+    @if $i % 3 == 0 {
+      $columns-per-row: 3;
+    } @else {
+      @if $i % 2 == 0 {
+        $columns-per-row: 2;
+      } @else {
+        @if $i % 3 > $i % 2 {
+          $columns-per-row: 3;
+        } @else {
+          $columns-per-row: 2;
+        }
+      }
+    }
+  
+    @for $j from $i through 1 {
+      $row: math.ceil(math.div($j, $columns-per-row));
+  
+      .pointlistwrapper div:first-child:nth-last-child(#{$i}) ~ div:nth-child(#{$j}){
+        grid-row: $row;
+        grid-column: $j % $columns-per-row;
+      }
+    }
   }
 }
 

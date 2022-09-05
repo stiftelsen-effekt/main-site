@@ -30,7 +30,7 @@ export const ProfileInfo: React.FC = () => {
 
   return (
     <>
-      <h3 className={style.header}>Hei {donor.name.split(" ")[0]}!</h3>
+      <h3 className={style.header}>Hei{donor.name ? " " + donor.name.split(" ")[0] : ""}!</h3>
       <section className={style.personalInfo}>
         Ditt navn <br />
         <input
@@ -45,17 +45,6 @@ export const ProfileInfo: React.FC = () => {
         <br /> <br />
         E-post <br />
         <input id="email" type="email" disabled value={donor.email} className={style.input} />{" "}
-        <br /> <br />
-        Fødselsnummer / Organisasjonsnummer <br />
-        <input
-          id="ssn"
-          type="text"
-          defaultValue={donor.ssn}
-          className={style.input}
-          onChange={(e) => {
-            setDonor({ ...donor, ssn: e.target.value });
-          }}
-        />{" "}
         <br /> <br />
         <input
           type="checkbox"

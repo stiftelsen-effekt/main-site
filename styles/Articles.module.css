@@ -28,6 +28,11 @@
   row-gap: 40px;
 }
 
+.articles li:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
 @media only screen and (max-width: 1180px) {
   .articles {
     margin-top: 20px;
@@ -35,6 +40,11 @@
     grid-auto-flow: row;
     grid-auto-rows: max-content;
     row-gap: 30px;
+  }
+
+  .articles li:first-child {
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 

@@ -4,7 +4,7 @@ describe("Profile page", () => {
 
     cy.fixture("donor")
       .then((donor) => {
-        cy.intercept("GET", "/donors/27/", {
+        cy.intercept("GET", "/donors/*/", {
           statusCode: 200,
           body: {
             status: 200,
@@ -57,19 +57,5 @@ describe("Profile page", () => {
     cy.reload();
     cy.get("h3").should("contain.text", newName);
     cy.get("#name").should("have.value", newName);
-  });
-
-  it("Should fail with invalid info", () => {
-    cy.intercept("PUT", "/donors/*/", {
-      statusCode: 400,
-      body: {
-        status: 400,
-        content: "The SSN is invalid, it must be 11 or 9 numbers in one word ",
-      },
-    });
-
-    cy.get("#ssn").clear().type("123");
-    cy.get('button[role="submit"]').click();
-    cy.get(".Toastify").contains("Noe gikk galt");
   });
 });

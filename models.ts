@@ -59,7 +59,6 @@ export type Donor = {
   id: string;
   name: string;
   email: string;
-  ssn: string;
   newsletter: boolean;
   registered: string;
 };
@@ -91,6 +90,14 @@ export type SEOMeta = {
   description: string;
   imageAsset: SanityAsset;
   canonicalurl: string;
+};
+
+export type FacebookDonationRegistration = {
+  email: string;
+  paymentID: string;
+  name: string;
+  ssn: string;
+  newsletter: boolean;
 };
 
 export type ImpactCharity = {

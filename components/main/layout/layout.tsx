@@ -8,7 +8,7 @@ import { WidgetPane } from "./WidgetPane/WidgetPane";
 export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
 export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
 
-export const Layout: LayoutElement = ({ children, footerData }) => {
+export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
@@ -27,7 +27,7 @@ export const Layout: LayoutElement = ({ children, footerData }) => {
       <GiveButton inverted={false} onClick={() => setWidgetOpen(true)} />
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
         <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-          <WidgetPane />
+          <WidgetPane text={widgetData} />
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
       </WidgetContext.Provider>

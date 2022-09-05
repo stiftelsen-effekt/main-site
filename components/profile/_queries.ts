@@ -1,5 +1,5 @@
 import { User } from "@auth0/auth0-react";
-import { Donor } from "../../models";
+import { Donor, FacebookDonationRegistration } from "../../models";
 
 export const save = async (data: Donor, user: User, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
@@ -26,4 +26,29 @@ export const save = async (data: Donor, user: User, token: string) => {
   }
 };
 
-export const test = () => true;
+export const registerFacebookDonation = async (
+  data: FacebookDonationRegistration,
+  token: string,
+) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/facebook/register/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+      body: JSON.stringify(data),
+    });
+
+    if (response.status !== 200) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return false;
+  }
+};

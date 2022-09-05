@@ -13,15 +13,11 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
+import { widgetQuery } from "../_queries";
+import { filterPageToSingleItem } from "./_app";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    initialData: data?.result,
-    enabled: preview,
-  });
-
-  const page = filterPageToSingleItem(previewData, preview);
+  const page = data.result.page;
 
   const header = page.header;
   const contactinfo = page.contact;
@@ -100,6 +96,7 @@ const fetchSupport = groq`
     }
   },
   ${footerQuery}
+  ${widgetQuery}
   "page": *[_type == "support"] {
     header {
       ...,
@@ -122,21 +119,6 @@ const fetchSupport = groq`
 }
 `;
 
-const filterPageToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.page)) {
-    return data.page;
-  }
-
-  if (data.page.length === 1) {
-    return data.page[0];
-  }
-
-  if (preview) {
-    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
-  }
-
-  return data.page[0];
-};
-
 Support.layout = Layout;
+Support.filterPage = true;
 export default Support;
