@@ -16,7 +16,7 @@ export const DonationImpactItem: React.FC<{
   signalRequiredPrecision: (precision: number) => void;
 }> = ({ orgAbriv, sumToOrg, donationTimestamp, precision, signalRequiredPrecision }) => {
   const { data, error, isValidating } = useSWR<{ evaluations: ImpactEvaluation[] }>(
-    `http://localhost:8000/api/evaluations?charity_abbreviation=${orgAbriv}&currency=NOK&language=NO&donation_year=${donationTimestamp.getFullYear()}&donation_month=${
+    `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${orgAbriv}&currency=NOK&language=NO&donation_year=${donationTimestamp.getFullYear()}&donation_month=${
       donationTimestamp.getMonth() + 1
     }`,
     fetcher,
@@ -67,18 +67,22 @@ export const DonationImpactItem: React.FC<{
     <>
       <tr className={style.overview}>
         <td>
-          <h4>{formattedOutput}</h4>
+          <h2>{formattedOutput}</h2>
         </td>
         <td>
           <div className={style.impactContext}>
-            <span>{relevantEvaluation.intervention.short_description}</span>
+            <span className={style.impactDetailsDescription}>
+              {relevantEvaluation.intervention.short_description}
+            </span>
             <span
               className={[style.impactDetailsExpandText, showDetails ? style.expanded : ""].join(
                 " ",
               )}
               onClick={() => setShowDetails(!showDetails)}
             >
-              {`${thousandize(sumToOrg)} kr til ${relevantEvaluation.charity.charity_name}`}
+              {`${thousandize(Math.round(sumToOrg))} kr til ${
+                relevantEvaluation.charity.charity_name
+              }`}
             </span>
           </div>
         </td>
@@ -87,7 +91,8 @@ export const DonationImpactItem: React.FC<{
         <td colSpan={Number.MAX_SAFE_INTEGER}>
           {/* Strange hack required to not have table reflow when showing the animated area */}
           <AnimateHeight duration={300} animateOpacity height={showDetails ? "auto" : 0}>
-            <div className={style.details}>
+            <div>
+              <p>{relevantEvaluation.intervention.long_description}</p>
               <p>
                 Tallene er basert på analysene til GiveWell. De gir et omtrentlig bilde på hva våre
                 anbefalte organisasjoner får ut av pengene. Alle tre tiltak er topp anbefalt som de
@@ -103,8 +108,15 @@ export const DonationImpactItem: React.FC<{
                     {
                       _type: "link",
                       _key: "giveWell",
-                      title: "GiveWell",
-                      url: "https://google.com",
+                      title: "Om " + relevantEvaluation.charity.charity_name,
+                      url: "https://gieffektivt.no/organizations",
+                      newtab: true,
+                    },
+                    {
+                      _type: "link",
+                      _key: "giveWell",
+                      title: "GiveWell’s analyser",
+                      url: "https://www.givewell.org/how-we-work/our-criteria/cost-effectiveness/cost-effectiveness-models",
                       newtab: true,
                     },
                   ]}
@@ -122,6 +134,9 @@ export const DonationImpactItem: React.FC<{
             </div>
           </AnimateHeight>
         </td>
+      </tr>
+      <tr className={style.spacerRow}>
+        <td colSpan={Number.MAX_SAFE_INTEGER}></td>
       </tr>
     </>
   );

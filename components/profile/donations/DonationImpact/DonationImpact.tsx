@@ -12,7 +12,7 @@ const DonationImpact: React.FC<{
   timestamp: Date;
 }> = ({ distribution, timestamp }) => {
   const { data, error, isValidating } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `http://localhost:8000/api/max_impact_fund_grants?currency=NOK&language=NO&donation_year=${timestamp.getFullYear()}&donation_month=${
+    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&donation_year=${timestamp.getFullYear()}&donation_month=${
       timestamp.getMonth() + 1
     }`,
     fetcher,

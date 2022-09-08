@@ -25,6 +25,10 @@
     border-left: 1px solid white;
     padding-left: 1.5rem;
     white-space: nowrap;
+
+    h2 {
+      margin: 10px 0;
+    }
   }
 
   td:last-child {
@@ -40,10 +44,16 @@
       margin: 0;
     }
 
+    span.impactDetailsDescription {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
     span.impactDetailsExpandText {
       user-select: none;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 0.9rem;
+      line-height: 1.1rem;
       
       &::after {
         content: "↓";
@@ -65,6 +75,12 @@
 .details {
   td:first-child {
     border-left: 1px solid white;
-    padding-left: 20px;
+    padding-left: 1.5rem;
+  }
+}
+
+.spacerRow {
+  td:first-child {
+    padding-bottom: 20px;
   }
 }
