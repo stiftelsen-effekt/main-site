@@ -1,5 +1,13 @@
 export default function resolveProductionUrl(doc: any) {
-  const baseUrl = process.env.SANITY_STUDIO_VERCEL_URL ? `https://${process.env.SANITY_STUDIO_VERCEL_URL}` : 'http://localhost:3000' 
+  let baseUrl = 'http://localhost:3000' 
+  if (process.env.SANITY_STUDIO_VERCEL_ENV) {
+    if (process.env.SANITY_STUDIO_VERCEL_ENV === 'production') {
+      baseUrl = 'https://gieffektivt.no'
+    }
+    if (process.env.SANITY_STUDIO_VERCEL_ENV === 'preview') {
+      baseUrl = `https://${process.env.SANITY_STUDIO_VERCEL_URL}`
+    }
+  }
 
   const previewUrl = new URL(baseUrl)
 
