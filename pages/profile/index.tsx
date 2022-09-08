@@ -95,10 +95,15 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
   const donationList = !isTotal ? (
     <DonationList
-      donations={donations.filter(
-        (donation: Donation) =>
-          new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string),
-      )}
+      donations={donations
+        .filter(
+          (donation: Donation) =>
+            new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string),
+        )
+        .sort(
+          (a: Donation, b: Donation) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        )}
       distributions={distributionsMap}
       year={router.query.year as string}
     />
@@ -108,9 +113,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       .map((year) => (
         <DonationList
           key={year}
-          donations={donations.filter(
-            (donation: Donation) => new Date(donation.timestamp).getFullYear() === year,
-          )}
+          donations={donations
+            .filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)
+            .sort(
+              (a: Donation, b: Donation) =>
+                new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+            )}
           distributions={distributionsMap}
           year={year.toString()}
         />

@@ -1,6 +1,35 @@
+.container {
+  width: 100%;
+}
+
+.smartdistributionlabel {
+  padding: 0 0.6rem;
+  background: var(--primary);
+  color: var(--secondary);
+  margin: 20px 0;
+  display: inline-flex;
+  flex-direction: row;
+  font-size: 12px;
+  align-items: center;
+  border-radius: 5px;
+
+  span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding-right: 0.5rem;
+    border-right: 1px solid var(--secondary);
+  }
+}
+
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  width: 100%;
+
+  tr {
+    width: 100%;
+  }
+}
+
+.impact {
+  position: relative;
+  width: 100%;
 }

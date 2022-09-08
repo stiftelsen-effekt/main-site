@@ -10,7 +10,7 @@ export type ListRow = {
 
 export const GenericList: React.FC<{
   title: string;
-  supplementalInformation: string;
+  supplementalInformation?: string | JSX.Element;
   headers: string[];
   rows: ListRow[];
   emptyPlaceholder: JSX.Element;

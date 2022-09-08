@@ -1,9 +1,9 @@
 import React from "react";
 import style from "./DonationDetails.module.scss";
 import { Distribution } from "../../../../../models";
-import { DonationsDistributionGraph } from "../../../donations/DonationsDistributionGraph/DonationsDistributionGraph";
 import DonationImpact from "../../../donations/DonationImpact/DonationImpact";
 import { Dictionary } from "cypress/types/lodash";
+import { SWRConfig } from "swr";
 
 export const DonationDetails: React.FC<{
   sum: string;
@@ -17,11 +17,16 @@ export const DonationDetails: React.FC<{
 
   return (
     <div className={style.wrapper}>
-      <div className={style.impact}>
+      <div className={style.impactEstimate}>
+        <strong>Estimert effekt</strong>
+        {/** Custom caching WIP */}
+        {/* <SWRConfig value={{ provider: () => ImpactCache }}> */}
         <DonationImpact distribution={mappedDistribution} timestamp={timestamp} />
+        {/*</SWRConfig>*/}
       </div>
 
       <div className={style.actions}>
+        {/*<strong>Handlinger</strong>*/}
         <ul>
           {/**
            *           <li>
