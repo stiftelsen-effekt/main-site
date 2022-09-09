@@ -26,8 +26,12 @@
     padding-left: 1.5rem;
     white-space: nowrap;
 
-    h2 {
-      margin: 10px 0;
+    .impactOutput {
+      display: inline-block;
+      margin: 1rem 0;
+      font-size: 3rem;
+      font-family: "ESKlarheitKurrent";
+      font-weight: normal;
     }
   }
 

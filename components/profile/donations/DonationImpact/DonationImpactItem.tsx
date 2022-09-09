@@ -67,7 +67,9 @@ export const DonationImpactItem: React.FC<{
     <>
       <tr className={style.overview} data-cy="donation-impact-list-item-overview">
         <td>
-          <h2 data-cy="donation-impact-list-item-output">{formattedOutput}</h2>
+          <span className={style.impactOutput} data-cy="donation-impact-list-item-output">
+            {formattedOutput}
+          </span>
         </td>
         <td>
           <div className={style.impactContext}>
