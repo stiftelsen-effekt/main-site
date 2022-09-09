@@ -53,6 +53,10 @@ table td svg.iconChevronDown {
   transition: transform 120ms ease-in-out;
 }
 
+table tr .detailRowCell {
+  width: 100%;
+}
+
 .expanderContent {
   width: 100%;
   position: absolute;
