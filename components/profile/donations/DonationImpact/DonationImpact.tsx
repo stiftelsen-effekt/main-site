@@ -82,7 +82,7 @@ const DonationImpact: React.FC<{
           <strong>{`${thousandize(giveWellDist.sum || null)} kr`}</strong>
         </div>
       )}
-      <table className={style.wrapper} cellSpacing={0}>
+      <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
         <tbody>
           {spreadDistribution.map((dist, i) => (
             <>
