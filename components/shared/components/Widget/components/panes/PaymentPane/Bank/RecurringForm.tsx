@@ -37,7 +37,12 @@ export const RecurringBankDonationForm: React.FC<{
           value={`${API_URL}/donations/status`}
         />
         <input type="hidden" name="notificationDisabled" id="notificationDisabled" value="false" />
-        <SubmitButton onClick={() => dispatch(draftAvtaleGiroAction.started(undefined))}>
+        <SubmitButton
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(draftAvtaleGiroAction.started(undefined));
+          }}
+        >
           {buttonText}
         </SubmitButton>
       </form>
