@@ -11,12 +11,15 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { SEO } from "../../components/shared/seo/Seo";
 import { Layout } from "../../components/main/layout/layout";
 import { BlockContentRenderer } from "../../components/main/blocks/BlockContentRenderer";
-import { usePreviewSubscription } from "../../lib/sanity";
 import { pageContentQuery, widgetQuery } from "../../_queries";
 import { filterPageToSingleItem } from "../_app";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const page = data.result.page;
+
+  if (!page) {
+    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+  }
 
   const header = page.header;
   const content = page.content;
@@ -50,6 +53,7 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
   const { slug } = params;
   let result = await getClient(preview).fetch(fetchArticle, { slug });
   result = { ...result, page: filterPageToSingleItem(result, preview) };
+  console.log(result);
 
   return {
     props: {

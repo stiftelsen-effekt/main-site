@@ -9,15 +9,16 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { Layout } from "../components/main/layout/layout";
-import { usePreviewSubscription } from "../lib/sanity";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app";
-import { Quote } from "../components/main/blocks/Quote/Quote";
-import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const page = data.result.page;
+
+  if (!page) {
+    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+  }
 
   const header = page.header;
   const content = page.content;
