@@ -207,7 +207,7 @@ export const AgreementDetails: React.FC<{
         onCancel={() => setLightboxOpen(false)}
       >
         <div className={style.textWrapper}>
-          <h2>Avslutt avtale</h2>
+          <h4>Avslutt avtale</h4>
           <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
           {checkPaymentDate(new Date(), day) ? (
             <p>
