@@ -53,7 +53,7 @@ const mapNameToOrgAbbriv = (name: string): string => {
     "Deworm the World": "DTW",
     Sightsavers: "SS",
     Drift: "Drift",
-    "GiveWell Maximum Impact Fund": "GiveWell",
+    "GiveWell Top Charities Fund": "GiveWell",
     "Malaria Consortium": "MC",
     "Project Healthy Children": "PHC",
     "Drift av Gi Effektivt": "Drift",
