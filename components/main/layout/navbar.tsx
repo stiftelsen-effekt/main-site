@@ -112,11 +112,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           )}
           <li className={styles.buttonsWrapper}>
             <Link href="/profile" passHref>
-              <EffektButton
-                extraMargin={true}
-                type={EffektButtonType.SECONDARY}
-                onClick={() => setExpanded(false)}
-              >
+              <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
                 Min side
               </EffektButton>
             </Link>
