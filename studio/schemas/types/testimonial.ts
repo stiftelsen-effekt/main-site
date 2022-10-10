@@ -28,8 +28,9 @@ export default {
     },
     {
       name: 'quotee_background',
-      type: 'string',
-      title: 'Quotee backgrond'
+      title: 'Quotee backgrond',
+      type: 'array',
+      of: [{type: 'block'}]
     },
   ]
 }
