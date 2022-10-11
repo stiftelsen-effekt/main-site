@@ -14,9 +14,9 @@ export const ReferralTextInput = styled.input`
   padding: 10px 10px 10px 10px;
   margin: 0;
   font-size: 16px;
-  background-color: var(--primary);
-  color: var(--secondary);
-  border: 1px solid white;
+  background-color: var(--secondary);
+  color: var(--primary);
+  border: 1px solid var(--primary);
   border-radius: 10px;
   width: 100%;
 
