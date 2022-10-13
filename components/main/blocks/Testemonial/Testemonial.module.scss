@@ -60,6 +60,20 @@
   text-align: center;
 }
 
+.tesimonial__background {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tesimonial__background a {
+  border-bottom: 1px solid black;
+}
+
+.tesimonial__background a:focus {
+  text-decoration: underline;
+}
+
 .testemonial__image {
   background-color: var(--primary);
   border-radius: 50%;
