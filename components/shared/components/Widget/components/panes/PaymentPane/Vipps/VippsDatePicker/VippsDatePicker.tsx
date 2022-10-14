@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { orange20 } from "../../../../../config/colors";
 import { setVippsAgreement } from "../../../../../store/donation/actions";
 import { State } from "../../../../../store/state";
 import { ToolTip } from "../../../../shared/ToolTip/ToolTip";
 import { CustomCheckBox } from "../../../DonorPane/CustomCheckBox";
 import { CheckBoxWrapper, HiddenCheckBox } from "../../../Forms.style";
-import {
-  Datebox,
-  DateBoxWrapper,
-  DateText,
-  DateTextWrapper,
-  Wrapper,
-} from "./VippsDatePicker.style";
+import { DateBoxWrapper, DateText, DateTextWrapper, Wrapper } from "./VippsDatePicker.style";
 import { formatDateText, getNextChargeDate, isIrregularChargeDay, showCheckBox } from "./dates";
-import { DatePicker } from "../../../../../../DatePicker/DatePicker";
-import { ScaledDatePicker } from "../../../../shared/Input/ScaledDatePicker.style";
+import { DatePicker } from "../../../../shared/DatePicker/DatePicker";
 
 const tooltipText =
   "Vi kan av tekniske grunner ikke melde trekk 1-3 dager i forveien, så første trekkdato utsettes med én måned. Du kan velge en senere dato eller krysse av for også å bli trukket i dag.";
@@ -79,7 +71,7 @@ export const VippsDatePicker: React.FC = () => {
         )}
       </DateTextWrapper>
       <DateBoxWrapper>
-        <ScaledDatePicker
+        <DatePicker
           selected={vippsAgreement?.monthlyChargeDay}
           onClickOutside={() => {}}
           onChange={(date) => {
