@@ -177,6 +177,11 @@ const nextConfig = {
           "https://drive.google.com/file/d/18qWoVYVhFpDilNssxbXfBQY_snSCxFkV/view?usp=sharing",
         permanent: true,
       },
+      {
+        source: "/givewell-maximum-impact-fund",
+        destination: "/givewell-top-charities-fund",
+        permanent: true,
+      },
     ];
   },
 };

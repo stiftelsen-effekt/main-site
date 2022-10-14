@@ -2,10 +2,11 @@ import React from "react";
 import styles from "./Testemonial.module.scss";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
+import { PortableText } from "../../../../lib/sanity";
 
 export interface Testimony {
   quotee: string;
-  quotee_background: string;
+  quotee_background: any;
   quote: string;
   image: SanityImageSource;
 }
@@ -24,7 +25,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             e.currentTarget.blur();
             setCurrentTestimony(Math.max(0, currentTestimony - 1));
           }}
-        >   
+        >
           <div>←</div>
         </button>
       )}
@@ -41,7 +42,10 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
               </div>
               <div className={styles.testimonial__bio}>
                 <p>{quotee}</p>
-                <p> &#x21b3; {quotee_background}</p>
+                <p className={styles.tesimonial__background}>
+                  {" "}
+                  &#x21b3;&nbsp; <PortableText blocks={quotee_background} />
+                </p>
               </div>
             </div>
           ))}
@@ -57,7 +61,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1));
           }}
         >
-         <div>→</div>
+          <div>→</div>
         </button>
       )}
     </section>
