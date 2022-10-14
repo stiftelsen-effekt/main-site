@@ -63,6 +63,8 @@ export interface Donor extends DonorInput {
 
 export interface Referrals {
   referrals?: [ReferralType];
+  selectedReferrals: number[];
+  otherText: string;
   websiteSession: string;
 }
 
