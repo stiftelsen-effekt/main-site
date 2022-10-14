@@ -11,5 +11,5 @@ export const SplashTitle = styled.h1`
   font-weight: 400;
   margin-bottom: 16px;
   font-size: 42px;
-  color: white;
+  color: var(--secondary);
 `;

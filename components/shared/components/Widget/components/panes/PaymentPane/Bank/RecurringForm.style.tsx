@@ -13,7 +13,7 @@ export const AvtaleGiroButton = styled.button`
   width: 80%;
   background: rgba(93, 56, 0, 1);
   border-radius: 5px;
-  color: white;
+  color: var(--secondary);
   font-family: "Roboto";
   font-weight: 600;
   font-size: 16px;
