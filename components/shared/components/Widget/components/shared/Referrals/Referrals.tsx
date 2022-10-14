@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
-import { submitReferralAction } from "../../../store/referrals/actions";
+import {
+  selectReferralAction,
+  setOtherText,
+  submitReferralAction,
+} from "../../../store/referrals/actions";
 import { State } from "../../../store/state";
+import { ReferralData } from "../../../types/Temp";
 import { WidgetPane3ReferralsProps } from "../../../types/WidgetProps";
 import { PaneTitle } from "../../panes/Panes.style";
 import {
@@ -11,10 +16,12 @@ import {
 } from "../../panes/PaymentPane/Bank/ReferralPane.style";
 
 export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text }) => {
-  const referrals = useSelector((state: State) => state.referrals.referrals);
-  const [selectedReferral, setSelectedReferral] = useState(0);
-  const [otherInput, setOtherInput] = useState("");
   const dispatch = useDispatch();
+  const OTHER_REFERRAL_ID = 10;
+
+  const referrals = useSelector((state: State) => state.referrals.referrals);
+  const selectedReferrals = useSelector((state: State) => state.referrals.selectedReferrals);
+  const otherText = useSelector((state: State) => state.referrals.otherText);
 
   return (
     <div>
@@ -34,33 +41,44 @@ export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text 
             type={EffektButtonType.SECONDARY}
             cy={`referral-button-${ref.id}`}
             key={ref.id}
-            selected={ref.id == selectedReferral}
+            selected={selectedReferrals.includes(ref.id)}
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.currentTarget.blur();
-              setSelectedReferral(ref.id);
-              dispatch(
-                submitReferralAction.started({
+              if (selectedReferrals.includes(ref.id)) {
+                const refData: ReferralData = {
                   referralID: ref.id,
-                  comment: otherInput,
-                }),
-              );
+                  active: false,
+                };
+                dispatch(selectReferralAction(refData));
+                dispatch(submitReferralAction.started(refData));
+              } else {
+                const refData: ReferralData = {
+                  referralID: ref.id,
+                  active: true,
+                };
+                dispatch(selectReferralAction(refData));
+                dispatch(submitReferralAction.started(refData));
+              }
+
+              e.currentTarget.blur();
             }}
           >
             {ref.name}
           </EffektButton>
         ))}
       </ReferralButtonsWrapper>
-      {selectedReferral == 10 && (
+      {selectedReferrals.includes(OTHER_REFERRAL_ID) && (
         <ReferralTextInput
           data-cy="referral-text-input"
           type="text"
           placeholder="Skriv inn"
+          value={otherText}
           onChange={(e) => {
-            setOtherInput(e.target.value);
+            dispatch(setOtherText(e.currentTarget.value));
             dispatch(
               submitReferralAction.started({
                 referralID: 10,
-                comment: e.target.value,
+                active: true,
+                comment: e.currentTarget.value,
               }),
             );
           }}
