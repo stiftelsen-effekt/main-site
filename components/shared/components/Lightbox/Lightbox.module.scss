@@ -43,6 +43,10 @@
   padding-top: 8px;
   display: flex;
   justify-content: flex-end;
+
+  & > button {
+    margin-left: 0.5rem;
+  }
 }
 
 .textWrapper {

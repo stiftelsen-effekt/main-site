@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { Book, Briefcase, DollarSign, Filter, HelpCircle, Paperclip, Settings, User, Users, Zap } from 'react-feather'
+import { Book, Briefcase, DollarSign, Filter, HelpCircle, Paperclip, Phone, Settings, User, Users, Zap } from 'react-feather'
 import Iframe from 'sanity-plugin-iframe-pane'
 import resolveProductionUrl from './resolveProductionUrl'
 
@@ -78,6 +78,20 @@ export default () =>
               .icon(Paperclip)
               .child(
                 S.document().schemaType('articles').documentId('articles').views([
+                  S.view.form(),
+                  S.view
+                  .component(Iframe)
+                  .options({
+                    url: (doc: any) => resolveProductionUrl(doc),
+                  })
+                  .title('Preview'),
+                ])
+              ),
+            S.listItem()
+              .title('Vipps agreement splash page')
+              .icon(Phone)
+              .child(
+                S.document().schemaType('vippsagreement').documentId('vippsagreement').views([
                   S.view.form(),
                   S.view
                   .component(Iframe)

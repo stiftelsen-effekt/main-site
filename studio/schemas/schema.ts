@@ -46,6 +46,7 @@ import fullvideo from './types/fullvideo'
 import htmlembed from './types/htmlembed'
 import donationwidget from './types/donationwidget'
 import quote from './types/quote'
+import vippsagreement from './pages/vippsagreement'
 
 export const pages = [
   generic,
@@ -56,7 +57,8 @@ export const pages = [
   support,
   criteria,
   article,
-  articles
+  articles,
+  vippsagreement
 ]
 
 export const types = [

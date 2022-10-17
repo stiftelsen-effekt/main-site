@@ -17,7 +17,7 @@ export const NextButton: React.FC<{
   );
 };
 
-export const SubmitButton: React.FC<{ children: React.ReactNode; onClick: () => void }> = ({
+export const SubmitButton: React.FC<{ children: React.ReactNode; onClick: (e: React.MouseEvent) => void }> = ({
   children,
   onClick,
 }) => {

@@ -82,6 +82,10 @@ export const filterPageToSingleItem = (data: any, preview: boolean) => {
     return data.page[0];
   }
 
+  if (data.page.length === 0) {
+    return null;
+  }
+
   if (preview) {
     return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
   }

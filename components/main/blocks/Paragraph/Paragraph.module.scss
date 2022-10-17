@@ -16,6 +16,10 @@
   content: " ↗";
 }
 
+.paragraphwrapper ul li, .paragraphwrapper ol li {
+  margin-bottom: 0.8rem;
+}
+
 @media only screen and (max-width: 1520px) and (min-width: 1181px) { 
   .paragraphwrapper {
     max-width: 640px;

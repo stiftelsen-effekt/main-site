@@ -39,6 +39,9 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
     case "articles":
       res.writeHead(307, { Location: `/articles` });
       break;
+    case "vippsagreement":
+      res.writeHead(307, { Location: `/vippsagreement?email=example@email.com` });
+      break;
     case "generic_page":
       res.writeHead(307, { Location: `/${req?.query?.slug}` ?? `/` });
       break;
