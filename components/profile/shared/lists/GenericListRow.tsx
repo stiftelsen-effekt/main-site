@@ -14,12 +14,19 @@ const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
 
   return (
     <tbody ref={ref}>
-      <tr key={row.id}>
+      <tr
+        key={row.id}
+        onClick={() => {
+          expandable ? setExpanded(!expanded) : expanded;
+        }}
+        data-cy="generic-list-row-expand"
+        className={expandable ? style.expandableRow : ""}
+      >
         {row.cells.map((val, i) => (
           <td key={i}>{val}</td>
         ))}
         {expandable ? (
-          <td onClick={() => setExpanded(!expanded)} data-cy="generic-list-row-expand">
+          <td onClick={() => setExpanded(!expanded)}>
             <ChevronDown
               className={expanded ? style.iconChevronUp : style.iconChevronDown}
               color={"black"}

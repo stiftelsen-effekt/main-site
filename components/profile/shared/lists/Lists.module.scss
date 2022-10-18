@@ -11,6 +11,10 @@
   text-align: left;
 }
 
+.table .expandableRow {
+  cursor: pointer;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: 20% 70%;
