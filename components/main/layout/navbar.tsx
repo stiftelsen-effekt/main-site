@@ -61,7 +61,12 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           <div className={styles.logoWrapperImage}>
             <Link href="/">
               <a>
-                <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
+                <ResponsiveImage
+                  image={logo}
+                  onClick={() => setExpanded(false)}
+                  priority
+                  blur={false}
+                />
               </a>
             </Link>
           </div>

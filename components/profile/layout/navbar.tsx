@@ -22,7 +22,12 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
         <div className={styles.logoWrapper}>
           <div className={styles.logoWrapperImage}>
             <Link href="/" passHref>
-              <ResponsiveImage image={logo} onClick={() => setExpandMenu(false)} priority />
+              <ResponsiveImage
+                image={logo}
+                onClick={() => setExpandMenu(false)}
+                priority
+                blur={false}
+              />
             </Link>
           </div>
           <button className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>

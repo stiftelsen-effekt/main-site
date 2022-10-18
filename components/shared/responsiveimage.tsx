@@ -10,10 +10,12 @@ export const ResponsiveImage: React.FC<{
   onClick?: () => void;
   priority?: boolean;
   layout?: "intrinsic" | "fill" | "responsive" | "fixed";
+  blur?: boolean;
   urlBuilder?: UseNextSanityImageBuilder;
-}> = ({ image, alt, onClick, priority, layout = "fill", urlBuilder }) => {
+}> = ({ image, alt, onClick, priority, layout = "fill", urlBuilder, blur = true }) => {
   const imageProps = useNextSanityImage({ clientConfig: config }, image, {
     imageBuilder: urlBuilder,
+    enableBlurUp: blur ? undefined : false,
   });
 
   return (
