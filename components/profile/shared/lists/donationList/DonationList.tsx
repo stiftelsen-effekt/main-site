@@ -34,7 +34,7 @@ export const DonationList: React.FC<{
   const rows: ListRow[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
-      isFirstRow: index === 0 ? true : false,
+      defaultExpanded: index === 0 ? true : false,
       cells: [
         shortDate(donation.timestamp),
         thousandize(Math.round(parseFloat(donation.sum))) + " kr",

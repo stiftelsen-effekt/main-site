@@ -9,7 +9,7 @@ const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
   row,
   expandable = true,
 }) => {
-  const [expanded, setExpanded] = useState<boolean>(row.isFirstRow);
+  const [expanded, setExpanded] = useState<boolean>(row.defaultExpanded);
   const [ref, isInView] = useInView();
 
   return (
