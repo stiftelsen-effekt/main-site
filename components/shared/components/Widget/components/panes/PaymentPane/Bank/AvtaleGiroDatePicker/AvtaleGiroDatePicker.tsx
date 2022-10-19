@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDueDay } from "../../../../../store/donation/actions";
 import { State } from "../../../../../store/state";
-import { ScaledDatePicker } from "../../../../shared/Input/ScaledDatePicker.style";
+import { DatePicker } from "../../../../shared/DatePicker/DatePicker";
 import { ToolTip } from "../../../../shared/ToolTip/ToolTip";
 import {
-  Datebox,
   Wrapper,
   DateBoxWrapper,
   DateTextWrapper,
@@ -39,7 +38,7 @@ export const AvtaleGiroDatePicker: React.FC = () => {
         {isIrregularChargeDay(selectedDueDay) && <ToolTip text={tooltipText} />}
       </DateTextWrapper>
       <DateBoxWrapper>
-        <ScaledDatePicker
+        <DatePicker
           selected={dueDay}
           onChange={(date) => {
             setSelectedDueDay(date);

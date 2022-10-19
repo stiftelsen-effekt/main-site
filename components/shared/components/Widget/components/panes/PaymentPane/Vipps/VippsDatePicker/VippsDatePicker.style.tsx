@@ -21,7 +21,7 @@ export const Datebox = styled.button`
   border: none;
   box-shadow: 0px 3px 6px 0 rgba(0, 0, 0, 0.15);
   box-shadow: 0px 0px 0px 1.5px ${orange20};
-  background-color: white;
+  background-color: var(--secondary);
   cursor: pointer;
 
   @media only screen and (max-width: 355px) {

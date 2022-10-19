@@ -61,7 +61,12 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           <div className={styles.logoWrapperImage}>
             <Link href="/">
               <a>
-                <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
+                <ResponsiveImage
+                  image={logo}
+                  onClick={() => setExpanded(false)}
+                  priority
+                  blur={false}
+                />
               </a>
             </Link>
           </div>
@@ -112,11 +117,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           )}
           <li className={styles.buttonsWrapper}>
             <Link href="/profile" passHref>
-              <EffektButton
-                extraMargin={true}
-                type={EffektButtonType.SECONDARY}
-                onClick={() => setExpanded(false)}
-              >
+              <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
                 Min side
               </EffektButton>
             </Link>

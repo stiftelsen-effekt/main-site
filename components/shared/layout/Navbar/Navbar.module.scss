@@ -65,24 +65,6 @@
   display: block;
 }
 
-.btnlogin {
-  background: var(--secondary);
-  box-shadow: none;
-  padding: 8px 18px;
-  color: var(--primary);
-  font-family: "ESKlarheitGrotesk";
-  border: 1px solid var(--primary);
-  font-size: 1em;
-  cursor: pointer;
-  border-radius: 20px;
-  margin-left: 20px;
-  margin-right: 30px;
-}
-
-.navbar ul li.btnlogin:hover {
-  background: var(--primary-hover);
-}
-
 .navbar ul li .submenu ul li {
   padding-bottom: 0;
 }
@@ -123,11 +105,8 @@
 
 @media only screen and (max-width: 1180px) {
   .navbarExpanded {
-    --primary: #fafafa;
-    --secondary: #000;
-    --primary-filter: invert(0);
-    background: var(--secondary);
-    color: var(--primary);
+    background: var(--primary);
+    color: var(--secondary);
     position: fixed;
     top: 0;
     left: 0;
@@ -258,14 +237,8 @@
     margin-top: auto;
   }
 
-  .navbar ul li .btnlogin {
-    background: var(--secondary);
-    color: var(--primary);
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-size: 14px;
+  .navbar ul li.buttonsWrapper button:first-child { 
     margin-left: 0;
-    margin-right: 20px;
   }
 }
 
@@ -285,11 +258,6 @@
     padding-left: 18px;
     padding-right: 18px;
     margin-top: 6px;
-  }
-
-  .navbar ul li .btnlogin {
-    margin-right: 15px;
-    margin-left: 30px;
   }
 }
 

@@ -2,10 +2,12 @@ import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
 import { Referrals } from "../state";
 import { fetchReferralsAction } from "./actions";
-import { ReferralActionTypes } from "./types";
+import { ReferralActionTypes, SELECT_REFERRAL, SET_OTHER_TEXT } from "./types";
 
 const initialState: Referrals = {
-  websiteSession: new Date().getTime().toString()
+  websiteSession: new Date().getTime().toString(),
+  selectedReferrals: [],
+  otherText: "",
 };
 
 /**
@@ -18,12 +20,35 @@ const initialState: Referrals = {
 
 export const referralReducer: Reducer<Referrals, ReferralActionTypes> = (
   state: Referrals = initialState,
-  action: ReferralActionTypes
+  action: ReferralActionTypes,
 ) => {
   if (isType(action, fetchReferralsAction.done)) {
     return {
       ...state,
       referrals: action.payload.result,
+    };
+  }
+
+  if (action.type === SELECT_REFERRAL) {
+    if (action.payload.ref.active) {
+      return {
+        ...state,
+        selectedReferrals: [...state.selectedReferrals, action.payload.ref.referralID],
+      };
+    } else {
+      return {
+        ...state,
+        selectedReferrals: state.selectedReferrals.filter(
+          (referralID) => referralID !== action.payload.ref.referralID,
+        ),
+      };
+    }
+  }
+
+  if (action.type === SET_OTHER_TEXT) {
+    return {
+      ...state,
+      otherText: action.payload.text,
     };
   }
 

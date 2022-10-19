@@ -19,6 +19,7 @@ export interface OrganizationShare {
 
 export interface ReferralData {
   referralID: number;
+  active: boolean;
   donorID?: number;
   comment?: string;
 }

@@ -44,7 +44,7 @@ export const UnderTitle = styled.p`
 
 export const HorizontalLine = styled.div`
   height: 1px;
-  background-color: white;
+  background-color: var(--secondary);
   margin-top: 10px;
   margin-bottom: 10px;
   width: 100%;

@@ -22,7 +22,12 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
         <div className={styles.logoWrapper}>
           <div className={styles.logoWrapperImage}>
             <Link href="/" passHref>
-              <ResponsiveImage image={logo} onClick={() => setExpandMenu(false)} priority />
+              <ResponsiveImage
+                image={logo}
+                onClick={() => setExpandMenu(false)}
+                priority
+                blur={false}
+              />
             </Link>
           </div>
           <button className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
@@ -50,16 +55,19 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
               Profil
             </Link>
           </li>
-          <li onClick={() => setExpandMenu(false)}>
+          <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
             <EffektButton
               type={EffektButtonType.SECONDARY}
               onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
+              extraMargin={true}
             >
               Logg ut
             </EffektButton>
-          </li>
-          <li>
-            <EffektButton cy="send-donation-button" onClick={() => setWidgetOpen(true)}>
+            <EffektButton
+              cy="send-donation-button"
+              onClick={() => setWidgetOpen(true)}
+              extraMargin={true}
+            >
               Send donasjon
             </EffektButton>
           </li>
