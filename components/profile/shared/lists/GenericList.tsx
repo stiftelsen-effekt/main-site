@@ -4,6 +4,7 @@ import React, { ReactElement } from "react";
 
 export type ListRow = {
   id: string;
+  isFirstRow: boolean;
   cells: string[];
   details: ReactElement;
 };
