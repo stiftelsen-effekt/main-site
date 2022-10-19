@@ -1,5 +1,11 @@
 .table {
   width: 100%;
+  border-spacing: 0;
+}
+
+/*Makes up for lost spacing from removed border-spacing*/
+.table td {
+  border: 1px solid transparent;
 }
 
 .table th {
@@ -13,6 +19,17 @@
 
 .table .expandableRow {
   cursor: pointer;
+}
+
+.table .expandableRow:hover {
+  color: var(--secondary);
+  background-color: var(--primary);
+
+  svg.iconChevronUp polyline,
+  svg.iconChevronDown polyline {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+  }
 }
 
 .gridContainer {

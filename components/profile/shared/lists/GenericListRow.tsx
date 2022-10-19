@@ -26,7 +26,7 @@ const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
           <td key={i}>{val}</td>
         ))}
         {expandable ? (
-          <td onClick={() => setExpanded(!expanded)}>
+          <td>
             <ChevronDown
               className={expanded ? style.iconChevronUp : style.iconChevronDown}
               color={"black"}
