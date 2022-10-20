@@ -61,35 +61,45 @@ describe("Donations page", () => {
   });
 
   beforeEach(() => {
-    cy.fixture("evaluations")
-      .then((evaluations) => {
-        console.log(evaluations);
+    cy.fixture("evaluations").then((evaluations) => {
+      console.log(evaluations);
 
-        cy.intercept(
-          "GET",
-          "/api/evaluations?charity_abbreviation=AMF&currency=NOK&language=NO&*",
-          {
-            statusCode: 200,
-            body: evaluations.AMF,
-          },
-        );
-        cy.intercept("GET", "/api/evaluations?charity_abbreviation=GD&currency=NOK&language=NO&*", {
+      cy.intercept(
+        "GET",
+        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=AMF&currency=NOK&language=NO&*",
+        {
+          statusCode: 200,
+          body: evaluations.AMF,
+        },
+      ).as("getAMFEvaluations");
+      cy.intercept(
+        "GET",
+        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=GD&currency=NOK&language=NO&*",
+        {
           statusCode: 200,
           body: evaluations.GD,
-        });
-        cy.intercept("GET", "/api/evaluations?charity_abbreviation=NI&currency=NOK&language=NO&*", {
+        },
+      ).as("getGDEvaluations");
+      cy.intercept(
+        "GET",
+        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=NI&currency=NOK&language=NO&*",
+        {
           statusCode: 200,
           body: evaluations.NI,
-        });
-      })
-      .as("getEvaluations");
+        },
+      ).as("getNIEvaluations");
+    });
 
     cy.fixture("grants")
       .then((grants) => {
-        cy.intercept("GET", "/api/max_impact_fund_grants?currency=NOK&language=NO&*", {
-          statusCode: 200,
-          body: grants,
-        });
+        cy.intercept(
+          "GET",
+          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
+          {
+            statusCode: 200,
+            body: grants,
+          },
+        );
       })
       .as("getGrants");
   });
@@ -166,6 +176,14 @@ describe("Donations page", () => {
 
   it("Should be possible to filter by year", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
+
+    /**
+     * Wait for evaluations
+     */
+    cy.wait(["@getAMFEvaluations", "@getNIEvaluations", "@getGDEvaluations"], {
+      timeout: 30000,
+    });
+
     cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 4);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");

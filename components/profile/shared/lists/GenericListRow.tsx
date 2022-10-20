@@ -13,15 +13,15 @@ const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
   const [ref, isInView] = useInView();
 
   return (
-    <tbody ref={ref}>
-      <tr
-        key={row.id}
-        onClick={() => {
-          expandable ? setExpanded(!expanded) : expanded;
-        }}
-        data-cy="generic-list-row-expand"
-        className={expandable ? style.expandableRow : ""}
-      >
+    <tbody
+      ref={ref}
+      onClick={() => {
+        expandable ? setExpanded(!expanded) : expanded;
+      }}
+      data-cy="generic-list-row-expand"
+      className={expandable ? style.expandableRow : ""}
+    >
+      <tr key={row.id}>
         {row.cells.map((val, i) => (
           <td key={i}>{val}</td>
         ))}

@@ -21,7 +21,7 @@
   cursor: pointer;
 }
 
-.table .expandableRow:hover {
+.table .expandableRow:hover > tr:first-child {
   color: var(--secondary);
   background-color: var(--primary);
 
