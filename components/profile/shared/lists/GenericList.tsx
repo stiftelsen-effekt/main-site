@@ -5,13 +5,13 @@ import React, { ReactElement } from "react";
 export type ListRow = {
   id: string;
   cells: string[];
-  details: ReactElement;
+  details?: ReactElement;
 };
 
 export const GenericList: React.FC<{
   title: string;
-  supplementalInformation: string;
-  headers: string[];
+  supplementalInformation?: string;
+  headers: { label: string; width?: string }[];
   rows: ListRow[];
   emptyPlaceholder: JSX.Element;
   expandable?: boolean;
@@ -19,7 +19,7 @@ export const GenericList: React.FC<{
   return (
     <div className={style.gridContainer} key={title} data-cy="generic-list">
       <section className={style.header} data-cy="generic-list-header">
-        <h3>{title}</h3>
+        <h5>{title}</h5>
         <p>{supplementalInformation}</p>
       </section>
       <section>
@@ -28,7 +28,9 @@ export const GenericList: React.FC<{
             <thead>
               <tr>
                 {headers.map((header) => (
-                  <th key={header}>{header}</th>
+                  <th key={header.label} style={{ width: header.width ?? "auto" }}>
+                    {header.label}
+                  </th>
                 ))}
               </tr>
             </thead>

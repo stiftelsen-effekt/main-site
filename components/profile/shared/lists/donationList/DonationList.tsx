@@ -24,7 +24,23 @@ export const DonationList: React.FC<{
     skattefradrag`;
   }
 
-  const headers = ["Dato", "Sum", "Betalingskanal", "KID"];
+  const headers = [
+    {
+      label: "Dato",
+      width: "25%",
+    },
+    {
+      label: "Sum",
+      width: "25%",
+    },
+    {
+      label: "Betalingskanal",
+      width: "25%",
+    },
+    {
+      label: "KID",
+    },
+  ];
 
   const rows: ListRow[] = donations.map((donation) => {
     return {
