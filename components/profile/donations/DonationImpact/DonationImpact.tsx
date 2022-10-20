@@ -98,7 +98,8 @@ const DonationImpact: React.FC<{
               {dist.org === "Drift" && (
                 <tr>
                   <td className={style.impact} colSpan={100}>
-                    {dist.sum} til drift av GiEffektivt
+                    <span>Drift av Gi Effektivt</span>
+                    <strong>{`${dist.sum} kr`}</strong>
                   </td>
                 </tr>
               )}

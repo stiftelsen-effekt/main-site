@@ -3,21 +3,32 @@
 }
 
 .smartdistributionlabel {
-  padding: 0 0.6rem;
-  background: var(--primary);
-  color: var(--secondary);
-  margin: 20px 0;
+  margin: 5px 0 5px 0;
   display: inline-flex;
-  flex-direction: row;
-  font-size: 12px;
+
+  span {
+    margin-left: 2px;
+  }
+}
+
+.impact {
+  position: relative;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.smartdistributionlabel,
+.impact {
   align-items: center;
-  border-radius: 5px;
+  font-size: 14px;
+  line-height: 14px;
+  text-transform: uppercase;
 
   span {
     display: inline-block;
     margin-right: 0.5rem;
     padding-right: 0.5rem;
-    border-right: 1px solid var(--secondary);
+    border-right: 1px solid var(--primary);
   }
 }
 
@@ -27,9 +38,4 @@
   tr {
     width: 100%;
   }
-}
-
-.impact {
-  position: relative;
-  width: 100%;
 }
