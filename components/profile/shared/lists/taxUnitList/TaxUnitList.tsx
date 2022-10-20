@@ -1,3 +1,4 @@
+import { Edit, Edit2, Trash, Trash2 } from "react-feather";
 import { Distribution, Donation, META_OWNER, TaxUnit } from "../../../../../models";
 import { shortDate, thousandize } from "../../../../../util/formatting";
 import { GenericList, ListRow } from "../GenericList";
@@ -35,6 +36,19 @@ export const TaxUnitList: React.FC<{
         thousandize(Math.round(unit.sumDonations)) + " kr",
         "TODO",
       ],
+      contextOptions: [
+        {
+          label: "Endre",
+          icon: <Edit2 size={16} />,
+        },
+        {
+          label: "Slett",
+          icon: <Trash2 size={16} />,
+        },
+      ],
+      onContextSelect: (option) => {
+        alert(option);
+      },
     },
   ];
 
