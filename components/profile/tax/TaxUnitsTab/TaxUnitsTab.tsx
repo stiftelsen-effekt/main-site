@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useContext } from "react";
 import { TaxUnit } from "../../../../models";
 import { useTaxUnits } from "../../../../_queries";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { ActivityContext } from "../../layout/activityProvider";
 import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
 import styles from "./TaxUnitsTab.module.scss";
@@ -22,9 +23,13 @@ export const TaxUnitsTab: React.FC = () => {
   return (
     <div className={styles.container}>
       <h5>Dine skatteenheter</h5>
-      {!loading && !error && data && data.length > 0
-        ? data.map((taxUnit: TaxUnit) => <TaxUnitList taxUnits={[taxUnit]} />)
-        : null}
+      {!loading && !error && data && data.length > 0 ? (
+        data.map((taxUnit: TaxUnit) => <TaxUnitList taxUnits={[taxUnit]} />)
+      ) : (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 };
