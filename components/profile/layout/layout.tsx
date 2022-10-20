@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
 import Router from "next/router";
 import { LayoutElement } from "../../../types";
 import { UserWrapper } from "./userwrapper";
@@ -21,6 +21,15 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
 
+  let cacheLocation: CacheLocation = "memory";
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost") {
+      cacheLocation = "localstorage";
+    } else if ((window as any).Cypress) {
+      cacheLocation = "localstorage";
+    }
+  }
+
   return (
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_DOMAIN || ""}
@@ -29,13 +38,7 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
       scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
       redirectUri={typeof window !== "undefined" ? window.location.origin + "/profile/" : undefined}
       onRedirectCallback={onRedirectCallback}
-      cacheLocation={
-        typeof window !== "undefined"
-          ? (window as any).Cypress
-            ? "localstorage"
-            : "memory"
-          : undefined
-      }
+      cacheLocation={cacheLocation}
     >
       <div className={styles.container + " " + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false }}>
