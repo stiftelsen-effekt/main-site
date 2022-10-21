@@ -16,7 +16,7 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   const navBarCheck = useCallback(() => {
     if (typeof window !== "undefined") {
       if (window.scrollY > 0) setNavbarShrinked(true);
-      else setNavbarShrinked(false)
+      else setNavbarShrinked(false);
     }
   }, [setNavbarShrinked]);
 
@@ -24,8 +24,7 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
     if (typeof window !== "undefined") {
       if (window.scrollY > lastScrollPosition && window.scrollY > 160) {
         setNavBarVisible(false);
-      } else if (window.scrollY == lastScrollPosition) {
-      } else {
+      } else if (window.scrollY < lastScrollPosition - 20 || window.scrollY <= 160) {
         setNavBarVisible(true);
       }
     }
@@ -52,5 +51,9 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   if (navbarShrinked) classes.push(styles.navbarShrinked);
   if (!navBarVisible) classes.push(styles.navbarHidden);
 
-  return <div data-cy="header" className={classes.join(" ")}>{children}</div>;
+  return (
+    <div data-cy="header" className={classes.join(" ")}>
+      {children}
+    </div>
+  );
 };
