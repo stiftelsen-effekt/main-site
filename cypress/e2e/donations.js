@@ -50,17 +50,6 @@ describe("Donations page", () => {
       })
       .as("getDistribution");
 
-    cy.visit(`/profile/`);
-
-    /**
-     * Wait for initial data load
-     */
-    cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution"], {
-      timeout: 30000,
-    });
-  });
-
-  beforeEach(() => {
     cy.fixture("evaluations").then((evaluations) => {
       console.log(evaluations);
 
@@ -88,20 +77,41 @@ describe("Donations page", () => {
           body: evaluations.NI,
         },
       ).as("getNIEvaluations");
-    });
 
-    cy.fixture("grants")
-      .then((grants) => {
-        cy.intercept(
-          "GET",
-          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
-          {
-            statusCode: 200,
-            body: grants,
-          },
-        );
-      })
-      .as("getGrants");
+      cy.fixture("grants")
+        .then((grants) => {
+          cy.intercept(
+            "GET",
+            "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
+            {
+              statusCode: 200,
+              body: grants,
+            },
+          );
+        })
+        .as("getGrants");
+
+      cy.visit(`/profile/`);
+
+      /**
+       * Wait for initial data load
+       */
+      cy.wait(
+        [
+          "@getDonor",
+          "@getDonations",
+          "@getAggregated",
+          "@getDistribution",
+          "@getGrants",
+          "@getNIEvaluations",
+          "@getGDEvaluations",
+          "@getAMFEvaluations",
+        ],
+        {
+          timeout: 30000,
+        },
+      );
+    });
   });
 
   it("Should display a menu for selection donation year", () => {
@@ -176,13 +186,6 @@ describe("Donations page", () => {
 
   it("Should be possible to filter by year", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
-
-    /**
-     * Wait for evaluations
-     */
-    cy.wait(["@getAMFEvaluations", "@getNIEvaluations", "@getGDEvaluations"], {
-      timeout: 30000,
-    });
 
     cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 4);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
