@@ -1,15 +1,15 @@
 import React from "react";
 import style from "./DonationDetails.module.scss";
-import { Distribution } from "../../../../../models";
+import { Distribution, Donation } from "../../../../../models";
 import DonationImpact from "../../../donations/DonationImpact/DonationImpact";
 import { Dictionary } from "cypress/types/lodash";
-import { SWRConfig } from "swr";
 
 export const DonationDetails: React.FC<{
   sum: string;
+  donation: Donation;
   distribution: Distribution;
   timestamp: Date;
-}> = ({ sum, distribution, timestamp }) => {
+}> = ({ sum, donation, distribution, timestamp }) => {
   const mappedDistribution = distribution.organizations.map((org) => ({
     org: mapNameToOrgAbbriv(org.name) || org.name,
     sum: parseFloat(sum) * (parseFloat(org.share) / 100),
@@ -21,7 +21,11 @@ export const DonationDetails: React.FC<{
         <strong>Estimert effekt</strong>
         {/** Custom caching WIP */}
         {/* <SWRConfig value={{ provider: () => ImpactCache }}> */}
-        <DonationImpact distribution={mappedDistribution} timestamp={timestamp} />
+        <DonationImpact
+          donation={donation}
+          distribution={mappedDistribution}
+          timestamp={timestamp}
+        />
         {/*</SWRConfig>*/}
       </div>
 

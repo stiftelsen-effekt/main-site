@@ -51,8 +51,6 @@ describe("Donations page", () => {
       .as("getDistribution");
 
     cy.fixture("evaluations").then((evaluations) => {
-      console.log(evaluations);
-
       cy.intercept(
         "GET",
         "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=AMF&currency=NOK&language=NO&*",

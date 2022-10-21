@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import { GiveWellGrant } from "../../../../models";
+import { Donation, GiveWellGrant } from "../../../../models";
 import { thousandize } from "../../../../util/formatting";
 import style from "./DonationImpact.module.scss";
 import { DonationImpactItem } from "./DonationImpactItem";
@@ -8,9 +8,10 @@ import { DonationImpactItem } from "./DonationImpactItem";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const DonationImpact: React.FC<{
+  donation: Donation;
   distribution: { org: string; sum: number }[];
   timestamp: Date;
-}> = ({ distribution, timestamp }) => {
+}> = ({ donation, distribution, timestamp }) => {
   const { data, error, isValidating } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
     `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&donation_year=${timestamp.getFullYear()}&donation_month=${
       timestamp.getMonth() + 1
@@ -24,17 +25,12 @@ const DonationImpact: React.FC<{
   );
 
   const [requiredPrecision, setRequiredPrecision] = useState(0);
-  const signalRequiredPrecision = (precision: number) => {
-    if (precision > requiredPrecision) {
-      setRequiredPrecision(precision);
-    }
-  };
 
   if (!data || isValidating) {
-    return <div>Loading...</div>;
+    return <div key={`${donation.id}`}>Loading...</div>;
   }
   if (error) {
-    return <div>{error}</div>;
+    return <div key={`${donation.id}`}>{error}</div>;
   }
 
   /**
@@ -51,18 +47,16 @@ const DonationImpact: React.FC<{
     const relevantGrant = data?.max_impact_fund_grants[0];
 
     if (!relevantGrant) {
-      return <div>Could not find relevant maximum impact grant</div>;
+      return <div key={`${donation.id}`}>Could not find relevant maximum impact grant</div>;
     }
 
     const grantTotal = relevantGrant.allotment_set.reduce((acc, grant) => {
       return acc + grant.sum_in_cents;
     }, 0);
-    console.log(grantTotal);
 
     relevantGrant.allotment_set.forEach((allotment) => {
       const org = allotment.charity.abbreviation;
       const sum = Math.round((allotment.sum_in_cents / grantTotal) * giveWellDist.sum);
-      console.log(allotment.sum_in_cents / grantTotal);
       const orgIndex = spreadDistribution.findIndex((d) => d.org === org);
       if (orgIndex !== -1) {
         log.push(`Adding ${sum} to ${org}`);
@@ -75,7 +69,7 @@ const DonationImpact: React.FC<{
   }
 
   return (
-    <div className={style.container}>
+    <div className={style.container} key={`${donation.id}`}>
       {giveWellDist && (
         <div className={style.smartdistributionlabel}>
           <span>Smart fordeling</span>
@@ -92,11 +86,13 @@ const DonationImpact: React.FC<{
                   sumToOrg={dist.sum}
                   donationTimestamp={timestamp}
                   precision={requiredPrecision}
-                  signalRequiredPrecision={signalRequiredPrecision}
+                  signalRequiredPrecision={(precision) => {
+                    precision > requiredPrecision ? setRequiredPrecision(precision) : null;
+                  }}
                 />
               )}
               {dist.org === "Drift" && (
-                <tr>
+                <tr key={`${donation.id}-drift`}>
                   <td className={style.impact} colSpan={100}>
                     <span>Drift av Gi Effektivt</span>
                     <strong>{`${dist.sum} kr`}</strong>

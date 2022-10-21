@@ -29,10 +29,18 @@ export const DonationImpactItem: React.FC<{
   const [showDetails, setShowDetails] = React.useState(false);
 
   if (!data || isValidating) {
-    return <div>Loading...</div>;
+    return (
+      <tr>
+        <td>Loading...</td>
+      </tr>
+    );
   }
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <tr>
+        <td>{error}</td>
+      </tr>
+    );
   }
   /**
    * Sort evaluations by start time
@@ -44,7 +52,7 @@ export const DonationImpactItem: React.FC<{
   if (!relevantEvaluation) {
     return (
       <>
-        <tr className={style.overview} data-cy="donation-impact-list-item-overview">
+        <tr className={style.overview} data-cy="donation-impact-list-item-overview" key={``}>
           <td>
             <span className={style.impactOutput} data-cy="donation-impact-list-item-output">
               {thousandize(sumToOrg)}
@@ -109,7 +117,6 @@ export const DonationImpactItem: React.FC<{
 
   let requiredPrecision = 0;
   while (parseFloat(output.toFixed(requiredPrecision)) === 0 && requiredPrecision < 3) {
-    console.log("increasing precision for " + orgAbriv);
     requiredPrecision += 1;
   }
 
@@ -169,7 +176,7 @@ export const DonationImpactItem: React.FC<{
                   links={[
                     {
                       _type: "link",
-                      _key: "giveWell",
+                      _key: "charity_description",
                       title: "Om " + relevantEvaluation.charity.charity_name,
                       url:
                         "https://gieffektivt.no/organizations#" +

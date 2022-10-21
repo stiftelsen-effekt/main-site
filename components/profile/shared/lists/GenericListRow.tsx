@@ -38,7 +38,7 @@ const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
         )}
       </tr>
       {expandable ? (
-        <tr>
+        <tr key={`${row.id}-expanded`}>
           <td colSpan={Number.MAX_SAFE_INTEGER} className={style.detailRowCell}>
             <AnimateHeight height={expanded ? "auto" : 0} animateOpacity={true}>
               {(expanded || isInView) && row.details}

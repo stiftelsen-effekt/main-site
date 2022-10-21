@@ -117,9 +117,11 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           )}
           <li className={styles.buttonsWrapper}>
             <Link href="/profile" passHref>
-              <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
-                Min side
-              </EffektButton>
+              <a>
+                <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
+                  Min side
+                </EffektButton>
+              </a>
             </Link>
             <EffektButton
               cy="send-donation-button"
