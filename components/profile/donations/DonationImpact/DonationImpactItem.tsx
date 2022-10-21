@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import style from "./DonationImpactItem.module.scss";
-import { thousandize } from "../../../../util/formatting";
+import { thousandize, thousandizeString } from "../../../../util/formatting";
 import useSWR from "swr";
 import { ImpactEvaluation } from "../../../../models";
 import AnimateHeight from "react-animate-height";
@@ -42,7 +42,67 @@ export const DonationImpactItem: React.FC<{
   const relevantEvaluation = data?.evaluations[0];
 
   if (!relevantEvaluation) {
-    return <div>No relevant evaluation found for {orgAbriv}</div>;
+    return (
+      <>
+        <tr className={style.overview} data-cy="donation-impact-list-item-overview">
+          <td>
+            <span className={style.impactOutput} data-cy="donation-impact-list-item-output">
+              {thousandize(sumToOrg)}
+            </span>
+          </td>
+          <td>
+            <div className={style.impactContext}>
+              <span className={style.impactDetailsDescription}>kr til {orgAbriv}</span>
+              <span
+                className={[style.impactDetailsExpandText, showDetails ? style.expanded : ""].join(
+                  " ",
+                )}
+                onClick={() => setShowDetails(!showDetails)}
+              >
+                Ingen relevant evaluering tilgjengelig for å beregne effekt
+              </span>
+            </div>
+          </td>
+        </tr>
+        <tr className={style.details}>
+          <td colSpan={Number.MAX_SAFE_INTEGER}>
+            {/* Strange hack required to not have table reflow when showing the animated area */}
+            <AnimateHeight duration={300} animateOpacity height={showDetails ? "auto" : 0}>
+              <div>
+                <p>
+                  For denne intervensjonen har vi ikke lagt inn en relevant evaluering fra GiveWell
+                  for tidsrommet donasjonen er gitt. Dette kan skyldes at vi ikke har oppdaterte
+                  tall fra GiveWell for det gitte tidsrommet, eller at vi ikke har rukket å legge
+                  det inn i vår database. Vi jobber kontinuerlig med å oppdatere våre tall og håper
+                  å kunne legge inn en relevant evaluering for denne intervensjonen så snart det
+                  foreligger. Ta gjerne kontakt med oss på{" "}
+                  <a href="mailto:donasjon@gieffektivt.no" style={{ textDecoration: "underline" }}>
+                    donasjon@gieffektivt.no
+                  </a>{" "}
+                  om du har noen spørsmål.
+                </p>
+                <div>
+                  <Links
+                    links={[
+                      {
+                        _type: "link",
+                        _key: "giveWell",
+                        title: "GiveWell’s analyser",
+                        url: "https://www.givewell.org/how-we-work/our-criteria/cost-effectiveness/cost-effectiveness-models",
+                        newtab: true,
+                      },
+                    ]}
+                  />
+                </div>
+              </div>
+            </AnimateHeight>
+          </td>
+        </tr>
+        <tr className={style.spacerRow}>
+          <td colSpan={Number.MAX_SAFE_INTEGER}></td>
+        </tr>
+      </>
+    );
   }
 
   const output = sumToOrg / relevantEvaluation.converted_cost_per_output;
@@ -57,11 +117,11 @@ export const DonationImpactItem: React.FC<{
     signalRequiredPrecision(requiredPrecision);
   }
 
-  const formattedOutput = (
-    Math.round(output * Math.pow(10, requiredPrecision)) / Math.pow(10, requiredPrecision)
-  )
-    .toFixed(precision)
-    .replace(/\./, ",");
+  const formattedOutput = thousandizeString(
+    (Math.round(output * Math.pow(10, requiredPrecision)) / Math.pow(10, requiredPrecision))
+      .toFixed(precision)
+      .replace(/\./, ","),
+  );
 
   return (
     <>
@@ -125,15 +185,6 @@ export const DonationImpactItem: React.FC<{
                     },
                   ]}
                 />
-              </div>
-              <div className={style.chosenEvaluation}>
-                <span>Evaluering: </span>
-                <span>{relevantEvaluation.start_year} </span>
-                <span>
-                  {new Date(2020, relevantEvaluation.start_month - 1).toLocaleString("no-NB", {
-                    month: "long",
-                  })}
-                </span>
               </div>
             </div>
           </AnimateHeight>

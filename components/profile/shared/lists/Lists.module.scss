@@ -5,20 +5,25 @@
 
 /*Makes up for lost spacing from removed border-spacing*/
 .table td {
-  border: 1px solid transparent;
+  
 }
 
 .table th {
   text-align: left;
 }
 
-.table td {
+.table tr td {
   margin-left: 0px;
   text-align: left;
+  padding: 0.25rem 0rem;
 }
 
 .table .expandableRow {
   cursor: pointer;
+}
+
+.table .expandableRow + tr > td {
+  padding: 0;
 }
 
 .table .expandableRow:hover {
