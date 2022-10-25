@@ -40,7 +40,14 @@ const DonationImpact: React.FC<{
   const giveWellDist = distribution.find((d) => d.org === "GiveWell");
   const filteredDistribution = distribution
     .filter((d) => d.org !== "GiveWell")
-    .map((o) => ({ ...o }));
+    .map((o) => ({ ...o }))
+    .sort(function (a, b) {
+      var key = "Drift";
+      if (a.org === key && b.org != key) return -1;
+      if (a.org != key && b.org === key) return 1;
+      return 0;
+    });
+
   let spreadDistribution: { org: string; sum: number }[] = [...filteredDistribution];
   const log: string[] = [];
   if (giveWellDist) {
