@@ -95,11 +95,9 @@
     display: grid;
     border-left: 1px solid var(--primary);
 
-    td {
-      &:first-child {
-        border-left: none;
-        text-align: left;
-      }
+    td:first-child {
+      border-left: none;
+      text-align: left;
     }
   }
 }
