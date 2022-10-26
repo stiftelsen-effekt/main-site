@@ -7,7 +7,6 @@
   padding-left: 20px;
   margin: 20px 0;
   width: 100%;
-
 }
 
 .chosenEvaluation {
@@ -58,7 +57,7 @@
       cursor: pointer;
       font-size: 0.9rem;
       line-height: 1.1rem;
-      
+
       &::after {
         content: "↓";
         display: inline-block;
@@ -88,5 +87,19 @@
 .spacerRow {
   td:first-child {
     padding-bottom: 20px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .overview {
+    display: grid;
+    border-left: 1px solid var(--primary);
+
+    td {
+      &:first-child {
+        border-left: none;
+        text-align: left;
+      }
+    }
   }
 }
