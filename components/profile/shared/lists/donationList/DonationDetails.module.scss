@@ -33,3 +33,9 @@
 .actions ul li span {
   text-decoration: underline;
 }
+
+@media only screen and (max-width: 1180px) {
+  .impactEstimate {
+    text-align: right;
+  }
+}

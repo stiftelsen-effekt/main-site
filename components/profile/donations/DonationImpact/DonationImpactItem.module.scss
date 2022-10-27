@@ -91,13 +91,27 @@
 }
 
 @media only screen and (max-width: 1180px) {
-  .overview {
+  .overview,
+  .details {
     display: grid;
-    border-left: 1px solid var(--primary);
 
-    td:first-child {
-      border-left: none;
-      text-align: left;
+    border-right: 1px solid var(--primary);
+    padding-right: 1.5em;
+
+    td,
+    div,
+    span {
+      text-align: right;
+      &:first-child {
+        border-left: none;
+        text-align: right;
+        padding-left: 0;
+      }
     }
+  }
+
+  .wrapper th td {
+    display: flex;
+    justify-content: flex-end;
   }
 }
