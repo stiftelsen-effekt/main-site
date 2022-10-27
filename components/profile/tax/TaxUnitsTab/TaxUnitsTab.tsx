@@ -46,13 +46,11 @@ export const TaxUnitsTab: React.FC = () => {
       {createModalOpen && (
         <TaxUnitCreateModal
           open={createModalOpen}
-          onSuccess={function (unit: TaxUnit): void {
+          onSuccess={(unit: TaxUnit) => {
             setCreateModalOpen(false);
           }}
-          onFailure={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onClose={function (): void {
+          onFailure={() => {}}
+          onClose={() => {
             setCreateModalOpen(false);
           }}
         />

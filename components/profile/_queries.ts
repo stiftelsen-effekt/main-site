@@ -54,7 +54,11 @@ export const registerFacebookDonation = async (
   }
 };
 
-export const createTaxUnit = async (data: Partial<TaxUnit>, user: User, token: string) => {
+export const createTaxUnit = async (
+  data: Partial<TaxUnit>,
+  user: User,
+  token: string,
+): Promise<TaxUnit | string | false> => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
@@ -79,7 +83,45 @@ export const createTaxUnit = async (data: Partial<TaxUnit>, user: User, token: s
       mutate(`/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`);
       return data.content;
     } else {
-      return false;
+      const data = await response.json();
+      return data.content;
+    }
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+
+export const updateTaxUnit = async (
+  data: TaxUnit,
+  user: User,
+  token: string,
+): Promise<TaxUnit | string | false> => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(
+      `${api}/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/${data.id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          taxUnit: data,
+        }),
+      },
+    );
+
+    if (response.status === 200) {
+      const data = await response.json();
+      mutate(`/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`);
+      return data.content;
+    } else {
+      const data = await response.json();
+      return data.content;
     }
   } catch (e) {
     console.error(e);
@@ -91,7 +133,7 @@ export const deleteTaxUnit = async (
   data: { unit: TaxUnit; transferUnit: TaxUnit | null },
   user: User,
   token: string,
-) => {
+): Promise<string | boolean> => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
@@ -115,7 +157,8 @@ export const deleteTaxUnit = async (
       mutate(`/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`);
       return true;
     } else {
-      return false;
+      const data = await response.json();
+      return data.content;
     }
   } catch (e) {
     console.error(e);

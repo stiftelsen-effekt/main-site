@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { Edit, Edit2, Trash, Trash2 } from "react-feather";
-import { Distribution, Donation, META_OWNER, TaxUnit } from "../../../../../models";
-import { shortDate, thousandize } from "../../../../../util/formatting";
+import { Edit2, Trash2 } from "react-feather";
+import { TaxUnit } from "../../../../../models";
+import { thousandize } from "../../../../../util/formatting";
 import { TaxUnitDeleteModal } from "../../TaxUnitModal/TaxUnitDeleteModal";
+import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
 import { GenericList, ListRow } from "../GenericList";
 
 export const TaxUnitList: React.FC<{
   taxUnits: TaxUnit[];
 }> = ({ taxUnits }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const unit = taxUnits[0];
 
@@ -37,7 +39,7 @@ export const TaxUnitList: React.FC<{
     (td) => td.year === new Date().getFullYear(),
   );
   const suplementalInformation = currentYearDeductions
-    ? `I 2022 er du kvalifiserft for ${thousandize(
+    ? `I 2022 er du kvalifisert for ${thousandize(
         Math.round(currentYearDeductions.taxDeduction),
       )} kr i skattefradrag for denne enheten`
     : ``;
@@ -70,9 +72,11 @@ export const TaxUnitList: React.FC<{
       onContextSelect: (option) => {
         switch (option) {
           case "Endre":
+            setEditModalOpen(true);
             break;
           case "Slett":
             setDeleteModalOpen(true);
+            break;
         }
       },
     },
@@ -97,19 +101,24 @@ export const TaxUnitList: React.FC<{
         emptyPlaceholder={emptyPlaceholder}
         expandable={false}
       />
+      {editModalOpen && (
+        <TaxUnitEditModal
+          open={editModalOpen}
+          initial={unit}
+          onClose={() => setEditModalOpen(false)}
+          onSuccess={() => setEditModalOpen(false)}
+          onFailure={() => {}}
+        />
+      )}
       {deleteModalOpen && (
         <TaxUnitDeleteModal
           open={deleteModalOpen}
           taxUnit={unit}
-          onSuccess={function (unit: TaxUnit): void {
-            setDeleteModalOpen(false);
+          onSuccess={(success: boolean) => {
+            setDeleteModalOpen(success);
           }}
-          onFailure={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onClose={function (): void {
-            setDeleteModalOpen(false);
-          }}
+          onFailure={() => {}}
+          onClose={() => setDeleteModalOpen(false)}
         />
       )}
     </>

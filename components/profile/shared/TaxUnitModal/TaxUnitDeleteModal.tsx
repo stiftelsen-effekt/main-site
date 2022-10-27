@@ -1,6 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useState } from "react";
 import AnimateHeight from "react-animate-height";
+import { AlertCircle, Check } from "react-feather";
+import { toast } from "react-toastify";
 import { mutate } from "swr";
 import { TaxUnit } from "../../../../models";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
@@ -45,12 +47,18 @@ export const TaxUnitDeleteModal: React.FC<{
 
     const result = await deleteTaxUnit({ unit: taxUnit, transferUnit: transferUnit }, user, token);
 
-    if (result) {
-      console.log(result);
+    if (result && typeof result !== "string") {
+      successToast();
       onSuccess(result);
+      setError("");
+    } else if (typeof result === "string") {
+      onFailure();
+      failureToast();
+      setError(result);
     } else {
       onFailure();
-      setError("Noe gikk galt");
+      failureToast();
+      setError("");
     }
 
     setLoading(false);
@@ -112,3 +120,7 @@ export const TaxUnitDeleteModal: React.FC<{
     </Lightbox>
   );
 };
+
+const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
+const failureToast = () =>
+  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });

@@ -1,13 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext, useState } from "react";
-import { mutate } from "swr";
+import { useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
-import { DonorContext } from "../../layout/donorProvider";
 import { createTaxUnit } from "../../_queries";
+import { toast } from "react-toastify";
 
 import styles from "./TaxUnitModal.module.scss";
+import { AlertCircle, Check } from "react-feather";
+import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -37,19 +38,32 @@ export const TaxUnitCreateModal: React.FC<{
     }
     const result = await createTaxUnit({ name, ssn }, user, token);
 
-    if (result) {
-      console.log(result);
+    if (result && typeof result !== "string") {
+      successToast();
       onSuccess(result);
+      setError("");
+    } else if (typeof result === "string") {
+      onFailure();
+      failureToast();
+      setError(result);
     } else {
       onFailure();
-      setError("Noe gikk galt");
+      failureToast();
+      setError("");
     }
 
     setLoading(false);
   };
 
+  const isValid =
+    name !== "" &&
+    ssn !== "" &&
+    (type === TaxUnitTypes.PERSON
+      ? ssn.length === 11 && validateSsn(ssn)
+      : ssn.length === 9 && validateOrg(ssn));
+
   return (
-    <Lightbox open={open} onConfirm={create} onCancel={onClose}>
+    <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid}>
       <div className={styles.container}>
         <h5>Ny skatteenhet</h5>
         <div className={styles.typeSelector}>
@@ -89,9 +103,25 @@ export const TaxUnitCreateModal: React.FC<{
             value={ssn}
             onChange={(e) => setSsn(e.target.value)}
           ></input>
+
+          <span className={styles.ssnValidation}>
+            {ssn.length === 11 &&
+              type === TaxUnitTypes.PERSON &&
+              !validateSsn(ssn) &&
+              "Ugyldig fødselsnummer"}
+            {ssn.length === 9 &&
+              type === TaxUnitTypes.COMPANY &&
+              !validateOrg(ssn) &&
+              "Ugyldig organisasjonsnummer"}
+            &nbsp;
+          </span>
         </div>
         {error && <div className={styles.error}>{error}</div>}
       </div>
     </Lightbox>
   );
 };
+
+const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
+const failureToast = () =>
+  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
