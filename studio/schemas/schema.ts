@@ -47,6 +47,7 @@ import htmlembed from './types/htmlembed'
 import donationwidget from './types/donationwidget'
 import quote from './types/quote'
 import vippsagreement from './pages/vippsagreement'
+import tax from './pages/tax'
 
 export const pages = [
   generic,
@@ -58,7 +59,8 @@ export const pages = [
   criteria,
   article,
   articles,
-  vippsagreement
+  vippsagreement,
+  tax
 ]
 
 export const types = [

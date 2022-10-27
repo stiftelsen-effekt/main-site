@@ -101,13 +101,9 @@ export default () =>
                   .title('Preview'),
                 ])
               ),
-            S.listItem()
-              .title('Profile')
-              .icon(User)
-              .child(S.document().schemaType('profile').documentId('profile')),
-            S.divider(),
           ])
         ),
+
       S.listItem()
         .schemaType('generic_page')
         .title('Generic pages')
@@ -154,6 +150,31 @@ export default () =>
                   .title('Preview'),
                 ]))
         ),
+        S.listItem()
+        .title("Profile pages")
+        .icon(Book)
+        .child(
+          S.list()
+            .title("Profile pages")
+            .items([
+              S.listItem()
+              .title("Profile details")
+              .icon(User)
+              .child(
+                S.document()
+                  .schemaType("profile")
+                  .documentId("profile")
+              ),
+              S.listItem()
+              .title("Tax")
+              .icon(DollarSign)
+              .child(
+                S.document()
+                  .schemaType("tax")
+                  .documentId("tax")
+              ),
+            ])
+      ),
       S.listItem()
         .schemaType('donationwidget')
         .title('Donation widget')
