@@ -1,11 +1,17 @@
 import style from "./Lists.module.scss";
 import GenericListRow from "./GenericListRow";
 import React, { ReactElement } from "react";
+import {
+  GenericListContextMenuOptions,
+  GenericListContextMenuSelect,
+} from "./GenericListContextMenu";
 
 export type ListRow = {
   id: string;
   cells: string[];
   details?: ReactElement;
+  contextOptions?: GenericListContextMenuOptions;
+  onContextSelect?: GenericListContextMenuSelect;
 };
 
 export const GenericList: React.FC<{

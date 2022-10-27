@@ -11,6 +11,11 @@
   text-align: left;
 }
 
+.table td.rowAction {
+  cursor: pointer;
+  text-align: right;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: 20% 70%;
@@ -76,6 +81,44 @@ table td svg.iconChevronDown {
 
 .expanderContent .contextMenu a svg {
   margin-right: 5px;
+}
+
+.contextDropdownWrapper {
+  display: block;
+  position: relative;
+}
+
+.contextDropdownContainer {
+  display: flex;
+  flex-direction: column;
+  background: var(--primary);
+  color: var(--secondary);
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 8px 0px 8px 8px;
+}
+
+.contextDropdownItem {
+  padding: 0.1rem 0.9rem;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
+.contextDropdownItem:first-child {
+  padding-top: 0.5rem;
+}
+
+.contextDropdownItem:last-child {
+  padding-bottom: 0.5rem;
+}
+
+.contextDropdownItem:hover {
+  text-decoration: underline;
 }
 
 @media only screen and (max-width: 1180px) {
