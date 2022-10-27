@@ -97,7 +97,6 @@ export type FacebookDonationRegistration = {
   paymentID: string;
   name: string;
   ssn: string;
-  newsletter: boolean;
 };
 
 export type TaxUnit = {
