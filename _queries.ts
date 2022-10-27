@@ -194,6 +194,22 @@ export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
   };
 };
 
+export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(
+    `/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const linksContentQuery = `links[] {
   _type == 'navitem' => @ {
     ...,

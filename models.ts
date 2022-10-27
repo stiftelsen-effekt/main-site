@@ -99,3 +99,13 @@ export type FacebookDonationRegistration = {
   ssn: string;
   newsletter: boolean;
 };
+
+export type TaxUnit = {
+  id: number;
+  donorId: number;
+  ssn: string;
+  name: string;
+  numDonations: number;
+  sumDonations: number;
+  registered: string;
+};
