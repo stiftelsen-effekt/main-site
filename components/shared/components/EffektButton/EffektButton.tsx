@@ -18,25 +18,37 @@ export const EffektButton: React.FC<{
   selected?: boolean;
   squared?: boolean;
   extraMargin?: boolean;
-}> = ({ onClick, role, type = EffektButtonType.PRIMARY, children, cy, className, disabled, selected, squared, extraMargin }) => {
-  const styleClasses = [elements.button, type, className]
+}> = ({
+  onClick,
+  role,
+  type = EffektButtonType.PRIMARY,
+  children,
+  cy,
+  className,
+  disabled,
+  selected,
+  squared,
+  extraMargin,
+}) => {
+  const styleClasses = [elements.button, type, className];
   if (selected) {
-    styleClasses.push(elements.selected)
+    styleClasses.push(elements.selected);
   }
   if (squared) {
-    styleClasses.push(elements.button__squared)
+    styleClasses.push(elements.button__squared);
   }
   if (extraMargin) {
-    styleClasses.push(elements.extraMargin)
+    styleClasses.push(elements.extraMargin);
   }
   if (disabled) {
-    styleClasses.push(elements.disabledBtn)
+    styleClasses.push(elements.disabledBtn);
   }
-  const styleClassesName = styleClasses.join(" ")
-  
+  const styleClassesName = styleClasses.join(" ");
+
   return (
     <button
       className={styleClassesName}
+      disabled={disabled}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.currentTarget.blur();
         if (!disabled) onClick(e);

@@ -1,0 +1,55 @@
+.container {
+  min-width: 500px;
+}
+
+.container .typeSelector {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.container .inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+
+.container .inputContainer p {
+  margin-top: 0.5rem;
+}
+
+.container .selectorContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+
+.container .inputContainer:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.container .inputContainer input {
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 14px 22px;
+  border-radius: 45px;
+  font-size: 100%;
+}
+
+.container .ssnValidation {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.container .error {
+  margin-top: 1rem;
+  max-width: 500px;
+}
+
+.container .error::before {
+  // content with the utf8 warning mark
+  content: "\26A0";
+  display: inline-block;
+  margin-right: 0.2rem;
+  vertical-align: middle;
+}
