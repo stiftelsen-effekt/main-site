@@ -1,10 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { useTaxUnits } from "../../../../_queries";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { ActivityContext } from "../../layout/activityProvider";
 import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
+import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
 import styles from "./TaxUnitsTab.module.scss";
 
 export const TaxUnitsTab: React.FC = () => {
@@ -16,6 +17,8 @@ export const TaxUnitsTab: React.FC = () => {
   }
 
   const { loading, isValidating, data, error } = useTaxUnits(user, getAccessTokenSilently);
+
+  const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(data?.[0] ?? null);
 
   if (isValidating || loading) setActivity(true);
   else setActivity(false);
@@ -30,6 +33,15 @@ export const TaxUnitsTab: React.FC = () => {
           <Spinner />
         </div>
       )}
+      <TaxUnitSelector
+        selected={selectedTaxUnit}
+        onChange={(selected: TaxUnit) => {
+          alert(selected.id);
+        }}
+        onAddNew={() => {
+          alert("Add new");
+        }}
+      />
     </div>
   );
 };

@@ -1,0 +1,82 @@
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  border: 1px solid var(--primary);
+  border-radius: 2rem;
+  
+  position: relative;
+}
+
+.container .button {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0.5rem 1.2rem;
+}
+
+.container .button .right {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.container .button .left {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.container .button .ssn {
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.container .button .arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  color: var(--secondary);
+  background: var(--primary);
+  border-radius: 0.5rem;
+  z-index: 100;
+}
+
+.menu .menuItem {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.menu .menuItem:last-child {
+  border-top: 1px solid var(--secondary);
+}
+
+.menu .menuItem .inner {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  padding: 0 0.05rem;
+}
+
+.menu .menuItem:hover .inner {
+  border-bottom: 1px solid var(--secondary);
+}
+
+.menu .menuItem .ssn {
+}
