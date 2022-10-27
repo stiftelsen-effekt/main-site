@@ -108,4 +108,6 @@ export type TaxUnit = {
   numDonations: number;
   sumDonations: number;
   registered: string;
+  archived: string | null;
+  taxDeductions?: { year: number; sumDonations: number; taxDeduction: number }[];
 };

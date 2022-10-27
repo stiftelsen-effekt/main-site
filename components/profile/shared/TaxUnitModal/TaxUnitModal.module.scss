@@ -1,0 +1,37 @@
+.container {
+  min-width: 500px;
+}
+
+.container .typeSelector {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.container .inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+
+.container .inputContainer p {
+  margin-top: 0.5rem;
+}
+
+.container .selectorContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+
+.container .inputContainer:last-child {
+  margin-bottom: 2rem;
+}
+
+.container .inputContainer input {
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 14px 22px;
+  border-radius: 45px;
+  font-size: 100%;
+}

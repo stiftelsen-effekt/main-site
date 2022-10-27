@@ -9,9 +9,10 @@ import styles from "./TaxUnitSelector.module.scss";
 
 export const TaxUnitSelector: React.FC<{
   selected: TaxUnit | null;
+  exclude?: TaxUnit[];
   onChange: (selectedTaxUnit: TaxUnit) => void;
   onAddNew: () => void;
-}> = ({ selected, onChange, onAddNew }) => {
+}> = ({ selected, exclude = [], onChange, onAddNew }) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   if (!user) {
@@ -43,20 +44,23 @@ export const TaxUnitSelector: React.FC<{
           {loading && <div>Laster...</div>}
           {error && <div>En feil oppstod</div>}
           {data &&
-            data.map((taxUnit: TaxUnit) => (
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  onChange(taxUnit);
-                }}
-                className={styles.menuItem}
-              >
-                <div className={styles.inner}>
-                  <div className={styles.name}>{taxUnit.name}</div>
-                  <div className={styles.ssn}>{taxUnit.ssn}</div>
-                </div>
-              </button>
-            ))}
+            data
+              .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
+              .filter((taxUnit: TaxUnit) => !exclude.map((u) => u.id).includes(taxUnit.id))
+              .map((taxUnit: TaxUnit) => (
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onChange(taxUnit);
+                  }}
+                  className={styles.menuItem}
+                >
+                  <div className={styles.inner}>
+                    <div className={styles.name}>{taxUnit.name}</div>
+                    <div className={styles.ssn}>{taxUnit.ssn}</div>
+                  </div>
+                </button>
+              ))}
           <button
             onClick={() => {
               setMenuOpen(false);
