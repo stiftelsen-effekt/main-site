@@ -71,6 +71,7 @@ export const AgreementList: React.FC<{
    */
   const rows: ListRow[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
+    defaultExpanded: false,
     cells: [
       agreement.type,
       agreement.date > 0

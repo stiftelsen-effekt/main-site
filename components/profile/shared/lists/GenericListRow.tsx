@@ -9,13 +9,16 @@ import {
   GenericListContextMenuSelect,
 } from "./GenericListContextMenu";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
+import { useInView } from "react-hook-inview";
 
 const GenericListRow: React.FC<{
   row: ListRow;
   expandable?: boolean;
 }> = ({ row, expandable = true }) => {
-  const [expanded, setExpanded] = useState<boolean>();
+  const [expanded, setExpanded] = useState<boolean>(row.defaultExpanded);
   const [contextOpen, setContextOpen] = useState<boolean>(false);
+
+  const [ref, isInView] = useInView();
 
   const actionRef = useRef<HTMLDivElement>(null);
   useClickOutsideAlerter(actionRef, () => setContextOpen(false));
@@ -60,18 +63,25 @@ const GenericListRow: React.FC<{
   }
 
   return (
-    <tbody>
-      <tr key={row.id}>
+    <tbody ref={ref}>
+      <tr
+        key={row.id}
+        onClick={() => {
+          expandable ? setExpanded(!expanded) : expanded;
+        }}
+        data-cy="generic-list-row-expand"
+        className={expandable ? style.expandableRow : ""}
+      >
         {row.cells.map((val, i) => (
           <td key={i}>{val}</td>
         ))}
         {action}
       </tr>
       {expandable ? (
-        <tr>
-          <td colSpan={Number.MAX_SAFE_INTEGER}>
+        <tr key={`${row.id}-expanded`}>
+          <td colSpan={Number.MAX_SAFE_INTEGER} className={style.detailRowCell}>
             <AnimateHeight height={expanded ? "auto" : 0} animateOpacity={true}>
-              {row.details}
+              {(expanded || isInView) && row.details}
             </AnimateHeight>
           </td>
         </tr>

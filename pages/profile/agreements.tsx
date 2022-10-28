@@ -12,7 +12,7 @@ import {
   useVippsAgreements,
   widgetQuery,
 } from "../../_queries";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ActivityContext } from "../../components/profile/layout/activityProvider";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { AlertTriangle, Clock } from "react-feather";
@@ -79,6 +79,11 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
   const refreshing =
     avtaleGiroRefreshing || vippsRefreshing || organizationsRefreshing || distributionsRefreshing;
 
+  useEffect(() => {
+    if (refreshing) setActivity(true);
+    else setActivity(false);
+  }, [refreshing]);
+
   if (loading || !organizations || !distributions || !vipps || !avtaleGiro)
     return (
       <>
@@ -104,9 +109,6 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
         </PageContent>
       </>
     );
-
-  if (refreshing) setActivity(true);
-  else setActivity(false);
 
   const activeAvtalegiroAgreements: AvtaleGiroAgreement[] = avtaleGiro.filter(
     (agreement: AvtaleGiroAgreement) => agreement.active === 1,

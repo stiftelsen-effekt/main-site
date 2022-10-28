@@ -3,6 +3,20 @@ context("Window", () => {
     cy.visit("/");
   });
 
+  beforeEach(() => {
+    cy.fixture("organizations")
+      .then((organizations) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: organizations,
+          },
+        });
+      })
+      .as("registerDonation");
+  });
+
   it("End-2-End single bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.get("[data-cy=gi-button]").click();
@@ -48,6 +62,20 @@ context("Window", () => {
     cy.visit("/");
   });
 
+  beforeEach(() => {
+    cy.fixture("organizations")
+      .then((organizations) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: organizations,
+          },
+        });
+      })
+      .as("registerDonation");
+  });
+
   it("End-2-End recurring bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.get("[data-cy=gi-button]").click();
@@ -91,6 +119,20 @@ context("Window", () => {
     cy.visit("/");
   });
 
+  beforeEach(() => {
+    cy.fixture("organizations")
+      .then((organizations) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: organizations,
+          },
+        });
+      })
+      .as("registerDonation");
+  });
+
   it("End-2-End single vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.get("[data-cy=gi-button]").click();
@@ -126,6 +168,20 @@ context("Window", () => {
 context("Window", () => {
   before(() => {
     cy.visit("/");
+  });
+
+  beforeEach(() => {
+    cy.fixture("organizations")
+      .then((organizations) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: organizations,
+          },
+        });
+      })
+      .as("registerDonation");
   });
 
   it("End-2-End recurring vipps donation", () => {
@@ -172,6 +228,20 @@ context("Window", () => {
 context("Window", () => {
   before(() => {
     cy.visit("/");
+  });
+
+  beforeEach(() => {
+    cy.fixture("organizations")
+      .then((organizations) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: organizations,
+          },
+        });
+      })
+      .as("registerDonation");
   });
 
   it("End-2-End shared donation", () => {
@@ -223,6 +293,20 @@ context("Window", () => {
 context("Window", () => {
   before(() => {
     cy.visit("/");
+  });
+
+  beforeEach(() => {
+    cy.fixture("organizations")
+      .then((organizations) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: organizations,
+          },
+        });
+      })
+      .as("registerDonation");
   });
 
   it("End-2-End for all input fields", () => {

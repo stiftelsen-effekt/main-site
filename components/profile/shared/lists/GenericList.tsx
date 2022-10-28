@@ -8,6 +8,7 @@ import {
 
 export type ListRow = {
   id: string;
+  defaultExpanded: boolean;
   cells: string[];
   details?: ReactElement;
   contextOptions?: GenericListContextMenuOptions;
@@ -16,8 +17,8 @@ export type ListRow = {
 
 export const GenericList: React.FC<{
   title: string;
-  supplementalInformation?: string;
   headers: { label: string; width?: string }[];
+  supplementalInformation?: string | JSX.Element;
   rows: ListRow[];
   emptyPlaceholder: JSX.Element;
   expandable?: boolean;

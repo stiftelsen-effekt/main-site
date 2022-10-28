@@ -1,7 +1,7 @@
 import { useAuth0, User } from "@auth0/auth0-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import DonationsChart from "../../components/profile/donations/DonationsChart/DonationsChart";
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
@@ -63,6 +63,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const loading = aggregatedLoading || donationsLoading || distributionsLoading;
   const validating =
     aggregatedDonationsValidating || donationsIsValidating || distributionsValidating;
+
+  useEffect(() => {
+    if (validating) setActivity(true);
+    else setActivity(false);
+  }, [validating]);
+
   if (!dataAvailable || loading)
     return (
       <>
@@ -74,9 +80,6 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         </PageContent>
       </>
     );
-
-  if (validating) setActivity(true);
-  else setActivity(false);
 
   const isTotal = typeof router.query.year === "undefined";
   const years = getYears(donor, donations);
@@ -95,10 +98,15 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
   const donationList = !isTotal ? (
     <DonationList
-      donations={donations.filter(
-        (donation: Donation) =>
-          new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string),
-      )}
+      donations={donations
+        .filter(
+          (donation: Donation) =>
+            new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string),
+        )
+        .sort(
+          (a: Donation, b: Donation) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        )}
       distributions={distributionsMap}
       year={router.query.year as string}
     />
@@ -108,9 +116,12 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       .map((year) => (
         <DonationList
           key={year}
-          donations={donations.filter(
-            (donation: Donation) => new Date(donation.timestamp).getFullYear() === year,
-          )}
+          donations={donations
+            .filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)
+            .sort(
+              (a: Donation, b: Donation) =>
+                new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+            )}
           distributions={distributionsMap}
           year={year.toString()}
         />
