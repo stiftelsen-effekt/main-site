@@ -1,100 +1,86 @@
 .wrapper {
-  display: grid;
-  grid-template-columns: 1fr 150px;
-  column-gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   padding: 30px 0;
-}
-
-.values input {
-  height: 35px;
-  padding-left: 16px;
-  background: var(--secondary);
-  color: var(--primary);
-  font-size: 12px;
-  font-family: "ESKlarheitGrotesk";
-  min-width: 150px;
-  box-sizing: border-box;
-  width: 150px;
-  border-radius: 30px;
-  border: 1px solid var(--primary);
-}
-
-.actions {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  padding-top: 26px;
-  
-  button {
-    margin-left: 0.5rem;
-  }
-}
-
-.actions .button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  box-shadow: none;
-  background: var(--primary);
-  color: var(--secondary);
-  width: 150px;
-  height: 35px;
-  text-align: center;
-  font-weight: 500;
-  margin-left: 10px;
-  font-size: 12px;
-  box-sizing: border-box;
 }
 
 .values {
   display: grid;
-  grid-template-rows: 20px;
-  row-gap: 25px;
-  box-sizing: border-box;
+  grid-template-columns: max-content max-content 1fr max-content;
+  column-gap: 1.5rem;
+  font-size: 0.8rem;
 }
 
 .values > div {
   position: relative;
-  /* margin-bottom: 10px; */
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.values > div:last-child {
+  justify-content: flex-end;
 }
 
 .values > div span {
   position: absolute;
   right: 0;
-  top: 0;
+  top: calc(50% - 0.5em);
   color: var(--primary);
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-right: 20px;
-  margin-top: 5px;
-  font-size: 12px;
+  padding-right: 1.2em;
+  font-size: 1em;
+  line-height: 1em;
 }
 
-@media only screen and (max-width: 1180px) {
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-  }
+.values input {
+  background: var(--secondary);
+  color: var(--primary);
+  font-family: "ESKlarheitGrotesk";
+  box-sizing: border-box;
+  font-size: 1em;
+  border-radius: 1.5em;
+  border: 1px solid var(--primary);
+  padding: 0.5em 1.2em;
+}
 
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  
+  button {
+    margin-left: 1rem;
+  }
+}
+
+
+
+@media only screen and (max-width: 1180px) {
   .values {
-    margin-top: 25px;
+    grid-template-columns: 1fr;
+    row-gap: 1.5em;
+    font-size: 1rem;
   }
 
   .values input {
     width: 100%;
   }
 
-  .actions {
-    justify-content: space-between;
+  .values > div:last-child {
+    justify-content: flex-start;
   }
 
-  .actions .button {
-    margin-left: 0;
+  .actions {
+    justify-content: space-between;
+
+    button {
+      margin-left: 0;
+    }
   }
 }

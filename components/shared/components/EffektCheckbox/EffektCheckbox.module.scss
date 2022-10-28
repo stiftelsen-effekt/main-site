@@ -1,12 +1,11 @@
 .wrapper {
   cursor: pointer;
-  margin-top: 5px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   z-index: 1;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
 }
@@ -15,13 +14,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 23px;
-  height: 23px;
+  width: 1.8em;
+  height: 1.8em;
   border: 1px solid var(--primary);
 }
 
 .checkmark {
-  font-size: 14px;
+  font-size: 1em;
   color: var(--primary);
   display: none;
 }
@@ -41,16 +40,11 @@
 
 .checkboxlabel {
   display: inline-block;
-  font-size: 18px;
+  font-size: 1em;
   margin: 0;
-  margin-left: 10px;
+  margin-left: 0.8em;
 
   a:link {
     text-decoration: underline;
-  }
-
-  @media only screen and (max-width: 768px) {
-    font-size: 22px;
-    line-height: 30px;
   }
 }

@@ -139,7 +139,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
     .some(
       (distribution: Distribution | undefined) =>
         distribution &&
-        distribution.organizations.some((org) => org.id === sciOrgId && parseFloat(org.share) > 0),
+        distribution.shares.some((org) => org.id === sciOrgId && parseFloat(org.share) > 0),
     );
 
   return (
@@ -270,19 +270,21 @@ const getDistributionMap = (distributions: Distribution[], organizations: Organi
   for (let i = 0; i < distributions.length; i++) {
     let dist = distributions[i];
 
-    let newDist = {
+    let newDist: Distribution = {
       kid: "",
-      organizations: organizations.map((org) => ({
+      standardDistribution: dist.standardDistribution,
+      taxUnit: dist.taxUnit,
+      shares: organizations.map((org) => ({
         id: org.id,
         name: org.name,
         share: "0",
       })),
     };
 
-    for (let j = 0; j < dist.organizations.length; j++) {
-      let org = dist.organizations[j];
-      let index = newDist.organizations.map((o) => o.id).indexOf(org.id);
-      if (newDist.organizations[index]) newDist.organizations[index].share = org.share;
+    for (let j = 0; j < dist.shares.length; j++) {
+      let org = dist.shares[j];
+      let index = newDist.shares.map((o) => o.id).indexOf(org.id);
+      if (newDist.shares[index]) newDist.shares[index].share = org.share;
     }
 
     map.set(dist.kid, { ...newDist });

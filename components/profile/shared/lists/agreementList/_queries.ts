@@ -16,10 +16,7 @@ export const updateVippsAgreementDistribution = async (
       },
       credentials: "same-origin",
       body: JSON.stringify({
-        distribution: distribution.organizations.map((dist) => ({
-          organizationId: dist.id,
-          share: dist.share,
-        })),
+        distribution: distribution,
       }),
     });
 
@@ -46,7 +43,7 @@ export const updateVippsAgreementPrice = async (urlCode: string, sum: number, to
       },
       credentials: "same-origin",
       body: JSON.stringify({
-        price: sum*100,
+        price: sum * 100,
       }),
     });
 
@@ -128,10 +125,7 @@ export const updateAvtalegiroAgreementDistribution = async (
       },
       credentials: "same-origin",
       body: JSON.stringify({
-        distribution: distribution.organizations.map((dist) => ({
-          organizationId: dist.id,
-          share: dist.share,
-        })),
+        distribution: distribution,
       }),
     });
 

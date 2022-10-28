@@ -48,7 +48,9 @@ export type VippsAgreement = {
 
 export type Distribution = {
   kid: string;
-  organizations: {
+  standardDistribution: boolean;
+  taxUnit: TaxUnit | null;
+  shares: {
     id: number;
     name: string;
     share: string;
