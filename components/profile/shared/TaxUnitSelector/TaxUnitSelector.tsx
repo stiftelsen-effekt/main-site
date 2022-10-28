@@ -1,4 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import { useRef, useState } from "react";
 import { ChevronDown } from "react-feather";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
@@ -15,16 +15,12 @@ export const TaxUnitSelector: React.FC<{
 }> = ({ selected, exclude = [], onChange, onAddNew }) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
-  if (!user) {
-    return null;
-  }
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   const actionRef = useRef<HTMLDivElement>(null);
   useClickOutsideAlerter(actionRef, () => setMenuOpen(false));
 
-  const { data, loading, isValidating, error } = useTaxUnits(user, getAccessTokenSilently);
+  const { data, loading, isValidating, error } = useTaxUnits(user as User, getAccessTokenSilently);
 
   return (
     <div className={styles.container} ref={actionRef}>
@@ -54,6 +50,7 @@ export const TaxUnitSelector: React.FC<{
                     onChange(taxUnit);
                   }}
                   className={styles.menuItem}
+                  key={taxUnit.id}
                 >
                   <div className={styles.inner}>
                     <div className={styles.name}>{taxUnit.name}</div>

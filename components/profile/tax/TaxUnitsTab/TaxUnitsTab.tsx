@@ -1,4 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import { useContext, useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { useTaxUnits } from "../../../../_queries";
@@ -15,11 +15,7 @@ export const TaxUnitsTab: React.FC = () => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
 
-  if (!user) {
-    return null;
-  }
-
-  const { loading, isValidating, data, error } = useTaxUnits(user, getAccessTokenSilently);
+  const { loading, isValidating, data, error } = useTaxUnits(user as User, getAccessTokenSilently);
 
   // const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(data?.[0] ?? null);
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -33,7 +29,7 @@ export const TaxUnitsTab: React.FC = () => {
       {!loading && !error && data && data.length > 0 ? (
         data
           .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
-          .map((taxUnit: TaxUnit) => <TaxUnitList taxUnits={[taxUnit]} />)
+          .map((taxUnit: TaxUnit) => <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />)
       ) : (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Spinner />

@@ -29,7 +29,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
 
   const [menuChoice, setMenuChoice] = useState(TaxMenuChoices.TAX_UNITS);
 
-  if (!router.isFallback && !data) {
+  if ((!router.isFallback && !data) || !donor) {
     return <div>Loading...</div>;
   }
 

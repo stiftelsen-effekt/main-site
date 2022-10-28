@@ -6,7 +6,7 @@ import { FacebookTaxWidget } from "../FacebookTaxWidget/FacebookTaxWidget";
 
 import style from "./FacebookTab.module.scss";
 
-export const FacebookTab: React.FC<{ donor: Donor | null; description: any[]; links: any[] }> = ({
+export const FacebookTab: React.FC<{ donor: Donor; description: any[]; links: any[] }> = ({
   donor,
   description,
   links,
@@ -15,7 +15,7 @@ export const FacebookTab: React.FC<{ donor: Donor | null; description: any[]; li
     <div className={style.gridContainer}>
       <section>
         <h5>Facebook-donasjoner</h5>
-        <FacebookTaxWidget name={donor ? donor.name : null} email={donor ? donor.email : null} />
+        <FacebookTaxWidget email={donor.email} />
       </section>
       <section>
         <h5>Skattefradrag</h5>

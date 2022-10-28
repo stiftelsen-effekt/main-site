@@ -38,7 +38,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
     } else {
       setNextDisabled(true);
     }
-  }, [errors, watchAllFields]);
+  }, [errors, watchAllFields, taxUnit]);
 
   const paneSubmitted = () => {
     if (!taxUnit) return;
