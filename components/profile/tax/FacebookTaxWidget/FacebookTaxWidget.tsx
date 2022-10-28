@@ -77,7 +77,6 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
 
   return (
     <div className={styles.container}>
-      <InfoText>Fyll ut skjemaet for å få skattefradrag for dine Facebook-donasjoner</InfoText>
       <form onSubmit={handleSubmit(paneSubmitted)}>
         <InputFieldWrapper>
           <TaxUnitSelector
