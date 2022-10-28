@@ -1,14 +1,35 @@
 .table {
   width: 100%;
+  border-spacing: 0;
 }
 
 .table th {
   text-align: left;
 }
 
-.table td {
+.table tr td {
   margin-left: 0px;
   text-align: left;
+  padding: 0.25rem 0rem;
+}
+
+.table .expandableRow {
+  cursor: pointer;
+}
+
+.table .expandableRow + tr > td {
+  padding: 0;
+}
+
+.table .expandableRow:hover {
+  color: var(--secondary);
+  background-color: var(--primary);
+
+  svg.iconChevronUp polyline,
+  svg.iconChevronDown polyline {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+  }
 }
 
 .gridContainer {
@@ -51,6 +72,10 @@ table td svg.iconChevronUp {
 
 table td svg.iconChevronDown {
   transition: transform 120ms ease-in-out;
+}
+
+table tr .detailRowCell {
+  width: 100%;
 }
 
 .expanderContent {

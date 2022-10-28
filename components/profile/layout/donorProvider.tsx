@@ -19,7 +19,7 @@ export const DonorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   if (loading) {
     return <FullPageSpinner />;
   } else if (error) {
-    return <FullPageError />;
+    return <FullPageError error={error.message} />;
   } else if (!donor) {
     setDonor(data);
   }

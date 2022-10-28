@@ -10,3 +10,6 @@ export const longDate = (isoDate: string): string => {
 
 export const thousandize = (number: number | null) =>
   number !== null ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "-";
+
+export const thousandizeString = (number: string | null) =>
+  number !== null ? number.replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "-";

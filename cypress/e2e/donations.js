@@ -50,13 +50,65 @@ describe("Donations page", () => {
       })
       .as("getDistribution");
 
-    cy.visit(`/profile/`);
+    cy.fixture("evaluations").then((evaluations) => {
+      cy.intercept(
+        "GET",
+        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=AMF&currency=NOK&language=NO&*",
+        {
+          statusCode: 200,
+          body: evaluations.AMF,
+        },
+      ).as("getAMFEvaluations");
+      cy.intercept(
+        "GET",
+        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=GD&currency=NOK&language=NO&*",
+        {
+          statusCode: 200,
+          body: evaluations.GD,
+        },
+      ).as("getGDEvaluations");
+      cy.intercept(
+        "GET",
+        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=NI&currency=NOK&language=NO&*",
+        {
+          statusCode: 200,
+          body: evaluations.NI,
+        },
+      ).as("getNIEvaluations");
 
-    /**
-     * Wait for initial data load
-     */
-    cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution"], {
-      timeout: 30000,
+      cy.fixture("grants")
+        .then((grants) => {
+          cy.intercept(
+            "GET",
+            "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
+            {
+              statusCode: 200,
+              body: grants,
+            },
+          );
+        })
+        .as("getGrants");
+
+      cy.visit(`/profile/`);
+
+      /**
+       * Wait for initial data load
+       */
+      cy.wait(
+        [
+          "@getDonor",
+          "@getDonations",
+          "@getAggregated",
+          "@getDistribution",
+          "@getGrants",
+          "@getNIEvaluations",
+          "@getGDEvaluations",
+          "@getAMFEvaluations",
+        ],
+        {
+          timeout: 30000,
+        },
+      );
     });
   });
 
@@ -132,6 +184,7 @@ describe("Donations page", () => {
 
   it("Should be possible to filter by year", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
+
     cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 4);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
@@ -142,7 +195,7 @@ describe("Donations page", () => {
     cy.get("[data-cy=generic-list-header]").should("contain.text", "2021");
   });
 
-  it("Should be possible to expand a donation to see actions and distribution graph", () => {
+  it("Should be possible to expand a donation to see actions and donation impact", () => {
     // Expand the first donation
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -151,28 +204,88 @@ describe("Donations page", () => {
       .find("[data-cy=generic-list-row-expand]")
       .click();
 
-    // Check that the graph is visible
+    // Check that the impact list is visible
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
       .first()
-      .find("[data-cy=donation-distribution-graph]")
+      .find("[data-cy=donation-impact-list]")
       .should("be.visible");
 
     // Check that the graph information is correct
+
+    // 3 evaluations
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
       .first()
-      .find("[data-cy=donation-distribution-graph] [data-cy=donation-distribution-graph-bar]")
-      .should("contain.text", "Against Malaria Foundation");
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .should("have.length", 3);
+
+    // check that the three evaluation values are correct
+
+    // check amount to organization
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .eq(0)
+      .should("contain.text", "500 kr til Against Malaria Foundation");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
       .first()
-      .find("[data-cy=donation-distribution-graph] [data-cy=donation-distribution-graph-bar]")
-      .should("contain.text", "10 000 kr");
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .eq(1)
+      .should("contain.text", "200 kr til GiveDirectly");
+
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .eq(2)
+      .should("contain.text", "300 kr til New Incentives");
+
+    // check output values
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .eq(0)
+      .find("[data-cy=donation-impact-list-item-output]")
+      .first()
+      .should("contain.text", "12,0");
+
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .eq(1)
+      .find("[data-cy=donation-impact-list-item-output]")
+      .first()
+      .should("contain.text", "19,0");
+
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=donation-impact-list]")
+      .find("[data-cy=donation-impact-list-item-overview]")
+      .eq(2)
+      .find("[data-cy=donation-impact-list-item-output]")
+      .first()
+      .should("contain.text", "0,3");
   });
 
   it("Should show empty placeholder for years with no donations", () => {

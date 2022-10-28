@@ -14,21 +14,27 @@ export const DonationList: React.FC<{
 
   taxEligableSum = Math.min(taxEligableSum, year === "2022" ? 25000 : 50000);
 
-  let taxDeductionText = "";
+  let taxDeductionText: JSX.Element | undefined = undefined;
 
   if (taxEligableSum > 500 && parseInt(year) >= 2019) {
     const taxDeductions = Math.round(taxEligableSum * 0.22);
-    taxDeductionText = `Dine donasjoner i ${year} ${
-      year === "2022" ? "kvalifiserer deg for" : "ga deg"
-    } ${thousandize(taxDeductions)} kroner i
-    skattefradrag`;
+    taxDeductionText = (
+      <span>
+        {`Dine donasjoner i ${year} ${
+          year === new Date().getFullYear().toString() ? "kvalifiserer deg for" : "ga deg"
+        }`}{" "}
+        <span style={{ whiteSpace: "nowrap" }}>{thousandize(taxDeductions)}</span> kroner i
+        skattefradrag
+      </span>
+    );
   }
 
   const headers = ["Dato", "Sum", "Betalingskanal", "KID"];
 
-  const rows: ListRow[] = donations.map((donation) => {
+  const rows: ListRow[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
+      defaultExpanded: index === 0 ? true : false,
       cells: [
         shortDate(donation.timestamp),
         thousandize(Math.round(parseFloat(donation.sum))) + " kr",
@@ -38,8 +44,10 @@ export const DonationList: React.FC<{
       details: (
         <DonationDetails
           key={donation.id}
+          donation={donation}
           sum={donation.sum}
           distribution={distributions.get(donation.KID) as Distribution}
+          timestamp={new Date(donation.timestamp)}
         />
       ),
     };

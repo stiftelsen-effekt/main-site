@@ -53,7 +53,6 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
   const { slug } = params;
   let result = await getClient(preview).fetch(fetchArticle, { slug });
   result = { ...result, page: filterPageToSingleItem(result, preview) };
-  console.log(result);
 
   return {
     props: {

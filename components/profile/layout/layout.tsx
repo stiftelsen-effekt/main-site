@@ -31,7 +31,7 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
       onRedirectCallback={onRedirectCallback}
       cacheLocation={
         typeof window !== "undefined"
-          ? (window as any).Cypress
+          ? (window as any).Cypress || process.env.NODE_ENV === "development"
             ? "localstorage"
             : "memory"
           : undefined

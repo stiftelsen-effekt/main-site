@@ -4,13 +4,14 @@ import React, { ReactElement } from "react";
 
 export type ListRow = {
   id: string;
+  defaultExpanded: boolean;
   cells: string[];
   details: ReactElement;
 };
 
 export const GenericList: React.FC<{
   title: string;
-  supplementalInformation: string;
+  supplementalInformation?: string | JSX.Element;
   headers: string[];
   rows: ListRow[];
   emptyPlaceholder: JSX.Element;

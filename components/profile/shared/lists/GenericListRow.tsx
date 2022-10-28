@@ -3,21 +3,30 @@ import style from "./Lists.module.scss";
 import { ListRow } from "./GenericList";
 import { ChevronDown } from "react-feather";
 import AnimateHeight from "react-animate-height";
+import { useInView } from "react-hook-inview";
 
 const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
   row,
   expandable = true,
 }) => {
-  const [expanded, setExpanded] = useState<boolean>();
+  const [expanded, setExpanded] = useState<boolean>(row.defaultExpanded);
+  const [ref, isInView] = useInView();
 
   return (
-    <tbody>
-      <tr key={row.id}>
+    <tbody ref={ref}>
+      <tr
+        key={row.id}
+        onClick={() => {
+          expandable ? setExpanded(!expanded) : expanded;
+        }}
+        data-cy="generic-list-row-expand"
+        className={expandable ? style.expandableRow : ""}
+      >
         {row.cells.map((val, i) => (
           <td key={i}>{val}</td>
         ))}
         {expandable ? (
-          <td onClick={() => setExpanded(!expanded)} data-cy="generic-list-row-expand">
+          <td>
             <ChevronDown
               className={expanded ? style.iconChevronUp : style.iconChevronDown}
               color={"black"}
@@ -29,10 +38,10 @@ const GenericListRow: React.FC<{ row: ListRow; expandable?: boolean }> = ({
         )}
       </tr>
       {expandable ? (
-        <tr>
-          <td colSpan={Number.MAX_SAFE_INTEGER}>
+        <tr key={`${row.id}-expanded`}>
+          <td colSpan={Number.MAX_SAFE_INTEGER} className={style.detailRowCell}>
             <AnimateHeight height={expanded ? "auto" : 0} animateOpacity={true}>
-              {row.details}
+              {(expanded || isInView) && row.details}
             </AnimateHeight>
           </td>
         </tr>
