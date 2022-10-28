@@ -38,15 +38,22 @@ export const TaxUnitList: React.FC<{
   const currentYearDeductions = unit.taxDeductions?.find(
     (td) => td.year === new Date().getFullYear(),
   );
-  const suplementalInformation = currentYearDeductions
-    ? `I 2022 er du kvalifisert for ${thousandize(
-        Math.round(currentYearDeductions.taxDeduction),
-      )} kr i skattefradrag for denne enheten`
-    : ``;
+  const suplementalInformation = currentYearDeductions ? (
+    <span>
+      {`I år kvalifiserer donasjoner på denne enheten deg til `}
+      <span style={{ whiteSpace: "nowrap" }}>
+        {thousandize(Math.round(currentYearDeductions.taxDeduction))}
+      </span>{" "}
+      kroner i skattefradrag
+    </span>
+  ) : (
+    ``
+  );
 
   const rows: ListRow[] = [
     {
       id: unit.id.toString(),
+      defaultExpanded: false,
       cells: [
         unit.ssn,
         thousandize(Math.round(unit.numDonations)),
