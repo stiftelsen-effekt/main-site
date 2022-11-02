@@ -202,6 +202,7 @@ describe("Donations page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Check that the impact list is visible
