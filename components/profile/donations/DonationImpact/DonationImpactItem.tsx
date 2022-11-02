@@ -164,7 +164,7 @@ export const DonationImpactItem: React.FC<{
               <p>{relevantEvaluation.intervention.long_description}</p>
               <p>
                 Tallene er basert på analysene til GiveWell. De gir et omtrentlig bilde på hva våre
-                anbefalte organisasjoner får ut av pengene. Alle tre tiltak er topp anbefalt som de
+                anbefalte organisasjoner får ut av pengene. Tiltaket er topp anbefalt som en av de
                 mest kostnadseffektive måtene å redde liv eller forbedre den økonomiske situasjonen
                 til ekstremt fattige. Mange bistandsorganisasjoner viser til overdrevne og
                 misvisende tall i sin markedsføring. Bak våre tall ligger tusenvis av timer med
