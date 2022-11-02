@@ -99,12 +99,10 @@
     padding-right: 1.5em;
 
     td,
-    div,
     span {
       text-align: right;
       &:first-child {
         border-left: none;
-        text-align: right;
         padding-left: 0;
       }
     }
