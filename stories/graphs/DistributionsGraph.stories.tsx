@@ -1,4 +1,5 @@
 import { DonationsDistributionGraph } from "../../components/profile/donations/DonationsDistributionGraph/DonationsDistributionGraph";
+import { Distribution } from "../../models";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -6,9 +7,11 @@ export default {
   component: DonationsDistributionGraph,
 };
 
-const distribution = {
+const distribution: Distribution = {
   kid: "123456789",
-  organizations: [
+  standardDistribution: false,
+  taxUnit: null,
+  shares: [
     {
       id: 1,
       name: "Against Malaria foundation",
