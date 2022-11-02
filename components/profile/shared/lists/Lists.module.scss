@@ -104,6 +104,17 @@ table tr .detailRowCell {
 }
 
 @media only screen and (max-width: 1180px) {
+  .table .expandableRow:hover {
+    color: var(--primary);
+    background-color: var(--secondary);
+
+    svg.iconChevronUp polyline,
+    svg.iconChevronDown polyline {
+      -webkit-filter: none;
+      filter: none;
+    }
+  }
+
   .gridContainer {
     grid-template-columns: 1fr;
   }
