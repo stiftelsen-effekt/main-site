@@ -22,6 +22,16 @@ describe("Agreements page", () => {
       }).as("getOrganizations");
     });
 
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
+
     cy.fixture("vipps").then((vipps) => {
       cy.intercept("GET", "/donors/*/recurring/vipps/", {
         statusCode: 200,
@@ -410,7 +420,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=date-picker-button-13]")
-      .click({force: true});
+      .click({ force: true });
 
     cy.get("[data-cy=generic-list-table]")
       .first()

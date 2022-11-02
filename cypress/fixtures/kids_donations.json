@@ -1,7 +1,8 @@
 [
   {
     "kid": "74651480",
-    "organizations": [
+    "standardDistribution": true,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",
@@ -11,7 +12,8 @@
   },
   {
     "kid": "29563244",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -26,7 +28,8 @@
   },
   {
     "kid": "189324340",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -56,7 +59,8 @@
   },
   {
     "kid": "92268267",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -76,7 +80,8 @@
   },
   {
     "kid": "973593270",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -106,7 +111,8 @@
   },
   {
     "kid": "32166183",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -121,7 +127,8 @@
   },
   {
     "kid": "889942150",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 6,
         "name": "Sightsavers",
@@ -136,7 +143,8 @@
   },
   {
     "kid": "32245953",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -146,7 +154,8 @@
   },
   {
     "kid": "74289539",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -161,7 +170,8 @@
   },
   {
     "kid": "47666474",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -181,7 +191,8 @@
   },
   {
     "kid": "00002752162",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",

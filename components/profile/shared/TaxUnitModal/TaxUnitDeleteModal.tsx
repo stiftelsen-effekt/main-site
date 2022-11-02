@@ -87,7 +87,7 @@ export const TaxUnitDeleteModal: React.FC<{
                 checked={transferDonations}
                 onChange={(checked: boolean) => setTransferDonations(checked)}
               >
-                Overfør donasjoner
+                Flytt donasjoner til annen skatteenhet
               </EffektCheckbox>
               <AnimateHeight duration={80} height={transferDonations ? "auto" : 0} animateOpacity>
                 <div className={styles.selectorContainer}>
