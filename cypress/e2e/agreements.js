@@ -129,6 +129,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Check that the distribution is correctly displayed
@@ -180,6 +181,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     cy.get("[data-cy=generic-list-table]")
@@ -206,6 +208,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Create inconsistent distribution
@@ -254,6 +257,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Create a consistent new distribution
@@ -279,7 +283,7 @@ describe("Agreements page", () => {
     cy.intercept("PUT", "/vipps/agreement/*/distribution", {
       statusCode: 200,
       body: { KID: newKid },
-    });
+    }).as("saveDistribution");
 
     /**
      * Stub methods that are not relevant to the update
@@ -330,7 +334,7 @@ describe("Agreements page", () => {
             ...kids.filter((dist) => dist.kid != "95231965"),
             {
               kid: newKid,
-              organizations: [
+              shares: [
                 {
                   id: 12,
                   name: "GiveWells tildelingsfond",
@@ -391,9 +395,9 @@ describe("Agreements page", () => {
       .find("[data-cy=btn-save-agreement]")
       .click();
 
-    cy.get(".Toastify").contains("Lagret");
+    cy.wait(["@saveDistribution", "@getVipps", "@getDistribution"]);
 
-    cy.wait(["@getVipps", "@getDistribution"]);
+    cy.get(".Toastify").contains("Lagret");
 
     cy.get("[data-cy=generic-list-table]").first().find("tbody").should("contain.text", newKid);
   });
@@ -405,6 +409,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Change the payment date
@@ -494,6 +499,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Change the agreement amount
@@ -536,7 +542,7 @@ describe("Agreements page", () => {
     cy.intercept("PUT", "/vipps/agreement/*/distribution", {
       statusCode: 200,
       body: { KID: "95231965" },
-    });
+    }).as("saveDistributionStub");
 
     /**
      * Stub methods that are not relevant to the update
@@ -544,11 +550,11 @@ describe("Agreements page", () => {
     cy.intercept("PUT", "/vipps/agreement/*/chargeDay", {
       statusCode: 200,
       body: true,
-    });
+    }).as("changeChargeDayStub");
 
     cy.intercept("PUT", "/vipps/agreement/*/price", {
       statusCode: 200,
-    });
+    }).as("changePriceStub");
 
     // Save agreement
     cy.get("[data-cy=generic-list-table]")
@@ -570,6 +576,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     /**
