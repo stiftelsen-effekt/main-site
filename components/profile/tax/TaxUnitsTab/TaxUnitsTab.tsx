@@ -6,6 +6,7 @@ import { EffektButton } from "../../../shared/components/EffektButton/EffektButt
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { ActivityContext } from "../../layout/activityProvider";
 import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
+import { TaxUnitMobileList } from "../../shared/lists/taxUnitList/TaxUnitMobileList";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 import { TaxUnitDeleteModal } from "../../shared/TaxUnitModal/TaxUnitDeleteModal";
 import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
@@ -25,11 +26,22 @@ export const TaxUnitsTab: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h5>Dine skatteenheter</h5>
+      <h5 className={styles.header}>Dine skatteenheter</h5>
       {!loading && !error && data && data.length > 0 ? (
-        data
-          .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
-          .map((taxUnit: TaxUnit) => <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />)
+        <>
+          <div className={styles.desktopList}>
+            {data
+              .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
+              .map((taxUnit: TaxUnit) => (
+                <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />
+              ))}
+          </div>
+          <div className={styles.mobileList}>
+            <TaxUnitMobileList
+              taxUnits={data.filter((taxUnit: TaxUnit) => taxUnit.archived === null)}
+            />
+          </div>
+        </>
       ) : (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Spinner />

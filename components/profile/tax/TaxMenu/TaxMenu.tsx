@@ -10,9 +10,13 @@ export enum TaxMenuChoices {
 const TaxMenu: React.FC<{
   selected: TaxMenuChoices;
   onChange: (selected: TaxMenuChoices) => void;
-}> = ({ selected, onChange }) => {
+  mobile?: boolean;
+}> = ({ selected, onChange, mobile }) => {
+  const containerStyles = [style.menu];
+  if (mobile) containerStyles.push(style.menumobile);
+
   return (
-    <div className={style.menu}>
+    <div className={containerStyles.join(" ")}>
       <ul>
         <li
           className={selected == TaxMenuChoices.TAX_UNITS ? style["menu-selected"] : ""}

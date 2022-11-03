@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./Lightbox.module.scss";
 import { EffektButton, EffektButtonType } from "../EffektButton/EffektButton";
+import { X } from "react-feather";
 
 export const Lightbox: React.FC<{
   children: React.ReactNode;
@@ -14,6 +15,9 @@ export const Lightbox: React.FC<{
   return (
     <div className={style.lightboxWrapper}>
       <div className={style.lightbox}>
+        <div className={style.lightboxCloseButton} onClick={onCancel}>
+          <X size={"1.5rem"} />
+        </div>
         {children}
         <div className={style.buttonWrapper}>
           <EffektButton

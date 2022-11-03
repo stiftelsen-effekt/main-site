@@ -53,3 +53,13 @@
   margin-right: 0.2rem;
   vertical-align: middle;
 }
+
+@media screen and (max-width: 1180px) {
+  .container {
+    min-width: 100%;
+
+    h5 {
+      margin: 3rem 0;
+    }
+  }
+}

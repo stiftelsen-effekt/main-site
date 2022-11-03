@@ -35,6 +35,13 @@
 .table td.rowAction {
   cursor: pointer;
   text-align: right;
+  vertical-align: middle;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.table td.rowAction:last-child {
+  padding-right: 0rem;
 }
 
 .gridContainer {

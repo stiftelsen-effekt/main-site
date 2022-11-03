@@ -23,29 +23,20 @@ const GenericListRow: React.FC<{
   const actionRef = useRef<HTMLDivElement>(null);
   useClickOutsideAlerter(actionRef, () => setContextOpen(false));
 
-  let action = null;
-  if (expandable) {
-    action = (
+  let actions = [];
+
+  if (typeof row.contextOptions !== "undefined") {
+    actions.push(
       <td
-        onClick={() => setExpanded(!expanded)}
-        className={style.rowAction}
-        data-cy="generic-list-row-expand"
-      >
-        <ChevronDown
-          className={expanded ? style.iconChevronUp : style.iconChevronDown}
-          color={"black"}
-          width={24}
-        />
-      </td>
-    );
-  } else if (typeof row.contextOptions !== "undefined") {
-    action = (
-      <td
-        onClick={() => setContextOpen(!contextOpen)}
+        onClick={(e: React.MouseEvent) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setContextOpen(!contextOpen);
+        }}
         className={style.rowAction}
         data-cy="generic-list-row-context"
       >
-        <div ref={actionRef}>
+        <div ref={actionRef} style={{ display: "flex", flexDirection: "column" }}>
           <MoreHorizontal width={24} />
           <div className={style.contextDropdownWrapper}>
             {contextOpen && (
@@ -58,7 +49,22 @@ const GenericListRow: React.FC<{
             )}
           </div>
         </div>
-      </td>
+      </td>,
+    );
+  }
+  if (expandable) {
+    actions.push(
+      <td
+        onClick={() => setExpanded(!expanded)}
+        className={style.rowAction}
+        data-cy="generic-list-row-expand"
+      >
+        <ChevronDown
+          className={expanded ? style.iconChevronUp : style.iconChevronDown}
+          color={"black"}
+          width={24}
+        />
+      </td>,
     );
   }
 
@@ -75,7 +81,9 @@ const GenericListRow: React.FC<{
         {row.cells.map((val, i) => (
           <td key={i}>{val}</td>
         ))}
-        {action}
+        {actions.map((action, i) => (
+          <>{action}</>
+        ))}
       </tr>
       {expandable ? (
         <tr key={`${row.id}-expanded`}>

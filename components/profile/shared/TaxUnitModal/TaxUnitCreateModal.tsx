@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import styles from "./TaxUnitModal.module.scss";
 import { AlertCircle, Check } from "react-feather";
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -113,6 +114,8 @@ export const TaxUnitCreateModal: React.FC<{
               type === TaxUnitTypes.COMPANY &&
               !validateOrg(ssn) &&
               "Ugyldig organisasjonsnummer"}
+            {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
+            {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
             &nbsp;
           </span>
         </div>

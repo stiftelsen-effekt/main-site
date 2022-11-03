@@ -43,29 +43,36 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
 
       <MainHeader hideOnScroll={false}>
         <Navbar logo={settings.logo} />
+        <TaxMenu
+          mobile
+          selected={menuChoice}
+          onChange={(selected) => setMenuChoice(selected)}
+        ></TaxMenu>
       </MainHeader>
 
       <PageContent>
-        <h3 className={style.header}>Skatt</h3>
+        <div className={style.container}>
+          <h3 className={style.header}>Skatt</h3>
 
-        <TaxMenu selected={menuChoice} onChange={(selected) => setMenuChoice(selected)}></TaxMenu>
+          <TaxMenu selected={menuChoice} onChange={(selected) => setMenuChoice(selected)}></TaxMenu>
 
-        {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
+          {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
 
-        {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
-          <FacebookTab
-            donor={donor}
-            description={page.facebook_description[0]}
-            links={page.facebook_description_links.links}
-          />
-        )}
+          {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
+            <FacebookTab
+              donor={donor}
+              description={page.facebook_description[0]}
+              links={page.facebook_description_links.links}
+            />
+          )}
 
-        {menuChoice == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS && (
-          <TaxDeductionsTab
-            description={page.about_taxdeductions[0]}
-            links={page.about_taxdeductions_links.links}
-          ></TaxDeductionsTab>
-        )}
+          {menuChoice == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS && (
+            <TaxDeductionsTab
+              description={page.about_taxdeductions[0]}
+              links={page.about_taxdeductions_links.links}
+            ></TaxDeductionsTab>
+          )}
+        </div>
       </PageContent>
     </>
   );

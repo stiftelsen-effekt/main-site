@@ -102,9 +102,11 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
         </MainHeader>
 
         <PageContent>
-          <h3 className={styles.header}>Faste avtaler</h3>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <Spinner />
+          <div className={styles.container}>
+            <h3 className={styles.header}>Faste avtaler</h3>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <Spinner />
+            </div>
           </div>
         </PageContent>
       </>

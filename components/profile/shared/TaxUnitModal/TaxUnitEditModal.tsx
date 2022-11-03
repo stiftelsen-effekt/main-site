@@ -116,6 +116,8 @@ export const TaxUnitEditModal: React.FC<{
               type === TaxUnitTypes.COMPANY &&
               !validateOrg(ssn) &&
               "Ugyldig organisasjonsnummer"}
+            {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
+            {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
             &nbsp;
           </span>
         </div>

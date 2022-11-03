@@ -12,16 +12,17 @@ export const FacebookTab: React.FC<{ donor: Donor; description: any[]; links: an
   links,
 }) => {
   return (
-    <div className={style.gridContainer}>
-      <section>
-        <h5>Facebook-donasjoner</h5>
-        <FacebookTaxWidget email={donor.email} />
-      </section>
-      <section>
-        <h5>Skattefradrag</h5>
-        <PortableText blocks={description} />
-        <Links links={links} />
-      </section>
+    <div className={style.container}>
+      <h5>Knytt donasjoner fra Facebook til din profil</h5>
+      <div className={style.gridContainer}>
+        <section>
+          <FacebookTaxWidget email={donor.email} />
+        </section>
+        <section>
+          <PortableText blocks={description} />
+          <Links links={links} />
+        </section>
+      </div>
     </div>
   );
 };

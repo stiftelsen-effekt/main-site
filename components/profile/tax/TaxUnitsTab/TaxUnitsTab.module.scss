@@ -8,3 +8,21 @@
   flex-direction: row;
   justify-content: flex-end;
 }
+
+.mobileList {
+  display: none;
+}
+
+@media only screen and (max-width: 1180px) {
+  .header {
+    display: none;
+  }
+
+  .desktopList {
+    display: none;
+  }
+
+  .mobileList {
+    display: block;
+  }
+}
