@@ -19,7 +19,7 @@ export const TaxUnitMobileList: React.FC<{
       label: "Navn",
     },
     {
-      label: "Fødsels- eller organisasjonsnummer",
+      label: "Identifikator",
     },
   ];
 

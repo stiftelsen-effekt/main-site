@@ -38,6 +38,7 @@
   vertical-align: middle;
   padding-left: 0.5rem;
   padding-right: 0;
+  white-space: nowrap;
 }
 
 .table td.rowAction .actionContainer { 
@@ -129,7 +130,7 @@ table tr .detailRowCell {
   background: var(--primary);
   color: var(--secondary);
   position: absolute;
-  top: 0;
+  top: 0.5em;
   right: 0;
   border-radius: 8px 0px 8px 8px;
 }
