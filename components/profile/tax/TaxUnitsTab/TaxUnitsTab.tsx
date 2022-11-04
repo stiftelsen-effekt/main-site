@@ -1,15 +1,12 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { useTaxUnits } from "../../../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
-import { ActivityContext } from "../../layout/activityProvider";
 import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
 import { TaxUnitMobileList } from "../../shared/lists/taxUnitList/TaxUnitMobileList";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
-import { TaxUnitDeleteModal } from "../../shared/TaxUnitModal/TaxUnitDeleteModal";
-import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
 import styles from "./TaxUnitsTab.module.scss";
 
 export const TaxUnitsTab: React.FC = () => {
@@ -17,7 +14,6 @@ export const TaxUnitsTab: React.FC = () => {
 
   const { loading, isValidating, data, error } = useTaxUnits(user as User, getAccessTokenSilently);
 
-  // const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(data?.[0] ?? null);
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
   return (
