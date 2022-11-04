@@ -13,28 +13,25 @@
   float: right;
 }
 
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
 .input {
   background: var(--secondary);
   font-family: "ESKlarheitGrotesk", sans-serif;
   font-size: 16px;
   color: var(--primary);
-  padding: 14px 18px;
+  padding: 0.5em 1.2em;
   border: none;
   width: 100%;
   max-width: 280px;
   border-radius: 40px;
   border: 1px solid var(--primary);
   margin-top: 4px;
-}
-
-.checkbox {
-  -webkit-transform: scale(2, 2);
-  margin: 10px;
-}
-
-.checkboxActive {
-  -webkit-transform: scale(2, 2);
-  margin: 10px;
 }
 
 .input[type="number"]::-webkit-inner-spin-button,
