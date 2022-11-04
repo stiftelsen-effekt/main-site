@@ -192,7 +192,7 @@ export const AgreementDetails: React.FC<{
           <span>kr</span>
         </div>
         <TaxUnitSelector
-          selected={distribution.taxUnit}
+          selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
           onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
           onAddNew={() => setAddTaxUnitOpen(true)}
         />
