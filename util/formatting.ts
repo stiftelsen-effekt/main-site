@@ -1,5 +1,9 @@
 import { DateTime } from "luxon";
 
+export const onlyDate = (date: string) => {
+  return DateTime.fromISO(date).toFormat("dd.MM");
+};
+
 export const shortDate = (isoDate: string): string => {
   return DateTime.fromISO(isoDate).toFormat("dd.MM yyyy");
 };
