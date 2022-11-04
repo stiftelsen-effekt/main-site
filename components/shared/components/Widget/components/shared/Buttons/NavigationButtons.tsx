@@ -27,7 +27,7 @@ export const SubmitButton: React.FC<{
 
   return (
     <StyledSubmitButton onClick={onClick}>
-      {loading || true ? <LoadingButtonSpinner /> : children}
+      {loading ? <LoadingButtonSpinner /> : children}
     </StyledSubmitButton>
   );
 };
