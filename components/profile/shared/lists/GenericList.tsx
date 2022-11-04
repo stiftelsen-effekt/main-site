@@ -33,6 +33,8 @@ export const GenericList = <T extends unknown>({
   emptyPlaceholder,
   expandable,
 }: Props<T>) => {
+  const hasActions = rows.some((row) => typeof row.contextOptions !== "undefined") || expandable;
+
   return (
     <div className={style.gridContainer} key={title} data-cy="generic-list">
       <section className={style.header} data-cy="generic-list-header">
@@ -44,8 +46,12 @@ export const GenericList = <T extends unknown>({
           <table className={style.table} data-cy="generic-list-table">
             <thead>
               <tr>
-                {headers.map((header) => (
-                  <th key={header.label} style={{ width: header.width ?? "auto" }}>
+                {headers.map((header, i) => (
+                  <th
+                    key={header.label}
+                    style={{ width: header.width ?? "auto" }}
+                    colSpan={hasActions && i === headers.length - 1 ? 2 : 1}
+                  >
                     {header.label}
                   </th>
                 ))}

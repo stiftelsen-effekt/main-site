@@ -29,14 +29,14 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
 
   if (typeof row.contextOptions !== "undefined") {
     actions.push(
-      <td
+      <div
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();
           e.stopPropagation();
           setContextOpen(!contextOpen);
         }}
-        className={style.rowAction}
         data-cy="generic-list-row-context"
+        className={style.actionContainer}
       >
         <div ref={actionRef} style={{ display: "flex", flexDirection: "column" }}>
           <MoreHorizontal width={24} />
@@ -52,22 +52,22 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
             )}
           </div>
         </div>
-      </td>,
+      </div>,
     );
   }
   if (expandable) {
     actions.push(
-      <td
+      <div
         onClick={() => setExpanded(!expanded)}
-        className={style.rowAction}
         data-cy="generic-list-row-expand"
+        className={style.actionContainer}
       >
         <ChevronDown
           className={expanded ? style.iconChevronUp : style.iconChevronDown}
           color={"black"}
-          width={24}
+          width={"24px"}
         />
-      </td>,
+      </div>,
     );
   }
 
@@ -84,9 +84,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
         {row.cells.map((val, i) => (
           <td key={i}>{val}</td>
         ))}
-        {actions.map((action, i) => (
-          <>{action}</>
-        ))}
+        <td className={style.rowAction}>{actions.map((action, i) => action)}</td>
       </tr>
       {expandable ? (
         <tr key={`${row.id}-expanded`}>

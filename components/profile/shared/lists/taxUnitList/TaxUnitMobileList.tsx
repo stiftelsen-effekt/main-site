@@ -17,11 +17,9 @@ export const TaxUnitMobileList: React.FC<{
   const headers = [
     {
       label: "Navn",
-      width: "60%",
     },
     {
       label: "Fødsels- eller organisasjonsnummer",
-      width: "40%",
     },
   ];
 

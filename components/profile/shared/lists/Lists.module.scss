@@ -37,11 +37,13 @@
   text-align: right;
   vertical-align: middle;
   padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-right: 0;
 }
 
-.table td.rowAction:last-child {
-  padding-right: 0rem;
+.table td.rowAction .actionContainer { 
+  display: inline-flex;
+  margin-left: 1rem;
+  vertical-align: middle;
 }
 
 .gridContainer {
