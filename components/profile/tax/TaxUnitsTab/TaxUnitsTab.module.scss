@@ -17,6 +17,11 @@
   display: none;
 }
 
+.noTaxUnitsLink {
+  border-bottom: 1px solid var(--primary);
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 1180px) {
   .header {
     display: none;

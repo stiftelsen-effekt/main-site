@@ -19,29 +19,45 @@ export const TaxUnitsTab: React.FC = () => {
   return (
     <div className={styles.container}>
       <h4 className={styles.header}>Dine skatteenheter</h4>
-      {!loading && !error && data && data.length > 0 ? (
-        <>
-          <div className={styles.desktopList}>
-            {data
-              .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
-              .map((taxUnit: TaxUnit) => (
-                <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />
-              ))}
+      {!loading && !error && data ? (
+        data.filter((taxUnit: TaxUnit) => taxUnit.archived === null).length > 0 ? (
+          <>
+            <div className={styles.desktopList}>
+              {data
+                .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
+                .map((taxUnit: TaxUnit) => (
+                  <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />
+                ))}
+            </div>
+            <div className={styles.mobileList}>
+              <TaxUnitMobileList
+                taxUnits={data.filter((taxUnit: TaxUnit) => taxUnit.archived === null)}
+              />
+            </div>
+
+            <div className={styles.buttonContainer}>
+              <EffektButton onClick={() => setCreateModalOpen(true)}>
+                Opprett ny skatteenhet
+              </EffektButton>
+            </div>
+          </>
+        ) : (
+          <div className={styles.noTaxUnits}>
+            <p className={styles.noTaxUnitsText}>
+              Vi har ikke registrert noen skatteenheter på deg. For å få skattefradrag på donasjoner
+              må du registrere ditt personnummer, eller organisasjonsnummer hvis du donerer fra en
+              skattepliktig bedrift. Du kan registrere flere skatteenheter på samme bruker.
+            </p>
+            <a onClick={() => setCreateModalOpen(true)} className={styles.noTaxUnitsLink}>
+              Opprett din første skatteenhet her.
+            </a>
           </div>
-          <div className={styles.mobileList}>
-            <TaxUnitMobileList
-              taxUnits={data.filter((taxUnit: TaxUnit) => taxUnit.archived === null)}
-            />
-          </div>
-        </>
+        )
       ) : (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Spinner />
         </div>
       )}
-      <div className={styles.buttonContainer}>
-        <EffektButton onClick={() => setCreateModalOpen(true)}>Opprett ny skatteenhet</EffektButton>
-      </div>
 
       {createModalOpen && (
         <TaxUnitCreateModal
