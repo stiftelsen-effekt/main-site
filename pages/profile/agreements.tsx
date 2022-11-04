@@ -206,6 +206,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
               distributions={distributionsMap}
               supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
               emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
+              expandable={true}
             />
           ) : null}
 

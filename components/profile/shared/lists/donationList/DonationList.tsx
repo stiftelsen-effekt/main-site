@@ -87,6 +87,7 @@ export const DonationList: React.FC<{
       headers={headers}
       rows={rows}
       emptyPlaceholder={emptyPlaceholder}
+      expandable={true}
     />
   );
 };
