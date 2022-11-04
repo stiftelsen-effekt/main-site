@@ -56,7 +56,6 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
                   draggable
                   pauseOnHover
                   closeButton={false}
-                  style={{ maxWidth: 200 }}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
                 <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>

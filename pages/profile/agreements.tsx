@@ -76,14 +76,6 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
 
   const loading = vippsLoading || avtaleGiroLoading || distributionsLoading || organizationsLoading;
 
-  const refreshing =
-    avtaleGiroRefreshing || vippsRefreshing || organizationsRefreshing || distributionsRefreshing;
-
-  useEffect(() => {
-    if (refreshing) setActivity(true);
-    else setActivity(false);
-  }, [refreshing]);
-
   if (loading || !organizations || !distributions || !vipps || !avtaleGiro)
     return (
       <>

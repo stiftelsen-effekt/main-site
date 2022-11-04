@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { AlertCircle, Check } from "react-feather";
 import { toast } from "react-toastify";
@@ -35,7 +35,7 @@ export const TaxUnitDeleteModal: React.FC<{
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [transferDonations, setTransferDonations] = useState(false);
 
-  const deleteUnit = async () => {
+  const deleteUnit = useCallback(async () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
 
@@ -54,18 +54,18 @@ export const TaxUnitDeleteModal: React.FC<{
     } else if (typeof result === "string") {
       onFailure();
       failureToast();
+      setLoading(false);
       setError(result);
     } else {
       onFailure();
       failureToast();
+      setLoading(false);
       setError("");
     }
-
-    setLoading(false);
-  };
+  }, [getAccessTokenSilently, user, taxUnit, selectedTaxUnit, transferDonations]);
 
   return (
-    <Lightbox open={open} onConfirm={deleteUnit} onCancel={onClose}>
+    <Lightbox open={open} onConfirm={deleteUnit} onCancel={onClose} loading={loading}>
       <div className={styles.container}>
         <h5>Slett skatteenhet</h5>
 

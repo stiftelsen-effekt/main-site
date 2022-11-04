@@ -11,10 +11,12 @@ import {
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { useInView } from "react-hook-inview";
 
-const GenericListRow: React.FC<{
-  row: ListRow;
+type Props<T> = {
+  row: ListRow<T>;
   expandable?: boolean;
-}> = ({ row, expandable = true }) => {
+};
+
+const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
   const [expanded, setExpanded] = useState<boolean>(row.defaultExpanded);
   const [contextOpen, setContextOpen] = useState<boolean>(false);
 
@@ -42,8 +44,9 @@ const GenericListRow: React.FC<{
             {contextOpen && (
               <GenericListContextMenu
                 options={row.contextOptions}
+                element={row.element}
                 onSelect={(selected: string) =>
-                  row.onContextSelect ? row.onContextSelect(selected) : () => {}
+                  row.onContextSelect ? row.onContextSelect(selected, row.element) : () => {}
                 }
               />
             )}

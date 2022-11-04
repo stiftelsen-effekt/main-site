@@ -20,10 +20,10 @@ export function* draftVippsAgreement(): SagaIterator<void> {
     const KID: number = yield select((state: State) => state.donation.kid);
     const amount: number = yield select((state: State) => state.donation.sum);
     const initialCharge: boolean = yield select(
-      (state: State) => state.donation.vippsAgreement?.initialCharge
+      (state: State) => state.donation.vippsAgreement?.initialCharge,
     );
     const monthlyChargeDay: Date = yield select(
-      (state: State) => state.donation.vippsAgreement?.monthlyChargeDay
+      (state: State) => state.donation.vippsAgreement?.monthlyChargeDay,
     );
     const data = {
       KID,
@@ -42,7 +42,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
     });
 
     const draftResponse: IServerResponse<DraftAgreementResponse> = yield call(
-      draftRequest.json.bind(draftRequest)
+      draftRequest.json.bind(draftRequest),
     );
 
     if (draftResponse.status === 200) {
@@ -50,8 +50,8 @@ export function* draftVippsAgreement(): SagaIterator<void> {
 
       yield put(
         setPaymentProviderURL(
-          (draftResponse.content as DraftAgreementResponse).vippsConfirmationUrl
-        )
+          (draftResponse.content as DraftAgreementResponse).vippsConfirmationUrl,
+        ),
       );
     }
 
@@ -88,13 +88,11 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
     });
 
     const draftResponse: IServerResponse<undefined> = yield call(
-      draftRequest.json.bind(draftRequest)
+      draftRequest.json.bind(draftRequest),
     );
 
     if (draftResponse.status === 200) {
-      const form = document.getElementById(
-        "avtalegiro-form"
-      ) as HTMLFormElement;
+      const form = document.getElementById("avtalegiro-form") as HTMLFormElement;
       form.submit();
     }
 
@@ -112,22 +110,16 @@ export function* registerBankPending(): SagaIterator<void> {
     const KID: number = yield select((state: State) => state.donation.kid);
     const sum: number = yield select((state: State) => state.donation.sum);
 
-    const request: Response = yield call(
-      fetch,
-      `${API_URL}/donations/bank/pending`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/x-www-form-urlencoded",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `data={"KID":"${KID}", "sum":${sum}}`,
-      }
-    );
+    const request: Response = yield call(fetch, `${API_URL}/donations/bank/pending`, {
+      method: "POST",
+      headers: {
+        Accept: "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `data={"KID":"${KID}", "sum":${sum}}`,
+    });
 
-    const result: IServerResponse<never> = yield call(
-      request.json.bind(request)
-    );
+    const result: IServerResponse<never> = yield call(request.json.bind(request));
 
     if (result.status !== 200) throw new Error(result.content as string);
   } catch (ex) {
@@ -135,9 +127,7 @@ export function* registerBankPending(): SagaIterator<void> {
   }
 }
 
-export function* registerDonation(
-  action: Action<undefined>
-): SagaIterator<void> {
+export function* registerDonation(action: Action<undefined>): SagaIterator<void> {
   yield put(setLoading(true));
   try {
     const donation: Donation = yield select((state: State) => state.donation);
@@ -167,7 +157,7 @@ export function* registerDonation(
     });
 
     const result: IServerResponse<RegisterDonationResponse> = yield call(
-      request.json.bind(request)
+      request.json.bind(request),
     );
     if (result.status !== 200) throw new Error(result.content as string);
 
@@ -175,21 +165,19 @@ export function* registerDonation(
       setAnsweredReferral(
         data.donor?.email === "anon@gieffektivt.no"
           ? false
-          : (result.content as RegisterDonationResponse).hasAnsweredReferral
-      )
+          : (result.content as RegisterDonationResponse).hasAnsweredReferral,
+      ),
     );
 
     yield put(
-      setPaymentProviderURL(
-        (result.content as RegisterDonationResponse).paymentProviderUrl
-      )
+      setPaymentProviderURL((result.content as RegisterDonationResponse).paymentProviderUrl),
     );
 
     yield put(
       registerDonationAction.done({
         params: action.payload,
         result: result.content as RegisterDonationResponse,
-      })
+      }),
     );
 
     if (
@@ -202,8 +190,6 @@ export function* registerDonation(
     yield put(setLoading(false));
     yield put(nextPane());
   } catch (ex) {
-    yield put(
-      registerDonationAction.failed({ params: action.payload, error: ex as Error })
-    );
+    yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));
   }
 }

@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { useSelector } from "react-redux";
+import { LoadingButtonSpinner } from "../../../../Spinner/LoadingButtonSpinner";
 import { State } from "../../../store/state";
 import { StyledNextButton, StyledSpinner, StyledSubmitButton } from "./NavigationButtons.style";
 
@@ -17,14 +18,14 @@ export const NextButton: React.FC<{
   );
 };
 
-export const SubmitButton: React.FC<{ children: React.ReactNode; onClick: (e: React.MouseEvent) => void }> = ({
-  children,
-  onClick,
-}) => {
+export const SubmitButton: React.FC<{
+  children: React.ReactNode;
+  onClick: (e: React.MouseEvent) => void;
+}> = ({ children, onClick }) => {
   const loading = useSelector((state: State) => state.layout.loading);
   return (
     <StyledSubmitButton onClick={onClick}>
-      {loading ? <StyledSpinner /> : children}
+      {loading || true ? <LoadingButtonSpinner /> : children}
     </StyledSubmitButton>
   );
 };

@@ -44,16 +44,16 @@ export const TaxUnitCreateModal: React.FC<{
       onSuccess(result);
       setError("");
     } else if (typeof result === "string") {
+      setLoading(false);
       onFailure();
       failureToast();
       setError(result);
     } else {
+      setLoading(false);
       onFailure();
       failureToast();
       setError("");
     }
-
-    setLoading(false);
   };
 
   const isValid =
@@ -64,7 +64,7 @@ export const TaxUnitCreateModal: React.FC<{
       : ssn.length === 9 && validateOrg(ssn));
 
   return (
-    <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid}>
+    <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
       <div className={styles.container}>
         <h5>Ny skatteenhet</h5>
         <div className={styles.typeSelector}>

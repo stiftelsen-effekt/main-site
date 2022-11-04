@@ -2,14 +2,17 @@ import React from "react";
 import style from "./Lightbox.module.scss";
 import { EffektButton, EffektButtonType } from "../EffektButton/EffektButton";
 import { X } from "react-feather";
+import { Spinner } from "../Spinner/Spinner";
+import { LoadingButtonSpinner } from "../Spinner/LoadingButtonSpinner";
 
 export const Lightbox: React.FC<{
   children: React.ReactNode;
   open: boolean;
   valid?: boolean;
+  loading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
-}> = ({ children, open, valid, onConfirm, onCancel }) => {
+}> = ({ children, open, valid, loading, onConfirm, onCancel }) => {
   if (!open) return null;
 
   return (
@@ -25,7 +28,7 @@ export const Lightbox: React.FC<{
             cy="lightbox-confirm"
             disabled={typeof valid === "boolean" ? !valid : false}
           >
-            Bekreft
+            {loading ? <LoadingButtonSpinner /> : "Bekreft"}
           </EffektButton>
           <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} cy="lightbox-cancel">
             Avbryt

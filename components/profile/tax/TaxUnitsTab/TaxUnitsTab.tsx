@@ -14,19 +14,15 @@ import styles from "./TaxUnitsTab.module.scss";
 
 export const TaxUnitsTab: React.FC = () => {
   const { getAccessTokenSilently, user } = useAuth0();
-  const { setActivity } = useContext(ActivityContext);
 
   const { loading, isValidating, data, error } = useTaxUnits(user as User, getAccessTokenSilently);
 
   // const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(data?.[0] ?? null);
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
-  if (isValidating || loading) setActivity(true);
-  else setActivity(false);
-
   return (
     <div className={styles.container}>
-      <h5 className={styles.header}>Dine skatteenheter</h5>
+      <h4 className={styles.header}>Dine skatteenheter</h4>
       {!loading && !error && data && data.length > 0 ? (
         <>
           <div className={styles.desktopList}>

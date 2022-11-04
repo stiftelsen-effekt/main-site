@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
@@ -32,7 +32,7 @@ export const TaxUnitEditModal: React.FC<{
     initial.ssn.length === 11 ? TaxUnitTypes.PERSON : TaxUnitTypes.COMPANY,
   );
 
-  const create = async () => {
+  const create = useCallback(async () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
 
@@ -48,15 +48,15 @@ export const TaxUnitEditModal: React.FC<{
     } else if (typeof result === "string") {
       onFailure();
       failureToast();
+      setLoading(false);
       setError(result);
     } else {
       onFailure();
       failureToast();
+      setLoading(false);
       setError("");
     }
-
-    setLoading(false);
-  };
+  }, [name, ssn, user]);
 
   const isValid =
     name !== "" &&
@@ -66,7 +66,7 @@ export const TaxUnitEditModal: React.FC<{
       : ssn.length === 9 && validateOrg(ssn));
 
   return (
-    <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid}>
+    <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
       <div className={styles.container}>
         <h5>Endre skatteenhet</h5>
         <div className={styles.typeSelector}>

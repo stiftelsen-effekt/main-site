@@ -22,3 +22,22 @@
     transform: rotate(360deg);
   }
 }
+
+
+.textsizespinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  mix-blend-mode: difference;
+  vertical-align: middle;
+}
+.textsizespinner:after {
+  content: " ";
+  display: block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  border: 0.15em solid white;
+  border-color: white transparent white transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}

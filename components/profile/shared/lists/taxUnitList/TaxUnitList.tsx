@@ -11,6 +11,7 @@ export const TaxUnitList: React.FC<{
 }> = ({ taxUnits }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
   const unit = taxUnits[0];
 
@@ -51,7 +52,7 @@ export const TaxUnitList: React.FC<{
       ``
     );
 
-  const rows: ListRow[] = [
+  const rows: ListRow<TaxUnit>[] = [
     {
       id: unit.id.toString(),
       defaultExpanded: false,
@@ -77,16 +78,19 @@ export const TaxUnitList: React.FC<{
           icon: <Trash2 size={16} />,
         },
       ],
-      onContextSelect: (option) => {
+      onContextSelect: (option, element) => {
         switch (option) {
           case "Endre":
+            setSelectedTaxUnit(element);
             setEditModalOpen(true);
             break;
           case "Slett":
+            setSelectedTaxUnit(element);
             setDeleteModalOpen(true);
             break;
         }
       },
+      element: unit,
     },
   ];
 
@@ -109,19 +113,19 @@ export const TaxUnitList: React.FC<{
         emptyPlaceholder={emptyPlaceholder}
         expandable={false}
       />
-      {editModalOpen && (
+      {editModalOpen && selectedTaxUnit && (
         <TaxUnitEditModal
           open={editModalOpen}
-          initial={unit}
+          initial={selectedTaxUnit}
           onClose={() => setEditModalOpen(false)}
           onSuccess={() => setEditModalOpen(false)}
           onFailure={() => {}}
         />
       )}
-      {deleteModalOpen && (
+      {deleteModalOpen && selectedTaxUnit && (
         <TaxUnitDeleteModal
           open={deleteModalOpen}
-          taxUnit={unit}
+          taxUnit={selectedTaxUnit}
           onSuccess={(success: boolean) => {
             setDeleteModalOpen(success);
           }}

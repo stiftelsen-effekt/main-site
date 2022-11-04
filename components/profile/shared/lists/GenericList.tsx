@@ -6,23 +6,33 @@ import {
   GenericListContextMenuSelect,
 } from "./GenericListContextMenu";
 
-export type ListRow = {
+export type ListRow<T> = {
   id: string;
   defaultExpanded: boolean;
   cells: string[];
   details?: ReactElement;
   contextOptions?: GenericListContextMenuOptions;
-  onContextSelect?: GenericListContextMenuSelect;
+  onContextSelect?: GenericListContextMenuSelect<T>;
+  element: T;
 };
 
-export const GenericList: React.FC<{
+export type Props<T> = {
   title: string;
   headers: { label: string; width?: string }[];
   supplementalInformation?: string | JSX.Element;
-  rows: ListRow[];
+  rows: ListRow<T>[];
   emptyPlaceholder: JSX.Element;
   expandable?: boolean;
-}> = ({ headers, title, supplementalInformation, rows, emptyPlaceholder, expandable }) => {
+};
+
+export const GenericList = <T extends unknown>({
+  headers,
+  title,
+  supplementalInformation,
+  rows,
+  emptyPlaceholder,
+  expandable,
+}: Props<T>) => {
   return (
     <div className={style.gridContainer} key={title} data-cy="generic-list">
       <section className={style.header} data-cy="generic-list-header">

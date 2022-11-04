@@ -12,22 +12,20 @@ export const TaxUnitMobileList: React.FC<{
 }> = ({ taxUnits }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
-  const unit = taxUnits[0];
-
-  const ssnType = unit.ssn.length === 11 ? "birthnr" : "orgnr";
   const headers = [
     {
       label: "Navn",
       width: "60%",
     },
     {
-      label: ssnType === "birthnr" ? "Fødselsnummer" : "Organisasjonsnummer",
+      label: "Fødsels- eller organisasjonsnummer",
       width: "40%",
     },
   ];
 
-  const rows: ListRow[] = taxUnits.map((unit) => ({
+  const rows: ListRow<TaxUnit>[] = taxUnits.map((unit) => ({
     id: unit.id.toString(),
     defaultExpanded: false,
     cells: [unit.name, unit.ssn],
@@ -41,17 +39,20 @@ export const TaxUnitMobileList: React.FC<{
         icon: <Trash2 size={16} />,
       },
     ],
-    onContextSelect: (option) => {
+    onContextSelect: (option, element) => {
       switch (option) {
         case "Endre":
           setEditModalOpen(true);
+          setSelectedTaxUnit(element);
           break;
         case "Slett":
+          setSelectedTaxUnit(element);
           setDeleteModalOpen(true);
           break;
       }
     },
     details: <TaxUnitMobileDetails taxUnit={unit} />,
+    element: unit,
   }));
 
   const emptyPlaceholder = (
@@ -66,27 +67,27 @@ export const TaxUnitMobileList: React.FC<{
   return (
     <>
       <GenericList
-        title={unit.name}
+        title={""}
         headers={headers}
         rows={rows}
         emptyPlaceholder={emptyPlaceholder}
         expandable={true}
       />
-      {editModalOpen && (
+      {editModalOpen && selectedTaxUnit && (
         <TaxUnitEditModal
           open={editModalOpen}
-          initial={unit}
+          initial={selectedTaxUnit}
           onClose={() => setEditModalOpen(false)}
           onSuccess={() => setEditModalOpen(false)}
           onFailure={() => {}}
         />
       )}
-      {deleteModalOpen && (
+      {deleteModalOpen && selectedTaxUnit && (
         <TaxUnitDeleteModal
           open={deleteModalOpen}
-          taxUnit={unit}
+          taxUnit={selectedTaxUnit}
           onSuccess={(success: boolean) => {
-            setDeleteModalOpen(success);
+            setDeleteModalOpen(false);
           }}
           onFailure={() => {}}
           onClose={() => setDeleteModalOpen(false)}

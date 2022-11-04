@@ -73,9 +73,10 @@
     .lightbox {
       width: 100vw;
       height: 100vh;
+      max-width: none;
       padding: 0;
       border-radius: 0;
-      overflow-y: scroll;
+      overflow-y: auto;
       margin: 0;
       padding: 0 5vw;
       box-sizing: border-box;

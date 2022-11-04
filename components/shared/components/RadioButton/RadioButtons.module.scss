@@ -27,22 +27,22 @@
 }
 
 .radiobuttonlabel {
-  height: 24px;
-  padding-left: 34px;
-  padding-top: 2px;
+  height: 1.5em;
+  padding-left: 2rem;
+  padding-top: 0.25em;
   position: relative;
   cursor: pointer;
   display: inline-block;
   vertical-align: top;
   margin-right: 16px;
   line-height: 100%;
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 .radiobuttonlabel::before {
   content: "";
-  width: 22px;
-  height: 22px;
+  width: 1.5em;
+  height: 1.5em;
   border: 1px solid var(--primary);
   background: var(--secondary);
   border-radius: 50%;
@@ -53,12 +53,12 @@
 
 .radiobutton + .radiobuttonlabel:after {
   content: "";
-  width: 16px;
-  height: 16px;
+  width: 1.1em;
+  height: 1.1em;
   background: var(--primary);
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 0.25em;
+  left: 0.25em;
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.7);
