@@ -53,6 +53,11 @@
 }
 
 @media only screen and (max-width: 1180px) {  
+  .inputContainer input {
+    width: 100%;
+    max-width: none;
+  }
+
   .header {
     margin-top: 40px;
     margin-bottom: 0px;
