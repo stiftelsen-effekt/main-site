@@ -171,6 +171,7 @@ table tr .detailRowCell {
 
   .gridContainer {
     grid-template-columns: 1fr;
+    margin-bottom: 3rem;
   }
 
   .gridContainer section {
@@ -189,9 +190,13 @@ table tr .detailRowCell {
     padding-bottom: 4px;
   }
 
+  .table td.rowAction {
+    padding-left: 0;
+  }
+
   .table td.rowAction .actionContainer { 
 
-    margin-left: 0rem;
+    margin-left: 0.5rem;
   }
 
   /* Display only the three first columns */
