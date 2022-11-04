@@ -189,6 +189,11 @@ table tr .detailRowCell {
     padding-bottom: 4px;
   }
 
+  .table td.rowAction .actionContainer { 
+
+    margin-left: 0rem;
+  }
+
   /* Display only the three first columns */
   .gridContainer tr th,
   .gridContainer tr td {
@@ -198,6 +203,8 @@ table tr .detailRowCell {
   .gridContainer tr th:nth-child(-n + 3),
   .gridContainer tr td:nth-child(-n + 3) {
     display: table-cell;
+    /* Override fixed with for column alignment on desktop */
+    width: auto !important;
   }
 
   .gridContainer tr td:last-child {
