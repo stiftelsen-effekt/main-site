@@ -155,7 +155,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "22.04 2022");
+      .should("contain.text", "22.04");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
