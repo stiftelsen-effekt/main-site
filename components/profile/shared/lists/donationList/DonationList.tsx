@@ -55,7 +55,7 @@ export const DonationList: React.FC<{
       cells: [
         shortDate(donation.timestamp),
         thousandize(Math.round(parseFloat(donation.sum))) + " kr",
-        donation.paymentMethod,
+        mapPaymentMethodString(donation.paymentMethod),
         donation.KID,
       ],
       details: (
@@ -91,4 +91,17 @@ export const DonationList: React.FC<{
       expandable={true}
     />
   );
+};
+
+const mapPaymentMethodString = (paymentMethod: string): string => {
+  switch (paymentMethod) {
+    case "Vipps Recurring":
+      return "Vippsavtale";
+    case "Vipps KID":
+      return "Vipps";
+    case "Bank u/KID":
+      return "Bank";
+    default:
+      return paymentMethod;
+  }
 };
