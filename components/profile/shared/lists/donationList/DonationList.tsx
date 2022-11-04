@@ -7,7 +7,8 @@ export const DonationList: React.FC<{
   donations: Donation[];
   distributions: Map<string, Distribution>;
   year: string;
-}> = ({ donations, distributions, year }) => {
+  firstOpen: boolean;
+}> = ({ donations, distributions, year, firstOpen }) => {
   let taxEligableSum = donations
     .filter((d) => d.metaOwnerId === META_OWNER.EAN || d.metaOwnerId === META_OWNER.EFFEKTANDEAN)
     .reduce((acc, curr) => acc + parseFloat(curr.sum), 0);
@@ -50,7 +51,7 @@ export const DonationList: React.FC<{
   const rows: ListRow<Donation>[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
-      defaultExpanded: index === 0 ? true : false,
+      defaultExpanded: firstOpen && index === 0 ? true : false,
       cells: [
         shortDate(donation.timestamp),
         thousandize(Math.round(parseFloat(donation.sum))) + " kr",

@@ -99,6 +99,8 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
     ? getYearlyDistribution(aggregatedDonations, parseInt(router.query.year as string))
     : getTotalDistribution(aggregatedDonations);
 
+  const mostRecentYearsWithDonations = getMostRecentYearWithDonations(aggregatedDonations);
+
   const donationList = !isTotal ? (
     <DonationList
       donations={donations
@@ -112,6 +114,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         )}
       distributions={distributionsMap}
       year={router.query.year as string}
+      firstOpen={true}
     />
   ) : (
     years
@@ -127,6 +130,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
             )}
           distributions={distributionsMap}
           year={year.toString()}
+          firstOpen={year === mostRecentYearsWithDonations}
         />
       ))
   );
@@ -262,4 +266,8 @@ const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: strin
       0,
     ),
   );
+};
+
+const getMostRecentYearWithDonations = (aggregatedDonations: AggregatedDonations[]) => {
+  return Math.max(...aggregatedDonations.map((el: AggregatedDonations) => el.year));
 };

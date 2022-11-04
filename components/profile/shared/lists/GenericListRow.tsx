@@ -76,7 +76,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
       <tr
         key={row.id}
         onClick={() => {
-          expandable ? setExpanded(!expanded) : expanded;
+          expandable && window.innerWidth > 1180 ? setExpanded(!expanded) : expanded;
         }}
         data-cy="generic-list-row-expand"
         className={expandable ? style.expandableRow : ""}
