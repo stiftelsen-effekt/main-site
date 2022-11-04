@@ -47,7 +47,7 @@ export const DonationList: React.FC<{
     },
   ];
 
-  const rows: ListRow[] = donations.map((donation, index) => {
+  const rows: ListRow<Donation>[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
       defaultExpanded: index === 0 ? true : false,
@@ -66,6 +66,7 @@ export const DonationList: React.FC<{
           timestamp={new Date(donation.timestamp)}
         />
       ),
+      element: donation,
     };
   });
 

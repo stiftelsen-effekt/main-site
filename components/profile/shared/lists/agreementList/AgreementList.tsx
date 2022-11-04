@@ -69,7 +69,7 @@ export const AgreementList: React.FC<{
   /**
    * Maps agreements into rows in the agreement table.
    */
-  const rows: ListRow[] = rowData.map((agreement) => ({
+  const rows: ListRow<AgreementRow>[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
     defaultExpanded: false,
     cells: [
@@ -92,6 +92,7 @@ export const AgreementList: React.FC<{
         inputDate={agreement.date}
       />
     ),
+    element: agreement,
   }));
 
   const emptyPlaceholder = (
