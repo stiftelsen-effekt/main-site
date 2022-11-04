@@ -42,9 +42,14 @@ const donations: Donation[] = [
 ];
 
 export const List = () => (
-  <DonationList year={"2020"} distributions={distributions} donations={donations} />
+  <DonationList
+    firstOpen={true}
+    year={"2020"}
+    distributions={distributions}
+    donations={donations}
+  />
 );
 
 export const Empty = () => (
-  <DonationList year={"2020"} distributions={distributions} donations={[]} />
+  <DonationList firstOpen={true} year={"2020"} distributions={distributions} donations={[]} />
 );
