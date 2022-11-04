@@ -18,6 +18,7 @@ export const EffektButton: React.FC<{
   selected?: boolean;
   squared?: boolean;
   extraMargin?: boolean;
+  noMinWidth?: boolean;
 }> = ({
   onClick,
   role,
@@ -29,6 +30,7 @@ export const EffektButton: React.FC<{
   selected,
   squared,
   extraMargin,
+  noMinWidth = false,
 }) => {
   const styleClasses = [elements.button, type, className];
   if (selected) {
@@ -42,6 +44,9 @@ export const EffektButton: React.FC<{
   }
   if (disabled) {
     styleClasses.push(elements.disabledBtn);
+  }
+  if (noMinWidth) {
+    styleClasses.push(elements.noMinWidth);
   }
   const styleClassesName = styleClasses.join(" ");
 

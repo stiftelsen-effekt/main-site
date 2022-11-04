@@ -64,6 +64,7 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
                   type={EffektButtonType.SECONDARY}
                   selected={donation.sum === suggested.amount}
                   onClick={() => dispatch(setSum(suggested.amount))}
+                  noMinWidth={true}
                 >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
                 {suggested.subtext && <i>{suggested.subtext}</i>}
               </div>
