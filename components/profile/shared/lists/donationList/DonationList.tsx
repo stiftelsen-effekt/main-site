@@ -19,7 +19,7 @@ export const DonationList: React.FC<{
   distributions.forEach((el) => {
     console.log(el);
     if (typeof el.taxUnit !== "undefined") {
-      if (typeof el.taxUnit?.taxDeductions !== "undefined") {
+      if (el.taxUnit?.archived == null && typeof el.taxUnit?.taxDeductions !== "undefined") {
         el.taxUnit?.taxDeductions.forEach((deduction) => {
           if (deduction.year === parseInt(year)) {
             taxDeductions += deduction.taxDeduction;
@@ -34,8 +34,8 @@ export const DonationList: React.FC<{
         {`Dine donasjoner i ${year} ${
           year === new Date().getFullYear().toString() ? "kvalifiserer deg for" : "ga deg"
         }`}{" "}
-        <span style={{ whiteSpace: "nowrap" }}>{thousandize(taxDeductions)}</span> kroner i
-        skattefradrag
+        <span style={{ whiteSpace: "nowrap" }}>{thousandize(Math.round(taxDeductions))}</span>{" "}
+        kroner i skattefradrag
       </span>
     );
   }
