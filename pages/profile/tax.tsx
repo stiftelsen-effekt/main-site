@@ -69,7 +69,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           {menuChoice == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS && (
             <TaxDeductionsTab
               description={page.about_taxdeductions[0]}
-              links={page.about_taxdeductions_links.links}
+              links={page.about_taxdeductions_links ? page.about_taxdeductions_links.links : []}
             ></TaxDeductionsTab>
           )}
         </div>
