@@ -61,14 +61,14 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
             <FacebookTab
               donor={donor}
-              description={page.facebook_description[0]}
+              description={page.facebook_description}
               links={page.facebook_description_links ? page.facebook_description_links.links : []}
             />
           )}
 
           {menuChoice == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS && (
             <TaxDeductionsTab
-              description={page.about_taxdeductions[0]}
+              description={page.about_taxdeductions}
               links={page.about_taxdeductions_links ? page.about_taxdeductions_links.links : []}
             ></TaxDeductionsTab>
           )}
