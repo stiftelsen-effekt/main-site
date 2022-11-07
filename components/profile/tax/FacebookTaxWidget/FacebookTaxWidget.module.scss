@@ -1,3 +1,9 @@
 .container {
+  
   margin-top: 20px;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
 }

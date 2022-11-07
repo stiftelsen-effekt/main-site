@@ -99,4 +99,7 @@ export const LoadingButtonSpinner = styled(Spinner)`
 
 export const SubmitButton = styled(EffektButton)`
   min-width: 160px;
+  max-width: 160px;
+
+  align-self: flex-end;
 `;
