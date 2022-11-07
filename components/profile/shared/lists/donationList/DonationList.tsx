@@ -17,7 +17,6 @@ export const DonationList: React.FC<{
 
   let taxDeductions = 0;
   distributions.forEach((el) => {
-    console.log(el);
     if (typeof el.taxUnit !== "undefined") {
       if (el.taxUnit?.archived == null && typeof el.taxUnit?.taxDeductions !== "undefined") {
         el.taxUnit?.taxDeductions.forEach((deduction) => {
