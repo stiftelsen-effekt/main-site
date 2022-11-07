@@ -11,6 +11,7 @@
   margin-left: 0px;
   text-align: left;
   padding: 0.25rem 0rem;
+  vertical-align: top;
 }
 
 .table .expandableRow {
@@ -35,7 +36,7 @@
 .table td.rowAction {
   cursor: pointer;
   text-align: right;
-  vertical-align: middle;
+  vertical-align: top;
   padding-left: 0.5rem;
   padding-right: 0;
   white-space: nowrap;
@@ -44,7 +45,7 @@
 .table td.rowAction .actionContainer { 
   display: inline-flex;
   margin-left: 1rem;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .gridContainer {
