@@ -12,14 +12,19 @@ export const DonationList: React.FC<{
   let taxDeductionText: JSX.Element | undefined = undefined;
 
   let taxDeductions = 0;
+  let processedUnits = new Set<number>();
   distributions.forEach((el) => {
+    // Get all unique tax units by id
     if (typeof el.taxUnit !== "undefined") {
       if (el.taxUnit?.archived == null && typeof el.taxUnit?.taxDeductions !== "undefined") {
-        el.taxUnit?.taxDeductions.forEach((deduction) => {
-          if (deduction.year === parseInt(year)) {
-            taxDeductions += deduction.taxDeduction;
-          }
-        });
+        if (!processedUnits.has(el.taxUnit.id)) {
+          el.taxUnit?.taxDeductions.forEach((deduction) => {
+            if (deduction.year === parseInt(year)) {
+              taxDeductions += deduction.taxDeduction;
+            }
+          });
+          processedUnits.add(el.taxUnit.id);
+        }
       }
     }
   });
