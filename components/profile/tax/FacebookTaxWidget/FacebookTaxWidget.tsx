@@ -102,6 +102,10 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
           </span>
         </InputFieldWrapper>
 
+        <span style={{ display: "inline-block", fontSize: "0.8rem", marginBottom: "1rem" }}>
+          Kvittering sendes til {email}
+        </span>
+
         <SubmitButton
           onClick={() => {
             handleSubmit(paneSubmitted);
