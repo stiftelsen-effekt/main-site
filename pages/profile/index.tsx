@@ -99,7 +99,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
     ? getYearlyDistribution(aggregatedDonations, parseInt(router.query.year as string))
     : getTotalDistribution(aggregatedDonations);
 
-  const mostRecentYearsWithDonations = getMostRecentYearWithDonations(aggregatedDonations);
+  const mostRecentYearWithDonations = getMostRecentYearWithDonations(aggregatedDonations);
 
   const donationList = !isTotal ? (
     <DonationList
@@ -130,7 +130,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
             )}
           distributions={distributionsMap}
           year={year.toString()}
-          firstOpen={year === mostRecentYearsWithDonations}
+          firstOpen={year === mostRecentYearWithDonations}
         />
       ))
   );
