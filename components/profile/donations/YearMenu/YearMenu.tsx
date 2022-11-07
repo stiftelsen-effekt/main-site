@@ -35,12 +35,12 @@ const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: b
 
         {years.map((year) => (
           <li
+            key={year}
             className={selected == year.toString() ? style["menu-selected"] : ""}
             onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
             onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
           >
             <Link
-              key={year}
               href={{
                 pathname: "/profile/",
                 query: {
