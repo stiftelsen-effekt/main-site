@@ -12,6 +12,10 @@
   align-items: center;
 }
 
+.lightboxCloseButton {
+  display: none;
+}
+
 .lightbox {
   background-color: var(--secondary);
   color: var(--primary);
@@ -19,10 +23,10 @@
   flex-direction: column;
   margin: 0 5vw;
   max-height: 100vh;
-  max-width: 600px;
-  padding: 15px 30px 30px 30px;
+  max-width: 760px;
+  padding: 2rem 3rem 3rem 3rem;
   border-radius: 10px;
-  overflow-y: auto;
+  overflow-y: visible;
   z-index: 2;
 }
 
@@ -51,4 +55,31 @@
 
 .textWrapper {
   text-align: left;
+}
+
+@media only screen and (max-width: 1180px) {
+  .lightboxWrapper {
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+
+    .lightboxCloseButton {
+      display: block;
+      position: absolute;
+      top: 3rem;
+      right: 5vw;
+    }
+
+    .lightbox {
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      padding: 0;
+      border-radius: 0;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0 5vw;
+      box-sizing: border-box;
+    }
+  }
 }

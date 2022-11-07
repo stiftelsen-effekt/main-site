@@ -8,6 +8,7 @@ import style from "./ProfileInfo.module.scss";
 import { DonorContext } from "../../layout/donorProvider";
 import { save } from "../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 
 export const ProfileInfo: React.FC = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -32,30 +33,32 @@ export const ProfileInfo: React.FC = () => {
     <>
       <h3 className={style.header}>Hei{donor.name ? " " + donor.name.split(" ")[0] : ""}!</h3>
       <section className={style.personalInfo}>
-        Ditt navn <br />
-        <input
-          id="name"
-          type="text"
-          defaultValue={donor.name}
-          className={style.input}
-          onChange={(e) => {
-            setDonor({ ...donor, name: e.target.value });
-          }}
-        />{" "}
-        <br /> <br />
-        E-post <br />
-        <input id="email" type="email" disabled value={donor.email} className={style.input} />{" "}
-        <br /> <br />
-        <input
-          type="checkbox"
-          className={donor.newsletter ? style.checkboxActive : style.checkbox}
-          checked={donor.newsletter}
-          onChange={() => {
-            setDonor({ ...donor, newsletter: !donor.newsletter });
-          }}
-        />{" "}
-        Send meg nyhetsbrev på e-post <br />
-        <br />
+        <div className={style.inputContainer}>
+          Ditt navn
+          <input
+            id="name"
+            type="text"
+            defaultValue={donor.name}
+            className={style.input}
+            onChange={(e) => {
+              setDonor({ ...donor, name: e.target.value });
+            }}
+          />
+        </div>
+        <div className={style.inputContainer}>
+          E-post
+          <input id="email" type="email" disabled value={donor.email} className={style.input} />
+        </div>
+        <div className={style.inputContainer}>
+          <EffektCheckbox
+            checked={donor.newsletter}
+            onChange={() => {
+              setDonor({ ...donor, newsletter: !donor.newsletter });
+            }}
+          >
+            Send meg nyhetsbrev på e-post
+          </EffektCheckbox>
+        </div>
         <EffektButton role={"submit"} onClick={saveDonor} cy="btn-save">
           Lagre
         </EffektButton>

@@ -87,6 +87,14 @@
   filter: var(--primary-filter);
 }
 
+.navbar .logoWrapper:active {
+  outline: none;
+}
+
+.navbar .logoWrapper:focus-within { 
+  outline: 2px solid var(--secondary);
+}
+
 .navbar ul li.expandedSubmenu button::after {
   content: "↓";
   display: inline-block;
@@ -101,6 +109,10 @@
 
 .navbar ul li button:focus + div .submenu {
   display: block;
+}
+
+.navbar ul li.buttonsWrapper a {
+  border-bottom: none;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -235,6 +247,10 @@
     justify-content: space-between;
     width: 100%;
     margin-top: auto;
+  }
+
+  .navbar ul li.buttonsWrapper a {
+    width: auto;
   }
 
   .navbar ul li.buttonsWrapper button:first-child { 

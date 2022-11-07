@@ -1,7 +1,8 @@
 [
   {
     "kid": "51615227",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -16,7 +17,8 @@
   },
   {
     "kid": "16753477",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",
@@ -36,7 +38,8 @@
   },
   {
     "kid": "95231965",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",
@@ -86,7 +89,8 @@
   },
   {
     "kid": "000027848912260",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",

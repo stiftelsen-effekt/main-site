@@ -10,7 +10,9 @@ export default {
 const distributions = new Map<string, Distribution>();
 distributions.set("123456789", {
   kid: "123456789",
-  organizations: [
+  standardDistribution: false,
+  taxUnit: null,
+  shares: [
     {
       id: 1,
       name: "Against Malaria foundation",
@@ -40,9 +42,14 @@ const donations: Donation[] = [
 ];
 
 export const List = () => (
-  <DonationList year={"2020"} distributions={distributions} donations={donations} />
+  <DonationList
+    firstOpen={true}
+    year={"2020"}
+    distributions={distributions}
+    donations={donations}
+  />
 );
 
 export const Empty = () => (
-  <DonationList year={"2020"} distributions={distributions} donations={[]} />
+  <DonationList firstOpen={true} year={"2020"} distributions={distributions} donations={[]} />
 );

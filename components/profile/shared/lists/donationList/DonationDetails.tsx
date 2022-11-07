@@ -10,7 +10,7 @@ export const DonationDetails: React.FC<{
   distribution: Distribution;
   timestamp: Date;
 }> = ({ sum, donation, distribution, timestamp }) => {
-  const mappedDistribution = distribution.organizations.map((org) => ({
+  const mappedDistribution = distribution.shares.map((org) => ({
     org: mapNameToOrgAbbriv(org.name) || org.name,
     sum: parseFloat(sum) * (parseFloat(org.share) / 100),
   }));

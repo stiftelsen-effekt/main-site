@@ -13,43 +13,47 @@ import Validate from "validator";
 import { EffektButtonType } from "../../../shared/components/EffektButton/EffektButton";
 import { toast } from "react-toastify";
 import { AlertCircle, Check } from "react-feather";
-import { FacebookDonationRegistration } from "../../../../models";
+import { FacebookDonationRegistration, TaxUnit } from "../../../../models";
 import { useAuth0 } from "@auth0/auth0-react";
 import { registerFacebookDonation } from "../../_queries";
+import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
+import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 
-export const FacebookTaxWidget: React.FC<{ name: string | null; email: string | null }> = ({
-  name,
-  email,
-}) => {
+export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
   const { getAccessTokenSilently } = useAuth0();
   const [nextDisabled, setNextDisabled] = useState(true);
   const [paymentIDError, setPaymentIDError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [nameError, setNameError] = useState(false);
-  const [ssnError, setSsnError] = useState(false);
+  const [taxUnit, setTaxUnit] = useState<TaxUnit | null>(null);
   const [loadingAnimation, setLoadingAnimation] = useState(false);
+  const [createTaxUnitModalOpen, setCreateTaxUnitModalOpen] = useState(false);
 
-  const { register, watch, errors, handleSubmit, reset } = useForm<FacebookDonationRegistration>();
+  const { register, watch, errors, handleSubmit, reset } = useForm<{ paymentID: string }>();
   const watchAllFields = watch();
 
   useEffect(() => {
     errors.paymentID ? setPaymentIDError(true) : setPaymentIDError(false);
-    errors.email ? setEmailError(true) : setEmailError(false);
-    errors.name ? setNameError(true) : setNameError(false);
-    errors.ssn ? setSsnError(true) : setSsnError(false);
 
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0 && taxUnit !== null) {
       setNextDisabled(false);
     } else {
       setNextDisabled(true);
     }
-  }, [errors, watchAllFields]);
+  }, [errors, watchAllFields, taxUnit]);
 
   const paneSubmitted = () => {
+    if (!taxUnit) return;
     setLoadingAnimation(true);
     getAccessTokenSilently()
       .then((accessToken) => {
-        registerFacebookDonation(watchAllFields, accessToken)
+        registerFacebookDonation(
+          {
+            name: taxUnit.name,
+            email: email,
+            ssn: taxUnit.ssn,
+            paymentID: watchAllFields.paymentID,
+          },
+          accessToken,
+        )
           .then((success) => {
             if (success) {
               successToast("Registrert");
@@ -73,64 +77,17 @@ export const FacebookTaxWidget: React.FC<{ name: string | null; email: string | 
 
   return (
     <div className={styles.container}>
-      <InfoText>Fyll ut skjemaet for å få skattefradrag for dine Facebook-donasjoner</InfoText>
       <form onSubmit={handleSubmit(paneSubmitted)}>
         <InputFieldWrapper>
-          <label htmlFor="name">Ditt navn</label>
-          <TaxInput
-            name="name"
-            type="text"
-            defaultValue={name || ""}
-            ref={register({
-              required: true,
-              validate: (val: string) => {
-                const trimmed = val.trim();
-                return trimmed.length > 2;
-              },
-            })}
-          />
-          {nameError && <ErrorField text="Ugyldig navn" />}
+          <TaxUnitSelector
+            selected={taxUnit}
+            onChange={(taxUnit: TaxUnit) => setTaxUnit(taxUnit)}
+            onAddNew={() => setCreateTaxUnitModalOpen(true)}
+          ></TaxUnitSelector>
         </InputFieldWrapper>
 
         <InputFieldWrapper>
-          <label htmlFor="email">E-post</label>
-          <TaxInput
-            name="email"
-            type="text"
-            defaultValue={email || ""}
-            ref={register({
-              required: true,
-              validate: (val: string) => {
-                const trimmed = val.trim();
-                return Validate.isEmail(trimmed);
-              },
-            })}
-          />
-          {emailError && <ErrorField text="Ugyldig epost" />}
-        </InputFieldWrapper>
-
-        <InputFieldWrapper>
-          <label htmlFor="ssn">Fødselsnummer / Organisasjonsnummer</label>
-          <TaxInput
-            name="ssn"
-            type="number"
-            inputMode="numeric"
-            ref={register({
-              required: false,
-              validate: (val: string) => {
-                const trimmed = val.toString().trim();
-                if (Validate.isInt(trimmed)) {
-                  return trimmed.length === 9 || trimmed.length === 11;
-                }
-                return false;
-              },
-            })}
-          />
-          {ssnError && <ErrorField text="Må være 11 (f.nr.) eller 9 (org.nr.) siffer" />}
-        </InputFieldWrapper>
-
-        <InputFieldWrapper>
-          <label htmlFor="paymentID">Betalings-ID (facebook)</label>
+          <label htmlFor="paymentID">Betalings-ID fra Facebook</label>
           <TaxInput
             name="paymentID"
             type="number"
@@ -140,8 +97,14 @@ export const FacebookTaxWidget: React.FC<{ name: string | null; email: string | 
               maxLength: 16,
             })}
           />
-          {paymentIDError && <ErrorField text="Betalings-ID må være 16 siffer" />}
+          <span style={{ fontSize: "0.8rem", marginTop: "0.3rem" }}>
+            Betalings-ID må være 16 siffer
+          </span>
         </InputFieldWrapper>
+
+        <span style={{ display: "inline-block", fontSize: "0.8rem", marginBottom: "1rem" }}>
+          Kvittering sendes til {email}
+        </span>
 
         <SubmitButton
           onClick={() => {
@@ -153,6 +116,19 @@ export const FacebookTaxWidget: React.FC<{ name: string | null; email: string | 
           {loadingAnimation ? <LoadingButtonSpinner /> : "Registrer"}
         </SubmitButton>
       </form>
+      {createTaxUnitModalOpen && (
+        <TaxUnitCreateModal
+          open={createTaxUnitModalOpen}
+          onSuccess={function (unit: TaxUnit): void {
+            setTaxUnit(unit);
+            setCreateTaxUnitModalOpen(false);
+          }}
+          onFailure={function (): void {
+            setCreateTaxUnitModalOpen(false);
+          }}
+          onClose={() => setCreateTaxUnitModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

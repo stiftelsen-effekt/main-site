@@ -101,6 +101,7 @@
 @media only screen and (max-width: 1180px) {
   .datepicker-input-wrapper {
     position: static;
+    min-width: 100%;
   }
 
   .datepicker-container {

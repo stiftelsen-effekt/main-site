@@ -89,26 +89,38 @@ describe("Donations page", () => {
         })
         .as("getGrants");
 
+      cy.fixture("organizations").then((orgs) => {
+        cy.intercept("GET", "/organizations/active", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: orgs,
+          },
+        }).as("getOrganizations");
+      });
+
+      cy.fixture("referrals").then((referrals) => {
+        cy.intercept("GET", "/referrals/types", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: referrals,
+          },
+        }).as("getReferrals");
+      });
+
       cy.visit(`/profile/`);
 
       /**
        * Wait for initial data load
        */
-      cy.wait(
-        [
-          "@getDonor",
-          "@getDonations",
-          "@getAggregated",
-          "@getDistribution",
-          "@getGrants",
-          "@getNIEvaluations",
-          "@getGDEvaluations",
-          "@getAMFEvaluations",
-        ],
-        {
-          timeout: 30000,
-        },
-      );
+      cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getGrants"], {
+        timeout: 30000,
+      });
+
+      cy.scrollTo("0px", "500px");
+
+      cy.wait(["@getNIEvaluations", "@getGDEvaluations", "@getAMFEvaluations"]);
     });
   });
 
@@ -143,7 +155,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "22.04 2022");
+      .should("contain.text", "22.04");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
@@ -153,7 +165,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "Bank u/KID");
+      .should("contain.text", "Bank");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
@@ -202,6 +214,7 @@ describe("Donations page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Check that the impact list is visible

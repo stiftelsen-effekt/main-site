@@ -6,15 +6,15 @@ export const DonationsDistributionGraph: React.FC<{ sum: string; distribution: D
   sum,
   distribution,
 }) => {
-  const max = Math.max(...distribution.organizations.map((org) => parseFloat(org.share)));
-  distribution.organizations = distribution.organizations.sort(
+  const max = Math.max(...distribution.shares.map((org) => parseFloat(org.share)));
+  distribution.shares = distribution.shares.sort(
     (a, b) => parseFloat(b.share) - parseFloat(a.share),
   );
 
   return (
     <div className={style.wrapper} data-cy="donation-distribution-graph">
       <div className={style.bars}>
-        {distribution.organizations.map((dist) => (
+        {distribution.shares.map((dist) => (
           <div
             key={dist.name}
             className={style.bar}

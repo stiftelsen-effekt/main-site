@@ -48,7 +48,9 @@ export type VippsAgreement = {
 
 export type Distribution = {
   kid: string;
-  organizations: {
+  standardDistribution: boolean;
+  taxUnit: TaxUnit | null;
+  shares: {
     id: number;
     name: string;
     share: string;
@@ -97,7 +99,18 @@ export type FacebookDonationRegistration = {
   paymentID: string;
   name: string;
   ssn: string;
-  newsletter: boolean;
+};
+
+export type TaxUnit = {
+  id: number;
+  donorId: number;
+  ssn: string;
+  name: string;
+  numDonations: number;
+  sumDonations: number;
+  registered: string;
+  archived: string | null;
+  taxDeductions?: { year: number; sumDonations: number; taxDeduction: number }[];
 };
 
 export type ImpactCharity = {

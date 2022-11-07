@@ -15,15 +15,25 @@
 .menu li {
   display: inline-block;
   cursor: pointer;
-  width: 72px;
   text-align: center;
-  padding-bottom: 2px;
-  margin-right: 20px;
-  font-size: 24px;
+  padding-bottom: 0.1rem;
+  margin-right: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.menu li:focus-within {
+  outline: 2px solid var(--primary);
+}
+
+.menu li A:link {
+  border-bottom: none;
+}
+  
+.menu li A:hover {
+  border-bottom: none;
 }
 
 .menu-selected {
-  font-weight: 600;
   border-bottom: 1px solid var(--primary);
 }
 

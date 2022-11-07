@@ -1,0 +1,78 @@
+.menu {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.menu.menumobile {
+  display: none;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  margin-right: 1.5rem;
+  font-size: 1.2rem;
+  padding-bottom: 0.1rem;
+}
+
+.menu li button {
+  cursor: pointer;
+}
+
+.menu li button:focus {
+  outline: 2px solid var(--primary);
+}
+
+.menu li button:active {
+  outline: none;
+}
+
+.menu-selected {
+  border-bottom: 1px solid var(--primary);
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .menu {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .menu {
+    display: none;
+  }
+
+  .menu.menumobile {
+    display: block;
+    overflow-x: scroll;
+    white-space: nowrap;
+    background: var(--secondary);
+    width: 100vw;
+    border-bottom: 1px solid var(--primary);
+    padding-left: 5vw;
+    box-sizing: border-box;
+    padding-bottom: 0;
+    z-index: 10;
+    margin: 0;
+  }
+
+  .menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu-selected {
+    border-bottom-width: 2px;
+  }
+}

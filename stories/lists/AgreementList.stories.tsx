@@ -10,7 +10,9 @@ export default {
 const distributions = new Map<string, Distribution>();
 distributions.set("123456789", {
   kid: "123456789",
-  organizations: [
+  standardDistribution: false,
+  taxUnit: null,
+  shares: [
     {
       id: 1,
       name: "Against Malaria foundation",
