@@ -9,10 +9,6 @@ export const DonationList: React.FC<{
   year: string;
   firstOpen: boolean;
 }> = ({ donations, distributions, year, firstOpen }) => {
-  let taxEligableSum = donations
-    .filter((d) => d.metaOwnerId === META_OWNER.EAN || d.metaOwnerId === META_OWNER.EFFEKTANDEAN)
-    .reduce((acc, curr) => acc + parseFloat(curr.sum), 0);
-
   let taxDeductionText: JSX.Element | undefined = undefined;
 
   let taxDeductions = 0;
