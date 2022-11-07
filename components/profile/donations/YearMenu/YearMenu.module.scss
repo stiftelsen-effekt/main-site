@@ -21,6 +21,18 @@
   font-size: 1.2rem;
 }
 
+.menu li:focus-within {
+  outline: 2px solid var(--primary);
+}
+
+.menu li A:link {
+  border-bottom: none;
+}
+  
+.menu li A:hover {
+  border-bottom: none;
+}
+
 .menu-selected {
   border-bottom: 1px solid var(--primary);
 }

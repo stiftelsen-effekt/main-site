@@ -21,6 +21,18 @@
   padding-bottom: 0.1rem;
 }
 
+.menu li button {
+  cursor: pointer;
+}
+
+.menu li button:focus {
+  outline: 2px solid var(--primary);
+}
+
+.menu li button:active {
+  outline: none;
+}
+
 .menu-selected {
   border-bottom: 1px solid var(--primary);
 }

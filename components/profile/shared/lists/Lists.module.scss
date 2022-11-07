@@ -131,8 +131,9 @@ table tr .detailRowCell {
   color: var(--secondary);
   position: absolute;
   top: 0.5em;
-  right: 0;
+  right: -1px;
   border-radius: 8px 0px 8px 8px;
+  border: 1px solid var(--secondary);
 }
 
 .contextDropdownItem {

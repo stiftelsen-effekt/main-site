@@ -1,4 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import { useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
@@ -10,6 +10,7 @@ import styles from "./TaxUnitModal.module.scss";
 import { AlertCircle, Check } from "react-feather";
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { useTaxUnits } from "../../../../_queries";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -23,6 +24,13 @@ export const TaxUnitCreateModal: React.FC<{
   onClose: () => void;
 }> = ({ open, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+
+  const {
+    data: existingUnits,
+    loading: loadingUnits,
+    isValidating: validatingUnits,
+    error: errorLoadingUnits,
+  } = useTaxUnits(user as User, getAccessTokenSilently);
 
   const [name, setName] = useState("");
   const [ssn, setSsn] = useState("");
@@ -56,12 +64,18 @@ export const TaxUnitCreateModal: React.FC<{
     }
   };
 
+  if (loadingUnits) {
+    return <Spinner />;
+  }
+
+  const ssnIsExistingUnit = existingUnits.some((unit: TaxUnit) => unit.ssn === ssn);
   const isValid =
     name !== "" &&
     ssn !== "" &&
     (type === TaxUnitTypes.PERSON
       ? ssn.length === 11 && validateSsn(ssn)
-      : ssn.length === 9 && validateOrg(ssn));
+      : ssn.length === 9 && validateOrg(ssn)) &&
+    !ssnIsExistingUnit;
 
   return (
     <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
@@ -116,6 +130,7 @@ export const TaxUnitCreateModal: React.FC<{
               "Ugyldig organisasjonsnummer"}
             {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
             {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
+            {ssnIsExistingUnit && "Skatteenhet eksisterer allerede"}
             &nbsp;
           </span>
         </div>

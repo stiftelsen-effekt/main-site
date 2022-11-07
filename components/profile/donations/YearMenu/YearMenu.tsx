@@ -15,33 +15,46 @@ const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: b
       data-cy={mobile ? "" : "year-menu"}
     >
       <ul>
-        <Link
-          href={{
-            pathname: "/profile/",
-          }}
-          scroll={false}
-          passHref
+        <li
+          className={selected == "total" ? style["menu-selected"] : ""}
+          onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
+          onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
         >
-          <li className={selected == "total" ? style["menu-selected"] : ""}>
-            <span>Totalt</span>
-          </li>
-        </Link>
-        {years.map((year) => (
           <Link
-            key={year}
             href={{
               pathname: "/profile/",
-              query: {
-                year,
-              },
             }}
             scroll={false}
             passHref
           >
-            <li className={selected == year.toString() ? style["menu-selected"] : ""}>
-              <span>{year}</span>
-            </li>
+            <a onClick={(e) => e.currentTarget.blur()}>
+              <span>Totalt</span>
+            </a>
           </Link>
+        </li>
+
+        {years.map((year) => (
+          <li
+            className={selected == year.toString() ? style["menu-selected"] : ""}
+            onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
+            onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
+          >
+            <Link
+              key={year}
+              href={{
+                pathname: "/profile/",
+                query: {
+                  year,
+                },
+              }}
+              scroll={false}
+              passHref
+            >
+              <a onClick={(e) => e.currentTarget.blur()}>
+                <span>{year}</span>
+              </a>
+            </Link>
+          </li>
         ))}
       </ul>
     </div>

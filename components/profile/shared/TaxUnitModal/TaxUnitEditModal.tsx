@@ -1,4 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import { useCallback, useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
@@ -9,6 +9,8 @@ import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 
 import styles from "./TaxUnitModal.module.scss";
 import { AlertCircle, Check } from "react-feather";
+import { useTaxUnits } from "../../../../_queries";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -23,6 +25,13 @@ export const TaxUnitEditModal: React.FC<{
   onClose: () => void;
 }> = ({ open, initial, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+
+  const {
+    data: existingUnits,
+    loading: loadingUnits,
+    isValidating: validatingUnits,
+    error: errorLoadingUnits,
+  } = useTaxUnits(user as User, getAccessTokenSilently);
 
   const [name, setName] = useState(initial.name);
   const [ssn, setSsn] = useState(initial.ssn);
@@ -58,12 +67,21 @@ export const TaxUnitEditModal: React.FC<{
     }
   }, [name, ssn, user]);
 
+  if (loadingUnits) {
+    return <Spinner />;
+  }
+
+  const ssnIsExistingUnit = existingUnits
+    .filter((unit: TaxUnit) => unit != initial)
+    .some((unit: TaxUnit) => unit.ssn === ssn);
   const isValid =
     name !== "" &&
     ssn !== "" &&
     (type === TaxUnitTypes.PERSON
       ? ssn.length === 11 && validateSsn(ssn)
-      : ssn.length === 9 && validateOrg(ssn));
+      : ssn.length === 9 && validateOrg(ssn)) &&
+    !ssnIsExistingUnit;
+  !validatingUnits;
 
   return (
     <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
@@ -118,6 +136,7 @@ export const TaxUnitEditModal: React.FC<{
               "Ugyldig organisasjonsnummer"}
             {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
             {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
+            {ssnIsExistingUnit && "Skatteenhet eksisterer allerede"}
             &nbsp;
           </span>
         </div>
