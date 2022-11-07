@@ -13,12 +13,22 @@ export const DonationList: React.FC<{
     .filter((d) => d.metaOwnerId === META_OWNER.EAN || d.metaOwnerId === META_OWNER.EFFEKTANDEAN)
     .reduce((acc, curr) => acc + parseFloat(curr.sum), 0);
 
-  taxEligableSum = Math.min(taxEligableSum, year === "2022" ? 25000 : 50000);
-
   let taxDeductionText: JSX.Element | undefined = undefined;
 
-  if (taxEligableSum > 500 && parseInt(year) >= 2019) {
-    const taxDeductions = Math.round(taxEligableSum * 0.22);
+  let taxDeductions = 0;
+  distributions.forEach((el) => {
+    console.log(el);
+    if (typeof el.taxUnit !== "undefined") {
+      if (typeof el.taxUnit?.taxDeductions !== "undefined") {
+        el.taxUnit?.taxDeductions.forEach((deduction) => {
+          if (deduction.year === parseInt(year)) {
+            taxDeductions += deduction.taxDeduction;
+          }
+        });
+      }
+    }
+  });
+  if (taxDeductions > 0) {
     taxDeductionText = (
       <span>
         {`Dine donasjoner i ${year} ${
