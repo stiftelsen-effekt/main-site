@@ -70,6 +70,7 @@ describe("Navigation", () => {
     // Widget should be closed
     cy.get("[data-cy=widget-pane]").should("not.be.visible");
 
+    // Wait for animation to complete
     cy.wait(200);
 
     cy.get("[data-cy=gi-button]").click();
