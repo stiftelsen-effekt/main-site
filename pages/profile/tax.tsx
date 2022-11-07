@@ -62,7 +62,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
             <FacebookTab
               donor={donor}
               description={page.facebook_description[0]}
-              links={page.facebook_description_links.links}
+              links={page.facebook_description_links ? page.facebook_description_links.links : []}
             />
           )}
 
