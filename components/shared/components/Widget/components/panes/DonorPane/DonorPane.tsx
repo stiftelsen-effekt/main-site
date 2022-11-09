@@ -129,7 +129,7 @@ export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
 
   return (
     <Pane>
-      <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
+      <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="off">
         <PaneContainer>
           <div>
             <PaneTitle>
