@@ -129,7 +129,7 @@ export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
 
   return (
     <Pane>
-      <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="off">
+      <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
         <PaneContainer>
           <div>
             <PaneTitle>
@@ -239,6 +239,7 @@ export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
                         name="ssn"
                         type="text"
                         inputMode="numeric"
+                        autoComplete="off"
                         placeholder={text.tax_deduction_ssn_placeholder}
                         defaultValue={
                           // Hide SSN if anonymous donor
