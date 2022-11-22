@@ -167,11 +167,6 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: "/filantropi",
-        destination: "/kommer-snart",
-        permanent: false,
-      },
-      {
         source: "/onepager",
         destination:
           "https://drive.google.com/file/d/18qWoVYVhFpDilNssxbXfBQY_snSCxFkV/view?usp=sharing",
