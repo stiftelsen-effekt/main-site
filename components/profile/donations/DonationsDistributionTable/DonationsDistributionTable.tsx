@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import style from "./DonationsDistributionTable.module.scss";
@@ -13,6 +13,7 @@ import {
 } from "../../../../models";
 import { DistributionsRow } from "./DistributionsRow";
 import { mapNameToOrgAbbriv } from "../../shared/lists/donationList/DonationDetails";
+import { FauxDistributionRow } from "./FauxDistributionRow";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const multiFetcher = (...urls: string[]) => {
@@ -103,7 +104,7 @@ const DonationsDistributionTable: React.FC<{
   });
 
   if (!impactdata || impactvalidating || !evaluationdata || evaluationvalidating) {
-    return <div>Loading...</div>;
+    return <div className={style.distribution} data-cy="aggregated-distribution-table"></div>;
   }
 
   if (imacterror || evaluationerror) {

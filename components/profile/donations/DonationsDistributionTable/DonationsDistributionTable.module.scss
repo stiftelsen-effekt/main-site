@@ -1,5 +1,6 @@
 .distribution {
   max-width: 420px;
+  min-height: 250px;
   word-break: break-all;
 }
 
@@ -30,7 +31,44 @@
 
 .distribution table tr td {
   padding: 2px 0;
+  transform: translateY(-0.5rem);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
+
+.distribution table tr.rowloaded td {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.distribution table tr:nth-child(1) td {
+  transition-delay: 0ms;
+}
+.distribution table tr:nth-child(3) td {
+  transition-delay: 10ms;
+}
+.distribution table tr:nth-child(5) {
+  transition-delay: 20ms;
+}
+.distribution table tr:nth-child(7) td {
+  transition-delay: 30ms;
+}
+.distribution table tr:nth-child(9) td {
+  transition-delay: 40ms;
+}
+.distribution table tr:nth-child(11) td {
+  transition-delay: 50ms;
+}
+.distribution table tr:nth-child(13) td {
+  transition-delay: 60ms;
+}
+.distribution table tr:nth-child(15) td {
+  transition-delay: 70ms;
+}
+.distribution table tr:nth-child(17) td {
+  transition-delay: 80ms;
+}
+
 
 .distribution table tr td span, .distribution table tr td strong {
   vertical-align: middle;
@@ -44,6 +82,10 @@
   transition: transform 80ms;
   line-height: 165%;
   transform-origin: center center;
+}
+
+.distribution table .fauxrow td {
+  filter: blur(3px);
 }
 
 .distribution table tr td:nth-child(2) {

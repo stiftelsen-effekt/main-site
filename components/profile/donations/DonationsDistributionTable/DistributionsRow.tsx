@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import useSWR from "swr";
@@ -18,6 +18,17 @@ export const DistributionsRow: React.FC<{
   aggregatedimpact: AggregatedImpact;
 }> = ({ outputkey, aggregatedimpact }) => {
   const [expanded, setExpanded] = useState(false);
+  const [animate, setAnimate] = useState(true);
+
+  useLayoutEffect(() => {
+    update();
+  }, []);
+
+  const update = useCallback(() => {
+    setTimeout(() => {
+      setAnimate(false);
+    }, 100);
+  }, [setAnimate]);
 
   const impact = aggregatedimpact[outputkey];
 
@@ -32,9 +43,15 @@ export const DistributionsRow: React.FC<{
       .replace(/\./, ","),
   );
 
+  const animateClass = animate ? "" : style.rowloaded;
+
   return (
     <>
-      <tr key={outputkey} onClick={() => setExpanded(!expanded)} className={style.expandable}>
+      <tr
+        key={outputkey}
+        onClick={() => setExpanded(!expanded)}
+        className={[style.expandable, animateClass].join(" ")}
+      >
         <td>
           <strong>{formattedOutput}</strong>&nbsp;<span>{outputkey}</span>
         </td>
