@@ -33,7 +33,6 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
   const router = useRouter();
   const settings = data.result.settings[0];
   const { donor } = useContext(DonorContext);
-  const { setActivity } = useContext(ActivityContext);
 
   const {
     loading: aggregatedLoading,
@@ -160,7 +159,18 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         <DonationsChart distribution={distribution}></DonationsChart>
 
         <div className={style.details}>
-          <DonationsDistributionTable distribution={distribution}></DonationsDistributionTable>
+          <DonationsDistributionTable
+            donations={
+              isTotal
+                ? donations
+                : donations.filter(
+                    (donation: Donation) =>
+                      new Date(donation.timestamp).getFullYear() ===
+                      parseInt(router.query.year as string),
+                  )
+            }
+            distributionMap={distributionsMap}
+          ></DonationsDistributionTable>
           <DonationsTotals sum={sum} period={periodText} />
         </div>
         {isTotal && window.innerWidth < 1180 ? (

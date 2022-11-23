@@ -45,7 +45,7 @@ export const DonationDetails: React.FC<{
   );
 };
 
-const mapNameToOrgAbbriv = (name: string): string => {
+export const mapNameToOrgAbbriv = (name: string): string => {
   const map = {
     "Against Malaria Foundation": "AMF",
     "SCI Foundation": "SCI",

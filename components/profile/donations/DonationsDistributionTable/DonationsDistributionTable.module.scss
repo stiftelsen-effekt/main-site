@@ -1,3 +1,8 @@
+.distribution {
+  max-width: 420px;
+  word-break: break-all;
+}
+
 .distributionHeader {
   display: none;
 }
@@ -7,12 +12,52 @@
   max-width: 420px;
 }
 
-.distribution table tr td {
-  padding: 6px 0;
+.distribution table tr.expandable {
+  cursor: pointer;
+  user-select: none;
 }
 
-.distribution table tr td:last-child {
+.distribution table tr.expandable:hover td {
+  color: var(--secondary);
+  background-color: var(--primary);
+
+  svg,
+  svg {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+  }
+}
+
+.distribution table tr td {
+  padding: 2px 0;
+}
+
+.distribution table tr td span, .distribution table tr td strong {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.distribution table tr td.rowexpand svg {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 1rem;
+  transition: transform 80ms;
+  line-height: 165%;
+  transform-origin: center center;
+}
+
+.distribution table tr td:nth-child(2) {
   text-align: right;
+}
+
+.distribution table tr td .innertable {
+  padding-left: 1rem;
+  border-left: 1px solid var(--primary);
+  font-size: 0.9em;
+}
+
+.distribution table tr td .innertable table {
+  width: 100%;
 }
 
 @media only screen and (max-width: 1180px) {
