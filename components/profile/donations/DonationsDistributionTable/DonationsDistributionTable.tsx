@@ -303,7 +303,12 @@ const aggregateImpact = (
     const abbreviation = mapNameToOrgAbbriv(orgkey);
     const filteredEvaluations = filterAndOrderEvaluations(evaluations, abbreviation);
 
-    const outputtype = filteredEvaluations[0].intervention.short_description;
+    let outputtype = filteredEvaluations[0].intervention.short_description;
+
+    // Lowercase if output type is not A-vitamin
+    if (!outputtype.match(/[A-Z]\-/)) {
+      outputtype = outputtype.toLowerCase();
+    }
 
     if (!(outputtype in impact)) {
       impact[outputtype] = {
