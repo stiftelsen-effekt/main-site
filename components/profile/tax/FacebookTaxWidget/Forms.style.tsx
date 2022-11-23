@@ -91,7 +91,7 @@ export const LoadingButtonSpinner = styled(Spinner)`
   height: 20px;
   width: 20px;
   position: relative;
-  top: -6px;
+  top: -10px;
   left: -10px;
   transform-origin: center center;
   mix-blend-mode: difference;
@@ -100,6 +100,6 @@ export const LoadingButtonSpinner = styled(Spinner)`
 export const SubmitButton = styled(EffektButton)`
   min-width: 160px;
   max-width: 160px;
-
+  min-height: 37.5px
   align-self: flex-end;
 `;
