@@ -52,7 +52,7 @@ export const DistributionsRow: React.FC<{
             <div className={style.innertable}>
               <table>
                 {Object.keys(impact.constituents).map((key) => (
-                  <tr>
+                  <tr key={key}>
                     <td>{key}</td>
                     <td>{thousandize(impact.constituents[key])} kr</td>
                   </tr>
