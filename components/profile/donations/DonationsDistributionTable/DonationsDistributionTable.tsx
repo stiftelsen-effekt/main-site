@@ -2,19 +2,10 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import style from "./DonationsDistributionTable.module.scss";
-import { thousandize } from "../../../../util/formatting";
 import useSWR from "swr";
-import {
-  Distribution,
-  Donation,
-  GiveWellGrant,
-  ImpactEvaluation,
-  Organization,
-} from "../../../../models";
+import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../../../models";
 import { DistributionsRow } from "./DistributionsRow";
 import { mapNameToOrgAbbriv } from "../../shared/lists/donationList/DonationDetails";
-import { FauxDistributionRow } from "./FauxDistributionRow";
-import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -60,6 +51,16 @@ const DonationsDistributionTable: React.FC<{
 }> = ({ donations, distributionMap }) => {
   const [expanded, setExpanded] = useState(true);
   const [loadedClass, setLoadedClass] = useState<string>("");
+  const [lastImpactCount, setLastImpactCount] = useState<number>(0);
+  const [heightSet, setHeightSet] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (heightSet) {
+      setTimeout(() => {
+        setHeightSet(false);
+      }, 350);
+    }
+  }, [heightSet]);
 
   const {
     data: impactdata,
@@ -119,22 +120,15 @@ const DonationsDistributionTable: React.FC<{
     }
   }, [impactdata, evaluationdata]);
 
-  if (!impactdata || impactvalidating || !evaluationdata || evaluationvalidating) {
-    return (
-      <div className={style.distribution} data-cy="aggregated-distribution-table">
-        <div className={style.distributionHeader} onClick={() => setExpanded(!expanded)}>
-          <span>Estimert effekt</span>
-          <div className={style.loadingSpinner}>
-            <LoadingButtonSpinner />
-          </div>
-          <ChevronDown
-            size={"24"}
-            color={"black"}
-            className={expanded ? style.chevronRotated : ""}
-          />
-        </div>
-      </div>
-    );
+  let impact = {};
+  let mappedEvaluations = [];
+  if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
+    mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
+    impact = aggregateImpact(aggregated, mappedEvaluations);
+  } else {
+    if (!heightSet) {
+      setHeightSet(true);
+    }
   }
 
   if (imacterror || evaluationerror) {
@@ -146,9 +140,10 @@ const DonationsDistributionTable: React.FC<{
     );
   }
 
-  let mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
-
-  const impact = aggregateImpact(aggregated, mappedEvaluations);
+  if (lastImpactCount !== Object.keys(impact).length && Object.keys(impact).length > 0) {
+    setHeightSet(true);
+    setLastImpactCount(Object.keys(impact).length);
+  }
 
   return (
     <div
@@ -156,20 +151,36 @@ const DonationsDistributionTable: React.FC<{
       data-cy="aggregated-distribution-table"
     >
       <div className={style.distributionHeader} onClick={() => setExpanded(!expanded)}>
-        <span>Estimert effekt</span>
-        <div className={style.loadingSpinner}>
-          <LoadingButtonSpinner />
-        </div>
+        <span>
+          Estimert effekt
+          <div className={style.loadingSpinner}>
+            <LoadingButtonSpinner />
+          </div>
+        </span>
+
         <ChevronDown size={"24"} color={"black"} className={expanded ? style.chevronRotated : ""} />
       </div>
-      <AnimateHeight height={expanded ? "auto" : 0}>
+      <AnimateHeight
+        height={expanded ? (heightSet ? convertRemToPixels(lastImpactCount * 2) : "auto") : 0}
+      >
         <table cellSpacing={0} className={style.maintable}>
           <tbody>
-            {Object.keys(impact).map((key: string) =>
-              key.toLowerCase().indexOf("drift") === -1 ? (
-                <DistributionsRow aggregatedimpact={impact} outputkey={key}></DistributionsRow>
-              ) : null,
-            )}
+            {Object.keys(impact).length > 0
+              ? Object.keys(impact).map((key: string) =>
+                  key.toLowerCase().indexOf("drift") === -1 ? (
+                    <DistributionsRow
+                      aggregatedimpact={impact}
+                      outputkey={key}
+                      key={key}
+                    ></DistributionsRow>
+                  ) : null,
+                )
+              : new Array(lastImpactCount * 2).fill(0).map((_, i) => (
+                  <tr key={i}>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </AnimateHeight>
@@ -395,5 +406,9 @@ const aggregateImpact = (
 
   return impact;
 };
+
+function convertRemToPixels(rem: number) {
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
 
 export default DonationsDistributionTable;

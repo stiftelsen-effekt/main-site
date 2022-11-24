@@ -50,7 +50,7 @@ export const mapNameToOrgAbbriv = (name: string): string => {
     "Against Malaria Foundation": "AMF",
     "SCI Foundation": "SCI",
     GiveDirectly: "GD",
-    "GiveDirectly Borgerlønn": "GD",
+    "GiveDirectly Borgerlønn": "UBI",
     "Helen Keller International": "HKI",
     "New Incentives": "NI",
     "The End Fund": "END",

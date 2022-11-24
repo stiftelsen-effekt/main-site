@@ -51,12 +51,14 @@ export const DistributionsRow: React.FC<{
           <AnimateHeight duration={300} height={expanded ? "auto" : 0} animateOpacity>
             <div className={style.innertable}>
               <table cellSpacing={0}>
-                {Object.keys(impact.constituents).map((key) => (
-                  <tr key={key}>
-                    <td>{key}</td>
-                    <td>{thousandize(impact.constituents[key])} kr</td>
-                  </tr>
-                ))}
+                <tbody>
+                  {Object.keys(impact.constituents).map((key) => (
+                    <tr key={key}>
+                      <td>{key}</td>
+                      <td>{thousandize(impact.constituents[key])} kr</td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           </AnimateHeight>

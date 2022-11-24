@@ -1,6 +1,5 @@
 .distribution {
   max-width: 420px;
-  min-height: 300px;
   word-break: break-all;
 }
 
@@ -52,13 +51,14 @@
 }
 
 .distribution table tr td {
-  padding: 2px 0;
+  padding: 0;
 }
 
 .distribution table.maintable > tbody > tr:nth-child(2n+1) td {
   transform: translateY(-0.5rem);
   opacity: 0;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  height: 2rem;
 }
 
 .distribution.loaded table.maintable > tbody > tr td {
@@ -137,19 +137,23 @@
 }
 
 @media only screen and (max-width: 1180px) {
-  .distributionHeader {
+  .distribution .distributionHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 14px 0;
   }
 
-  .distributionHeader svg {
+  .distribution .distributionHeader  {
+    margin-bottom: 0;
+  }
+
+  .distribution .distributionHeader svg {
     filter: var(--primary-filter);
     transition: transform 200ms;
   }
 
-  .distributionHeader svg.chevronRotated {
+  .distribution .distributionHeader svg.chevronRotated {
     transform: rotate(180deg);
   }
 
