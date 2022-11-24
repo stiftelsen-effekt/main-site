@@ -14,6 +14,7 @@ import DonationsDistributionTable from "../../components/profile/donations/Donat
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
   useAggregatedDonations,
+  useAllOrganizations,
   useDistributions,
   useDonations,
   widgetQuery,
@@ -58,8 +59,16 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
     error: distributionsError,
   } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids));
 
-  const dataAvailable = donations && distributions && aggregatedDonations && donor;
-  const loading = aggregatedLoading || donationsLoading || distributionsLoading;
+  const {
+    data: organizations,
+    loading: organizationsloading,
+    isValidating: organizationsValidation,
+    error: organizationsError,
+  } = useAllOrganizations(user as User, getAccessTokenSilently);
+
+  const dataAvailable = donations && distributions && aggregatedDonations && donor && organizations;
+  const loading =
+    aggregatedLoading || donationsLoading || distributionsLoading || organizationsloading;
 
   if (!dataAvailable || loading)
     return (
@@ -76,7 +85,15 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
         <PageContent>
           <h3 className={style.header}>Donasjoner</h3>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: "10vh",
+              paddingBottom: "40vh",
+            }}
+          >
             <Spinner />
           </div>
         </PageContent>
@@ -156,7 +173,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
         <DonationYearMenu years={years} selected={(router.query.year as string) || "total"} />
 
-        <DonationsChart distribution={distribution}></DonationsChart>
+        <DonationsChart distribution={distribution} organizations={organizations}></DonationsChart>
 
         <div className={style.details}>
           <DonationsDistributionTable

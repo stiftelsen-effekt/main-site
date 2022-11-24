@@ -1,11 +1,33 @@
 .distribution {
   max-width: 420px;
-  min-height: 250px;
+  min-height: 300px;
   word-break: break-all;
 }
 
-.distributionHeader {
-  display: none;
+.distribution .distributionHeader {
+  margin-bottom: 0.5rem;
+}
+
+.distribution .distributionHeader span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 0;
+}
+
+.distribution .distributionHeader .loadingSpinner {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 1rem;
+  transition: all 200ms;
+  opacity: 1;
+  display: inline-flex;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+}
+
+.distribution.loaded .distributionHeader .loadingSpinner {
+  opacity: 0;
 }
 
 .distribution table {
@@ -31,44 +53,46 @@
 
 .distribution table tr td {
   padding: 2px 0;
+}
+
+.distribution table.maintable > tbody > tr:nth-child(2n+1) td {
   transform: translateY(-0.5rem);
   opacity: 0;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.distribution table tr.rowloaded td {
+.distribution.loaded table.maintable > tbody > tr td {
   transform: translateY(0);
   opacity: 1;
 }
 
-.distribution table tr:nth-child(1) td {
+.distribution table.maintable > tbody > tr:nth-child(1) td {
   transition-delay: 0ms;
 }
-.distribution table tr:nth-child(3) td {
+.distribution table.maintable > tbody > tr:nth-child(3) td {
   transition-delay: 10ms;
 }
-.distribution table tr:nth-child(5) {
+.distribution table.maintable > tbody > tr:nth-child(5) {
   transition-delay: 20ms;
 }
-.distribution table tr:nth-child(7) td {
+.distribution table.maintable > tbody > tr:nth-child(7) td {
   transition-delay: 30ms;
 }
-.distribution table tr:nth-child(9) td {
+.distribution table.maintable > tbody > tr:nth-child(9) td {
   transition-delay: 40ms;
 }
-.distribution table tr:nth-child(11) td {
+.distribution table.maintable > tbody > tr:nth-child(11) td {
   transition-delay: 50ms;
 }
-.distribution table tr:nth-child(13) td {
+.distribution table.maintable > tbody > tr:nth-child(13) td {
   transition-delay: 60ms;
 }
-.distribution table tr:nth-child(15) td {
+.distribution table.maintable > tbody > tr:nth-child(15) td {
   transition-delay: 70ms;
 }
-.distribution table tr:nth-child(17) td {
+.distribution table.maintable > tbody > tr:nth-child(17) td {
   transition-delay: 80ms;
 }
-
 
 .distribution table tr td span, .distribution table tr td strong {
   vertical-align: middle;

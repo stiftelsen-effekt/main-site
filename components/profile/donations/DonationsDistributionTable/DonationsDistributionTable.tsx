@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import style from "./DonationsDistributionTable.module.scss";
@@ -14,6 +14,8 @@ import {
 import { DistributionsRow } from "./DistributionsRow";
 import { mapNameToOrgAbbriv } from "../../shared/lists/donationList/DonationDetails";
 import { FauxDistributionRow } from "./FauxDistributionRow";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const multiFetcher = (...urls: string[]) => {
@@ -57,6 +59,7 @@ const DonationsDistributionTable: React.FC<{
   distributionMap: Map<string, Distribution>;
 }> = ({ donations, distributionMap }) => {
   const [expanded, setExpanded] = useState(true);
+  const [loadedClass, setLoadedClass] = useState<string>("");
 
   const {
     data: impactdata,
@@ -103,8 +106,35 @@ const DonationsDistributionTable: React.FC<{
     revalidateOnReconnect: false,
   });
 
+  useLayoutEffect(() => {
+    if (
+      typeof evaluationdata !== "undefined" &&
+      typeof impactdata !== "undefined" &&
+      !evaluationvalidating &&
+      !impactvalidating
+    ) {
+      setTimeout(() => setLoadedClass(style.loaded), 50);
+    } else {
+      setTimeout(() => setLoadedClass(""));
+    }
+  }, [impactdata, evaluationdata]);
+
   if (!impactdata || impactvalidating || !evaluationdata || evaluationvalidating) {
-    return <div className={style.distribution} data-cy="aggregated-distribution-table"></div>;
+    return (
+      <div className={style.distribution} data-cy="aggregated-distribution-table">
+        <div className={style.distributionHeader} onClick={() => setExpanded(!expanded)}>
+          <span>Estimert effekt</span>
+          <div className={style.loadingSpinner}>
+            <LoadingButtonSpinner />
+          </div>
+          <ChevronDown
+            size={"24"}
+            color={"black"}
+            className={expanded ? style.chevronRotated : ""}
+          />
+        </div>
+      </div>
+    );
   }
 
   if (imacterror || evaluationerror) {
@@ -121,13 +151,19 @@ const DonationsDistributionTable: React.FC<{
   const impact = aggregateImpact(aggregated, mappedEvaluations);
 
   return (
-    <div className={style.distribution} data-cy="aggregated-distribution-table">
+    <div
+      className={[style.distribution, loadedClass].join(" ")}
+      data-cy="aggregated-distribution-table"
+    >
       <div className={style.distributionHeader} onClick={() => setExpanded(!expanded)}>
-        <span>Fordeling</span>
+        <span>Estimert effekt</span>
+        <div className={style.loadingSpinner}>
+          <LoadingButtonSpinner />
+        </div>
         <ChevronDown size={"24"} color={"black"} className={expanded ? style.chevronRotated : ""} />
       </div>
       <AnimateHeight height={expanded ? "auto" : 0}>
-        <table cellSpacing={0}>
+        <table cellSpacing={0} className={style.maintable}>
           <tbody>
             {Object.keys(impact).map((key: string) =>
               key.toLowerCase().indexOf("drift") === -1 ? (
