@@ -180,15 +180,17 @@ const DonationsDistributionTable: React.FC<{
         >
           <table cellSpacing={0} className={style.maintable}>
             <tbody>
-              {Object.keys(impact).map((key: string) =>
-                key.toLowerCase().indexOf("drift") === -1 ? (
-                  <DistributionsRow
-                    aggregatedimpact={impact}
-                    outputkey={key}
-                    key={key}
-                  ></DistributionsRow>
-                ) : null,
-              )}
+              {Object.keys(impact)
+                .sort((a: string, b: string) => (b < a ? 1 : -1))
+                .map((key: string) =>
+                  key.toLowerCase().indexOf("drift") === -1 ? (
+                    <DistributionsRow
+                      aggregatedimpact={impact}
+                      outputkey={key}
+                      key={key}
+                    ></DistributionsRow>
+                  ) : null,
+                )}
             </tbody>
           </table>
         </div>
