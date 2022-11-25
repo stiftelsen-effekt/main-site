@@ -109,10 +109,6 @@
   transform-origin: center center;
 }
 
-.distribution table .fauxrow td {
-  filter: blur(3px);
-}
-
 .distribution table tr td:nth-child(2) {
   text-align: right;
 }
@@ -126,15 +122,25 @@
 
 .distribution table tr td .innertable table {
   width: 100%;
-  
 }
 
 .distribution table tr td .innertable table tr:first-child td {
   padding-top: 0;
+  
 }
 
 .distribution table tr td .innertable table tr:last-child td {
   padding-bottom: 0;
+
+}
+
+.distribution table tr td .innertable table tr td:first-child {
+  word-break: keep-all;
+}
+
+.distribution table tr td .innertable table tr td:last-child {
+  word-break: keep-all;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -156,6 +162,17 @@
 
   .distribution .distributionHeader svg.chevronRotated {
     transform: rotate(180deg);
+  }
+
+  .distribution table tr.expandable:hover td {
+    color: var(--primary);
+    background-color: var(--secondary);
+  
+    svg,
+    svg {
+      -webkit-filter: none;
+      filter: none;
+    }
   }
 
   .distribution {
