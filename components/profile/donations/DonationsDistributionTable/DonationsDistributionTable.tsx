@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import style from "./DonationsDistributionTable.module.scss";
@@ -54,6 +54,7 @@ const DonationsDistributionTable: React.FC<{
   const [lastimpactCount, setLastimpactCount] = useState<number>(0);
   const [currentHeight, setCurrentHeight] = useState<number | "auto">(0);
   const [currentTimeoutId, setCurrentTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const {
     data: impactdata,
@@ -137,8 +138,9 @@ const DonationsDistributionTable: React.FC<{
   }
 
   if (currentImpactCount != lastimpactCount || loading) {
-    if (currentHeight != convertRemToPixels(lastimpactCount * 2 + (lastimpactCount > 0 ? 1 : 0))) {
-      setCurrentHeight(convertRemToPixels(lastimpactCount * 2 + (lastimpactCount > 0 ? 1 : 0)));
+    const height = tableContainerRef.current?.clientHeight;
+    if (currentHeight != height && typeof height !== "undefined") {
+      setCurrentHeight(height);
     }
   } else {
     if (currentHeight !== "auto") {
@@ -170,6 +172,7 @@ const DonationsDistributionTable: React.FC<{
       </div>
       <AnimateHeight height={expanded ? currentHeight : 0}>
         <div
+          ref={tableContainerRef}
           style={{
             height: expanded ? currentHeight : "auto",
             overflow: "hidden",
