@@ -32,6 +32,7 @@
 .distribution table {
   width: 100%;
   max-width: 420px;
+  margin-bottom: 1rem;
 }
 
 .distribution table tr.expandable {
@@ -163,7 +164,6 @@
   }
 
   .distribution table {
-    margin-bottom: 16px;
     max-width: initial;
   }
 }

@@ -51,16 +51,9 @@ const DonationsDistributionTable: React.FC<{
 }> = ({ donations, distributionMap }) => {
   const [expanded, setExpanded] = useState(true);
   const [loadedClass, setLoadedClass] = useState<string>("");
-  const [lastImpactCount, setLastImpactCount] = useState<number>(0);
-  const [heightSet, setHeightSet] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (heightSet) {
-      setTimeout(() => {
-        setHeightSet(false);
-      }, 350);
-    }
-  }, [heightSet]);
+  const [lastimpactCount, setLastimpactCount] = useState<number>(0);
+  const [currentHeight, setCurrentHeight] = useState<number | "auto">(0);
+  const [currentTimeoutId, setCurrentTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const {
     data: impactdata,
@@ -121,14 +114,12 @@ const DonationsDistributionTable: React.FC<{
   }, [impactdata, evaluationdata]);
 
   let impact = {};
+  let loading = true;
   let mappedEvaluations = [];
   if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
     mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
     impact = aggregateImpact(aggregated, mappedEvaluations);
-  } else {
-    if (!heightSet) {
-      setHeightSet(true);
-    }
+    loading = false;
   }
 
   if (imacterror || evaluationerror) {
@@ -140,9 +131,26 @@ const DonationsDistributionTable: React.FC<{
     );
   }
 
-  if (lastImpactCount !== Object.keys(impact).length && Object.keys(impact).length > 0) {
-    setHeightSet(true);
-    setLastImpactCount(Object.keys(impact).length);
+  const currentImpactCount = Object.keys(impact).length;
+  if (!loading && lastimpactCount !== currentImpactCount) {
+    setLastimpactCount(currentImpactCount);
+  }
+
+  if (currentImpactCount != lastimpactCount || loading) {
+    if (currentHeight != convertRemToPixels(lastimpactCount * 2 + (lastimpactCount > 0 ? 1 : 0))) {
+      setCurrentHeight(convertRemToPixels(lastimpactCount * 2 + (lastimpactCount > 0 ? 1 : 0)));
+    }
+  } else {
+    if (currentHeight !== "auto") {
+      if (currentTimeoutId === null) {
+        const timeoutId: NodeJS.Timeout = setTimeout(() => {
+          setCurrentHeight("auto");
+          clearTimeout(timeoutId);
+          setCurrentTimeoutId(null);
+        }, 100);
+        setCurrentTimeoutId(timeoutId);
+      }
+    }
   }
 
   return (
@@ -160,29 +168,27 @@ const DonationsDistributionTable: React.FC<{
 
         <ChevronDown size={"24"} color={"black"} className={expanded ? style.chevronRotated : ""} />
       </div>
-      <AnimateHeight
-        height={expanded ? (heightSet ? convertRemToPixels(lastImpactCount * 2) : "auto") : 0}
-      >
-        <table cellSpacing={0} className={style.maintable}>
-          <tbody>
-            {Object.keys(impact).length > 0
-              ? Object.keys(impact).map((key: string) =>
-                  key.toLowerCase().indexOf("drift") === -1 ? (
-                    <DistributionsRow
-                      aggregatedimpact={impact}
-                      outputkey={key}
-                      key={key}
-                    ></DistributionsRow>
-                  ) : null,
-                )
-              : new Array(lastImpactCount * 2).fill(0).map((_, i) => (
-                  <tr key={i}>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
+      <AnimateHeight height={expanded ? currentHeight : 0}>
+        <div
+          style={{
+            height: expanded ? currentHeight : 0,
+            overflow: "hidden",
+          }}
+        >
+          <table cellSpacing={0} className={style.maintable}>
+            <tbody>
+              {Object.keys(impact).map((key: string) =>
+                key.toLowerCase().indexOf("drift") === -1 ? (
+                  <DistributionsRow
+                    aggregatedimpact={impact}
+                    outputkey={key}
+                    key={key}
+                  ></DistributionsRow>
+                ) : null,
+              )}
+            </tbody>
+          </table>
+        </div>
       </AnimateHeight>
     </div>
   );
