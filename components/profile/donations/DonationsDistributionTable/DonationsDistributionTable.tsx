@@ -171,7 +171,7 @@ const DonationsDistributionTable: React.FC<{
       <AnimateHeight height={expanded ? currentHeight : 0}>
         <div
           style={{
-            height: expanded ? currentHeight : 0,
+            height: expanded ? currentHeight : "auto",
             overflow: "hidden",
           }}
         >
