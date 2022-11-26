@@ -50,6 +50,58 @@ describe("Donations page", () => {
       })
       .as("getDistribution");
 
+    cy.fixture("organizations").then((orgs) => {
+      cy.intercept("GET", "/organizations/active", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: orgs,
+        },
+      }).as("getOrganizations");
+    });
+
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
+
+    cy.visit(`/profile/`);
+
+    /**
+     * Wait for initial data load
+     */
+    cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution"], {
+      timeout: 30000,
+    });
+  });
+
+  beforeEach(() => {
+    cy.fixture(`evaluations/evaluations.json`)
+      .then((evaluations) => {
+        cy.intercept(
+          "https://impact.gieffektivt.no/api/evaluations?currency=NOK&language=NO&donation_year=*&donation_month=*&charity_abbreviation=*",
+          (req) => {
+            const [, year, month, abbriv] = req.url.match(
+              /.*year=(\d{4}).*month=(\d{1,2}).*abbreviation=(.*)/,
+            );
+            const filename = `${year}-${month}-${abbriv}`;
+            console.log(filename);
+            console.log(evaluations[filename]);
+            if (evaluations[filename]) {
+              req.reply(evaluations[filename]);
+            } else {
+              req.reply({ evaluations: [] });
+            }
+          },
+        ).as("getEvaluations");
+      })
+      .as("evaluationFixture");
+
     cy.fixture("evaluations").then((evaluations) => {
       cy.intercept(
         "GET",
@@ -75,53 +127,21 @@ describe("Donations page", () => {
           body: evaluations.NI,
         },
       ).as("getNIEvaluations");
-
-      cy.fixture("grants")
-        .then((grants) => {
-          cy.intercept(
-            "GET",
-            "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
-            {
-              statusCode: 200,
-              body: grants,
-            },
-          );
-        })
-        .as("getGrants");
-
-      cy.fixture("organizations").then((orgs) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: orgs,
-          },
-        }).as("getOrganizations");
-      });
-
-      cy.fixture("referrals").then((referrals) => {
-        cy.intercept("GET", "/referrals/types", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: referrals,
-          },
-        }).as("getReferrals");
-      });
-
-      cy.visit(`/profile/`);
-
-      /**
-       * Wait for initial data load
-       */
-      cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getGrants"], {
-        timeout: 30000,
-      });
-
-      cy.scrollTo("0px", "500px");
-
-      cy.wait(["@getNIEvaluations", "@getGDEvaluations", "@getAMFEvaluations"]);
     });
+
+    cy.fixture("grants")
+      .then((grants) => {
+        cy.intercept(
+          "GET",
+          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
+          {
+            statusCode: 200,
+            body: grants,
+          },
+        );
+      })
+      .as("getGrants");
+    cy.wait(3000);
   });
 
   it("Should display a menu for selection donation year", () => {
@@ -173,20 +193,21 @@ describe("Donations page", () => {
       .should("contain.text", "32245953");
   });
 
-  it("Should display a total distribution table", () => {
-    cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 9);
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+  it("Should display a donation aggregate impact table", () => {
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 6);
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "Against Malaria Foundation");
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+      .should("contain.text", "307");
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "623 060 kr");
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+      .should("contain.text", "A-vitamintilskudd");
+
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "The End Fund");
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+      .should("contain.text", "12");
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "5 kr");
+      .should("contain.text", "vaksinasjoner");
   });
 
   it("Should display a donation sum field", () => {
@@ -197,7 +218,7 @@ describe("Donations page", () => {
   it("Should be possible to filter by year", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
 
-    cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 4);
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 5);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
   });

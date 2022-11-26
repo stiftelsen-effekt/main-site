@@ -90,6 +90,7 @@ const DonationsDistributionTable: React.FC<{
       );
     }
   }
+  console.log(urls);
 
   const {
     data: evaluationdata,
@@ -126,8 +127,8 @@ const DonationsDistributionTable: React.FC<{
   if (imacterror || evaluationerror) {
     return (
       <div>
-        {imacterror}
-        {evaluationerror}
+        {JSON.stringify(imacterror)}
+        {JSON.stringify(evaluationerror)}
       </div>
     );
   }
@@ -178,7 +179,11 @@ const DonationsDistributionTable: React.FC<{
             overflow: "hidden",
           }}
         >
-          <table cellSpacing={0} className={style.maintable}>
+          <table
+            cellSpacing={0}
+            className={style.maintable}
+            data-cy="aggregated-distribution-table-main"
+          >
             <tbody>
               {Object.keys(impact)
                 .sort((a: string, b: string) => (b < a ? 1 : -1))
@@ -362,6 +367,10 @@ const aggregateImpact = (
     const abbreviation = mapNameToOrgAbbriv(orgkey);
     const filteredEvaluations = filterAndOrderEvaluations(evaluations, abbreviation);
 
+    if (filteredEvaluations.length === 0) {
+      console.error("No evaluations found for", orgkey);
+      return;
+    }
     let outputtype = filteredEvaluations[0].intervention.short_description;
 
     // Lowercase if output type is not A-vitamin

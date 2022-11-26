@@ -34,7 +34,12 @@ export const DistributionsRow: React.FC<{
 
   return (
     <>
-      <tr key={outputkey} onClick={() => setExpanded(!expanded)} className={style.expandable}>
+      <tr
+        key={outputkey}
+        onClick={() => setExpanded(!expanded)}
+        className={style.expandable}
+        data-cy="donation-aggregate-impact-distribution-row"
+      >
         <td>
           <strong>{formattedOutput}</strong>&nbsp;<span>{outputkey}</span>
         </td>
@@ -46,7 +51,10 @@ export const DistributionsRow: React.FC<{
           />
         </td>
       </tr>
-      <tr key={`${outputkey}-expander`}>
+      <tr
+        key={`${outputkey}-expander`}
+        data-cy="donation-aggregate-impact-distribution-row-details"
+      >
         <td colSpan={2}>
           <AnimateHeight duration={300} height={expanded ? "auto" : 0} animateOpacity>
             <div className={style.innertable}>
