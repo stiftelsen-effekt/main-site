@@ -54,9 +54,9 @@ const DonationsDistributionTable: React.FC<{
       const year = key.split("-")[0];
       const month = key.split("-")[1];
       urls.push(
-        `https://impact.gieffektivt.no/api/evaluations?currency=NOK&language=NO&donation_year=${year}&donation_month=${
+        `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${abbriv}&currency=NOK&language=NO&donation_year=${year}&donation_month=${
           parseInt(month) + 1
-        }&charity_abbreviation=${abbriv}`,
+        }`,
       );
     }
   }
