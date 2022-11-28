@@ -326,8 +326,8 @@ const getRelevantEvaluation = (evaluations: ImpactEvaluation[], year: string, mo
 const formatOutputType = (outputtype: string) => {
   let formatted = outputtype;
   // Lowercase if output type is not A-vitamin (or any other vitamin)
-  if (!outputtype.match(/[A-Z]\-/)) {
-    outputtype = outputtype.toLowerCase();
+  if (!formatted.match(/[A-Z]\-/)) {
+    formatted = formatted.toLowerCase();
   }
   return formatted;
 };
