@@ -204,7 +204,7 @@ describe("Donations page", () => {
 
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "12");
+      .should("contain.text", "16");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
       .should("contain.text", "vaksinasjoner");
