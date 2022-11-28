@@ -90,7 +90,6 @@ const DonationsDistributionTable: React.FC<{
       );
     }
   }
-  console.log(urls);
 
   const {
     data: evaluationdata,
