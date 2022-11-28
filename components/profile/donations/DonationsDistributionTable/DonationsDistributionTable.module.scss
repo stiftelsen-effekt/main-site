@@ -108,6 +108,11 @@
   transform-origin: center center;
 }
 
+.distribution table tr td.drift {
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
 .distribution table tr td:nth-child(2) {
   text-align: right;
 }

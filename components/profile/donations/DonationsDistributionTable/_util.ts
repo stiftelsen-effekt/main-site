@@ -194,7 +194,15 @@ export const aggregateImpact = (
   // and all the periods for the organization
   // e.g. "Deworming Charity" and it's periods "2021-1", "2021-2", "2021-3", "2021-4", "2020-1"
   Object.keys(aggregatedorganizations).forEach((orgkey) => {
-    if (orgkey.toLowerCase().indexOf("drift") !== -1) return;
+    if (orgkey.toLowerCase().indexOf("drift") !== -1) {
+      if (!(orgkey in impact)) {
+        impact[orgkey] = {
+          outputs: aggregatedorganizations[orgkey].sum,
+          constituents: {},
+        };
+      }
+      return;
+    }
 
     const abbreviation = mapNameToOrgAbbriv(orgkey);
     const filteredEvaluations = filterAndOrderEvaluations(evaluations, abbreviation);
@@ -267,6 +275,8 @@ export const aggregateImpact = (
       }
     });
   });
+
+  console.log(impact);
 
   return impact;
 };

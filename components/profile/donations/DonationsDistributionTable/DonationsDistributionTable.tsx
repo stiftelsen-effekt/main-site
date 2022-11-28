@@ -156,16 +156,24 @@ const DonationsDistributionTable: React.FC<{
           >
             <tbody>
               {Object.keys(impact)
+                .filter((key) => key.toLowerCase().indexOf("drift") === -1)
                 .sort((a: string, b: string) => (b < a ? 1 : -1))
-                .map((key: string) =>
-                  key.toLowerCase().indexOf("drift") === -1 ? (
-                    <DistributionsRow
-                      aggregatedimpact={impact}
-                      outputkey={key}
-                      key={key}
-                    ></DistributionsRow>
-                  ) : null,
-                )}
+                .map((key: string) => (
+                  <DistributionsRow
+                    aggregatedimpact={impact}
+                    outputkey={key}
+                    key={key}
+                  ></DistributionsRow>
+                ))}
+              {Object.keys(impact)
+                .filter((key) => key.toLowerCase().indexOf("drift") !== -1)
+                .map((key: string) => (
+                  <DistributionsRow
+                    aggregatedimpact={impact}
+                    outputkey={key}
+                    key={key}
+                  ></DistributionsRow>
+                ))}
             </tbody>
           </table>
         </div>

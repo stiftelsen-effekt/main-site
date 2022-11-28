@@ -29,6 +29,17 @@ export const DistributionsRow: React.FC<{
       .replace(/\./, ","),
   );
 
+  if (outputkey.toLowerCase().indexOf("drift") !== -1) {
+    return (
+      <tr key={outputkey}>
+        <td colSpan={3} className={style.drift}>
+          <span className={style.driftText}>{outputkey}</span> |{" "}
+          <strong>{formattedOutput} kr</strong>
+        </td>
+      </tr>
+    );
+  }
+
   return (
     <>
       <tr
