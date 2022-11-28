@@ -84,10 +84,10 @@ describe("Donations page", () => {
     cy.fixture(`evaluations/evaluations.json`)
       .then((evaluations) => {
         cy.intercept(
-          "https://impact.gieffektivt.no/api/evaluations?currency=NOK&language=NO&donation_year=*&donation_month=*&charity_abbreviation=*",
+          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=NOK&language=NO&donation_year=*&donation_month=*",
           (req) => {
-            const [, year, month, abbriv] = req.url.match(
-              /.*year=(\d{4}).*month=(\d{1,2}).*abbreviation=(.*)/,
+            const [, abbriv, year, month] = req.url.match(
+              /.*abbreviation=(.*)\&currency.*year=(\d{4}).*month=(\d{1,2})/,
             );
             const filename = `${year}-${month}-${abbriv}`;
             console.log(filename);
@@ -101,33 +101,6 @@ describe("Donations page", () => {
         ).as("getEvaluations");
       })
       .as("evaluationFixture");
-
-    cy.fixture("evaluations").then((evaluations) => {
-      cy.intercept(
-        "GET",
-        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=AMF&currency=NOK&language=NO&*",
-        {
-          statusCode: 200,
-          body: evaluations.AMF,
-        },
-      ).as("getAMFEvaluations");
-      cy.intercept(
-        "GET",
-        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=GD&currency=NOK&language=NO&*",
-        {
-          statusCode: 200,
-          body: evaluations.GD,
-        },
-      ).as("getGDEvaluations");
-      cy.intercept(
-        "GET",
-        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=NI&currency=NOK&language=NO&*",
-        {
-          statusCode: 200,
-          body: evaluations.NI,
-        },
-      ).as("getNIEvaluations");
-    });
 
     cy.fixture("grants")
       .then((grants) => {
@@ -204,7 +177,7 @@ describe("Donations page", () => {
 
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "16");
+      .should("contain.text", "12");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
       .should("contain.text", "vaksinasjoner");
@@ -308,7 +281,7 @@ describe("Donations page", () => {
       .eq(1)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "19,0");
+      .should("contain.text", "20,0");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -319,7 +292,7 @@ describe("Donations page", () => {
       .eq(2)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "0,3");
+      .should("contain.text", "0,2");
   });
 
   it("Should show empty placeholder for years with no donations", () => {
