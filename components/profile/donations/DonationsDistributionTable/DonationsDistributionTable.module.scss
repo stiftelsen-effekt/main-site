@@ -1,5 +1,5 @@
 .distribution {
-  max-width: 420px;
+  max-width: 28rem;
   word-break: break-all;
 }
 
@@ -31,7 +31,6 @@
 
 .distribution table {
   width: 100%;
-  max-width: 420px;
   margin-bottom: 1rem;
 }
 
@@ -144,6 +143,10 @@
 }
 
 @media only screen and (max-width: 1180px) {
+  .distribution {
+    max-width: none;
+  }
+
   .distribution .distributionHeader {
     display: flex;
     flex-direction: row;
