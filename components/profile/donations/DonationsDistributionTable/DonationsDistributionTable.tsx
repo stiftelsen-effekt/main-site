@@ -73,10 +73,11 @@ const DonationsDistributionTable: React.FC<{
 
   useLayoutEffect(() => {
     if (
-      typeof evaluationdata !== "undefined" &&
-      typeof impactdata !== "undefined" &&
-      !evaluationvalidating &&
-      !impactvalidating
+      (typeof evaluationdata !== "undefined" &&
+        typeof impactdata !== "undefined" &&
+        !evaluationvalidating &&
+        !impactvalidating) ||
+      donations.length == 0
     ) {
       setTimeout(() => setLoadedClass(style.loaded), 50);
     } else {
