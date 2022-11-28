@@ -2,7 +2,7 @@ import React from "react";
 import style from "./DonationDetails.module.scss";
 import { Distribution, Donation } from "../../../../../models";
 import DonationImpact from "../../../donations/DonationImpact/DonationImpact";
-import { Dictionary } from "cypress/types/lodash";
+import { mapNameToOrgAbbriv } from "../../../../../util/mappings";
 
 export const DonationDetails: React.FC<{
   sum: string;
@@ -43,24 +43,4 @@ export const DonationDetails: React.FC<{
       </div>
     </div>
   );
-};
-
-export const mapNameToOrgAbbriv = (name: string): string => {
-  const map = {
-    "Against Malaria Foundation": "AMF",
-    "SCI Foundation": "SCI",
-    GiveDirectly: "GD",
-    "GiveDirectly Borgerlønn": "UBI",
-    "Helen Keller International": "HKI",
-    "New Incentives": "NI",
-    "The End Fund": "END",
-    "Deworm the World": "DTW",
-    Sightsavers: "SS",
-    Drift: "Drift",
-    "GiveWell Top Charities Fund": "GiveWell",
-    "Malaria Consortium": "MC",
-    "Project Healthy Children": "PHC",
-    "Drift av Gi Effektivt": "Drift",
-  };
-  return (map as Dictionary<string>)[name];
 };

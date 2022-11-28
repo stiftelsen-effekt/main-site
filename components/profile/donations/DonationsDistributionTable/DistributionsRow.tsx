@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
-import useSWR from "swr";
-import { ImpactEvaluation } from "../../../../models";
 import { thousandize, thousandizeString } from "../../../../util/formatting";
-import { mapNameToOrgAbbriv } from "../../shared/lists/donationList/DonationDetails";
-import { AggregatedImpact, OrganizationsAggregatedSums } from "./DonationsDistributionTable";
 import style from "./DonationsDistributionTable.module.scss";
+import { AggregatedImpact } from "./_util";
 
 const multiFetcher = (...urls: string[]) => {
   const f = (u: string) => fetch(u).then((r) => r.json());
