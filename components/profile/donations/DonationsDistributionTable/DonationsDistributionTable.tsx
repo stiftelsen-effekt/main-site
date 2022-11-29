@@ -28,7 +28,7 @@ const DonationsDistributionTable: React.FC<{
 
   const {
     data: impactdata,
-    error: imacterror,
+    error: impacterror,
     isValidating: impactvalidating,
   } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
     `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO`,
@@ -94,10 +94,10 @@ const DonationsDistributionTable: React.FC<{
     loading = false;
   }
 
-  if (imacterror || evaluationerror) {
+  if (impacterror || evaluationerror) {
     return (
       <div>
-        {JSON.stringify(imacterror)}
+        {JSON.stringify(impacterror)}
         {JSON.stringify(evaluationerror)}
       </div>
     );
