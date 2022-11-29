@@ -178,6 +178,21 @@ export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently)
   };
 };
 
+export const useAllOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(`/organizations/all/`, (url) =>
+    fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     `/donors/${user["https://gieffektivt.no/user-id"]}/`,

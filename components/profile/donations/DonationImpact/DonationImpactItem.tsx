@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./DonationImpactItem.module.scss";
 import { thousandize, thousandizeString } from "../../../../util/formatting";
 import useSWR from "swr";
@@ -26,18 +26,25 @@ export const DonationImpactItem: React.FC<{
       revalidateOnReconnect: false,
     },
   );
-  const [showDetails, setShowDetails] = React.useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [requiredPrecision, setRequiredPrecision] = useState(0);
+
+  useEffect(() => {
+    if (precision < requiredPrecision) {
+      signalRequiredPrecision(requiredPrecision);
+    }
+  }, [precision, requiredPrecision]);
 
   if (!data || isValidating) {
     return (
-      <tr>
+      <tr key={`loading`}>
         <td>Loading...</td>
       </tr>
     );
   }
   if (error) {
     return (
-      <tr>
+      <tr key={`error`}>
         <td>{error}</td>
       </tr>
     );
@@ -52,7 +59,7 @@ export const DonationImpactItem: React.FC<{
   if (!relevantEvaluation) {
     return (
       <>
-        <tr className={style.overview} data-cy="donation-impact-list-item-overview" key={``}>
+        <tr className={style.overview} data-cy="donation-impact-list-item-overview">
           <td>
             <span className={style.impactOutput} data-cy="donation-impact-list-item-output">
               {thousandize(sumToOrg)}
@@ -115,13 +122,12 @@ export const DonationImpactItem: React.FC<{
 
   const output = sumToOrg / relevantEvaluation.converted_cost_per_output;
 
-  let requiredPrecision = 0;
-  while (parseFloat(output.toFixed(requiredPrecision)) === 0 && requiredPrecision < 3) {
-    requiredPrecision += 1;
+  let tmpRequiredPrecision = 0;
+  while (parseFloat(output.toFixed(tmpRequiredPrecision)) === 0 && tmpRequiredPrecision < 3) {
+    tmpRequiredPrecision += 1;
   }
-
-  if (requiredPrecision > precision) {
-    signalRequiredPrecision(requiredPrecision);
+  if (requiredPrecision < tmpRequiredPrecision) {
+    setRequiredPrecision(tmpRequiredPrecision);
   }
 
   const formattedOutput = thousandizeString(
