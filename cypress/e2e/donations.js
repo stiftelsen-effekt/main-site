@@ -90,8 +90,6 @@ describe("Donations page", () => {
               /.*abbreviation=(.*)\&currency.*year=(\d{4}).*month=(\d{1,2})/,
             );
             const filename = `${year}-${month}-${abbriv}`;
-            console.log(filename);
-            console.log(evaluations[filename]);
             if (evaluations[filename]) {
               req.reply(evaluations[filename]);
             } else {

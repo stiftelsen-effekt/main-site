@@ -276,8 +276,6 @@ export const aggregateImpact = (
     });
   });
 
-  console.log(impact);
-
   return impact;
 };
 
