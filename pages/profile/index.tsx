@@ -130,7 +130,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
         )}
       distributions={distributionsMap}
       year={router.query.year as string}
-      firstOpen={true}
+      firstOpen={false}
     />
   ) : (
     years
@@ -146,7 +146,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
             )}
           distributions={distributionsMap}
           year={year.toString()}
-          firstOpen={year === mostRecentYearWithDonations}
+          firstOpen={false}
         />
       ))
   );

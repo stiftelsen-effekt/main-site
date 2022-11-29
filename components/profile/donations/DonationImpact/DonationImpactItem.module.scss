@@ -95,21 +95,20 @@
   .details {
     display: grid;
 
-    border-right: 1px solid var(--primary);
+    border-left: 1px solid var(--primary);
     padding-right: 1.5em;
 
     td,
     span {
-      text-align: right;
+      text-align: left;
       &:first-child {
         border-left: none;
-        padding-left: 0;
       }
     }
   }
 
   .wrapper th td {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 }
