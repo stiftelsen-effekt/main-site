@@ -14,3 +14,37 @@
 .center-wrapper p {
   max-width: 600px;
 }
+
+.center-wrapper .content {
+  width: 60%;
+  margin-bottom: 20px;
+}
+.center-wrapper h5 {
+  display: none;
+}
+
+.center-wrapper .button-group {
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.center-wrapper .button-group button:last-child {
+  margin-left: 20px;
+}
+
+@media (max-width: 1180px) {
+  .center-wrapper {
+    height: calc(100vh - 112px);
+  }
+}
+
+@media (max-width: 450px) {
+  .center-wrapper h3 {
+    display: none;
+  }
+  .center-wrapper h5 {
+    display: block;
+  }
+}
