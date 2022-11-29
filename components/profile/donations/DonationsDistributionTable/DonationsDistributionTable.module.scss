@@ -145,6 +145,7 @@
 .distribution table tr td .innertable table tr td:last-child {
   word-break: keep-all;
   white-space: nowrap;
+  vertical-align: top;
 }
 
 @media only screen and (max-width: 1180px) {
