@@ -30,7 +30,13 @@ export const formatHarvardCitation = ({
     <span className={elements.citation}>
       {authorString}
       {yearString}
-      <a href={url} className={elements.citationLink} target="_blank" tabIndex={tabindex}>
+      <a
+        href={url}
+        className={elements.citationLink}
+        target="_blank"
+        tabIndex={tabindex}
+        rel="noreferrer"
+      >
         {titleString}
       </a>
       , {publisherString}
