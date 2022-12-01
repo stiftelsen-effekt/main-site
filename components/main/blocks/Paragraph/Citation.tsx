@@ -72,77 +72,77 @@ export const reflowCitations = () => {
   }
 };
 
+export const Citation = (props: any): JSX.Element => {
+  // console.log(document.querySelectorAll(".extendedcitation"));
+  const [index, setIndex] = useState(1);
+  const [highlighted, setHighlighted] = useState(false);
+  const extendedRef = useRef<HTMLElement | null>(null);
+
+  const setCitationIndex = () => {
+    if (extendedRef.current) {
+      const citations = document.querySelectorAll(".extendedcitation");
+
+      for (let i = 0; i < citations.length; i++) {
+        if (citations[i] === extendedRef.current) {
+          if (i > 0) {
+            setIndex(i + 1);
+          }
+        }
+      }
+    }
+  };
+  useEffect(setCitationIndex, [extendedRef]);
+  useClickOutsideAlerter(extendedRef, () => setHighlighted(false));
+
+  const highlighCitation = useCallback(() => {
+    if (extendedRef.current) {
+      if (window.innerWidth > 1180) {
+        window.scrollTo({
+          top:
+            window.scrollY +
+            extendedRef.current?.getBoundingClientRect().top -
+            getRemInPixels() * 5,
+          behavior: "smooth",
+        });
+      }
+      extendedRef.current?.focus();
+      setHighlighted(true);
+    }
+  }, [extendedRef]);
+
+  return (
+    <React.Fragment>
+      <cite
+        style={{ cursor: "pointer" }}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.currentTarget.blur();
+            highlighCitation();
+          }
+        }}
+        onClick={(e) => {
+          e.currentTarget.blur();
+          highlighCitation();
+        }}
+      >
+        {props.children}
+        <sup>{index}</sup>
+      </cite>
+      <span
+        className={["extendedcitation", highlighted ? elements.citationHighlighted : ""].join(" ")}
+        ref={extendedRef}
+        onBlur={() => setHighlighted(false)}
+      >
+        <strong>{index}.</strong>
+        {formatHarvardCitation({ ...props.value.citation, tabindex: highlighted ? 0 : -1 })}
+      </span>
+    </React.Fragment>
+  );
+};
+
 export const customComponentRenderers = {
   marks: {
-    citation: (props: any): JSX.Element => {
-      // console.log(document.querySelectorAll(".extendedcitation"));
-      const [index, setIndex] = useState(1);
-      const [highlighted, setHighlighted] = useState(false);
-      const extendedRef = useRef<HTMLElement | null>(null);
-
-      const setCitationIndex = () => {
-        if (extendedRef.current) {
-          const citations = document.querySelectorAll(".extendedcitation");
-
-          for (let i = 0; i < citations.length; i++) {
-            if (citations[i] === extendedRef.current) {
-              if (i > 0) {
-                setIndex(i + 1);
-              }
-            }
-          }
-        }
-      };
-      useEffect(setCitationIndex, [extendedRef]);
-      useClickOutsideAlerter(extendedRef, () => setHighlighted(false));
-
-      const highlighCitation = useCallback(() => {
-        if (extendedRef.current) {
-          if (window.innerWidth > 1180) {
-            window.scrollTo({
-              top:
-                window.scrollY +
-                extendedRef.current?.getBoundingClientRect().top -
-                getRemInPixels() * 5,
-              behavior: "smooth",
-            });
-          }
-          extendedRef.current?.focus();
-          setHighlighted(true);
-        }
-      }, [extendedRef]);
-
-      return (
-        <React.Fragment>
-          <cite
-            style={{ cursor: "pointer" }}
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.currentTarget.blur();
-                highlighCitation();
-              }
-            }}
-            onClick={(e) => {
-              e.currentTarget.blur();
-              highlighCitation();
-            }}
-          >
-            {props.children}
-            <sup>{index}</sup>
-          </cite>
-          <span
-            className={["extendedcitation", highlighted ? elements.citationHighlighted : ""].join(
-              " ",
-            )}
-            ref={extendedRef}
-            onBlur={() => setHighlighted(false)}
-          >
-            <strong>{index}.</strong>
-            {formatHarvardCitation({ ...props.value.citation, tabindex: highlighted ? 0 : -1 })}
-          </span>
-        </React.Fragment>
-      );
-    },
+    citation: Citation,
   },
 };
