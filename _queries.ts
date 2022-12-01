@@ -239,7 +239,20 @@ export const pageContentQuery = `content[] {
       ...,
       ${linksContentQuery}
     },
-    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
+    _type == 'paragraph' => @ {
+      ...,
+      content[] {
+        ...,
+        markDefs[] {
+          _type == 'citation' => @ {
+            ...,
+            citation->,
+          },
+          _type != 'citation' => @,
+        }
+      }
+    },
+    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' => @,
   }
 },
 `;

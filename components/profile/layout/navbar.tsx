@@ -36,7 +36,13 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
               </a>
             </Link>
           </div>
-          <button className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
+          <button
+            className={styles.expandBtn}
+            onClick={(e) => {
+              setExpandMenu(!expandMenu);
+              e.currentTarget.blur();
+            }}
+          >
             {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
           </button>
         </div>

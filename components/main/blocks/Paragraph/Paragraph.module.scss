@@ -2,6 +2,7 @@
   max-width: 760px;
   width: 100%;
   margin-bottom: 50px;
+  position: relative;
 }
 
 .paragraphwrapper h2 {
@@ -20,15 +21,78 @@
   margin-bottom: 0.8rem;
 }
 
+.paragraphwrapper cite {
+  font-style: normal;
+}
+
+.paragraphwrapper cite:focus {
+  outline: 2px solid var(--primary);
+}
+
+.paragraphwrapper cite + span {
+  position: absolute;
+  left: calc(100% + 3rem);
+  font-size: 0.6rem;
+  line-height: 1.2rem;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem;
+  width: calc(((100vw - 100%) / 2) - 3rem - 5vw);
+  outline-offset: 0.5rem;
+  max-width: 16rem;
+}
+
+.paragraphwrapper cite + span.citationHighlighted {
+  outline: 2px solid var(--primary);
+}
+
+.paragraphwrapper cite sup {
+  font-weight: bold;
+  font-size: 0.7rem;
+  margin-left: 0.1rem;
+}
+
 @media only screen and (max-width: 1520px) and (min-width: 1181px) { 
   .paragraphwrapper {
     max-width: 640px;
+  }
+
+  .paragraphwrapper cite + span {
+    left: calc(100% + 2rem);
+    font-size: 0.75rem;
+    width: calc(((100vw - 100%) / 2) - 2rem - 5vw);
   }
 }
 
 @media only screen and (max-width: 1180px) {
   .paragraphwrapper {
     margin-bottom: 20px;
+  }
+
+  .paragraphwrapper cite + span {
+    position: fixed;
+    left: 0;
+    bottom: -100%;
+    width: 100vw;
+    padding: 1.2rem 5vw;
+    padding-right: calc(5vw + 50px + 1.2rem);
+    padding-bottom: 60px;
+    font-size: 0.8rem;
+    max-width: 100%;
+    background: var(--primary);
+    color: var(--secondary);
+    transform: translateY(1rem) !important;
+    z-index: 10;
+    border-top: 1px solid var(--secondary);
+    opacity: 0;
+    transition: opacity .12s ease-out, transform .12s ease-out;
+  }
+
+  .paragraphwrapper cite + span.citationHighlighted {
+    outline: none;
+    bottom: 0;
+    transform: translateY(0) !important;
+    opacity: 1;
   }
 }
 
