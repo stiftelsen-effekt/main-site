@@ -108,7 +108,7 @@ export default {
         author: 'author',
         year: 'year',
       },
-      prepare(selection) {
+      prepare(selection:any) {
         const {author, year, title} = selection
         return {
           title: `${author ?? '-'} (${year ?? '-'})`,
