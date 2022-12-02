@@ -74,20 +74,25 @@ export const reflowCitations = () => {
 
 export const Citation = (props: any): JSX.Element => {
   // console.log(document.querySelectorAll(".extendedcitation"));
+  console.log(props);
   const [index, setIndex] = useState(1);
   const [highlighted, setHighlighted] = useState(false);
   const extendedRef = useRef<HTMLElement | null>(null);
 
   const setCitationIndex = () => {
     if (extendedRef.current) {
-      const citations = document.querySelectorAll(".extendedcitation");
+      const citations = document.querySelectorAll(".citation");
 
+      let k = 0;
       for (let i = 0; i < citations.length; i++) {
         if (citations[i] === extendedRef.current) {
           if (i > 0) {
-            setIndex(i + 1);
+            setIndex(k + 1);
           }
         }
+        console.log(citations[i]);
+        console.log(citations[i].querySelectorAll(".extendedcitation").length);
+        k += citations[i].querySelectorAll(".extendedcitation").length;
       }
     }
   };
@@ -97,11 +102,13 @@ export const Citation = (props: any): JSX.Element => {
   const highlighCitation = useCallback(() => {
     if (extendedRef.current) {
       if (window.innerWidth > 1180) {
+        const firstExtended = extendedRef.current.querySelector(".extendedcitation");
+        let offset = 0;
+        if (firstExtended) {
+          offset = firstExtended.getBoundingClientRect().top;
+        }
         window.scrollTo({
-          top:
-            window.scrollY +
-            extendedRef.current?.getBoundingClientRect().top -
-            getRemInPixels() * 5,
+          top: window.scrollY + offset - getRemInPixels() * 5,
           behavior: "smooth",
         });
       }
@@ -114,6 +121,8 @@ export const Citation = (props: any): JSX.Element => {
     <React.Fragment>
       <cite
         style={{ cursor: "pointer" }}
+        ref={extendedRef}
+        className={"citation"}
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -127,16 +136,21 @@ export const Citation = (props: any): JSX.Element => {
         }}
       >
         {props.children}
-        <sup>{index}</sup>
+
+        <sup>{props.value.citations.map((citation: any, i: number) => index + i).join(",")}</sup>
+
+        {props.value.citations.map((citation: any, i: number) => (
+          <span
+            className={["extendedcitation", highlighted ? elements.citationHighlighted : ""].join(
+              " ",
+            )}
+            onBlur={() => setHighlighted(false)}
+          >
+            <strong>{index + i}.</strong>
+            {formatHarvardCitation({ ...citation, tabindex: highlighted ? 0 : -1 })}
+          </span>
+        ))}
       </cite>
-      <span
-        className={["extendedcitation", highlighted ? elements.citationHighlighted : ""].join(" ")}
-        ref={extendedRef}
-        onBlur={() => setHighlighted(false)}
-      >
-        <strong>{index}.</strong>
-        {formatHarvardCitation({ ...props.value.citation, tabindex: highlighted ? 0 : -1 })}
-      </span>
     </React.Fragment>
   );
 };

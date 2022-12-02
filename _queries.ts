@@ -246,7 +246,7 @@ export const pageContentQuery = `content[] {
         markDefs[] {
           _type == 'citation' => @ {
             ...,
-            citation->,
+            "citations": citations[]->
           },
           _type != 'citation' => @,
         }

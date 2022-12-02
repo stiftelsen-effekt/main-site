@@ -37,6 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     enabled: pageProps.preview,
   });
 
+  console.log(propsData?.query);
   if (pageProps.data) {
     pageProps.data.result = previewData;
 

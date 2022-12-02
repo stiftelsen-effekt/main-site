@@ -11,13 +11,17 @@ export const blocktype = {
         icon: Bookmark,
         fields: [
           {
-            type: 'reference',
-            name: 'citation',
-            title: 'Citation',
-            to: [
-              { type: 'citation' }
-            ],
-            
+            type: 'array',
+            name: 'citations',
+            title: 'Citations',
+            of: [
+              {
+                type: 'reference',
+                to: [
+                  { type: 'citation' }
+                ],
+              }
+            ]
           }
         ],
         blockEditor: {

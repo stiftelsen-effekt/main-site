@@ -11,6 +11,8 @@ export type ParagraphProps = {
 };
 
 export const Paragraph: React.FC<ParagraphProps> = ({ title, blocks }) => {
+  console.log(blocks);
+
   const debounceReflowCitations = useDebouncedCallback(() => reflowCitations(), 100, {
     maxWait: 100,
   });
