@@ -21,22 +21,38 @@ export const Links: React.FC<LinksProps> = ({ links }) => {
       {links &&
         links.map((link) => (
           <li key={link._key}>
-            <Link
-              href={
-                link._type === "navitem"
-                  ? link.pagetype === "article_page"
-                    ? `/articles/${link.slug}`
-                    : `/${link.slug}`
-                  : link.url
-              }
-              passHref
-            >
-              <a
-                target={link._type === "link" && link.newtab ? "_blank" : ""}
-              >{`→ ${link.title}`}</a>
-            </Link>
+            <LinkComponent link={link} />
           </li>
         ))}
     </ul>
+  );
+};
+
+export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: string }> = ({
+  link,
+  children,
+}) => {
+  return (
+    <Link
+      href={
+        link._type === "navitem"
+          ? link.pagetype === "article_page"
+            ? `/articles/${link.slug}`
+            : `/${link.slug}`
+          : link.url
+      }
+      passHref
+    >
+      <a
+        target={link._type === "link" && link.newtab ? "_blank" : ""}
+        onClick={(e) => {
+          e.currentTarget.blur();
+        }}
+      >
+        {link.title
+          ? `→ ${link.title}`
+          : `${children} ${link._type === "link" && link.newtab ? " ↗" : ""}`}
+      </a>
+    </Link>
   );
 };

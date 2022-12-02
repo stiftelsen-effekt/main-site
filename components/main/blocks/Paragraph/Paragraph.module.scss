@@ -10,11 +10,15 @@
 }
 
 .paragraphwrapper a {
-  text-decoration: underline;
+  border-bottom: 1px solid var(--primary);
 }
 
-.paragraphwrapper a::after {
-  content: " ↗";
+.paragraphwrapper a:focus {
+  outline: 1px solid var(--primary);
+}
+
+.paragraphwrapper a:active {
+  outline: none;
 }
 
 .paragraphwrapper ul li, .paragraphwrapper ol li {
@@ -42,7 +46,11 @@
   max-width: 16rem;
 }
 
-.paragraphwrapper cite > span.citationHighlighted {
+.paragraphwrapper cite > span:focus-within {
+  outline: 2px solid var(--primary);
+}
+
+.paragraphwrapper cite:focus > span {
   outline: 2px solid var(--primary);
 }
 

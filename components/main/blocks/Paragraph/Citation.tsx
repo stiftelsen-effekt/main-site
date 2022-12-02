@@ -1,6 +1,7 @@
 import React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
+import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
 
 export const formatHarvardCitation = ({
@@ -36,6 +37,10 @@ export const formatHarvardCitation = ({
         target="_blank"
         tabIndex={tabindex}
         rel="noreferrer"
+        onClick={(e) => {
+          e.stopPropagation();
+          e.currentTarget.blur();
+        }}
       >
         {titleString}
       </a>
@@ -73,8 +78,6 @@ export const reflowCitations = () => {
 };
 
 export const Citation = (props: any): JSX.Element => {
-  // console.log(document.querySelectorAll(".extendedcitation"));
-  console.log(props);
   const [index, setIndex] = useState(1);
   const [highlighted, setHighlighted] = useState(false);
   const extendedRef = useRef<HTMLElement | null>(null);
@@ -90,8 +93,6 @@ export const Citation = (props: any): JSX.Element => {
             setIndex(k + 1);
           }
         }
-        console.log(citations[i]);
-        console.log(citations[i].querySelectorAll(".extendedcitation").length);
         k += citations[i].querySelectorAll(".extendedcitation").length;
       }
     }
@@ -158,5 +159,7 @@ export const Citation = (props: any): JSX.Element => {
 export const customComponentRenderers = {
   marks: {
     citation: Citation,
+    link: (props: any) => <LinkComponent link={props.value} children={props.children} />,
+    navitem: (props: any) => <LinkComponent link={props.value} children={props.children} />,
   },
 };
