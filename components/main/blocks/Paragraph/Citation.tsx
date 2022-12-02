@@ -160,7 +160,7 @@ export const Citation = (props: any): JSX.Element => {
 export const customComponentRenderers = {
   marks: {
     citation: Citation,
-    link: (props: any) => <LinkComponent link={props.value} children={props.children} />,
-    navitem: (props: any) => <LinkComponent link={props.value} children={props.children} />,
+    link: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
+    navitem: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
   },
 };
