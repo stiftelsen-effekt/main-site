@@ -142,6 +142,7 @@ export const Citation = (props: any): JSX.Element => {
 
         {props.value.citations.map((citation: any, i: number) => (
           <span
+            key={citation._key}
             className={["extendedcitation", highlighted ? elements.citationHighlighted : ""].join(
               " ",
             )}
