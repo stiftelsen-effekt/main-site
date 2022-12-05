@@ -10,7 +10,8 @@ export default {
     {
       name: 'title',
       type: 'string',
-      title: 'Title'
+      title: 'Title',
+      description: 'Not needed if link in text'
     },
     {
       name: 'page',

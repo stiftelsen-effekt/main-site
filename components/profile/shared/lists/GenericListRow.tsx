@@ -37,6 +37,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
         }}
         data-cy="generic-list-row-context"
         className={style.actionContainer}
+        key={row.id + "-context"}
       >
         <div ref={actionRef} style={{ display: "flex", flexDirection: "column" }}>
           <MoreHorizontal width={24} />
@@ -61,6 +62,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
         onClick={() => setExpanded(!expanded)}
         data-cy="generic-list-row-expand"
         className={style.actionContainer}
+        key={row.id + "-expand"}
       >
         <ChevronDown
           className={expanded ? style.iconChevronUp : style.iconChevronDown}

@@ -1,35 +1,187 @@
-.distributionHeader {
-  display: none;
+.distribution {
+  max-width: 28rem;
+  word-break: break-all;
+}
+
+.distribution .distributionHeader {
+  margin-bottom: 0.5rem;
+}
+
+.distribution .distributionHeader span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 0;
+}
+
+.distribution .distributionHeader .loadingSpinner {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 1rem;
+  transition: all 200ms;
+  opacity: 1;
+  display: inline-flex;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+}
+
+.distribution.loaded .distributionHeader .loadingSpinner {
+  opacity: 0;
 }
 
 .distribution table {
   width: 100%;
-  max-width: 420px;
+  margin-bottom: 1rem;
+}
+
+.distribution table tr.expandable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.distribution table tr.expandable:hover td {
+  color: var(--secondary);
+  background-color: var(--primary);
+
+  svg,
+  svg {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+  }
 }
 
 .distribution table tr td {
-  padding: 6px 0;
+  padding: 0;
 }
 
-.distribution table tr td:last-child {
+.distribution table.maintable > tbody > tr:nth-child(2n+1) td {
+  transform: translateY(-0.5rem);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  height: 2rem;
+}
+
+.distribution.loaded table.maintable > tbody > tr td {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.distribution table.maintable > tbody > tr:nth-child(1) td {
+  transition-delay: 0ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(3) td {
+  transition-delay: 10ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(5) {
+  transition-delay: 20ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(7) td {
+  transition-delay: 30ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(9) td {
+  transition-delay: 40ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(11) td {
+  transition-delay: 50ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(13) td {
+  transition-delay: 60ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(15) td {
+  transition-delay: 70ms;
+}
+.distribution table.maintable > tbody > tr:nth-child(17) td {
+  transition-delay: 80ms;
+}
+
+.distribution table tr td span, .distribution table tr td strong {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.distribution table tr td.rowexpand svg {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 1rem;
+  transition: transform 80ms;
+  line-height: 165%;
+  transform-origin: center center;
+}
+
+.distribution table tr td.drift {
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+.distribution table tr td:nth-child(2) {
   text-align: right;
 }
 
+.distribution table tr td .innertable {
+  padding-left: 1rem;
+  border-left: 1px solid var(--primary);
+  font-size: 0.9em;
+  margin: 0.3rem 0;
+}
+
+.distribution table tr td .innertable table {
+  width: 100%;
+}
+
+.distribution table tr td .innertable table tr:first-child td {
+  padding-top: 0;
+  
+}
+
+.distribution table tr td .innertable table tr:last-child td {
+  padding-bottom: 0;
+
+}
+
+.distribution table tr td .innertable table tr td:first-child {
+  word-break: keep-all;
+}
+
+.distribution table tr td .innertable table tr td:last-child {
+  word-break: keep-all;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
 @media only screen and (max-width: 1180px) {
-  .distributionHeader {
+  .distribution {
+    max-width: none;
+  }
+
+  .distribution .distributionHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 14px 0;
   }
 
-  .distributionHeader svg {
+  .distribution .distributionHeader  {
+    margin-bottom: 0;
+  }
+
+  .distribution .distributionHeader svg {
     filter: var(--primary-filter);
     transition: transform 200ms;
   }
 
-  .distributionHeader svg.chevronRotated {
+  .distribution .distributionHeader svg.chevronRotated {
     transform: rotate(180deg);
+  }
+
+  .distribution table tr.expandable:hover td {
+    color: var(--primary);
+    background-color: var(--secondary);
+  
+    svg,
+    svg {
+      -webkit-filter: none;
+      filter: none;
+    }
   }
 
   .distribution {
@@ -38,7 +190,6 @@
   }
 
   .distribution table {
-    margin-bottom: 16px;
     max-width: initial;
   }
 }

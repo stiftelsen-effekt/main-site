@@ -1,4 +1,5 @@
 import { Type } from "react-feather";
+import { blocktype } from "./blockcontent";
 
 export default {
   title: 'Paragraph', 
@@ -15,7 +16,7 @@ export default {
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [{type: 'block'}]
+      of: [ blocktype ]
     }
   ],
   preview: {
