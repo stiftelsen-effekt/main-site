@@ -225,15 +225,19 @@ export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
   };
 };
 
+export const linksSelectorQuery = `
+_type == 'navitem' => @ {
+  ...,
+  "slug": page->slug.current,
+  "pagetype": page->_type,
+},
+_type == 'link' => @ {
+  ...
+},
+`;
+
 export const linksContentQuery = `links[] {
-  _type == 'navitem' => @ {
-    ...,
-    "slug": page->slug.current,
-    "pagetype": page->_type,
-  },
-  _type == 'link' => @ {
-    ...
-  },
+  ${linksSelectorQuery}
 }`;
 
 export const pageContentQuery = `content[] {
@@ -254,7 +258,21 @@ export const pageContentQuery = `content[] {
       ...,
       ${linksContentQuery}
     },
-    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
+    _type == 'paragraph' => @ {
+      ...,
+      content[] {
+        ...,
+        markDefs[] {
+          _type == 'citation' => @ {
+            ...,
+            "citations": citations[]->
+          },
+          ${linksSelectorQuery}
+          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+        }
+      }
+    },
+    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' => @,
   }
 },
 `;
