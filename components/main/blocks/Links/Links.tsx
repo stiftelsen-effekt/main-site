@@ -39,7 +39,7 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
           ? link.pagetype === "article_page"
             ? `/articles/${link.slug}`
             : `/${link.slug}`
-          : link.url
+          : link.url ?? (link as any).href
       }
       passHref
     >
