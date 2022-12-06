@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { Donation, GiveWellGrant } from "../../../../models";
 import { thousandize } from "../../../../util/formatting";
@@ -25,12 +25,18 @@ const DonationImpact: React.FC<{
   );
 
   const [requiredPrecision, setRequiredPrecision] = useState(0);
+  const updatePrecision = useCallback(
+    (precision) => {
+      setRequiredPrecision(precision);
+    },
+    [setRequiredPrecision],
+  );
 
   if (!data || isValidating) {
-    return <div key={`${donation.id}`}>Loading...</div>;
+    return <div key={`${donation.id}-impact`}>Loading...</div>;
   }
   if (error) {
-    return <div key={`${donation.id}`}>{error}</div>;
+    return <div key={`${donation.id}-impact`}>{error}</div>;
   }
 
   /**
@@ -49,12 +55,11 @@ const DonationImpact: React.FC<{
     });
 
   let spreadDistribution: { org: string; sum: number }[] = [...filteredDistribution];
-  const log: string[] = [];
   if (giveWellDist) {
     const relevantGrant = data?.max_impact_fund_grants[0];
 
     if (!relevantGrant) {
-      return <div key={`${donation.id}`}>Could not find relevant maximum impact grant</div>;
+      return <div key={`${donation.id}-impact`}>Could not find relevant maximum impact grant</div>;
     }
 
     const grantTotal = relevantGrant.allotment_set.reduce((acc, grant) => {
@@ -66,17 +71,15 @@ const DonationImpact: React.FC<{
       const sum = Math.round((allotment.sum_in_cents / grantTotal) * giveWellDist.sum);
       const orgIndex = spreadDistribution.findIndex((d) => d.org === org);
       if (orgIndex !== -1) {
-        log.push(`Adding ${sum} to ${org}`);
         spreadDistribution[orgIndex].sum += sum;
       } else {
-        log.push(`Pushing ${sum} to ${org}`);
         spreadDistribution.push({ org, sum });
       }
     });
   }
 
   return (
-    <div className={style.container} key={`${donation.id}`}>
+    <div className={style.container} key={`${donation.id}-impact`}>
       {giveWellDist && (
         <div className={style.smartdistributionlabel}>
           <span>Smart fordeling</span>
@@ -86,7 +89,7 @@ const DonationImpact: React.FC<{
       <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
         <tbody>
           {spreadDistribution.map((dist, i) => (
-            <>
+            <React.Fragment key={`${donation.id}-impact-${dist.org}`}>
               {dist.org !== "Drift" && (
                 <DonationImpactItem
                   orgAbriv={dist.org}
@@ -94,19 +97,19 @@ const DonationImpact: React.FC<{
                   donationTimestamp={timestamp}
                   precision={requiredPrecision}
                   signalRequiredPrecision={(precision) => {
-                    precision > requiredPrecision ? setRequiredPrecision(precision) : null;
+                    if (precision > requiredPrecision) updatePrecision(precision);
                   }}
                 />
               )}
               {dist.org === "Drift" && (
-                <tr key={`${donation.id}-drift`}>
+                <tr>
                   <td className={style.impact} colSpan={100}>
                     <span>Drift av Gi Effektivt</span>
                     <strong>{`${dist.sum} kr`}</strong>
                   </td>
                 </tr>
               )}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>

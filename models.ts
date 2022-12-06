@@ -138,13 +138,14 @@ export type ImpactEvaluation = {
 };
 
 export type GiveWellGrant = {
-  id: 1;
+  id: number;
   allotment_set: {
-    id: 1;
+    id: number;
     intervention: ImpactIntervention;
     converted_sum: number;
     currency: string;
     converted_cost_per_output: number;
+    exchange_rate_date: string;
     sum_in_cents: number;
     number_outputs_purchased: number;
     charity: ImpactCharity;

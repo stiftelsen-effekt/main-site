@@ -14,25 +14,46 @@ import { EffektButtonType } from "../../../shared/components/EffektButton/Effekt
 import { toast } from "react-toastify";
 import { AlertCircle, Check } from "react-feather";
 import { FacebookDonationRegistration, TaxUnit } from "../../../../models";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import { registerFacebookDonation } from "../../_queries";
 import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
+import { useTaxUnits } from "../../../../_queries";
 
 export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, user } = useAuth0();
   const [nextDisabled, setNextDisabled] = useState(true);
   const [paymentIDError, setPaymentIDError] = useState(false);
   const [taxUnit, setTaxUnit] = useState<TaxUnit | null>(null);
   const [loadingAnimation, setLoadingAnimation] = useState(false);
   const [createTaxUnitModalOpen, setCreateTaxUnitModalOpen] = useState(false);
 
-  const { register, watch, errors, handleSubmit, reset } = useForm<{ paymentID: string }>();
+  const { register, watch, errors, handleSubmit, reset, trigger } = useForm<{ paymentID: string }>({
+    mode: "all",
+    defaultValues: { paymentID: "" },
+  });
   const watchAllFields = watch();
+
+  const { data } = useTaxUnits(user as User, getAccessTokenSilently);
+  const filteredData = data
+    .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
+    .sort((a: TaxUnit, b: TaxUnit) => (a.ssn.length > b.ssn.length ? -1 : 1));
+
+  useEffect(() => {
+    trigger();
+  }, []);
+
+  useEffect(() => {
+    if (taxUnit === null)
+      setTaxUnit(
+        filteredData.length >= 1
+          ? filteredData.sort((a: TaxUnit, b: TaxUnit) => (a.ssn.length > b.ssn.length ? -1 : 1))[0]
+          : null,
+      );
+  }, [filteredData]);
 
   useEffect(() => {
     errors.paymentID ? setPaymentIDError(true) : setPaymentIDError(false);
-
     if (Object.keys(errors).length === 0 && taxUnit !== null) {
       setNextDisabled(false);
     } else {
