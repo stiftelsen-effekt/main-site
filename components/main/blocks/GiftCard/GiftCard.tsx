@@ -15,10 +15,10 @@ export const GiftCard: React.FC = () => {
       </div>
       <div className={styles.giftcardtext}>
         <div>
-          <h3>Gavekort</h3>
+          <h3>Gavekort.</h3>
           <p>
             Gi en gave til verden og noen du er glad i. Gjennomfør en donasjon som vanlig, last ned
-            malen vår under til et gavekort og print den ut eller send den digitalt.
+            malen vår under og print ut eller send digitalt.
           </p>
         </div>
         <Link
