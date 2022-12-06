@@ -6,7 +6,6 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: var(--primary);
   padding: 0 5vw;
   padding-bottom: 160px;
 }
@@ -17,8 +16,12 @@
 
 .center-wrapper .content {
   width: 60%;
-  margin-bottom: 20px;
+  color: var(--secondary);
+  background: var(--primary);
+  padding: 2em;
+  border-radius: 8px;
 }
+
 .center-wrapper h5 {
   display: none;
 }
@@ -46,5 +49,9 @@
   }
   .center-wrapper h5 {
     display: block;
+  }
+
+  .center-wrapper .content {
+    width: 100%;
   }
 }
