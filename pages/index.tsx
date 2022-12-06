@@ -74,7 +74,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       </SectionContainer>
       {interventionWidget.interventions && (
         <div style={{ marginTop: "45px" }}>
-          <SectionContainer>
+          <SectionContainer nodivider>
             <ImpactWidget frontpage={frontpage} />
           </SectionContainer>
         </div>
