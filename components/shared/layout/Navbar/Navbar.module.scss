@@ -258,23 +258,6 @@
   }
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .navbar .logoWrapper {
-    width: 160px;
-  }
-  .navbar ul li {
-    font-size: 14px !important;
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-
-  .navbar ul li .submenu ul li {
-    font-size: 14px !important;
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-}
-
 @media only screen and (max-width: 1600px) and (min-width: 1181px) {
   .navbar ul li {
     font-size: 15px;
@@ -287,6 +270,22 @@
     padding-left: 18px;
     padding-right: 18px;
     margin-top: 6px;
+  }
+}
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .navbar .logoWrapper {
+    width: 160px;
+  }
+  .navbar ul li {
+    font-size: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .navbar ul li .submenu ul li {
+    font-size: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 }
 
