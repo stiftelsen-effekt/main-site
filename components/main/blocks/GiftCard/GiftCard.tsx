@@ -17,18 +17,18 @@ export const GiftCard: React.FC = () => {
         <div>
           <h3>Gavekort</h3>
           <p>
-            Noe om å gi en donasjon til jul og så at man kan laste ned og printe ut, Nedlastbar PDF
-            som kan printes ut og brukes som gave dokument
+            Gi en gave til verden og noen du er glad i. Gjennomfør en donasjon som vanlig, last ned
+            malen vår under til et gavekort og print den ut eller send den digitalt.
           </p>
         </div>
         <Link
           href={
-            "https://drive.google.com/file/d/1Ym7FwUHaBkOgMCl9wXkEzHczYFDD20EM/view?usp=share_link"
+            "https://drive.google.com/file/d/1Xaur4Fd1hXvfld_XMPrBK0-2y_Rp-V_v/view?usp=share_link"
           }
           target="_blank"
           passHref
         >
-          <a target={"_blank"}>→ Last ned gavekort-mal her</a>
+          <a target={"_blank"}>→ Last ned mal til gavekort her</a>
         </Link>
       </div>
     </div>
