@@ -91,7 +91,7 @@
   outline: none;
 }
 
-.navbar .logoWrapper:focus-within { 
+.navbar .logoWrapper:focus-within {
   outline: 2px solid var(--secondary);
 }
 
@@ -178,7 +178,7 @@
     margin-top: 14px;
   }
 
-  .navbar ul li a { 
+  .navbar ul li a {
     display: inline-block;
     width: 100%;
   }
@@ -253,16 +253,29 @@
     width: auto;
   }
 
-  .navbar ul li.buttonsWrapper button:first-child { 
+  .navbar ul li.buttonsWrapper button:first-child {
     margin-left: 0;
   }
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .navbar .logoWrapper {
-    width: 200px;
+    width: 160px;
+  }
+  .navbar ul li {
+    font-size: 14px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
   }
 
+  .navbar ul li .submenu ul li {
+    font-size: 14px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+@media only screen and (max-width: 1600px) and (min-width: 1181px) {
   .navbar ul li {
     font-size: 15px;
     padding-left: 18px;
