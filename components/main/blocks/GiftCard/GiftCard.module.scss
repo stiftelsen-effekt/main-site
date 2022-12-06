@@ -1,0 +1,79 @@
+.giftcard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin: 50px 0;
+}
+
+.giftcardimage {
+  position: relative;
+  width: 100%;
+}
+
+.giftcardtext {
+  padding: 0 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  max-width: 90%;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 100px;
+
+}
+
+.giftcardtext p {
+  font-size: normal;
+  font-weight: normal;
+  line-height: 180%;
+  white-space: pre-wrap;
+  font-size: 30px;
+  line-height: 40px;
+  margin-bottom: 3rem;
+}
+
+.giftcardtext a {
+  height: 1.65rem;
+}
+
+.giftcardtext button {
+  margin-left: 0;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .giftcardtext {
+    padding-left: 60px;
+  }
+
+  .giftcardtext p {
+    font-size: 22px;
+    line-height: 150%;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .giftcard {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content max-content;
+    margin: 0px 0;
+  }
+
+  .giftcardtext {
+    grid-column: auto;
+    grid-row: 1/1;
+    padding: 0;
+    padding-bottom: 3rem;
+  }
+
+  .giftcardtext p {
+    font-size: 22px;
+    line-height: 150%;
+    margin-bottom: 2rem;
+  }
+
+  .giftcardimage {
+    grid-column: auto;
+    grid-row: 2/2;
+  }
+}
