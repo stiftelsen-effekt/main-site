@@ -15,20 +15,19 @@ export const LoginError: React.FC<{ message: string }> = ({ message }) => {
       <div className={elements["content"]}>
         <h3>Gi Effektivt.</h3>
         <h5>Gi Effektivt.</h5>
-
         <p>{message}</p>
-      </div>
 
-      <div className={elements["button-group"]}>
-        <EffektButton
-          onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
-          type={EffektButtonType.SECONDARY}
-        >
-          Avbryt
-        </EffektButton>
-        <EffektButton onClick={loginWithRedirect} cy="btn-login">
-          Logg inn
-        </EffektButton>
+        <div className={elements["button-group"]}>
+          <EffektButton
+            onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
+            type={EffektButtonType.SECONDARY}
+          >
+            Avbryt
+          </EffektButton>
+          <EffektButton onClick={loginWithRedirect} cy="btn-login">
+            Logg inn
+          </EffektButton>
+        </div>
       </div>
     </div>
   );
