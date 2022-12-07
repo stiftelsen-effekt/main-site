@@ -60,6 +60,26 @@
   margin-left: 0.1rem;
 }
 
+.paragraphwrapper cite p {
+  margin: 0;
+}
+
+.paragraphwrapper cite ul, .paragraphwrapper cite ol {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.paragraphwrapper cite ul li, .paragraphwrapper cite ol li {
+  margin: 0;
+}
+
+.paragraphwrapper cite blockquote {
+  margin: 0;
+  padding: 0;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--primary);
+}
+
 @media only screen and (max-width: 1520px) and (min-width: 1181px) { 
   .paragraphwrapper {
     max-width: 640px;
@@ -101,6 +121,10 @@
     bottom: 0;
     transform: translateY(0) !important;
     opacity: 1;
+  }
+
+  .paragraphwrapper cite blockquote {
+    border-left: 1px solid var(--secondary);
   }
 }
 
