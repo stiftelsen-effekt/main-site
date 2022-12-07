@@ -42,7 +42,7 @@ export const GiveWellStamp: React.FC = () => {
           </div>
 
           <p className="inngress">
-            “We're very grateful that Gi Effektivt is helping donors in Norway support GiveWell
+            “We&apos;re very grateful that Gi Effektivt is helping donors in Norway support GiveWell
             charities! Donations through Gi Effektivt will save and significantly improve the lives
             of people living in the poorest parts of the world.”
           </p>
