@@ -111,6 +111,12 @@ export default {
       hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type === 'book' || parent.type === 'note'
     },
     {
+      name: 'notetitle',
+      type: 'string',
+      title: 'Note Title',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'note'
+    },
+    {
       name: 'note',
       type: 'array',
       title: 'Note',
@@ -126,13 +132,14 @@ export default {
         author: 'author',
         year: 'year',
         type: 'type',
-        note: 'note'
+        note: 'note',
+        notetitle: 'notetitle'
       },
       prepare(selection:any) {
-        const { author, year, title, type, note } = selection
+        const { author, year, title, type, note, notetitle } = selection
         const noteBlocks = (note || []).find((block: any) => block._type === 'block')
         return {
-          title: type != 'note' ? `${author ?? '-'} (${year ?? '-'})` : 'Note',
+          title: type != 'note' ? `${author ?? '-'} (${year ?? '-'})` : notetitle,
           subtitle: type != 'note' ? title : (noteBlocks ? noteBlocks.children
           .filter((child: any) => child._type === 'span')
           .map((span: any) => span.text)
