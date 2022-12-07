@@ -130,9 +130,13 @@ export default {
       },
       prepare(selection:any) {
         const { author, year, title, type, note } = selection
+        const noteBlocks = (note || []).find((block: any) => block._type === 'block')
         return {
           title: type != 'note' ? `${author ?? '-'} (${year ?? '-'})` : 'Note',
-          subtitle: type != 'note' ? title : `${note ?? '-'}`
+          subtitle: type != 'note' ? title : (noteBlocks ? noteBlocks.children
+          .filter((child: any) => child._type === 'span')
+          .map((span: any) => span.text)
+          .join('') : 'No content')
         }
       }
     }
