@@ -107,7 +107,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                   return (
                     <HTMLEmbed
                       key={block._key || block._id}
-                      code={block.code}
+                      code={block.htmlcode}
                       grayscale={block.grayscale}
                     />
                   );
