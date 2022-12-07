@@ -22,7 +22,8 @@ export default {
           "website",
           "video",
           "podcast",
-          "misc"
+          "misc",
+          "note"
         ],
       },
     },
@@ -30,54 +31,64 @@ export default {
       name: 'author',
       type: 'string',
       title: 'Author',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined',
+      description: 'Surname, Initial(s). If a reference has more than 3 authors, only write the first author’s surname followed by “et al.”',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type === 'note',
     },
     {
       name: 'title',
       type: 'string',
       title: 'Title',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type === 'note',
     },
     {
       name: 'journal',
       type: 'string',
       title: 'Journal',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'article',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'article' || parent.type === 'note', 
     },
     {
       name: 'year',
       type: 'string',
       title: 'Year',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined'
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type === 'note'
     },
     {
       name: 'volume',
       type: 'string',
       title: 'Volume',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'article'
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'article' || parent.type === 'note'
     },
     {
       name: 'number',
       type: 'string',
       title: 'Number',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'article'
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'article' || parent.type === 'note'
     },
     {
       name: 'pages',
       type: 'string',
       title: 'Pages',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || (parent.type !== 'article' && parent.type !== 'book')
+      description: 'E.g. 509-516',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || (parent.type !== 'article' && parent.type !== 'book') || parent.type === 'note'
+    },
+    {
+      name: 'edition',
+      type: 'number',
+      title: 'Edition',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'book'
     },
     {
       name: 'publisher',
       type: 'string',
       title: 'Publisher',
+      description: 'E.g. Oxford University Press',
       hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'book'
     },
     {
       name: 'address',
       type: 'string',
       title: 'Address',
+      description: 'Or place, e.g. Colombia',
       hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'book'
     },
     {
@@ -90,14 +101,21 @@ export default {
       name: 'timestamp',
       type: 'string',
       title: 'Timestamp',
-      description: 'Timestamp for the cited information e.g. 32:45',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || (parent.type !== 'video' && parent.type !== 'podcast')
+      description: 'Optional timestamp for the cited information e.g. 32:45',
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || (parent.type !== 'video' && parent.type !== 'podcast') || parent.type === 'note'
     },
     {
       name: 'url',
       type: 'url',
       title: 'URL',
-      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type === 'book'
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type === 'book' || parent.type === 'note'
+    },
+    {
+      name: 'note',
+      type: 'array',
+      title: 'Note',
+      of: [{ type: 'block' }],
+      hidden: ({ parent }: any) => typeof parent.type === 'undefined' || parent.type !== 'note'
     }
   ],
   options: {
@@ -107,12 +125,14 @@ export default {
         title: 'title',
         author: 'author',
         year: 'year',
+        type: 'type',
+        note: 'note'
       },
       prepare(selection:any) {
-        const {author, year, title} = selection
+        const { author, year, title, type, note } = selection
         return {
-          title: `${author ?? '-'} (${year ?? '-'})`,
-          subtitle: title
+          title: type != 'note' ? `${author ?? '-'} (${year ?? '-'})` : 'Note',
+          subtitle: type != 'note' ? title : `${note ?? '-'}`
         }
       }
     }
