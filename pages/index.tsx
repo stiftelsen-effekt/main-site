@@ -107,7 +107,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
         <GiveWellStamp></GiveWellStamp>
       </SectionContainer>
       {frontpage.testimonials && (
-        <SectionContainer heading="Hva folk sier om oss">
+        <SectionContainer heading="Hva folk sier om oss" nodivider>
           <Testimonial testimonies={frontpage.testimonials} />
         </SectionContainer>
       )}

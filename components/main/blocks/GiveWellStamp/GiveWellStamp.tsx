@@ -8,9 +8,6 @@ export const GiveWellStamp: React.FC = () => {
   return (
     <div className={style.container}>
       <div className={style.context}>
-        <div className={style.stamp}>
-          <Image src={Stamp} layout={"fill"} objectFit={"contain"} objectPosition={"left"} />
-        </div>
         <Links
           links={[
             {
@@ -29,6 +26,9 @@ export const GiveWellStamp: React.FC = () => {
             },
           ]}
         ></Links>
+        <div className={style.stamp}>
+          <Image src={Stamp} layout={"fill"} objectFit={"contain"} objectPosition={"left"} />
+        </div>
       </div>
       <div className={style.quote}>
         <div className={style.quoteText}>
