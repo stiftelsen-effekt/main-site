@@ -51,7 +51,14 @@ const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previ
               <ArticlePreview
                 key={article._key}
                 header={article.header}
-                inngress={i === 0 ? article.header.inngress : undefined}
+                inngress={
+                  i === 0
+                    ? article.header.inngress ||
+                      (article.preview.length > 350
+                        ? article.preview.substr(0, 350) + "..."
+                        : article.preview)
+                    : undefined
+                }
                 slug={article.slug}
               />
             ))}
@@ -121,6 +128,7 @@ const fethcArticles = groq`
   "articles": *[_type == "article_page"] | order(header.published desc) {
     header,
     "slug": slug.current,
+    "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...3].text, "\n"),
   }
 }
 `;
