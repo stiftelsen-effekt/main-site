@@ -1,0 +1,72 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 6rem;
+  padding-bottom: 5rem;
+}
+
+.context {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.context .stamp {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.context .stamp span img {
+  object-position: center !important;
+}
+
+.context ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 0;
+}
+
+.quote {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.quote span {
+  display: block;
+}
+
+.quote .logo {
+  width: 60%;
+  margin-bottom: 3rem;
+  aspect-ratio: 960 / 164;
+  position: relative;
+}
+
+@media screen and (max-width: 1180px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr max-content;
+    margin: 0px 0;
+  }
+
+  .context {
+    grid-row: 2/2;
+    justify-content: left;
+    margin-top: 2rem;
+  }
+
+  .context .stamp {
+    display: none;
+  }
+
+  .quote .logo {
+    width: auto;
+    max-height: 5rem;
+    max-width: 80%;
+  }
+}

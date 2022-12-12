@@ -21,6 +21,7 @@ import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/Impact
 import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
 import { widgetQuery } from "../_queries";
 import { GiftCard } from "../components/main/blocks/GiftCard/GiftCard";
+import { GiveWellStamp } from "../components/main/blocks/GiveWellStamp/GiveWellStamp";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
   () =>
@@ -79,6 +80,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           </SectionContainer>
         </div>
       )}
+
       <SectionContainer>
         <GiftCard></GiftCard>
       </SectionContainer>
@@ -101,8 +103,11 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       <SectionContainer heading="Slik fungerer det" padded>
         <Stepwize steps={frontpage.key_points.map((p: any) => p)} />
       </SectionContainer>
+      <SectionContainer inverted nodivider>
+        <GiveWellStamp></GiveWellStamp>
+      </SectionContainer>
       {frontpage.testimonials && (
-        <SectionContainer heading="Hva folk sier om oss">
+        <SectionContainer heading="Hva folk sier om oss" nodivider>
           <Testimonial testimonies={frontpage.testimonials} />
         </SectionContainer>
       )}
