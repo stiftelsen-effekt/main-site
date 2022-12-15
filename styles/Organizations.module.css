@@ -2,6 +2,14 @@
   border-top: none;
 }
 
+.organizationWrapper h5 {
+  display: none;
+}
+
+.organizationWrapper h4 {
+  display: block;
+}
+
 .organization {
   padding-top: 10px;
   margin-bottom: 80px;
@@ -28,6 +36,14 @@
 }
 
 @media only screen and (max-width: 1180px) {
+  .organizationWrapper h5 {
+    display: block;
+  }
+
+  .organizationWrapper h4 {
+    display: none;
+  }
+
   .grid {
     display: flex;
     flex-direction: column;
