@@ -80,10 +80,6 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           </SectionContainer>
         </div>
       )}
-
-      <SectionContainer>
-        <GiftCard></GiftCard>
-      </SectionContainer>
       <SectionContainer heading="">
         <div className={styles.teasers}>
           {frontpage.teasers.map(

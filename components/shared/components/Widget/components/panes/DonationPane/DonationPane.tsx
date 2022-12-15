@@ -8,6 +8,7 @@ import { RecurringDonation, ShareType } from "../../../types/Enums";
 import { SharesSelection } from "./ShareSelection";
 import {
   ActionBar,
+  GiftCardLink,
   InfoParagraph,
   ShareSelectionWrapper,
   SumButtonsWrapper,
@@ -20,6 +21,7 @@ import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektB
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
+import Link from "next/link";
 
 export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();
@@ -90,6 +92,10 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
               />
             </span>
           </SumWrapper>
+
+          <Link href={"https://gieffektivt.no/gavekort"} target="_blank" passHref>
+            <GiftCardLink target={"_blank"}>Tips: Last ned vår gavekort mal.</GiftCardLink>
+          </Link>
 
           <ShareSelectionWrapper>
             <RadioButtonGroup

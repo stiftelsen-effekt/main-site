@@ -90,5 +90,10 @@ export const InfoParagraph = styled.p`
 `;
 
 export const ShareSelectionWrapper = styled.div`
-  margin-top: 60px;
+  margin-top: 90px;
+`;
+
+export const GiftCardLink = styled.a`
+  position: absolute;
+  margin-top: -15px;
 `;
