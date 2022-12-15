@@ -1,5 +1,6 @@
 .organizationWrapper .organization:first-child {
   border-top: none;
+  padding-top: 10px;
 }
 
 .organizationWrapper h5 {
@@ -11,8 +12,8 @@
 }
 
 .organization {
-  padding-top: 10px;
-  margin-bottom: 80px;
+  padding-top: 6rem;
+  margin-bottom: 60px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 50px;
