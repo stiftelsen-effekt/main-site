@@ -29,6 +29,10 @@
   font-style: normal;
 }
 
+.paragraphwrapper cite sup {
+  line-height: 0;
+}
+
 .paragraphwrapper cite:focus {
   outline: 2px solid var(--primary);
 }
