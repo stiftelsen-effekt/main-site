@@ -93,15 +93,9 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
             </span>
           </SumWrapper>
 
-          <Link
-            href={
-              "https://gieffektivt.no/gavekort"
-            }
-            target="_blank"
-            passHref
-          >
-            <GiftCardLink target={"_blank"}>→ Last ned gavekort</GiftCardLink>
-        </Link>
+          <Link href={"https://gieffektivt.no/gavekort"} target="_blank" passHref>
+            <GiftCardLink target={"_blank"}>Tips: Last ned vår gavekort mal.</GiftCardLink>
+          </Link>
 
           <ShareSelectionWrapper>
             <RadioButtonGroup
