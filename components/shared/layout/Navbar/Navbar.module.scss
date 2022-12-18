@@ -169,6 +169,12 @@
 
   .navbarExpanded .logoWrapper {
     filter: var(--primary-filter) invert(1);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
   }
 
   .navbar ul li {
