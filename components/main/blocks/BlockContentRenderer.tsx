@@ -33,103 +33,110 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
             nodivider={section.nodivider}
             padded={section.padded}
           >
-            {section.blocks.map((block: any) => {
-              switch (block._type) {
-                case "paragraph":
-                  return <Paragraph key={block._key} title={block.title} blocks={block.content} />;
-                case "videoembed":
-                  return <VideoEmbed key={block._key} id={block.url} />;
-                case "pointlist":
-                  return (
-                    <PointListSectionWrapper key={block._key}>
-                      <PointList
-                        points={block.points.map((point: PointListPointProps, i: number) => ({
-                          number: block.numbered ? i + 1 : null,
-                          heading: point.heading,
-                          paragraph: point.paragraph,
-                        }))}
-                      ></PointList>
-                    </PointListSectionWrapper>
-                  );
-                case "links":
-                  return (
-                    <div key={block._key} className={links.linksWrapper}>
-                      <p className="inngress">Les mer:</p>
-                      <Links links={block.links}></Links>
-                    </div>
-                  );
-                case "contactinfo":
-                  return (
-                    <ContactInfo
-                      key={block._key || block._id}
-                      title={block.title}
-                      description={block.description}
-                      phone={block.phone}
-                      email={block.email}
-                    />
-                  );
-                case "questionandanswergroup":
-                  return <QuestionsAndAnswersGroup key={block._key} group={block} />;
-                case "splitview":
-                  return (
-                    <SplitView
-                      key={block._key || block._id}
-                      title={block.title}
-                      swapped={block.swapped}
-                      paragraph={block.paragraph}
-                      link={block.link}
-                      image={block.image}
-                    />
-                  );
-                case "fullimage":
-                  return (
-                    <FullImage key={block._key || block._id} image={block.image} alt={block.alt} />
-                  );
-                case "normalimage":
-                  return (
-                    <NormalImage
-                      key={block._key || block._id}
-                      image={block.image}
-                      alt={block.alt}
-                      grayscale={block.grayscale}
-                      caption={block.caption}
-                    />
-                  );
-                case "fullvideo":
-                  return (
-                    <FullVideo
-                      key={block._key || block._id}
-                      video={block.video.asset}
-                      alt={block.alt}
-                    />
-                  );
-                case "htmlembed":
-                  return (
-                    <HTMLEmbed
-                      key={block._key || block._id}
-                      code={block.htmlcode}
-                      grayscale={block.grayscale}
-                    />
-                  );
-                case "columns":
-                  return <Columns key={block._key || block._id} columns={block.columns} />;
-                case "testimonials":
-                  return (
-                    <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
-                  );
-                case "quote":
-                  return (
-                    <Quote
-                      key={block._key || block._id}
-                      quote={block.quote}
-                      offset={block.offset}
-                      quotationMarks={block.quotation_marks}
-                    />
-                  );
-                default:
-                  return block._type;
-              }
-            })}
+            {section.blocks &&
+              section.blocks.map((block: any) => {
+                switch (block._type) {
+                  case "paragraph":
+                    return (
+                      <Paragraph key={block._key} title={block.title} blocks={block.content} />
+                    );
+                  case "videoembed":
+                    return <VideoEmbed key={block._key} id={block.url} />;
+                  case "pointlist":
+                    return (
+                      <PointListSectionWrapper key={block._key}>
+                        <PointList
+                          points={block.points.map((point: PointListPointProps, i: number) => ({
+                            number: block.numbered ? i + 1 : null,
+                            heading: point.heading,
+                            paragraph: point.paragraph,
+                          }))}
+                        ></PointList>
+                      </PointListSectionWrapper>
+                    );
+                  case "links":
+                    return (
+                      <div key={block._key} className={links.linksWrapper}>
+                        <p className="inngress">Les mer:</p>
+                        <Links links={block.links}></Links>
+                      </div>
+                    );
+                  case "contactinfo":
+                    return (
+                      <ContactInfo
+                        key={block._key || block._id}
+                        title={block.title}
+                        description={block.description}
+                        phone={block.phone}
+                        email={block.email}
+                      />
+                    );
+                  case "questionandanswergroup":
+                    return <QuestionsAndAnswersGroup key={block._key} group={block} />;
+                  case "splitview":
+                    return (
+                      <SplitView
+                        key={block._key || block._id}
+                        title={block.title}
+                        swapped={block.swapped}
+                        paragraph={block.paragraph}
+                        link={block.link}
+                        image={block.image}
+                      />
+                    );
+                  case "fullimage":
+                    return (
+                      <FullImage
+                        key={block._key || block._id}
+                        image={block.image}
+                        alt={block.alt}
+                      />
+                    );
+                  case "normalimage":
+                    return (
+                      <NormalImage
+                        key={block._key || block._id}
+                        image={block.image}
+                        alt={block.alt}
+                        grayscale={block.grayscale}
+                        caption={block.caption}
+                      />
+                    );
+                  case "fullvideo":
+                    return (
+                      <FullVideo
+                        key={block._key || block._id}
+                        video={block.video.asset}
+                        alt={block.alt}
+                      />
+                    );
+                  case "htmlembed":
+                    return (
+                      <HTMLEmbed
+                        key={block._key || block._id}
+                        code={block.htmlcode}
+                        grayscale={block.grayscale}
+                      />
+                    );
+                  case "columns":
+                    return <Columns key={block._key || block._id} columns={block.columns} />;
+                  case "testimonials":
+                    return (
+                      <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
+                    );
+                  case "quote":
+                    return (
+                      <Quote
+                        key={block._key || block._id}
+                        quote={block.quote}
+                        offset={block.offset}
+                        quotationMarks={block.quotation_marks}
+                      />
+                    );
+                  default:
+                    return block._type;
+                }
+              })}
           </SectionContainer>
         ))}
     </>
