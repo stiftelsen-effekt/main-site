@@ -51,7 +51,7 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
       >
         {link.title
           ? `→ ${link.title}`
-          : `${children} ${link._type === "link" && link.newtab ? " ↗" : ""}`}
+          : `${children}${link._type === "link" && link.newtab ? " ↗" : ""}`}
       </a>
     </Link>
   );
