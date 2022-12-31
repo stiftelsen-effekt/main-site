@@ -77,7 +77,8 @@ const DonationsDistributionTable: React.FC<{
         typeof impactdata !== "undefined" &&
         !evaluationvalidating &&
         !impactvalidating) ||
-      donations.length == 0
+      donations.length == 0 ||
+      urls.length == 0
     ) {
       setTimeout(() => setLoadedClass(style.loaded), 50);
     } else {
@@ -91,6 +92,9 @@ const DonationsDistributionTable: React.FC<{
   if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
     mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
     impact = aggregateImpact(aggregated, mappedEvaluations);
+    loading = false;
+  } else if (urls.length == 0) {
+    impact = aggregateImpact(aggregated, []);
     loading = false;
   }
 
