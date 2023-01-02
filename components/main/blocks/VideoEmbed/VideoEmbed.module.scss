@@ -2,9 +2,21 @@
   margin-top: 100px;
   margin-bottom: 50px;
   width: 100%;
+  position: relative;
 }
 
-.videocontainer iframe {
+.videocontainer .thumbnail {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  cursor: pointer;
+  background-color: var(--secondary);
+}
+
+.videoinnercontainer {
   aspect-ratio: 16 / 9;
   width: 100%;
 }

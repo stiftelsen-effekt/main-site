@@ -41,7 +41,9 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       <Paragraph key={block._key} title={block.title} blocks={block.content} />
                     );
                   case "videoembed":
-                    return <VideoEmbed key={block._key} id={block.url} />;
+                    return (
+                      <VideoEmbed key={block._key} id={block.url} thumbnail={block.thumbnail} />
+                    );
                   case "pointlist":
                     return (
                       <PointListSectionWrapper key={block._key}>
