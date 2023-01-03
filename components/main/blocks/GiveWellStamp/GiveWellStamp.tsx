@@ -14,7 +14,7 @@ export const GiveWellStamp: React.FC = () => {
               _type: "link",
               _key: "topplista",
               title: "Topplista",
-              url: "https://giffektivt.no/organizations",
+              url: "https://gieffektivt.no/organizations",
               newtab: true,
             },
             {
