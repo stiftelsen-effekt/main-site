@@ -42,10 +42,10 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
               </div>
               <div className={styles.testimonial__bio}>
                 <p>{quotee}</p>
-                <p className={styles.tesimonial__background}>
+                <div className={styles.tesimonial__background}>
                   {" "}
                   &#x21b3;&nbsp; <PortableText blocks={quotee_background} />
-                </p>
+                </div>
               </div>
             </div>
           ))}
