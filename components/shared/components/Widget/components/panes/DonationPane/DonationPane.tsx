@@ -8,7 +8,6 @@ import { RecurringDonation, ShareType } from "../../../types/Enums";
 import { SharesSelection } from "./ShareSelection";
 import {
   ActionBar,
-  GiftCardLink,
   InfoParagraph,
   ShareSelectionWrapper,
   SumButtonsWrapper,
