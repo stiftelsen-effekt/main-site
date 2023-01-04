@@ -20,7 +20,6 @@ import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
 import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
 import { widgetQuery } from "../_queries";
-import { GiftCard } from "../components/main/blocks/GiftCard/GiftCard";
 import { GiveWellStamp } from "../components/main/blocks/GiveWellStamp/GiveWellStamp";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
