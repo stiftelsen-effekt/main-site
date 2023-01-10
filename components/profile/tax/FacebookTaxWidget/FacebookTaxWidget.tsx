@@ -108,7 +108,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
         </InputFieldWrapper>
 
         <InputFieldWrapper>
-          <label htmlFor="paymentID">Betalings-ID fra Facebook</label>
+          <label htmlFor="paymentID">Betalings-ID fra Facebook eller Instagram</label>
           <TaxInput
             name="paymentID"
             type="number"
