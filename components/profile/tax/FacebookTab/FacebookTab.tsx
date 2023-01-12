@@ -13,7 +13,7 @@ export const FacebookTab: React.FC<{ donor: Donor; description: any[]; links: an
 }) => {
   return (
     <div className={style.container}>
-      <h5>Knytt donasjoner fra Facebook til din profil</h5>
+      <h5>Knytt din donasjon til din profil</h5>
       <div className={style.gridContainer}>
         <section>
           <FacebookTaxWidget email={donor.email} />
