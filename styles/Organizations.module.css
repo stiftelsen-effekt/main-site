@@ -1,22 +1,14 @@
-.organizationWrapper .organization:first-child {
-  padding-top: 0;
-  margin-top: 10px;
+.organizationWrapper .organization:last-child {
+  border-bottom: none;
+  margin-bottom: 1em;
 }
 
-.organizationWrapper .organization:first-child > div {
-  border-top: none;
-  padding-top: 0;
-}
-
-.organizationWrapper .organization:first-child h4 {
+.organizationWrapper .organization h4,
+.organizationWrapper .organization .description > h5 {
   margin-top: 0;
 }
 
-.organizationWrapper .organization:first-child .description .inngress {
-  margin-top: 0;
-}
-
-.organizationWrapper h5 {
+.organizationWrapper .meta h5 {
   display: none;
 }
 
@@ -25,25 +17,19 @@
 }
 
 .organization {
-  margin-bottom: 60px;
-  border-left: 2rem solid var(--primary);
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin-bottom: 6em;
+  padding-bottom: 2em;
+  border-bottom: 1px solid var(--primary);
+  border-left: 2rem solid var(--primary);
 }
 
 .meta {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 1em;
-  margin-left: 2em;
-  border-top: 1px solid var(--primary);
-}
-
-.description {
-  border-top: 1px solid var(--primary);
-  padding-top: 1em;
-  padding-left: 2em;
+  padding: 0 2em;
 }
 
 .intervention {
@@ -60,6 +46,10 @@
     display: block;
   }
 
+  .organizationWrapper .organization .description > h5 {
+    margin-top: 2em;
+  }
+
   .organizationWrapper h4 {
     display: none;
   }
@@ -68,26 +58,18 @@
     display: flex;
     flex-direction: column;
   }
-  .organizationWrapper .organization:first-child {
-    border-top: none;
-  }
 
   .organization {
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;
-    padding-top: 2rem;
     border-left: none;
-    border-top: 1px solid var(--primary);
-  }
-  .meta {
-    border-top: none;
-    margin-left: 0;
   }
 
+  .meta,
   .description {
-    border-top: none;
     padding-left: 0;
+    border-top: none;
   }
   .intervention {
     margin-top: 20px;

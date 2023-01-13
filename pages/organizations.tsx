@@ -63,7 +63,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
                   </div>
                 </div>
                 <div className={styles.description}>
-                  <p className="inngress">{organization.oneliner}</p>
+                  <h5> {organization.oneliner}</h5>
                   <PortableText blocks={organization.content}></PortableText>
 
                   {organization.links && (
