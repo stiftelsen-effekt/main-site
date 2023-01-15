@@ -35,3 +35,9 @@
     padding-top: 260px;
   }
 }
+
+@media print {
+  .container {
+    min-height: 100vh;
+  }
+}
