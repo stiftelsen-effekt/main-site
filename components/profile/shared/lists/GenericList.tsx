@@ -23,6 +23,7 @@ export type Props<T> = {
   rows: ListRow<T>[];
   emptyPlaceholder: JSX.Element;
   expandable?: boolean;
+  children?: ReactElement;
 };
 
 export const GenericList = <T extends unknown>({
@@ -32,6 +33,7 @@ export const GenericList = <T extends unknown>({
   rows,
   emptyPlaceholder,
   expandable,
+  children,
 }: Props<T>) => {
   const hasActions = rows.some((row) => typeof row.contextOptions !== "undefined") || expandable;
 
@@ -39,7 +41,7 @@ export const GenericList = <T extends unknown>({
     <div className={style.gridContainer} key={title} data-cy="generic-list">
       <section className={style.header} data-cy="generic-list-header">
         <h5>{title}</h5>
-        <p>{supplementalInformation}</p>
+        {supplementalInformation}
       </section>
       <section>
         {rows.length > 0 ? (
@@ -64,6 +66,7 @@ export const GenericList = <T extends unknown>({
         ) : (
           emptyPlaceholder
         )}
+        {children}
       </section>
     </div>
   );

@@ -20,6 +20,7 @@ import TaxMenu, { TaxMenuChoices } from "../../components/profile/tax/TaxMenu/Ta
 import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
 import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
 import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
+import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
@@ -57,6 +58,8 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           <TaxMenu selected={menuChoice} onChange={(selected) => setMenuChoice(selected)}></TaxMenu>
 
           {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
+
+          {menuChoice == TaxMenuChoices.YEARLY_REPORTS && <YearlyReportsTab />}
 
           {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
             <FacebookTab

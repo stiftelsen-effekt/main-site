@@ -113,6 +113,25 @@ export type TaxUnit = {
   taxDeductions?: { year: number; sumDonations: number; taxDeduction: number }[];
 };
 
+export type TaxYearlyReport = {
+  year: number;
+  units: TaxYearlyReportUnits[];
+  sumTaxDeductionsByChannel: {
+    channel: "Gi Effektivt" | "EAN Giverpotal";
+    sumTaxDeductions: number;
+  }[];
+  sumTaxDeductions: number;
+};
+
+export type TaxYearlyReportUnits = {
+  id: number;
+  name: string;
+  ssn: string;
+  sumDonations: number;
+  taxDeduction: number;
+  channel: "Gi Effektivt" | "EAN Giverpotal";
+};
+
 export type ImpactCharity = {
   id: number; // Not necessarily the same as the id in the database
   charity_name: string;

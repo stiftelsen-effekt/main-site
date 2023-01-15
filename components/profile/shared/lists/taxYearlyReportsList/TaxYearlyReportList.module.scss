@@ -1,0 +1,48 @@
+.printLink {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.printLink svg {
+  margin-right: 0.5rem;
+}
+
+.printLink span {
+  border-bottom: 1px solid var(--primary);
+}
+
+.summation {
+  margin-top: 10rem;
+}
+
+.summation h5 {
+  margin-bottom: 0.2rem !important;
+}
+
+.summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+  border-top: 1px solid var(--primary);
+  margin-top: 4rem;
+}
+
+.summaryTable tr td {
+  padding-bottom: 0.5rem;
+}
+
+.summaryTable tr td:last-child {
+  text-align: right;
+}
+
+.summaryTable tr:first-child td {
+  padding-top: 0.5rem;
+}
+
+.summaryTable tr:last-child td {
+  border-top: 1px solid var(--primary);
+  padding-top: 0.5rem;
+}

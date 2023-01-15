@@ -225,6 +225,22 @@ export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
   };
 };
 
+export const useYearlyTaxReports = (user: User, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(
+    `/donors/${user["https://gieffektivt.no/user-id"]}/taxreports/`,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const linksSelectorQuery = `
 _type == 'navitem' => @ {
   ...,

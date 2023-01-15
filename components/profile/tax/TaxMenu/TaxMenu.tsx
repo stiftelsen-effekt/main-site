@@ -3,6 +3,7 @@ import style from "./TaxMenu.module.scss";
 
 export enum TaxMenuChoices {
   TAX_UNITS = "Skatteenheter",
+  YEARLY_REPORTS = "Årsoppgaver",
   FACEBOOK_DONATIONS = "Facebook og Instagram",
   ABOUT_TAX_DEDUCTIONS = "Om skattefradrag",
 }
@@ -23,6 +24,12 @@ const TaxMenu: React.FC<{
           onClick={() => onChange(TaxMenuChoices.TAX_UNITS)}
         >
           <button onClick={(e) => e.currentTarget.blur()}>{TaxMenuChoices.TAX_UNITS}</button>
+        </li>
+        <li
+          className={selected == TaxMenuChoices.YEARLY_REPORTS ? style["menu-selected"] : ""}
+          onClick={() => onChange(TaxMenuChoices.YEARLY_REPORTS)}
+        >
+          <button onClick={(e) => e.currentTarget.blur()}>{TaxMenuChoices.YEARLY_REPORTS}</button>
         </li>
         <li
           className={selected == TaxMenuChoices.FACEBOOK_DONATIONS ? style["menu-selected"] : ""}
