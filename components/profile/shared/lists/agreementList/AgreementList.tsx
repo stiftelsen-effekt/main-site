@@ -113,6 +113,7 @@ export const AgreementList: React.FC<{
       headers={headers}
       rows={rows}
       expandable={expandable}
+      proportions={[20, 70]}
     />
   );
 };

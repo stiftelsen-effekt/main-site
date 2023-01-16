@@ -22,6 +22,7 @@ export type Props<T> = {
   supplementalInformation?: string | JSX.Element;
   rows: ListRow<T>[];
   emptyPlaceholder: JSX.Element;
+  proportions: number[];
   expandable?: boolean;
   children?: ReactElement;
 };
@@ -32,15 +33,21 @@ export const GenericList = <T extends unknown>({
   supplementalInformation,
   rows,
   emptyPlaceholder,
+  proportions,
   expandable,
   children,
 }: Props<T>) => {
   const hasActions = rows.some((row) => typeof row.contextOptions !== "undefined") || expandable;
 
   return (
-    <div className={style.gridContainer} key={title} data-cy="generic-list">
+    <div
+      className={style.gridContainer}
+      style={{ gridTemplateColumns: `${proportions.map((p) => p.toString() + "%").join(" ")}` }}
+      key={title}
+      data-cy="generic-list"
+    >
       <section className={style.header} data-cy="generic-list-header">
-        <h5>{title}</h5>
+        <h3>{title}</h3>
         {supplementalInformation}
       </section>
       <section>

@@ -99,6 +99,7 @@ export const DonationList: React.FC<{
       rows={rows}
       emptyPlaceholder={emptyPlaceholder}
       expandable={true}
+      proportions={[20, 70]}
     />
   );
 };

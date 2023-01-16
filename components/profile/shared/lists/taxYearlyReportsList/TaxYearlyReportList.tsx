@@ -1,12 +1,20 @@
 import { FileText } from "react-feather";
-import { TaxYearlyReport, TaxYearlyReportUnits } from "../../../../../models";
+import {
+  Distribution,
+  Donation,
+  TaxYearlyReport,
+  TaxYearlyReportUnits,
+} from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
+import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
 import { GenericList, ListRow } from "../GenericList";
 import style from "./TaxYearlyReportList.module.scss";
 
 export const TaxYearlyReportList: React.FC<{
   report: TaxYearlyReport;
-}> = ({ report }) => {
+  donations: Donation[];
+  distribtionMap: Map<string, Distribution>;
+}> = ({ report, donations, distribtionMap }) => {
   const headers = [
     { label: "Skatteenhet", width: "20%" },
     { label: "Enhetsnummer", width: "20%" },
@@ -36,8 +44,14 @@ export const TaxYearlyReportList: React.FC<{
         <FileText size={"1rem"} />
         <span>Skriv ut</span>
       </div>
+      <div className={style.impactWrapper}>
+        <DonationsDistributionTable
+          donations={donations}
+          distributionMap={distribtionMap}
+        ></DonationsDistributionTable>
+      </div>
       <div className={style.summation}>
-        <h5>{thousandize(report.sumTaxDeductions)} kr</h5>
+        <h3>{thousandize(report.sumTaxDeductions)} kr</h3>
         <span>Totalt sum donert i 2022 som er skattefradragsgodkjent</span>
       </div>
     </>
@@ -51,6 +65,7 @@ export const TaxYearlyReportList: React.FC<{
       emptyPlaceholder={emptyPlaceholder}
       expandable={false}
       supplementalInformation={supplementalInformation}
+      proportions={[30, 60]}
     >
       <table className={style.summaryTable}>
         <tbody>

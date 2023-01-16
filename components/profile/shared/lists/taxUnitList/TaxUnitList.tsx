@@ -112,6 +112,7 @@ export const TaxUnitList: React.FC<{
         rows={rows}
         emptyPlaceholder={emptyPlaceholder}
         expandable={false}
+        proportions={[30, 60]}
       />
       {editModalOpen && selectedTaxUnit && (
         <TaxUnitEditModal

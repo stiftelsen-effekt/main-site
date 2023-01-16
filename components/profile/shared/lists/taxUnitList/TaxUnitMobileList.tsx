@@ -70,6 +70,7 @@ export const TaxUnitMobileList: React.FC<{
         rows={rows}
         emptyPlaceholder={emptyPlaceholder}
         expandable={true}
+        proportions={[30, 60]}
       />
       {editModalOpen && selectedTaxUnit && (
         <TaxUnitEditModal
