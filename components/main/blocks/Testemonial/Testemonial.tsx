@@ -64,6 +64,22 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
           <div>→</div>
         </button>
       )}
+      {testimonies.length > 1 && (
+        <div className={styles.testimonial__dots}>
+          {testimonies.map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.testimonial__dot} ${
+                currentTestimony === i ? styles.testimonial__dot__active : ""
+              }`}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.currentTarget.blur();
+                setCurrentTestimony(i);
+              }}
+            ></button>
+          ))}
+        </div>
+      )}
     </section>
   );
 };
