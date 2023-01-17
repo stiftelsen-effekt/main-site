@@ -4,6 +4,7 @@
     alt="Gi Effektivt logo"
     width="340" />
 </p>
+:) 
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=main-site-qeprf4g0x-effective-altruism-norway)](https://gieffektivt.no)
 [![Main site](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/wfkg9n&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/wfkg9n/runs)
