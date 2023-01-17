@@ -5,11 +5,11 @@
       "headers": [
         {
           "key": "Report-To",
-          "value": "{\\\"group\\\":\\\"default\\\",\\\"max_age\\\":10886400,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://q5rxg34t.uriports.com/reports\\\"}],\\\"include_subdomains\\\":true}"
+          "value": "{\"group\":\"default\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"https://q5rxg34t.uriports.com/reports\"}],\"include_subdomains\":true}"
         },
         {
           "key": "NEL",
-          "value": "{\\\"report_to\\\":\\\"default\\\",\\\"max_age\\\":2592000,\\\"include_subdomains\\\":true,\\\"failure_fraction\\\":1.0}"
+          "value": "{\"report_to\":\"default\",\"max_age\":2592000,\"include_subdomains\":true,\"failure_fraction\":1.0}"
         },
         {
           "key": "Content-Security-Policy-Report-Only",
@@ -17,7 +17,7 @@
         },
         {
           "key": "Expect-CT",
-          "value": "max-age=86400,report-uri=\\\"https://q5rxg34t.uriports.com/reports/report\\\""
+          "value": "max-age=86400,report-uri=\"https://q5rxg34t.uriports.com/reports/report\""
         },
         {
           "key": "Permissions-Policy",
