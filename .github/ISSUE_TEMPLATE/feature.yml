@@ -15,9 +15,8 @@ body:
     id: description
     attributes:
       label: Description 
-      description: What is the intended change?
+      description: What is the intended change? Framing this as a user story might be helpfull. E.g. [as a user I want to be able to get a readout of my yearly tax deductible donations, so that I feel confident that the correct amount is reported]
       placeholder: Tell us what you want to see!
-      Tip: Framing this as a user story might be helpfull. E.g. [as a user I want to be able to get a readout of my yearly tax deductible donations, so that I feel confident that the correct amount is reported]
     validations:
       required: true
   - type: input
