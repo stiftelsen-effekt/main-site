@@ -19,6 +19,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@portabletext/react": "^2.0.0",
     "@sanity/cli": "^2.30.0",
+    "@sentry/nextjs": "^7.31.0",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
     "auth0": "^2.40.0",
     "auth0-js": "^9.19.0",
