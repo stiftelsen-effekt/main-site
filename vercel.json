@@ -12,10 +12,6 @@
           "value": "{\"report_to\":\"default\",\"max_age\":2592000,\"include_subdomains\":true,\"failure_fraction\":1.0}"
         },
         {
-          "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src 'self'; script-src 'report-sample' 'self' https://www.googletagmanager.com/gtag/js https://www.youtube.com/iframe_api; style-src 'report-sample' 'self'; object-src 'none'; base-uri 'self'; connect-src 'self' https://data.gieffektivt.no https://impact.gieffektivt.no https://region1.google-analytics.com https://o4504519113244672.ingest.sentry.io; font-src 'self'; frame-src 'self' https://www.youtube.com; img-src 'self' data: https://cdn.sanity.io https://i.ytimg.com https://www.googletagmanager.com; manifest-src 'self'; media-src 'self'; report-uri https://q5rxg34t.uriports.com/reports/report; report-to default"
-        },
-        {
           "key": "Expect-CT",
           "value": "max-age=86400,report-uri=\"https://q5rxg34t.uriports.com/reports/report\""
         },
