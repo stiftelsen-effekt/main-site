@@ -94,6 +94,36 @@ table tr .detailRowCell {
   width: 100%;
 }
 
+table tr td .cellTooltip {
+  display: inline-block;
+  cursor: pointer;
+}
+
+table tr td .cellTooltip:hover {
+  text-decoration: underline;
+}
+
+table tr td .cellTooltip .cellTooltipContent {
+  display: none;
+}
+
+table tr td .cellTooltip:hover .cellTooltipContent {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: -60px;
+  left: -5vw;
+  background: var(--primary);
+  color: var(--secondary);
+  width: calc(100% + 10vw);
+  padding: 0.6rem 5vw;
+  font-size: 0.8rem;
+}
+
+table tr td .cellTooltip:hover .cellTooltipContent svg {
+  margin-right: 0.5rem;
+}
+
 .expanderContent {
   width: 100%;
   position: absolute;
@@ -156,6 +186,12 @@ table tr .detailRowCell {
 
 .contextDropdownItem:hover {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  table tr td .cellTooltip:hover .cellTooltipContent {
+    top: -30px;
+  }
 }
 
 @media only screen and (max-width: 1180px) {

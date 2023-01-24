@@ -116,10 +116,18 @@ export type TaxUnit = {
 export type TaxYearlyReport = {
   year: number;
   units: TaxYearlyReportUnits[];
-  sumTaxDeductionsByChannel: {
-    channel: "Gi Effektivt" | "EAN Giverpotal";
-    sumTaxDeductions: number;
-  }[];
+  sumDonationsWithoutTaxUnitByChannel: TaxYearlyReportMissingTaxUnitDonations[];
+  sumTaxDeductionsByChannel: TaxYearlyReportChannelDeductions[];
+  sumTaxDeductions: number;
+};
+
+export type TaxYearlyReportMissingTaxUnitDonations = {
+  channel: "Gi Effektivt" | "EAN Giverpotal";
+  sumDonationsWithoutTaxUnit: number;
+};
+
+export type TaxYearlyReportChannelDeductions = {
+  channel: "Gi Effektivt" | "EAN Giverpotal";
   sumTaxDeductions: number;
 };
 

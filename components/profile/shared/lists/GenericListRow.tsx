@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import style from "./Lists.module.scss";
-import { ListRow } from "./GenericList";
-import { ChevronDown, MoreHorizontal } from "react-feather";
+import { ChevronDown, Info, MoreHorizontal } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import {
   GenericListContextMenu,
@@ -10,6 +9,22 @@ import {
 } from "./GenericListContextMenu";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { useInView } from "react-hook-inview";
+
+export type ListRowCell = {
+  value: string;
+  tooltip?: string;
+  align?: "left" | "right";
+};
+
+export type ListRow<T> = {
+  id: string;
+  defaultExpanded: boolean;
+  cells: ListRowCell[];
+  details?: ReactElement;
+  contextOptions?: GenericListContextMenuOptions;
+  onContextSelect?: GenericListContextMenuSelect<T>;
+  element: T;
+};
 
 type Props<T> = {
   row: ListRow<T>;
@@ -83,8 +98,19 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
         data-cy="generic-list-row-expand"
         className={expandable ? style.expandableRow : ""}
       >
-        {row.cells.map((val, i) => (
-          <td key={i}>{val}</td>
+        {row.cells.map((cell: ListRowCell, i: number) => (
+          <td key={i}>
+            {cell.value}
+            {cell.tooltip ? (
+              <div className={style.cellTooltip}>
+                <div className={style.cellTooltipContent}>
+                  <Info size={"1rem"} />
+                  {cell.tooltip}
+                </div>
+                <Info size={"1rem"} />
+              </div>
+            ) : null}
+          </td>
         ))}
         <td className={style.rowAction}>{actions.map((action, i) => action)}</td>
       </tr>

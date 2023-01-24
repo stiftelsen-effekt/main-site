@@ -4,7 +4,8 @@ import { TaxUnit } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
 import { TaxUnitDeleteModal } from "../../TaxUnitModal/TaxUnitDeleteModal";
 import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
-import { GenericList, ListRow } from "../GenericList";
+import { GenericList } from "../GenericList";
+import { ListRow } from "../GenericListRow";
 
 export const TaxUnitList: React.FC<{
   taxUnits: TaxUnit[];
@@ -57,16 +58,19 @@ export const TaxUnitList: React.FC<{
       id: unit.id.toString(),
       defaultExpanded: false,
       cells: [
-        unit.ssn,
-        thousandize(Math.round(unit.numDonations)),
-        thousandize(Math.round(unit.sumDonations)) + " kr",
-        thousandize(
-          Math.round(
-            unit.taxDeductions
-              ? unit.taxDeductions.reduce((acc, deduction) => acc + deduction.taxDeduction, 0)
-              : 0,
-          ),
-        ) + " kr",
+        { value: unit.ssn },
+        { value: thousandize(Math.round(unit.numDonations)) },
+        { value: thousandize(Math.round(unit.sumDonations)) + " kr" },
+        {
+          value:
+            thousandize(
+              Math.round(
+                unit.taxDeductions
+                  ? unit.taxDeductions.reduce((acc, deduction) => acc + deduction.taxDeduction, 0)
+                  : 0,
+              ),
+            ) + " kr",
+        },
       ],
       contextOptions: [
         {
@@ -78,7 +82,7 @@ export const TaxUnitList: React.FC<{
           icon: <Trash2 size={16} />,
         },
       ],
-      onContextSelect: (option, element) => {
+      onContextSelect: (option: string, element: TaxUnit) => {
         switch (option) {
           case "Endre":
             setSelectedTaxUnit(element);

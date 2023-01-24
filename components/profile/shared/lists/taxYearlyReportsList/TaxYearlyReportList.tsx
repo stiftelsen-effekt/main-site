@@ -3,11 +3,13 @@ import {
   Distribution,
   Donation,
   TaxYearlyReport,
+  TaxYearlyReportMissingTaxUnitDonations,
   TaxYearlyReportUnits,
 } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
 import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
-import { GenericList, ListRow } from "../GenericList";
+import { GenericList } from "../GenericList";
+import { ListRow } from "../GenericListRow";
 import style from "./TaxYearlyReportList.module.scss";
 
 export const TaxYearlyReportList: React.FC<{
@@ -23,18 +25,38 @@ export const TaxYearlyReportList: React.FC<{
     { label: "Sum donasjoner", width: "20%" },
   ];
 
-  const rows: ListRow<TaxYearlyReportUnits>[] = report.units.map((unit) => ({
+  const rowsMissingTaxUnits = report.sumDonationsWithoutTaxUnitByChannel
+    .filter((missing) => missing.sumDonationsWithoutTaxUnit > 0)
+    .map((missing: TaxYearlyReportMissingTaxUnitDonations) => ({
+      id: missing.channel,
+      defaultExpanded: false,
+      cells: [
+        { value: "", tooltip: "Mangler skatteenhet" },
+        { value: "-" },
+        { value: missing.channel },
+        { value: "-" },
+        { value: thousandize(Math.round(missing.sumDonationsWithoutTaxUnit)) + " kr" },
+      ],
+      element: missing,
+    }));
+
+  const rowsUnits = report.units.map((unit) => ({
     id: unit.id + unit.channel,
     defaultExpanded: false,
     cells: [
-      unit.name,
-      unit.ssn,
-      unit.channel,
-      thousandize(Math.round(unit.taxDeduction)) + " kr",
-      thousandize(Math.round(unit.sumDonations)) + " kr",
+      { value: unit.name },
+      { value: unit.ssn },
+      { value: unit.channel },
+      { value: thousandize(Math.round(unit.taxDeduction)) + " kr" },
+      { value: thousandize(Math.round(unit.sumDonations)) + " kr" },
     ],
     element: unit,
   }));
+
+  const rows: ListRow<TaxYearlyReportUnits | TaxYearlyReportMissingTaxUnitDonations>[] = [
+    ...rowsMissingTaxUnits,
+    ...rowsUnits,
+  ];
 
   const emptyPlaceholder = <div>EMPTY PLACEHOLDER</div>;
 
