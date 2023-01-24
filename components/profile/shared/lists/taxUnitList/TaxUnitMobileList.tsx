@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Edit2, Trash2 } from "react-feather";
 import { TaxUnit } from "../../../../../models";
-import { thousandize } from "../../../../../util/formatting";
 import { TaxUnitDeleteModal } from "../../TaxUnitModal/TaxUnitDeleteModal";
 import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
-import { GenericList, ListRow } from "../GenericList";
+import { GenericList } from "../GenericList";
+import { ListRow } from "../GenericListRow";
 import { TaxUnitMobileDetails } from "./TaxUnitMobileDetails";
 
 export const TaxUnitMobileList: React.FC<{
@@ -26,7 +26,7 @@ export const TaxUnitMobileList: React.FC<{
   const rows: ListRow<TaxUnit>[] = taxUnits.map((unit) => ({
     id: unit.id.toString(),
     defaultExpanded: false,
-    cells: [unit.name, unit.ssn],
+    cells: [{ value: unit.name }, { value: unit.ssn }],
     contextOptions: [
       {
         label: "Endre",
