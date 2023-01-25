@@ -31,7 +31,14 @@ export const TaxYearlyReportList: React.FC<{
       id: missing.channel,
       defaultExpanded: false,
       cells: [
-        { value: "", tooltip: "Mangler skatteenhet" },
+        {
+          value: "",
+          tooltip: `Mangler skatteenhet. ${
+            report.units.length == 0
+              ? "Om du ikke har noen skatteenheter registrert kan du registrere en og alle donasjoner vil knyttes til den."
+              : "Har du mer enn en skatteenhet kan du kontakte oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."
+          }`,
+        },
         { value: "-" },
         { value: missing.channel },
         { value: "-" },
