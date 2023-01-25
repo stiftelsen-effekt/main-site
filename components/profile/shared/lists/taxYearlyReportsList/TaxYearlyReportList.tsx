@@ -76,6 +76,16 @@ export const TaxYearlyReportList: React.FC<{
         <h3>{thousandize(report.sumTaxDeductions)} kr</h3>
         <span>Totalt sum donert i 2022 som er skattefradragsgodkjent</span>
       </div>
+      <div className={style.taxMessageInfo}>
+        <span>
+          Beløpet vil være registrert i skattemeldingen når du får den (Gave og arv → Gave til
+          frivillige organisasjoner).
+        </span>
+      </div>
+      <div className={style.orgInfo}>
+        <strong>Effektiv Altruisme Norge</strong>
+        <span> Org.nr 919 809 140</span>
+      </div>
     </>
   );
 
