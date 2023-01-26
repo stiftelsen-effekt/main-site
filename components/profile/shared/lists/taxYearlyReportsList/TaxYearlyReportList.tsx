@@ -35,8 +35,8 @@ export const TaxYearlyReportList: React.FC<{
           value: "",
           tooltip: `Mangler skatteenhet. ${
             report.units.length == 0
-              ? "Om du ikke har noen skatteenheter registrert kan du registrere en og alle donasjoner vil knyttes til den."
-              : "Har du mer enn en skatteenhet kan du kontakte oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."
+              ? "Registrer en skatteenhet i fanen til venstre i menyen og alle donasjoner vil knyttes til den."
+              : "Du har allerede en eller flere skatteenheter, kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."
           }`,
         },
         { value: "-" },
@@ -106,20 +106,40 @@ export const TaxYearlyReportList: React.FC<{
       supplementalInformation={supplementalInformation}
       proportions={[30, 60]}
     >
-      <table className={style.summaryTable}>
-        <tbody>
-          {report.sumTaxDeductionsByChannel.map((channel) => (
-            <tr key={channel.channel}>
-              <td>{channel.channel}</td>
-              <td>{thousandize(channel.sumTaxDeductions)} kr</td>
+      <>
+        <table className={style.summaryTable}>
+          <tbody>
+            {report.sumTaxDeductionsByChannel.map((channel) => (
+              <tr key={channel.channel}>
+                <td>{channel.channel}</td>
+                <td>{thousandize(channel.sumTaxDeductions)} kr</td>
+              </tr>
+            ))}
+            <tr>
+              <td>Totalt</td>
+              <td>{thousandize(report.sumTaxDeductions)} kr</td>
             </tr>
-          ))}
-          <tr>
-            <td>Totalt</td>
-            <td>{thousandize(report.sumTaxDeductions)} kr</td>
-          </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+
+        {report.sumNonDeductibleDonationsByType.length > 0 && (
+          <table className={style.nonDeductibleDonationsTable}>
+            <thead>
+              <tr>
+                <th colSpan={2}>Donasjoner som ikke er fradragsgodkjente</th>
+              </tr>
+            </thead>
+            <tbody>
+              {report.sumNonDeductibleDonationsByType.map((nondeductible) => (
+                <tr key={nondeductible.type}>
+                  <td>{nondeductible.type}</td>
+                  <td>{thousandize(nondeductible.sumNonDeductibleDonations)} kr</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </>
     </GenericList>
   );
 };
