@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { Book, Briefcase, DollarSign, Filter, HelpCircle, Paperclip, Phone, Settings, User, Users, Zap } from 'react-feather'
+import { Book, Bookmark, Briefcase, DollarSign, Filter, HelpCircle, Paperclip, Phone, Settings, User, Users, Zap } from 'react-feather'
 import Iframe from 'sanity-plugin-iframe-pane'
 import resolveProductionUrl from './resolveProductionUrl'
 
@@ -101,13 +101,9 @@ export default () =>
                   .title('Preview'),
                 ])
               ),
-            S.listItem()
-              .title('Profile')
-              .icon(User)
-              .child(S.document().schemaType('profile').documentId('profile')),
-            S.divider(),
           ])
         ),
+
       S.listItem()
         .schemaType('generic_page')
         .title('Generic pages')
@@ -154,6 +150,38 @@ export default () =>
                   .title('Preview'),
                 ]))
         ),
+        S.listItem()
+        .title("Profile pages")
+        .icon(Book)
+        .child(
+          S.list()
+            .title("Profile pages")
+            .items([
+              S.listItem()
+              .title("Profile details")
+              .icon(User)
+              .child(
+                S.document()
+                  .schemaType("profile")
+                  .documentId("profile")
+              ),
+              S.listItem()
+              .title("Tax")
+              .icon(DollarSign)
+              .child(
+                S.document()
+                  .schemaType("tax")
+                  .documentId("tax")
+              ),
+            ])
+      ),
+      S.listItem()
+            .title('Bibliography')
+            .schemaType('citation')
+            .icon(Bookmark)
+            .child(
+              S.documentTypeList("citation")
+                .title("Entries")),
       S.listItem()
         .schemaType('donationwidget')
         .title('Donation widget')

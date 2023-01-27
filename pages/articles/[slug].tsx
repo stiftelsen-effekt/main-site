@@ -30,10 +30,12 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
     <>
       <SEO
         title={header.seoTitle || header.title}
-        titleTemplate={"%s | GiEffektivt."}
+        titleTemplate={"%s | Gi Effektivt."}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/articles/${page.slug.current}`}
+        canonicalurl={
+          header.cannonicalUrl ?? `https://gieffektivt.no/articles/${page.slug.current}`
+        }
       />
 
       <MainHeader hideOnScroll={true}>

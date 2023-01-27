@@ -20,6 +20,7 @@ import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektB
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
+import Link from "next/link";
 
 export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
                   type={EffektButtonType.SECONDARY}
                   selected={donation.sum === suggested.amount}
                   onClick={() => dispatch(setSum(suggested.amount))}
+                  noMinWidth={true}
                 >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
                 {suggested.subtext && <i>{suggested.subtext}</i>}
               </div>

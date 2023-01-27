@@ -10,6 +10,11 @@ export default {
       name: 'url',
       type: 'string',
       title: 'Youtube url'
+    },
+    {
+      name: 'thumbnail', 
+      type: 'image',
+      title: 'Thumbnail',
     }
   ]
 }

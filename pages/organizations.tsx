@@ -51,7 +51,9 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
               >
                 <div className={styles.meta}>
                   <div>
-                    <p className="inngress">{organization.name}</p>
+                    <h4>{organization.name}</h4>
+                    <h5>{organization.name}</h5>
+
                     <p className="inngress">{organization.subtitle}</p>
                   </div>
                   <div className={styles.intervention}>

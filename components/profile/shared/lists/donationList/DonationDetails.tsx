@@ -2,7 +2,7 @@ import React from "react";
 import style from "./DonationDetails.module.scss";
 import { Distribution, Donation } from "../../../../../models";
 import DonationImpact from "../../../donations/DonationImpact/DonationImpact";
-import { Dictionary } from "cypress/types/lodash";
+import { mapNameToOrgAbbriv } from "../../../../../util/mappings";
 
 export const DonationDetails: React.FC<{
   sum: string;
@@ -10,7 +10,10 @@ export const DonationDetails: React.FC<{
   distribution: Distribution;
   timestamp: Date;
 }> = ({ sum, donation, distribution, timestamp }) => {
-  const mappedDistribution = distribution.organizations.map((org) => ({
+  if (!distribution)
+    return <span>Ingen distribusjon funnet for donasjon med KID {donation.KID}</span>;
+
+  const mappedDistribution = distribution.shares.map((org) => ({
     org: mapNameToOrgAbbriv(org.name) || org.name,
     sum: parseFloat(sum) * (parseFloat(org.share) / 100),
   }));
@@ -43,24 +46,4 @@ export const DonationDetails: React.FC<{
       </div>
     </div>
   );
-};
-
-const mapNameToOrgAbbriv = (name: string): string => {
-  const map = {
-    "Against Malaria Foundation": "AMF",
-    "SCI Foundation": "SCI",
-    GiveDirectly: "GD",
-    "GiveDirectly Borgerlønn": "GD",
-    "Helen Keller International": "HKI",
-    "New Incentives": "NI",
-    "The End Fund": "END",
-    "Deworm the World": "DTW",
-    Sightsavers: "SS",
-    Drift: "Drift",
-    "GiveWell Top Charities Fund": "GiveWell",
-    "Malaria Consortium": "MC",
-    "Project Healthy Children": "PHC",
-    "Drift av Gi Effektivt": "Drift",
-  };
-  return (map as Dictionary<string>)[name];
 };

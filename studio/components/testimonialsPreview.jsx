@@ -3,7 +3,12 @@ import { Text, Flex, Grid, Box, Stack } from '@sanity/ui'
 import { MessageCircle } from 'react-feather'
 
 export const TestimonialsPreview = React.forwardRef((props, ref) => {
+  if (!props.value) {
+    return <Text muted size={1}>No testimonials</Text>
+  }
+
   const testimonials = props.value.testimonials
+
 
   return <Flex direction={'row'} align={'center'}>
     <Box style={{ flexShrink: 0 }}>

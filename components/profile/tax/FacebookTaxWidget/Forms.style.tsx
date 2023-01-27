@@ -24,9 +24,9 @@ export const TaxInput = styled.input`
   background: none;
   border: 1px solid var(--primary);
   color: var(--primary);
-  padding: 14px 22px;
+  padding: 0.5em 1.2em;
   border-radius: 45px;
-  font-size: 100%;
+  font-size: 1em;
 `;
 
 export const TextField = styled.input`
@@ -91,7 +91,7 @@ export const LoadingButtonSpinner = styled(Spinner)`
   height: 20px;
   width: 20px;
   position: relative;
-  top: -6px;
+  top: -10px;
   left: -10px;
   transform-origin: center center;
   mix-blend-mode: difference;
@@ -99,4 +99,7 @@ export const LoadingButtonSpinner = styled(Spinner)`
 
 export const SubmitButton = styled(EffektButton)`
   min-width: 160px;
+  max-width: 160px;
+  min-height: 37.5px
+  align-self: flex-end;
 `;

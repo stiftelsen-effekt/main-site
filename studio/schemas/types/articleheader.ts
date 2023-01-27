@@ -31,5 +31,6 @@ export default {
     {name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo'},
     {name: 'seoDescription', title: 'SEO description', type: 'text', rows: 3, group: 'seo'},
     {name: 'seoImage', title: 'SEO Image', type: 'image', group: 'seo'},
+    {name: 'cannonicalUrl', title: 'Cannonical URL', type: 'url', group: 'seo'}
   ]
 }

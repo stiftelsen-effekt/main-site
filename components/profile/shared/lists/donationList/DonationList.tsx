@@ -1,5 +1,5 @@
 import { Distribution, Donation, META_OWNER } from "../../../../../models";
-import { shortDate, thousandize } from "../../../../../util/formatting";
+import { onlyDate, shortDate, thousandize } from "../../../../../util/formatting";
 import { GenericList, ListRow } from "../GenericList";
 import { DonationDetails } from "./DonationDetails";
 
@@ -7,38 +7,69 @@ export const DonationList: React.FC<{
   donations: Donation[];
   distributions: Map<string, Distribution>;
   year: string;
-}> = ({ donations, distributions, year }) => {
-  let taxEligableSum = donations
-    .filter((d) => d.metaOwnerId === META_OWNER.EAN || d.metaOwnerId === META_OWNER.EFFEKTANDEAN)
-    .reduce((acc, curr) => acc + parseFloat(curr.sum), 0);
-
-  taxEligableSum = Math.min(taxEligableSum, year === "2022" ? 25000 : 50000);
-
+  firstOpen: boolean;
+}> = ({ donations, distributions, year, firstOpen }) => {
   let taxDeductionText: JSX.Element | undefined = undefined;
 
-  if (taxEligableSum > 500 && parseInt(year) >= 2019) {
-    const taxDeductions = Math.round(taxEligableSum * 0.22);
+  let taxDeductions = 0;
+  let processedUnits = new Set<number>();
+  distributions.forEach((el) => {
+    // Get all unique tax units by id
+    if (typeof el.taxUnit !== "undefined") {
+      if (el.taxUnit?.archived == null && typeof el.taxUnit?.taxDeductions !== "undefined") {
+        if (!processedUnits.has(el.taxUnit.id)) {
+          el.taxUnit?.taxDeductions.forEach((deduction) => {
+            if (deduction.year === parseInt(year)) {
+              taxDeductions += deduction.taxDeduction;
+            }
+          });
+          processedUnits.add(el.taxUnit.id);
+        }
+      }
+    }
+  });
+  if (taxDeductions > 0) {
     taxDeductionText = (
       <span>
-        {`Dine donasjoner i ${year} ${
-          year === new Date().getFullYear().toString() ? "kvalifiserer deg for" : "ga deg"
+        {`I ${year} ${
+          year === new Date().getFullYear().toString()
+            ? "får du skattefradrag som kvalifiserer deg for"
+            : "fikk du skattefradrag som kvalifiserte deg for"
         }`}{" "}
-        <span style={{ whiteSpace: "nowrap" }}>{thousandize(taxDeductions)}</span> kroner i
-        skattefradrag
+        <span style={{ whiteSpace: "nowrap" }}>
+          {thousandize(Math.round(taxDeductions * 0.22))}
+        </span>{" "}
+        kroner mindre i skatt
       </span>
     );
   }
 
-  const headers = ["Dato", "Sum", "Betalingskanal", "KID"];
+  const headers = [
+    {
+      label: "Dato",
+      width: "25%",
+    },
+    {
+      label: "Sum",
+      width: "25%",
+    },
+    {
+      label: "Betalingskanal",
+      width: "25%",
+    },
+    {
+      label: "KID",
+    },
+  ];
 
-  const rows: ListRow[] = donations.map((donation, index) => {
+  const rows: ListRow<Donation>[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
-      defaultExpanded: index === 0 ? true : false,
+      defaultExpanded: firstOpen && index === 0 ? true : false,
       cells: [
-        shortDate(donation.timestamp),
+        onlyDate(donation.timestamp),
         thousandize(Math.round(parseFloat(donation.sum))) + " kr",
-        donation.paymentMethod,
+        mapPaymentMethodString(donation.paymentMethod),
         donation.KID,
       ],
       details: (
@@ -46,10 +77,11 @@ export const DonationList: React.FC<{
           key={donation.id}
           donation={donation}
           sum={donation.sum}
-          distribution={distributions.get(donation.KID) as Distribution}
+          distribution={distributions.get(donation.KID.trim()) as Distribution}
           timestamp={new Date(donation.timestamp)}
         />
       ),
+      element: donation,
     };
   });
 
@@ -70,6 +102,20 @@ export const DonationList: React.FC<{
       headers={headers}
       rows={rows}
       emptyPlaceholder={emptyPlaceholder}
+      expandable={true}
     />
   );
+};
+
+const mapPaymentMethodString = (paymentMethod: string): string => {
+  switch (paymentMethod) {
+    case "Vipps Recurring":
+      return "Vippsavtale";
+    case "Vipps KID":
+      return "Vipps";
+    case "Bank u/KID":
+      return "Bank";
+    default:
+      return paymentMethod;
+  }
 };

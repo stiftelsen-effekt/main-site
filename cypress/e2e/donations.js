@@ -50,66 +50,69 @@ describe("Donations page", () => {
       })
       .as("getDistribution");
 
-    cy.fixture("evaluations").then((evaluations) => {
-      cy.intercept(
-        "GET",
-        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=AMF&currency=NOK&language=NO&*",
-        {
-          statusCode: 200,
-          body: evaluations.AMF,
+    cy.fixture("organizations").then((orgs) => {
+      cy.intercept("GET", "/organizations/active", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: orgs,
         },
-      ).as("getAMFEvaluations");
-      cy.intercept(
-        "GET",
-        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=GD&currency=NOK&language=NO&*",
-        {
-          statusCode: 200,
-          body: evaluations.GD,
-        },
-      ).as("getGDEvaluations");
-      cy.intercept(
-        "GET",
-        "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=NI&currency=NOK&language=NO&*",
-        {
-          statusCode: 200,
-          body: evaluations.NI,
-        },
-      ).as("getNIEvaluations");
-
-      cy.fixture("grants")
-        .then((grants) => {
-          cy.intercept(
-            "GET",
-            "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
-            {
-              statusCode: 200,
-              body: grants,
-            },
-          );
-        })
-        .as("getGrants");
-
-      cy.visit(`/profile/`);
-
-      /**
-       * Wait for initial data load
-       */
-      cy.wait(
-        [
-          "@getDonor",
-          "@getDonations",
-          "@getAggregated",
-          "@getDistribution",
-          "@getGrants",
-          "@getNIEvaluations",
-          "@getGDEvaluations",
-          "@getAMFEvaluations",
-        ],
-        {
-          timeout: 30000,
-        },
-      );
+      }).as("getOrganizations");
     });
+
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
+
+    cy.visit(`/profile/`);
+
+    /**
+     * Wait for initial data load
+     */
+    cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution"], {
+      timeout: 30000,
+    });
+  });
+
+  beforeEach(() => {
+    cy.fixture(`evaluations/evaluations.json`)
+      .then((evaluations) => {
+        cy.intercept(
+          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=NOK&language=NO&donation_year=*&donation_month=*",
+          (req) => {
+            const [, abbriv, year, month] = req.url.match(
+              /.*abbreviation=(.*)\&currency.*year=(\d{4}).*month=(\d{1,2})/,
+            );
+            const filename = `${year}-${month}-${abbriv}`;
+            if (evaluations[filename]) {
+              req.reply(evaluations[filename]);
+            } else {
+              req.reply({ evaluations: [] });
+            }
+          },
+        ).as("getEvaluations");
+      })
+      .as("evaluationFixture");
+
+    cy.fixture("grants")
+      .then((grants) => {
+        cy.intercept(
+          "GET",
+          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
+          {
+            statusCode: 200,
+            body: grants,
+          },
+        );
+      })
+      .as("getGrants");
+    cy.wait(3000);
   });
 
   it("Should display a menu for selection donation year", () => {
@@ -143,7 +146,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "22.04 2022");
+      .should("contain.text", "22.04");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
@@ -153,7 +156,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "Bank u/KID");
+      .should("contain.text", "Bank");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
@@ -161,20 +164,21 @@ describe("Donations page", () => {
       .should("contain.text", "32245953");
   });
 
-  it("Should display a total distribution table", () => {
-    cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 9);
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+  it("Should display a donation aggregate impact table", () => {
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 6);
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "Against Malaria Foundation");
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+      .should("contain.text", "307");
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "623 060 kr");
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+      .should("contain.text", "A-vitamintilskudd");
+
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "The End Fund");
-    cy.get("[data-cy=aggregated-distribution-table] table tr")
+      .should("contain.text", "12");
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "5 kr");
+      .should("contain.text", "vaksinasjoner");
   });
 
   it("Should display a donation sum field", () => {
@@ -185,7 +189,7 @@ describe("Donations page", () => {
   it("Should be possible to filter by year", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
 
-    cy.get("[data-cy=aggregated-distribution-table] table tr").should("have.length", 4);
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 5);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
   });
@@ -202,6 +206,7 @@ describe("Donations page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=generic-list-row-expand]")
+      .first()
       .click();
 
     // Check that the impact list is visible
@@ -274,7 +279,7 @@ describe("Donations page", () => {
       .eq(1)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "19,0");
+      .should("contain.text", "20,0");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -285,7 +290,7 @@ describe("Donations page", () => {
       .eq(2)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "0,3");
+      .should("contain.text", "0,2");
   });
 
   it("Should show empty placeholder for years with no donations", () => {

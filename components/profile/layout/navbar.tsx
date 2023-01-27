@@ -19,10 +19,14 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
       <nav className={`${styles.navbar}`} data-cy="navbar">
-        <div className={styles.logoWrapper}>
+        <div
+          className={styles.logoWrapper}
+          onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
+          onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
+        >
           <div className={styles.logoWrapperImage}>
             <Link href="/" passHref>
-              <a>
+              <a onClick={(e) => e.currentTarget.blur()}>
                 <ResponsiveImage
                   image={logo}
                   onClick={() => setExpandMenu(false)}
@@ -32,7 +36,13 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
               </a>
             </Link>
           </div>
-          <button className={styles.expandBtn} onClick={() => setExpandMenu(!expandMenu)}>
+          <button
+            className={styles.expandBtn}
+            onClick={(e) => {
+              setExpandMenu(!expandMenu);
+              e.currentTarget.blur();
+            }}
+          >
             {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
           </button>
         </div>

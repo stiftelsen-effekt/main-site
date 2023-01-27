@@ -11,12 +11,12 @@ export default {
   fields: [
     {
       name: 'main_heading',
-      type: 'string',
+      type: 'text',
       title: 'Main heading'
     },
     {
       name: 'sub_heading',
-      type: 'string',
+      type: 'text',
       title: 'Sub heading'
     },
     {name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo'},

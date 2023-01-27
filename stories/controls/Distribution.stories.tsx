@@ -10,7 +10,9 @@ export default {
 
 const defaultDistribution: Distribution = {
   kid: "000111",
-  organizations: [
+  standardDistribution: false,
+  taxUnit: null,
+  shares: [
     {
       id: 1,
       name: "Against Malaria Foundation",

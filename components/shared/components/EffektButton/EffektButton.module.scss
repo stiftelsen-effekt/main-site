@@ -6,6 +6,11 @@
   padding: 8px 18px;
   cursor: pointer;
   box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 7em;
 }
 
 .button:disabled {
@@ -92,6 +97,10 @@
 
 .extraMargin {
   margin-left: 25px;
+}
+
+.noMinWidth {
+  min-width: 0;
 }
 
 .disabledBtn {

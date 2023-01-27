@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Distribution } from "../../../../../models";
+import { Distribution, TaxUnit } from "../../../../../models";
 import { DistributionController } from "../../Distribution";
 import { toast } from "react-toastify";
 import {
@@ -19,6 +19,10 @@ import { DatePickerInput } from "../../../../shared/components/DatePicker/DatePi
 import style from "./AgreementDetails.module.scss";
 import { EffektButton } from "../../../../shared/components/EffektButton/EffektButton";
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
+import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
+import { TaxUnitCreateModal } from "../../TaxUnitModal/TaxUnitCreateModal";
+import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/EffektCheckbox";
+import AnimateHeight from "react-animate-height";
 
 /**
  * Gets the number of days in a month in a year
@@ -69,6 +73,8 @@ export const AgreementDetails: React.FC<{
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
+  const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [loadingChanges, setLoadingChanges] = useState(false);
 
@@ -85,10 +91,7 @@ export const AgreementDetails: React.FC<{
     const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution);
     const sumChanged = parseFloat(sum) !== inputSum;
     const dayChanged = day !== inputDate;
-    const distSum = distribution.organizations.reduce(
-      (acc, curr) => acc + parseFloat(curr.share),
-      0,
-    );
+    const distSum = distribution.shares.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
 
     if (distSum !== 100 || parseFloat(sum) < 1) {
       invalidInputToast();
@@ -175,14 +178,10 @@ export const AgreementDetails: React.FC<{
 
   return (
     <div className={style.wrapper} data-cy="agreement-list-details">
-      <div className={style.distribution}>
-        <DistributionController
-          distribution={distribution}
-          onChange={(dist) => setDistribution(dist)}
-        />
-      </div>
       <div className={style.values}>
-        <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
+        <div>
+          <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
+        </div>
         <div>
           <input
             type="text"
@@ -192,7 +191,32 @@ export const AgreementDetails: React.FC<{
           />
           <span>kr</span>
         </div>
+        <TaxUnitSelector
+          selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
+          onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
+          onAddNew={() => setAddTaxUnitOpen(true)}
+        />
+        <div>
+          <EffektCheckbox
+            checked={distribution.standardDistribution}
+            onChange={(standard: boolean) =>
+              setDistribution({ ...distribution, standardDistribution: standard })
+            }
+          >
+            Smart fordeling
+          </EffektCheckbox>
+        </div>
       </div>
+
+      <AnimateHeight height={!distribution.standardDistribution ? "auto" : 0} animateOpacity={true}>
+        <div className={style.distribution}>
+          <DistributionController
+            distribution={distribution}
+            onChange={(dist) => setDistribution(dist)}
+          />
+        </div>
+      </AnimateHeight>
+
       <div className={style.actions}>
         <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
           Avslutt avtale
@@ -201,13 +225,25 @@ export const AgreementDetails: React.FC<{
           {!loadingChanges ? "Lagre" : "Laster..."}
         </EffektButton>
       </div>
+
+      {addTaxUnitOpen && (
+        <TaxUnitCreateModal
+          open={addTaxUnitOpen}
+          onFailure={() => {}}
+          onSuccess={(unit: TaxUnit) => {
+            setDistribution({ ...distribution, taxUnit: unit });
+            setAddTaxUnitOpen(false);
+          }}
+          onClose={() => setAddTaxUnitOpen(false)}
+        />
+      )}
       <Lightbox
         open={lightboxOpen}
         onConfirm={() => cancel()}
         onCancel={() => setLightboxOpen(false)}
       >
         <div className={style.textWrapper}>
-          <h4>Avslutt avtale</h4>
+          <h5>Avslutt avtale</h5>
           <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
           {checkPaymentDate(new Date(), day) ? (
             <p>

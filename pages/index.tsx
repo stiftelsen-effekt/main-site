@@ -20,6 +20,7 @@ import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
 import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
 import { widgetQuery } from "../_queries";
+import { GiveWellStamp } from "../components/main/blocks/GiveWellStamp/GiveWellStamp";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
   () =>
@@ -45,19 +46,16 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
         imageAsset={seoImage ? seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/`}
       />
-
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
-
       <div className={styles.hero}>
         <div className={styles.header}>
           <h1>{frontpage.main_heading}</h1>
         </div>
         <p className={styles.subheading + " inngress"}>{frontpage.sub_heading}</p>
       </div>
-
       <div className={styles.salespitchWrapper}>
         <PointList
           points={salespitch.points.map((pitch: PointListPointProps, i: number) => ({
@@ -67,7 +65,6 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           }))}
         ></PointList>
       </div>
-
       <SectionContainer nodivider inverted>
         <IntroSection
           heading={frontpage.introsection.heading}
@@ -75,21 +72,13 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           slug={frontpage.introsection.slug}
         ></IntroSection>
       </SectionContainer>
-
-      {/** 
-       * <SectionContainer>
-        <CalculatorTeaser></CalculatorTeaser>
-      </SectionContainer>
-       * 
-      */}
       {interventionWidget.interventions && (
         <div style={{ marginTop: "45px" }}>
-          <SectionContainer>
+          <SectionContainer nodivider>
             <ImpactWidget frontpage={frontpage} />
           </SectionContainer>
         </div>
       )}
-
       <SectionContainer heading="">
         <div className={styles.teasers}>
           {frontpage.teasers.map(
@@ -109,13 +98,14 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       <SectionContainer heading="Slik fungerer det" padded>
         <Stepwize steps={frontpage.key_points.map((p: any) => p)} />
       </SectionContainer>
-
+      <SectionContainer inverted nodivider>
+        <GiveWellStamp></GiveWellStamp>
+      </SectionContainer>
       {frontpage.testimonials && (
-        <SectionContainer heading="Hva folk sier om oss">
+        <SectionContainer heading="Hva folk sier om oss" nodivider>
           <Testimonial testimonies={frontpage.testimonials} />
         </SectionContainer>
       )}
-
       <SectionContainer nodivider>
         <GiveBlock></GiveBlock>
       </SectionContainer>

@@ -47,6 +47,8 @@ import htmlembed from './types/htmlembed'
 import donationwidget from './types/donationwidget'
 import quote from './types/quote'
 import vippsagreement from './pages/vippsagreement'
+import tax from './pages/tax'
+import citation from './types/citation'
 
 export const pages = [
   generic,
@@ -58,7 +60,8 @@ export const pages = [
   criteria,
   article,
   articles,
-  vippsagreement
+  vippsagreement,
+  tax
 ]
 
 export const types = [
@@ -94,7 +97,8 @@ export const types = [
   fullvideo,
   htmlembed,
   donationwidget,
-  quote
+  quote,
+  citation
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity

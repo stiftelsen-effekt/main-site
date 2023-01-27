@@ -178,6 +178,21 @@ export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently)
   };
 };
 
+export const useAllOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(`/organizations/all/`, (url) =>
+    fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     `/donors/${user["https://gieffektivt.no/user-id"]}/`,
@@ -194,15 +209,35 @@ export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
   };
 };
 
+export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(
+    `/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
+export const linksSelectorQuery = `
+_type == 'navitem' => @ {
+  ...,
+  "slug": page->slug.current,
+  "pagetype": page->_type,
+},
+_type == 'link' => @ {
+  ...
+},
+`;
+
 export const linksContentQuery = `links[] {
-  _type == 'navitem' => @ {
-    ...,
-    "slug": page->slug.current,
-    "pagetype": page->_type,
-  },
-  _type == 'link' => @ {
-    ...
-  },
+  ${linksSelectorQuery}
 }`;
 
 export const pageContentQuery = `content[] {
@@ -223,7 +258,21 @@ export const pageContentQuery = `content[] {
       ...,
       ${linksContentQuery}
     },
-    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' => @,
+    _type == 'paragraph' => @ {
+      ...,
+      content[] {
+        ...,
+        markDefs[] {
+          _type == 'citation' => @ {
+            ...,
+            "citations": citations[]->
+          },
+          ${linksSelectorQuery}
+          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+        }
+      }
+    },
+    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' => @,
   }
 },
 `;

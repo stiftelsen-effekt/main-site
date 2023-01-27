@@ -1,7 +1,8 @@
 [
   {
     "kid": "51615227",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 1,
         "name": "Against Malaria Foundation",
@@ -9,14 +10,15 @@
       },
       {
         "id": 2,
-        "name": "Schistosomiasis Control Initiative",
+        "name": "SCI Foundation",
         "share": "30.000000000000"
       }
     ]
   },
   {
     "kid": "16753477",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",
@@ -29,14 +31,15 @@
       },
       {
         "id": 2,
-        "name": "Schistosomiasis Control Initiative",
+        "name": "SCI Foundation",
         "share": "50.000000000000"
       }
     ]
   },
   {
     "kid": "95231965",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",
@@ -59,7 +62,7 @@
       },
       {
         "id": 2,
-        "name": "Schistosomiasis Control Initiative",
+        "name": "SCI Foundation",
         "share": "30.000000000000"
       },
       {
@@ -86,7 +89,8 @@
   },
   {
     "kid": "000027848912260",
-    "organizations": [
+    "standardDistribution": false,
+    "shares": [
       {
         "id": 12,
         "name": "GiveWells tildelingsfond",
@@ -109,7 +113,7 @@
       },
       {
         "id": 2,
-        "name": "Schistosomiasis Control Initiative",
+        "name": "SCI Foundation",
         "share": "0.000000000000"
       },
       {

@@ -42,10 +42,10 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
               </div>
               <div className={styles.testimonial__bio}>
                 <p>{quotee}</p>
-                <p className={styles.tesimonial__background}>
+                <div className={styles.tesimonial__background}>
                   {" "}
                   &#x21b3;&nbsp; <PortableText blocks={quotee_background} />
-                </p>
+                </div>
               </div>
             </div>
           ))}
@@ -63,6 +63,22 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
         >
           <div>→</div>
         </button>
+      )}
+      {testimonies.length > 1 && (
+        <div className={styles.testimonial__dots}>
+          {testimonies.map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.testimonial__dot} ${
+                currentTestimony === i ? styles.testimonial__dot__active : ""
+              }`}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.currentTarget.blur();
+                setCurrentTestimony(i);
+              }}
+            ></button>
+          ))}
+        </div>
       )}
     </section>
   );

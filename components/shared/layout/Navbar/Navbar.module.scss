@@ -31,7 +31,6 @@
   margin-right: 0;
   margin-left: 0;
   padding-right: 0;
-  padding-left: 0px;
 }
 
 .navbar ul li .submenu {
@@ -87,6 +86,14 @@
   filter: var(--primary-filter);
 }
 
+.navbar .logoWrapper:active {
+  outline: none;
+}
+
+.navbar .logoWrapper:focus-within {
+  outline: 2px solid var(--secondary);
+}
+
 .navbar ul li.expandedSubmenu button::after {
   content: "↓";
   display: inline-block;
@@ -101,6 +108,10 @@
 
 .navbar ul li button:focus + div .submenu {
   display: block;
+}
+
+.navbar ul li.buttonsWrapper a {
+  border-bottom: none;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -157,6 +168,12 @@
 
   .navbarExpanded .logoWrapper {
     filter: var(--primary-filter) invert(1);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
   }
 
   .navbar ul li {
@@ -166,7 +183,7 @@
     margin-top: 14px;
   }
 
-  .navbar ul li a { 
+  .navbar ul li a {
     display: inline-block;
     width: 100%;
   }
@@ -237,16 +254,16 @@
     margin-top: auto;
   }
 
-  .navbar ul li.buttonsWrapper button:first-child { 
+  .navbar ul li.buttonsWrapper a {
+    width: auto;
+  }
+
+  .navbar ul li.buttonsWrapper button:first-child {
     margin-left: 0;
   }
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .navbar .logoWrapper {
-    width: 200px;
-  }
-
+@media only screen and (max-width: 1600px) and (min-width: 1181px) {
   .navbar ul li {
     font-size: 15px;
     padding-left: 18px;
@@ -258,6 +275,22 @@
     padding-left: 18px;
     padding-right: 18px;
     margin-top: 6px;
+  }
+}
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .navbar .logoWrapper {
+    width: 160px;
+  }
+  .navbar ul li {
+    font-size: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .navbar ul li .submenu ul li {
+    font-size: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 }
 

@@ -30,7 +30,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/${page.slug.current}`}
+        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug.current}`}
       />
 
       <MainHeader hideOnScroll={true}>

@@ -28,7 +28,22 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
   // Then reset on render
   // This is to prevent jancky initial page load where the pane flies over the screen
   const [paneStyle, setPaneStyle] = useState<any>({ transition: "none" });
-  useEffect(() => setPaneStyle({}), []);
+  const [widgetOpenClass, setWidgetOpenClass] = useState<string | "">("");
+  useEffect(() => setPaneStyle({ display: "block" }), []);
+
+  useEffect(() => {
+    if (widgetOpen) {
+      setPaneStyle({ display: "block" });
+      setTimeout(() => {
+        setWidgetOpenClass(styles.widgetPaneOpen);
+      }, 10);
+    } else {
+      setWidgetOpenClass("");
+      setTimeout(() => {
+        setPaneStyle({ display: "none" });
+      }, 200);
+    }
+  }, [widgetOpen]);
 
   const delta = currentY - initialY;
 
@@ -41,7 +56,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
   return (
     <aside
       data-cy="widget-pane"
-      className={`${styles.widgetPane} ${widgetOpen ? styles.widgetPaneOpen : null}`}
+      className={`${styles.widgetPane} ${widgetOpenClass}`}
       style={paneStyle}
     >
       <div

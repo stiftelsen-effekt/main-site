@@ -5,6 +5,14 @@ export const Pane = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  font-size: 18px;
+  line-height: 30px;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 20px;
+    line-height: 30px;
+  }
 `;
 
 export const PaneContainer = styled.div`
