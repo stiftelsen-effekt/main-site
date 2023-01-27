@@ -31,11 +31,15 @@ export const DonationList: React.FC<{
   if (taxDeductions > 0) {
     taxDeductionText = (
       <span>
-        {`Dine donasjoner i ${year} ${
-          year === new Date().getFullYear().toString() ? "kvalifiserer deg for" : "ga deg"
+        {`I ${year} ${
+          year === new Date().getFullYear().toString()
+            ? "får du skattefradrag som kvalifiserer deg for"
+            : "fikk du skattefradrag som kvalifiserte deg for"
         }`}{" "}
-        <span style={{ whiteSpace: "nowrap" }}>{thousandize(Math.round(taxDeductions))}</span>{" "}
-        kroner i skattefradrag
+        <span style={{ whiteSpace: "nowrap" }}>
+          {thousandize(Math.round(taxDeductions * 0.22))}
+        </span>{" "}
+        kroner mindre i skatt
       </span>
     );
   }
