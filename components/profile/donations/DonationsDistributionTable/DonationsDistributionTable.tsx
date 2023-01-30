@@ -20,7 +20,9 @@ const DonationsDistributionTable: React.FC<{
   distributionMap: Map<string, Distribution>;
   defaultExpanded?: boolean;
 }> = ({ donations, distributionMap, defaultExpanded = true }) => {
-  const [expanded, setExpanded] = useState(defaultExpanded);
+  const [expanded, setExpanded] = useState(
+    defaultExpanded || (typeof window !== "undefined" && window.innerWidth > 1180),
+  );
   const [loadedClass, setLoadedClass] = useState<string>("");
   const [lastimpactCount, setLastimpactCount] = useState<number>(0);
   const [currentHeight, setCurrentHeight] = useState<number | "auto">(0);
@@ -136,7 +138,14 @@ const DonationsDistributionTable: React.FC<{
       className={[style.distribution, loadedClass].join(" ")}
       data-cy="aggregated-distribution-table"
     >
-      <div className={style.distributionHeader} onClick={() => setExpanded(!expanded)}>
+      <div
+        className={style.distributionHeader}
+        onClick={() => {
+          if (typeof window !== "undefined" && window.innerWidth <= 1180) {
+            setExpanded(!expanded);
+          }
+        }}
+      >
         <span>
           Estimert effekt
           <div className={style.loadingSpinner}>
