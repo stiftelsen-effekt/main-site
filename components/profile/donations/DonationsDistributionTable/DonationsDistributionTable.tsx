@@ -18,8 +18,9 @@ const multiFetcher = (...urls: string[]) => {
 const DonationsDistributionTable: React.FC<{
   donations: Donation[];
   distributionMap: Map<string, Distribution>;
-}> = ({ donations, distributionMap }) => {
-  const [expanded, setExpanded] = useState(true);
+  defaultExpanded?: boolean;
+}> = ({ donations, distributionMap, defaultExpanded = true }) => {
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const [loadedClass, setLoadedClass] = useState<string>("");
   const [lastimpactCount, setLastimpactCount] = useState<number>(0);
   const [currentHeight, setCurrentHeight] = useState<number | "auto">(0);

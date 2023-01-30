@@ -1,4 +1,3 @@
-import { FileText } from "react-feather";
 import {
   Distribution,
   Donation,
@@ -7,24 +6,27 @@ import {
   TaxYearlyReportUnits,
 } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
-import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
+import { TaxYearlyReportMobileDetails } from "./TaxYearlyReportMobileDetails";
 import style from "./TaxYearlyReportList.module.scss";
+import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
+import { FileText } from "react-feather";
 import { TaxYearlyReportListBody } from "./TaxYearlyReportListBody";
 import { TaxYearlyReportListSupplemental } from "./TaxYearlyReportListSupplemental";
 
-export const TaxYearlyReportList: React.FC<{
+export const TaxYearlyReportMobileList: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
 }> = ({ report, donations, distribtionMap }) => {
   const headers = [
-    { label: "Skatteenhet", width: "20%" },
-    { label: "Enhetsnummer", width: "20%" },
-    { label: "Gitt gjennom", width: "20%" },
-    { label: "Skattefradrag", width: "20%" },
-    { label: "Sum donasjoner", width: "20%" },
+    {
+      label: "Navn",
+    },
+    {
+      label: "Identifikator",
+    },
   ];
 
   const rowsMissingTaxUnits = report.sumDonationsWithoutTaxUnitByChannel
@@ -34,31 +36,23 @@ export const TaxYearlyReportList: React.FC<{
       defaultExpanded: false,
       cells: [
         {
-          value: "",
+          value: "Mangler skatteenhet",
           tooltip: `Mangler skatteenhet. ${
             report.units.length == 0
               ? "Registrer en skatteenhet i fanen til venstre i menyen og alle donasjoner vil knyttes til den."
               : "Du har allerede en eller flere skatteenheter, kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."
           }`,
         },
-        { value: "-" },
-        { value: missing.channel },
-        { value: "-" },
-        { value: thousandize(Math.round(missing.sumDonationsWithoutTaxUnit)) + " kr" },
       ],
+      details: <TaxYearlyReportMobileDetails unit={missing} />,
       element: missing,
     }));
 
   const rowsUnits = report.units.map((unit) => ({
     id: unit.id + unit.channel,
     defaultExpanded: false,
-    cells: [
-      { value: unit.name },
-      { value: unit.ssn },
-      { value: unit.channel },
-      { value: thousandize(Math.round(unit.taxDeduction)) + " kr" },
-      { value: thousandize(Math.round(unit.sumDonations)) + " kr" },
-    ],
+    cells: [{ value: unit.name }],
+    details: <TaxYearlyReportMobileDetails unit={unit} />,
     element: unit,
   }));
 
@@ -67,25 +61,34 @@ export const TaxYearlyReportList: React.FC<{
     ...rowsMissingTaxUnits,
   ];
 
-  const emptyPlaceholder = <div>EMPTY PLACEHOLDER</div>;
+  const emptyPlaceholder = (
+    <div>
+      <div>Det mangler informasjon for skatteenheten.</div>
+      <div>
+        Ta kontakt på <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.
+      </div>
+    </div>
+  );
 
   return (
-    <GenericList
-      title={report.year.toString()}
-      headers={headers}
-      rows={rows}
-      emptyPlaceholder={emptyPlaceholder}
-      expandable={false}
-      supplementalInformation={
-        <TaxYearlyReportListSupplemental
-          report={report}
-          donations={donations}
-          distribtionMap={distribtionMap}
-        />
-      }
-      proportions={[30, 60]}
-    >
-      <TaxYearlyReportListBody report={report} />
-    </GenericList>
+    <>
+      <GenericList
+        title={""}
+        headers={[]}
+        rows={rows}
+        emptyPlaceholder={emptyPlaceholder}
+        expandable={true}
+        proportions={[30, 60]}
+        supplementalInformation={
+          <TaxYearlyReportListSupplemental
+            report={report}
+            donations={donations}
+            distribtionMap={distribtionMap}
+          />
+        }
+      >
+        <TaxYearlyReportListBody report={report} />
+      </GenericList>
+    </>
   );
 };

@@ -105,7 +105,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
               <div className={style.cellTooltip}>
                 <div className={style.cellTooltipContent}>
                   <Info size={"1rem"} />
-                  {cell.tooltip}
+                  <span>{cell.tooltip}</span>
                 </div>
                 <Info size={"1rem"} />
               </div>

@@ -1,0 +1,70 @@
+
+
+.summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+  border-top: 1px solid var(--primary);
+  margin-top: 3rem;
+}
+
+.summaryTable tr td {
+  padding-bottom: 0.5rem;
+}
+
+.summaryTable tr td:last-child {
+  text-align: right;
+}
+
+.summaryTable tr:first-child td {
+  padding-top: 0.5rem;
+}
+
+.summaryTable tr:last-child td {
+  border-top: 1px solid var(--primary);
+  padding-top: 0.5rem;
+}
+
+.nonDeductibleDonationsTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+  margin-top: 8rem;
+}
+
+.nonDeductibleDonationsTable thead tr th {
+  text-align: left;
+  font-weight: normal;
+  font-style: italic;
+  padding-bottom: 0.5rem;
+}
+
+.nonDeductibleDonationsTable tbody tr td {
+  padding-bottom: 0.5rem;
+}
+
+.nonDeductibleDonationsTable tbody tr td:last-child {
+  text-align: right;
+}
+
+.nonDeductibleDonationsTable tbody tr:first-child td {
+  border-top: 1px solid var(--primary);
+  padding-top: 0.5rem;
+}
+
+.nonDeductibleDonationsTable tbody tr:last-child td {
+  border-bottom: 1px solid var(--primary);
+  padding-top: 0.5rem;
+}
+
+@media only screen and (max-width: 1180px) {
+  .summaryTable {
+    margin-top: 3rem;
+  }
+
+  .nonDeductibleDonationsTable {
+    margin-top: 3rem;
+  }
+}

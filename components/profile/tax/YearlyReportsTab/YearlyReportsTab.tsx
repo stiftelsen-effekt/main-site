@@ -12,6 +12,7 @@ import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
 import { TaxUnitMobileList } from "../../shared/lists/taxUnitList/TaxUnitMobileList";
 import { TaxYearlyReportList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportList";
+import { TaxYearlyReportMobileList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportMobileList";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 import styles from "./YearlyReportsTab.module.scss";
 
@@ -64,16 +65,32 @@ export const YearlyReportsTab: React.FC = () => {
       <h4 className={styles.header}>Dine årsoppgaver</h4>
 
       {reportsData.map((report: TaxYearlyReport) => (
-        <TaxYearlyReportList
-          key={report.year}
-          donations={donations.filter(
-            (donation: Donation) =>
-              new Date(donation.timestamp).getFullYear() === report.year &&
-              distributionsMap.get(donation.KID)?.taxUnit,
-          )}
-          distribtionMap={distributionsMap}
-          report={report}
-        />
+        <>
+          <div className={styles.desktopList}>
+            <TaxYearlyReportList
+              key={report.year}
+              donations={donations.filter(
+                (donation: Donation) =>
+                  new Date(donation.timestamp).getFullYear() === report.year &&
+                  distributionsMap.get(donation.KID)?.taxUnit,
+              )}
+              distribtionMap={distributionsMap}
+              report={report}
+            />
+          </div>
+          <div className={styles.mobileList}>
+            <TaxYearlyReportMobileList
+              key={report.year}
+              donations={donations.filter(
+                (donation: Donation) =>
+                  new Date(donation.timestamp).getFullYear() === report.year &&
+                  distributionsMap.get(donation.KID)?.taxUnit,
+              )}
+              distribtionMap={distributionsMap}
+              report={report}
+            />
+          </div>
+        </>
       ))}
     </div>
   );

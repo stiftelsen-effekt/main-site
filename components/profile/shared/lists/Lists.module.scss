@@ -96,6 +96,8 @@ table tr .detailRowCell {
 
 table tr td .cellTooltip {
   display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
   cursor: pointer;
 }
 
@@ -122,6 +124,11 @@ table tr td .cellTooltip:hover .cellTooltipContent {
 
 table tr td .cellTooltip:hover .cellTooltipContent svg {
   margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+table tr td .cellTooltip:hover .cellTooltipContent span {
+  flex-shrink: 1;
 }
 
 .expanderContent {
@@ -207,7 +214,7 @@ table tr td .cellTooltip:hover .cellTooltipContent svg {
   }
 
   .gridContainer {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     margin-bottom: 3rem;
   }
 
@@ -216,7 +223,7 @@ table tr td .cellTooltip:hover .cellTooltipContent svg {
   }
 
   .gridContainer section.header {
-    display: none;
+    /*display: none;*/
   }
 
   .gridContainer tr th {
@@ -232,7 +239,6 @@ table tr td .cellTooltip:hover .cellTooltipContent svg {
   }
 
   .table td.rowAction .actionContainer { 
-
     margin-left: 0.5rem;
   }
 
@@ -251,5 +257,13 @@ table tr td .cellTooltip:hover .cellTooltipContent svg {
 
   .gridContainer tr td:last-child {
     display: table-cell;
+  }
+
+  table tr td .cellTooltip:hover .cellTooltipContent {
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
   }
 }
