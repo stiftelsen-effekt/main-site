@@ -34,7 +34,7 @@ export const TaxYearlyReportList: React.FC<{
       defaultExpanded: false,
       cells: [
         {
-          value: "",
+          value: "Mangler",
           tooltip: `Mangler skatteenhet. ${
             report.units.length == 0
               ? "Registrer en skatteenhet i fanen til venstre i menyen og alle donasjoner vil knyttes til den."
