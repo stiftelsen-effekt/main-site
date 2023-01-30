@@ -223,7 +223,11 @@ table tr td .cellTooltip:hover .cellTooltipContent span {
   }
 
   .gridContainer section.header {
-    /*display: none;*/
+    display: none;
+  }
+
+  .gridContainer.supplementalOnMobile section.header {
+    display: block;
   }
 
   .gridContainer tr th {

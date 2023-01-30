@@ -4,6 +4,10 @@
   justify-content: space-between;
 }
 
+.header h2 {
+  display: none;
+}
+
 .printLink {
   display: inline-flex;
   flex-direction: row;
@@ -46,5 +50,9 @@
 
   .orgInfo {
     display: none;
+  }
+
+  .header h2 {
+    display: block;
   }
 }

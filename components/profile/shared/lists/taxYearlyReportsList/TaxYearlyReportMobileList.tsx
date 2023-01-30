@@ -86,6 +86,7 @@ export const TaxYearlyReportMobileList: React.FC<{
             distribtionMap={distribtionMap}
           />
         }
+        supplementalOnMobile={true}
       >
         <TaxYearlyReportListBody report={report} />
       </GenericList>
