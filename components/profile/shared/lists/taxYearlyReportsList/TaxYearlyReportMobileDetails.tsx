@@ -24,7 +24,7 @@ export const TaxYearlyReportMobileDetails: React.FC<{
             </tr>
             <tr>
               <td>Sum donasjoner</td>
-              <td>{thousandize(Math.round(unit.sumDonations))} kr</td>
+              <td>{thousandize(Math.round(parseFloat(unit.sumDonations)))} kr</td>
             </tr>
             <tr>
               <td>Sum skattefradrag</td>

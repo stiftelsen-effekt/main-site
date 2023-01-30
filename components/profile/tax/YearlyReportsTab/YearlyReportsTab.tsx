@@ -1,6 +1,14 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import { useState } from "react";
-import { Distribution, Donation, TaxUnit, TaxYearlyReport } from "../../../../models";
+import { useContext, useState } from "react";
+import {
+  Distribution,
+  Donation,
+  TaxUnit,
+  TaxYearlyReport,
+  TaxYearlyReportChannelDeductions,
+  TaxYearlyReportMissingTaxUnitDonations,
+  TaxYearlyReportUnits,
+} from "../../../../models";
 import {
   useDistributions,
   useDonations,
@@ -9,6 +17,7 @@ import {
 } from "../../../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { DonorContext } from "../../layout/donorProvider";
 import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
 import { TaxUnitMobileList } from "../../shared/lists/taxUnitList/TaxUnitMobileList";
 import { TaxYearlyReportList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportList";
@@ -18,6 +27,8 @@ import styles from "./YearlyReportsTab.module.scss";
 
 export const YearlyReportsTab: React.FC = () => {
   const { getAccessTokenSilently, user } = useAuth0();
+
+  const { donor } = useContext(DonorContext);
 
   const {
     loading: reportsLoading,
@@ -46,7 +57,7 @@ export const YearlyReportsTab: React.FC = () => {
   const dataAvailable = donations && distributions && reportsData;
   const loading = donationsLoading || distributionsLoading || reportsLoading;
 
-  if (loading || !dataAvailable) {
+  if (loading || !dataAvailable || !donor) {
     return (
       <div className={styles.container}>
         <h4 className={styles.header}>Dine årsoppgaver</h4>
@@ -64,34 +75,87 @@ export const YearlyReportsTab: React.FC = () => {
     <div className={styles.container}>
       <h4 className={styles.header}>Dine årsoppgaver</h4>
 
-      {reportsData.map((report: TaxYearlyReport) => (
-        <>
-          <div className={styles.desktopList}>
-            <TaxYearlyReportList
-              key={report.year}
-              donations={donations.filter(
-                (donation: Donation) =>
-                  new Date(donation.timestamp).getFullYear() === report.year &&
-                  distributionsMap.get(donation.KID)?.taxUnit,
-              )}
-              distribtionMap={distributionsMap}
-              report={report}
-            />
-          </div>
-          <div className={styles.mobileList}>
-            <TaxYearlyReportMobileList
-              key={report.year}
-              donations={donations.filter(
-                (donation: Donation) =>
-                  new Date(donation.timestamp).getFullYear() === report.year &&
-                  distributionsMap.get(donation.KID)?.taxUnit,
-              )}
-              distribtionMap={distributionsMap}
-              report={report}
-            />
-          </div>
-        </>
-      ))}
+      {reportsData.map((report: TaxYearlyReport) => {
+        const sumEanWithoutDeduction = report.sumDonationsWithoutTaxUnitByChannel.reduce(
+          (acc: number, missing: TaxYearlyReportMissingTaxUnitDonations) => {
+            if (missing.channel === "EAN Giverportal") {
+              return acc + missing.sumDonationsWithoutTaxUnit;
+            }
+            return acc;
+          },
+          0,
+        );
+
+        const sumEanWithDeduction = report.units.reduce(
+          (acc: number, unit: TaxYearlyReportUnits) => {
+            if (unit.channel === "EAN Giverportal") {
+              return acc + parseFloat(unit.sumDonations);
+            }
+            return acc;
+          },
+          0,
+        );
+
+        const sumEanDonations = sumEanWithDeduction + sumEanWithoutDeduction;
+
+        const eanDistribution: Distribution = {
+          kid: "EAN Giverportal",
+          taxUnit: null,
+          standardDistribution: true,
+          shares: [
+            {
+              id: 12,
+              name: "GiveWell Top Charities Fund",
+              share: "100",
+            },
+          ],
+        };
+        distributionsMap.set("EAN Giverportal", eanDistribution);
+
+        const fakeEanDonation = {
+          id: Number.MAX_SAFE_INTEGER,
+          KID: "EAN Giverportal",
+          sum: sumEanDonations.toString(),
+          timestamp: new Date(2022, 6, 1).toISOString(),
+          donor: donor.name,
+          donorId: parseInt(donor.id),
+          email: donor.email,
+          paymentMethod: "Bank",
+          transactionCost: "0",
+          metaOwnerId: 3,
+        };
+
+        const mergedDonations = [...donations, fakeEanDonation];
+
+        const filteredDonations = mergedDonations.filter(
+          (donation: Donation) => new Date(donation.timestamp).getFullYear() === report.year,
+        );
+
+        return (
+          <>
+            <div className={styles.desktopList}>
+              <TaxYearlyReportList
+                key={report.year}
+                donations={filteredDonations}
+                distribtionMap={distributionsMap}
+                report={report}
+              />
+            </div>
+            <div className={styles.mobileList}>
+              <TaxYearlyReportMobileList
+                key={report.year}
+                donations={donations.filter(
+                  (donation: Donation) =>
+                    new Date(donation.timestamp).getFullYear() === report.year &&
+                    distributionsMap.get(donation.KID)?.taxUnit,
+                )}
+                distribtionMap={distributionsMap}
+                report={report}
+              />
+            </div>
+          </>
+        );
+      })}
     </div>
   );
 };

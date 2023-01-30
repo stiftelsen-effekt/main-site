@@ -57,7 +57,7 @@ export const TaxYearlyReportList: React.FC<{
       { value: unit.ssn },
       { value: unit.channel },
       { value: thousandize(Math.round(unit.taxDeduction)) + " kr" },
-      { value: thousandize(Math.round(unit.sumDonations)) + " kr" },
+      { value: thousandize(Math.round(parseFloat(unit.sumDonations))) + " kr" },
     ],
     element: unit,
   }));

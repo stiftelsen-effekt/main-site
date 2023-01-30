@@ -123,12 +123,12 @@ export type TaxYearlyReport = {
 };
 
 export type TaxYearlyReportMissingTaxUnitDonations = {
-  channel: "Gi Effektivt" | "EAN Giverpotal";
+  channel: "Gi Effektivt" | "EAN Giverportal";
   sumDonationsWithoutTaxUnit: number;
 };
 
 export type TaxYearlyReportChannelDeductions = {
-  channel: "Gi Effektivt" | "EAN Giverpotal";
+  channel: "Gi Effektivt" | "EAN Giverportal";
   sumTaxDeductions: number;
 };
 
@@ -141,9 +141,9 @@ export type TaxYearlyReportUnits = {
   id: number;
   name: string;
   ssn: string;
-  sumDonations: number;
+  sumDonations: string;
   taxDeduction: number;
-  channel: "Gi Effektivt" | "EAN Giverpotal";
+  channel: "Gi Effektivt" | "EAN Giverportal";
 };
 
 export type ImpactCharity = {
