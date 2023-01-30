@@ -31,7 +31,6 @@ const Custom404: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview 
 
 export async function getStaticProps({ preview = false }) {
   let result = await getClient(preview).fetch(fetchNotFoundPage);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
@@ -73,5 +72,4 @@ const fetchNotFoundPage = groq`
 `;
 
 Custom404.layout = Layout;
-Custom404.filterPage = true;
 export default Custom404;
