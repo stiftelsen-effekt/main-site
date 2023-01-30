@@ -34,7 +34,7 @@ export const RecurringBankDonationForm: React.FC<{
           type="hidden"
           name="returnUrl"
           id="returnUrl"
-          value={`${API_URL}/donations/status`}
+          value={`${API_URL}/avtalegiro/${donation.kid}/redirect`}
         />
         <input type="hidden" name="notificationDisabled" id="notificationDisabled" value="false" />
         <SubmitButton
