@@ -296,48 +296,48 @@ button {
 
   html,
   body {
-    font-size: 11px;
+    font-size: 9px;
     line-height: 165%;
   }
 
   h1 {
-    font-size: 60px;
+    font-size: 50px;
     line-height: 110%;
   }
 
   h2 {
-    font-size: 45px;
+    font-size: 38px;
     line-height: 120%;
   }
 
   h3 {
-    font-size: 36px;
+    font-size: 32px;
     line-height: 125%;
   }
 
   h4 {
-    font-size: 28px;
+    font-size: 24px;
     line-height: 135%;
   }
 
   h5 {
-    font-size: 22px;
+    font-size: 18px;
     line-height: 140%;
   }
 
   p.inngress {
-    font-size: 16px;
+    font-size: 13px;
     line-height: 150%;
   }
 
   span.detailheader {
-    font-size: 10px;
+    font-size: 8px;
     line-height: 110%;
     text-transform: uppercase;
   }
 
   span.caption {
-    font-size: 10px;
+    font-size: 8px;
     line-height: 20px;
   }
 }
