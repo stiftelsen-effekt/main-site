@@ -27,7 +27,7 @@ export const TaxYearlyReportListSupplemental: React.FC<{
         ></DonationsDistributionTable>
       </div>
       <div className={style.summation}>
-        <h3>{thousandize(report.sumTaxDeductions)} kr</h3>
+        <h3>{thousandize(report.units.reduce((acc, u) => acc + u.sumDonations, 0))} kr</h3>
         <span>Totalt sum donert i 2022 som er skattefradragsgodkjent</span>
       </div>
       <div className={style.taxMessageInfo}>
