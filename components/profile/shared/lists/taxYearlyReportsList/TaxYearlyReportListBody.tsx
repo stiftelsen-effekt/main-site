@@ -56,8 +56,8 @@ export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({
               <p>
                 <strong>Donasjoner uten skatteenhet</strong> kvalifiserer ikke til skattefradrag. Om
                 du ikke har noen registrerte skatteenheter kan du registrere en til venstre i menyen
-                under "skatt" og vi vil knytte donasjonene for i år til denne enheten. Har du
-                allerede en eller flere enheter, ta kontakt på{" "}
+                under &quot;skatt&quot; og vi vil knytte donasjonene for i år til denne enheten. Har
+                du allerede en eller flere enheter, ta kontakt på{" "}
                 <a href="mailto:donasjon@gieffektivt.no">donasjon@gieffektivt.no</a> slik at vi kan
                 knytte rett donasjon til rett skatteenhet.
               </p>
