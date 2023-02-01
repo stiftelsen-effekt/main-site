@@ -40,6 +40,9 @@ export const TaxYearlyReportListSupplemental: React.FC<{
         <strong>Effektiv Altruisme Norge</strong>
         <span> Org.nr 919 809 140</span>
       </div>
+      <div className={style.mobileListHeader}>
+        <i>Skattenheter</i>
+      </div>
     </>
   );
 };

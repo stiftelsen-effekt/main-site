@@ -11,16 +11,18 @@ export const Lightbox: React.FC<{
   valid?: boolean;
   loading?: boolean;
   onConfirm: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 }> = ({ children, open, valid, loading, onConfirm, onCancel }) => {
   if (!open) return null;
 
   return (
-    <div className={style.lightboxWrapper}>
+    <div className={style.lightboxWrapper} onClick={(e) => e.stopPropagation()}>
       <div className={style.lightbox}>
-        <div className={style.lightboxCloseButton} onClick={onCancel}>
-          <X size={"1.5rem"} />
-        </div>
+        {onCancel && (
+          <div className={style.lightboxCloseButton} onClick={onCancel}>
+            <X size={"1.5rem"} />
+          </div>
+        )}
         {children}
         <div className={style.buttonWrapper}>
           <EffektButton
@@ -28,11 +30,13 @@ export const Lightbox: React.FC<{
             cy="lightbox-confirm"
             disabled={typeof valid === "boolean" ? !valid : false}
           >
-            {loading ? <LoadingButtonSpinner /> : "Bekreft"}
+            {loading ? <LoadingButtonSpinner /> : onCancel ? "Bekreft" : "OK"}
           </EffektButton>
-          <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} cy="lightbox-cancel">
-            Avbryt
-          </EffektButton>
+          {onCancel && (
+            <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} cy="lightbox-cancel">
+              Avbryt
+            </EffektButton>
+          )}
         </div>
       </div>
     </div>

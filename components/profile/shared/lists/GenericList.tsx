@@ -8,13 +8,14 @@ import {
 
 export type Props<T> = {
   title: string;
-  headers: { label: string; width?: string }[];
+  headers: { label: string; width?: string; align?: "right" }[];
   supplementalInformation?: string | JSX.Element;
   rows: ListRow<T>[];
   emptyPlaceholder: JSX.Element;
   proportions: number[];
   expandable?: boolean;
   supplementalOnMobile?: boolean;
+  linedRows?: boolean;
   children?: ReactElement;
 };
 
@@ -27,15 +28,18 @@ export const GenericList = <T extends unknown>({
   proportions,
   expandable,
   supplementalOnMobile = false,
+  linedRows = false,
   children,
 }: Props<T>) => {
   const hasActions = rows.some((row) => typeof row.contextOptions !== "undefined") || expandable;
 
   return (
     <div
-      className={[style.gridContainer, supplementalOnMobile ? style.supplementalOnMobile : ""].join(
-        " ",
-      )}
+      className={[
+        style.gridContainer,
+        supplementalOnMobile ? style.supplementalOnMobile : "",
+        linedRows ? style.linedRows : "",
+      ].join(" ")}
       style={{ gridTemplateColumns: `${proportions.map((p) => p.toString() + "%").join(" ")}` }}
       key={title}
       data-cy="generic-list"
@@ -54,6 +58,7 @@ export const GenericList = <T extends unknown>({
                     key={header.label}
                     style={{ width: header.width ?? "auto" }}
                     colSpan={hasActions && i === headers.length - 1 ? 2 : 1}
+                    align={header.align ?? "left"}
                   >
                     {header.label}
                   </th>

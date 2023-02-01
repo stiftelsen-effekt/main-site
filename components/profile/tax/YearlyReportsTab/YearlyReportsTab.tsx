@@ -1,28 +1,18 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import { useContext, useState } from "react";
-import {
-  Distribution,
-  Donation,
-  TaxUnit,
-  TaxYearlyReport,
-  TaxYearlyReportChannelDeductions,
-  TaxYearlyReportMissingTaxUnitDonations,
-  TaxYearlyReportUnits,
-} from "../../../../models";
+import { useContext } from "react";
+import { Info } from "react-feather";
+import { Distribution, Donation, TaxYearlyReport, TaxYearlyReportUnits } from "../../../../models";
 import {
   useDistributions,
   useDonations,
   useTaxUnits,
   useYearlyTaxReports,
 } from "../../../../_queries";
-import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import { InfoBox } from "../../../shared/components/Infobox/Infobox";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { DonorContext } from "../../layout/donorProvider";
-import { TaxUnitList } from "../../shared/lists/taxUnitList/TaxUnitList";
-import { TaxUnitMobileList } from "../../shared/lists/taxUnitList/TaxUnitMobileList";
 import { TaxYearlyReportList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportList";
 import { TaxYearlyReportMobileList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportMobileList";
-import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 import styles from "./YearlyReportsTab.module.scss";
 
 export const YearlyReportsTab: React.FC = () => {
@@ -76,25 +66,23 @@ export const YearlyReportsTab: React.FC = () => {
       <h4 className={styles.header}>Dine årsoppgaver</h4>
 
       {reportsData.map((report: TaxYearlyReport) => {
-        const sumEanWithoutDeduction = report.sumDonationsWithoutTaxUnitByChannel.reduce(
-          (acc: number, missing: TaxYearlyReportMissingTaxUnitDonations) => {
+        const sumEanWithoutDeduction = report.sumDonationsWithoutTaxUnit.channels
+          .filter((c) => c.channel === "EAN Giverportal")
+          .reduce((acc: number, missing) => {
             if (missing.channel === "EAN Giverportal") {
-              return acc + missing.sumDonationsWithoutTaxUnit;
+              return acc + missing.sumDonations;
             }
             return acc;
-          },
-          0,
-        );
+          }, 0);
 
-        const sumEanWithDeduction = report.units.reduce(
-          (acc: number, unit: TaxYearlyReportUnits) => {
-            if (unit.channel === "EAN Giverportal") {
-              return acc + parseFloat(unit.sumDonations);
+        const sumEanWithDeduction = report.units
+          .map((u) => u.channels.find((c) => c.channel === "EAN Giverportal"))
+          .reduce((acc: number, channel) => {
+            if (channel) {
+              return acc + channel?.sumDonations || 0;
             }
             return acc;
-          },
-          0,
-        );
+          }, 0);
 
         const sumEanDonations = sumEanWithDeduction + sumEanWithoutDeduction;
 
@@ -133,6 +121,21 @@ export const YearlyReportsTab: React.FC = () => {
 
         return (
           <>
+            {report.sumDonationsWithoutTaxUnit.sumDonations > 0 && (
+              <InfoBox>
+                <header>
+                  <Info />
+                  Donasjoner mangler skattenhet
+                </header>
+                <p>
+                  Du har donasjoner for skatteåret som kvalifiserer til skattefradrag, men mangler
+                  skatteenhet.{" "}
+                  {report.units.length == 0
+                    ? 'Registrer en skatteenhet i fanen til venstre i menyen under "skatt" og alle donasjoner vil knyttes til den. Ta kontakt på donasjon@gieffektivt.no om du ønsker å knytte donasjonene dine til flere skatteenheter.'
+                    : "Du har allerede en eller flere skatteenheter. Kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."}
+                </p>
+              </InfoBox>
+            )}
             <div className={styles.desktopList}>
               <TaxYearlyReportList
                 key={report.year}

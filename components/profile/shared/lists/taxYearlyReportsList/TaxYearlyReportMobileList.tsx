@@ -2,7 +2,6 @@ import {
   Distribution,
   Donation,
   TaxYearlyReport,
-  TaxYearlyReportMissingTaxUnitDonations,
   TaxYearlyReportUnits,
 } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
@@ -20,46 +19,32 @@ export const TaxYearlyReportMobileList: React.FC<{
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
 }> = ({ report, donations, distribtionMap }) => {
-  const headers = [
-    {
-      label: "Navn",
-    },
-    {
-      label: "Identifikator",
-    },
-  ];
-
-  const rowsMissingTaxUnits = report.sumDonationsWithoutTaxUnitByChannel
-    .filter((missing) => missing.sumDonationsWithoutTaxUnit > 0)
-    .map((missing: TaxYearlyReportMissingTaxUnitDonations) => ({
-      id: missing.channel,
-      defaultExpanded: false,
-      cells: [
-        {
-          value: "Mangler skatteenhet",
-          tooltip: `Mangler skatteenhet. ${
-            report.units.length == 0
-              ? "Registrer en skatteenhet i fanen til venstre i menyen og alle donasjoner vil knyttes til den."
-              : "Du har allerede en eller flere skatteenheter, kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."
-          }`,
-        },
-      ],
-      details: <TaxYearlyReportMobileDetails unit={missing} />,
-      element: missing,
-    }));
+  const rowMissingTaxUnits = {
+    id: "missingTaxUnits",
+    defaultExpanded: false,
+    cells: [
+      {
+        value: "Mangler enhet",
+        tooltip: `Du har donasjoner for skatteåret som kvalifiserer til skattefradrag, men mangler skatteenhet. ${
+          report.units.length == 0
+            ? 'Registrer en skatteenhet i fanen til venstre i menyen under "skatt" og alle donasjoner vil knyttes til den. Ta kontakt på donasjon@gieffektivt.no om du ønsker å knytte donasjonene dine til flere skatteenheter.'
+            : "Du har allerede en eller flere skatteenheter, kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."
+        }`,
+      },
+    ],
+    details: <TaxYearlyReportMobileDetails channels={report.sumDonationsWithoutTaxUnit.channels} />,
+    element: report.sumDonationsWithoutTaxUnit,
+  };
 
   const rowsUnits = report.units.map((unit) => ({
-    id: unit.id + unit.channel,
+    id: unit.id.toString(),
     defaultExpanded: false,
     cells: [{ value: unit.name }],
-    details: <TaxYearlyReportMobileDetails unit={unit} />,
+    details: <TaxYearlyReportMobileDetails channels={unit.channels} unit={unit} />,
     element: unit,
   }));
 
-  const rows: ListRow<TaxYearlyReportUnits | TaxYearlyReportMissingTaxUnitDonations>[] = [
-    ...rowsUnits,
-    ...rowsMissingTaxUnits,
-  ];
+  const rows: ListRow<TaxYearlyReportUnits | any>[] = [...rowsUnits, rowMissingTaxUnits];
 
   const emptyPlaceholder = (
     <div>
@@ -87,6 +72,7 @@ export const TaxYearlyReportMobileList: React.FC<{
           />
         }
         supplementalOnMobile={true}
+        linedRows={true}
       >
         <TaxYearlyReportListBody report={report} />
       </GenericList>

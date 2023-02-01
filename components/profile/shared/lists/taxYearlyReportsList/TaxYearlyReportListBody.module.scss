@@ -5,23 +5,30 @@
   border-collapse: collapse;
   border-spacing: 0;
   margin-bottom: 20px;
-  border-top: 1px solid var(--primary);
-  margin-top: 3rem;
+  margin-top: 5rem;
 }
 
-.summaryTable tr td {
+.summaryTable thead tr th {
+  text-align: left;
+  font-weight: normal;
+  font-style: italic;
   padding-bottom: 0.5rem;
 }
 
-.summaryTable tr td:last-child {
+.summaryTable tbody tr td {
+  padding-bottom: 0.5rem;
+}
+
+.summaryTable tbody tr td:last-child {
   text-align: right;
 }
 
-.summaryTable tr:first-child td {
+.summaryTable tbody tr:first-child td {
+  border-top: 1px solid var(--primary);
   padding-top: 0.5rem;
 }
 
-.summaryTable tr:last-child td {
+.summaryTable tbody tr:last-child td {
   border-top: 1px solid var(--primary);
   padding-top: 0.5rem;
 }
@@ -31,7 +38,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   margin-bottom: 20px;
-  margin-top: 8rem;
+  margin-top: 3rem;
 }
 
 .nonDeductibleDonationsTable thead tr th {
@@ -39,6 +46,17 @@
   font-weight: normal;
   font-style: italic;
   padding-bottom: 0.5rem;
+}
+
+.nonDeductibleDonationsTable thead tr th .cellContent {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.nonDeductibleDonationsTable thead tr th svg {
+  margin-left: 0.5rem;
+  cursor: pointer;
 }
 
 .nonDeductibleDonationsTable tbody tr td {
@@ -59,6 +77,10 @@
   padding-top: 0.5rem;
 }
 
+.mobileOrgInfo {
+  display: none;
+}
+
 @media only screen and (max-width: 1180px) {
   .summaryTable {
     margin-top: 3rem;
@@ -66,5 +88,15 @@
 
   .nonDeductibleDonationsTable {
     margin-top: 3rem;
+  }
+
+  .nonDeductibleInfo {
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+  }
+
+  .mobileOrgInfo {
+    display: block;
+    margin-top: 5rem;
   }
 }

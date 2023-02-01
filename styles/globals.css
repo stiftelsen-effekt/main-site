@@ -39,6 +39,7 @@ body {
   background: var(--secondary);
   font-size: 20px;
   line-height: 32px;
+  overflow-x: hidden;
 }
 
 h1,

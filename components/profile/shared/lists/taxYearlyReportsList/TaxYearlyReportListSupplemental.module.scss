@@ -43,6 +43,10 @@
   margin-top: 1rem;
 }
 
+.mobileListHeader {
+  display: none;
+}
+
 @media only screen and (max-width: 1180px) {
   .summation {
     margin-top: 2rem;
@@ -54,5 +58,10 @@
 
   .header h2 {
     display: block;
+  }
+
+  .mobileListHeader {
+    display: block;
+    margin-top: 3rem;
   }
 }

@@ -9,6 +9,7 @@ import {
 } from "./GenericListContextMenu";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { useInView } from "react-hook-inview";
+import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 
 export type ListRowCell = {
   value: string;
@@ -34,6 +35,7 @@ type Props<T> = {
 const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
   const [expanded, setExpanded] = useState<boolean>(row.defaultExpanded);
   const [contextOpen, setContextOpen] = useState<boolean>(false);
+  const [openTooltips, setOpenTooltips] = useState(new Set<number>());
 
   const [ref, isInView] = useInView();
 
@@ -99,24 +101,48 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
         className={expandable ? style.expandableRow : ""}
       >
         {row.cells.map((cell: ListRowCell, i: number) => (
-          <td key={i}>
-            {cell.value}
-            {cell.tooltip ? (
-              <div className={style.cellTooltip}>
-                <div className={style.cellTooltipContent}>
-                  <Info size={"1rem"} />
-                  <span>{cell.tooltip}</span>
-                </div>
-                <Info size={"1rem"} />
-              </div>
-            ) : null}
+          <td
+            key={i}
+            className={cell.align ? (cell.align === "right" ? style.rightAlignCell : "") : ""}
+          >
+            <div className={style.cellContent}>
+              {cell.value}
+              {cell.tooltip ? (
+                <>
+                  <Info
+                    size={"1rem"}
+                    className={style.extraInfoIcon}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      let newSet = new Set(openTooltips);
+                      newSet.add(i);
+                      setOpenTooltips(newSet);
+                    }}
+                  />
+                  <Lightbox
+                    open={openTooltips.has(i)}
+                    onConfirm={() => {
+                      let newSet = new Set(openTooltips);
+                      newSet.delete(i);
+                      setOpenTooltips(newSet);
+                    }}
+                  >
+                    <div className={style.cellTooltipContent}>
+                      <span>{cell.tooltip}</span>
+                    </div>
+                  </Lightbox>
+                </>
+              ) : null}
+            </div>
           </td>
         ))}
-        <td className={style.rowAction}>{actions.map((action, i) => action)}</td>
+        <td className={style.rowAction}>
+          <div className={style.cellContent}>{actions.map((action, i) => action)}</div>
+        </td>
       </tr>
       {expandable ? (
         <tr key={`${row.id}-expanded`}>
-          <td colSpan={Number.MAX_SAFE_INTEGER} className={style.detailRowCell}>
+          <td colSpan={row.cells.length} className={style.detailRowCell}>
             <AnimateHeight height={expanded ? "auto" : 0} animateOpacity={true}>
               {(expanded || isInView) && row.details}
             </AnimateHeight>

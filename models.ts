@@ -114,36 +114,53 @@ export type TaxUnit = {
 };
 
 export type TaxYearlyReport = {
+  /** @description The year the report is for */
   year: number;
+  /** @description The tax units for the year */
   units: TaxYearlyReportUnits[];
-  sumDonationsWithoutTaxUnitByChannel: TaxYearlyReportMissingTaxUnitDonations[];
-  sumTaxDeductionsByChannel: TaxYearlyReportChannelDeductions[];
-  sumNonDeductibleDonationsByType: TaxYearlyReportNonDeductibleDonations[];
+  /** @description The sum of all donations for the year not connected to a tax unit */
+  sumDonationsWithoutTaxUnit: {
+    /** @description The sum of all donations for the year not connected to a tax unit */
+    sumDonations: number;
+    /** @description The channels for the year */
+    channels: {
+      /** @description The channel (or entity the donations where given to) for the year and channel */
+      channel: string;
+      /** @description The sum of all donations for the year and channel */
+      sumDonations: number;
+    }[];
+  };
+  /** @description The sum of all non deductible donations for the year and type */
+  sumNonDeductibleDonationsByType: {
+    /** @description The type of non deductible donation */
+    type: string;
+    /** @description The sum of all non deductible donations for the year and type */
+    sumNonDeductibleDonations: number;
+  }[];
+  /** @description The sum of all tax deductions for the year */
   sumTaxDeductions: number;
-};
-
-export type TaxYearlyReportMissingTaxUnitDonations = {
-  channel: "Gi Effektivt" | "EAN Giverportal";
-  sumDonationsWithoutTaxUnit: number;
-};
-
-export type TaxYearlyReportChannelDeductions = {
-  channel: "Gi Effektivt" | "EAN Giverportal";
-  sumTaxDeductions: number;
-};
-
-export type TaxYearlyReportNonDeductibleDonations = {
-  type: "Crypto" | "Stiftelsen Gi Effektivt";
-  sumNonDeductibleDonations: number;
+  /** @description The sum of all donations for the year */
+  sumDonations: number;
 };
 
 export type TaxYearlyReportUnits = {
+  /** @description The Auto-generated id for a tax unit */
   id: number;
+  /** @description Full name of the tax unit (either a personal name or a business entity) */
   name: string;
+  /** @description Either a personal number or the number for the business entity */
   ssn: string;
-  sumDonations: string;
+  /** @description The sum of all donations for the tax unit for the year and channel */
+  sumDonations: number;
+  /** @description The tax deduction for the tax unit for the year and channel */
   taxDeduction: number;
-  channel: "Gi Effektivt" | "EAN Giverportal";
+  /** @description The channels for the tax unit for the year */
+  channels: {
+    /** @description The channel (or entity the donations where given to) for the tax unit for the year and channel */
+    channel: string;
+    /** @description The sum of all donations for the tax unit for the year and channel */
+    sumDonations: number;
+  }[];
 };
 
 export type ImpactCharity = {

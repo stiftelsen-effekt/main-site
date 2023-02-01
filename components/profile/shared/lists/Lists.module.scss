@@ -14,6 +14,24 @@
   vertical-align: top;
 }
 
+.table tr td .cellContent {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  vertical-align: middle;
+}
+
+.table tr td svg.extraInfoIcon {
+  margin-left: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 100%;
+}
+
+.table tr td.rightAlignCell {
+  text-align: right;
+}
+
 .table .expandableRow {
   cursor: pointer;
 }
@@ -73,6 +91,16 @@
   display: inline-block;
 }
 
+.gridContainer.linedRows > section > .table {
+  & > tbody > tr:first-child > td {
+    border-top: 1px solid var(--primary);
+    padding: 0.6rem 0rem;
+  }
+  &  {
+    border-bottom: 1px solid var(--primary);
+  }
+}
+
 table td svg.iconChevronUp,
 table td svg.iconChevronDown {
   cursor: pointer;
@@ -92,43 +120,6 @@ table td svg.iconChevronDown {
 
 table tr .detailRowCell {
   width: 100%;
-}
-
-table tr td .cellTooltip {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 0.5rem;
-  cursor: pointer;
-}
-
-table tr td .cellTooltip:hover {
-  text-decoration: underline;
-}
-
-table tr td .cellTooltip .cellTooltipContent {
-  display: none;
-}
-
-table tr td .cellTooltip:hover .cellTooltipContent {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: -60px;
-  left: -5vw;
-  background: var(--primary);
-  color: var(--secondary);
-  width: calc(100% + 10vw);
-  padding: 0.6rem 5vw;
-  font-size: 0.8rem;
-}
-
-table tr td .cellTooltip:hover .cellTooltipContent svg {
-  margin-right: 0.5rem;
-  flex-shrink: 0;
-}
-
-table tr td .cellTooltip:hover .cellTooltipContent span {
-  flex-shrink: 1;
 }
 
 .expanderContent {
@@ -195,12 +186,6 @@ table tr td .cellTooltip:hover .cellTooltipContent span {
   text-decoration: underline;
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  table tr td .cellTooltip:hover .cellTooltipContent {
-    top: -30px;
-  }
-}
-
 @media only screen and (max-width: 1180px) {
   .table .expandableRow:hover {
     color: var(--primary);
@@ -263,11 +248,8 @@ table tr td .cellTooltip:hover .cellTooltipContent span {
     display: table-cell;
   }
 
-  table tr td .cellTooltip:hover .cellTooltipContent {
-    top: 0;
-    left: 0;
-    position: fixed;
-    z-index: 1000;
-    width: 100%;
+  .cellTooltipContent {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
   }
 }
