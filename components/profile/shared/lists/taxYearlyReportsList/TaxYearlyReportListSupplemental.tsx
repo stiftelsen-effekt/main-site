@@ -10,6 +10,7 @@ export const TaxYearlyReportListSupplemental: React.FC<{
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
 }> = ({ report, donations, distribtionMap }) => {
+  if (report.sumDonations == 0) return null;
   return (
     <>
       <div className={style.header}>

@@ -72,7 +72,12 @@ export const TaxYearlyReportList: React.FC<{
     rows.push(rowMissingTaxUnits);
   }
 
-  const emptyPlaceholder = <div>EMPTY PLACEHOLDER</div>;
+  const emptyPlaceholder = (
+    <div>
+      Vi har ikke registrert noen donasjoner på deg i 2022. Om dette ikke stemmer ta kontakt med oss
+      på donasjon@gieffektivt.no.
+    </div>
+  );
 
   return (
     <GenericList

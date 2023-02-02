@@ -8,6 +8,7 @@ import style from "./TaxYearlyReportListBody.module.scss";
 export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({ report }) => {
   const [nonDeductibleInfoOpen, setNonDeductibleInfoOpen] = useState(false);
 
+  if (report.sumDonations == 0) return null;
   return (
     <>
       <table className={style.summaryTable}>
@@ -46,7 +47,10 @@ export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({
         </tbody>
       </table>
 
-      {report.sumNonDeductibleDonationsByType.length > 0 && (
+      {report.sumNonDeductibleDonationsByType.reduce(
+        (acc, n) => acc + n.sumNonDeductibleDonations,
+        0,
+      ) > 0 && (
         <>
           <Lightbox open={nonDeductibleInfoOpen} onConfirm={() => setNonDeductibleInfoOpen(false)}>
             <div className={style.nonDeductibleInfo}>
