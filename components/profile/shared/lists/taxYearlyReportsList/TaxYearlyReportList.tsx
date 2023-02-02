@@ -46,7 +46,9 @@ export const TaxYearlyReportList: React.FC<{
       },
     ],
     details: (
-      <TaxYearlyReportDesktopDetails channels={report.sumDonationsWithoutTaxUnit.channels} />
+      <TaxYearlyReportDesktopDetails
+        channels={report.sumDonationsWithoutTaxUnit.channels.filter((c) => c.sumDonations > 0)}
+      />
     ),
     element: report.sumDonationsWithoutTaxUnit,
   };
@@ -64,7 +66,11 @@ export const TaxYearlyReportList: React.FC<{
     element: unit,
   }));
 
-  const rows: ListRow<TaxYearlyReportUnits | any>[] = [...rowsUnits, rowMissingTaxUnits];
+  const rows: ListRow<TaxYearlyReportUnits | any>[] = [...rowsUnits];
+
+  if (report.sumDonationsWithoutTaxUnit.sumDonations > 0) {
+    rows.push(rowMissingTaxUnits);
+  }
 
   const emptyPlaceholder = <div>EMPTY PLACEHOLDER</div>;
 
