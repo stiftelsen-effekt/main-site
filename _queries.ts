@@ -26,6 +26,15 @@ const fetcher = async (
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!response.ok) {
+    let error = new Error("An error occurred while fetching the data.");
+    // Attach extra info to the error object.
+    (error as any).info = await response.json();
+    (error as any).status = response.status;
+    throw error;
+  }
+
   return (await response.json()).content;
 };
 

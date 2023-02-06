@@ -11,6 +11,7 @@ import {
 import { InfoBox } from "../../../shared/components/Infobox/Infobox";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { DonorContext } from "../../layout/donorProvider";
+import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
 import { TaxYearlyReportList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportList";
 import { TaxYearlyReportMobileList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportMobileList";
 import styles from "./YearlyReportsTab.module.scss";
@@ -47,6 +48,19 @@ export const YearlyReportsTab: React.FC = () => {
   const dataAvailable = donations && distributions && reportsData;
   const loading = donationsLoading || distributionsLoading || reportsLoading;
 
+  if (reportsError) {
+    return (
+      <div className={styles.container}>
+        <h4 className={styles.header}>Dine årsoppgaver</h4>
+        <p>
+          Henting av dine årsrapporter feilet. Våre utviklere er varlset om feilen og er på saken.
+          Kontakt oss gjerne på donasjon@gieffektivt.no så finner vi ut av det!{" "}
+        </p>
+        <ErrorMessage>{JSON.stringify(reportsError, null, 2)}</ErrorMessage>
+      </div>
+    );
+  }
+
   if (loading || !dataAvailable || !donor) {
     return (
       <div className={styles.container}>
@@ -60,6 +74,8 @@ export const YearlyReportsTab: React.FC = () => {
 
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
+
+  console.log(reportsError);
 
   return (
     <div className={styles.container}>
