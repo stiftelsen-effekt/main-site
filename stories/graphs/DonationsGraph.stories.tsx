@@ -29,7 +29,7 @@ const organizations = [
     shortDesc:
       "Against Malaria Foundation driver preventivt arbeid gjennom distribusjon av impregnerte malarianett. Studier viser at for 8kr beskyttes én person i minst ett år.",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ const organizations = [
     shortDesc:
       "SCI Foundation bekjemper neglisjerte tropesykdommer som blant annet sneglefeber ved bruk av kostnadseffektive medisiner i Jemen og Afrika sør for Sahara.",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ const organizations = [
     abbriv: "End",
     shortDesc: "end ",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 4,
@@ -55,7 +55,7 @@ const organizations = [
     shortDesc:
       "Malaria Consortium utfører seasonal malaria chemoprevention (SMC) som forhindrer smitte  i Afrika, studier viser at denne metoden er svært kostnadseffektiv.",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 5,
@@ -63,7 +63,7 @@ const organizations = [
     abbriv: "DtW",
     shortDesc: "DtW",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 6,
@@ -71,7 +71,7 @@ const organizations = [
     abbriv: "Sight",
     shortDesc: "Sight",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 7,
@@ -80,7 +80,7 @@ const organizations = [
     shortDesc:
       "GiveDirectly utfører kontantoverføringer til ekstremt fattige i Kenya og Uganda, slik at mottakerne kan selv velge hvor de vil investere pengene sine.",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 8,
@@ -88,7 +88,7 @@ const organizations = [
     abbriv: "PHC",
     shortDesc: "PhC",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 9,
@@ -96,7 +96,7 @@ const organizations = [
     abbriv: "NLS",
     shortDesc: "NLS",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 10,
@@ -105,7 +105,7 @@ const organizations = [
     shortDesc:
       "Helen Keller International forebygger mangelsykdommer ved bruk av vitamin A-tilskudd, som er årsaken til halvparten av dødsfall blant barn under 5 år.",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 11,
@@ -113,7 +113,7 @@ const organizations = [
     abbriv: "Drift",
     shortDesc: "Penger donert til oss brukes til videre drift og utvikling av våre tjenester. ",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 12,
@@ -122,7 +122,7 @@ const organizations = [
     shortDesc:
       "GiveWell gjør en kontinuerlig vurdering av saksområder for å finne de mest trengende sakene, pengene utdeles så kvartalsvis til de mest effektive organisasjonene.",
     standardShare: 100,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 13,
@@ -131,7 +131,7 @@ const organizations = [
     shortDesc:
       "GiveDirectly utfører kontantoverføringer til ekstremt fattige, og driver dessuten et forsøksprosjekt med borgerlønn i Kenya (UBI). Velg dette alternativet om du vil støtte det prosjektet spesifikt.",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 14,
@@ -140,7 +140,7 @@ const organizations = [
     shortDesc:
       "Når omsorgspersoner tar med et spedbarn til en klinikk for den første vaksinen, får de tilbud om å motta direkte kontantoverføringer hvis de fortsetter å komme tilbake i tråd med vaksinasjonsplanen.\n",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
   {
     id: 15,
@@ -148,7 +148,7 @@ const organizations = [
     abbriv: "AGF",
     shortDesc: "AGF",
     standardShare: 0,
-    infoUrl: "https://gieffektivt.no/organisasjoner",
+    infoUrl: "https://gieffektivt.no/topplista",
   },
 ];
 

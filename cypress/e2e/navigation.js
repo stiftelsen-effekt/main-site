@@ -88,17 +88,17 @@ describe("Navigation", () => {
     cy.get("[data-cy=articles-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/articles");
+    cy.url().should("include", "/artikler");
 
     cy.get("[data-cy=about-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/about");
+    cy.url().should("include", "/om");
 
     cy.get("[data-cy=Topplista-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/organizations");
+    cy.url().should("include", "/topplista");
 
     cy.get("[data-cy=Kriterier-link]").within(() => {
       cy.get("a").click({ force: true });
@@ -123,14 +123,14 @@ describe("Navigation", () => {
     cy.get("[data-cy=FAQ-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/support");
+    cy.url().should("include", "/ofte-stilte-sporsmal");
   });
 
   it("Tests links in the Footer", () => {
     cy.get("[data-cy=articles-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/articles");
+    cy.url().should("include", "/artikler");
   });
 
   it("Tests newsletter signup", () => {

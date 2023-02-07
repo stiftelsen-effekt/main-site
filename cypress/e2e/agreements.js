@@ -62,7 +62,7 @@ describe("Agreements page", () => {
       }).as("getDistribution");
     });
 
-    cy.visit(`/profile/agreements/`);
+    cy.visit(`/min-side/avtaler/`);
 
     /**
      * Wait for initial data load

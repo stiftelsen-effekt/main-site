@@ -1,25 +1,25 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
-import style from "../../styles/Tax.module.css";
-import { LayoutPage } from "../../types";
+import { Layout } from "../../../components/profile/layout/layout";
+import style from "../../../styles/Tax.module.css";
+import { LayoutPage } from "../../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../../lib/sanity.server";
 import { groq } from "next-sanity";
-import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { Navbar } from "../../components/profile/layout/navbar";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
-import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { FacebookTaxWidget } from "../../components/profile/tax/FacebookTaxWidget/FacebookTaxWidget";
+import { PageContent } from "../../../components/profile/layout/PageContent/PageContent";
+import { Navbar } from "../../../components/profile/layout/navbar";
+import { footerQuery } from "../../../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../../../components/shared/layout/Header/Header";
+import { FacebookTaxWidget } from "../../../components/profile/tax/FacebookTaxWidget/FacebookTaxWidget";
 import { useContext, useState } from "react";
-import { DonorContext } from "../../components/profile/layout/donorProvider";
-import { PortableText } from "../../lib/sanity";
+import { DonorContext } from "../../../components/profile/layout/donorProvider";
+import { PortableText } from "../../../lib/sanity";
 import Link from "next/link";
-import { widgetQuery } from "../../_queries";
-import TaxMenu, { TaxMenuChoices } from "../../components/profile/tax/TaxMenu/TaxMenu";
-import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
-import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
-import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
+import { widgetQuery } from "../../../_queries";
+import TaxMenu, { TaxMenuChoices } from "../../../components/profile/tax/TaxMenu/TaxMenu";
+import { FacebookTab } from "../../../components/profile/tax/FacebookTab/FacebookTab";
+import { TaxDeductionsTab } from "../../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
+import { TaxUnitsTab } from "../../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
@@ -27,10 +27,19 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
   const page = data.result.page[0];
   const { donor } = useContext(DonorContext);
 
-  const [menuChoice, setMenuChoice] = useState(TaxMenuChoices.TAX_UNITS);
-
   if ((!router.isFallback && !data) || !donor) {
     return <div>Loading...</div>;
+  }
+  let menuChoice = TaxMenuChoices.TAX_UNITS;
+
+  let slug = router.query.slug ? router.query.slug[0] : "";
+  switch (slug) {
+    case TaxMenuChoices.ABOUT_TAX_DEDUCTIONS:
+      menuChoice = TaxMenuChoices.ABOUT_TAX_DEDUCTIONS;
+      break;
+    case TaxMenuChoices.FACEBOOK_DONATIONS:
+      menuChoice = TaxMenuChoices.FACEBOOK_DONATIONS;
+      break;
   }
 
   return (
@@ -46,7 +55,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
         <TaxMenu
           mobile
           selected={menuChoice}
-          onChange={(selected) => setMenuChoice(selected)}
+          onChange={(selected) => router.push("/min-side/skatt/" + selected)}
         ></TaxMenu>
       </MainHeader>
 
@@ -54,7 +63,10 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
         <div className={style.container}>
           <h3 className={style.header}>Skatt</h3>
 
-          <TaxMenu selected={menuChoice} onChange={(selected) => setMenuChoice(selected)}></TaxMenu>
+          <TaxMenu
+            selected={menuChoice}
+            onChange={(selected) => router.push("/min-side/skatt/" + selected)}
+          ></TaxMenu>
 
           {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
 
@@ -93,6 +105,17 @@ export async function getStaticProps({ preview = false }) {
   };
 }
 
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { slug: [""] } },
+      { params: { slug: [TaxMenuChoices.ABOUT_TAX_DEDUCTIONS] } },
+      { params: { slug: [TaxMenuChoices.FACEBOOK_DONATIONS] } },
+      { params: { slug: [TaxMenuChoices.TAX_UNITS] } },
+    ],
+    fallback: false,
+  };
+}
 const fetchProfilePage = groq`
 {
   "settings": *[_type == "site_settings"] {

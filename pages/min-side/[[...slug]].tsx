@@ -100,36 +100,41 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </>
     );
 
-  const isTotal = typeof router.query.year === "undefined";
+  let filterYear: string | undefined;
+  if (typeof router.query.slug !== "undefined") {
+    if (router.query.slug.length === 2 && router.query.slug[0] === "donasjoner") {
+      filterYear = router.query.slug[1];
+    }
+  }
+  console.log(filterYear);
+
+  const isTotal = typeof filterYear === "undefined";
+
   const years = getYears(donor, donations);
   const firstYear = Math.min(...years);
-  const sum = getDonationSum(aggregatedDonations, router.query.year as string);
+  const sum = getDonationSum(aggregatedDonations, filterYear as string);
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
-  const periodText = !isTotal
-    ? `I ${router.query.year} har du gitt`
-    : `Siden ${firstYear} har du gitt`;
+  const periodText = !isTotal ? `I ${filterYear} har du gitt` : `Siden ${firstYear} har du gitt`;
 
   let distribution = !isTotal
-    ? getYearlyDistribution(aggregatedDonations, parseInt(router.query.year as string))
+    ? getYearlyDistribution(aggregatedDonations, parseInt(filterYear as string))
     : getTotalDistribution(aggregatedDonations);
-
-  const mostRecentYearWithDonations = getMostRecentYearWithDonations(aggregatedDonations);
 
   const donationList = !isTotal ? (
     <DonationList
       donations={donations
         .filter(
           (donation: Donation) =>
-            new Date(donation.timestamp).getFullYear() === parseInt(router.query.year as string),
+            new Date(donation.timestamp).getFullYear() === parseInt(filterYear as string),
         )
         .sort(
           (a: Donation, b: Donation) =>
             new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         )}
       distributions={distributionsMap}
-      year={router.query.year as string}
+      year={filterYear as string}
       firstOpen={false}
     />
   ) : (
@@ -161,17 +166,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <MainHeader hideOnScroll={false}>
         <Navbar logo={settings.logo} />
-        <DonationYearMenu
-          years={years}
-          selected={(router.query.year as string) || "total"}
-          mobile
-        />
+        <DonationYearMenu years={years} selected={(filterYear as string) || "total"} mobile />
       </MainHeader>
 
       <PageContent>
         <h3 className={style.header}>Donasjoner</h3>
 
-        <DonationYearMenu years={years} selected={(router.query.year as string) || "total"} />
+        <DonationYearMenu years={years} selected={(filterYear as string) || "total"} />
 
         <DonationsChart distribution={distribution} organizations={organizations}></DonationsChart>
 
@@ -182,8 +183,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
                 ? donations
                 : donations.filter(
                     (donation: Donation) =>
-                      new Date(donation.timestamp).getFullYear() ===
-                      parseInt(router.query.year as string),
+                      new Date(donation.timestamp).getFullYear() === parseInt(filterYear as string),
                   )
             }
             distributionMap={distributionsMap}
@@ -216,6 +216,23 @@ export async function getStaticProps({ preview = false }) {
     },
   };
 }
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { slug: [""] } }, ...getYearPaths()],
+    fallback: false,
+  };
+}
+
+const getYearPaths = () => {
+  const currentYear = new Date().getFullYear();
+  const yearPaths = [];
+  for (let year = 2016; year <= currentYear + 1; year++) {
+    yearPaths.push({ params: { slug: ["donasjoner", year.toString()] } });
+  }
+
+  return yearPaths;
+};
 
 const fetchProfilePage = groq`
 {
@@ -293,8 +310,4 @@ const getDonationSum = (aggregatedDonations: AggregatedDonations[], year?: strin
       0,
     ),
   );
-};
-
-const getMostRecentYearWithDonations = (aggregatedDonations: AggregatedDonations[]) => {
-  return Math.max(...aggregatedDonations.map((el: AggregatedDonations) => el.year));
 };

@@ -21,7 +21,7 @@ export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = 
       <div className={styles.header}>
         <h4>Relaterte artikler</h4>
         <div className={styles.viewall}>
-          <Link href="/articles" passHref>
+          <Link href="/artikler" passHref>
             <a>
               <span>Se alle</span>
               <div>→</div>

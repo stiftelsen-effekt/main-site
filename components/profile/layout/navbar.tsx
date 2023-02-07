@@ -48,22 +48,22 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
         </div>
         <ul>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile" passHref>
+            <Link href="/min-side" passHref>
               Donasjoner
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile/agreements" passHref>
+            <Link href="/min-side/avtaler" passHref>
               Avtaler
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile/tax" passHref>
+            <Link href="/min-side/skatt" passHref>
               Skatt
             </Link>
           </li>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/profile/details" passHref>
+            <Link href="/min-side/profil" passHref>
               Profil
             </Link>
           </li>

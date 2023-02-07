@@ -28,25 +28,25 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
       res.writeHead(307, { Location: `/` });
       break;
     case "about_us":
-      res.writeHead(307, { Location: `/about` });
+      res.writeHead(307, { Location: `/om` });
       break;
     case "organizations":
-      res.writeHead(307, { Location: `/organizations` });
+      res.writeHead(307, { Location: `/topplista` });
       break;
     case "support":
-      res.writeHead(307, { Location: `/support` });
+      res.writeHead(307, { Location: `/ofte-stilte-sporsmal` });
       break;
     case "articles":
-      res.writeHead(307, { Location: `/articles` });
+      res.writeHead(307, { Location: `/artikler` });
       break;
     case "vippsagreement":
-      res.writeHead(307, { Location: `/vippsagreement?email=example@email.com` });
+      res.writeHead(307, { Location: `/vippsavtale?email=example@email.com` });
       break;
     case "generic_page":
       res.writeHead(307, { Location: `/${req?.query?.slug}` ?? `/` });
       break;
     case "article_page":
-      res.writeHead(307, { Location: `/articles/${req?.query?.slug}` ?? `/` });
+      res.writeHead(307, { Location: `/artikler/${req?.query?.slug}` ?? `/` });
       break;
     case "donationwidget":
       res.writeHead(307, { Location: `/` });

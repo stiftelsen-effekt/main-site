@@ -34,7 +34,7 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/about`}
+        canonicalurl={`https://gieffektivt.no/om`}
       />
 
       <MainHeader hideOnScroll={true}>

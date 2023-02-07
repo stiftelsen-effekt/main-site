@@ -45,7 +45,7 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/organizations`}
+        canonicalurl={`https://gieffektivt.no/vippsavtale`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -66,10 +66,10 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
           <LinkButton
             title={"Registrer bruker"}
             type={"primary"}
-            url={`/profile?screen_hint=signup&prompt=login`}
+            url={`/min-side?screen_hint=signup&prompt=login`}
           />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <LinkButton title={"Logg inn"} type={"primary"} url={`/profile`} />
+          <LinkButton title={"Logg inn"} type={"primary"} url={`/min-side`} />
         </div>
       </SectionContainer>
       <BlockContentRenderer content={page.content} />
