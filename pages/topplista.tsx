@@ -31,7 +31,7 @@ const Organizations: LayoutPage<{ data: any; preview: boolean }> = ({ data, prev
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/organizations`}
+        canonicalurl={`https://gieffektivt.no/topplista`}
       />
 
       <MainHeader hideOnScroll={true}>

@@ -54,7 +54,7 @@ export async function getServerSideProps({ res }: any) {
 const getPath = (type: string, slug: string) => {
   switch (type) {
     case "article_page":
-      return `/articles/${slug}`;
+      return `/artikler/${slug}`;
     default:
       return `/${slug || ""}`;
   }

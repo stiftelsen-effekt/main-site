@@ -185,7 +185,7 @@ export const DonationImpactItem: React.FC<{
                       _key: "charity_description",
                       title: "Om " + relevantEvaluation.charity.charity_name,
                       url:
-                        "https://gieffektivt.no/organizations#" +
+                        "https://gieffektivt.no/topplista#" +
                         relevantEvaluation.charity.charity_name.replaceAll(" ", "_"),
                       newtab: true,
                     },

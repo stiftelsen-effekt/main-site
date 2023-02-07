@@ -29,7 +29,7 @@ const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview })
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/support`}
+        canonicalurl={`https://gieffektivt.no/ofte-stilte-sporsmal`}
       />
 
       <MainHeader hideOnScroll={true}>

@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { LinkType } from "../../../main/blocks/Links/Links";
 import { NavLink } from "../../../main/layout/navbar";
+import vercelBanner from "../../../../public/vercel-banner.svg";
 import styles from "./Footer.module.scss";
 
 export type FooterItem = NavLink | LinkType;
@@ -96,7 +98,9 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           </li>
           <li>&nbsp;</li>
           <li>
-            <a data-cy="navigate-to-top" href="#top">Til toppen &uarr;</a>
+            <a data-cy="navigate-to-top" href="#top">
+              Til toppen &uarr;
+            </a>
           </li>
         </ul>
       </div>
@@ -117,7 +121,13 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
           </label>
 
           <div className={styles.input__inlinebutton}>
-            <input data-cy="newsletter-input" type="email" name="EMAIL" placeholder="E-POST" id="mce-EMAIL" />
+            <input
+              data-cy="newsletter-input"
+              type="email"
+              name="EMAIL"
+              placeholder="E-POST"
+              id="mce-EMAIL"
+            />
             <button
               data-cy="newsletter-submit"
               type="submit"
@@ -143,6 +153,12 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
         Structured content powered by{" "}
         <a href="https://www.sanity.io/" target="_blank" rel="noreferrer">
           Sanity.io
+        </a>
+        <a
+          href="https://vercel.com?utm_source=effective-altruism-norway&utm_campaign=oss"
+          style={{ borderBottom: "none", marginTop: "0.8rem", display: "block" }}
+        >
+          <Image src={vercelBanner} alt="Powered by Vercel" width={160} />
         </a>
       </div>
     </footer>

@@ -13,7 +13,7 @@ import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 
 const onRedirectCallback = (appState: any) => {
-  Router.replace(appState?.returnTo || "/profile/");
+  Router.replace(appState?.returnTo || "/min-side/");
 };
 
 export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
@@ -36,7 +36,9 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ""}
       audience="https://data.gieffektivt.no"
       scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
-      redirectUri={typeof window !== "undefined" ? window.location.origin + "/profile/" : undefined}
+      redirectUri={
+        typeof window !== "undefined" ? window.location.origin + "/min-side/" : undefined
+      }
       onRedirectCallback={onRedirectCallback}
       cacheLocation={cacheLocation}
     >

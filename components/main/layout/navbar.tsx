@@ -126,7 +126,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             ),
           )}
           <li className={styles.buttonsWrapper}>
-            <Link href="/profile" passHref>
+            <Link href="/min-side" passHref>
               <a tabIndex={-1}>
                 <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
                   Min side

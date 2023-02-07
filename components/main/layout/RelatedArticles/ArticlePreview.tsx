@@ -9,7 +9,7 @@ export const ArticlePreview: React.FC<{
   slug: string;
 }> = ({ header, inngress, slug }) => {
   return (
-    <Link key={slug} href={`/articles/${slug}`} passHref>
+    <Link key={slug} href={`/artikler/${slug}`} passHref>
       <li className={styles.article}>
         {header.published && (
           <div className={styles.article__meta}>
