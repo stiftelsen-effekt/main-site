@@ -2,9 +2,9 @@ import React from "react";
 import style from "./TaxMenu.module.scss";
 
 export enum TaxMenuChoices {
-  TAX_UNITS = "Skatteenheter",
-  FACEBOOK_DONATIONS = "Facebook og Instagram",
-  ABOUT_TAX_DEDUCTIONS = "Om skattefradrag",
+  TAX_UNITS = "skatteenheter",
+  FACEBOOK_DONATIONS = "fb-instagram",
+  ABOUT_TAX_DEDUCTIONS = "om",
 }
 
 const TaxMenu: React.FC<{
@@ -22,23 +22,19 @@ const TaxMenu: React.FC<{
           className={selected == TaxMenuChoices.TAX_UNITS ? style["menu-selected"] : ""}
           onClick={() => onChange(TaxMenuChoices.TAX_UNITS)}
         >
-          <button onClick={(e) => e.currentTarget.blur()}>{TaxMenuChoices.TAX_UNITS}</button>
+          <button onClick={(e) => e.currentTarget.blur()}>Skatteenheter</button>
         </li>
         <li
           className={selected == TaxMenuChoices.FACEBOOK_DONATIONS ? style["menu-selected"] : ""}
           onClick={() => onChange(TaxMenuChoices.FACEBOOK_DONATIONS)}
         >
-          <button onClick={(e) => e.currentTarget.blur()}>
-            {TaxMenuChoices.FACEBOOK_DONATIONS}
-          </button>
+          <button onClick={(e) => e.currentTarget.blur()}>Facebook og Instagram</button>
         </li>
         <li
           className={selected == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS ? style["menu-selected"] : ""}
           onClick={() => onChange(TaxMenuChoices.ABOUT_TAX_DEDUCTIONS)}
         >
-          <button onClick={(e) => e.currentTarget.blur()}>
-            {TaxMenuChoices.ABOUT_TAX_DEDUCTIONS}
-          </button>
+          <button onClick={(e) => e.currentTarget.blur()}>Om skattefradrag</button>
         </li>
       </ul>
     </div>

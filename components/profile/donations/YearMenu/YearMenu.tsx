@@ -22,7 +22,7 @@ const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: b
         >
           <Link
             href={{
-              pathname: "/profile/",
+              pathname: "/min-side/",
             }}
             scroll={false}
             passHref
@@ -42,10 +42,7 @@ const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: b
           >
             <Link
               href={{
-                pathname: "/profile/",
-                query: {
-                  year,
-                },
+                pathname: "/min-side/donasjoner/" + year,
               }}
               scroll={false}
               passHref
