@@ -9,7 +9,6 @@
 [![Main site](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/wfkg9n&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/wfkg9n/runs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-
 # Table of Contents
 
 - [Getting started <g-emoji class="g-emoji" alias="zap" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png">⚡</g-emoji>](#getting-started-)
@@ -64,9 +63,9 @@ The file `pages/_app.tsx` defines which layout that is to be used for site rende
 
 ### Pages
 
-The default Next.js router uses the folder structure of the `/pages` folder. The page will be available at the coresponding route in the application, for example `/pages/about.tsx` will be served at `/about`.
+The default Next.js router uses the folder structure of the `/pages` folder. The page will be available at the coresponding route in the application, for example `/pages/om.tsx` will be served at `/om`.
 
-All pages under `/pages/profile` should specify the profile layout (found under `components/profile/layout.tsx`). This is beceause this layout is wrapped with the Auth0 provider, which is needed for authentification. It also uses a different navigation bar than the public facing site.
+All pages under `/pages/min-side` should specify the profile layout (found under `components/min-side/layout.tsx`). This is beceause this layout is wrapped with the Auth0 provider, which is needed for authentification. It also uses a different navigation bar than the public facing site.
 
 Conversely, all public facing pages should use the main layout (found under `components/main/layout.tsx`).
 
@@ -146,7 +145,7 @@ In this example page, we use the publicly available main layout for the page. We
 
 ## Profile page 🧑‍🤝‍🧑
 
-We utilize Auth0 as our identity provider. Under `components/profile/layout` we wrap the profile page with the [Auth0 react SDK](https://github.com/auth0/auth0-react) provider. When querying the [API](https://github.com/stiftelsen-effekt/effekt-backend) for data, we provide the access token from Auth0. Depending on whether the resource accessed is a protected resource, the backend API validates the token, and returns the data. The following diagram illustrates the process.
+We utilize Auth0 as our identity provider. Under `components/min-side/layout` we wrap the profile page with the [Auth0 react SDK](https://github.com/auth0/auth0-react) provider. When querying the [API](https://github.com/stiftelsen-effekt/effekt-backend) for data, we provide the access token from Auth0. Depending on whether the resource accessed is a protected resource, the backend API validates the token, and returns the data. The following diagram illustrates the process.
 
 <div style="text-align: center">
   <img src="docs/profilepageflow.svg" width="420" alt="Profile Page Flow Diagram" />

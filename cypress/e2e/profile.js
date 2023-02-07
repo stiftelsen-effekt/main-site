@@ -14,7 +14,7 @@ describe("Profile page", () => {
       })
       .as("getDonor");
 
-    cy.visit(`/profile/details/`);
+    cy.visit(`/min-side/profil/`);
 
     /**
      * Wait for initial data load

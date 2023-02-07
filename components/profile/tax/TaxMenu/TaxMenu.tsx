@@ -3,7 +3,7 @@ import style from "./TaxMenu.module.scss";
 
 export enum TaxMenuChoices {
   TAX_UNITS = "skatteenheter",
-  FACEBOOK_DONATIONS = "fb-instagram",
+  FACEBOOK_DONATIONS = "facebook-instagram",
   ABOUT_TAX_DEDUCTIONS = "om",
 }
 

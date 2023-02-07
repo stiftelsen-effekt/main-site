@@ -21,7 +21,7 @@ export const SharesSelection: React.FC = () => {
             href={
               organizations.filter((org) => org.id === share.id)[0].id === 12
                 ? "https://gieffektivt.no/smart-fordeling"
-                : `https://gieffektivt.no/organizations/#${organizations
+                : `https://gieffektivt.no/topplista/#${organizations
                     .filter((org) => org.id === share.id)[0]
                     .name.replace(/ /g, "_")}`
             }

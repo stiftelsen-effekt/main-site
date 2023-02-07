@@ -27,7 +27,7 @@ const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previ
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/articles`}
+        canonicalurl={`https://gieffektivt.no/artikler`}
       />
 
       <div className={styles.inverted}>

@@ -70,7 +70,7 @@ describe("Donations page", () => {
       }).as("getReferrals");
     });
 
-    cy.visit(`/profile/`);
+    cy.visit(`/min-side/`);
 
     /**
      * Wait for initial data load
