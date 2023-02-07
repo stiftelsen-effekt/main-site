@@ -9,6 +9,7 @@
 [![Main site](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/wfkg9n&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/wfkg9n/runs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+[![Powered by Vercel](docs/vercel-banner.svg)](https://vercel.com?utm_source=effective-altruism-norway&utm_campaign=oss)
 
 # Table of Contents
 
