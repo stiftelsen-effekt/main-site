@@ -85,7 +85,7 @@ describe("Navigation", () => {
   });
 
   it("Tests links in the NavBar", () => {
-    cy.get("[data-cy=articles-link]").within(() => {
+    cy.get("[data-cy=artikler-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/artikler");
@@ -127,7 +127,7 @@ describe("Navigation", () => {
   });
 
   it("Tests links in the Footer", () => {
-    cy.get("[data-cy=articles-link]").within(() => {
+    cy.get("[data-cy=artikler-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/artikler");
