@@ -14,6 +14,24 @@
   vertical-align: top;
 }
 
+.table tr td .cellContent {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  vertical-align: middle;
+}
+
+.table tr td svg.extraInfoIcon {
+  margin-left: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 100%;
+}
+
+.table tr td.rightAlignCell {
+  text-align: right;
+}
+
 .table .expandableRow {
   cursor: pointer;
 }
@@ -50,7 +68,6 @@
 
 .gridContainer {
   display: grid;
-  grid-template-columns: 20% 70%;
   justify-content: space-between;
   word-break: keep-all;
   margin-bottom: 100px;
@@ -61,7 +78,7 @@
   padding-top: 16px;
 }
 
-.gridContainer section.header h5 {
+.gridContainer section.header h3 {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -72,6 +89,16 @@
 
 .gridContainer section.header p div {
   display: inline-block;
+}
+
+.gridContainer.linedRows > section > .table {
+  & > tbody > tr:first-child > td {
+    border-top: 1px solid var(--primary);
+    padding: 0.6rem 0rem;
+  }
+  &  {
+    border-bottom: 1px solid var(--primary);
+  }
 }
 
 table td svg.iconChevronUp,
@@ -172,7 +199,7 @@ table tr .detailRowCell {
   }
 
   .gridContainer {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     margin-bottom: 3rem;
   }
 
@@ -182,6 +209,10 @@ table tr .detailRowCell {
 
   .gridContainer section.header {
     display: none;
+  }
+
+  .gridContainer.supplementalOnMobile section.header {
+    display: block;
   }
 
   .gridContainer tr th {
@@ -197,7 +228,6 @@ table tr .detailRowCell {
   }
 
   .table td.rowAction .actionContainer { 
-
     margin-left: 0.5rem;
   }
 
@@ -216,5 +246,10 @@ table tr .detailRowCell {
 
   .gridContainer tr td:last-child {
     display: table-cell;
+  }
+
+  .cellTooltipContent {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
   }
 }

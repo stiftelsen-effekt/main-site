@@ -1,0 +1,25 @@
+.container {
+  
+  white-space: pre-wrap;
+  background: var(--primary);
+
+  padding: 1rem;
+  position: relative;
+  font-size: 0.8rem;
+  margin-top: 3rem;
+  color: var(--secondary);
+  font-family: monospace;
+}
+
+.container::before {
+  content: 'Feilmelding';
+  display: block;
+  text-transform: uppercase;
+  position: absolute;
+  left: 0;
+  top: -2rem;
+  color: var(--primary);
+  letter-spacing: 1px;
+  font-family: 'ESKlarheitGrotesk';
+  font-weight: bold;
+}

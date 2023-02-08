@@ -1,28 +1,22 @@
 import style from "./Lists.module.scss";
-import GenericListRow from "./GenericListRow";
+import GenericListRow, { ListRow } from "./GenericListRow";
 import React, { ReactElement } from "react";
 import {
   GenericListContextMenuOptions,
   GenericListContextMenuSelect,
 } from "./GenericListContextMenu";
 
-export type ListRow<T> = {
-  id: string;
-  defaultExpanded: boolean;
-  cells: string[];
-  details?: ReactElement;
-  contextOptions?: GenericListContextMenuOptions;
-  onContextSelect?: GenericListContextMenuSelect<T>;
-  element: T;
-};
-
 export type Props<T> = {
   title: string;
-  headers: { label: string; width?: string }[];
+  headers: { label: string; width?: string; align?: "right" }[];
   supplementalInformation?: string | JSX.Element;
   rows: ListRow<T>[];
   emptyPlaceholder: JSX.Element;
+  proportions: number[];
   expandable?: boolean;
+  supplementalOnMobile?: boolean;
+  linedRows?: boolean;
+  children?: ReactElement;
 };
 
 export const GenericList = <T extends unknown>({
@@ -31,15 +25,28 @@ export const GenericList = <T extends unknown>({
   supplementalInformation,
   rows,
   emptyPlaceholder,
+  proportions,
   expandable,
+  supplementalOnMobile = false,
+  linedRows = false,
+  children,
 }: Props<T>) => {
   const hasActions = rows.some((row) => typeof row.contextOptions !== "undefined") || expandable;
 
   return (
-    <div className={style.gridContainer} key={title} data-cy="generic-list">
+    <div
+      className={[
+        style.gridContainer,
+        supplementalOnMobile ? style.supplementalOnMobile : "",
+        linedRows ? style.linedRows : "",
+      ].join(" ")}
+      style={{ gridTemplateColumns: `${proportions.map((p) => p.toString() + "%").join(" ")}` }}
+      key={title}
+      data-cy="generic-list"
+    >
       <section className={style.header} data-cy="generic-list-header">
-        <h5>{title}</h5>
-        <p>{supplementalInformation}</p>
+        <h3>{title}</h3>
+        {supplementalInformation}
       </section>
       <section>
         {rows.length > 0 ? (
@@ -51,6 +58,7 @@ export const GenericList = <T extends unknown>({
                     key={header.label}
                     style={{ width: header.width ?? "auto" }}
                     colSpan={hasActions && i === headers.length - 1 ? 2 : 1}
+                    align={header.align ?? "left"}
                   >
                     {header.label}
                   </th>
@@ -64,6 +72,7 @@ export const GenericList = <T extends unknown>({
         ) : (
           emptyPlaceholder
         )}
+        {children}
       </section>
     </div>
   );

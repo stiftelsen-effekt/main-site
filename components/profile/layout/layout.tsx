@@ -43,7 +43,7 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
       cacheLocation={cacheLocation}
     >
       <div className={styles.container + " " + styles.dark}>
-        <SWRConfig value={{ revalidateOnFocus: false }}>
+        <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
           <UserWrapper>
             <DonorProvider>
               <ActivityProvider>

@@ -20,6 +20,7 @@ import TaxMenu, { TaxMenuChoices } from "../../../components/profile/tax/TaxMenu
 import { FacebookTab } from "../../../components/profile/tax/FacebookTab/FacebookTab";
 import { TaxDeductionsTab } from "../../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
 import { TaxUnitsTab } from "../../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
+import { YearlyReportsTab } from "../../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
 
 const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const router = useRouter();
@@ -40,6 +41,8 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
     case TaxMenuChoices.FACEBOOK_DONATIONS:
       menuChoice = TaxMenuChoices.FACEBOOK_DONATIONS;
       break;
+    case TaxMenuChoices.YEARLY_REPORTS:
+      menuChoice = TaxMenuChoices.YEARLY_REPORTS;
   }
 
   return (
@@ -69,6 +72,8 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           ></TaxMenu>
 
           {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
+
+          {menuChoice == TaxMenuChoices.YEARLY_REPORTS && <YearlyReportsTab />}
 
           {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
             <FacebookTab
@@ -112,6 +117,7 @@ export async function getStaticPaths() {
       { params: { slug: [TaxMenuChoices.ABOUT_TAX_DEDUCTIONS] } },
       { params: { slug: [TaxMenuChoices.FACEBOOK_DONATIONS] } },
       { params: { slug: [TaxMenuChoices.TAX_UNITS] } },
+      { params: { slug: [TaxMenuChoices.YEARLY_REPORTS] } },
     ],
     fallback: false,
   };

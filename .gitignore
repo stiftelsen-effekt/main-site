@@ -42,6 +42,4 @@ yarn-error.log*
 .next
 cypress.env.json
 cypress.env.json
-
-# Sentry
 .sentryclirc

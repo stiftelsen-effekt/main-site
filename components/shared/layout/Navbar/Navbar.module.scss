@@ -316,3 +316,18 @@
     margin-right: auto;
   }
 }
+
+@media print {
+  .navbar {
+    margin-top: 40px;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+
+  .navbar .logoWrapper {
+    height: 26px;
+    width: 176px;
+  }
+}

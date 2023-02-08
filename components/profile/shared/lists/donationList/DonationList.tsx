@@ -1,6 +1,7 @@
 import { Distribution, Donation, META_OWNER } from "../../../../../models";
 import { onlyDate, shortDate, thousandize } from "../../../../../util/formatting";
-import { GenericList, ListRow } from "../GenericList";
+import { GenericList } from "../GenericList";
+import { ListRow } from "../GenericListRow";
 import { DonationDetails } from "./DonationDetails";
 
 export const DonationList: React.FC<{
@@ -67,10 +68,10 @@ export const DonationList: React.FC<{
       id: donation.id.toString(),
       defaultExpanded: firstOpen && index === 0 ? true : false,
       cells: [
-        onlyDate(donation.timestamp),
-        thousandize(Math.round(parseFloat(donation.sum))) + " kr",
-        mapPaymentMethodString(donation.paymentMethod),
-        donation.KID,
+        { value: onlyDate(donation.timestamp) },
+        { value: thousandize(Math.round(parseFloat(donation.sum))) + " kr" },
+        { value: mapPaymentMethodString(donation.paymentMethod) },
+        { value: donation.KID },
       ],
       details: (
         <DonationDetails
@@ -103,6 +104,7 @@ export const DonationList: React.FC<{
       rows={rows}
       emptyPlaceholder={emptyPlaceholder}
       expandable={true}
+      proportions={[20, 70]}
     />
   );
 };

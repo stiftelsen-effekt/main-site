@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.mobileList {
+  display: none;
+}
+
+.noTaxUnitsLink {
+  border-bottom: 1px solid var(--primary);
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1180px) {
+  .header {
+    display: none;
+  }
+
+  .noTaxUnitsText {
+    margin-top: 3rem;
+  }
+
+  .desktopList {
+    display: none;
+  }
+
+  .mobileList {
+    display: block;
+  }
+}

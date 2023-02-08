@@ -5,6 +5,7 @@ export enum TaxMenuChoices {
   TAX_UNITS = "skatteenheter",
   FACEBOOK_DONATIONS = "facebook-instagram",
   ABOUT_TAX_DEDUCTIONS = "om",
+  YEARLY_REPORTS = "aarsoppgaver",
 }
 
 const TaxMenu: React.FC<{
@@ -23,6 +24,12 @@ const TaxMenu: React.FC<{
           onClick={() => onChange(TaxMenuChoices.TAX_UNITS)}
         >
           <button onClick={(e) => e.currentTarget.blur()}>Skatteenheter</button>
+        </li>
+        <li
+          className={selected == TaxMenuChoices.YEARLY_REPORTS ? style["menu-selected"] : ""}
+          onClick={() => onChange(TaxMenuChoices.YEARLY_REPORTS)}
+        >
+          <button onClick={(e) => e.currentTarget.blur()}>Årsoppgaver</button>
         </li>
         <li
           className={selected == TaxMenuChoices.FACEBOOK_DONATIONS ? style["menu-selected"] : ""}

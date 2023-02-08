@@ -1,0 +1,67 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header h2 {
+  display: none;
+}
+
+.printLink {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.printLink svg {
+  margin-right: 0.5rem;
+}
+
+.printLink span {
+  border-bottom: 1px solid var(--primary);
+}
+
+.impactWrapper {
+  margin-top: 1rem;
+}
+
+.summation {
+  margin-top: 6rem;
+}
+
+.summation h3 {
+  margin-bottom: 0.2rem !important;
+}
+
+.taxMessageInfo {
+  margin-top: 1rem;
+}
+
+.orgInfo {
+  margin-top: 1rem;
+}
+
+.mobileListHeader {
+  display: none;
+}
+
+@media only screen and (max-width: 1180px) {
+  .summation {
+    margin-top: 2rem;
+  }
+
+  .orgInfo {
+    display: none;
+  }
+
+  .header h2 {
+    display: block;
+  }
+
+  .mobileListHeader {
+    display: block;
+    margin-top: 3rem;
+  }
+}

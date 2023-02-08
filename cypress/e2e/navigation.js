@@ -85,12 +85,12 @@ describe("Navigation", () => {
   });
 
   it("Tests links in the NavBar", () => {
-    cy.get("[data-cy=articles-link]").within(() => {
+    cy.get("[data-cy=artikler-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/artikler");
 
-    cy.get("[data-cy=about-link]").within(() => {
+    cy.get("[data-cy=om-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/om");
@@ -103,7 +103,7 @@ describe("Navigation", () => {
     cy.get("[data-cy=Kriterier-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/criteria");
+    cy.url().should("include", "/kriterier");
 
     cy.get("[data-cy=Maks-effekt-link]").within(() => {
       cy.get("a").click({ force: true });
@@ -127,7 +127,7 @@ describe("Navigation", () => {
   });
 
   it("Tests links in the Footer", () => {
-    cy.get("[data-cy=articles-link]").within(() => {
+    cy.get("[data-cy=artikler-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/artikler");

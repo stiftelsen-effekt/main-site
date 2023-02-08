@@ -1,6 +1,7 @@
 import { AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
-import { GenericList, ListRow } from "../GenericList";
+import { GenericList } from "../GenericList";
+import { ListRow } from "../GenericListRow";
 import { AgreementDetails } from "./AgreementDetails";
 
 type AgreementRow = {
@@ -73,15 +74,18 @@ export const AgreementList: React.FC<{
     id: agreement.ID.toString(),
     defaultExpanded: false,
     cells: [
-      agreement.type,
-      agreement.date > 0
-        ? "Den " +
-          agreement.date // agreement.payment_date ||
-            .toString() +
-          ". hver måned"
-        : "Siste dagen i måneden",
-      thousandize(agreement.amount) + " kr",
-      agreement.KID,
+      { value: agreement.type },
+      {
+        value:
+          agreement.date > 0
+            ? "Den " +
+              agreement.date // agreement.payment_date ||
+                .toString() +
+              ". hver måned"
+            : "Siste dagen i måneden",
+      },
+      { value: thousandize(agreement.amount) + " kr" },
+      { value: agreement.KID },
     ],
     details: (
       <AgreementDetails
@@ -113,6 +117,7 @@ export const AgreementList: React.FC<{
       headers={headers}
       rows={rows}
       expandable={expandable}
+      proportions={[20, 70]}
     />
   );
 };
