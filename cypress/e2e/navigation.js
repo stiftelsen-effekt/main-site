@@ -103,7 +103,7 @@ describe("Navigation", () => {
     cy.get("[data-cy=Kriterier-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/criteria");
+    cy.url().should("include", "/kriterier");
 
     cy.get("[data-cy=Maks-effekt-link]").within(() => {
       cy.get("a").click({ force: true });
