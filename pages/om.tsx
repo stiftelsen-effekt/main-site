@@ -16,7 +16,7 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Links } from "../components/main/blocks/Links/Links";
 import { Layout } from "../components/main/layout/layout";
-import { widgetQuery } from "../_queries";
+import { linksContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
@@ -131,15 +131,7 @@ const fetchAboutUs = groq`
       seoImage{
         asset->
       },
-      links[] {
-        _type == 'navitem' => @ {
-          ...,
-          "slug": page->slug.current
-        },
-        _type == 'link' => @ {
-          ...
-        },
-      }
+      ${linksContentQuery}
     },
     content
   },

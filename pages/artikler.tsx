@@ -12,7 +12,7 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { filterPageToSingleItem } from "./_app";
-import { widgetQuery } from "../_queries";
+import { linksContentQuery, widgetQuery } from "../_queries";
 
 const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const page = data.result.page;
@@ -114,15 +114,7 @@ const fethcArticles = groq`
       seoImage{
         asset->
       },
-      links[] {
-        _type == 'navitem' => @ {
-          ...,
-          "slug": page->slug.current
-        },
-        _type == 'link' => @ {
-          ...
-        },
-      }
+      ${linksContentQuery}
     },
   },
   "articles": *[_type == "article_page"] | order(header.published desc) {

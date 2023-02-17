@@ -265,6 +265,13 @@ export const linksContentQuery = `links[] {
   ${linksSelectorQuery}
 }`;
 
+export const questionAndAnswerSelectionQuery = `
+  ..., 
+  answers[] {
+    ...,
+    ${linksContentQuery}
+} `;
+
 export const pageContentQuery = `content[] {
   ...,
   blocks[] {
@@ -283,6 +290,9 @@ export const pageContentQuery = `content[] {
       ...,
       ${linksContentQuery}
     },
+    _type == 'questionandanswergroup' => {
+      ${questionAndAnswerSelectionQuery}
+    },
     _type == 'paragraph' => @ {
       ...,
       content[] {
@@ -297,7 +307,7 @@ export const pageContentQuery = `content[] {
         }
       }
     },
-    _type != 'links' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' => @,
+    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' => @,
   }
 },
 `;
