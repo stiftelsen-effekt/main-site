@@ -11,7 +11,7 @@ export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({
   if (report.sumDonations == 0) return null;
   return (
     <>
-      <table className={style.summaryTable}>
+      <table className={style.summaryTable} data-cy="yearly-tax-report-summary-table">
         <thead>
           <tr>
             <th colSpan={2}>Donasjoner som kvalifiserer til skattefradrag</th>
@@ -28,7 +28,7 @@ export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({
                 if (channelInAcc) {
                   channelInAcc.sumDonations += channel.sumDonations;
                 } else {
-                  acc.push(channel);
+                  acc.push({ ...channel });
                 }
               });
               return acc;

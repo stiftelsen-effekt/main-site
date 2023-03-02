@@ -45,7 +45,7 @@ export const GenericList = <T extends unknown>({
       data-cy="generic-list"
     >
       <section className={style.header} data-cy="generic-list-header">
-        <h3>{title}</h3>
+        <h3 data-cy="generic-list-header-title">{title}</h3>
         {supplementalInformation}
       </section>
       <section>
@@ -70,7 +70,7 @@ export const GenericList = <T extends unknown>({
             ))}
           </table>
         ) : (
-          emptyPlaceholder
+          <div data-cy="generic-list-empty-placeholder">{emptyPlaceholder}</div>
         )}
         {children}
       </section>
