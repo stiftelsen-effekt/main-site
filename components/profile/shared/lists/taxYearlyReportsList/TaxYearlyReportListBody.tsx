@@ -71,7 +71,10 @@ export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({
               </p>
             </div>
           </Lightbox>
-          <table className={style.nonDeductibleDonationsTable}>
+          <table
+            className={style.nonDeductibleDonationsTable}
+            data-cy="yearly-tax-report-non-deductable-table"
+          >
             <thead>
               <tr>
                 <th colSpan={2}>
@@ -80,6 +83,7 @@ export const TaxYearlyReportListBody: React.FC<{ report: TaxYearlyReport }> = ({
                     <HelpCircle
                       size={"1rem"}
                       onClick={() => setNonDeductibleInfoOpen(true)}
+                      data-cy="tax-report-tooltip-icon"
                     ></HelpCircle>
                   </div>
                 </th>

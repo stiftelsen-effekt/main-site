@@ -1,4 +1,4 @@
-describe("Tax reports page missing ssn", () => {
+describe("Tax reports page with crypto donations", () => {
   beforeEach(() => {
     cy.login();
 
@@ -178,4 +178,12 @@ describe("Tax reports page missing ssn", () => {
       .last()
       .should("contain", "4 000 kr");
   });
+
+  /*
+  it("should show crypto and stiftelsen effekt donations in separate table"),
+
+  
+  
+  
+  */
 });
