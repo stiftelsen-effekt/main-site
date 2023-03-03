@@ -1,4 +1,4 @@
-describe("Tax reports page with crypto donations", () => {
+describe("Tax reports page with ea funds donations", () => {
   beforeEach(() => {
     cy.login();
 
@@ -32,7 +32,7 @@ describe("Tax reports page with crypto donations", () => {
       }).as("getReferrals");
     });
 
-    cy.fixture("tax-reports/missing-ssn").then((reports) => {
+    cy.fixture("tax-reports/ea-funds").then((reports) => {
       cy.intercept("GET", "donors/*/taxreports", {
         statusCode: 200,
         body: {
@@ -79,111 +79,39 @@ describe("Tax reports page with crypto donations", () => {
     );
   });
 
-  it("should should show warning if missing ssn", () => {
-    cy.get("[data-cy=info-box]").should("be.visible");
-    cy.get("[data-cy=info-box]").should("contain.text", "mangler");
-  });
-
-  it("should display row with donations missing tax units", () => {
-    cy.get("[data-cy=generic-list-table]").first().find(">tbody").should("have.length", 3);
-
-    cy.get("[data-cy=generic-list-table]")
+  it("should contain info icon with tooltip in unit table title", () => {
+    cy.get("[data-cy=yearly-tax-report-non-deductable-table]")
       .first()
-      .find(">tbody")
-      .last()
-      .should("contain.text", "Mangler enhet");
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .should("contain.text", "-");
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .should("contain.text", "-");
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .should("contain.text", "5 000 kr");
-  });
-
-  it("should contain info icon with tooltip", () => {
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .find("[data-cy=tooltip-icon]")
+      .find("thead")
+      .find("[data-cy=tax-report-tooltip-icon]")
       .should("be.visible");
 
     cy.get("[data-cy=lightbox]").should("not.exist");
 
-    cy.get("[data-cy=generic-list-table]")
+    cy.get("[data-cy=yearly-tax-report-non-deductable-table]")
       .first()
-      .find(">tbody")
-      .last()
-      .find("[data-cy=tooltip-icon]")
+      .find("thead")
+      .find("[data-cy=tax-report-tooltip-icon]")
       .click();
 
     cy.get("[data-cy=lightbox]").should("be.visible");
   });
 
-  it("should be able to expant missing tax unit in unit table", () => {
-    cy.get("[data-cy=generic-list-table]").first().find(">tbody").last().click();
+  it("should display the correct information in the non deductable donations unit table", () => {
+    cy.get("[data-cy=yearly-tax-report-non-deductable-table]")
+      .first()
+      .find("tbody tr")
+      .should("have.length", 1);
 
-    cy.get("[data-cy=generic-list-table]")
+    cy.get("[data-cy=yearly-tax-report-non-deductable-table]")
       .first()
-      .find(">tbody")
-      .last()
-      .find("tbody")
+      .find("tbody tr")
       .first()
-      .should("be.visible");
-
-    cy.get("[data-cy=generic-list-table]")
+      .should("contain.text", "Stiftelsen Effekt");
+    cy.get("[data-cy=yearly-tax-report-non-deductable-table]")
       .first()
-      .find(">tbody")
-      .last()
-      .find("tbody")
+      .find("tbody tr")
       .first()
-      .find("tr")
-      .first()
-      .should("contain", "Gitt gjennom Gi Effektivt");
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .find("tbody")
-      .first()
-      .find("tr")
-      .first()
-      .should("contain", "1 000 kr");
-
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .find("tbody")
-      .first()
-      .find("tr")
-      .last()
-      .should("contain", "Gitt gjennom EAN Giverportal");
-    cy.get("[data-cy=generic-list-table]")
-      .first()
-      .find(">tbody")
-      .last()
-      .find("tbody")
-      .first()
-      .find("tr")
-      .last()
-      .should("contain", "4 000 kr");
+      .should("contain.text", "20 000");
   });
-
-  /*
-  it("should show crypto and stiftelsen effekt donations in separate table"),
-
-  
-  
-  
-  */
 });
