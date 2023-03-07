@@ -70,14 +70,27 @@ describe("Donations page", () => {
       }).as("getReferrals");
     });
 
+    cy.fixture("organizations").then((orgs) => {
+      cy.intercept("GET", "/organizations/all", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: orgs,
+        },
+      }).as("getOrganizations");
+    });
+
     cy.visit(`/min-side/`);
 
     /**
      * Wait for initial data load
      */
-    cy.wait(["@getDonor", "@getDonations", "@getAggregated", "@getDistribution"], {
-      timeout: 30000,
-    });
+    cy.wait(
+      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getOrganizations"],
+      {
+        timeout: 30000,
+      },
+    );
   });
 
   beforeEach(() => {

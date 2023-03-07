@@ -1,0 +1,16 @@
+[
+  {
+    "year": 2022,
+    "units": [],
+    "sumDonations": 0,
+    "sumTaxDeductions": 0,
+    "sumDonationsWithoutTaxUnit": {
+      "sumDonations": 0,
+      "channels": [
+        { "channel": "Gi Effektivt", "sumDonations": 0 },
+        { "channel": "EAN Giverportal", "sumDonations": 0 }
+      ]
+    },
+    "sumNonDeductibleDonationsByType": []
+  }
+]

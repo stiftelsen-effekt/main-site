@@ -16,7 +16,7 @@ export const Lightbox: React.FC<{
   if (!open) return null;
 
   return (
-    <div className={style.lightboxWrapper} onClick={(e) => e.stopPropagation()}>
+    <div className={style.lightboxWrapper} onClick={(e) => e.stopPropagation()} data-cy="lightbox">
       <div className={style.lightbox}>
         {onCancel && (
           <div className={style.lightboxCloseButton} onClick={onCancel}>

@@ -118,6 +118,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
                       newSet.add(i);
                       setOpenTooltips(newSet);
                     }}
+                    data-cy="tooltip-icon"
                   />
                   <Lightbox
                     open={openTooltips.has(i)}

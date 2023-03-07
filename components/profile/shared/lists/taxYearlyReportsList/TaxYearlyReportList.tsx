@@ -41,7 +41,7 @@ export const TaxYearlyReportList: React.FC<{
       { value: "-" },
       { value: "-" },
       {
-        value: thousandize(Math.round(report.sumDonationsWithoutTaxUnit.sumDonations)) + "kr",
+        value: thousandize(Math.round(report.sumDonationsWithoutTaxUnit.sumDonations)) + " kr",
         align: "right" as "right",
       },
     ],
