@@ -15,7 +15,7 @@ export type FooterProps = {
 
 export default function Footer({ footer_column_1, footer_column_2, footer_column_3 }: FooterProps) {
   return (
-    <footer className={styles.grid}>
+    <footer className={styles.grid} id={"footer"}>
       <div className={`${styles.category} ${styles.logo__bottom}`}>
         <figure>
           <p>G</p>
