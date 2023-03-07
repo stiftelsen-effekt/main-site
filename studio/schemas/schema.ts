@@ -49,6 +49,7 @@ import quote from './types/quote'
 import vippsagreement from './pages/vippsagreement'
 import tax from './pages/tax'
 import citation from './types/citation'
+import newslettersignup from './types/newslettersignup'
 
 export const pages = [
   generic,
@@ -95,6 +96,7 @@ export const types = [
   interventionwidget,
   testimonials,
   fullvideo,
+  newslettersignup,
   htmlembed,
   donationwidget,
   quote,

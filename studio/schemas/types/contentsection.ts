@@ -48,6 +48,7 @@ export default {
         { type: 'reference', 
           to: [{ type: 'contactinfo' }],
         },
+        { type: 'newslettersignup' },
         { type: 'htmlembed' },
       ],
       options: {
