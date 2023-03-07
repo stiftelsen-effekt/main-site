@@ -55,6 +55,7 @@
 
 .newsletter {
   grid-column: 2 / 4;
+  max-width: 360px;
 }
 
 /** ----- Sanity link --------*/
@@ -86,9 +87,6 @@
   .newsletter {
     grid-row: 1;
     grid-column: 1 / 3;
-  }
-
-  .input__inlinebutton {
     max-width: initial;
   }
 
