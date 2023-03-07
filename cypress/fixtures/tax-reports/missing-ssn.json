@@ -1,0 +1,36 @@
+[
+  {
+    "year": 2022,
+    "units": [
+      {
+        "id": 8235,
+        "name": "Elise Egg",
+        "ssn": "24029358224",
+        "sumDonations": 50000,
+        "taxDeduction": 25000,
+        "channels": [{ "channel": "Gi Effektivt", "sumDonations": 50000 }]
+      },
+      {
+        "id": 8236,
+        "name": "Elise Høne AS",
+        "ssn": "928457234",
+        "sumDonations": 20000,
+        "taxDeduction": 20000,
+        "channels": [
+          { "channel": "Gi Effektivt", "sumDonations": 10000 },
+          { "channel": "EAN Giverportal", "sumDonations": 10000 }
+        ]
+      }
+    ],
+    "sumDonations": 70000,
+    "sumTaxDeductions": 45000,
+    "sumDonationsWithoutTaxUnit": {
+      "sumDonations": 5000,
+      "channels": [
+        { "channel": "Gi Effektivt", "sumDonations": 1000 },
+        { "channel": "EAN Giverportal", "sumDonations": 4000 }
+      ]
+    },
+    "sumNonDeductibleDonationsByType": []
+  }
+]
