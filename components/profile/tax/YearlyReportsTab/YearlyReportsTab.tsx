@@ -75,8 +75,6 @@ export const YearlyReportsTab: React.FC = () => {
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
-  console.log(reportsError);
-
   return (
     <div className={styles.container}>
       <h4 className={styles.header}>Dine årsoppgaver</h4>
