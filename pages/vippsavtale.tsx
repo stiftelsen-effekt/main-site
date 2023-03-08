@@ -10,7 +10,7 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
-import { widgetQuery } from "../_queries";
+import { linksContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app";
 import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
 import {
@@ -123,15 +123,7 @@ const fetchVippsAgreementPage = groq`
       seoImage{
         asset->
       },
-      links[] {
-        _type == 'navitem' => @ {
-          ...,
-          "slug": page->slug.current
-        },
-        _type == 'link' => @ {
-          ...
-        },
-      }
+      ${linksContentQuery}
     },
     content,
   }

@@ -13,7 +13,7 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
-import { widgetQuery } from "../_queries";
+import { linksContentQuery, questionAndAnswerSelectionQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
@@ -103,17 +103,11 @@ const fetchSupport = groq`
       seoImage{
         asset->
       },
-      links[] {
-        _type == 'navitem' => @ {
-          ...,
-          "slug": page->slug.current
-        },
-        _type == 'link' => @ {
-          ...
-        },
-      }
+      ${linksContentQuery}
     },
-    questionandanswergroups,
+    questionandanswergroups[] {
+      ${questionAndAnswerSelectionQuery}
+    },
     contact->
   },
 }
