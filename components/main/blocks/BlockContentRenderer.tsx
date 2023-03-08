@@ -20,6 +20,7 @@ import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
+import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -111,6 +112,13 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         video={block.video.asset}
                         alt={block.alt}
                       />
+                    );
+                  case "newslettersignup":
+                    return (
+                      <NewsletterSignup
+                        key={block._key || block._id}
+                        header={block.header}
+                      ></NewsletterSignup>
                     );
                   case "htmlembed":
                     return (

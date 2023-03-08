@@ -53,66 +53,9 @@
   font-family: "ESKlarheitKurrent";
 }
 
-/** -----News Letter Signup--------*/
 .newsletter {
   grid-column: 2 / 4;
-}
-
-.newsletter fieldset {
-  border: none;
-  padding: 0;
-}
-
-.newsletter_label {
-  font-size: 18px;
-}
-
-.input__inlinebutton {
-  margin-top: 14px;
   max-width: 360px;
-  position: relative;
-}
-.input__inlinebutton input {
-  font-size: 14px;
-  border: none;
-}
-
-.input__inlinebutton input[type="email"] {
-  padding: 14px 22px;
-  box-sizing: border-box;
-  border-radius: 50px;
-  width: 100%;
-  background-color: var(--secondary);
-  border: solid 1px var(--primary);
-}
-
-.input__inlinebutton button {
-  position: absolute;
-  letter-spacing: 1px;
-  height: 100%;
-  padding: 0px 22px;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.input__inlinebutton input[type="submit"]:hover {
-  color: var(--primary-hover);
-}
-
-.newsletter input[type="email"] {
-  background: var(--secondary);
-  color: var(--primary);
-  font-family: "ESKlarheitGrotesk", sans-serif;
-}
-
-.newsletter__input {
-  background: var(--secondary);
-  font-family: "ESKlarheitGrotesk", sans-serif;
-  color: var(--primary);
-  border: none;
-  width: 100%;
 }
 
 /** ----- Sanity link --------*/
@@ -144,9 +87,6 @@
   .newsletter {
     grid-row: 1;
     grid-column: 1 / 3;
-  }
-
-  .input__inlinebutton {
     max-width: initial;
   }
 
