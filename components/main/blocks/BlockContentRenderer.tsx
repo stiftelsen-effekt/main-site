@@ -21,6 +21,7 @@ import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
 import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
+import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -141,6 +142,13 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         quote={block.quote}
                         offset={block.offset}
                         quotationMarks={block.quotation_marks}
+                      />
+                    );
+                  case "wealthcalculator":
+                    return (
+                      <WealthCalculator
+                        key={block._key || block._id}
+                        showImpact={block.show_impact}
                       />
                     );
                   default:

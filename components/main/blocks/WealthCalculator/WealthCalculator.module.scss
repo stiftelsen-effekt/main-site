@@ -1,0 +1,76 @@
+.calculator {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr;
+  gap: 1rem;
+}
+
+.calculator__input {
+  padding-bottom: 28px;
+}
+
+.calculator__input__inner {
+  background: var(--primary);
+  color: var(--secondary);
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator__input__group {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.calculator__input__group__input__text {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--secondary);
+  font-family: 'ESKlarheitGrotesk';
+  font-size: 1.2rem;
+  color: var(--secondary);
+  padding: 0.5rem 0;
+}
+
+.calculator__input__group__percentage_input_wrapper {
+  display: inline;
+  position: relative;
+  margin-right: 0.5rem;
+}
+
+.calculator__input__group__percentage_input {
+  display: inline;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--secondary);
+  font-family: 'ESKlarheitGrotesk';
+  font-size: 1rem;
+  color: var(--secondary);
+  padding: 0.2rem 0;
+  width: 2.2rem;
+}
+
+.calculator__input__group__percentage_input_wrapper span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--secondary);
+  line-height: 100%;
+  padding-top: 0.2rem;
+}
+
+.calculator__input__group__percentage_input::after {
+  content: '%';
+}
+
+.calculator__input__group i {
+  font-size: 0.8rem;
+}
+
+
+
+.calculator__output {
+  
+}
