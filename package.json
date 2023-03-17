@@ -41,6 +41,7 @@
     "react-feather": "^2.0.9",
     "react-hook-form": "^6.11.2",
     "react-hook-inview": "^4.5.0",
+    "react-number-format": "^5.1.4",
     "react-redux": "^7.2.1",
     "react-test-renderer": "^17.0.2",
     "react-toastify": "^8.2.0",

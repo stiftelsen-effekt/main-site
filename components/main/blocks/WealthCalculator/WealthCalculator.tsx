@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { NumericFormat } from "react-number-format";
 import { useDebouncedCallback } from "use-debounce";
 import { thousandize } from "../../../../util/formatting";
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
@@ -7,7 +8,8 @@ import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 
 export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact }) => {
-  const [income, setIncome] = useState(460000);
+  const [incomeInput, setIncomeInput] = useState<number | undefined>();
+  const income = incomeInput || 0;
   const [donationPercentage, setDonationPercentage] = useState(10);
   const [chartSize, setChartSize] = useState<{
     width: number | undefined;
@@ -51,18 +53,19 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
           </span>
 
           <div className={styles.calculator__input__group}>
-            <input
-              type={"text"}
-              value={income.toString()}
-              className={styles.calculator__input__group__input__text}
-              onChange={(e) => {
-                if (e.target.value !== "" || !isNaN(parseInt(e.target.value))) {
-                  setIncome(parseInt(e.target.value));
-                } else if (e.target.value === "") {
-                  setIncome(0);
-                }
-              }}
-            />
+            <div className={styles.calculator__input__group__input__income__wrapper}>
+              <NumericFormat
+                type={"tel"}
+                placeholder={"Inntekt"}
+                value={incomeInput}
+                className={styles.calculator__input__group__input__text}
+                thousandSeparator={" "}
+                onValueChange={(values) => {
+                  setIncomeInput(values.floatValue);
+                }}
+              />
+              <span>kr</span>
+            </div>
             <i>Oppgi total inntekt før skatt for husholdningen din.</i>
           </div>
 
@@ -91,7 +94,7 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
                 {calculateWealthPercentile(
                   wealthMountainGraphData,
                   income * (1 - donationPercentage / 100),
-                )}
+                ).toLocaleString("no-NB")}
                 % rikeste i verden.
               </span>
             </div>
@@ -109,9 +112,9 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
       <div className={styles.calculator__output} ref={outputRef}>
         <AreaChart
           data={wealthMountainGraphData}
-          lineInput={income}
+          lineInput={income || 0}
           donationPercentage={donationPercentage / 100}
-          wealthPercentile={calculateWealthPercentile(wealthMountainGraphData, income)}
+          wealthPercentile={calculateWealthPercentile(wealthMountainGraphData, income || 0)}
           size={chartSize}
         />
       </div>

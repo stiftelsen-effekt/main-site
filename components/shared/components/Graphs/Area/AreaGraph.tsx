@@ -1,6 +1,5 @@
 import * as Plot from "@observablehq/plot";
-import { RefObject, useEffect, useRef, useState } from "react";
-import { Chart } from "../../../../../stories/graphs/DistributionsGraph.stories";
+import { useEffect, useRef, useState } from "react";
 
 const drawChart = (
   data: { x: number; y: number }[],
@@ -12,6 +11,44 @@ const drawChart = (
   const incomeXPositon = lineInput / 365 / 10;
   const incomeAfterDonationXPosition = (lineInput * (1 - donationPercentage)) / 365 / 10;
   const dataMax = Math.max(...data.map((d) => d.y));
+
+  let incomeMarkers: any[] = [];
+  if (lineInput >= 1000) {
+    incomeMarkers = [
+      Plot.ruleX([incomeXPositon], { y: dataMax * 1.15 }),
+
+      Plot.text(
+        [
+          `Deg i dag, blant de ${lineInputWealthPercentage.toLocaleString(
+            "no-NB",
+          )}% rikeste i verden`,
+        ],
+        {
+          lineWidth: 10,
+          lineHeight: 1.3,
+          textAnchor: "start",
+          frameAnchor: "top",
+          x: incomeXPositon,
+          y: dataMax * 1.15,
+          dx: "10",
+          background: "var(--secondary)",
+        },
+      ),
+      Plot.text([`Deg om du donerte ${Math.round(donationPercentage * 100)}% av inntekten din`], {
+        lineWidth: 10,
+        lineHeight: 1.3,
+        textAnchor: "start",
+        frameAnchor: "top",
+        x: incomeAfterDonationXPosition,
+        y: dataMax * 1.3,
+        dx: "10",
+        style: {
+          background: "var(--secondary)",
+        },
+        paddingRight: 10,
+      }),
+    ];
+  }
 
   const chart = Plot.plot({
     height: size.height,
@@ -36,31 +73,8 @@ const drawChart = (
         y: "y",
         range: [0, incomeXPositon],
       }),
-      Plot.ruleX([incomeXPositon], { y: dataMax * 1.15 }),
       Plot.ruleX([incomeAfterDonationXPosition], { strokeDasharray: "4,4", y: dataMax * 1.3 }),
-      Plot.text([`Deg i dag, blant de ${lineInputWealthPercentage}% rikeste i verden`], {
-        lineWidth: 10,
-        lineHeight: 1.3,
-        textAnchor: "start",
-        frameAnchor: "top",
-        x: incomeXPositon,
-        y: dataMax * 1.15,
-        dx: "10",
-        background: "var(--secondary)",
-      }),
-      Plot.text([`Deg om du donerte ${Math.round(donationPercentage * 100)}% av inntekten din`], {
-        lineWidth: 10,
-        lineHeight: 1.3,
-        textAnchor: "start",
-        frameAnchor: "top",
-        x: incomeAfterDonationXPosition,
-        y: dataMax * 1.3,
-        dx: "10",
-        style: {
-          background: "var(--secondary)",
-        },
-        paddingRight: 10,
-      }),
+      ...incomeMarkers,
     ],
   });
 
