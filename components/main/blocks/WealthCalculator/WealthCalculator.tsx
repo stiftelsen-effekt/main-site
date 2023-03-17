@@ -121,11 +121,25 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
 
 const calculateWealthPercentile = (data: { x: number; y: number }[], income: number) => {
   const dataSum = data.reduce((acc, curr) => acc + curr.y, 0);
+  const dailyIncome = income / 365 / 10;
   const bucketsSumUpToLineInput = data
-    .filter((d) => d.x <= income / 365 / 10)
+    .filter((d) => d.x <= dailyIncome)
     .reduce((acc, curr) => acc + curr.y, 0);
 
-  let lineInputWealthPercentile = (1 - bucketsSumUpToLineInput / dataSum) * 100;
+  const bucketAfterLineInputIndex = data.findIndex((d) => d.x > dailyIncome);
+
+  let linearInterpolationAdd = 0;
+  if (bucketAfterLineInputIndex > -1) {
+    const positionBetweenBuckets =
+      (dailyIncome - data[bucketAfterLineInputIndex - 1].x) /
+      (data[bucketAfterLineInputIndex].x - data[bucketAfterLineInputIndex - 1].x);
+
+    linearInterpolationAdd = data[bucketAfterLineInputIndex].y * positionBetweenBuckets;
+  }
+
+  const totalSum = bucketsSumUpToLineInput + linearInterpolationAdd;
+
+  let lineInputWealthPercentile = (1 - totalSum / dataSum) * 100;
   // Round to 2 decimals
   lineInputWealthPercentile = Math.round(lineInputWealthPercentile * 10) / 10;
 
