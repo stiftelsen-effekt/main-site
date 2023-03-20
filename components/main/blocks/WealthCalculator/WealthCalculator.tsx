@@ -49,7 +49,7 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
         <div className={styles.calculator__input__inner}>
           <h5>Rikdomskalkulator.</h5>
           <span className={styles.calculator__input__subtitle}>
-            Hvor rik er du sammenlignet med resten av verden?
+            Hvor rik er du sammenlignet med resten av verden? Test.
           </span>
 
           <div className={styles.calculator__input__group}>
