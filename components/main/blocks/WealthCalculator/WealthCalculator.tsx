@@ -3,6 +3,7 @@ import { NumericFormat } from "react-number-format";
 import { useDebouncedCallback } from "use-debounce";
 import { thousandize } from "../../../../util/formatting";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import { EffektDropdown } from "../../../shared/components/EffektDropdown/EffektDropdown";
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { WidgetContext } from "../../layout/layout";
@@ -13,6 +14,8 @@ import styles from "./WealthCalculator.module.scss";
 export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact }) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
+  const [numberOfChildren, setNumberOfChildren] = useState(0);
+  const [numberOfParents, setNumberOfParents] = useState(1);
   const [donationPercentage, setDonationPercentage] = useState(10);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const [chartSize, setChartSize] = useState<{
@@ -72,6 +75,35 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
                 <span>kr</span>
               </div>
               <i>Oppgi total inntekt før skatt for husholdningen din.</i>
+            </div>
+
+            <div className={styles.calculator__input__group}>
+              <EffektDropdown
+                placeholder={"Antall barn i husholdningen"}
+                options={[
+                  "0 barn i husholdningen",
+                  "1 barn i husholdningen",
+                  "2 barn i husholdningen",
+                  "3 barn i husholdningen",
+                  "4 barn i husholdningen",
+                  "5 barn i husholdningen",
+                ]}
+                value={numberOfChildren.toString() + " barn i husholdningen"}
+                onChange={(val: string) => setNumberOfChildren(parseInt(val[0]))}
+              ></EffektDropdown>
+            </div>
+
+            <div className={styles.calculator__input__group}>
+              <EffektDropdown
+                placeholder={"Antall voksne i husholdningen"}
+                options={[
+                  "1 voksen i husholdningen",
+                  "2 voksne i husholdningen",
+                  "3 voksne i husholdningen",
+                ]}
+                value={numberOfParents.toString() + " voksne i husholdningen"}
+                onChange={(val: string) => setNumberOfParents(parseInt(val[0]))}
+              ></EffektDropdown>
             </div>
 
             <div className={styles.calculator__input__group}>
