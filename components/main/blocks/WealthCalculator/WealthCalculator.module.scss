@@ -88,3 +88,24 @@
 .calculator__output {
   
 }
+
+.calculator__impact {
+  display: grid;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr;
+  gap: 1rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--primary);
+  margin-top: 3rem;
+}
+
+.calculator__impact__description p {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.calculator__impact__output {
+  padding-top: 1rem;
+  padding-left: 2rem;
+}
