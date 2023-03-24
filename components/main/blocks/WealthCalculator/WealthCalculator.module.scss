@@ -109,3 +109,10 @@
   padding-top: 1rem;
   padding-left: 2rem;
 }
+
+@media screen and (max-width: 1180px) {
+  .calculator {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}

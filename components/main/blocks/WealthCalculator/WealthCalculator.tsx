@@ -30,10 +30,17 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
 
   const updateSizing = () => {
     if (outputRef.current) {
-      setChartSize({
-        width: outputRef.current.offsetWidth,
-        height: outputRef.current.offsetHeight,
-      });
+      if (window && window.innerWidth > 1180) {
+        setChartSize({
+          width: outputRef.current.offsetWidth,
+          height: outputRef.current.offsetHeight,
+        });
+      } else {
+        setChartSize({
+          width: outputRef.current.offsetWidth,
+          height: outputRef.current.offsetWidth * 0.8,
+        });
+      }
     }
   };
 
