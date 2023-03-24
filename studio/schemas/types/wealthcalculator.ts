@@ -11,6 +11,11 @@ export default {
       name: 'show_impact',
       type: 'boolean',
       title: 'Show Impact',
-    }
+    },
+    {
+      name: 'interventions',
+      type: 'array',
+      of: [{ type: 'intervention' }]
+    },
   ]
 }

@@ -149,6 +149,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       <WealthCalculator
                         key={block._key || block._id}
                         showImpact={block.show_impact}
+                        interventions={block.interventions}
                       />
                     );
                   default:

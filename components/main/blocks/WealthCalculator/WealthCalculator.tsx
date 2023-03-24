@@ -7,11 +7,14 @@ import { EffektDropdown } from "../../../shared/components/EffektDropdown/Effekt
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { WidgetContext } from "../../layout/layout";
-import { ImpactWidgetOutput } from "../ImpactWidget/ImpactWidgetOutput";
+import { ImpactWidgetOutput, SanityIntervention } from "../ImpactWidget/ImpactWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 
-export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact }) => {
+export const WealthCalculator: React.FC<{
+  showImpact: boolean;
+  interventions: SanityIntervention[];
+}> = ({ showImpact, interventions }) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
@@ -177,15 +180,7 @@ export const WealthCalculator: React.FC<{ showImpact: boolean }> = ({ showImpact
           <div className={styles.calculator__impact__output}>
             <ImpactWidgetOutput
               sum={income * (donationPercentage / 100)}
-              interventions={[
-                {
-                  title: "Mygnett",
-                  abbreviation: "AMF",
-                  organization_name: "Against Malaria Foundation",
-                  template_string:
-                    "myggnett distribueres i malariautsatte områder. Forebygger spredning av malaria og forhindrer sykdom og død.                  ",
-                },
-              ]}
+              interventions={interventions}
             />
           </div>
         </div>
