@@ -110,6 +110,24 @@
   padding-left: 2rem;
 }
 
+.calculator__explanation__toggle {
+  display: flex;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  user-select: none;
+  cursor: pointer;
+}
+
+.calculator__explanation__toggle::after {
+  content: "↓";
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.calculator__explanation__toggle_open::after {
+  transform: rotate(180deg);
+}
+
 @media screen and (max-width: 1180px) {
   .calculator {
     grid-template-columns: 1fr;

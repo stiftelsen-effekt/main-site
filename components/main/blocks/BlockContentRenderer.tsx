@@ -150,6 +150,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         key={block._key || block._id}
                         showImpact={block.show_impact}
                         interventions={block.interventions}
+                        explanation={block.data_explanation}
                       />
                     );
                   default:

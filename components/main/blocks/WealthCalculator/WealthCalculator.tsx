@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import AnimateHeight from "react-animate-height";
 import { NumericFormat } from "react-number-format";
 import { useDebouncedCallback } from "use-debounce";
 import { thousandize } from "../../../../util/formatting";
@@ -7,6 +8,7 @@ import { EffektDropdown } from "../../../shared/components/EffektDropdown/Effekt
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { WidgetContext } from "../../layout/layout";
+import { BlockContentRenderer } from "../BlockContentRenderer";
 import { ImpactWidgetOutput, SanityIntervention } from "../ImpactWidget/ImpactWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
@@ -14,13 +16,15 @@ import styles from "./WealthCalculator.module.scss";
 export const WealthCalculator: React.FC<{
   showImpact: boolean;
   interventions: SanityIntervention[];
-}> = ({ showImpact, interventions }) => {
+  explanation?: any;
+}> = ({ showImpact, interventions, explanation }) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [numberOfAdults, setNumberOfParents] = useState(1);
   const [donationPercentage, setDonationPercentage] = useState(10);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [explanationOpen, setExplanationOpen] = useState(false);
   const [chartSize, setChartSize] = useState<{
     width: number | undefined;
     height: number | undefined;
@@ -171,6 +175,23 @@ export const WealthCalculator: React.FC<{
           />
         </div>
       </div>
+      {explanation && (
+        <>
+          <div
+            className={
+              styles.calculator__explanation__toggle +
+              " " +
+              (explanationOpen ? styles.calculator__explanation__toggle_open : "")
+            }
+            onClick={() => setExplanationOpen(!explanationOpen)}
+          >
+            Hvordan regner vi ut hvor rik du er?
+          </div>
+          <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
+            <BlockContentRenderer content={[explanation]} />
+          </AnimateHeight>
+        </>
+      )}
       {showImpact && (
         <div className={styles.calculator__impact}>
           <div className={styles.calculator__impact__description}>

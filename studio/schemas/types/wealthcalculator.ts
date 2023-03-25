@@ -8,6 +8,15 @@ export default {
   icon: DollarSign,
   fields: [
     {
+      name: 'data_explanation',
+      type: 'reference',
+      to: [{ type: 'contentsection' }],
+      title: 'Data Explanation',
+      options: {
+        disableNew: false
+      }
+    },
+    {
       name: 'show_impact',
       type: 'boolean',
       title: 'Show Impact',
