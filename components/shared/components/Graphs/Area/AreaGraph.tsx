@@ -28,6 +28,8 @@ const drawChart = (
           lineHeight: 1.3,
           textAnchor: "start",
           frameAnchor: "top",
+          fontSize: 14,
+          fontFamily: "ES Klarheit Grotesk",
           x: incomeXPositon,
           y: dataMax * 1.15,
           dx: "10",
@@ -39,6 +41,8 @@ const drawChart = (
         lineHeight: 1.3,
         textAnchor: "start",
         frameAnchor: "top",
+        fontSize: 14,
+        fontFamily: "ES Klarheit Grotesk",
         x: incomeAfterDonationXPosition,
         y: dataMax * 1.3,
         dx: "10",
@@ -57,7 +61,9 @@ const drawChart = (
       type: "log",
       domain: [1000, Math.max(2000000, lineInput)],
       label: `Årsinntekt i kroner (logaritmisk skala) →`,
+      labelOffset: 40,
       insetRight: lineInput > 1000000 ? 100 : 0,
+      insetBottom: 40,
       transform: (dailyIncome: number) => dailyIncome * 365 * 10,
     },
     y: {
@@ -65,6 +71,7 @@ const drawChart = (
     },
     style: {
       background: "var(--secondary)",
+      fontSize: "0.6rem",
     },
     marks: [
       Plot.areaY(data, {

@@ -18,7 +18,7 @@ export const WealthCalculator: React.FC<{
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
-  const [numberOfParents, setNumberOfParents] = useState(1);
+  const [numberOfAdults, setNumberOfParents] = useState(1);
   const [donationPercentage, setDonationPercentage] = useState(10);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const [chartSize, setChartSize] = useState<{
@@ -28,6 +28,8 @@ export const WealthCalculator: React.FC<{
     width: undefined,
     height: undefined,
   });
+
+  const equvivalizedIncome = equvivalizeIncome(income, numberOfChildren, numberOfAdults);
 
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -111,7 +113,7 @@ export const WealthCalculator: React.FC<{
                   "2 voksne i husholdningen",
                   "3 voksne i husholdningen",
                 ]}
-                value={numberOfParents.toString() + " voksne i husholdningen"}
+                value={numberOfAdults.toString() + " voksne i husholdningen"}
                 onChange={(val: string) => setNumberOfParents(parseInt(val[0]))}
               ></EffektDropdown>
             </div>
@@ -140,7 +142,7 @@ export const WealthCalculator: React.FC<{
                   bistand i året og fortsatt være blant de{" "}
                   {calculateWealthPercentile(
                     wealthMountainGraphData,
-                    income * (1 - donationPercentage / 100),
+                    equvivalizedIncome * (1 - donationPercentage / 100),
                   ).toLocaleString("no-NB")}
                   % rikeste i verden.
                 </span>
@@ -159,9 +161,12 @@ export const WealthCalculator: React.FC<{
         <div className={styles.calculator__output} ref={outputRef}>
           <AreaChart
             data={wealthMountainGraphData}
-            lineInput={income || 0}
+            lineInput={equvivalizedIncome || 0}
             donationPercentage={donationPercentage / 100}
-            wealthPercentile={calculateWealthPercentile(wealthMountainGraphData, income || 0)}
+            wealthPercentile={calculateWealthPercentile(
+              wealthMountainGraphData,
+              equvivalizedIncome || 0,
+            )}
             size={chartSize}
           />
         </div>
@@ -214,4 +219,11 @@ const calculateWealthPercentile = (data: { x: number; y: number }[], income: num
   lineInputWealthPercentile = Math.round(lineInputWealthPercentile * 10) / 10;
 
   return lineInputWealthPercentile;
+};
+
+const equvivalizeIncome = (income: number, numberOfChildren: number, numberOfAdults: number) => {
+  // Using OECD-modified scale for equvivalize income
+  // https://en.wikipedia.org/wiki/Equivalisation
+  const equvivalizedIncome = income / (1 + 0.3 * numberOfChildren + 0.5 * (numberOfAdults - 1));
+  return equvivalizedIncome;
 };
