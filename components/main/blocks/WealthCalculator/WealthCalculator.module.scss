@@ -1,12 +1,13 @@
 .calculator {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr;
-  gap: 1rem;
+  grid-template-rows: 1fr max-content;
+  column-gap: 1rem;
+  row-gap: 0;
 }
 
 .calculator__input {
-  padding-bottom: 28px;
+  padding-bottom: 2rem;
 }
 
 .calculator__input__inner {
@@ -110,9 +111,14 @@
   padding-left: 2rem;
 }
 
+.calculator__axis__label {
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .calculator__explanation__toggle {
   display: flex;
-  margin-top: 1rem;
   font-size: 0.8rem;
   user-select: none;
   cursor: pointer;

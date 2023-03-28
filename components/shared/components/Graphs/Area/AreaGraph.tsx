@@ -19,51 +19,59 @@ const drawChart = (
 
       Plot.text(
         [
-          `Deg i dag, blant de ${lineInputWealthPercentage.toLocaleString(
-            "no-NB",
-          )}% rikeste i verden`,
+          `Deg i dag, blant de ${convertNumberToBoldText(
+            lineInputWealthPercentage,
+            true,
+          )} rikeste i verden`,
         ],
         {
-          lineWidth: 10,
+          lineWidth: 12,
           lineHeight: 1.3,
           textAnchor: "start",
           frameAnchor: "top",
-          fontSize: 14,
-          fontFamily: "ES Klarheit Grotesk",
+          fontSize: getBrowserRemSizeInPx(0.8),
+          fontFamily: "ESKlarheitGrotesk",
           x: incomeXPositon,
           y: dataMax * 1.15,
           dx: "10",
           background: "var(--secondary)",
         },
       ),
-      Plot.text([`Deg om du donerte ${Math.round(donationPercentage * 100)}% av inntekten din`], {
-        lineWidth: 10,
-        lineHeight: 1.3,
-        textAnchor: "start",
-        frameAnchor: "top",
-        fontSize: 14,
-        fontFamily: "ES Klarheit Grotesk",
-        x: incomeAfterDonationXPosition,
-        y: dataMax * 1.3,
-        dx: "10",
-        style: {
-          background: "var(--secondary)",
+      Plot.text(
+        [
+          `Deg om du donerte ${convertNumberToBoldText(
+            Math.round(donationPercentage * 100),
+            true,
+          )} av inntekten din`,
+        ],
+        {
+          lineWidth: 12,
+          lineHeight: 1.3,
+          textAnchor: "start",
+          frameAnchor: "top",
+          fontSize: getBrowserRemSizeInPx(0.8),
+          fontFamily: "ESKlarheitGrotesk",
+          x: incomeAfterDonationXPosition,
+          y: dataMax * 1.3,
+          dx: "10",
+          style: {
+            background: "var(--secondary)",
+          },
+          paddingRight: 10,
         },
-        paddingRight: 10,
-      }),
+      ),
     ];
   }
 
   const chart = Plot.plot({
     height: size.height,
     width: size.width,
+    paddingOuter: 20,
     x: {
       type: "log",
       domain: [1000, Math.max(2000000, lineInput)],
-      label: `Årsinntekt i kroner (logaritmisk skala) →`,
       labelOffset: 40,
       insetRight: lineInput > 1000000 ? 100 : 0,
-      insetBottom: 40,
       transform: (dailyIncome: number) => dailyIncome * 365 * 10,
     },
     y: {
@@ -71,7 +79,9 @@ const drawChart = (
     },
     style: {
       background: "var(--secondary)",
-      fontSize: "0.6rem",
+      fontSize: "0.7rem",
+      fontFamily: "ESKlarheitGrotesk",
+      fill: "var(--primary)",
     },
     marks: [
       Plot.areaY(data, {
@@ -115,4 +125,62 @@ export const AreaChart: React.FC<{
       <svg ref={svgRef} />
     </div>
   );
+};
+
+const convertNumberToBoldText = (number: number, percentage: boolean = false) => {
+  const str = number.toLocaleString("no-NB");
+  const split = str.split("");
+  let result = "";
+
+  for (let i = 0; i < split.length; i++) {
+    const char = split[i];
+    // 0 to 9 are located at utf code U+03e2 and upwards, with comma trailing after 9 and % after comma
+    switch (char) {
+      case "0":
+        result += "Ϣ";
+        break;
+      case "1":
+        result += "ϣ";
+        break;
+      case "2":
+        result += "Ϥ";
+        break;
+      case "3":
+        result += "ϥ";
+        break;
+      case "4":
+        result += "Ϧ";
+        break;
+      case "5":
+        result += "ϧ";
+        break;
+      case "6":
+        result += "Ϩ";
+        break;
+      case "7":
+        result += "ϩ";
+        break;
+      case "8":
+        result += "Ϫ";
+        break;
+      case "9":
+        result += "ϫ";
+        break;
+      case ",":
+        result += "Ϭ";
+        break;
+      default:
+        result += char;
+    }
+  }
+
+  if (percentage) {
+    result += "ϭ";
+  }
+
+  return result;
+};
+
+const getBrowserRemSizeInPx = (rems: number = 1) => {
+  return rems * parseFloat(getComputedStyle(document.documentElement).fontSize);
 };

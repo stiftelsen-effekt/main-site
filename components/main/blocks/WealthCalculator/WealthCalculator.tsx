@@ -174,9 +174,7 @@ export const WealthCalculator: React.FC<{
             size={chartSize}
           />
         </div>
-      </div>
-      {explanation && (
-        <>
+        {explanation ? (
           <div
             className={
               styles.calculator__explanation__toggle +
@@ -187,6 +185,15 @@ export const WealthCalculator: React.FC<{
           >
             Hvordan regner vi ut hvor rik du er?
           </div>
+        ) : (
+          <></>
+        )}
+        <div className={styles.calculator__axis__label}>
+          <span>Ekvivalisert årsinntekt i kroner (logaritmisk skala) →</span>
+        </div>
+      </div>
+      {explanation && (
+        <>
           <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
             <BlockContentRenderer content={[explanation]} />
           </AnimateHeight>
