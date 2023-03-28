@@ -171,6 +171,10 @@ export const WealthCalculator: React.FC<{
               wealthMountainGraphData,
               equvivalizedIncome || 0,
             )}
+            afterDonationWealthPercentile={calculateWealthPercentile(
+              wealthMountainGraphData,
+              equvivalizedIncome * (1 - donationPercentage / 100),
+            )}
             size={chartSize}
           />
         </div>

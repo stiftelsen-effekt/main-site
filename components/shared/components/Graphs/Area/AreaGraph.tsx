@@ -5,6 +5,7 @@ const drawChart = (
   data: { x: number; y: number }[],
   lineInput: number,
   lineInputWealthPercentage: number,
+  afterDonationWealthPercentage: number,
   donationPercentage: number,
   size: { width: number | undefined; height: number | undefined },
 ) => {
@@ -19,7 +20,7 @@ const drawChart = (
 
       Plot.text(
         [
-          `Deg i dag, blant de ${convertNumberToBoldText(
+          `I dag er du blant de ${convertNumberToBoldText(
             lineInputWealthPercentage,
             true,
           )} rikeste i verden`,
@@ -39,10 +40,12 @@ const drawChart = (
       ),
       Plot.text(
         [
-          `Deg om du donerte ${convertNumberToBoldText(
-            Math.round(donationPercentage * 100),
+          `Om du donerer ${(donationPercentage * 100).toLocaleString(
+            "no-NB",
+          )}% av inntekten din er du blant de ${convertNumberToBoldText(
+            afterDonationWealthPercentage,
             true,
-          )} av inntekten din`,
+          )} rikeste i verden`,
         ],
         {
           lineWidth: 12,
@@ -69,9 +72,9 @@ const drawChart = (
     paddingOuter: 20,
     x: {
       type: "log",
-      domain: [1000, Math.max(2000000, lineInput)],
+      domain: [1000, Math.max(4000000, lineInput)],
       labelOffset: 40,
-      insetRight: lineInput > 1000000 ? 100 : 0,
+      insetRight: lineInput > 900000 ? 150 : 0,
       transform: (dailyIncome: number) => dailyIncome * 365 * 10,
     },
     y: {
@@ -103,18 +106,40 @@ export const AreaChart: React.FC<{
   lineInput: number;
   donationPercentage: number;
   wealthPercentile: number;
+  afterDonationWealthPercentile: number;
   size: { width: number | undefined; height: number | undefined };
-}> = ({ data, lineInput, donationPercentage, wealthPercentile, size }) => {
+}> = ({
+  data,
+  lineInput,
+  donationPercentage,
+  wealthPercentile,
+  afterDonationWealthPercentile,
+  size,
+}) => {
   const [chart, setChart] = useState(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (svgRef.current && !chart) {
-      const newChart = drawChart(data, lineInput, wealthPercentile, donationPercentage, size);
+      const newChart = drawChart(
+        data,
+        lineInput,
+        wealthPercentile,
+        afterDonationWealthPercentile,
+        donationPercentage,
+        size,
+      );
       svgRef.current.replaceWith(newChart);
       setChart(newChart);
     } else if (svgRef.current && chart) {
-      const newChart = drawChart(data, lineInput, wealthPercentile, donationPercentage, size);
+      const newChart = drawChart(
+        data,
+        lineInput,
+        wealthPercentile,
+        afterDonationWealthPercentile,
+        donationPercentage,
+        size,
+      );
       (chart as any).replaceWith(newChart);
       setChart(newChart);
     }
