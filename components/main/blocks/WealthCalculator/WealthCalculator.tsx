@@ -3,7 +3,10 @@ import AnimateHeight from "react-animate-height";
 import { NumericFormat } from "react-number-format";
 import { useDebouncedCallback } from "use-debounce";
 import { thousandize } from "../../../../util/formatting";
-import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import {
+  EffektButton,
+  EffektButtonType,
+} from "../../../shared/components/EffektButton/EffektButton";
 import { EffektDropdown } from "../../../shared/components/EffektDropdown/EffektDropdown";
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
@@ -42,8 +45,21 @@ export const WealthCalculator: React.FC<{
       if (window && window.innerWidth > 1180) {
         setChartSize({
           width: outputRef.current.offsetWidth,
-          height: outputRef.current.offsetHeight,
+          height: 0,
         });
+        setTimeout(() => {
+          if (outputRef.current) {
+            setChartSize({
+              width: outputRef.current.offsetWidth,
+              height: outputRef.current.offsetHeight,
+            });
+          } else {
+            setChartSize({
+              width: chartSize.width || 640,
+              height: chartSize.width || 640 * 0.8,
+            });
+          }
+        }, 1);
       } else {
         setChartSize({
           width: outputRef.current.offsetWidth,
@@ -122,6 +138,28 @@ export const WealthCalculator: React.FC<{
               ></EffektDropdown>
             </div>
 
+            <div
+              className={[
+                styles.calculator__input__group,
+                styles.calculator__input__group_mobile,
+              ].join(" ")}
+            >
+              <EffektButton
+                onClick={() => {
+                  window.scrollTo({
+                    top: (outputRef.current?.offsetTop || 0) - 60,
+                    behavior: "smooth",
+                  });
+                }}
+                type={EffektButtonType.SECONDARY}
+              >
+                Beregn
+              </EffektButton>
+            </div>
+          </div>
+        </div>
+        <div className={[styles.calculator__input, styles.calculator__input_slider].join(" ")}>
+          <div className={styles.calculator__input__inner}>
             <div className={styles.calculator__input__group}>
               <div>
                 <span>Om du ga bort </span>

@@ -37,9 +37,9 @@
 }
 
 .calculator__input__group__percentage_slider__bars__bar {
-  background: var(--primary);
+  background: var(--secondary);
   height: 0.5rem;
-  border: 1px solid var(--secondary);
+  border: 1px solid var(--primary);
 }
 
 .calculator__input__group__percentage_slider__track__fill {
@@ -52,19 +52,18 @@
 }
 
 .calculator__input__group__percentage_slider__track__fill__bar {
-  background: var(--secondary);
+  background: var(--primary);
   height: 0.5rem;
-  border-right: 1px solid var(--primary);
+  border-right: 1px solid var(--secondary);
 }
 
 .calculator__input__group__percentage_slider__handle {
   height: 1rem;
   width: 1rem;
   cursor: pointer;
-  background: var(--secondary);
+  background: var(--primary);
   border-radius: 50%;
   position: absolute;
   top: 0.5rem;
   transform: translateX(-50%);
-  
 }
