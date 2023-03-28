@@ -53,6 +53,7 @@
   color: var(--secondary);
   padding: 0.5rem 0;
   width: 100%;
+  border-radius: 0;
 }
 
 .calculator__input__group__percentage_input_wrapper {
@@ -84,6 +85,7 @@
   color: var(--primary);
   padding: 0.2rem 0;
   width: 2.2rem;
+  border-radius: 0;
 }
 
 .calculator__input__group__percentage_input_wrapper span {
