@@ -16,14 +16,18 @@ const drawChart = (
   const isMobile = window.innerWidth <= 1180;
 
   const requiredMarginTopAsPercentage = size.height
-    ? (getBrowserRemSizeInPx() * 10) / size.height
+    ? (getBrowserRemSizeInPx(0.8) * 1.3 * 6) / (size.height - getBrowserRemSizeInPx(0.7) * 1.2 * 2)
     : 0.4;
+
+  const adjustedMax = dataMax / (1 - requiredMarginTopAsPercentage);
+  const numberOfLinesInChart = 6 / requiredMarginTopAsPercentage;
+  const adjustedBelowMax = adjustedMax * ((numberOfLinesInChart - 4) / numberOfLinesInChart);
 
   let incomeMarkers: any[] = [];
   if (lineInput >= 1000) {
     incomeMarkers = [
       Plot.ruleX([incomeXPositon], {
-        y: dataMax * (1 + requiredMarginTopAsPercentage / 2.5),
+        y: adjustedBelowMax,
       }),
 
       Plot.text(
@@ -45,7 +49,7 @@ const drawChart = (
           paintOrder: "stroke",
           strokeWidth: 10,
           x: incomeXPositon,
-          y: dataMax * (1 + requiredMarginTopAsPercentage / 2.5),
+          y: adjustedBelowMax,
           dx: isMobile ? "-10" : "10",
           background: "var(--secondary)",
         },
@@ -67,7 +71,7 @@ const drawChart = (
           fontSize: getBrowserRemSizeInPx(0.8),
           fontFamily: "ESKlarheitGrotesk",
           x: incomeAfterDonationXPosition,
-          y: dataMax * (1 + requiredMarginTopAsPercentage),
+          y: adjustedMax,
           dx: isMobile ? "-10" : "10",
           style: {
             background: "var(--secondary)",
@@ -85,9 +89,9 @@ const drawChart = (
     x: {
       type: "log",
       domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
-      labelOffset: 40,
       insetRight: lineInput > 900000 && !isMobile ? 150 : 0,
       transform: (dailyIncome: number) => dailyIncome * 365 * 10,
+      label: null,
     },
     y: {
       axis: null,
@@ -107,7 +111,7 @@ const drawChart = (
       }),
       Plot.ruleX([incomeAfterDonationXPosition], {
         strokeDasharray: "4,4",
-        y: dataMax * (1 + requiredMarginTopAsPercentage),
+        y: adjustedMax,
       }),
       ...incomeMarkers,
     ],
