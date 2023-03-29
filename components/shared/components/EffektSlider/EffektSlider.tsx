@@ -47,7 +47,17 @@ export const EffektSlider: React.FC<{
           );
         })}
       </div>
-      <div className={styles.calculator__input__group__percentage_slider__track}>
+      <div
+        className={styles.calculator__input__group__percentage_slider__track}
+        onClick={(e) => {
+          // If the user clicks on the slider, we want to move the handle to the clicked position
+          const rect = sliderRef.current?.getBoundingClientRect();
+          if (rect) {
+            const x = Math.min(Math.max(0, (e.clientX || 0) - rect.left), rect.width);
+            onChange(Math.round((x / sliderWidth) * (min + (max - min))));
+          }
+        }}
+      >
         <div className={styles.calculator__input__group__percentage_slider__bars}>
           {Array.from(Array(10)).map((_, i) => {
             return (
