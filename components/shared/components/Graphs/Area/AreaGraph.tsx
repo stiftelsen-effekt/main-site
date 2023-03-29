@@ -12,11 +12,19 @@ const drawChart = (
   const incomeXPositon = lineInput / 365 / 10;
   const incomeAfterDonationXPosition = (lineInput * (1 - donationPercentage)) / 365 / 10;
   const dataMax = Math.max(...data.map((d) => d.y));
+  // Browser window width smaller than or equal to 1180px
+  const isMobile = window.innerWidth <= 1180;
+
+  const requiredMarginTopAsPercentage = size.height
+    ? (getBrowserRemSizeInPx() * 10) / size.height
+    : 0.4;
 
   let incomeMarkers: any[] = [];
   if (lineInput >= 1000) {
     incomeMarkers = [
-      Plot.ruleX([incomeXPositon], { y: dataMax * 1.15 }),
+      Plot.ruleX([incomeXPositon], {
+        y: dataMax * (1 + requiredMarginTopAsPercentage / 2.5),
+      }),
 
       Plot.text(
         [
@@ -28,13 +36,17 @@ const drawChart = (
         {
           lineWidth: 12,
           lineHeight: 1.3,
-          textAnchor: "start",
+          textAnchor: isMobile ? "end" : "start",
           frameAnchor: "top",
           fontSize: getBrowserRemSizeInPx(0.8),
           fontFamily: "ESKlarheitGrotesk",
+          stroke: "var(--secondary)",
+          fill: "var(--primary)",
+          paintOrder: "stroke",
+          strokeWidth: 10,
           x: incomeXPositon,
-          y: dataMax * 1.15,
-          dx: "10",
+          y: dataMax * (1 + requiredMarginTopAsPercentage / 2.5),
+          dx: isMobile ? "-10" : "10",
           background: "var(--secondary)",
         },
       ),
@@ -50,13 +62,13 @@ const drawChart = (
         {
           lineWidth: 12,
           lineHeight: 1.3,
-          textAnchor: "start",
+          textAnchor: isMobile ? "end" : "start",
           frameAnchor: "top",
           fontSize: getBrowserRemSizeInPx(0.8),
           fontFamily: "ESKlarheitGrotesk",
           x: incomeAfterDonationXPosition,
-          y: dataMax * 1.3,
-          dx: "10",
+          y: dataMax * (1 + requiredMarginTopAsPercentage),
+          dx: isMobile ? "-10" : "10",
           style: {
             background: "var(--secondary)",
           },
@@ -72,9 +84,9 @@ const drawChart = (
     paddingOuter: 20,
     x: {
       type: "log",
-      domain: [1000, Math.max(4000000, lineInput)],
+      domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
       labelOffset: 40,
-      insetRight: lineInput > 900000 ? 150 : 0,
+      insetRight: lineInput > 900000 && !isMobile ? 150 : 0,
       transform: (dailyIncome: number) => dailyIncome * 365 * 10,
     },
     y: {
@@ -93,7 +105,10 @@ const drawChart = (
         y: "y",
         range: [0, incomeXPositon],
       }),
-      Plot.ruleX([incomeAfterDonationXPosition], { strokeDasharray: "4,4", y: dataMax * 1.3 }),
+      Plot.ruleX([incomeAfterDonationXPosition], {
+        strokeDasharray: "4,4",
+        y: dataMax * (1 + requiredMarginTopAsPercentage),
+      }),
       ...incomeMarkers,
     ],
   });
