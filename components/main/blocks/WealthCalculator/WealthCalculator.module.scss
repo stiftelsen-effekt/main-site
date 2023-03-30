@@ -39,6 +39,10 @@
   margin-top: 1rem;
 }
 
+.calculator__input__group__percentage_text {
+
+}
+
 
 .calculator__input__group_mobile {
   display: none;
@@ -195,7 +199,6 @@
 
   .calculator__input_slider { 
     grid-row: 4;
-    margin-top: 2rem;
     
     .calculator__input__inner {
       background: var(--secondary);
@@ -205,6 +208,11 @@
       .calculator__input__group {
         --primary: black;
         --secondary: #fafafa;
+
+        .calculator__input__group__percentage_text {
+          order: 2;
+          margin-top: 2rem;
+        }
       }
     }
   }

@@ -161,7 +161,7 @@ export const WealthCalculator: React.FC<{
         <div className={[styles.calculator__input, styles.calculator__input_slider].join(" ")}>
           <div className={styles.calculator__input__inner}>
             <div className={styles.calculator__input__group}>
-              <div>
+              <div className={styles.calculator__input__group__percentage_text}>
                 <span>Om du ga bort </span>
                 <div className={styles.calculator__input__group__percentage_input_wrapper}>
                   <input
