@@ -250,13 +250,20 @@ export const WealthCalculator: React.FC<{
               donert til effektiv bistand kan du påvirke mange liv der det trengs mest du kan for
               eksempel bidra med myggnett, A-vitamin tilskudd eller vaksinering.
             </p>
-            <EffektButton onClick={() => setWidgetOpen(true)}>Sett opp fast donasjon</EffektButton>
+            <div className={styles.calculator__impact__description__button_desktop}>
+              <EffektButton onClick={() => setWidgetOpen(true)}>
+                Sett opp fast donasjon
+              </EffektButton>
+            </div>
           </div>
           <div className={styles.calculator__impact__output}>
             <ImpactWidgetOutput
               sum={income * (donationPercentage / 100)}
               interventions={interventions}
             />
+          </div>
+          <div className={styles.calculator__impact__description__button_mobile}>
+            <EffektButton onClick={() => setWidgetOpen(true)}>Sett opp fast donasjon</EffektButton>
           </div>
         </div>
       )}

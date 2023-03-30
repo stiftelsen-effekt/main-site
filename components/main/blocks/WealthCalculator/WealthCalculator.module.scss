@@ -130,6 +130,10 @@
   margin-bottom: 3rem;
 }
 
+.calculator__impact__description__button_mobile {
+  display: none;
+}
+
 .calculator__impact__output {
   padding-top: 1rem;
   padding-left: 2rem;
@@ -220,5 +224,17 @@
   .calculator__explanation__toggle {
     grid-column: 1;
     grid-row: 5;
+  }
+
+  .calculator__impact__description p {
+    margin-bottom: 0;
+  }
+
+  .calculator__impact__description__button_mobile {
+    display: block;
+  }
+
+  .calculator__impact__description__button_desktop {
+    display: none;
   }
 }
