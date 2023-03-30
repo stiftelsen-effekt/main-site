@@ -56,14 +56,14 @@ export const WealthCalculator: React.FC<{
           } else {
             setChartSize({
               width: chartSize.width || 640,
-              height: chartSize.width || 640 * 0.8,
+              height: chartSize.width || 640,
             });
           }
         }, 1);
       } else {
         setChartSize({
           width: outputRef.current.offsetWidth,
-          height: outputRef.current.offsetWidth * 0.8,
+          height: outputRef.current.offsetWidth,
         });
       }
     }

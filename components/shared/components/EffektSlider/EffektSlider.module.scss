@@ -65,7 +65,7 @@
   border-radius: 50%;
   position: absolute;
   top: 0.5rem;
-  transform: translateX(-50%);
+  transform: translateX(0.5rem);
 }
 
 @media screen and (max-width: 1180px) { 
@@ -73,5 +73,11 @@
     height: 1.5rem;
     width: 1.5rem;
     top: 0.25rem;
+    transform: translateX(0.75rem);
+  }
+
+  .calculator__input__group__percentage_slider__track {
+    left: -0.75rem;
+    width: calc(100% + 1.5rem);
   }
 }
