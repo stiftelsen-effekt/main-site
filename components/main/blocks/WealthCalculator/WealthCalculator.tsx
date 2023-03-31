@@ -14,6 +14,7 @@ import { WidgetContext } from "../../layout/layout";
 import { BlockContentRenderer } from "../BlockContentRenderer";
 import { ImpactWidgetOutput, SanityIntervention } from "../ImpactWidget/ImpactWidgetOutput";
 import { wealthMountainGraphData } from "./data";
+import { taxTable } from "./taxTable";
 import styles from "./WealthCalculator.module.scss";
 
 export const WealthCalculator: React.FC<{
@@ -35,8 +36,6 @@ export const WealthCalculator: React.FC<{
     width: undefined,
     height: undefined,
   });
-
-  const equvivalizedIncome = equvivalizeIncome(income, numberOfChildren, numberOfAdults);
 
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +81,15 @@ export const WealthCalculator: React.FC<{
     }
   }, []);
 
+  let postTaxIncome: number = 0;
+  for (let i = 0; i < numberOfAdults; i++) {
+    postTaxIncome += getEstimatedPostTaxIncome(income / numberOfAdults);
+  }
+
+  console.log("Post tax", postTaxIncome, "Pre tax", income);
+
+  const equvivalizedIncome = equvivalizeIncome(postTaxIncome, numberOfChildren, numberOfAdults);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.calculator}>
@@ -89,7 +97,7 @@ export const WealthCalculator: React.FC<{
           <div className={styles.calculator__input__inner}>
             <h5>Rikdomskalkulator.</h5>
             <span className={styles.calculator__input__subtitle}>
-              Hvor rik er du sammenlignet med resten av verden? Test.
+              Hvor rik er du sammenlignet med resten av verden?
             </span>
 
             <div className={styles.calculator__input__group}>
@@ -107,6 +115,7 @@ export const WealthCalculator: React.FC<{
                 <span>kr</span>
               </div>
               <i>Oppgi total inntekt før skatt for husholdningen din.</i>
+              <i>Estimert inntekt etter skatt: {thousandize(postTaxIncome)} kr</i>
             </div>
 
             <div className={styles.calculator__input__group}>
@@ -303,4 +312,23 @@ const equvivalizeIncome = (income: number, numberOfChildren: number, numberOfAdu
   // https://en.wikipedia.org/wiki/Equivalisation
   const equvivalizedIncome = income / (1 + 0.3 * numberOfChildren + 0.5 * (numberOfAdults - 1));
   return equvivalizedIncome;
+};
+
+const getEstimatedPostTaxIncome = (income: number) => {
+  // Round income to nearest 1000
+  const roundedIncome = Math.round(income / 1000) * 1000;
+
+  if (roundedIncome < 50000) return income;
+  if (roundedIncome > 9999000) {
+    const topTableTax = taxTable[taxTable.length - 1];
+    const surplusIncome = income - 9999000;
+    const surplusTax = surplusIncome * 0.475;
+    return income - topTableTax - surplusTax;
+  }
+
+  const taxIndex = (roundedIncome - 50000) / 1000;
+
+  const tax = taxTable[taxIndex];
+
+  return income - tax;
 };

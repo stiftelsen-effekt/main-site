@@ -89,7 +89,7 @@ const drawChart = (
     x: {
       type: "log",
       domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
-      insetRight: lineInput > 900000 && !isMobile ? 150 : 0,
+      insetRight: lineInput > 900000 && !isMobile ? 180 : 0,
       transform: (dailyIncome: number) => dailyIncome * 365 * 10,
       label: null,
     },
