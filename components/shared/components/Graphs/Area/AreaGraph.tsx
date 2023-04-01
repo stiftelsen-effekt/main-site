@@ -7,6 +7,8 @@ const drawChart = (
   lineInputWealthPercentage: number,
   afterDonationWealthPercentage: number,
   donationPercentage: number,
+  incomePercentileLabelTemplateString: string,
+  afterDonationPercentileLabelTemplateString: string,
   size: { width: number | undefined; height: number | undefined },
 ) => {
   const incomeXPositon = lineInput / 365 / 10;
@@ -23,6 +25,14 @@ const drawChart = (
   const numberOfLinesInChart = 6 / requiredMarginTopAsPercentage;
   const adjustedBelowMax = adjustedMax * ((numberOfLinesInChart - 4) / numberOfLinesInChart);
 
+  const wealthPercentileText = convertNumberToBoldText(lineInputWealthPercentage, true);
+  const donationPercentageText = (donationPercentage * 100).toLocaleString("no-NB") + "%";
+
+  const afterDonationWealthPercentileText = convertNumberToBoldText(
+    afterDonationWealthPercentage,
+    true,
+  );
+
   let incomeMarkers: any[] = [];
   if (lineInput >= 1000) {
     incomeMarkers = [
@@ -32,10 +42,9 @@ const drawChart = (
 
       Plot.text(
         [
-          `I dag er du blant de ${convertNumberToBoldText(
-            lineInputWealthPercentage,
-            true,
-          )} rikeste i verden`,
+          incomePercentileLabelTemplateString
+            .replace("{percentile}", wealthPercentileText)
+            .replace("{donationpercentage}", donationPercentageText),
         ],
         {
           lineWidth: 12,
@@ -56,12 +65,10 @@ const drawChart = (
       ),
       Plot.text(
         [
-          `Om du donerer ${(donationPercentage * 100).toLocaleString(
-            "no-NB",
-          )}% av inntekten din er du blant de ${convertNumberToBoldText(
-            afterDonationWealthPercentage,
-            true,
-          )} rikeste i verden`,
+          // Replace {percentile} with the actual percentile and {donationpercentage} with the actual donation percentage in the template string
+          afterDonationPercentileLabelTemplateString
+            .replace("{percentile}", afterDonationWealthPercentileText)
+            .replace("{donationpercentage}", donationPercentageText),
         ],
         {
           lineWidth: 12,
@@ -126,6 +133,8 @@ export const AreaChart: React.FC<{
   donationPercentage: number;
   wealthPercentile: number;
   afterDonationWealthPercentile: number;
+  incomePercentileLabelTemplateString: string;
+  afterDonationPercentileLabelTemplateString: string;
   size: { width: number | undefined; height: number | undefined };
 }> = ({
   data,
@@ -133,6 +142,8 @@ export const AreaChart: React.FC<{
   donationPercentage,
   wealthPercentile,
   afterDonationWealthPercentile,
+  incomePercentileLabelTemplateString,
+  afterDonationPercentileLabelTemplateString,
   size,
 }) => {
   const [chart, setChart] = useState(null);
@@ -146,6 +157,8 @@ export const AreaChart: React.FC<{
         wealthPercentile,
         afterDonationWealthPercentile,
         donationPercentage,
+        incomePercentileLabelTemplateString,
+        afterDonationPercentileLabelTemplateString,
         size,
       );
       svgRef.current.replaceWith(newChart);
@@ -157,6 +170,8 @@ export const AreaChart: React.FC<{
         wealthPercentile,
         afterDonationWealthPercentile,
         donationPercentage,
+        incomePercentileLabelTemplateString,
+        afterDonationPercentileLabelTemplateString,
         size,
       );
       (chart as any).replaceWith(newChart);

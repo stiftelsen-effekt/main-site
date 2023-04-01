@@ -51,6 +51,7 @@ import tax from './pages/tax'
 import citation from './types/citation'
 import newslettersignup from './types/newslettersignup'
 import wealthcalculator from './types/wealthcalculator'
+import wealthcalculatorteaser from './types/wealthcalculatorteaser'
 
 export const pages = [
   generic,
@@ -102,7 +103,8 @@ export const types = [
   donationwidget,
   quote,
   citation,
-  wealthcalculator
+  wealthcalculator,
+  wealthcalculatorteaser
 ]
 
 // Then we give our schema to the builder and provide the result to Sanity

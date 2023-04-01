@@ -21,7 +21,15 @@ export const WealthCalculator: React.FC<{
   showImpact: boolean;
   interventions: SanityIntervention[];
   explanation?: any;
-}> = ({ showImpact, interventions, explanation }) => {
+  incomePercentileLabelTemplateString: string;
+  afterDonationPercentileLabelTemplateString: string;
+}> = ({
+  showImpact,
+  interventions,
+  explanation,
+  incomePercentileLabelTemplateString,
+  afterDonationPercentileLabelTemplateString,
+}) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
@@ -223,6 +231,8 @@ export const WealthCalculator: React.FC<{
               equvivalizedIncome * (1 - donationPercentage / 100),
             )}
             size={chartSize}
+            afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
+            incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
           />
         </div>
         {explanation ? (
@@ -280,7 +290,7 @@ export const WealthCalculator: React.FC<{
   );
 };
 
-const calculateWealthPercentile = (data: { x: number; y: number }[], income: number) => {
+export const calculateWealthPercentile = (data: { x: number; y: number }[], income: number) => {
   const dataSum = data.reduce((acc, curr) => acc + curr.y, 0);
   const dailyIncome = income / 365 / 10;
   const bucketsSumUpToLineInput = data
