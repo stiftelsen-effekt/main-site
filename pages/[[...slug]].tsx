@@ -1,16 +1,16 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
+import { GetStaticPropsContext } from "next";
 import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
-import { Navbar } from "../components/main/layout/navbar";
+import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { Layout } from "../components/main/layout/layout";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { Layout } from "../components/main/layout/layout";
-import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
+import { getClient } from "../lib/sanity.server";
+import { LayoutPage } from "../types";
 import { filterPageToSingleItem } from "./_app";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
@@ -30,7 +30,7 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug.current}`}
+        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug?.current ?? ""}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -50,9 +50,11 @@ const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
   );
 };
 
-export async function getStaticProps({ preview = false, params = { slug: "" } }) {
-  const { slug } = params;
-  let result = await getClient(preview).fetch(fetchGenericPage, { slug });
+export async function getStaticProps({
+  preview = false,
+  params: { slug = [] } = {},
+}: GetStaticPropsContext<{ slug?: string[] }>) {
+  let result = await getClient(preview).fetch(fetchGenericPage, { slug: slug[0] ?? null });
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
@@ -71,9 +73,12 @@ export async function getStaticPaths() {
   const data = await getClient(false).fetch(fetchGenericPages);
 
   return {
-    paths: data.pages.map((page: { slug: { current: string } }) => ({
-      params: { slug: page.slug.current },
-    })),
+    paths: data.pages.map((page: { slug: { current: string } }) => {
+      const slug = [page.slug?.current || ""];
+      return {
+        params: { slug },
+      };
+    }),
     fallback: false,
   };
 }
