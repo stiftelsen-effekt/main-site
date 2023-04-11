@@ -39,6 +39,8 @@ To get started, install the packages using npm.
 
 `npm install`
 
+Copy the `.env.production` file to `.env.local` and fill in the missing values.
+
 To start the development server run
 
 `npm run dev`
