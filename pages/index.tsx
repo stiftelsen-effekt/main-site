@@ -99,14 +99,6 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       <SectionContainer heading="Slik fungerer det" padded>
         <Stepwize steps={frontpage.key_points.map((p: any) => p)} />
       </SectionContainer>
-      <SectionContainer inverted nodivider>
-        <GiveWellStamp></GiveWellStamp>
-      </SectionContainer>
-      {frontpage.testimonials && (
-        <SectionContainer heading="Hva folk sier om oss" nodivider>
-          <Testimonial testimonies={frontpage.testimonials} />
-        </SectionContainer>
-      )}
       {frontpage.wealthcalculatorteaser && (
         <SectionContainer>
           <WealthCalculatorTeaser
@@ -122,6 +114,14 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
               frontpage.wealthcalculatorteaser.income_percentile_label_template_string
             }
           ></WealthCalculatorTeaser>
+        </SectionContainer>
+      )}
+      <SectionContainer inverted nodivider>
+        <GiveWellStamp></GiveWellStamp>
+      </SectionContainer>
+      {frontpage.testimonials && (
+        <SectionContainer heading="Hva folk sier om oss" nodivider>
+          <Testimonial testimonies={frontpage.testimonials} />
         </SectionContainer>
       )}
       <SectionContainer nodivider>
