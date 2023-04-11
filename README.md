@@ -49,7 +49,7 @@ Navigating to `localhost:3000/` in your browser should yield something like this
 
 <img src="docs/frontpage.png" width="420" alt="Gi Effektivt front page" />
 
-The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, run
+The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, install dependencies in the `/studio` directory and run
 
 `npm run sanity`
 
