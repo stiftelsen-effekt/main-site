@@ -17,21 +17,35 @@ const drawChart = (
   // Browser window width smaller than or equal to 1180px
   const isMobile = window.innerWidth <= 1180;
 
+  const wealthPercentileText = convertNumberToBoldText(lineInputWealthPercentage, true);
+  const donationPercentageText = (donationPercentage * 100).toLocaleString("no-NB") + "%";
+  const afterDonationWealthPercentileText = convertNumberToBoldText(
+    afterDonationWealthPercentage,
+    true,
+  );
+
+  const afterDonationLabel = afterDonationPercentileLabelTemplateString
+    .replace("{percentile}", afterDonationWealthPercentileText)
+    .replace("{donationpercentage}", donationPercentageText);
+
+  const incomePercentileLabel = incomePercentileLabelTemplateString
+    .replace("{percentile}", wealthPercentileText)
+    .replace("{donationpercentage}", donationPercentageText);
+
+  const labelLineWidth = 12;
+  const labelLineNumber = Math.round(
+    afterDonationLabel.length / (labelLineWidth * 1.5) +
+      incomePercentileLabel.length / (labelLineWidth * 1.5),
+  );
+
   const requiredMarginTopAsPercentage = size.height
-    ? (getBrowserRemSizeInPx(0.8) * 1.3 * 6) / (size.height - getBrowserRemSizeInPx(0.7) * 1.2 * 2)
+    ? (getBrowserRemSizeInPx(0.8) * 1.3 * labelLineNumber) /
+      (size.height - getBrowserRemSizeInPx(0.7) * 1.2 * 2)
     : 0.4;
 
   const adjustedMax = dataMax / (1 - requiredMarginTopAsPercentage);
   const numberOfLinesInChart = 6 / requiredMarginTopAsPercentage;
   const adjustedBelowMax = adjustedMax * ((numberOfLinesInChart - 4) / numberOfLinesInChart);
-
-  const wealthPercentileText = convertNumberToBoldText(lineInputWealthPercentage, true);
-  const donationPercentageText = (donationPercentage * 100).toLocaleString("no-NB") + "%";
-
-  const afterDonationWealthPercentileText = convertNumberToBoldText(
-    afterDonationWealthPercentage,
-    true,
-  );
 
   let incomeMarkers: any[] = [];
   if (lineInput >= 1000) {
@@ -40,52 +54,37 @@ const drawChart = (
         y: adjustedBelowMax,
       }),
 
-      Plot.text(
-        [
-          incomePercentileLabelTemplateString
-            .replace("{percentile}", wealthPercentileText)
-            .replace("{donationpercentage}", donationPercentageText),
-        ],
-        {
-          lineWidth: 12,
-          lineHeight: 1.3,
-          textAnchor: isMobile ? "end" : "start",
-          frameAnchor: "top",
-          fontSize: getBrowserRemSizeInPx(0.8),
-          fontFamily: "ESKlarheitGrotesk",
-          stroke: "var(--secondary)",
-          fill: "var(--primary)",
-          paintOrder: "stroke",
-          strokeWidth: 10,
-          x: incomeXPositon,
-          y: adjustedBelowMax,
-          dx: isMobile ? "-10" : "10",
+      Plot.text([incomePercentileLabel], {
+        lineWidth: labelLineWidth,
+        lineHeight: 1.3,
+        textAnchor: isMobile ? "end" : "start",
+        frameAnchor: "top",
+        fontSize: getBrowserRemSizeInPx(0.8),
+        fontFamily: "ESKlarheitGrotesk",
+        stroke: "var(--secondary)",
+        fill: "var(--primary)",
+        paintOrder: "stroke",
+        strokeWidth: 10,
+        x: incomeXPositon,
+        y: adjustedBelowMax,
+        dx: isMobile ? "-10" : "10",
+        background: "var(--secondary)",
+      }),
+      Plot.text([afterDonationLabel], {
+        lineWidth: labelLineWidth,
+        lineHeight: 1.3,
+        textAnchor: isMobile ? "end" : "start",
+        frameAnchor: "top",
+        fontSize: getBrowserRemSizeInPx(0.8),
+        fontFamily: "ESKlarheitGrotesk",
+        x: incomeAfterDonationXPosition,
+        y: adjustedMax,
+        dx: isMobile ? "-10" : "10",
+        style: {
           background: "var(--secondary)",
         },
-      ),
-      Plot.text(
-        [
-          // Replace {percentile} with the actual percentile and {donationpercentage} with the actual donation percentage in the template string
-          afterDonationPercentileLabelTemplateString
-            .replace("{percentile}", afterDonationWealthPercentileText)
-            .replace("{donationpercentage}", donationPercentageText),
-        ],
-        {
-          lineWidth: 12,
-          lineHeight: 1.3,
-          textAnchor: isMobile ? "end" : "start",
-          frameAnchor: "top",
-          fontSize: getBrowserRemSizeInPx(0.8),
-          fontFamily: "ESKlarheitGrotesk",
-          x: incomeAfterDonationXPosition,
-          y: adjustedMax,
-          dx: isMobile ? "-10" : "10",
-          style: {
-            background: "var(--secondary)",
-          },
-          paddingRight: 10,
-        },
-      ),
+        paddingRight: 10,
+      }),
     ];
   }
 

@@ -82,6 +82,7 @@ export const WealthCalculator: React.FC<{
 
   const debouncedSizingUpdate = useDebouncedCallback(() => updateSizing(), 100, {
     maxWait: 100,
+    trailing: true,
   });
   useEffect(() => {
     if (typeof window !== "undefined") {
