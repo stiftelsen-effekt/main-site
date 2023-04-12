@@ -55,9 +55,10 @@ const GenericPage: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = 
 
 export async function getStaticProps({
   preview = false,
-  params: { slug = [] } = {},
+  params,
 }: GetStaticPropsContext<{ slug?: string[] }>) {
-  let result = await getClient(preview).fetch(fetchGenericPage, { slug: slug[0] ?? null });
+  const slug = params?.slug?.[0] ?? "/";
+  let result = await getClient(preview).fetch(fetchGenericPage, { slug });
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
@@ -77,7 +78,7 @@ export async function getStaticPaths() {
 
   return {
     paths: data.pages.map((page: { slug: { current: string } }) => {
-      const slug = [page.slug?.current || ""];
+      const slug = [page.slug?.current || "/"];
       return {
         params: { slug },
       };

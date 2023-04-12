@@ -27,7 +27,7 @@ export default {
       options: {
         source: (doc: { header: { title: string } }, options: any) => doc.header.title,
       },
-      validation: (Rule: any) => Rule.required().warning('Leave this empty for front page only.')
+      validation: (Rule: any) => Rule.required()
     }
   ],
   preview: {
