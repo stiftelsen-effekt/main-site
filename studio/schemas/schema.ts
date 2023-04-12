@@ -63,7 +63,7 @@ export const pages = [
   articles,
   vippsagreement,
   tax
-]
+] as const
 
 export const types = [
   teaser,
@@ -101,7 +101,7 @@ export const types = [
   donationwidget,
   quote,
   citation
-]
+] as const
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({

@@ -17,4 +17,4 @@ export default {
       initialValue: 'profile/profil'
     }
   ]
-}
+} as const
