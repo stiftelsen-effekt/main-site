@@ -12,9 +12,10 @@ import { Layout } from "../components/main/layout/layout";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app";
+import type { PageTypes } from "../studio/types";
 
 const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
-  const page = data.result.page;
+  const page: PageTypes["generic_page"] = data.result.page;
 
   if (!page) {
     return <div>404{preview ? " - Attempting to load preview" : null}</div>;
