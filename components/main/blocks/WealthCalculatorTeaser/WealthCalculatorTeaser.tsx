@@ -86,14 +86,16 @@ export const WealthCalculatorTeaser: React.FC<{
           <div className={styles.descriptionText}>
             <PortableText value={description} />
           </div>
-          <Link
-            href={link.pagetype === "article_page" ? `/artikler/${link.slug}` : `/${link.slug}`}
-            passHref
-          >
-            <a>
-              <EffektButton onClick={() => {}}>{link.title}</EffektButton>
-            </a>
-          </Link>
+          <div className={styles.desktopButton}>
+            <Link
+              href={link.pagetype === "article_page" ? `/artikler/${link.slug}` : `/${link.slug}`}
+              passHref
+            >
+              <a>
+                <EffektButton onClick={() => {}}>{link.title}</EffektButton>
+              </a>
+            </Link>
+          </div>
         </div>
         <div className={styles.graph} ref={outputRef}>
           <AreaChart
@@ -113,6 +115,18 @@ export const WealthCalculatorTeaser: React.FC<{
       </div>
       <div className={styles.axislabel}>
         <span>Årsinntekt i kroner (lograitmisk skala) →</span>
+      </div>
+      <div className={styles.mobileButton}>
+        <Link
+          href={link.pagetype === "article_page" ? `/artikler/${link.slug}` : `/${link.slug}`}
+          passHref
+        >
+          <a>
+            <EffektButton onClick={() => {}} fullWidth>
+              {link.title}
+            </EffektButton>
+          </a>
+        </Link>
       </div>
     </div>
   );

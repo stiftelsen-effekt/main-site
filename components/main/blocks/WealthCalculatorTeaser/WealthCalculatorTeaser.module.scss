@@ -33,6 +33,10 @@
   }
 }
 
+.mobileButton {
+  display: none;
+}
+
 @media screen and (max-width: 1520px) and (min-width: 1181px) { 
   .container {
     .inner {
@@ -60,5 +64,19 @@
         bottom: 0;
       }
     }
+    .axislabel {
+      margin-top: 0rem;
+    }
+  }
+
+
+
+  .desktopButton {
+    display: none;
+  }
+
+  .mobileButton {
+    display: block;
+    margin-top: 2rem;
   }
 }
