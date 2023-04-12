@@ -95,8 +95,6 @@ export const WealthCalculator: React.FC<{
     postTaxIncome += getEstimatedPostTaxIncome(income / numberOfAdults);
   }
 
-  console.log("Post tax", postTaxIncome, "Pre tax", income);
-
   const equvivalizedIncome = equvivalizeIncome(postTaxIncome, numberOfChildren, numberOfAdults);
 
   return (
