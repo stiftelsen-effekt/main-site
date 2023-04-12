@@ -14,7 +14,6 @@ import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
 import { PointList } from "./PointList/PointList";
 import { PointListPointProps } from "./PointList/PointListPoint";
-import { PointListSectionWrapper } from "./PointList/PointListSectionWrapper";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
 import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
@@ -49,15 +48,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                     );
                   case "pointlist":
                     return (
-                      <PointListSectionWrapper key={block._key}>
-                        <PointList
-                          points={block.points.map((point: PointListPointProps, i: number) => ({
-                            number: block.numbered ? i + 1 : null,
-                            heading: point.heading,
-                            paragraph: point.paragraph,
-                          }))}
-                        ></PointList>
-                      </PointListSectionWrapper>
+                      <PointList
+                        key={block._key}
+                        points={block.points.map((point: PointListPointProps, i: number) => ({
+                          number: block.numbered ? i + 1 : null,
+                          heading: point.heading,
+                          paragraph: point.paragraph,
+                        }))}
+                      />
                     );
                   case "links":
                     return (
