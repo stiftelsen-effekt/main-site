@@ -13,6 +13,7 @@ export const mapNameToOrgAbbriv = (name: string): string => {
     "GiveWell Top Charities Fund": "GiveWell",
     "Malaria Consortium": "MC",
     "Project Healthy Children": "PHC",
+    "GiveDirectly Zakat-fond": "GDZF,
     "Drift av Gi Effektivt": "Drift",
   };
   return (map as { [key: string]: string })[name];
