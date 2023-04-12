@@ -122,7 +122,6 @@ export const WealthCalculator: React.FC<{
                 <span>kr</span>
               </div>
               <i>Oppgi total inntekt før skatt for husholdningen din.</i>
-              <i>Estimert inntekt etter skatt: {thousandize(postTaxIncome)} kr</i>
             </div>
 
             <div className={styles.calculator__input__group}>
