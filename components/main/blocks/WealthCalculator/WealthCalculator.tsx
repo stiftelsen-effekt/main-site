@@ -291,7 +291,7 @@ export const WealthCalculator: React.FC<{
 
 export const calculateWealthPercentile = (data: { x: number; y: number }[], income: number) => {
   const dataSum = data.reduce((acc, curr) => acc + curr.y, 0);
-  const dailyIncome = income / 365 / 10;
+  const dailyIncome = income / 365 / 10.5;
   const bucketsSumUpToLineInput = data
     .filter((d) => d.x <= dailyIncome)
     .reduce((acc, curr) => acc + curr.y, 0);
