@@ -49,6 +49,7 @@ export default {
           to: [{ type: 'contactinfo' }],
         },
         { type: 'newslettersignup' },
+        { type: 'wealthcalculator' },
         { type: 'htmlembed' },
       ],
       options: {

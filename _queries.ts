@@ -307,7 +307,31 @@ export const pageContentQuery = `content[] {
         }
       }
     },
-    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' => @,
+    _type == 'wealthcalculator' => {
+      ...,
+      data_explanation {
+        _type == 'reference' => @->{
+          ...,
+          blocks[] {
+            _type == 'paragraph' => @ {
+              ...,
+              content[] {
+                ...,
+                markDefs[] {
+                  _type == 'citation' => @ {
+                    ...,
+                    "citations": citations[]->
+                  },
+                  ${linksSelectorQuery}
+                  _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+                }
+              }
+            },
+          }
+        },
+      }
+    },
+    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'wealthcalculator' => @,
   }
 },
 `;

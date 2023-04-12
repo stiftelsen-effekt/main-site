@@ -120,7 +120,7 @@ describe("Navigation", () => {
     });
     cy.url().should("include", "/full-oversikt");
 
-    cy.get("[data-cy=FAQ-link]").within(() => {
+    cy.get("[data-cy=Vanlige-spørsmål-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/ofte-stilte-sporsmal");

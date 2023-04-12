@@ -11,13 +11,23 @@ export type ParagraphProps = {
 };
 
 export const Paragraph: React.FC<ParagraphProps> = ({ title, blocks }) => {
-  const debounceReflowCitations = useDebouncedCallback(() => reflowCitations(), 100, {
-    maxWait: 100,
-  });
+  const debounceReflowCitations = useDebouncedCallback(
+    () => {
+      reflowCitations();
+    },
+    100,
+    {
+      maxWait: 1000,
+    },
+  );
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", debounceReflowCitations);
     }
+    const resizeObserver = new ResizeObserver((entries) => {
+      debounceReflowCitations();
+    });
+    resizeObserver.observe(document.body);
   }, []);
   useEffect(() => {
     reflowCitations();
