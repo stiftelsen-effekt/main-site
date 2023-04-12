@@ -71,6 +71,7 @@
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
   column-gap: 30px;
+  padding-bottom: 2rem;
 }
 
 .select button {
@@ -116,7 +117,7 @@
 }
 
 .output {
-  padding-top: 50px;
+  padding-top: 10px;
 }
 
 .output .paragraphWrapper {

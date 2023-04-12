@@ -22,7 +22,6 @@ export const VideoEmbed: React.FC<{ id: string; thumbnail: SanityImageSource }> 
         <div
           className={elements.thumbnail}
           onClick={() => {
-            console.log(videoTarget);
             if (videoTarget) {
               setShowThumbnail(false);
               videoTarget.playVideo();
