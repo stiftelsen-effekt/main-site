@@ -1,4 +1,4 @@
-import { GetStaticPropsContext } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { groq } from "next-sanity";
 import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
@@ -13,7 +13,10 @@ import { getClient } from "../lib/sanity.server";
 import { LayoutPage } from "../types";
 import { filterPageToSingleItem } from "./_app";
 
-const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const GenericPage: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
   const page = data.result.page;
 
   if (!page) {
