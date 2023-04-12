@@ -45,7 +45,7 @@ const GenericPage: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = 
         title={header.title}
         inngress={header.inngress}
         links={header.links}
-        centered={header.centered}
+        layout={header.layout}
       />
 
       <BlockContentRenderer content={content} />

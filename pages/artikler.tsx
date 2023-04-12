@@ -40,7 +40,7 @@ const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previ
           title={header.title}
           inngress={header.inngress}
           links={header.links}
-          centered={header.centered}
+          layout={header.centered ? "centered" : "default"}
         />
       </div>
 
