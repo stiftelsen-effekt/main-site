@@ -11,7 +11,7 @@
 }
 
 .calculator__input_slider {
-  padding-bottom: 2rem;
+  padding-bottom:1.6rem;
 
   .calculator__input__inner {
     padding-top: 0;
@@ -159,6 +159,12 @@
 
 .calculator__explanation__toggle_open::after {
   transform: rotate(180deg);
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) { 
+  .calculator__input_slider {
+    padding-bottom:2rem;
+  }
 }
 
 @media screen and (max-width: 1180px) {

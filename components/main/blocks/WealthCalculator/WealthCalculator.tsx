@@ -58,7 +58,7 @@ export const WealthCalculator: React.FC<{
           if (outputRef.current) {
             setChartSize({
               width: outputRef.current.offsetWidth,
-              height: outputRef.current.offsetHeight,
+              height: Math.floor(outputRef.current.offsetHeight) - 1,
             });
           } else {
             setChartSize({
@@ -70,7 +70,7 @@ export const WealthCalculator: React.FC<{
       } else {
         setChartSize({
           width: outputRef.current.offsetWidth,
-          height: outputRef.current.offsetWidth,
+          height: Math.floor(outputRef.current.offsetWidth) - 1,
         });
       }
     }
