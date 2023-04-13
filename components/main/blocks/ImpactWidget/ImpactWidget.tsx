@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
-import AnimateHeight from "react-animate-height";
+import React, { useState } from "react";
 import styles from "./ImpactWidget.module.scss";
-import { Links } from "../Links/Links";
-import { Spinner } from "../../../shared/components/Spinner/Spinner";
-import { thousandize } from "../../../../util/formatting";
-import { ImpactWidgetOutput } from "./ImpactWidgetOutput";
+import { ImpactWidgetOutput, SanityIntervention } from "./ImpactWidgetOutput";
 
 export interface ImpactWidgetProps {
-  frontpage: any;
+  default_sum: number;
+  title: string;
+  interventions?: SanityIntervention[];
 }
 
-export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
-  const [sum, setSum] = useState(frontpage.intervention_widget.default_sum);
-
-  const interventionWidget = frontpage.intervention_widget;
+export const ImpactWidget: React.FC<ImpactWidgetProps> = ({
+  default_sum,
+  title,
+  interventions,
+}) => {
+  const [sum, setSum] = useState(default_sum);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h3>{interventionWidget.title}</h3>
+        <h3>{title}</h3>
       </div>
       <div className={styles.grid}>
         <div className={styles.input}>
@@ -38,7 +38,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({ frontpage }) => {
           </div>
         </div>
         <div className={styles.output}>
-          <ImpactWidgetOutput sum={sum} interventions={interventionWidget.interventions} />
+          <ImpactWidgetOutput sum={sum} interventions={interventions} />
         </div>
       </div>
     </div>
