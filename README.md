@@ -139,7 +139,7 @@ In this example page, we use the publicly available main layout for the page. We
 
 ### Sanity Studio
 
-The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the data set configured in your `.env.local`, run
+The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the data set configured in your `.env.local`, install dependencies in the `/studio` directory and run
 
 `npm run sanity`
 

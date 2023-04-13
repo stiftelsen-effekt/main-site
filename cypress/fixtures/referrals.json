@@ -1,37 +1,37 @@
- [
+[
   {
-  "id": 1,
-  "name": "Bekjent",
-  "ordering": 1
+    "id": 1,
+    "name": "Bekjent",
+    "ordering": 1
   },
   {
-  "id": 8,
-  "name": "Internettsøk",
-  "ordering": 2
+    "id": 8,
+    "name": "Internettsøk",
+    "ordering": 2
   },
   {
-  "id": 24,
-  "name": "Podkast",
-  "ordering": 3
+    "id": 24,
+    "name": "Podkast",
+    "ordering": 3
   },
   {
-  "id": 26,
-  "name": "Sosiale medier",
-  "ordering": 4
+    "id": 26,
+    "name": "Sosiale medier",
+    "ordering": 4
   },
   {
-  "id": 25,
-  "name": "Avis",
-  "ordering": 5
+    "id": 25,
+    "name": "Avis",
+    "ordering": 5
   },
   {
-  "id": 7,
-  "name": "TV / Radio",
-  "ordering": 6
+    "id": 7,
+    "name": "TV / Radio",
+    "ordering": 6
   },
   {
-  "id": 10,
-  "name": "Annet",
-  "ordering": 7
+    "id": 10,
+    "name": "Annet",
+    "ordering": 7
   }
-  ]
+]

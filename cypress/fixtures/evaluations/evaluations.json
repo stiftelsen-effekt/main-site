@@ -1,1 +1,802 @@
-{"2019-10-AMF":{"evaluations":[{"id":32,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":41.344043861258946,"exchange_rate_date":"2019-10-01","currency":"NOK","language":"no","start_year":2018,"start_month":11,"cents_per_output":453,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2019-10-END":{"evaluations":[{"id":40,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.39264360433107,"exchange_rate_date":"2019-10-01","currency":"NOK","language":"no","start_year":2018,"start_month":1,"cents_per_output":81,"charity":{"id":5,"charity_name":"The END Fund","abbreviation":"END"}}]},"2019-10-HKI":{"evaluations":[{"id":56,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":12.321072673885118,"exchange_rate_date":"2019-10-01","currency":"NOK","language":"no","start_year":2018,"start_month":11,"cents_per_output":135,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2019-10-MC":{"evaluations":[{"id":25,"intervention":{"long_description":"Barn behandlet med en full kur med malariamedisin","short_description":"Malariabehandlinger","id":1},"converted_cost_per_output":65.07351715911176,"exchange_rate_date":"2019-10-01","currency":"NOK","language":"no","start_year":2019,"start_month":1,"cents_per_output":713,"charity":{"id":10,"charity_name":"Malaria Consortium","abbreviation":"MC"}}]},"2019-11-AMF":{"evaluations":[{"id":33,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":41.51655444833468,"exchange_rate_date":"2019-11-01","currency":"NOK","language":"no","start_year":2019,"start_month":11,"cents_per_output":455,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2019-11-END":{"evaluations":[{"id":40,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.390859143549691,"exchange_rate_date":"2019-11-01","currency":"NOK","language":"no","start_year":2018,"start_month":1,"cents_per_output":81,"charity":{"id":5,"charity_name":"The END Fund","abbreviation":"END"}}]},"2019-11-HKI":{"evaluations":[{"id":55,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":11.223156477242124,"exchange_rate_date":"2019-11-01","currency":"NOK","language":"no","start_year":2019,"start_month":11,"cents_per_output":123,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2019-11-MC":{"evaluations":[{"id":25,"intervention":{"long_description":"Barn behandlet med en full kur med malariamedisin","short_description":"Malariabehandlinger","id":1},"converted_cost_per_output":65.05780949815963,"exchange_rate_date":"2019-11-01","currency":"NOK","language":"no","start_year":2019,"start_month":1,"cents_per_output":713,"charity":{"id":10,"charity_name":"Malaria Consortium","abbreviation":"MC"}}]},"2019-12-HKI":{"evaluations":[{"id":55,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":11.312030095676395,"exchange_rate_date":"2019-12-01","currency":"NOK","language":"no","start_year":2019,"start_month":11,"cents_per_output":123,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2019-12-MC":{"evaluations":[{"id":25,"intervention":{"long_description":"Barn behandlet med en full kur med malariamedisin","short_description":"Malariabehandlinger","id":1},"converted_cost_per_output":65.57298746518106,"exchange_rate_date":"2019-12-01","currency":"NOK","language":"no","start_year":2019,"start_month":1,"cents_per_output":713,"charity":{"id":10,"charity_name":"Malaria Consortium","abbreviation":"MC"}}]},"2019-3-AMF":{"evaluations":[{"id":32,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":38.70895545989634,"exchange_rate_date":"2019-03-01","currency":"NOK","language":"no","start_year":2018,"start_month":11,"cents_per_output":453,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2019-6-AMF":{"evaluations":[{"id":32,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":39.718226177322535,"exchange_rate_date":"2019-06-01","currency":"NOK","language":"no","start_year":2018,"start_month":11,"cents_per_output":453,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-1-AMF":{"evaluations":[{"id":1,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":45.51202925045703,"exchange_rate_date":"2020-01-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":518,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-1-END":{"evaluations":[{"id":40,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.1167458866544795,"exchange_rate_date":"2020-01-01","currency":"NOK","language":"no","start_year":2018,"start_month":1,"cents_per_output":81,"charity":{"id":5,"charity_name":"The END Fund","abbreviation":"END"}}]},"2020-1-HKI":{"evaluations":[{"id":3,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":10.016160877513709,"exchange_rate_date":"2020-01-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":114,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2020-1-MC":{"evaluations":[{"id":23,"intervention":{"long_description":"Barn behandlet med en full kur med malariamedisin","short_description":"Malariabehandlinger","id":1},"converted_cost_per_output":62.64493601462522,"exchange_rate_date":"2020-01-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":713,"charity":{"id":10,"charity_name":"Malaria Consortium","abbreviation":"MC"}}]},"2020-1-SS":{"evaluations":[{"id":38,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":8.083217550274222,"exchange_rate_date":"2020-01-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":92,"charity":{"id":7,"charity_name":"Sightsavers","abbreviation":"SS"}}]},"2020-10-MC":{"evaluations":[{"id":23,"intervention":{"long_description":"Barn behandlet med en full kur med malariamedisin","short_description":"Malariabehandlinger","id":1},"converted_cost_per_output":66.17516082368958,"exchange_rate_date":"2020-10-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":713,"charity":{"id":10,"charity_name":"Malaria Consortium","abbreviation":"MC"}}]},"2020-12-AMF":{"evaluations":[{"id":1,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":45.89112967914438,"exchange_rate_date":"2020-12-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":518,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-2-AMF":{"evaluations":[{"id":1,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":47.845272233946325,"exchange_rate_date":"2020-02-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":518,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-2-END":{"evaluations":[{"id":40,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.481596623454929,"exchange_rate_date":"2020-02-01","currency":"NOK","language":"no","start_year":2018,"start_month":1,"cents_per_output":81,"charity":{"id":5,"charity_name":"The END Fund","abbreviation":"END"}}]},"2020-3-AMF":{"evaluations":[{"id":1,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":48.644692212756986,"exchange_rate_date":"2020-03-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":518,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-4-AMF":{"evaluations":[{"id":1,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":53.374935991221655,"exchange_rate_date":"2020-04-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":518,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-8-AMF":{"evaluations":[{"id":1,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":47.063974930833936,"exchange_rate_date":"2020-08-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":518,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2020-8-MC":{"evaluations":[{"id":23,"intervention":{"long_description":"Barn behandlet med en full kur med malariamedisin","short_description":"Malariabehandlinger","id":1},"converted_cost_per_output":64.78110835074247,"exchange_rate_date":"2020-08-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":713,"charity":{"id":10,"charity_name":"Malaria Consortium","abbreviation":"MC"}}]},"2021-1-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":41.591543708892466,"exchange_rate_date":"2021-01-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2021-2-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":41.95491559086395,"exchange_rate_date":"2021-02-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2021-2-HKI":{"evaluations":[{"id":4,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":9.45705064548163,"exchange_rate_date":"2021-02-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":110,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2021-2-SS":{"evaluations":[{"id":38,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.90953326713009,"exchange_rate_date":"2021-02-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":92,"charity":{"id":7,"charity_name":"Sightsavers","abbreviation":"SS"}}]},"2021-3-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":41.94540778229486,"exchange_rate_date":"2021-03-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2021-3-HKI":{"evaluations":[{"id":4,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":9.454907491910728,"exchange_rate_date":"2021-03-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":110,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2021-3-SS":{"evaluations":[{"id":38,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.907740811416245,"exchange_rate_date":"2021-03-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":92,"charity":{"id":7,"charity_name":"Sightsavers","abbreviation":"SS"}}]},"2021-4-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":41.71556615017878,"exchange_rate_date":"2021-04-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2021-4-HKI":{"evaluations":[{"id":4,"intervention":{"long_description":"Barn som får A-vitamintilskudd","short_description":"A-vitamintilskudd","id":3},"converted_cost_per_output":9.4030989272944,"exchange_rate_date":"2021-04-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":110,"charity":{"id":3,"charity_name":"Helen Keller International","abbreviation":"HKI"}}]},"2021-4-SS":{"evaluations":[{"id":38,"intervention":{"long_description":"Barn behandlet med ormekur for ett år","short_description":"Ormekurer","id":4},"converted_cost_per_output":7.8644100119189515,"exchange_rate_date":"2021-04-01","currency":"NOK","language":"no","start_year":2020,"start_month":1,"cents_per_output":92,"charity":{"id":7,"charity_name":"Sightsavers","abbreviation":"SS"}}]},"2021-5-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":40.32873619089704,"exchange_rate_date":"2021-05-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2021-5-GD":{"evaluations":[{"id":17,"intervention":{"long_description":"Kontantoverføring mottatt av ekstremt fattige husholdninger","short_description":"Dollar mottatt","id":6},"converted_cost_per_output":9.916902342023864,"exchange_rate_date":"2021-05-01","currency":"NOK","language":"no","start_year":2018,"start_month":3,"cents_per_output":120,"charity":{"id":8,"charity_name":"GiveDirectly","abbreviation":"GD"}}]},"2021-5-NI":{"evaluations":[{"id":65,"intervention":{"long_description":"Spebarn vaksinert som ikke ville blitt vaksinert hadde det ikke vært for dette tiltaket","short_description":"Vaksinasjoner","id":5},"converted_cost_per_output":1319.526497459125,"exchange_rate_date":"2021-05-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":15967,"charity":{"id":4,"charity_name":"New Incentives","abbreviation":"NI"}}]},"2022-3-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":43.106812399211606,"exchange_rate_date":"2022-03-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]},"2022-4-AMF":{"evaluations":[{"id":5,"intervention":{"long_description":"Myggnett impregnert med insektmiddel levert til husholdninger","short_description":"Myggnett","id":2},"converted_cost_per_output":42.66600072385089,"exchange_rate_date":"2022-04-01","currency":"NOK","language":"no","start_year":2021,"start_month":1,"cents_per_output":488,"charity":{"id":1,"charity_name":"Against Malaria Foundation","abbreviation":"AMF"}}]}}
+{
+  "2019-10-AMF": {
+    "evaluations": [
+      {
+        "id": 32,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 41.344043861258946,
+        "exchange_rate_date": "2019-10-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 11,
+        "cents_per_output": 453,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2019-10-END": {
+    "evaluations": [
+      {
+        "id": 40,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.39264360433107,
+        "exchange_rate_date": "2019-10-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 1,
+        "cents_per_output": 81,
+        "charity": { "id": 5, "charity_name": "The END Fund", "abbreviation": "END" }
+      }
+    ]
+  },
+  "2019-10-HKI": {
+    "evaluations": [
+      {
+        "id": 56,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 12.321072673885118,
+        "exchange_rate_date": "2019-10-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 11,
+        "cents_per_output": 135,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2019-10-MC": {
+    "evaluations": [
+      {
+        "id": 25,
+        "intervention": {
+          "long_description": "Barn behandlet med en full kur med malariamedisin",
+          "short_description": "Malariabehandlinger",
+          "id": 1
+        },
+        "converted_cost_per_output": 65.07351715911176,
+        "exchange_rate_date": "2019-10-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2019,
+        "start_month": 1,
+        "cents_per_output": 713,
+        "charity": { "id": 10, "charity_name": "Malaria Consortium", "abbreviation": "MC" }
+      }
+    ]
+  },
+  "2019-11-AMF": {
+    "evaluations": [
+      {
+        "id": 33,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 41.51655444833468,
+        "exchange_rate_date": "2019-11-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2019,
+        "start_month": 11,
+        "cents_per_output": 455,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2019-11-END": {
+    "evaluations": [
+      {
+        "id": 40,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.390859143549691,
+        "exchange_rate_date": "2019-11-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 1,
+        "cents_per_output": 81,
+        "charity": { "id": 5, "charity_name": "The END Fund", "abbreviation": "END" }
+      }
+    ]
+  },
+  "2019-11-HKI": {
+    "evaluations": [
+      {
+        "id": 55,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 11.223156477242124,
+        "exchange_rate_date": "2019-11-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2019,
+        "start_month": 11,
+        "cents_per_output": 123,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2019-11-MC": {
+    "evaluations": [
+      {
+        "id": 25,
+        "intervention": {
+          "long_description": "Barn behandlet med en full kur med malariamedisin",
+          "short_description": "Malariabehandlinger",
+          "id": 1
+        },
+        "converted_cost_per_output": 65.05780949815963,
+        "exchange_rate_date": "2019-11-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2019,
+        "start_month": 1,
+        "cents_per_output": 713,
+        "charity": { "id": 10, "charity_name": "Malaria Consortium", "abbreviation": "MC" }
+      }
+    ]
+  },
+  "2019-12-HKI": {
+    "evaluations": [
+      {
+        "id": 55,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 11.312030095676395,
+        "exchange_rate_date": "2019-12-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2019,
+        "start_month": 11,
+        "cents_per_output": 123,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2019-12-MC": {
+    "evaluations": [
+      {
+        "id": 25,
+        "intervention": {
+          "long_description": "Barn behandlet med en full kur med malariamedisin",
+          "short_description": "Malariabehandlinger",
+          "id": 1
+        },
+        "converted_cost_per_output": 65.57298746518106,
+        "exchange_rate_date": "2019-12-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2019,
+        "start_month": 1,
+        "cents_per_output": 713,
+        "charity": { "id": 10, "charity_name": "Malaria Consortium", "abbreviation": "MC" }
+      }
+    ]
+  },
+  "2019-3-AMF": {
+    "evaluations": [
+      {
+        "id": 32,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 38.70895545989634,
+        "exchange_rate_date": "2019-03-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 11,
+        "cents_per_output": 453,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2019-6-AMF": {
+    "evaluations": [
+      {
+        "id": 32,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 39.718226177322535,
+        "exchange_rate_date": "2019-06-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 11,
+        "cents_per_output": 453,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-1-AMF": {
+    "evaluations": [
+      {
+        "id": 1,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 45.51202925045703,
+        "exchange_rate_date": "2020-01-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-1-END": {
+    "evaluations": [
+      {
+        "id": 40,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.1167458866544795,
+        "exchange_rate_date": "2020-01-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 1,
+        "cents_per_output": 81,
+        "charity": { "id": 5, "charity_name": "The END Fund", "abbreviation": "END" }
+      }
+    ]
+  },
+  "2020-1-HKI": {
+    "evaluations": [
+      {
+        "id": 3,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 10.016160877513709,
+        "exchange_rate_date": "2020-01-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 114,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2020-1-MC": {
+    "evaluations": [
+      {
+        "id": 23,
+        "intervention": {
+          "long_description": "Barn behandlet med en full kur med malariamedisin",
+          "short_description": "Malariabehandlinger",
+          "id": 1
+        },
+        "converted_cost_per_output": 62.64493601462522,
+        "exchange_rate_date": "2020-01-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 713,
+        "charity": { "id": 10, "charity_name": "Malaria Consortium", "abbreviation": "MC" }
+      }
+    ]
+  },
+  "2020-1-SS": {
+    "evaluations": [
+      {
+        "id": 38,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 8.083217550274222,
+        "exchange_rate_date": "2020-01-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 92,
+        "charity": { "id": 7, "charity_name": "Sightsavers", "abbreviation": "SS" }
+      }
+    ]
+  },
+  "2020-10-MC": {
+    "evaluations": [
+      {
+        "id": 23,
+        "intervention": {
+          "long_description": "Barn behandlet med en full kur med malariamedisin",
+          "short_description": "Malariabehandlinger",
+          "id": 1
+        },
+        "converted_cost_per_output": 66.17516082368958,
+        "exchange_rate_date": "2020-10-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 713,
+        "charity": { "id": 10, "charity_name": "Malaria Consortium", "abbreviation": "MC" }
+      }
+    ]
+  },
+  "2020-12-AMF": {
+    "evaluations": [
+      {
+        "id": 1,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 45.89112967914438,
+        "exchange_rate_date": "2020-12-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-2-AMF": {
+    "evaluations": [
+      {
+        "id": 1,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 47.845272233946325,
+        "exchange_rate_date": "2020-02-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-2-END": {
+    "evaluations": [
+      {
+        "id": 40,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.481596623454929,
+        "exchange_rate_date": "2020-02-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 1,
+        "cents_per_output": 81,
+        "charity": { "id": 5, "charity_name": "The END Fund", "abbreviation": "END" }
+      }
+    ]
+  },
+  "2020-3-AMF": {
+    "evaluations": [
+      {
+        "id": 1,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 48.644692212756986,
+        "exchange_rate_date": "2020-03-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-4-AMF": {
+    "evaluations": [
+      {
+        "id": 1,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 53.374935991221655,
+        "exchange_rate_date": "2020-04-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-8-AMF": {
+    "evaluations": [
+      {
+        "id": 1,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 47.063974930833936,
+        "exchange_rate_date": "2020-08-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 518,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2020-8-MC": {
+    "evaluations": [
+      {
+        "id": 23,
+        "intervention": {
+          "long_description": "Barn behandlet med en full kur med malariamedisin",
+          "short_description": "Malariabehandlinger",
+          "id": 1
+        },
+        "converted_cost_per_output": 64.78110835074247,
+        "exchange_rate_date": "2020-08-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 713,
+        "charity": { "id": 10, "charity_name": "Malaria Consortium", "abbreviation": "MC" }
+      }
+    ]
+  },
+  "2021-1-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 41.591543708892466,
+        "exchange_rate_date": "2021-01-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2021-2-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 41.95491559086395,
+        "exchange_rate_date": "2021-02-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2021-2-HKI": {
+    "evaluations": [
+      {
+        "id": 4,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 9.45705064548163,
+        "exchange_rate_date": "2021-02-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 110,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2021-2-SS": {
+    "evaluations": [
+      {
+        "id": 38,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.90953326713009,
+        "exchange_rate_date": "2021-02-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 92,
+        "charity": { "id": 7, "charity_name": "Sightsavers", "abbreviation": "SS" }
+      }
+    ]
+  },
+  "2021-3-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 41.94540778229486,
+        "exchange_rate_date": "2021-03-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2021-3-HKI": {
+    "evaluations": [
+      {
+        "id": 4,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 9.454907491910728,
+        "exchange_rate_date": "2021-03-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 110,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2021-3-SS": {
+    "evaluations": [
+      {
+        "id": 38,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.907740811416245,
+        "exchange_rate_date": "2021-03-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 92,
+        "charity": { "id": 7, "charity_name": "Sightsavers", "abbreviation": "SS" }
+      }
+    ]
+  },
+  "2021-4-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 41.71556615017878,
+        "exchange_rate_date": "2021-04-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2021-4-HKI": {
+    "evaluations": [
+      {
+        "id": 4,
+        "intervention": {
+          "long_description": "Barn som får A-vitamintilskudd",
+          "short_description": "A-vitamintilskudd",
+          "id": 3
+        },
+        "converted_cost_per_output": 9.4030989272944,
+        "exchange_rate_date": "2021-04-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 110,
+        "charity": { "id": 3, "charity_name": "Helen Keller International", "abbreviation": "HKI" }
+      }
+    ]
+  },
+  "2021-4-SS": {
+    "evaluations": [
+      {
+        "id": 38,
+        "intervention": {
+          "long_description": "Barn behandlet med ormekur for ett år",
+          "short_description": "Ormekurer",
+          "id": 4
+        },
+        "converted_cost_per_output": 7.8644100119189515,
+        "exchange_rate_date": "2021-04-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2020,
+        "start_month": 1,
+        "cents_per_output": 92,
+        "charity": { "id": 7, "charity_name": "Sightsavers", "abbreviation": "SS" }
+      }
+    ]
+  },
+  "2021-5-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 40.32873619089704,
+        "exchange_rate_date": "2021-05-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2021-5-GD": {
+    "evaluations": [
+      {
+        "id": 17,
+        "intervention": {
+          "long_description": "Kontantoverføring mottatt av ekstremt fattige husholdninger",
+          "short_description": "Dollar mottatt",
+          "id": 6
+        },
+        "converted_cost_per_output": 9.916902342023864,
+        "exchange_rate_date": "2021-05-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2018,
+        "start_month": 3,
+        "cents_per_output": 120,
+        "charity": { "id": 8, "charity_name": "GiveDirectly", "abbreviation": "GD" }
+      }
+    ]
+  },
+  "2021-5-NI": {
+    "evaluations": [
+      {
+        "id": 65,
+        "intervention": {
+          "long_description": "Spebarn vaksinert som ikke ville blitt vaksinert hadde det ikke vært for dette tiltaket",
+          "short_description": "Vaksinasjoner",
+          "id": 5
+        },
+        "converted_cost_per_output": 1319.526497459125,
+        "exchange_rate_date": "2021-05-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 15967,
+        "charity": { "id": 4, "charity_name": "New Incentives", "abbreviation": "NI" }
+      }
+    ]
+  },
+  "2022-3-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 43.106812399211606,
+        "exchange_rate_date": "2022-03-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  },
+  "2022-4-AMF": {
+    "evaluations": [
+      {
+        "id": 5,
+        "intervention": {
+          "long_description": "Myggnett impregnert med insektmiddel levert til husholdninger",
+          "short_description": "Myggnett",
+          "id": 2
+        },
+        "converted_cost_per_output": 42.66600072385089,
+        "exchange_rate_date": "2022-04-01",
+        "currency": "NOK",
+        "language": "no",
+        "start_year": 2021,
+        "start_month": 1,
+        "cents_per_output": 488,
+        "charity": { "id": 1, "charity_name": "Against Malaria Foundation", "abbreviation": "AMF" }
+      }
+    ]
+  }
+}

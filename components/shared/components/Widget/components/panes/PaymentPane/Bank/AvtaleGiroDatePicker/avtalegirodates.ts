@@ -21,10 +21,7 @@ const thisMonth = new Date().getMonth();
 const processingDays = 10;
 
 // Checks if the due date of a charge is at least three days ahead of today
-export function hasTimeToProcess(
-  dueDate: Date,
-  todayDate: Date = new Date()
-): boolean {
+export function hasTimeToProcess(dueDate: Date, todayDate: Date = new Date()): boolean {
   const dd = dueDate.getDate();
   const mm = dueDate.getMonth();
   const yyyy = dueDate.getFullYear();
@@ -68,15 +65,11 @@ export function getEarliestPossibleChargeDate(): number {
 
 export function isIrregularChargeDay(
   selectedChargeDay: number,
-  todayDate: Date = new Date()
+  todayDate: Date = new Date(),
 ): boolean {
   const chargeDateThisMonth = new Date(thisYear, thisMonth, selectedChargeDay);
 
-  const chargeDateNextMonth = new Date(
-    thisYear,
-    thisMonth + 1,
-    selectedChargeDay
-  );
+  const chargeDateNextMonth = new Date(thisYear, thisMonth + 1, selectedChargeDay);
 
   if (selectedChargeDay === todayDate.getDate()) return false;
 
@@ -84,10 +77,7 @@ export function isIrregularChargeDay(
     return false;
   }
 
-  if (
-    !hasTimeToProcess(chargeDateThisMonth) &&
-    selectedChargeDay > todayDate.getDate()
-  ) {
+  if (!hasTimeToProcess(chargeDateThisMonth) && selectedChargeDay > todayDate.getDate()) {
     return true;
   }
 
@@ -103,16 +93,8 @@ export function getNextChargeDate(newChargeDay: number): Date {
   }
 
   const newChargeDateThisMonth = new Date(thisYear, thisMonth, newChargeDay);
-  const newChargeDateNextMonth = new Date(
-    thisYear,
-    thisMonth + 1,
-    newChargeDay
-  );
-  const newChargeDateFurtherNextMonth = new Date(
-    thisYear,
-    thisMonth + 2,
-    newChargeDay
-  );
+  const newChargeDateNextMonth = new Date(thisYear, thisMonth + 1, newChargeDay);
+  const newChargeDateFurtherNextMonth = new Date(thisYear, thisMonth + 2, newChargeDay);
 
   if (hasTimeToProcess(newChargeDateThisMonth)) {
     return newChargeDateThisMonth;

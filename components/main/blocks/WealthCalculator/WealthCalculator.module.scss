@@ -11,7 +11,7 @@
 }
 
 .calculator__input_slider {
-  padding-bottom:1.6rem;
+  padding-bottom: 1.6rem;
 
   .calculator__input__inner {
     padding-top: 0;
@@ -47,7 +47,7 @@
   background: none;
   border: none;
   border-bottom: 1px solid var(--secondary);
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   font-size: 1.2rem;
   color: var(--secondary);
   padding: 0.5rem 0;
@@ -79,7 +79,7 @@
   background: none;
   border: none;
   border-bottom: 1px solid var(--primary);
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   font-size: 1rem;
   color: var(--primary);
   padding: 0.2rem 0;
@@ -97,7 +97,7 @@
 }
 
 .calculator__input__group__percentage_input::after {
-  content: '%';
+  content: "%";
 }
 
 .calculator__input__group i {
@@ -161,9 +161,9 @@
   transform: rotate(180deg);
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 1181px) { 
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .calculator__input_slider {
-    padding-bottom:2rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -199,7 +199,7 @@
     grid-column: 1;
 
     &::before {
-      content: 'Global inntektsdistribusjon';
+      content: "Global inntektsdistribusjon";
       text-transform: uppercase;
       margin-bottom: 1.5rem;
       display: block;
@@ -211,9 +211,9 @@
     grid-row: 3;
   }
 
-  .calculator__input_slider { 
+  .calculator__input_slider {
     grid-row: 4;
-    
+
     .calculator__input__inner {
       background: var(--secondary);
       color: var(--primary);

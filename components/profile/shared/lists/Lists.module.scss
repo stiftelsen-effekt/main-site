@@ -60,7 +60,7 @@
   white-space: nowrap;
 }
 
-.table td.rowAction .actionContainer { 
+.table td.rowAction .actionContainer {
   display: inline-flex;
   margin-left: 1rem;
   vertical-align: top;
@@ -96,7 +96,7 @@
     border-top: 1px solid var(--primary);
     padding: 0.6rem 0rem;
   }
-  &  {
+  & {
     border-bottom: 1px solid var(--primary);
   }
 }
@@ -227,7 +227,7 @@ table tr .detailRowCell {
     padding-left: 0;
   }
 
-  .table td.rowAction .actionContainer { 
+  .table td.rowAction .actionContainer {
     margin-left: 0.5rem;
   }
 

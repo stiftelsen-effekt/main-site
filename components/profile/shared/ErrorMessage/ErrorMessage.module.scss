@@ -1,5 +1,4 @@
 .container {
-  
   white-space: pre-wrap;
   background: var(--primary);
 
@@ -12,7 +11,7 @@
 }
 
 .container::before {
-  content: 'Feilmelding';
+  content: "Feilmelding";
   display: block;
   text-transform: uppercase;
   position: absolute;
@@ -20,6 +19,6 @@
   top: -2rem;
   color: var(--primary);
   letter-spacing: 1px;
-  font-family: 'ESKlarheitGrotesk';
+  font-family: "ESKlarheitGrotesk";
   font-weight: bold;
 }

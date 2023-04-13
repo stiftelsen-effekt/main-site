@@ -1,22 +1,21 @@
-*Issue description here*
+_Issue description here_
 
-#linked-issue-nr
+- closes #linked-issue-nr
 
 ---
 
-Tested on devices 
+Tested on devices
+
 - [ ] Desktop 💻
 - [ ] Mobile 📱
 
-Tests  
+Tests
+
 - [ ] All tests are running ✔️
 - [ ] Test are updated 🧪
 - [ ] Code Review 👩‍💻
 - [ ] QA 👌
 
-
-
 ⏲️ Time spent on CR:
-
 
 ⏲️ Time spent on QA:
