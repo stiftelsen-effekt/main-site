@@ -1,18 +1,25 @@
 import { useRouter } from "next/router";
 import React from "react";
-import elements from "./Teaser.module.scss";
+import elements from "./TeasersItem.module.scss";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
-export interface Teaser {
+export interface TeasersItemProps {
   title: string;
   paragraph: string;
   disclaimer?: string;
   link: string;
   image: SanityImageSource;
 }
-export const Teaser: React.FC<Teaser> = ({ title, paragraph, disclaimer, link, image }) => {
+
+export const TeasersItem: React.FC<TeasersItemProps> = ({
+  title,
+  paragraph,
+  disclaimer,
+  link,
+  image,
+}) => {
   const router = useRouter();
 
   return (
