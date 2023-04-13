@@ -49,16 +49,6 @@ Navigating to `localhost:3000/` in your browser should yield something like this
 
 <img src="docs/frontpage.png" width="420" alt="Gi Effektivt front page" />
 
-The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the development data set, run
-
-`npm run sanity`
-
-> To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
-
-This will make sanity studio available at `localhost:3333/`. It should look something like this
-
-<img src="docs/sanity.png" width="420" alt="Gi Effektivt front page" />
-
 ## Project structure
 
 The project is structured around to major parts of the application. We have divided the site into a main part, and a profile part. This is done to reduce the payload for the users visiting the site that do not intend to log in, which is the majority of users. By seperating out the code for login and API calls, this is contained to only the users that require it.
@@ -146,6 +136,28 @@ export default ExamplePage;
 </Details>
 <br>
 In this example page, we use the publicly available main layout for the page. We fetch the data we are interested in on site generation, using the `getStaticProps` method, a sanity client and a groq query. If no data was found, we render a 404 message.
+
+### Sanity Studio
+
+The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the data set configured in your `.env.local`, run
+
+`npm run sanity`
+
+> To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
+
+This will make sanity studio available at `localhost:3333/`. It should look something like this
+
+<img src="docs/sanity.png" width="420" alt="Gi Effektivt front page" />
+
+If you wish to edit documents with JSON in VSCode, you may run:
+
+`npm run sanity:edit {documentId}`
+
+> To edit draft documents, use the `drafts.` prefix with your document id.
+
+Example usage:
+
+`npm run sanity:edit drafts.75407a6f-ff17-401d-bc37-50e866ada48e`
 
 ## Profile page 🧑‍🤝‍🧑
 

@@ -6,6 +6,7 @@
     "prebuild": "echo 'Building Sanity to public/studio' && export SANITY_STUDIO_VERCEL_ENV=$VERCEL_ENV && export SANITY_STUDIO_VERCEL_URL=$VERCEL_URL && cd studio && npm i && npx @sanity/cli build ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "dotenv -e .env.local npm run start -- --prefix studio",
+    "sanity:edit": "dotenv -e .env.local npm run edit -- --prefix studio",
     "start": "next start",
     "lint": "next lint",
     "cypress": "./node_modules/.bin/cypress open",
