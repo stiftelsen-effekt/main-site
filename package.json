@@ -12,7 +12,8 @@
     "coverage": "jest --coverage",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
