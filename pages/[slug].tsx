@@ -1,7 +1,7 @@
 import React from "react";
 import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
+import { LayoutPage, PageTypes } from "../types";
 import { Navbar } from "../components/main/layout/navbar";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
@@ -13,7 +13,10 @@ import { BlockContentRenderer } from "../components/main/blocks/BlockContentRend
 import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app";
 
-const GenericPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const GenericPage: LayoutPage<{
+  data: { result: { [key: string]: any; page: PageTypes["generic_page"] } };
+  preview: boolean;
+}> = ({ data, preview }) => {
   const page = data.result.page;
 
   if (!page) {
