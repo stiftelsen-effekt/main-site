@@ -118,7 +118,7 @@ describe("Donations page", () => {
      * Wait for initial data load
      */
     cy.wait(
-      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getOrganizations", "@getEvaluations"],
+      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getOrganizations"],
       {
         timeout: 30000,
       },
