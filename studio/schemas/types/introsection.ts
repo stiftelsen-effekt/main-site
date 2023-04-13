@@ -24,10 +24,5 @@ export default {
       rows: 3,
       title: 'Paragraph'
     },
-    {
-      name: 'slug',
-      type: 'string',
-      title: 'Link target'
-    }
   ]
 }
