@@ -13,7 +13,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
@@ -88,12 +89,17 @@
     "eslint-config-next": "12.0.8",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-storybook": "^0.5.12",
+    "husky": "^8.0.3",
     "jest": "^27.5.1",
+    "lint-staged": "^13.2.1",
     "prettier": "2.6.2",
     "redux-devtools-extension": "^2.13.9",
     "ts-jest": "^27.1.5",
     "typescript": "^4.5.5",
     "typescript-fsa": "^3.0.0",
     "webpack": "^5.70.0"
+  },
+  "lint-staged": {
+    "*": "prettier --write"
   }
 }
