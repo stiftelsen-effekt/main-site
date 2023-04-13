@@ -175,9 +175,9 @@ describe("Donations page", () => {
   });
 
   it("Should display a donation aggregate impact table", () => {
-    cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 6, {
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]", {
       timeout: 15000
-      });
+      }).should("have.length", 6);
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
       .should("contain.text", "307");
@@ -203,9 +203,9 @@ describe("Donations page", () => {
 
     cy.get("[data-cy=generic-list-header]").should("have.length", 1, { timeout: 5000 });
 
-    cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 5, {
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]", {
       timeout: 15000
-      });
+      }).should("have.length", 5);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
   });
@@ -237,8 +237,8 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .find("[data-cy=donation-impact-list]")
-      .should("be.visible", { timeout: 15000 });
+      .find("[data-cy=donation-impact-list]", { timeout: 15000 })
+      .should("be.visible");
 
     // Check that the graph information is correct
 
