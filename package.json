@@ -81,7 +81,7 @@
     "@types/styled-components": "^5.1.25",
     "@types/validator": "^13.7.3",
     "babel-loader": "^8.2.3",
-    "cypress": "^10.1.0",
+    "cypress": "^12.9.0",
     "cypress-dotenv": "^2.0.0",
     "cypress-localstorage-commands": "^1.7.0",
     "dotenv": "^16.0.0",
