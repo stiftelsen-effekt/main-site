@@ -22,9 +22,7 @@ import { VippsAgreement } from "../state";
 
 const actionCreator = actionCreatorFactory();
 
-export function selectPaymentMethod(
-  method: PaymentMethod
-): DonationActionTypes {
+export function selectPaymentMethod(method: PaymentMethod): DonationActionTypes {
   return {
     type: SELECT_PAYMENT_METHOD,
     payload: {
@@ -47,7 +45,7 @@ export function submitDonorInfo(
   email: string,
   taxDeduction: boolean,
   ssn: string,
-  newsletter: boolean
+  newsletter: boolean,
 ): DonationActionTypes {
   return {
     type: SUBMIT_DONOR_INFO,
@@ -88,9 +86,7 @@ export function setDueDay(day: number): DonationActionTypes {
   };
 }
 
-export function setRecurring(
-  recurring: RecurringDonation
-): DonationActionTypes {
+export function setRecurring(recurring: RecurringDonation): DonationActionTypes {
   return {
     type: SET_RECURRING,
     payload: {
@@ -153,9 +149,7 @@ export function setDonationValid(isValid: boolean): DonationActionTypes {
   };
 }
 
-export function setVippsAgreement(
-  vippsAgreement: VippsAgreement
-): DonationActionTypes {
+export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActionTypes {
   return {
     type: SET_VIPPS_AGREEMENT,
     payload: {
@@ -175,17 +169,13 @@ export type RegisterDonationResponse = {
   paymentProviderUrl: string;
 };
 
-export const draftAgreementAction = actionCreator.async<
-  undefined,
-  DraftAgreementResponse,
-  Error
->("DRAFT_AGREEMENT");
+export const draftAgreementAction = actionCreator.async<undefined, DraftAgreementResponse, Error>(
+  "DRAFT_AGREEMENT",
+);
 
-export const draftAvtaleGiroAction = actionCreator.async<
-  undefined,
-  undefined,
-  Error
->("DRAFT_AVTALEGIRO");
+export const draftAvtaleGiroAction = actionCreator.async<undefined, undefined, Error>(
+  "DRAFT_AVTALEGIRO",
+);
 
 export const registerDonationAction = actionCreator.async<
   undefined,
@@ -193,8 +183,6 @@ export const registerDonationAction = actionCreator.async<
   Error
 >("REGISTER_DONATION");
 
-export const registerBankPendingAction = actionCreator.async<
-  undefined,
-  undefined,
-  Error
->("REGISTER_BANK_PENDING");
+export const registerBankPendingAction = actionCreator.async<undefined, undefined, Error>(
+  "REGISTER_BANK_PENDING",
+);

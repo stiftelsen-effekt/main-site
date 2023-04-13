@@ -111,11 +111,13 @@
   right: 0;
 }
 
-.testimonial__arrow__backward:focus > div, .testimonial__arrow__forward:focus > div {
+.testimonial__arrow__backward:focus > div,
+.testimonial__arrow__forward:focus > div {
   outline: 2px solid var(--primary);
 }
 
-.testimonial__arrow__backward:active > div, .testimonial__arrow__forward:active > div {
+.testimonial__arrow__backward:active > div,
+.testimonial__arrow__forward:active > div {
   outline: none;
 }
 
