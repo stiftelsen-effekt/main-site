@@ -1,12 +1,12 @@
 @use "sass:math";
 
-
 .pointlistwrapper {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
   column-gap: 40px;
   width: 100%;
+  margin-top: 80px;
   margin-bottom: 110px;
 }
 
@@ -30,7 +30,7 @@
     @for $j from $i through 1 {
       $row: math.ceil(math.div($j, $columns-per-row));
 
-      .pointlistwrapper div:first-child:nth-last-child(#{$i}) ~ div:nth-child(#{$j}){
+      .pointlistwrapper div:first-child:nth-last-child(#{$i}) ~ div:nth-child(#{$j}) {
         grid-row: $row;
         grid-column: $j % $columns-per-row;
       }
@@ -54,11 +54,11 @@
         }
       }
     }
-  
+
     @for $j from $i through 1 {
       $row: math.ceil(math.div($j, $columns-per-row));
-  
-      .pointlistwrapper div:first-child:nth-last-child(#{$i}) ~ div:nth-child(#{$j}){
+
+      .pointlistwrapper div:first-child:nth-last-child(#{$i}) ~ div:nth-child(#{$j}) {
         grid-row: $row;
         grid-column: $j % $columns-per-row;
       }

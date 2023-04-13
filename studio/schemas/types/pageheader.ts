@@ -31,10 +31,17 @@ export default {
       group: 'content',
     },
     {
-      name: 'centered',
-      title: 'Centered',
-      type: 'boolean',
+      name: 'layout',
+      title: 'Layout',
+      type: 'string',
       group: 'content',
+      options: {
+        list: [
+          'default',
+          'centered',
+          'hero',
+        ],
+      }
     },
     {
       name: 'links',
