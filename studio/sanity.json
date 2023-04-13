@@ -4,10 +4,6 @@
     "name": "Gi Effektivt Website",
     "basePath": "/studio"
   },
-  "api": {
-    "projectId": "vf0df6h3",
-    "dataset": "dev"
-  },
   "plugins": [
     "@sanity/base",
     "@sanity/default-layout",
