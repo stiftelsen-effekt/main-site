@@ -12,7 +12,7 @@ export const ShareContainer = styled.div`
 
 export const ShareLink = styled.a`
   border: none !important;
-  
+
   &:hover > label {
     cursor: pointer;
     text-decoration: underline;

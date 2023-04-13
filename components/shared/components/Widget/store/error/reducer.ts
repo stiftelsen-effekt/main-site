@@ -17,7 +17,7 @@ const initialState: Error = {
 
 export const errorReducer: Reducer<Error, ErrorActionTypes> = (
   state: Error = initialState,
-  action: ErrorActionTypes
+  action: ErrorActionTypes,
 ) => {
   switch (action.type) {
     case SET_ERROR:

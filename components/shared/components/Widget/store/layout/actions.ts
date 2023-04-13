@@ -32,9 +32,7 @@ export function prevPane(): LayoutActionTypes {
   };
 }
 
-export function setAnsweredReferral(
-  answeredReferral: boolean
-): LayoutActionTypes {
+export function setAnsweredReferral(answeredReferral: boolean): LayoutActionTypes {
   return {
     type: SET_ANSWERED_REFERRAL,
     payload: {
@@ -50,8 +48,6 @@ export function setLoading(loading: boolean): LayoutActionTypes {
   };
 }
 
-export const fetchOrganizationsAction = actionCreator.async<
-  undefined,
-  Organization[],
-  Error
->("FETCH_ORGANIZATIONS");
+export const fetchOrganizationsAction = actionCreator.async<undefined, Organization[], Error>(
+  "FETCH_ORGANIZATIONS",
+);

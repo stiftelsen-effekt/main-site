@@ -6,7 +6,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     border-bottom: 1px solid var(--primary);
-  
+
     .description {
       padding-bottom: 10rem;
 
@@ -37,7 +37,7 @@
   display: none;
 }
 
-@media screen and (max-width: 1520px) and (min-width: 1181px) { 
+@media screen and (max-width: 1520px) and (min-width: 1181px) {
   .container {
     .inner {
       .graph {
@@ -68,8 +68,6 @@
       margin-top: 0rem;
     }
   }
-
-
 
   .desktopButton {
     display: none;
