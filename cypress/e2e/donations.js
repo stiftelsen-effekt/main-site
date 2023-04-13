@@ -199,6 +199,8 @@ describe("Donations page", () => {
   it("Should be possible to filter by year", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
 
+    cy.get("[data-cy=generic-list-header]").should("have.length", 1, { timeout: 5000 });
+
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]").should("have.length", 5);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
@@ -207,7 +209,7 @@ describe("Donations page", () => {
   it("Should only display the selected year in donation list", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
 
-    cy.get("[data-cy=generic-list-header]").should("have.length", 1);
+    cy.get("[data-cy=generic-list-header]").should("have.length", 1, { timeout: 5000 });
     cy.get("[data-cy=generic-list-header]").should("contain.text", "2021");
   });
 
@@ -215,8 +217,7 @@ describe("Donations page", () => {
     cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
 
     // Wait for the list to filter
-    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
-    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
+    cy.get("[data-cy=generic-list-header]").should("have.length", 1, { timeout: 5000 });
 
     // Expand the first donation
     cy.get("[data-cy=generic-list-table]")
