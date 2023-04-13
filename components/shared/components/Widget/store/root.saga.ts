@@ -15,10 +15,7 @@ import {
 } from "./donation/saga";
 import { fetchOrganizationsAction } from "./layout/actions";
 import { fetchOrganizations } from "./layout/saga";
-import {
-  fetchReferralsAction,
-  submitReferralAction,
-} from "./referrals/actions";
+import { fetchReferralsAction, submitReferralAction } from "./referrals/actions";
 import { fetchReferrals, submitReferral } from "./referrals/saga";
 import { State } from "./state";
 
@@ -26,18 +23,14 @@ const postCustomEvent = (
   action: string,
   category: string,
   recurring: RecurringDonation,
-  value?: number
+  value?: number,
 ) => {
   const eventData = {
     action,
     category,
-    label:
-      recurring === RecurringDonation.RECURRING ? "Recurring" : "Non-recurring",
+    label: recurring === RecurringDonation.RECURRING ? "Recurring" : "Non-recurring",
   };
-  window.parent.postMessage(
-    value ? { ...eventData, value } : eventData,
-    "https://gieffektivt.no/"
-  );
+  window.parent.postMessage(value ? { ...eventData, value } : eventData, "https://gieffektivt.no/");
 };
 
 const postPurchaseEvent = (kid?: string, value?: number) => {
@@ -49,42 +42,43 @@ const postPurchaseEvent = (kid?: string, value?: number) => {
   window.parent.postMessage(eventData, "https://gieffektivt.no/");
 };
 
-export const postMessageMiddleware: Middleware = ({ getState }) => (next) => (
-  action
-) => {
-  const { donation, layout }: State = getState();
-  switch (action.type) {
-    case "SELECT_PAYMENT_METHOD":
-      if (action.payload.method) {
+export const postMessageMiddleware: Middleware =
+  ({ getState }) =>
+  (next) =>
+  (action) => {
+    const { donation, layout }: State = getState();
+    switch (action.type) {
+      case "SELECT_PAYMENT_METHOD":
+        if (action.payload.method) {
+          postCustomEvent(
+            `Payment method selected: ${PaymentMethod[action.payload.method]}`,
+            "Payment method selected",
+            donation.recurring,
+          );
+        }
+        break;
+      case "REGISTER_DONATION_DONE":
+        postPurchaseEvent(action.payload.result.KID, donation.sum);
+        break;
+      case "INCREMENT_CURRENT_PANE":
         postCustomEvent(
-          `Payment method selected: ${PaymentMethod[action.payload.method]}`,
-          "Payment method selected",
-          donation.recurring
+          `Proceeded to step ${layout.paneNumber + 2}`,
+          "Step change",
+          donation.recurring,
         );
-      }
-      break;
-    case "REGISTER_DONATION_DONE":
-      postPurchaseEvent(action.payload.result.KID, donation.sum);
-      break;
-    case "INCREMENT_CURRENT_PANE":
-      postCustomEvent(
-        `Proceeded to step ${layout.paneNumber + 2}`,
-        "Step change",
-        donation.recurring
-      );
-      break;
-    case "DECREMENT_CURRENT_PANE":
-      postCustomEvent(
-        `Went back to step ${layout.paneNumber}`,
-        "Step change",
-        donation.recurring
-      );
-      break;
-    default:
-  }
+        break;
+      case "DECREMENT_CURRENT_PANE":
+        postCustomEvent(
+          `Went back to step ${layout.paneNumber}`,
+          "Step change",
+          donation.recurring,
+        );
+        break;
+      default:
+    }
 
-  return next(action);
-};
+    return next(action);
+  };
 
 export function* watchAll() {
   yield all([
