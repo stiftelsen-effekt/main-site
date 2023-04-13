@@ -27,4 +27,4 @@ export default {
       title: 'header.title'
     }
   }
-}
+} as const

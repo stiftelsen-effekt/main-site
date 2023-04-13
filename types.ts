@@ -12,3 +12,5 @@ export type LayoutElement = React.FC<{
   footerData: FooterProps;
   widgetData: WidgetProps;
 }>;
+
+export * from "./studio/types";
