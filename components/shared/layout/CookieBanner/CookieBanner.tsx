@@ -13,11 +13,9 @@ export const CookieBanner: React.FC = () => {
       typeof window !== "undefined"
         ? window.localStorage.getItem("gieffektivt-cookies-accepted") === "true"
         : false,
-    )
+    );
     setLocalStorageLoaded(true);
-    },
-    []
-  );
+  }, []);
 
   return (
     <>
@@ -39,7 +37,11 @@ export const CookieBanner: React.FC = () => {
           </Script>
         </>
       )}
-      <div data-cy="cookiebanner-container" className={styles.container} style={{ display: cookiesAccepted ? "none" : "flex" }}>
+      <div
+        data-cy="cookiebanner-container"
+        className={styles.container}
+        style={{ display: cookiesAccepted ? "none" : "flex" }}
+      >
         <div className={styles.content}>
           <div>
             <span>Cookies</span>

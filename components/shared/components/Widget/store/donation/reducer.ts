@@ -50,7 +50,7 @@ const initialState: Donation = {
 
 export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   state: Donation = initialState,
-  action: DonationActionTypes
+  action: DonationActionTypes,
 ) => {
   if (isType(action, fetchOrganizationsAction.done)) {
     state = {
@@ -59,7 +59,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         (org): OrganizationShare => ({
           id: org.id,
           split: org.standardShare,
-        })
+        }),
       ),
     };
   }

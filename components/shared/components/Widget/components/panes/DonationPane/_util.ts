@@ -2,19 +2,12 @@ import { PaymentMethod, RecurringDonation } from "../../../types/Enums";
 import { Donation } from "../../../store/state";
 
 export const displayClaimWarning = (donation: Donation): boolean => {
-  if (
-    donation.method !== PaymentMethod.BANK ||
-    donation.recurring !== RecurringDonation.RECURRING
-  )
+  if (donation.method !== PaymentMethod.BANK || donation.recurring !== RecurringDonation.RECURRING)
     return false;
 
   const timeStamp = new Date();
   const today = timeStamp.getDate();
-  const daysInMonth = new Date(
-    timeStamp.getFullYear(),
-    timeStamp.getMonth(),
-    0
-  ).getDate();
+  const daysInMonth = new Date(timeStamp.getFullYear(), timeStamp.getMonth(), 0).getDate();
 
   if (donation.dueDay) {
     if (today + 5 <= 28) {
