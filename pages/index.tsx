@@ -21,6 +21,7 @@ import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/Impact
 import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
 import { widgetQuery } from "../_queries";
 import { GiveWellStamp } from "../components/main/blocks/GiveWellStamp/GiveWellStamp";
+import { WealthCalculatorTeaser } from "../components/main/blocks/WealthCalculatorTeaser/WealthCalculatorTeaser";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
   () =>
@@ -98,6 +99,23 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       <SectionContainer heading="Slik fungerer det" padded>
         <Stepwize steps={frontpage.key_points.map((p: any) => p)} />
       </SectionContainer>
+      {frontpage.wealthcalculatorteaser && (
+        <SectionContainer>
+          <WealthCalculatorTeaser
+            title={frontpage.wealthcalculatorteaser.title}
+            description={frontpage.wealthcalculatorteaser.description}
+            medianIncome={frontpage.wealthcalculatorteaser.median_income}
+            link={frontpage.wealthcalculatorteaser.button}
+            afterDonationPercentileLabelTemplateString={
+              frontpage.wealthcalculatorteaser
+                .income_percentile_after_donation_label_template_string
+            }
+            incomePercentileLabelTemplateString={
+              frontpage.wealthcalculatorteaser.income_percentile_label_template_string
+            }
+          ></WealthCalculatorTeaser>
+        </SectionContainer>
+      )}
       <SectionContainer inverted nodivider>
         <GiveWellStamp></GiveWellStamp>
       </SectionContainer>
@@ -159,6 +177,7 @@ const fetchFrontpage = groq`
   ${footerQuery}
   ${widgetQuery}
   "page": *[_type == "frontpage"] {
+    ...,
     seoTitle, 
     seoDescription, 
     seoImage{
@@ -172,7 +191,15 @@ const fetchFrontpage = groq`
     intervention_widget,
     key_points,
     testimonials[]->,
-    teasers
+    teasers,
+    wealthcalculatorteaser {
+      ...,
+      button {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      }
+    }
   },
 }
 `;

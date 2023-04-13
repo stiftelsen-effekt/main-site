@@ -106,7 +106,6 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       filterYear = router.query.slug[1];
     }
   }
-  console.log(filterYear);
 
   const isTotal = typeof filterYear === "undefined";
 

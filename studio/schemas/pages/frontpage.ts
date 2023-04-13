@@ -56,6 +56,11 @@ export default {
       of: [{ type: 'reference', to: { type: 'testimonial' }}],
     },
     {
+      name: 'wealthcalculatorteaser',
+      type: 'wealthcalculatorteaser',
+      title: 'Wealth Calculator Teaser',
+    },
+    {
       title: 'Sitemap priority',
       name: 'sitemap_priority',
       type: 'number',

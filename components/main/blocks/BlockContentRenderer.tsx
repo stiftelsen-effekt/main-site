@@ -21,6 +21,8 @@ import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
 import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
+import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
+import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -141,6 +143,37 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         quote={block.quote}
                         offset={block.offset}
                         quotationMarks={block.quotation_marks}
+                      />
+                    );
+                  case "wealthcalculator":
+                    return (
+                      <WealthCalculator
+                        key={block._key || block._id}
+                        showImpact={block.show_impact}
+                        interventions={block.interventions}
+                        explanation={block.data_explanation}
+                        afterDonationPercentileLabelTemplateString={
+                          block.income_percentile_after_donation_label_template_string
+                        }
+                        incomePercentileLabelTemplateString={
+                          block.income_percentile_label_template_string
+                        }
+                      />
+                    );
+                  case "wealthcalculatorteaser":
+                    return (
+                      <WealthCalculatorTeaser
+                        key={block._key || block._id}
+                        title={block.title}
+                        description={block.description}
+                        link={block.navlink}
+                        medianIncome={block.median_income}
+                        afterDonationPercentileLabelTemplateString={
+                          block.income_percentile_after_donation_label_template_string
+                        }
+                        incomePercentileLabelTemplateString={
+                          block.income_percentile_label_template_string
+                        }
                       />
                     );
                   default:
