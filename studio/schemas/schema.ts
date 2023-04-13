@@ -65,7 +65,7 @@ export const pages = [
   articles,
   vippsagreement,
   tax
-]
+] as const
 
 export const types = [
   teaser,
@@ -105,7 +105,7 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser
-]
+] as const
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
