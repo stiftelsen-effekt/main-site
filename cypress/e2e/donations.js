@@ -1,5 +1,5 @@
 describe("Donations page", () => {
-  before(() => {
+  beforeEach(() => {
     cy.login();
 
     cy.fixture("donor")
@@ -80,20 +80,6 @@ describe("Donations page", () => {
       }).as("getOrganizations");
     });
 
-    cy.visit(`/min-side/`);
-
-    /**
-     * Wait for initial data load
-     */
-    cy.wait(
-      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getOrganizations"],
-      {
-        timeout: 30000,
-      },
-    );
-  });
-
-  beforeEach(() => {
     cy.fixture(`evaluations/evaluations.json`)
       .then((evaluations) => {
         cy.intercept(
@@ -122,10 +108,21 @@ describe("Donations page", () => {
             statusCode: 200,
             body: grants,
           },
-        );
+        ).as("getGrants");
       })
-      .as("getGrants");
-    cy.wait(3000);
+      .as("grantsFixture");
+
+    cy.visit(`/min-side/`);
+
+    /**
+     * Wait for initial data load
+     */
+    cy.wait(
+      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getOrganizations", "@getEvaluations"],
+      {
+        timeout: 30000,
+      },
+    );
   });
 
   it("Should display a menu for selection donation year", () => {
@@ -208,11 +205,19 @@ describe("Donations page", () => {
   });
 
   it("Should only display the selected year in donation list", () => {
+    cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
+
     cy.get("[data-cy=generic-list-header]").should("have.length", 1);
     cy.get("[data-cy=generic-list-header]").should("contain.text", "2021");
   });
 
   it("Should be possible to expand a donation to see actions and donation impact", () => {
+    cy.get("[data-cy=year-menu]").find("ul").contains("li", /2021/i).click();
+
+    // Wait for the list to filter
+    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
+    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
+
     // Expand the first donation
     cy.get("[data-cy=generic-list-table]")
       .first()
