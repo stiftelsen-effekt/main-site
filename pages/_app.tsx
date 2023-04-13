@@ -26,7 +26,13 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 sagaMiddleware.run(watchAll);
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({
+  Component,
+  pageProps,
+}: AppProps<{
+  preview: boolean;
+  data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
+}>) {
   // Gets the page layout from the component, defaults to the main layout
   const PageLayout = (Component as LayoutPage).layout || Layout;
 
