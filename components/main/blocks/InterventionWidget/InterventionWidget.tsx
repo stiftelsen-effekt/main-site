@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import styles from "./ImpactWidget.module.scss";
-import { ImpactWidgetOutput, SanityIntervention } from "./ImpactWidgetOutput";
+import styles from "./InterventionWidget.module.scss";
+import { InterventionWidgetOutput, SanityIntervention } from "./InterventionWidgetOutput";
 
-export interface ImpactWidgetProps {
+export interface InterventionWidgetProps {
   default_sum: number;
   title: string;
   interventions?: SanityIntervention[];
 }
 
-export const ImpactWidget: React.FC<ImpactWidgetProps> = ({
+export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
   default_sum,
   title,
   interventions,
@@ -38,7 +38,7 @@ export const ImpactWidget: React.FC<ImpactWidgetProps> = ({
           </div>
         </div>
         <div className={styles.output}>
-          <ImpactWidgetOutput sum={sum} interventions={interventions} />
+          <InterventionWidgetOutput sum={sum} interventions={interventions} />
         </div>
       </div>
     </div>

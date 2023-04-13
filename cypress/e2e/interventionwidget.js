@@ -1,4 +1,4 @@
-describe("ImpactWidget", () => {
+describe("InterventionWidget", () => {
   before(() => {
     cy.fixture("impact_evaluations")
       .then((impactEvaluations) => {
