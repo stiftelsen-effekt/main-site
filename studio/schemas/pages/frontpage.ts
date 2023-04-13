@@ -79,4 +79,4 @@ export default {
       title: 'main_heading'
     }
   }
-}
+} as const
