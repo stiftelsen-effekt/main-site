@@ -23,6 +23,7 @@ import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
 import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
 import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
+import { IntroSection } from "./IntroSection/IntroSection";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -176,6 +177,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         }
                       />
                     );
+                  case "introsection": {
+                    return (
+                      <IntroSection
+                        key={block._key || block._id}
+                        heading={block.heading}
+                        paragraph={block.paragraph}
+                      />
+                    );
+                  }
                   default:
                     return block._type;
                 }

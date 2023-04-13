@@ -70,8 +70,7 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
         <IntroSection
           heading={frontpage.introsection.heading}
           paragraph={frontpage.introsection.paragraph}
-          slug={frontpage.introsection.slug}
-        ></IntroSection>
+        />
       </SectionContainer>
       {interventionWidget.interventions && (
         <div style={{ marginTop: "45px" }}>
