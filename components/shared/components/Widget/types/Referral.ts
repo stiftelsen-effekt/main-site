@@ -1,5 +1,5 @@
 export default interface Referral {
-    ID: number,
-    name: string,
-    ordering: number
+  ID: number;
+  name: string;
+  ordering: number;
 }

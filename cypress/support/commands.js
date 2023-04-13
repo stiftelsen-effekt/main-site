@@ -5,7 +5,7 @@ Cypress.Commands.add("login", (overrides = {}) => {
   cy.clearLocalStorage();
   Cypress.log({
     name: "loginAuth0",
-  }); 
+  });
 
   const client_id = Cypress.env("AUTH_CLIENT_ID");
   const client_secret = Cypress.env("AUTH_CLIENT_SECRET");
@@ -69,8 +69,8 @@ const getState = () => cy.window().its("store").invoke("getState");
 
 const nextWidgetPane = () => {
   cy.get("[data-cy=next-button-div]").within(() => {
-    cy.get('button').click();
-  })
+    cy.get("button").click();
+  });
 };
 
 const prevWidgetPane = () => {
@@ -79,9 +79,9 @@ const prevWidgetPane = () => {
 
 const checkNextIsDisabled = () => {
   cy.get("[data-cy=next-button-div]").within(() => {
-    cy.get('button').should('have.css', 'opacity', '0.5')
-  })
-}
+    cy.get("button").should("have.css", "opacity", "0.5");
+  });
+};
 
 const pickRecurringDonation = () => {
   cy.get("[data-cy=radio-recurring]").click({ force: true });
@@ -91,16 +91,16 @@ const registerDonationStub = () => {
   cy.intercept("POST", "/donations/register", {
     statusCode: 200,
     body: {
-        status: 200,
-        content: {
-            KID: "87397824",
-            donorID: 973,
-            hasAnsweredReferral: false,
-            paymentProviderUrl: ""
-        },
+      status: 200,
+      content: {
+        KID: "87397824",
+        donorID: 973,
+        hasAnsweredReferral: false,
+        paymentProviderUrl: "",
+      },
     },
   }).as("registerDonation");
-}
+};
 
 const pickSingleDonation = () => {
   cy.get("[data-cy=radio-single]").click({ force: true });
@@ -113,9 +113,7 @@ const pickAnonymous = () => {
 // TODO: Use this in a test
 const inputDonorValues = () => {
   cy.react("TextInput", { props: { name: "name" } }).type("Cypress Test");
-  cy.react("TextInput", { props: { name: "email" } }).type(
-    `cypress@testeffekt.no`
-  );
+  cy.react("TextInput", { props: { name: "email" } }).type(`cypress@testeffekt.no`);
   cy.get("[data-cy=checkboxTaxDeduction]").click("left");
   cy.get("[data-cy=checkboxNewsletter]").click("left");
   cy.get("[data-cy=checkboxPrivacyPolicy]").click("left");

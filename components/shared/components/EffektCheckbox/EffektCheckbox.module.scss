@@ -31,12 +31,11 @@
   cursor: pointer;
   height: 0;
   width: 0;
-  
+
   &:checked ~ .checkboxwrapper .checkmark {
     display: block;
   }
 }
-
 
 .checkboxlabel {
   display: inline-block;

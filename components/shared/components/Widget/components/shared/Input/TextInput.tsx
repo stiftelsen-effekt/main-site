@@ -28,9 +28,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   // Mobile labels longer than 25 characters are abbreviated
   if (label && label.length > 25) {
     mobileLabel =
-      label === "Drift av gieffektivt.no"
-        ? "Egen drift"
-        : label?.match(/[A-Z]/g)?.join("");
+      label === "Drift av gieffektivt.no" ? "Egen drift" : label?.match(/[A-Z]/g)?.join("");
   } else {
     mobileLabel = label;
   }

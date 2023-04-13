@@ -35,7 +35,7 @@ export const StyledInput = styled.input`
   cursor: pointer;
   height: 0;
   width: 0;
-  
+
   &:checked ~ ${CheckBoxWrapper} ${CheckMark} {
     display: block;
   }

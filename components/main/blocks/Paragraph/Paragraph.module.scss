@@ -21,7 +21,8 @@
   outline: none;
 }
 
-.paragraphwrapper ul li, .paragraphwrapper ol li {
+.paragraphwrapper ul li,
+.paragraphwrapper ol li {
   margin-bottom: 0.8rem;
 }
 
@@ -68,12 +69,14 @@
   margin: 0;
 }
 
-.paragraphwrapper cite ul, .paragraphwrapper cite ol {
+.paragraphwrapper cite ul,
+.paragraphwrapper cite ol {
   padding-left: 1rem;
   margin: 0;
 }
 
-.paragraphwrapper cite ul li, .paragraphwrapper cite ol li {
+.paragraphwrapper cite ul li,
+.paragraphwrapper cite ol li {
   margin: 0;
 }
 
@@ -84,7 +87,7 @@
   border-left: 1px solid var(--primary);
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 1181px) { 
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .paragraphwrapper {
     max-width: 640px;
   }
@@ -117,7 +120,7 @@
     z-index: 10;
     border-top: 1px solid var(--secondary);
     opacity: 0;
-    transition: opacity .12s ease-out, transform .12s ease-out;
+    transition: opacity 0.12s ease-out, transform 0.12s ease-out;
   }
 
   .paragraphwrapper cite > span.citationHighlighted {
@@ -131,4 +134,3 @@
     border-left: 1px solid var(--secondary);
   }
 }
-
