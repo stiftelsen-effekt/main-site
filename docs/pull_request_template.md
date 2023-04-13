@@ -1,6 +1,6 @@
 _Issue description here_
 
-#linked-issue-nr
+- closes #linked-issue-nr
 
 ---
 
