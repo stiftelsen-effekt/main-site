@@ -54,7 +54,7 @@
   padding: 0;
 }
 
-.distribution table.maintable > tbody > tr:nth-child(2n+1) td {
+.distribution table.maintable > tbody > tr:nth-child(2n + 1) td {
   transform: translateY(-0.5rem);
   opacity: 0;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -94,7 +94,8 @@
   transition-delay: 80ms;
 }
 
-.distribution table tr td span, .distribution table tr td strong {
+.distribution table tr td span,
+.distribution table tr td strong {
   vertical-align: middle;
   display: inline-block;
 }
@@ -130,12 +131,10 @@
 
 .distribution table tr td .innertable table tr:first-child td {
   padding-top: 0;
-  
 }
 
 .distribution table tr td .innertable table tr:last-child td {
   padding-bottom: 0;
-
 }
 
 .distribution table tr td .innertable table tr td:first-child {
@@ -160,7 +159,7 @@
     padding: 14px 0;
   }
 
-  .distribution .distributionHeader  {
+  .distribution .distributionHeader {
     margin-bottom: 0;
   }
 
@@ -176,7 +175,7 @@
   .distribution table tr.expandable:hover td {
     color: var(--primary);
     background-color: var(--secondary);
-  
+
     svg,
     svg {
       -webkit-filter: none;

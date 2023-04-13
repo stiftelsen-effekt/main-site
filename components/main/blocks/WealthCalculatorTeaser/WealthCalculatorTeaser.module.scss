@@ -1,0 +1,80 @@
+.container {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+
+  .inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--primary);
+
+    .description {
+      padding-bottom: 10rem;
+
+      .descriptionText {
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      a:hover {
+        border-bottom: none;
+      }
+    }
+
+    .graph {
+      position: relative;
+      bottom: -1.56rem;
+    }
+  }
+
+  .axislabel {
+    text-align: right;
+    font-size: 0.8rem;
+    margin-top: 2rem;
+  }
+}
+
+.mobileButton {
+  display: none;
+}
+
+@media screen and (max-width: 1520px) and (min-width: 1181px) {
+  .container {
+    .inner {
+      .graph {
+        bottom: -1.95rem;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .container {
+    .inner {
+      grid-template-columns: 1fr;
+      grid-template-rows: max-content max-content;
+      grid-row-gap: 2rem;
+      grid-column-gap: 0;
+      border-bottom: none;
+
+      .description {
+        padding-bottom: 0;
+      }
+
+      .graph {
+        bottom: 0;
+      }
+    }
+    .axislabel {
+      margin-top: 0rem;
+    }
+  }
+
+  .desktopButton {
+    display: none;
+  }
+
+  .mobileButton {
+    display: block;
+    margin-top: 2rem;
+  }
+}

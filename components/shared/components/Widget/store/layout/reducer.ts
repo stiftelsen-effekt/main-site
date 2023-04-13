@@ -29,7 +29,7 @@ const initialState: Layout = {
 
 export const layoutReducer: Reducer<Layout, LayoutActionTypes> = (
   state: Layout = initialState,
-  action: LayoutActionTypes
+  action: LayoutActionTypes,
 ) => {
   if (isType(action, fetchOrganizationsAction.done)) {
     return {

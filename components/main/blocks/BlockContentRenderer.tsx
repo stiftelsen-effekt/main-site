@@ -21,6 +21,9 @@ import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
 import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
+import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
+import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
+import { IntroSection } from "./IntroSection/IntroSection";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -143,6 +146,46 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         quotationMarks={block.quotation_marks}
                       />
                     );
+                  case "wealthcalculator":
+                    return (
+                      <WealthCalculator
+                        key={block._key || block._id}
+                        showImpact={block.show_impact}
+                        interventions={block.interventions}
+                        explanation={block.data_explanation}
+                        afterDonationPercentileLabelTemplateString={
+                          block.income_percentile_after_donation_label_template_string
+                        }
+                        incomePercentileLabelTemplateString={
+                          block.income_percentile_label_template_string
+                        }
+                      />
+                    );
+                  case "wealthcalculatorteaser":
+                    return (
+                      <WealthCalculatorTeaser
+                        key={block._key || block._id}
+                        title={block.title}
+                        description={block.description}
+                        link={block.navlink}
+                        medianIncome={block.median_income}
+                        afterDonationPercentileLabelTemplateString={
+                          block.income_percentile_after_donation_label_template_string
+                        }
+                        incomePercentileLabelTemplateString={
+                          block.income_percentile_label_template_string
+                        }
+                      />
+                    );
+                  case "introsection": {
+                    return (
+                      <IntroSection
+                        key={block._key || block._id}
+                        heading={block.heading}
+                        paragraph={block.paragraph}
+                      />
+                    );
+                  }
                   default:
                     return block._type;
                 }

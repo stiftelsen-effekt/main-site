@@ -1,10 +1,9 @@
 import React from "react";
 import elements from "./IntroSection.module.scss";
 
-export const IntroSection: React.FC<{ heading: string; paragraph: string; slug: string }> = ({
+export const IntroSection: React.FC<{ heading: string; paragraph: string }> = ({
   heading,
   paragraph,
-  slug,
 }) => {
   return (
     <div className={elements.introsection}>

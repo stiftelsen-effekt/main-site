@@ -7,6 +7,8 @@ import Spinner from 'part:@sanity/components/loading/spinner';
 // These are react components
 
 export const ContentSectionPreview = React.forwardRef((props, ref) => {
+  if (!props.value) return null
+  
   const hasHeader = !props.value.nodivider || props.value.title
 
   const referencePreview = (id) => (

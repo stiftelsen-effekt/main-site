@@ -10,6 +10,10 @@
   padding: 0 5vw;
 }
 
+.section__container .section__container {
+  padding: 0;
+}
+
 .divider {
   border-top: solid var(--primary) 1px;
 
