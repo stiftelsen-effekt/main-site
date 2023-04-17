@@ -37,4 +37,4 @@ export default {
       title: "Link",
     },
   ],
-};
+} as const;

@@ -22,4 +22,4 @@ export default {
       title: "Video",
     },
   ],
-};
+} as const;

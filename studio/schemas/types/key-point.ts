@@ -17,4 +17,4 @@ export default {
       title: "body",
     },
   ],
-};
+} as const;

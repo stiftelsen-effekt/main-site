@@ -17,4 +17,4 @@ export default {
       title: "Thumbnail",
     },
   ],
-};
+} as const;

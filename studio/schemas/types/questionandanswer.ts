@@ -24,4 +24,4 @@ export default {
       of: [{ type: "link" }, { type: "navitem" }],
     },
   ],
-};
+} as const;
