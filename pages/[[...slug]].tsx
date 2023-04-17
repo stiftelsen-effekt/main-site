@@ -74,11 +74,13 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const data = await getClient(false).fetch(fetchGenericPages);
+  const data = await getClient(false).fetch<{ pages: PageTypes["generic_page"][] }>(
+    fetchGenericPages,
+  );
 
   return {
-    paths: data.pages.map((page: { slug: { current: string } }) => {
-      const slug = [page.slug?.current || "/"];
+    paths: data.pages.map((page) => {
+      const slug = [page.slug.current === "/" ? "" : page.slug.current];
       return {
         params: { slug },
       };
