@@ -20,4 +20,4 @@ export default {
       to: [...pages.map((p) => ({ type: p.name }))],
     },
   ],
-};
+} as const;

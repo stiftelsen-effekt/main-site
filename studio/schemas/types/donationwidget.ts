@@ -344,4 +344,4 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
   ],
-};
+} as const;

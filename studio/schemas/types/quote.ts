@@ -31,4 +31,4 @@ export default {
       title: "quote",
     },
   },
-};
+} as const;
