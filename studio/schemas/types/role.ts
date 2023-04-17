@@ -1,17 +1,17 @@
 export default {
-  name: 'role',
-  type: 'document',
-  title: 'Roles',
+  name: "role",
+  type: "document",
+  title: "Roles",
   fields: [
     {
-      name: 'title',
-      type: 'string',
-      title: 'Title'
+      name: "title",
+      type: "string",
+      title: "Title",
     },
     {
-      name: 'id',
-      title: 'Id',
-      type: 'string',
-    }
-  ]
-}
+      name: "id",
+      title: "Id",
+      type: "string",
+    },
+  ],
+};

@@ -1,21 +1,21 @@
 import { Code } from "react-feather";
 
 export default {
-  name: 'htmlembed',
-  type: 'object',
-  title: 'HTML Embed',
+  name: "htmlembed",
+  type: "object",
+  title: "HTML Embed",
   icon: Code,
   fields: [
     {
-      name: 'htmlcode',
-      type: 'text',
+      name: "htmlcode",
+      type: "text",
       lines: 10,
-      title: 'HTML code'
+      title: "HTML code",
     },
     {
-      name: 'grayscale',
-      type: 'boolean',
-      title: 'Grayscale'
-    }
-  ]
-}
+      name: "grayscale",
+      type: "boolean",
+      title: "Grayscale",
+    },
+  ],
+};

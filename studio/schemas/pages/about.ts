@@ -1,37 +1,37 @@
 export default {
-  title: 'About us page', 
-  name: 'about_us',
-  type: 'document',
+  title: "About us page",
+  name: "about_us",
+  type: "document",
   fields: [
     {
-      name: 'header',
-      title: 'Header',
-      type: 'pageheader'
+      name: "header",
+      title: "Header",
+      type: "pageheader",
     },
     {
-      name: 'content',
-      title: 'Content',
-      type: 'array',
-      of: [{type: 'block'}]
+      name: "content",
+      title: "Content",
+      type: "array",
+      of: [{ type: "block" }],
     },
     {
-      title: 'Sitemap priority',
-      name: 'sitemap_priority',
-      type: 'number',
-      validation: (Rule: any) => Rule.required().min(0).max(1)
+      title: "Sitemap priority",
+      name: "sitemap_priority",
+      type: "number",
+      validation: (Rule: any) => Rule.required().min(0).max(1),
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
+      name: "slug",
+      title: "Slug",
+      type: "slug",
       readOnly: false,
-      initialValue: 'about',
-      validation: (Rule: any) => Rule.required()
+      initialValue: "about",
+      validation: (Rule: any) => Rule.required(),
     },
   ],
   preview: {
     select: {
-      title: 'header.title'
-    }
-  }
-} as const
+      title: "header.title",
+    },
+  },
+} as const;
