@@ -2,44 +2,42 @@ import { Bookmark, ExternalLink, Link, Link2 } from "react-feather";
 import { CitationRenderer } from "../../components/citationRenderer";
 
 export const blocktype = {
-  type: 'block',
+  type: "block",
   marks: {
     annotations: [
       {
-        name: 'citation',
-        type: 'object',
+        name: "citation",
+        type: "object",
         icon: Bookmark,
         fields: [
           {
-            type: 'array',
-            name: 'citations',
-            title: 'Citations',
+            type: "array",
+            name: "citations",
+            title: "Citations",
             of: [
               {
-                type: 'reference',
-                to: [
-                  { type: 'citation' }
-                ],
-              }
-            ]
-          }
+                type: "reference",
+                to: [{ type: "citation" }],
+              },
+            ],
+          },
         ],
         blockEditor: {
-          render: CitationRenderer
+          render: CitationRenderer,
         },
       },
       {
-        name: 'link',
-        type: 'link',
+        name: "link",
+        type: "link",
         icon: ExternalLink,
-        title: 'Link',
+        title: "Link",
       },
       {
-        name: 'navitem',
-        type: 'navitem',
+        name: "navitem",
+        type: "navitem",
         icon: Link,
-        title: 'Navigation item',
-      }
-    ]
-  }
-}
+        title: "Navigation item",
+      },
+    ],
+  },
+};

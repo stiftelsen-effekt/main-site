@@ -14,7 +14,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
-    "format": "prettier --write ./**/*.{js,ts,jsx,tsx,json,md,css,scss,yml}",
+    "format": "prettier --write \"./**/*{js,ts,jsx,tsx,json,md,css,scss,yml}\"",
     "prepare": "husky install"
   },
   "dependencies": {
