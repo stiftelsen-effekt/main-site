@@ -2,30 +2,25 @@ import style from "./GiveWellStamp.module.scss";
 import Stamp from "./Stamp.png";
 import GiveWellLogo from "./GiveWellLogo.png";
 import Image from "next/image";
-import { Links } from "../Links/Links";
+import { LinkType, Links } from "../Links/Links";
 
-export const GiveWellStamp: React.FC = () => {
+export type GiveWellStampProps = {
+  links: LinkType[];
+  quote: string;
+  quotee: string;
+  quoteePosition: string;
+};
+
+export const GiveWellStamp: React.FC<GiveWellStampProps> = ({
+  links,
+  quote,
+  quotee,
+  quoteePosition,
+}) => {
   return (
     <div className={style.container}>
       <div className={style.context}>
-        <Links
-          links={[
-            {
-              _type: "link",
-              _key: "topplista",
-              title: "Topplista",
-              url: "https://gieffektivt.no/topplista",
-              newtab: true,
-            },
-            {
-              _type: "link",
-              _key: "givewell",
-              title: "GiveWell",
-              url: "https://givewell.org",
-              newtab: true,
-            },
-          ]}
-        ></Links>
+        <Links links={links}></Links>
         <div className={style.stamp}>
           <Image src={Stamp} layout={"fill"} objectFit={"contain"} objectPosition={"left"} />
         </div>
@@ -40,14 +35,9 @@ export const GiveWellStamp: React.FC = () => {
               objectPosition={"left"}
             />
           </div>
-
-          <p className="inngress">
-            “We&apos;re very grateful that Gi Effektivt is helping donors in Norway support GiveWell
-            charities! Donations through Gi Effektivt will save and significantly improve the lives
-            of people living in the poorest parts of the world.”
-          </p>
-          <span className={style.quoteAuthor}>Stephanie Stojanic</span>
-          <span className={style.quotePosition}>GiveWell Director of Development</span>
+          <p className="inngress">“{quote}”</p>
+          <span className={style.quoteAuthor}>{quotee}</span>
+          <span className={style.quotePosition}>{quoteePosition}</span>
         </div>
       </div>
     </div>
