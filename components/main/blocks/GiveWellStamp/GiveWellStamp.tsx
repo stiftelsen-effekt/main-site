@@ -22,7 +22,7 @@ export const GiveWellStamp: React.FC<GiveWellStampProps> = ({
       <div className={style.context}>
         <Links links={links}></Links>
         <div className={style.stamp}>
-          <Image src={Stamp} layout={"fill"} objectFit={"contain"} objectPosition={"left"} />
+          <Image src={Stamp} layout={"fill"} objectFit={"contain"} objectPosition={"left"} alt="" />
         </div>
       </div>
       <div className={style.quote}>
@@ -33,6 +33,7 @@ export const GiveWellStamp: React.FC<GiveWellStampProps> = ({
               layout={"fill"}
               objectFit={"contain"}
               objectPosition={"left"}
+              alt="GiveWell"
             />
           </div>
           <p className="inngress">“{quote}”</p>
