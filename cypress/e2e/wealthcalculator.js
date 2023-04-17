@@ -101,13 +101,13 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 24% avinntekten din er du blantde ϦϬϤϭ rikeste i verden.",
+      "Om du donerer 25% avinntekten din er du blantde ϦϬϥϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
       "Du er i dag blant deϤϬϦϭ rikeste i verden.",
     );
-    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "24");
+    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "25");
   });
 
   it("Should allow users to tap the slider track to change percentage", () => {
@@ -117,13 +117,13 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 38% avinntekten din er du blantde ϧϬϫϭ rikeste i verden.",
+      "Om du donerer 39% avinntekten din er du blantde ϨϬϣϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
       "Du er i dag blant deϤϬϦϭ rikeste i verden.",
     );
-    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "38");
+    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "39");
   });
 
   it("Should be possible to expand and collapse the explanation", () => {
