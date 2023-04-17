@@ -43,6 +43,8 @@ export const DateText = styled.p`
   vertical-align: middle;
   padding-bottom: 12px;
   font-size: 20px;
+  white-space: pre-wrap;
+  max-width: 60%;
 `;
 
 export const DateTextWrapper = styled.div`
