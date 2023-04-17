@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
-import styles from "./ImpactWidget.module.scss";
+import styles from "./InterventionWidget.module.scss";
 import { Links } from "../Links/Links";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { thousandize } from "../../../../util/formatting";
@@ -20,7 +20,7 @@ type Intervention = {
   outputStringTemplate: string;
 };
 
-export const ImpactWidgetOutput: React.FC<{
+export const InterventionWidgetOutput: React.FC<{
   sum: number;
   interventions: SanityIntervention[] | undefined;
 }> = ({ sum, interventions }) => {
