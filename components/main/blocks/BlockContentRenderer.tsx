@@ -53,11 +53,9 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                     return (
                       <PointList
                         key={block._key}
-                        points={block.points.map((point: PointListPointProps, i: number) => ({
-                          number: block.numbered ? i + 1 : null,
-                          heading: point.heading,
-                          paragraph: point.paragraph,
-                        }))}
+                        points={block.points}
+                        numbered={block.numbered}
+                        options={block.options}
                       />
                     );
                   case "links":
