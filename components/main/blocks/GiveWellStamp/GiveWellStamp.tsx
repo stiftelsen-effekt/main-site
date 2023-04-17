@@ -36,9 +36,17 @@ export const GiveWellStamp: React.FC<GiveWellStampProps> = ({
               alt="GiveWell"
             />
           </div>
-          <p className="inngress">“{quote}”</p>
-          <span className={style.quoteAuthor}>{quotee}</span>
-          <span className={style.quotePosition}>{quoteePosition}</span>
+          <figure>
+            <blockquote>
+              <p className="inngress">“{quote}”</p>
+            </blockquote>
+            <figcaption>
+              <cite>
+                <span className={style.quoteAuthor}>{quotee}</span>
+                <span className={style.quotePosition}>{quoteePosition}</span>
+              </cite>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>

@@ -36,6 +36,11 @@
   justify-content: center;
 }
 
+.quote figure,
+.quote blockquote {
+  margin: 0;
+}
+
 .quote span {
   display: block;
 }
