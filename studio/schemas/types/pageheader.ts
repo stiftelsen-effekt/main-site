@@ -38,6 +38,7 @@ export default {
       options: {
         list: ["default", "centered", "hero"],
       },
+      initialValue: "default",
     },
     {
       name: "links",
