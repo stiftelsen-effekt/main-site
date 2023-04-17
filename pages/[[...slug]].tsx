@@ -1,4 +1,4 @@
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext } from "next";
 import { groq } from "next-sanity";
 import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
@@ -10,13 +10,13 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
-import { LayoutPage } from "../types";
+import { LayoutPage, PageTypes } from "../types";
 import { filterPageToSingleItem } from "./_app";
 
-const GenericPage: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-}) => {
+const GenericPage: LayoutPage<{
+  data: { result: { [key: string]: any; page: PageTypes["generic_page"] } };
+  preview: boolean;
+}> = ({ data, preview }) => {
   const page = data.result.page;
 
   if (!page) {
