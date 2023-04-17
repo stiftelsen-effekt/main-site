@@ -8,7 +8,8 @@ import keyPoint from "./types/key-point";
 import organization from "./types/organization";
 import role from "./types/role";
 import testimonial from "./types/testimonial";
-import teaser from "./types/teaser";
+import teasers from "./types/teasers";
+import teasersitem from "./types/teasersitem";
 import pointlist from "./types/pointlist";
 import introsection from "./types/introsection";
 import siteSettings from "./siteSettings";
@@ -68,7 +69,8 @@ export const pages = [
 ] as const;
 
 export const types = [
-  teaser,
+  teasers,
+  teasersitem,
   testimonial,
   contributor,
   introsection,

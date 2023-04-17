@@ -41,7 +41,7 @@ export default {
       name: "teasers",
       type: "array",
       title: "Teasers",
-      of: [{ type: "teaser" }],
+      of: [{ type: "teasersitem" }],
     },
     {
       name: "key_points",
