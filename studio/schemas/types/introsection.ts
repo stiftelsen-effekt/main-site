@@ -25,4 +25,4 @@ export default {
       title: "Paragraph",
     },
   ],
-};
+} as const;

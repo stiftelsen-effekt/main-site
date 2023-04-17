@@ -24,4 +24,4 @@ export default {
       title: "Button text",
     },
   ],
-};
+} as const;

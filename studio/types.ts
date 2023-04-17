@@ -1,4 +1,4 @@
-import { pages } from "./schemas/schema";
+import { pages, types } from "./schemas/schema";
 
 type SanityField = {
   name: string;
@@ -20,3 +20,4 @@ type SanityModels<T extends Readonly<SanityDocument[]>> = {
 };
 
 export type PageTypes = SanityModels<typeof pages>;
+export type ContentTypes = SanityModels<typeof types>;

@@ -34,4 +34,4 @@ export default {
     },
     component: ContactPreview,
   },
-};
+} as const;

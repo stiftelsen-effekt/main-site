@@ -12,4 +12,4 @@ export default {
       title: "Header",
     },
   ],
-};
+} as const;

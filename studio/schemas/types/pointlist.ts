@@ -26,4 +26,4 @@ export default {
     },
     component: PointlistPreview,
   },
-};
+} as const;

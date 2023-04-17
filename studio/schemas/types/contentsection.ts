@@ -64,4 +64,4 @@ export default {
     },
     component: ContentSectionPreview,
   },
-};
+} as const;
