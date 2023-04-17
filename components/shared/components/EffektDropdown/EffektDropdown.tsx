@@ -50,9 +50,10 @@ export const EffektDropdown: React.FC<{
               </div>
             )}
             <div className={styles.dropdown__options__list}>
-              {filteredOptions.map((option) => (
+              {filteredOptions.map((option, i) => (
                 <div
                   key={option}
+                  data-cy={`dropdown-option-${i}`}
                   className={styles.dropdown__options__list__option}
                   onClick={() => select(option)}
                 >
