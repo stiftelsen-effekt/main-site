@@ -156,4 +156,4 @@ export default {
       },
     },
   },
-};
+} as const;

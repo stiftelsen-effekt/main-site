@@ -19,4 +19,4 @@ export default {
     },
     component: ColumnsPreview,
   },
-};
+} as const;

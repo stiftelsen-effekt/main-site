@@ -25,4 +25,4 @@ export default {
       title: "Template string",
     },
   ],
-};
+} as const;

@@ -18,4 +18,4 @@ export default {
       title: "Grayscale",
     },
   ],
-};
+} as const;

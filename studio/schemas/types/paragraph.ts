@@ -25,4 +25,4 @@ export default {
       subtitle: "content.0.children.0.text",
     },
   },
-};
+} as const;

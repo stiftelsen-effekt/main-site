@@ -43,4 +43,4 @@ export default {
       title: "Additional info",
     },
   ],
-};
+} as const;

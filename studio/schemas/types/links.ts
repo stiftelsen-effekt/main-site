@@ -20,4 +20,4 @@ export default {
     },
     component: LinksPreview,
   },
-};
+} as const;

@@ -33,4 +33,4 @@ export default {
       of: [{ type: "block" }],
     },
   ],
-};
+} as const;
