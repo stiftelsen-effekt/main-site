@@ -1,23 +1,14 @@
-import { Columns } from "react-feather";
-
 export default {
-  name: "splitview",
+  name: "teasersitem",
   type: "object",
-  icon: Columns,
-  title: "Split view",
+  title: "Teaser",
   preview: {
     select: {
       title: "title",
       media: "image",
-      subtitle: "paragraph",
     },
   },
   fields: [
-    {
-      name: "swapped",
-      type: "boolean",
-      title: "Swapped",
-    },
     {
       name: "title",
       type: "string",
@@ -28,6 +19,12 @@ export default {
       type: "text",
       rows: 3,
       title: "Paragraph",
+    },
+    {
+      name: "disclaimer",
+      type: "text",
+      rows: 2,
+      title: "Disclaimer",
     },
     {
       name: "image",

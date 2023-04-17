@@ -70,4 +70,4 @@ export default {
       type: "boolean",
     },
   ],
-};
+} as const;

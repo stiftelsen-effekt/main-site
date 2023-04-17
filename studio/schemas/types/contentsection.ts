@@ -49,6 +49,8 @@ export default {
         { type: "newslettersignup" },
         { type: "wealthcalculator" },
         { type: "htmlembed" },
+        { type: "teasers" },
+        { type: "interventionwidget" },
       ],
       options: {
         editModal: "fullscreen",
@@ -64,4 +66,4 @@ export default {
     },
     component: ContentSectionPreview,
   },
-};
+} as const;

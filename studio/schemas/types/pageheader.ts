@@ -52,4 +52,4 @@ export default {
     { name: "seoImage", title: "SEO Image", type: "image", group: "seo" },
     { name: "cannonicalUrl", title: "Cannonical URL", type: "url", group: "seo" },
   ],
-};
+} as const;

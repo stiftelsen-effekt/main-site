@@ -72,4 +72,4 @@ export default {
     },
     component: TestimonialsPreview,
   },
-};
+} as const;

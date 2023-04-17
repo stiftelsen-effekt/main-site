@@ -18,4 +18,4 @@ export default {
       of: [{ type: "reference", to: [{ type: "navitem" }] }],
     },
   ],
-};
+} as const;
