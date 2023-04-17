@@ -6,13 +6,24 @@ jobs:
     # only runs this job on successful deploy to main-site
     if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'main-site')
     runs-on: ubuntu-latest
+    strategy:
+      # when one test fails, DO NOT cancel the other
+      # containers, because this will kill Cypress processes
+      # leaving Cypress Cloud hanging ...
+      # https://github.com/cypress-io/github-action/issues/48
+      fail-fast: false
+      matrix:
+        # run 3 copies of the current job in parallel
+        containers: [1, 2, 3, 4, 5, 6]
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v1
       - name: Run Cypress 🌲
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           record: true
+          parallel: true
+          group: "GiEffektivt e2e tests"
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
