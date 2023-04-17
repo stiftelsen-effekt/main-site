@@ -19,9 +19,10 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
 import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
-import { widgetQuery } from "../_queries";
+import { linksSelectorQuery, widgetQuery } from "../_queries";
 import { GiveWellStamp } from "../components/main/blocks/GiveWellStamp/GiveWellStamp";
 import { WealthCalculatorTeaser } from "../components/main/blocks/WealthCalculatorTeaser/WealthCalculatorTeaser";
+import { SplitView } from "../components/main/blocks/SplitView/SplitView";
 
 const ImpactWidget = dynamic<ImpactWidgetProps>(
   () =>
@@ -72,13 +73,24 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
           paragraph={frontpage.introsection.paragraph}
         />
       </SectionContainer>
-      {interventionWidget.interventions && (
-        <div style={{ marginTop: "45px" }}>
-          <SectionContainer nodivider>
-            <ImpactWidget frontpage={frontpage} />
-          </SectionContainer>
-        </div>
-      )}
+
+      <SectionContainer nodivider>
+        {frontpage.malariaday && (
+          <SplitView
+            title={frontpage.malariaday.title}
+            paragraph={frontpage.malariaday.paragraph}
+            image={frontpage.malariaday.image}
+            links={frontpage.malariaday.links}
+            swapped={frontpage.malariaday.swapped}
+            darktext={frontpage.malariaday.darktext}
+          />
+        )}
+      </SectionContainer>
+
+      <SectionContainer>
+        {interventionWidget.interventions && <ImpactWidget frontpage={frontpage} />}
+      </SectionContainer>
+
       <SectionContainer heading="">
         <div className={styles.teasers}>
           {frontpage.teasers.map(
@@ -187,6 +199,12 @@ const fetchFrontpage = groq`
     sub_heading_link_target,
     salespitch,
     introsection,
+    malariaday {
+      ...,
+      links[] {
+        ${linksSelectorQuery}
+      }
+    },
     intervention_widget,
     key_points,
     testimonials[]->,

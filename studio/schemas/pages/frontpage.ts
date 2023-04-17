@@ -28,6 +28,11 @@ export default {
       title: "Intro section",
     },
     {
+      name: "malariaday",
+      type: "splitview",
+      title: "Malaria day intro",
+    },
+    {
       name: "intervention_widget",
       type: "interventionwidget",
       title: "Intervention widget",
