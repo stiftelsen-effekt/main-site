@@ -1,37 +1,37 @@
 import { ContactPreview } from "../../components/contactPreview";
 
 export default {
-  name: 'contactinfo',
-  type: 'document',
-  title: 'Contact information',
+  name: "contactinfo",
+  type: "document",
+  title: "Contact information",
   fields: [
     {
-      name: 'title',
-      type: 'string',
-      title: 'Title'
+      name: "title",
+      type: "string",
+      title: "Title",
     },
     {
-      name: 'description',
-      type: 'text',
+      name: "description",
+      type: "text",
       rows: 2,
-      title: 'Description'
+      title: "Description",
     },
     {
-      name: 'phone',
-      type: 'string',
-      title: 'Phone'
+      name: "phone",
+      type: "string",
+      title: "Phone",
     },
     {
-      name: 'email',
-      type: 'string',
-      title: 'Email'
-    }
+      name: "email",
+      type: "string",
+      title: "Email",
+    },
   ],
   preview: {
     select: {
-      phone: 'phone',
-      email: 'email'
+      phone: "phone",
+      email: "email",
     },
-    component: ContactPreview
-  }
-}
+    component: ContactPreview,
+  },
+};

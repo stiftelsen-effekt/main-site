@@ -23,7 +23,7 @@ jobs:
         with:
           record: true
           parallel: true
-          group: 'GiEffektivt e2e tests'
+          group: "GiEffektivt e2e tests"
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
