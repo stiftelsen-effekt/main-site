@@ -23,6 +23,7 @@ import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
 import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 import { IntroSection } from "./IntroSection/IntroSection";
+import { Teasers } from "./Teasers/Teasers";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -135,6 +136,8 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                     return (
                       <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
                     );
+                  case "teasers":
+                    return <Teasers key={block._key || block._id} teasers={block.teasers} />;
                   case "quote":
                     return (
                       <Quote
