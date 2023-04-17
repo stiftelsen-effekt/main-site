@@ -12,7 +12,10 @@ import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlid
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { WidgetContext } from "../../layout/layout";
 import { BlockContentRenderer } from "../BlockContentRenderer";
-import { ImpactWidgetOutput, SanityIntervention } from "../ImpactWidget/ImpactWidgetOutput";
+import {
+  InterventionWidgetOutput,
+  SanityIntervention,
+} from "../InterventionWidget/InterventionWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import { taxTable } from "./taxTable";
 import styles from "./WealthCalculator.module.scss";
@@ -274,7 +277,7 @@ export const WealthCalculator: React.FC<{
             </div>
           </div>
           <div className={styles.calculator__impact__output}>
-            <ImpactWidgetOutput
+            <InterventionWidgetOutput
               sum={income * (donationPercentage / 100)}
               interventions={interventions}
             />

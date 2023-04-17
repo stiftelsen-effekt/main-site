@@ -21,4 +21,4 @@ export default {
     },
     component: TeasersPreview,
   },
-};
+} as const;

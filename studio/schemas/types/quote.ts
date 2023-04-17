@@ -1,34 +1,34 @@
 import { Bookmark } from "react-feather";
 
 export default {
-  name: 'quote',
-  type: 'object',
-  title: 'Quote',
+  name: "quote",
+  type: "object",
+  title: "Quote",
   icon: Bookmark,
   fields: [
     {
-      name: 'quote',
-      type: 'text',
+      name: "quote",
+      type: "text",
       lines: 3,
-      title: 'Quote',
+      title: "Quote",
     },
     {
-      name: 'quotation_marks',
-      type: 'boolean',
-      title: 'Quotation marks'
+      name: "quotation_marks",
+      type: "boolean",
+      title: "Quotation marks",
     },
     {
-      name: 'offset',
-      type: 'string',
-      title: 'Offset',
+      name: "offset",
+      type: "string",
+      title: "Offset",
       options: {
-        list: ["Left", "Right"]
-      }
-    }
+        list: ["Left", "Right"],
+      },
+    },
   ],
   preview: {
     select: {
-      title: 'quote'
-    }
-  }
-}
+      title: "quote",
+    },
+  },
+} as const;

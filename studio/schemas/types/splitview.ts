@@ -1,43 +1,43 @@
 import { Columns } from "react-feather";
 
 export default {
-  name: 'splitview',
-  type: 'object',
+  name: "splitview",
+  type: "object",
   icon: Columns,
-  title: 'Split view',
+  title: "Split view",
   preview: {
     select: {
-      title: 'title',
-      media: 'image',
-      subtitle: 'paragraph'
-    }
+      title: "title",
+      media: "image",
+      subtitle: "paragraph",
+    },
   },
   fields: [
     {
-      name: 'swapped',
-      type: 'boolean',
-      title: 'Swapped'
+      name: "swapped",
+      type: "boolean",
+      title: "Swapped",
     },
     {
-      name: 'title',
-      type: 'string',
-      title: 'Title',
+      name: "title",
+      type: "string",
+      title: "Title",
     },
     {
-      name: 'paragraph',
-      type: 'text',
+      name: "paragraph",
+      type: "text",
       rows: 3,
-      title: 'Paragraph'
+      title: "Paragraph",
     },
     {
-      name: 'image',
-      type: 'image',
-      title: 'Image'
+      name: "image",
+      type: "image",
+      title: "Image",
     },
     {
-      name: 'link',
-      type: 'string',
-      title: 'Link'
-    }
-  ]
-}
+      name: "link",
+      type: "string",
+      title: "Link",
+    },
+  ],
+} as const;

@@ -1,5 +1,5 @@
 export default {
-  name: "teasersitem",
+  name: "teaser",
   type: "object",
   title: "Teaser",
   preview: {
