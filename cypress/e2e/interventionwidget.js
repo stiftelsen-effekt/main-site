@@ -1,5 +1,5 @@
 describe("InterventionWidget", () => {
-  before(() => {
+  beforeEach(() => {
     cy.fixture("impact_evaluations")
       .then((impactEvaluations) => {
         cy.intercept("GET", "https://impact.gieffektivt.no/api/evaluations*", {

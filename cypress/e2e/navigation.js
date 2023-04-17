@@ -1,6 +1,28 @@
 describe("Navigation", () => {
-  before(() => {
+  beforeEach(() => {
+    cy.fixture("organizations").then((orgs) => {
+      cy.intercept("GET", "/organizations/active", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: orgs,
+        },
+      }).as("getOrganizations");
+    });
+
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
+
     cy.visit(`/`);
+
+    cy.wait(["@getOrganizations", "@getReferrals"]);
   });
 
   it("Tests if CookieBanner works correctly", () => {

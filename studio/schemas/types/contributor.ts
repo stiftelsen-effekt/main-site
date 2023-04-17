@@ -1,46 +1,46 @@
 export default {
-  name: 'contributor',
-  type: 'document',
-  title: 'Contributors',
+  name: "contributor",
+  type: "document",
+  title: "Contributors",
   fields: [
     {
-      name: 'image',
-      type: 'image',
-      title: 'Image',
+      name: "image",
+      type: "image",
+      title: "Image",
     },
     {
-      name: 'name',
-      type: 'string',
-      title: 'Name',
-      validation: (Rule: any) => Rule.required()
+      name: "name",
+      type: "string",
+      title: "Name",
+      validation: (Rule: any) => Rule.required(),
     },
     {
-      name: 'email',
-      type: 'string',
-      title: 'Email'
+      name: "email",
+      type: "string",
+      title: "Email",
     },
     {
-      name: 'role',
-      type: 'reference',
-      title: 'Role',
-      to: [{ type: 'role' }]
+      name: "role",
+      type: "reference",
+      title: "Role",
+      to: [{ type: "role" }],
     },
     {
-      name: 'subrole',
-      type: 'text',
+      name: "subrole",
+      type: "text",
       rows: 3,
-      title: 'Sub-role'
+      title: "Sub-role",
     },
     {
-      name: 'order',
-      type: 'number',
-      title: 'Order',
+      name: "order",
+      type: "number",
+      title: "Order",
     },
     {
-      name: 'additional',
-      type: 'text',
+      name: "additional",
+      type: "text",
       rows: 3,
-      title: 'Additional info'
-    }
-  ]
-}
+      title: "Additional info",
+    },
+  ],
+} as const;

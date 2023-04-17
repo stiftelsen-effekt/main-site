@@ -1,30 +1,30 @@
 export default {
-  title: 'Articles page', 
-  name: 'articles',
-  type: 'document',
+  title: "Articles page",
+  name: "articles",
+  type: "document",
   fields: [
     {
-      name: 'header',
-      title: 'Header',
-      type: 'pageheader'
+      name: "header",
+      title: "Header",
+      type: "pageheader",
     },
     {
-      title: 'Sitemap priority',
-      name: 'sitemap_priority',
-      type: 'number',
-      validation: (Rule: any) => Rule.required().min(0).max(1)
+      title: "Sitemap priority",
+      name: "sitemap_priority",
+      type: "number",
+      validation: (Rule: any) => Rule.required().min(0).max(1),
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
+      name: "slug",
+      title: "Slug",
+      type: "slug",
       readOnly: false,
-      validation: (Rule: any) => Rule.required()
+      validation: (Rule: any) => Rule.required(),
     },
   ],
   preview: {
     select: {
-      title: 'header.title'
-    }
-  }
-} as const
+      title: "header.title",
+    },
+  },
+} as const;
