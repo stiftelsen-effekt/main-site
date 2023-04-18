@@ -74,14 +74,9 @@ const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =
         </SectionContainer>
       )}
 
-      <div style={{ marginTop: "40px" }}>
-        <SectionContainer nodivider>
-          <GiveBlock
-            heading={"Maksimer effekten av det du gir."}
-            paragraph={"Bruk Gi Effektivt."}
-          />
-        </SectionContainer>
-      </div>
+      <SectionContainer nodivider>
+        <GiveBlock heading={"Maksimer effekten av det du gir."} paragraph={"Bruk Gi Effektivt."} />
+      </SectionContainer>
     </>
   );
 };
