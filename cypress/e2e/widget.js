@@ -15,6 +15,16 @@ describe("Widget", () => {
         });
       })
       .as("registerDonation");
+
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
   });
 
   it("End-2-End single bank donation", () => {
