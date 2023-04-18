@@ -1,5 +1,5 @@
-context("Window", () => {
-  before(() => {
+describe("Widget", () => {
+  beforeEach(() => {
     cy.visit("/");
   });
 
@@ -55,26 +55,6 @@ context("Window", () => {
       expect(kid).to.be.length(8);
     });
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End recurring bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
@@ -112,26 +92,6 @@ context("Window", () => {
 
     cy.get("[data-cy=avtalegiro-form]").submit();
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End single vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
@@ -162,26 +122,6 @@ context("Window", () => {
       cy.get("button").click({ force: true });
     });
     cy.wait(500);
-  });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
   });
 
   it("End-2-End recurring vipps donation", () => {
@@ -222,26 +162,6 @@ context("Window", () => {
       cy.get("button").click();
     });
     cy.wait(500);
-  });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
   });
 
   it("End-2-End shared donation", () => {
@@ -287,26 +207,6 @@ context("Window", () => {
       const kid = $kid.text();
       expect(kid).to.be.length(8);
     });
-  });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
   });
 
   it("End-2-End for all input fields", () => {
