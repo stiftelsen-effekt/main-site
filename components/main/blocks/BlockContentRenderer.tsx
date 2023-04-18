@@ -167,7 +167,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         key={block._key || block._id}
                         title={block.title}
                         description={block.description}
-                        link={block.navlink}
+                        link={block.button}
                         medianIncome={block.median_income}
                         afterDonationPercentileLabelTemplateString={
                           block.income_percentile_after_donation_label_template_string
