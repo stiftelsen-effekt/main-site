@@ -53,6 +53,7 @@ import citation from "./types/citation";
 import newslettersignup from "./types/newslettersignup";
 import wealthcalculator from "./types/wealthcalculator";
 import wealthcalculatorteaser from "./types/wealthcalculatorteaser";
+import giveblock from "./types/giveblock";
 
 export const pages = [
   generic,
@@ -107,6 +108,7 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser,
+  giveblock,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
