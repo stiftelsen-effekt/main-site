@@ -1,9 +1,5 @@
 describe("Widget", () => {
   beforeEach(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
     cy.fixture("organizations")
       .then((organizations) => {
         cy.intercept("GET", "/organizations/active", {
@@ -25,11 +21,14 @@ describe("Widget", () => {
         },
       }).as("getReferrals");
     });
+
+    cy.visit("/");
+    cy.wait(500);
+    cy.get("[data-cy=gi-button]").click();
   });
 
   it("End-2-End single bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -68,7 +67,6 @@ describe("Widget", () => {
 
   it("End-2-End recurring bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -105,7 +103,6 @@ describe("Widget", () => {
 
   it("End-2-End single vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -136,7 +133,6 @@ describe("Widget", () => {
 
   it("End-2-End recurring vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -176,7 +172,6 @@ describe("Widget", () => {
 
   it("End-2-End shared donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.get("[data-cy=radio-custom-share]").click({ force: true });
@@ -221,7 +216,6 @@ describe("Widget", () => {
 
   it("End-2-End for all input fields", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.checkNextIsDisabled();
     cy.pickSingleDonation();
     cy.checkNextIsDisabled();
