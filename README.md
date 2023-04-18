@@ -139,7 +139,7 @@ In this example page, we use the publicly available main layout for the page. We
 
 ### Sanity Studio
 
-The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the data set configured in your `.env.local`, install dependencies in the `/studio` directory and run
+The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the dataset configured in your `.env.local`, install dependencies in the `/studio` directory and run
 
 `npm run sanity`
 
@@ -155,9 +155,9 @@ If you wish to edit documents with JSON in VSCode, you may run:
 
 > To edit draft documents, use the `drafts.` prefix with your document id.
 
-Example usage:
+The dataset will default to the `SANITY_STUDIO_API_DATASET` variable configured in the `.env.local` file, but you can override this by passing it as the second argument, for example:
 
-`npm run sanity:edit drafts.75407a6f-ff17-401d-bc37-50e866ada48e`
+`npm run sanity:edit drafts.75407a6f-ff17-401d-bc37-50e866ada48e dev-se`
 
 ## Profile page 🧑‍🤝‍🧑
 
