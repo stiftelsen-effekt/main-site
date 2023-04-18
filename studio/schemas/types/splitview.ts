@@ -19,6 +19,11 @@ export default {
       title: "Swapped",
     },
     {
+      name: "darktext",
+      type: "boolean",
+      title: "Dark text",
+    },
+    {
       name: "title",
       type: "string",
       title: "Title",
@@ -35,9 +40,10 @@ export default {
       title: "Image",
     },
     {
-      name: "link",
-      type: "string",
-      title: "Link",
+      name: "links",
+      type: "array",
+      title: "Links",
+      of: [{ type: "link" }, { type: "navitem" }],
     },
   ],
 } as const;
