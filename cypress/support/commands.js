@@ -84,7 +84,7 @@ const checkNextIsDisabled = () => {
 };
 
 const pickRecurringDonation = () => {
-  cy.get("[data-cy=radio-recurring]").click({ force: true });
+  cy.get("[data-cy=radio-recurring]").should("exist").click({ force: true });
 };
 
 const registerDonationStub = () => {
@@ -103,7 +103,7 @@ const registerDonationStub = () => {
 };
 
 const pickSingleDonation = () => {
-  cy.get("[data-cy=radio-single]").click({ force: true });
+  cy.get("[data-cy=radio-single]").should("exist").click({ force: true });
 };
 
 const pickAnonymous = () => {
