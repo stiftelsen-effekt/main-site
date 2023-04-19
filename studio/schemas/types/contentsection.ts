@@ -51,6 +51,7 @@ export default {
         { type: "htmlembed" },
         { type: "teasers" },
         { type: "interventionwidget" },
+        { type: "givewellstamp" },
       ],
       options: {
         editModal: "fullscreen",
