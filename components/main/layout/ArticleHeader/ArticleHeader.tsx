@@ -13,7 +13,9 @@ export const ArticleHeader: React.FC<{
       </div>
       {inngress ? <div>{inngress ? <p className="inngress">{inngress}</p> : null}</div> : null}
       {published ? (
-        <div>{published ? <span>{new Date(published).toLocaleDateString()}</span> : null}</div>
+        <div>
+          {published ? <span>{new Date(published).toLocaleDateString("no-NB")}</span> : null}
+        </div>
       ) : null}
     </section>
   );
