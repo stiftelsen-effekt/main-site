@@ -24,6 +24,8 @@ import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
 import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 import { IntroSection } from "./IntroSection/IntroSection";
+import { Contributors } from "./Contributors/Contributors";
+import { ContributorType } from "./Contributors/Contributor";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -177,6 +179,18 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           block.income_percentile_label_template_string
                         }
                       />
+                    );
+                  case "contributorlist":
+                    console.log(block);
+                    return (
+                      <>
+                        <span>Hello</span>
+                        <Contributors
+                          id={block._key || block._id}
+                          title={block.role.title}
+                          contributors={block.contributors}
+                        />
+                      </>
                     );
                   case "introsection": {
                     return (
