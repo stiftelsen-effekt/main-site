@@ -280,6 +280,10 @@ export const pageContentQuery = `content[] {
       ...,
       testimonials[]->,
     },
+    _type == 'organizationslist' =>  {
+      ...,
+      organizations[]->,
+    },
     _type == 'fullvideo' =>  {
       ...,
       video{
@@ -335,7 +339,7 @@ export const pageContentQuery = `content[] {
         },
       }
     },
-    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'wealthcalculator' => @,
+    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'wealthcalculator' => @,
   }
 },
 `;
