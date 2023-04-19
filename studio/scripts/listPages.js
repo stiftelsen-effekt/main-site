@@ -6,11 +6,7 @@
  */
 const { spawn } = require("child_process");
 
-const [documentId, dataset] = process.argv.slice(2);
-
-if (!documentId) {
-  throw new Error("No document id was provided.");
-}
+const [dataset] = process.argv.slice(2);
 
 const isValidDataset = ["production", "production-se", "dev", "dev-se"].includes(dataset);
 const isExplicitDataset = typeof dataset === "string";
@@ -20,24 +16,30 @@ if (isExplicitDataset && !isValidDataset) {
 }
 
 console.log(
-  `Editing document ${documentId} in dataset ${
+  `Listing documents in dataset ${
     isExplicitDataset ? dataset : process.env.SANITY_STUDIO_API_DATASET
   }.`,
 );
 
-spawn(
+const childProcess = spawn(
   "sanity",
   [
     "documents",
-    "create",
-    "--id",
-    documentId,
+    "query",
+    `'*[_type == "generic_page"] {
+      _id,
+      slug { current }
+    }'`,
     ...(isExplicitDataset ? ["--dataset", dataset] : []),
-    "--replace",
   ],
   {
-    cwd: process.cwd(),
-    stdio: "inherit",
     shell: true,
   },
 );
+
+childProcess.stdout.on("data", (data) => {
+  const json = JSON.parse(data);
+  json.forEach((doc) => {
+    console.log(`${doc._id} - ${doc.slug.current}`);
+  });
+});

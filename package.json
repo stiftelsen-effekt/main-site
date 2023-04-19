@@ -7,6 +7,7 @@
     "build": "next build",
     "sanity": "dotenv -e .env.local npm run start -- --prefix studio",
     "sanity:edit": "dotenv -e .env.local npm run edit -- --prefix studio",
+    "sanity:list:pages": "dotenv -e .env.local npm run list:pages -- --prefix studio",
     "start": "next start",
     "lint": "next lint",
     "cypress": "./node_modules/.bin/cypress open",
