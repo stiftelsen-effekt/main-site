@@ -25,6 +25,7 @@ import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculato
 import { InterventionWidget } from "./InterventionWidget/InterventionWidget";
 import { IntroSection } from "./IntroSection/IntroSection";
 import { Teasers } from "./Teasers/Teasers";
+import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
@@ -191,6 +192,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                   case "introsection": {
                     return (
                       <IntroSection
+                        key={block._key || block._id}
+                        heading={block.heading}
+                        paragraph={block.paragraph}
+                      />
+                    );
+                  }
+                  case "giveblock": {
+                    return (
+                      <GiveBlock
                         key={block._key || block._id}
                         heading={block.heading}
                         paragraph={block.paragraph}

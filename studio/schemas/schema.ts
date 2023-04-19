@@ -53,6 +53,7 @@ import citation from "./types/citation";
 import newslettersignup from "./types/newslettersignup";
 import wealthcalculator from "./types/wealthcalculator";
 import wealthcalculatorteaser from "./types/wealthcalculatorteaser";
+import giveblock from "./types/giveblock";
 import givewellstamp from "./types/givewellstamp";
 
 export const pages = [
@@ -108,6 +109,7 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser,
+  giveblock,
   givewellstamp,
 ] as const;
 
