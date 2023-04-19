@@ -71,15 +71,15 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
 }
 
 export async function getStaticPaths() {
+  const SKIP_GENERIC_PATHS = ["/", "topplista"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
   const slugs = data.pages.map((page) => page.slug.current);
-  const skipPaths = process.env.SKIP_GENERIC_PATHS?.split(",") ?? [];
 
   return {
     paths: slugs
-      .filter((slug) => !skipPaths.includes(slug))
+      .filter((slug) => !SKIP_GENERIC_PATHS.includes(slug))
       .map((slug) => ({
         params: { slug },
       })),
