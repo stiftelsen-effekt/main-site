@@ -24,6 +24,7 @@ import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
 import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 import { IntroSection } from "./IntroSection/IntroSection";
+import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -184,6 +185,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         key={block._key || block._id}
                         heading={block.heading}
                         paragraph={block.paragraph}
+                      />
+                    );
+                  }
+                  case "organizationslist": {
+                    return (
+                      <OrganizationsList
+                        key={block._key || block._id}
+                        organizations={block.organizations}
                       />
                     );
                   }
