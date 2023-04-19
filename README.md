@@ -159,6 +159,8 @@ The dataset will default to the `SANITY_STUDIO_API_DATASET` variable configured 
 
 `npm run sanity:edit drafts.75407a6f-ff17-401d-bc37-50e866ada48e dev-se`
 
+You can also list pages using the `npm run sanity:list:pages` command.
+
 ## Profile page 🧑‍🤝‍🧑
 
 We utilize Auth0 as our identity provider. Under `components/min-side/layout` we wrap the profile page with the [Auth0 react SDK](https://github.com/auth0/auth0-react) provider. When querying the [API](https://github.com/stiftelsen-effekt/effekt-backend) for data, we provide the access token from Auth0. Depending on whether the resource accessed is a protected resource, the backend API validates the token, and returns the data. The following diagram illustrates the process.
