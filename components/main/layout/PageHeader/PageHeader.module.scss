@@ -177,7 +177,9 @@
 }
 
 @media only screen and (min-width: 1920px) {
-  .pageheader {
+  .pageheader,
+  .pageheader.hero,
+  .pageheader.pageheadermeta.hero {
     max-width: 1714px;
     padding-left: 0;
     padding-right: 0;
