@@ -26,6 +26,7 @@ import { InterventionWidget } from "./InterventionWidget/InterventionWidget";
 import { IntroSection } from "./IntroSection/IntroSection";
 import { Teasers } from "./Teasers/Teasers";
 import { GiveBlock } from "./GiveBlock/GiveBlock";
+import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -85,8 +86,9 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         title={block.title}
                         swapped={block.swapped}
                         paragraph={block.paragraph}
-                        link={block.link}
+                        links={block.links}
                         image={block.image}
+                        darktext={block.darktext}
                       />
                     );
                   case "fullimage":
@@ -202,6 +204,17 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         key={block._key || block._id}
                         heading={block.heading}
                         paragraph={block.paragraph}
+                      />
+                    );
+                  }
+                  case "givewellstamp": {
+                    return (
+                      <GiveWellStamp
+                        key={block._key || block._id}
+                        links={block.links}
+                        quote={block.quote}
+                        quotee={block.quotee}
+                        quoteePosition={block.quotee_position}
                       />
                     );
                   }
