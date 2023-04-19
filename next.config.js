@@ -156,26 +156,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/aarsrapport21",
-        destination: "https://stiftelseneffekt.no/aarsrapport21",
-        permanent: true,
-      },
-      {
-        source: "/aarsrapport20",
-        destination: "https://stiftelseneffekt.no/aarsrapport20",
-        permanent: true,
-      },
-      {
-        source: "/aarsrapport19",
-        destination: "https://stiftelseneffekt.no/aarsrapport19",
-        permanent: true,
-      },
-      {
-        source: "/aarsrapport18",
-        destination: "https://stiftelseneffekt.no/aarsrapport18",
-        permanent: true,
-      },
-      {
         source: "/fb-skattefradrag",
         destination: "/skattefradrag",
         permanent: true,
@@ -199,7 +179,7 @@ const nextConfig = {
       },
       {
         source: "/aarsrapport",
-        destination: "https://stiftelseneffekt.no/aarsrapport21",
+        destination: "https://gieffektivt.no/arsrapporter",
         permanent: false,
       },
       {
