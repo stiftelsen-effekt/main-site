@@ -85,8 +85,9 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         title={block.title}
                         swapped={block.swapped}
                         paragraph={block.paragraph}
-                        link={block.link}
+                        links={block.links}
                         image={block.image}
+                        darktext={block.darktext}
                       />
                     );
                   case "fullimage":

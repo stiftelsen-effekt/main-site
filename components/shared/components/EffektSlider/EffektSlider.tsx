@@ -34,7 +34,11 @@ export const EffektSlider: React.FC<{
   }, []);
 
   return (
-    <div className={styles.calculator__input__group__percentage_slider} ref={sliderRef}>
+    <div
+      className={styles.calculator__input__group__percentage_slider}
+      ref={sliderRef}
+      data-cy="slider-container"
+    >
       <div className={styles.calculator__input__group__percentage_slider__labels}>
         {Array.from(Array(6)).map((_, i) => {
           return (
@@ -49,6 +53,7 @@ export const EffektSlider: React.FC<{
       </div>
       <div
         className={styles.calculator__input__group__percentage_slider__track}
+        data-cy="slider-track"
         onClick={(e) => {
           // If the user clicks on the slider, we want to move the handle to the clicked position
           const rect = sliderRef.current?.getBoundingClientRect();
@@ -91,7 +96,10 @@ export const EffektSlider: React.FC<{
           }}
           position={{ x: scaledValue * sliderWidth, y: 0 }}
         >
-          <div className={styles.calculator__input__group__percentage_slider__handle}></div>
+          <div
+            className={styles.calculator__input__group__percentage_slider__handle}
+            data-cy="slider-handle"
+          ></div>
         </Draggable>
       </div>
     </div>

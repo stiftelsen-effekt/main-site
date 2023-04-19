@@ -102,7 +102,7 @@ export const WealthCalculator: React.FC<{
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.calculator}>
+      <div className={styles.calculator} data-cy="wealthcalculator-container">
         <div className={styles.calculator__input}>
           <div className={styles.calculator__input__inner}>
             <h5>Rikdomskalkulator.</h5>
@@ -110,7 +110,10 @@ export const WealthCalculator: React.FC<{
               Hvor rik er du sammenlignet med resten av verden?
             </span>
 
-            <div className={styles.calculator__input__group}>
+            <div
+              className={styles.calculator__input__group}
+              data-cy="wealthcalculator-income-input"
+            >
               <div className={styles.calculator__input__group__input__income__wrapper}>
                 <NumericFormat
                   type={"tel"}
@@ -127,7 +130,10 @@ export const WealthCalculator: React.FC<{
               <i>Oppgi total inntekt før skatt for husholdningen din.</i>
             </div>
 
-            <div className={styles.calculator__input__group}>
+            <div
+              className={styles.calculator__input__group}
+              data-cy="wealthcalculator-children-input"
+            >
               <EffektDropdown
                 placeholder={"Antall barn i husholdningen"}
                 options={[
@@ -143,7 +149,10 @@ export const WealthCalculator: React.FC<{
               ></EffektDropdown>
             </div>
 
-            <div className={styles.calculator__input__group}>
+            <div
+              className={styles.calculator__input__group}
+              data-cy="wealthcalculator-adults-input"
+            >
               <EffektDropdown
                 placeholder={"Antall voksne i husholdningen"}
                 options={[
@@ -151,7 +160,9 @@ export const WealthCalculator: React.FC<{
                   "2 voksne i husholdningen",
                   "3 voksne i husholdningen",
                 ]}
-                value={numberOfAdults.toString() + " voksne i husholdningen"}
+                value={`${numberOfAdults.toString()} ${
+                  numberOfAdults === 1 ? "voksen" : "voksne"
+                } i husholdningen`}
                 onChange={(val: string) => setNumberOfParents(parseInt(val[0]))}
               ></EffektDropdown>
             </div>
@@ -186,6 +197,7 @@ export const WealthCalculator: React.FC<{
                     type={"text"}
                     className={styles.calculator__input__group__percentage_input}
                     value={donationPercentage.toString()}
+                    data-cy="wealthcalculator-donation-percentage-input"
                     onChange={(e) => {
                       if (e.target.value !== "" || !isNaN(parseInt(e.target.value))) {
                         setDonationPercentage(parseInt(e.target.value));
@@ -218,7 +230,7 @@ export const WealthCalculator: React.FC<{
           </div>
         </div>
 
-        <div className={styles.calculator__output} ref={outputRef}>
+        <div className={styles.calculator__output} ref={outputRef} data-cy="wealthcalculator-graph">
           <AreaChart
             data={wealthMountainGraphData}
             lineInput={equvivalizedIncome || 0}
@@ -243,6 +255,7 @@ export const WealthCalculator: React.FC<{
               " " +
               (explanationOpen ? styles.calculator__explanation__toggle_open : "")
             }
+            data-cy="wealthcalculator-explanation-toggle"
             onClick={() => setExplanationOpen(!explanationOpen)}
           >
             Hvordan regner vi ut hvor rik du er?
@@ -257,7 +270,9 @@ export const WealthCalculator: React.FC<{
       {explanation && (
         <>
           <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
-            <BlockContentRenderer content={[explanation]} />
+            <div data-cy="wealthcalculator-explanation">
+              <BlockContentRenderer content={[explanation]} />
+            </div>
           </AnimateHeight>
         </>
       )}
@@ -270,7 +285,10 @@ export const WealthCalculator: React.FC<{
               donert til effektiv bistand kan du påvirke mange liv der det trengs mest du kan for
               eksempel bidra med myggnett, A-vitamin tilskudd eller vaksinering.
             </p>
-            <div className={styles.calculator__impact__description__button_desktop}>
+            <div
+              className={styles.calculator__impact__description__button_desktop}
+              data-cy="wealthcalculator-impact-create-agreement-button"
+            >
               <EffektButton onClick={() => setWidgetOpen(true)}>
                 Sett opp fast donasjon
               </EffektButton>
