@@ -39,6 +39,13 @@ export default {
       fieldset: "layout",
     },
     {
+      name: "ypadded",
+      type: "boolean",
+      title: "Top bottom padded",
+      initialValue: true,
+      fieldset: "layout",
+    },
+    {
       name: "blocks",
       type: "array",
       title: "Content",

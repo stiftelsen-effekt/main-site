@@ -6,6 +6,7 @@ export type SectionContainerProps = {
   inverted?: boolean;
   nodivider?: boolean;
   padded?: boolean;
+  ypadded?: boolean;
 };
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
@@ -13,11 +14,16 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   inverted,
   nodivider,
   padded,
+  ypadded = true,
   children,
 }) => {
   const containerClasses = [styles.section__container, inverted ? styles.inverted : ""];
   const headingClasses = [styles.section__heading, nodivider ? "" : styles.divider];
-  const contentClasses = [styles.section__content, padded ? styles.padded : ""];
+  const contentClasses = [
+    styles.section__content,
+    padded ? styles.padded : "",
+    ypadded ? styles.ypadded : "",
+  ];
 
   return (
     <section className={containerClasses.join(" ")}>

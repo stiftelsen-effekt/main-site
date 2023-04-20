@@ -38,10 +38,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 45px;
-  padding-bottom: 45px;
   margin: 0 auto;
   max-width: 1920px;
+
+  &.ypadded {
+    padding-top: 45px;
+    padding-bottom: 45px;
+  }
 }
 
 .padded {
@@ -69,7 +72,7 @@
     margin-bottom: 0;
   }
 
-  .section__content {
+  .section__content.ypadded {
     padding-top: 30px;
     padding-bottom: 30px;
   }
