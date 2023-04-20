@@ -340,7 +340,11 @@ export const pageContentQuery = `content[] {
       role->,
       contributors[]->
     },
-    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'wealthcalculator' => @,
+    _type == 'inngress' => {
+      ...,
+      ${linksContentQuery}
+    },
+    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' => @,
   }
 },
 `;

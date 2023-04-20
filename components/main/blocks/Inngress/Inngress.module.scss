@@ -1,0 +1,25 @@
+.ingress__container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 3fr;
+  column-gap: 40px;
+  margin-bottom: 100px;
+  margin-top: 50px;
+}
+
+.links {
+  padding-top: 10px;
+}
+
+.intro {
+  max-width: 800px;
+}
+
+@media (max-width: 1180px) {
+  .ingress__container {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    margin-bottom: 20px;
+    margin-top: 0px;
+  }
+}

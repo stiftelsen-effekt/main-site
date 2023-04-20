@@ -26,6 +26,7 @@ import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculato
 import { IntroSection } from "./IntroSection/IntroSection";
 import { Contributors } from "./Contributors/Contributors";
 import { ContributorType } from "./Contributors/Contributor";
+import { Inngress } from "./Inngress/Inngress";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -181,16 +182,23 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       />
                     );
                   case "contributorlist":
-                    console.log(block);
                     return (
                       <>
-                        <span>Hello</span>
                         <Contributors
                           id={block._key || block._id}
                           title={block.role.title}
                           contributors={block.contributors}
                         />
                       </>
+                    );
+                  case "inngress":
+                    return (
+                      <Inngress
+                        key={block._key || block._id}
+                        header={block.heading}
+                        content={block.body}
+                        links={block.sidelinks}
+                      />
                     );
                   case "introsection": {
                     return (

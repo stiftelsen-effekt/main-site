@@ -49,6 +49,7 @@ export default {
         { type: "newslettersignup" },
         { type: "wealthcalculator" },
         { type: "contributorlist" },
+        { type: "inngress" },
         { type: "htmlembed" },
       ],
       options: {
