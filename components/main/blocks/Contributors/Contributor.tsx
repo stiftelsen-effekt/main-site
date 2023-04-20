@@ -15,7 +15,7 @@ export type ContributorType = {
 };
 
 const contributorImageBuilder = (imageUrlBuilder: ImageUrlBuilder) => {
-  return imageUrlBuilder.width(240).height(310).saturation(-100).fit("clip");
+  return imageUrlBuilder.width(400).height(490).saturation(-100).fit("clip");
 };
 
 export const Contributor: React.FC<ContributorType> = ({
