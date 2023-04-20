@@ -74,14 +74,7 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const SKIP_GENERIC_PATHS = [
-    "/",
-    "topplista",
-    "artikler",
-    "om",
-    "ofte-stilte-sporsmal",
-    "vippsavtale",
-  ];
+  const SKIP_GENERIC_PATHS = ["topplista", "artikler", "om", "ofte-stilte-sporsmal", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: PageTypes["generic_page"][] }>(
     fetchGenericPages,
   );
