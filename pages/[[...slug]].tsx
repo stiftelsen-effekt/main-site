@@ -74,17 +74,28 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
+  const SKIP_GENERIC_PATHS = [
+    "/",
+    "topplista",
+    "artikler",
+    "om",
+    "ofte-stilte-sporsmal",
+    "vippsavtale",
+  ];
   const data = await getClient(false).fetch<{ pages: PageTypes["generic_page"][] }>(
     fetchGenericPages,
   );
+  const slugs = data.pages.map((page) => page.slug.current);
 
   return {
-    paths: data.pages.map((page) => {
-      const slug = [page.slug.current === "/" ? "" : page.slug.current];
-      return {
-        params: { slug },
-      };
-    }),
+    paths: slugs
+      .filter((slug) => !SKIP_GENERIC_PATHS.includes(slug))
+      .map((slug) => {
+        const slugParts = [slug === "/" ? "" : slug];
+        return {
+          params: { slug: slugParts },
+        };
+      }),
     fallback: false,
   };
 }
