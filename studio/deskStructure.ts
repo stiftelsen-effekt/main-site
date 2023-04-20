@@ -221,16 +221,6 @@ export default () =>
             ]),
         ),
       S.listItem()
-        .schemaType("contributor")
-        .title("Contributors")
-        .icon(Users)
-        .child(
-          S.documentList()
-            .title("People")
-            .schemaType("contributor")
-            .filter('_type == "contributor"'),
-        ),
-      S.listItem()
         .title("Settings")
         .icon(Settings)
         .child(S.document().schemaType("site_settings").documentId("site_settings")),

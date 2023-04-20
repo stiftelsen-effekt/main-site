@@ -185,9 +185,10 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                     return (
                       <>
                         <Contributors
-                          id={block._key || block._id}
+                          key={block._key || block._id}
                           title={block.role.title}
                           contributors={block.contributors}
+                          displayImages={block.displayimages}
                         />
                       </>
                     );
