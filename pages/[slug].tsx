@@ -71,12 +71,25 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
 }
 
 export async function getStaticPaths() {
-  const data = await getClient(false).fetch(fetchGenericPages);
+  const SKIP_GENERIC_PATHS = [
+    "/",
+    "topplista",
+    "artikler",
+    "om",
+    "ofte-stilte-sporsmal",
+    "vippsavtale",
+  ];
+  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
+    fetchGenericPages,
+  );
+  const slugs = data.pages.map((page) => page.slug.current);
 
   return {
-    paths: data.pages.map((page: { slug: { current: string } }) => ({
-      params: { slug: page.slug.current },
-    })),
+    paths: slugs
+      .filter((slug) => !SKIP_GENERIC_PATHS.includes(slug))
+      .map((slug) => ({
+        params: { slug },
+      })),
     fallback: false,
   };
 }

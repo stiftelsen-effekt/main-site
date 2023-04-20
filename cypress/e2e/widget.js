@@ -1,8 +1,4 @@
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
+describe("Widget", () => {
   beforeEach(() => {
     cy.fixture("organizations")
       .then((organizations) => {
@@ -15,11 +11,24 @@ context("Window", () => {
         });
       })
       .as("registerDonation");
+
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
+
+    cy.visit("/");
+    cy.wait(500);
+    cy.get("[data-cy=gi-button]").click();
   });
 
   it("End-2-End single bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -55,30 +64,9 @@ context("Window", () => {
       expect(kid).to.be.length(8);
     });
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End recurring bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -112,30 +100,9 @@ context("Window", () => {
 
     cy.get("[data-cy=avtalegiro-form]").submit();
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End single vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -163,30 +130,9 @@ context("Window", () => {
     });
     cy.wait(500);
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End recurring vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
@@ -223,30 +169,9 @@ context("Window", () => {
     });
     cy.wait(500);
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End shared donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.get("[data-cy=radio-custom-share]").click({ force: true });
@@ -288,30 +213,9 @@ context("Window", () => {
       expect(kid).to.be.length(8);
     });
   });
-});
-
-context("Window", () => {
-  before(() => {
-    cy.visit("/");
-  });
-
-  beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: organizations,
-          },
-        });
-      })
-      .as("registerDonation");
-  });
 
   it("End-2-End for all input fields", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=gi-button]").click();
     cy.checkNextIsDisabled();
     cy.pickSingleDonation();
     cy.checkNextIsDisabled();

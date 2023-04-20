@@ -9,7 +9,8 @@
   "scripts": {
     "start": "sanity start",
     "build": "sanity build",
-    "edit": "export EDITOR=\"code -w\" && node scripts/editDocument.js"
+    "edit": "export EDITOR=\"code -w\" && node scripts/editDocument.js",
+    "list:pages": "node scripts/listPages.js"
   },
   "keywords": [
     "sanity"
