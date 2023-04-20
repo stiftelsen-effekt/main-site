@@ -39,6 +39,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
             inverted={section.inverted}
             nodivider={section.nodivider}
             padded={section.padded}
+            ypadded={section.ypadded}
           >
             {section.blocks &&
               section.blocks.map((block: any) => {
