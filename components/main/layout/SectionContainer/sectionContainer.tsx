@@ -21,9 +21,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
 
   return (
     <section className={containerClasses.join(" ")}>
-      <span className={headingClasses.join(" ")} style={heading ? {} : { paddingTop: "0px" }}>
-        {heading}
-      </span>
+      <span className={headingClasses.join(" ")}>{heading}</span>
       <div className={contentClasses.join(" ")}>{children}</div>
     </section>
   );
