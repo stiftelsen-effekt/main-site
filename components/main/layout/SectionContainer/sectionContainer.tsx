@@ -15,23 +15,16 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   padded,
   children,
 }) => {
-  let background;
-  let dividerLine = styles.divider;
-  let paddedClass;
-
-  inverted ? (background = styles.inverted) : null;
-  nodivider ? (dividerLine = "") : null;
-  padded ? (paddedClass = styles.padded) : null;
+  const containerClasses = [styles.section__container, inverted ? styles.inverted : ""];
+  const headingClasses = [styles.section__heading, nodivider ? "" : styles.divider];
+  const contentClasses = [styles.section__content, padded ? styles.padded : ""];
 
   return (
-    <section className={styles.section__container + " " + background}>
-      <span
-        className={styles.section__heading + " " + dividerLine}
-        style={heading ? {} : { paddingTop: "0px" }}
-      >
+    <section className={containerClasses.join(" ")}>
+      <span className={headingClasses.join(" ")} style={heading ? {} : { paddingTop: "0px" }}>
         {heading}
       </span>
-      <div className={styles.section__content + " " + paddedClass}>{children}</div>
+      <div className={contentClasses.join(" ")}>{children}</div>
     </section>
   );
 };
