@@ -74,8 +74,8 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const SKIP_GENERIC_PATHS = ["topplista", "artikler", "om", "ofte-stilte-sporsmal", "vippsavtale"];
-  const data = await getClient(false).fetch<{ pages: PageTypes["generic_page"][] }>(
+  const SKIP_GENERIC_PATHS = ["artikler", "om", "ofte-stilte-sporsmal", "vippsavtale"];
+  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
   const slugs = data.pages.map((page) => page.slug.current);

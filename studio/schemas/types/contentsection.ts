@@ -72,6 +72,7 @@ export default {
         { type: "interventionwidget" },
         { type: "giveblock" },
         { type: "givewellstamp" },
+        { type: "organizationslist" },
       ],
       options: {
         editModal: "fullscreen",

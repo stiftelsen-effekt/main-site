@@ -27,6 +27,7 @@ import { IntroSection } from "./IntroSection/IntroSection";
 import { Teasers } from "./Teasers/Teasers";
 import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
+import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -216,6 +217,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         quote={block.quote}
                         quotee={block.quotee}
                         quoteePosition={block.quotee_position}
+                      />
+                    );
+                  }
+                  case "organizationslist": {
+                    return (
+                      <OrganizationsList
+                        key={block._key || block._id}
+                        organizations={block.organizations}
                       />
                     );
                   }
