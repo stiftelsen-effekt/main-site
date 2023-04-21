@@ -26,7 +26,7 @@
 
 .pageheader.hero,
 .pageheader.pageheadermeta.hero {
-  $-point-list-whitespace: 80px + 45px;
+  $-point-list-whitespace: 80px;
   min-height: calc(100vh - 300px - $-point-list-whitespace);
   grid-template-columns: 1fr;
   align-items: center;
@@ -95,9 +95,8 @@
 
   .pageheader.hero,
   .pageheader.pageheadermeta.hero {
-    $-point-list-whitespace: 30px;
-    min-height: calc(100vh - 240px - $-point-list-whitespace);
-    padding-bottom: calc(10vh - $-point-list-whitespace);
+    min-height: calc(100vh - 240px);
+    padding-bottom: calc(10vh);
     align-content: flex-end;
   }
 
