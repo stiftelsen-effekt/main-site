@@ -54,6 +54,8 @@ export const BlockContentRenderer = withStaticProps(
         ),
       ),
     );
+
+    /* getStaticProps must return a serializable object (https://nextjs.org/docs/api-reference/data-fetching/get-static-props#props) */
     const serializedMap = JSON.stringify(Array.from(resolvedMap.entries()));
 
     return {
