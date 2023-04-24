@@ -26,6 +26,7 @@ import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculato
 import { IntroSection } from "./IntroSection/IntroSection";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { withStaticProps } from "../../../util/withStaticProps";
+import { ArticlesPreviewList } from "./ArticlesPreviewList/ArticlesPreviewList";
 
 type Section = SectionContainerProps & {
   _key: string;
@@ -38,6 +39,9 @@ export const BlockContentRenderer = withStaticProps(
     const promiseMap = blocks.reduce<Map<typeof blocks[number]["_key"], Promise<any>>>(
       (map, block) => {
         switch (block._type) {
+          case "articlespreviewlist": {
+            map.set(block._key, ArticlesPreviewList.getStaticProps({ preview }));
+          }
         }
         return map;
       },
@@ -227,6 +231,9 @@ export const BlockContentRenderer = withStaticProps(
                         organizations={block.organizations}
                       />
                     );
+                  }
+                  case "articlespreviewlist": {
+                    return <ArticlesPreviewList key={block._key} {...parsedMap.get(block._key)} />;
                   }
                   default:
                     return block._type;
