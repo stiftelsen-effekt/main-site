@@ -71,7 +71,7 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
 }
 
 export async function getStaticPaths() {
-  const SKIP_GENERIC_PATHS = ["/", "artikler", "om", "ofte-stilte-sporsmal", "vippsavtale"];
+  const SKIP_GENERIC_PATHS = ["/", "artikler", "om", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
