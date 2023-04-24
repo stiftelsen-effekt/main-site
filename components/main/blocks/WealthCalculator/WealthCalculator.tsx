@@ -268,7 +268,7 @@ export const WealthCalculator: React.FC<{
         <>
           <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
             <div data-cy="wealthcalculator-explanation">
-              <BlockContentRenderer content={[explanation]} />
+              <BlockContentRenderer content={[explanation]} data={JSON.stringify([])} />
             </div>
           </AnimateHeight>
         </>
