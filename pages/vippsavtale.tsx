@@ -20,8 +20,13 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
+import { InferGetStaticPropsType } from "next";
 
-const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const VippsAgreement: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+  blocksData,
+}) => {
   const { loginWithRedirect } = useAuth0();
 
   const page = data.result.page;
@@ -72,7 +77,7 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
           <LinkButton title={"Logg inn"} type={"primary"} url={`/min-side`} />
         </div>
       </SectionContainer>
-      <BlockContentRenderer content={page.content} />
+      <BlockContentRenderer content={page.content} data={blocksData} />
     </>
   );
 };
@@ -80,6 +85,11 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
 export async function getStaticProps({ preview = false }) {
   let result = await getClient(preview).fetch(fetchVippsAgreementPage);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
+
+  const { data: blocksData } = await BlockContentRenderer.getStaticProps({
+    preview,
+    content: result.page.content,
+  });
 
   return {
     props: {
@@ -89,6 +99,7 @@ export async function getStaticProps({ preview = false }) {
         query: fetchVippsAgreementPage,
         queryParams: {},
       },
+      blocksData,
     },
   };
 }

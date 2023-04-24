@@ -13,8 +13,13 @@ import { Layout } from "../../components/main/layout/layout";
 import { BlockContentRenderer } from "../../components/main/blocks/BlockContentRenderer";
 import { pageContentQuery, widgetQuery } from "../../_queries";
 import { filterPageToSingleItem } from "../_app";
+import { InferGetStaticPropsType } from "next";
 
-const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const ArticlePage: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+  blocksData,
+}) => {
   const page = data.result.page;
 
   if (!page) {
@@ -45,7 +50,7 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
 
-      <BlockContentRenderer content={content} />
+      <BlockContentRenderer content={content} data={blocksData} />
       <RelatedArticles relatedArticles={relatedArticles} />
     </>
   );
@@ -56,6 +61,11 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
   let result = await getClient(preview).fetch(fetchArticle, { slug });
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
+  const { data: blocksData } = await BlockContentRenderer.getStaticProps({
+    preview,
+    content: result.page.content,
+  });
+
   return {
     props: {
       preview: preview,
@@ -64,6 +74,7 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
         query: fetchArticle,
         queryParams: { slug },
       },
+      blocksData,
     },
   };
 }

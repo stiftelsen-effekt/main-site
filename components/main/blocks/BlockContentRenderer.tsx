@@ -25,12 +25,44 @@ import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 import { IntroSection } from "./IntroSection/IntroSection";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
+import { withStaticProps } from "../../../util/withStaticProps";
 
-export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
+type Section = SectionContainerProps & {
+  _key: string;
+  blocks: Array<Record<string, any> & { _key: string; _type: string }>;
+};
+
+export const BlockContentRenderer = withStaticProps(
+  async ({ preview, content }: { preview: boolean; content: Section[] }) => {
+    const blocks = content.flatMap((section: Section) => section.blocks);
+    const promiseMap = blocks.reduce<Map<typeof blocks[number]["_key"], Promise<any>>>(
+      (map, block) => {
+        switch (block._type) {
+        }
+        return map;
+      },
+      new Map(),
+    );
+    const resolvedMap = new Map(
+      await Promise.all(
+        Array.from(promiseMap.entries()).map(
+          async ([key, promise]) => [key, await promise] as const,
+        ),
+      ),
+    );
+    const serializedMap = JSON.stringify(Array.from(resolvedMap.entries()));
+
+    return {
+      data: serializedMap,
+    };
+  },
+)<{ content: Section[] }>(({ content, data }) => {
+  const parsedMap = new Map<any, any>(JSON.parse(data));
+
   return (
     <>
       {content &&
-        content.map((section: SectionContainerProps & { _key: string; blocks: any }) => (
+        content.map((section) => (
           <SectionContainer
             key={section._key}
             heading={section.heading}
@@ -39,7 +71,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
             padded={section.padded}
           >
             {section.blocks &&
-              section.blocks.map((block: any) => {
+              section.blocks.map((block) => {
                 switch (block._type) {
                   case "paragraph":
                     return (
@@ -204,4 +236,4 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
         ))}
     </>
   );
-};
+});
