@@ -88,7 +88,7 @@ export async function getStaticProps({ preview = false }) {
 
   const { data: blocksData } = await BlockContentRenderer.getStaticProps({
     preview,
-    content: result.page.content,
+    content: result.page.content || [],
   });
 
   return {
