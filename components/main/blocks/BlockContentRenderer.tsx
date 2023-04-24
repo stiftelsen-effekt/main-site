@@ -30,12 +30,12 @@ import { ArticlesPreviewList } from "./ArticlesPreviewList/ArticlesPreviewList";
 
 type Section = SectionContainerProps & {
   _key: string;
-  blocks: Array<Record<string, any> & { _key: string; _type: string }>;
+  blocks?: Array<Record<string, any> & { _key: string; _type: string }>;
 };
 
 export const BlockContentRenderer = withStaticProps(
   async ({ preview, content }: { preview: boolean; content: Section[] }) => {
-    const blocks = content.flatMap((section: Section) => section.blocks);
+    const blocks = content.flatMap((section: Section) => section.blocks || []);
     const promiseMap = blocks.reduce<Map<typeof blocks[number]["_key"], Promise<any>>>(
       (map, block) => {
         switch (block._type) {
