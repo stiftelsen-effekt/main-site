@@ -7,6 +7,21 @@
   padding-bottom: 80px;
 }
 
+.pageheader.inverted {
+  background: #000;
+  color: #fafafa;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: -200px;
+    height: 200px;
+    background: #000;
+  }
+}
+
 .pageheader.pageheadermeta {
   grid-template-columns: 1fr 2fr;
 }

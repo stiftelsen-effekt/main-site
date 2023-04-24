@@ -7,6 +7,18 @@
   transition: transform 0.3s ease-in-out;
 }
 
+.container.inverted {
+  --primary: #fafafa;
+  --secondary: #000;
+  --primary-filter: invert(1);
+
+  color: #fafafa;
+
+  .navbarExpanded {
+    --primary-filter: invert(0);
+  }
+}
+
 .container.navbarShrinked nav {
   padding: 0 0;
 }

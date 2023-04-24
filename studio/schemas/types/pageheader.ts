@@ -37,6 +37,12 @@ export default {
       group: "content",
     },
     {
+      name: "inverted",
+      title: "Inverted",
+      type: "boolean",
+      group: "content",
+    },
+    {
       name: "links",
       title: "Links",
       type: "array",

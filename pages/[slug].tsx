@@ -36,7 +36,7 @@ const GenericPage: LayoutPage<{
         canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug.current}`}
       />
 
-      <MainHeader hideOnScroll={true}>
+      <MainHeader hideOnScroll={true} inverted={header.inverted}>
         <CookieBanner />
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
@@ -46,6 +46,7 @@ const GenericPage: LayoutPage<{
         inngress={header.inngress}
         links={header.links}
         centered={header.centered}
+        inverted={header.inverted}
       />
 
       <BlockContentRenderer content={content} />

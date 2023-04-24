@@ -3,10 +3,13 @@ import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
 
-export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScroll: boolean }> = ({
-  children,
-  hideOnScroll,
-}) => {
+type MainHeaderProps = {
+  children: ReactNode | ReactNode[];
+  hideOnScroll: boolean;
+  inverted?: boolean;
+};
+
+export const MainHeader: React.FC<MainHeaderProps> = ({ children, hideOnScroll, inverted }) => {
   const router = useRouter();
 
   const [navbarShrinked, setNavbarShrinked] = useState(false);
@@ -50,6 +53,7 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
   const classes = [styles.container];
   if (navbarShrinked) classes.push(styles.navbarShrinked);
   if (!navBarVisible) classes.push(styles.navbarHidden);
+  if (inverted) classes.push(styles.inverted);
 
   return (
     <div data-cy="header" className={classes.join(" ")}>
