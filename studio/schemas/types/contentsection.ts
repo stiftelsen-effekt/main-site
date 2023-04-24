@@ -50,6 +50,7 @@ export default {
         { type: "wealthcalculator" },
         { type: "htmlembed" },
         { type: "organizationslist" },
+        { type: "articlespreviewlist" },
       ],
       options: {
         editModal: "fullscreen",
