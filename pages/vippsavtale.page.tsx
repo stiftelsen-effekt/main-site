@@ -11,7 +11,7 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { linksContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app";
+import { filterPageToSingleItem } from "./_app.page";
 import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
 import {
   EffektButton,

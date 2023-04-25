@@ -7,7 +7,7 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { Layout } from "../components/main/layout/layout";
 import { widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app";
+import { filterPageToSingleItem } from "./_app.page";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { SEO } from "../components/shared/seo/Seo";

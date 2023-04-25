@@ -14,7 +14,7 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
 import { linksContentQuery, questionAndAnswerSelectionQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app";
+import { filterPageToSingleItem } from "./_app.page";
 
 const Support: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const page = data.result.page;

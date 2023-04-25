@@ -11,7 +11,7 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
-import { filterPageToSingleItem } from "./_app";
+import { filterPageToSingleItem } from "./_app.page";
 import { linksContentQuery, widgetQuery } from "../_queries";
 
 const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {

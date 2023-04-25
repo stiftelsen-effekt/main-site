@@ -11,7 +11,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { Layout } from "../components/main/layout/layout";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app";
+import { filterPageToSingleItem } from "./_app.page";
 
 const GenericPage: LayoutPage<{
   data: { result: { [key: string]: any; page: PageTypes["generic_page"] } };

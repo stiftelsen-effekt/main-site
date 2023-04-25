@@ -18,7 +18,7 @@ import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { ImpactWidgetProps } from "../components/main/blocks/ImpactWidget/ImpactWidget";
-import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app";
+import { filterPageToSingleItem, filterWidgetToSingleItem } from "./_app.page";
 import { linksContentQuery, linksSelectorQuery, widgetQuery } from "../_queries";
 import { GiveWellStamp } from "../components/main/blocks/GiveWellStamp/GiveWellStamp";
 import { WealthCalculatorTeaser } from "../components/main/blocks/WealthCalculatorTeaser/WealthCalculatorTeaser";
