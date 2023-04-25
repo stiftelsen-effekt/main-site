@@ -6,7 +6,15 @@
   grid-auto-columns: minmax(0, 1fr);
   column-gap: 40px;
   width: 100%;
+  margin-top: 80px;
   margin-bottom: 110px;
+
+  &.top {
+    column-gap: 50px;
+    margin-top: 95px;
+    margin-bottom: 180px;
+    font-family: "ESKlarheitKurrent";
+  }
 }
 
 @media only screen and (min-width: 1520px) {
@@ -63,6 +71,13 @@
       }
     }
   }
+
+  .pointlistwrapper {
+    &.top {
+      margin-top: 80px;
+      margin-bottom: 120px;
+    }
+  }
 }
 
 @media only screen and (max-width: 1180px) {
@@ -72,6 +87,12 @@
     grid-auto-flow: row;
     row-gap: 20px;
     width: 100%;
+    margin-bottom: 30px;
+    margin-top: 0;
+  }
+
+  .pointlistwrapper.top {
+    row-gap: 30px;
     margin-bottom: 30px;
     margin-top: 0;
   }

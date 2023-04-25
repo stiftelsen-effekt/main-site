@@ -58,7 +58,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
           title={header.title}
           inngress={header.inngress}
           links={header.links}
-          centered={header.centered}
+          layout={header.centered ? "centered" : "default"}
         />
       </div>
 

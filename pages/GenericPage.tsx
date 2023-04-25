@@ -1,21 +1,18 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { LayoutPage, PageTypes } from "../types";
-import { Navbar } from "../components/main/layout/navbar";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { Layout } from "../components/main/layout/layout";
-import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app.page";
+import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
+import { filterPageToSingleItem } from "./_app.page";
+import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
 export const getGenericPagePaths = async () => {
-  const SKIP_GENERIC_PATHS = ["/", "artikler", "om", "vippsavtale"];
+  const SKIP_GENERIC_PATHS = ["artikler", "om", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
@@ -55,7 +52,7 @@ export const GenericPage = withStaticProps(
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug.current}`}
+        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug?.current ?? ""}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -67,7 +64,7 @@ export const GenericPage = withStaticProps(
         title={header.title}
         inngress={header.inngress}
         links={header.links}
-        centered={header.centered}
+        layout={header.layout}
       />
 
       <BlockContentRenderer content={content} />

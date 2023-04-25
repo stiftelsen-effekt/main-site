@@ -1,4 +1,4 @@
-import { InferGetStaticPropsType, NextPage } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
 import { LayoutPage, PageTypes } from "../types";
 import { GenericPage, getGenericPagePaths } from "./GenericPage";
 import { Layout } from "../components/main/layout/layout";
@@ -22,8 +22,11 @@ const Page: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   }
 };
 
-export async function getStaticProps({ preview = false, params = { slug: "" } }) {
-  const { slug } = params;
+export async function getStaticProps({
+  preview = false,
+  params,
+}: GetStaticPropsContext<{ slug?: string[] }>) {
+  const slug = params?.slug?.[0] ?? "/";
 
   const isArticlePage = await getArticlesPagePath().then((path) => path === slug);
 
@@ -57,9 +60,12 @@ export async function getStaticPaths() {
   );
 
   return {
-    paths: paths.map((slug) => ({
-      params: { slug },
-    })),
+    paths: paths.map((slug) => {
+      const slugParts = [slug === "/" ? "" : slug];
+      return {
+        params: { slug: slugParts },
+      };
+    }),
     fallback: false,
   };
 }
