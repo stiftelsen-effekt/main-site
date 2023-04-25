@@ -19,7 +19,6 @@ import navgroup from "./types/navgroup";
 import pageheader from "./types/pageheader";
 import questionandanswer from "./types/questionandanswer";
 import questionandanswergroup from "./types/questionandanswergroup";
-import frontpage from "./pages/frontpage";
 import about from "./pages/about";
 import profile from "./pages/profile";
 import support from "./pages/support";
@@ -58,7 +57,6 @@ import organizationslist from "./types/organizationslist";
 
 export const pages = [
   generic,
-  frontpage,
   about,
   profile,
   support,
