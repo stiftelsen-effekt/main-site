@@ -12,7 +12,7 @@ import { SEO } from "../../components/shared/seo/Seo";
 import { Layout } from "../../components/main/layout/layout";
 import { BlockContentRenderer } from "../../components/main/blocks/BlockContentRenderer";
 import { pageContentQuery, widgetQuery } from "../../_queries";
-import { filterPageToSingleItem } from "../_app";
+import { filterPageToSingleItem } from "../_app.page";
 
 const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const page = data.result.page;

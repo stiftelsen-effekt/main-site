@@ -17,7 +17,7 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Links } from "../components/main/blocks/Links/Links";
 import { Layout } from "../components/main/layout/layout";
 import { linksContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app";
+import { filterPageToSingleItem } from "./_app.page";
 
 const About: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
   const about = data.result.page;
