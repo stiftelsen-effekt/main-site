@@ -1,6 +1,5 @@
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.server";
-import { LayoutPage } from "../types";
 import styles from "../styles/Articles.module.css";
 import { SEO } from "../components/shared/seo/Seo";
 import { Navbar } from "../components/main/layout/navbar";
@@ -10,11 +9,30 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { Layout } from "../components/main/layout/layout";
 import { filterPageToSingleItem } from "./_app.page";
 import { linksContentQuery, widgetQuery } from "../_queries";
+import { withStaticProps } from "../util/withStaticProps";
 
-const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+export const getArticlesPagePath = async () => {
+  let result = await getClient(false).fetch(fetchArticles);
+  result = { ...result, page: filterPageToSingleItem(result, false) };
+  const slug: string = result.page.slug;
+  return slug;
+};
+
+export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  let result = await getClient(preview).fetch(fetchArticles);
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
+
+  return {
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchArticles,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
   const page = data.result.page;
 
   const settings = data.result.settings[0];
@@ -66,25 +84,9 @@ const ArticlesPage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previ
       </SectionContainer>
     </>
   );
-};
+});
 
-export async function getStaticProps({ preview = false }) {
-  let result = await getClient(preview).fetch(fethcArticles);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fethcArticles,
-        queryParams: {},
-      },
-    },
-  };
-}
-
-const fethcArticles = groq`
+const fetchArticles = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
@@ -109,6 +111,7 @@ const fethcArticles = groq`
   ${footerQuery}
   ${widgetQuery}
   "page": *[_type == "articles"] {
+    "slug": slug.current,
     header {
       ...,
       seoImage{
@@ -124,7 +127,3 @@ const fethcArticles = groq`
   }
 }
 `;
-
-ArticlesPage.layout = Layout;
-ArticlesPage.filterPage = true;
-export default ArticlesPage;
