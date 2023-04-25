@@ -1,20 +1,50 @@
 import React from "react";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { LayoutPage } from "../../types";
-import { ArticleHeader } from "../../components/main/layout/ArticleHeader/ArticleHeader";
-import { Navbar } from "../../components/main/layout/navbar";
-import { RelatedArticles } from "../../components/main/layout/RelatedArticles/RelatedArticles";
-import { CookieBanner } from "../../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
-import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { SEO } from "../../components/shared/seo/Seo";
-import { Layout } from "../../components/main/layout/layout";
-import { BlockContentRenderer } from "../../components/main/blocks/BlockContentRenderer";
-import { pageContentQuery, widgetQuery } from "../../_queries";
-import { filterPageToSingleItem } from "../_app.page";
+import { LayoutPage } from "../types";
+import { ArticleHeader } from "../components/main/layout/ArticleHeader/ArticleHeader";
+import { Navbar } from "../components/main/layout/navbar";
+import {
+  RelatedArticle,
+  RelatedArticles,
+} from "../components/main/layout/RelatedArticles/RelatedArticles";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { SEO } from "../components/shared/seo/Seo";
+import { Layout } from "../components/main/layout/layout";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
+import { pageContentQuery, widgetQuery } from "../_queries";
+import { filterPageToSingleItem } from "./_app.page";
+import { withStaticProps } from "../util/withStaticProps";
 
-const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+export const getArticlePaths = async (articlesPagePath: string[]) => {
+  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
+    fetchArticles,
+  );
+
+  return data.pages.map((page) => [...articlesPagePath, page.slug.current]);
+};
+
+const ArticlePage = withStaticProps(
+  async ({ slug, preview }: { slug: string; preview: boolean }) => {
+    let result = await getClient(preview).fetch<{
+      page: any;
+      settings: any[];
+      relatedArticles: RelatedArticle[];
+    }>(fetchArticle, { slug });
+    result = { ...result, page: filterPageToSingleItem(result, preview) };
+
+    return {
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchArticle,
+        queryParams: { slug },
+      },
+    };
+  },
+)(({ data, preview }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -49,35 +79,7 @@ const ArticlePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
       <RelatedArticles relatedArticles={relatedArticles} />
     </>
   );
-};
-
-export async function getStaticProps({ preview = false, params = { slug: "" } }) {
-  const { slug } = params;
-  let result = await getClient(preview).fetch(fetchArticle, { slug });
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchArticle,
-        queryParams: { slug },
-      },
-    },
-  };
-}
-
-export async function getStaticPaths() {
-  const data = await getClient(false).fetch(fetchArticles);
-
-  return {
-    paths: data.pages.map((page: { slug: { current: string } }) => ({
-      params: { slug: page.slug.current },
-    })),
-    fallback: false,
-  };
-}
+});
 
 const fetchArticles = groq`
 {
@@ -128,6 +130,4 @@ const fetchArticle = groq`
 }
 `;
 
-ArticlePage.layout = Layout;
-ArticlePage.filterPage = true;
 export default ArticlePage;

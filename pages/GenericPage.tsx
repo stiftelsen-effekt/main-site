@@ -17,8 +17,9 @@ export const getGenericPagePaths = async () => {
     fetchGenericPages,
   );
   const slugs = data.pages.map((page) => page.slug.current);
-
-  return slugs.filter((slug) => !SKIP_GENERIC_PATHS.includes(slug));
+  const filteredSlugs = slugs.filter((slug) => !SKIP_GENERIC_PATHS.includes(slug));
+  const paths = filteredSlugs.map((slug) => [slug === "/" ? "" : slug]);
+  return paths;
 };
 
 export const GenericPage = withStaticProps(

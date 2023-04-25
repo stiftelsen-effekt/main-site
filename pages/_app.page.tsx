@@ -79,7 +79,7 @@ export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
   return data.widget[0];
 };
 
-export const filterPageToSingleItem = (data: any, preview: boolean) => {
+export const filterPageToSingleItem = <T,>(data: { page: T | T[] }, preview: boolean): T | null => {
   if (!Array.isArray(data.page)) {
     return data.page;
   }

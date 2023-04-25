@@ -17,7 +17,8 @@ export const getArticlesPagePath = async () => {
   let result = await getClient(false).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, false) };
   const slug: string = result.page.slug;
-  return slug;
+  const path = [slug];
+  return path;
 };
 
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
