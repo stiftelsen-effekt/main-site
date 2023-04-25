@@ -15,7 +15,7 @@ import { filterPageToSingleItem } from "./_app.page";
 import { withStaticProps } from "../util/withStaticProps";
 
 export const getGenericPagePaths = async () => {
-  const SKIP_GENERIC_PATHS = ["/", "artikler", "om", "ofte-stilte-sporsmal", "vippsavtale"];
+  const SKIP_GENERIC_PATHS = ["/", "artikler", "om", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
