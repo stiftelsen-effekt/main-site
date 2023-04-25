@@ -8,7 +8,8 @@ import keyPoint from "./types/key-point";
 import organization from "./types/organization";
 import role from "./types/role";
 import testimonial from "./types/testimonial";
-import teaser from "./types/teaser";
+import teasers from "./types/teasers";
+import teasersitem from "./types/teasersitem";
 import pointlist from "./types/pointlist";
 import introsection from "./types/introsection";
 import siteSettings from "./siteSettings";
@@ -19,7 +20,6 @@ import pageheader from "./types/pageheader";
 import questionandanswer from "./types/questionandanswer";
 import questionandanswergroup from "./types/questionandanswergroup";
 import frontpage from "./pages/frontpage";
-import organizations from "./pages/organizations";
 import profile from "./pages/profile";
 import support from "./pages/support";
 import generic from "./pages/generic";
@@ -53,11 +53,13 @@ import wealthcalculator from "./types/wealthcalculator";
 import wealthcalculatorteaser from "./types/wealthcalculatorteaser";
 import contributorlist from "./types/contributorlist";
 import inngress from "./types/inngress";
+import giveblock from "./types/giveblock";
+import givewellstamp from "./types/givewellstamp";
+import organizationslist from "./types/organizationslist";
 
 export const pages = [
   generic,
   frontpage,
-  organizations,
   profile,
   support,
   criteria,
@@ -68,7 +70,8 @@ export const pages = [
 ] as const;
 
 export const types = [
-  teaser,
+  teasers,
+  teasersitem,
   testimonial,
   contributor,
   introsection,
@@ -107,6 +110,9 @@ export const types = [
   wealthcalculatorteaser,
   contributorlist,
   inngress,
+  giveblock,
+  givewellstamp,
+  organizationslist,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

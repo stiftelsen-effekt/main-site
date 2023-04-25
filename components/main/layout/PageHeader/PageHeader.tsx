@@ -6,15 +6,15 @@ import { Links, LinkType } from "../../blocks/Links/Links";
 export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
-  centered?: boolean;
+  layout?: "default" | "centered" | "hero";
   links?: (LinkType | NavLink)[];
-}> = ({ title, inngress, links, centered }) => {
+}> = ({ title, inngress, links, layout = "default" }) => {
   const hasmetacontent = inngress || links;
 
   return (
     <section
       className={`${style.pageheader} ${hasmetacontent ? style.pageheadermeta : null} ${
-        centered ? style.centered : null
+        style[layout]
       }`}
     >
       <div data-cy="header-container">

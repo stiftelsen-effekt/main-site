@@ -13,6 +13,24 @@ export default {
       title: "Numbered",
     },
     {
+      title: "Numbering options",
+      type: "object",
+      name: "options",
+      fields: [
+        {
+          name: "layout",
+          type: "string",
+          title: "Layout",
+          options: {
+            list: ["left", "top"],
+            layout: "radio",
+          },
+          initialValue: "left",
+        },
+      ],
+      hidden: ({ parent }: any) => !parent.numbered,
+    },
+    {
       name: "points",
       type: "array",
       title: "Points",

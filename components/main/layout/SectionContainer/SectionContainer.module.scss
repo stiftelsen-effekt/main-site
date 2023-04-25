@@ -25,8 +25,11 @@
   display: block;
   width: 100%;
   margin: 0 auto;
-  padding-top: 28px;
   max-width: 1920px;
+
+  &:not(:empty) {
+    padding-top: 28px;
+  }
 }
 
 .section__content {
@@ -35,10 +38,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 45px;
-  padding-bottom: 45px;
   margin: 0 auto;
   max-width: 1920px;
+
+  &.ypadded {
+    padding-top: 45px;
+    padding-bottom: 45px;
+  }
 }
 
 .padded {
@@ -47,23 +53,26 @@
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .section__heading {
+  .section__heading:not(:empty) {
     padding-top: 18px;
   }
 }
 
 @media only screen and (max-width: 1180px) {
   .section__heading {
-    padding-top: 4px;
     /* Small type */
     font-size: 14px;
+
+    &:not(:empty) {
+      padding-top: 4px;
+    }
   }
 
   .section__container {
     margin-bottom: 0;
   }
 
-  .section__content {
+  .section__content.ypadded {
     padding-top: 30px;
     padding-bottom: 30px;
   }

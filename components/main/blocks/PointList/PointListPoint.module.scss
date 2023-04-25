@@ -2,8 +2,54 @@
   border-top: 1px solid black;
   display: flex;
   column-gap: 25px;
+
+  &.top {
+    display: block;
+    border-top: none;
+
+    .pointlistpoint__number {
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--primary);
+      font-size: 120px;
+      line-height: 110%;
+    }
+
+    .pointlistpoint__heading {
+      margin-top: 24px;
+      margin-bottom: 40px;
+    }
+
+    .pointlistpoint__paragraph {
+      max-width: 400px;
+      margin-bottom: 0;
+    }
+  }
 }
 
-.pointlistpoint div:nth-child(2) {
-  flex-grow: 1;
+@media screen and (max-width: 1520px) and (min-width: 1181px) {
+  .pointlistpoint {
+    &.top {
+      .pointlistpoint__number {
+        font-size: 90px;
+        line-height: 110%;
+      }
+
+      .pointlistpoint__heading {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .pointlistpoint {
+    &.top {
+      .pointlistpoint__number {
+        width: 120px;
+        font-size: 70px;
+        line-height: 80px;
+      }
+    }
+  }
 }
