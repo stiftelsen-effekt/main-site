@@ -28,63 +28,12 @@ export default () =>
             .title("Pages")
             .items([
               S.listItem()
-                .title("Frontpage")
-                .icon(Zap)
-                .child(
-                  S.document()
-                    .schemaType("frontpage")
-                    .documentId("frontpage")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
                 .title("About us")
                 .icon(Users)
                 .child(
                   S.document()
                     .schemaType("about_us")
                     .documentId("about_us")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
-                .title("Organizations")
-                .icon(Briefcase)
-                .child(
-                  S.document()
-                    .schemaType("organizations")
-                    .documentId("organizations")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
-                .title("Support")
-                .icon(HelpCircle)
-                .child(
-                  S.document()
-                    .schemaType("support")
-                    .documentId("support")
                     .views([
                       S.view.form(),
                       S.view
