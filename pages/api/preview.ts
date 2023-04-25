@@ -14,12 +14,15 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
     return res.status(401).json({ message: "Invalid secret token" });
   }
 
-  if (!req.query.slug) {
+  if (req.query.slug == null) {
     return res.status(401).json({ message: "No slug" });
   }
 
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({});
+
+  const slug = Array.isArray(req.query.slug) ? req.query.slug[0] : req.query.slug;
+  const slugWithoutSlash = slug.startsWith("/") ? slug.slice(1) : slug;
 
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
@@ -43,10 +46,10 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
       res.writeHead(307, { Location: `/vippsavtale?email=example@email.com` });
       break;
     case "generic_page":
-      res.writeHead(307, { Location: `/${req?.query?.slug}` ?? `/` });
+      res.writeHead(307, { Location: `/${slugWithoutSlash}` ?? `/` });
       break;
     case "article_page":
-      res.writeHead(307, { Location: `/artikler/${req?.query?.slug}` ?? `/` });
+      res.writeHead(307, { Location: `/artikler/${slugWithoutSlash}` ?? `/` });
       break;
     case "donationwidget":
       res.writeHead(307, { Location: `/` });

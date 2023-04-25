@@ -6,26 +6,44 @@ export default {
   type: "document",
   title: "Section",
   icon: FileText,
+  fieldsets: [
+    {
+      name: "layout",
+      title: "Layout",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     {
       name: "heading",
       type: "string",
       title: "Header",
+      fieldset: "layout",
     },
     {
       name: "nodivider",
       type: "boolean",
       title: "No divider line",
+      fieldset: "layout",
     },
     {
       name: "inverted",
       type: "boolean",
       title: "Inverted",
+      fieldset: "layout",
     },
     {
       name: "padded",
       type: "boolean",
       title: "Left right padded",
+      fieldset: "layout",
+    },
+    {
+      name: "ypadded",
+      type: "boolean",
+      title: "Top bottom padded",
+      initialValue: true,
+      fieldset: "layout",
     },
     {
       name: "blocks",
@@ -48,7 +66,12 @@ export default {
         { type: "reference", to: [{ type: "contactinfo" }] },
         { type: "newslettersignup" },
         { type: "wealthcalculator" },
+        { type: "wealthcalculatorteaser" },
         { type: "htmlembed" },
+        { type: "teasers" },
+        { type: "interventionwidget" },
+        { type: "giveblock" },
+        { type: "givewellstamp" },
         { type: "organizationslist" },
       ],
       options: {

@@ -1,7 +1,10 @@
+import { Zap } from "react-feather";
+
 export default {
   name: "interventionwidget",
   type: "object",
   title: "Intervention widget",
+  icon: Zap,
   fields: [
     {
       name: "title",
@@ -17,11 +20,6 @@ export default {
       name: "interventions",
       type: "array",
       of: [{ type: "intervention" }],
-    },
-    {
-      name: "button_text",
-      type: "string",
-      title: "Button text",
     },
   ],
 } as const;

@@ -14,7 +14,6 @@ import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
 import { PointList } from "./PointList/PointList";
 import { PointListPointProps } from "./PointList/PointListPoint";
-import { PointListSectionWrapper } from "./PointList/PointListSectionWrapper";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
 import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
@@ -23,7 +22,11 @@ import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
 import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
 import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
+import { InterventionWidget } from "./InterventionWidget/InterventionWidget";
 import { IntroSection } from "./IntroSection/IntroSection";
+import { Teasers } from "./Teasers/Teasers";
+import { GiveBlock } from "./GiveBlock/GiveBlock";
+import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
@@ -37,6 +40,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
             inverted={section.inverted}
             nodivider={section.nodivider}
             padded={section.padded}
+            ypadded={section.ypadded}
           >
             {section.blocks &&
               section.blocks.map((block: any) => {
@@ -51,15 +55,12 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                     );
                   case "pointlist":
                     return (
-                      <PointListSectionWrapper key={block._key}>
-                        <PointList
-                          points={block.points.map((point: PointListPointProps, i: number) => ({
-                            number: block.numbered ? i + 1 : null,
-                            heading: point.heading,
-                            paragraph: point.paragraph,
-                          }))}
-                        ></PointList>
-                      </PointListSectionWrapper>
+                      <PointList
+                        key={block._key}
+                        points={block.points}
+                        numbered={block.numbered}
+                        options={block.options}
+                      />
                     );
                   case "links":
                     return (
@@ -139,6 +140,8 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                     return (
                       <Testimonial key={block._key || block._id} testimonies={block.testimonials} />
                     );
+                  case "teasers":
+                    return <Teasers key={block._key || block._id} teasers={block.teasers} />;
                   case "quote":
                     return (
                       <Quote
@@ -169,7 +172,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         key={block._key || block._id}
                         title={block.title}
                         description={block.description}
-                        link={block.navlink}
+                        link={block.button}
                         medianIncome={block.median_income}
                         afterDonationPercentileLabelTemplateString={
                           block.income_percentile_after_donation_label_template_string
@@ -179,12 +182,41 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         }
                       />
                     );
+                  case "interventionwidget":
+                    return (
+                      <InterventionWidget
+                        key={block._key || block._id}
+                        title={block.title}
+                        default_sum={block.default_sum}
+                        interventions={block.interventions}
+                      />
+                    );
                   case "introsection": {
                     return (
                       <IntroSection
                         key={block._key || block._id}
                         heading={block.heading}
                         paragraph={block.paragraph}
+                      />
+                    );
+                  }
+                  case "giveblock": {
+                    return (
+                      <GiveBlock
+                        key={block._key || block._id}
+                        heading={block.heading}
+                        paragraph={block.paragraph}
+                      />
+                    );
+                  }
+                  case "givewellstamp": {
+                    return (
+                      <GiveWellStamp
+                        key={block._key || block._id}
+                        links={block.links}
+                        quote={block.quote}
+                        quotee={block.quotee}
+                        quoteePosition={block.quotee_position}
                       />
                     );
                   }

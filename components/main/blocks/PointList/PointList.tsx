@@ -2,15 +2,28 @@ import React from "react";
 import elements from "./PointList.module.scss";
 import { PointListPoint, PointListPointProps } from "./PointListPoint";
 
-export const PointList: React.FC<{ points: PointListPointProps[] }> = ({ points }) => {
+type PointListProps = {
+  points: {
+    heading: string;
+    paragraph: string;
+  }[];
+  numbered?: boolean;
+  options?: {
+    layout?: "left" | "top";
+  };
+};
+
+export const PointList: React.FC<PointListProps> = ({ points, options, numbered }) => {
+  const layout = options?.layout || "left";
   return (
-    <div className={elements.pointlistwrapper}>
-      {points.map((point) => (
+    <div className={[elements.pointlistwrapper, layout === "top" ? elements.top : ""].join(" ")}>
+      {points.map((point, index) => (
         <PointListPoint
-          key={point.number || point.heading}
-          number={point.number}
+          key={`${index}-${point.heading}`}
+          number={numbered ? index + 1 : undefined}
           heading={point.heading}
           paragraph={point.paragraph}
+          layout={layout}
         />
       ))}
     </div>

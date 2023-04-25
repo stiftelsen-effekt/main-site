@@ -1,16 +1,16 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
+import { GetStaticPropsContext } from "next";
 import { groq } from "next-sanity";
-import { LayoutPage, PageTypes } from "../types";
-import { Navbar } from "../components/main/layout/navbar";
+import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { Layout } from "../components/main/layout/layout";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { Layout } from "../components/main/layout/layout";
-import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
+import { getClient } from "../lib/sanity.server";
+import { LayoutPage, PageTypes } from "../types";
 import { filterPageToSingleItem } from "./_app";
 
 const GenericPage: LayoutPage<{
@@ -33,7 +33,7 @@ const GenericPage: LayoutPage<{
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug.current}`}
+        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug?.current ?? ""}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -45,7 +45,7 @@ const GenericPage: LayoutPage<{
         title={header.title}
         inngress={header.inngress}
         links={header.links}
-        centered={header.centered}
+        layout={header.layout}
       />
 
       <BlockContentRenderer content={content} />
@@ -53,8 +53,11 @@ const GenericPage: LayoutPage<{
   );
 };
 
-export async function getStaticProps({ preview = false, params = { slug: "" } }) {
-  const { slug } = params;
+export async function getStaticProps({
+  preview = false,
+  params,
+}: GetStaticPropsContext<{ slug?: string[] }>) {
+  const slug = params?.slug?.[0] ?? "/";
   let result = await getClient(preview).fetch(fetchGenericPage, { slug });
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
@@ -71,7 +74,7 @@ export async function getStaticProps({ preview = false, params = { slug: "" } })
 }
 
 export async function getStaticPaths() {
-  const SKIP_GENERIC_PATHS = ["/", "artikler", "om", "vippsavtale"];
+  const SKIP_GENERIC_PATHS = ["artikler", "om", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
@@ -80,9 +83,12 @@ export async function getStaticPaths() {
   return {
     paths: slugs
       .filter((slug) => !SKIP_GENERIC_PATHS.includes(slug))
-      .map((slug) => ({
-        params: { slug },
-      })),
+      .map((slug) => {
+        const slugParts = [slug === "/" ? "" : slug];
+        return {
+          params: { slug: slugParts },
+        };
+      }),
     fallback: false,
   };
 }

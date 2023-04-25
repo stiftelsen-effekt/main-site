@@ -8,7 +8,8 @@ import keyPoint from "./types/key-point";
 import organization from "./types/organization";
 import role from "./types/role";
 import testimonial from "./types/testimonial";
-import teaser from "./types/teaser";
+import teasers from "./types/teasers";
+import teasersitem from "./types/teasersitem";
 import pointlist from "./types/pointlist";
 import introsection from "./types/introsection";
 import siteSettings from "./siteSettings";
@@ -51,6 +52,8 @@ import citation from "./types/citation";
 import newslettersignup from "./types/newslettersignup";
 import wealthcalculator from "./types/wealthcalculator";
 import wealthcalculatorteaser from "./types/wealthcalculatorteaser";
+import giveblock from "./types/giveblock";
+import givewellstamp from "./types/givewellstamp";
 import organizationslist from "./types/organizationslist";
 
 export const pages = [
@@ -67,7 +70,8 @@ export const pages = [
 ] as const;
 
 export const types = [
-  teaser,
+  teasers,
+  teasersitem,
   testimonial,
   contributor,
   introsection,
@@ -104,6 +108,8 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser,
+  giveblock,
+  givewellstamp,
   organizationslist,
 ] as const;
 
