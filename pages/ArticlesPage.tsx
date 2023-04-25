@@ -13,14 +13,6 @@ import { filterPageToSingleItem } from "./_app.page";
 import { linksContentQuery, widgetQuery } from "../_queries";
 import { withStaticProps } from "../util/withStaticProps";
 
-export const getArticlesPagePath = async () => {
-  let result = await getClient(false).fetch(fetchArticles);
-  result = { ...result, page: filterPageToSingleItem(result, false) };
-  const slug: string = result.page.slug;
-  const path = [slug];
-  return path;
-};
-
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
   let result = await getClient(preview).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
@@ -46,7 +38,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/artikler`}
+        canonicalurl={`https://gieffektivt.no/${page.slug}`}
       />
 
       <div className={styles.inverted}>

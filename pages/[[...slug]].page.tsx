@@ -2,8 +2,9 @@ import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
 import { LayoutPage, PageTypes } from "../types";
 import { GenericPage, getGenericPagePaths } from "./GenericPage";
 import { Layout } from "../components/main/layout/layout";
-import { ArticlesPage, getArticlesPagePath } from "./ArticlesPage";
+import { ArticlesPage } from "./ArticlesPage";
 import ArticlePage, { getArticlePaths } from "./ArticlePage";
+import { fetchRouterContext } from "../context/RouterContext";
 
 enum PageType {
   GenericPage = "generic",
@@ -27,12 +28,12 @@ const Page: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 };
 
 const inferPageTypeFromPath = async (path: string[]) => {
-  const articlesPagePath = await getArticlesPagePath();
+  const { articlesPageSlug } = await fetchRouterContext();
 
-  const isArticle = path?.[0] === articlesPagePath?.[0] && path?.length > 1;
+  const isArticle = path?.[0] === articlesPageSlug && path?.length > 1;
   if (isArticle) return PageType.ArticlePage;
 
-  const isArticlesPage = path?.[0] === articlesPagePath?.[0] && path?.length === 1;
+  const isArticlesPage = path?.[0] === articlesPageSlug && path?.length === 1;
   if (isArticlesPage) return PageType.ArticlesPage;
 
   return PageType.GenericPage;
@@ -80,9 +81,14 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const articlesPagePath = await getArticlesPagePath();
-  const paths = await Promise.all([getGenericPagePaths(), getArticlePaths(articlesPagePath)]).then(
-    ([genericPagePaths, articlePaths]) => [...genericPagePaths, articlesPagePath, ...articlePaths],
+  const { articlesPageSlug } = await fetchRouterContext();
+
+  const paths = await Promise.all([getGenericPagePaths(), getArticlePaths(articlesPageSlug)]).then(
+    ([genericPagePaths, articlePaths]) => [
+      ...genericPagePaths,
+      ...articlePaths,
+      [articlesPageSlug],
+    ],
   );
 
   return {
