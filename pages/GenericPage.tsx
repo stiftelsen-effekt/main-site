@@ -1,22 +1,41 @@
-import { GetStaticPropsContext } from "next";
 import { groq } from "next-sanity";
-import { linksContentQuery, pageContentQuery, widgetQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
-import { Layout } from "../components/main/layout/layout";
 import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
-import { LayoutPage, PageTypes } from "../types";
-import { filterPageToSingleItem } from "./_app";
+import { withStaticProps } from "../util/withStaticProps";
+import { filterPageToSingleItem } from "./_app.page";
+import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
-const GenericPage: LayoutPage<{
-  data: { result: { [key: string]: any; page: PageTypes["generic_page"] } };
-  preview: boolean;
-}> = ({ data, preview }) => {
+export const getGenericPagePaths = async () => {
+  const SKIP_GENERIC_PATHS = ["artikler", "om", "vippsavtale"];
+  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
+    fetchGenericPages,
+  );
+  const slugs = data.pages.map((page) => page.slug.current);
+
+  return slugs.filter((slug) => !SKIP_GENERIC_PATHS.includes(slug));
+};
+
+export const GenericPage = withStaticProps(
+  async ({ preview, slug }: { preview: boolean; slug: string }) => {
+    let result = await getClient(preview).fetch(fetchGenericPage, { slug });
+    result = { ...result, page: filterPageToSingleItem(result, preview) };
+
+    return {
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchGenericPage,
+        queryParams: { slug },
+      },
+    };
+  },
+)(({ data, preview }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -51,47 +70,7 @@ const GenericPage: LayoutPage<{
       <BlockContentRenderer content={content} />
     </>
   );
-};
-
-export async function getStaticProps({
-  preview = false,
-  params,
-}: GetStaticPropsContext<{ slug?: string[] }>) {
-  const slug = params?.slug?.[0] ?? "/";
-  let result = await getClient(preview).fetch(fetchGenericPage, { slug });
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchGenericPage,
-        queryParams: { slug },
-      },
-    },
-  };
-}
-
-export async function getStaticPaths() {
-  const SKIP_GENERIC_PATHS = ["artikler", "om", "vippsavtale"];
-  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
-    fetchGenericPages,
-  );
-  const slugs = data.pages.map((page) => page.slug.current);
-
-  return {
-    paths: slugs
-      .filter((slug) => !SKIP_GENERIC_PATHS.includes(slug))
-      .map((slug) => {
-        const slugParts = [slug === "/" ? "" : slug];
-        return {
-          params: { slug: slugParts },
-        };
-      }),
-    fallback: false,
-  };
-}
+});
 
 const fetchGenericPages = groq`
 {
@@ -138,7 +117,3 @@ const fetchGenericPage = groq`
   },
 }
 `;
-
-GenericPage.layout = Layout;
-GenericPage.filterPage = true;
-export default GenericPage;

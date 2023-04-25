@@ -28,6 +28,7 @@ const nextConfig = {
     // for more information.
     hideSourceMaps: true,
   },
+  pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   async redirects() {
     return [
       {
