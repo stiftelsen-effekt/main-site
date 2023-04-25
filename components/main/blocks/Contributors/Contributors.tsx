@@ -9,7 +9,7 @@ export const Contributors: React.FC<{
 }> = ({ title, contributors, displayImages = true }) => {
   return (
     <div className={styles.contributors}>
-      <h5 className={styles.contributors__title}>{title}</h5>
+      <h4 className={styles.contributors__title}>{title}</h4>
       <div className={styles.contributors__list}>
         {contributors.map((member) => (
           <Contributor key={member._id} displayImage={displayImages} {...member} />
