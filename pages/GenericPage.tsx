@@ -12,7 +12,7 @@ import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
 export const getGenericPagePaths = async () => {
-  const SKIP_GENERIC_PATHS = ["artikler", "om", "vippsavtale"];
+  const SKIP_GENERIC_PATHS = ["om", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
