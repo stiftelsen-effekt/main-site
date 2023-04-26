@@ -7,6 +7,7 @@ import { ImageUrlBuilder } from "next-sanity-image";
 export type ContributorType = {
   _id: string;
   image: SanityImageSource;
+  displayImage?: boolean;
   name: string;
   email?: string;
   subrole?: string;
@@ -14,11 +15,12 @@ export type ContributorType = {
 };
 
 const contributorImageBuilder = (imageUrlBuilder: ImageUrlBuilder) => {
-  return imageUrlBuilder.width(240).height(310).saturation(-100).fit("clip");
+  return imageUrlBuilder.width(400).height(490).saturation(-100).fit("clip");
 };
 
 export const Contributor: React.FC<ContributorType> = ({
   image,
+  displayImage = true,
   name,
   email,
   subrole,
@@ -26,7 +28,7 @@ export const Contributor: React.FC<ContributorType> = ({
 }) => {
   return (
     <div className={styles.contributor}>
-      {image != null && (
+      {image != null && displayImage && (
         <div className={styles.contributor__image}>
           <ResponsiveImage layout="fill" image={image} urlBuilder={contributorImageBuilder} />
         </div>

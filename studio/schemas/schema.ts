@@ -19,7 +19,6 @@ import navgroup from "./types/navgroup";
 import pageheader from "./types/pageheader";
 import questionandanswer from "./types/questionandanswer";
 import questionandanswergroup from "./types/questionandanswergroup";
-import about from "./pages/about";
 import profile from "./pages/profile";
 import support from "./pages/support";
 import generic from "./pages/generic";
@@ -51,13 +50,14 @@ import citation from "./types/citation";
 import newslettersignup from "./types/newslettersignup";
 import wealthcalculator from "./types/wealthcalculator";
 import wealthcalculatorteaser from "./types/wealthcalculatorteaser";
+import contributorlist from "./types/contributorlist";
+import inngress from "./types/inngress";
 import giveblock from "./types/giveblock";
 import givewellstamp from "./types/givewellstamp";
 import organizationslist from "./types/organizationslist";
 
 export const pages = [
   generic,
-  about,
   profile,
   support,
   criteria,
@@ -106,6 +106,8 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser,
+  contributorlist,
+  inngress,
   giveblock,
   givewellstamp,
   organizationslist,

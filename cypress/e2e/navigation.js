@@ -112,10 +112,10 @@ describe("Navigation", () => {
     });
     cy.url().should("include", "/artikler");
 
-    cy.get("[data-cy=om-link]").within(() => {
+    cy.get("[data-cy=om-oss-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/om");
+    cy.url().should("include", "/om-oss");
 
     cy.get("[data-cy=Topplista-link]").within(() => {
       cy.get("a").click({ force: true });

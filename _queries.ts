@@ -339,13 +339,22 @@ export const pageContentQuery = `content[] {
         },
       }
     },
+    _type == 'contributorlist' => {
+      ...,
+      role->,
+      contributors[]->
+    },
+    _type == 'inngress' => {
+      ...,
+      ${linksContentQuery}
+    },
     _type == 'wealthcalculatorteaser' => {
       ...,
       button {
         ${linksSelectorQuery}
       }
     },
-    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'wealthcalculator' && _type != 'wealthcalculatorteaser' => @,
+    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'wealthcalculatorteaser' => @,
   }
 },
 `;
