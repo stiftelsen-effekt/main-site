@@ -28,57 +28,6 @@ export default () =>
             .title("Pages")
             .items([
               S.listItem()
-                .title("Frontpage")
-                .icon(Zap)
-                .child(
-                  S.document()
-                    .schemaType("frontpage")
-                    .documentId("frontpage")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
-                .title("Organizations")
-                .icon(Briefcase)
-                .child(
-                  S.document()
-                    .schemaType("organizations")
-                    .documentId("organizations")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
-                .title("Support")
-                .icon(HelpCircle)
-                .child(
-                  S.document()
-                    .schemaType("support")
-                    .documentId("support")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
                 .title("Articles")
                 .icon(Paperclip)
                 .child(
@@ -114,7 +63,6 @@ export default () =>
                 ),
             ]),
         ),
-
       S.listItem()
         .schemaType("generic_page")
         .title("Generic pages")
@@ -124,6 +72,7 @@ export default () =>
             .title("Pages")
             .schemaType("generic_page")
             .filter('_type == "generic_page"')
+            .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document()
                 .schemaType("generic_page")
