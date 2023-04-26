@@ -24,6 +24,8 @@ import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 import { InterventionWidget } from "./InterventionWidget/InterventionWidget";
 import { IntroSection } from "./IntroSection/IntroSection";
+import { Contributors } from "./Contributors/Contributors";
+import { Inngress } from "./Inngress/Inngress";
 import { Teasers } from "./Teasers/Teasers";
 import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
@@ -180,6 +182,26 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         incomePercentileLabelTemplateString={
                           block.income_percentile_label_template_string
                         }
+                      />
+                    );
+                  case "contributorlist":
+                    return (
+                      <>
+                        <Contributors
+                          key={block._key || block._id}
+                          title={block.role.title}
+                          contributors={block.contributors}
+                          displayImages={block.displayimages}
+                        />
+                      </>
+                    );
+                  case "inngress":
+                    return (
+                      <Inngress
+                        key={block._key || block._id}
+                        header={block.heading}
+                        content={block.body}
+                        links={block.sidelinks}
                       />
                     );
                   case "interventionwidget":

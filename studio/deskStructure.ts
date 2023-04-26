@@ -45,23 +45,6 @@ export default () =>
                     ]),
                 ),
               S.listItem()
-                .title("About us")
-                .icon(Users)
-                .child(
-                  S.document()
-                    .schemaType("about_us")
-                    .documentId("about_us")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
                 .title("Organizations")
                 .icon(Briefcase)
                 .child(
@@ -219,16 +202,6 @@ export default () =>
                 })
                 .title("Preview"),
             ]),
-        ),
-      S.listItem()
-        .schemaType("contributor")
-        .title("Contributors")
-        .icon(Users)
-        .child(
-          S.documentList()
-            .title("People")
-            .schemaType("contributor")
-            .filter('_type == "contributor"'),
         ),
       S.listItem()
         .title("Settings")
