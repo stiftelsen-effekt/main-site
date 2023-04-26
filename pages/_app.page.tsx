@@ -16,6 +16,8 @@ import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
 import App from "next/app";
 import { RouterContext, fetchRouterContext } from "../context/RouterContext";
+import { AppStaticProps, LayoutType } from "../util/withAppStaticProps";
+import { ProfileLayout } from "../components/profile/layout/layout";
 
 const rootReducer = combineReducers<State>({
   donation: donationReducer,
@@ -31,16 +33,19 @@ sagaMiddleware.run(watchAll);
 function MyApp({
   Component,
   pageProps,
-  routerContextValue,
-}: Awaited<ReturnType<typeof MyApp.getInitialProps>> &
-  AppProps<{
-    preview: boolean;
-    data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
-  }>) {
-  // Gets the page layout from the component, defaults to the main layout
-  const PageLayout = (Component as LayoutPage).layout || Layout;
+}: AppProps<{
+  appStaticProps?: AppStaticProps;
+  preview: boolean;
+  data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
+}>) {
+  const { data: propsData, appStaticProps } = pageProps;
+  if (!appStaticProps) {
+    throw new Error('appStaticProps is undefined. Did you forget to use "withAppStaticProps"?');
+  }
 
-  const propsData = pageProps.data;
+  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
+    appStaticProps.layout
+  ];
   const { data: previewData } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
     initialData: propsData?.result,
@@ -51,13 +56,14 @@ function MyApp({
     pageProps.data.result = previewData;
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
-    if ((Component as LayoutPage).filterPage) {
+
+    if (appStaticProps.filterPage) {
       pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
     }
 
     return (
       <Provider store={store}>
-        <RouterContext.Provider value={routerContextValue}>
+        <RouterContext.Provider value={appStaticProps.routerContext}>
           <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
             <Component {...pageProps} />
           </PageLayout>
@@ -68,17 +74,6 @@ function MyApp({
     return <Component {...pageProps} />;
   }
 }
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-
-  const routerContextValue = await fetchRouterContext();
-
-  return {
-    ...appProps,
-    routerContextValue,
-  };
-};
 
 export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
   if (!Array.isArray(data.widget)) {

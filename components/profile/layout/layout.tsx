@@ -16,7 +16,7 @@ const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || "/min-side/");
 };
 
-export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
+export const ProfileLayout: LayoutElement = ({ children, footerData, widgetData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);

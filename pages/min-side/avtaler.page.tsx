@@ -1,6 +1,4 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
-import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
 import { AvtaleGiroAgreement, Distribution, Organization, VippsAgreement } from "../../models";
@@ -28,8 +26,13 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
+import { InferGetStaticPropsType } from "next";
+import { LayoutType, withAppStaticProps } from "../../util/withAppStaticProps";
 
-const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
   const { articlesPageSlug } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
@@ -233,20 +236,22 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
   );
 };
 
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
+export const getStaticProps = withAppStaticProps({ layout: LayoutType.Profile })(
+  async ({ preview = false }) => {
+    const result = await getClient(preview).fetch(fetchProfilePage);
 
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
+    return {
+      props: {
+        preview: preview,
+        data: {
+          result: result,
+          query: fetchProfilePage,
+          queryParams: {},
+        },
       },
-    },
-  };
-}
+    };
+  },
+);
 
 const fetchProfilePage = groq`
 {
@@ -258,7 +263,6 @@ const fetchProfilePage = groq`
 }
 `;
 
-Agreements.layout = Layout;
 export default Agreements;
 
 const getDistributionMap = (distributions: Distribution[], organizations: Organization[]) => {

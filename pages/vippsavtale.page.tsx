@@ -1,7 +1,6 @@
 import React from "react";
 import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
 import { SEO } from "../components/shared/seo/Seo";
 import { Navbar } from "../components/main/layout/navbar";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
@@ -9,7 +8,6 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { Layout } from "../components/main/layout/layout";
 import { linksContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app.page";
 import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
@@ -20,8 +18,13 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
+import { withAppStaticProps } from "../util/withAppStaticProps";
+import { GetStaticPropsResult, InferGetStaticPropsType } from "next";
 
-const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
   const { loginWithRedirect } = useAuth0();
 
   const page = data.result.page;
@@ -77,7 +80,9 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = withAppStaticProps({
+  filterPage: true,
+})(async ({}, { preview }) => {
   let result = await getClient(preview).fetch(fetchVippsAgreementPage);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
@@ -91,7 +96,7 @@ export async function getStaticProps({ preview = false }) {
       },
     },
   };
-}
+});
 
 const fetchVippsAgreementPage = groq`
 {
@@ -130,6 +135,4 @@ const fetchVippsAgreementPage = groq`
 }
 `;
 
-VippsAgreement.layout = Layout;
-VippsAgreement.filterPage = true;
 export default VippsAgreement;

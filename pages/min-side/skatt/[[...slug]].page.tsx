@@ -1,7 +1,5 @@
 import Head from "next/head";
-import { Layout } from "../../../components/profile/layout/layout";
 import style from "../../../styles/Tax.module.css";
-import { LayoutPage } from "../../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { getClient } from "../../../lib/sanity.server";
@@ -21,8 +19,10 @@ import { FacebookTab } from "../../../components/profile/tax/FacebookTab/Faceboo
 import { TaxDeductionsTab } from "../../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
 import { TaxUnitsTab } from "../../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 import { YearlyReportsTab } from "../../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
+import { InferGetStaticPropsType } from "next";
+import { LayoutType, withAppStaticProps } from "../../../util/withAppStaticProps";
 
-const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const router = useRouter();
   const settings = data.result.settings[0];
   const page = data.result.page[0];
@@ -95,20 +95,22 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
   );
 };
 
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
+export const getStaticProps = withAppStaticProps({ layout: LayoutType.Profile })(
+  async ({ preview = false }) => {
+    const result = await getClient(preview).fetch(fetchProfilePage);
 
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
+    return {
+      props: {
+        preview: preview,
+        data: {
+          result: result,
+          query: fetchProfilePage,
+          queryParams: {},
+        },
       },
-    },
-  };
-}
+    };
+  },
+);
 
 export async function getStaticPaths() {
   return {
@@ -138,5 +140,4 @@ const fetchProfilePage = groq`
 }
 `;
 
-Home.layout = Layout;
-export default Home;
+export default Page;

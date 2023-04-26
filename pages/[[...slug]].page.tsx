@@ -1,10 +1,9 @@
-import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
-import { LayoutPage, PageTypes } from "../types";
-import { GenericPage, getGenericPagePaths } from "./GenericPage";
-import { Layout } from "../components/main/layout/layout";
-import { ArticlesPage } from "./ArticlesPage";
-import ArticlePage, { getArticlePaths } from "./ArticlePage";
+import { InferGetStaticPropsType } from "next";
 import { fetchRouterContext } from "../context/RouterContext";
+import { withAppStaticProps } from "../util/withAppStaticProps";
+import ArticlePage, { getArticlePaths } from "./ArticlePage";
+import { ArticlesPage } from "./ArticlesPage";
+import { GenericPage, getGenericPagePaths } from "./GenericPage";
 
 enum PageType {
   GenericPage = "generic",
@@ -12,7 +11,7 @@ enum PageType {
   ArticlePage = "article",
 }
 
-const Page: LayoutPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   data,
   preview,
   pageType,
@@ -39,10 +38,9 @@ const inferPageTypeFromPath = async (path: string[]) => {
   return PageType.GenericPage;
 };
 
-export async function getStaticProps({
-  preview = false,
-  params,
-}: GetStaticPropsContext<{ slug?: string[] }>) {
+export const getStaticProps = withAppStaticProps<{ slug: string[] }>({
+  filterPage: true,
+})(async ({ preview = false, params }) => {
   const path = params?.slug ?? [];
 
   const pageType = await inferPageTypeFromPath(path);
@@ -78,7 +76,7 @@ export async function getStaticProps({
       } as const;
     }
   }
-}
+});
 
 export async function getStaticPaths() {
   const { articlesPageSlug } = await fetchRouterContext();
@@ -100,8 +98,5 @@ export async function getStaticPaths() {
     fallback: false,
   };
 }
-
-Page.layout = Layout;
-Page.filterPage = true;
 
 export default Page;

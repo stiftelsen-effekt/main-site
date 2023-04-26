@@ -6,9 +6,7 @@ import DonationsChart from "../../components/profile/donations/DonationsChart/Do
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
 import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
-import { Layout } from "../../components/profile/layout/layout";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
-import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from "../../components/profile/donations/DonationsDistributionTable/DonationsDistributionTable";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
@@ -28,8 +26,10 @@ import { DonationsYearlyGraph } from "../../components/profile/donations/Donatio
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
+import { InferGetStaticPropsType } from "next";
+import { LayoutType, withAppStaticProps } from "../../util/withAppStaticProps";
 
-const Home: LayoutPage<{ data: any }> = ({ data }) => {
+const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const router = useRouter();
   const settings = data.result.settings[0];
@@ -199,22 +199,22 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
   );
 };
 
-Home.layout = Layout;
+export const getStaticProps = withAppStaticProps({ layout: LayoutType.Profile })(
+  async ({ preview = false }) => {
+    const result = await getClient(preview).fetch(fetchProfilePage);
 
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
+    return {
+      props: {
+        preview: preview,
+        data: {
+          result: result,
+          query: fetchProfilePage,
+          queryParams: {},
+        },
       },
-    },
-  };
-}
+    };
+  },
+);
 
 export async function getStaticPaths() {
   return {
@@ -243,7 +243,7 @@ const fetchProfilePage = groq`
 }
 `;
 
-export default Home;
+export default Page;
 
 const getTotalDistribution = (
   aggregated: AggregatedDonations[],
