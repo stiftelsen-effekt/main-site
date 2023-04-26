@@ -209,9 +209,9 @@ export const WealthCalculator: React.FC<{
                   <span>%</span>
                 </div>
                 <span>
-                  av din inntekt kan du donere{" "}
-                  {thousandize(Math.round(income * (donationPercentage / 100)))} kr til effektiv
-                  bistand i året og fortsatt være blant de{" "}
+                  av din inntekt etter estimert skatt kan du donere{" "}
+                  {thousandize(Math.round(postTaxIncome * (donationPercentage / 100)))} kr til
+                  effektiv bistand i året og fortsatt være blant de{" "}
                   {calculateWealthPercentile(
                     wealthMountainGraphData,
                     equvivalizedIncome * (1 - donationPercentage / 100),
@@ -281,9 +281,9 @@ export const WealthCalculator: React.FC<{
           <div className={styles.calculator__impact__description}>
             <h3>Din impact.</h3>
             <p>
-              Med {thousandize(Math.round(income * (donationPercentage / 100)))} kroner i året
-              donert til effektiv bistand kan du påvirke mange liv der det trengs mest du kan for
-              eksempel bidra med myggnett, A-vitamin tilskudd eller vaksinering.
+              Med {thousandize(Math.round(postTaxIncome * (donationPercentage / 100)))} kroner i
+              året donert til effektiv bistand kan du påvirke mange liv der det trengs mest du kan
+              for eksempel bidra med myggnett, A-vitamin tilskudd eller vaksinering.
             </p>
             <div
               className={styles.calculator__impact__description__button_desktop}
@@ -296,7 +296,7 @@ export const WealthCalculator: React.FC<{
           </div>
           <div className={styles.calculator__impact__output}>
             <InterventionWidgetOutput
-              sum={income * (donationPercentage / 100)}
+              sum={postTaxIncome * (donationPercentage / 100)}
               interventions={interventions}
             />
           </div>
