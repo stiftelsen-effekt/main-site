@@ -1,7 +1,6 @@
 import React from "react";
 import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
 import { ArticleHeader } from "../components/main/layout/ArticleHeader/ArticleHeader";
 import { Navbar } from "../components/main/layout/navbar";
 import {
@@ -12,7 +11,6 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { Layout } from "../components/main/layout/layout";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { pageContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app.page";

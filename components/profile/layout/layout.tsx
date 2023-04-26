@@ -3,7 +3,7 @@ import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
 import Router from "next/router";
-import { LayoutElement } from "../../../types";
+import { LayoutProps } from "../../../types";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
@@ -16,7 +16,7 @@ const onRedirectCallback = (appState: any) => {
   Router.replace(appState?.returnTo || "/min-side/");
 };
 
-export const ProfileLayout: LayoutElement = ({ children, footerData, widgetData }) => {
+export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, widgetData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
