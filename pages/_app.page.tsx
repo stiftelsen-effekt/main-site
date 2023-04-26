@@ -33,14 +33,14 @@ function MyApp({
   Component,
   pageProps,
 }: AppProps<{
-  appStaticProps: AppStaticProps;
   preview: boolean;
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
+  appStaticProps?: AppStaticProps;
 }>) {
   const { data: propsData, appStaticProps } = pageProps;
 
   const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
-    appStaticProps.layout
+    appStaticProps?.layout || LayoutType.Default
   ];
   const { data: previewData } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
@@ -59,7 +59,7 @@ function MyApp({
 
     return (
       <Provider store={store}>
-        <RouterContext.Provider value={appStaticProps.routerContext}>
+        <RouterContext.Provider value={appStaticProps?.routerContext || null}>
           <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
             <Component {...pageProps} />
           </PageLayout>
