@@ -1,18 +1,18 @@
 import React from "react";
 import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
 import { Navbar } from "../components/main/layout/navbar";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
-import { Layout } from "../components/main/layout/layout";
 import { widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app.page";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { SEO } from "../components/shared/seo/Seo";
+import { withAppStaticProps } from "../util/withAppStaticProps";
+import { InferGetStaticPropsType } from "next";
 
-const Custom404: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const settings = data.result.settings[0];
 
   return (
@@ -29,7 +29,7 @@ const Custom404: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview 
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = withAppStaticProps()(async ({ preview = false }) => {
   let result = await getClient(preview).fetch(fetchNotFoundPage);
 
   return {
@@ -42,7 +42,7 @@ export async function getStaticProps({ preview = false }) {
       },
     },
   };
-}
+});
 
 const fetchNotFoundPage = groq`
 {
@@ -71,5 +71,4 @@ const fetchNotFoundPage = groq`
 }
 `;
 
-Custom404.layout = Layout;
 export default Custom404;
