@@ -27,17 +27,8 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
   switch (req.query.type) {
-    case "frontpage":
-      res.writeHead(307, { Location: `/` });
-      break;
     case "about_us":
       res.writeHead(307, { Location: `/om` });
-      break;
-    case "organizations":
-      res.writeHead(307, { Location: `/topplista` });
-      break;
-    case "support":
-      res.writeHead(307, { Location: `/ofte-stilte-sporsmal` });
       break;
     case "articles":
       res.writeHead(307, { Location: `/artikler` });
