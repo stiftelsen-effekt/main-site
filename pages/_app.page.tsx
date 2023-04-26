@@ -53,7 +53,7 @@ function MyApp({
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
 
-    if (appStaticProps.filterPage) {
+    if (appStaticProps?.filterPage) {
       pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
     }
 
