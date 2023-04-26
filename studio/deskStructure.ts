@@ -28,23 +28,6 @@ export default () =>
             .title("Pages")
             .items([
               S.listItem()
-                .title("About us")
-                .icon(Users)
-                .child(
-                  S.document()
-                    .schemaType("about_us")
-                    .documentId("about_us")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
                 .title("Articles")
                 .icon(Paperclip)
                 .child(
@@ -80,7 +63,6 @@ export default () =>
                 ),
             ]),
         ),
-
       S.listItem()
         .schemaType("generic_page")
         .title("Generic pages")
@@ -90,6 +72,7 @@ export default () =>
             .title("Pages")
             .schemaType("generic_page")
             .filter('_type == "generic_page"')
+            .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document()
                 .schemaType("generic_page")
@@ -168,16 +151,6 @@ export default () =>
                 })
                 .title("Preview"),
             ]),
-        ),
-      S.listItem()
-        .schemaType("contributor")
-        .title("Contributors")
-        .icon(Users)
-        .child(
-          S.documentList()
-            .title("People")
-            .schemaType("contributor")
-            .filter('_type == "contributor"'),
         ),
       S.listItem()
         .title("Settings")

@@ -66,6 +66,8 @@ export default {
         { type: "reference", to: [{ type: "contactinfo" }] },
         { type: "newslettersignup" },
         { type: "wealthcalculator" },
+        { type: "contributorlist" },
+        { type: "inngress" },
         { type: "wealthcalculatorteaser" },
         { type: "htmlembed" },
         { type: "teasers" },

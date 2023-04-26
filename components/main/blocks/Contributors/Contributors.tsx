@@ -2,19 +2,17 @@ import React from "react";
 import styles from "./Contributors.module.scss";
 import { Contributor, ContributorType } from "./Contributor";
 
-export type Role = {
+export const Contributors: React.FC<{
   title: string;
-  id: "boardmembers" | "volunteers" | "employees";
   contributors: ContributorType[];
-};
-
-export const Contributors: React.FC<Role> = ({ title, contributors }) => {
+  displayImages?: boolean;
+}> = ({ title, contributors, displayImages = true }) => {
   return (
     <div className={styles.contributors}>
-      <h5 className={styles.contributors__title}>{title}</h5>
+      <h4 className={styles.contributors__title}>{title}</h4>
       <div className={styles.contributors__list}>
         {contributors.map((member) => (
-          <Contributor key={member._id} {...member} />
+          <Contributor key={member._id} displayImage={displayImages} {...member} />
         ))}
       </div>
     </div>
