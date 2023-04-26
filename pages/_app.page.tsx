@@ -57,10 +57,6 @@ function MyApp({
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
 
-    if (appStaticProps?.filterPage) {
-      pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
-    }
-
     return (
       <Provider store={store}>
         <RouterContext.Provider value={appStaticProps?.routerContext || null}>
@@ -75,12 +71,11 @@ function MyApp({
   }
 }
 
-export async function getAppStaticProps(options?: { layout?: LayoutType; filterPage?: boolean }) {
+export async function getAppStaticProps(options?: { layout?: LayoutType }) {
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
     layout: options?.layout ?? LayoutType.Default,
-    filterPage: options?.filterPage ?? false,
   };
   return appStaticProps;
 }

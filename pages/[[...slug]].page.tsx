@@ -42,9 +42,7 @@ export const getStaticProps = async ({
   preview = false,
   params,
 }: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps({
-    filterPage: true,
-  });
+  const appStaticProps = await getAppStaticProps();
 
   const path = params?.slug ?? [];
 
