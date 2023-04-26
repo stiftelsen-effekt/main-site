@@ -1,6 +1,5 @@
 import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
-import { LayoutPage } from "../types";
 import React from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
@@ -34,14 +33,11 @@ function MyApp({
   Component,
   pageProps,
 }: AppProps<{
-  appStaticProps?: AppStaticProps;
+  appStaticProps: AppStaticProps;
   preview: boolean;
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
 }>) {
   const { data: propsData, appStaticProps } = pageProps;
-  if (!appStaticProps) {
-    throw new Error('appStaticProps is undefined. Did you forget to use "withAppStaticProps"?');
-  }
 
   const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
     appStaticProps.layout
