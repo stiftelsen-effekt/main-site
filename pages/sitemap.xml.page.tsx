@@ -7,7 +7,7 @@ export default function SiteMap() {
 }
 
 const siteMapQuery = groq`{
-  "pages": *[_type in ["frontpage", "about_us", "organizations", "articles", "support", "generic_page", "article_page"] && !(_id in path('drafts.**'))]{
+  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path('drafts.**'))]{
         _updatedAt,
         "slug": slug.current,
         sitemap_priority,
@@ -54,10 +54,11 @@ export async function getServerSideProps({ res }: any) {
 }
 
 const getPath = (type: string, slug: string, routerContext: RouterContextValue) => {
+  const slugWithoutSlash = slug.startsWith("/") ? slug.slice(1) : slug;
   switch (type) {
     case "article_page":
-      return `/${routerContext.articlesPageSlug}/${slug}`;
+      return `/${routerContext.articlesPageSlug}/${slugWithoutSlash}`;
     default:
-      return `/${slug || ""}`;
+      return `/${slugWithoutSlash || ""}`;
   }
 };
