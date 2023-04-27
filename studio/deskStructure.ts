@@ -44,23 +44,6 @@ export default () =>
                         .title("Preview"),
                     ]),
                 ),
-              S.listItem()
-                .title("Vipps agreement splash page")
-                .icon(Phone)
-                .child(
-                  S.document()
-                    .schemaType("vippsagreement")
-                    .documentId("vippsagreement")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
             ]),
         ),
       S.listItem()

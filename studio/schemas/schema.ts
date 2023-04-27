@@ -55,6 +55,7 @@ import inngress from "./types/inngress";
 import giveblock from "./types/giveblock";
 import givewellstamp from "./types/givewellstamp";
 import organizationslist from "./types/organizationslist";
+import vipps from "./types/paymentproviders/vipps";
 
 export const pages = [
   generic,
@@ -111,6 +112,7 @@ export const types = [
   giveblock,
   givewellstamp,
   organizationslist,
+  vipps,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
