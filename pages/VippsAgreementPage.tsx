@@ -18,12 +18,29 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { withStaticProps } from "../util/withStaticProps";
 
-const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-}) => {
+export const getVippsAgreementPagePath = async () => {
+  const result = await getClient(false).fetch(fetchVippsAgreementPage);
+  const paymentProviders = result.settings[0]["payment_providers"];
+  const vipps = paymentProviders?.some((provider: any) => provider._type === "vipps");
+  const slug: string | null = vipps ? result.page?.[0]?.slug?.current : null;
+  return slug?.split("/") || null;
+};
+
+export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  let result = await getClient(preview).fetch(fetchVippsAgreementPage);
+  result = { ...result, page: filterPageToSingleItem(result, preview) };
+
+  return {
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchVippsAgreementPage,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
   const { loginWithRedirect } = useAuth0();
 
   const page = data.result.page;
@@ -47,7 +64,7 @@ const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> =
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/vippsavtale`}
+        canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -77,30 +94,7 @@ const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> =
       <BlockContentRenderer content={page.content} />
     </>
   );
-};
-
-export const getStaticProps = async ({
-  preview = false,
-  params,
-}: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps({
-    filterPage: true,
-  });
-  let result = await getClient(preview).fetch(fetchVippsAgreementPage);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
-
-  return {
-    props: {
-      appStaticProps,
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchVippsAgreementPage,
-        queryParams: {},
-      },
-    },
-  };
-};
+});
 
 const fetchVippsAgreementPage = groq`
 {
@@ -122,11 +116,19 @@ const fetchVippsAgreementPage = groq`
         title,
         "slug": page->slug.current
       },
+    },
+    payment_providers[] {
+      _type == 'reference' => @-> {
+        _type,
+      }
     }
   },
   ${widgetQuery}
   ${footerQuery}
   "page": *[_type == "vippsagreement"] {
+    slug {
+      current
+    },
     header {
       ...,
       seoImage{

@@ -1,14 +1,16 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { fetchRouterContext } from "../context/RouterContext";
 import ArticlePage, { getArticlePaths } from "./ArticlePage";
-import { ArticlesPage } from "./ArticlesPage";
 import { GenericPage, getGenericPagePaths } from "./GenericPage";
 import { getAppStaticProps } from "./_app.page";
+import { ArticlesPage } from "./ArticlesPage";
+import VippsAgreementPage, { getVippsAgreementPagePath } from "./VippsAgreementPage";
 
 enum PageType {
   GenericPage = "generic",
   ArticlesPage = "articles",
   ArticlePage = "article",
+  VippsAgreementPage = "vipps-agreement",
 }
 
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
@@ -23,16 +25,29 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       return <ArticlesPage data={data} preview={preview} />;
     case PageType.ArticlePage:
       return <ArticlePage data={data} preview={preview} />;
+    case PageType.VippsAgreementPage:
+      return <VippsAgreementPage data={data} preview={preview} />;
   }
 };
 
-const inferPageTypeFromPath = async (path: string[]) => {
-  const { articlesPageSlug } = await fetchRouterContext();
+function compareArrays<T>(a: T[], b: T[]) {
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}
 
-  const isArticle = path?.[0] === articlesPageSlug && path?.length > 1;
+const inferPageTypeFromPath = async (path: string[]) => {
+  const { articlesPagePath, vippsAgreementPagePath } = await fetchRouterContext();
+
+  const isVippsAgreementPage =
+    vippsAgreementPagePath &&
+    compareArrays(path.slice(0, vippsAgreementPagePath.length), vippsAgreementPagePath);
+  if (isVippsAgreementPage) return PageType.VippsAgreementPage;
+
+  const isArticle =
+    compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath) &&
+    path.length > articlesPagePath.length;
   if (isArticle) return PageType.ArticlePage;
 
-  const isArticlesPage = path?.[0] === articlesPageSlug && path?.length === 1;
+  const isArticlesPage = compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath);
   if (isArticlesPage) return PageType.ArticlesPage;
 
   return PageType.GenericPage;
@@ -83,17 +98,27 @@ export const getStaticProps = async ({
         },
       } as const;
     }
+    case PageType.VippsAgreementPage: {
+      const props = await VippsAgreementPage.getStaticProps({ preview });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
   }
 };
 
 export async function getStaticPaths() {
-  const { articlesPageSlug } = await fetchRouterContext();
+  const { articlesPagePath, vippsAgreementPagePath } = await fetchRouterContext();
 
-  const paths = await Promise.all([getGenericPagePaths(), getArticlePaths(articlesPageSlug)]).then(
+  const paths = await Promise.all([getGenericPagePaths(), getArticlePaths(articlesPagePath)]).then(
     ([genericPagePaths, articlePaths]) => [
       ...genericPagePaths,
       ...articlePaths,
-      [articlesPageSlug],
+      articlesPagePath,
+      ...(vippsAgreementPagePath ? [vippsAgreementPagePath] : []),
     ],
   );
 
