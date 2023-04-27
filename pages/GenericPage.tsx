@@ -16,12 +16,13 @@ export const getGenericPagePaths = async () => {
     fetchGenericPages,
   );
   const slugs = data.pages.map((page) => page.slug.current);
-  const paths = slugs.map((slug) => [slug === "/" ? "" : slug]);
+  const paths = slugs.map((slug) => slug.split("/"));
   return paths;
 };
 
 export const GenericPage = withStaticProps(
-  async ({ preview, slug }: { preview: boolean; slug: string }) => {
+  async ({ preview, path }: { preview: boolean; path: string[] }) => {
+    const slug = path.join("/") || "/";
     let result = await getClient(preview).fetch(fetchGenericPage, { slug });
     result = { ...result, page: filterPageToSingleItem(result, preview) };
 
