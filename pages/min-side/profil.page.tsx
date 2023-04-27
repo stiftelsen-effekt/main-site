@@ -11,8 +11,8 @@ import { ProfileInfo } from "../../components/profile/details/ProfileInfo/Profil
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { widgetQuery } from "../../_queries";
-import { InferGetStaticPropsType } from "next";
-import { LayoutType, withAppStaticProps } from "../../util/withAppStaticProps";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
 const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   data,
@@ -47,13 +47,18 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   );
 };
 
-export const getStaticProps = withAppStaticProps({
-  layout: LayoutType.Profile,
-})(async ({ preview = false }) => {
+export const getStaticProps = async ({
+  preview = false,
+  params,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
   const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
@@ -62,7 +67,7 @@ export const getStaticProps = withAppStaticProps({
       },
     },
   };
-});
+};
 
 const fetchProfilePage = groq`
 {

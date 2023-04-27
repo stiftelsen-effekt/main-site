@@ -9,7 +9,7 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { linksContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app.page";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
 import {
   EffektButton,
@@ -18,8 +18,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
-import { withAppStaticProps } from "../util/withAppStaticProps";
-import { GetStaticPropsResult, InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 
 const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   data,
@@ -80,14 +79,19 @@ const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> =
   );
 };
 
-export const getStaticProps = withAppStaticProps({
-  filterPage: true,
-})(async ({}, { preview }) => {
+export const getStaticProps = async ({
+  preview = false,
+  params,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    filterPage: true,
+  });
   let result = await getClient(preview).fetch(fetchVippsAgreementPage);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
     props: {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
@@ -96,7 +100,7 @@ export const getStaticProps = withAppStaticProps({
       },
     },
   };
-});
+};
 
 const fetchVippsAgreementPage = groq`
 {

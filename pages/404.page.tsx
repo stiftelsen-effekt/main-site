@@ -5,12 +5,11 @@ import { Navbar } from "../components/main/layout/navbar";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app.page";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { SEO } from "../components/shared/seo/Seo";
-import { withAppStaticProps } from "../util/withAppStaticProps";
-import { InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const settings = data.result.settings[0];
@@ -28,12 +27,13 @@ const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ d
     </>
   );
 };
-
-export const getStaticProps = withAppStaticProps()(async ({ preview = false }) => {
+export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {
+  const appStaticProps = await getAppStaticProps();
   let result = await getClient(preview).fetch(fetchNotFoundPage);
 
   return {
     props: {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
@@ -42,7 +42,7 @@ export const getStaticProps = withAppStaticProps()(async ({ preview = false }) =
       },
     },
   };
-});
+};
 
 const fetchNotFoundPage = groq`
 {

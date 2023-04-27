@@ -26,8 +26,8 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
-import { InferGetStaticPropsType } from "next";
-import { LayoutType, withAppStaticProps } from "../../util/withAppStaticProps";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
 const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   data,
@@ -236,22 +236,26 @@ const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   );
 };
 
-export const getStaticProps = withAppStaticProps({ layout: LayoutType.Profile })(
-  async ({ preview = false }) => {
-    const result = await getClient(preview).fetch(fetchProfilePage);
+export const getStaticProps = async ({
+  preview = false,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
+  const result = await getClient(preview).fetch(fetchProfilePage);
 
-    return {
-      props: {
-        preview: preview,
-        data: {
-          result: result,
-          query: fetchProfilePage,
-          queryParams: {},
-        },
+  return {
+    props: {
+      appStaticProps,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
       },
-    };
-  },
-);
+    },
+  };
+};
 
 const fetchProfilePage = groq`
 {

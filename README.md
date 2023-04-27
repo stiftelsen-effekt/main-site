@@ -86,7 +86,7 @@ import { groq } from "next-sanity";
 import React from "react";
 import { PortableText } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
-import { withAppStaticProps } from "../util/withAppStaticProps";
+import { getAppStaticProps, LayoutType } from "./_app";
 
 const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   data,
@@ -113,16 +113,18 @@ const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   );
 };
 
-export const getStaticProps = withAppStaticProps()(async ({ preview = false }) => {
+export const getStaticProps = async ({ preview = false }) => {
+  const appStaticProps = getAppStaticProps({ layout: LayoutType.Profile });
   const data = await getClient(preview).fetch(fetchAboutUs);
 
   return {
     props: {
+      appStaticProps,
       preview,
       data,
     },
   };
-});
+};
 
 const fetchAboutUs = groq`
 {

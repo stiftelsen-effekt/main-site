@@ -26,8 +26,8 @@ import { DonationsYearlyGraph } from "../../components/profile/donations/Donatio
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { InferGetStaticPropsType } from "next";
-import { LayoutType, withAppStaticProps } from "../../util/withAppStaticProps";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { getAppStaticProps, LayoutType } from "../_app.page";
 
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data }) => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -199,22 +199,26 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data }
   );
 };
 
-export const getStaticProps = withAppStaticProps({ layout: LayoutType.Profile })(
-  async ({ preview = false }) => {
-    const result = await getClient(preview).fetch(fetchProfilePage);
+export const getStaticProps = async ({
+  preview = false,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
+  const result = await getClient(preview).fetch(fetchProfilePage);
 
-    return {
-      props: {
-        preview: preview,
-        data: {
-          result: result,
-          query: fetchProfilePage,
-          queryParams: {},
-        },
+  return {
+    props: {
+      appStaticProps,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
       },
-    };
-  },
-);
+    },
+  };
+};
 
 export async function getStaticPaths() {
   return {

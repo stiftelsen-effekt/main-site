@@ -19,8 +19,8 @@ import { FacebookTab } from "../../../components/profile/tax/FacebookTab/Faceboo
 import { TaxDeductionsTab } from "../../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
 import { TaxUnitsTab } from "../../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 import { YearlyReportsTab } from "../../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
-import { InferGetStaticPropsType } from "next";
-import { LayoutType, withAppStaticProps } from "../../../util/withAppStaticProps";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { LayoutType, getAppStaticProps } from "../../_app.page";
 
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const router = useRouter();
@@ -95,22 +95,26 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, 
   );
 };
 
-export const getStaticProps = withAppStaticProps({ layout: LayoutType.Profile })(
-  async ({ preview = false }) => {
-    const result = await getClient(preview).fetch(fetchProfilePage);
+export const getStaticProps = async ({
+  preview = false,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
+  const result = await getClient(preview).fetch(fetchProfilePage);
 
-    return {
-      props: {
-        preview: preview,
-        data: {
-          result: result,
-          query: fetchProfilePage,
-          queryParams: {},
-        },
+  return {
+    props: {
+      appStaticProps,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
       },
-    };
-  },
-);
+    },
+  };
+};
 
 export async function getStaticPaths() {
   return {

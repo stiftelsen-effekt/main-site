@@ -14,9 +14,13 @@ import { referralReducer } from "../components/shared/components/Widget/store/re
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
 import App from "next/app";
-import { RouterContext, fetchRouterContext } from "../context/RouterContext";
-import { AppStaticProps, LayoutType } from "../util/withAppStaticProps";
+import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
+
+export enum LayoutType {
+  Default = "default",
+  Profile = "profile",
+}
 
 const rootReducer = combineReducers<State>({
   donation: donationReducer,
@@ -35,7 +39,7 @@ function MyApp({
 }: AppProps<{
   preview: boolean;
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
-  appStaticProps?: AppStaticProps;
+  appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
 }>) {
   const { data: propsData, appStaticProps } = pageProps;
 
@@ -69,6 +73,16 @@ function MyApp({
   } else {
     return <Component {...pageProps} />;
   }
+}
+
+export async function getAppStaticProps(options?: { layout?: LayoutType; filterPage?: boolean }) {
+  const routerContext = await fetchRouterContext();
+  const appStaticProps = {
+    routerContext,
+    layout: options?.layout ?? LayoutType.Default,
+    filterPage: options?.filterPage ?? false,
+  };
+  return appStaticProps;
 }
 
 export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
