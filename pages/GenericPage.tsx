@@ -12,13 +12,11 @@ import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
 export const getGenericPagePaths = async () => {
-  const SKIP_GENERIC_PATHS = ["om", "vippsavtale"];
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
   const slugs = data.pages.map((page) => page.slug.current);
-  const filteredSlugs = slugs.filter((slug) => !SKIP_GENERIC_PATHS.includes(slug));
-  const paths = filteredSlugs.map((slug) => [slug === "/" ? "" : slug]);
+  const paths = slugs.map((slug) => [slug === "/" ? "" : slug]);
   return paths;
 };
 
