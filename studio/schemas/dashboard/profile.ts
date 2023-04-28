@@ -1,5 +1,7 @@
+import { isShallowSlug } from "../../validators/isShallowSlug";
+
 export default {
-  title: "Profile page",
+  title: "Profile",
   name: "profile",
   type: "document",
   fields: [
@@ -20,7 +22,15 @@ export default {
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "profile/profil",
+      initialValue: "profile",
+      description: "Relative to dashboard",
+      validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
   ],
+
+  preview: {
+    select: {
+      title: "slug.current",
+    },
+  },
 } as const;
