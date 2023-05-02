@@ -13,6 +13,7 @@ import { BlockContentRenderer } from "../components/main/blocks/BlockContentRend
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import { withStaticProps } from "../util/withStaticProps";
 import { useRouterContext } from "../context/RouterContext";
+import { getAppStaticProps } from "./_app.page";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
@@ -22,9 +23,11 @@ export const getVippsAgreementPagePath = async () => {
 };
 
 export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps();
   const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
 
   return {
+    appStaticProps,
     preview: preview,
     data: {
       result: result,
