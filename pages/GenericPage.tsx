@@ -7,7 +7,7 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem } from "./_app.page";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
@@ -22,11 +22,15 @@ export const getGenericPagePaths = async () => {
 
 export const GenericPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
+    const appStaticProps = await getAppStaticProps();
+
     const slug = path.join("/") || "/";
+
     let result = await getClient(preview).fetch(fetchGenericPage, { slug });
     result = { ...result, page: filterPageToSingleItem(result, preview) };
 
     return {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,

@@ -11,13 +11,36 @@ import { ProfileInfo } from "../../components/profile/details/ProfileInfo/Profil
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { widgetQuery } from "../../_queries";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-}) => {
+export async function getProfilePagePath() {
+  const result = await getClient(false).fetch<FetchProfilePageResult>(fetchProfilePage);
+
+  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const slug = result?.page?.[0]?.slug?.current;
+
+  if (!dashboardSlug || !slug) return null;
+
+  return [dashboardSlug, slug];
+}
+
+export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
+  const result = await getClient(preview).fetch<FetchProfilePageResult>(fetchProfilePage);
+
+  return {
+    appStaticProps,
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchProfilePage,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
   const router = useRouter();
   const settings = data.result.settings[0];
 
@@ -45,28 +68,12 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       </PageContent>
     </>
   );
-};
+});
 
-export const getStaticProps = async ({
-  preview = false,
-  params,
-}: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps({
-    layout: LayoutType.Profile,
-  });
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      appStaticProps,
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
-      },
-    },
-  };
+type FetchProfilePageResult = {
+  settings: any[];
+  page: Array<{ slug?: { current?: string }; tax?: any; data?: any }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 
 const fetchProfilePage = groq`
@@ -74,7 +81,15 @@ const fetchProfilePage = groq`
   "settings": *[_type == "site_settings"] {
     logo,
   },
+  "dashboard": *[_type == "dashboard"] {
+    dashboard_slug {
+      current
+    }
+  },
   "page": *[_type == "profile"] {
+    slug {
+      current
+    },
     tax,
     data
   },
@@ -82,5 +97,3 @@ const fetchProfilePage = groq`
   ${widgetQuery}
 }
 `;
-
-export default ProfilePage;

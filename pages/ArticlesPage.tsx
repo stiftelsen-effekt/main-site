@@ -9,7 +9,7 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { filterPageToSingleItem } from "./_app.page";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 import { linksContentQuery, widgetQuery } from "../_queries";
 import { withStaticProps } from "../util/withStaticProps";
 
@@ -27,10 +27,13 @@ export const getArticlesPagePath = async () => {
 };
 
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps();
+
   let result = await getClient(preview).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
+    appStaticProps,
     preview: preview,
     data: {
       result: result,

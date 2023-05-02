@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
-import React from "react";
+import React, { useMemo } from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
@@ -60,7 +60,7 @@ function MyApp({
 
     return (
       <Provider store={store}>
-        <RouterContext.Provider value={appStaticProps?.routerContext || null}>
+        <RouterContext.Provider value={pageProps.appStaticProps?.routerContext || null}>
           <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
             <Component {...pageProps} />
           </PageLayout>
