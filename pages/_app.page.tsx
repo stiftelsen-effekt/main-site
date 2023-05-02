@@ -46,6 +46,7 @@ function MyApp({
   const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
     appStaticProps?.layout || LayoutType.Default
   ];
+
   const { data: previewData } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
     initialData: propsData?.result,
@@ -56,10 +57,6 @@ function MyApp({
     pageProps.data.result = previewData;
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
-
-    if (appStaticProps?.filterPage) {
-      pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
-    }
 
     return (
       <Provider store={store}>
@@ -75,12 +72,11 @@ function MyApp({
   }
 }
 
-export async function getAppStaticProps(options?: { layout?: LayoutType; filterPage?: boolean }) {
+export async function getAppStaticProps(options?: { layout?: LayoutType }) {
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
     layout: options?.layout ?? LayoutType.Default,
-    filterPage: options?.filterPage ?? false,
   };
   return appStaticProps;
 }

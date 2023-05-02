@@ -57,9 +57,7 @@ export const getStaticProps = async ({
   preview = false,
   params,
 }: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps({
-    filterPage: true,
-  });
+  const appStaticProps = await getAppStaticProps();
 
   const path = params?.slug ?? [];
 
@@ -67,8 +65,7 @@ export const getStaticProps = async ({
 
   switch (pageType) {
     case PageType.GenericPage: {
-      const slug = path[0] ?? "/";
-      const props = await GenericPage.getStaticProps({ preview, slug });
+      const props = await GenericPage.getStaticProps({ preview, path });
       return {
         props: {
           ...props,
