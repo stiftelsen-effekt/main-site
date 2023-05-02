@@ -46,6 +46,7 @@ function MyApp({
   const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
     appStaticProps?.layout || LayoutType.Default
   ];
+
   const { data: previewData } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
     initialData: propsData?.result,
