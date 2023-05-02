@@ -1,10 +1,8 @@
 import { createContext, useContext } from "react";
-import { getClient } from "../lib/sanity.server";
-import { groq } from "next-sanity";
+import { getArticlesPagePath } from "../pages/ArticlesPage";
+import { getVippsAgreementPagePath } from "../pages/VippsAgreementPage";
 
-export type RouterContextValue = {
-  articlesPageSlug: string;
-};
+export type RouterContextValue = Awaited<ReturnType<typeof fetchRouterContext>>;
 
 export const RouterContext = createContext<RouterContextValue | null>(null);
 
@@ -16,17 +14,13 @@ export const useRouterContext = () => {
   return context;
 };
 
-const fetchArticlesPageSlug = groq`
-{
-  "page": *[_type == "articles"] {
-    "slug": slug.current,
-  }[0]
-}
-`;
-
-export const fetchRouterContext = async (): Promise<RouterContextValue> => {
-  const { page } = await getClient(false).fetch<{ page: { slug: string } }>(fetchArticlesPageSlug);
+export const fetchRouterContext = async () => {
+  const [articlesPagePath, vippsAgreementPagePath] = await Promise.all([
+    getArticlesPagePath(),
+    getVippsAgreementPagePath(),
+  ]);
   return {
-    articlesPageSlug: page.slug,
+    articlesPagePath,
+    vippsAgreementPagePath,
   };
 };

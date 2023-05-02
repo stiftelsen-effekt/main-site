@@ -17,12 +17,12 @@ import { filterPageToSingleItem } from "./_app.page";
 import { withStaticProps } from "../util/withStaticProps";
 import { useRouterContext } from "../context/RouterContext";
 
-export const getArticlePaths = async (articlesPageSlug: string) => {
+export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchArticles,
   );
 
-  return data.pages.map((page) => [articlesPageSlug, page.slug.current]);
+  return data.pages.map((page) => [...articlesPagePath, page.slug.current]);
 };
 
 const ArticlePage = withStaticProps(
@@ -44,7 +44,7 @@ const ArticlePage = withStaticProps(
     };
   },
 )(({ data, preview }) => {
-  const { articlesPageSlug } = useRouterContext();
+  const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
   if (!page) {
@@ -64,7 +64,8 @@ const ArticlePage = withStaticProps(
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={
-          header.cannonicalUrl ?? `https://gieffektivt.no/${articlesPageSlug}/${page.slug.current}`
+          header.cannonicalUrl ??
+          `https://gieffektivt.no/${[...articlesPagePath, page.slug.current].join("/")}`
         }
       />
 

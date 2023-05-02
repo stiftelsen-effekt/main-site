@@ -3,30 +3,38 @@ import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
 import { SEO } from "../components/shared/seo/Seo";
 import { Navbar } from "../components/main/layout/navbar";
-import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { linksContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
-import {
-  EffektButton,
-  EffektButtonType,
-} from "../components/shared/components/EffektButton/EffektButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { withStaticProps } from "../util/withStaticProps";
 
-const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-}) => {
+export const getVippsAgreementPagePath = async () => {
+  const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
+  const vipps = result.vipps?.[0];
+  const slug = vipps?.agreement_page?.slug?.current;
+  return slug?.split("/") || null;
+};
+
+export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
+
+  return {
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchVipps,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
   const { loginWithRedirect } = useAuth0();
 
-  const page = data.result.page;
+  const page = data.result.vipps?.[0].agreement_page;
 
   if (!page) {
     return <div>404{preview ? " - Attempting to load preview" : null}</div>;
@@ -47,7 +55,7 @@ const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> =
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/vippsavtale`}
+        canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -77,30 +85,20 @@ const VippsAgreement: React.FC<InferGetStaticPropsType<typeof getStaticProps>> =
       <BlockContentRenderer content={page.content} />
     </>
   );
+});
+
+type FetchVippsResult = {
+  settings: any[];
+  vipps?: Array<{
+    agreement_page: Record<string, any> & {
+      slug: {
+        current: string;
+      };
+    };
+  }>;
 };
 
-export const getStaticProps = async ({
-  preview = false,
-  params,
-}: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps();
-  let result = await getClient(preview).fetch(fetchVippsAgreementPage);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
-
-  return {
-    props: {
-      appStaticProps,
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchVippsAgreementPage,
-        queryParams: {},
-      },
-    },
-  };
-};
-
-const fetchVippsAgreementPage = groq`
+const fetchVipps = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
@@ -124,15 +122,20 @@ const fetchVippsAgreementPage = groq`
   },
   ${widgetQuery}
   ${footerQuery}
-  "page": *[_type == "vippsagreement"] {
-    header {
-      ...,
-      seoImage{
-        asset->
+  "vipps": *[_type == "vipps"] {
+    agreement_page->{
+      slug {
+        current
       },
-      ${linksContentQuery}
-    },
-    content,
+      header {
+        ...,
+        seoImage{
+          asset->
+        },
+        ${linksContentQuery}
+      },
+      content,
+    }
   }
 }
 `;

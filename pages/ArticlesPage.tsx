@@ -13,6 +13,19 @@ import { filterPageToSingleItem } from "./_app.page";
 import { linksContentQuery, widgetQuery } from "../_queries";
 import { withStaticProps } from "../util/withStaticProps";
 
+const fetchArticlesPageSlug = groq`
+{
+  "page": *[_type == "articles"] {
+    "slug": slug.current,
+  }[0]
+}
+`;
+
+export const getArticlesPagePath = async () => {
+  const { page } = await getClient(false).fetch<{ page: { slug: string } }>(fetchArticlesPageSlug);
+  return page.slug.split("/");
+};
+
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
   let result = await getClient(preview).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, preview) };

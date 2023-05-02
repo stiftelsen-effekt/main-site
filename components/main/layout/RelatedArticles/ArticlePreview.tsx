@@ -9,9 +9,10 @@ export const ArticlePreview: React.FC<{
   inngress?: string;
   slug: string;
 }> = ({ header, inngress, slug }) => {
-  const { articlesPageSlug } = useRouterContext();
+  const { articlesPagePath } = useRouterContext();
+
   return (
-    <Link key={slug} href={`/${articlesPageSlug}/${slug}`} passHref>
+    <Link key={slug} href={`/${[...articlesPagePath, slug].join("/")}`} passHref>
       <li className={styles.article}>
         {header.published && (
           <div className={styles.article__meta}>

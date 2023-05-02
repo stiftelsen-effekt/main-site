@@ -33,14 +33,14 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
   link,
   children,
 }) => {
-  const { articlesPageSlug } = useRouterContext();
+  const { articlesPagePath } = useRouterContext();
 
   return (
     <Link
       href={
         link._type === "navitem"
           ? link.pagetype === "article_page"
-            ? `/${articlesPageSlug}/${link.slug}`
+            ? `/${[...articlesPagePath, link.slug].join("/")}`
             : `/${link.slug}`
           : link.url ?? (link as any).href
       }

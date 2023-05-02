@@ -26,7 +26,7 @@ export const WealthCalculatorTeaser: React.FC<{
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
 }) => {
-  const { articlesPageSlug } = useRouterContext();
+  const { articlesPagePath } = useRouterContext();
 
   const [chartSize, setChartSize] = useState<{
     width: number | undefined;
@@ -93,7 +93,7 @@ export const WealthCalculatorTeaser: React.FC<{
             <Link
               href={
                 link.pagetype === "article_page"
-                  ? `/${articlesPageSlug}/${link.slug}`
+                  ? `/${[...articlesPagePath, link.slug].join("/")}`
                   : `/${link.slug}`
               }
               passHref
@@ -126,7 +126,9 @@ export const WealthCalculatorTeaser: React.FC<{
       <div className={styles.mobileButton}>
         <Link
           href={
-            link.pagetype === "article_page" ? `/${articlesPageSlug}/${link.slug}` : `/${link.slug}`
+            link.pagetype === "article_page"
+              ? `/${[...articlesPagePath, link.slug].join("/")}`
+              : `/${link.slug}`
           }
           passHref
         >

@@ -57,7 +57,7 @@ const getPath = (type: string, slug: string, routerContext: RouterContextValue) 
   const slugWithoutSlash = slug.startsWith("/") ? slug.slice(1) : slug;
   switch (type) {
     case "article_page":
-      return `/${routerContext.articlesPageSlug}/${slugWithoutSlash}`;
+      return `/${[...routerContext.articlesPagePath, slugWithoutSlash].join("/")}`;
     default:
       return `/${slugWithoutSlash || ""}`;
   }

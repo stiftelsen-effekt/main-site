@@ -33,7 +33,7 @@ const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   data,
   preview,
 }) => {
-  const { articlesPageSlug } = useRouterContext();
+  const { articlesPagePath } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
@@ -171,7 +171,10 @@ const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 Du har en aktiv donasjonsavtale til SCI Foundation. Vi anbefaler ikke lenger
                 donasjoner til SCI Foundation gjeldende fra 18.08.22 og vil slutte å tildele penger
                 til dem 31. oktober 2022. Les mer om denne endringen på{" "}
-                <Link href={`/${articlesPageSlug}/nye-evalueringskriterier-for-topplista`} passHref>
+                <Link
+                  href={`/${[...articlesPagePath, "nye-evalueringskriterier-for-topplista"]}`}
+                  passHref
+                >
                   <a style={{ textDecoration: "underline" }}>bloggen vår</a>
                 </Link>
                 .

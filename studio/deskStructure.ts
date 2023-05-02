@@ -9,6 +9,7 @@ import {
   Paperclip,
   Phone,
   Settings,
+  Tool,
   User,
   Users,
   Zap,
@@ -34,23 +35,6 @@ export default () =>
                   S.document()
                     .schemaType("articles")
                     .documentId("articles")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
-                .title("Vipps agreement splash page")
-                .icon(Phone)
-                .child(
-                  S.document()
-                    .schemaType("vippsagreement")
-                    .documentId("vippsagreement")
                     .views([
                       S.view.form(),
                       S.view
@@ -156,4 +140,17 @@ export default () =>
         .title("Settings")
         .icon(Settings)
         .child(S.document().schemaType("site_settings").documentId("site_settings")),
+      S.listItem()
+        .title("Payment providers")
+        .icon(Tool)
+        .child(
+          S.list()
+            .title("Payment providers")
+            .items([
+              S.listItem()
+                .title("Vipps")
+                .icon(Tool)
+                .child(S.document().schemaType("vipps").documentId("vipps")),
+            ]),
+        ),
     ]);

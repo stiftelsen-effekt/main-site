@@ -17,14 +17,14 @@ export type RelatedArticle = {
 export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = ({
   relatedArticles,
 }) => {
-  const { articlesPageSlug } = useRouterContext();
+  const { articlesPagePath } = useRouterContext();
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <h4>Relaterte artikler</h4>
         <div className={styles.viewall}>
-          <Link href={`/${articlesPageSlug}`} passHref>
+          <Link href={`/${articlesPagePath.join("/")}`} passHref>
             <a>
               <span>Se alle</span>
               <div>→</div>
