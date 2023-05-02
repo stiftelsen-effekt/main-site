@@ -1,7 +1,5 @@
 import Head from "next/head";
-import { Layout } from "../../../components/profile/layout/layout";
 import style from "../../../styles/Tax.module.css";
-import { LayoutPage } from "../../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { getClient } from "../../../lib/sanity.server";
@@ -21,8 +19,10 @@ import { FacebookTab } from "../../../components/profile/tax/FacebookTab/Faceboo
 import { TaxDeductionsTab } from "../../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
 import { TaxUnitsTab } from "../../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 import { YearlyReportsTab } from "../../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { LayoutType, getAppStaticProps } from "../../_app.page";
 
-const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const router = useRouter();
   const settings = data.result.settings[0];
   const page = data.result.page[0];
@@ -95,11 +95,17 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = async ({
+  preview = false,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
   const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
@@ -108,7 +114,7 @@ export async function getStaticProps({ preview = false }) {
       },
     },
   };
-}
+};
 
 export async function getStaticPaths() {
   return {
@@ -138,5 +144,4 @@ const fetchProfilePage = groq`
 }
 `;
 
-Home.layout = Layout;
-export default Home;
+export default Page;

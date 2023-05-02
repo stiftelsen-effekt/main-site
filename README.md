@@ -79,16 +79,19 @@ Let's have a look at an example.
 <Summary>Example page</Summary>
 
 ```typescript
+import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { groq } from "next-sanity";
 import React from "react";
 import { PortableText } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
-import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
-import { Layout } from "../components/main/layout";
+import { getAppStaticProps, LayoutType } from "./_app";
 
-const ExamplePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
   const router = useRouter();
 
   if (!router.isFallback && !data.about) {
@@ -110,16 +113,18 @@ const ExamplePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = async ({ preview = false }) => {
+  const appStaticProps = getAppStaticProps({ layout: LayoutType.Profile });
   const data = await getClient(preview).fetch(fetchAboutUs);
 
   return {
     props: {
+      appStaticProps,
       preview,
       data,
     },
   };
-}
+};
 
 const fetchAboutUs = groq`
 {
@@ -129,7 +134,6 @@ const fetchAboutUs = groq`
 }
 `;
 
-ExamplePage.layout = Layout;
 export default ExamplePage;
 ```
 

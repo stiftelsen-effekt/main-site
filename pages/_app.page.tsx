@@ -1,6 +1,5 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { LayoutPage } from "../types";
+import type { AppContext, AppProps } from "next/app";
 import React from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
@@ -14,6 +13,14 @@ import { watchAll } from "../components/shared/components/Widget/store/root.saga
 import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
+import App from "next/app";
+import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
+import { ProfileLayout } from "../components/profile/layout/layout";
+
+export enum LayoutType {
+  Default = "default",
+  Profile = "profile",
+}
 
 const rootReducer = combineReducers<State>({
   donation: donationReducer,
@@ -32,11 +39,13 @@ function MyApp({
 }: AppProps<{
   preview: boolean;
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
+  appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
 }>) {
-  // Gets the page layout from the component, defaults to the main layout
-  const PageLayout = (Component as LayoutPage).layout || Layout;
+  const { data: propsData, appStaticProps } = pageProps;
 
-  const propsData = pageProps.data;
+  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
+    appStaticProps?.layout || LayoutType.Default
+  ];
   const { data: previewData } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
     initialData: propsData?.result,
@@ -47,20 +56,33 @@ function MyApp({
     pageProps.data.result = previewData;
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
-    if ((Component as LayoutPage).filterPage) {
+
+    if (appStaticProps?.filterPage) {
       pageProps.data.result.page = filterPageToSingleItem(previewData, pageProps.preview);
     }
 
     return (
       <Provider store={store}>
-        <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
-          <Component {...pageProps} />
-        </PageLayout>
+        <RouterContext.Provider value={appStaticProps?.routerContext || null}>
+          <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
+            <Component {...pageProps} />
+          </PageLayout>
+        </RouterContext.Provider>
       </Provider>
     );
   } else {
     return <Component {...pageProps} />;
   }
+}
+
+export async function getAppStaticProps(options?: { layout?: LayoutType; filterPage?: boolean }) {
+  const routerContext = await fetchRouterContext();
+  const appStaticProps = {
+    routerContext,
+    layout: options?.layout ?? LayoutType.Default,
+    filterPage: options?.filterPage ?? false,
+  };
+  return appStaticProps;
 }
 
 export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
@@ -79,7 +101,7 @@ export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
   return data.widget[0];
 };
 
-export const filterPageToSingleItem = (data: any, preview: boolean) => {
+export const filterPageToSingleItem = <T,>(data: { page: T | T[] }, preview: boolean): T | null => {
   if (!Array.isArray(data.page)) {
     return data.page;
   }

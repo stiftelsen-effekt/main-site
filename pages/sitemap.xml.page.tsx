@@ -1,5 +1,6 @@
 import groq from "groq";
 import { getClient } from "../lib/sanity.server";
+import { RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 
 export default function SiteMap() {
   return null;
@@ -19,11 +20,12 @@ const siteMapQuery = groq`{
 export async function getServerSideProps({ res }: any) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const { pages } = await getClient(false).fetch(siteMapQuery);
+  const routerContext = await fetchRouterContext();
 
   const locations = pages.map((page: any) => {
     const { type, slug, sitemap_priority, _updatedAt } = page;
 
-    const url = `${baseUrl}${getPath(type, slug)}`;
+    const url = `${baseUrl}${getPath(type, slug, routerContext)}`;
     return `
           <loc>${url}</loc>
           <lastmod>${_updatedAt}</lastmod>
@@ -51,11 +53,11 @@ export async function getServerSideProps({ res }: any) {
   };
 }
 
-const getPath = (type: string, slug: string) => {
+const getPath = (type: string, slug: string, routerContext: RouterContextValue) => {
   const slugWithoutSlash = slug.startsWith("/") ? slug.slice(1) : slug;
   switch (type) {
     case "article_page":
-      return `/artikler/${slugWithoutSlash}`;
+      return `/${routerContext.articlesPageSlug}/${slugWithoutSlash}`;
     default:
       return `/${slugWithoutSlash || ""}`;
   }

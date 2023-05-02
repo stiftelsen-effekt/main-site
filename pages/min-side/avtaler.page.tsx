@@ -1,6 +1,4 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
-import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
 import { AvtaleGiroAgreement, Distribution, Organization, VippsAgreement } from "../../models";
@@ -27,8 +25,15 @@ import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
 import { DateTime } from "luxon";
+import { useRouterContext } from "../../context/RouterContext";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
+  const { articlesPageSlug } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
@@ -166,7 +171,7 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
                 Du har en aktiv donasjonsavtale til SCI Foundation. Vi anbefaler ikke lenger
                 donasjoner til SCI Foundation gjeldende fra 18.08.22 og vil slutte å tildele penger
                 til dem 31. oktober 2022. Les mer om denne endringen på{" "}
-                <Link href={"/artikler/nye-evalueringskriterier-for-topplista"} passHref>
+                <Link href={`/${articlesPageSlug}/nye-evalueringskriterier-for-topplista`} passHref>
                   <a style={{ textDecoration: "underline" }}>bloggen vår</a>
                 </Link>
                 .
@@ -231,11 +236,17 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = async ({
+  preview = false,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
   const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
@@ -244,7 +255,7 @@ export async function getStaticProps({ preview = false }) {
       },
     },
   };
-}
+};
 
 const fetchProfilePage = groq`
 {
@@ -256,7 +267,6 @@ const fetchProfilePage = groq`
 }
 `;
 
-Agreements.layout = Layout;
 export default Agreements;
 
 const getDistributionMap = (distributions: Distribution[], organizations: Organization[]) => {

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { LayoutElement } from "../../../types";
+import { LayoutProps } from "../../../types";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
@@ -8,7 +8,7 @@ import { WidgetPane } from "./WidgetPane/WidgetPane";
 export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
 export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
 
-export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, footerData, widgetData }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);

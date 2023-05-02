@@ -1,8 +1,6 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
 import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
 import style from "../../styles/Profile.module.css";
-import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { getClient } from "../../lib/sanity.server";
@@ -13,8 +11,13 @@ import { ProfileInfo } from "../../components/profile/details/ProfileInfo/Profil
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { widgetQuery } from "../../_queries";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
   const router = useRouter();
   const settings = data.result.settings[0];
 
@@ -44,11 +47,18 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = async ({
+  preview = false,
+  params,
+}: GetStaticPropsContext<{ slug: string[] }>) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
   const result = await getClient(preview).fetch(fetchProfilePage);
 
   return {
     props: {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
@@ -57,7 +67,7 @@ export async function getStaticProps({ preview = false }) {
       },
     },
   };
-}
+};
 
 const fetchProfilePage = groq`
 {
@@ -73,5 +83,4 @@ const fetchProfilePage = groq`
 }
 `;
 
-Home.layout = Layout;
-export default Home;
+export default ProfilePage;
