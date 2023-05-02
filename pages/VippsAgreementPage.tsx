@@ -3,47 +3,39 @@ import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
 import { SEO } from "../components/shared/seo/Seo";
 import { Navbar } from "../components/main/layout/navbar";
-import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { linksContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
-import {
-  EffektButton,
-  EffektButtonType,
-} from "../components/shared/components/EffektButton/EffektButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import { withStaticProps } from "../util/withStaticProps";
 
 export const getVippsAgreementPagePath = async () => {
-  const result = await getClient(false).fetch(fetchVippsAgreementPage);
-  const paymentProviders = result.settings[0]["payment_providers"];
-  const vipps = paymentProviders?.some((provider: any) => provider._type === "vipps");
-  const slug: string | null = vipps ? result.page?.[0]?.slug?.current : null;
+  const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
+  console.log(result);
+  const vipps = result.vipps?.[0];
+  const slug = vipps?.agreement_page?.slug?.current;
   return slug?.split("/") || null;
 };
 
 export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  let result = await getClient(preview).fetch(fetchVippsAgreementPage);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
+  const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
 
   return {
     preview: preview,
     data: {
       result: result,
-      query: fetchVippsAgreementPage,
+      query: fetchVipps,
       queryParams: {},
     },
   };
 })(({ data, preview }) => {
   const { loginWithRedirect } = useAuth0();
 
-  const page = data.result.page;
+  const page = data.result.vipps?.[0].agreement_page;
 
   if (!page) {
     return <div>404{preview ? " - Attempting to load preview" : null}</div>;
@@ -96,7 +88,18 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   );
 });
 
-const fetchVippsAgreementPage = groq`
+type FetchVippsResult = {
+  settings: any[];
+  vipps?: Array<{
+    agreement_page: Record<string, any> & {
+      slug: {
+        current: string;
+      };
+    };
+  }>;
+};
+
+const fetchVipps = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
@@ -116,27 +119,24 @@ const fetchVippsAgreementPage = groq`
         title,
         "slug": page->slug.current
       },
-    },
-    payment_providers[] {
-      _type == 'reference' => @-> {
-        _type,
-      }
     }
   },
   ${widgetQuery}
   ${footerQuery}
-  "page": *[_type == "vippsagreement"] {
-    slug {
-      current
-    },
-    header {
-      ...,
-      seoImage{
-        asset->
+  "vipps": *[_type == "vipps"] {
+    agreement_page->{
+      slug {
+        current
       },
-      ${linksContentQuery}
-    },
-    content,
+      header {
+        ...,
+        seoImage{
+          asset->
+        },
+        ${linksContentQuery}
+      },
+      content,
+    }
   }
 }
 `;

@@ -64,17 +64,5 @@ export default {
       group: "footer",
       of: [{ type: "navitem" }, { type: "link" }],
     },
-    {
-      type: "array",
-      name: "payment_providers",
-      title: "Payment providers",
-      of: [
-        {
-          type: "reference",
-          title: "Payment provider",
-          to: [{ type: "vipps" }],
-        },
-      ],
-    },
   ],
 };

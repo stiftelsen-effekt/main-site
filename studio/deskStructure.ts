@@ -9,6 +9,7 @@ import {
   Paperclip,
   Phone,
   Settings,
+  Tool,
   User,
   Users,
   Zap,
@@ -139,4 +140,17 @@ export default () =>
         .title("Settings")
         .icon(Settings)
         .child(S.document().schemaType("site_settings").documentId("site_settings")),
+      S.listItem()
+        .title("Payment providers")
+        .icon(Tool)
+        .child(
+          S.list()
+            .title("Payment providers")
+            .items([
+              S.listItem()
+                .title("Vipps")
+                .icon(Tool)
+                .child(S.document().schemaType("vipps").documentId("vipps")),
+            ]),
+        ),
     ]);
