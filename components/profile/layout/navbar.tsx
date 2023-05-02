@@ -7,11 +7,14 @@ import { ResponsiveImage } from "../../shared/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
 import { WidgetContext } from "../../main/layout/layout";
+import { useRouterContext } from "../../../context/RouterContext";
 
 export type ProfileNavbarProps = {
   logo: SanityImageSource;
 };
+
 export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
+  const { dashboardPath, agreementsPagePath, taxPagePath, profilePagePath } = useRouterContext();
   const { logout } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
@@ -48,25 +51,31 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
         </div>
         <ul>
           <li onClick={() => setExpandMenu(false)}>
-            <Link href="/min-side" passHref>
+            <Link href={dashboardPath.join("/")} passHref>
               Donasjoner
             </Link>
           </li>
-          <li onClick={() => setExpandMenu(false)}>
-            <Link href="/min-side/avtaler" passHref>
-              Avtaler
-            </Link>
-          </li>
-          <li onClick={() => setExpandMenu(false)}>
-            <Link href="/min-side/skatt" passHref>
-              Skatt
-            </Link>
-          </li>
-          <li onClick={() => setExpandMenu(false)}>
-            <Link href="/min-side/profil" passHref>
-              Profil
-            </Link>
-          </li>
+          {agreementsPagePath ? (
+            <li onClick={() => setExpandMenu(false)}>
+              <Link href={agreementsPagePath.join("/")} passHref>
+                Avtaler
+              </Link>
+            </li>
+          ) : null}
+          {taxPagePath ? (
+            <li onClick={() => setExpandMenu(false)}>
+              <Link href={taxPagePath.join("/")} passHref>
+                Skatt
+              </Link>
+            </li>
+          ) : null}
+          {profilePagePath ? (
+            <li onClick={() => setExpandMenu(false)}>
+              <Link href={profilePagePath.join("/")} passHref>
+                Profil
+              </Link>
+            </li>
+          ) : null}
           <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
             <EffektButton
               type={EffektButtonType.SECONDARY}

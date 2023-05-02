@@ -8,6 +8,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { WidgetContext } from "./layout";
 import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
 import { ResponsiveImage } from "../../shared/responsiveimage";
+import { useRouterContext } from "../../../context/RouterContext";
 
 export type NavLink = {
   _type: "navitem";
@@ -32,6 +33,7 @@ export type MainNavbarProps = {
 };
 
 export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
+  const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
@@ -126,7 +128,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             ),
           )}
           <li className={styles.buttonsWrapper}>
-            <Link href="/min-side" passHref>
+            <Link href={dashboardPath.join("/")} passHref>
               <a tabIndex={-1}>
                 <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
                   Min side

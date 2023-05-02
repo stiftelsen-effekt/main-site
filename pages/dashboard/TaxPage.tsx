@@ -153,21 +153,14 @@ export const TaxPage = withStaticProps(
 
       <MainHeader hideOnScroll={false}>
         <Navbar logo={settings.logo} />
-        <TaxMenu
-          mobile
-          selected={menuChoice}
-          onChange={(selected) => router.push("/min-side/skatt/" + selected)}
-        ></TaxMenu>
+        <TaxMenu mobile selected={menuChoice}></TaxMenu>
       </MainHeader>
 
       <PageContent>
         <div className={style.container}>
           <h3 className={style.header}>Skatt</h3>
 
-          <TaxMenu
-            selected={menuChoice}
-            onChange={(selected) => router.push("/min-side/skatt/" + selected)}
-          ></TaxMenu>
+          <TaxMenu selected={menuChoice}></TaxMenu>
 
           {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
 

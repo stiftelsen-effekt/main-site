@@ -17,7 +17,8 @@ const dashboard = {
       title: "Dashboard slug",
       type: "slug",
       initialValue: "my-pages",
-      description: "Entry point for dashboard",
+      description:
+        "Entry point for dashboard. Please note that this must be an allowed redirect URI in Auth0.",
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
     {

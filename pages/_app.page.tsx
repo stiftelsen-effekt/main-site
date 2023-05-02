@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
@@ -41,6 +41,9 @@ function MyApp({
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
   appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
 }>) {
+  const routerContextValue = useRef<RouterContextValue | null>(
+    pageProps.appStaticProps?.routerContext || null,
+  );
   const { data: propsData, appStaticProps } = pageProps;
 
   const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
@@ -60,7 +63,7 @@ function MyApp({
 
     return (
       <Provider store={store}>
-        <RouterContext.Provider value={pageProps.appStaticProps?.routerContext || null}>
+        <RouterContext.Provider value={routerContextValue.current}>
           <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
             <Component {...pageProps} />
           </PageLayout>
