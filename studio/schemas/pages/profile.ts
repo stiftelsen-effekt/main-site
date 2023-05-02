@@ -4,6 +4,12 @@ export default {
   type: "document",
   fields: [
     {
+      name: "tax",
+      title: "Tax deduction",
+      type: "array",
+      of: [{ type: "block" }],
+    },
+    {
       name: "data",
       title: "Data policy",
       type: "array",
