@@ -15,7 +15,6 @@ import { withStaticProps } from "../util/withStaticProps";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
-  console.log(result);
   const vipps = result.vipps?.[0];
   const slug = vipps?.agreement_page?.slug?.current;
   return slug?.split("/") || null;
