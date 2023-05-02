@@ -124,7 +124,7 @@ const fetchVipps = groq`
   },
   ${widgetQuery}
   ${footerQuery}
-  "vipps": *[_type == "vipps"] {
+  "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {
         current

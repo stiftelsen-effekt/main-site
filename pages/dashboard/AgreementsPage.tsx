@@ -278,12 +278,12 @@ const fetchAgreementsPage = groq`
   "settings": *[_type == "site_settings"] {
     logo,
   },
-  "dashboard": *[_type == "dashboard"] {
+  "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     }
   },
-  "page": *[_type == "agreements"] {
+  "page": *[_id == "agreements"] {
     slug {
       current
     }

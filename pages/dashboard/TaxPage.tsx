@@ -212,31 +212,31 @@ const fetchTaxPage = groq`
   "settings": *[_type == "site_settings"] {
     logo,
   },
-  "dashboard": *[_type == "dashboard"] {
+  "dashboard": *[_id == "dashboard"] {
     tax_slug {
       current
     },
   },
-  "taxdeduction": *[_type == "taxdeduction"] {
+  "taxdeduction": *[_id == "taxdeduction"] {
     slug {
       current
     },
     about_taxdeductions,
     about_taxdeductions_links,
   },
-  "metareceipt": *[_type == "metareceipt"] {
+  "metareceipt": *[_id == "metareceipt"] {
     slug {
       current
     },
     facebook_description,
     facebook_description_links,
   },
-  "taxstatements": *[_type == "taxstatements"] {
+  "taxstatements": *[_id == "taxstatements"] {
     slug {
       current
     }
   },
-  "taxunits": *[_type == "taxunits"] {
+  "taxunits": *[_id == "taxunits"] {
     slug {
       current
     }

@@ -268,12 +268,12 @@ const fetchDonationsPage = groq`
   "settings": *[_type == "site_settings"] {
     logo,
   },
-  "dashboard": *[_type == "dashboard"] {
+  "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     }
   },
-  "page": *[_type == "donations"] {
+  "page": *[_id == "donations"] {
     slug {
       current
     }
