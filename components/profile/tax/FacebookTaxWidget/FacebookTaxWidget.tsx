@@ -47,7 +47,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
     if (taxUnit === null)
       setTaxUnit(
         filteredData && filteredData.length >= 1
-          ? filteredData.sort((a: TaxUnit, b: TaxUnit) => (a.ssn.length > b.ssn.length ? -1 : 1))[0]
+          ? filteredData.sort((a, b) => (a.ssn.length > b.ssn.length ? -1 : 1))[0]
           : null,
       );
   }, [filteredData]);
@@ -102,7 +102,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
         <InputFieldWrapper>
           <TaxUnitSelector
             selected={taxUnit}
-            onChange={(taxUnit: TaxUnit) => setTaxUnit(taxUnit)}
+            onChange={(taxUnit) => setTaxUnit(taxUnit)}
             onAddNew={() => setCreateTaxUnitModalOpen(true)}
           ></TaxUnitSelector>
         </InputFieldWrapper>
@@ -140,7 +140,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
       {createTaxUnitModalOpen && (
         <TaxUnitCreateModal
           open={createTaxUnitModalOpen}
-          onSuccess={function (unit: TaxUnit): void {
+          onSuccess={function (unit): void {
             setTaxUnit(unit);
             setCreateTaxUnitModalOpen(false);
           }}
