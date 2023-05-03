@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { NavLink } from "../../layout/navbar";
 import Link from "next/link";
+import { useRouterContext } from "../../../../context/RouterContext";
 
 export const WealthCalculatorTeaser: React.FC<{
   title: string;
@@ -25,6 +26,8 @@ export const WealthCalculatorTeaser: React.FC<{
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
 }) => {
+  const { articlesPagePath } = useRouterContext();
+
   const [chartSize, setChartSize] = useState<{
     width: number | undefined;
     height: number | undefined;
@@ -88,7 +91,11 @@ export const WealthCalculatorTeaser: React.FC<{
           </div>
           <div className={styles.desktopButton}>
             <Link
-              href={link.pagetype === "article_page" ? `/artikler/${link.slug}` : `/${link.slug}`}
+              href={
+                link.pagetype === "article_page"
+                  ? `/${[...articlesPagePath, link.slug].join("/")}`
+                  : `/${link.slug}`
+              }
               passHref
             >
               <a>
@@ -118,7 +125,11 @@ export const WealthCalculatorTeaser: React.FC<{
       </div>
       <div className={styles.mobileButton}>
         <Link
-          href={link.pagetype === "article_page" ? `/artikler/${link.slug}` : `/${link.slug}`}
+          href={
+            link.pagetype === "article_page"
+              ? `/${[...articlesPagePath, link.slug].join("/")}`
+              : `/${link.slug}`
+          }
           passHref
         >
           <a>

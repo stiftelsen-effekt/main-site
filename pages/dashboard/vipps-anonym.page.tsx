@@ -1,6 +1,4 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
-import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useAnonymousVippsAgreement, widgetQuery } from "../../_queries";
 import styles from "../../styles/Agreements.module.css";

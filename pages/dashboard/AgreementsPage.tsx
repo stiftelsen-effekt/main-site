@@ -1,6 +1,4 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
-import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
 import { AvtaleGiroAgreement, Distribution, Organization, VippsAgreement } from "../../models";
@@ -27,8 +25,41 @@ import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
 import { DateTime } from "luxon";
+import { useRouterContext } from "../../context/RouterContext";
+import { GetStaticPropsContext } from "next";
+import { withStaticProps } from "../../util/withStaticProps";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+export async function getAgreementsPagePath() {
+  const result = await getClient(false).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
+
+  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const agreementsSlug = result?.page?.[0]?.slug?.current;
+
+  if (!dashboardSlug || !agreementsSlug) return null;
+
+  return [dashboardSlug, agreementsSlug];
+}
+
+export const AgreementsPage = withStaticProps(
+  async ({ preview = false }: GetStaticPropsContext<{ slug: string[] }>) => {
+    const appStaticProps = await getAppStaticProps({
+      layout: LayoutType.Profile,
+    });
+    const result = await getClient(preview).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
+
+    return {
+      appStaticProps,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchAgreementsPage,
+        queryParams: {},
+      },
+    };
+  },
+)(({ data, preview }) => {
+  const { articlesPagePath } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
@@ -166,7 +197,10 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
                 Du har en aktiv donasjonsavtale til SCI Foundation. Vi anbefaler ikke lenger
                 donasjoner til SCI Foundation gjeldende fra 18.08.22 og vil slutte å tildele penger
                 til dem 31. oktober 2022. Les mer om denne endringen på{" "}
-                <Link href={"/artikler/nye-evalueringskriterier-for-topplista"} passHref>
+                <Link
+                  href={`/${[...articlesPagePath, "nye-evalueringskriterier-for-topplista"]}`}
+                  passHref
+                >
                   <a style={{ textDecoration: "underline" }}>bloggen vår</a>
                 </Link>
                 .
@@ -229,35 +263,35 @@ const Agreements: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview
       </PageContent>
     </>
   );
+});
+
+type FetchAgreementsPageResult = {
+  settings: any[];
+  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
+  page?: Array<{ slug?: { current?: string } }>;
+  footer: any[];
+  widget: any[];
 };
 
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
-      },
-    },
-  };
-}
-
-const fetchProfilePage = groq`
+const fetchAgreementsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+  },
+  "dashboard": *[_id == "dashboard"] {
+    dashboard_slug {
+      current
+    }
+  },
+  "page": *[_id == "agreements"] {
+    slug {
+      current
+    }
   },
   ${footerQuery}
   ${widgetQuery}
 }
 `;
-
-Agreements.layout = Layout;
-export default Agreements;
 
 const getDistributionMap = (distributions: Distribution[], organizations: Organization[]) => {
   const map = new Map<string, Distribution>();

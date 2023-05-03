@@ -21,15 +21,21 @@
   padding-bottom: 0.1rem;
 }
 
-.menu li button {
-  cursor: pointer;
+.menu li a {
+  display: inline-block;
 }
 
-.menu li button:focus {
+.menu li a:hover,
+.menu li a:focus,
+.menu li a:active {
+  border-bottom: none;
+}
+
+.menu li a:focus-visible {
   outline: 2px solid var(--primary);
 }
 
-.menu li button:active {
+.menu li a:active {
   outline: none;
 }
 

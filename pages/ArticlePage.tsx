@@ -1,32 +1,39 @@
+import React from "react";
+import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { ArticleHeader } from "../components/main/layout/ArticleHeader/ArticleHeader";
 import { Navbar } from "../components/main/layout/navbar";
+import {
+  RelatedArticle,
+  RelatedArticles,
+} from "../components/main/layout/RelatedArticles/RelatedArticles";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { getClient } from "../lib/sanity.server";
-import { withStaticProps } from "../util/withStaticProps";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
+import { pageContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
+import { withStaticProps } from "../util/withStaticProps";
+import { useRouterContext } from "../context/RouterContext";
 
-export const getGenericPagePaths = async () => {
+export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
-    fetchGenericPages,
+    fetchArticles,
   );
-  const slugs = data.pages.map((page) => page.slug.current);
-  const paths = slugs.map((slug) => slug.split("/"));
-  return paths;
+
+  return data.pages.map((page) => [...articlesPagePath, page.slug.current]);
 };
 
-export const GenericPage = withStaticProps(
-  async ({ preview, path }: { preview: boolean; path: string[] }) => {
+const ArticlePage = withStaticProps(
+  async ({ slug, preview }: { slug: string; preview: boolean }) => {
     const appStaticProps = await getAppStaticProps();
 
-    const slug = path.join("/") || "/";
-
-    let result = await getClient(preview).fetch(fetchGenericPage, { slug });
+    let result = await getClient(preview).fetch<{
+      page: any;
+      settings: any[];
+      relatedArticles: RelatedArticle[];
+    }>(fetchArticle, { slug });
     result = { ...result, page: filterPageToSingleItem(result, preview) };
 
     return {
@@ -34,12 +41,13 @@ export const GenericPage = withStaticProps(
       preview: preview,
       data: {
         result: result,
-        query: fetchGenericPage,
+        query: fetchArticle,
         queryParams: { slug },
       },
     };
   },
 )(({ data, preview }) => {
+  const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
   if (!page) {
@@ -49,14 +57,19 @@ export const GenericPage = withStaticProps(
   const header = page.header;
   const content = page.content;
   const settings = data.result.settings[0];
+  const relatedArticles = data.result.relatedArticles;
 
   return (
     <>
       <SEO
         title={header.seoTitle || header.title}
+        titleTemplate={"%s | Gi Effektivt."}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug?.current ?? ""}`}
+        canonicalurl={
+          header.cannonicalUrl ??
+          `https://gieffektivt.no/${[...articlesPagePath, page.slug.current].join("/")}`
+        }
       />
 
       <MainHeader hideOnScroll={true}>
@@ -64,27 +77,23 @@ export const GenericPage = withStaticProps(
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
       </MainHeader>
 
-      <PageHeader
-        title={header.title}
-        inngress={header.inngress}
-        links={header.links}
-        layout={header.layout}
-      />
+      <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
 
       <BlockContentRenderer content={content} />
+      <RelatedArticles relatedArticles={relatedArticles} />
     </>
   );
 });
 
-const fetchGenericPages = groq`
+const fetchArticles = groq`
 {
-  "pages": *[_type == "generic_page"] {
+  "pages": *[_type == "article_page"] {
     slug { current }
   }
 }
 `;
 
-const fetchGenericPage = groq`
+const fetchArticle = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
@@ -106,18 +115,23 @@ const fetchGenericPage = groq`
       },
     }
   },
-  ${widgetQuery}
   ${footerQuery}
-  "page": *[_type == "generic_page" && slug.current == $slug] {
+  ${widgetQuery}
+  "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,
       seoImage{
-        asset->,
+        asset->
       },
-      ${linksContentQuery}
     },
     ${pageContentQuery}
     slug { current },
   },
+  "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {
+    header,
+    "slug": slug.current,
+  }
 }
 `;
+
+export default ArticlePage;

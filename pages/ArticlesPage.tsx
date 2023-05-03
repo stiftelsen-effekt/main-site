@@ -9,22 +9,31 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { filterPageToSingleItem } from "./_app.page";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 import { linksContentQuery, widgetQuery } from "../_queries";
 import { withStaticProps } from "../util/withStaticProps";
 
+const fetchArticlesPageSlug = groq`
+{
+  "page": *[_type == "articles"] {
+    "slug": slug.current,
+  }[0]
+}
+`;
+
 export const getArticlesPagePath = async () => {
-  let result = await getClient(false).fetch(fetchArticles);
-  result = { ...result, page: filterPageToSingleItem(result, false) };
-  const slug: string = result.page.slug;
-  return slug;
+  const { page } = await getClient(false).fetch<{ page: { slug: string } }>(fetchArticlesPageSlug);
+  return page.slug.split("/");
 };
 
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps();
+
   let result = await getClient(preview).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
   return {
+    appStaticProps,
     preview: preview,
     data: {
       result: result,
@@ -45,7 +54,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/artikler`}
+        canonicalurl={`https://gieffektivt.no/${page.slug}`}
       />
 
       <div className={styles.inverted}>

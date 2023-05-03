@@ -7,17 +7,39 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { Layout } from "../components/main/layout/layout";
 import { linksContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app.page";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
+import { withStaticProps } from "../util/withStaticProps";
+import { useRouterContext } from "../context/RouterContext";
+import { getAppStaticProps } from "./_app.page";
 
-const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+export const getVippsAgreementPagePath = async () => {
+  const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
+  const vipps = result.vipps?.[0];
+  const slug = vipps?.agreement_page?.slug?.current;
+  return slug?.split("/") || null;
+};
+
+export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps();
+  const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
+
+  return {
+    appStaticProps,
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchVipps,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
+  const { dashboardPath } = useRouterContext();
   const { loginWithRedirect } = useAuth0();
 
-  const page = data.result.page;
+  const page = data.result.vipps?.[0].agreement_page;
 
   if (!page) {
     return <div>404{preview ? " - Attempting to load preview" : null}</div>;
@@ -38,7 +60,7 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/vippsavtale`}
+        canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -59,34 +81,29 @@ const VippsAgreement: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
           <LinkButton
             title={"Registrer bruker"}
             type={"primary"}
-            url={`/min-side?screen_hint=signup&prompt=login`}
+            url={`/${dashboardPath.join("/")}?screen_hint=signup&prompt=login`}
           />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <LinkButton title={"Logg inn"} type={"primary"} url={`/min-side`} />
+          <LinkButton title={"Logg inn"} type={"primary"} url={`/${dashboardPath.join("/")}`} />
         </div>
       </SectionContainer>
       <BlockContentRenderer content={page.content} />
     </>
   );
+});
+
+type FetchVippsResult = {
+  settings: any[];
+  vipps?: Array<{
+    agreement_page: Record<string, any> & {
+      slug: {
+        current: string;
+      };
+    };
+  }>;
 };
 
-export async function getStaticProps({ preview = false }) {
-  let result = await getClient(preview).fetch(fetchVippsAgreementPage);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchVippsAgreementPage,
-        queryParams: {},
-      },
-    },
-  };
-}
-
-const fetchVippsAgreementPage = groq`
+const fetchVipps = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
@@ -110,19 +127,22 @@ const fetchVippsAgreementPage = groq`
   },
   ${widgetQuery}
   ${footerQuery}
-  "page": *[_type == "vippsagreement"] {
-    header {
-      ...,
-      seoImage{
-        asset->
+  "vipps": *[_id == "vipps"] {
+    agreement_page->{
+      slug {
+        current
       },
-      ${linksContentQuery}
-    },
-    content,
+      header {
+        ...,
+        seoImage{
+          asset->
+        },
+        ${linksContentQuery}
+      },
+      content,
+    }
   }
 }
 `;
 
-VippsAgreement.layout = Layout;
-VippsAgreement.filterPage = true;
 export default VippsAgreement;

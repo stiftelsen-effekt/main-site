@@ -1,14 +1,17 @@
 import S from "@sanity/desk-tool/structure-builder";
 import {
+  Activity,
   Book,
   Bookmark,
   Briefcase,
   DollarSign,
   Filter,
   HelpCircle,
+  Lock,
   Paperclip,
   Phone,
   Settings,
+  Tool,
   User,
   Users,
   Zap,
@@ -34,23 +37,6 @@ export default () =>
                   S.document()
                     .schemaType("articles")
                     .documentId("articles")
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                    ]),
-                ),
-              S.listItem()
-                .title("Vipps agreement splash page")
-                .icon(Phone)
-                .child(
-                  S.document()
-                    .schemaType("vippsagreement")
-                    .documentId("vippsagreement")
                     .views([
                       S.view.form(),
                       S.view
@@ -113,20 +99,59 @@ export default () =>
             ),
         ),
       S.listItem()
-        .title("Profile pages")
-        .icon(Book)
+        .title("Dashboard")
+        .icon(Lock)
         .child(
           S.list()
-            .title("Profile pages")
+            .title("Dashboard")
             .items([
               S.listItem()
-                .title("Profile details")
-                .icon(User)
-                .child(S.document().schemaType("profile").documentId("profile")),
+                .title("Settings")
+                .icon(Settings)
+                .child(S.editor().id("settings").schemaType("dashboard").documentId("dashboard")),
+              S.divider(),
               S.listItem()
-                .title("Tax")
+                .title("Donations")
+                .icon(Activity)
+                .child(S.editor().id("donations").schemaType("donations").documentId("donations")),
+              S.listItem()
+                .title("Agreements")
+                .icon(Paperclip)
+                .child(
+                  S.editor().id("agreements").schemaType("agreements").documentId("agreements"),
+                ),
+              S.listItem()
+                .title("Profile")
+                .icon(User)
+                .child(S.editor().id("profile").schemaType("profile").documentId("profile")),
+              S.listItem()
+                .title("Tax deduction")
                 .icon(DollarSign)
-                .child(S.document().schemaType("tax").documentId("tax")),
+                .child(
+                  S.editor()
+                    .id("taxdeduction")
+                    .schemaType("taxdeduction")
+                    .documentId("taxdeduction"),
+                ),
+              S.listItem()
+                .title("Tax units")
+                .icon(DollarSign)
+                .child(S.editor().id("taxunits").schemaType("taxunits").documentId("taxunits")),
+              S.listItem()
+                .title("Tax statements")
+                .icon(DollarSign)
+                .child(
+                  S.editor()
+                    .id("taxstatements")
+                    .schemaType("taxstatements")
+                    .documentId("taxstatements"),
+                ),
+              S.listItem()
+                .title("Meta receipt")
+                .icon(DollarSign)
+                .child(
+                  S.editor().id("metareceipt").schemaType("metareceipt").documentId("metareceipt"),
+                ),
             ]),
         ),
       S.listItem()
@@ -156,4 +181,17 @@ export default () =>
         .title("Settings")
         .icon(Settings)
         .child(S.document().schemaType("site_settings").documentId("site_settings")),
+      S.listItem()
+        .title("Payment providers")
+        .icon(Tool)
+        .child(
+          S.list()
+            .title("Payment providers")
+            .items([
+              S.listItem()
+                .title("Vipps")
+                .icon(Tool)
+                .child(S.document().schemaType("vipps").documentId("vipps")),
+            ]),
+        ),
     ]);

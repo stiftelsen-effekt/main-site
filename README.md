@@ -57,9 +57,11 @@ The file `pages/_app.tsx` defines which layout that is to be used for site rende
 
 ### Pages
 
-The default Next.js router uses the folder structure of the `/pages` folder. The page will be available at the coresponding route in the application, for example `/pages/om.tsx` will be served at `/om`.
+While Next.js router uses the folder structure of the `/pages` folder by default, this is insufficient when serving localized paths, hence we're using a custom routing solution. Only pages with the `page.tsx` extension are magically picked up by the Next.js router. The `/pages/[[...slug]].page.tsx` file is central in the custom routing implementation - it is responsible for parsing the slug and rendering the correct page type.
 
-All pages under `/pages/min-side` should specify the profile layout (found under `components/min-side/layout.tsx`). This is beceause this layout is wrapped with the Auth0 provider, which is needed for authentification. It also uses a different navigation bar than the public facing site.
+Conventionally, each page type is defined inside the `/pages` directory as regular modules without the magic `page.tsx` extension. Each page type exports some function that returns static paths for that page type as well as a function returning static props (using the `withStaticProps()` helper). The `[[...slug]].page.tsx` file then imports all page types and uses them to generate the static paths and props for each.
+
+All pages under `/pages/dashboard` should specify the profile layout (found under `components/min-side/layout.tsx`). This is because this layout is wrapped with the Auth0 provider, which is needed for authentification. It also uses a different navigation bar than the public facing site.
 
 Conversely, all public facing pages should use the main layout (found under `components/main/layout.tsx`).
 
@@ -79,16 +81,19 @@ Let's have a look at an example.
 <Summary>Example page</Summary>
 
 ```typescript
+import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { groq } from "next-sanity";
 import React from "react";
 import { PortableText } from "../lib/sanity";
 import { getClient } from "../lib/sanity.server";
-import { groq } from "next-sanity";
-import { LayoutPage } from "../types";
-import { Layout } from "../components/main/layout";
+import { getAppStaticProps, LayoutType } from "./_app";
 
-const ExamplePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  data,
+  preview,
+}) => {
   const router = useRouter();
 
   if (!router.isFallback && !data.about) {
@@ -110,16 +115,18 @@ const ExamplePage: LayoutPage<{ data: any; preview: boolean }> = ({ data, previe
   );
 };
 
-export async function getStaticProps({ preview = false }) {
+export const getStaticProps = async ({ preview = false }) => {
+  const appStaticProps = getAppStaticProps({ layout: LayoutType.Profile });
   const data = await getClient(preview).fetch(fetchAboutUs);
 
   return {
     props: {
+      appStaticProps,
       preview,
       data,
     },
   };
-}
+};
 
 const fetchAboutUs = groq`
 {
@@ -129,7 +136,6 @@ const fetchAboutUs = groq`
 }
 `;
 
-ExamplePage.layout = Layout;
 export default ExamplePage;
 ```
 

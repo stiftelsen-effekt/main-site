@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./RelatedArticles.module.scss";
 import { ArticlePreview } from "./ArticlePreview";
+import { useRouterContext } from "../../../../context/RouterContext";
 
 export type ArticleHeader = {
   title: string;
@@ -16,12 +17,14 @@ export type RelatedArticle = {
 export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = ({
   relatedArticles,
 }) => {
+  const { articlesPagePath } = useRouterContext();
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <h4>Relaterte artikler</h4>
         <div className={styles.viewall}>
-          <Link href="/artikler" passHref>
+          <Link href={`/${articlesPagePath.join("/")}`} passHref>
             <a>
               <span>Se alle</span>
               <div>→</div>

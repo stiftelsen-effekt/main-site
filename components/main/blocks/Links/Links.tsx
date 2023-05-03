@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import elements from "./Links.module.scss";
 import { NavLink } from "../../layout/navbar";
+import { useRouterContext } from "../../../../context/RouterContext";
 
 export type LinkType = {
   _type: "link";
@@ -32,12 +33,14 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
   link,
   children,
 }) => {
+  const { articlesPagePath } = useRouterContext();
+
   return (
     <Link
       href={
         link._type === "navitem"
           ? link.pagetype === "article_page"
-            ? `/artikler/${link.slug}`
+            ? `/${[...articlesPagePath, link.slug].join("/")}`
             : `/${link.slug}`
           : link.url ?? (link as any).href
       }

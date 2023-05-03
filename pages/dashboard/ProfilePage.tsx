@@ -1,8 +1,6 @@
 import Head from "next/head";
-import { Layout } from "../../components/profile/layout/layout";
 import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
 import style from "../../styles/Profile.module.css";
-import { LayoutPage } from "../../types";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { getClient } from "../../lib/sanity.server";
@@ -13,8 +11,36 @@ import { ProfileInfo } from "../../components/profile/details/ProfileInfo/Profil
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { widgetQuery } from "../../_queries";
+import { withStaticProps } from "../../util/withStaticProps";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+export async function getProfilePagePath() {
+  const result = await getClient(false).fetch<FetchProfilePageResult>(fetchProfilePage);
+
+  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const slug = result?.page?.[0]?.slug?.current;
+
+  if (!dashboardSlug || !slug) return null;
+
+  return [dashboardSlug, slug];
+}
+
+export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
+  const result = await getClient(preview).fetch<FetchProfilePageResult>(fetchProfilePage);
+
+  return {
+    appStaticProps,
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchProfilePage,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
   const router = useRouter();
   const settings = data.result.settings[0];
 
@@ -42,29 +68,28 @@ const Home: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) =>
       </PageContent>
     </>
   );
+});
+
+type FetchProfilePageResult = {
+  settings: any[];
+  page: Array<{ slug?: { current?: string }; tax?: any; data?: any }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
-
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
-      },
-    },
-  };
-}
 
 const fetchProfilePage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
   },
-  "page": *[_type == "profile"] {
+  "dashboard": *[_id == "dashboard"] {
+    dashboard_slug {
+      current
+    }
+  },
+  "page": *[_id == "profile"] {
+    slug {
+      current
+    },
     tax,
     data
   },
@@ -72,6 +97,3 @@ const fetchProfilePage = groq`
   ${widgetQuery}
 }
 `;
-
-Home.layout = Layout;
-export default Home;

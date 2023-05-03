@@ -3,7 +3,7 @@ import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
 import Router from "next/router";
-import { LayoutElement } from "../../../types";
+import { LayoutProps } from "../../../types";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
@@ -11,9 +11,10 @@ import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
 import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
+import { useRouterContext } from "../../../context/RouterContext";
 
-const onRedirectCallback = (appState: any) => {
-  Router.replace(appState?.returnTo || "/min-side/");
+const onRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
+  Router.replace(appState?.returnTo || dashboardPath.join("/"));
 };
 
 const shouldBypassAuth = (): boolean => {
@@ -37,7 +38,8 @@ const UnauthenticatedLayout = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
-export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
+export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, widgetData }) => {
+  const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
@@ -62,9 +64,11 @@ export const Layout: LayoutElement = ({ children, footerData, widgetData }) => {
         audience="https://data.gieffektivt.no"
         scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
         redirectUri={
-          typeof window !== "undefined" ? window.location.origin + "/min-side/" : undefined
+          typeof window !== "undefined"
+            ? [window.location.origin, ...dashboardPath, ""].join("/")
+            : undefined
         }
-        onRedirectCallback={onRedirectCallback}
+        onRedirectCallback={() => onRedirectCallback(dashboardPath)}
         cacheLocation={cacheLocation}
       >
         {children}

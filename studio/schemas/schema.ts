@@ -19,7 +19,6 @@ import navgroup from "./types/navgroup";
 import pageheader from "./types/pageheader";
 import questionandanswer from "./types/questionandanswer";
 import questionandanswergroup from "./types/questionandanswergroup";
-import profile from "./pages/profile";
 import support from "./pages/support";
 import generic from "./pages/generic";
 import contactinfo from "./types/contactinfo";
@@ -45,7 +44,6 @@ import htmlembed from "./types/htmlembed";
 import donationwidget from "./types/donationwidget";
 import quote from "./types/quote";
 import vippsagreement from "./pages/vippsagreement";
-import tax from "./pages/tax";
 import citation from "./types/citation";
 import newslettersignup from "./types/newslettersignup";
 import wealthcalculator from "./types/wealthcalculator";
@@ -55,17 +53,10 @@ import inngress from "./types/inngress";
 import giveblock from "./types/giveblock";
 import givewellstamp from "./types/givewellstamp";
 import organizationslist from "./types/organizationslist";
+import vipps from "./types/paymentproviders/vipps";
+import dashboard from "./dashboard";
 
-export const pages = [
-  generic,
-  profile,
-  support,
-  criteria,
-  article,
-  articles,
-  vippsagreement,
-  tax,
-] as const;
+export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 
 export const types = [
   teasers,
@@ -111,6 +102,7 @@ export const types = [
   giveblock,
   givewellstamp,
   organizationslist,
+  vipps,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
@@ -119,5 +111,5 @@ export default createSchema({
   name: "default",
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
-  types: schemaTypes.concat(pages, types, [siteSettings]),
+  types: schemaTypes.concat(pages, types, [siteSettings], dashboard),
 });

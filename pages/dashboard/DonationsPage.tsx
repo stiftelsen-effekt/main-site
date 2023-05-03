@@ -6,9 +6,7 @@ import DonationsChart from "../../components/profile/donations/DonationsChart/Do
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
 import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
-import { Layout } from "../../components/profile/layout/layout";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
-import { LayoutPage } from "../../types";
 import style from "../../styles/Donations.module.css";
 import DonationsDistributionTable from "../../components/profile/donations/DonationsDistributionTable/DonationsDistributionTable";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
@@ -28,10 +26,75 @@ import { DonationsYearlyGraph } from "../../components/profile/donations/Donatio
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
+import { withStaticProps } from "../../util/withStaticProps";
+import { getAppStaticProps, LayoutType } from "../_app.page";
 
-const Home: LayoutPage<{ data: any }> = ({ data }) => {
+export async function getDashboardPagePath() {
+  const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
+
+  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+
+  if (!dashboardSlug) throw new Error("Dashboard slug not found");
+
+  return dashboardSlug.split("/");
+}
+
+export async function getDonationsPagePath() {
+  const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
+  const dashboardPath = await getDashboardPagePath();
+
+  const donationsSlug = result?.page?.[0]?.slug?.current;
+
+  if (!donationsSlug) return null;
+
+  return [...dashboardPath, ...donationsSlug.split("/")];
+}
+
+export async function getDonationsPageSubpaths() {
+  const donationsPagePath = await getDonationsPagePath();
+
+  if (!donationsPagePath) return [];
+
+  const years = getYearPaths();
+
+  return years.map((year) => [...donationsPagePath, year]);
+}
+
+const getYearPaths = () => {
+  const currentYear = new Date().getFullYear();
+  const yearPaths = [];
+  for (let year = 2016; year <= currentYear + 1; year++) {
+    yearPaths.push(year.toString());
+  }
+
+  return yearPaths;
+};
+
+export const DonationsPage = withStaticProps(
+  async ({ preview, path }: { preview: boolean; path: string[] }) => {
+    const appStaticProps = await getAppStaticProps({
+      layout: LayoutType.Profile,
+    });
+    const result = await getClient(preview).fetch<FetchDonationsPageResult>(fetchDonationsPage);
+
+    const donationsPagePath = await getDonationsPagePath();
+
+    const filterYear =
+      (donationsPagePath && donationsPagePath.length < path.length && path.at(-1)) || null;
+
+    return {
+      appStaticProps,
+      preview: preview,
+      filterYear,
+      data: {
+        result: result,
+        query: fetchDonationsPage,
+        queryParams: {},
+      },
+    };
+  },
+)(({ data, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
-  const router = useRouter();
   const settings = data.result.settings[0];
   const { donor } = useContext(DonorContext);
 
@@ -100,25 +163,18 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </>
     );
 
-  let filterYear: string | undefined;
-  if (typeof router.query.slug !== "undefined") {
-    if (router.query.slug.length === 2 && router.query.slug[0] === "donasjoner") {
-      filterYear = router.query.slug[1];
-    }
-  }
-
-  const isTotal = typeof filterYear === "undefined";
+  const isTotal = filterYear === null;
 
   const years = getYears(donor, donations);
   const firstYear = Math.min(...years);
-  const sum = getDonationSum(aggregatedDonations, filterYear as string);
+  const sum = getDonationSum(aggregatedDonations, filterYear || undefined);
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
   const periodText = !isTotal ? `I ${filterYear} har du gitt` : `Siden ${firstYear} har du gitt`;
 
   let distribution = !isTotal
-    ? getYearlyDistribution(aggregatedDonations, parseInt(filterYear as string))
+    ? getYearlyDistribution(aggregatedDonations, parseInt(filterYear))
     : getTotalDistribution(aggregatedDonations);
 
   const donationList = !isTotal ? (
@@ -126,14 +182,14 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       donations={donations
         .filter(
           (donation: Donation) =>
-            new Date(donation.timestamp).getFullYear() === parseInt(filterYear as string),
+            new Date(donation.timestamp).getFullYear() === parseInt(filterYear),
         )
         .sort(
           (a: Donation, b: Donation) =>
             new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         )}
       distributions={distributionsMap}
-      year={filterYear as string}
+      year={filterYear}
       firstOpen={false}
     />
   ) : (
@@ -165,13 +221,13 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
 
       <MainHeader hideOnScroll={false}>
         <Navbar logo={settings.logo} />
-        <DonationYearMenu years={years} selected={(filterYear as string) || "total"} mobile />
+        <DonationYearMenu years={years} selected={filterYear || "total"} mobile />
       </MainHeader>
 
       <PageContent>
         <h3 className={style.header}>Donasjoner</h3>
 
-        <DonationYearMenu years={years} selected={(filterYear as string) || "total"} />
+        <DonationYearMenu years={years} selected={filterYear || "total"} />
 
         <DonationsChart distribution={distribution} organizations={organizations}></DonationsChart>
 
@@ -182,7 +238,7 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
                 ? donations
                 : donations.filter(
                     (donation: Donation) =>
-                      new Date(donation.timestamp).getFullYear() === parseInt(filterYear as string),
+                      new Date(donation.timestamp).getFullYear() === parseInt(filterYear),
                   )
             }
             distributionMap={distributionsMap}
@@ -197,53 +253,35 @@ const Home: LayoutPage<{ data: any }> = ({ data }) => {
       </PageContent>
     </>
   );
+});
+
+type FetchDonationsPageResult = {
+  settings: any[];
+  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
+  page?: Array<{ slug?: { current?: string } }>;
+  footer: any[];
+  widget: any[];
 };
 
-Home.layout = Layout;
-
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
-      },
-    },
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { slug: [""] } }, ...getYearPaths()],
-    fallback: false,
-  };
-}
-
-const getYearPaths = () => {
-  const currentYear = new Date().getFullYear();
-  const yearPaths = [];
-  for (let year = 2016; year <= currentYear + 1; year++) {
-    yearPaths.push({ params: { slug: ["donasjoner", year.toString()] } });
-  }
-
-  return yearPaths;
-};
-
-const fetchProfilePage = groq`
+const fetchDonationsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+  },
+  "dashboard": *[_id == "dashboard"] {
+    dashboard_slug {
+      current
+    }
+  },
+  "page": *[_id == "donations"] {
+    slug {
+      current
+    }
   },
   ${footerQuery}
   ${widgetQuery}
 }
 `;
-
-export default Home;
 
 const getTotalDistribution = (
   aggregated: AggregatedDonations[],
