@@ -4,7 +4,6 @@ import { groq } from "next-sanity";
 import { LayoutPage } from "../types";
 import { SEO } from "../components/shared/seo/Seo";
 import { Navbar } from "../components/main/layout/navbar";
-import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
@@ -12,11 +11,6 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { Layout } from "../components/main/layout/layout";
 import { linksContentQuery, widgetQuery } from "../_queries";
 import { filterPageToSingleItem } from "./_app.page";
-import { Paragraph } from "../components/main/blocks/Paragraph/Paragraph";
-import {
-  EffektButton,
-  EffektButtonType,
-} from "../components/shared/components/EffektButton/EffektButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";

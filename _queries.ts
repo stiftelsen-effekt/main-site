@@ -15,16 +15,20 @@ export interface Query<T> {
 
 const fetcher = async (
   url: string,
-  fetchToken: getAccessTokenSilently,
+  fetchToken: getAccessTokenSilently | null = null,
   method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
 ) => {
-  const token = await fetchToken();
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+  const headers: Record<string, string> = {};
+
+  if (fetchToken) {
+    const token = await fetchToken();
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(api + url, {
     method: method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: headers,
   });
 
   if (!response.ok) {
@@ -161,6 +165,24 @@ export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilentl
     `/donors/${user["https://gieffektivt.no/user-id"]}/recurring/vipps/`,
     (url) => fetcher(url, fetchToken),
   );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
+export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
+  console.log(agreementUrlCode);
+  const { data, error, isValidating } = useSWR(
+    `/vipps/agreement/minside/${agreementUrlCode}`,
+    (url) => fetcher(url),
+  );
+  console.log(data, error, isValidating);
 
   const loading = !data && !error;
 

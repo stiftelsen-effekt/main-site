@@ -67,9 +67,7 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
-  const [distribution, setDistribution] = useState<Distribution>(
-    JSON.parse(JSON.stringify(inputDistribution)),
-  );
+  const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
@@ -176,87 +174,98 @@ export const AgreementDetails: React.FC<{
     }
   };
 
-  return (
-    <div className={style.wrapper} data-cy="agreement-list-details">
-      <div className={style.values}>
-        <div>
-          <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
-        </div>
-        <div>
-          <input
-            type="text"
-            defaultValue={inputSum}
-            onChange={(e) => setSum(e.target.value)}
-            data-cy="agreement-list-amount-input"
-          />
-          <span>kr</span>
-        </div>
-        <TaxUnitSelector
-          selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-          onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
-          onAddNew={() => setAddTaxUnitOpen(true)}
-        />
-        <div>
-          <EffektCheckbox
-            checked={distribution.standardDistribution}
-            onChange={(standard: boolean) =>
-              setDistribution({ ...distribution, standardDistribution: standard })
-            }
-          >
-            Smart fordeling
-          </EffektCheckbox>
-        </div>
+  if (typeof distribution === "undefined") {
+    return (
+      <div className={style.errorWrapper}>
+        <p>Det oppstod en feil. Vennligst prøv igjen eller kontakt oss.</p>
       </div>
-
-      <AnimateHeight height={!distribution.standardDistribution ? "auto" : 0} animateOpacity={true}>
-        <div className={style.distribution}>
-          <DistributionController
-            distribution={distribution}
-            onChange={(dist) => setDistribution(dist)}
+    );
+  } else {
+    return (
+      <div className={style.wrapper} data-cy="agreement-list-details">
+        <div className={style.values}>
+          <div>
+            <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
+          </div>
+          <div>
+            <input
+              type="text"
+              defaultValue={inputSum}
+              onChange={(e) => setSum(e.target.value)}
+              data-cy="agreement-list-amount-input"
+            />
+            <span>kr</span>
+          </div>
+          <TaxUnitSelector
+            selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
+            onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
+            onAddNew={() => setAddTaxUnitOpen(true)}
           />
+          <div>
+            <EffektCheckbox
+              checked={distribution.standardDistribution}
+              onChange={(standard: boolean) =>
+                setDistribution({ ...distribution, standardDistribution: standard })
+              }
+            >
+              Smart fordeling
+            </EffektCheckbox>
+          </div>
         </div>
-      </AnimateHeight>
 
-      <div className={style.actions}>
-        <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
-          Avslutt avtale
-        </EffektButton>
-        <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
-          {!loadingChanges ? "Lagre" : "Laster..."}
-        </EffektButton>
+        <AnimateHeight
+          height={!distribution.standardDistribution ? "auto" : 0}
+          animateOpacity={true}
+        >
+          <div className={style.distribution}>
+            <DistributionController
+              distribution={distribution}
+              onChange={(dist) => setDistribution(dist)}
+            />
+          </div>
+        </AnimateHeight>
+
+        <div className={style.actions}>
+          <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
+            Avslutt avtale
+          </EffektButton>
+          <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
+            {!loadingChanges ? "Lagre" : "Laster..."}
+          </EffektButton>
+        </div>
+
+        {addTaxUnitOpen && (
+          <TaxUnitCreateModal
+            open={addTaxUnitOpen}
+            onFailure={() => {}}
+            onSuccess={(unit: TaxUnit) => {
+              setDistribution({ ...distribution, taxUnit: unit });
+              setAddTaxUnitOpen(false);
+            }}
+            onClose={() => setAddTaxUnitOpen(false)}
+          />
+        )}
+        <Lightbox
+          open={lightboxOpen}
+          onConfirm={() => cancel()}
+          onCancel={() => setLightboxOpen(false)}
+        >
+          <div className={style.textWrapper}>
+            <h5>Avslutt avtale</h5>
+            <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
+            {checkPaymentDate(new Date(), day) ? (
+              <p>
+                Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
+                sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i
+                registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du
+                ta kontakt på donasjon@gieffektivt.no
+              </p>
+            ) : null}
+          </div>
+        </Lightbox>
       </div>
-
-      {addTaxUnitOpen && (
-        <TaxUnitCreateModal
-          open={addTaxUnitOpen}
-          onFailure={() => {}}
-          onSuccess={(unit: TaxUnit) => {
-            setDistribution({ ...distribution, taxUnit: unit });
-            setAddTaxUnitOpen(false);
-          }}
-          onClose={() => setAddTaxUnitOpen(false)}
-        />
-      )}
-      <Lightbox
-        open={lightboxOpen}
-        onConfirm={() => cancel()}
-        onCancel={() => setLightboxOpen(false)}
-      >
-        <div className={style.textWrapper}>
-          <h5>Avslutt avtale</h5>
-          <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
-          {checkPaymentDate(new Date(), day) ? (
-            <p>
-              Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
-              sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i
-              registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta
-              kontakt på donasjon@gieffektivt.no
-            </p>
-          ) : null}
-        </div>
-      </Lightbox>
-    </div>
-  );
+    );
+  }
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
