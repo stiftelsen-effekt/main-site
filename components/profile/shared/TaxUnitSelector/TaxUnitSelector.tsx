@@ -41,9 +41,9 @@ export const TaxUnitSelector: React.FC<{
           {error && <div>En feil oppstod</div>}
           {data &&
             data
-              .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
-              .filter((taxUnit: TaxUnit) => !exclude.map((u) => u.id).includes(taxUnit.id))
-              .map((taxUnit: TaxUnit) => (
+              .filter((taxUnit) => taxUnit.archived === null)
+              .filter((taxUnit) => !exclude.map((u) => u.id).includes(taxUnit.id))
+              .map((taxUnit) => (
                 <button
                   onClick={() => {
                     setMenuOpen(false);

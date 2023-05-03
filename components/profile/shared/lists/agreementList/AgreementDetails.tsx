@@ -193,7 +193,7 @@ export const AgreementDetails: React.FC<{
         </div>
         <TaxUnitSelector
           selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-          onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
+          onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
           onAddNew={() => setAddTaxUnitOpen(true)}
         />
         <div>
@@ -230,7 +230,7 @@ export const AgreementDetails: React.FC<{
         <TaxUnitCreateModal
           open={addTaxUnitOpen}
           onFailure={() => {}}
-          onSuccess={(unit: TaxUnit) => {
+          onSuccess={(unit) => {
             setDistribution({ ...distribution, taxUnit: unit });
             setAddTaxUnitOpen(false);
           }}

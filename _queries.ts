@@ -1,6 +1,7 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
 import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
+import { TaxUnit } from "./models";
 
 export interface Query<T> {
   (
@@ -219,7 +220,7 @@ export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
 };
 
 export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(
+  const { data, error, isValidating } = useSWR<TaxUnit[]>(
     `/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`,
     (url) => fetcher(url, fetchToken),
   );
