@@ -5,28 +5,40 @@ import { GenericPage, getGenericPagePaths } from "./GenericPage";
 import { getAppStaticProps } from "./_app.page";
 import { ArticlesPage } from "./ArticlesPage";
 import VippsAgreementPage, { getVippsAgreementPagePath } from "./VippsAgreementPage";
+import { DonationsPage, getDonationsPageSubpaths } from "./dashboard/DonationsPage";
+import { AgreementsPage } from "./dashboard/AgreementsPage";
+import { ProfilePage } from "./dashboard/ProfilePage";
+import { TaxPage } from "./dashboard/TaxPage";
 
 enum PageType {
   GenericPage = "generic",
   ArticlesPage = "articles",
   ArticlePage = "article",
   VippsAgreementPage = "vipps-agreement",
+  AgreementsPage = "agreements",
+  DonationsPage = "donations",
+  ProfilePage = "profile",
+  TaxPage = "tax",
 }
 
-const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-  pageType,
-}) => {
-  switch (pageType) {
+const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  switch (props.pageType) {
     case PageType.GenericPage:
-      return <GenericPage data={data} preview={preview} />;
+      return <GenericPage {...props} />;
     case PageType.ArticlesPage:
-      return <ArticlesPage data={data} preview={preview} />;
+      return <ArticlesPage {...props} />;
     case PageType.ArticlePage:
-      return <ArticlePage data={data} preview={preview} />;
+      return <ArticlePage {...props} />;
     case PageType.VippsAgreementPage:
-      return <VippsAgreementPage data={data} preview={preview} />;
+      return <VippsAgreementPage {...props} />;
+    case PageType.AgreementsPage:
+      return <AgreementsPage {...props} />;
+    case PageType.DonationsPage:
+      return <DonationsPage {...props} />;
+    case PageType.ProfilePage:
+      return <ProfilePage {...props} />;
+    case PageType.TaxPage:
+      return <TaxPage {...props} />;
   }
 };
 
@@ -35,7 +47,14 @@ function compareArrays<T>(a: T[], b: T[]) {
 }
 
 const inferPageTypeFromPath = async (path: string[]) => {
-  const { articlesPagePath, vippsAgreementPagePath } = await fetchRouterContext();
+  const {
+    articlesPagePath,
+    vippsAgreementPagePath,
+    dashboardPath,
+    agreementsPagePath,
+    taxPagePath,
+    profilePagePath,
+  } = await fetchRouterContext();
 
   const isVippsAgreementPage =
     vippsAgreementPagePath &&
@@ -50,6 +69,28 @@ const inferPageTypeFromPath = async (path: string[]) => {
   const isArticlesPage = compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath);
   if (isArticlesPage) return PageType.ArticlesPage;
 
+  const isDashboard = dashboardPath
+    ? compareArrays(path.slice(0, dashboardPath.length), dashboardPath)
+    : false;
+
+  if (isDashboard) {
+    const isAgreementsPage = agreementsPagePath
+      ? compareArrays(path.slice(0, agreementsPagePath.length), agreementsPagePath)
+      : false;
+    if (isAgreementsPage) return PageType.AgreementsPage;
+
+    const isTaxPage = taxPagePath
+      ? compareArrays(path.slice(0, taxPagePath.length), taxPagePath)
+      : false;
+    if (isTaxPage) return PageType.TaxPage;
+
+    const isProfilePage = profilePagePath
+      ? compareArrays(path.slice(0, profilePagePath.length), profilePagePath)
+      : false;
+    if (isProfilePage) return PageType.ProfilePage;
+
+    return PageType.DonationsPage;
+  }
   return PageType.GenericPage;
 };
 
@@ -57,8 +98,6 @@ export const getStaticProps = async ({
   preview = false,
   params,
 }: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps();
-
   const path = params?.slug ?? [];
 
   const pageType = await inferPageTypeFromPath(path);
@@ -69,7 +108,6 @@ export const getStaticProps = async ({
       return {
         props: {
           ...props,
-          appStaticProps,
           pageType,
         },
       } as const;
@@ -79,7 +117,6 @@ export const getStaticProps = async ({
       return {
         props: {
           ...props,
-          appStaticProps,
           pageType,
         },
       } as const;
@@ -90,7 +127,6 @@ export const getStaticProps = async ({
       return {
         props: {
           ...props,
-          appStaticProps,
           pageType,
         },
       } as const;
@@ -104,20 +140,58 @@ export const getStaticProps = async ({
         },
       } as const;
     }
+    case PageType.DonationsPage: {
+      const props = await DonationsPage.getStaticProps({ preview, path });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
+    case PageType.AgreementsPage: {
+      const props = await AgreementsPage.getStaticProps({ preview });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
+    case PageType.ProfilePage: {
+      const props = await ProfilePage.getStaticProps({ preview });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
+    case PageType.TaxPage: {
+      const props = await TaxPage.getStaticProps({ preview, path });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
   }
 };
 
 export async function getStaticPaths() {
-  const { articlesPagePath, vippsAgreementPagePath } = await fetchRouterContext();
+  const routerContext = await fetchRouterContext();
 
-  const paths = await Promise.all([getGenericPagePaths(), getArticlePaths(articlesPagePath)]).then(
-    ([genericPagePaths, articlePaths]) => [
-      ...genericPagePaths,
-      ...articlePaths,
-      articlesPagePath,
-      ...(vippsAgreementPagePath ? [vippsAgreementPagePath] : []),
-    ],
-  );
+  const paths = await Promise.all([
+    getGenericPagePaths(),
+    getArticlePaths(routerContext.articlesPagePath),
+    getDonationsPageSubpaths(),
+  ]).then(([genericPagePaths, articlePaths, donationsPageSubpaths]) => [
+    ...genericPagePaths,
+    ...articlePaths,
+    ...donationsPageSubpaths,
+    ...(Object.values(routerContext).filter((path) => path !== null) as string[][]),
+  ]);
 
   return {
     paths: paths.map((path) => {

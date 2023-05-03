@@ -1,11 +1,13 @@
 import S from "@sanity/desk-tool/structure-builder";
 import {
+  Activity,
   Book,
   Bookmark,
   Briefcase,
   DollarSign,
   Filter,
   HelpCircle,
+  Lock,
   Paperclip,
   Phone,
   Settings,
@@ -97,20 +99,59 @@ export default () =>
             ),
         ),
       S.listItem()
-        .title("Profile pages")
-        .icon(Book)
+        .title("Dashboard")
+        .icon(Lock)
         .child(
           S.list()
-            .title("Profile pages")
+            .title("Dashboard")
             .items([
               S.listItem()
-                .title("Profile details")
-                .icon(User)
-                .child(S.document().schemaType("profile").documentId("profile")),
+                .title("Settings")
+                .icon(Settings)
+                .child(S.editor().id("settings").schemaType("dashboard").documentId("dashboard")),
+              S.divider(),
               S.listItem()
-                .title("Tax")
+                .title("Donations")
+                .icon(Activity)
+                .child(S.editor().id("donations").schemaType("donations").documentId("donations")),
+              S.listItem()
+                .title("Agreements")
+                .icon(Paperclip)
+                .child(
+                  S.editor().id("agreements").schemaType("agreements").documentId("agreements"),
+                ),
+              S.listItem()
+                .title("Profile")
+                .icon(User)
+                .child(S.editor().id("profile").schemaType("profile").documentId("profile")),
+              S.listItem()
+                .title("Tax deduction")
                 .icon(DollarSign)
-                .child(S.document().schemaType("tax").documentId("tax")),
+                .child(
+                  S.editor()
+                    .id("taxdeduction")
+                    .schemaType("taxdeduction")
+                    .documentId("taxdeduction"),
+                ),
+              S.listItem()
+                .title("Tax units")
+                .icon(DollarSign)
+                .child(S.editor().id("taxunits").schemaType("taxunits").documentId("taxunits")),
+              S.listItem()
+                .title("Tax statements")
+                .icon(DollarSign)
+                .child(
+                  S.editor()
+                    .id("taxstatements")
+                    .schemaType("taxstatements")
+                    .documentId("taxstatements"),
+                ),
+              S.listItem()
+                .title("Meta receipt")
+                .icon(DollarSign)
+                .child(
+                  S.editor().id("metareceipt").schemaType("metareceipt").documentId("metareceipt"),
+                ),
             ]),
         ),
       S.listItem()

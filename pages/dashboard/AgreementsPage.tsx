@@ -26,13 +26,39 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext } from "next";
+import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-}) => {
+export async function getAgreementsPagePath() {
+  const result = await getClient(false).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
+
+  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const agreementsSlug = result?.page?.[0]?.slug?.current;
+
+  if (!dashboardSlug || !agreementsSlug) return null;
+
+  return [dashboardSlug, agreementsSlug];
+}
+
+export const AgreementsPage = withStaticProps(
+  async ({ preview = false }: GetStaticPropsContext<{ slug: string[] }>) => {
+    const appStaticProps = await getAppStaticProps({
+      layout: LayoutType.Profile,
+    });
+    const result = await getClient(preview).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
+
+    return {
+      appStaticProps,
+      preview: preview,
+      data: {
+        result: result,
+        query: fetchAgreementsPage,
+        queryParams: {},
+      },
+    };
+  },
+)(({ data, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const { setActivity } = useContext(ActivityContext);
@@ -237,40 +263,35 @@ const Agreements: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       </PageContent>
     </>
   );
+});
+
+type FetchAgreementsPageResult = {
+  settings: any[];
+  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
+  page?: Array<{ slug?: { current?: string } }>;
+  footer: any[];
+  widget: any[];
 };
 
-export const getStaticProps = async ({
-  preview = false,
-}: GetStaticPropsContext<{ slug: string[] }>) => {
-  const appStaticProps = await getAppStaticProps({
-    layout: LayoutType.Profile,
-  });
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      appStaticProps,
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
-      },
-    },
-  };
-};
-
-const fetchProfilePage = groq`
+const fetchAgreementsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+  },
+  "dashboard": *[_id == "dashboard"] {
+    dashboard_slug {
+      current
+    }
+  },
+  "page": *[_id == "agreements"] {
+    slug {
+      current
+    }
   },
   ${footerQuery}
   ${widgetQuery}
 }
 `;
-
-export default Agreements;
 
 const getDistributionMap = (distributions: Distribution[], organizations: Organization[]) => {
   const map = new Map<string, Distribution>();

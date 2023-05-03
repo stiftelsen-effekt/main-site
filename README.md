@@ -57,9 +57,11 @@ The file `pages/_app.tsx` defines which layout that is to be used for site rende
 
 ### Pages
 
-The default Next.js router uses the folder structure of the `/pages` folder. The page will be available at the coresponding route in the application, for example `/pages/om.tsx` will be served at `/om`.
+While Next.js router uses the folder structure of the `/pages` folder by default, this is insufficient when serving localized paths, hence we're using a custom routing solution. Only pages with the `page.tsx` extension are magically picked up by the Next.js router. The `/pages/[[...slug]].page.tsx` file is central in the custom routing implementation - it is responsible for parsing the slug and rendering the correct page type.
 
-All pages under `/pages/min-side` should specify the profile layout (found under `components/min-side/layout.tsx`). This is beceause this layout is wrapped with the Auth0 provider, which is needed for authentification. It also uses a different navigation bar than the public facing site.
+Conventionally, each page type is defined inside the `/pages` directory as regular modules without the magic `page.tsx` extension. Each page type exports some function that returns static paths for that page type as well as a function returning static props (using the `withStaticProps()` helper). The `[[...slug]].page.tsx` file then imports all page types and uses them to generate the static paths and props for each.
+
+All pages under `/pages/dashboard` should specify the profile layout (found under `components/min-side/layout.tsx`). This is because this layout is wrapped with the Auth0 provider, which is needed for authentification. It also uses a different navigation bar than the public facing site.
 
 Conversely, all public facing pages should use the main layout (found under `components/main/layout.tsx`).
 

@@ -1,5 +1,7 @@
 import React from "react";
 import style from "./TaxMenu.module.scss";
+import { useRouterContext } from "../../../../context/RouterContext";
+import Link from "next/link";
 
 export enum TaxMenuChoices {
   TAX_UNITS = "skatteenheter",
@@ -10,39 +12,50 @@ export enum TaxMenuChoices {
 
 const TaxMenu: React.FC<{
   selected: TaxMenuChoices;
-  onChange: (selected: TaxMenuChoices) => void;
   mobile?: boolean;
-}> = ({ selected, onChange, mobile }) => {
+}> = ({ selected, mobile }) => {
+  const { taxUnitsPagePath, taxStatementsPagePath, metaReceiptPagePath, taxDeductionsPagePath } =
+    useRouterContext();
   const containerStyles = [style.menu];
   if (mobile) containerStyles.push(style.menumobile);
 
   return (
     <div className={containerStyles.join(" ")}>
       <ul>
-        <li
-          className={selected == TaxMenuChoices.TAX_UNITS ? style["menu-selected"] : ""}
-          onClick={() => onChange(TaxMenuChoices.TAX_UNITS)}
-        >
-          <button onClick={(e) => e.currentTarget.blur()}>Skatteenheter</button>
-        </li>
-        <li
-          className={selected == TaxMenuChoices.YEARLY_REPORTS ? style["menu-selected"] : ""}
-          onClick={() => onChange(TaxMenuChoices.YEARLY_REPORTS)}
-        >
-          <button onClick={(e) => e.currentTarget.blur()}>Årsoppgaver</button>
-        </li>
-        <li
-          className={selected == TaxMenuChoices.FACEBOOK_DONATIONS ? style["menu-selected"] : ""}
-          onClick={() => onChange(TaxMenuChoices.FACEBOOK_DONATIONS)}
-        >
-          <button onClick={(e) => e.currentTarget.blur()}>Facebook og Instagram</button>
-        </li>
-        <li
-          className={selected == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS ? style["menu-selected"] : ""}
-          onClick={() => onChange(TaxMenuChoices.ABOUT_TAX_DEDUCTIONS)}
-        >
-          <button onClick={(e) => e.currentTarget.blur()}>Om skattefradrag</button>
-        </li>
+        {taxUnitsPagePath ? (
+          <li className={selected == TaxMenuChoices.TAX_UNITS ? style["menu-selected"] : ""}>
+            <Link href={taxUnitsPagePath.join("/")} passHref>
+              <a>Skatteenheter</a>
+            </Link>
+          </li>
+        ) : null}
+        {taxStatementsPagePath ? (
+          <li className={selected == TaxMenuChoices.YEARLY_REPORTS ? style["menu-selected"] : ""}>
+            <Link href={taxStatementsPagePath.join("/")} passHref>
+              <a>Årsoppgaver</a>
+            </Link>
+          </li>
+        ) : null}
+        {metaReceiptPagePath ? (
+          <li
+            className={selected == TaxMenuChoices.FACEBOOK_DONATIONS ? style["menu-selected"] : ""}
+          >
+            <Link href={metaReceiptPagePath.join("/")} passHref>
+              <a>Facebook og Instagram</a>
+            </Link>
+          </li>
+        ) : null}
+        {taxDeductionsPagePath ? (
+          <li
+            className={
+              selected == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS ? style["menu-selected"] : ""
+            }
+          >
+            <Link href={taxDeductionsPagePath.join("/")} passHref>
+              <a>Om skattefradrag</a>
+            </Link>
+          </li>
+        ) : null}
       </ul>
     </div>
   );

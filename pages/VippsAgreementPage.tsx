@@ -12,6 +12,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import { withStaticProps } from "../util/withStaticProps";
+import { useRouterContext } from "../context/RouterContext";
+import { getAppStaticProps } from "./_app.page";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
@@ -21,9 +23,11 @@ export const getVippsAgreementPagePath = async () => {
 };
 
 export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps();
   const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
 
   return {
+    appStaticProps,
     preview: preview,
     data: {
       result: result,
@@ -32,6 +36,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
     },
   };
 })(({ data, preview }) => {
+  const { dashboardPath } = useRouterContext();
   const { loginWithRedirect } = useAuth0();
 
   const page = data.result.vipps?.[0].agreement_page;
@@ -76,10 +81,10 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
           <LinkButton
             title={"Registrer bruker"}
             type={"primary"}
-            url={`/min-side?screen_hint=signup&prompt=login`}
+            url={`/${dashboardPath.join("/")}?screen_hint=signup&prompt=login`}
           />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <LinkButton title={"Logg inn"} type={"primary"} url={`/min-side`} />
+          <LinkButton title={"Logg inn"} type={"primary"} url={`/${dashboardPath.join("/")}`} />
         </div>
       </SectionContainer>
       <BlockContentRenderer content={page.content} />
@@ -122,7 +127,7 @@ const fetchVipps = groq`
   },
   ${widgetQuery}
   ${footerQuery}
-  "vipps": *[_type == "vipps"] {
+  "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {
         current
