@@ -13,7 +13,7 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { pageContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem } from "./_app.page";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 import { withStaticProps } from "../util/withStaticProps";
 import { useRouterContext } from "../context/RouterContext";
 
@@ -27,6 +27,8 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
 
 const ArticlePage = withStaticProps(
   async ({ slug, preview }: { slug: string; preview: boolean }) => {
+    const appStaticProps = await getAppStaticProps();
+
     let result = await getClient(preview).fetch<{
       page: any;
       settings: any[];
@@ -35,6 +37,7 @@ const ArticlePage = withStaticProps(
     result = { ...result, page: filterPageToSingleItem(result, preview) };
 
     return {
+      appStaticProps,
       preview: preview,
       data: {
         result: result,
