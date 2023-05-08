@@ -1,6 +1,6 @@
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
-import { useAnonymousVippsAgreement, widgetQuery } from "../../_queries";
+import { linksContentQuery, useAnonymousVippsAgreement, widgetQuery } from "../../_queries";
 import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { getClient } from "../../lib/sanity.server";
@@ -11,8 +11,39 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { AgreementDetails } from "../../components/profile/shared/lists/agreementList/AgreementDetails";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { withStaticProps } from "../../util/withStaticProps";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 
-const VippsAnonymous: LayoutPage<{ data: any; preview: boolean }> = ({ data, preview }) => {
+export async function getVippsAnonymousPagePath() {
+  const result = await getClient(false).fetch<FetchVippsAnonymousPageResult>(
+    fetchVippsAnonymousPage,
+  );
+
+  const slug = result?.page?.[0]?.slug?.current;
+
+  if (!slug) return null;
+
+  return [slug];
+}
+
+export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const appStaticProps = await getAppStaticProps({
+    layout: LayoutType.Profile,
+  });
+  const result = await getClient(preview).fetch<FetchVippsAnonymousPageResult>(
+    fetchVippsAnonymousPage,
+  );
+
+  return {
+    appStaticProps,
+    preview: preview,
+    data: {
+      result: result,
+      query: fetchVippsAnonymousPage,
+      queryParams: {},
+    },
+  };
+})(({ data, preview }) => {
   const settings = data.result.settings[0];
   const router = useRouter();
   const agreementUrlCode = router.query.agreementUrlCode as string;
@@ -57,32 +88,30 @@ const VippsAnonymous: LayoutPage<{ data: any; preview: boolean }> = ({ data, pre
       </PageContent>
     </>
   );
+});
+
+type FetchVippsAnonymousPageResult = {
+  settings: any[];
+  page: Array<{ slug?: { current?: string }; tax?: any; data?: any }>;
 };
 
-export async function getStaticProps({ preview = false }) {
-  const result = await getClient(preview).fetch(fetchProfilePage);
-
-  return {
-    props: {
-      preview: preview,
-      data: {
-        result: result,
-        query: fetchProfilePage,
-        queryParams: {},
-      },
-    },
-  };
-}
-
-const fetchProfilePage = groq`
+const fetchVippsAnonymousPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
   },
+  "dashboard": *[_id == "dashboard"] {
+    dashboard_slug {
+      current
+    }
+  },
+  "page": *[_id == "vipps-anonymous"] {
+    slug {
+      current
+    },
+    tax,
+    data
+  },
   ${footerQuery}
   ${widgetQuery}
-}
-`;
-
-VippsAnonymous.layout = Layout;
-export default VippsAnonymous;
+}`;

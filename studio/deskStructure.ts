@@ -152,6 +152,15 @@ export default () =>
                 .child(
                   S.editor().id("metareceipt").schemaType("metareceipt").documentId("metareceipt"),
                 ),
+              S.listItem()
+                .title("Vipps anonymous agreement")
+                .icon(DollarSign)
+                .child(
+                  S.editor()
+                    .id("vipps-anonymous")
+                    .schemaType("vipps-anonymous")
+                    .documentId("vipps-anonymous"),
+                ),
             ]),
         ),
       S.listItem()

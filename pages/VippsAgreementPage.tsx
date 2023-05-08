@@ -7,13 +7,14 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { linksContentQuery, widgetQuery } from "../_queries";
+import { linksContentQuery, useAnonymousVippsAgreement, widgetQuery } from "../_queries";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import { withStaticProps } from "../util/withStaticProps";
 import { useRouterContext } from "../context/RouterContext";
 import { getAppStaticProps } from "./_app.page";
+import { AgreementDetails } from "../components/profile/shared/lists/agreementList/AgreementDetails";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
@@ -38,6 +39,12 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 })(({ data, preview }) => {
   const { dashboardPath } = useRouterContext();
   const { loginWithRedirect } = useAuth0();
+  const {
+    loading: vippsLoading,
+    data: agreement,
+    isValidating: vippsRefreshing,
+    error: vippsError,
+  } = useAnonymousVippsAgreement("4f973040d16c7f3bcb9212ba9e5ee7201e12eb82");
 
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -70,6 +77,13 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 
       <SectionContainer>
         <h2 style={{ marginTop: "10vh" }}>{header.title}</h2>
+        {/* <AgreementDetails
+              type="Vipps"
+              endpoint={agreement.endpoint}
+              inputDistribution={}
+              inputSum={agreement.amount}
+              inputDate={agreement.date}
+            /> */}
         <p className="inngress" style={{ maxWidth: 740, textAlign: "center" }}>
           {header.inngress}
         </p>

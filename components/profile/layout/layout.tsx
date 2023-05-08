@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
@@ -13,15 +13,15 @@ import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 
-const onRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
+const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
 };
 
 const shouldBypassAuth = (): boolean => {
   if (typeof window === "undefined") return false;
 
-  const routesToBypass = ["/min-side/vipps-anonym"];
-  return routesToBypass.includes(window.location.pathname);
+  const routesToBypass = ["/dashboard/vipps-anonym"];
+  return routesToBypass.some((route) => window.location.pathname.startsWith(route));
 };
 
 const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
@@ -53,6 +53,8 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
       cacheLocation = "localstorage";
     }
   }
+
+  const onRedirectCallback = useMemo(() => createRedirectCallback(dashboardPath), [dashboardPath]);
 
   const CustomAuth0Provider = ({ children }: { children: ReactNode }) => {
     if (bypassAuth) return <>{children}</>;

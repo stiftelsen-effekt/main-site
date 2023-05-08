@@ -177,13 +177,10 @@ export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilentl
 };
 
 export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
-  console.log(agreementUrlCode);
   const { data, error, isValidating } = useSWR(
-    `/vipps/agreement/minside/${agreementUrlCode}`,
+    `/vipps/agreement/anonymous/${agreementUrlCode}`,
     (url) => fetcher(url),
   );
-  console.log(data, error, isValidating);
-
   const loading = !data && !error;
 
   return {
