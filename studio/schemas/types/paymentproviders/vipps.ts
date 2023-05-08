@@ -10,6 +10,13 @@ export default {
       to: [{ type: "vippsagreement" }],
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "anonymous_page",
+      title: "Anonymous Vipps page",
+      type: "reference",
+      to: [{ type: "vipps-anonymous" }],
+      validation: (Rule: any) => Rule.required(),
+    },
   ],
   preview: {
     prepare() {

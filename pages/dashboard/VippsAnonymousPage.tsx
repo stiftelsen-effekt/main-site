@@ -19,11 +19,13 @@ export async function getVippsAnonymousPagePath() {
     fetchVippsAnonymousPage,
   );
 
-  const slug = result?.page?.[0]?.slug?.current;
+  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const slug = result?.vipps?.[0]?.anonymous_page?.slug.current;
+  console.log(dashboardSlug, slug, result.vipps);
 
-  if (!slug) return null;
+  if (!dashboardSlug || !slug) return null;
 
-  return [slug];
+  return [dashboardSlug, slug];
 }
 
 export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
@@ -92,26 +94,80 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
 
 type FetchVippsAnonymousPageResult = {
   settings: any[];
-  page: Array<{ slug?: { current?: string }; tax?: any; data?: any }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
+  vipps?: Array<{
+    anonymous_page: Record<string, any> & {
+      slug: {
+        current: string;
+      };
+    };
+  }>;
 };
 
 const fetchVippsAnonymousPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
   },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     }
   },
-  "page": *[_id == "vipps-anonymous"] {
-    slug {
-      current
-    },
-    tax,
-    data
-  },
-  ${footerQuery}
   ${widgetQuery}
-}`;
+  ${footerQuery}
+  "vipps": *[_id == "vipps"] {
+    anonymous_page->{
+      slug {
+        current
+      },
+      header {
+        ...,
+        seoImage{
+          asset->
+        },
+        ${linksContentQuery}
+      },
+      content,
+    }
+  }
+}
+`;
+
+// const fetchVippsAnonymousPage = groq`
+// {
+//   "settings": *[_type == "site_settings"] {
+//     logo,
+//   },
+//   "dashboard": *[_id == "dashboard"] {
+//     dashboard_slug {
+//       current
+//     }
+//   },
+//   "page": *[_id == "vipps-anonymous"] {
+//     slug {
+//       current
+//     },
+//     tax,
+//     data
+//   },
+//   ${footerQuery}
+//   ${widgetQuery}
+// }`;
