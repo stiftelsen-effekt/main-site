@@ -20,7 +20,7 @@ const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
 const shouldBypassAuth = (): boolean => {
   if (typeof window === "undefined") return false;
 
-  const routesToBypass = ["/dashboard/vipps-anonymous"];
+  const routesToBypass = ["/min-side/vipps-anonym"];
   return routesToBypass.some((route) => window.location.pathname.startsWith(route));
 };
 

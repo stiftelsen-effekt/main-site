@@ -167,8 +167,6 @@ export const AgreementsPage = withStaticProps(
         distribution.shares.some((org) => org.id === sciOrgId && parseFloat(org.share) > 0),
     );
 
-  console.log(distributionsMap);
-
   return (
     <>
       <Head>

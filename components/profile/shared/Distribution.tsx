@@ -1,6 +1,7 @@
 import React from "react";
 import { Distribution } from "../../../models";
 import style from "./Distribution.module.scss";
+import { useOrganizations } from "../../../_queries";
 
 export const DistributionController: React.FC<{
   distribution: Distribution;

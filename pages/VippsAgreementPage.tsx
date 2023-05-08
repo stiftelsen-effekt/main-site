@@ -38,14 +38,6 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   };
 })(({ data, preview }) => {
   const { dashboardPath } = useRouterContext();
-  const { loginWithRedirect } = useAuth0();
-  const {
-    loading: vippsLoading,
-    data: agreement,
-    isValidating: vippsRefreshing,
-    error: vippsError,
-  } = useAnonymousVippsAgreement("4f973040d16c7f3bcb9212ba9e5ee7201e12eb82");
-
   const page = data.result.vipps?.[0].agreement_page;
 
   if (!page) {
@@ -77,13 +69,6 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 
       <SectionContainer>
         <h2 style={{ marginTop: "10vh" }}>{header.title}</h2>
-        {/* <AgreementDetails
-              type="Vipps"
-              endpoint={agreement.endpoint}
-              inputDistribution={}
-              inputSum={agreement.amount}
-              inputDate={agreement.date}
-            /> */}
         <p className="inngress" style={{ maxWidth: 740, textAlign: "center" }}>
           {header.inngress}
         </p>
