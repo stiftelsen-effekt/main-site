@@ -1,12 +1,13 @@
 import { User } from "@auth0/auth0-react";
 import { mutate } from "swr";
+import { getUserId } from "../../lib/user";
 import { Donor, FacebookDonationRegistration, TaxUnit } from "../../models";
 
 export const save = async (data: Donor, user: User, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(`${api}/donors/${user["https://gieffektivt.no/user-id"]}/`, {
+    const response = await fetch(`${api}/donors/${getUserId(user)}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -62,25 +63,22 @@ export const createTaxUnit = async (
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(
-      `${api}/donors/${user["https://gieffektivt.no/user-id"]}/taxunits`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          name: data.name,
-          ssn: data.ssn,
-        }),
+    const response = await fetch(`${api}/donors/${getUserId(user)}/taxunits`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-    );
+      credentials: "same-origin",
+      body: JSON.stringify({
+        name: data.name,
+        ssn: data.ssn,
+      }),
+    });
 
     if (response.status === 200) {
       const data = await response.json();
-      mutate(`/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`);
+      mutate(`/donors/${getUserId(user)}/taxunits/`);
       return data.content;
     } else {
       const data = await response.json();
@@ -100,24 +98,21 @@ export const updateTaxUnit = async (
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(
-      `${api}/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/${data.id}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          taxUnit: data,
-        }),
+    const response = await fetch(`${api}/donors/${getUserId(user)}/taxunits/${data.id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-    );
+      credentials: "same-origin",
+      body: JSON.stringify({
+        taxUnit: data,
+      }),
+    });
 
     if (response.status === 200) {
       const data = await response.json();
-      mutate(`/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`);
+      mutate(`/donors/${getUserId(user)}/taxunits/`);
       return data.content;
     } else {
       const data = await response.json();
@@ -137,24 +132,21 @@ export const deleteTaxUnit = async (
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(
-      `${api}/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/${data.unit.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          transferId: data.transferUnit?.id || null,
-        }),
+    const response = await fetch(`${api}/donors/${getUserId(user)}/taxunits/${data.unit.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-    );
+      credentials: "same-origin",
+      body: JSON.stringify({
+        transferId: data.transferUnit?.id || null,
+      }),
+    });
 
     if (response.status === 200) {
       const data = await response.json();
-      mutate(`/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`);
+      mutate(`/donors/${getUserId(user)}/taxunits/`);
       return true;
     } else {
       const data = await response.json();

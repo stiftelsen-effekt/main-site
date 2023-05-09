@@ -1,6 +1,8 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
 import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
+import { TaxUnit } from "./models";
+import { getUserId } from "./lib/user";
 
 export interface Query<T> {
   (
@@ -46,7 +48,7 @@ const fetcher = async (
  */
 export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/donations/aggregated`,
+    `/donors/${getUserId(user)}/donations/aggregated`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -67,9 +69,8 @@ export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSil
  * @param {String} getAccessTokenSilently - Retrieves access token
  * */
 export const useDonations = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/donations/`,
-    (url) => fetcher(url, fetchToken),
+  const { data, error, isValidating } = useSWR(`/donors/${getUserId(user)}/donations/`, (url) =>
+    fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -98,7 +99,7 @@ export const useDistributions = (
 ) => {
   const { data, error, isValidating } = useSWR(
     condition
-      ? `/donors/${user["https://gieffektivt.no/user-id"]}/distributions/?kids=${encodeURIComponent(
+      ? `/donors/${getUserId(user)}/distributions/?kids=${encodeURIComponent(
           Array.from(kids).join(","),
         )}`
       : null,
@@ -123,7 +124,7 @@ export const useAgreementsDistributions = (
 ) => {
   const { data, error, isValidating } = useSWR(
     condition
-      ? `/donors/${user["https://gieffektivt.no/user-id"]}/distributions/?kids=${encodeURIComponent(
+      ? `/donors/${getUserId(user)}/distributions/?kids=${encodeURIComponent(
           Array.from(kids).join(","),
         )}`
       : null,
@@ -142,7 +143,7 @@ export const useAgreementsDistributions = (
 
 export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`,
+    `/donors/${getUserId(user)}/recurring/avtalegiro/`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -158,7 +159,7 @@ export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSi
 
 export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/recurring/vipps/`,
+    `/donors/${getUserId(user)}/recurring/vipps/`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -203,9 +204,8 @@ export const useAllOrganizations = (user: User, fetchToken: getAccessTokenSilent
 };
 
 export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/`,
-    (url) => fetcher(url, fetchToken),
+  const { data, error, isValidating } = useSWR(`/donors/${getUserId(user)}/`, (url) =>
+    fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -219,8 +219,8 @@ export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
 };
 
 export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/taxunits/`,
+  const { data, error, isValidating } = useSWR<TaxUnit[]>(
+    `/donors/${getUserId(user)}/taxunits/`,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -235,9 +235,8 @@ export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
 };
 
 export const useYearlyTaxReports = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(
-    `/donors/${user["https://gieffektivt.no/user-id"]}/taxreports/`,
-    (url) => fetcher(url, fetchToken),
+  const { data, error, isValidating } = useSWR(`/donors/${getUserId(user)}/taxreports/`, (url) =>
+    fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -266,7 +265,7 @@ export const linksContentQuery = `links[] {
 }`;
 
 export const questionAndAnswerSelectionQuery = `
-  ..., 
+  ...,
   answers[] {
     ...,
     ${linksContentQuery}

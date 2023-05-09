@@ -23,6 +23,7 @@ import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../TaxUnitModal/TaxUnitCreateModal";
 import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/EffektCheckbox";
 import AnimateHeight from "react-animate-height";
+import { getUserId } from "../../../../../lib/user";
 
 /**
  * Gets the number of days in a month in a year
@@ -103,6 +104,8 @@ export const AgreementDetails: React.FC<{
       return;
     }
 
+    if (!user) throw new Error("User is not logged in");
+
     setLoadingChanges(true);
 
     if (type == "Vipps") {
@@ -122,7 +125,7 @@ export const AgreementDetails: React.FC<{
 
       if (result != null) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/vipps/`);
+        mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
         setLoadingChanges(false);
       } else {
         failureToast();
@@ -145,7 +148,7 @@ export const AgreementDetails: React.FC<{
 
       if (result !== null) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`);
+        mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
         setLoadingChanges(false);
       } else {
         failureToast();
@@ -155,13 +158,15 @@ export const AgreementDetails: React.FC<{
   };
 
   const cancel = async () => {
+    if (!user) throw new Error("User is not logged in");
+
     setLightboxOpen(false);
     const token = await getAccessTokenSilently();
     if (type === "Vipps") {
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/vipps/`);
+        mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
       } else {
         failureToast();
       }
@@ -169,7 +174,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`);
+        mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
       } else {
         failureToast();
       }
@@ -193,7 +198,7 @@ export const AgreementDetails: React.FC<{
         </div>
         <TaxUnitSelector
           selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-          onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
+          onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
           onAddNew={() => setAddTaxUnitOpen(true)}
         />
         <div>
@@ -230,7 +235,7 @@ export const AgreementDetails: React.FC<{
         <TaxUnitCreateModal
           open={addTaxUnitOpen}
           onFailure={() => {}}
-          onSuccess={(unit: TaxUnit) => {
+          onSuccess={(unit) => {
             setDistribution({ ...distribution, taxUnit: unit });
             setAddTaxUnitOpen(false);
           }}

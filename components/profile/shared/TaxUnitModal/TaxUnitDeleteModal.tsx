@@ -94,7 +94,7 @@ export const TaxUnitDeleteModal: React.FC<{
                   <TaxUnitSelector
                     selected={selectedTaxUnit}
                     exclude={[taxUnit]}
-                    onChange={(unit: TaxUnit) => setSelectedTaxUnit(unit)}
+                    onChange={(unit) => setSelectedTaxUnit(unit)}
                     onAddNew={() => setCreateModalOpen(true)}
                   />
                 </div>
@@ -107,7 +107,7 @@ export const TaxUnitDeleteModal: React.FC<{
       {createModalOpen && (
         <TaxUnitCreateModal
           open={createModalOpen}
-          onSuccess={function (unit: TaxUnit): void {
+          onSuccess={function (unit): void {
             setSelectedTaxUnit(unit);
             setCreateModalOpen(false);
           }}
