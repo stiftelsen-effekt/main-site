@@ -3,7 +3,7 @@ import { mutate } from "swr";
 import { getUserId } from "../../lib/user";
 import { Donor, FacebookDonationRegistration, TaxUnit } from "../../models";
 
-export const save = async (data: Donor, user: User, token: string) => {
+export const saveDonor = async (data: Donor, user: User, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
