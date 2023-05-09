@@ -28,7 +28,7 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
   switch (req.query.type) {
     case "about_us":
-      res.writeHead(307, { Location: `/om` });
+      res.writeHead(307, { Location: `/om-oss` });
       break;
     case "articles":
       res.writeHead(307, { Location: `/artikler` });
