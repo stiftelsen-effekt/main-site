@@ -4,6 +4,7 @@ import { WidgetProps } from "./components/shared/components/Widget/types/WidgetP
 import { FooterProps } from "./components/shared/layout/Footer/Footer";
 
 export type LayoutProps = {
+  isPreview?: boolean;
   footerData: FooterProps;
   widgetData: WidgetProps;
 };

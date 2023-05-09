@@ -1,0 +1,38 @@
+.container {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  background: var(--primary);
+  padding: 0.5rem;
+  color: var(--secondary);
+  border-top: 1px solid var(--secondary);
+  z-index: 10000;
+  font-size: 0.8rem;
+  vertical-align: middle;
+
+  svg:first-child {
+    margin-right: 0.5rem;
+  }
+
+  svg:last-child {
+    margin-left: 0.5rem;
+  }
+}
+
+.divider {
+  margin: 0 1rem;
+}
+
+.exitLink {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+}
+
+.exitLink:hover {
+  border: none;
+}
