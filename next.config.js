@@ -53,7 +53,7 @@ const nextConfig = {
       },
       {
         source: "/about",
-        destination: "/om",
+        destination: "/om-oss",
         permanent: true,
       },
       {

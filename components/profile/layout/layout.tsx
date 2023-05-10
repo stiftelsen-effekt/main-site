@@ -40,7 +40,6 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
       domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN || ""}
       clientId={process.env.NEXT_PUBLIC_AUTH_CLIENT_ID || ""}
       audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
-      scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
       redirectUri={
         typeof window !== "undefined"
           ? [window.location.origin, ...dashboardPath, ""].join("/")
