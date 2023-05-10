@@ -8,11 +8,10 @@ import { groq } from "next-sanity";
 import { Navbar } from "../../components/profile/layout/navbar";
 import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { AgreementDetails } from "../../components/profile/shared/lists/agreementList/AgreementDetails";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
+import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient(false).fetch<FetchVippsAnonymousPageResult>(
@@ -21,7 +20,6 @@ export async function getVippsAnonymousPagePath() {
 
   const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
   const slug = result?.vipps?.[0]?.anonymous_page?.slug.current;
-  console.log(dashboardSlug, slug, result.vipps);
 
   if (!dashboardSlug || !slug) return null;
 
@@ -48,17 +46,18 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
 })(({ data, preview }) => {
   const settings = data.result.settings[0];
   const router = useRouter();
-  const agreementUrlCode = router.query.agreementUrlCode as string;
-  const {
-    loading: vippsLoading,
-    data: vipps,
-    isValidating: vippsRefreshing,
-    error: vippsError,
-  } = useAnonymousVippsAgreement(agreementUrlCode);
+  const agreementCode = router.query["agreement-code"] as string;
+  const page = data.result.vipps?.[0].anonymous_page;
 
-  const [agreement, setAgreement] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  if (!page) {
+    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+  }
+
+  const { loading, data: agreementData, error } = useAnonymousVippsAgreement(agreementCode);
+
+  const distribution = agreementData?.distribution;
+  const agreement = agreementData?.agreement;
+  const status = agreement?.status;
 
   return (
     <>
@@ -73,19 +72,33 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       </MainHeader>
 
       <PageContent>
+        <h3>Anonym Vipps-avtale</h3>
         <div className={styles.container}>
-          <h3 className={styles.header}>Din Vipps-avtale</h3>
           {loading && <div>Loading...</div>}
-          {error && <div>Error: {error}</div>}
-          {/* {agreement &&
-            <AgreementDetails
-              type={agreement.type}
-              endpoint={agreement.endpoint}
-              inputDistribution={}
+          {error && <div>Error</div>}
+          {status === "ACTIVE" && (
+            <AnonymousVippsAgreement
+              endpoint={agreementCode}
+              inputDistribution={agreementData.distribution}
               inputSum={agreement.amount}
-              inputDate={agreement.date}
+              inputDate={agreement.monthly_charge_day}
             />
-          } */}
+          )}
+          {status === "STOPPED" && (
+            <div>
+              <h4>Avtalen er avsluttet</h4>
+              <p>Avtalen er avsluttet og vil ikke trekkes lenger.</p>
+            </div>
+          )}
+          {status !== "STOPPED" && status !== "ACTIVE" && (
+            <div>
+              <h4>Avtalen er ikke aktiv</h4>
+              <p>
+                Årsaken til dette kan være at avtalen ikke er aktivert enda, eller at det er noe
+                feil med avtalen.
+              </p>
+            </div>
+          )}
         </div>
       </PageContent>
     </>
