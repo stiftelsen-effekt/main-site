@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DonorContext } from "../donorProvider";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
@@ -14,7 +14,13 @@ export const MissingNameModal: React.FC = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(donor?.name === "");
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (donor && !donor.name) {
+      setOpen(true);
+    }
+  }, [donor]);
 
   const saveName = async () => {
     setLoading(true);
