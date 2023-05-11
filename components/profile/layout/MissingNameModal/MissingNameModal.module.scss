@@ -1,0 +1,20 @@
+.container {
+  max-width: 500px;
+
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem 0;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .container {
+    max-width: 100%;
+    min-width: 100%;
+
+    h5 {
+      margin: 3rem 0;
+    }
+  }
+}
