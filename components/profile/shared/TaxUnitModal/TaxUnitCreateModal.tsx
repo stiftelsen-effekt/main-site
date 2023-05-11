@@ -11,6 +11,7 @@ import { AlertCircle, Check } from "react-feather";
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { useTaxUnits } from "../../../../_queries";
+import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -103,21 +104,13 @@ export const TaxUnitCreateModal: React.FC<{
         </div>
         <div className={styles.inputContainer}>
           <label className={styles.label}>Navn</label>
-          <input
-            className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          ></input>
+          <EffektTextInput value={name} onChange={(val) => setName(val)} />
         </div>
         <div className={styles.inputContainer}>
           <label className={styles.label}>
             {type === TaxUnitTypes.PERSON ? "Fødselsnummer" : "Organisasjonsnummer"}
           </label>
-          <input
-            className={styles.input}
-            value={ssn}
-            onChange={(e) => setSsn(e.target.value)}
-          ></input>
+          <EffektTextInput value={ssn} onChange={(val: string) => setSsn(val)} />
 
           <span className={styles.ssnValidation}>
             {ssn.length === 11 &&

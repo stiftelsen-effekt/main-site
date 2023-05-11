@@ -12,6 +12,7 @@ import { SWRConfig } from "swr";
 import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
+import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -39,7 +40,6 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
       domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN || ""}
       clientId={process.env.NEXT_PUBLIC_AUTH_CLIENT_ID || ""}
       audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
-      scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
       redirectUri={
         typeof window !== "undefined"
           ? [window.location.origin, ...dashboardPath, ""].join("/")
@@ -70,6 +70,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
                     <WidgetPane darkMode={true} text={widgetData} />
                     <main className={styles.main}>{children}</main>
+                    <MissingNameModal />
                   </CookiesAccepted.Provider>
                 </WidgetContext.Provider>
                 <Footer {...footerData} />
