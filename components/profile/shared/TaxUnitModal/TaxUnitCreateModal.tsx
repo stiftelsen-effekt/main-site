@@ -68,7 +68,7 @@ export const TaxUnitCreateModal: React.FC<{
     return <Spinner />;
   }
 
-  const ssnIsExistingUnit = existingUnits.some((unit: TaxUnit) => unit.ssn === ssn);
+  const ssnIsExistingUnit = existingUnits?.some((unit) => unit.ssn === ssn);
   const isValid =
     name !== "" &&
     ssn !== "" &&

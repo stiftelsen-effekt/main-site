@@ -72,8 +72,8 @@ export const TaxUnitEditModal: React.FC<{
   }
 
   const ssnIsExistingUnit = existingUnits
-    .filter((unit: TaxUnit) => unit != initial)
-    .some((unit: TaxUnit) => unit.ssn === ssn);
+    ?.filter((unit) => unit != initial)
+    .some((unit) => unit.ssn === ssn);
   const isValid =
     name !== "" &&
     ssn !== "" &&

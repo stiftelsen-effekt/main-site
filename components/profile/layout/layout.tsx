@@ -63,14 +63,13 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
       <Auth0Provider
         domain={process.env.NEXT_PUBLIC_DOMAIN || ""}
         clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ""}
-        audience="https://data.gieffektivt.no"
-        scope="openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements"
+        audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
         redirectUri={
           typeof window !== "undefined"
             ? [window.location.origin, ...dashboardPath, ""].join("/")
             : undefined
         }
-        onRedirectCallback={() => onRedirectCallback(dashboardPath)}
+        onRedirectCallback={onRedirectCallback}
         cacheLocation={cacheLocation}
       >
         {children}

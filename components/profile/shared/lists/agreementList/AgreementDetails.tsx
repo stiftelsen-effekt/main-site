@@ -24,6 +24,7 @@ import { TaxUnitCreateModal } from "../../TaxUnitModal/TaxUnitCreateModal";
 import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/EffektCheckbox";
 import AnimateHeight from "react-animate-height";
 import { checkPaymentDate } from "../../../../../util/dates";
+import { getUserId } from "../../../../../lib/user";
 
 export const AgreementDetails: React.FC<{
   type: "Vipps" | "AvtaleGiro";
@@ -68,6 +69,8 @@ export const AgreementDetails: React.FC<{
       return;
     }
 
+    if (!user) throw new Error("User is not logged in");
+
     setLoadingChanges(true);
 
     if (type == "Vipps") {
@@ -87,7 +90,7 @@ export const AgreementDetails: React.FC<{
 
       if (result != null) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/vipps/`);
+        mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
         setLoadingChanges(false);
       } else {
         failureToast();
@@ -110,7 +113,7 @@ export const AgreementDetails: React.FC<{
 
       if (result !== null) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`);
+        mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
         setLoadingChanges(false);
       } else {
         failureToast();
@@ -120,13 +123,15 @@ export const AgreementDetails: React.FC<{
   };
 
   const cancel = async () => {
+    if (!user) throw new Error("User is not logged in");
+
     setLightboxOpen(false);
     const token = await getAccessTokenSilently();
     if (type === "Vipps") {
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/vipps/`);
+        mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
       } else {
         failureToast();
       }
@@ -134,7 +139,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
         successToast();
-        mutate(`/donors/${(user as User)["https://gieffektivt.no/user-id"]}/recurring/avtalegiro/`);
+        mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
       } else {
         failureToast();
       }
@@ -168,16 +173,22 @@ export const AgreementDetails: React.FC<{
             onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
             onAddNew={() => setAddTaxUnitOpen(true)}
           />
-          <div>
-            <EffektCheckbox
-              checked={distribution.standardDistribution}
-              onChange={(standard: boolean) =>
-                setDistribution({ ...distribution, standardDistribution: standard })
-              }
-            >
-              Smart fordeling
-            </EffektCheckbox>
-          </div>
+          <span>kr</span>
+        </div>
+        <TaxUnitSelector
+          selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
+          onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
+          onAddNew={() => setAddTaxUnitOpen(true)}
+        />
+        <div>
+          <EffektCheckbox
+            checked={distribution.standardDistribution}
+            onChange={(standard: boolean) =>
+              setDistribution({ ...distribution, standardDistribution: standard })
+            }
+          >
+            Smart fordeling
+          </EffektCheckbox>
         </div>
 
         <AnimateHeight

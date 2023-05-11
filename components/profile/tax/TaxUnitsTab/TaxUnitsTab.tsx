@@ -20,19 +20,17 @@ export const TaxUnitsTab: React.FC = () => {
     <div className={styles.container}>
       <h4 className={styles.header}>Dine skatteenheter</h4>
       {!loading && !error && data ? (
-        data.filter((taxUnit: TaxUnit) => taxUnit.archived === null).length > 0 ? (
+        data.filter((taxUnit) => taxUnit.archived === null).length > 0 ? (
           <>
             <div className={styles.desktopList}>
               {data
-                .filter((taxUnit: TaxUnit) => taxUnit.archived === null)
-                .map((taxUnit: TaxUnit) => (
+                .filter((taxUnit) => taxUnit.archived === null)
+                .map((taxUnit) => (
                   <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />
                 ))}
             </div>
             <div className={styles.mobileList}>
-              <TaxUnitMobileList
-                taxUnits={data.filter((taxUnit: TaxUnit) => taxUnit.archived === null)}
-              />
+              <TaxUnitMobileList taxUnits={data.filter((taxUnit) => taxUnit.archived === null)} />
             </div>
 
             <div className={styles.buttonContainer}>
@@ -62,7 +60,7 @@ export const TaxUnitsTab: React.FC = () => {
       {createModalOpen && (
         <TaxUnitCreateModal
           open={createModalOpen}
-          onSuccess={(unit: TaxUnit) => {
+          onSuccess={(unit) => {
             setCreateModalOpen(false);
           }}
           onFailure={() => {}}
