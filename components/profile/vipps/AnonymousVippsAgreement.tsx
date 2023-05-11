@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { Check, AlertCircle, Info } from "react-feather";
 import { toast } from "react-toastify";
-import { useSWRConfig } from "swr";
 import { Distribution } from "../../../models";
 import { DatePickerInput } from "../../shared/components/DatePicker/DatePickerInput";
 import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
@@ -23,7 +22,6 @@ export const AnonymousVippsAgreement: React.FC<{
   inputDistribution: Distribution;
   endpoint: string;
 }> = ({ inputSum, inputDate, inputDistribution, endpoint }) => {
-  const { mutate } = useSWRConfig();
   const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));

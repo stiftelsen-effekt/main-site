@@ -21,7 +21,8 @@ const shouldBypassAuth = (): boolean => {
   if (typeof window === "undefined") return false;
 
   const routesToBypass = ["/min-side/vipps-anonym"];
-  return routesToBypass.some((route) => window.location.pathname.startsWith(route));
+  const shouldBypass = routesToBypass.some((route) => window.location.pathname.startsWith(route));
+  return shouldBypass;
 };
 
 const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
@@ -32,10 +33,6 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
       </DonorProvider>
     </UserWrapper>
   );
-};
-
-const UnauthenticatedLayout = ({ children }: { children: ReactNode }) => {
-  return <>{children}</>;
 };
 
 export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, widgetData }) => {
@@ -56,6 +53,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
 
   const onRedirectCallback = useMemo(() => createRedirectCallback(dashboardPath), [dashboardPath]);
 
+  // This is declared here to prevent a rendering bug that occurs if moved outside of the component
   const CustomAuth0Provider = ({ children }: { children: ReactNode }) => {
     if (bypassAuth) return <>{children}</>;
 
@@ -78,7 +76,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
   };
 
   const layoutContent = bypassAuth ? (
-    <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
+    <>{children}</>
   ) : (
     <AuthenticatedLayout>{children}</AuthenticatedLayout>
   );

@@ -12,13 +12,6 @@ export default {
       description: "The header text for the Vipps Anonymous page",
     },
     {
-      name: "content",
-      title: "Content",
-      type: "array",
-      of: [{ type: "block" }],
-      description: "The main content for the Vipps Anonymous page",
-    },
-    {
       name: "slug",
       title: "Slug",
       type: "slug",
