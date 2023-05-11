@@ -13,12 +13,18 @@ import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
+import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
 };
 
-export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, widgetData }) => {
+export const ProfileLayout: React.FC<LayoutProps> = ({
+  children,
+  footerData,
+  widgetData,
+  isPreview,
+}) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
@@ -66,6 +72,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
                   closeButton={false}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
+                {isPreview && <PreviewBlock />}
                 <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
                     <WidgetPane darkMode={true} text={widgetData} />
