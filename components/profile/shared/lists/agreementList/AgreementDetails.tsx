@@ -35,7 +35,7 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
-  const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
+  const [distribution, setDistribution] = useState<Distribution>({ ...inputDistribution });
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
@@ -146,10 +146,10 @@ export const AgreementDetails: React.FC<{
     }
   };
 
-  if (typeof distribution === "undefined") {
+  if (!distribution.shares) {
     return (
       <div className={style.errorWrapper}>
-        <p>Det oppstod en feil. Vennligst prøv igjen eller kontakt oss.</p>
+        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
       </div>
     );
   } else {
@@ -170,17 +170,9 @@ export const AgreementDetails: React.FC<{
           </div>
           <TaxUnitSelector
             selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-            onChange={(unit: TaxUnit) => setDistribution({ ...distribution, taxUnit: unit })}
+            onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
             onAddNew={() => setAddTaxUnitOpen(true)}
           />
-          <span>kr</span>
-        </div>
-        <TaxUnitSelector
-          selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-          onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
-          onAddNew={() => setAddTaxUnitOpen(true)}
-        />
-        <div>
           <EffektCheckbox
             checked={distribution.standardDistribution}
             onChange={(standard: boolean) =>
