@@ -4,6 +4,7 @@
 }
 
 .datepicker-input-wrapper input {
+  z-index: 100;
   padding: 12px 16px;
   border: none;
   background: var(--secondary);

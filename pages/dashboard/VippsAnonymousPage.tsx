@@ -72,33 +72,46 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       </MainHeader>
 
       <PageContent>
-        <h3>Anonym Vipps-avtale</h3>
-        <div className={styles.container}>
-          {loading && <div>Loading...</div>}
-          {error && <div>Error</div>}
-          {status === "ACTIVE" && (
-            <AnonymousVippsAgreement
-              endpoint={agreementCode}
-              inputDistribution={agreementData.distribution}
-              inputSum={agreement.amount}
-              inputDate={agreement.monthly_charge_day}
-            />
-          )}
-          {status === "STOPPED" && (
-            <div>
-              <h4>Avtalen er avsluttet</h4>
-              <p>Avtalen er avsluttet og vil ikke trekkes lenger.</p>
-            </div>
-          )}
-          {status !== "STOPPED" && status !== "ACTIVE" && (
-            <div>
-              <h4>Avtalen er ikke aktiv</h4>
-              <p>
-                Årsaken til dette kan være at avtalen ikke er aktivert enda, eller at det er noe
-                feil med avtalen.
-              </p>
-            </div>
-          )}
+        <h3 className={styles.header}>Anonym Vipps-avtale</h3>
+        <p>Her kan du endre eller avslutte din anonyme Vipps-avtale.</p>
+        <div className={styles.gridContainer}>
+          <div className={styles.editGridCell}>
+            {loading && <div>Loading...</div>}
+            {error && <div>Error</div>}
+            {status === "ACTIVE" && (
+              <AnonymousVippsAgreement
+                endpoint={agreementCode}
+                inputDistribution={distribution}
+                inputSum={agreement.amount}
+                inputDate={agreement.monthly_charge_day}
+              />
+            )}
+            {status === "STOPPED" && (
+              <div>
+                <h4>Avtalen er avsluttet</h4>
+                <p>Avtalen er avsluttet og vil ikke trekkes lenger.</p>
+              </div>
+            )}
+            {status !== "STOPPED" && status !== "ACTIVE" && (
+              <div>
+                <h4>Avtalen er ikke aktiv</h4>
+                <p>
+                  Årsaken til dette kan være at avtalen ikke er aktivert enda, eller at det er noe
+                  feil med avtalen.
+                </p>
+              </div>
+            )}
+          </div>
+          <div className={styles.infoGridCell}>
+            {agreement && (
+              <>
+                <h4>Din avtale</h4>
+                <p>Sum: {agreement.amount} kr</p>
+                <p>Trekkdag: Den {agreement.monthly_charge_day}. hver måned</p>
+                <p>Status: {status}</p>
+              </>
+            )}
+          </div>
         </div>
       </PageContent>
     </>
@@ -163,24 +176,3 @@ const fetchVippsAnonymousPage = groq`
   }
 }
 `;
-
-// const fetchVippsAnonymousPage = groq`
-// {
-//   "settings": *[_type == "site_settings"] {
-//     logo,
-//   },
-//   "dashboard": *[_id == "dashboard"] {
-//     dashboard_slug {
-//       current
-//     }
-//   },
-//   "page": *[_id == "vipps-anonymous"] {
-//     slug {
-//       current
-//     },
-//     tax,
-//     data
-//   },
-//   ${footerQuery}
-//   ${widgetQuery}
-// }`;
