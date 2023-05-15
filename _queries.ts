@@ -345,7 +345,9 @@ export const pageContentQuery = `content[] {
     },
     _type == 'inngress' => {
       ...,
-      ${linksContentQuery}
+      sidelinks[] {
+        ${linksSelectorQuery}
+      },
     },
     _type == 'wealthcalculatorteaser' => {
       ...,
