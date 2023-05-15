@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Donor } from "../../../../models";
 import style from "./ProfileInfo.module.scss";
 import { DonorContext } from "../../layout/donorProvider";
-import { save } from "../../_queries";
+import { saveDonor } from "../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 
@@ -17,9 +17,9 @@ export const ProfileInfo: React.FC = () => {
 
   if (!donor || !user) return <div>Noe gikk galt.</div>;
 
-  const saveDonor = async () => {
+  const save = async () => {
     const token = await getAccessTokenSilently();
-    const result = await save(donor, user, token);
+    const result = await saveDonor(donor, user, token);
     if (result === null) {
       failureToast();
     } else {
@@ -58,7 +58,7 @@ export const ProfileInfo: React.FC = () => {
             Send meg nyhetsbrev på e-post
           </EffektCheckbox>
         </div>
-        <EffektButton role={"submit"} onClick={saveDonor} cy="btn-save">
+        <EffektButton role={"submit"} onClick={save} cy="btn-save">
           Lagre
         </EffektButton>
       </section>

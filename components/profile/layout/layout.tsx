@@ -12,6 +12,8 @@ import { SWRConfig } from "swr";
 import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
+import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
+import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -35,7 +37,12 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, widgetData }) => {
+export const ProfileLayout: React.FC<LayoutProps> = ({
+  children,
+  footerData,
+  widgetData,
+  isPreview,
+}) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
@@ -59,8 +66,8 @@ export const ProfileLayout: React.FC<LayoutProps> = ({ children, footerData, wid
 
     return (
       <Auth0Provider
-        domain={process.env.NEXT_PUBLIC_DOMAIN || ""}
-        clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ""}
+        domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN || ""}
+        clientId={process.env.NEXT_PUBLIC_AUTH_CLIENT_ID || ""}
         audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
         redirectUri={
           typeof window !== "undefined"
