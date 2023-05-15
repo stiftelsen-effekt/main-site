@@ -50,13 +50,17 @@ function MyApp({
     appStaticProps?.layout || LayoutType.Default
   ];
 
-  const { data: previewData } = usePreviewSubscription(propsData?.query, {
+  const { data: previewData, loading: previewLoading } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
     initialData: propsData?.result,
     enabled: pageProps.preview,
   });
 
   if (pageProps.data) {
+    if (Array.isArray(previewData.page)) {
+      previewData.page = filterPageToSingleItem(previewData, pageProps.preview);
+    }
+
     pageProps.data.result = previewData;
 
     const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
@@ -64,7 +68,11 @@ function MyApp({
     return (
       <Provider store={store}>
         <RouterContext.Provider value={routerContextValue.current}>
-          <PageLayout footerData={pageProps.data.result.footer[0]} widgetData={widgetData}>
+          <PageLayout
+            footerData={pageProps.data.result.footer[0]}
+            widgetData={widgetData}
+            isPreview={pageProps.preview}
+          >
             <Component {...pageProps} />
           </PageLayout>
         </RouterContext.Provider>

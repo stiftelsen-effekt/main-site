@@ -63,7 +63,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
       <PageContent>
         <div className={style.gridContainer}>
           <ProfileInfo />
-          <DataInfo data={data.result.page} />
+          <DataInfo page={data.result.page} />
         </div>
       </PageContent>
     </>
