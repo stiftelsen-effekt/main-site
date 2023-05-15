@@ -51,24 +51,39 @@ export const AnonymousVippsAgreement: React.FC<{
     setLoadingChanges(true);
 
     let result = null;
+    let errorOccurred = false;
 
-    if (distributionChanged) {
-      result = await updateAnonymousVippsAgreementDistribution(endpoint, distribution);
-    }
+    try {
+      if (distributionChanged) {
+        result = await updateAnonymousVippsAgreementDistribution(endpoint, distribution);
+        if (!result) {
+          errorOccurred = true;
+        }
+      }
 
-    if (dayChanged) {
-      result = await updateAnonymousVippsAgreementDay(endpoint, day);
-    }
+      if (dayChanged) {
+        result = await updateAnonymousVippsAgreementDay(endpoint, day);
+        if (!result) {
+          errorOccurred = true;
+        }
+      }
 
-    if (sumChanged) {
-      result = await updateAnonymousVippsAgreementPrice(endpoint, parseFloat(sum));
-    }
+      if (sumChanged) {
+        result = await updateAnonymousVippsAgreementPrice(endpoint, parseFloat(sum));
+        if (!result) {
+          errorOccurred = true;
+        }
+      }
 
-    if (result != null) {
-      successToast();
-      setLoadingChanges(false);
-    } else {
+      if (errorOccurred) {
+        partialFailureToast();
+      } else {
+        successToast();
+      }
+    } catch (error) {
+      console.error(error);
       failureToast();
+    } finally {
       setLoadingChanges(false);
     }
   };
@@ -86,7 +101,7 @@ export const AnonymousVippsAgreement: React.FC<{
   if (typeof distribution === "undefined") {
     return (
       <div className={style.errorWrapper}>
-        <p>Det oppstod en feil. Vennligst prøv igjen eller kontakt oss.</p>
+        <p>Det oppstod en feil med denne avtalen. Vennligst ta kontakt med oss.</p>
       </div>
     );
   } else {
@@ -156,6 +171,10 @@ export const AnonymousVippsAgreement: React.FC<{
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
 const failureToast = () =>
   toast.error("Noe gikk galt", {
+    icon: <AlertCircle size={24} color={"black"} />,
+  });
+const partialFailureToast = () =>
+  toast.error("Noen endringer feilet", {
     icon: <AlertCircle size={24} color={"black"} />,
   });
 const noChangesToast = () =>

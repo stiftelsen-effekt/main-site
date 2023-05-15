@@ -20,7 +20,7 @@ const fetcher = async (
   fetchToken: getAccessTokenSilently | null = null,
   method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
 ) => {
-  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API;
   const headers: Record<string, string> = {};
 
   if (fetchToken) {

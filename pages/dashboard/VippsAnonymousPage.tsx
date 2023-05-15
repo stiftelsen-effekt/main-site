@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
+import { DateTime } from "luxon";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient(false).fetch<FetchVippsAnonymousPageResult>(
@@ -73,42 +74,57 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
 
       <PageContent>
         <h3 className={styles.header}>Anonym Vipps-avtale</h3>
-        <p>Her kan du endre eller avslutte din anonyme Vipps-avtale.</p>
         <div className={styles.gridContainer}>
           <div className={styles.editGridCell}>
             {loading && <div>Loading...</div>}
             {error && <div>Error</div>}
             {status === "ACTIVE" && (
-              <AnonymousVippsAgreement
-                endpoint={agreementCode}
-                inputDistribution={distribution}
-                inputSum={agreement.amount}
-                inputDate={agreement.monthly_charge_day}
-              />
+              <>
+                <h5 className={styles.cellTitle}>Endre avtale</h5>
+                <AnonymousVippsAgreement
+                  endpoint={agreementCode}
+                  inputDistribution={distribution}
+                  inputSum={agreement.amount}
+                  inputDate={agreement.monthly_charge_day}
+                />
+              </>
             )}
             {status === "STOPPED" && (
-              <div>
-                <h4>Avtalen er avsluttet</h4>
+              <>
+                <h5 className={styles.cellTitle}>Avtalen er avsluttet</h5>
                 <p>Avtalen er avsluttet og vil ikke trekkes lenger.</p>
-              </div>
+              </>
             )}
             {status !== "STOPPED" && status !== "ACTIVE" && (
-              <div>
-                <h4>Avtalen er ikke aktiv</h4>
+              <>
+                <h5 className={styles.cellTitle}>Avtalen er ikke aktiv</h5>
                 <p>
                   Årsaken til dette kan være at avtalen ikke er aktivert enda, eller at det er noe
                   feil med avtalen.
                 </p>
-              </div>
+              </>
             )}
           </div>
           <div className={styles.infoGridCell}>
-            {agreement && (
+            {agreement && !loading && (
               <>
-                <h4>Din avtale</h4>
-                <p>Sum: {agreement.amount} kr</p>
-                <p>Trekkdag: Den {agreement.monthly_charge_day}. hver måned</p>
-                <p>Status: {status}</p>
+                <h5 className={styles.cellTitle}>Avtaledetaljer</h5>
+                <p>
+                  <strong>Sum:</strong> {agreement.amount} kr
+                </p>
+                <p>
+                  <strong>Trekkdag:</strong> Den {agreement.monthly_charge_day}. hver måned
+                </p>
+                <p>
+                  <strong>Status:</strong>{" "}
+                  {status === "ACTIVE" ? "Aktiv" : status === "STOPPED" ? "Avsluttet" : "Inaktiv"}
+                </p>
+                <p>
+                  <strong>Opprettet:</strong>{" "}
+                  {DateTime.fromJSDate(new Date(agreement.timestamp_created)).toFormat(
+                    "dd.MM.yyyy",
+                  )}
+                </p>
               </>
             )}
           </div>

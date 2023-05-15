@@ -5,13 +5,15 @@
   justify-content: space-between;
 }
 
+.cellTitle {
+  margin-top: 40px;
+}
+
 .infoGridCell {
-  padding-top: 40px;
   border-top: 1px solid var(--primary);
 }
 
 .editGridCell {
-  padding-top: 40px;
   border-top: 1px solid var(--primary);
 }
 
