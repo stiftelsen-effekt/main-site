@@ -222,8 +222,8 @@ export const useAllOrganizations = (user: User, fetchToken: getAccessTokenSilent
   };
 };
 
-export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(`/donors/${getUserId(user)}/`, (url) =>
+export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(user ? `/donors/${getUserId(user)}/` : null, (url) =>
     fetcher(url, fetchToken),
   );
 

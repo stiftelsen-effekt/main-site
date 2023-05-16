@@ -4,7 +4,11 @@ import { FullPageSpinner } from "../../shared/layout/FullPageSpinner/FullPageSpi
 import { LoginError } from "./LoginError/LoginError";
 
 type PromptValues = "login" | "consent" | "none" | "select_account" | undefined;
-export const UserWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
+export const UserWrapper: React.FC<{ children: React.ReactNode; skipAuthentication?: boolean }> = ({
+  children,
+  skipAuthentication = false,
+}) => {
   const { isLoading, isAuthenticated, loginWithRedirect, user, error } = useAuth0();
 
   let screenHint;
@@ -15,7 +19,7 @@ export const UserWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
     prompt = urlParams.get("prompt") as PromptValues;
   }
 
-  if (!isAuthenticated && !isLoading && !error)
+  if (!isAuthenticated && !isLoading && !error && !skipAuthentication)
     loginWithRedirect({
       screen_hint: screenHint ? screenHint : undefined,
       prompt: prompt ? prompt : undefined,
@@ -23,7 +27,7 @@ export const UserWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
 
   if (error) return <LoginError message={error.message}></LoginError>;
 
-  if (!user) return <FullPageSpinner />; // In the process of redirecting
+  if (!user && !skipAuthentication) return <FullPageSpinner />; // In the process of redirecting
 
   return <>{children}</>;
 };
