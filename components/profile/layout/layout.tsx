@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo, useState } from "react";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { LayoutProps } from "../../../types";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
@@ -19,22 +19,12 @@ const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
 };
 
-const shouldBypassAuth = (): boolean => {
-  if (typeof window === "undefined") return false;
+const routesToBypass = ["/min-side/vipps-anonym"];
 
-  const routesToBypass = ["/min-side/vipps-anonym"];
-  const shouldBypass = routesToBypass.some((route) => window.location.pathname.startsWith(route));
+const useShouldAuthenticate = (): boolean => {
+  const { asPath } = useRouter();
+  const shouldBypass = routesToBypass.some((route) => asPath.startsWith(route));
   return shouldBypass;
-};
-
-const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <UserWrapper>
-      <DonorProvider>
-        <ActivityProvider>{children}</ActivityProvider>
-      </DonorProvider>
-    </UserWrapper>
-  );
 };
 
 export const ProfileLayout: React.FC<LayoutProps> = ({
@@ -47,7 +37,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
-  const bypassAuth = shouldBypassAuth();
+  const bypassAuth = useShouldAuthenticate();
 
   let cacheLocation: CacheLocation = "memory";
   if (typeof window !== "undefined") {
@@ -60,36 +50,19 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
 
   const onRedirectCallback = useMemo(() => createRedirectCallback(dashboardPath), [dashboardPath]);
 
-  // This is declared here to prevent a rendering bug that occurs if moved outside of the component
-  const CustomAuth0Provider = ({ children }: { children: ReactNode }) => {
-    if (bypassAuth) return <>{children}</>;
-
-    return (
-      <Auth0Provider
-        domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN || ""}
-        clientId={process.env.NEXT_PUBLIC_AUTH_CLIENT_ID || ""}
-        audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
-        redirectUri={
-          typeof window !== "undefined"
-            ? [window.location.origin, ...dashboardPath, ""].join("/")
-            : undefined
-        }
-        onRedirectCallback={onRedirectCallback}
-        cacheLocation={cacheLocation}
-      >
-        {children}
-      </Auth0Provider>
-    );
-  };
-
-  const layoutContent = bypassAuth ? (
-    <>{children}</>
-  ) : (
-    <AuthenticatedLayout>{children}</AuthenticatedLayout>
-  );
-
   return (
-    <CustomAuth0Provider>
+    <Auth0Provider
+      domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN || ""}
+      clientId={process.env.NEXT_PUBLIC_AUTH_CLIENT_ID || ""}
+      audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
+      redirectUri={
+        typeof window !== "undefined"
+          ? [window.location.origin, ...dashboardPath, ""].join("/")
+          : undefined
+      }
+      onRedirectCallback={onRedirectCallback}
+      cacheLocation={cacheLocation}
+    >
       <div className={styles.container + " " + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
           <ToastContainer
@@ -108,12 +81,18 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
           <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
             <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
               <WidgetPane darkMode={true} text={widgetData} />
-              <main className={styles.main}>{layoutContent}</main>
+              <main className={styles.main}>
+                <UserWrapper skipAuthentication={bypassAuth}>
+                  <DonorProvider>
+                    <ActivityProvider>{children}</ActivityProvider>
+                  </DonorProvider>
+                </UserWrapper>
+              </main>
             </CookiesAccepted.Provider>
           </WidgetContext.Provider>
           <Footer {...footerData} />
         </SWRConfig>
       </div>
-    </CustomAuth0Provider>
+    </Auth0Provider>
   );
 };
