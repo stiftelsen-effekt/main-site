@@ -18,7 +18,10 @@ export default {
       readOnly: false,
       initialValue: "vipps-anonymous",
       description: "Relative to dashboard",
-      validation: (Rule: any) => Rule.required().custom(isShallowSlug),
+      validation: (Rule: any) =>
+        Rule.required()
+          .custom(isShallowSlug)
+          .custom((slug: any) => slug.current === "vipps-anonym" || "Slug must be 'vipps-anonym'"),
     },
   ],
 
