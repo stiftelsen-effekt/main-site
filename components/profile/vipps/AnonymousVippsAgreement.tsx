@@ -15,6 +15,7 @@ import {
   updateAnonymousVippsAgreementPrice,
 } from "../shared/lists/agreementList/_queries";
 import style from "./AnonymousVippsAgreement.module.scss";
+import { SumInput } from "../shared/SumInput/SumInput";
 
 export const AnonymousVippsAgreement: React.FC<{
   inputSum: number;
@@ -109,16 +110,12 @@ export const AnonymousVippsAgreement: React.FC<{
       <div className={style.wrapper}>
         <div className={style.values}>
           <div>
+            <p>Trekkdag</p>
             <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
           </div>
           <div>
-            <input
-              type="text"
-              defaultValue={inputSum}
-              onChange={(e) => setSum(e.target.value)}
-              data-cy="agreement-list-amount-input"
-            />
-            <span>kr</span>
+            <p>Sum</p>
+            <SumInput value={sum} label="kr" onChange={(value) => setSum(value)} />
           </div>
           <div>
             <EffektCheckbox

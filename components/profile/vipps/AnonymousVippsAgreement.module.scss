@@ -12,28 +12,29 @@
 }
 
 .values > div {
+  margin-top: 40px;
   position: relative;
   display: inline-flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  justify-content: end;
+  font-size: 14px;
 }
 
 .values > div:last-child {
-  justify-content: flex-end;
+  margin-bottom: 5px;
 }
 
-.values > div span {
+.values p {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.sumInputLabel {
   position: absolute;
-  right: 0;
-  top: calc(50% - 0.5em);
+  right: 10px;
   color: var(--primary);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-right: 1.2em;
-  font-size: 1em;
-  line-height: 1em;
+  pointer-events: none;
 }
 
 .values input {

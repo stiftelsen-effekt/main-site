@@ -1,0 +1,25 @@
+.inputWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputField {
+  background: var(--secondary);
+  color: var(--primary);
+  font-family: "ESKlarheitGrotesk";
+  box-sizing: border-box;
+  font-size: 1em;
+  border-radius: 1.5em;
+  border: 1px solid var(--primary);
+  padding: 0.5em 1.2em;
+  width: 100%;
+}
+
+.label {
+  position: absolute;
+  right: 15px;
+  color: var(--primary);
+  pointer-events: none;
+}

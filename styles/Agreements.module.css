@@ -1,6 +1,6 @@
 .gridContainer {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 2fr;
   column-gap: 100px;
   justify-content: space-between;
 }
@@ -15,6 +15,13 @@
 
 .editGridCell {
   border-top: 1px solid var(--primary);
+}
+
+.infoSection {
+  font-size: 18px;
+  margin-top: 40px;
+  white-space: pre;
+  line-height: 16px;
 }
 
 .header {

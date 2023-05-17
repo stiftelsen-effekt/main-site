@@ -75,12 +75,40 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       <PageContent>
         <h3 className={styles.header}>Anonym Vipps-avtale</h3>
         <div className={styles.gridContainer}>
+          <div className={styles.infoGridCell}>
+            {agreement && !loading && (
+              <>
+                <div className={styles.infoSection}>
+                  <p>
+                    <strong>Sum:</strong> {agreement.amount} kr
+                  </p>
+                  <p>
+                    <strong>Status:</strong>
+                    {"  "}
+                    {status === "ACTIVE" ? "Aktiv" : status === "STOPPED" ? "Avsluttet" : "Inaktiv"}
+                  </p>
+                </div>
+                <div className={styles.infoSection}>
+                  <p>
+                    <strong>Opprettet:</strong>
+                    {"  "}
+                    {DateTime.fromJSDate(new Date(agreement.timestamp_created)).toFormat(
+                      "dd.MM.yyyy",
+                    )}
+                  </p>
+                  <p>
+                    <strong>Trekkdag:</strong> Den {agreement.monthly_charge_day}. hver måned
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
           <div className={styles.editGridCell}>
+            {/* TODO: Add proper loading and error messages */}
             {loading && <div>Loading...</div>}
             {error && <div>Error</div>}
             {status === "ACTIVE" && (
               <>
-                <h5 className={styles.cellTitle}>Endre avtale</h5>
                 <AnonymousVippsAgreement
                   endpoint={agreementCode}
                   inputDistribution={distribution}
@@ -101,29 +129,6 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
                 <p>
                   Årsaken til dette kan være at avtalen ikke er aktivert enda, eller at det er noe
                   feil med avtalen.
-                </p>
-              </>
-            )}
-          </div>
-          <div className={styles.infoGridCell}>
-            {agreement && !loading && (
-              <>
-                <h5 className={styles.cellTitle}>Avtaledetaljer</h5>
-                <p>
-                  <strong>Sum:</strong> {agreement.amount} kr
-                </p>
-                <p>
-                  <strong>Trekkdag:</strong> Den {agreement.monthly_charge_day}. hver måned
-                </p>
-                <p>
-                  <strong>Status:</strong>{" "}
-                  {status === "ACTIVE" ? "Aktiv" : status === "STOPPED" ? "Avsluttet" : "Inaktiv"}
-                </p>
-                <p>
-                  <strong>Opprettet:</strong>{" "}
-                  {DateTime.fromJSDate(new Date(agreement.timestamp_created)).toFormat(
-                    "dd.MM.yyyy",
-                  )}
                 </p>
               </>
             )}
