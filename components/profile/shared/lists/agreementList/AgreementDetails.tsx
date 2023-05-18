@@ -35,7 +35,10 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
-  const [distribution, setDistribution] = useState<Distribution>({ ...inputDistribution });
+  // Parse and stringify to make a deep copy of the object
+  const [distribution, setDistribution] = useState<Distribution>(
+    JSON.parse(JSON.stringify(inputDistribution)),
+  );
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
 
