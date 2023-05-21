@@ -9,12 +9,15 @@ import { DonationsPage, getDonationsPageSubpaths } from "./dashboard/DonationsPa
 import { AgreementsPage } from "./dashboard/AgreementsPage";
 import { ProfilePage } from "./dashboard/ProfilePage";
 import { TaxPage } from "./dashboard/TaxPage";
+import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
+import vipps from "../studio/schemas/types/paymentproviders/vipps";
 
 enum PageType {
   GenericPage = "generic",
   ArticlesPage = "articles",
   ArticlePage = "article",
   VippsAgreementPage = "vipps-agreement",
+  VippsAnonymousPage = "vipps-anonymous",
   AgreementsPage = "agreements",
   DonationsPage = "donations",
   ProfilePage = "profile",
@@ -33,6 +36,8 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
       return <VippsAgreementPage {...props} />;
     case PageType.AgreementsPage:
       return <AgreementsPage {...props} />;
+    case PageType.VippsAnonymousPage:
+      return <VippsAnonymousPage {...props} />;
     case PageType.DonationsPage:
       return <DonationsPage {...props} />;
     case PageType.ProfilePage:
@@ -54,6 +59,7 @@ const inferPageTypeFromPath = async (path: string[]) => {
     agreementsPagePath,
     taxPagePath,
     profilePagePath,
+    vippsAnonymousPagePath,
   } = await fetchRouterContext();
 
   const isVippsAgreementPage =
@@ -78,6 +84,11 @@ const inferPageTypeFromPath = async (path: string[]) => {
       ? compareArrays(path.slice(0, agreementsPagePath.length), agreementsPagePath)
       : false;
     if (isAgreementsPage) return PageType.AgreementsPage;
+
+    const isVippsAnonymousPage = vippsAnonymousPagePath
+      ? compareArrays(path.slice(0, vippsAnonymousPagePath.length), vippsAnonymousPagePath)
+      : false;
+    if (isVippsAnonymousPage) return PageType.VippsAnonymousPage;
 
     const isTaxPage = taxPagePath
       ? compareArrays(path.slice(0, taxPagePath.length), taxPagePath)
@@ -133,6 +144,15 @@ export const getStaticProps = async ({
     }
     case PageType.VippsAgreementPage: {
       const props = await VippsAgreementPage.getStaticProps({ preview });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
+    case PageType.VippsAnonymousPage: {
+      const props = await VippsAnonymousPage.getStaticProps({ preview });
       return {
         props: {
           ...props,

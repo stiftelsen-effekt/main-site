@@ -1,11 +1,10 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { Carousel } from "./Carousel";
 import { fetchOrganizationsAction } from "../store/layout/actions";
-import { State } from "../store/state";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { useDebouncedCallback } from "use-debounce";

@@ -5,7 +5,7 @@ export const EffektCheckbox: React.FC<{
   checked: boolean;
   onChange: (checked: boolean) => void;
   dataCy?: string;
-  children: string;
+  children: string | JSX.Element;
 }> = ({ checked, onChange, dataCy, children }) => {
   return (
     <div className={styles.wrapper} onClick={() => onChange(!checked)} data-cy={dataCy}>

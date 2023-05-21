@@ -17,16 +17,20 @@ export interface Query<T> {
 
 const fetcher = async (
   url: string,
-  fetchToken: getAccessTokenSilently,
+  fetchToken: getAccessTokenSilently | null = null,
   method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
 ) => {
-  const token = await fetchToken();
-  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API;
+  const headers: Record<string, string> = {};
+
+  if (fetchToken) {
+    const token = await fetchToken();
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(api + url, {
     method: method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: headers,
   });
 
   if (!response.ok) {
@@ -173,6 +177,21 @@ export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilentl
   };
 };
 
+export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
+  const { data, error, isValidating } = useSWR(
+    `/vipps/agreement/anonymous/${agreementUrlCode}`,
+    (url) => fetcher(url),
+  );
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(`/organizations/active/`, (url) =>
     fetcher(url, fetchToken),
@@ -203,8 +222,8 @@ export const useAllOrganizations = (user: User, fetchToken: getAccessTokenSilent
   };
 };
 
-export const useDonor = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(`/donors/${getUserId(user)}/`, (url) =>
+export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(user ? `/donors/${getUserId(user)}/` : null, (url) =>
     fetcher(url, fetchToken),
   );
 

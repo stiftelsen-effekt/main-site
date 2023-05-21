@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { LayoutProps } from "../../../types";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
@@ -12,11 +12,19 @@ import { SWRConfig } from "swr";
 import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
-import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
+import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
+};
+
+const routesToBypass = ["/min-side/vipps-anonym"];
+
+const useShouldAuthenticate = (): boolean => {
+  const { asPath } = useRouter();
+  const shouldBypass = routesToBypass.some((route) => asPath.startsWith(route));
+  return shouldBypass;
 };
 
 export const ProfileLayout: React.FC<LayoutProps> = ({
@@ -29,6 +37,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
+  const bypassAuth = useShouldAuthenticate();
 
   let cacheLocation: CacheLocation = "memory";
   if (typeof window !== "undefined") {
@@ -56,7 +65,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
     >
       <div className={styles.container + " " + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
-          <UserWrapper>
+          <UserWrapper skipAuthentication={bypassAuth}>
             <DonorProvider>
               <ActivityProvider>
                 <ToastContainer

@@ -15,7 +15,7 @@ export type ProfileNavbarProps = {
 
 export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
   const { dashboardPath, agreementsPagePath, taxPagePath, profilePagePath } = useRouterContext();
-  const { logout } = useAuth0();
+  const { user, logout, loginWithRedirect } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
@@ -77,13 +77,23 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
             </li>
           ) : null}
           <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
-            <EffektButton
-              type={EffektButtonType.SECONDARY}
-              onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
-              extraMargin={true}
-            >
-              Logg ut
-            </EffektButton>
+            {user ? (
+              <EffektButton
+                type={EffektButtonType.SECONDARY}
+                onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
+                extraMargin={true}
+              >
+                Logg ut
+              </EffektButton>
+            ) : (
+              <EffektButton
+                type={EffektButtonType.SECONDARY}
+                onClick={() => loginWithRedirect({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
+                extraMargin={true}
+              >
+                Logg inn
+              </EffektButton>
+            )}
             <EffektButton
               cy="send-donation-button"
               onClick={() => setWidgetOpen(true)}

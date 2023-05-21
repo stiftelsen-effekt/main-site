@@ -2,7 +2,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useState } from "react";
 import { AlertCircle, Check } from "react-feather";
 import { toast } from "react-toastify";
-import { useApi } from "../../../../hooks/useApi";
 import { Donor } from "../../../../models";
 import style from "./ProfileInfo.module.scss";
 import { DonorContext } from "../../layout/donorProvider";

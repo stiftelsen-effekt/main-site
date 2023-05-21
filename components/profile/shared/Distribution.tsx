@@ -1,17 +1,18 @@
 import React from "react";
 import { Distribution } from "../../../models";
 import style from "./Distribution.module.scss";
+import { useOrganizations } from "../../../_queries";
 
 export const DistributionController: React.FC<{
   distribution: Distribution;
   onChange: (distribtion: Distribution) => void;
 }> = ({ distribution, onChange }) => {
-  const sum = distribution.shares.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
+  const sum = distribution.shares?.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
 
   return (
     <div className={style.wrapper}>
       <div className={style.grid}>
-        {distribution.shares.map((org) => (
+        {distribution.shares?.map((org) => (
           <div key={org.id} className={style["share-wrapper"]}>
             <span>{org.name}</span>
             <div>

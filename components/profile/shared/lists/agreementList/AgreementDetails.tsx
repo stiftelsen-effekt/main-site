@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Distribution, TaxUnit } from "../../../../../models";
 import { DistributionController } from "../../Distribution";
 import { toast } from "react-toastify";
@@ -23,41 +23,8 @@ import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../TaxUnitModal/TaxUnitCreateModal";
 import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/EffektCheckbox";
 import AnimateHeight from "react-animate-height";
+import { checkPaymentDate } from "../../../../../util/dates";
 import { getUserId } from "../../../../../lib/user";
-
-/**
- * Gets the number of days in a month in a year
- * @param {number} month - The month to check number of days of, january = 1
- * @param {number} year - The year to check days of month
- * @returns {number} The number of days in given month in given year
- */
-export function daysInMonth(month: number, year: number) {
-  return new Date(year, month, 0).getDate();
-}
-
-/**
- * Checks if paymentdate is within 6 days from now
- * @param {Date} today - Todays date
- * @param {number} currentPaymentDate - The paymentDate registered on agreement
- * @returns {boolean} true if paymentdate is within 6 days from today, false if not
- */
-export function checkPaymentDate(today: Date, currentPaymentDate: number) {
-  let paymentDate;
-  let daysMonth: number = daysInMonth(today.getMonth() + 1, today.getFullYear());
-  let todaysDate = today.getDate();
-  if (currentPaymentDate == 0) {
-    paymentDate = daysMonth;
-  } else {
-    paymentDate = currentPaymentDate;
-  }
-
-  let daysBetween = paymentDate - todaysDate;
-  if (daysBetween >= 0) {
-    return daysBetween <= 6 ? true : false;
-  } else {
-    return daysMonth - todaysDate + paymentDate <= 6 ? true : false;
-  }
-}
 
 export const AgreementDetails: React.FC<{
   type: "Vipps" | "AvtaleGiro";
@@ -68,6 +35,7 @@ export const AgreementDetails: React.FC<{
 }> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
+  // Parse and stringify to make a deep copy of the object
   const [distribution, setDistribution] = useState<Distribution>(
     JSON.parse(JSON.stringify(inputDistribution)),
   );
@@ -181,27 +149,33 @@ export const AgreementDetails: React.FC<{
     }
   };
 
-  return (
-    <div className={style.wrapper} data-cy="agreement-list-details">
-      <div className={style.values}>
-        <div>
-          <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
-        </div>
-        <div>
-          <input
-            type="text"
-            defaultValue={inputSum}
-            onChange={(e) => setSum(e.target.value)}
-            data-cy="agreement-list-amount-input"
+  if (!distribution.shares) {
+    return (
+      <div className={style.errorWrapper}>
+        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
+      </div>
+    );
+  } else {
+    return (
+      <div className={style.wrapper} data-cy="agreement-list-details">
+        <div className={style.values}>
+          <div>
+            <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
+          </div>
+          <div>
+            <input
+              type="text"
+              defaultValue={inputSum}
+              onChange={(e) => setSum(e.target.value)}
+              data-cy="agreement-list-amount-input"
+            />
+            <span>kr</span>
+          </div>
+          <TaxUnitSelector
+            selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
+            onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
+            onAddNew={() => setAddTaxUnitOpen(true)}
           />
-          <span>kr</span>
-        </div>
-        <TaxUnitSelector
-          selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-          onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
-          onAddNew={() => setAddTaxUnitOpen(true)}
-        />
-        <div>
           <EffektCheckbox
             checked={distribution.standardDistribution}
             onChange={(standard: boolean) =>
@@ -211,57 +185,60 @@ export const AgreementDetails: React.FC<{
             Smart fordeling
           </EffektCheckbox>
         </div>
-      </div>
 
-      <AnimateHeight height={!distribution.standardDistribution ? "auto" : 0} animateOpacity={true}>
-        <div className={style.distribution}>
-          <DistributionController
-            distribution={distribution}
-            onChange={(dist) => setDistribution(dist)}
+        <AnimateHeight
+          height={!distribution.standardDistribution ? "auto" : 0}
+          animateOpacity={true}
+        >
+          <div className={style.distribution}>
+            <DistributionController
+              distribution={distribution}
+              onChange={(dist) => setDistribution(dist)}
+            />
+          </div>
+        </AnimateHeight>
+
+        <div className={style.actions}>
+          <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
+            Avslutt avtale
+          </EffektButton>
+          <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
+            {!loadingChanges ? "Lagre" : "Laster..."}
+          </EffektButton>
+        </div>
+
+        {addTaxUnitOpen && (
+          <TaxUnitCreateModal
+            open={addTaxUnitOpen}
+            onFailure={() => {}}
+            onSuccess={(unit: TaxUnit) => {
+              setDistribution({ ...distribution, taxUnit: unit });
+              setAddTaxUnitOpen(false);
+            }}
+            onClose={() => setAddTaxUnitOpen(false)}
           />
-        </div>
-      </AnimateHeight>
-
-      <div className={style.actions}>
-        <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
-          Avslutt avtale
-        </EffektButton>
-        <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
-          {!loadingChanges ? "Lagre" : "Laster..."}
-        </EffektButton>
+        )}
+        <Lightbox
+          open={lightboxOpen}
+          onConfirm={() => cancel()}
+          onCancel={() => setLightboxOpen(false)}
+        >
+          <div className={style.textWrapper}>
+            <h5>Avslutt avtale</h5>
+            <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
+            {checkPaymentDate(new Date(), day) ? (
+              <p>
+                Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
+                sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i
+                registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du
+                ta kontakt på donasjon@gieffektivt.no
+              </p>
+            ) : null}
+          </div>
+        </Lightbox>
       </div>
-
-      {addTaxUnitOpen && (
-        <TaxUnitCreateModal
-          open={addTaxUnitOpen}
-          onFailure={() => {}}
-          onSuccess={(unit) => {
-            setDistribution({ ...distribution, taxUnit: unit });
-            setAddTaxUnitOpen(false);
-          }}
-          onClose={() => setAddTaxUnitOpen(false)}
-        />
-      )}
-      <Lightbox
-        open={lightboxOpen}
-        onConfirm={() => cancel()}
-        onCancel={() => setLightboxOpen(false)}
-      >
-        <div className={style.textWrapper}>
-          <h5>Avslutt avtale</h5>
-          <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
-          {checkPaymentDate(new Date(), day) ? (
-            <p>
-              Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
-              sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i
-              registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du ta
-              kontakt på donasjon@gieffektivt.no
-            </p>
-          ) : null}
-        </div>
-      </Lightbox>
-    </div>
-  );
+    );
+  }
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });

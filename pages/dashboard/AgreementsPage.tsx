@@ -10,7 +10,7 @@ import {
   useVippsAgreements,
   widgetQuery,
 } from "../../_queries";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ActivityContext } from "../../components/profile/layout/activityProvider";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { AlertTriangle, Clock } from "react-feather";

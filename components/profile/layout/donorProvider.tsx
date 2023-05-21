@@ -14,13 +14,13 @@ export const DonorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const { getAccessTokenSilently, user } = useAuth0();
   const [donor, setDonor] = useState<Donor | null>(null);
 
-  const { loading, error, data } = useDonor(user as User, getAccessTokenSilently);
+  const { loading, error, data } = useDonor(user, getAccessTokenSilently);
 
-  if (loading) {
+  if (loading && user) {
     return <FullPageSpinner />;
   } else if (error) {
     return <FullPageError error={error.message} />;
-  } else if (!donor) {
+  } else if (!donor && data !== donor) {
     setDonor(data);
   }
 

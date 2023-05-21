@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Validator from "validator";
 import { setShares } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
-import { TextInput } from "../../shared/Input/TextInput";
 import { ShareContainer, ShareInputContainer, ShareLink } from "./ShareSelection.style";
 
 export const SharesSelection: React.FC = () => {

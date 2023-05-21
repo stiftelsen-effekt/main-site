@@ -47,7 +47,6 @@ export const updateVippsAgreementPrice = async (urlCode: string, sum: number, to
       }),
     });
 
-    //const result = await response.json();
     if (response.status !== 200) {
       return null;
     } else {
@@ -99,6 +98,106 @@ export const cancelVippsAgreement = async (urlCode: string, token: string) => {
     });
 
     const result = await response.json();
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
+export const updateAnonymousVippsAgreementDistribution = async (
+  urlCode: string,
+  distribution: Distribution,
+) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/vipps/agreement/${urlCode}/distribution`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        distribution: distribution,
+      }),
+    });
+
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
+export const updateAnonymousVippsAgreementPrice = async (urlCode: string, sum: number) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/vipps/agreement/${urlCode}/price`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        price: sum * 100,
+      }),
+    });
+
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
+export const updateAnonymousVippsAgreementDay = async (urlCode: string, day: number) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/vipps/agreement/${urlCode}/chargeDay`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        chargeDay: day,
+      }),
+    });
+
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
+export const cancelAnonymousVippsAgreement = async (urlCode: string) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/vipps/agreement/${urlCode}/cancel`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    });
+
     if (response.status !== 200) {
       return null;
     } else {
