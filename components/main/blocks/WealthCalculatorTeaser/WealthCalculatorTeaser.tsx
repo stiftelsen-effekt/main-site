@@ -121,7 +121,7 @@ export const WealthCalculatorTeaser: React.FC<{
         </div>
       </div>
       <div className={styles.axislabel}>
-        <span>Årsinntekt i kroner (lograitmisk skala) →</span>
+        <span>Årsinntekt i kroner (logaritmisk skala) →</span>
       </div>
       <div className={styles.mobileButton}>
         <Link
