@@ -10,6 +10,12 @@ export default {
       to: [{ type: "vippsagreement" }],
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "foo",
+      title: "Foo",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
   ],
   preview: {
     prepare() {
