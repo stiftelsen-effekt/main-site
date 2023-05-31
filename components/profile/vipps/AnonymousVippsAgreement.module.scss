@@ -22,7 +22,7 @@
 }
 
 .values > div:last-child {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.25rem;
 }
 
 .values p {
@@ -62,17 +62,14 @@
 
 @media only screen and (max-width: 1180px) {
   .values {
-    grid-template-columns: 1fr;
-    row-gap: 1.5em;
-    font-size: 1rem;
-  }
-
-  .values input {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    align-items: start;
   }
 
-  .values > div:last-child {
-    justify-content: flex-start;
+  .values > div {
+    width: 30%;
   }
 
   .actions {
