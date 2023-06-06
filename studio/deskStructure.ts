@@ -125,33 +125,9 @@ export default () =>
                 .icon(User)
                 .child(S.editor().id("profile").schemaType("profile").documentId("profile")),
               S.listItem()
-                .title("Tax deduction")
+                .title("Tax")
                 .icon(DollarSign)
-                .child(
-                  S.editor()
-                    .id("taxdeduction")
-                    .schemaType("taxdeduction")
-                    .documentId("taxdeduction"),
-                ),
-              S.listItem()
-                .title("Tax units")
-                .icon(DollarSign)
-                .child(S.editor().id("taxunits").schemaType("taxunits").documentId("taxunits")),
-              S.listItem()
-                .title("Tax statements")
-                .icon(DollarSign)
-                .child(
-                  S.editor()
-                    .id("taxstatements")
-                    .schemaType("taxstatements")
-                    .documentId("taxstatements"),
-                ),
-              S.listItem()
-                .title("Meta receipt")
-                .icon(DollarSign)
-                .child(
-                  S.editor().id("metareceipt").schemaType("metareceipt").documentId("metareceipt"),
-                ),
+                .child(S.editor().id("tax").schemaType("tax").documentId("tax")),
             ]),
         ),
       S.listItem()

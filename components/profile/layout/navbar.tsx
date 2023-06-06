@@ -8,15 +8,40 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
 import { WidgetContext } from "../../main/layout/layout";
 import { useRouterContext } from "../../../context/RouterContext";
+import { MainNavbarGroup, NavLink } from "../../main/layout/navbar";
+import AnimateHeight from "react-animate-height";
+
+export type ProfileNavbarItem = NavLink | MainNavbarGroup;
 
 export type ProfileNavbarProps = {
   logo: SanityImageSource;
+  elements: ProfileNavbarItem[];
 };
 
-export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
+export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
+  elements = elements.filter((e) => e !== null);
   const { dashboardPath, agreementsPagePath, taxPagePath, profilePagePath } = useRouterContext();
   const { user, logout, loginWithRedirect } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
+  const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
+    elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
+  );
+
+  const setExpanded = (expanded: boolean) => {
+    if (expanded && window.innerWidth < 1180) document.body.style.overflow = "hidden";
+    else if (typeof document !== "undefined") document.body.style.overflow = "auto";
+
+    setExpandMenu(expanded);
+  };
+
+  const toggleExpanded = (key: string) => {
+    if (expandMenu) {
+      const expanded = { ...expandedSubmenu };
+      expanded[key] = !expandedSubmenu[key];
+      setExpandedSubmenu(expanded);
+    }
+  };
+
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   return (
@@ -50,6 +75,53 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
           </button>
         </div>
         <ul>
+          {elements.map((el) =>
+            el._type === "navgroup" ? (
+              <li
+                key={el._key}
+                className={
+                  expandedSubmenu[el._key] ? styles.expandedSubmenu : styles.collapsedSubmenu
+                }
+              >
+                <button onClick={() => toggleExpanded(el._key)} tabIndex={-1}>
+                  {el.title}
+                </button>
+                <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
+                  <div className={styles.submenu}>
+                    <ul>
+                      {el.items &&
+                        el.items
+                          .filter((subel) => subel !== null)
+                          .map((subel) => (
+                            <li
+                              key={subel.title}
+                              data-cy={`${subel.title}-link`.replace(/ /g, "-")}
+                            >
+                              <Link href={`${dashboardPath}/${subel.slug}`} passHref>
+                                <a
+                                  onClick={(e) => {
+                                    e.currentTarget.blur();
+                                    setExpanded(false);
+                                  }}
+                                >
+                                  {subel.title}
+                                </a>
+                              </Link>
+                            </li>
+                          ))}
+                    </ul>
+                  </div>
+                </AnimateHeight>
+              </li>
+            ) : (
+              <li key={el._key} data-cy={`${el.slug}-link`}>
+                <Link href={`${dashboardPath}/${el.slug}`} passHref>
+                  <a onClick={() => setExpanded(false)}>{el.title}</a>
+                </Link>
+              </li>
+            ),
+          )}
+          {/** 
           <li onClick={() => setExpandMenu(false)}>
             <Link href={dashboardPath.join("/")} passHref>
               Donasjoner
@@ -76,6 +148,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ logo }) => {
               </Link>
             </li>
           ) : null}
+          */}
           <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
             {user ? (
               <EffektButton

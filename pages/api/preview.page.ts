@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { getDonationsPagePath } from "../dashboard/DonationsPage";
 
-export default function preview(req: NextApiRequest, res: NextApiResponse) {
+export default async function preview(req: NextApiRequest, res: NextApiResponse) {
   if (!req?.query?.secret) {
     return res.status(401).json({ message: "No secret token" });
   }
@@ -45,6 +46,17 @@ export default function preview(req: NextApiRequest, res: NextApiResponse) {
     case "donationwidget":
       res.writeHead(307, { Location: `/` });
       break;
+    case "donations":
+      const path = await getDonationsPagePath();
+      if (path == null) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Preview not supported for page, missing either dashboard path (slug) or donations path (slug)",
+          });
+      }
+      res.writeHead(307, { Location: `/${path.join("/")}` });
     default:
       return res.status(400).json({ message: "Preview not supported for page" });
   }

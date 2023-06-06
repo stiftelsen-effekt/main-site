@@ -1,5 +1,5 @@
 import { Link } from "react-feather";
-import { pages } from "../schema";
+import { dashboardpages, pages } from "../schema";
 
 export default {
   name: "navitem",
@@ -17,7 +17,12 @@ export default {
       name: "page",
       title: "Page",
       type: "reference",
-      to: [...pages.map((p) => ({ type: p.name }))],
+      to: [
+        ...[
+          ...pages.map((p) => ({ type: p.name })),
+          ...dashboardpages.map((p) => ({ type: p.name })),
+        ],
+      ],
     },
   ],
 } as const;

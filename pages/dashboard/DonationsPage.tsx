@@ -96,6 +96,7 @@ export const DonationsPage = withStaticProps(
 )(({ data, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
   const { donor } = useContext(DonorContext);
 
   const {
@@ -143,7 +144,7 @@ export const DonationsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} />
+          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
         </MainHeader>
 
         <PageContent>
@@ -220,7 +221,7 @@ export const DonationsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} />
+        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
         <DonationYearMenu years={years} selected={filterYear || "total"} mobile />
       </MainHeader>
 
@@ -257,7 +258,7 @@ export const DonationsPage = withStaticProps(
 
 type FetchDonationsPageResult = {
   settings: any[];
-  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
   page?: Array<{ slug?: { current?: string } }>;
   footer: any[];
   widget: any[];
@@ -271,6 +272,23 @@ const fetchDonationsPage = groq`
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
+    },
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
     }
   },
   "page": *[_id == "donations"] {

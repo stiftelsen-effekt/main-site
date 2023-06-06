@@ -1,17 +1,16 @@
-import { isShallowSlug } from "../../validators/isShallowSlug";
-import agreements from "./agreements";
-import donations from "./donations";
-import metareceipt from "./metareceipt";
-import profile from "./profile";
-import taxdeduction from "./taxdeduction";
-import taxstatements from "./taxstatements";
-import taxunits from "./taxunits";
+import { isShallowSlug } from "../validators/isShallowSlug";
 
-const dashboard = {
+export default {
   name: "dashboard",
   title: "Dashboard",
   type: "document",
   fields: [
+    {
+      name: "main_navigation",
+      title: "Menu",
+      type: "array",
+      of: [{ type: "navitem" }, { type: "navgroup" }],
+    },
     {
       name: "dashboard_slug",
       title: "Dashboard slug",
@@ -36,14 +35,3 @@ const dashboard = {
     },
   },
 } as const;
-
-export default [
-  dashboard,
-  agreements,
-  donations,
-  profile,
-  taxdeduction,
-  taxunits,
-  taxstatements,
-  metareceipt,
-];

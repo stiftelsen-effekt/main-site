@@ -1,10 +1,15 @@
-import { isShallowSlug } from "../../validators/isShallowSlug";
+import { isShallowSlug } from "../../../validators/isShallowSlug";
 
 export default {
   title: "Meta receipt",
   name: "metareceipt",
-  type: "document",
+  type: "object",
   fields: [
+    {
+      name: "title",
+      title: "Title",
+      type: "string",
+    },
     {
       name: "facebook_description",
       title: "Hvordan finne betalings-ID",
@@ -26,10 +31,4 @@ export default {
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
   ],
-
-  preview: {
-    select: {
-      title: "slug.current",
-    },
-  },
 } as const;

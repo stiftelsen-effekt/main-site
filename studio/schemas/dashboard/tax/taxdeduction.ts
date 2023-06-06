@@ -1,18 +1,23 @@
-import { isShallowSlug } from "../../validators/isShallowSlug";
+import { isShallowSlug } from "../../../validators/isShallowSlug";
 
 export default {
-  title: "Tax deduction",
-  name: "taxdeduction",
-  type: "document",
+  title: "About tax deductions",
+  name: "abouttaxdeductions",
+  type: "object",
   fields: [
     {
-      name: "about_taxdeductions",
+      name: "title",
+      title: "Title",
+      type: "string",
+    },
+    {
+      name: "about",
       title: "Om skattefradrag",
       type: "array",
       of: [{ type: "block" }],
     },
     {
-      name: "about_taxdeductions_links",
+      name: "links",
       title: "Om skattefradrag lenker",
       type: "links",
     },
@@ -26,10 +31,4 @@ export default {
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
   ],
-
-  preview: {
-    select: {
-      title: "slug.current",
-    },
-  },
 } as const;
