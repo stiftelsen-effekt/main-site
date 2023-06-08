@@ -61,7 +61,6 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
 };
 
 const validateLink: (link: LinkType | NavLink) => boolean = (link) => {
-  console.log(link);
   if (link._type === "navitem") return link.slug !== undefined && link.slug !== null;
   else return link.url !== undefined && link.url !== null;
 };

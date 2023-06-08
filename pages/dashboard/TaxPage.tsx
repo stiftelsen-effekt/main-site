@@ -32,9 +32,6 @@ export async function getTaxPagePath(): Promise<string[]> {
 
   const taxSlug = page?.slug?.current;
 
-  console.log("Tax slug", taxSlug);
-  console.log("Tax page", result.page);
-
   if (!taxSlug) return [];
 
   return [...dashboardPath, ...taxSlug.split("/")];
@@ -61,9 +58,6 @@ export const TaxPage = withStaticProps(
     const appStaticProps = await getAppStaticProps({
       layout: LayoutType.Profile,
     });
-    console.log("\n\n\n");
-    console.log(fetchTaxPage);
-    console.log("\n\n\n");
     const result = await getClient(preview).fetch<FetchTaxPageResult>(fetchTaxPage);
 
     const taxPath = await getTaxPagePath();
@@ -89,9 +83,6 @@ export const TaxPage = withStaticProps(
   if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
 
   const menuChoice = page.features?.find((f) => f.slug.current == subpath) || null;
-
-  console.log("Menu choice", menuChoice);
-  console.log("Page", page);
 
   const { donor } = useContext(DonorContext);
 

@@ -90,7 +90,6 @@ const inferPageTypeFromPath = async (path: string[]) => {
       : false;
     if (isVippsAnonymousPage) return PageType.VippsAnonymousPage;
 
-    console.log(taxPagePath);
     const isTaxPage = taxPagePath
       ? compareArrays(path.slice(0, taxPagePath.length), taxPagePath)
       : false;

@@ -57,8 +57,6 @@ function MyApp({
   });
 
   if (pageProps.data) {
-    console.log("pageProps.data", pageProps.data);
-
     if (Array.isArray(previewData.page)) {
       previewData.page = filterPageToSingleItem(previewData, pageProps.preview);
     }
