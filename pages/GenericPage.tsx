@@ -26,11 +26,13 @@ export const GenericPage = withStaticProps(
     const slug = path.join("/") || "/";
 
     let result = await getClient(preview).fetch(fetchGenericPage, { slug });
+
     result = { ...result, page: filterPageToSingleItem(result, preview) };
 
     return {
       appStaticProps,
       preview: preview,
+      navbar: await Navbar.getStaticProps({ preview }),
       data: {
         result,
         query: fetchGenericPage,
@@ -38,7 +40,7 @@ export const GenericPage = withStaticProps(
       },
     };
   },
-)(({ data, preview }) => {
+)(({ navbar, data, preview }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -47,7 +49,6 @@ export const GenericPage = withStaticProps(
 
   const header = page.header;
   const content = page.content;
-  const settings = data.result.settings[0];
 
   let cannonicalUrlDefault: string = `https://gieffektivt.no/${page.slug?.current ?? ""}`;
   if (page.slug?.current == "/") {
@@ -65,7 +66,7 @@ export const GenericPage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbar} />
       </MainHeader>
 
       <PageHeader
@@ -90,26 +91,6 @@ const fetchGenericPages = groq`
 
 const fetchGenericPage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,
