@@ -9,7 +9,6 @@ import { WidgetContext } from "./layout";
 import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
 import { ResponsiveImage } from "../../shared/responsiveimage";
 import { useRouterContext } from "../../../context/RouterContext";
-import { text } from "d3";
 
 export type NavLink = {
   _type: "navitem";
