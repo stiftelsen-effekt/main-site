@@ -29,6 +29,18 @@ const dashboard = {
       description: "Relative to dashboard",
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
+    {
+      name: "my_page_text",
+      title: "My page button text",
+      type: "string",
+      description: "My page button text item",
+    },
+    {
+      name: "send_donation_text",
+      title: "Send donation button text",
+      type: "string",
+      description: "Send donation button text item",
+    },
   ],
   preview: {
     select: {

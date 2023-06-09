@@ -13,12 +13,13 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
 
   return (
     <>
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} texts={dashboard} />
       </MainHeader>
 
       <SectionContainer>
@@ -46,6 +47,10 @@ export const getStaticProps = async ({ preview = false }: GetStaticPropsContext)
 
 const fetchNotFoundPage = groq`
 {
+  "dashboard": *[_id == "dashboard"] {
+    my_page_text,
+    send_donation_text,
+  },
   "settings": *[_type == "site_settings"] {
     logo,
     main_navigation[] {

@@ -45,6 +45,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   }
 
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
   const header = page.header;
 
   let email;
@@ -64,7 +65,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} texts={dashboard} />
       </MainHeader>
 
       <SectionContainer>
@@ -93,6 +94,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 
 type FetchVippsResult = {
   settings: any[];
+  dashboard: any[];
   vipps?: Array<{
     agreement_page: Record<string, any> & {
       slug: {
@@ -104,6 +106,10 @@ type FetchVippsResult = {
 
 const fetchVipps = groq`
 {
+  "dashboard": *[_id == "dashboard"] {
+    my_page_text,
+    send_donation_text,
+  },
   "settings": *[_type == "site_settings"] {
     logo,
     main_navigation[] {

@@ -45,6 +45,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   const page = data.result.page;
 
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
   const header = page.header;
   const articles = data.result.articles;
 
@@ -60,7 +61,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
           <CookieBanner />
-          <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+          <Navbar logo={settings.logo} elements={settings["main_navigation"]} texts={dashboard} />
         </MainHeader>
 
         <PageHeader
@@ -97,6 +98,10 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
 
 const fetchArticles = groq`
 {
+  "dashboard": *[_id == "dashboard"] {
+    my_page_text,
+    send_donation_text,
+  },
   "settings": *[_type == "site_settings"] {
     logo,
     main_navigation[] {

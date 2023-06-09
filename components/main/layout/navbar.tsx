@@ -9,6 +9,7 @@ import { WidgetContext } from "./layout";
 import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
 import { ResponsiveImage } from "../../shared/responsiveimage";
 import { useRouterContext } from "../../../context/RouterContext";
+import { text } from "d3";
 
 export type NavLink = {
   _type: "navitem";
@@ -25,14 +26,20 @@ export type MainNavbarGroup = {
   items: NavLink[];
 };
 
+export type MainNavbarItemTexts = {
+  my_page_text: string;
+  send_donation_text: string;
+};
+
 export type MainNavbarItem = NavLink | MainNavbarGroup;
 
 export type MainNavbarProps = {
   logo: SanityImageSource;
   elements: MainNavbarItem[];
+  texts: MainNavbarItemTexts;
 };
 
-export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
+export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo, texts }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
@@ -131,7 +138,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
             <Link href={dashboardPath.join("/")} passHref>
               <a tabIndex={-1}>
                 <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
-                  Min side
+                  {texts.my_page_text}
                 </EffektButton>
               </a>
             </Link>
@@ -140,7 +147,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
               extraMargin={true}
               onClick={() => setWidgetOpen(true)}
             >
-              Send donasjon
+              {texts.send_donation_text}
             </EffektButton>
           </li>
         </ul>

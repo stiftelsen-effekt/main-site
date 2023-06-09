@@ -49,6 +49,7 @@ export const GenericPage = withStaticProps(
   const header = page.header;
   const content = page.content;
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
 
   return (
     <>
@@ -61,7 +62,7 @@ export const GenericPage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar logo={settings.logo} elements={settings["main_navigation"]} texts={dashboard} />
       </MainHeader>
 
       <PageHeader
@@ -86,6 +87,10 @@ const fetchGenericPages = groq`
 
 const fetchGenericPage = groq`
 {
+  "dashboard": *[_id == "dashboard"] {
+    my_page_text,
+    send_donation_text,
+  },
   "settings": *[_type == "site_settings"] {
     logo,
     main_navigation[] {
