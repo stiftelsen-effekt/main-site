@@ -1,6 +1,6 @@
 import React from "react";
 import { useNextSanityImage, UseNextSanityImageBuilder } from "next-sanity-image";
-import { config } from "../../lib/config";
+import { projectConfig } from "../../lib/config";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image";
 
@@ -13,7 +13,7 @@ export const ResponsiveImage: React.FC<{
   blur?: boolean;
   urlBuilder?: UseNextSanityImageBuilder;
 }> = ({ image, alt, onClick, priority, layout = "fill", urlBuilder, blur = true }) => {
-  const imageProps = useNextSanityImage({ clientConfig: config }, image, {
+  const imageProps = useNextSanityImage({ clientConfig: projectConfig }, image, {
     imageBuilder: urlBuilder,
     enableBlurUp: blur ? undefined : false,
   });
