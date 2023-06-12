@@ -41,7 +41,7 @@
     "next-sanity-image": "^3.2.1",
     "next-seo": "^5.4.0",
     "react": "17.0.2",
-    "react-animate-height": "^2.0.23",
+    "react-animate-height": "^3.1.1",
     "react-dom": "17.0.2",
     "react-draggable": "^4.4.5",
     "react-feather": "^2.0.9",
