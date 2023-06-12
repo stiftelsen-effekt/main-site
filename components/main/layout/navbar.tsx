@@ -3,7 +3,6 @@ import styles from "../../shared/layout/Navbar/Navbar.module.scss";
 import Link from "next/link";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
-import { Dictionary } from "lodash";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { WidgetContext } from "./layout";
 import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
@@ -37,7 +36,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
-  const [expandedSubmenu, setExpandedSubmenu] = useState<Dictionary<boolean>>(
+  const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
     elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
