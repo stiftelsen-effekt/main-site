@@ -67,8 +67,7 @@ const drawChart = (
         strokeWidth: 10,
         x: incomeXPositon,
         y: adjustedBelowMax,
-        dx: isMobile ? "-10" : "10",
-        background: "var(--secondary)",
+        dx: isMobile ? -10 : 10,
       }),
       Plot.text([afterDonationLabel], {
         lineWidth: labelLineWidth,
@@ -79,11 +78,7 @@ const drawChart = (
         fontFamily: "ESKlarheitGrotesk",
         x: incomeAfterDonationXPosition,
         y: adjustedMax,
-        dx: isMobile ? "-10" : "10",
-        style: {
-          background: "var(--secondary)",
-        },
-        paddingRight: 10,
+        dx: isMobile ? -10 : 10,
       }),
     ];
   }
@@ -91,7 +86,7 @@ const drawChart = (
   const chart = Plot.plot({
     height: size.height,
     width: size.width,
-    paddingOuter: 20,
+    padding: 20,
     x: {
       type: "log",
       domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
@@ -113,7 +108,6 @@ const drawChart = (
         curve: "natural",
         x: "x",
         y: "y",
-        range: [0, incomeXPositon],
       }),
       Plot.ruleX([incomeAfterDonationXPosition], {
         strokeDasharray: "4,4",
@@ -145,7 +139,7 @@ export const AreaChart: React.FC<{
   afterDonationPercentileLabelTemplateString,
   size,
 }) => {
-  const [chart, setChart] = useState(null);
+  const [chart, setChart] = useState<Plot.Plot | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {

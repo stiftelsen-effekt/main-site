@@ -1,7 +1,7 @@
 import React from "react";
-import { PortableText } from "../../../../lib/sanity";
 import { Links } from "../Links/Links";
 import styles from "./OrganizationsList.module.scss";
+import { PortableText } from "@portabletext/react";
 
 export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organizations }) => {
   return (
@@ -28,7 +28,7 @@ export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organiza
             </div>
             <div className={styles.description}>
               <p className="inngress">{organization.oneliner}</p>
-              <PortableText blocks={organization.content}></PortableText>
+              <PortableText value={organization.content}></PortableText>
 
               {organization.links && (
                 <>

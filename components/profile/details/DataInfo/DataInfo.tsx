@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { PortableText } from "../../../../lib/sanity";
 import style from "./DataInfo.module.scss";
+import { PortableText } from "@portabletext/react";
 
 export const DataInfo: React.FC<{ page: any }> = ({ page }) => {
   return (
@@ -9,7 +9,7 @@ export const DataInfo: React.FC<{ page: any }> = ({ page }) => {
       <div className={style.columns}>
         <section className={style.tax}>
           <strong>Skattefradrag</strong>
-          <PortableText blocks={page.tax} />
+          <PortableText value={page.tax} />
 
           <Link href="/skattefradrag" passHref>
             <a target={"_blank"}>Les mer →</a>
@@ -17,7 +17,7 @@ export const DataInfo: React.FC<{ page: any }> = ({ page }) => {
         </section>
         <section className={style.privacy}>
           <strong>Personvern</strong>
-          <PortableText blocks={page.data} />
+          <PortableText value={page.data} />
 
           <Link href="/personvern" passHref>
             <a target={"_blank"}>Les mer →</a>

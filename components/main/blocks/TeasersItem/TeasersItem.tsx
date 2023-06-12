@@ -9,7 +9,7 @@ export interface TeasersItemProps {
   title: string;
   paragraph: string;
   disclaimer?: string;
-  link: string;
+  link?: string;
   image: SanityImageSource;
 }
 
@@ -34,13 +34,15 @@ export const TeasersItem: React.FC<TeasersItemProps> = ({
         </div>
         <div>
           {disclaimer && <p className={elements.teaserdisclaimer}>{disclaimer}</p>}
-          <EffektButton
-            onClick={() => {
-              router.push(link);
-            }}
-          >
-            Les mer
-          </EffektButton>
+          {link && (
+            <EffektButton
+              onClick={() => {
+                router.push(link);
+              }}
+            >
+              Les mer
+            </EffektButton>
+          )}
         </div>
       </div>
     </div>
