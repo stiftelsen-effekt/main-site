@@ -1,10 +1,9 @@
 import "../styles/globals.css";
-import type { AppContext, AppProps } from "next/app";
-import React, { useMemo, useRef } from "react";
+import type { AppProps } from "next/app";
+import React, { useRef } from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
-import { composeWithDevTools } from "redux-devtools-extension";
 import { State } from "../components/shared/components/Widget/store/state";
 import { donationReducer } from "../components/shared/components/Widget/store/donation/reducer";
 import { layoutReducer } from "../components/shared/components/Widget/store/layout/reducer";
@@ -13,9 +12,9 @@ import { watchAll } from "../components/shared/components/Widget/store/root.saga
 import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
 import { Layout } from "../components/main/layout/layout";
 import { usePreviewSubscription } from "../lib/sanity";
-import App from "next/app";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
+import { composeWithDevTools } from "@redux-devtools/extension";
 
 export enum LayoutType {
   Default = "default",
