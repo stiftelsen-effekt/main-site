@@ -75,21 +75,30 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       <SectionContainer nodivider>
         <div className={styles.articles}>
           {articles &&
-            articles.map((article: any, i: number) => (
-              <ArticlePreview
-                key={article._key}
-                header={article.header}
-                inngress={
-                  i === 0
-                    ? article.header.inngress ||
-                      (article.preview.length > 350
-                        ? article.preview.substr(0, 350) + "..."
-                        : article.preview)
-                    : undefined
+            articles.map((article: any, i: number) => {
+              let inngress: string | undefined;
+              if (i === 0) {
+                if (article.header.inngress) {
+                  inngress = article.header.inngress;
                 }
-                slug={article.slug}
-              />
-            ))}
+                if (article.preview) {
+                  if (article.preview.length > 350) {
+                    inngress = article.preview.substr(0, 350) + "...";
+                  } else {
+                    inngress = article.preview;
+                  }
+                }
+              }
+
+              return (
+                <ArticlePreview
+                  key={article._key}
+                  header={article.header}
+                  inngress={inngress}
+                  slug={article.slug}
+                />
+              );
+            })}
         </div>
       </SectionContainer>
     </>

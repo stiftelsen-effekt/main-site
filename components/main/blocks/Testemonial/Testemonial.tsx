@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Testemonial.module.scss";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
-import { PortableText } from "../../../../lib/sanity";
+import { PortableText } from "@portabletext/react";
 
 export interface Testimony {
   quotee: string;
@@ -44,7 +44,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
                 <p>{quotee}</p>
                 <div className={styles.tesimonial__background}>
                   {" "}
-                  &#x21b3;&nbsp; <PortableText blocks={quotee_background} />
+                  &#x21b3;&nbsp; <PortableText value={quotee_background} />
                 </div>
               </div>
             </div>

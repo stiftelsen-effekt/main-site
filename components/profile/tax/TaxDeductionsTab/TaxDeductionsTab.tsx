@@ -1,4 +1,4 @@
-import { PortableText } from "../../../../lib/sanity";
+import { PortableText } from "@portabletext/react";
 import { Links } from "../../../main/blocks/Links/Links";
 
 import styles from "./TaxDeductionsTab.module.scss";
@@ -10,7 +10,7 @@ export const TaxDeductionsTab: React.FC<{ description: any[]; links: any[] }> = 
   return (
     <div className={styles.container}>
       <h5>Få skattefradrag på dine donasjoner til oss</h5>
-      <PortableText blocks={description} />
+      <PortableText value={description} />
       <Links links={links} />
     </div>
   );
