@@ -229,13 +229,22 @@ export const DonationsPage = withStaticProps(
 
       <MainHeader hideOnScroll={false}>
         <Navbar logo={settings.logo} />
-        <DonationYearMenu years={years} selected={filterYear || "total"} mobile />
+        <DonationYearMenu
+          totalTitle={page.year_menu_total_title}
+          years={years}
+          selected={filterYear || "total"}
+          mobile
+        />
       </MainHeader>
 
       <PageContent>
         <h3 className={style.header}>{page.title}</h3>
 
-        <DonationYearMenu years={years} selected={filterYear || "total"} />
+        <DonationYearMenu
+          totalTitle={page.year_menu_total_title}
+          years={years}
+          selected={filterYear || "total"}
+        />
 
         <DonationsChart distribution={distribution} organizations={organizations}></DonationsChart>
 
@@ -263,7 +272,11 @@ export const DonationsPage = withStaticProps(
   );
 });
 
-type DonationsPageData = { title: string; slug?: { current?: string } };
+type DonationsPageData = {
+  title: string;
+  year_menu_total_title: string;
+  slug?: { current?: string };
+};
 
 type FetchDonationsPageResult = {
   settings: any[];
@@ -292,6 +305,7 @@ const fetchDonationsPage = groq`
   },
   "page": *[_id == "donations"] {
     title,
+    year_menu_total_title,
     slug {
       current
     }

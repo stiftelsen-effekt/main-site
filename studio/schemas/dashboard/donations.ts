@@ -12,6 +12,12 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "year_menu_total_title",
+      title: "Year Menu Total Title",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",
