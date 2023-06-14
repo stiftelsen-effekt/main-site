@@ -41,6 +41,14 @@ export default {
       },
     },
     {
+      name: "main_currency",
+      title: "Main Currency",
+      type: "string",
+      options: {
+        list: ["NOK", "SEK", "DKK", "EUR", "USD"],
+      },
+    },
+    {
       title: "Footer column 1",
       name: "footer_column_1",
       description: "Select links for the first footer column",

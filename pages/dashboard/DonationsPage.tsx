@@ -8,7 +8,10 @@ import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMe
 import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
 import style from "../../styles/Donations.module.css";
-import DonationsDistributionTable from "../../components/profile/donations/DonationsDistributionTable/DonationsDistributionTable";
+import {
+  AggregatedImpactTableTexts,
+  DonationsAggregateImpactTable,
+} from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
   useAggregatedDonations,
@@ -103,6 +106,8 @@ export const DonationsPage = withStaticProps(
   const page = data.result.page;
 
   if (!page) return null;
+
+  console.log(page.aggregate_estimated_impact);
 
   const { donor } = useContext(DonorContext);
 
@@ -249,17 +254,23 @@ export const DonationsPage = withStaticProps(
         <DonationsChart distribution={distribution} organizations={organizations}></DonationsChart>
 
         <div className={style.details}>
-          <DonationsDistributionTable
-            donations={
-              isTotal
-                ? donations
-                : donations.filter(
-                    (donation: Donation) =>
-                      new Date(donation.timestamp).getFullYear() === parseInt(filterYear),
-                  )
-            }
-            distributionMap={distributionsMap}
-          ></DonationsDistributionTable>
+          {page.aggregate_estimated_impact ? (
+            <DonationsAggregateImpactTable
+              donations={
+                isTotal
+                  ? donations
+                  : donations.filter(
+                      (donation: Donation) =>
+                        new Date(donation.timestamp).getFullYear() === parseInt(filterYear),
+                    )
+              }
+              distributionMap={distributionsMap}
+              texts={page.aggregate_estimated_impact}
+              currency={settings.main_currency}
+            ></DonationsAggregateImpactTable>
+          ) : (
+            <div>Aggregate donations impact texts are missing in Sanity</div>
+          )}
           <DonationsTotals sum={sum} period={periodText} />
         </div>
         {isTotal && window.innerWidth < 1180 ? (
@@ -275,28 +286,26 @@ export const DonationsPage = withStaticProps(
 type DonationsPageData = {
   title: string;
   year_menu_total_title: string;
+  aggregate_estimated_impact?: AggregatedImpactTableTexts;
   slug?: { current?: string };
 };
 
 type FetchDonationsPageResult = {
-  settings: any[];
+  settings: {
+    logo: any;
+    main_currency: string;
+  }[];
   dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
   page: DonationsPageData | DonationsPageData[] | null;
   footer: any[];
   widget: any[];
 };
 
-type FilteredFetchDonationsPageResult = Pick<
-  FetchDonationsPageResult,
-  "settings" | "dashboard" | "footer" | "widget"
-> & {
-  page: DonationsPageData | null;
-};
-
 const fetchDonationsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+    main_currency,
   },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
@@ -304,8 +313,8 @@ const fetchDonationsPage = groq`
     }
   },
   "page": *[_id == "donations"] {
-    title,
-    year_menu_total_title,
+    ...,
+    aggregate_estimated_impact->,
     slug {
       current
     }

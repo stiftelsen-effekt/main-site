@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
-import style from "./DonationsDistributionTable.module.scss";
+import style from "./DonationsAggregateImpactTable.module.scss";
 import useSWR from "swr";
 import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../../../models";
 import { DistributionsRow } from "./DistributionsRow";
@@ -15,11 +15,21 @@ const multiFetcher = (...urls: string[]) => {
   return Promise.all(urls.map(f));
 };
 
-const DonationsDistributionTable: React.FC<{
+export type AggregatedImpactTableTexts = {
+  title: string;
+  impact_locale: string;
+  org_grant_template_string: string;
+  org_direct_template_string: string;
+  org_operations_string: string;
+};
+
+export const DonationsAggregateImpactTable: React.FC<{
   donations: Donation[];
   distributionMap: Map<string, Distribution>;
+  texts: AggregatedImpactTableTexts;
+  currency: string;
   defaultExpanded?: boolean;
-}> = ({ donations, distributionMap, defaultExpanded = true }) => {
+}> = ({ donations, distributionMap, texts, currency, defaultExpanded = true }) => {
   const [expanded, setExpanded] = useState(
     defaultExpanded || (typeof window !== "undefined" && window.innerWidth > 1180),
   );
@@ -34,7 +44,7 @@ const DonationsDistributionTable: React.FC<{
     error: impacterror,
     isValidating: impactvalidating,
   } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO`,
+    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${currency}&language=${texts.impact_locale}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -57,9 +67,9 @@ const DonationsDistributionTable: React.FC<{
       const year = key.split("-")[0];
       const month = key.split("-")[1];
       urls.push(
-        `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${abbriv}&currency=NOK&language=NO&donation_year=${year}&donation_month=${
-          parseInt(month) + 1
-        }`,
+        `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${abbriv}&currency=${currency}&language=${
+          texts.impact_locale
+        }&donation_year=${year}&donation_month=${parseInt(month) + 1}`,
       );
     }
   }
@@ -92,12 +102,16 @@ const DonationsDistributionTable: React.FC<{
   let impact = {};
   let loading = true;
   let mappedEvaluations = [];
+  let templateStrings = {
+    org_direct_template_string: texts.org_direct_template_string,
+    org_grant_template_string: texts.org_grant_template_string,
+  };
   if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
     mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
-    impact = aggregateImpact(aggregated, mappedEvaluations);
+    impact = aggregateImpact(aggregated, mappedEvaluations, templateStrings);
     loading = false;
   } else if (urls.length == 0) {
-    impact = aggregateImpact(aggregated, []);
+    impact = aggregateImpact(aggregated, [], templateStrings);
     loading = false;
   }
 
@@ -147,7 +161,7 @@ const DonationsDistributionTable: React.FC<{
         }}
       >
         <span>
-          Estimert effekt
+          {texts.title}
           <div className={style.loadingSpinner}>
             <LoadingButtonSpinner />
           </div>
@@ -195,5 +209,3 @@ const DonationsDistributionTable: React.FC<{
     </div>
   );
 };
-
-export default DonationsDistributionTable;

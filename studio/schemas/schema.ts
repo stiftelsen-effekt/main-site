@@ -56,6 +56,7 @@ import organizationslist from "./types/organizationslist";
 import vipps from "./types/paymentproviders/vipps";
 import dashboard from "./dashboard";
 import vippsAnonymous from "./dashboard/vipps-anonymous";
+import aggregateestimatedimpact from "./types/aggregateestimatedimpact";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 
@@ -105,6 +106,7 @@ export const types = [
   organizationslist,
   vipps,
   vippsAnonymous,
+  aggregateestimatedimpact,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
