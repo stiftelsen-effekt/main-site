@@ -1,11 +1,13 @@
 import { useAuth0, User } from "@auth0/auth0-react";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import DonationsChart from "../../components/profile/donations/DonationsChart/DonationsChart";
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
-import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
+import {
+  DonationList,
+  DonationsListConfiguration,
+} from "../../components/profile/shared/lists/donationList/DonationList";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
 import style from "../../styles/Donations.module.css";
 import {
@@ -20,7 +22,6 @@ import {
   useDonations,
   widgetQuery,
 } from "../../_queries";
-import { ActivityContext } from "../../components/profile/layout/activityProvider";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
@@ -31,6 +32,8 @@ import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { withStaticProps } from "../../util/withStaticProps";
 import { filterPageToSingleItem, getAppStaticProps, LayoutType } from "../_app.page";
+import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
+import { useDebouncedCallback } from "use-debounce";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -105,12 +108,44 @@ export const DonationsPage = withStaticProps(
   const settings = data.result.settings[0];
   const page = data.result.page;
 
-  if (!page) return null;
+  if (!page)
+    return (
+      <ErrorMessage>
+        <p>Missing page configuration</p>
+      </ErrorMessage>
+    );
 
-  console.log(page.aggregate_estimated_impact);
+  /**
+   * We listen for window changes to determine if we should render the mobile or desktop version of the page.
+   * We use a debounced callback to listen for the resize event, and then set the state accordingly.
+   * TODO: Refactor this to a custom hook
+   * This logic is used a couple of places, could be centralized
+   */
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" && window.innerWidth <= 1180,
+  );
+
+  const debouncedMobileCheck = useDebouncedCallback(
+    () => {
+      typeof window !== "undefined" && window.innerWidth <= 1180
+        ? setIsMobile(true)
+        : setIsMobile(false);
+    },
+    500,
+    { trailing: true },
+  );
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", debouncedMobileCheck);
+    }
+  }, []);
 
   const { donor } = useContext(DonorContext);
 
+  /**
+   * Load the required data from the REST API
+   */
   const {
     loading: aggregatedLoading,
     data: aggregatedDonations,
@@ -141,6 +176,11 @@ export const DonationsPage = withStaticProps(
     isValidating: organizationsValidation,
     error: organizationsError,
   } = useAllOrganizations(user as User, getAccessTokenSilently);
+
+  /**
+   * While data is loading, we show a spinner
+   * In the future, we probably want to move this to a server side fetch
+   */
 
   const dataAvailable = donations && distributions && aggregatedDonations && donor && organizations;
   const loading =
@@ -176,11 +216,18 @@ export const DonationsPage = withStaticProps(
       </>
     );
 
+  /**
+   * We have two states for the page, either we are showing the total donations over all years, or we are showing the donations for a given year
+   */
   const isTotal = filterYear === null;
 
   const years = getYears(donor, donations);
   const firstYear = Math.min(...years);
   const sum = getDonationSum(aggregatedDonations, filterYear || undefined);
+
+  /**
+   * We create a hashmap to make it easier to find the distribution for a given donation
+   */
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
@@ -190,39 +237,66 @@ export const DonationsPage = withStaticProps(
     ? getYearlyDistribution(aggregatedDonations, parseInt(filterYear))
     : getTotalDistribution(aggregatedDonations);
 
-  const donationList = !isTotal ? (
-    <DonationList
-      donations={donations
-        .filter(
-          (donation: Donation) =>
-            new Date(donation.timestamp).getFullYear() === parseInt(filterYear),
-        )
-        .sort(
-          (a: Donation, b: Donation) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-        )}
-      distributions={distributionsMap}
-      year={filterYear}
-      firstOpen={false}
-    />
-  ) : (
-    years
+  const tableConfiguration = isMobile
+    ? page.mobile_donations_table_configuration
+    : page.desktop_donations_table_configuration;
+
+  let donationList: JSX.Element | JSX.Element[];
+  if (!tableConfiguration) {
+    donationList = (
+      <ErrorMessage>
+        <p>Missing Sanity configuration for donation list.</p>
+      </ErrorMessage>
+    );
+  } else if (isTotal) {
+    /**
+     * When we are showing the total view, we list all the years in descending order
+     */
+    donationList = years
       .sort((a, b) => b - a)
-      .map((year) => (
-        <DonationList
-          key={year}
-          donations={donations
-            .filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)
-            .sort(
-              (a: Donation, b: Donation) =>
-                new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-            )}
-          distributions={distributionsMap}
-          year={year.toString()}
-          firstOpen={false}
-        />
-      ))
-  );
+      .map((year) =>
+        tableConfiguration ? (
+          <DonationList
+            key={year}
+            donations={donations
+              .filter((donation: Donation) => new Date(donation.timestamp).getFullYear() === year)
+              .sort(
+                (a: Donation, b: Donation) =>
+                  new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+              )}
+            distributions={distributionsMap}
+            year={year.toString()}
+            configuration={tableConfiguration}
+            firstOpen={false}
+          />
+        ) : (
+          <ErrorMessage>
+            <p>Missing Sanity configuration for donation list.</p>
+          </ErrorMessage>
+        ),
+      );
+  } else {
+    /**
+     * When we are showing the yearly view, we only show the donations for the given year
+     */
+    donationList = (
+      <DonationList
+        donations={donations
+          .filter(
+            (donation: Donation) =>
+              new Date(donation.timestamp).getFullYear() === parseInt(filterYear),
+          )
+          .sort(
+            (a: Donation, b: Donation) =>
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+          )}
+        distributions={distributionsMap}
+        year={filterYear}
+        configuration={tableConfiguration}
+        firstOpen={false}
+      />
+    );
+  }
 
   return (
     <>
@@ -273,7 +347,7 @@ export const DonationsPage = withStaticProps(
           )}
           <DonationsTotals sum={sum} period={periodText} />
         </div>
-        {isTotal && window.innerWidth < 1180 ? (
+        {isTotal && isMobile ? (
           <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />
         ) : (
           donationList
@@ -287,6 +361,8 @@ type DonationsPageData = {
   title: string;
   year_menu_total_title: string;
   aggregate_estimated_impact?: AggregatedImpactTableTexts;
+  desktop_donations_table_configuration?: DonationsListConfiguration;
+  mobile_donations_table_configuration?: DonationsListConfiguration;
   slug?: { current?: string };
 };
 
@@ -315,6 +391,8 @@ const fetchDonationsPage = groq`
   "page": *[_id == "donations"] {
     ...,
     aggregate_estimated_impact->,
+    desktop_donations_table_configuration,
+    mobile_donations_table_configuration,
     slug {
       current
     }

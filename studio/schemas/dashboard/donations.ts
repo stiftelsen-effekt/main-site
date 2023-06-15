@@ -24,6 +24,16 @@ export default {
       to: [{ type: "aggregateestimatedimpact" }],
     },
     {
+      name: "desktop_donations_table_configuration",
+      title: "Desktop donations table configuration",
+      type: "donationstableconfiguration",
+    },
+    {
+      name: "mobile_donations_table_configuration",
+      title: "Mobile donations table configuration",
+      type: "donationstableconfiguration",
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",
