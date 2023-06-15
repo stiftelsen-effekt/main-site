@@ -15,21 +15,21 @@ const multiFetcher = (...urls: string[]) => {
   return Promise.all(urls.map(f));
 };
 
-export type AggregatedImpactTableTexts = {
+export type AggregatedImpactTableConfiguration = {
   title: string;
-  impact_locale: string;
   org_grant_template_string: string;
   org_direct_template_string: string;
   org_operations_string: string;
+  currency: string;
+  locale: string;
 };
 
 export const DonationsAggregateImpactTable: React.FC<{
   donations: Donation[];
   distributionMap: Map<string, Distribution>;
-  texts: AggregatedImpactTableTexts;
-  currency: string;
+  configuration: AggregatedImpactTableConfiguration;
   defaultExpanded?: boolean;
-}> = ({ donations, distributionMap, texts, currency, defaultExpanded = true }) => {
+}> = ({ donations, distributionMap, configuration, defaultExpanded = true }) => {
   const [expanded, setExpanded] = useState(
     defaultExpanded || (typeof window !== "undefined" && window.innerWidth > 1180),
   );
@@ -44,7 +44,7 @@ export const DonationsAggregateImpactTable: React.FC<{
     error: impacterror,
     isValidating: impactvalidating,
   } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${currency}&language=${texts.impact_locale}`,
+    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${configuration.currency}&language=${configuration.locale}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -67,9 +67,11 @@ export const DonationsAggregateImpactTable: React.FC<{
       const year = key.split("-")[0];
       const month = key.split("-")[1];
       urls.push(
-        `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${abbriv}&currency=${currency}&language=${
-          texts.impact_locale
-        }&donation_year=${year}&donation_month=${parseInt(month) + 1}`,
+        `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${abbriv}&currency=${
+          configuration.currency
+        }&language=${configuration.locale}&donation_year=${year}&donation_month=${
+          parseInt(month) + 1
+        }`,
       );
     }
   }
@@ -103,8 +105,8 @@ export const DonationsAggregateImpactTable: React.FC<{
   let loading = true;
   let mappedEvaluations = [];
   let templateStrings = {
-    org_direct_template_string: texts.org_direct_template_string,
-    org_grant_template_string: texts.org_grant_template_string,
+    org_direct_template_string: configuration.org_direct_template_string,
+    org_grant_template_string: configuration.org_grant_template_string,
   };
   if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
     mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
@@ -161,7 +163,7 @@ export const DonationsAggregateImpactTable: React.FC<{
         }}
       >
         <span>
-          {texts.title}
+          {configuration.title}
           <div className={style.loadingSpinner}>
             <LoadingButtonSpinner />
           </div>
