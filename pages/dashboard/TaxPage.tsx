@@ -101,6 +101,8 @@ export const TaxPage = withStaticProps(
       metareceipt: [metareceipt] = [],
     } = result;
 
+    console.log(taxstatements);
+
     const subpath = (taxPath && taxPath.length < path.length && path[taxPath.length]) || null;
 
     const menuChoice = (() => {
@@ -137,6 +139,9 @@ export const TaxPage = withStaticProps(
     metareceipt: [metareceipt] = [],
   } = data.result;
 
+  console.log(taxstatements);
+  console.log(settings);
+
   const { donor } = useContext(DonorContext);
 
   if ((!router.isFallback && !data) || !donor) {
@@ -164,7 +169,12 @@ export const TaxPage = withStaticProps(
 
           {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
 
-          {menuChoice == TaxMenuChoices.YEARLY_REPORTS && <YearlyReportsTab />}
+          {menuChoice == TaxMenuChoices.YEARLY_REPORTS && (
+            <YearlyReportsTab
+              aggregatedImpactTexts={taxstatements.aggregate_estimated_impact}
+              currency={settings.main_currency}
+            />
+          )}
 
           {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
             <FacebookTab
@@ -211,6 +221,7 @@ const fetchTaxPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+    main_currency,
   },
   "dashboard": *[_id == "dashboard"] {
     tax_slug {
@@ -232,6 +243,7 @@ const fetchTaxPage = groq`
     facebook_description_links,
   },
   "taxstatements": *[_id == "taxstatements"] {
+    aggregate_estimated_impact->,
     slug {
       current
     }

@@ -6,19 +6,21 @@ import {
   TaxYearlyReportUnits,
 } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
-import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { TaxYearlyReportDesktopDetails } from "./TaxYearlyReportDesktopDetails";
 import style from "./TaxYearlyReportList.module.scss";
 import { TaxYearlyReportListBody } from "./TaxYearlyReportListBody";
 import { TaxYearlyReportListSupplemental } from "./TaxYearlyReportListSupplemental";
+import { AggregatedImpactTableTexts } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
 export const TaxYearlyReportList: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
-}> = ({ report, donations, distribtionMap }) => {
+  aggregateImpactTexts: AggregatedImpactTableTexts;
+  currency: string;
+}> = ({ report, donations, distribtionMap, aggregateImpactTexts, currency }) => {
   const headers = [
     { label: "Skatteenhet", width: "25%" },
     { label: "Enhetsnummer", width: "25%" },
@@ -87,6 +89,8 @@ export const TaxYearlyReportList: React.FC<{
           report={report}
           donations={donations}
           distribtionMap={distribtionMap}
+          aggregateImpactTexts={aggregateImpactTexts}
+          currency={currency}
         />
       }
       proportions={[30, 60]}
