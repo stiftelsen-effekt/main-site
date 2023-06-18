@@ -11,7 +11,7 @@ import {
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
 import style from "../../styles/Donations.module.css";
 import {
-  AggregatedImpactTableTexts,
+  AggregatedImpactTableConfiguration,
   DonationsAggregateImpactTable,
 } from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
@@ -34,6 +34,7 @@ import { withStaticProps } from "../../util/withStaticProps";
 import { filterPageToSingleItem, getAppStaticProps, LayoutType } from "../_app.page";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
+import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -267,6 +268,7 @@ export const DonationsPage = withStaticProps(
             distributions={distributionsMap}
             year={year.toString()}
             configuration={tableConfiguration}
+            detailsConfiguration={page.donations_details_configuration}
             firstOpen={false}
           />
         ) : (
@@ -293,6 +295,7 @@ export const DonationsPage = withStaticProps(
         distributions={distributionsMap}
         year={filterYear}
         configuration={tableConfiguration}
+        detailsConfiguration={page.donations_details_configuration}
         firstOpen={false}
       />
     );
@@ -339,8 +342,7 @@ export const DonationsPage = withStaticProps(
                     )
               }
               distributionMap={distributionsMap}
-              texts={page.aggregate_estimated_impact}
-              currency={settings.main_currency}
+              configuration={page.aggregate_estimated_impact}
             ></DonationsAggregateImpactTable>
           ) : (
             <div>Aggregate donations impact texts are missing in Sanity</div>
@@ -360,9 +362,10 @@ export const DonationsPage = withStaticProps(
 type DonationsPageData = {
   title: string;
   year_menu_total_title: string;
-  aggregate_estimated_impact?: AggregatedImpactTableTexts;
+  aggregate_estimated_impact?: AggregatedImpactTableConfiguration;
   desktop_donations_table_configuration?: DonationsListConfiguration;
   mobile_donations_table_configuration?: DonationsListConfiguration;
+  donations_details_configuration?: DonationDetailsConfiguration;
   slug?: { current?: string };
 };
 
@@ -370,6 +373,7 @@ type FetchDonationsPageResult = {
   settings: {
     logo: any;
     main_currency: string;
+    main_locale: string;
   }[];
   dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
   page: DonationsPageData | DonationsPageData[] | null;
@@ -382,6 +386,7 @@ const fetchDonationsPage = groq`
   "settings": *[_type == "site_settings"] {
     logo,
     main_currency,
+    main_locale,
   },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
@@ -390,9 +395,26 @@ const fetchDonationsPage = groq`
   },
   "page": *[_id == "donations"] {
     ...,
-    aggregate_estimated_impact->,
+    aggregate_estimated_impact->{
+      ...,
+      "currency": *[ _type == "site_settings"][0].main_currency,
+      "locale": *[ _type == "site_settings"][0].main_locale,
+    },
     desktop_donations_table_configuration,
     mobile_donations_table_configuration,
+    donations_details_configuration {
+      ...,
+      impact_items_configuration {
+        ...,
+        "currency": *[ _type == "site_settings"][0].main_currency,
+        "locale": *[ _type == "site_settings"][0].main_locale,
+        impact_item_configuration {
+          ...,
+          "currency": *[ _type == "site_settings"][0].main_currency,
+          "locale": *[ _type == "site_settings"][0].main_locale,
+        }
+      }
+    },
     slug {
       current
     }

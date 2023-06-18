@@ -1,8 +1,9 @@
 import { Distribution, Donation } from "../../../../../models";
 import { onlyDate, thousandize } from "../../../../../util/formatting";
+import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
-import { DonationDetails } from "./DonationDetails";
+import { DonationDetails, DonationDetailsConfiguration } from "./DonationDetails";
 
 export type TableFieldTypes = "string" | "sum" | "date" | "paymentmethod";
 
@@ -20,8 +21,9 @@ export const DonationList: React.FC<{
   distributions: Map<string, Distribution>;
   year: string;
   configuration: DonationsListConfiguration;
+  detailsConfiguration?: DonationDetailsConfiguration;
   firstOpen: boolean;
-}> = ({ donations, distributions, year, configuration, firstOpen }) => {
+}> = ({ donations, distributions, year, configuration, detailsConfiguration, firstOpen }) => {
   let taxDeductionText: JSX.Element | undefined = undefined;
 
   let taxDeductions = 0;
@@ -71,14 +73,17 @@ export const DonationList: React.FC<{
       cells: configuration.columns.map((column) => ({
         value: formatField(donation[column.value], column.type),
       })),
-      details: (
+      details: detailsConfiguration ? (
         <DonationDetails
           key={donation.id}
           donation={donation}
           sum={donation.sum}
           distribution={distributions.get(donation.KID.trim()) as Distribution}
           timestamp={new Date(donation.timestamp)}
+          configuration={detailsConfiguration}
         />
+      ) : (
+        <ErrorMessage>Missing donation details configuration in Sanity</ErrorMessage>
       ),
       element: donation,
     };
