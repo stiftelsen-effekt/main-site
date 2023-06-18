@@ -1,19 +1,30 @@
 import React, { useCallback, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { Donation, GiveWellGrant } from "../../../../models";
 import { thousandize } from "../../../../util/formatting";
 import style from "./DonationImpact.module.scss";
-import { DonationImpactItem } from "./DonationImpactItem";
+import { DonationImpactItem, ImpactItemConfiguration } from "./DonationImpactItem";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export type DonationImpactItemsConfiguration = {
+  currency: string;
+  locale: string;
+  smart_distribution_label: string;
+  operations_label: string;
+  impact_item_configuration: ImpactItemConfiguration;
+};
 
 const DonationImpact: React.FC<{
   donation: Donation;
   distribution: { org: string; sum: number }[];
   timestamp: Date;
-}> = ({ donation, distribution, timestamp }) => {
+  configuration: DonationImpactItemsConfiguration;
+}> = ({ donation, distribution, timestamp, configuration }) => {
   const { data, error, isValidating } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&donation_year=${timestamp.getFullYear()}&donation_month=${
+    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${
+      configuration.currency
+    }&language=${configuration.locale}&donation_year=${timestamp.getFullYear()}&donation_month=${
       timestamp.getMonth() + 1
     }`,
     fetcher,
@@ -82,7 +93,7 @@ const DonationImpact: React.FC<{
     <div className={style.container} key={`${donation.id}-impact`}>
       {giveWellDist && (
         <div className={style.smartdistributionlabel}>
-          <span>Smart fordeling</span>
+          <span>{configuration.smart_distribution_label}</span>
           <strong>{`${thousandize(giveWellDist.sum || null)} kr`}</strong>
         </div>
       )}
@@ -99,12 +110,13 @@ const DonationImpact: React.FC<{
                   signalRequiredPrecision={(precision) => {
                     if (precision > requiredPrecision) updatePrecision(precision);
                   }}
+                  configuration={configuration.impact_item_configuration}
                 />
               )}
               {dist.org === "Drift" && (
                 <tr>
                   <td className={style.impact} colSpan={100}>
-                    <span>Drift av Gi Effektivt</span>
+                    <span>{configuration.operations_label}</span>
                     <strong>{`${dist.sum} kr`}</strong>
                   </td>
                 </tr>

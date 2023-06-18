@@ -1,15 +1,20 @@
 import { FileText } from "react-feather";
 import { Distribution, Donation, TaxYearlyReport } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
-import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
 
 import style from "./TaxYearlyReportListSupplemental.module.scss";
+import {
+  AggregatedImpactTableTexts,
+  DonationsAggregateImpactTable,
+} from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
 export const TaxYearlyReportListSupplemental: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
-}> = ({ report, donations, distribtionMap }) => {
+  aggregateImpactTexts: AggregatedImpactTableTexts;
+  currency: string;
+}> = ({ report, donations, distribtionMap, aggregateImpactTexts, currency }) => {
   if (report.sumDonations == 0) return null;
   return (
     <>
@@ -21,11 +26,13 @@ export const TaxYearlyReportListSupplemental: React.FC<{
         </div>
       </div>
       <div className={style.impactWrapper}>
-        <DonationsDistributionTable
+        <DonationsAggregateImpactTable
           donations={donations}
           distributionMap={distribtionMap}
+          texts={aggregateImpactTexts}
+          currency={currency}
           defaultExpanded={false}
-        ></DonationsDistributionTable>
+        ></DonationsAggregateImpactTable>
       </div>
       <div className={style.summation}>
         <h3 data-cy="yearly-tax-report-sum">

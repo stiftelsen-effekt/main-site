@@ -7,6 +7,12 @@ export default {
 
   fields: [
     {
+      name: "aggregate_estimated_impact",
+      title: "Aggregate estimated impact configuration",
+      type: "reference",
+      to: [{ type: "aggregateestimatedimpact" }],
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",
