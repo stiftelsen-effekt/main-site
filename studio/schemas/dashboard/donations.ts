@@ -99,6 +99,18 @@ export default {
                   type: "array",
                   of: [{ type: "block" }],
                 },
+                {
+                  name: "about_org_link_title_format_string",
+                  title: "About org link title format string",
+                  type: "string",
+                  description: "Use {{org}} to insert the organization name",
+                },
+                {
+                  name: "about_org_link_url_format_string",
+                  title: "About org link url format string",
+                  type: "string",
+                  description: "Use {{org}} to insert the organization name",
+                },
               ],
             },
           ],

@@ -13,6 +13,8 @@ export type ImpactItemConfiguration = {
   output_subheading_format_string: string;
   missing_evaluation_header: string;
   missing_impact_evaluation_text: any[];
+  about_org_link_title_format_string: string;
+  about_org_link_url_format_string: string;
   currency: string;
   locale: string;
 };
@@ -209,17 +211,13 @@ export const DonationImpactItem: React.FC<{
                     {
                       _type: "link",
                       _key: "charity_description",
-                      title: "Om " + relevantEvaluation.charity.charity_name,
-                      url:
-                        "https://gieffektivt.no/topplista#" +
-                        relevantEvaluation.charity.charity_name.replaceAll(" ", "_"),
-                      newtab: true,
-                    },
-                    {
-                      _type: "link",
-                      _key: "giveWell",
-                      title: "GiveWell’s analyser",
-                      url: "https://www.givewell.org/how-we-work/our-criteria/cost-effectiveness/cost-effectiveness-models",
+                      title: configuration.about_org_link_title_format_string.replace(
+                        "{{org}}",
+                        relevantEvaluation.charity.charity_name,
+                      ),
+                      url: configuration.about_org_link_url_format_string
+                        .replace("{{org}}", relevantEvaluation.charity.charity_name)
+                        .replaceAll(" ", "_"),
                       newtab: true,
                     },
                   ]}
