@@ -93,7 +93,7 @@ export const TaxPage = withStaticProps(
     pageContent = <TaxUnitsTab />;
   } else if (menuChoice?._type == "taxstatements") {
     pageContent = <YearlyReportsTab />;
-  } else if (menuChoice?._type == "facebookdonations") {
+  } else if (menuChoice?._type == "metareceipt") {
     if (!donor) return <ErrorMessage>Missing donor</ErrorMessage>;
     pageContent = (
       <FacebookTab
@@ -174,7 +174,7 @@ export type TaxStatementsData = TaxFeatureProps & {
 };
 
 export type MetaReceiptData = TaxFeatureProps & {
-  _type: "facebookdonations";
+  _type: "metareceipt";
   facebook_description?: any[];
   facebook_description_links?: {
     links: any[];

@@ -21,18 +21,19 @@ const TaxMenu: React.FC<{
       <ul>
         {choices
           .filter((c) => c != null)
-          .map((c) => (
-            <li
-              className={
-                selected && selected.slug.current == c.slug.current ? style["menu-selected"] : ""
-              }
-              key={c.slug.current}
-            >
-              <Link href={`${taxPagePath.join("/")}/${c.slug.current}`} passHref>
-                <a>{c.title}</a>
-              </Link>
-            </li>
-          ))}
+          .map((c, i) => {
+            let isSelected: boolean = false;
+            if (selected && selected.slug.current == c.slug.current) isSelected = true;
+            else if (!selected && i == 0) isSelected = true;
+
+            return (
+              <li className={isSelected ? style["menu-selected"] : ""} key={c.slug.current}>
+                <Link href={`${taxPagePath.join("/")}/${c.slug.current}`} passHref>
+                  <a>{c.title}</a>
+                </Link>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );
