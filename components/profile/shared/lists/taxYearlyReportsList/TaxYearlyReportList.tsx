@@ -89,7 +89,6 @@ export const TaxYearlyReportList: React.FC<{
           donations={donations}
           distribtionMap={distribtionMap}
           aggregateImpactConfig={aggregateImpactConfig}
-          currency={currency}
         />
       }
       proportions={[30, 60]}

@@ -230,6 +230,14 @@ const fetchTaxPage = groq`
           ${linksContentQuery}
         }
       },
+      _type == "taxstatements" => {
+        ...,
+        aggregate_estimated_impact -> {
+          ...,
+          "currency": *[ _type == "site_settings"][0].main_currency,
+          "locale": *[ _type == "site_settings"][0].main_locale,
+        }
+      },
     },
     slug {
       current
