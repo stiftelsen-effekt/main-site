@@ -61,9 +61,9 @@ export const AgreementsPage = withStaticProps(
 )(({ data, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
-  const { setActivity } = useContext(ActivityContext);
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
 
   const {
     loading: avtaleGiroLoading,
@@ -117,7 +117,7 @@ export const AgreementsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} />
+          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
           <AgreementsMenu
             selected={selected}
             onChange={(selected) => setSelected(selected)}
@@ -176,7 +176,7 @@ export const AgreementsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} />
+        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
         <AgreementsMenu
           selected={selected}
           onChange={(selected) => setSelected(selected)}
@@ -267,7 +267,7 @@ export const AgreementsPage = withStaticProps(
 
 type FetchAgreementsPageResult = {
   settings: any[];
-  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
   page?: Array<{ slug?: { current?: string } }>;
   footer: any[];
   widget: any[];
@@ -281,6 +281,23 @@ const fetchAgreementsPage = groq`
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
+    },
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
     }
   },
   "page": *[_id == "agreements"] {

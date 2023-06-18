@@ -7,8 +7,8 @@ import { useRouterContext } from "../../../../context/RouterContext";
 export type LinkType = {
   _type: "link";
   _key: string;
-  title: string;
-  url: string;
+  title?: string;
+  url?: string;
   newtab?: boolean;
 };
 
@@ -20,7 +20,7 @@ export const Links: React.FC<LinksProps> = ({ links }) => {
   return (
     <ul className={elements.links}>
       {links &&
-        links.map((link) => (
+        links.filter(validateLink).map((link) => (
           <li key={link._key}>
             <LinkComponent link={link} />
           </li>
@@ -58,4 +58,9 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
       </a>
     </Link>
   );
+};
+
+const validateLink: (link: LinkType | NavLink) => boolean = (link) => {
+  if (link._type === "navitem") return link.slug !== undefined && link.slug !== null;
+  else return link.url !== undefined && link.url !== null;
 };

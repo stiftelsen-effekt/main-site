@@ -43,6 +43,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
 })(({ data, preview }) => {
   const router = useRouter();
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
 
   if (!router.isFallback && !data) {
     return <div>Loading...</div>;
@@ -57,7 +58,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} />
+        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
       </MainHeader>
 
       <PageContent>
@@ -73,7 +74,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
 type FetchProfilePageResult = {
   settings: any[];
   page: Array<{ slug?: { current?: string }; tax?: any; data?: any }>;
-  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
 };
 
 const fetchProfilePage = groq`
@@ -84,6 +85,23 @@ const fetchProfilePage = groq`
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
+    },
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
     }
   },
   "page": *[_id == "profile"] {

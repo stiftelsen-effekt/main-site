@@ -10,79 +10,47 @@ import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { useContext } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
-import { widgetQuery } from "../../_queries";
-import TaxMenu, { TaxMenuChoices } from "../../components/profile/tax/TaxMenu/TaxMenu";
-import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
-import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
-import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
-import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
+import { linksContentQuery, linksSelectorQuery, widgetQuery } from "../../_queries";
+import TaxMenu from "../../components/profile/tax/TaxMenu/TaxMenu";
 import { withStaticProps } from "../../util/withStaticProps";
 import { getDashboardPagePath } from "./DonationsPage";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
+import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
+import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
+import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
+import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
+import { LinksProps } from "../../components/main/blocks/Links/Links";
 
-export async function getTaxPagePath() {
+export async function getTaxPagePath(): Promise<string[]> {
   const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
   const dashboardPath = await getDashboardPagePath();
 
   const { dashboard: [dashboard] = [] } = result;
 
-  const taxSlug = dashboard?.tax_slug?.current;
+  const page = filterPageToSingleItem(result, false);
 
-  if (!taxSlug) return null;
+  const taxSlug = page?.slug?.current;
+
+  if (!taxSlug) return [];
 
   return [...dashboardPath, ...taxSlug.split("/")];
 }
 
-export async function getTaxDeductionPagePath() {
+export async function getTaxPageSubPaths(): Promise<string[][]> {
   const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
-  const taxPath = await getTaxPagePath();
+  const dashboardPath = await getDashboardPagePath();
 
-  const { taxdeduction: [taxdeduction] = [] } = result;
+  const { dashboard: [dashboard] = [] } = result;
 
-  const taxdeductionSlug = taxdeduction?.slug?.current;
+  const page = filterPageToSingleItem(result, false);
 
-  if (!taxPath || !taxdeductionSlug) return null;
+  const taxSlug = page?.slug?.current;
 
-  return [...taxPath, ...taxdeductionSlug.split("/")];
-}
+  if (!taxSlug) return [];
+  if (!page.features) return [];
 
-export async function getTaxUnitsPagePath() {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
-  const taxPath = await getTaxPagePath();
-
-  const { taxunits: [taxunits] = [] } = result;
-
-  const taxunitsSlug = taxunits?.slug?.current;
-
-  if (!taxPath || !taxunitsSlug) return null;
-
-  return [...taxPath, ...taxunitsSlug.split("/")];
-}
-
-export async function getTaxStatementsPagePath() {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
-  const taxPath = await getTaxPagePath();
-
-  const { taxstatements: [taxstatements] = [] } = result;
-
-  const taxstatementsSlug = taxstatements?.slug?.current;
-
-  if (!taxPath || !taxstatementsSlug) return null;
-
-  return [...taxPath, ...taxstatementsSlug.split("/")];
-}
-
-export async function getMetaReceiptPagePath() {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
-  const taxPath = await getTaxPagePath();
-
-  const { metareceipt: [metareceipt] = [] } = result;
-
-  const metareceiptSlug = metareceipt?.slug?.current;
-
-  if (!taxPath || !metareceiptSlug) return null;
-
-  return [...taxPath, ...metareceiptSlug.split("/")];
+  return page.features.map((f) => [...dashboardPath, ...taxSlug.split("/"), f.slug.current]);
 }
 
 export const TaxPage = withStaticProps(
@@ -94,32 +62,12 @@ export const TaxPage = withStaticProps(
 
     const taxPath = await getTaxPagePath();
 
-    const {
-      taxdeduction: [taxdeduction] = [],
-      taxunits: [taxunits] = [],
-      taxstatements: [taxstatements] = [],
-      metareceipt: [metareceipt] = [],
-    } = result;
-
-    const subpath = (taxPath && taxPath.length < path.length && path[taxPath.length]) || null;
-
-    const menuChoice = (() => {
-      switch (subpath) {
-        case taxdeduction?.slug?.current:
-          return TaxMenuChoices.ABOUT_TAX_DEDUCTIONS;
-        case metareceipt?.slug?.current:
-          return TaxMenuChoices.FACEBOOK_DONATIONS;
-        case taxstatements?.slug?.current:
-          return TaxMenuChoices.YEARLY_REPORTS;
-        default:
-          return TaxMenuChoices.TAX_UNITS;
-      }
-    })();
+    const subpath = (taxPath && taxPath.length < path.length && path[taxPath.length]) || "";
 
     return {
       appStaticProps,
       preview: preview,
-      menuChoice,
+      subpath,
       data: {
         result: result,
         query: fetchTaxPage,
@@ -127,20 +75,42 @@ export const TaxPage = withStaticProps(
       },
     };
   },
-)(({ data, menuChoice, preview }) => {
-  const router = useRouter();
-  const {
-    settings: [settings] = [],
-    taxdeduction: [taxdeduction] = [],
-    taxunits: [taxunits] = [],
-    taxstatements: [taxstatements] = [],
-    metareceipt: [metareceipt] = [],
-  } = data.result;
+)(({ data, subpath, preview }) => {
+  const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
+  const page = filterPageToSingleItem(data.result, preview);
+
+  if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
+
+  const menuChoice = page.features?.find((f) => f.slug.current == subpath) || null;
 
   const { donor } = useContext(DonorContext);
 
-  if ((!router.isFallback && !data) || !donor) {
-    return <div>Loading...</div>;
+  if (!page.features) return <ErrorMessage>No features defined for tax page</ErrorMessage>;
+
+  let pageContent = null;
+  if (!menuChoice || menuChoice?._type == "taxunits") {
+    pageContent = <TaxUnitsTab />;
+  } else if (menuChoice?._type == "taxstatements") {
+    pageContent = <YearlyReportsTab />;
+  } else if (menuChoice?._type == "metareceipt") {
+    if (!donor) return <ErrorMessage>Missing donor</ErrorMessage>;
+    pageContent = (
+      <FacebookTab
+        donor={donor}
+        description={menuChoice.facebook_description || []}
+        links={
+          menuChoice.facebook_description_links ? menuChoice.facebook_description_links.links : []
+        }
+      />
+    );
+  } else if (menuChoice?._type == "abouttaxdeductions") {
+    pageContent = (
+      <TaxDeductionsTab
+        description={menuChoice.about || []}
+        links={menuChoice.links ? menuChoice.links.links : []}
+      />
+    );
   }
 
   return (
@@ -152,42 +122,17 @@ export const TaxPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} />
-        <TaxMenu mobile selected={menuChoice}></TaxMenu>
+        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <TaxMenu mobile selected={menuChoice} choices={page.features}></TaxMenu>
       </MainHeader>
 
       <PageContent>
         <div className={style.container}>
-          <h3 className={style.header}>Skatt</h3>
+          <h3 className={style.header}>{page.title}</h3>
 
-          <TaxMenu selected={menuChoice}></TaxMenu>
+          <TaxMenu selected={menuChoice} choices={page.features}></TaxMenu>
 
-          {menuChoice == TaxMenuChoices.TAX_UNITS && <TaxUnitsTab />}
-
-          {menuChoice == TaxMenuChoices.YEARLY_REPORTS && <YearlyReportsTab />}
-
-          {menuChoice == TaxMenuChoices.FACEBOOK_DONATIONS && (
-            <FacebookTab
-              donor={donor}
-              description={metareceipt.facebook_description}
-              links={
-                metareceipt.facebook_description_links
-                  ? metareceipt.facebook_description_links.links
-                  : []
-              }
-            />
-          )}
-
-          {menuChoice == TaxMenuChoices.ABOUT_TAX_DEDUCTIONS && (
-            <TaxDeductionsTab
-              description={taxdeduction.about_taxdeductions}
-              links={
-                taxdeduction.about_taxdeductions_links
-                  ? taxdeduction.about_taxdeductions_links.links
-                  : []
-              }
-            ></TaxDeductionsTab>
-          )}
+          {pageContent || <ErrorMessage>Missing page content</ErrorMessage>}
         </div>
       </PageContent>
     </>
@@ -195,17 +140,48 @@ export const TaxPage = withStaticProps(
 });
 
 type FetchTaxPageResult = {
-  settings?: any[];
-  taxdeduction?: Array<{ slug?: { current?: string } } & Record<string, any>>;
-  taxunits?: Array<{ slug?: { current?: string } } & Record<string, any>>;
-  taxstatements?: Array<{ slug?: { current?: string } } & Record<string, any>>;
-  metareceipt?: Array<{ slug?: { current?: string } } & Record<string, any>>;
-  dashboard?: {
-    tax_slug?: {
+  settings: any[];
+  page: Array<{
+    title?: string;
+    features?: TaxPageFeature[];
+    slug?: {
       current?: string;
     };
-  }[];
+  }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
 };
+
+export interface TaxFeatureProps {
+  _type: string;
+  title: string;
+  slug: {
+    current: string;
+  };
+}
+
+export type TaxUnitsData = TaxFeatureProps & {
+  _type: "taxunits";
+};
+
+export type TaxDeductionData = TaxFeatureProps & {
+  _type: "abouttaxdeductions";
+  about?: any[];
+  links?: LinksProps;
+};
+
+export type TaxStatementsData = TaxFeatureProps & {
+  _type: "taxstatements";
+};
+
+export type MetaReceiptData = TaxFeatureProps & {
+  _type: "metareceipt";
+  facebook_description?: any[];
+  facebook_description_links?: {
+    links: any[];
+  };
+};
+
+export type TaxPageFeature = TaxUnitsData | TaxDeductionData | TaxStatementsData | MetaReceiptData;
 
 const fetchTaxPage = groq`
 {
@@ -216,30 +192,40 @@ const fetchTaxPage = groq`
     tax_slug {
       current
     },
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
   },
-  "taxdeduction": *[_id == "taxdeduction"] {
+  "page": *[_type == "tax"] {
+    ...,
+    title,
+    features[] {
+      ...,
+      _type == "abouttaxdeductions" => {
+        ...,
+        links {
+          ...,
+          ${linksContentQuery}
+        }
+      },
+    },
     slug {
       current
     },
-    about_taxdeductions,
-    about_taxdeductions_links,
-  },
-  "metareceipt": *[_id == "metareceipt"] {
-    slug {
-      current
-    },
-    facebook_description,
-    facebook_description_links,
-  },
-  "taxstatements": *[_id == "taxstatements"] {
-    slug {
-      current
-    }
-  },
-  "taxunits": *[_id == "taxunits"] {
-    slug {
-      current
-    }
   },
   ${footerQuery}
   ${widgetQuery}

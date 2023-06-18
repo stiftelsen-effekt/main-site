@@ -1,25 +1,23 @@
-import { isShallowSlug } from "../../validators/isShallowSlug";
+import { isShallowSlug } from "../../../validators/isShallowSlug";
 
 export default {
-  title: "Tax statements",
-  name: "taxstatements",
-  type: "document",
-
+  title: "Tax units",
+  name: "taxunits",
+  type: "object",
   fields: [
+    {
+      name: "title",
+      title: "Title",
+      type: "string",
+    },
     {
       name: "slug",
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "annual-statements",
+      initialValue: "taxunits",
       description: "Relative to tax page",
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
   ],
-
-  preview: {
-    select: {
-      title: "slug.current",
-    },
-  },
 } as const;
