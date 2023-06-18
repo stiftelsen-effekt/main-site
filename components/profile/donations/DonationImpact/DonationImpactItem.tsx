@@ -5,8 +5,19 @@ import useSWR from "swr";
 import { ImpactEvaluation } from "../../../../models";
 import AnimateHeight from "react-animate-height";
 import { Links } from "../../../main/blocks/Links/Links";
+import { PortableText } from "@portabletext/react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export type ImpactItemConfiguration = {
+  output_subheading_format_string: string;
+  missing_evaluation_header: string;
+  missing_impact_evaluation_text: any[];
+  about_org_link_title_format_string: string;
+  about_org_link_url_format_string: string;
+  currency: string;
+  locale: string;
+};
 
 export const DonationImpactItem: React.FC<{
   orgAbriv: string;
@@ -14,9 +25,21 @@ export const DonationImpactItem: React.FC<{
   donationTimestamp: Date;
   precision: number;
   signalRequiredPrecision: (precision: number) => void;
-}> = ({ orgAbriv, sumToOrg, donationTimestamp, precision, signalRequiredPrecision }) => {
+  configuration: ImpactItemConfiguration;
+}> = ({
+  orgAbriv,
+  sumToOrg,
+  donationTimestamp,
+  precision,
+  signalRequiredPrecision,
+  configuration,
+}) => {
   const { data, error, isValidating } = useSWR<{ evaluations: ImpactEvaluation[] }>(
-    `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${orgAbriv}&currency=NOK&language=NO&donation_year=${donationTimestamp.getFullYear()}&donation_month=${
+    `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${orgAbriv}&currency=${
+      configuration.currency
+    }&language=${
+      configuration.locale
+    }&donation_year=${donationTimestamp.getFullYear()}&donation_month=${
       donationTimestamp.getMonth() + 1
     }`,
     fetcher,
@@ -67,14 +90,19 @@ export const DonationImpactItem: React.FC<{
           </td>
           <td>
             <div className={style.impactContext}>
-              <span className={style.impactDetailsDescription}>kr til {orgAbriv}</span>
+              <span className={style.impactDetailsDescription}>
+                {" "}
+                {configuration.output_subheading_format_string
+                  .replace("{{sum}}", thousandize(sumToOrg))
+                  .replace("{{org}}", orgAbriv)}
+              </span>
               <span
                 className={[style.impactDetailsExpandText, showDetails ? style.expanded : ""].join(
                   " ",
                 )}
                 onClick={() => setShowDetails(!showDetails)}
               >
-                Ingen relevant evaluering tilgjengelig for å beregne effekt
+                {configuration.missing_evaluation_header}
               </span>
             </div>
           </td>
@@ -84,6 +112,8 @@ export const DonationImpactItem: React.FC<{
             {/* Strange hack required to not have table reflow when showing the animated area */}
             <AnimateHeight duration={300} animateOpacity height={showDetails ? "auto" : 0}>
               <div>
+                <PortableText value={configuration.missing_impact_evaluation_text} />
+                {/*
                 <p>
                   For denne intervensjonen har vi ikke lagt inn en relevant evaluering fra GiveWell
                   for tidsrommet donasjonen er gitt. Dette kan skyldes at vi ikke har oppdaterte
@@ -109,6 +139,7 @@ export const DonationImpactItem: React.FC<{
                     ]}
                   />
                 </div>
+                */}
               </div>
             </AnimateHeight>
           </td>
@@ -155,9 +186,15 @@ export const DonationImpactItem: React.FC<{
               )}
               onClick={() => setShowDetails(!showDetails)}
             >
-              {`${thousandize(Math.round(sumToOrg))} kr til ${
+              {/** {{sum}} for sum and {{org}} for charity name in template string */}
+              {configuration.output_subheading_format_string
+                .replace("{{sum}}", thousandize(sumToOrg))
+                .replace("{{org}}", relevantEvaluation.charity.charity_name)}
+              {/*
+              `${thousandize(Math.round(sumToOrg))} kr til ${
                 relevantEvaluation.charity.charity_name
-              }`}
+              }`
+            */}
             </span>
           </div>
         </td>
@@ -168,32 +205,19 @@ export const DonationImpactItem: React.FC<{
           <AnimateHeight duration={300} animateOpacity height={showDetails ? "auto" : 0}>
             <div>
               <p>{relevantEvaluation.intervention.long_description}</p>
-              <p>
-                Tallene er basert på analysene til GiveWell. De gir et omtrentlig bilde på hva våre
-                anbefalte organisasjoner får ut av pengene. Tiltaket er topp anbefalt som en av de
-                mest kostnadseffektive måtene å redde liv eller forbedre den økonomiske situasjonen
-                til ekstremt fattige. Mange bistandsorganisasjoner viser til overdrevne og
-                misvisende tall i sin markedsføring. Bak våre tall ligger tusenvis av timer med
-                undersøkelser og inkluderer alle kostnader, inkludert planlegging, innkjøp,
-                distribusjon, opplæring og kontroll.
-              </p>
               <div>
                 <Links
                   links={[
                     {
                       _type: "link",
                       _key: "charity_description",
-                      title: "Om " + relevantEvaluation.charity.charity_name,
-                      url:
-                        "https://gieffektivt.no/topplista#" +
-                        relevantEvaluation.charity.charity_name.replaceAll(" ", "_"),
-                      newtab: true,
-                    },
-                    {
-                      _type: "link",
-                      _key: "giveWell",
-                      title: "GiveWell’s analyser",
-                      url: "https://www.givewell.org/how-we-work/our-criteria/cost-effectiveness/cost-effectiveness-models",
+                      title: configuration.about_org_link_title_format_string.replace(
+                        "{{org}}",
+                        relevantEvaluation.charity.charity_name,
+                      ),
+                      url: configuration.about_org_link_url_format_string
+                        .replace("{{org}}", relevantEvaluation.charity.charity_name)
+                        .replaceAll(" ", "_"),
                       newtab: true,
                     },
                   ]}

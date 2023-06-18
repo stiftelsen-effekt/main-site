@@ -49,6 +49,20 @@ export default {
       },
     },
     {
+      name: "main_locale",
+      title: "Main Locale",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+      options: {
+        list: [
+          { title: "English", value: "en" },
+          { title: "Norwegian", value: "no" },
+          { title: "Swedish", value: "se" },
+          { title: "Estonian", value: "et" },
+        ],
+      },
+    },
+    {
       title: "Footer column 1",
       name: "footer_column_1",
       description: "Select links for the first footer column",

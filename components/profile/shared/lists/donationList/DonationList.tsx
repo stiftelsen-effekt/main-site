@@ -1,15 +1,29 @@
-import { Distribution, Donation, META_OWNER } from "../../../../../models";
-import { onlyDate, shortDate, thousandize } from "../../../../../util/formatting";
+import { Distribution, Donation } from "../../../../../models";
+import { onlyDate, thousandize } from "../../../../../util/formatting";
+import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
-import { DonationDetails } from "./DonationDetails";
+import { DonationDetails, DonationDetailsConfiguration } from "./DonationDetails";
+
+export type TableFieldTypes = "string" | "sum" | "date" | "paymentmethod";
+
+export type DonationsListConfiguration = {
+  columns: {
+    title: string;
+    value: keyof Donation;
+    type: TableFieldTypes;
+    width?: string;
+  }[];
+};
 
 export const DonationList: React.FC<{
   donations: Donation[];
   distributions: Map<string, Distribution>;
   year: string;
+  configuration: DonationsListConfiguration;
+  detailsConfiguration?: DonationDetailsConfiguration;
   firstOpen: boolean;
-}> = ({ donations, distributions, year, firstOpen }) => {
+}> = ({ donations, distributions, year, configuration, detailsConfiguration, firstOpen }) => {
   let taxDeductionText: JSX.Element | undefined = undefined;
 
   let taxDeductions = 0;
@@ -45,42 +59,31 @@ export const DonationList: React.FC<{
     );
   }
 
-  const headers = [
-    {
-      label: "Dato",
-      width: "25%",
-    },
-    {
-      label: "Sum",
-      width: "25%",
-    },
-    {
-      label: "Betalingskanal",
-      width: "25%",
-    },
-    {
-      label: "KID",
-    },
-  ];
+  const headers = configuration.columns.map((column) => {
+    return {
+      label: column.title,
+      width: column.width + "%",
+    };
+  });
 
   const rows: ListRow<Donation>[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
       defaultExpanded: firstOpen && index === 0 ? true : false,
-      cells: [
-        { value: onlyDate(donation.timestamp) },
-        { value: thousandize(Math.round(parseFloat(donation.sum))) + " kr" },
-        { value: mapPaymentMethodString(donation.paymentMethod) },
-        { value: donation.KID },
-      ],
-      details: (
+      cells: configuration.columns.map((column) => ({
+        value: formatField(donation[column.value], column.type),
+      })),
+      details: detailsConfiguration ? (
         <DonationDetails
           key={donation.id}
           donation={donation}
           sum={donation.sum}
           distribution={distributions.get(donation.KID.trim()) as Distribution}
           timestamp={new Date(donation.timestamp)}
+          configuration={detailsConfiguration}
         />
+      ) : (
+        <ErrorMessage>Missing donation details configuration in Sanity</ErrorMessage>
       ),
       element: donation,
     };
@@ -107,6 +110,21 @@ export const DonationList: React.FC<{
       proportions={[20, 70]}
     />
   );
+};
+
+const formatField: (field: any, type: TableFieldTypes) => string = (field, type) => {
+  switch (type) {
+    case "string":
+      return field;
+    case "sum":
+      return thousandize(Math.round(parseFloat(field))) + " kr";
+    case "date":
+      return onlyDate(field);
+    case "paymentmethod":
+      return mapPaymentMethodString(field);
+    default:
+      return field;
+  }
 };
 
 const mapPaymentMethodString = (paymentMethod: string): string => {
