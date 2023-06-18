@@ -32,13 +32,13 @@ export type MainNavbarProps = {
 };
 
 export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
-  elements = elements.filter((e) => e !== null);
+  const filteredElements = elements.filter((e) => e !== null);
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
-    elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
+    filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
   const setExpanded = (expanded: boolean) => {
@@ -87,7 +87,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           </button>
         </div>
         <ul>
-          {elements.map((el) =>
+          {filteredElements.map((el) =>
             el._type === "navgroup" ? (
               <li
                 key={el._key}

@@ -19,12 +19,12 @@ export type ProfileNavbarProps = {
 };
 
 export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
-  elements = elements.filter((e) => e !== null);
+  const filteredElements = elements.filter((e) => e !== null);
   const { dashboardPath, agreementsPagePath, taxPagePath, profilePagePath } = useRouterContext();
   const { user, logout, loginWithRedirect } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
-    elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
+    filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
   const setExpanded = (expanded: boolean) => {
@@ -75,7 +75,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
           </button>
         </div>
         <ul>
-          {elements.map((el) =>
+          {filteredElements.map((el) =>
             el._type === "navgroup" ? (
               <li
                 key={el._key}
