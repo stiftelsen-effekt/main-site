@@ -3,13 +3,7 @@ import { getArticlesPagePath } from "../pages/ArticlesPage";
 import { getVippsAgreementPagePath } from "../pages/VippsAgreementPage";
 import { getDashboardPagePath, getDonationsPagePath } from "../pages/dashboard/DonationsPage";
 import { getAgreementsPagePath } from "../pages/dashboard/AgreementsPage";
-import {
-  getMetaReceiptPagePath,
-  getTaxDeductionPagePath,
-  getTaxPagePath,
-  getTaxStatementsPagePath,
-  getTaxUnitsPagePath,
-} from "../pages/dashboard/TaxPage";
+import { getTaxPagePath } from "../pages/dashboard/TaxPage";
 import { getProfilePagePath } from "../pages/dashboard/ProfilePage";
 import { getVippsAnonymousPagePath } from "../pages/dashboard/VippsAnonymousPage";
 
@@ -37,10 +31,6 @@ export const fetchRouterContext = async () => {
     donationsPagePath: getDonationsPagePath(),
     agreementsPagePath: getAgreementsPagePath(),
     taxPagePath: getTaxPagePath(),
-    taxUnitsPagePath: getTaxUnitsPagePath(),
-    taxDeductionsPagePath: getTaxDeductionPagePath(),
-    taxStatementsPagePath: getTaxStatementsPagePath(),
-    metaReceiptPagePath: getMetaReceiptPagePath(),
     profilePagePath: getProfilePagePath(),
     vippsAnonymousPagePath: getVippsAnonymousPagePath(),
   };

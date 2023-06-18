@@ -8,7 +8,7 @@ import VippsAgreementPage, { getVippsAgreementPagePath } from "./VippsAgreementP
 import { DonationsPage, getDonationsPageSubpaths } from "./dashboard/DonationsPage";
 import { AgreementsPage } from "./dashboard/AgreementsPage";
 import { ProfilePage } from "./dashboard/ProfilePage";
-import { TaxPage } from "./dashboard/TaxPage";
+import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
 import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
 import vipps from "../studio/schemas/types/paymentproviders/vipps";
 
@@ -206,10 +206,12 @@ export async function getStaticPaths() {
     getGenericPagePaths(),
     getArticlePaths(routerContext.articlesPagePath),
     getDonationsPageSubpaths(),
-  ]).then(([genericPagePaths, articlePaths, donationsPageSubpaths]) => [
+    getTaxPageSubPaths(),
+  ]).then(([genericPagePaths, articlePaths, donationsPageSubpaths, taxPageSubPaths]) => [
     ...genericPagePaths,
     ...articlePaths,
     ...donationsPageSubpaths,
+    ...taxPageSubPaths,
     ...(Object.values(routerContext).filter((path) => path !== null) as string[][]),
   ]);
 

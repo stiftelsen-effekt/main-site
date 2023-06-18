@@ -1,11 +1,16 @@
-import { isShallowSlug } from "../../validators/isShallowSlug";
+import { isShallowSlug } from "../../../validators/isShallowSlug";
 
 export default {
   title: "Tax statements",
   name: "taxstatements",
-  type: "document",
+  type: "object",
 
   fields: [
+    {
+      name: "title",
+      title: "Title",
+      type: "string",
+    },
     {
       name: "aggregate_estimated_impact",
       title: "Aggregate estimated impact configuration",
@@ -22,10 +27,4 @@ export default {
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
   ],
-
-  preview: {
-    select: {
-      title: "slug.current",
-    },
-  },
 } as const;

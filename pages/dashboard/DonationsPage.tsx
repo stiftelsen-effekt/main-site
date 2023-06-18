@@ -107,6 +107,16 @@ export const DonationsPage = withStaticProps(
 )(({ data, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const settings = data.result.settings[0];
+
+  if (!data.result.dashboard || !data.result.dashboard[0]) {
+    return (
+      <ErrorMessage>
+        <p>Missing dashboard configuration</p>
+      </ErrorMessage>
+    );
+  }
+
+  const dashboard = data.result.dashboard[0];
   const page = data.result.page;
 
   if (!page)
@@ -197,7 +207,7 @@ export const DonationsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} />
+          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
         </MainHeader>
 
         <PageContent>
@@ -310,7 +320,7 @@ export const DonationsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} />
+        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
         <DonationYearMenu
           totalTitle={page.year_menu_total_title}
           years={years}
@@ -375,7 +385,7 @@ type FetchDonationsPageResult = {
     main_currency: string;
     main_locale: string;
   }[];
-  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
+  dashboard?: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
   page: DonationsPageData | DonationsPageData[] | null;
   footer: any[];
   widget: any[];
@@ -391,6 +401,23 @@ const fetchDonationsPage = groq`
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
+    },
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
     }
   },
   "page": *[_id == "donations"] {

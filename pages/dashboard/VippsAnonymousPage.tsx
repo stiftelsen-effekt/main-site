@@ -46,6 +46,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
   };
 })(({ data, preview }) => {
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard[0];
   const router = useRouter();
   const agreementCode = router.query["agreement-code"] as string;
   const page = data.result.vipps?.[0].anonymous_page;
@@ -69,7 +70,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} />
+        <Navbar elements={dashboard.main_navigation} logo={settings.logo} />
       </MainHeader>
 
       <PageContent>
@@ -141,7 +142,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
 
 type FetchVippsAnonymousPageResult = {
   settings: any[];
-  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
   vipps?: Array<{
     anonymous_page: Record<string, any> & {
       slug: {
@@ -176,6 +177,23 @@ const fetchVippsAnonymousPage = groq`
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
+    },
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
     }
   },
   ${widgetQuery}

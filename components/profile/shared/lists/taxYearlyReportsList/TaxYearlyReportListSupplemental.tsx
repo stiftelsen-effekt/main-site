@@ -4,7 +4,7 @@ import { thousandize } from "../../../../../util/formatting";
 
 import style from "./TaxYearlyReportListSupplemental.module.scss";
 import {
-  AggregatedImpactTableTexts,
+  AggregatedImpactTableConfiguration,
   DonationsAggregateImpactTable,
 } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
@@ -12,9 +12,8 @@ export const TaxYearlyReportListSupplemental: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
-  aggregateImpactTexts: AggregatedImpactTableTexts;
-  currency: string;
-}> = ({ report, donations, distribtionMap, aggregateImpactTexts, currency }) => {
+  aggregateImpactConfig: AggregatedImpactTableConfiguration;
+}> = ({ report, donations, distribtionMap, aggregateImpactConfig: aggregateImpactTexts }) => {
   if (report.sumDonations == 0) return null;
   return (
     <>
@@ -29,8 +28,7 @@ export const TaxYearlyReportListSupplemental: React.FC<{
         <DonationsAggregateImpactTable
           donations={donations}
           distributionMap={distribtionMap}
-          texts={aggregateImpactTexts}
-          currency={currency}
+          configuration={aggregateImpactTexts}
           defaultExpanded={false}
         ></DonationsAggregateImpactTable>
       </div>

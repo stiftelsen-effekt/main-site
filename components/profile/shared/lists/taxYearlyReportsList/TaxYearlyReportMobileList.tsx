@@ -9,15 +9,14 @@ import { ListRow } from "../GenericListRow";
 import { TaxYearlyReportMobileDetails } from "./TaxYearlyReportMobileDetails";
 import { TaxYearlyReportListBody } from "./TaxYearlyReportListBody";
 import { TaxYearlyReportListSupplemental } from "./TaxYearlyReportListSupplemental";
-import { AggregatedImpactTableTexts } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
+import { AggregatedImpactTableConfiguration } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
 export const TaxYearlyReportMobileList: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
-  aggregateImpactTexts: AggregatedImpactTableTexts;
-  currency: string;
-}> = ({ report, donations, distribtionMap, aggregateImpactTexts, currency }) => {
+  aggregateImpactConfig: AggregatedImpactTableConfiguration;
+}> = ({ report, donations, distribtionMap, aggregateImpactConfig }) => {
   const rowMissingTaxUnits = {
     id: "missingTaxUnits",
     defaultExpanded: false,
@@ -72,8 +71,7 @@ export const TaxYearlyReportMobileList: React.FC<{
             report={report}
             donations={donations}
             distribtionMap={distribtionMap}
-            aggregateImpactTexts={aggregateImpactTexts}
-            currency={currency}
+            aggregateImpactConfig={aggregateImpactConfig}
           />
         }
         supplementalOnMobile={true}

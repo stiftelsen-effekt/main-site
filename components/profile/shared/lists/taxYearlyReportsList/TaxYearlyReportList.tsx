@@ -12,15 +12,14 @@ import { TaxYearlyReportDesktopDetails } from "./TaxYearlyReportDesktopDetails";
 import style from "./TaxYearlyReportList.module.scss";
 import { TaxYearlyReportListBody } from "./TaxYearlyReportListBody";
 import { TaxYearlyReportListSupplemental } from "./TaxYearlyReportListSupplemental";
-import { AggregatedImpactTableTexts } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
+import { AggregatedImpactTableConfiguration } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
 export const TaxYearlyReportList: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
-  aggregateImpactTexts: AggregatedImpactTableTexts;
-  currency: string;
-}> = ({ report, donations, distribtionMap, aggregateImpactTexts, currency }) => {
+  aggregateImpactConfig: AggregatedImpactTableConfiguration;
+}> = ({ report, donations, distribtionMap, aggregateImpactConfig }) => {
   const headers = [
     { label: "Skatteenhet", width: "25%" },
     { label: "Enhetsnummer", width: "25%" },
@@ -89,7 +88,7 @@ export const TaxYearlyReportList: React.FC<{
           report={report}
           donations={donations}
           distribtionMap={distribtionMap}
-          aggregateImpactTexts={aggregateImpactTexts}
+          aggregateImpactConfig={aggregateImpactConfig}
           currency={currency}
         />
       }

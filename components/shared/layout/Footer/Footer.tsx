@@ -30,7 +30,9 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
               return (
                 <li key={footerItem._key}>
                   <Link
-                    href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                    href={
+                      footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url || "/"
+                    }
                     passHref
                   >
                     <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>
@@ -50,7 +52,9 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
               return (
                 <li key={footerItem._key}>
                   <Link
-                    href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                    href={
+                      footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url || "/"
+                    }
                     passHref
                   >
                     <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>
@@ -70,7 +74,9 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
               return (
                 <li key={footerItem._key}>
                   <Link
-                    href={footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url}
+                    href={
+                      footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url || "/"
+                    }
                     passHref
                   >
                     <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>

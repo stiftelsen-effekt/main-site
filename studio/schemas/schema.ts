@@ -54,12 +54,21 @@ import giveblock from "./types/giveblock";
 import givewellstamp from "./types/givewellstamp";
 import organizationslist from "./types/organizationslist";
 import vipps from "./types/paymentproviders/vipps";
-import dashboard from "./dashboard";
 import vippsAnonymous from "./dashboard/vipps-anonymous";
 import aggregateestimatedimpact from "./types/aggregateestimatedimpact";
 import donationstableconfiguration from "./types/donationstableconfiguration";
+import donations from "./dashboard/donations";
+import agreements from "./dashboard/agreements";
+import profile from "./dashboard/profile";
+import dashboard from "./dashboard";
+import tax from "./dashboard/tax";
+import taxunits from "./dashboard/tax/taxunits";
+import metareceipt from "./dashboard/tax/metareceipt";
+import taxdeduction from "./dashboard/tax/taxdeduction";
+import taxstatements from "./dashboard/tax/taxstatements";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
+export const dashboardpages = [donations, agreements, profile, tax] as const;
 
 export const types = [
   teasers,
@@ -109,6 +118,10 @@ export const types = [
   vippsAnonymous,
   aggregateestimatedimpact,
   donationstableconfiguration,
+  taxunits,
+  metareceipt,
+  taxdeduction,
+  taxstatements,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
@@ -117,5 +130,5 @@ export default createSchema({
   name: "default",
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
-  types: schemaTypes.concat(pages, types, [siteSettings], dashboard),
+  types: schemaTypes.concat(pages, dashboardpages, types, [siteSettings], [dashboard]),
 });

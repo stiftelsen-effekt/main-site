@@ -1,10 +1,15 @@
-import { isShallowSlug } from "../../validators/isShallowSlug";
+import { isShallowSlug } from "../../../validators/isShallowSlug";
 
 export default {
   title: "Tax units",
   name: "taxunits",
-  type: "document",
+  type: "object",
   fields: [
+    {
+      name: "title",
+      title: "Title",
+      type: "string",
+    },
     {
       name: "slug",
       title: "Slug",
@@ -15,10 +20,4 @@ export default {
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
   ],
-
-  preview: {
-    select: {
-      title: "slug.current",
-    },
-  },
 } as const;
