@@ -17,16 +17,8 @@ export default {
       title: "Pane 3 - Bank recurring",
     },
     {
-      name: "pane3_vipps_recurring",
-      title: "Pane 3 - Vipps recurring",
-    },
-    {
       name: "pane3_bank_single",
       title: "Pane 3 - Bank single",
-    },
-    {
-      name: "pane3_vipps_single",
-      title: "Pane 3 - Vipps single",
     },
     {
       name: "referrals",
@@ -209,13 +201,6 @@ export default {
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
     },
-    {
-      name: "payment_method_selector_vipps_text",
-      title: "Payment method selector vipps text",
-      type: "string",
-      group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
     // Button text pane 2
     {
       name: "pane2_button_text",
@@ -286,53 +271,6 @@ export default {
       type: "text",
       rows: 3,
       group: "pane3_bank_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Title pane 3 vipps recurring
-    {
-      name: "pane3_vipps_recurring_title",
-      title: "Title",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Selector text pane 3 vipps recurring
-    {
-      name: "pane3_vipps_recurring_selector_earliest_text",
-      title: "Selector earliest text",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "pane3_vipps_recurring_selector_choose_date_text",
-      title: "Selector choose date text",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Button text pane 3 vipps recurring
-    {
-      name: "pane3_vipps_recurring_button_text",
-      title: "Button text",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Title pane 3 vipps single
-    {
-      name: "pane3_vipps_single_title",
-      title: "Title",
-      type: "string",
-      group: "pane3_vipps_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Button text pane 3 vipps single
-    {
-      name: "pane3_vipps_single_button_text",
-      title: "Button text",
-      type: "string",
-      group: "pane3_vipps_single",
       validation: (Rule: any) => Rule.required(),
     },
     // Referrals header pane 3

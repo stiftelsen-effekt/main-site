@@ -40,7 +40,10 @@ const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
 
-export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
+export const DonorPane: React.FC<{
+  text: Omit<WidgetPane2Props, "payment_method_selector_bank_text">;
+  paymentMethods: { id: PaymentMethod.BANK | PaymentMethod.VIPPS; text: string }[];
+}> = ({ text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
   const method = useSelector((state: State) => state.donation.method);
@@ -301,18 +304,14 @@ export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
             </div>
 
             <RadioButtonGroup
-              options={[
-                {
-                  title: text.payment_method_selector_bank_text,
-                  value: PaymentMethod.BANK,
-                  data_cy: "bank-method",
-                },
-                {
-                  title: text.payment_method_selector_vipps_text,
-                  value: PaymentMethod.VIPPS,
-                  data_cy: "vipps-method",
-                },
-              ]}
+              options={paymentMethods.map((method) => ({
+                title: method.text,
+                value: method.id,
+                data_cy: {
+                  [PaymentMethod.BANK]: "bank-method",
+                  [PaymentMethod.VIPPS]: "vipps-method",
+                }[method.id],
+              }))}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}
             />

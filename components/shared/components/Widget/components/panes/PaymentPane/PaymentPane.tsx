@@ -6,25 +6,20 @@ import {
   WidgetPane3BankRecurringProps,
   WidgetPane3BankSingleProps,
   WidgetPane3ReferralsProps,
-  WidgetPane3VippsRecurringProps,
-  WidgetPane3VippsSingleProps,
 } from "../../../types/WidgetProps";
-import { Pane } from "../Panes.style";
 import { ResultPane } from "./Bank/ResultPane";
 import { VippsPane } from "./Vipps/VippsPane";
+import { VippsProps } from "../../../types/VippsProps";
 
 export const PaymentPane: React.FC<{
-  text: WidgetPane3BankRecurringProps &
-    WidgetPane3BankSingleProps &
-    WidgetPane3VippsRecurringProps &
-    WidgetPane3VippsSingleProps &
-    WidgetPane3ReferralsProps;
-}> = ({ text }) => {
+  text: WidgetPane3BankRecurringProps & WidgetPane3BankSingleProps & WidgetPane3ReferralsProps;
+  vipps?: VippsProps;
+}> = ({ text, vipps }) => {
   const method = useSelector((state: State) => state.donation.method);
 
-  return (
-    <Pane>
-      {method === PaymentMethod.BANK && (
+  switch (method) {
+    case PaymentMethod.BANK: {
+      return (
         <ResultPane
           text={{
             pane3_bank_recurring_title: text.pane3_bank_recurring_title,
@@ -40,22 +35,23 @@ export const PaymentPane: React.FC<{
             pane3_referrals_title: text.pane3_referrals_title,
           }}
         />
-      )}
-      {method === PaymentMethod.VIPPS && (
+      );
+    }
+    case PaymentMethod.VIPPS: {
+      if (!vipps) {
+        throw new Error("Missing configuration for Vipps, but selected payment method is vipps");
+      }
+      return (
         <VippsPane
           text={{
-            pane3_vipps_recurring_title: text.pane3_vipps_recurring_title,
-            pane3_vipps_recurring_selector_earliest_text:
-              text.pane3_vipps_recurring_selector_earliest_text,
-            pane3_vipps_recurring_selector_choose_date_text:
-              text.pane3_vipps_recurring_selector_choose_date_text,
-            pane3_vipps_recurring_button_text: text.pane3_vipps_recurring_button_text,
-            pane3_vipps_single_title: text.pane3_vipps_single_title,
-            pane3_vipps_single_button_text: text.pane3_vipps_single_button_text,
             pane3_referrals_title: text.pane3_referrals_title,
           }}
+          vipps={vipps}
         />
-      )}
-    </Pane>
-  );
+      );
+    }
+    default: {
+      throw new Error(`Unknown payment method: ${method}`);
+    }
+  }
 };

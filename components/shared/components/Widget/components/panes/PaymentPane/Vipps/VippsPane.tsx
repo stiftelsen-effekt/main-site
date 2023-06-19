@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButtonGroup } from "../../../../../RadioButton/RadioButtonGroup";
 import { Referrals } from "../../../shared/Referrals/Referrals";
-import { WidgetContext } from "../../../../../../../main/layout/layout";
 import { draftAgreementAction, setVippsAgreement } from "../../../../store/donation/actions";
 import { State } from "../../../../store/state";
 import { RecurringDonation } from "../../../../types/Enums";
@@ -11,15 +10,13 @@ import { ErrorField } from "../../../shared/Error/ErrorField";
 import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
 import { VippsButtonWrapper } from "./VippsPane.style";
-import {
-  WidgetPane3ReferralsProps,
-  WidgetPane3VippsRecurringProps,
-  WidgetPane3VippsSingleProps,
-} from "../../../../types/WidgetProps";
+import { WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
+import { VippsProps } from "../../../../types/VippsProps";
 
 export const VippsPane: React.FC<{
-  text: WidgetPane3VippsSingleProps & WidgetPane3VippsRecurringProps & WidgetPane3ReferralsProps;
-}> = ({ text }) => {
+  text: WidgetPane3ReferralsProps;
+  vipps: VippsProps;
+}> = ({ text, vipps }) => {
   const dispatch = useDispatch();
   const donationState = useSelector((state: State) => state.donation);
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
@@ -34,12 +31,12 @@ export const VippsPane: React.FC<{
         {recurring === RecurringDonation.RECURRING && (
           <>
             <div>
-              <PaneTitle>{text.pane3_vipps_recurring_title}</PaneTitle>
+              <PaneTitle>{vipps.recurring_title}</PaneTitle>
               <div style={{ paddingTop: 20, marginBottom: 30 }}>
                 <RadioButtonGroup
                   options={[
-                    { title: text.pane3_vipps_recurring_selector_earliest_text, value: 0 },
-                    { title: text.pane3_vipps_recurring_selector_choose_date_text, value: 1 },
+                    { title: vipps.recurring_selector_earliest_text, value: 0 },
+                    { title: vipps.recurring_selector_choose_date_text, value: 1 },
                   ]}
                   selected={chooseChargeDay}
                   onSelect={(option: number) => {
@@ -68,7 +65,7 @@ export const VippsPane: React.FC<{
                     (document.activeElement as HTMLElement).blur();
                   }}
                 >
-                  {text.pane3_vipps_recurring_button_text}
+                  {vipps.recurring_button_text}
                 </SubmitButton>
               </div>
             </CenterDiv>
@@ -77,7 +74,7 @@ export const VippsPane: React.FC<{
         {recurring === RecurringDonation.NON_RECURRING && (
           <>
             <div>
-              <PaneTitle>{text.pane3_vipps_single_title}</PaneTitle>
+              <PaneTitle>{vipps.single_title}</PaneTitle>
             </div>
             <CenterDiv>
               <VippsButtonWrapper data-cy="vipps-single-button">
@@ -89,7 +86,7 @@ export const VippsPane: React.FC<{
                     (document.activeElement as HTMLElement).blur();
                   }}
                 >
-                  {text.pane3_vipps_single_button_text}
+                  {vipps.single_button_text}
                 </SubmitButton>
               </VippsButtonWrapper>
             </CenterDiv>
