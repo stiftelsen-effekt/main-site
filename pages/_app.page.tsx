@@ -16,11 +16,6 @@ import { RouterContext, RouterContextValue, fetchRouterContext } from "../contex
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
-export enum LayoutType {
-  Default = "default",
-  Profile = "profile",
-}
-
 const rootReducer = combineReducers<State>({
   donation: donationReducer,
   layout: layoutReducer,
@@ -43,11 +38,7 @@ function MyApp({
   const routerContextValue = useRef<RouterContextValue | null>(
     pageProps.appStaticProps?.routerContext || null,
   );
-  const { data: propsData, appStaticProps } = pageProps;
-
-  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
-    appStaticProps?.layout || LayoutType.Default
-  ];
+  const { data: propsData } = pageProps;
 
   const { data: previewData, loading: previewLoading } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
@@ -62,18 +53,10 @@ function MyApp({
 
     pageProps.data.result = previewData;
 
-    const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
-
     return (
       <Provider store={store}>
         <RouterContext.Provider value={routerContextValue.current}>
-          <PageLayout
-            footerData={pageProps.data.result.footer[0]}
-            widgetData={widgetData}
-            isPreview={pageProps.preview}
-          >
-            <Component {...pageProps} />
-          </PageLayout>
+          <Component {...pageProps} />
         </RouterContext.Provider>
       </Provider>
     );
@@ -82,30 +65,13 @@ function MyApp({
   }
 }
 
-export async function getAppStaticProps(options?: { layout?: LayoutType }) {
+export async function getAppStaticProps() {
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
-    layout: options?.layout ?? LayoutType.Default,
   };
   return appStaticProps;
 }
-
-export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.widget)) {
-    return data.widget;
-  }
-
-  if (data.widget.length === 1) {
-    return data.widget[0];
-  }
-
-  if (preview) {
-    return data.widget.find((item: any) => item._id.startsWith("drafts.")) || data.widget[0];
-  }
-
-  return data.widget[0];
-};
 
 export const filterPageToSingleItem = <T,>(data: { page: T | T[] }, preview: boolean): T | null => {
   if (!Array.isArray(data.page)) {

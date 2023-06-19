@@ -6,6 +6,9 @@ import { NavLink } from "../../../main/layout/navbar";
 import vercelBanner from "../../../../public/vercel-banner.svg";
 import styles from "./Footer.module.scss";
 import { NewsletterSignup } from "../../../main/blocks/NewsletterSignup/NewsletterSignup";
+import { withStaticProps } from "../../../../util/withStaticProps";
+import { getClient } from "../../../../lib/sanity.server";
+import { groq } from "next-sanity";
 
 export type FooterItem = NavLink | LinkType;
 export type FooterProps = {
@@ -14,7 +17,51 @@ export type FooterProps = {
   footer_column_3?: FooterItem[];
 };
 
-export default function Footer({ footer_column_1, footer_column_2, footer_column_3 }: FooterProps) {
+type QueryResult = {
+  footer: [FooterProps];
+};
+
+const query = groq`
+  {
+    "footer": *[_type == "site_settings"] {
+      footer_column_1[] {
+        _type == 'navitem' => @ {
+          ...,
+          "slug": page->slug.current
+        },
+        _type == 'link' => @ {
+          ...
+        },
+      },
+      footer_column_2[] {
+        _type == 'navitem' => @ {
+          ...,
+          "slug": page->slug.current
+        },
+        _type == 'link' => @ {
+          ...
+        },
+      },
+      footer_column_3[] {
+        _type == 'navitem' => @ {
+          ...,
+          "slug": page->slug.current
+        },
+        _type == 'link' => @ {
+          ...
+        },
+      }
+    }
+  }
+`;
+
+const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<QueryResult>(query);
+
+  return {
+    data: result.footer[0],
+  };
+})(({ data: { footer_column_1, footer_column_2, footer_column_3 } }) => {
   return (
     <footer className={styles.grid} id={"footer"}>
       <div className={`${styles.category} ${styles.logo__bottom}`}>
@@ -128,36 +175,6 @@ export default function Footer({ footer_column_1, footer_column_2, footer_column
       </div>
     </footer>
   );
-}
+});
 
-export const footerQuery = `
-  "footer": *[_type == "site_settings"] {
-    footer_column_1[] {
-      _type == 'navitem' => @ {
-        ...,
-        "slug": page->slug.current
-      },
-      _type == 'link' => @ {
-        ...
-      },
-    },
-    footer_column_2[] {
-      _type == 'navitem' => @ {
-        ...,
-        "slug": page->slug.current
-      },
-      _type == 'link' => @ {
-        ...
-      },
-    },
-    footer_column_3[] {
-      _type == 'navitem' => @ {
-        ...,
-        "slug": page->slug.current
-      },
-      _type == 'link' => @ {
-        ...
-      },
-    }
-  },
-`;
+export default Footer;

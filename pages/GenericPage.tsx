@@ -1,6 +1,8 @@
 import { groq } from "next-sanity";
+import { linksContentQuery, pageContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
+import { Layout } from "../components/main/layout/layout";
 import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
@@ -8,8 +10,6 @@ import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
 import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -32,14 +32,15 @@ export const GenericPage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
+      layoutData: await Layout.getStaticProps({ preview }),
       data: {
-        result: result,
+        result,
         query: fetchGenericPage,
         queryParams: { slug },
       },
     };
   },
-)(({ data, preview }) => {
+)(({ data, layoutData, preview }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -51,7 +52,7 @@ export const GenericPage = withStaticProps(
   const settings = data.result.settings[0];
 
   return (
-    <>
+    <Layout {...layoutData}>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
@@ -72,7 +73,7 @@ export const GenericPage = withStaticProps(
       />
 
       <BlockContentRenderer content={content} />
-    </>
+    </Layout>
   );
 });
 
@@ -106,8 +107,6 @@ const fetchGenericPage = groq`
       },
     }
   },
-  ${widgetQuery}
-  ${footerQuery}
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,
@@ -118,6 +117,6 @@ const fetchGenericPage = groq`
     },
     ${pageContentQuery}
     slug { current },
-  },
+  }
 }
 `;

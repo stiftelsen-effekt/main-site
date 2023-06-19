@@ -1,20 +1,17 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
-import { SEO } from "../components/shared/seo/Seo";
-import { Navbar } from "../components/main/layout/navbar";
-import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
-import { MainHeader } from "../components/shared/layout/Header/Header";
-import { linksContentQuery, useAnonymousVippsAgreement, widgetQuery } from "../_queries";
-import { useAuth0 } from "@auth0/auth0-react";
+import { linksContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { Layout } from "../components/main/layout/layout";
+import { Navbar } from "../components/main/layout/navbar";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
-import { withStaticProps } from "../util/withStaticProps";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
+import { getClient } from "../lib/sanity.server";
+import { withStaticProps } from "../util/withStaticProps";
 import { getAppStaticProps } from "./_app.page";
-import { AgreementDetails } from "../components/profile/shared/lists/agreementList/AgreementDetails";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
@@ -30,13 +27,14 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   return {
     appStaticProps,
     preview: preview,
+    layoutData: await Layout.getStaticProps({ preview }),
     data: {
-      result: result,
+      result,
       query: fetchVipps,
       queryParams: {},
     },
   };
-})(({ data, preview }) => {
+})(({ data, layoutData, preview }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -54,7 +52,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   }
 
   return (
-    <>
+    <Layout {...layoutData}>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
@@ -87,7 +85,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
         </div>
       </SectionContainer>
       <BlockContentRenderer content={page.content} />
-    </>
+    </Layout>
   );
 });
 
@@ -124,8 +122,6 @@ const fetchVipps = groq`
       },
     }
   },
-  ${widgetQuery}
-  ${footerQuery}
   "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {

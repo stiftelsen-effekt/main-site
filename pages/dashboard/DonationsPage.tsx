@@ -1,33 +1,30 @@
 import { useAuth0, User } from "@auth0/auth0-react";
+import { groq } from "next-sanity";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
-import DonationsChart from "../../components/profile/donations/DonationsChart/DonationsChart";
-import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
-import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
-import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
-import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
-import style from "../../styles/Donations.module.css";
-import DonationsDistributionTable from "../../components/profile/donations/DonationsDistributionTable/DonationsDistributionTable";
-import { DonorContext } from "../../components/profile/layout/donorProvider";
+import { useContext } from "react";
 import {
   useAggregatedDonations,
   useAllOrganizations,
   useDistributions,
   useDonations,
-  widgetQuery,
 } from "../../_queries";
-import { ActivityContext } from "../../components/profile/layout/activityProvider";
-import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { getClient } from "../../lib/sanity.server";
-import { groq } from "next-sanity";
-import { Navbar } from "../../components/profile/layout/navbar";
+import DonationsChart from "../../components/profile/donations/DonationsChart/DonationsChart";
+import DonationsDistributionTable from "../../components/profile/donations/DonationsDistributionTable/DonationsDistributionTable";
+import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
+import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
+import { DonorContext } from "../../components/profile/layout/donorProvider";
+import { ProfileLayout } from "../../components/profile/layout/layout";
+import { Navbar } from "../../components/profile/layout/navbar";
+import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
+import { DonationList } from "../../components/profile/shared/lists/donationList/DonationList";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
+import { getClient } from "../../lib/sanity.server";
+import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
+import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { getAppStaticProps, LayoutType } from "../_app.page";
+import { getAppStaticProps } from "../_app.page";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -72,9 +69,7 @@ const getYearPaths = () => {
 
 export const DonationsPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({
-      layout: LayoutType.Profile,
-    });
+    const appStaticProps = await getAppStaticProps();
     const result = await getClient(preview).fetch<FetchDonationsPageResult>(fetchDonationsPage);
 
     const donationsPagePath = await getDonationsPagePath();
@@ -86,6 +81,7 @@ export const DonationsPage = withStaticProps(
       appStaticProps,
       preview: preview,
       filterYear,
+      layoutData: await ProfileLayout.getStaticProps({ preview }),
       data: {
         result: result,
         query: fetchDonationsPage,
@@ -93,7 +89,7 @@ export const DonationsPage = withStaticProps(
       },
     };
   },
-)(({ data, filterYear }) => {
+)(({ data, layoutData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const settings = data.result.settings[0];
   const dashboard = data.result.dashboard[0];
@@ -296,8 +292,6 @@ const fetchDonationsPage = groq`
       current
     }
   },
-  ${footerQuery}
-  ${widgetQuery}
 }
 `;
 

@@ -1,17 +1,17 @@
 import { groq } from "next-sanity";
-import { getClient } from "../lib/sanity.server";
-import styles from "../styles/Articles.module.css";
-import { SEO } from "../components/shared/seo/Seo";
-import { Navbar } from "../components/main/layout/navbar";
+import { linksContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { Layout } from "../components/main/layout/layout";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { linksContentQuery, widgetQuery } from "../_queries";
+import { SEO } from "../components/shared/seo/Seo";
+import { getClient } from "../lib/sanity.server";
+import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -35,13 +35,14 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   return {
     appStaticProps,
     preview: preview,
+    layoutData: await Layout.getStaticProps({ preview }),
     data: {
-      result: result,
+      result,
       query: fetchArticles,
       queryParams: {},
     },
   };
-})(({ data, preview }) => {
+})(({ data, layoutData, preview }) => {
   const page = data.result.page;
 
   const settings = data.result.settings[0];
@@ -49,7 +50,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   const articles = data.result.articles;
 
   return (
-    <>
+    <Layout {...layoutData}>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
@@ -99,7 +100,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
             })}
         </div>
       </SectionContainer>
-    </>
+    </Layout>
   );
 });
 
@@ -125,8 +126,6 @@ const fetchArticles = groq`
       },
     },
   },
-  ${footerQuery}
-  ${widgetQuery}
   "page": *[_type == "articles"] {
     "slug": slug.current,
     header {

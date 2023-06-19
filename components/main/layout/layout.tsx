@@ -1,17 +1,22 @@
-import React, { createContext, useState } from "react";
-import { LayoutProps } from "../../../types";
+import { createContext, useState } from "react";
+import { withStaticProps } from "../../../util/withStaticProps";
+import { Widget } from "../../shared/components/Widget/components/Widget";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
-import { WidgetPane } from "./WidgetPane/WidgetPane";
-import { Divide, Eye, LogOut } from "react-feather";
-import Link from "next/link";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
+import { WidgetPane } from "./WidgetPane/WidgetPane";
 
 export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
 export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
 
-export const Layout: React.FC<LayoutProps> = ({ children, footerData, widgetData, isPreview }) => {
+export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  return {
+    footerData: await Footer.getStaticProps({ preview }),
+    widgetData: await Widget.getStaticProps({ preview }),
+    isPreview: preview,
+  };
+})(({ children, footerData, widgetData, isPreview }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
@@ -31,11 +36,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, footerData, widgetData
       <GiveButton inverted={false} onClick={() => setWidgetOpen(true)} />
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
         <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-          <WidgetPane text={widgetData} />
+          <WidgetPane {...widgetData} />
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
       </WidgetContext.Provider>
       <Footer {...footerData} />
     </div>
   );
-};
+});

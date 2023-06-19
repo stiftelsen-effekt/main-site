@@ -1,21 +1,20 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
+import { pageContentQuery } from "../_queries";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { ArticleHeader } from "../components/main/layout/ArticleHeader/ArticleHeader";
-import { Navbar } from "../components/main/layout/navbar";
 import {
   RelatedArticle,
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
+import { Layout } from "../components/main/layout/layout";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { pageContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { withStaticProps } from "../util/withStaticProps";
 import { useRouterContext } from "../context/RouterContext";
+import { getClient } from "../lib/sanity.server";
+import { withStaticProps } from "../util/withStaticProps";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -39,14 +38,15 @@ const ArticlePage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
+      layoutData: await Layout.getStaticProps({ preview }),
       data: {
-        result: result,
+        result,
         query: fetchArticle,
         queryParams: { slug },
       },
     };
   },
-)(({ data, preview }) => {
+)(({ data, layoutData, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -60,7 +60,7 @@ const ArticlePage = withStaticProps(
   const relatedArticles = data.result.relatedArticles;
 
   return (
-    <>
+    <Layout {...layoutData}>
       <SEO
         title={header.seoTitle || header.title}
         titleTemplate={"%s | Gi Effektivt."}
@@ -81,7 +81,7 @@ const ArticlePage = withStaticProps(
 
       <BlockContentRenderer content={content} />
       <RelatedArticles relatedArticles={relatedArticles} />
-    </>
+    </Layout>
   );
 });
 
@@ -115,8 +115,6 @@ const fetchArticle = groq`
       },
     }
   },
-  ${footerQuery}
-  ${widgetQuery}
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,
