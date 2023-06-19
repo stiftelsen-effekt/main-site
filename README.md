@@ -81,19 +81,35 @@ Let's have a look at an example.
 <Summary>Example page</Summary>
 
 ```typescript
+import { PortableText } from "@portabletext/react";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { groq } from "next-sanity";
 import React from "react";
-import { PortableText } from "../lib/sanity";
+import { withStaticProps } from "../util/withStaticProps";
 import { getClient } from "../lib/sanity.server";
-import { getAppStaticProps, LayoutType } from "./_app";
+import { getAppStaticProps } from "./_app";
 
-const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  preview,
-}) => {
+const fetchAboutUs = groq`
+  {
+    "about": *[_type == "about_us"] {
+      content
+    }
+  }
+`;
+
+export const ExamplePage = withStaticProps(async ({ preview = false }) => {
+  const appStaticProps = await getAppStaticProps();
+  const data = await getClient(preview).fetch(fetchAboutUs);
+
+  return {
+    appStaticProps,
+    layoutData: await Layout.getStaticProps({ preview }),
+    preview,
+    data,
+  };
+})(({ data, preview }) => {
   const router = useRouter();
 
   if (!router.isFallback && !data.about) {
@@ -101,7 +117,7 @@ const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   }
 
   return (
-    <>
+    <Layout {...layoutData}>
       <Head>
         <title>Gi Effektivt. | Example Page</title>
         <meta name="description" content="Gi Effektivt example page" />
@@ -111,32 +127,9 @@ const ExamplePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <h1>Example page</h1>
 
       <PortableText blocks={data.about[0].content}></PortableText>
-    </>
+    </Layout>
   );
-};
-
-export const getStaticProps = async ({ preview = false }) => {
-  const appStaticProps = getAppStaticProps({ layout: LayoutType.Profile });
-  const data = await getClient(preview).fetch(fetchAboutUs);
-
-  return {
-    props: {
-      appStaticProps,
-      preview,
-      data,
-    },
-  };
-};
-
-const fetchAboutUs = groq`
-{
-  "about": *[_type == "about_us"] {
-    content
-  }
-}
-`;
-
-export default ExamplePage;
+});
 ```
 
 </Details>
