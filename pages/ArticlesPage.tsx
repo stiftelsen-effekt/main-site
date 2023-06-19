@@ -79,8 +79,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
               if (i === 0) {
                 if (article.header.inngress) {
                   inngress = article.header.inngress;
-                }
-                if (article.preview) {
+                } else if (article.preview) {
                   if (article.preview.length > 350) {
                     inngress = article.preview.substr(0, 350) + "...";
                   } else {
