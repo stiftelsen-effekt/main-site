@@ -24,7 +24,7 @@ import { getClient } from "../../lib/sanity.server";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
 import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { getAppStaticProps } from "../_app.page";
+import { getAppStaticProps, LayoutType } from "../_app.page";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -69,7 +69,7 @@ const getYearPaths = () => {
 
 export const DonationsPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps();
+    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
     const result = await getClient(preview).fetch<FetchDonationsPageResult>(fetchDonationsPage);
 
     const donationsPagePath = await getDonationsPagePath();
@@ -81,7 +81,6 @@ export const DonationsPage = withStaticProps(
       appStaticProps,
       preview: preview,
       filterYear,
-      layoutData: await ProfileLayout.getStaticProps({ preview }),
       data: {
         result: result,
         query: fetchDonationsPage,
@@ -89,7 +88,7 @@ export const DonationsPage = withStaticProps(
       },
     };
   },
-)(({ data, layoutData, filterYear }) => {
+)(({ data, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const settings = data.result.settings[0];
   const dashboard = data.result.dashboard[0];

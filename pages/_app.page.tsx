@@ -10,11 +10,17 @@ import { layoutReducer } from "../components/shared/components/Widget/store/layo
 import { errorReducer } from "../components/shared/components/Widget/store/error/reducer";
 import { watchAll } from "../components/shared/components/Widget/store/root.saga";
 import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
-import { Layout } from "../components/main/layout/layout";
+
 import { usePreviewSubscription } from "../lib/sanity";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { composeWithDevTools } from "@redux-devtools/extension";
+import { Layout } from "../components/main/layout/layout";
+
+export enum LayoutType {
+  Default = "default",
+  Profile = "profile",
+}
 
 const rootReducer = combineReducers<State>({
   donation: donationReducer,
@@ -38,7 +44,16 @@ function MyApp({
   const routerContextValue = useRef<RouterContextValue | null>(
     pageProps.appStaticProps?.routerContext || null,
   );
-  const { data: propsData } = pageProps;
+
+  const { data: propsData, appStaticProps } = pageProps;
+
+  if (!appStaticProps) {
+    throw new Error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
+  }
+
+  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
+    appStaticProps?.layout || LayoutType.Default
+  ];
 
   const { data: previewData, loading: previewLoading } = usePreviewSubscription(propsData?.query, {
     params: propsData?.queryParams ?? {},
@@ -56,7 +71,9 @@ function MyApp({
     return (
       <Provider store={store}>
         <RouterContext.Provider value={routerContextValue.current}>
-          <Component {...pageProps} />
+          <PageLayout {...appStaticProps.layoutProps}>
+            <Component {...pageProps} />
+          </PageLayout>
         </RouterContext.Provider>
       </Provider>
     );
@@ -65,10 +82,20 @@ function MyApp({
   }
 }
 
-export async function getAppStaticProps() {
+export async function getAppStaticProps({
+  preview,
+  layout = LayoutType.Default,
+}: {
+  preview: boolean;
+  layout?: LayoutType;
+}) {
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
+    layout,
+    layoutProps: await (layout === LayoutType.Default
+      ? Layout.getStaticProps({ preview })
+      : ProfileLayout.getStaticProps({ preview })),
   };
   return appStaticProps;
 }

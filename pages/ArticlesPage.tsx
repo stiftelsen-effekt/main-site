@@ -3,7 +3,6 @@ import { linksContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Layout } from "../components/main/layout/layout";
 import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
@@ -27,7 +26,7 @@ export const getArticlesPagePath = async () => {
 };
 
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps();
+  const appStaticProps = await getAppStaticProps({ preview });
 
   let result = await getClient(preview).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
@@ -35,14 +34,13 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   return {
     appStaticProps,
     preview: preview,
-    layoutData: await Layout.getStaticProps({ preview }),
     data: {
       result,
       query: fetchArticles,
       queryParams: {},
     },
   };
-})(({ data, layoutData, preview }) => {
+})(({ data, preview }) => {
   const page = data.result.page;
 
   const settings = data.result.settings[0];
@@ -50,7 +48,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   const articles = data.result.articles;
 
   return (
-    <Layout {...layoutData}>
+    <>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
@@ -100,7 +98,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
             })}
         </div>
       </SectionContainer>
-    </Layout>
+    </>
   );
 });
 

@@ -2,7 +2,6 @@ import { groq } from "next-sanity";
 import { linksContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Layout } from "../components/main/layout/layout";
 import { Navbar } from "../components/main/layout/navbar";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
@@ -21,20 +20,19 @@ export const getVippsAgreementPagePath = async () => {
 };
 
 export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps();
+  const appStaticProps = await getAppStaticProps({ preview });
   const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
 
   return {
     appStaticProps,
     preview: preview,
-    layoutData: await Layout.getStaticProps({ preview }),
     data: {
       result,
       query: fetchVipps,
       queryParams: {},
     },
   };
-})(({ data, layoutData, preview }) => {
+})(({ data, preview }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -52,7 +50,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   }
 
   return (
-    <Layout {...layoutData}>
+    <>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
@@ -85,7 +83,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
         </div>
       </SectionContainer>
       <BlockContentRenderer content={page.content} />
-    </Layout>
+    </>
   );
 });
 

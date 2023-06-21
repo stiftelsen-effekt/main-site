@@ -2,22 +2,18 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { groq } from "next-sanity";
 import React from "react";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Layout } from "../components/main/layout/layout";
+
 import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { getClient } from "../lib/sanity.server";
 import { getAppStaticProps } from "./_app.page";
 
-const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  data,
-  layoutData,
-  preview,
-}) => {
+const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const settings = data.result.settings[0];
 
   return (
-    <Layout {...layoutData}>
+    <>
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
         <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
@@ -26,19 +22,18 @@ const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <SectionContainer>
         <h2 style={{ marginTop: "10vh" }}>Finner ikke siden</h2>
       </SectionContainer>
-    </Layout>
+    </>
   );
 };
 
 export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {
-  const appStaticProps = await getAppStaticProps();
+  const appStaticProps = await getAppStaticProps({ preview });
   let result = await getClient(preview).fetch(fetchNotFoundPage);
 
   return {
     props: {
       appStaticProps,
       preview: preview,
-      layoutData: await Layout.getStaticProps({ preview }),
       data: {
         result,
         query: fetchNotFoundPage,

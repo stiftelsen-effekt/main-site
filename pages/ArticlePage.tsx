@@ -6,7 +6,6 @@ import {
   RelatedArticle,
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
-import { Layout } from "../components/main/layout/layout";
 import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
@@ -26,7 +25,7 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
 
 const ArticlePage = withStaticProps(
   async ({ slug, preview }: { slug: string; preview: boolean }) => {
-    const appStaticProps = await getAppStaticProps();
+    const appStaticProps = await getAppStaticProps({ preview });
 
     let result = await getClient(preview).fetch<{
       page: any;
@@ -38,7 +37,6 @@ const ArticlePage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
-      layoutData: await Layout.getStaticProps({ preview }),
       data: {
         result,
         query: fetchArticle,
@@ -46,7 +44,7 @@ const ArticlePage = withStaticProps(
       },
     };
   },
-)(({ data, layoutData, preview }) => {
+)(({ data, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -60,7 +58,7 @@ const ArticlePage = withStaticProps(
   const relatedArticles = data.result.relatedArticles;
 
   return (
-    <Layout {...layoutData}>
+    <>
       <SEO
         title={header.seoTitle || header.title}
         titleTemplate={"%s | Gi Effektivt."}
@@ -81,7 +79,7 @@ const ArticlePage = withStaticProps(
 
       <BlockContentRenderer content={content} />
       <RelatedArticles relatedArticles={relatedArticles} />
-    </Layout>
+    </>
   );
 });
 

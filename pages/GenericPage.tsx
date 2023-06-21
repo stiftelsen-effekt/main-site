@@ -2,7 +2,6 @@ import { groq } from "next-sanity";
 import { linksContentQuery, pageContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
-import { Layout } from "../components/main/layout/layout";
 import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
@@ -22,7 +21,7 @@ export const getGenericPagePaths = async () => {
 
 export const GenericPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps();
+    const appStaticProps = await getAppStaticProps({ preview });
 
     const slug = path.join("/") || "/";
 
@@ -32,7 +31,6 @@ export const GenericPage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
-      layoutData: await Layout.getStaticProps({ preview }),
       data: {
         result,
         query: fetchGenericPage,
@@ -40,7 +38,7 @@ export const GenericPage = withStaticProps(
       },
     };
   },
-)(({ data, layoutData, preview }) => {
+)(({ data, preview }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -52,7 +50,7 @@ export const GenericPage = withStaticProps(
   const settings = data.result.settings[0];
 
   return (
-    <Layout {...layoutData}>
+    <>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
@@ -73,7 +71,7 @@ export const GenericPage = withStaticProps(
       />
 
       <BlockContentRenderer content={content} />
-    </Layout>
+    </>
   );
 });
 

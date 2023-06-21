@@ -100,12 +100,11 @@ const fetchAboutUs = groq`
 `;
 
 export const ExamplePage = withStaticProps(async ({ preview = false }) => {
-  const appStaticProps = await getAppStaticProps();
+  const appStaticProps = await getAppStaticProps({ preview });
   const data = await getClient(preview).fetch(fetchAboutUs);
 
   return {
     appStaticProps,
-    layoutData: await Layout.getStaticProps({ preview }),
     preview,
     data,
   };
@@ -117,7 +116,7 @@ export const ExamplePage = withStaticProps(async ({ preview = false }) => {
   }
 
   return (
-    <Layout {...layoutData}>
+    <>
       <Head>
         <title>Gi Effektivt. | Example Page</title>
         <meta name="description" content="Gi Effektivt example page" />
@@ -127,7 +126,7 @@ export const ExamplePage = withStaticProps(async ({ preview = false }) => {
       <h1>Example page</h1>
 
       <PortableText blocks={data.about[0].content}></PortableText>
-    </Layout>
+    </>
   );
 });
 ```
