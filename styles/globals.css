@@ -35,7 +35,6 @@ body {
   font-weight: 300;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-feature-settings: "ss10" on, "ss08" on;
   background: var(--secondary);
   font-size: 20px;
   line-height: 32px;
