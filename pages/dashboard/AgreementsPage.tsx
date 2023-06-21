@@ -70,21 +70,21 @@ export const AgreementsPage = withStaticProps(
     data: avtaleGiro,
     isValidating: avtaleGiroRefreshing,
     error: avtaleGiroError,
-  } = useAvtalegiroAgreements(user as User, getAccessTokenSilently);
+  } = useAvtalegiroAgreements(user, getAccessTokenSilently);
 
   const {
     loading: vippsLoading,
     data: vipps,
     isValidating: vippsRefreshing,
     error: vippsError,
-  } = useVippsAgreements(user as User, getAccessTokenSilently);
+  } = useVippsAgreements(user, getAccessTokenSilently);
 
   const {
     loading: organizationsLoading,
     data: organizations,
     isValidating: organizationsRefreshing,
     error: organizationsError,
-  } = useOrganizations(user as User, getAccessTokenSilently);
+  } = useOrganizations(getAccessTokenSilently);
 
   const kids = new Set<string>();
   if (vipps && avtaleGiro)
@@ -99,7 +99,7 @@ export const AgreementsPage = withStaticProps(
     isValidating: distributionsRefreshing,
     error: distributionsError,
   } = useAgreementsDistributions(
-    user as User,
+    user,
     getAccessTokenSilently,
     !vippsLoading && !avtaleGiroLoading,
     Array.from(kids),
