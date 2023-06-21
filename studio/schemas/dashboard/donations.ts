@@ -24,6 +24,18 @@ export default {
       to: [{ type: "aggregateestimatedimpact" }],
     },
     {
+      name: "sum_all_times_template_string",
+      title: "Sum all times template string",
+      type: "string",
+      description: "Use {{year}} to insert the first year of donations",
+    },
+    {
+      name: "sum_year_template_string",
+      title: "Sum year template string",
+      type: "string",
+      description: "Use {{year}} to insert the year of donations",
+    },
+    {
       name: "desktop_donations_table_configuration",
       title: "Desktop donations table configuration",
       type: "donationstableconfiguration",

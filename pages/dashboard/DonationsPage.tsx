@@ -242,7 +242,16 @@ export const DonationsPage = withStaticProps(
   const distributionsMap = new Map<string, Distribution>();
   distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
-  const periodText = !isTotal ? `I ${filterYear} har du gitt` : `Siden ${firstYear} har du gitt`;
+  let periodText = "";
+  if (isTotal) {
+    if (page.sum_all_times_template_string) {
+      periodText = page.sum_all_times_template_string.replace("{{year}}", firstYear.toString());
+    }
+  } else {
+    if (page.sum_year_template_string) {
+      periodText = page.sum_year_template_string.replace("{{year}}", filterYear.toString());
+    }
+  }
 
   let distribution = !isTotal
     ? getYearlyDistribution(aggregatedDonations, parseInt(filterYear))
@@ -372,6 +381,8 @@ export const DonationsPage = withStaticProps(
 type DonationsPageData = {
   title: string;
   year_menu_total_title: string;
+  sum_all_times_template_string?: string;
+  sum_year_template_string?: string;
   aggregate_estimated_impact?: AggregatedImpactTableConfiguration;
   desktop_donations_table_configuration?: DonationsListConfiguration;
   mobile_donations_table_configuration?: DonationsListConfiguration;
