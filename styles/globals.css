@@ -23,6 +23,7 @@
   --primary-filter: brightness(0);
   --primary-hover: #333333;
   --secondary-hover: #555555;
+  --inactive: #808080;
   --focus: blue;
   --widget-panel-width: calc(40vw - 40px);
 }
