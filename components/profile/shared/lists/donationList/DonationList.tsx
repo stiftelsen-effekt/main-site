@@ -1,3 +1,4 @@
+import { PortableText } from "@portabletext/react";
 import { Distribution, Donation } from "../../../../../models";
 import { onlyDate, thousandize } from "../../../../../util/formatting";
 import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
@@ -14,6 +15,9 @@ export type DonationsListConfiguration = {
     type: TableFieldTypes;
     width?: string;
   }[];
+  tax_deduction_current_year_template: string;
+  tax_deduction_previous_year_template: string;
+  no_donations_placeholder_text: any[];
 };
 
 export const DonationList: React.FC<{
@@ -44,17 +48,29 @@ export const DonationList: React.FC<{
     }
   });
   if (taxDeductions > 0) {
+    {
+      /** TODO: Tax rules will differ for different juristictions. Update backend to support a structured format to reflect this. */
+    }
+    let taxDeductionTextSplit: string[];
+    let taxDeductionSumElement: JSX.Element = (
+      <span style={{ whiteSpace: "nowrap" }}>{thousandize(Math.round(taxDeductions * 0.22))}</span>
+    );
+
+    if (year === new Date().getFullYear().toString()) {
+      taxDeductionTextSplit =
+        configuration.tax_deduction_current_year_template.split("{{deduction}}");
+    } else {
+      taxDeductionTextSplit =
+        configuration.tax_deduction_previous_year_template.split("{{deduction}}");
+    }
+
+    taxDeductionTextSplit = taxDeductionTextSplit.map((el) => el.replace("{{year}}", year));
+
     taxDeductionText = (
       <span>
-        {`I ${year} ${
-          year === new Date().getFullYear().toString()
-            ? "får du skattefradrag som kvalifiserer deg for"
-            : "fikk du skattefradrag som kvalifiserte deg for"
-        }`}{" "}
-        <span style={{ whiteSpace: "nowrap" }}>
-          {thousandize(Math.round(taxDeductions * 0.22))}
-        </span>{" "}
-        kroner mindre i skatt
+        {taxDeductionTextSplit[0]}
+        {taxDeductionSumElement}
+        {taxDeductionTextSplit[1]}
       </span>
     );
   }
@@ -91,11 +107,7 @@ export const DonationList: React.FC<{
 
   const emptyPlaceholder = (
     <div>
-      <div>Vi har ikke registrert noen donasjoner fra deg i {year}.</div>
-      <div>
-        Mangler det donasjoner vi ikke har registrert? Ta kontakt på{" "}
-        <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.
-      </div>
+      <PortableText value={configuration.no_donations_placeholder_text} />
     </div>
   );
 
