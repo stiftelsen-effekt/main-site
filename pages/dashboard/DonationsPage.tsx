@@ -162,14 +162,14 @@ export const DonationsPage = withStaticProps(
     data: aggregatedDonations,
     isValidating: aggregatedDonationsValidating,
     error: aggregatedError,
-  } = useAggregatedDonations(user as User, getAccessTokenSilently);
+  } = useAggregatedDonations(user, getAccessTokenSilently);
 
   const {
     loading: donationsLoading,
     data: donations,
     isValidating: donationsIsValidating,
     error: donationsError,
-  } = useDonations(user as User, getAccessTokenSilently);
+  } = useDonations(user, getAccessTokenSilently);
 
   const kids = new Set<string>();
   donations?.map((donation: Donation) => kids.add(donation.KID));
@@ -179,14 +179,14 @@ export const DonationsPage = withStaticProps(
     data: distributions,
     isValidating: distributionsValidating,
     error: distributionsError,
-  } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids));
+  } = useDistributions(user, getAccessTokenSilently, !donationsLoading, Array.from(kids));
 
   const {
     data: organizations,
     loading: organizationsloading,
     isValidating: organizationsValidation,
     error: organizationsError,
-  } = useAllOrganizations(user as User, getAccessTokenSilently);
+  } = useAllOrganizations(getAccessTokenSilently);
 
   /**
    * While data is loading, we show a spinner

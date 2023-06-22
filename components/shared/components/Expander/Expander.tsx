@@ -26,7 +26,7 @@ export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => 
         {expanded ? <Minus size={28} /> : <Plus size={28} />}
       </label>
       <div className={elements.expanderContent}>
-        <AnimateHeight height={expanded ? "auto" : "0%"} animateOpacity>
+        <AnimateHeight height={expanded ? "auto" : 0} animateOpacity>
           <p>{content}</p>
           {links ? (
             <>

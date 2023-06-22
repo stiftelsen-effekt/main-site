@@ -98,7 +98,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                 <button onClick={() => toggleExpanded(el._key)} tabIndex={-1}>
                   {el.title}
                 </button>
-                <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : "0%"} animateOpacity>
+                <AnimateHeight height={expandedSubmenu[el._key] ? "auto" : 0} animateOpacity>
                   <div className={styles.submenu}>
                     <ul>
                       {el.items &&
