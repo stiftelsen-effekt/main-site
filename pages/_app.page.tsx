@@ -35,35 +35,36 @@ sagaMiddleware.run(watchAll);
 
 function MyApp({
   Component,
-  pageProps,
+  pageProps: { appStaticProps, preview, ...pageProps },
 }: AppProps<{
   preview: boolean;
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
   appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
 }>) {
   const routerContextValue = useRef<RouterContextValue | null>(
-    pageProps.appStaticProps?.routerContext || null,
+    appStaticProps?.routerContext || null,
   );
 
-  const { data: propsData, appStaticProps } = pageProps;
-
-  if (!appStaticProps) {
-    throw new Error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
-  }
-
-  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
-    appStaticProps?.layout || LayoutType.Default
-  ];
-
-  const { data: previewData, loading: previewLoading } = usePreviewSubscription(propsData?.query, {
-    params: propsData?.queryParams ?? {},
-    initialData: propsData?.result,
-    enabled: pageProps.preview,
-  });
+  const { data: previewData, loading: previewLoading } = usePreviewSubscription(
+    pageProps.data?.query,
+    {
+      params: pageProps.data?.queryParams ?? {},
+      initialData: pageProps.data?.result,
+      enabled: preview,
+    },
+  );
 
   if (pageProps.data) {
+    if (!appStaticProps) {
+      throw new Error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
+    }
+
+    const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
+      appStaticProps.layout
+    ];
+
     if (Array.isArray(previewData.page)) {
-      previewData.page = filterPageToSingleItem(previewData, pageProps.preview);
+      previewData.page = filterPageToSingleItem(previewData, preview);
     }
 
     pageProps.data.result = previewData;
