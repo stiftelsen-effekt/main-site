@@ -113,33 +113,6 @@ export const DonationImpactItem: React.FC<{
             <AnimateHeight duration={300} animateOpacity height={showDetails ? "auto" : 0}>
               <div>
                 <PortableText value={configuration.missing_impact_evaluation_text} />
-                {/*
-                <p>
-                  For denne intervensjonen har vi ikke lagt inn en relevant evaluering fra GiveWell
-                  for tidsrommet donasjonen er gitt. Dette kan skyldes at vi ikke har oppdaterte
-                  tall fra GiveWell for det gitte tidsrommet, eller at vi ikke har rukket å legge
-                  det inn i vår database. Vi jobber kontinuerlig med å oppdatere våre tall og håper
-                  å kunne legge inn en relevant evaluering for denne intervensjonen så snart det
-                  foreligger. Ta gjerne kontakt med oss på{" "}
-                  <a href="mailto:donasjon@gieffektivt.no" style={{ textDecoration: "underline" }}>
-                    donasjon@gieffektivt.no
-                  </a>{" "}
-                  om du har noen spørsmål.
-                </p>
-                <div>
-                  <Links
-                    links={[
-                      {
-                        _type: "link",
-                        _key: "giveWell",
-                        title: "GiveWell’s analyser",
-                        url: "https://www.givewell.org/how-we-work/our-criteria/cost-effectiveness/cost-effectiveness-models",
-                        newtab: true,
-                      },
-                    ]}
-                  />
-                </div>
-                */}
               </div>
             </AnimateHeight>
           </td>
@@ -186,15 +159,9 @@ export const DonationImpactItem: React.FC<{
               )}
               onClick={() => setShowDetails(!showDetails)}
             >
-              {/** {{sum}} for sum and {{org}} for charity name in template string */}
               {configuration.output_subheading_format_string
                 .replace("{{sum}}", thousandize(sumToOrg))
                 .replace("{{org}}", relevantEvaluation.charity.charity_name)}
-              {/*
-              `${thousandize(Math.round(sumToOrg))} kr til ${
-                relevantEvaluation.charity.charity_name
-              }`
-            */}
             </span>
           </div>
         </td>

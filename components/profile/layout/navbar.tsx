@@ -121,34 +121,6 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
               </li>
             ),
           )}
-          {/** 
-          <li onClick={() => setExpandMenu(false)}>
-            <Link href={dashboardPath.join("/")} passHref>
-              Donasjoner
-            </Link>
-          </li>
-          {agreementsPagePath ? (
-            <li onClick={() => setExpandMenu(false)}>
-              <Link href={agreementsPagePath.join("/")} passHref>
-                Avtaler
-              </Link>
-            </li>
-          ) : null}
-          {taxPagePath ? (
-            <li onClick={() => setExpandMenu(false)}>
-              <Link href={taxPagePath.join("/")} passHref>
-                Skatt
-              </Link>
-            </li>
-          ) : null}
-          {profilePagePath ? (
-            <li onClick={() => setExpandMenu(false)}>
-              <Link href={profilePagePath.join("/")} passHref>
-                Profil
-              </Link>
-            </li>
-          ) : null}
-          */}
           <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
             {user ? (
               <EffektButton
