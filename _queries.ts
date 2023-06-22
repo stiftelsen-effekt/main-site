@@ -385,7 +385,3 @@ export const pageContentQuery = `content[] {
   }
 },
 `;
-
-export const widgetQuery = `
-  "widget": *[_type == "donationwidget"],
-`;

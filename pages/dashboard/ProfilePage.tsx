@@ -1,18 +1,17 @@
-import Head from "next/head";
-import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
-import style from "../../styles/Profile.module.css";
-import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/router";
-import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import "react-toastify/dist/ReactToastify.css";
+import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
+import { ProfileInfo } from "../../components/profile/details/ProfileInfo/ProfileInfo";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { Navbar } from "../../components/profile/layout/navbar";
-import { ProfileInfo } from "../../components/profile/details/ProfileInfo/ProfileInfo";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { widgetQuery } from "../../_queries";
+import { getClient } from "../../lib/sanity.server";
+import style from "../../styles/Profile.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
+import { ProfileLayout } from "../../components/profile/layout/layout";
 
 export async function getProfilePagePath() {
   const result = await getClient(false).fetch<FetchProfilePageResult>(fetchProfilePage);
@@ -26,9 +25,7 @@ export async function getProfilePagePath() {
 }
 
 export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({
-    layout: LayoutType.Profile,
-  });
+  const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
   const result = await getClient(preview).fetch<FetchProfilePageResult>(fetchProfilePage);
 
   return {
@@ -111,7 +108,5 @@ const fetchProfilePage = groq`
     tax,
     data
   },
-  ${footerQuery}
-  ${widgetQuery}
 }
 `;

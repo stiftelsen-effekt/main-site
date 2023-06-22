@@ -3,7 +3,6 @@ import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
 import Router, { useRouter } from "next/router";
-import { LayoutProps } from "../../../types";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
@@ -14,6 +13,8 @@ import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
 import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
+import { withStaticProps } from "../../../util/withStaticProps";
+import { Widget } from "../../shared/components/Widget/components/Widget";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -27,12 +28,13 @@ const useShouldAuthenticate = (): boolean => {
   return shouldBypass;
 };
 
-export const ProfileLayout: React.FC<LayoutProps> = ({
-  children,
-  footerData,
-  widgetData,
-  isPreview,
-}) => {
+export const ProfileLayout = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  return {
+    footerData: await Footer.getStaticProps({ preview }),
+    widgetData: await Widget.getStaticProps({ preview }),
+    isPreview: preview,
+  };
+})(({ children, footerData, widgetData, isPreview }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
@@ -84,7 +86,7 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
                 {isPreview && <PreviewBlock />}
                 <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-                    <WidgetPane darkMode={true} text={widgetData} />
+                    <WidgetPane darkMode={true} {...widgetData} />
                     <main className={styles.main}>{children}</main>
                     <MissingNameModal />
                   </CookiesAccepted.Provider>
@@ -97,4 +99,4 @@ export const ProfileLayout: React.FC<LayoutProps> = ({
       </div>
     </Auth0Provider>
   );
-};
+});

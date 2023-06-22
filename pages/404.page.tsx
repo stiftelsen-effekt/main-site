@@ -1,15 +1,13 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
-import { groq } from "next-sanity";
-import { Navbar } from "../components/main/layout/navbar";
-import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
-import { widgetQuery } from "../_queries";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { MainHeader } from "../components/shared/layout/Header/Header";
-import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { SEO } from "../components/shared/seo/Seo";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { groq } from "next-sanity";
+import React from "react";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+
+import { Navbar } from "../components/main/layout/navbar";
+import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { MainHeader } from "../components/shared/layout/Header/Header";
+import { getClient } from "../lib/sanity.server";
+import { getAppStaticProps } from "./_app.page";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
   const settings = data.result.settings[0];
@@ -27,8 +25,9 @@ const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ d
     </>
   );
 };
+
 export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {
-  const appStaticProps = await getAppStaticProps();
+  const appStaticProps = await getAppStaticProps({ preview });
   let result = await getClient(preview).fetch(fetchNotFoundPage);
 
   return {
@@ -36,7 +35,7 @@ export const getStaticProps = async ({ preview = false }: GetStaticPropsContext)
       appStaticProps,
       preview: preview,
       data: {
-        result: result,
+        result,
         query: fetchNotFoundPage,
         queryParams: {},
       },
@@ -66,8 +65,6 @@ const fetchNotFoundPage = groq`
       },
     }
   },
-  ${widgetQuery}
-  ${footerQuery}
 }
 `;
 
