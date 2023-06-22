@@ -1,6 +1,6 @@
 import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../../../models";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
-import { AggregatedImpactTableTexts } from "./DonationsAggregateImpactTable";
+import { AggregatedImpactTableConfiguration } from "./DonationsAggregateImpactTable";
 
 export type OrganizationsAggregatedSums = {
   // Organization name
@@ -189,7 +189,7 @@ export const aggregateImpact = (
   aggregatedorganizations: OrganizationsAggregatedSums,
   evaluations: ImpactEvaluation[],
   textTemplates: Pick<
-    AggregatedImpactTableTexts,
+    AggregatedImpactTableConfiguration,
     "org_grant_template_string" | "org_direct_template_string"
   >,
 ) => {
