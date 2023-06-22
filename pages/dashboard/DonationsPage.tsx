@@ -291,7 +291,7 @@ export const DonationsPage = withStaticProps(
             firstOpen={false}
           />
         ) : (
-          <ErrorMessage>
+          <ErrorMessage key={year}>
             <p>Missing Sanity configuration for donation list.</p>
           </ErrorMessage>
         ),
