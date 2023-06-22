@@ -50,9 +50,12 @@ const fetcher = async (
  * @param {User} user - Which user's data to fetch
  * @param {String} fetchToken - Access token
  */
-export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useAggregatedDonations = (
+  user: User | undefined,
+  fetchToken: getAccessTokenSilently,
+) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${getUserId(user)}/donations/aggregated`,
+    user ? `/donors/${getUserId(user)}/donations/aggregated` : null,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -72,9 +75,10 @@ export const useAggregatedDonations = (user: User, fetchToken: getAccessTokenSil
  * @param {User} user - Which user's data to fetch
  * @param {String} getAccessTokenSilently - Retrieves access token
  * */
-export const useDonations = (user: User, fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR(`/donors/${getUserId(user)}/donations/`, (url) =>
-    fetcher(url, fetchToken),
+export const useDonations = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(
+    user ? `/donors/${getUserId(user)}/donations/` : null,
+    (url) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
@@ -96,13 +100,13 @@ export const useDonations = (user: User, fetchToken: getAccessTokenSilently) => 
  * @param {kids} string[] -
  * */
 export const useDistributions = (
-  user: User,
+  user: User | undefined,
   fetchToken: getAccessTokenSilently,
   condition: boolean,
   kids: string[],
 ) => {
   const { data, error, isValidating } = useSWR(
-    condition
+    condition && user
       ? `/donors/${getUserId(user)}/distributions/?kids=${encodeURIComponent(
           Array.from(kids).join(","),
         )}`
@@ -121,13 +125,13 @@ export const useDistributions = (
 };
 
 export const useAgreementsDistributions = (
-  user: User,
+  user: User | undefined,
   fetchToken: getAccessTokenSilently,
   condition: boolean,
   kids: string[],
 ) => {
   const { data, error, isValidating } = useSWR(
-    condition
+    condition && user
       ? `/donors/${getUserId(user)}/distributions/?kids=${encodeURIComponent(
           Array.from(kids).join(","),
         )}`
@@ -145,9 +149,12 @@ export const useAgreementsDistributions = (
   };
 };
 
-export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useAvtalegiroAgreements = (
+  user: User | undefined,
+  fetchToken: getAccessTokenSilently,
+) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${getUserId(user)}/recurring/avtalegiro/`,
+    user ? `/donors/${getUserId(user)}/recurring/avtalegiro/` : null,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -161,9 +168,9 @@ export const useAvtalegiroAgreements = (user: User, fetchToken: getAccessTokenSi
   };
 };
 
-export const useVippsAgreements = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useVippsAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    `/donors/${getUserId(user)}/recurring/vipps/`,
+    user ? `/donors/${getUserId(user)}/recurring/vipps/` : null,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -192,7 +199,7 @@ export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
   };
 };
 
-export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(`/organizations/active/`, (url) =>
     fetcher(url, fetchToken),
   );
@@ -207,7 +214,7 @@ export const useOrganizations = (user: User, fetchToken: getAccessTokenSilently)
   };
 };
 
-export const useAllOrganizations = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useAllOrganizations = (fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(`/organizations/all/`, (url) =>
     fetcher(url, fetchToken),
   );
