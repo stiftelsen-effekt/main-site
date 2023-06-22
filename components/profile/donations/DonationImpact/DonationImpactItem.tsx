@@ -85,7 +85,7 @@ export const DonationImpactItem: React.FC<{
         <tr className={style.overview} data-cy="donation-impact-list-item-overview">
           <td>
             <span className={style.impactOutput} data-cy="donation-impact-list-item-output">
-              {thousandize(sumToOrg)}
+              {thousandize(Math.round(sumToOrg))}
             </span>
           </td>
           <td>
@@ -93,7 +93,7 @@ export const DonationImpactItem: React.FC<{
               <span className={style.impactDetailsDescription}>
                 {" "}
                 {configuration.output_subheading_format_string
-                  .replace("{{sum}}", thousandize(sumToOrg))
+                  .replace("{{sum}}", thousandize(Math.round(sumToOrg)))
                   .replace("{{org}}", orgAbriv)}
               </span>
               <span
@@ -160,7 +160,7 @@ export const DonationImpactItem: React.FC<{
               onClick={() => setShowDetails(!showDetails)}
             >
               {configuration.output_subheading_format_string
-                .replace("{{sum}}", thousandize(sumToOrg))
+                .replace("{{sum}}", thousandize(Math.round(sumToOrg)))
                 .replace("{{org}}", relevantEvaluation.charity.charity_name)}
             </span>
           </div>
