@@ -126,5 +126,26 @@ export default {
           return true;
         }),
     },
+    {
+      name: "tax_deduction_current_year_template",
+      title: "Tax deduction current year template",
+      type: "string",
+      description:
+        "Template for the tax deduction text for the current year. Use the following variables: {{year}} for the year, and {{deduction}} for the saved tax deduction amount. Displayed below the table header for the current year if the tax deduction amount is greater than 0.",
+    },
+    {
+      name: "tax_deduction_previous_year_template",
+      title: "Tax deduction previous year template",
+      type: "string",
+      description:
+        "Template for the tax deduction text for a previous year. Use the following variables: {{year}} for the year, and {{deduction}} for the saved tax deduction amount. Displayed below the table header for the previous year if the tax deduction amount is greater than 0.",
+    },
+    {
+      name: "no_donations_placeholder_text",
+      title: "No donations placeholder text",
+      type: "array",
+      of: [{ type: "block" }],
+      description: "Text displayed when there are no donations in a year.",
+    },
   ],
 };
