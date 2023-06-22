@@ -55,6 +55,7 @@ export default async function preview(req: NextApiRequest, res: NextApiResponse)
         });
       }
       res.writeHead(307, { Location: `/${path.join("/")}` });
+      break;
     default:
       return res.status(400).json({ message: "Preview not supported for page" });
   }
