@@ -1,19 +1,38 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { groq } from "next-sanity";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useDebouncedCallback } from "use-debounce";
+import { getClient } from "../../../../../lib/sanity.server";
+import { withStaticProps } from "../../../../../util/withStaticProps";
+import { WidgetContext } from "../../../../main/layout/layout";
+import { fetchOrganizationsAction } from "../store/layout/actions";
+import { fetchReferralsAction } from "../store/referrals/actions";
+import { WidgetProps } from "../types/WidgetProps";
+import { Carousel } from "./Carousel";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
-import { Carousel } from "./Carousel";
-import { fetchOrganizationsAction } from "../store/layout/actions";
-import { fetchReferralsAction } from "../store/referrals/actions";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
-import { useDebouncedCallback } from "use-debounce";
-import { WidgetContext } from "../../../../main/layout/layout";
-import { WidgetProps } from "../types/WidgetProps";
+
+type QueryResult = {
+  widget: [WidgetProps];
+};
+
+const widgetQuery = groq`
+  {
+    "widget": *[_type == "donationwidget"]
+  }
+`;
 
 export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
 
-export const Widget: React.FC<{ text: WidgetProps }> = ({ text }) => {
+export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
+
+  return {
+    text: result.widget[0],
+  };
+})(({ text }) => {
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
@@ -124,4 +143,4 @@ export const Widget: React.FC<{ text: WidgetProps }> = ({ text }) => {
       </WidgetTooltipContext.Provider>
     </div>
   );
-};
+});

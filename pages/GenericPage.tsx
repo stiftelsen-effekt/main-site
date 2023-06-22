@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { linksContentQuery, pageContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { Navbar } from "../components/main/layout/navbar";
@@ -8,8 +9,6 @@ import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
 import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { widgetQuery, linksContentQuery, pageContentQuery } from "../_queries";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -22,7 +21,7 @@ export const getGenericPagePaths = async () => {
 
 export const GenericPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps();
+    const appStaticProps = await getAppStaticProps({ preview });
 
     const slug = path.join("/") || "/";
 
@@ -33,7 +32,7 @@ export const GenericPage = withStaticProps(
       appStaticProps,
       preview: preview,
       data: {
-        result: result,
+        result,
         query: fetchGenericPage,
         queryParams: { slug },
       },
@@ -106,8 +105,6 @@ const fetchGenericPage = groq`
       },
     }
   },
-  ${widgetQuery}
-  ${footerQuery}
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,
@@ -118,6 +115,6 @@ const fetchGenericPage = groq`
     },
     ${pageContentQuery}
     slug { current },
-  },
+  }
 }
 `;

@@ -8,7 +8,6 @@ import {
   useAvtalegiroAgreements,
   useOrganizations,
   useVippsAgreements,
-  widgetQuery,
 } from "../../_queries";
 import { useContext, useState } from "react";
 import { ActivityContext } from "../../components/profile/layout/activityProvider";
@@ -21,7 +20,6 @@ import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
 import { Navbar } from "../../components/profile/layout/navbar";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
 import { DateTime } from "luxon";
@@ -29,6 +27,7 @@ import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
+import { ProfileLayout } from "../../components/profile/layout/layout";
 
 export async function getAgreementsPagePath() {
   const result = await getClient(false).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
@@ -43,9 +42,7 @@ export async function getAgreementsPagePath() {
 
 export const AgreementsPage = withStaticProps(
   async ({ preview = false }: GetStaticPropsContext<{ slug: string[] }>) => {
-    const appStaticProps = await getAppStaticProps({
-      layout: LayoutType.Profile,
-    });
+    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
     const result = await getClient(preview).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
 
     return {
@@ -304,9 +301,7 @@ const fetchAgreementsPage = groq`
     slug {
       current
     }
-  },
-  ${footerQuery}
-  ${widgetQuery}
+  }
 }
 `;
 

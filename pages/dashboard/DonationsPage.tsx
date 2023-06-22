@@ -1,40 +1,38 @@
-import { useAuth0, User } from "@auth0/auth0-react";
-import Head from "next/head";
-import { useContext, useEffect, useState } from "react";
-import DonationsChart from "../../components/profile/donations/DonationsChart/DonationsChart";
-import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
-import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
-import {
-  DonationList,
-  DonationsListConfiguration,
-} from "../../components/profile/shared/lists/donationList/DonationList";
-import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
+import { useAuth0 } from "@auth0/auth0-react";
 import style from "../../styles/Donations.module.css";
-import {
-  AggregatedImpactTableConfiguration,
-  DonationsAggregateImpactTable,
-} from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
+import { withStaticProps } from "../../util/withStaticProps";
+import { filterPageToSingleItem, getAppStaticProps, LayoutType } from "../_app.page";
+import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
+import { useDebouncedCallback } from "use-debounce";
+import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
+import { getClient } from "../../lib/sanity.server";
+import { useContext, useEffect, useState } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
   useAggregatedDonations,
   useAllOrganizations,
   useDistributions,
   useDonations,
-  widgetQuery,
 } from "../../_queries";
-import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { getClient } from "../../lib/sanity.server";
-import { groq } from "next-sanity";
-import { Navbar } from "../../components/profile/layout/navbar";
-import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
-import { Spinner } from "../../components/shared/components/Spinner/Spinner";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
+import Head from "next/head";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { withStaticProps } from "../../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps, LayoutType } from "../_app.page";
-import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
-import { useDebouncedCallback } from "use-debounce";
-import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
+import { Navbar } from "../../components/profile/layout/navbar";
+import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
+import { Spinner } from "../../components/shared/components/Spinner/Spinner";
+import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
+import {
+  DonationList,
+  DonationsListConfiguration,
+} from "../../components/profile/shared/lists/donationList/DonationList";
+import DonationYearMenu from "../../components/profile/donations/YearMenu/YearMenu";
+import DonationsChart from "../../components/profile/donations/DonationsChart/DonationsChart";
+import {
+  AggregatedImpactTableConfiguration,
+  DonationsAggregateImpactTable,
+} from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
+import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
+import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
+import { groq } from "next-sanity";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -81,12 +79,8 @@ const getYearPaths = () => {
 
 export const DonationsPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({
-      layout: LayoutType.Profile,
-    });
-
-    let result = await getClient(preview).fetch<FetchDonationsPageResult>(fetchDonationsPage);
-    let filteredResult = { ...result, page: filterPageToSingleItem(result, preview) };
+    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
+    const result = await getClient(preview).fetch<FetchDonationsPageResult>(fetchDonationsPage);
 
     const donationsPagePath = await getDonationsPagePath();
 
@@ -98,7 +92,7 @@ export const DonationsPage = withStaticProps(
       preview: preview,
       filterYear,
       data: {
-        result: filteredResult,
+        result: result,
         query: fetchDonationsPage,
         queryParams: {},
       },
@@ -117,7 +111,7 @@ export const DonationsPage = withStaticProps(
   }
 
   const dashboard = data.result.dashboard[0];
-  const page = data.result.page;
+  const page = filterPageToSingleItem(data.result, false);
 
   if (!page)
     return (
@@ -457,8 +451,6 @@ const fetchDonationsPage = groq`
       current
     }
   },
-  ${footerQuery}
-  ${widgetQuery}
 }
 `;
 
