@@ -148,4 +148,8 @@ export default {
       description: "Text displayed when there are no donations in a year.",
     },
   ],
+  options: {
+    collapsible: true,
+    collapsed: true,
+  },
 };

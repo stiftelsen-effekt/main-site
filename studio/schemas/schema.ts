@@ -66,6 +66,7 @@ import taxunits from "./dashboard/tax/taxunits";
 import metareceipt from "./dashboard/tax/metareceipt";
 import taxdeduction from "./dashboard/tax/taxdeduction";
 import taxstatements from "./dashboard/tax/taxstatements";
+import donationstabledetailsconfiguration from "./types/donationstabledetailsconfiguration";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -118,6 +119,7 @@ export const types = [
   vippsAnonymous,
   aggregateestimatedimpact,
   donationstableconfiguration,
+  donationstabledetailsconfiguration,
   taxunits,
   metareceipt,
   taxdeduction,
