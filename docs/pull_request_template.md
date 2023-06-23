@@ -16,6 +16,13 @@ Tests
 - [ ] Code Review 👩‍💻
 - [ ] QA 👌
 
+Checkpoints
+
+*Check these to flag for a more thurough review, as they could be potentially breaking changes*
+
+- [ ] Packages updated
+- [ ] Other infrastructure updated (such as node version or similar)
+
 ⏲️ Time spent on CR:
 
 ⏲️ Time spent on QA:
