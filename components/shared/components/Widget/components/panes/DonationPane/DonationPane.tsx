@@ -12,8 +12,8 @@ import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektB
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
-import { SingleCauseAreaSelector } from "./ShareSelector/SingleCauseAreaSelector";
-import { MultipleCauseAreasSelector } from "./ShareSelector/MultipleCauseAreasSelector";
+import { SingleCauseAreaSelector } from "./ShareSelector/Single/SingleCauseAreaSelector";
+import { MultipleCauseAreasSelector } from "./ShareSelector/Multiple/MultipleCauseAreasSelector";
 
 export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();

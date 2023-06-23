@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RadioButtonGroup } from "../../../../../RadioButton/RadioButtonGroup";
-import { InfoParagraph, ShareSelectionWrapper } from "../DonationPane.style";
-import { setShareType } from "../../../../store/donation/actions";
-import { State } from "../../../../store/state";
-import { ShareType } from "../../../../types/Enums";
-import { SharesSelection } from "./ShareSelection";
-import { SharesSum } from "./SharesSum";
+import { RadioButtonGroup } from "../../../../../../RadioButton/RadioButtonGroup";
+import { InfoParagraph, ShareSelectionWrapper } from "../../DonationPane.style";
+import { setShareType } from "../../../../../store/donation/actions";
+import { State } from "../../../../../store/state";
+import { ShareType } from "../../../../../types/Enums";
+import { SharesSelection } from "../ShareSelection";
+import { SharesSum } from "../SharesSum";
 
 export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
   const dispatch = useDispatch();
@@ -46,12 +46,8 @@ export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
           <InfoParagraph>{text.smart_fordeling_description}</InfoParagraph>
         </div>
       )}
-      {shareType === ShareType.CUSTOM && (
-        <div>
-          <SharesSelection causeAreaOrgs={causeAreaOrgs} />
-          <SharesSum causeArea={causeAreaOrgs.name} />
-        </div>
-      )}
+
+      <SharesSelection causeAreaOrgs={causeAreaOrgs} open={shareType === ShareType.CUSTOM} />
     </>
   );
 };

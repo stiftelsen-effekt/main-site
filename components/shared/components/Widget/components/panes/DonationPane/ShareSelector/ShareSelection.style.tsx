@@ -5,6 +5,7 @@ export const ShareContainer = styled.div`
   grid-auto-rows: 1fr;
   row-gap: 15px;
   align-items: flex-end;
+  margin-bottom: 40px;
 `;
 
 export const ShareLink = styled.a`
