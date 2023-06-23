@@ -49,13 +49,18 @@ export const GenericPage = withStaticProps(
   const content = page.content;
   const settings = data.result.settings[0];
 
+  let cannonicalUrlDefault: string = `https://gieffektivt.no/${page.slug?.current ?? ""}`;
+  if (page.slug?.current == "/") {
+    cannonicalUrlDefault = "https://gieffektivt.no/";
+  }
+
   return (
     <>
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={header.cannonicalUrl ?? `https://gieffektivt.no/${page.slug?.current ?? ""}`}
+        canonicalurl={header.cannonicalUrl ?? cannonicalUrlDefault}
       />
 
       <MainHeader hideOnScroll={true}>
