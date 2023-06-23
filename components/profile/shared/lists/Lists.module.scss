@@ -231,19 +231,6 @@ table tr .detailRowCell {
     margin-left: 0.5rem;
   }
 
-  /* Display only the three first columns */
-  .gridContainer tr th,
-  .gridContainer tr td {
-    display: none;
-  }
-
-  .gridContainer tr th:nth-child(-n + 3),
-  .gridContainer tr td:nth-child(-n + 3) {
-    display: table-cell;
-    /* Override fixed with for column alignment on desktop */
-    width: auto !important;
-  }
-
   .gridContainer tr td:last-child {
     display: table-cell;
   }

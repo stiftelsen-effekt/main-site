@@ -1,15 +1,33 @@
-import { Distribution, Donation, META_OWNER } from "../../../../../models";
-import { onlyDate, shortDate, thousandize } from "../../../../../util/formatting";
+import { PortableText } from "@portabletext/react";
+import { Distribution, Donation } from "../../../../../models";
+import { onlyDate, thousandize } from "../../../../../util/formatting";
+import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
-import { DonationDetails } from "./DonationDetails";
+import { DonationDetails, DonationDetailsConfiguration } from "./DonationDetails";
+
+export type TableFieldTypes = "string" | "sum" | "date" | "paymentmethod";
+
+export type DonationsListConfiguration = {
+  columns: {
+    title: string;
+    value: keyof Donation;
+    type: TableFieldTypes;
+    width?: string;
+  }[];
+  tax_deduction_current_year_template: string;
+  tax_deduction_previous_year_template: string;
+  no_donations_placeholder_text: any[];
+};
 
 export const DonationList: React.FC<{
   donations: Donation[];
   distributions: Map<string, Distribution>;
   year: string;
+  configuration: DonationsListConfiguration;
+  detailsConfiguration?: DonationDetailsConfiguration;
   firstOpen: boolean;
-}> = ({ donations, distributions, year, firstOpen }) => {
+}> = ({ donations, distributions, year, configuration, detailsConfiguration, firstOpen }) => {
   let taxDeductionText: JSX.Element | undefined = undefined;
 
   let taxDeductions = 0;
@@ -30,57 +48,58 @@ export const DonationList: React.FC<{
     }
   });
   if (taxDeductions > 0) {
+    {
+      /** TODO: Tax rules will differ for different juristictions. Update backend to support a structured format to reflect this. */
+    }
+    let taxDeductionTextSplit: string[];
+    let taxDeductionSumElement: JSX.Element = (
+      <span style={{ whiteSpace: "nowrap" }}>{thousandize(Math.round(taxDeductions * 0.22))}</span>
+    );
+
+    if (year === new Date().getFullYear().toString()) {
+      taxDeductionTextSplit =
+        configuration.tax_deduction_current_year_template.split("{{deduction}}");
+    } else {
+      taxDeductionTextSplit =
+        configuration.tax_deduction_previous_year_template.split("{{deduction}}");
+    }
+
+    taxDeductionTextSplit = taxDeductionTextSplit.map((el) => el.replace("{{year}}", year));
+
     taxDeductionText = (
       <span>
-        {`I ${year} ${
-          year === new Date().getFullYear().toString()
-            ? "får du skattefradrag som kvalifiserer deg for"
-            : "fikk du skattefradrag som kvalifiserte deg for"
-        }`}{" "}
-        <span style={{ whiteSpace: "nowrap" }}>
-          {thousandize(Math.round(taxDeductions * 0.22))}
-        </span>{" "}
-        kroner mindre i skatt
+        {taxDeductionTextSplit[0]}
+        {taxDeductionSumElement}
+        {taxDeductionTextSplit[1]}
       </span>
     );
   }
 
-  const headers = [
-    {
-      label: "Dato",
-      width: "25%",
-    },
-    {
-      label: "Sum",
-      width: "25%",
-    },
-    {
-      label: "Betalingskanal",
-      width: "25%",
-    },
-    {
-      label: "KID",
-    },
-  ];
+  const headers = configuration.columns.map((column) => {
+    return {
+      label: column.title,
+      width: column.width + "%",
+    };
+  });
 
   const rows: ListRow<Donation>[] = donations.map((donation, index) => {
     return {
       id: donation.id.toString(),
       defaultExpanded: firstOpen && index === 0 ? true : false,
-      cells: [
-        { value: onlyDate(donation.timestamp) },
-        { value: thousandize(Math.round(parseFloat(donation.sum))) + " kr" },
-        { value: mapPaymentMethodString(donation.paymentMethod) },
-        { value: donation.KID },
-      ],
-      details: (
+      cells: configuration.columns.map((column) => ({
+        value: formatField(donation[column.value], column.type),
+      })),
+      details: detailsConfiguration ? (
         <DonationDetails
           key={donation.id}
           donation={donation}
           sum={donation.sum}
           distribution={distributions.get(donation.KID.trim()) as Distribution}
           timestamp={new Date(donation.timestamp)}
+          configuration={detailsConfiguration}
         />
+      ) : (
+        <ErrorMessage>Missing donation details configuration in Sanity</ErrorMessage>
       ),
       element: donation,
     };
@@ -88,11 +107,7 @@ export const DonationList: React.FC<{
 
   const emptyPlaceholder = (
     <div>
-      <div>Vi har ikke registrert noen donasjoner fra deg i {year}.</div>
-      <div>
-        Mangler det donasjoner vi ikke har registrert? Ta kontakt på{" "}
-        <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.
-      </div>
+      <PortableText value={configuration.no_donations_placeholder_text} />
     </div>
   );
 
@@ -107,6 +122,21 @@ export const DonationList: React.FC<{
       proportions={[20, 70]}
     />
   );
+};
+
+const formatField: (field: any, type: TableFieldTypes) => string = (field, type) => {
+  switch (type) {
+    case "string":
+      return field;
+    case "sum":
+      return thousandize(Math.round(parseFloat(field))) + " kr";
+    case "date":
+      return onlyDate(field);
+    case "paymentmethod":
+      return mapPaymentMethodString(field);
+    default:
+      return field;
+  }
 };
 
 const mapPaymentMethodString = (paymentMethod: string): string => {

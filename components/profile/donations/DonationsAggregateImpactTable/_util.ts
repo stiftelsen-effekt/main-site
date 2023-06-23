@@ -1,5 +1,6 @@
 import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../../../models";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
+import { AggregatedImpactTableConfiguration } from "./DonationsAggregateImpactTable";
 
 export type OrganizationsAggregatedSums = {
   // Organization name
@@ -187,6 +188,10 @@ const addToAggregated = (
 export const aggregateImpact = (
   aggregatedorganizations: OrganizationsAggregatedSums,
   evaluations: ImpactEvaluation[],
+  textTemplates: Pick<
+    AggregatedImpactTableConfiguration,
+    "org_grant_template_string" | "org_direct_template_string"
+  >,
 ) => {
   const impact: AggregatedImpact = {};
 
@@ -248,8 +253,16 @@ export const aggregateImpact = (
         // we add the amount to the smart distribution sum or the custom distribution sum
         // (or both)
 
-        const smartdistributionconstituentlabel = `${orgkey} via smart fordeling`;
-        const customconstituentlabel = `${orgkey} direkte fordelt`;
+        const smartdistributionconstituentlabel = textTemplates.org_grant_template_string.replace(
+          "{{org}}",
+          orgkey,
+        );
+        //`${orgkey} via smart fordeling`;
+        const customconstituentlabel = textTemplates.org_direct_template_string.replace(
+          "{{org}}",
+          orgkey,
+        );
+        //`${orgkey} direkte fordelt`;
 
         // The amount for the period and organization that was smart distributed is above 0
         // e.g. aggregatedorganizations["Deworming Charity"].periods["2021-1"].smart_distribution_sum is above 0

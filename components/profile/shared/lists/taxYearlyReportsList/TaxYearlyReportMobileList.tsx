@@ -4,21 +4,19 @@ import {
   TaxYearlyReport,
   TaxYearlyReportUnits,
 } from "../../../../../models";
-import { thousandize } from "../../../../../util/formatting";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { TaxYearlyReportMobileDetails } from "./TaxYearlyReportMobileDetails";
-import style from "./TaxYearlyReportList.module.scss";
-import DonationsDistributionTable from "../../../donations/DonationsDistributionTable/DonationsDistributionTable";
-import { FileText } from "react-feather";
 import { TaxYearlyReportListBody } from "./TaxYearlyReportListBody";
 import { TaxYearlyReportListSupplemental } from "./TaxYearlyReportListSupplemental";
+import { AggregatedImpactTableConfiguration } from "../../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
 export const TaxYearlyReportMobileList: React.FC<{
   report: TaxYearlyReport;
   donations: Donation[];
   distribtionMap: Map<string, Distribution>;
-}> = ({ report, donations, distribtionMap }) => {
+  aggregateImpactConfig: AggregatedImpactTableConfiguration;
+}> = ({ report, donations, distribtionMap, aggregateImpactConfig }) => {
   const rowMissingTaxUnits = {
     id: "missingTaxUnits",
     defaultExpanded: false,
@@ -73,6 +71,7 @@ export const TaxYearlyReportMobileList: React.FC<{
             report={report}
             donations={donations}
             distribtionMap={distribtionMap}
+            aggregateImpactConfig={aggregateImpactConfig}
           />
         }
         supplementalOnMobile={true}
