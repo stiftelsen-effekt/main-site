@@ -33,3 +33,35 @@
 .actions ul li span {
   text-decoration: underline;
 }
+
+.caption {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8rem;
+  display: block;
+}
+
+.caption::after {
+  content: "↓";
+  display: inline-block;
+  transition: transform 200ms;
+  transform: rotate(0deg);
+}
+
+.captionopen::after {
+  transform: rotate(180deg);
+}
+
+.impactExplanationContainer {
+  display: flex;
+  padding-top: 1rem;
+  padding-bottom: 0;
+  padding-left: 2rem;
+  flex-direction: column;
+  border-left: 1px solid var(--primary);
+  margin-top: 1rem;
+}
+
+.impactExplanationContainer p {
+  margin: 0;
+}
