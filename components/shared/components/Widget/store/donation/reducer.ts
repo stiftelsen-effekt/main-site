@@ -26,7 +26,6 @@ import {
 
 const initialState: Donation = {
   recurring: RecurringDonation.RECURRING,
-  shareType: ShareType.STANDARD,
   donor: {
     taxDeduction: false,
     newsletter: false,
@@ -55,12 +54,28 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   if (isType(action, fetchOrganizationsAction.done)) {
     state = {
       ...state,
-      shares: action.payload.result.map(
-        (org): OrganizationShare => ({
-          id: org.id,
-          split: org.standardShare,
-        }),
-      ),
+      shares: [
+        {
+          causeArea: "GlobalHealth",
+          shareType: ShareType.STANDARD,
+          organizationShares: action.payload.result.map(
+            (org): OrganizationShare => ({
+              id: org.id,
+              split: org.standardShare,
+            }),
+          ),
+        },
+        {
+          causeArea: "AnimalWelfare",
+          shareType: ShareType.STANDARD,
+          organizationShares: action.payload.result.map(
+            (org): OrganizationShare => ({
+              id: org.id,
+              split: org.standardShare,
+            }),
+          ),
+        },
+      ],
     };
   }
 
@@ -99,7 +114,19 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       };
       break;
     case SET_SHARES:
-      state = { ...state, shares: action.payload.shares };
+      state = {
+        ...state,
+        shares: state.shares.map((s) => {
+          if (s.causeArea === action.payload.causeAreaName) {
+            return {
+              ...s,
+              organizationShares: action.payload.shares,
+            };
+          } else {
+            return s;
+          }
+        }),
+      };
       break;
     case SET_SUM:
       state = { ...state, sum: action.payload.sum };
@@ -123,10 +150,32 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = { ...state, paymentProviderURL: action.payload.url };
       break;
     case SET_SHARE_TYPE:
-      state = { ...state, shareType: action.payload.shareType };
+      state = {
+        ...state,
+        shares: state.shares.map((s) => {
+          if (s.causeArea === action.payload.causeAreaName) {
+            return {
+              ...s,
+              shareType: action.payload.shareType,
+            };
+          }
+          return s;
+        }),
+      };
       break;
     case SELECT_CUSTOM_SHARE:
-      state = { ...state, shareType: ShareType.CUSTOM };
+      state = {
+        ...state,
+        shares: state.shares.map((s) => {
+          if (s.causeArea === action.payload.causeAreaName) {
+            return {
+              ...s,
+              shareType: action.payload.customShare ? ShareType.CUSTOM : ShareType.STANDARD,
+            };
+          }
+          return s;
+        }),
+      };
       break;
     case SET_DONATION_VALID:
       state = { ...state };
@@ -149,18 +198,16 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
    * Parts of the validation is done directly inside DonationPane
    */
 
-  if (
-    state.shareType === ShareType.CUSTOM &&
-    state.shares.reduce((acc, curr) => acc + curr.split, 0) !== 100
-  )
-    return { ...state, isValid: false };
+  let notSummingToHundred = state.shares.some(
+    (shares) =>
+      shares.shareType == ShareType.CUSTOM &&
+      validateOrgSharesSumToHundred(shares.organizationShares) == false,
+  );
+  if (notSummingToHundred) return { ...state, isValid: false };
 
-  let negativeShare = false;
-  state.shares.forEach((share) => {
-    if (share.split < 0) {
-      negativeShare = true;
-    }
-  });
+  let negativeShare = state.shares.some(
+    (shares) => validateOrgSharesNotNegative(shares.organizationShares) == true,
+  );
   if (negativeShare) {
     return { ...state, isValid: false };
   }
@@ -172,4 +219,18 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   }
 
   return { ...state, isValid: true };
+};
+
+const validateOrgSharesSumToHundred: (shares: OrganizationShare[]) => boolean = (
+  shares: OrganizationShare[],
+) => {
+  const sum = shares.reduce((acc, curr) => acc + curr.split, 0);
+  return sum === 100;
+};
+
+const validateOrgSharesNotNegative: (shares: OrganizationShare[]) => boolean = (
+  shares: OrganizationShare[],
+) => {
+  const negativeShare = shares.some((share) => share.split < 0);
+  return !negativeShare;
 };

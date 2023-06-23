@@ -14,16 +14,19 @@ export interface Layout {
   answeredReferral?: boolean;
   height: number;
   loading: boolean;
-  organizations?: Organization[];
+  causeAreas?: CauseAreaOrgs[];
 }
 
 export interface DonationInput {
   method?: PaymentMethod;
   sum?: number;
-  shareType: ShareType;
   recurring: RecurringDonation;
   donor?: Donor;
-  shares: OrganizationShare[];
+  shares: {
+    causeArea: CauseAreaNames;
+    shareType: ShareType;
+    organizationShares: OrganizationShare[];
+  }[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
 }
@@ -89,3 +92,9 @@ export enum PaneNumber {
   ReferralPane = 3,
   ResultPane = 4,
 }
+
+export type CauseAreaNames = "GlobalHealth" | "Longtermism" | "AnimalWelfare" | "Meta";
+export type CauseAreaOrgs = {
+  name: CauseAreaNames;
+  organizations: Organization[];
+};

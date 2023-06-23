@@ -14,7 +14,7 @@ export const SumWrapper = styled.div`
   span {
     position: relative;
     display: inline-flex;
-    max-width: 260px;
+    margin-bottom: 24px;
 
     input {
       background: var(--secondary);
@@ -23,7 +23,7 @@ export const SumWrapper = styled.div`
       border: 1px solid var(--primary);
       color: var(--primary);
       font-size: 28px;
-      max-width: 260px;
+      width: 100%;
     }
 
     &:after {

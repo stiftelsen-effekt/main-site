@@ -1,6 +1,6 @@
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { OrganizationShare } from "../../types/Temp";
-import { VippsAgreement } from "../state";
+import { CauseAreaNames, VippsAgreement } from "../state";
 
 export const SELECT_PAYMENT_METHOD = "SELECT_PAYMENT_METHOD";
 export const SELECT_TAX_DEDUCTION = "SELECT_TAX_DEDUCTION";
@@ -45,6 +45,7 @@ interface SubmitDonorInfo {
 interface SetShares {
   type: typeof SET_SHARES;
   payload: {
+    causeAreaName: CauseAreaNames;
     shares: OrganizationShare[];
   };
 }
@@ -94,6 +95,7 @@ interface SetPaymentProviderURL {
 interface SelectCustomShare {
   type: typeof SELECT_CUSTOM_SHARE;
   payload: {
+    causeAreaName: CauseAreaNames;
     customShare: boolean;
   };
 }
@@ -101,6 +103,7 @@ interface SelectCustomShare {
 interface SetShareType {
   type: typeof SET_SHARE_TYPE;
   payload: {
+    causeAreaName: CauseAreaNames;
     shareType: ShareType;
   };
 }

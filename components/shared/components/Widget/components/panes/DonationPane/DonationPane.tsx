@@ -1,30 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validator from "validator";
-import { setSum, setShareType, setRecurring } from "../../../store/donation/actions";
+import { setSum, setRecurring } from "../../../store/donation/actions";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { State } from "../../../store/state";
-import { RecurringDonation, ShareType } from "../../../types/Enums";
-import { SharesSelection } from "./ShareSelection";
-import {
-  ActionBar,
-  InfoParagraph,
-  ShareSelectionWrapper,
-  SumButtonsWrapper,
-  SumWrapper,
-} from "./DonationPane.style";
-import { SharesSum } from "./SharesSum";
+import { RecurringDonation } from "../../../types/Enums";
+import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
 import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
-import Link from "next/link";
+import { SingleCauseAreaSelector } from "./ShareSelector/SingleCauseAreaSelector";
+import { MultipleCauseAreasSelector } from "./ShareSelector/MultipleCauseAreasSelector";
 
 export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
+  const layout = useSelector((state: State) => state.layout);
 
   const suggestedSums = donation.recurring
     ? text.preset_amounts_recurring
@@ -58,19 +52,21 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
             onSelect={(option) => dispatch(setRecurring(option as RecurringDonation))}
           />
 
-          <SumButtonsWrapper>
-            {suggestedSums.map((suggested) => (
-              <div key={suggested.amount}>
-                <EffektButton
-                  type={EffektButtonType.SECONDARY}
-                  selected={donation.sum === suggested.amount}
-                  onClick={() => dispatch(setSum(suggested.amount))}
-                  noMinWidth={true}
-                >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
-                {suggested.subtext && <i>{suggested.subtext}</i>}
-              </div>
-            ))}
-          </SumButtonsWrapper>
+          {layout.causeAreas?.length === 1 && (
+            <SumButtonsWrapper>
+              {suggestedSums.map((suggested) => (
+                <div key={suggested.amount}>
+                  <EffektButton
+                    type={EffektButtonType.SECONDARY}
+                    selected={donation.sum === suggested.amount}
+                    onClick={() => dispatch(setSum(suggested.amount))}
+                    noMinWidth={true}
+                  >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
+                  {suggested.subtext && <i>{suggested.subtext}</i>}
+                </div>
+              ))}
+            </SumButtonsWrapper>
+          )}
           <SumWrapper>
             <label htmlFor="sum">Annet beløp</label>
             <span>
@@ -92,37 +88,9 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
             </span>
           </SumWrapper>
 
-          <ShareSelectionWrapper>
-            <RadioButtonGroup
-              options={[
-                {
-                  title: text.smart_fordeling_text,
-                  value: ShareType.STANDARD,
-                  data_cy: "radio-smart-share",
-                },
-                {
-                  title: text.choose_your_own_text,
-                  value: ShareType.CUSTOM,
-                  data_cy: "radio-custom-share",
-                },
-              ]}
-              selected={donation.shareType}
-              onSelect={(option) => {
-                dispatch(setShareType(option as ShareType));
-              }}
-            />
-          </ShareSelectionWrapper>
-
-          {donation.shareType === ShareType.STANDARD && (
-            <div>
-              <InfoParagraph>{text.smart_fordeling_description}</InfoParagraph>
-            </div>
-          )}
-          {donation.shareType === ShareType.CUSTOM && (
-            <div>
-              <SharesSelection />
-              <SharesSum />
-            </div>
+          {layout.causeAreas?.length === 1 && false && <SingleCauseAreaSelector text={text} />}
+          {((layout.causeAreas && layout.causeAreas?.length > 1) || true) && (
+            <MultipleCauseAreasSelector />
           )}
         </div>
 

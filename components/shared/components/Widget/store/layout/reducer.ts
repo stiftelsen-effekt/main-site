@@ -30,11 +30,20 @@ const initialState: Layout = {
 export const layoutReducer: Reducer<Layout, LayoutActionTypes> = (
   state: Layout = initialState,
   action: LayoutActionTypes,
-) => {
+): Layout => {
   if (isType(action, fetchOrganizationsAction.done)) {
     return {
       ...state,
-      organizations: action.payload.result,
+      causeAreas: [
+        {
+          name: "GlobalHealth",
+          organizations: action.payload.result,
+        },
+        {
+          name: "AnimalWelfare",
+          organizations: action.payload.result,
+        },
+      ],
     };
   }
 
