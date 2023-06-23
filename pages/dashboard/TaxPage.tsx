@@ -1,26 +1,25 @@
-import Head from "next/head";
-import style from "../../styles/Tax.module.css";
-import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/router";
-import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
-import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { Navbar } from "../../components/profile/layout/navbar";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
-import { MainHeader } from "../../components/shared/layout/Header/Header";
+import Head from "next/head";
 import { useContext } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { linksContentQuery } from "../../_queries";
+import { LinksProps } from "../../components/main/blocks/Links/Links";
+import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
-import { linksContentQuery, linksSelectorQuery, widgetQuery } from "../../_queries";
-import TaxMenu from "../../components/profile/tax/TaxMenu/TaxMenu";
-import { withStaticProps } from "../../util/withStaticProps";
-import { getDashboardPagePath } from "./DonationsPage";
-import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import { ProfileLayout } from "../../components/profile/layout/layout";
+import { Navbar } from "../../components/profile/layout/navbar";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
-import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
-import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
 import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
 import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
-import { LinksProps } from "../../components/main/blocks/Links/Links";
+import TaxMenu from "../../components/profile/tax/TaxMenu/TaxMenu";
+import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
+import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
+import { MainHeader } from "../../components/shared/layout/Header/Header";
+import { getClient } from "../../lib/sanity.server";
+import style from "../../styles/Tax.module.css";
+import { withStaticProps } from "../../util/withStaticProps";
+import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import { getDashboardPagePath } from "./DonationsPage";
 
 export async function getTaxPagePath(): Promise<string[]> {
   const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
@@ -55,9 +54,7 @@ export async function getTaxPageSubPaths(): Promise<string[][]> {
 
 export const TaxPage = withStaticProps(
   async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({
-      layout: LayoutType.Profile,
-    });
+    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
     const result = await getClient(preview).fetch<FetchTaxPageResult>(fetchTaxPage);
 
     const taxPath = await getTaxPagePath();
@@ -227,7 +224,5 @@ const fetchTaxPage = groq`
       current
     },
   },
-  ${footerQuery}
-  ${widgetQuery}
 }
 `;

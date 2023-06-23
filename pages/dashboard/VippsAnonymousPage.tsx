@@ -1,18 +1,18 @@
-import Head from "next/head";
-import "react-toastify/dist/ReactToastify.css";
-import { linksContentQuery, useAnonymousVippsAgreement, widgetQuery } from "../../_queries";
-import styles from "../../styles/Agreements.module.css";
-import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { getClient } from "../../lib/sanity.server";
+import { DateTime } from "luxon";
 import { groq } from "next-sanity";
-import { Navbar } from "../../components/profile/layout/navbar";
-import { footerQuery } from "../../components/shared/layout/Footer/Footer";
-import { MainHeader } from "../../components/shared/layout/Header/Header";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import "react-toastify/dist/ReactToastify.css";
+import { linksContentQuery, useAnonymousVippsAgreement } from "../../_queries";
+import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
+import { ProfileLayout } from "../../components/profile/layout/layout";
+import { Navbar } from "../../components/profile/layout/navbar";
+import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
+import { MainHeader } from "../../components/shared/layout/Header/Header";
+import { getClient } from "../../lib/sanity.server";
+import styles from "../../styles/Agreements.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
-import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
-import { DateTime } from "luxon";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient(false).fetch<FetchVippsAnonymousPageResult>(
@@ -28,9 +28,7 @@ export async function getVippsAnonymousPagePath() {
 }
 
 export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({
-    layout: LayoutType.Profile,
-  });
+  const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
   const result = await getClient(preview).fetch<FetchVippsAnonymousPageResult>(
     fetchVippsAnonymousPage,
   );
@@ -196,8 +194,6 @@ const fetchVippsAnonymousPage = groq`
       },
     }
   },
-  ${widgetQuery}
-  ${footerQuery}
   "vipps": *[_id == "vipps"] {
     anonymous_page->{
       slug {

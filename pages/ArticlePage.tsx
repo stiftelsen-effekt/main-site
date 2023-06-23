@@ -1,21 +1,19 @@
-import React from "react";
-import { getClient } from "../lib/sanity.server";
 import { groq } from "next-sanity";
+import { pageContentQuery } from "../_queries";
+import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { ArticleHeader } from "../components/main/layout/ArticleHeader/ArticleHeader";
-import { Navbar } from "../components/main/layout/navbar";
 import {
   RelatedArticle,
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
-import { pageContentQuery, widgetQuery } from "../_queries";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { withStaticProps } from "../util/withStaticProps";
 import { useRouterContext } from "../context/RouterContext";
+import { getClient } from "../lib/sanity.server";
+import { withStaticProps } from "../util/withStaticProps";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -27,7 +25,7 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
 
 const ArticlePage = withStaticProps(
   async ({ slug, preview }: { slug: string; preview: boolean }) => {
-    const appStaticProps = await getAppStaticProps();
+    const appStaticProps = await getAppStaticProps({ preview });
 
     let result = await getClient(preview).fetch<{
       page: any;
@@ -40,7 +38,7 @@ const ArticlePage = withStaticProps(
       appStaticProps,
       preview: preview,
       data: {
-        result: result,
+        result,
         query: fetchArticle,
         queryParams: { slug },
       },
@@ -115,8 +113,6 @@ const fetchArticle = groq`
       },
     }
   },
-  ${footerQuery}
-  ${widgetQuery}
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,

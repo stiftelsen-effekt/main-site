@@ -1,17 +1,16 @@
 import { groq } from "next-sanity";
-import { getClient } from "../lib/sanity.server";
-import styles from "../styles/Articles.module.css";
-import { SEO } from "../components/shared/seo/Seo";
-import { Navbar } from "../components/main/layout/navbar";
+import { linksContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { Navbar } from "../components/main/layout/navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
-import { footerQuery } from "../components/shared/layout/Footer/Footer";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
-import { linksContentQuery, widgetQuery } from "../_queries";
+import { SEO } from "../components/shared/seo/Seo";
+import { getClient } from "../lib/sanity.server";
+import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
+import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -27,7 +26,7 @@ export const getArticlesPagePath = async () => {
 };
 
 export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps();
+  const appStaticProps = await getAppStaticProps({ preview });
 
   let result = await getClient(preview).fetch(fetchArticles);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
@@ -36,7 +35,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
     appStaticProps,
     preview: preview,
     data: {
-      result: result,
+      result,
       query: fetchArticles,
       queryParams: {},
     },
@@ -125,8 +124,6 @@ const fetchArticles = groq`
       },
     },
   },
-  ${footerQuery}
-  ${widgetQuery}
   "page": *[_type == "articles"] {
     "slug": slug.current,
     header {

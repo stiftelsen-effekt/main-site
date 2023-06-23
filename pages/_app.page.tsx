@@ -10,11 +10,12 @@ import { layoutReducer } from "../components/shared/components/Widget/store/layo
 import { errorReducer } from "../components/shared/components/Widget/store/error/reducer";
 import { watchAll } from "../components/shared/components/Widget/store/root.saga";
 import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
-import { Layout } from "../components/main/layout/layout";
+
 import { usePreviewSubscription } from "../lib/sanity";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { composeWithDevTools } from "@redux-devtools/extension";
+import { Layout } from "../components/main/layout/layout";
 
 export enum LayoutType {
   Default = "default",
@@ -34,44 +35,44 @@ sagaMiddleware.run(watchAll);
 
 function MyApp({
   Component,
-  pageProps,
+  pageProps: { appStaticProps, preview, ...pageProps },
 }: AppProps<{
   preview: boolean;
   data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
   appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
 }>) {
   const routerContextValue = useRef<RouterContextValue | null>(
-    pageProps.appStaticProps?.routerContext || null,
+    appStaticProps?.routerContext || null,
   );
-  const { data: propsData, appStaticProps } = pageProps;
 
-  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
-    appStaticProps?.layout || LayoutType.Default
-  ];
-
-  const { data: previewData, loading: previewLoading } = usePreviewSubscription(propsData?.query, {
-    params: propsData?.queryParams ?? {},
-    initialData: propsData?.result,
-    enabled: pageProps.preview,
-  });
+  const { data: previewData, loading: previewLoading } = usePreviewSubscription(
+    pageProps.data?.query,
+    {
+      params: pageProps.data?.queryParams ?? {},
+      initialData: pageProps.data?.result,
+      enabled: preview,
+    },
+  );
 
   if (pageProps.data) {
+    if (!appStaticProps) {
+      throw new Error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
+    }
+
+    const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
+      appStaticProps.layout
+    ];
+
     if (Array.isArray(previewData.page)) {
-      previewData.page = filterPageToSingleItem(previewData, pageProps.preview);
+      previewData.page = filterPageToSingleItem(previewData, preview);
     }
 
     pageProps.data.result = previewData;
 
-    const widgetData = filterWidgetToSingleItem(previewData, pageProps.preview);
-
     return (
       <Provider store={store}>
         <RouterContext.Provider value={routerContextValue.current}>
-          <PageLayout
-            footerData={pageProps.data.result.footer[0]}
-            widgetData={widgetData}
-            isPreview={pageProps.preview}
-          >
+          <PageLayout {...appStaticProps.layoutProps}>
             <Component {...pageProps} />
           </PageLayout>
         </RouterContext.Provider>
@@ -82,30 +83,23 @@ function MyApp({
   }
 }
 
-export async function getAppStaticProps(options?: { layout?: LayoutType }) {
+export async function getAppStaticProps({
+  preview,
+  layout = LayoutType.Default,
+}: {
+  preview: boolean;
+  layout?: LayoutType;
+}) {
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
-    layout: options?.layout ?? LayoutType.Default,
+    layout,
+    layoutProps: await (layout === LayoutType.Default
+      ? Layout.getStaticProps({ preview })
+      : ProfileLayout.getStaticProps({ preview })),
   };
   return appStaticProps;
 }
-
-export const filterWidgetToSingleItem = (data: any, preview: boolean) => {
-  if (!Array.isArray(data.widget)) {
-    return data.widget;
-  }
-
-  if (data.widget.length === 1) {
-    return data.widget[0];
-  }
-
-  if (preview) {
-    return data.widget.find((item: any) => item._id.startsWith("drafts.")) || data.widget[0];
-  }
-
-  return data.widget[0];
-};
 
 export const filterPageToSingleItem = <T,>(data: { page: T | T[] }, preview: boolean): T | null => {
   if (!Array.isArray(data.page)) {
