@@ -41,7 +41,7 @@ const capitalizeNames = (string: string) => {
 
 export const DonorPane: React.FC<{
   text: WidgetPane2Props;
-  paymentMethods: WidgetProps["methods"];
+  paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
@@ -303,20 +303,14 @@ export const DonorPane: React.FC<{
             </div>
 
             <RadioButtonGroup
-              options={[
-                {
-                  title: text.payment_method_selector_bank_text,
-                  value: PaymentMethod.BANK,
-                  data_cy: "bank-method",
-                },
-                ...(paymentMethods || []).map((method) => ({
-                  title: method.selector_text,
-                  value: {
-                    vipps: PaymentMethod.VIPPS,
-                  }[method._id],
-                  data_cy: `${method._id}-method`,
-                })),
-              ]}
+              options={paymentMethods.map((method) => ({
+                title: method.selector_text,
+                value: {
+                  vipps: PaymentMethod.VIPPS,
+                  bank: PaymentMethod.BANK,
+                }[method._id],
+                data_cy: `${method._id}-method`,
+              }))}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}
             />
