@@ -6,15 +6,15 @@ import {
   WidgetPane3BankRecurringProps,
   WidgetPane3BankSingleProps,
   WidgetPane3ReferralsProps,
+  WidgetProps,
 } from "../../../types/WidgetProps";
 import { ResultPane } from "./Bank/ResultPane";
 import { VippsPane } from "./Vipps/VippsPane";
-import { VippsProps } from "../../../types/VippsProps";
 
 export const PaymentPane: React.FC<{
   text: WidgetPane3BankRecurringProps & WidgetPane3BankSingleProps & WidgetPane3ReferralsProps;
-  vipps?: VippsProps;
-}> = ({ text, vipps }) => {
+  paymentMethods: WidgetProps["methods"];
+}> = ({ text, paymentMethods }) => {
   const method = useSelector((state: State) => state.donation.method);
 
   switch (method) {
@@ -38,15 +38,16 @@ export const PaymentPane: React.FC<{
       );
     }
     case PaymentMethod.VIPPS: {
-      if (!vipps) {
+      const vippsConfiguration = paymentMethods.find((method) => method._id === "vipps");
+      if (!vippsConfiguration) {
         throw new Error("Missing configuration for Vipps, but selected payment method is vipps");
       }
       return (
         <VippsPane
-          text={{
+          referrals={{
             pane3_referrals_title: text.pane3_referrals_title,
           }}
-          vipps={vipps}
+          vipps={vippsConfiguration}
         />
       );
     }

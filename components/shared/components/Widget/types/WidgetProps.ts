@@ -2,7 +2,20 @@ export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3BankRecurringProps &
   WidgetPane3BankSingleProps &
-  WidgetPane3ReferralsProps;
+  WidgetPane3ReferralsProps & {
+    methods: Array<VippsPaymentMethod>;
+  };
+
+export type VippsPaymentMethod = {
+  _id: "vipps";
+  selector_text: string;
+  recurring_title: string;
+  recurring_selector_earliest_text: string;
+  recurring_selector_choose_date_text: string;
+  recurring_button_text: string;
+  single_title: string;
+  single_button_text: string;
+};
 
 export type WidgetPane1Props = {
   single_donation_text: string;

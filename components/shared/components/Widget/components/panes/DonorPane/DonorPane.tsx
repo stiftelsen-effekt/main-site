@@ -20,10 +20,9 @@ import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import Link from "next/link";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
-import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { Donor } from "../../../../../../../models";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
-import { WidgetPane2Props } from "../../../types/WidgetProps";
+import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -41,8 +40,8 @@ const capitalizeNames = (string: string) => {
 };
 
 export const DonorPane: React.FC<{
-  text: Omit<WidgetPane2Props, "payment_method_selector_bank_text">;
-  paymentMethods: { id: PaymentMethod.BANK | PaymentMethod.VIPPS; text: string }[];
+  text: WidgetPane2Props;
+  paymentMethods: WidgetProps["methods"];
 }> = ({ text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
@@ -304,14 +303,20 @@ export const DonorPane: React.FC<{
             </div>
 
             <RadioButtonGroup
-              options={paymentMethods.map((method) => ({
-                title: method.text,
-                value: method.id,
-                data_cy: {
-                  [PaymentMethod.BANK]: "bank-method",
-                  [PaymentMethod.VIPPS]: "vipps-method",
-                }[method.id],
-              }))}
+              options={[
+                {
+                  title: text.payment_method_selector_bank_text,
+                  value: PaymentMethod.BANK,
+                  data_cy: "bank-method",
+                },
+                ...paymentMethods.map((method) => ({
+                  title: method.selector_text,
+                  value: {
+                    vipps: PaymentMethod.VIPPS,
+                  }[method._id],
+                  data_cy: `${method._id}-method`,
+                })),
+              ]}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}
             />

@@ -10,13 +10,12 @@ import { ErrorField } from "../../../shared/Error/ErrorField";
 import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
 import { VippsButtonWrapper } from "./VippsPane.style";
-import { WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
-import { VippsProps } from "../../../../types/VippsProps";
+import { VippsPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
 
 export const VippsPane: React.FC<{
-  text: WidgetPane3ReferralsProps;
-  vipps: VippsProps;
-}> = ({ text, vipps }) => {
+  referrals: WidgetPane3ReferralsProps;
+  vipps: VippsPaymentMethod;
+}> = ({ referrals, vipps }) => {
   const dispatch = useDispatch();
   const donationState = useSelector((state: State) => state.donation);
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
@@ -96,7 +95,7 @@ export const VippsPane: React.FC<{
         {(!hasAnswerredReferral || donorID == 1464) && (
           <Referrals
             text={{
-              pane3_referrals_title: text.pane3_referrals_title,
+              pane3_referrals_title: referrals.pane3_referrals_title,
             }}
           />
         )}

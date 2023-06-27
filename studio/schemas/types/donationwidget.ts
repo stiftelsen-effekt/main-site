@@ -6,7 +6,6 @@ export default {
     {
       name: "pane1",
       title: "Pane 1",
-      default: true,
     },
     {
       name: "pane2",
@@ -26,6 +25,21 @@ export default {
     },
   ],
   fields: [
+    {
+      name: "methods",
+      type: "array",
+      title: "Payment methods",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "vipps" }],
+          validation: (Rule: any) => Rule.required(),
+          options: {
+            disableNew: true,
+          },
+        },
+      ],
+    },
     //Single / monthly donation text
     {
       name: "single_donation_text",

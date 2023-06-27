@@ -13,25 +13,29 @@ import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
-import { PaymentMethod } from "../types/Enums";
-import { VippsProps } from "../types/VippsProps";
 
 type QueryResult = {
   widget: [WidgetProps];
-  vipps?: [VippsProps];
 };
 
 const widgetQuery = groq`
   {
-    "widget": *[_type == "donationwidget"],
-    "vipps": *[_id == "vipps"] {
-      selector_text,
-      recurring_title,
-      recurring_selector_earliest_text,
-      recurring_selector_choose_date_text,
-      recurring_button_text,
-      single_title,
-      single_button_text,
+    "widget": *[_type == "donationwidget"] {
+      ...,
+      methods[] { 
+        _type == 'reference' => @->{
+          _type == 'vipps' => {
+            _id,
+            selector_text,
+            recurring_title,
+            recurring_selector_earliest_text,
+            recurring_selector_choose_date_text,
+            recurring_button_text,
+            single_title,
+            single_button_text,
+          }
+        },
+      }
     }
   }
 `;
@@ -41,11 +45,12 @@ export const WidgetTooltipContext = createContext<[string | null, any]>([null, (
 export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) => {
   const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
 
+  const widget = result.widget[0];
+
   return {
-    widget: result.widget[0],
-    vipps: result.vipps?.[0],
+    widget,
   };
-})(({ widget, vipps }) => {
+})(({ widget }) => {
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
@@ -87,21 +92,6 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
-  const paymentMethods = [
-    {
-      id: PaymentMethod.BANK,
-      text: widget.payment_method_selector_bank_text,
-    } as const,
-    ...(vipps
-      ? [
-          {
-            id: PaymentMethod.VIPPS,
-            text: vipps.selector_text,
-          } as const,
-        ]
-      : []),
-  ];
-
   const [tooltip, setTooltip] = useState<string | null>(null);
 
   return (
@@ -140,8 +130,9 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               newsletter_selector_text: widget.newsletter_selector_text,
               privacy_policy_text: widget.privacy_policy_text,
               pane2_button_text: widget.pane2_button_text,
+              payment_method_selector_bank_text: widget.payment_method_selector_bank_text,
             }}
-            paymentMethods={paymentMethods}
+            paymentMethods={widget.methods}
           />
           <PaymentPane
             text={{
@@ -157,7 +148,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               pane3_bank_single_explanatory_text: widget.pane3_bank_single_explanatory_text,
               pane3_referrals_title: widget.pane3_referrals_title,
             }}
-            vipps={vipps}
+            paymentMethods={widget.methods}
           />
         </Carousel>
       </WidgetTooltipContext.Provider>
