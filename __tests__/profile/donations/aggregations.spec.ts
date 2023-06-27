@@ -1,6 +1,6 @@
 import { expect, jest, test } from "@jest/globals";
 
-import { aggregateOrgSumByYearAndMonth } from "../../../components/profile/donations/DonationsDistributionTable/_util";
+import { aggregateOrgSumByYearAndMonth } from "../../../components/profile/donations/DonationsAggregateImpactTable/_util";
 import { Distribution, Donation, GiveWellGrant } from "../../../models";
 
 const donations: Donation[] = [

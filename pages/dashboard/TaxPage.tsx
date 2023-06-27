@@ -11,6 +11,7 @@ import { Navbar } from "../../components/profile/layout/navbar";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
 import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
+import { AggregatedImpactTableConfiguration } from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 import TaxMenu from "../../components/profile/tax/TaxMenu/TaxMenu";
 import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
@@ -89,7 +90,9 @@ export const TaxPage = withStaticProps(
   if (!menuChoice || menuChoice?._type == "taxunits") {
     pageContent = <TaxUnitsTab />;
   } else if (menuChoice?._type == "taxstatements") {
-    pageContent = <YearlyReportsTab />;
+    pageContent = (
+      <YearlyReportsTab aggregatedImpactConfiguration={menuChoice.aggregate_estimated_impact} />
+    );
   } else if (menuChoice?._type == "metareceipt") {
     if (!donor) return <ErrorMessage>Missing donor</ErrorMessage>;
     pageContent = (
@@ -137,7 +140,10 @@ export const TaxPage = withStaticProps(
 });
 
 type FetchTaxPageResult = {
-  settings: any[];
+  settings: Array<{
+    logo?: any;
+    main_currency?: string;
+  }>;
   page: Array<{
     title?: string;
     features?: TaxPageFeature[];
@@ -168,6 +174,7 @@ export type TaxDeductionData = TaxFeatureProps & {
 
 export type TaxStatementsData = TaxFeatureProps & {
   _type: "taxstatements";
+  aggregate_estimated_impact: AggregatedImpactTableConfiguration;
 };
 
 export type MetaReceiptData = TaxFeatureProps & {
@@ -184,6 +191,7 @@ const fetchTaxPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+    main_currency,
   },
   "dashboard": *[_id == "dashboard"] {
     tax_slug {
@@ -217,6 +225,14 @@ const fetchTaxPage = groq`
         links {
           ...,
           ${linksContentQuery}
+        }
+      },
+      _type == "taxstatements" => {
+        ...,
+        aggregate_estimated_impact -> {
+          ...,
+          "currency": *[ _type == "site_settings"][0].main_currency,
+          "locale": *[ _type == "site_settings"][0].main_locale,
         }
       },
     },

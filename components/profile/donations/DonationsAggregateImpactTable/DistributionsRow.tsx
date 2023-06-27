@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import { thousandize, thousandizeString } from "../../../../util/formatting";
-import style from "./DonationsDistributionTable.module.scss";
+import style from "./DonationsAggregateImpactTable.module.scss";
 import { AggregatedImpact } from "./_util";
 
 const multiFetcher = (...urls: string[]) => {
