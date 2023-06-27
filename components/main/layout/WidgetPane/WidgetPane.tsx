@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { WidgetProps } from "../../../shared/components/Widget/types/WidgetProps";
 import { WidgetContext } from "../layout";
 import styles from "./WidgetPane.module.scss";
-import { VippsProps } from "../../../shared/components/Widget/types/VippsProps";
 
 const Widget = dynamic<Props>(
   () => import("../../../shared/components/Widget/components/Widget").then((mod) => mod.Widget),
@@ -15,10 +14,9 @@ const Widget = dynamic<Props>(
 interface Props {
   darkMode?: boolean;
   widget: WidgetProps;
-  vipps: VippsProps | undefined;
 }
 
-export const WidgetPane: React.FC<Props> = ({ darkMode, widget, vipps }) => {
+export const WidgetPane: React.FC<Props> = ({ darkMode, widget }) => {
   const followThreshold = 20;
   const closeThreshold = 140;
   const [initialY, setInitialY] = useState(0);
@@ -82,7 +80,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, widget, vipps }) => {
         }}
       ></div>
       <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
-        <Widget widget={widget} vipps={vipps} />
+        <Widget widget={widget} />
       </div>
     </aside>
   );
