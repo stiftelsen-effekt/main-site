@@ -1,7 +1,7 @@
 export default {
   name: "vipps",
   type: "document",
-  title: "Vipps payment provider",
+  title: "Vipps payment method",
   groups: [
     {
       name: "single",

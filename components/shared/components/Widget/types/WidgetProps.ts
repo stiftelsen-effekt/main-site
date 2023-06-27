@@ -1,9 +1,7 @@
 export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
-  WidgetPane3BankRecurringProps &
-  WidgetPane3BankSingleProps &
   WidgetPane3ReferralsProps & {
-    methods?: Array<VippsPaymentMethod>;
+    methods?: Array<VippsPaymentMethod | BankPaymentMethod>;
   };
 
 export type VippsPaymentMethod = {
@@ -15,6 +13,19 @@ export type VippsPaymentMethod = {
   recurring_button_text: string;
   single_title: string;
   single_button_text: string;
+};
+
+export type BankPaymentMethod = {
+  _id: "bank";
+  selector_text: string;
+  single_title: string;
+  single_kontonr_title: string;
+  single_kid_title: string;
+  single_explanatory_text: string;
+  recurring_title: string;
+  recurring_selector_earliest_text: string;
+  recurring_selector_choose_date_text: string;
+  recurring_button_text: string;
 };
 
 export type WidgetPane1Props = {
@@ -43,22 +54,7 @@ export type WidgetPane2Props = {
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
   privacy_policy_text: string;
-  payment_method_selector_bank_text: string;
   pane2_button_text: string;
-};
-
-export type WidgetPane3BankSingleProps = {
-  pane3_bank_single_title: string;
-  pane3_bank_single_kontonr_title: string;
-  pane3_bank_single_kid_title: string;
-  pane3_bank_single_explanatory_text: string;
-};
-
-export type WidgetPane3BankRecurringProps = {
-  pane3_bank_recurring_title: string;
-  pane3_bank_recurring_selector_earliest_text: string;
-  pane3_bank_recurring_selector_choose_date_text: string;
-  pane3_bank_recurring_button_text: string;
 };
 
 export type WidgetPane3ReferralsProps = {

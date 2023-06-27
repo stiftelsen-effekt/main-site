@@ -158,15 +158,19 @@ export default () =>
         .icon(Settings)
         .child(S.document().schemaType("site_settings").documentId("site_settings")),
       S.listItem()
-        .title("Payment providers")
+        .title("Payment methods")
         .icon(Tool)
         .child(
           S.list()
-            .title("Payment providers")
+            .title("Payment methods")
             .items([
               S.listItem()
+                .title("Bank")
+                .icon(Briefcase)
+                .child(S.document().schemaType("bank").documentId("bank")),
+              S.listItem()
                 .title("Vipps")
-                .icon(Tool)
+                .icon(Phone)
                 .child(S.document().schemaType("vipps").documentId("vipps")),
             ]),
         ),
