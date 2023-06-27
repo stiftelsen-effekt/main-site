@@ -309,7 +309,7 @@ export const DonorPane: React.FC<{
                   value: PaymentMethod.BANK,
                   data_cy: "bank-method",
                 },
-                ...paymentMethods.map((method) => ({
+                ...(paymentMethods || []).map((method) => ({
                   title: method.selector_text,
                   value: {
                     vipps: PaymentMethod.VIPPS,

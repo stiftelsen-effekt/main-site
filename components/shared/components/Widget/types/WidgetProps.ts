@@ -3,7 +3,7 @@ export type WidgetProps = WidgetPane1Props &
   WidgetPane3BankRecurringProps &
   WidgetPane3BankSingleProps &
   WidgetPane3ReferralsProps & {
-    methods: Array<VippsPaymentMethod>;
+    methods?: Array<VippsPaymentMethod>;
   };
 
 export type VippsPaymentMethod = {

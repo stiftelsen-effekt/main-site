@@ -38,7 +38,7 @@ export const PaymentPane: React.FC<{
       );
     }
     case PaymentMethod.VIPPS: {
-      const vippsConfiguration = paymentMethods.find((method) => method._id === "vipps");
+      const vippsConfiguration = paymentMethods?.find((method) => method._id === "vipps");
       if (!vippsConfiguration) {
         throw new Error("Missing configuration for Vipps, but selected payment method is vipps");
       }
