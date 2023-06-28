@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/studio' && npm i --prefix studio && npm run build --prefix studio -- ../public/studio -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/studio' && npm i --prefix studio && cross-env SANITY_STUDIO_SITE_URL=$NEXT_PUBLIC_SITE_URL SANITY_STUDIO_VERCEL_ENV=$VERCEL_ENV SANITY_STUDIO_VERCEL_URL=$VERCEL_URL npm run build --prefix studio -- ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "dotenv -e .env.local npm run start -- --prefix studio",
     "sanity:edit": "dotenv -e .env.local npm run edit -- --prefix studio",
