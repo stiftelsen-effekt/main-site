@@ -10,7 +10,6 @@ import { AgreementsPage } from "./dashboard/AgreementsPage";
 import { ProfilePage } from "./dashboard/ProfilePage";
 import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
 import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
-import vipps from "../studio/schemas/types/paymentproviders/vipps";
 
 enum PageType {
   GenericPage = "generic",

@@ -1,7 +1,8 @@
+import { env } from "./env";
+
 export default function resolveProductionUrl(doc: any) {
-  const baseUrl = process.env.SANITY_STUDIO_VERCEL_URL
-    ? `https://${process.env.SANITY_STUDIO_VERCEL_URL}`
-    : `http://localhost:3000`;
+  const baseUrl = env.VERCEL_ENV === "preview" ? env.VERCEL_URL : env.SITE_URL;
+  if (!baseUrl) throw new Error("No SITE_URL or VERCEL_URL env var provided");
   const previewUrl = new URL(baseUrl);
 
   previewUrl.pathname = `/api/preview`;
