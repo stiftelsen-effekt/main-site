@@ -2,7 +2,6 @@ import { PortableText } from "@portabletext/react";
 import React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
-import citation from "../../../../studio/schemas/types/citation";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
 
