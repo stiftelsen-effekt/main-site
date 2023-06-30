@@ -20,7 +20,23 @@ type QueryResult = {
 
 const widgetQuery = groq`
   {
-    "widget": *[_type == "donationwidget"]
+    "widget": *[_type == "donationwidget"] {
+      ...,
+      methods[] { 
+        _type == 'reference' => @->{
+          _type == 'vipps' => {
+            _id,
+            selector_text,
+            recurring_title,
+            recurring_selector_earliest_text,
+            recurring_selector_choose_date_text,
+            recurring_button_text,
+            single_title,
+            single_button_text,
+          }
+        },
+      }
+    }
   }
 `;
 
@@ -29,10 +45,12 @@ export const WidgetTooltipContext = createContext<[string | null, any]>([null, (
 export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) => {
   const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
 
+  const widget = result.widget[0];
+
   return {
-    text: result.widget[0],
+    widget,
   };
-})(({ text }) => {
+})(({ widget }) => {
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
@@ -91,53 +109,46 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
         <Carousel minHeight={scaledHeight - 116}>
           <DonationPane
             text={{
-              single_donation_text: text.single_donation_text,
-              monthly_donation_text: text.monthly_donation_text,
-              preset_amounts_recurring: text.preset_amounts_recurring,
-              preset_amounts_single: text.preset_amounts_single,
-              smart_fordeling_text: text.smart_fordeling_text,
-              smart_fordeling_description: text.smart_fordeling_description,
-              choose_your_own_text: text.choose_your_own_text,
-              pane1_button_text: text.pane1_button_text,
+              single_donation_text: widget.single_donation_text,
+              monthly_donation_text: widget.monthly_donation_text,
+              preset_amounts_recurring: widget.preset_amounts_recurring,
+              preset_amounts_single: widget.preset_amounts_single,
+              smart_fordeling_text: widget.smart_fordeling_text,
+              smart_fordeling_description: widget.smart_fordeling_description,
+              choose_your_own_text: widget.choose_your_own_text,
+              pane1_button_text: widget.pane1_button_text,
             }}
           />
           <DonorPane
             text={{
-              anon_button_text: text.anon_button_text,
-              name_placeholder: text.name_placeholder,
-              email_placeholder: text.email_placeholder,
-              tax_deduction_selector_text: text.tax_deduction_selector_text,
-              tax_deduction_ssn_placeholder: text.tax_deduction_ssn_placeholder,
-              tax_deduction_tooltip_text: text.tax_deduction_tooltip_text,
-              newsletter_selector_text: text.newsletter_selector_text,
-              privacy_policy_text: text.privacy_policy_text,
-              payment_method_selector_bank_text: text.payment_method_selector_bank_text,
-              payment_method_selector_vipps_text: text.payment_method_selector_vipps_text,
-              pane2_button_text: text.pane2_button_text,
+              anon_button_text: widget.anon_button_text,
+              name_placeholder: widget.name_placeholder,
+              email_placeholder: widget.email_placeholder,
+              tax_deduction_selector_text: widget.tax_deduction_selector_text,
+              tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
+              tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
+              newsletter_selector_text: widget.newsletter_selector_text,
+              privacy_policy_text: widget.privacy_policy_text,
+              pane2_button_text: widget.pane2_button_text,
+              payment_method_selector_bank_text: widget.payment_method_selector_bank_text,
             }}
+            paymentMethods={widget.methods}
           />
           <PaymentPane
             text={{
-              pane3_bank_recurring_title: text.pane3_bank_recurring_title,
+              pane3_bank_recurring_title: widget.pane3_bank_recurring_title,
               pane3_bank_recurring_selector_earliest_text:
-                text.pane3_bank_recurring_selector_earliest_text,
+                widget.pane3_bank_recurring_selector_earliest_text,
               pane3_bank_recurring_selector_choose_date_text:
-                text.pane3_bank_recurring_selector_choose_date_text,
-              pane3_bank_recurring_button_text: text.pane3_bank_recurring_button_text,
-              pane3_bank_single_title: text.pane3_bank_single_title,
-              pane3_bank_single_kontonr_title: text.pane3_bank_single_kontonr_title,
-              pane3_bank_single_kid_title: text.pane3_bank_single_kid_title,
-              pane3_bank_single_explanatory_text: text.pane3_bank_single_explanatory_text,
-              pane3_vipps_single_title: text.pane3_vipps_single_title,
-              pane3_vipps_single_button_text: text.pane3_vipps_single_button_text,
-              pane3_vipps_recurring_title: text.pane3_vipps_recurring_title,
-              pane3_vipps_recurring_selector_earliest_text:
-                text.pane3_vipps_recurring_selector_earliest_text,
-              pane3_vipps_recurring_selector_choose_date_text:
-                text.pane3_vipps_recurring_selector_choose_date_text,
-              pane3_vipps_recurring_button_text: text.pane3_vipps_recurring_button_text,
-              pane3_referrals_title: text.pane3_referrals_title,
+                widget.pane3_bank_recurring_selector_choose_date_text,
+              pane3_bank_recurring_button_text: widget.pane3_bank_recurring_button_text,
+              pane3_bank_single_title: widget.pane3_bank_single_title,
+              pane3_bank_single_kontonr_title: widget.pane3_bank_single_kontonr_title,
+              pane3_bank_single_kid_title: widget.pane3_bank_single_kid_title,
+              pane3_bank_single_explanatory_text: widget.pane3_bank_single_explanatory_text,
+              pane3_referrals_title: widget.pane3_referrals_title,
             }}
+            paymentMethods={widget.methods}
           />
         </Carousel>
       </WidgetTooltipContext.Provider>

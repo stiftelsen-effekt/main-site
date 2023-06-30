@@ -20,10 +20,9 @@ import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import Link from "next/link";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
-import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
 import { Donor } from "../../../../../../../models";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
-import { WidgetPane2Props } from "../../../types/WidgetProps";
+import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -40,7 +39,10 @@ const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
 
-export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
+export const DonorPane: React.FC<{
+  text: WidgetPane2Props;
+  paymentMethods: WidgetProps["methods"];
+}> = ({ text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
   const method = useSelector((state: State) => state.donation.method);
@@ -307,11 +309,13 @@ export const DonorPane: React.FC<{ text: WidgetPane2Props }> = ({ text }) => {
                   value: PaymentMethod.BANK,
                   data_cy: "bank-method",
                 },
-                {
-                  title: text.payment_method_selector_vipps_text,
-                  value: PaymentMethod.VIPPS,
-                  data_cy: "vipps-method",
-                },
+                ...(paymentMethods || []).map((method) => ({
+                  title: method.selector_text,
+                  value: {
+                    vipps: PaymentMethod.VIPPS,
+                  }[method._id],
+                  data_cy: `${method._id}-method`,
+                })),
               ]}
               selected={method}
               onSelect={(option) => dispatch(selectPaymentMethod(option))}

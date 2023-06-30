@@ -13,10 +13,10 @@ const Widget = dynamic<Props>(
 
 interface Props {
   darkMode?: boolean;
-  text: WidgetProps;
+  widget: WidgetProps;
 }
 
-export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
+export const WidgetPane: React.FC<Props> = ({ darkMode, widget }) => {
   const followThreshold = 20;
   const closeThreshold = 140;
   const [initialY, setInitialY] = useState(0);
@@ -80,7 +80,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, text }) => {
         }}
       ></div>
       <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
-        <Widget text={text} />
+        <Widget widget={widget} />
       </div>
     </aside>
   );
