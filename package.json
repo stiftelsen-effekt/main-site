@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/studio' && export SANITY_STUDIO_VERCEL_ENV=$VERCEL_ENV && export SANITY_STUDIO_VERCEL_URL=$VERCEL_URL && cd studio && npm i && npx @sanity/cli build ../public/studio -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/studio' && npm i --prefix studio && cross-env SANITY_STUDIO_SITE_URL=$NEXT_PUBLIC_SITE_URL SANITY_STUDIO_VERCEL_ENV=$VERCEL_ENV SANITY_STUDIO_VERCEL_URL=$VERCEL_URL npm run build --prefix studio -- ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "dotenv -e .env.local npm run start -- --prefix studio",
     "sanity:edit": "dotenv -e .env.local npm run edit -- --prefix studio",
@@ -25,7 +25,6 @@
     "@observablehq/plot": "^0.6.8",
     "@portabletext/react": "^2.0.0",
     "@redux-devtools/extension": "^3.2.5",
-    "@sanity/cli": "^2.30.0",
     "@sanity/image-url": "^1.0.2",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
     "auth0": "^3.2.0",
