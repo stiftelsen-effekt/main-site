@@ -26,11 +26,11 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
   };
 
   const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 150) {
+    if (touchStart - touchEnd > 100) {
       setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1));
     }
 
-    if (touchStart - touchEnd < -150) {
+    if (touchStart - touchEnd < -100) {
       setCurrentTestimony(Math.max(0, currentTestimony - 1));
     }
   };
