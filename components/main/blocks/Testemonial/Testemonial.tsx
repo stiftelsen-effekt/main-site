@@ -14,6 +14,27 @@ export interface Testimony {
 export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonies }) => {
   const [currentTestimony, setCurrentTestimony] = React.useState(0);
 
+  const [touchStart, setTouchStart] = React.useState(0);
+  const [touchEnd, setTouchEnd] = React.useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 150) {
+      setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1));
+    }
+
+    if (touchStart - touchEnd < -150) {
+      setCurrentTestimony(Math.max(0, currentTestimony - 1));
+    }
+  };
+
   return (
     <section className={styles.wrapper}>
       {testimonies.length > 1 && (
@@ -29,7 +50,12 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
           <div>←</div>
         </button>
       )}
-      <div className={styles.testimonialtrack}>
+      <div
+        className={styles.testimonialtrack}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
           className={styles.testimonialtrackinner}
           style={{ transform: `translateX(${currentTestimony * -100}%)` }}
