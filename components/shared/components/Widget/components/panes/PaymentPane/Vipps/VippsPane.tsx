@@ -14,8 +14,8 @@ import { VippsPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types
 
 export const VippsPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
-  vipps: VippsPaymentMethod;
-}> = ({ referrals, vipps }) => {
+  config: VippsPaymentMethod;
+}> = ({ referrals, config }) => {
   const dispatch = useDispatch();
   const donationState = useSelector((state: State) => state.donation);
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
@@ -30,12 +30,12 @@ export const VippsPane: React.FC<{
         {recurring === RecurringDonation.RECURRING && (
           <>
             <div>
-              <PaneTitle>{vipps.recurring_title}</PaneTitle>
+              <PaneTitle>{config.recurring_title}</PaneTitle>
               <div style={{ paddingTop: 20, marginBottom: 30 }}>
                 <RadioButtonGroup
                   options={[
-                    { title: vipps.recurring_selector_earliest_text, value: 0 },
-                    { title: vipps.recurring_selector_choose_date_text, value: 1 },
+                    { title: config.recurring_selector_earliest_text, value: 0 },
+                    { title: config.recurring_selector_choose_date_text, value: 1 },
                   ]}
                   selected={chooseChargeDay}
                   onSelect={(option: number) => {
@@ -64,7 +64,7 @@ export const VippsPane: React.FC<{
                     (document.activeElement as HTMLElement).blur();
                   }}
                 >
-                  {vipps.recurring_button_text}
+                  {config.recurring_button_text}
                 </SubmitButton>
               </div>
             </CenterDiv>
@@ -73,7 +73,7 @@ export const VippsPane: React.FC<{
         {recurring === RecurringDonation.NON_RECURRING && (
           <>
             <div>
-              <PaneTitle>{vipps.single_title}</PaneTitle>
+              <PaneTitle>{config.single_title}</PaneTitle>
             </div>
             <CenterDiv>
               <VippsButtonWrapper data-cy="vipps-single-button">
@@ -85,7 +85,7 @@ export const VippsPane: React.FC<{
                     (document.activeElement as HTMLElement).blur();
                   }}
                 >
-                  {vipps.single_button_text}
+                  {config.single_button_text}
                 </SubmitButton>
               </VippsButtonWrapper>
             </CenterDiv>

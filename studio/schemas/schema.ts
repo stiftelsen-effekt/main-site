@@ -53,7 +53,7 @@ import inngress from "./types/inngress";
 import giveblock from "./types/giveblock";
 import givewellstamp from "./types/givewellstamp";
 import organizationslist from "./types/organizationslist";
-import vipps from "./types/paymentproviders/vipps";
+import vipps from "./types/paymentmethods/vipps";
 import vippsAnonymous from "./dashboard/vipps-anonymous";
 import aggregateestimatedimpact from "./types/aggregateestimatedimpact";
 import donationstableconfiguration from "./types/donationstableconfiguration";
@@ -67,9 +67,12 @@ import metareceipt from "./dashboard/tax/metareceipt";
 import taxdeduction from "./dashboard/tax/taxdeduction";
 import taxstatements from "./dashboard/tax/taxstatements";
 import donationstabledetailsconfiguration from "./types/donationstabledetailsconfiguration";
+import bank from "./types/paymentmethods/bank";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
+
+const paymentMethods = [vipps, bank] as const;
 
 export const types = [
   teasers,
@@ -115,7 +118,6 @@ export const types = [
   giveblock,
   givewellstamp,
   organizationslist,
-  vipps,
   vippsAnonymous,
   aggregateestimatedimpact,
   donationstableconfiguration,
@@ -132,5 +134,12 @@ export default createSchema({
   name: "default",
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
-  types: schemaTypes.concat(pages, dashboardpages, types, [siteSettings], [dashboard]),
+  types: schemaTypes.concat(
+    pages,
+    dashboardpages,
+    types,
+    paymentMethods,
+    [siteSettings],
+    [dashboard],
+  ),
 });

@@ -33,7 +33,10 @@ const widgetQuery = groq`
             recurring_button_text,
             single_title,
             single_button_text,
-          }
+          },
+          _type == 'bank' => {
+            ...
+          },
         },
       }
     }
@@ -46,6 +49,10 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
 
   const widget = result.widget[0];
+
+  if (!widget.methods?.length) {
+    throw new Error("No payment methods found");
+  }
 
   return {
     widget,
@@ -130,25 +137,14 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               newsletter_selector_text: widget.newsletter_selector_text,
               privacy_policy_text: widget.privacy_policy_text,
               pane2_button_text: widget.pane2_button_text,
-              payment_method_selector_bank_text: widget.payment_method_selector_bank_text,
             }}
-            paymentMethods={widget.methods}
+            paymentMethods={widget.methods!}
           />
           <PaymentPane
-            text={{
-              pane3_bank_recurring_title: widget.pane3_bank_recurring_title,
-              pane3_bank_recurring_selector_earliest_text:
-                widget.pane3_bank_recurring_selector_earliest_text,
-              pane3_bank_recurring_selector_choose_date_text:
-                widget.pane3_bank_recurring_selector_choose_date_text,
-              pane3_bank_recurring_button_text: widget.pane3_bank_recurring_button_text,
-              pane3_bank_single_title: widget.pane3_bank_single_title,
-              pane3_bank_single_kontonr_title: widget.pane3_bank_single_kontonr_title,
-              pane3_bank_single_kid_title: widget.pane3_bank_single_kid_title,
-              pane3_bank_single_explanatory_text: widget.pane3_bank_single_explanatory_text,
+            referrals={{
               pane3_referrals_title: widget.pane3_referrals_title,
             }}
-            paymentMethods={widget.methods}
+            paymentMethods={widget.methods!}
           />
         </Carousel>
       </WidgetTooltipContext.Provider>
