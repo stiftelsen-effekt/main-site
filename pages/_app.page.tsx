@@ -71,7 +71,6 @@ function MyApp({
     pageProps.data.result = previewData;
 
     const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
-    console.log(process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN);
 
     return (
       <PlausibleProvider domain={plausibleDomain} trackOutboundLinks={true}>
