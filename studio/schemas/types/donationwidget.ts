@@ -225,4 +225,11 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Donation widget",
+      };
+    },
+  },
 } as const;
