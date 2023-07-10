@@ -10,6 +10,7 @@ import {
   Lock,
   Paperclip,
   Phone,
+  PhoneCall,
   Settings,
   Tool,
   User,
@@ -172,6 +173,10 @@ export default () =>
                 .title("Vipps")
                 .icon(Phone)
                 .child(S.document().schemaType("vipps").documentId("vipps")),
+              S.listItem()
+                .title("Swish")
+                .icon(PhoneCall)
+                .child(S.document().schemaType("swish").documentId("swish")),
             ]),
         ),
     ]);

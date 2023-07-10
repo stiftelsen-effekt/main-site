@@ -33,7 +33,7 @@ export default {
       of: [
         {
           type: "reference",
-          to: [{ type: "vipps" }, { type: "bank" }],
+          to: [{ type: "bank" }, { type: "vipps" }, { type: "swish" }],
           validation: (Rule: any) => Rule.required(),
           options: {
             disableNew: true,
