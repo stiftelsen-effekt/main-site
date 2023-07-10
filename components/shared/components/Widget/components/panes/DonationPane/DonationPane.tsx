@@ -20,9 +20,12 @@ import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektB
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
-import Link from "next/link";
 
-export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
+export const DonationPane: React.FC<{
+  text: WidgetPane1Props;
+  enableRecurring: boolean;
+  enableSingle: boolean;
+}> = ({ text, enableRecurring, enableSingle }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
 
@@ -47,11 +50,13 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
                 title: text.monthly_donation_text,
                 value: RecurringDonation.RECURRING,
                 data_cy: "radio-recurring",
+                disabled: !enableRecurring,
               },
               {
                 title: text.single_donation_text,
                 value: RecurringDonation.NON_RECURRING,
                 data_cy: "radio-single",
+                disabled: !enableSingle,
               },
             ]}
             selected={donation.recurring}

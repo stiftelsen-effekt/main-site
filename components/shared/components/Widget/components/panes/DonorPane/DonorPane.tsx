@@ -308,6 +308,7 @@ export const DonorPane: React.FC<{
                 value: {
                   vipps: PaymentMethod.VIPPS,
                   bank: PaymentMethod.BANK,
+                  swish: PaymentMethod.SWISH,
                 }[method._id],
                 data_cy: `${method._id}-method`,
               }))}

@@ -1,12 +1,24 @@
 import { groq } from "next-sanity";
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.server";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { WidgetContext } from "../../../../main/layout/layout";
+import { paymentMethodConfigurations } from "../config/methods";
+import { setRecurring } from "../store/donation/actions";
 import { fetchOrganizationsAction } from "../store/layout/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
+import { State } from "../store/state";
+import { RecurringDonation } from "../types/Enums";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
@@ -24,6 +36,9 @@ const widgetQuery = groq`
       ...,
       methods[] { 
         _type == 'reference' => @->{
+          _type == 'bank' => {
+            ...
+          },
           _type == 'vipps' => {
             _id,
             selector_text,
@@ -34,7 +49,7 @@ const widgetQuery = groq`
             single_title,
             single_button_text,
           },
-          _type == 'bank' => {
+          _type == 'swish' => {
             ...
           },
         },
@@ -45,21 +60,75 @@ const widgetQuery = groq`
 
 export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
 
-export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
+/**
+ * Determine available recurring options based on the configured payment methods
+ */
+const useAvailableRecurringOptions = (paymentMethods: NonNullable<WidgetProps["methods"]>) => {
+  const recurring = useMemo(
+    () =>
+      paymentMethods.some((method) => {
+        const configuration = paymentMethodConfigurations.find(
+          (config) => config.id === method._id,
+        );
+        return configuration?.recurringOptions.includes(RecurringDonation.RECURRING);
+      }),
+    [paymentMethods],
+  );
 
-  const widget = result.widget[0];
+  const single = useMemo(
+    () =>
+      paymentMethods.some((method) => {
+        const configuration = paymentMethodConfigurations.find(
+          (config) => config.id === method._id,
+        );
+        return configuration?.recurringOptions.includes(RecurringDonation.NON_RECURRING);
+      }),
+    [paymentMethods],
+  );
 
-  if (!widget.methods?.length) {
-    throw new Error("No payment methods found");
-  }
+  return useMemo(() => ({ recurring, single }), [recurring, single]);
+};
 
-  return {
-    widget,
-  };
-})(({ widget }) => {
+/**
+ * Determine available payment methods based on the selected recurring option
+ */
+const useAvailablePaymentMethods = (paymentMethods: NonNullable<WidgetProps["methods"]>) => {
+  const recurring = useSelector((state: State) => state.donation.recurring);
+
+  const availablePaymentMethods = useMemo(
+    () =>
+      paymentMethods.filter((method) => {
+        const configuration = paymentMethodConfigurations.find(
+          (config) => config.id === method._id,
+        );
+        return configuration?.recurringOptions.includes(recurring);
+      }),
+    [paymentMethods, recurring],
+  );
+
+  return availablePaymentMethods;
+};
+
+/**
+ * This effect is used to set the default payment method to single if recurring is not enabled
+ */
+const useDefaultPaymentMethodEffect = (paymentMethods: NonNullable<WidgetProps["methods"]>) => {
   const dispatch = useDispatch();
-  const widgetRef = useRef<HTMLDivElement>(null);
+  const recurring = useSelector((state: State) => state.donation.recurring);
+
+  const availableRecurringOptions = useAvailableRecurringOptions(paymentMethods);
+
+  useEffect(() => {
+    if (recurring === RecurringDonation.RECURRING && !availableRecurringOptions.recurring) {
+      dispatch(setRecurring(RecurringDonation.NON_RECURRING));
+    }
+  }, [recurring, availableRecurringOptions.recurring, dispatch]);
+};
+
+/**
+ * Scale the widget to fit the screen
+ */
+const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const [scalingFactor, setScalingFactor] = useState(1);
   const [scaledHeight, setScaledHeight] = useState(979);
@@ -81,6 +150,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
     setLastWidth(window.innerWidth);
     setLastHeight(window.innerHeight);
   }, [setScalingFactor, setScaledHeight, scalingFactor, scaledHeight, setLastWidth, setLastHeight]);
+
   useEffect(() => scaleWidget, [widgetOpen, scaleWidget]);
 
   const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 100, { maxWait: 100 });
@@ -90,16 +160,42 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
       window.addEventListener("resize", debouncedScaleWidget);
     }
   });
+
   useEffect(() => {
     scaleWidget();
   }, [widgetOpen, scaleWidget]);
+
+  return useMemo(() => ({ scaledHeight, scalingFactor }), [scaledHeight, scalingFactor]);
+};
+
+export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
+
+  const widget = result.widget[0];
+
+  if (!widget.methods?.length) {
+    throw new Error("No payment methods found");
+  }
+
+  return {
+    widget,
+  };
+})(({ widget }) => {
+  const dispatch = useDispatch();
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const [tooltip, setTooltip] = useState<string | null>(null);
+
+  const availableRecurringOptions = useAvailableRecurringOptions(widget.methods!);
+  const availablePaymentMethods = useAvailablePaymentMethods(widget.methods!);
+
+  const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
 
   useEffect(() => {
     dispatch(fetchOrganizationsAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
-  const [tooltip, setTooltip] = useState<string | null>(null);
+  useDefaultPaymentMethodEffect(widget.methods!);
 
   return (
     <div
@@ -125,6 +221,8 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               choose_your_own_text: widget.choose_your_own_text,
               pane1_button_text: widget.pane1_button_text,
             }}
+            enableRecurring={availableRecurringOptions.recurring}
+            enableSingle={availableRecurringOptions.single}
           />
           <DonorPane
             text={{
@@ -138,13 +236,13 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               privacy_policy_text: widget.privacy_policy_text,
               pane2_button_text: widget.pane2_button_text,
             }}
-            paymentMethods={widget.methods!}
+            paymentMethods={availablePaymentMethods}
           />
           <PaymentPane
             referrals={{
               pane3_referrals_title: widget.pane3_referrals_title,
             }}
-            paymentMethods={widget.methods!}
+            paymentMethods={availablePaymentMethods}
           />
         </Carousel>
       </WidgetTooltipContext.Provider>

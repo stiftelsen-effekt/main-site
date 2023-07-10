@@ -1,19 +1,8 @@
 export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
-    methods?: Array<VippsPaymentMethod | BankPaymentMethod>;
+    methods?: Array<BankPaymentMethod | VippsPaymentMethod | SwishPaymentMethod>;
   };
-
-export type VippsPaymentMethod = {
-  _id: "vipps";
-  selector_text: string;
-  recurring_title: string;
-  recurring_selector_earliest_text: string;
-  recurring_selector_choose_date_text: string;
-  recurring_button_text: string;
-  single_title: string;
-  single_button_text: string;
-};
 
 export type BankPaymentMethod = {
   _id: "bank";
@@ -26,6 +15,23 @@ export type BankPaymentMethod = {
   recurring_selector_earliest_text: string;
   recurring_selector_choose_date_text: string;
   recurring_button_text: string;
+};
+
+export type VippsPaymentMethod = {
+  _id: "vipps";
+  selector_text: string;
+  recurring_title: string;
+  recurring_selector_earliest_text: string;
+  recurring_selector_choose_date_text: string;
+  recurring_button_text: string;
+  single_title: string;
+  single_button_text: string;
+};
+
+export type SwishPaymentMethod = {
+  _id: "swish";
+  selector_text: string;
+  title: string;
 };
 
 export type WidgetPane1Props = {
