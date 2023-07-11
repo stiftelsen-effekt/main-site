@@ -93,7 +93,22 @@ export const DonorPane: React.FC<{
     }
   }, [donorType, method, dispatch, errors, watchAllFields]);
 
-  const paneSubmitted = (data: DonorFormValues) => {
+  const paneSubmitted = handleSubmit(
+    (data) => {
+      if (donorType === DonorType.DONOR) {
+        submitDonor(data);
+      } else {
+        submitAnonymous();
+      }
+    },
+    () => {
+      if (donorType === DonorType.ANONYMOUS) {
+        submitAnonymous();
+      }
+    },
+  );
+
+  const submitDonor = (data: DonorFormValues) => {
     dispatch(
       submitDonorInfo(
         data.name ? capitalizeNames(data.name.trim()) : "",
@@ -131,7 +146,7 @@ export const DonorPane: React.FC<{
 
   return (
     <Pane>
-      <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
+      <DonorForm onSubmit={paneSubmitted} autoComplete="on">
         <PaneContainer>
           <div>
             <PaneTitle>
@@ -317,16 +332,9 @@ export const DonorPane: React.FC<{
             />
           </div>
           <ActionBar data-cy="next-button-div">
-            {donorType === DonorType.DONOR ? (
-              <NextButton disabled={nextDisabled} onClick={() => {}}>
-                {text.pane2_button_text}
-              </NextButton>
-            ) : null}
-            {donorType === DonorType.ANONYMOUS ? (
-              <NextButton disabled={nextDisabled} onClick={submitAnonymous}>
-                {text.pane2_button_text}
-              </NextButton>
-            ) : null}
+            <NextButton disabled={nextDisabled} type="submit">
+              {text.pane2_button_text}
+            </NextButton>
           </ActionBar>
         </PaneContainer>
       </DonorForm>
