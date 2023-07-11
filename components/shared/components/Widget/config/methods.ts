@@ -7,7 +7,7 @@ interface PaymentMethodConfiguration {
 
 export const bankConfiguration: PaymentMethodConfiguration = {
   id: "bank",
-  recurringOptions: [RecurringDonation.NON_RECURRING],
+  recurringOptions: [RecurringDonation.RECURRING, RecurringDonation.NON_RECURRING],
 };
 
 export const vippsConfiguration: PaymentMethodConfiguration = {
