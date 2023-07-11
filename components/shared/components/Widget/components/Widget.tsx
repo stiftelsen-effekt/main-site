@@ -179,14 +179,15 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
 
   return {
     widget,
+    methods: widget.methods,
   };
-})(({ widget }) => {
+})(({ widget, methods }) => {
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<string | null>(null);
 
-  const availableRecurringOptions = useAvailableRecurringOptions(widget.methods!);
-  const availablePaymentMethods = useAvailablePaymentMethods(widget.methods!);
+  const availableRecurringOptions = useAvailableRecurringOptions(methods);
+  const availablePaymentMethods = useAvailablePaymentMethods(methods);
 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
 
@@ -195,7 +196,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
-  useDefaultPaymentMethodEffect(widget.methods!);
+  useDefaultPaymentMethodEffect(methods);
 
   return (
     <div
