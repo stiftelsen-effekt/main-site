@@ -16,7 +16,7 @@ import {
 import { SharesSum } from "./SharesSum";
 import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
-import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
+import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
@@ -67,7 +67,7 @@ export const DonationPane: React.FC<{
             {suggestedSums.map((suggested) => (
               <div key={suggested.amount}>
                 <EffektButton
-                  type={EffektButtonType.SECONDARY}
+                  variant={EffektButtonVariant.SECONDARY}
                   selected={donation.sum === suggested.amount}
                   onClick={() => dispatch(setSum(suggested.amount))}
                   noMinWidth={true}

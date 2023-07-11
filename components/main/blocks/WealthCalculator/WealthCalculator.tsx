@@ -5,7 +5,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { thousandize } from "../../../../util/formatting";
 import {
   EffektButton,
-  EffektButtonType,
+  EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
 import { EffektDropdown } from "../../../shared/components/EffektDropdown/EffektDropdown";
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
@@ -180,7 +180,7 @@ export const WealthCalculator: React.FC<{
                     behavior: "smooth",
                   });
                 }}
-                type={EffektButtonType.SECONDARY}
+                variant={EffektButtonVariant.SECONDARY}
               >
                 Beregn
               </EffektButton>
