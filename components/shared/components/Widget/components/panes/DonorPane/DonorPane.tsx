@@ -126,7 +126,7 @@ export const DonorPane: React.FC<{
     }
   };
 
-  const submitAnonymous = (data: DonorFormValues) => {
+  const submitAnonymous = () => {
     dispatch(
       submitDonorInfo(
         anonDonor.name,
