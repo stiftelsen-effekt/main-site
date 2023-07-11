@@ -26,13 +26,13 @@ import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 
 interface DonorFormValues extends DonorInput {}
 
-const anonDonor: DonorFormValues = {
+const anonDonor = {
   name: "Anonym Giver",
   email: "anon@gieffektivt.no",
   taxDeduction: false,
   ssn: "12345678910",
   newsletter: false,
-};
+}; // satisfies DonorFormValues (requires next@13);
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -126,14 +126,14 @@ export const DonorPane: React.FC<{
     }
   };
 
-  const submitAnonymous = () => {
+  const submitAnonymous = (data: DonorFormValues) => {
     dispatch(
       submitDonorInfo(
-        anonDonor.name ? anonDonor.name : "",
-        anonDonor.email ? anonDonor.email : "",
-        anonDonor.taxDeduction ? anonDonor.taxDeduction : false,
-        anonDonor.ssn ? anonDonor.ssn : "",
-        anonDonor.newsletter ? anonDonor.newsletter : false,
+        anonDonor.name,
+        anonDonor.email,
+        anonDonor.taxDeduction,
+        anonDonor.ssn,
+        anonDonor.newsletter,
       ),
     );
 
