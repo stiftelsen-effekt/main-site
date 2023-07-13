@@ -73,7 +73,13 @@ function MyApp({
     const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
 
     return (
-      <PlausibleProvider domain={plausibleDomain} trackOutboundLinks={true}>
+      <PlausibleProvider
+        domain={plausibleDomain}
+        trackOutboundLinks={true}
+        taggedEvents={true}
+        trackLocalhost={true} // TODO: Remove when testing is done
+        enabled={true} // TODO: Remove when testing is done
+      >
         <Provider store={store}>
           <RouterContext.Provider value={routerContextValue.current}>
             <PageLayout {...appStaticProps.layoutProps}>

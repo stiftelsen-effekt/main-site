@@ -20,17 +20,25 @@ import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektB
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
-import Link from "next/link";
+import { usePlausible } from "next-plausible";
 
 export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
+  const plausible = usePlausible();
 
   const suggestedSums = donation.recurring
     ? text.preset_amounts_recurring
     : text.preset_amounts_single;
 
   function onSubmit() {
+    plausible("SubmitDonationPane", {
+      props: {
+        recurring: donation.recurring,
+        sum: donation.sum,
+        shareType: donation.shareType,
+      },
+    });
     dispatch(nextPane());
   }
 
