@@ -107,10 +107,11 @@ export const DonorPane: React.FC<{
 
     if (donation.recurring) {
       if (method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-      else if (method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
-    } else if (!donation.recurring) {
+      if (method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+    }
+    if (!donation.recurring) {
       if (method === PaymentMethod.VIPPS) plausible("SelectVippsSingle");
-      else if (method === PaymentMethod.BANK) {
+      if (method === PaymentMethod.BANK) {
         plausible("SelectBankSingle");
         plausible("CompleteDonation");
       }
