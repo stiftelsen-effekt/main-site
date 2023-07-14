@@ -11,6 +11,7 @@ import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
 import { VippsButtonWrapper } from "./VippsPane.style";
 import { VippsPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
+import { usePlausible } from "next-plausible";
 
 export const VippsPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
@@ -23,6 +24,7 @@ export const VippsPane: React.FC<{
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
   const donorID = useSelector((state: State) => state.donation.donor?.donorID);
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
+  const plausible = usePlausible();
 
   return (
     <Pane>
@@ -59,6 +61,8 @@ export const VippsPane: React.FC<{
                 <SubmitButton
                   onClick={async () => {
                     if (recurring === RecurringDonation.RECURRING) {
+                      plausible("DraftVippsRecurringAgreement");
+                      plausible("CompleteDonation");
                       dispatch(draftAgreementAction.started(undefined));
                     }
                     (document.activeElement as HTMLElement).blur();
@@ -79,6 +83,8 @@ export const VippsPane: React.FC<{
               <VippsButtonWrapper data-cy="vipps-single-button">
                 <SubmitButton
                   onClick={async () => {
+                    plausible("InitiateSingleVippsPayment");
+                    plausible("CompleteDonation");
                     if (recurring === RecurringDonation.NON_RECURRING && paymentProviderURL) {
                       window.location.href = paymentProviderURL;
                     }
