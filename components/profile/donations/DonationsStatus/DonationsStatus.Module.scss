@@ -1,0 +1,20 @@
+.caption {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8rem;
+  display: block;
+  text-decoration: underline;
+
+  .cornerButton {
+    position: absolute;
+    top: 33%;
+    left: 10%;
+  }
+}
+
+.caption:hover {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8rem;
+  display: block;
+}

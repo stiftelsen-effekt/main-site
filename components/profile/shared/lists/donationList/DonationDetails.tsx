@@ -9,6 +9,9 @@ import AnimateHeight from "react-animate-height";
 import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
+import DonationsTimelinePreview from "../../../../shared/components/Timeline/DonationsTimeline.style";
+import { DonationsTimeline } from "../../../../shared/components/Timeline/DonationsTimeline";
+import { DonationStatus } from "../../../donations/DonationsStatus/DonationClick";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -38,7 +41,10 @@ export const DonationDetails: React.FC<{
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
+        <strong>Donasjonsstatus </strong>
+        <DonationsTimelinePreview description="Donasjon mottatt av GiveWell" timelineLength={2} />
         <strong>{configuration.impact_estimate_header}</strong>
+
         <span
           className={
             showImpactEstimateExplanation

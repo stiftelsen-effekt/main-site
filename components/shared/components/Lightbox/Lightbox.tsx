@@ -6,13 +6,14 @@ import { Spinner } from "../Spinner/Spinner";
 import { LoadingButtonSpinner } from "../Spinner/LoadingButtonSpinner";
 
 export const Lightbox: React.FC<{
+  showOkay?: boolean;
   children: React.ReactNode;
   open: boolean;
   valid?: boolean;
   loading?: boolean;
   onConfirm: () => void;
   onCancel?: () => void;
-}> = ({ children, open, valid, loading, onConfirm, onCancel }) => {
+}> = ({ showOkay, children, open, valid, loading, onConfirm, onCancel }) => {
   if (!open) return null;
 
   return (
@@ -25,13 +26,16 @@ export const Lightbox: React.FC<{
         )}
         {children}
         <div className={style.buttonWrapper}>
-          <EffektButton
-            onClick={onConfirm}
-            cy="lightbox-confirm"
-            disabled={typeof valid === "boolean" ? !valid : false}
-          >
-            {loading ? <LoadingButtonSpinner /> : onCancel ? "Bekreft" : "OK"}
-          </EffektButton>
+          {showOkay && (
+            <EffektButton
+              onClick={onConfirm}
+              cy="lightbox-confirm"
+              disabled={typeof valid === "boolean" ? !valid : false}
+            >
+              {loading ? <LoadingButtonSpinner /> : onCancel ? "Bekreft" : "OK"}
+            </EffektButton>
+          )}
+
           {onCancel && (
             <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} cy="lightbox-cancel">
               Avbryt
