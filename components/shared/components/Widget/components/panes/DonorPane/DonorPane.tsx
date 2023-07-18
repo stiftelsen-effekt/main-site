@@ -42,7 +42,6 @@ export const DonorPane: React.FC<{
   const method = useSelector((state: State) => state.donation.method);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
-  const [profileDonor] = useState<Donor | null>(initialDonor);
 
   const [nextDisabled, setNextDisabled] = useState(true);
   const [newsletterChecked, setNewsletterChecked] = useState(
@@ -191,8 +190,8 @@ export const DonorPane: React.FC<{
                   defaultValue={
                     donor?.name === ANONYMOUS_DONOR.name
                       ? ""
-                      : profileDonor?.name
-                      ? profileDonor?.name
+                      : initialDonor?.name
+                      ? initialDonor?.name
                       : donor?.name
                   }
                   ref={register({ required: true, minLength: 3 })}
@@ -208,8 +207,8 @@ export const DonorPane: React.FC<{
                   defaultValue={
                     donor?.email === ANONYMOUS_DONOR.email
                       ? ""
-                      : profileDonor?.email
-                      ? profileDonor?.email
+                      : initialDonor?.email
+                      ? initialDonor?.email
                       : donor?.email
                   }
                   ref={register({
