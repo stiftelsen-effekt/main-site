@@ -52,9 +52,6 @@ export const DonorPane: React.FC<{
   const [profileDonor] = useState<Donor | null>(initialDonor);
 
   const [nextDisabled, setNextDisabled] = useState(true);
-  const [nameErrorAnimation, setNameErrorAnimation] = useState(false);
-  const [emailErrorAnimation, setEmailErrorAnimation] = useState(false);
-  const [ssnErrorAnimation, setSsnErrorAnimation] = useState(false);
   const [newsletterChecked, setNewsletterChecked] = useState(
     donor?.newsletter ? donor.newsletter : false,
   );
@@ -75,10 +72,6 @@ export const DonorPane: React.FC<{
   }, []);
 
   useEffect(() => {
-    errors.name ? setNameErrorAnimation(true) : setNameErrorAnimation(false);
-    errors.email ? setEmailErrorAnimation(true) : setEmailErrorAnimation(false);
-    errors.ssn ? setSsnErrorAnimation(true) : setSsnErrorAnimation(false);
-
     if (donorType === DonorType.ANONYMOUS) {
       setNextDisabled(false);
     } else if (Object.keys(errors).length === 0) {
@@ -209,7 +202,7 @@ export const DonorPane: React.FC<{
                   }
                   ref={register({ required: true, minLength: 3 })}
                 />
-                {nameErrorAnimation && <ErrorField text="Ugyldig navn" />}
+                {errors.name && <ErrorField text="Ugyldig navn" />}
               </InputFieldWrapper>
               <InputFieldWrapper>
                 <input
@@ -232,7 +225,7 @@ export const DonorPane: React.FC<{
                     },
                   })}
                 />
-                {emailErrorAnimation && <ErrorField text="Ugyldig epost" />}
+                {errors.email && <ErrorField text="Ugyldig epost" />}
               </InputFieldWrapper>
               <CheckBoxGroupWrapper>
                 <div>
@@ -289,9 +282,7 @@ export const DonorPane: React.FC<{
                           },
                         })}
                       />
-                      {ssnErrorAnimation && (
-                        <ErrorField text="Ugyldig fødselsnummer eller org.nr." />
-                      )}
+                      {errors.ssn && <ErrorField text="Ugyldig fødselsnummer eller org.nr." />}
                     </InputFieldWrapper>
                   )}
                 </div>
