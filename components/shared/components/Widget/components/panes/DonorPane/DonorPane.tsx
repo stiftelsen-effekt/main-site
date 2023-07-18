@@ -1,32 +1,29 @@
+import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
+import { usePlausible } from "next-plausible";
+import Link from "next/link";
 import React, { FormEvent, FormEventHandler, useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
-import { validateSsn, validateOrg } from "@ssfbank/norwegian-id-validators";
-import { useForm } from "react-hook-form";
-import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
-import { DonorInput, State } from "../../../store/state";
+import { DonorContext } from "../../../../../../profile/layout/donorProvider";
+import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
+import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
 import {
   registerDonationAction,
   selectPaymentMethod,
   submitDonorInfo,
 } from "../../../store/donation/actions";
-import { InputFieldWrapper, HiddenCheckBox, CheckBoxWrapper } from "../Forms.style";
-import { DonorForm, ActionBar, CheckBoxGroupWrapper } from "./DonorPane.style";
-import { DonorType } from "../../../types/Temp";
-import { CustomCheckBox } from "./CustomCheckBox";
-import { ErrorField } from "../../shared/Error/ErrorField";
+import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
-import { NextButton } from "../../shared/Buttons/NavigationButtons";
-import Link from "next/link";
-import { ToolTip } from "../../shared/ToolTip/ToolTip";
-import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
-import { Donor } from "../../../../../../../models";
-import { DonorContext } from "../../../../../../profile/layout/donorProvider";
+import { DonorType } from "../../../types/Temp";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
-import { usePlausible } from "next-plausible";
-import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
-
-interface DonorFormValues extends DonorInput {}
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
+import { ErrorField } from "../../shared/Error/ErrorField";
+import { ToolTip } from "../../shared/ToolTip/ToolTip";
+import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
+import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
+import { CustomCheckBox } from "./CustomCheckBox";
+import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -53,20 +50,19 @@ export const DonorPane: React.FC<{
   const [donorType, setDonorType] = useState<DonorType>(
     donor?.email === ANONYMOUS_DONOR.email ? DonorType.ANONYMOUS : DonorType.DONOR,
   );
-  const { register, watch, errors, handleSubmit, clearErrors, setValue } = useForm<DonorFormValues>(
-    {
-      defaultValues: {
-        name: donor?.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor?.name || "",
-        email:
-          donor?.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor?.email || "",
-        ssn: donor?.ssn === ANONYMOUS_DONOR.ssn ? "" : donor?.ssn || "",
-        taxDeduction: donor?.taxDeduction,
-        newsletter: donor?.newsletter,
-      },
+  const { register, watch, errors, handleSubmit, clearErrors } = useForm({
+    defaultValues: {
+      name: donor?.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor?.name || "",
+      email:
+        donor?.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor?.email || "",
+      ssn: donor?.ssn === ANONYMOUS_DONOR.ssn ? "" : donor?.ssn || "",
+      taxDeduction: donor?.taxDeduction || false,
+      newsletter: donor?.newsletter || false,
     },
-  );
+  });
 
   const plausible = usePlausible();
+
   const taxDeduction = watch("taxDeduction");
 
   useEffect(() => {
