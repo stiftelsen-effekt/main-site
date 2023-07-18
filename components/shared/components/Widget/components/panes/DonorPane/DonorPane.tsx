@@ -1,7 +1,7 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { FormEvent, FormEventHandler, useContext, useEffect, useState } from "react";
+import React, { FormEvent, FormEventHandler, useContext, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
@@ -40,7 +40,6 @@ export const DonorPane: React.FC<{
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
 
-  const [nextDisabled, setNextDisabled] = useState(true);
   const [newsletterChecked, setNewsletterChecked] = useState(
     donor?.newsletter ? donor.newsletter : false,
   );
@@ -65,22 +64,9 @@ export const DonorPane: React.FC<{
 
   const taxDeduction = watch("taxDeduction");
 
-  useEffect(() => {
-    if (donorType === DonorType.ANONYMOUS) {
-      setNextDisabled(false);
-    } else if (Object.keys(errors).length === 0) {
-      setNextDisabled(false);
-    } else {
-      setNextDisabled(true);
-      return;
-    }
-
-    if (typeof method === "undefined") {
-      setNextDisabled(true);
-    } else {
-      setNextDisabled(false);
-    }
-  }, [donorType, method, dispatch, errors, taxDeduction]);
+  const nextDisabled = useMemo(() => {
+    return (donorType === DonorType.DONOR && Object.keys(errors).length > 0) || !method;
+  }, [donorType, errors, method]);
 
   const paneSubmitted: FormEventHandler = (event) =>
     donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous(event);
