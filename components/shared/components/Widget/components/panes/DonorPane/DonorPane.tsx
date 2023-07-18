@@ -160,117 +160,119 @@ export const DonorPane: React.FC<{
               </CheckBoxWrapper>
             </div>
 
-            <div style={{ display: donorType === DonorType.ANONYMOUS ? "none" : "block" }}>
-              <InputFieldWrapper>
-                <input
-                  data-cy="name-input"
-                  name="name"
-                  type="text"
-                  placeholder={text.name_placeholder}
-                  ref={register({ required: true, minLength: 3 })}
-                />
-                {errors.name && <ErrorField text="Ugyldig navn" />}
-              </InputFieldWrapper>
-              <InputFieldWrapper>
-                <input
-                  data-cy="email-input"
-                  name="email"
-                  type="email"
-                  placeholder={text.email_placeholder}
-                  ref={register({
-                    required: true,
-                    validate: (val) => {
-                      const trimmed = val.trim();
-                      return Validate.isEmail(trimmed);
-                    },
-                  })}
-                />
-                {errors.email && <ErrorField text="Ugyldig epost" />}
-              </InputFieldWrapper>
-              <CheckBoxGroupWrapper>
-                <div>
+            {donorType === DonorType.DONOR ? (
+              <>
+                <InputFieldWrapper>
+                  <input
+                    data-cy="name-input"
+                    name="name"
+                    type="text"
+                    placeholder={text.name_placeholder}
+                    ref={register({ required: true, minLength: 3 })}
+                  />
+                  {errors.name && <ErrorField text="Ugyldig navn" />}
+                </InputFieldWrapper>
+                <InputFieldWrapper>
+                  <input
+                    data-cy="email-input"
+                    name="email"
+                    type="email"
+                    placeholder={text.email_placeholder}
+                    ref={register({
+                      required: true,
+                      validate: (val) => {
+                        const trimmed = val.trim();
+                        return Validate.isEmail(trimmed);
+                      },
+                    })}
+                  />
+                  {errors.email && <ErrorField text="Ugyldig epost" />}
+                </InputFieldWrapper>
+                <CheckBoxGroupWrapper>
+                  <div>
+                    <CheckBoxWrapper>
+                      <HiddenCheckBox
+                        data-cy="tax-deduction-checkbox"
+                        name="taxDeduction"
+                        type="checkbox"
+                        ref={register}
+                        onChange={() => {
+                          if (!taxDeductionChecked) clearErrors(["ssn"]);
+                          (document.activeElement as HTMLElement).blur();
+                        }}
+                        onKeyDown={(e) => {
+                          if (!taxDeductionChecked) clearErrors(["ssn"]);
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                          }
+                        }}
+                      />
+                      <CustomCheckBox
+                        label={text.tax_deduction_selector_text}
+                        checked={taxDeductionChecked}
+                      />
+                    </CheckBoxWrapper>
+                    {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
+                    {taxDeductionChecked && (
+                      <InputFieldWrapper>
+                        <input
+                          data-cy="ssn-input"
+                          name="ssn"
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete="off"
+                          placeholder={text.tax_deduction_ssn_placeholder}
+                          ref={register({
+                            required: false,
+                            validate: (val) => {
+                              const trimmed = val.toString().trim();
+                              return (
+                                !taxDeductionChecked ||
+                                (Validate.isInt(trimmed) &&
+                                  // Check if valid norwegian org or SSN (Social security number) based on check sum
+                                  // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
+                                  ((trimmed.length === 9 && validateOrg(trimmed)) ||
+                                    (trimmed.length === 11 && validateSsn(trimmed))))
+                              );
+                            },
+                          })}
+                        />
+                        {errors.ssn && <ErrorField text="Ugyldig fødselsnummer eller org.nr." />}
+                      </InputFieldWrapper>
+                    )}
+                  </div>
                   <CheckBoxWrapper>
                     <HiddenCheckBox
-                      data-cy="tax-deduction-checkbox"
-                      name="taxDeduction"
+                      data-cy="newsletter-checkbox"
+                      name="newsletter"
                       type="checkbox"
                       ref={register}
                       onChange={() => {
-                        if (!taxDeductionChecked) clearErrors(["ssn"]);
                         (document.activeElement as HTMLElement).blur();
                       }}
                       onKeyDown={(e) => {
-                        if (!taxDeductionChecked) clearErrors(["ssn"]);
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                         }
                       }}
                     />
                     <CustomCheckBox
-                      label={text.tax_deduction_selector_text}
-                      checked={taxDeductionChecked}
+                      label={text.newsletter_selector_text}
+                      mobileLabel={text.newsletter_selector_text}
+                      checked={newsletterChecked}
                     />
                   </CheckBoxWrapper>
-                  {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
-                  {taxDeductionChecked && (
-                    <InputFieldWrapper>
-                      <input
-                        data-cy="ssn-input"
-                        name="ssn"
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="off"
-                        placeholder={text.tax_deduction_ssn_placeholder}
-                        ref={register({
-                          required: false,
-                          validate: (val) => {
-                            const trimmed = val.toString().trim();
-                            return (
-                              !taxDeductionChecked ||
-                              (Validate.isInt(trimmed) &&
-                                // Check if valid norwegian org or SSN (Social security number) based on check sum
-                                // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
-                                ((trimmed.length === 9 && validateOrg(trimmed)) ||
-                                  (trimmed.length === 11 && validateSsn(trimmed))))
-                            );
-                          },
-                        })}
-                      />
-                      {errors.ssn && <ErrorField text="Ugyldig fødselsnummer eller org.nr." />}
-                    </InputFieldWrapper>
-                  )}
-                </div>
-                <CheckBoxWrapper>
-                  <HiddenCheckBox
-                    data-cy="newsletter-checkbox"
-                    name="newsletter"
-                    type="checkbox"
-                    ref={register}
-                    onChange={() => {
-                      (document.activeElement as HTMLElement).blur();
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <CustomCheckBox
-                    label={text.newsletter_selector_text}
-                    mobileLabel={text.newsletter_selector_text}
-                    checked={newsletterChecked}
-                  />
-                </CheckBoxWrapper>
-                <div style={{ marginTop: "10px" }}>
-                  {text.privacy_policy_text}{" "}
-                  <Link href={"/personvern"} passHref>
-                    <a style={{ textDecoration: "underline" }} target={"_blank"}>
-                      personvernserklæring ↗
-                    </a>
-                  </Link>
-                </div>
-              </CheckBoxGroupWrapper>
-            </div>
+                  <div style={{ marginTop: "10px" }}>
+                    {text.privacy_policy_text}{" "}
+                    <Link href={"/personvern"} passHref>
+                      <a style={{ textDecoration: "underline" }} target={"_blank"}>
+                        personvernserklæring ↗
+                      </a>
+                    </Link>
+                  </div>
+                </CheckBoxGroupWrapper>
+              </>
+            ) : null}
 
             <RadioButtonGroup
               options={paymentMethods.map((method) => ({
