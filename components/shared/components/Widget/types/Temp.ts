@@ -1,8 +1,3 @@
-export enum DonorType {
-  ANONYMOUS,
-  DONOR,
-}
-
 export interface Shares {
   [id: number]: number;
 }

@@ -1,7 +1,7 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { FormEvent, FormEventHandler, useContext, useMemo, useState } from "react";
+import React, { FormEvent, FormEventHandler, useContext, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
@@ -15,7 +15,6 @@ import {
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
-import { DonorType } from "../../../types/Temp";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { ErrorField } from "../../shared/Error/ErrorField";
@@ -40,9 +39,6 @@ export const DonorPane: React.FC<{
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
 
-  const [donorType, setDonorType] = useState<DonorType>(
-    donor?.email === ANONYMOUS_DONOR.email ? DonorType.ANONYMOUS : DonorType.DONOR,
-  );
   const {
     register,
     watch,
@@ -51,6 +47,7 @@ export const DonorPane: React.FC<{
     clearErrors,
   } = useForm({
     defaultValues: {
+      isAnonymous: donor?.email === ANONYMOUS_DONOR.email,
       name: donor.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor.name || "",
       email: donor.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor.email || "",
       ssn: donor.ssn === ANONYMOUS_DONOR.ssn ? "" : donor.ssn || "",
@@ -63,63 +60,55 @@ export const DonorPane: React.FC<{
 
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
+  const isAnonymous = watch("isAnonymous");
 
   const nextDisabled = useMemo(() => {
-    return (donorType === DonorType.DONOR && Object.keys(errors).length > 0) || !method;
-  }, [donorType, errors, method]);
+    return (!isAnonymous && Object.keys(errors).length > 0) || !method;
+  }, [isAnonymous, errors, method]);
 
-  const paneSubmitted: FormEventHandler = (event) =>
-    donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous(event);
+  const paneSubmitted = handleSubmit((data) => {
+    if (!isAnonymous) {
+      plausible("SubmitDonorPane", {
+        props: {
+          donorType: isAnonymous ? 0 : 1,
+          taxDeduction: data.taxDeduction,
+          newsletter: data.newsletter,
+          method: method,
+        },
+      });
 
-  const submitDonor = handleSubmit((data) => {
-    plausible("SubmitDonorPane", {
-      props: {
-        donorType: donorType,
-        taxDeduction: data.taxDeduction,
-        newsletter: data.newsletter,
-        method: method,
-      },
-    });
-
-    if (donation.recurring) {
-      if (method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-      if (method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
-    }
-    if (!donation.recurring) {
-      if (method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
-      if (method === PaymentMethod.BANK) {
-        plausible("SelectBankSingle");
-        plausible("CompleteDonation");
+      if (donation.recurring) {
+        if (method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
+        if (method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+      }
+      if (!donation.recurring) {
+        if (method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (method === PaymentMethod.BANK) {
+          plausible("SelectBankSingle");
+          plausible("CompleteDonation");
+        }
       }
     }
-
     dispatch(
-      submitDonorInfo({
-        name: capitalizeNames(data.name.trim()),
-        email: data.email.trim().toLowerCase(),
-        taxDeduction: data.taxDeduction,
-        ssn: data.taxDeduction ? data.ssn.toString().trim() : "",
-        newsletter: data.newsletter,
-      }),
+      submitDonorInfo(
+        isAnonymous
+          ? ANONYMOUS_DONOR
+          : {
+              name: capitalizeNames(data.name.trim()),
+              email: data.email.trim().toLowerCase(),
+              taxDeduction: data.taxDeduction,
+              ssn: data.taxDeduction ? data.ssn.toString().trim() : "",
+              newsletter: data.newsletter,
+            },
+      ),
     );
 
-    if (donation.isValid && !nextDisabled) {
+    if ((isAnonymous || donation.isValid) && !nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
     } else {
       alert("Donation invalid");
     }
   });
-
-  const submitAnonymous = (event: FormEvent) => {
-    event.preventDefault();
-    dispatch(submitDonorInfo(ANONYMOUS_DONOR));
-
-    if (!nextDisabled) {
-      dispatch(registerDonationAction.started(undefined));
-    } else {
-      alert("Donation invalid");
-    }
-  };
 
   return (
     <Pane>
@@ -134,30 +123,24 @@ export const DonorPane: React.FC<{
               <CheckBoxWrapper data-cy="anon-button-div">
                 <HiddenCheckBox
                   data-cy="anon-checkbox"
-                  name="anonymousDonor"
                   type="checkbox"
-                  checked={donorType === DonorType.ANONYMOUS ? true : false}
-                  onChange={() => {
-                    if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
-                    else setDonorType(DonorType.DONOR);
-                    (document.activeElement as HTMLElement).blur();
-                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
-                      else setDonorType(DonorType.DONOR);
                       e.preventDefault();
                     }
                   }}
+                  {...register("isAnonymous", {
+                    onChange: () => {
+                      clearErrors(["name", "email", "ssn"]);
+                      (document.activeElement as HTMLElement).blur();
+                    },
+                  })}
                 />
-                <CustomCheckBox
-                  label={text.anon_button_text}
-                  checked={donorType === DonorType.ANONYMOUS}
-                />
+                <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
               </CheckBoxWrapper>
             </div>
 
-            {donorType === DonorType.DONOR ? (
+            {!isAnonymous ? (
               <>
                 <InputFieldWrapper>
                   <input
