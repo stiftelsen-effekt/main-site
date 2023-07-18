@@ -56,6 +56,10 @@ export const DonorPane: React.FC<{
   const { register, watch, errors, handleSubmit, clearErrors, setValue } = useForm<DonorFormValues>(
     {
       defaultValues: {
+        name: donor?.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor?.name || "",
+        email:
+          donor?.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor?.email || "",
+        ssn: donor?.ssn === ANONYMOUS_DONOR.ssn ? "" : donor?.ssn || "",
         taxDeduction: donor?.taxDeduction,
         newsletter: donor?.newsletter,
       },
@@ -187,13 +191,6 @@ export const DonorPane: React.FC<{
                   name="name"
                   type="text"
                   placeholder={text.name_placeholder}
-                  defaultValue={
-                    donor?.name === ANONYMOUS_DONOR.name
-                      ? ""
-                      : initialDonor?.name
-                      ? initialDonor?.name
-                      : donor?.name
-                  }
                   ref={register({ required: true, minLength: 3 })}
                 />
                 {errors.name && <ErrorField text="Ugyldig navn" />}
@@ -204,13 +201,6 @@ export const DonorPane: React.FC<{
                   name="email"
                   type="email"
                   placeholder={text.email_placeholder}
-                  defaultValue={
-                    donor?.email === ANONYMOUS_DONOR.email
-                      ? ""
-                      : initialDonor?.email
-                      ? initialDonor?.email
-                      : donor?.email
-                  }
                   ref={register({
                     required: true,
                     validate: (val) => {
@@ -257,10 +247,6 @@ export const DonorPane: React.FC<{
                         inputMode="numeric"
                         autoComplete="off"
                         placeholder={text.tax_deduction_ssn_placeholder}
-                        defaultValue={
-                          // Hide SSN if anonymous donor
-                          donor?.ssn === ANONYMOUS_DONOR.ssn ? "" : donor?.ssn
-                        }
                         ref={register({
                           required: false,
                           validate: (val) => {
