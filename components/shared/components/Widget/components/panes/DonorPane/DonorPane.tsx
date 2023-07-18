@@ -69,8 +69,9 @@ export const DonorPane: React.FC<{
       },
     },
   );
-  const watchAllFields = watch();
+
   const plausible = usePlausible();
+  const taxDeduction = watch("taxDeduction");
 
   useEffect(() => {
     if (donorType === DonorType.ANONYMOUS) {
@@ -87,7 +88,7 @@ export const DonorPane: React.FC<{
     } else {
       setNextDisabled(false);
     }
-  }, [donorType, method, dispatch, errors, watchAllFields]);
+  }, [donorType, method, dispatch, errors, taxDeduction]);
 
   const paneSubmitted: FormEventHandler = (event) =>
     donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous(event);
@@ -255,7 +256,7 @@ export const DonorPane: React.FC<{
                     />
                   </CheckBoxWrapper>
                   {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
-                  {watchAllFields.taxDeduction && (
+                  {taxDeduction && (
                     <InputFieldWrapper>
                       <input
                         data-cy="ssn-input"
@@ -273,7 +274,7 @@ export const DonorPane: React.FC<{
                           validate: (val) => {
                             const trimmed = val.toString().trim();
                             return (
-                              !watchAllFields.taxDeduction ||
+                              !taxDeduction ||
                               (Validate.isInt(trimmed) &&
                                 // Check if valid norwegian org or SSN (Social security number) based on check sum
                                 // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
