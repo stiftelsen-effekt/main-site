@@ -24,16 +24,9 @@ import { Donor } from "../../../../../../../models";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { usePlausible } from "next-plausible";
+import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
 
 interface DonorFormValues extends DonorInput {}
-
-const anonDonor = {
-  name: "Anonym Giver",
-  email: "anon@gieffektivt.no",
-  taxDeduction: false,
-  ssn: "12345678910",
-  newsletter: false,
-}; // satisfies DonorFormValues (requires next@13);
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -59,7 +52,7 @@ export const DonorPane: React.FC<{
     donor?.taxDeduction ? donor.taxDeduction : false,
   );
   const [donorType, setDonorType] = useState<DonorType>(
-    donor?.email === "anon@gieffektivt.no" ? DonorType.ANONYMOUS : DonorType.DONOR,
+    donor?.email === ANONYMOUS_DONOR.email ? DonorType.ANONYMOUS : DonorType.DONOR,
   );
   const { register, watch, errors, handleSubmit, clearErrors, setValue } = useForm<DonorFormValues>(
     {
@@ -136,11 +129,11 @@ export const DonorPane: React.FC<{
     event.preventDefault();
     dispatch(
       submitDonorInfo(
-        anonDonor.name,
-        anonDonor.email,
-        anonDonor.taxDeduction,
-        anonDonor.ssn,
-        anonDonor.newsletter,
+        ANONYMOUS_DONOR.name,
+        ANONYMOUS_DONOR.email,
+        ANONYMOUS_DONOR.taxDeduction,
+        ANONYMOUS_DONOR.ssn,
+        ANONYMOUS_DONOR.newsletter,
       ),
     );
 
@@ -196,7 +189,7 @@ export const DonorPane: React.FC<{
                   type="text"
                   placeholder={text.name_placeholder}
                   defaultValue={
-                    donor?.name === "Anonym Giver"
+                    donor?.name === ANONYMOUS_DONOR.name
                       ? ""
                       : profileDonor?.name
                       ? profileDonor?.name
@@ -213,7 +206,7 @@ export const DonorPane: React.FC<{
                   type="email"
                   placeholder={text.email_placeholder}
                   defaultValue={
-                    donor?.email === "anon@gieffektivt.no"
+                    donor?.email === ANONYMOUS_DONOR.email
                       ? ""
                       : profileDonor?.email
                       ? profileDonor?.email
@@ -267,7 +260,7 @@ export const DonorPane: React.FC<{
                         placeholder={text.tax_deduction_ssn_placeholder}
                         defaultValue={
                           // Hide SSN if anonymous donor
-                          donor?.ssn === "12345678910" ? "" : donor?.ssn
+                          donor?.ssn === ANONYMOUS_DONOR.ssn ? "" : donor?.ssn
                         }
                         ref={register({
                           required: false,

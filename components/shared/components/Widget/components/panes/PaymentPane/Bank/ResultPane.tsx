@@ -17,6 +17,7 @@ import { PaymentInformation } from "./PaymentInformation";
 import { RecurringBankDonationForm } from "./RecurringForm";
 import { Referrals } from "../../../shared/Referrals/Referrals";
 import { BankPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
+import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 
 export const ResultPane: React.FC<{
   config: BankPaymentMethod;
@@ -80,7 +81,7 @@ export const ResultPane: React.FC<{
         )}
 
         {donation.recurring === RecurringDonation.NON_RECURRING &&
-          donation.donor?.email !== "anon@gieffektivt.no" && (
+          donation.donor?.email !== ANONYMOUS_DONOR.email && (
             <InfoText>{`Vi har også sendt en mail til ${donation.donor?.email} med informasjon om din donasjon. Sjekk søppelpost-mappen om du ikke har mottatt eposten i løpet av noen minutter.`}</InfoText>
           )}
 
