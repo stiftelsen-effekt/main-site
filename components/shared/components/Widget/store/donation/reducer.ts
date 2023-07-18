@@ -49,8 +49,8 @@ const initialState: Donation = {
  */
 
 export const donationReducer: Reducer<Donation, DonationActionTypes> = (
-  state: Donation = initialState,
-  action: DonationActionTypes,
+  state = initialState,
+  action,
 ) => {
   if (isType(action, fetchOrganizationsAction.done)) {
     state = {

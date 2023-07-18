@@ -45,12 +45,11 @@ export const DonorPane: React.FC<{
   );
   const { register, watch, errors, handleSubmit, clearErrors } = useForm({
     defaultValues: {
-      name: donor?.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor?.name || "",
-      email:
-        donor?.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor?.email || "",
-      ssn: donor?.ssn === ANONYMOUS_DONOR.ssn ? "" : donor?.ssn || "",
-      taxDeduction: donor?.taxDeduction || false,
-      newsletter: donor?.newsletter || false,
+      name: donor.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor.name || "",
+      email: donor.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor.email || "",
+      ssn: donor.ssn === ANONYMOUS_DONOR.ssn ? "" : donor.ssn || "",
+      taxDeduction: donor.taxDeduction,
+      newsletter: donor.newsletter,
     },
   });
 
@@ -90,11 +89,11 @@ export const DonorPane: React.FC<{
 
     dispatch(
       submitDonorInfo(
-        data.name ? capitalizeNames(data.name.trim()) : "",
-        data.email ? data.email.trim().toLowerCase() : "",
-        data.taxDeduction ? data.taxDeduction : false,
-        data.taxDeduction && data.ssn ? data.ssn.toString().trim() : "",
-        data.newsletter ? data.newsletter : false,
+        capitalizeNames(data.name.trim()),
+        data.email.trim().toLowerCase(),
+        data.taxDeduction,
+        data.taxDeduction ? data.ssn.toString().trim() : "",
+        data.newsletter,
       ),
     );
 

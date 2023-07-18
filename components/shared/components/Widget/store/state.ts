@@ -22,7 +22,7 @@ export interface DonationInput {
   sum?: number;
   shareType: ShareType;
   recurring: RecurringDonation;
-  donor?: Donor;
+  donor: Donor;
   shares: OrganizationShare[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
@@ -51,9 +51,9 @@ export interface RegisterDonationObject {
 export interface DonorInput {
   name?: string;
   email?: string;
-  taxDeduction?: boolean;
+  taxDeduction: boolean;
   ssn?: string;
-  newsletter?: boolean;
+  newsletter: boolean;
   dueDay?: number;
 }
 

@@ -134,13 +134,9 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const donation: Donation = yield select((state: State) => state.donation);
 
     const data: RegisterDonationObject = {
-      donor: {
-        name: donation.donor?.name,
-        email: donation.donor?.email,
-        ssn: donation.donor?.ssn,
-      },
-      method: donation.method ? donation.method : PaymentMethod.BANK,
-      amount: donation.sum ? donation.sum : 0,
+      donor: donation.donor,
+      method: donation.method || PaymentMethod.BANK,
+      amount: donation.sum || 0,
       recurring: donation.recurring,
     };
 
