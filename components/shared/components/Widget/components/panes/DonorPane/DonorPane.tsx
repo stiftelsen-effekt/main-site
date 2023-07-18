@@ -40,12 +40,6 @@ export const DonorPane: React.FC<{
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
 
-  const [newsletterChecked, setNewsletterChecked] = useState(
-    donor?.newsletter ? donor.newsletter : false,
-  );
-  const [taxDeductionChecked, setTaxDeductionChecked] = useState(
-    donor?.taxDeduction ? donor.taxDeduction : false,
-  );
   const [donorType, setDonorType] = useState<DonorType>(
     donor?.email === ANONYMOUS_DONOR.email ? DonorType.ANONYMOUS : DonorType.DONOR,
   );
@@ -62,7 +56,8 @@ export const DonorPane: React.FC<{
 
   const plausible = usePlausible();
 
-  const taxDeduction = watch("taxDeduction");
+  const taxDeductionChecked = watch("taxDeduction");
+  const newsletterChecked = watch("newsletter");
 
   const nextDisabled = useMemo(() => {
     return (donorType === DonorType.DONOR && Object.keys(errors).length > 0) || !method;
@@ -203,13 +198,11 @@ export const DonorPane: React.FC<{
                       ref={register}
                       onChange={() => {
                         if (!taxDeductionChecked) clearErrors(["ssn"]);
-                        setTaxDeductionChecked(!taxDeductionChecked);
                         (document.activeElement as HTMLElement).blur();
                       }}
                       onKeyDown={(e) => {
                         if (!taxDeductionChecked) clearErrors(["ssn"]);
                         if (e.key === "Enter" || e.key === " ") {
-                          setTaxDeductionChecked(!taxDeductionChecked);
                           e.preventDefault();
                         }
                       }}
@@ -220,7 +213,7 @@ export const DonorPane: React.FC<{
                     />
                   </CheckBoxWrapper>
                   {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
-                  {taxDeduction && (
+                  {taxDeductionChecked && (
                     <InputFieldWrapper>
                       <input
                         data-cy="ssn-input"
@@ -234,7 +227,7 @@ export const DonorPane: React.FC<{
                           validate: (val) => {
                             const trimmed = val.toString().trim();
                             return (
-                              !taxDeduction ||
+                              !taxDeductionChecked ||
                               (Validate.isInt(trimmed) &&
                                 // Check if valid norwegian org or SSN (Social security number) based on check sum
                                 // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
@@ -256,11 +249,9 @@ export const DonorPane: React.FC<{
                     ref={register}
                     onChange={() => {
                       (document.activeElement as HTMLElement).blur();
-                      setNewsletterChecked(!newsletterChecked);
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
-                        setNewsletterChecked(!newsletterChecked);
                         e.preventDefault();
                       }
                     }}
