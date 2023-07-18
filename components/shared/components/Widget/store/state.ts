@@ -26,6 +26,7 @@ export interface DonationInput {
   shares: OrganizationShare[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
+  phone?: string;
 }
 
 export interface Donation extends DonationInput {
@@ -46,6 +47,7 @@ export interface RegisterDonationObject {
   amount: number;
   organizations?: OrganizationShare[];
   dueDay?: number;
+  phone?: string;
 }
 
 export interface DonorInput {

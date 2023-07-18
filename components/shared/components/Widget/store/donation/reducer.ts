@@ -21,6 +21,7 @@ import {
   SELECT_CUSTOM_SHARE,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
+  SUBMIT_PHONE_NUMBER,
 } from "./types";
 
 const initialState: Donation = {
@@ -95,6 +96,12 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
           ssn: action.payload.ssn,
           newsletter: action.payload.newsletter,
         },
+      };
+      break;
+    case SUBMIT_PHONE_NUMBER:
+      state = {
+        ...state,
+        phone: action.payload.phone,
       };
       break;
     case SET_SHARES:

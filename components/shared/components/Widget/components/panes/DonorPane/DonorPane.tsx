@@ -12,6 +12,7 @@ import {
   registerDonationAction,
   selectPaymentMethod,
   submitDonorInfo,
+  submitPhoneNumber,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
@@ -22,7 +23,12 @@ import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
+import {
+  ActionBar,
+  CheckBoxGroupWrapper,
+  DonorForm,
+  StyledSwishInputFieldWrapper,
+} from "./DonorPane.style";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -54,6 +60,7 @@ export const DonorPane: React.FC<{
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
       method: donation.method,
+      phone: donation.phone,
     },
   });
 
@@ -102,6 +109,10 @@ export const DonorPane: React.FC<{
     );
 
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
+
+    if (data.phone) {
+      dispatch(submitPhoneNumber(data.phone));
+    }
 
     if (isAnonymous || donation.isValid) {
       dispatch(registerDonationAction.started(undefined));
@@ -269,10 +280,30 @@ export const DonorPane: React.FC<{
                     data_cy: `${method._id}-method`,
                   }))}
                   selected={field.value}
-                  onSelect={(option) => field.onChange(option)}
+                  onSelect={(option) => {
+                    clearErrors(["phone"]);
+                    field.onChange(option);
+                  }}
                 />
               )}
             />
+            {selectedPaymentMethod === PaymentMethod.SWISH ? (
+              <StyledSwishInputFieldWrapper>
+                <input
+                  data-cy="phone-input"
+                  type="tel"
+                  placeholder={'Telefonnummer (ex. "0701234567")'}
+                  {...register("phone", {
+                    required: true,
+                    validate: (val) => {
+                      const trimmed = val?.trim();
+                      return trimmed && Validate.isMobilePhone(trimmed, "sv-SE");
+                    },
+                  })}
+                />
+                {errors.phone && <ErrorField text="Ugyldig telefonnummer" />}
+              </StyledSwishInputFieldWrapper>
+            ) : null}
           </div>
           <ActionBar data-cy="next-button-div">
             <NextButton
