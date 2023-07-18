@@ -4,11 +4,12 @@
   font-size: 0.8rem;
   display: block;
   text-decoration: underline;
+  position: relative;
 
   .cornerButton {
     position: absolute;
-    top: 33%;
-    left: 10%;
+    top: 50px;
+    right: 100px;
   }
 }
 
