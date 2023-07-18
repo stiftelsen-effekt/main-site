@@ -14,7 +14,6 @@ export const SET_DONOR_ID = "SET_DONOR_ID";
 export const SET_PAYMENT_PROVIDER_URL = "SET_PAYMENT_PROVIDER_URL";
 export const SELECT_CUSTOM_SHARE = "SELECT_CUSTOM_SHARE";
 export const SET_SHARE_TYPE = "SET_SHARE_TYPE";
-export const SET_DONATION_VALID = "SET_DONATION_VALID";
 export const SET_VIPPS_AGREEMENT = "SET_VIPPS_AGREEMENT";
 
 interface SelectPaymentMethod {
@@ -105,13 +104,6 @@ interface SetShareType {
   };
 }
 
-interface SetDonationValid {
-  type: typeof SET_DONATION_VALID;
-  payload: {
-    isValid: boolean;
-  };
-}
-
 interface SetVippsAgreement {
   type: typeof SET_VIPPS_AGREEMENT;
   payload: {
@@ -132,5 +124,4 @@ export type DonationActionTypes =
   | SetPaymentProviderURL
   | SelectCustomShare
   | SetShareType
-  | SetDonationValid
   | SetVippsAgreement;

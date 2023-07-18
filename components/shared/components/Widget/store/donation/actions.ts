@@ -12,7 +12,6 @@ import {
   SET_PAYMENT_PROVIDER_URL,
   SELECT_CUSTOM_SHARE,
   SET_SHARE_TYPE,
-  SET_DONATION_VALID,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
 } from "./types";
@@ -130,15 +129,6 @@ export function setShareType(shareType: ShareType): DonationActionTypes {
     type: SET_SHARE_TYPE,
     payload: {
       shareType,
-    },
-  };
-}
-
-export function setDonationValid(isValid: boolean): DonationActionTypes {
-  return {
-    type: SET_DONATION_VALID,
-    payload: {
-      isValid,
     },
   };
 }
