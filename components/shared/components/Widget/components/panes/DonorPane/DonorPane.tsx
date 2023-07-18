@@ -1,8 +1,8 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { FormEvent, FormEventHandler, useContext, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import React, { useContext } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
@@ -35,13 +35,13 @@ export const DonorPane: React.FC<{
 }> = ({ text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
-  const method = useSelector((state: State) => state.donation.method);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
 
   const {
     register,
     watch,
+    control,
     formState: { errors },
     handleSubmit,
     clearErrors,
@@ -53,6 +53,7 @@ export const DonorPane: React.FC<{
       ssn: donor.ssn === ANONYMOUS_DONOR.ssn ? "" : donor.ssn || "",
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
+      method: donation.method,
     },
   });
 
@@ -62,9 +63,7 @@ export const DonorPane: React.FC<{
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
 
-  const nextDisabled = useMemo(() => {
-    return (!isAnonymous && Object.keys(errors).length > 0) || !method;
-  }, [isAnonymous, errors, method]);
+  const nextDisabled = Object.keys(errors).length > 0;
 
   const paneSubmitted = handleSubmit((data) => {
     if (!isAnonymous) {
@@ -73,17 +72,17 @@ export const DonorPane: React.FC<{
           donorType: isAnonymous ? 0 : 1,
           taxDeduction: data.taxDeduction,
           newsletter: data.newsletter,
-          method: method,
+          method: data.method,
         },
       });
 
       if (donation.recurring) {
-        if (method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-        if (method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+        if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
+        if (data.method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
       }
       if (!donation.recurring) {
-        if (method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
-        if (method === PaymentMethod.BANK) {
+        if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (data.method === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
           plausible("CompleteDonation");
         }
@@ -102,6 +101,8 @@ export const DonorPane: React.FC<{
             },
       ),
     );
+
+    dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
     if ((isAnonymous || donation.isValid) && !nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
@@ -251,18 +252,27 @@ export const DonorPane: React.FC<{
               </>
             ) : null}
 
-            <RadioButtonGroup
-              options={paymentMethods.map((method) => ({
-                title: method.selector_text,
-                value: {
-                  vipps: PaymentMethod.VIPPS,
-                  bank: PaymentMethod.BANK,
-                  swish: PaymentMethod.SWISH,
-                }[method._id],
-                data_cy: `${method._id}-method`,
-              }))}
-              selected={method}
-              onSelect={(option) => dispatch(selectPaymentMethod(option))}
+            <Controller
+              control={control}
+              name="method"
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <RadioButtonGroup
+                  options={paymentMethods.map((method) => ({
+                    title: method.selector_text,
+                    value: {
+                      vipps: PaymentMethod.VIPPS,
+                      bank: PaymentMethod.BANK,
+                      swish: PaymentMethod.SWISH,
+                    }[method._id],
+                    data_cy: `${method._id}-method`,
+                  }))}
+                  selected={field.value}
+                  onSelect={(option) => field.onChange(option)}
+                />
+              )}
             />
           </div>
           <ActionBar data-cy="next-button-div">
