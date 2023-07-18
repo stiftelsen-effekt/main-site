@@ -61,15 +61,16 @@ export const DonorPane: React.FC<{
   const [donorType, setDonorType] = useState<DonorType>(
     donor?.email === "anon@gieffektivt.no" ? DonorType.ANONYMOUS : DonorType.DONOR,
   );
-  const { register, watch, errors, handleSubmit, clearErrors, setValue } =
-    useForm<DonorFormValues>();
+  const { register, watch, errors, handleSubmit, clearErrors, setValue } = useForm<DonorFormValues>(
+    {
+      defaultValues: {
+        taxDeduction: donor?.taxDeduction,
+        newsletter: donor?.newsletter,
+      },
+    },
+  );
   const watchAllFields = watch();
   const plausible = usePlausible();
-
-  useEffect(() => {
-    setValue("taxDeduction", donor?.taxDeduction);
-    setValue("newsletter", donor?.newsletter);
-  }, []);
 
   useEffect(() => {
     if (donorType === DonorType.ANONYMOUS) {
