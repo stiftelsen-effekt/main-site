@@ -43,7 +43,13 @@ export const DonorPane: React.FC<{
   const [donorType, setDonorType] = useState<DonorType>(
     donor?.email === ANONYMOUS_DONOR.email ? DonorType.ANONYMOUS : DonorType.DONOR,
   );
-  const { register, watch, errors, handleSubmit, clearErrors } = useForm({
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    clearErrors,
+  } = useForm({
     defaultValues: {
       name: donor.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor.name || "",
       email: donor.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor.email || "",
@@ -131,7 +137,6 @@ export const DonorPane: React.FC<{
                   name="anonymousDonor"
                   type="checkbox"
                   checked={donorType === DonorType.ANONYMOUS ? true : false}
-                  ref={register}
                   onChange={() => {
                     if (donorType === DonorType.DONOR) setDonorType(DonorType.ANONYMOUS);
                     else setDonorType(DonorType.DONOR);
@@ -157,20 +162,18 @@ export const DonorPane: React.FC<{
                 <InputFieldWrapper>
                   <input
                     data-cy="name-input"
-                    name="name"
                     type="text"
                     placeholder={text.name_placeholder}
-                    ref={register({ required: true, minLength: 3 })}
+                    {...register("name", { required: true, minLength: 3 })}
                   />
                   {errors.name && <ErrorField text="Ugyldig navn" />}
                 </InputFieldWrapper>
                 <InputFieldWrapper>
                   <input
                     data-cy="email-input"
-                    name="email"
                     type="email"
                     placeholder={text.email_placeholder}
-                    ref={register({
+                    {...register("email", {
                       required: true,
                       validate: (val) => {
                         const trimmed = val.trim();
@@ -185,19 +188,19 @@ export const DonorPane: React.FC<{
                     <CheckBoxWrapper>
                       <HiddenCheckBox
                         data-cy="tax-deduction-checkbox"
-                        name="taxDeduction"
                         type="checkbox"
-                        ref={register}
-                        onChange={() => {
-                          if (!taxDeductionChecked) clearErrors(["ssn"]);
-                          (document.activeElement as HTMLElement).blur();
-                        }}
                         onKeyDown={(e) => {
                           if (!taxDeductionChecked) clearErrors(["ssn"]);
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                           }
                         }}
+                        {...register("taxDeduction", {
+                          onChange() {
+                            if (!taxDeductionChecked) clearErrors(["ssn"]);
+                            (document.activeElement as HTMLElement).blur();
+                          },
+                        })}
                       />
                       <CustomCheckBox
                         label={text.tax_deduction_selector_text}
@@ -209,12 +212,11 @@ export const DonorPane: React.FC<{
                       <InputFieldWrapper>
                         <input
                           data-cy="ssn-input"
-                          name="ssn"
                           type="text"
                           inputMode="numeric"
                           autoComplete="off"
                           placeholder={text.tax_deduction_ssn_placeholder}
-                          ref={register({
+                          {...register("ssn", {
                             required: false,
                             validate: (val) => {
                               const trimmed = val.toString().trim();
@@ -236,17 +238,17 @@ export const DonorPane: React.FC<{
                   <CheckBoxWrapper>
                     <HiddenCheckBox
                       data-cy="newsletter-checkbox"
-                      name="newsletter"
                       type="checkbox"
-                      ref={register}
-                      onChange={() => {
-                        (document.activeElement as HTMLElement).blur();
-                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                         }
                       }}
+                      {...register("newsletter", {
+                        onChange() {
+                          (document.activeElement as HTMLElement).blur();
+                        },
+                      })}
                     />
                     <CustomCheckBox
                       label={text.newsletter_selector_text}
