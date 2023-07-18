@@ -58,7 +58,7 @@ export const TimelineRow = styled.div`
 `;
 
 export const ProgressLineHorizontal = styled.div`
-  width: 45px;
+  width: 25px;
   position: absolute;
   height: 1px;
   background: var(--primary);
@@ -68,7 +68,7 @@ export const ProgressLineHorizontal = styled.div`
 `;
 export const ProgressLineHorizontalDotted = styled.div`
   border-top: 2px dotted black;
-  width: 45px;
+  width: 25px;
   position: absolute;
   height: 1px;
   background: var(--primary);
@@ -90,21 +90,21 @@ export const ProgressCircleLarge = styled.div`
 `;
 
 export const ProgressCircle = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 1.1em;
+  height: 1.1em;
   border: 1px solid var(--primary);
   background-color: ${(props: ProgressCircleProps) =>
     props.filled ? `var(--primary)` : `var(--secondary)`};
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  margin-bottom 20px;
+  margin-bottom 30px;
   margin-left 10px;
 `;
 
 export const ProgressCircleSmall = styled.div`
-  width: 15px;
-  height: 15px;
+  width: .9em;
+  height: .9em;
   border: 1px solid var(--primary);
   background-color: ${(props: ProgressCircleProps) =>
     props.filled ? `var(--primary)` : `var(--secondary)`};
@@ -112,14 +112,14 @@ export const ProgressCircleSmall = styled.div`
   position: relative;
   z-index: 2;
   margin-bottom 20px;
-  margin-left 60px;
+  margin-left 45px;
 `;
 
 export const ProgressLine = styled.div`
   height: 100%;
   position: absolute;
   top: 50%;
-  left: 20px;
+  left: 18px;
   width: 2px;
   transform: translate(-50%, -50%);
   background: var(--primary);
@@ -131,7 +131,7 @@ export const ProgressLineDotted = styled.div`
   border-left: 2px dotted black;
   position: absolute;
   top: 50%;
-  left: 20px;
+  left: 18px;
   width: 1px;
   transform: translate(-50%, -50%);
   background: var(--primary);
@@ -144,8 +144,7 @@ export const TextLarge = styled.div`
 `;
 
 export const TextInfo = styled.div`
-  font-size: 16px;
-  margin-left: 15px;
+font-size: 1rem;
 }
 `;
 
@@ -155,8 +154,8 @@ export const TextInfo2 = styled.div`
 }
 `;
 export const TextInfo3 = styled.div`
-  font-size: 12px;
-  margin-left: 17px;
+  font-size: .9rem;
+
 }
 `;
 
