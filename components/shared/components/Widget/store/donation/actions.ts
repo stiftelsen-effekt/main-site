@@ -40,22 +40,16 @@ export function selectTaxDeduction(taxDeduction: boolean): DonationActionTypes {
   };
 }
 
-export function submitDonorInfo(
-  name: string,
-  email: string,
-  taxDeduction: boolean,
-  ssn: string,
-  newsletter: boolean,
-): DonationActionTypes {
+export function submitDonorInfo(data: {
+  name: string;
+  email: string;
+  taxDeduction: boolean;
+  ssn: string;
+  newsletter: boolean;
+}): DonationActionTypes {
   return {
     type: SUBMIT_DONOR_INFO,
-    payload: {
-      name,
-      email,
-      taxDeduction,
-      ssn,
-      newsletter,
-    },
+    payload: data,
   };
 }
 

@@ -88,13 +88,13 @@ export const DonorPane: React.FC<{
     }
 
     dispatch(
-      submitDonorInfo(
-        capitalizeNames(data.name.trim()),
-        data.email.trim().toLowerCase(),
-        data.taxDeduction,
-        data.taxDeduction ? data.ssn.toString().trim() : "",
-        data.newsletter,
-      ),
+      submitDonorInfo({
+        name: capitalizeNames(data.name.trim()),
+        email: data.email.trim().toLowerCase(),
+        taxDeduction: data.taxDeduction,
+        ssn: data.taxDeduction ? data.ssn.toString().trim() : "",
+        newsletter: data.newsletter,
+      }),
     );
 
     if (donation.isValid && !nextDisabled) {
@@ -106,15 +106,7 @@ export const DonorPane: React.FC<{
 
   const submitAnonymous = (event: FormEvent) => {
     event.preventDefault();
-    dispatch(
-      submitDonorInfo(
-        ANONYMOUS_DONOR.name,
-        ANONYMOUS_DONOR.email,
-        ANONYMOUS_DONOR.taxDeduction,
-        ANONYMOUS_DONOR.ssn,
-        ANONYMOUS_DONOR.newsletter,
-      ),
-    );
+    dispatch(submitDonorInfo(ANONYMOUS_DONOR));
 
     if (!nextDisabled) {
       dispatch(registerDonationAction.started(undefined));
