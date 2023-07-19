@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FormEventHandler, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
 import { validateSsn, validateOrg } from "@ssfbank/norwegian-id-validators";
@@ -23,6 +23,7 @@ import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { Donor } from "../../../../../../../models";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
+import { usePlausible } from "next-plausible";
 
 interface DonorFormValues extends DonorInput {}
 
@@ -66,6 +67,7 @@ export const DonorPane: React.FC<{
   const { register, watch, errors, handleSubmit, clearErrors, setValue } =
     useForm<DonorFormValues>();
   const watchAllFields = watch();
+  const plausible = usePlausible();
 
   useEffect(() => {
     setValue("taxDeduction", donor?.taxDeduction);
@@ -93,22 +95,31 @@ export const DonorPane: React.FC<{
     }
   }, [donorType, method, dispatch, errors, watchAllFields]);
 
-  const paneSubmitted = handleSubmit(
-    (data) => {
-      if (donorType === DonorType.DONOR) {
-        submitDonor(data);
-      } else {
-        submitAnonymous();
-      }
-    },
-    () => {
-      if (donorType === DonorType.ANONYMOUS) {
-        submitAnonymous();
-      }
-    },
-  );
+  const paneSubmitted: FormEventHandler = (event) =>
+    donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous();
 
-  const submitDonor = (data: DonorFormValues) => {
+  const submitDonor = handleSubmit((data) => {
+    plausible("SubmitDonorPane", {
+      props: {
+        donorType: donorType,
+        taxDeduction: data.taxDeduction,
+        newsletter: data.newsletter,
+        method: method,
+      },
+    });
+
+    if (donation.recurring) {
+      if (method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
+      if (method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+    }
+    if (!donation.recurring) {
+      if (method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+      if (method === PaymentMethod.BANK) {
+        plausible("SelectBankSingle");
+        plausible("CompleteDonation");
+      }
+    }
+
     dispatch(
       submitDonorInfo(
         data.name ? capitalizeNames(data.name.trim()) : "",
@@ -124,7 +135,7 @@ export const DonorPane: React.FC<{
     } else {
       alert("Donation invalid");
     }
-  };
+  });
 
   const submitAnonymous = () => {
     dispatch(
