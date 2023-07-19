@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useContext, useEffect, useState } from "react";
+import React, { FormEvent, FormEventHandler, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
 import { validateSsn, validateOrg } from "@ssfbank/norwegian-id-validators";
@@ -96,7 +96,7 @@ export const DonorPane: React.FC<{
   }, [donorType, method, dispatch, errors, watchAllFields]);
 
   const paneSubmitted: FormEventHandler = (event) =>
-    donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous();
+    donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous(event);
 
   const submitDonor = handleSubmit((data) => {
     plausible("SubmitDonorPane", {
@@ -137,7 +137,8 @@ export const DonorPane: React.FC<{
     }
   });
 
-  const submitAnonymous = () => {
+  const submitAnonymous = (event: FormEvent) => {
+    event.preventDefault();
     dispatch(
       submitDonorInfo(
         anonDonor.name,
