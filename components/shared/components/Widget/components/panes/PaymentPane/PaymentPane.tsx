@@ -4,11 +4,13 @@ import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import {
   BankPaymentMethod,
+  SwishPaymentMethod,
   VippsPaymentMethod,
   WidgetPane3ReferralsProps,
   WidgetProps,
 } from "../../../types/WidgetProps";
 import { ResultPane } from "./Bank/ResultPane";
+import { SwishPane } from "./Swish/SwishPane";
 import { VippsPane } from "./Vipps/VippsPane";
 
 export const PaymentPane: React.FC<{
@@ -35,6 +37,15 @@ export const PaymentPane: React.FC<{
         throw new Error("Missing configuration for Vipps, but selected payment method is vipps");
       }
       return <VippsPane config={vippsConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.SWISH: {
+      const swishConfiguration = paymentMethods.find(
+        (method): method is SwishPaymentMethod => method._id === "swish",
+      );
+      if (!swishConfiguration) {
+        throw new Error("Missing configuration for Swish, but selected payment method is swish");
+      }
+      return <SwishPane config={swishConfiguration} referrals={referrals} />;
     }
     default: {
       throw new Error(`Unknown payment method: ${method}`);
