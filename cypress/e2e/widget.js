@@ -306,10 +306,6 @@ describe("Widget", () => {
       },
     });
 
-    cy.visit("/min-side");
-    cy.wait(500);
-    cy.get("[data-cy=send-donation-button]").click();
-
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
