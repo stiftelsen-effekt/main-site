@@ -63,8 +63,6 @@ export const DonorPane: React.FC<{
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
 
-  const nextDisabled = Object.keys(errors).length > 0;
-
   const paneSubmitted = handleSubmit((data) => {
     if (!isAnonymous) {
       plausible("SubmitDonorPane", {
@@ -104,7 +102,7 @@ export const DonorPane: React.FC<{
 
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
-    if ((isAnonymous || donation.isValid) && !nextDisabled) {
+    if (isAnonymous || donation.isValid) {
       dispatch(registerDonationAction.started(undefined));
     } else {
       alert("Donation invalid");
@@ -276,7 +274,7 @@ export const DonorPane: React.FC<{
             />
           </div>
           <ActionBar data-cy="next-button-div">
-            <NextButton disabled={nextDisabled} type="submit">
+            <NextButton disabled={Object.keys(errors).length > 0} type="submit">
               {text.pane2_button_text}
             </NextButton>
           </ActionBar>
