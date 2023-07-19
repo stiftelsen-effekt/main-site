@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
+import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import {
   selectReferralAction,
   setOtherText,
@@ -38,7 +38,7 @@ export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text 
         {referrals?.map((ref) => (
           <EffektButton
             squared
-            type={EffektButtonType.SECONDARY}
+            variant={EffektButtonVariant.SECONDARY}
             cy={`referral-button-${ref.id}`}
             key={ref.id}
             selected={selectedReferrals.includes(ref.id)}

@@ -3,7 +3,7 @@ import styles from "./RadioButtons.module.scss";
 import { RadioButton } from "./RadioButton";
 
 export const RadioButtonGroup: React.FC<{
-  options: { title: string; value: number; data_cy?: string }[];
+  options: { title: string; value: number; data_cy?: string; disabled?: boolean }[];
   selected: number | undefined;
   onSelect: (value: number) => void;
 }> = ({ options, selected, onSelect }) => {
@@ -21,6 +21,7 @@ export const RadioButtonGroup: React.FC<{
           key={option.value}
           title={option.title}
           selected={selected === option.value}
+          disabled={option.disabled}
           onSelect={() => onSelect(option.value)}
         ></RadioButton>
       ))}

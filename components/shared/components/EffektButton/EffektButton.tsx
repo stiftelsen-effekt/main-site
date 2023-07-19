@@ -1,29 +1,26 @@
 import React from "react";
 import elements from "./EffektButton.module.scss";
 
-export const EffektButtonType = {
+export const EffektButtonVariant = {
   PRIMARY: elements.buttonprimary,
   SECONDARY: elements.buttonsecondary,
   TERTIARY: elements.buttontertiary,
 };
 
-export const EffektButton: React.FC<{
-  onClick: (e?: any) => void;
-  role?: string;
-  type?: string;
-  children: React.ReactNode;
+interface EffektButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: string;
   cy?: string;
-  className?: string;
-  disabled?: boolean;
   selected?: boolean;
   squared?: boolean;
   extraMargin?: boolean;
   noMinWidth?: boolean;
   fullWidth?: boolean;
-}> = ({
+}
+
+export const EffektButton: React.FC<EffektButtonProps> = ({
   onClick,
   role,
-  type = EffektButtonType.PRIMARY,
+  variant = EffektButtonVariant.PRIMARY,
   children,
   cy,
   className,
@@ -33,8 +30,9 @@ export const EffektButton: React.FC<{
   extraMargin,
   noMinWidth = false,
   fullWidth = false,
+  ...props
 }) => {
-  const styleClasses = [elements.button, type, className];
+  const styleClasses = [elements.button, variant, className];
   if (selected) {
     styleClasses.push(elements.selected);
   }
@@ -59,12 +57,13 @@ export const EffektButton: React.FC<{
     <button
       className={styleClassesName}
       disabled={disabled}
-      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick={(e) => {
         e.currentTarget.blur();
-        if (!disabled) onClick(e);
+        if (!disabled) onClick?.(e);
       }}
       role={role}
       data-cy={cy}
+      {...props}
     >
       {children}
     </button>

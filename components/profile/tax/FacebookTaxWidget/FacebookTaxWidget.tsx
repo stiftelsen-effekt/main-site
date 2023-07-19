@@ -10,7 +10,7 @@ import styles from "./FacebookTaxWidget.module.scss";
 import { useForm } from "react-hook-form";
 import { ErrorField } from "./ErrorField";
 import Validate from "validator";
-import { EffektButtonType } from "../../../shared/components/EffektButton/EffektButton";
+import { EffektButtonVariant } from "../../../shared/components/EffektButton/EffektButton";
 import { toast } from "react-toastify";
 import { AlertCircle, Check } from "react-feather";
 import { FacebookDonationRegistration, TaxUnit } from "../../../../models";
@@ -131,7 +131,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
           onClick={() => {
             handleSubmit(paneSubmitted);
           }}
-          type={EffektButtonType.PRIMARY}
+          variant={EffektButtonVariant.PRIMARY}
           disabled={nextDisabled}
         >
           {loadingAnimation ? <LoadingButtonSpinner /> : "Registrer"}

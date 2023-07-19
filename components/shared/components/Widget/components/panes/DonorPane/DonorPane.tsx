@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FormEvent, FormEventHandler, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validate from "validator";
 import { validateSsn, validateOrg } from "@ssfbank/norwegian-id-validators";
@@ -27,13 +27,13 @@ import { usePlausible } from "next-plausible";
 
 interface DonorFormValues extends DonorInput {}
 
-const anonDonor: DonorFormValues = {
+const anonDonor = {
   name: "Anonym Giver",
   email: "anon@gieffektivt.no",
   taxDeduction: false,
   ssn: "12345678910",
   newsletter: false,
-};
+}; // satisfies DonorFormValues (requires next@13);
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -95,7 +95,10 @@ export const DonorPane: React.FC<{
     }
   }, [donorType, method, dispatch, errors, watchAllFields]);
 
-  const paneSubmitted = (data: DonorFormValues) => {
+  const paneSubmitted: FormEventHandler = (event) =>
+    donorType === DonorType.DONOR ? submitDonor(event) : submitAnonymous(event);
+
+  const submitDonor = handleSubmit((data) => {
     plausible("SubmitDonorPane", {
       props: {
         donorType: donorType,
@@ -132,16 +135,17 @@ export const DonorPane: React.FC<{
     } else {
       alert("Donation invalid");
     }
-  };
+  });
 
-  const submitAnonymous = () => {
+  const submitAnonymous = (event: FormEvent) => {
+    event.preventDefault();
     dispatch(
       submitDonorInfo(
-        anonDonor.name ? anonDonor.name : "",
-        anonDonor.email ? anonDonor.email : "",
-        anonDonor.taxDeduction ? anonDonor.taxDeduction : false,
-        anonDonor.ssn ? anonDonor.ssn : "",
-        anonDonor.newsletter ? anonDonor.newsletter : false,
+        anonDonor.name,
+        anonDonor.email,
+        anonDonor.taxDeduction,
+        anonDonor.ssn,
+        anonDonor.newsletter,
       ),
     );
 
@@ -154,7 +158,7 @@ export const DonorPane: React.FC<{
 
   return (
     <Pane>
-      <DonorForm onSubmit={handleSubmit(paneSubmitted)} autoComplete="on">
+      <DonorForm onSubmit={paneSubmitted} autoComplete="on">
         <PaneContainer>
           <div>
             <PaneTitle>
@@ -331,6 +335,7 @@ export const DonorPane: React.FC<{
                 value: {
                   vipps: PaymentMethod.VIPPS,
                   bank: PaymentMethod.BANK,
+                  swish: PaymentMethod.SWISH,
                 }[method._id],
                 data_cy: `${method._id}-method`,
               }))}
@@ -339,16 +344,9 @@ export const DonorPane: React.FC<{
             />
           </div>
           <ActionBar data-cy="next-button-div">
-            {donorType === DonorType.DONOR ? (
-              <NextButton disabled={nextDisabled} onClick={() => {}}>
-                {text.pane2_button_text}
-              </NextButton>
-            ) : null}
-            {donorType === DonorType.ANONYMOUS ? (
-              <NextButton disabled={nextDisabled} onClick={submitAnonymous}>
-                {text.pane2_button_text}
-              </NextButton>
-            ) : null}
+            <NextButton disabled={nextDisabled} type="submit">
+              {text.pane2_button_text}
+            </NextButton>
           </ActionBar>
         </PaneContainer>
       </DonorForm>

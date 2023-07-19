@@ -3,7 +3,7 @@ import React from "react";
 import elements from "./LoginError.module.scss";
 import {
   EffektButton,
-  EffektButtonType,
+  EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
 import { group } from "console";
 
@@ -20,7 +20,7 @@ export const LoginError: React.FC<{ message: string }> = ({ message }) => {
         <div className={elements["button-group"]}>
           <EffektButton
             onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
-            type={EffektButtonType.SECONDARY}
+            variant={EffektButtonVariant.SECONDARY}
           >
             Avbryt
           </EffektButton>
