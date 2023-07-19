@@ -35,6 +35,25 @@ const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
 
+/**
+ *
+ * @param phoneNumber Any swedish format, e.g. 0701234567 or +46701234567
+ * @return A swedish phone number in E164 number format, e.g. 46701234567
+ */
+const formatSwedishPhoneNumber = (phoneNumber: string) => {
+  const isValidInput = Validate.isMobilePhone(phoneNumber, "sv-SE");
+  if (!isValidInput) {
+    return phoneNumber;
+  }
+  if (phoneNumber.startsWith("07")) {
+    return `46${phoneNumber.substring(1)}`;
+  } else if (phoneNumber.startsWith("+46")) {
+    return phoneNumber.substring(1);
+  } else {
+    return phoneNumber;
+  }
+};
+
 export const DonorPane: React.FC<{
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
@@ -111,7 +130,8 @@ export const DonorPane: React.FC<{
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
     if (data.phone) {
-      dispatch(submitPhoneNumber(data.phone));
+      const formattedPhone = formatSwedishPhoneNumber(data.phone);
+      dispatch(submitPhoneNumber(formattedPhone));
     }
 
     if (isAnonymous || donation.isValid) {
