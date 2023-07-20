@@ -18,14 +18,19 @@ import {
   TimelineItemBranch,
 } from "./DonationsTimeline.style";
 
-export const DonationsTimeline: React.FC = () => {
-  const numMainNodes = 3;
-  //const paneNumber = useSelector((state: State) => state.layout.paneNumber);
-  const numCompletedNodes = 1;
+interface DonationsTimelineProps {
+  numMainNodes: number;
+  numCompletedNodes: number;
+  numSideNodes: number;
+  numCompletedSideNodes: number;
+}
 
-  const numSideNodes = 4;
-  const numCompletedSideNodes = 4;
-
+export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({
+  numMainNodes,
+  numCompletedNodes,
+  numSideNodes,
+  numCompletedSideNodes,
+}) => {
   const sidePoints = [];
   for (let count = 0; count < numSideNodes; count++) {
     sidePoints.push(

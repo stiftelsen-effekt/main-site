@@ -1,10 +1,7 @@
 import styled from "styled-components";
-import { DonationStatus } from "../../../profile/donations/DonationsStatus/DonationClick";
+import { DonationStatusModal } from "../../../profile/donations/DonationsStatus/DonationStatusModal";
 
-interface TimelineProps {
-  description: string;
-  timelineLength: any;
-}
+import { TimelineProps } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 
 interface ProgressCircleProps {
   filled: boolean;
@@ -166,7 +163,7 @@ export const TextSmall = styled.div`
 }
 `;
 
-export default function DonationsTimelinePreview({ description, timelineLength }: TimelineProps) {
+export default function DonationsTimelinePreview({ description, data }: TimelineProps) {
   return (
     <HeaderContainer>
       <TimelineContainer>
@@ -183,7 +180,7 @@ export default function DonationsTimelinePreview({ description, timelineLength }
         </TimelineContainer>
         <TimelineItem>
           <ProgressCircle filled={false} />
-          <DonationStatus description="Se mer her"></DonationStatus>
+          <DonationStatusModal description="Se mer her" data={data}></DonationStatusModal>
         </TimelineItem>
       </TimelineContainer>
     </HeaderContainer>

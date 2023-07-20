@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import jsonData from "./dummy.json";
 import style from "./DonationDetails.module.scss";
 import { Distribution, Donation } from "../../../../../models";
 import DonationImpact, {
@@ -11,7 +12,7 @@ import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
 import DonationsTimelinePreview from "../../../../shared/components/Timeline/DonationsTimeline.style";
 import { DonationsTimeline } from "../../../../shared/components/Timeline/DonationsTimeline";
-import { DonationStatus } from "../../../donations/DonationsStatus/DonationClick";
+import { DonationStatusModal } from "../../../donations/DonationsStatus/DonationStatusModal";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -42,7 +43,7 @@ export const DonationDetails: React.FC<{
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
         <strong>Donasjonsstatus </strong>
-        <DonationsTimelinePreview description="Donasjon mottatt av GiveWell" timelineLength={2} />
+        <DonationsTimelinePreview description="Donasjon mottatt av GiveWell" data={jsonData} />
         <strong>{configuration.impact_estimate_header}</strong>
 
         <span
