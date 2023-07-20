@@ -42,7 +42,7 @@ export const DonorPane: React.FC<{
     register,
     watch,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
     clearErrors,
   } = useForm({
@@ -62,6 +62,7 @@ export const DonorPane: React.FC<{
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
+  const selectedPaymentMethod = watch("method");
 
   const paneSubmitted = handleSubmit((data) => {
     if (!isAnonymous) {
@@ -274,7 +275,10 @@ export const DonorPane: React.FC<{
             />
           </div>
           <ActionBar data-cy="next-button-div">
-            <NextButton disabled={Object.keys(errors).length > 0} type="submit">
+            <NextButton
+              disabled={!selectedPaymentMethod || Object.keys(errors).length > 0}
+              type="submit"
+            >
               {text.pane2_button_text}
             </NextButton>
           </ActionBar>
