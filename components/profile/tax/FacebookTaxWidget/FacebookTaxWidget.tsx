@@ -28,7 +28,14 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
   const [loadingAnimation, setLoadingAnimation] = useState(false);
   const [createTaxUnitModalOpen, setCreateTaxUnitModalOpen] = useState(false);
 
-  const { register, watch, errors, handleSubmit, reset, trigger } = useForm<{ paymentID: string }>({
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    trigger,
+  } = useForm<{ paymentID: string }>({
     mode: "all",
     defaultValues: { paymentID: "" },
   });
@@ -110,9 +117,8 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
         <InputFieldWrapper>
           <label htmlFor="paymentID">Betalings-ID fra Facebook eller Instagram</label>
           <TaxInput
-            name="paymentID"
             type="number"
-            ref={register({
+            {...register("paymentID", {
               required: true,
               minLength: 16,
               maxLength: 16,

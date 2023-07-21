@@ -19,7 +19,6 @@ import {
   SET_PAYMENT_PROVIDER_URL,
   SET_SHARE_TYPE,
   SELECT_CUSTOM_SHARE,
-  SET_DONATION_VALID,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
 } from "./types";
@@ -49,8 +48,8 @@ const initialState: Donation = {
  */
 
 export const donationReducer: Reducer<Donation, DonationActionTypes> = (
-  state: Donation = initialState,
-  action: DonationActionTypes,
+  state = initialState,
+  action,
 ) => {
   if (isType(action, fetchOrganizationsAction.done)) {
     state = {
@@ -127,9 +126,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       break;
     case SELECT_CUSTOM_SHARE:
       state = { ...state, shareType: ShareType.CUSTOM };
-      break;
-    case SET_DONATION_VALID:
-      state = { ...state };
       break;
     case SET_VIPPS_AGREEMENT:
       state = {

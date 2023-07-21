@@ -1,6 +1,7 @@
 import { SagaIterator } from "redux-saga";
 import { call, put, select } from "redux-saga/effects";
 import { Action } from "typescript-fsa";
+import { ANONYMOUS_DONOR } from "../../config/anonymous-donor";
 import { API_URL } from "../../config/api";
 import { PaymentMethod, ShareType, RecurringDonation } from "../../types/Enums";
 import { DraftAgreementResponse, IServerResponse } from "../../types/Temp";
@@ -133,13 +134,9 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const donation: Donation = yield select((state: State) => state.donation);
 
     const data: RegisterDonationObject = {
-      donor: {
-        name: donation.donor?.name,
-        email: donation.donor?.email,
-        ssn: donation.donor?.ssn,
-      },
-      method: donation.method ? donation.method : PaymentMethod.BANK,
-      amount: donation.sum ? donation.sum : 0,
+      donor: donation.donor,
+      method: donation.method || PaymentMethod.BANK,
+      amount: donation.sum || 0,
       recurring: donation.recurring,
     };
 
@@ -163,7 +160,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
 
     yield put(
       setAnsweredReferral(
-        data.donor?.email === "anon@gieffektivt.no"
+        data.donor?.email === ANONYMOUS_DONOR.email
           ? false
           : (result.content as RegisterDonationResponse).hasAnsweredReferral,
       ),

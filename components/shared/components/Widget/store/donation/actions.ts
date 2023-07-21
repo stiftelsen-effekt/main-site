@@ -12,7 +12,6 @@ import {
   SET_PAYMENT_PROVIDER_URL,
   SELECT_CUSTOM_SHARE,
   SET_SHARE_TYPE,
-  SET_DONATION_VALID,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
 } from "./types";
@@ -40,22 +39,16 @@ export function selectTaxDeduction(taxDeduction: boolean): DonationActionTypes {
   };
 }
 
-export function submitDonorInfo(
-  name: string,
-  email: string,
-  taxDeduction: boolean,
-  ssn: string,
-  newsletter: boolean,
-): DonationActionTypes {
+export function submitDonorInfo(data: {
+  name: string;
+  email: string;
+  taxDeduction: boolean;
+  ssn: string;
+  newsletter: boolean;
+}): DonationActionTypes {
   return {
     type: SUBMIT_DONOR_INFO,
-    payload: {
-      name,
-      email,
-      taxDeduction,
-      ssn,
-      newsletter,
-    },
+    payload: data,
   };
 }
 
@@ -136,15 +129,6 @@ export function setShareType(shareType: ShareType): DonationActionTypes {
     type: SET_SHARE_TYPE,
     payload: {
       shareType,
-    },
-  };
-}
-
-export function setDonationValid(isValid: boolean): DonationActionTypes {
-  return {
-    type: SET_DONATION_VALID,
-    payload: {
-      isValid,
     },
   };
 }
