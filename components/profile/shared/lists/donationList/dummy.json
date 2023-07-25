@@ -8,42 +8,31 @@
           "id": 1,
           "name": "charity_1",
           "date": "2021-03-01",
-          "share": 1
-        }
-      ]
-    },
-    {
-      "provider": "GiveWellClone",
-      "amount": 2000,
-      "involvedCharities": [
+          "share": 0.8
+        },
         {
           "id": 2,
           "name": "charity_2",
           "date": "2021-03-01",
-          "share": 0.5
-        },
-        {
-          "id": 3,
-          "name": "charity_3",
-          "share": 0.5
+          "share": 0.2
         }
       ]
     }
   ],
   "direct": [
     {
-      "provider": "DirectWell",
+      "provider": "GiveDirectly",
       "amount": 6000,
       "involvedCharities": [
         {
           "id": 4,
-          "name": "charity_1",
+          "name": "charity_8",
           "date": "2021-03-01",
           "share": 0.1
         },
         {
           "id": 5,
-          "name": "charity_2",
+          "name": "charity_9",
           "date": "2021-03-01",
           "share": 0.2
         },
@@ -51,18 +40,6 @@
           "id": 6,
           "name": "charity_10",
           "share": 0.7
-        }
-      ]
-    },
-    {
-      "provider": "DirectWellClone",
-      "amount": 1000,
-      "involvedCharities": [
-        {
-          "id": 7,
-          "name": "charity_5",
-          "date": "2021-03-01",
-          "share": 1
         }
       ]
     }
