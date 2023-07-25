@@ -14,12 +14,6 @@ import { TimelineProps } from "./DonationStatusJson/DonationStatusJsonProps";
 export const DonationStatusModal: React.FC<TimelineProps> = ({ description, data }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const listOfPoints = [3, 1, 2, 1];
-
-  //make a function for calculating numMainNodes, numCompletedNodes, numSideNodes and numCompletedSideNodes
-
-  const myList = data.smart[0].provider;
-
   return (
     <div>
       <button onClick={() => setModalOpen(true)} className={style.caption}>
@@ -28,13 +22,7 @@ export const DonationStatusModal: React.FC<TimelineProps> = ({ description, data
         <LightboxWithoutBotton open={modalOpen} onCancel={() => setModalOpen(false)}>
           <div>
             <h5>Donasjonsstatus</h5>
-            {myList}
-            <DonationsTimeline
-              numMainNodes={listOfPoints[0]}
-              numCompletedNodes={listOfPoints[1]}
-              numSideNodes={listOfPoints[2]}
-              numCompletedSideNodes={listOfPoints[3]}
-            />
+            <DonationsTimeline dataObj={data} />
           </div>
         </LightboxWithoutBotton>
       </button>
