@@ -18,7 +18,11 @@ export const DonationStatusModal: React.FC<TimelineProps> = ({ description, data
 
   //make a function for calculating numMainNodes, numCompletedNodes, numSideNodes and numCompletedSideNodes
 
-  const myList = data.smart[0].provider;
+  const Provider = data.smart[0];
+
+  const nameProvider = Provider.provider;
+  const sum = Provider.amount;
+  const numCharities = Provider.involvedCharities.length;
 
   return (
     <div>
@@ -28,7 +32,9 @@ export const DonationStatusModal: React.FC<TimelineProps> = ({ description, data
         <LightboxWithoutBotton open={modalOpen} onCancel={() => setModalOpen(false)}>
           <div>
             <h5>Donasjonsstatus</h5>
-            {myList}
+            {nameProvider}
+            {sum}
+            {numCharities}
             <DonationsTimeline
               numMainNodes={listOfPoints[0]}
               numCompletedNodes={listOfPoints[1]}

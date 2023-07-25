@@ -4,6 +4,28 @@ export default {
   type: "object",
   fields: [
     {
+      name: "status_estimate_header",
+      title: "Status estimate header",
+      type: "string",
+    },
+    {
+      name: "date_and_amount",
+      title: "Date and amount",
+      type: "string",
+      description: "Use {{date}}  {{amount}} kr",
+    },
+    {
+      name: "status_estimate_explanation_title",
+      title: "Status estimate explanation title",
+      type: "string",
+    },
+    {
+      name: "status_estimate_explanation_text",
+      title: "Status estimate explanation text",
+      type: "array",
+      of: [{ type: "block" }],
+    },
+    {
       name: "impact_estimate_header",
       title: "Impact estimate header",
       type: "string",

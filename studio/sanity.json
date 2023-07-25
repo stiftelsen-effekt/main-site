@@ -1,5 +1,9 @@
 {
   "root": true,
+  "api": {
+    "projectId": "9tzjtf7h",
+    "dataset": "heo"
+  },
   "project": {
     "name": "Gi Effektivt Website",
     "basePath": "/studio"
