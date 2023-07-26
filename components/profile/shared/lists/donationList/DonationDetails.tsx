@@ -60,7 +60,10 @@ export const DonationDetails: React.FC<{
           {configuration.status_estimate_explanation_title}&nbsp;&nbsp;
         </span>
         <div className={style.captionStatus}>
-          {console.log("configuration?.date_and_amount: ", configuration?.date_and_amount)}
+          {console.log(
+            "configuration?.date_and_amount: ",
+            configuration?.date_and_amount.replace("{{date}}", "1").replace("{{amount}}", "444"),
+          )}
         </div>
         <AnimateHeight duration={500} height={showStatusEstimateExplanation ? "auto" : 0}>
           <div className={style.impactExplanationContainer}>

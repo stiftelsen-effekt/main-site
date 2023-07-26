@@ -12,7 +12,7 @@ export const HeaderContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 30px 40px;
+  padding: 10px 2px;
 `;
 
 export const TimelineContainer = styled.div`
@@ -39,10 +39,11 @@ export const TimelineItemBranch = styled.div`
   flex-direction: row;
   column-gap: 30px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   max-height: 200px;
   height: 100%;
   position: relative;
+  margin-bottom: 5px;
 `;
 
 export const TimelineRow = styled.div`
@@ -61,7 +62,7 @@ export const ProgressLineHorizontal = styled.div`
   background: var(--primary);
   align-items: center;
   margin-left: 20px;
-  margin-bottom: 17px;
+  margin-top: 10px;
 `;
 export const ProgressLineHorizontalDotted = styled.div`
   border-top: 2px dotted black;
@@ -71,7 +72,7 @@ export const ProgressLineHorizontalDotted = styled.div`
   background: var(--primary);
   align-items: center;
   margin-left: 20px;
-  margin-bottom: 17px;
+  margin-top: 10px;
 `;
 
 export const ProgressCircleLarge = styled.div`
@@ -95,8 +96,8 @@ export const ProgressCircle = styled.div`
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  margin-bottom 30px;
-  margin-left 10px;
+  margin-bottom 2.6rem;
+  margin-left 0.3rem;
 `;
 
 export const ProgressCircleSmall = styled.div`
@@ -108,15 +109,16 @@ export const ProgressCircleSmall = styled.div`
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  margin-bottom 20px;
+  margin-bottom 1.4rem;
   margin-left 45px;
+  margin-top: 5px;
 `;
 
 export const ProgressLine = styled.div`
-  height: 100%;
+  height: 98%;
   position: absolute;
   top: 50%;
-  left: 18px;
+  left: 0.75rem;
   width: 2px;
   transform: translate(-50%, -50%);
   background: var(--primary);
@@ -128,7 +130,7 @@ export const ProgressLineDotted = styled.div`
   border-left: 2px dotted black;
   position: absolute;
   top: 50%;
-  left: 18px;
+  left: 0.75rem;
   width: 1px;
   transform: translate(-50%, -50%);
   background: var(--primary);
@@ -147,7 +149,6 @@ font-size: 1rem;
 
 export const TextInfo2 = styled.div`
   font-size: 14px;
-  margin-left: 16px;
 }
 `;
 export const TextInfo3 = styled.div`
@@ -157,10 +158,18 @@ export const TextInfo3 = styled.div`
 `;
 
 export const TextSmall = styled.div`
-  font-size: 16px;
-  margin-left: 17px;
-  text-decoration: underline;
+  font-size: .6rem;
+  margin-bottom: 2px;
 }
+`;
+
+export const TimelineContainerWithSplit = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  margin-top: 1.6rem;
 `;
 
 export default function DonationsTimelinePreview({ description, data }: TimelineProps) {
