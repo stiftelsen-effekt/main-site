@@ -2,7 +2,7 @@
   "smart": [
     {
       "provider": "GiveWell",
-      "amount": 5000,
+      "amount": 6000,
       "involvedCharities": [
         {
           "id": 1,

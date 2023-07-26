@@ -1,6 +1,7 @@
 import { jsonObject } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 import { buildTimelineFromObj } from "./TimelineFunctions";
 import { mapSidepoints } from "./TimelineFunctions";
+import style from "./DonationDetails.module.scss";
 import {
   HeaderContainer,
   TimelineContainer,
