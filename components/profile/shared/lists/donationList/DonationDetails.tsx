@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import jsonData from "./dummy.json";
+import { getDonationStatus } from "../../../_queries";
 import style from "./DonationDetails.module.scss";
 import { Distribution, Donation } from "../../../../../models";
 import DonationImpact, {
@@ -11,9 +11,6 @@ import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
 import DonationsTimelinePreview from "../../../../shared/components/Timeline/DonationsTimeline.style";
-import { DonationsTimeline } from "../../../../shared/components/Timeline/DonationsTimeline";
-import { DonationStatusModal } from "../../../donations/DonationsStatus/DonationStatusModal";
-//import { DonationDateAmount } from "./DonationDataAmount";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -48,7 +45,7 @@ export const DonationDetails: React.FC<{
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
-        <strong>{configuration.status_estimate_header}</strong>
+        <strong>{"TITTEL"}</strong>
         <span
           className={
             showStatusEstimateExplanation
@@ -56,15 +53,8 @@ export const DonationDetails: React.FC<{
               : style.caption
           }
           onClick={() => setShowStatusEstimateExplanation(!showStatusEstimateExplanation)}
-        >
-          {configuration.status_estimate_explanation_title}&nbsp;&nbsp;
-        </span>
-        <div className={style.captionStatus}>
-          {console.log(
-            "configuration?.date_and_amount: ",
-            configuration?.date_and_amount.replace("{{date}}", "1").replace("{{amount}}", "444"),
-          )}
-        </div>
+        ></span>
+        <div className={style.captionStatus}></div>
         <AnimateHeight duration={500} height={showStatusEstimateExplanation ? "auto" : 0}>
           <div className={style.impactExplanationContainer}>
             <PortableText value={configuration?.status_estimate_explanation_text} />
@@ -73,7 +63,10 @@ export const DonationDetails: React.FC<{
           </div>
         </AnimateHeight>
 
-        <DonationsTimelinePreview description="Donasjon mottatt av GiveWell" data={jsonData} />
+        <DonationsTimelinePreview
+          description="Donasjon mottatt av GiveWell"
+          data={getDonationStatus(0)}
+        />
         <strong>{configuration.impact_estimate_header}</strong>
 
         <span
