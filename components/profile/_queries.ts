@@ -2,6 +2,16 @@ import { User } from "@auth0/auth0-react";
 import { mutate } from "swr";
 import { getUserId } from "../../lib/user";
 import { Donor, FacebookDonationRegistration, TaxUnit } from "../../models";
+//import jsonData from "./donations/DonationsStatus/DonationStatusJson/dummyJsonsbothComplete.json";
+import {
+  bothComplete,
+  bothIncomplete,
+  bothWithDirctlyIncomplete,
+  bothWithSmartIncomplete,
+  DirectlyComplete,
+  smartComplete,
+  smartIncomplete,
+} from "./donations/DonationsStatus/DonationStatusJson/dummyJsons/exportJsons";
 
 export const saveDonor = async (data: Donor, user: User, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
@@ -25,6 +35,30 @@ export const saveDonor = async (data: Donor, user: User, token: string) => {
     }
   } catch (e) {
     return null;
+  }
+};
+
+export const getDonationStatus = (scenarioId: number) => {
+  if (scenarioId == 0) {
+    return bothComplete;
+  }
+  if (scenarioId == 1) {
+    return bothIncomplete;
+  }
+  if (scenarioId == 2) {
+    return bothWithDirctlyIncomplete;
+  }
+  if (scenarioId == 3) {
+    return bothWithSmartIncomplete;
+  }
+  if (scenarioId == 4) {
+    return DirectlyComplete;
+  }
+  if (scenarioId == 5) {
+    return smartComplete;
+  }
+  if (scenarioId == 6) {
+    return smartIncomplete;
   }
 };
 
