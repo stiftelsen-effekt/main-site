@@ -5,6 +5,7 @@ import bothWithSmartIncomplete from "./bothIncomplete .json";
 import DirectlyComplete from "./DirectlyComplete.json";
 import smartComplete from "./smartComplete.json";
 import smartIncomplete from "./smartIncomplete.json";
+import nonComplete from "./nonComplete.json";
 
 export {
   bothComplete,
@@ -14,4 +15,5 @@ export {
   DirectlyComplete,
   smartComplete,
   smartIncomplete,
+  nonComplete,
 };

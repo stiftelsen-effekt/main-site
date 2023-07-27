@@ -93,3 +93,19 @@ export function mapSidepoints(
   }
   return sidePoints;
 }
+
+export function getProviderStatus(Providers: Provider[]): any[] {
+  let receivedDate = false;
+  let providerTitle = "";
+  for (let i = 0; i < Providers.length; i++) {
+    let provider = Providers[i];
+    providerTitle = provider.provider;
+    if (provider.receivedDate) {
+      receivedDate = true;
+      return [receivedDate, providerTitle];
+    }
+    providerTitle = provider.provider;
+  }
+  receivedDate = false;
+  return [receivedDate, providerTitle];
+}

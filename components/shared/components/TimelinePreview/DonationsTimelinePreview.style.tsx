@@ -22,7 +22,18 @@ export const TimelineContainer = styled.div`
 export const TimelineItem = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: 1.3rem;
+  column-gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-height: 12.5rem;
+  height: 100%;
+  position: relative;
+`;
+
+export const TimelineItemSmall = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 1.45rem;
   justify-content: space-between;
   align-items: flex-start;
   max-height: 12.5rem;
@@ -56,7 +67,7 @@ export const ProgressLineHorizontal = styled.div`
   height: 0.0625rem;
   background: var(--primary);
   align-items: center;
-  margin-left: 0.8rem;
+  margin-left: 0.9rem;
   margin-top: 0.625rem;
 `;
 export const ProgressLineHorizontalDotted = styled.div`
@@ -66,20 +77,20 @@ export const ProgressLineHorizontalDotted = styled.div`
   height: 0.0625rem;
   background: var(--primary);
   align-items: center;
-  margin-left: 0.8rem;
+  margin-left: 1.25rem;
   margin-top: 0.625rem;
 `;
 
 export const ProgressCircleLarge = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.2rem;
+  height: 2.2rem;
   border: 0.0625rem solid var(--primary);
   background-color: ${(props: ProgressCircleProps) =>
     props.filled ? `var(--primary)` : `var(--secondary)`};
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  margin-bottom 2.5rem;
+  margin-bottom 1rem;
 `;
 
 export const ProgressCircle = styled.div`
@@ -91,8 +102,8 @@ export const ProgressCircle = styled.div`
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  margin-bottom 2.6rem;
-  margin-left 0.3rem;
+  margin-bottom 1rem;
+  margin-left 0.6rem;
 `;
 
 export const ProgressCircleSmall = styled.div`
@@ -110,13 +121,14 @@ export const ProgressCircleSmall = styled.div`
 `;
 
 export const ProgressLine = styled.div`
-  height: 100%;
+  height: 98%;
   position: absolute;
   top: 50%;
-  left: 0.66rem;
+  left: 0.75rem;
   width: 0.125rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
+  margin-left 0.38rem;
 `;
 
 export const ProgressLineDotted = styled.div`
@@ -125,10 +137,11 @@ export const ProgressLineDotted = styled.div`
   border-left: 0.125rem dotted black;
   position: absolute;
   top: 50%;
-  left: 0.66rem;
+  left: 0.75rem;
   width: 0.0625rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
+  margin-left 0.44rem;
 `;
 
 export const TextLarge = styled.div`
@@ -137,6 +150,7 @@ export const TextLarge = styled.div`
 `;
 
 export const TextInfo = styled.div`
+padding-top: 0.5rem;
 font-size: 1rem;
 }
 `;

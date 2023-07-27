@@ -6,6 +6,7 @@ export interface Charity {
 }
 
 export interface Provider {
+  receivedDate?: string;
   provider: string;
   amount: number;
   involvedCharities: Charity[];

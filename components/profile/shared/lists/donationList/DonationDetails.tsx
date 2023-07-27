@@ -10,7 +10,7 @@ import AnimateHeight from "react-animate-height";
 import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
-import DonationsTimelinePreview from "../../../../shared/components/Timeline/DonationsTimeline.style";
+import DonationsTimelinePreview from "../../../../shared/components/TimelinePreview/DonationsTimelinePreview";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -41,11 +41,11 @@ export const DonationDetails: React.FC<{
     org: mapNameToOrgAbbriv(org.name) || org.name,
     sum: parseFloat(sum) * (parseFloat(org.share) / 100),
   }));
-  const myDate = "22.03.23";
+
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
-        <strong>{"TITTEL"}</strong>
+        <strong>{"Donasjonsstatus"}</strong>
         <span
           className={
             showStatusEstimateExplanation
@@ -65,7 +65,7 @@ export const DonationDetails: React.FC<{
 
         <DonationsTimelinePreview
           description="Donasjon mottatt av GiveWell"
-          data={getDonationStatus(0)}
+          data={getDonationStatus(7)}
         />
         <strong>{configuration.impact_estimate_header}</strong>
 
