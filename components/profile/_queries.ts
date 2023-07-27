@@ -11,6 +11,7 @@ import {
   DirectlyComplete,
   smartComplete,
   smartIncomplete,
+  nonComplete,
 } from "./donations/DonationsStatus/DonationStatusJson/dummyJsons/exportJsons";
 
 export const saveDonor = async (data: Donor, user: User, token: string) => {
@@ -59,6 +60,9 @@ export const getDonationStatus = (scenarioId: number) => {
   }
   if (scenarioId == 6) {
     return smartIncomplete;
+  }
+  if (scenarioId == 7) {
+    return nonComplete;
   }
 };
 

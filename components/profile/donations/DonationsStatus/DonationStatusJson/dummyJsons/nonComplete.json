@@ -3,18 +3,16 @@
     {
       "provider": "GiveWell",
       "amount": 6000,
-      "receivedDate": "2021-01-01",
       "involvedCharities": [
         {
           "id": 1,
           "name": "charity_1",
-          "date": "2021-03-01",
           "share": 0.8
         },
         {
           "id": 2,
           "name": "charity_2",
-          "date": "2021-03-01",
+
           "share": 0.2
         }
       ]

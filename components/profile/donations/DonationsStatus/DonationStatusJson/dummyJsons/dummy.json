@@ -3,6 +3,7 @@
     {
       "provider": "GiveWell",
       "amount": 6000,
+      "receivedDate": "2021-01-01",
       "involvedCharities": [
         {
           "id": 1,
@@ -23,6 +24,7 @@
     {
       "provider": "GiveDirectly",
       "amount": 6000,
+      "receivedDate": "2021-01-01",
       "involvedCharities": [
         {
           "id": 4,

@@ -39,7 +39,13 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
   let amount = [];
   let sidePoints = [];
 
+  let listOfBool = [];
+  let fromGiEffektivt = false;
+
+  let checkForBoth = false;
+
   if (dataObj.smart) {
+    fromGiEffektivt = true;
     const computedValuesSmart = buildTimelineFromObj(dataObj.smart);
     numMainNodes++;
     numSideNodes.push(computedValuesSmart[1]);
@@ -49,6 +55,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
     listOfSums.push(computedValuesSmart[5]);
     amount.push(computedValuesSmart[6][0]);
     sidePoints.push(computedValuesSmart[7]);
+    listOfBool.push(computedValuesSmart[0]);
     if (computedValuesSmart[0]) {
       numCompletedNodes++;
     }
@@ -56,6 +63,8 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
   if (dataObj.direct) {
     const computedValuesDirect = buildTimelineFromObj(dataObj.direct);
     numMainNodes++;
+    listOfBool.push(computedValuesDirect[0]);
+    fromGiEffektivt = true;
     if (computedValuesDirect[0]) {
       numCompletedNodes++;
       numSideNodes.unshift(computedValuesDirect[1]);
@@ -74,6 +83,10 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
       amount.push(computedValuesDirect[6][0]);
       sidePoints.push(computedValuesDirect[7]);
     }
+  }
+
+  if (dataObj.direct && dataObj.smart) {
+    checkForBoth = true;
   }
 
   const points = [];
@@ -98,13 +111,13 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
         </TimelineContainer>,
       );
     } else {
-      if (dataObj.direct && dataObj.smart) {
+      if (checkForBoth) {
         points.push(
           <TimelineContainerWithSplit>
             <TimelineContainer>
               {numCompletedNodes - 1 >= i ? <ProgressLine /> : <ProgressLineDotted />}
               <TimelineItem>
-                <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
+                <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
                 <TimelineContainer>
                   <TextInfo>Penger ble overført til {providerTitle[i - 1]}</TextInfo>
                   <TextSmall>{amount[i - 1]} kr</TextSmall>
@@ -112,7 +125,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
               </TimelineItem>
               {sidePoints[i - 1].map((sp) => sp)}
             </TimelineContainer>
-            <ProgressCircle key={i} filled={numCompletedNodes - 1 >= i}></ProgressCircle>
+            <ProgressCircle key={i} filled={listOfBool[i - 1]}></ProgressCircle>
           </TimelineContainerWithSplit>,
         );
       } else {
