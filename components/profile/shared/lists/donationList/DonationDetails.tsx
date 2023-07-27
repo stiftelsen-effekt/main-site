@@ -11,8 +11,12 @@ import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
 import DonationsTimelinePreview from "../../../../shared/components/Timeline/DonationsTimeline.style";
-import { DonationsTimeline } from "../../../../shared/components/Timeline/DonationsTimeline";
+import {
+  DonationsTimeline,
+  TestModal,
+} from "../../../../shared/components/Timeline/DonationsTimeline";
 import { DonationStatusModal } from "../../../donations/DonationsStatus/DonationStatusModal";
+import { ExpansionWindow } from "./expansionWindow";
 //import { DonationDateAmount } from "./DonationDataAmount";
 
 export type DonationDetailsConfiguration = {
@@ -24,7 +28,9 @@ export type DonationDetailsConfiguration = {
   status_estimate_explanation_text: any[];
   impact_estimate_explanation_text: any[];
   impact_estimate_explanation_links: (LinkType | NavLink)[];
+
   impact_items_configuration: DonationImpactItemsConfiguration;
+  expansionWindow: TestModal;
 };
 
 export const DonationDetails: React.FC<{
@@ -35,7 +41,6 @@ export const DonationDetails: React.FC<{
   configuration: DonationDetailsConfiguration;
 }> = ({ sum, donation, distribution, timestamp, configuration }) => {
   const [showImpactEstimateExplanation, setShowImpactEstimateExplanation] = useState(false);
-  const [showStatusEstimateExplanation, setShowStatusEstimateExplanation] = useState(false);
 
   if (!distribution)
     return <span>Ingen distribusjon funnet for donasjon med KID {donation.KID}</span>;
@@ -49,31 +54,28 @@ export const DonationDetails: React.FC<{
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
         <strong>{configuration.status_estimate_header}</strong>
-        <span
-          className={
-            showStatusEstimateExplanation
-              ? [style.caption, style.captionopen].join(" ")
-              : style.caption
-          }
-          onClick={() => setShowStatusEstimateExplanation(!showStatusEstimateExplanation)}
-        >
-          {configuration.status_estimate_explanation_title}&nbsp;&nbsp;
-        </span>
-        <div className={style.captionStatus}>
-          {console.log(
-            "configuration?.date_and_amount: ",
-            configuration?.date_and_amount.replace("{{date}}", "1").replace("{{amount}}", "444"),
-          )}
-        </div>
-        <AnimateHeight duration={500} height={showStatusEstimateExplanation ? "auto" : 0}>
-          <div className={style.impactExplanationContainer}>
-            <PortableText value={configuration?.status_estimate_explanation_text} />
-
-            <Links links={configuration?.impact_estimate_explanation_links}></Links>
+        {configuration?.date_and_amount && (
+          <div className={style.captionStatus}>
+            {console.log(
+              "configuration?.date_and_amount: ",
+              configuration?.date_and_amount.replace("{{date}}", "1").replace("{{amount}}", "444"),
+              configuration,
+            )}
           </div>
-        </AnimateHeight>
+        )}
 
-        <DonationsTimelinePreview description="Donasjon mottatt av GiveWell" data={jsonData} />
+        <ExpansionWindow
+          explanation_title={configuration.status_estimate_explanation_title}
+          text_input={configuration.status_estimate_explanation_text}
+          title_style={style.caption}
+          text_style={style.impactExplanationContainer}
+        />
+
+        <DonationsTimelinePreview
+          description="Donasjon mottatt av GiveWell"
+          data={jsonData}
+          configuration={configuration}
+        />
         <strong>{configuration.impact_estimate_header}</strong>
 
         <span

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { DonationStatusModal } from "../../../profile/donations/DonationsStatus/DonationStatusModal";
 
 import { TimelineProps } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
+import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
 
 interface ProgressCircleProps {
   filled: boolean;
@@ -172,7 +173,11 @@ export const TimelineContainerWithSplit = styled.div`
   margin-top: 1.6rem;
 `;
 
-export default function DonationsTimelinePreview({ description, data }: TimelineProps) {
+export default function DonationsTimelinePreview({
+  description,
+  data,
+  configuration,
+}: TimelineProps) {
   return (
     <HeaderContainer>
       <TimelineContainer>
@@ -189,7 +194,11 @@ export default function DonationsTimelinePreview({ description, data }: Timeline
         </TimelineContainer>
         <TimelineItem>
           <ProgressCircle filled={false} />
-          <DonationStatusModal description="Se mer her" data={data}></DonationStatusModal>
+          <DonationStatusModal
+            description="Se mer her"
+            data={data}
+            configuration={configuration}
+          ></DonationStatusModal>
         </TimelineItem>
       </TimelineContainer>
     </HeaderContainer>

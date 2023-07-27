@@ -26,6 +26,36 @@ export default {
       of: [{ type: "block" }],
     },
     {
+      name: "expansionWindow",
+      title: "Expansion Window",
+      type: "object",
+      fields: [
+        {
+          name: "mottatt_title",
+          title: "Mottatt title",
+          type: "string",
+        },
+        {
+          name: "mottatt_undetitle",
+          title: "Mottatt undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "overfort_title",
+          title: "Overført title",
+          type: "string",
+        },
+        {
+          name: "overfort_undetitle",
+          title: "Overført undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+      ],
+    },
+
+    {
       name: "impact_estimate_header",
       title: "Impact estimate header",
       type: "string",

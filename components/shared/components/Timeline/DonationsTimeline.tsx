@@ -1,7 +1,7 @@
 import { jsonObject } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 import { buildTimelineFromObj } from "./TimelineFunctions";
 import { mapSidepoints } from "./TimelineFunctions";
-import style from "./DonationDetails.module.scss";
+import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
 import {
   HeaderContainer,
   TimelineContainer,
@@ -22,12 +22,23 @@ import {
   TimelineItemBranch,
   TimelineContainerWithSplit,
 } from "./DonationsTimeline.style";
+import { ExpansionWindow } from "../../../profile/shared/lists/donationList/expansionWindow";
+import { LinkType } from "../../../main/blocks/Links/Links";
+import { NavLink } from "../../../main/layout/navbar";
+
+export type TestModal = {
+  mottatt_title: string;
+  overfort_title: string;
+  mottatt_undetitle: any[];
+  overfort_undetitle: any[];
+};
 
 interface DonationsTimelineProps {
+  configuration: DonationDetailsConfiguration;
   dataObj: jsonObject;
 }
 
-export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj }) => {
+export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, configuration }) => {
   // Extracting values from json-object to build the timeline
   let numMainNodes = 2;
   let numCompletedNodes = 1;
@@ -84,7 +95,14 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
           {numCompletedNodes - 1 >= i ? <ProgressLine /> : <ProgressLineDotted />}
           <TimelineItem>
             <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
-            <TextInfo>Donasjonen mottatt av Gi Effektivt</TextInfo>
+            <TextInfo>
+              <ExpansionWindow
+                explanation_title={configuration.expansionWindow.mottatt_title}
+                text_input={configuration.expansionWindow.mottatt_undetitle}
+                title_style={style.caption}
+                text_style={style.impactExplanationContainer}
+              />
+            </TextInfo>
           </TimelineItem>
         </TimelineContainer>,
       );

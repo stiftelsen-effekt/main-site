@@ -11,7 +11,11 @@ import { TimelineProps } from "./DonationStatusJson/DonationStatusJsonProps";
 //import DonationsTimeline from "../../../shared/components/Timeline/DonationsTimeline.style";
 //import { LightboxDonation } from "./LightboxDonation";
 
-export const DonationStatusModal: React.FC<TimelineProps> = ({ description, data }) => {
+export const DonationStatusModal: React.FC<TimelineProps> = ({
+  description,
+  data,
+  configuration,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -21,8 +25,9 @@ export const DonationStatusModal: React.FC<TimelineProps> = ({ description, data
         {description}
         <LightboxWithoutBotton open={modalOpen} onCancel={() => setModalOpen(false)}>
           <div>
-            <h5>Donasjonsstatus</h5>
-            <DonationsTimeline dataObj={data} />
+            <h5>{configuration.status_estimate_header} </h5>
+            {console.log("configuration in DonationStatusModal", configuration)}
+            <DonationsTimeline dataObj={data} configuration={configuration} />
           </div>
         </LightboxWithoutBotton>
       </button>

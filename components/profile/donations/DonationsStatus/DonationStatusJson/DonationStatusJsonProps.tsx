@@ -1,3 +1,6 @@
+import { TestModal } from "../../../../shared/components/Timeline/DonationsTimeline";
+import { DonationDetailsConfiguration } from "../../../shared/lists/donationList/DonationDetails";
+
 export interface Charity {
   id: number;
   name: string;
@@ -19,4 +22,5 @@ export interface jsonObject {
 export interface TimelineProps {
   description: string;
   data: jsonObject;
+  configuration: DonationDetailsConfiguration;
 }
