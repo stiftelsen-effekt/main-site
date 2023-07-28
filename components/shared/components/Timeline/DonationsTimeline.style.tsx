@@ -1,12 +1,11 @@
 import styled from "styled-components";
-
 interface ProgressCircleProps {
   filled: boolean;
 }
 export const HeaderContainer = styled.div`
   display: flex;
-  height: 100%;
   flex-direction: column;
+  height: 100%;
   align-items: flex-start;
 
   padding: 0.625rem 0.125rem;
@@ -17,7 +16,7 @@ export const TimelineContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  height: 400px;
+  flex-wrap: wrap;
 `;
 
 export const TimelineContainerTestubg = styled.div`
@@ -25,9 +24,8 @@ export const TimelineContainerTestubg = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  width: 600px;
+  width: 30rem;
   overflow-wrap: break-word;
-  overflow-y: hidden;
 `;
 
 export const TimelineItem = styled.div`
