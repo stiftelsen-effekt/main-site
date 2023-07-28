@@ -39,6 +39,7 @@ export const saveDonor = async (data: Donor, user: User, token: string) => {
   }
 };
 
+//For DEMO
 export const getDonationStatus = (scenarioId: number) => {
   if (scenarioId == 0) {
     return bothComplete;

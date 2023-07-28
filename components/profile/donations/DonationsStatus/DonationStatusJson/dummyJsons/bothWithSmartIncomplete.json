@@ -23,6 +23,7 @@
     {
       "provider": "GiveDirectly",
       "amount": 6000,
+      "receivedDate": "2021-01-01",
       "involvedCharities": [
         {
           "id": 4,

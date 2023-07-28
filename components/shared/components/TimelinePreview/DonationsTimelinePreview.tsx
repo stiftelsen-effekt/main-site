@@ -32,8 +32,8 @@ export default function DonationsTimelinePreview({ description, data }: Timeline
   }
 
   if (data.direct) {
-    if (getProviderStatus(data.smart)[0]) {
-      newDescription = "Donasjon mottatt av " + getProviderStatus(data.smart)[1];
+    if (getProviderStatus(data.direct)[0]) {
+      newDescription = "Donasjon mottatt av " + getProviderStatus(data.direct)[1];
       checkStage2 = true;
     }
     const computedValuesDirect = buildTimelineFromObj(data.direct);
@@ -64,7 +64,7 @@ export default function DonationsTimelinePreview({ description, data }: Timeline
             <ProgressCircleLarge filled={checkStage2} />
             <TextInfo>{newDescription}</TextInfo>
           </TimelineItem>
-          <ProgressLineDotted />
+          {checkStage3 ? <ProgressLine /> : <ProgressLineDotted />}
         </TimelineContainer>
         <TimelineItemSmall>
           <ProgressCircle filled={checkStage3} />

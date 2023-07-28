@@ -9,12 +9,25 @@
           "id": 1,
           "name": "charity_1",
           "date": "2021-03-01",
-          "share": 0.8
+          "share": 0.4
         },
         {
           "id": 2,
           "name": "charity_2",
+          "date": "2021-03-01",
+          "share": 0.3
+        },
+        {
+          "id": 3,
+          "name": "charity_3",
+          "date": "2021-03-01",
           "share": 0.2
+        },
+        {
+          "id": 4,
+          "name": "charity_4",
+
+          "share": 0.1
         }
       ]
     }

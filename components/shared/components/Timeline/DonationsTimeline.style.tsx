@@ -19,6 +19,15 @@ export const TimelineContainer = styled.div`
   position: relative;
 `;
 
+export const TimelineContainerLastNode = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding-top: 3.5rem;
+  top: 0%;
+`;
+
 export const TimelineItem = styled.div`
   display: flex;
   flex-direction: row;
@@ -51,17 +60,17 @@ export const TimelineRow = styled.div`
 `;
 
 export const ProgressLineHorizontal = styled.div`
-  width: 1.5625rem;
+  width: 1.8rem;
   position: absolute;
   height: 0.0625rem;
   background: var(--primary);
   align-items: center;
-  margin-left: 0.8rem;
+  margin-left: 0.65rem;
   margin-top: 0.625rem;
 `;
 export const ProgressLineHorizontalDotted = styled.div`
   border-top: 0.125rem dotted black;
-  width: 1.5625rem;
+  width: 1.8rem;
   position: absolute;
   height: 0.0625rem;
   background: var(--primary);
@@ -92,7 +101,19 @@ export const ProgressCircle = styled.div`
   position: relative;
   z-index: 2;
   margin-bottom 2.6rem;
-  margin-left 0.3rem;
+  margin-left 0.21rem;
+`;
+
+export const ProgressCircleLast = styled.div`
+  width: 1.1em;
+  height: 1.1em;
+  border: 0.0625rem solid var(--primary);
+  background-color: ${(props: ProgressCircleProps) =>
+    props.filled ? `var(--primary)` : `var(--secondary)`};
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  margin-left 0.21rem;
 `;
 
 export const ProgressCircleSmall = styled.div`
@@ -110,7 +131,29 @@ export const ProgressCircleSmall = styled.div`
 `;
 
 export const ProgressLine = styled.div`
-  height: 100%;
+  height: 96%;
+  position: absolute;
+  top: 50%;
+  left: 0.66rem;
+  width: 0.12rem;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+`;
+
+export const ProgressLineOverlay = styled.div`
+  height: 117%;
+  position: absolute;
+  top: -35%;
+  left: 0.66rem;
+  width: 0.125rem;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+`;
+
+export const ProgressLineDotted = styled.div`
+  height: 98%;
+  border: none;
+  border-left: 0.125rem dotted black;
   position: absolute;
   top: 50%;
   left: 0.66rem;
@@ -119,14 +162,25 @@ export const ProgressLine = styled.div`
   background: var(--primary);
 `;
 
-export const ProgressLineDotted = styled.div`
-  height: 100%;
+export const ProgressLineDottedLastNode = styled.div`
+  height: 30%;
   border: none;
   border-left: 0.125rem dotted black;
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 0.66rem;
-  width: 0.0625rem;
+  width: 0.125rem;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+`;
+
+export const ProgressLineLastNode = styled.div`
+  height: 30%;
+  border: none;
+  position: absolute;
+  top: 35%;
+  left: 0.66rem;
+  width: 0.125rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
 `;
