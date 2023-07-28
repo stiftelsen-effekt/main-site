@@ -88,8 +88,12 @@ export function mapSidepoints(
             filled={numCharitiesReceived > count}
           ></ProgressCircleSmall>
           <TimelineContainer>
-            <TextInfo3>Penger blir overført til {charityTitles[count]}</TextInfo3>
-            <TextSmall>{sums[count]} kr</TextSmall>
+            <TextInfo3 style={{ color: numCharitiesReceived > count ? "white" : "grey" }}>
+              Penger blir overført til {charityTitles[count]}
+            </TextInfo3>
+            <TextSmall style={{ color: numCharitiesReceived > count ? "white" : "grey" }}>
+              {sums[count]} kr
+            </TextSmall>
           </TimelineContainer>
         </TimelineItemBranch>
       </TimelineContainer>,

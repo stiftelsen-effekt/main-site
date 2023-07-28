@@ -106,7 +106,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
           {numCompletedNodes - 1 >= i ? <ProgressLine /> : <ProgressLineDotted />}
           <TimelineItem>
             <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
-            <TextInfo>Donasjonen mottatt av Gi Effektivt</TextInfo>
+            <TextInfo style={{ color: numCompletedNodes - 1 >= i ? "white" : "grey" }}>
+              Donasjonen mottatt av Gi Effektivt
+            </TextInfo>
           </TimelineItem>
         </TimelineContainer>,
       );
@@ -117,7 +119,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
             {numCompletedNodes >= i ? <ProgressLineLastNode /> : <ProgressLineDottedLastNode />}
             <TimelineItem>
               <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
-              <TextInfo>Hele donasjonen er ferdig fordelt</TextInfo>
+              <TextInfo style={{ color: numCompletedNodes >= i ? "white" : "grey" }}>
+                Hele donasjonen er ferdig fordelt
+              </TextInfo>
             </TimelineItem>
           </TimelineContainerLastNode>,
         );
@@ -126,7 +130,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
           <TimelineContainer>
             <TimelineItem>
               <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
-              <TextInfo>Hele donasjonen er ferdig fordelt</TextInfo>
+              <TextInfo style={{ color: numCompletedNodes >= i ? "white" : "grey" }}>
+                Hele donasjonen er ferdig fordelt
+              </TextInfo>
             </TimelineItem>
           </TimelineContainer>,
         );
@@ -140,10 +146,12 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
               <TimelineItem>
                 <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
                 <TimelineContainer>
-                  <TextInfo style={{ color: fromGiEffektivt ? "black" : "grey" }}>
+                  <TextInfo style={{ color: fromGiEffektivt ? "white" : "grey" }}>
                     Penger ble overført til {providerTitle[i - 1]}
                   </TextInfo>
-                  <TextSmall>{amount[i - 1]} kr</TextSmall>
+                  <TextSmall style={{ color: fromGiEffektivt ? "white" : "grey" }}>
+                    {amount[i - 1]} kr
+                  </TextSmall>
                 </TimelineContainer>
               </TimelineItem>
               {sidePoints[i - 1].map((sp) => sp)}
@@ -161,7 +169,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
                 <TextInfo style={{ color: fromGiEffektivt ? "white" : "grey" }}>
                   Penger ble overført til {providerTitle[i - 1]}
                 </TextInfo>
-                <TextSmall>{amount[i - 1]} kr</TextSmall>
+                <TextSmall style={{ color: fromGiEffektivt ? "white" : "grey" }}>
+                  {amount[i - 1]} kr
+                </TextSmall>
               </TimelineContainer>
             </TimelineItem>
             {sidePoints[i - 1].map((sp) => sp)}
