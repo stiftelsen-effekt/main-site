@@ -34,7 +34,6 @@ export const TimelineItem = styled.div`
   column-gap: 1.3rem;
   justify-content: space-between;
   align-items: flex-start;
-  max-height: 12.5rem;
   height: 100%;
   position: relative;
 `;
@@ -44,7 +43,6 @@ export const TimelineItemBranch = styled.div`
   flex-direction: row;
   column-gap: 1.3rem;
   align-items: flex-start;
-  max-height: 12.5rem;
   height: 100%;
   position: relative;
   margin-bottom: 0.3125rem;
