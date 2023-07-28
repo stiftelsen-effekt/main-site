@@ -14,7 +14,11 @@ import {
   TimelineItemSmall,
 } from "./DonationsTimelinePreview.style";
 
-export default function DonationsTimelinePreview({ description, data }: TimelineProps) {
+export default function DonationsTimelinePreview({
+  description,
+  data,
+  configuration,
+}: TimelineProps) {
   let checkStage2 = false;
   let checkStage3 = false;
   let newDescription = "Donasjonen mottat av Gi Effektivt";
@@ -68,7 +72,11 @@ export default function DonationsTimelinePreview({ description, data }: Timeline
         </TimelineContainer>
         <TimelineItemSmall>
           <ProgressCircle filled={checkStage3} />
-          <DonationStatusModal description="Se mer her" data={data}></DonationStatusModal>
+          <DonationStatusModal
+            description="Se mer her"
+            data={data}
+            configuration={configuration}
+          ></DonationStatusModal>
         </TimelineItemSmall>
       </TimelineContainer>
     </HeaderContainer>

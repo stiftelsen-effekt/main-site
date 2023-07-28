@@ -8,7 +8,6 @@ export const HeaderContainer = styled.div`
   height: 100%;
   flex-direction: column;
   align-items: flex-start;
-
   padding: 0.625rem 0.125rem;
 `;
 

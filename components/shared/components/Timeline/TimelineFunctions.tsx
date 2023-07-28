@@ -2,6 +2,7 @@ import {
   jsonObject,
   Provider,
 } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
+import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
 import {
   TimelineItemBranch,
   ProgressLineHorizontal,
@@ -88,12 +89,14 @@ export function mapSidepoints(
             filled={numCharitiesReceived > count}
           ></ProgressCircleSmall>
           <TimelineContainer>
-            <TextInfo3 style={{ color: numCharitiesReceived > count ? "white" : "grey" }}>
-              Penger blir overført til {charityTitles[count]}
-            </TextInfo3>
-            <TextSmall style={{ color: numCharitiesReceived > count ? "white" : "grey" }}>
-              {sums[count]} kr
-            </TextSmall>
+            <FoldableDropDown
+              title={"Penger ble overført til" + charityTitles[count]}
+              dropDownText={[
+                "loremIp sumTe xtSSSSSSSSSSSSDAS Dassdvasdvsa dvsadvasdvasdva sdjvnsadjvnasjdkh vhsjad vsad vsad vhjksd vkjs dvjs advjk sadjkv jksa jksda vjka dasdasda",
+              ]}
+              smallText={sums[count] + "kr"}
+              color={numCharitiesReceived > count ? "white" : "grey"}
+            />
           </TimelineContainer>
         </TimelineItemBranch>
       </TimelineContainer>,
