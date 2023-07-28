@@ -34,6 +34,9 @@ interface DonationsTimelineProps {
   dataObj: jsonObject;
 }
 
+// TODO: "Penger ble overført til " + providerTitle[i - 1]
+// TODO: "Donasjonen mottatt av Gi Effektivt"
+// TODO: "Hele donasjonen er ferdig fordelt"
 export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, configuration }) => {
   // Extracting values from json-object to build the timeline
   let numMainNodes = 2;
@@ -56,7 +59,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       fromGiEffektivt = true;
     }
 
-    const computedValuesSmart = buildTimelineFromObj(dataObj.smart);
+    const computedValuesSmart = buildTimelineFromObj(dataObj.smart, configuration);
     numMainNodes++;
     numSideNodes.push(computedValuesSmart[1]);
     numCompletedSideNodes.push(computedValuesSmart[2]);
@@ -74,7 +77,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
     if (getProviderStatus(dataObj.direct)[0]) {
       fromGiEffektivt = true;
     }
-    const computedValuesDirect = buildTimelineFromObj(dataObj.direct);
+    const computedValuesDirect = buildTimelineFromObj(dataObj.direct, configuration);
     numMainNodes++;
     listOfBool.push(computedValuesDirect[0]);
     if (computedValuesDirect[0]) {

@@ -14,7 +14,7 @@ import { TimelineProps } from "./DonationStatusJson/DonationStatusJsonProps";
 export const DonationStatusModal: React.FC<TimelineProps> = ({
   description,
   data,
-  configuration,
+  configuration, //NEED TO ADD {Donasjonsstatus} IN SANITY
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 

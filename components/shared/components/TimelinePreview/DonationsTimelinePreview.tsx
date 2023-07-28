@@ -17,7 +17,7 @@ import {
 export default function DonationsTimelinePreview({
   description,
   data,
-  configuration,
+  configuration, //NEED TO ADD {"Donasjon mottatt av " + getProviderStatus(data.smart)[1];,  "Hele donasjonen er ferdig fordelt"} IN SANITY
 }: TimelineProps) {
   let checkStage2 = false;
   let checkStage3 = false;
@@ -28,7 +28,7 @@ export default function DonationsTimelinePreview({
       newDescription = "Donasjon mottatt av " + getProviderStatus(data.smart)[1];
       checkStage2 = true;
     }
-    const computedValuesSmart = buildTimelineFromObj(data.smart);
+    const computedValuesSmart = buildTimelineFromObj(data.smart, configuration);
     checkStage3 = computedValuesSmart[0];
     if (computedValuesSmart[0]) {
       newDescription = "Hele donasjonen er ferdig fordelt";
@@ -40,7 +40,7 @@ export default function DonationsTimelinePreview({
       newDescription = "Donasjon mottatt av " + getProviderStatus(data.direct)[1];
       checkStage2 = true;
     }
-    const computedValuesDirect = buildTimelineFromObj(data.direct);
+    const computedValuesDirect = buildTimelineFromObj(data.direct, configuration);
     checkStage3 = computedValuesDirect[0];
     if (computedValuesDirect[0]) {
       newDescription = "Hele donasjonen er ferdig fordelt";
@@ -48,7 +48,10 @@ export default function DonationsTimelinePreview({
   }
 
   if (data.smart && data.direct) {
-    if (buildTimelineFromObj(data.direct)[0] && buildTimelineFromObj(data.smart)[0]) {
+    if (
+      buildTimelineFromObj(data.direct, configuration)[0] &&
+      buildTimelineFromObj(data.smart, configuration)[0]
+    ) {
       checkStage3 = true;
       newDescription = "Hele donasjonen er ferdig fordelt";
     } else {

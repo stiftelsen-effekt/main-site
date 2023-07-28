@@ -2,6 +2,7 @@ import {
   jsonObject,
   Provider,
 } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
+import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
 import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
 import {
   TimelineItemBranch,
@@ -16,6 +17,7 @@ import {
 
 export function buildTimelineFromObj(
   Providers: Provider[],
+  configuration: DonationDetailsConfiguration,
 ): [boolean, number, number, string[], string[], number[], number[], any[]] {
   let completedStatus = false;
   let numCharitiesReceived = 0;
