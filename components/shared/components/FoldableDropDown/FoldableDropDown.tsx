@@ -10,7 +10,6 @@ export const FoldableDropDown: React.FC<{
   color?: string;
 }> = ({ title, dropDownText, smallText, color }) => {
   const [showImpactEstimateExplanation, setShowImpactEstimateExplanation] = useState(false);
-  console.log(dropDownText);
   return (
     <div className={style.timelineContainer} style={{ color: color }}>
       <span

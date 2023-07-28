@@ -90,7 +90,7 @@ export function mapSidepoints(
           ></ProgressCircleSmall>
           <TimelineContainer>
             <FoldableDropDown
-              title={"Penger ble overført til" + charityTitles[count]}
+              title={"Penger ble overført til " + charityTitles[count]}
               dropDownText={[
                 "loremIp sumTe xtSSSSSSSSSSSSDAS Dassdvasdvsa dvsadvasdvasdva sdjvnsadjvnasjdkh vhsjad vsad vsad vhjksd vkjs dvjs advjk sadjkv jksa jksda vjka dasdasda",
               ]}

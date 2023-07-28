@@ -46,7 +46,7 @@ export const DonationDetails: React.FC<{
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
-        <strong>{"Donasjonsstatus"}</strong>
+        <strong>{"SOME CUSTOM CONFIGURATION TITLE"}</strong>
         <span
           className={
             showStatusEstimateExplanation
@@ -54,23 +54,22 @@ export const DonationDetails: React.FC<{
               : style.caption
           }
           onClick={() => setShowStatusEstimateExplanation(!showStatusEstimateExplanation)}
-        ></span>
+        >
+          {"SOME CUSTOM CONFIGURATION TITLE"}&nbsp;&nbsp;
+        </span>
         <div className={style.captionStatus}></div>
         <AnimateHeight duration={500} height={showStatusEstimateExplanation ? "auto" : 0}>
           <div className={style.impactExplanationContainer}>
             <PortableText value={configuration?.status_estimate_explanation_text} />
-
             <Links links={configuration?.impact_estimate_explanation_links}></Links>
           </div>
         </AnimateHeight>
-
         <DonationsTimelinePreview
-          description="Donasjon mottatt av GiveWell"
+          description="Donasjon mottatt av GiveWell" //TODO: THIS NEEDS TO BE IN SANITY
           data={getDonationStatus(7)}
           configuration={configuration}
         />
-        <strong>{"configuration.impact_estimate_header"}</strong>
-
+        <strong>{configuration.impact_estimate_header}</strong>
         <span
           className={
             showImpactEstimateExplanation
@@ -79,15 +78,13 @@ export const DonationDetails: React.FC<{
           }
           onClick={() => setShowImpactEstimateExplanation(!showImpactEstimateExplanation)}
         >
-          {"configuration.impact_estimate_explanation_title"}&nbsp;&nbsp;
+          {configuration.impact_estimate_explanation_title}&nbsp;&nbsp;
         </span>
         <AnimateHeight duration={500} height={showImpactEstimateExplanation ? "auto" : 0}>
           <div className={style.impactExplanationContainer}>
             <PortableText value={configuration?.impact_estimate_explanation_text} />
-            {"ASFKJBASKJDNAJKSDN"}
           </div>
         </AnimateHeight>
-
         <DonationImpact
           donation={donation}
           distribution={mappedDistribution}
