@@ -1,0 +1,51 @@
+.caption {
+  cursor: pointer;
+  user-select: none;
+  font-size: 1rem;
+  display: block;
+}
+
+.captionStatus {
+  user-select: none;
+  font-size: 0.7rem;
+  display: block;
+}
+
+.caption::after {
+  content: "↓";
+  display: inline-block;
+  transition: transform 200ms;
+  transform: rotate(0deg);
+}
+
+.captionopen::after {
+  transform: rotate(180deg);
+}
+
+.impactExplanationContainer {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  max-width: 100%; /* Ensure the container does not exceed the parent's width */
+  overflow-wrap: break-word; /* Wrap the text to prevent overflow */
+}
+
+.impactExplanationContainer p {
+  margin: 0;
+}
+
+.smallText {
+  font-size: 0.6rem;
+  left: 0px;
+}
+
+.timelineContainer {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  overflow-y: hidden;
+}

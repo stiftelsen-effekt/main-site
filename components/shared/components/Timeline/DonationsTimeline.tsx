@@ -1,7 +1,6 @@
 import { jsonObject } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 import { buildTimelineFromObj } from "./TimelineFunctions";
 import { mapSidepoints } from "./TimelineFunctions";
-import style from "./DonationDetails.module.scss";
 import {
   HeaderContainer,
   TimelineContainer,
@@ -21,13 +20,17 @@ import {
   ProgressLineHorizontalDotted,
   TimelineItemBranch,
   TimelineContainerWithSplit,
+  TimelineContainerTestubg,
 } from "./DonationsTimeline.style";
+import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
+import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
 
 interface DonationsTimelineProps {
+  configuration: DonationDetailsConfiguration;
   dataObj: jsonObject;
 }
 
-export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj }) => {
+export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, configuration }) => {
   // Extracting values from json-object to build the timeline
   let numMainNodes = 2;
   let numCompletedNodes = 1;
@@ -97,7 +100,19 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
           {numCompletedNodes - 1 >= i ? <ProgressLine /> : <ProgressLineDotted />}
           <TimelineItem>
             <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
-            <TextInfo>Donasjonen mottatt av Gi Effektivt</TextInfo>
+            <TimelineContainerTestubg>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+              <TextInfo>HEI</TextInfo>
+            </TimelineContainerTestubg>
           </TimelineItem>
         </TimelineContainer>,
       );
@@ -148,3 +163,13 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
 
   return <HeaderContainer>{points.map((p) => p)}</HeaderContainer>;
 };
+
+/*
+  <FoldableDropDown
+                title="Donasjonen mottatt av Gi Effektivt"
+                dropDownText={
+                  "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
+                }
+                smallText="6000kr"
+              />
+              */

@@ -17,6 +17,17 @@ export const TimelineContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
+  height: 400px;
+`;
+
+export const TimelineContainerTestubg = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  width: 600px;
+  overflow-wrap: break-word;
+  overflow-y: hidden;
 `;
 
 export const TimelineItem = styled.div`
