@@ -16,6 +16,8 @@ export const TimelineContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
+  width: 30rem;
+
   flex-wrap: wrap;
 `;
 
@@ -34,7 +36,6 @@ export const TimelineItem = styled.div`
   column-gap: 1.3rem;
   justify-content: space-between;
   align-items: flex-start;
-  max-height: 12.5rem;
   height: 100%;
   position: relative;
 `;
