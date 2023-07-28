@@ -11,6 +11,7 @@ import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
 import DonationsTimelinePreview from "../../../../shared/components/TimelinePreview/DonationsTimelinePreview";
+import { FoldableDropDown } from "../../../../shared/components/FoldableDropDown/FoldableDropDown";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -66,8 +67,9 @@ export const DonationDetails: React.FC<{
         <DonationsTimelinePreview
           description="Donasjon mottatt av GiveWell"
           data={getDonationStatus(7)}
+          configuration={configuration}
         />
-        <strong>{configuration.impact_estimate_header}</strong>
+        <strong>{"configuration.impact_estimate_header"}</strong>
 
         <span
           className={
@@ -77,15 +79,15 @@ export const DonationDetails: React.FC<{
           }
           onClick={() => setShowImpactEstimateExplanation(!showImpactEstimateExplanation)}
         >
-          {configuration.impact_estimate_explanation_title}&nbsp;&nbsp;
+          {"configuration.impact_estimate_explanation_title"}&nbsp;&nbsp;
         </span>
         <AnimateHeight duration={500} height={showImpactEstimateExplanation ? "auto" : 0}>
           <div className={style.impactExplanationContainer}>
             <PortableText value={configuration?.impact_estimate_explanation_text} />
-
-            <Links links={configuration?.impact_estimate_explanation_links}></Links>
+            {"ASFKJBASKJDNAJKSDN"}
           </div>
         </AnimateHeight>
+
         <DonationImpact
           donation={donation}
           distribution={mappedDistribution}

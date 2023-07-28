@@ -1,3 +1,5 @@
+import { DonationDetailsConfiguration } from "../../../shared/lists/donationList/DonationDetails";
+
 export interface Charity {
   id: number;
   name: string;
@@ -18,6 +20,7 @@ export interface jsonObject {
 }
 
 export interface TimelineProps {
+  configuration: DonationDetailsConfiguration;
   description: string;
   data: jsonObject;
 }
