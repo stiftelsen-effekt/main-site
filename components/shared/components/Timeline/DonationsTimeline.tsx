@@ -1,6 +1,6 @@
 import { jsonObject } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 import { buildTimelineFromObj } from "./TimelineFunctions";
-import { mapSidepoints } from "./TimelineFunctions";
+import { mapSidepoints, getProviderStatus } from "./TimelineFunctions";
 import style from "./DonationDetails.module.scss";
 import {
   HeaderContainer,
@@ -21,6 +21,10 @@ import {
   ProgressLineHorizontalDotted,
   TimelineItemBranch,
   TimelineContainerWithSplit,
+  TimelineContainerLastNode,
+  ProgressLineDottedLastNode,
+  ProgressLineLastNode,
+  ProgressCircleLast,
 } from "./DonationsTimeline.style";
 
 interface DonationsTimelineProps {
@@ -45,7 +49,10 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
   let checkForBoth = false;
 
   if (dataObj.smart) {
-    fromGiEffektivt = true;
+    if (getProviderStatus(dataObj.smart)[0]) {
+      fromGiEffektivt = true;
+    }
+
     const computedValuesSmart = buildTimelineFromObj(dataObj.smart);
     numMainNodes++;
     numSideNodes.push(computedValuesSmart[1]);
@@ -61,10 +68,12 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
     }
   }
   if (dataObj.direct) {
+    if (getProviderStatus(dataObj.direct)[0]) {
+      fromGiEffektivt = true;
+    }
     const computedValuesDirect = buildTimelineFromObj(dataObj.direct);
     numMainNodes++;
     listOfBool.push(computedValuesDirect[0]);
-    fromGiEffektivt = true;
     if (computedValuesDirect[0]) {
       numCompletedNodes++;
       numSideNodes.unshift(computedValuesDirect[1]);
@@ -102,14 +111,26 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
         </TimelineContainer>,
       );
     } else if (i == numMainNodes - 1) {
-      points.push(
-        <TimelineContainer>
-          <TimelineItem>
-            <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
-            <TextInfo>Hele donasjonen er ferdig fordelt</TextInfo>
-          </TimelineItem>
-        </TimelineContainer>,
-      );
+      if (checkForBoth) {
+        points.push(
+          <TimelineContainerLastNode>
+            {numCompletedNodes >= i ? <ProgressLineLastNode /> : <ProgressLineDottedLastNode />}
+            <TimelineItem>
+              <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
+              <TextInfo>Hele donasjonen er ferdig fordelt</TextInfo>
+            </TimelineItem>
+          </TimelineContainerLastNode>,
+        );
+      } else {
+        points.push(
+          <TimelineContainer>
+            <TimelineItem>
+              <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
+              <TextInfo>Hele donasjonen er ferdig fordelt</TextInfo>
+            </TimelineItem>
+          </TimelineContainer>,
+        );
+      }
     } else {
       if (checkForBoth) {
         points.push(
@@ -119,13 +140,15 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
               <TimelineItem>
                 <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
                 <TimelineContainer>
-                  <TextInfo>Penger ble overført til {providerTitle[i - 1]}</TextInfo>
+                  <TextInfo style={{ color: fromGiEffektivt ? "black" : "grey" }}>
+                    Penger ble overført til {providerTitle[i - 1]}
+                  </TextInfo>
                   <TextSmall>{amount[i - 1]} kr</TextSmall>
                 </TimelineContainer>
               </TimelineItem>
               {sidePoints[i - 1].map((sp) => sp)}
             </TimelineContainer>
-            <ProgressCircle key={i} filled={listOfBool[i - 1]}></ProgressCircle>
+            <ProgressCircleLast key={i} filled={listOfBool[i - 1]}></ProgressCircleLast>
           </TimelineContainerWithSplit>,
         );
       } else {
@@ -133,9 +156,11 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj })
           <TimelineContainer>
             {numCompletedNodes - 1 >= i ? <ProgressLine /> : <ProgressLineDotted />}
             <TimelineItem>
-              <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
+              <ProgressCircle key={i} filled={fromGiEffektivt}></ProgressCircle>
               <TimelineContainer>
-                <TextInfo>Penger ble overført til {providerTitle[i - 1]}</TextInfo>
+                <TextInfo style={{ color: fromGiEffektivt ? "white" : "grey" }}>
+                  Penger ble overført til {providerTitle[i - 1]}
+                </TextInfo>
                 <TextSmall>{amount[i - 1]} kr</TextSmall>
               </TimelineContainer>
             </TimelineItem>

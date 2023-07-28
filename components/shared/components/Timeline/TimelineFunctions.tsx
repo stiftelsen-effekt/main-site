@@ -10,6 +10,7 @@ import {
   TimelineContainer,
   TextInfo3,
   TextSmall,
+  ProgressLineOverlay,
 } from "./DonationsTimeline.style";
 
 export function buildTimelineFromObj(
@@ -74,21 +75,24 @@ export function mapSidepoints(
   let sidePoints = [];
   for (let count = 0; count < numCharities; count++) {
     sidePoints.push(
-      <TimelineItemBranch>
-        {numCharitiesReceived - 1 >= count ? (
-          <ProgressLineHorizontal />
-        ) : (
-          <ProgressLineHorizontalDotted />
-        )}
-        <ProgressCircleSmall
-          key={count}
-          filled={numCharitiesReceived > count}
-        ></ProgressCircleSmall>
-        <TimelineContainer>
-          <TextInfo3>Penger blir overført til {charityTitles[count]}</TextInfo3>
-          <TextSmall>{sums[count]} kr</TextSmall>
-        </TimelineContainer>
-      </TimelineItemBranch>,
+      <TimelineContainer>
+        {count < numCharitiesReceived && <ProgressLineOverlay />}
+        <TimelineItemBranch>
+          {numCharitiesReceived - 1 >= count ? (
+            <ProgressLineHorizontal />
+          ) : (
+            <ProgressLineHorizontalDotted />
+          )}
+          <ProgressCircleSmall
+            key={count}
+            filled={numCharitiesReceived > count}
+          ></ProgressCircleSmall>
+          <TimelineContainer>
+            <TextInfo3>Penger blir overført til {charityTitles[count]}</TextInfo3>
+            <TextSmall>{sums[count]} kr</TextSmall>
+          </TimelineContainer>
+        </TimelineItemBranch>
+      </TimelineContainer>,
     );
   }
   return sidePoints;

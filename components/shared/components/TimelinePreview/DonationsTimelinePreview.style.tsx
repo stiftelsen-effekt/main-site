@@ -82,8 +82,8 @@ export const ProgressLineHorizontalDotted = styled.div`
 `;
 
 export const ProgressCircleLarge = styled.div`
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 0.0625rem solid var(--primary);
   background-color: ${(props: ProgressCircleProps) =>
     props.filled ? `var(--primary)` : `var(--secondary)`};
@@ -103,7 +103,7 @@ export const ProgressCircle = styled.div`
   position: relative;
   z-index: 2;
   margin-bottom 1rem;
-  margin-left 0.6rem;
+  margin-left 0.38rem;
 `;
 
 export const ProgressCircleSmall = styled.div`
@@ -128,7 +128,7 @@ export const ProgressLine = styled.div`
   width: 0.125rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
-  margin-left 0.38rem;
+  margin-left 0.18rem;
 `;
 
 export const ProgressLineDotted = styled.div`
@@ -141,7 +141,7 @@ export const ProgressLineDotted = styled.div`
   width: 0.0625rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
-  margin-left 0.44rem;
+  margin-left 0.18rem;
 `;
 
 export const TextLarge = styled.div`
@@ -150,7 +150,7 @@ export const TextLarge = styled.div`
 `;
 
 export const TextInfo = styled.div`
-padding-top: 0.5rem;
+padding-top: 0.3rem;
 font-size: 1rem;
 }
 `;
