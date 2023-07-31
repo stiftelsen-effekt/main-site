@@ -18,7 +18,7 @@ import {
 export function buildTimelineFromObj(
   Providers: Provider[],
   configuration: DonationDetailsConfiguration,
-): [boolean, number, number, string[], string[], number[], number[], any[]] {
+): [boolean, number, number, string[], string[], number[], number[], any[], string[]] {
   let completedStatus = false;
   let numCharitiesReceived = 0;
   let numCharities = 0;
@@ -27,18 +27,20 @@ export function buildTimelineFromObj(
   let charityTitles = [];
   let sums = [];
   let amounts = [];
+  let dates = [];
 
   for (let p = 0; p < Providers.length; p++) {
     let Provider = Providers[p];
     numCharities = Provider.involvedCharities.length;
     providerTitles.push(Provider.provider);
     amounts.push(Provider.amount);
+    dates.push(Provider.receivedDate);
     for (let i = 0; i < numCharities; i++) {
       sums.push(Provider.amount * Provider.involvedCharities[i].share);
       if (Provider.involvedCharities[i].date) {
         numCharitiesReceived++;
         charityTitles.push(Provider.involvedCharities[i].name);
-        //dates.push(Provider.involvedCharities[i].date)
+        dates.push(Provider.involvedCharities[i].date);
       } else {
         charityTitlesNotReceived.push(Provider.involvedCharities[i].name);
       }
@@ -54,7 +56,14 @@ export function buildTimelineFromObj(
     }
   }
 
-  let sidePoints = mapSidepoints(numCharitiesReceived, numCharities, charityTitles, sums);
+  let sidePoints = mapSidepoints(
+    numCharitiesReceived,
+    numCharities,
+    charityTitles,
+    sums,
+    configuration,
+    dates,
+  );
 
   return [
     completedStatus,
@@ -65,6 +74,7 @@ export function buildTimelineFromObj(
     sums,
     amounts,
     sidePoints,
+    dates,
   ];
 }
 
@@ -74,6 +84,8 @@ export function mapSidepoints(
   numCharities: number,
   charityTitles: string[],
   sums: number[],
+  configuration: DonationDetailsConfiguration,
+  dates: any[],
 ): any[] {
   let sidePoints = [];
   for (let count = 0; count < numCharities; count++) {
@@ -92,11 +104,11 @@ export function mapSidepoints(
           ></ProgressCircleSmall>
           <TimelineContainer>
             <FoldableDropDown
-              title={"Penger ble overført til " + charityTitles[count]}
-              dropDownText={[
-                "loremIp sumTe xtSSSSSSSSSSSSDAS Dassdvasdvsa dvsadvasdvasdva sdjvnsadjvnasjdkh vhsjad vsad vsad vhjksd vkjs dvjs advjk sadjkv jksa jksda vjka dasdasda",
-              ]}
-              smallText={sums[count] + "kr"}
+              title={configuration.expansionWindow.overfort_title + charityTitles[count]}
+              dropDownText={configuration.expansionWindow.overfort_undetitle}
+              smallText={configuration.date_and_amount
+                .replace("{{amount}}", sums[count])
+                .replace("{{date}}", dates[count])}
               color={numCharitiesReceived > count ? "white" : "grey"}
             />
           </TimelineContainer>

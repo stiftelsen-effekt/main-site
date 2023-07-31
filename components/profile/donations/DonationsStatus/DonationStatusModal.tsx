@@ -25,7 +25,7 @@ export const DonationStatusModal: React.FC<TimelineProps> = ({
         {description}
         <LightboxWithoutBotton open={modalOpen} onCancel={() => setModalOpen(false)}>
           <div>
-            <h5>Donasjonsstatus</h5>
+            <h5>{configuration.status_estimate_header}</h5>
             <DonationsTimeline dataObj={data} configuration={configuration} />
           </div>
         </LightboxWithoutBotton>

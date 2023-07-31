@@ -28,6 +28,16 @@ import {
 import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
 import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
 import { useState } from "react";
+import { DateBoxWrapper } from "../Widget/components/panes/PaymentPane/Vipps/VippsDatePicker/VippsDatePicker.style";
+
+export type ExpansionWindow = {
+  mottatt_title: string;
+  mottatt_undertitle: any[];
+  overfort_title: string;
+  overfort_undetitle: any[];
+  donasjon_fullfort: string;
+  hele_donasjons_fullfort_undertitle: any[];
+};
 
 interface DonationsTimelineProps {
   configuration: DonationDetailsConfiguration;
@@ -48,6 +58,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
   let listOfSums = [];
   let amount = [];
   let sidePoints = [];
+  let date = [];
 
   let listOfBool = [];
   let fromGiEffektivt = false;
@@ -69,6 +80,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
     amount.push(computedValuesSmart[6][0]);
     sidePoints.push(computedValuesSmart[7]);
     listOfBool.push(computedValuesSmart[0]);
+    date.push(computedValuesSmart[8]);
     if (computedValuesSmart[0]) {
       numCompletedNodes++;
     }
@@ -89,6 +101,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       listOfSums.unshift(computedValuesDirect[5]);
       amount.unshift(computedValuesDirect[6][0]);
       sidePoints.unshift(computedValuesDirect[7]);
+      date.unshift(computedValuesDirect[8]);
     } else {
       numSideNodes.push(computedValuesDirect[1]);
       numCompletedSideNodes.push(computedValuesDirect[2]);
@@ -97,6 +110,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       listOfSums.push(computedValuesDirect[5]);
       amount.push(computedValuesDirect[6][0]);
       sidePoints.push(computedValuesDirect[7]);
+      date.push(computedValuesDirect[8]);
     }
   }
 
@@ -116,9 +130,11 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
             <TimelineContainer>
               <FoldableDropDown
-                title="Donasjonen mottatt av Gi Effektivt"
-                dropDownText={[loremIpsumText]}
-                smallText="Yes boss!"
+                title={configuration.expansionWindow.mottatt_title}
+                dropDownText={configuration.expansionWindow.mottatt_undertitle}
+                smallText={configuration.date_and_amount
+                  .replace("{{amount}}", amount[0])
+                  .replace("{{date}}", date[0])}
                 color={numCompletedNodes - 1 >= i ? "white" : "grey"}
               />
             </TimelineContainer>
@@ -133,9 +149,8 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <TimelineItem>
               <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
               <FoldableDropDown
-                title="Hele donasjonen er ferdig fordelt"
-                dropDownText={[loremIpsumText]}
-                smallText="6000kr"
+                title={configuration.expansionWindow.donasjon_fullfort}
+                dropDownText={configuration.expansionWindow.hele_donasjons_fullfort_undertitle}
                 color={numCompletedNodes >= i ? "white" : "grey"}
               />
             </TimelineItem>
@@ -148,9 +163,8 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <TimelineItem>
               <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
               <FoldableDropDown
-                title="Hele donasjonen er ferdig fordelt"
-                dropDownText={[loremIpsumText]}
-                smallText="Very Cool"
+                title={configuration.expansionWindow.donasjon_fullfort}
+                dropDownText={configuration.expansionWindow.hele_donasjons_fullfort_undertitle}
                 color={numCompletedNodes >= i ? "white" : "grey"}
               />
             </TimelineItem>
@@ -167,9 +181,11 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
                 <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
                 <TimelineContainer>
                   <FoldableDropDown
-                    title={"Penger ble overført til " + providerTitle[i - 1]}
-                    dropDownText={[loremIpsumText]}
-                    smallText={amount[i - 1] + "kr"}
+                    title={configuration.expansionWindow.overfort_title + providerTitle[i - 1]}
+                    dropDownText={configuration.expansionWindow.overfort_undetitle}
+                    smallText={configuration.date_and_amount
+                      .replace("{{amount}}", amount[i - 1])
+                      .replace("{{date}}", date[1])}
                     color={fromGiEffektivt ? "white" : "grey"}
                   />
                 </TimelineContainer>
@@ -187,9 +203,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
               <ProgressCircle key={i} filled={fromGiEffektivt}></ProgressCircle>
               <TimelineContainer>
                 <FoldableDropDown
-                  title={"Penger ble overført til " + providerTitle[i - 1]}
-                  dropDownText={[loremIpsumText]}
-                  smallText={amount[i - 1] + "kr"}
+                  title={configuration.expansionWindow.overfort_title + providerTitle[i - 1]}
+                  dropDownText={configuration.expansionWindow.overfort_undetitle}
+                  smallText={configuration.date_and_amount.replace("{{amount}}", amount[i - 1])}
                   color={fromGiEffektivt ? "white" : "grey"}
                 />
               </TimelineContainer>
