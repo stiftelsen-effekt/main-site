@@ -12,6 +12,7 @@
   align-items: center;
   cursor: default;
   max-height: 85vh;
+  scrollbar-width: none;
 }
 
 .lightboxCloseButton {
@@ -39,7 +40,7 @@
 
 /* Hide the scrollbar */
 .lightbox::-webkit-scrollbar {
-  width: 0.5em;
+  width: 0;
 }
 
 .lightbox::-webkit-scrollbar-track {
