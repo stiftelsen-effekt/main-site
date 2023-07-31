@@ -45,11 +45,21 @@ export default {
           name: "overfort_title",
           title: "Overfort title",
           type: "string",
-          description: "Use {{org}}",
         },
         {
           name: "overfort_undetitle",
           title: "Overfort undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "fordeling_fullfort",
+          title: "Fordeling fullført",
+          type: "string",
+        },
+        {
+          name: "fordeling_fullfort_undertext",
+          title: "Fordeling fullført undertext",
           type: "array",
           of: [{ type: "block" }],
         },

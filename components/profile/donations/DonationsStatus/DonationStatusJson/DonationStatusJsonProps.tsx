@@ -18,6 +18,7 @@ export interface Provider {
 export interface jsonObject {
   direct: Provider[];
   smart: Provider[];
+  giEffektivt: Provider;
 }
 
 export interface TimelineProps {
