@@ -130,7 +130,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
                 dropDownText={configuration.expansionWindow.mottatt_undertitle}
                 smallText={configuration.date_and_amount
                   .replace("{{amount}}", amount[0])
-                  .replace("{{date}}", date[0])}
+                  .replace("{{date}}", date[0][0])}
                 color={numCompletedNodes - 1 >= i ? "white" : "grey"}
               />
             </TimelineContainer>
@@ -145,7 +145,6 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
           <FoldableDropDown
             title={configuration.expansionWindow.donasjon_fullfort}
             dropDownText={configuration.expansionWindow.hele_donasjons_fullfort_undertitle}
-            smallText="6000kr"
             color={numCompletedNodes >= i ? "white" : "grey"}
           />
         </TimelineItem>,
@@ -172,7 +171,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
               <FoldableDropDown
                 title={configuration.expansionWindow.overfort_title + providerTitles[i-1][provider]}
                 dropDownText={configuration.expansionWindow.overfort_undetitle}
-                smallText={amount[i - 1] + "kr"}
+                smallText={configuration.date_and_amount
+                  .replace("{{amount}}", amount[i - 1])
+                  .replace("{{date}}", date[1][0])}
                 color={fromGiEffektivt ? "white" : "grey"}
               />
             </TimelineContainer>
