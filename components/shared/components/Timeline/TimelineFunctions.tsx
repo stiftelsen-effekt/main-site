@@ -28,6 +28,8 @@ export function buildTimelineFromObj(
   let sums = [];
   let amounts = [];
   let dates = [];
+  let infoTexts = [];
+  let DateNotReceivedInfo = [];
 
   for (let p = 0; p < Providers.length; p++) {
     let Provider = Providers[p];
@@ -41,13 +43,17 @@ export function buildTimelineFromObj(
         numCharitiesReceived++;
         charityTitles.push(Provider.involvedCharities[i].name);
         dates.push(Provider.involvedCharities[i].date);
+        infoTexts.push(Provider.involvedCharities[i].charityInfo);
+        //dates.push(Provider.involvedCharities[i].date)
       } else {
         charityTitlesNotReceived.push(Provider.involvedCharities[i].name);
+        DateNotReceivedInfo.push(Provider.involvedCharities[i].charityInfo);
       }
     }
 
     for (let charity = 0; charity < charityTitlesNotReceived.length; charity++) {
       charityTitles.push(charityTitlesNotReceived[charity]);
+      infoTexts.push(DateNotReceivedInfo[charity]);
     }
 
     //OBS: Funker bare for 1 Provider!
@@ -63,6 +69,7 @@ export function buildTimelineFromObj(
     sums,
     configuration,
     dates,
+    infoTexts,
   );
 
   return [
@@ -86,6 +93,7 @@ export function mapSidepoints(
   sums: number[],
   configuration: DonationDetailsConfiguration,
   dates: any[],
+  infoTexts: string[],
 ): any[] {
   let sidePoints = [];
   for (let count = 0; count < numCharities; count++) {
@@ -105,7 +113,7 @@ export function mapSidepoints(
           <TimelineContainer>
             <FoldableDropDown
               title={configuration.expansionWindow.overfort_title + charityTitles[count]}
-              dropDownText={configuration.expansionWindow.overfort_undetitle}
+              dropDownText={[infoTexts[count]]}
               smallText={configuration.date_and_amount
                 .replace("{{amount}}", sums[count])
                 .replace("{{date}}", dates[count])}
