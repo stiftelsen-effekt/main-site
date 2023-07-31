@@ -48,6 +48,7 @@ export function buildTimelineFromObj(
       } else {
         charityTitlesNotReceived.push(Provider.involvedCharities[i].name);
         DateNotReceivedInfo.push(Provider.involvedCharities[i].charityInfo);
+        console.log(Provider.involvedCharities[i].charityInfo);
       }
     }
 
@@ -113,7 +114,7 @@ export function mapSidepoints(
           <TimelineContainer>
             <FoldableDropDown
               title={configuration.expansionWindow.overfort_title + charityTitles[count]}
-              dropDownText={[infoTexts[count]]}
+              dropDownText={infoTexts[count]}
               smallText={configuration.date_and_amount
                 .replace("{{amount}}", sums[count])
                 .replace("{{date}}", dates[count])}
