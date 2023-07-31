@@ -27,6 +27,7 @@
           "id": 2,
           "name": "charity_2",
           "share": 0.2,
+          "date": "2021-03-01",
           "charityInfo": "charityInfo 2"
         }
       ]

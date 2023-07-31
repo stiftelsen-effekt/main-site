@@ -25,6 +25,7 @@ import {
   ProgressLineDottedLastNode,
   ProgressLineLastNode,
   ProgressCircleLast,
+  ProgressLineOverlay,
 } from "./DonationsTimeline.style";
 
 import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
@@ -64,7 +65,6 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
   let fromGiEffektivt = false;
   let checkForBoth = false;
 
-  const loremIpsumText = "TEXTLOREMIPSUM";
 
   if (dataObj.smart) {
     numMainNodes++;
@@ -132,7 +132,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
                 title={configuration.expansionWindow.mottatt_title}
                 dropDownText={configuration.expansionWindow.mottatt_undertitle}
                 smallText={
-                  sidePoints[0] > amount
+                  (date.length > 0)
                     ? date[i][0] + " | " + amount[i] + configuration.date_and_amount
                     : amount[i] + configuration.date_and_amount
                 }
@@ -170,23 +170,28 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       let points4SameDistributer = [];
       for (let provider = 0; provider < numProviders[i - 1]; provider++) {
         points4SameDistributer.push(
-          <TimelineItem>
-            <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
-            <TimelineContainer>
-              <FoldableDropDown
-                title={
-                  configuration.expansionWindow.overfort_title + providerTitles[i - 1][provider]
-                }
-                dropDownText={configuration.expansionWindow.overfort_undetitle}
-                smallText={
-                  sidePoints[0] > amount
-                    ? date[i][provider] + " | " + amount[i] + configuration.date_and_amount
-                    : amount[i] + configuration.date_and_amount
-                }
-                color={fromGiEffektivt ? "white" : "grey"}
-              />
-            </TimelineContainer>
-          </TimelineItem>,
+          <TimelineContainer>
+            {provider == 1 && (
+              <ProgressLineOverlay style={{ top: "60%", height: "Calc(100% + 0.1rem)" }} />
+            )}
+            <TimelineItem>
+              <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
+              <TimelineContainer>
+                <FoldableDropDown
+                  title={
+                    configuration.expansionWindow.overfort_title + providerTitles[i - 1][provider]
+                  }
+                  dropDownText={configuration.expansionWindow.overfort_undetitle}
+                  smallText={
+                    fromGiEffektivt
+                      ? date[i][provider] + " | " + amount[i] + configuration.date_and_amount
+                      : amount[i] + configuration.date_and_amount
+                  }
+                  color={fromGiEffektivt ? "white" : "grey"}
+                />
+              </TimelineContainer>
+            </TimelineItem>
+          </TimelineContainer>,
         );
       }
       if (checkForBoth) {
@@ -224,21 +229,3 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
   return <HeaderContainer>{points.map((p) => p)}</HeaderContainer>;
 };
 
-/*
-  <FoldableDropDown
-                title="Donasjonen mottatt av Gi Effektivt"
-                dropDownText={
-                  "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
-                }
-                smallText="6000kr"
-              />
-              */
-
-/*
-                      <FoldableDropDown
-              title={""+providerTitles[i - 1][provider]}
-              dropDownText={[loremIpsumText]}
-              smallText={amount[i - 1] + "kr"}
-              color={fromGiEffektivt ? "white" : "grey"}
-            />
-            */

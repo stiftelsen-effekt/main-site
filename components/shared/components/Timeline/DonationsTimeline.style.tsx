@@ -142,9 +142,17 @@ export const ProgressLine = styled.div`
 `;
 
 export const ProgressLineOverlay = styled.div`
-  height: 117%;
   position: absolute;
-  top: -35%;
+  top: 50%;
+  left: 0.66rem;
+  width: 0.125rem;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+`;
+export const ProgressLineOverlayFirst = styled.div`
+  height: 100%;
+  position: absolute;
+  top: -30%;
   left: 0.66rem;
   width: 0.125rem;
   transform: translate(-50%, -50%);

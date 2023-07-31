@@ -13,6 +13,7 @@ import {
   TextInfo3,
   TextSmall,
   ProgressLineOverlay,
+  ProgressLineOverlayFirst,
 } from "./DonationsTimeline.style";
 
 export function buildTimelineFromObj(
@@ -49,7 +50,6 @@ export function buildTimelineFromObj(
       } else {
         charityTitlesNotReceived.push(Provider.involvedCharities[i].name);
         DateNotReceivedInfo.push(Provider.involvedCharities[i].charityInfo);
-        console.log(Provider.involvedCharities[i].charityInfo);
       }
     }
 
@@ -104,7 +104,9 @@ export function mapSidepoints(
   for (let count = 0; count < numCharities; count++) {
     sidePoints.push(
       <TimelineContainer>
-        {count < numCharitiesReceived && <ProgressLineOverlay />}
+        {count < numCharitiesReceived - 1 && (
+          <ProgressLineOverlay style={{ top: "50%", height: "Calc(100% + 1.2rem)" }} />
+        )}
         <TimelineItemBranch>
           {numCharitiesReceived - 1 >= count ? (
             <ProgressLineHorizontal />
