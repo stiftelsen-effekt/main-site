@@ -1,7 +1,13 @@
 {
   "smart": [
     {
-      "provider": "GiveWell",
+      "provider": "Penger ble overført til GiveWell for Smart fordeling",
+      "amount": 6000,
+      "receivedDate": "2021-01-01",
+      "involvedCharities": []
+    },
+    {
+      "provider": "Give Well valgte Grant fordeling",
       "amount": 6000,
       "receivedDate": "2021-01-01",
       "involvedCharities": [
@@ -9,13 +15,15 @@
           "id": 1,
           "name": "charity_1",
           "date": "2021-03-01",
-          "share": 0.8
+          "share": 0.8,
+          "charityInfo": "charityInfo 1"
         },
         {
           "id": 2,
           "name": "charity_2",
           "date": "2021-03-01",
-          "share": 0.2
+          "share": 0.2,
+          "charityInfo": "charityInfo 2"
         }
       ]
     }

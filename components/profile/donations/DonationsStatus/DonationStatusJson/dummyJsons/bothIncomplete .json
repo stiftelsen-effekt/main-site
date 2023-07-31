@@ -28,18 +28,21 @@
         {
           "id": 4,
           "name": "charity_4",
+          "charityInfo": "charityInfo 4",
           "share": 0.1
         },
         {
           "id": 5,
           "name": "charity_5",
           "date": "2021-03-01",
+          "charityInfo": "charityInfo 5",
           "share": 0.2
         },
         {
           "id": 6,
           "name": "charity_6",
           "date": "2021-03-01",
+          "charityInfo": "charityInfo 6",
           "share": 0.7
         }
       ]

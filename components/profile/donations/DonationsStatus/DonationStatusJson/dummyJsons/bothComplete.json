@@ -1,7 +1,13 @@
 {
   "smart": [
     {
-      "provider": "GiveWell",
+      "provider": "Give Well",
+      "amount": 6000,
+      "receivedDate": "2021-01-01",
+      "involvedCharities": []
+    },
+    {
+      "provider": "Grant fordeling",
       "amount": 6000,
       "receivedDate": "2021-01-01",
       "involvedCharities": [
@@ -9,12 +15,14 @@
           "id": 1,
           "name": "charity_1",
           "date": "2021-03-01",
+          "charityInfo": "Dette er informasjom om charity nummer 1",
           "share": 0.8
         },
         {
           "id": 2,
           "name": "charity_2",
           "date": "2021-03-01",
+          "charityInfo": "Dette er informasjom om charity nummer 2",
           "share": 0.2
         }
       ]
@@ -23,25 +31,27 @@
   "direct": [
     {
       "provider": "GiveDirectly",
-      "amount": 6000,
+      "amount": 4000,
       "receivedDate": "2021-01-01",
       "involvedCharities": [
         {
           "id": 4,
           "name": "charity_4",
-          "date": "2021-03-01",
+          "charityInfo": "Dette er informasjom om charity nummer 4",
           "share": 0.1
         },
         {
           "id": 5,
           "name": "charity_5",
           "date": "2021-03-01",
+          "charityInfo": "Dette er informasjom om charity nummer 5",
           "share": 0.2
         },
         {
           "id": 6,
           "name": "charity_6",
           "date": "2021-03-01",
+          "charityInfo": "Dette er informasjom om charity nummer 6",
           "share": 0.7
         }
       ]
