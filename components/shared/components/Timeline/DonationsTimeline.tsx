@@ -31,6 +31,7 @@ import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
 import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
 import { useState } from "react";
 import { DateBoxWrapper } from "../Widget/components/panes/PaymentPane/Vipps/VippsDatePicker/VippsDatePicker.style";
+import { data } from "cypress/types/jquery";
 
 export type ExpansionWindow = {
   mottatt_title: string;
@@ -39,6 +40,8 @@ export type ExpansionWindow = {
   overfort_undetitle: any[];
   donasjon_fullfort: string;
   hele_donasjons_fullfort_undertitle: any[];
+  fordeling_fullfort: string;
+  fordeling_fullfort_undertext: any[];
 };
 
 interface DonationsTimelineProps {
@@ -52,9 +55,9 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
   let numCompletedNodes = 1;
   let numSideNodes = [];
   let providerTitles = [];
-  let amount = [];
+  let amount = [dataObj.giEffektivt.amount];
   let sidePoints = [];
-  let date = [];
+  let date = [[dataObj.giEffektivt.receivedDate]];
 
   let numProviders = [];
   let listOfBool = [];
@@ -128,9 +131,11 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
               <FoldableDropDown
                 title={configuration.expansionWindow.mottatt_title}
                 dropDownText={configuration.expansionWindow.mottatt_undertitle}
-                smallText={configuration.date_and_amount
-                  .replace("{{amount}}", amount[0])
-                  .replace("{{date}}", date[0][0])}
+                smallText={
+                  sidePoints[0] > amount
+                    ? date[i][0] + " | " + amount[i] + configuration.date_and_amount
+                    : amount[i] + configuration.date_and_amount
+                }
                 color={numCompletedNodes - 1 >= i ? "white" : "grey"}
               />
             </TimelineContainer>
@@ -169,11 +174,15 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <ProgressCircle key={i} filled={fromGiEffektivt}></ProgressCircle>
             <TimelineContainer>
               <FoldableDropDown
-                title={configuration.expansionWindow.overfort_title + providerTitles[i-1][provider]}
+                title={
+                  configuration.expansionWindow.overfort_title + providerTitles[i - 1][provider]
+                }
                 dropDownText={configuration.expansionWindow.overfort_undetitle}
-                smallText={configuration.date_and_amount
-                  .replace("{{amount}}", amount[i - 1])
-                  .replace("{{date}}", date[1][0])}
+                smallText={
+                  sidePoints[0] > amount
+                    ? date[i][provider] + " | " + amount[i] + configuration.date_and_amount
+                    : amount[i] + configuration.date_and_amount
+                }
                 color={fromGiEffektivt ? "white" : "grey"}
               />
             </TimelineContainer>
@@ -191,7 +200,11 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <TimelineItem>
               <ProgressCircleLast key={i} filled={listOfBool[i - 1]}></ProgressCircleLast>
               <TextInfo style={{ color: listOfBool[i - 1] ? "white" : "grey" }}>
-                Fordeling fullført
+                <FoldableDropDown
+                  title={configuration.expansionWindow.fordeling_fullfort}
+                  dropDownText={configuration.expansionWindow.fordeling_fullfort_undertext}
+                  color={fromGiEffektivt ? "white" : "grey"}
+                />
               </TextInfo>
             </TimelineItem>
           </TimelineContainerWithSplit>,

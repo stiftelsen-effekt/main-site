@@ -30,6 +30,7 @@ export function buildTimelineFromObj(
   let dates = [];
   let infoTexts = [];
   let DateNotReceivedInfo = [];
+  let charityReceivedDates = [];
 
   for (let p = 0; p < Providers.length; p++) {
     let Provider = Providers[p];
@@ -42,7 +43,7 @@ export function buildTimelineFromObj(
       if (Provider.involvedCharities[i].date) {
         numCharitiesReceived++;
         charityTitles.push(Provider.involvedCharities[i].name);
-        dates.push(Provider.involvedCharities[i].date);
+        charityReceivedDates.push(Provider.involvedCharities[i].date);
         infoTexts.push(Provider.involvedCharities[i].charityInfo);
         //dates.push(Provider.involvedCharities[i].date)
       } else {
@@ -69,7 +70,7 @@ export function buildTimelineFromObj(
     charityTitles,
     sums,
     configuration,
-    dates,
+    charityReceivedDates,
     infoTexts,
   );
 
@@ -115,9 +116,11 @@ export function mapSidepoints(
             <FoldableDropDown
               title={configuration.expansionWindow.overfort_title + charityTitles[count]}
               dropDownText={infoTexts[count]}
-              smallText={configuration.date_and_amount
-                .replace("{{amount}}", sums[count])
-                .replace("{{date}}", dates[count])}
+              smallText={
+                numCharitiesReceived > count
+                  ? dates[count] + " | " + sums[count] + configuration.date_and_amount
+                  : sums[count] + configuration.date_and_amount
+              }
               color={numCharitiesReceived > count ? "white" : "grey"}
             />
           </TimelineContainer>
