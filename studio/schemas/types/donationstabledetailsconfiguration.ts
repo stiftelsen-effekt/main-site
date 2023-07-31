@@ -26,6 +26,48 @@ export default {
       of: [{ type: "block" }],
     },
     {
+      name: "expansionWindow",
+      title: "Expansion Window",
+      type: "object",
+      fields: [
+        {
+          name: "mottatt_title",
+          title: "Mottatt title",
+          type: "string",
+        },
+        {
+          name: "mottatt_undertitle",
+          title: "Mottatt undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "overfort_title",
+          title: "Overfort title",
+          type: "string",
+          description: "Use {{org}}",
+        },
+        {
+          name: "overfort_undetitle",
+          title: "Overfort undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "donasjon_fullfort",
+          title: "Donasjon fullfort",
+          type: "string",
+        },
+        {
+          name: "hele_donasjons_fullfort_undertitle",
+          title: "Donasjon fullfort undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+      ],
+    },
+
+    {
       name: "impact_estimate_header",
       title: "Impact estimate header",
       type: "string",

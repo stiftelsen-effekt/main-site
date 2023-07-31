@@ -11,7 +11,7 @@ import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../../main/layout/navbar";
 import DonationsTimelinePreview from "../../../../shared/components/TimelinePreview/DonationsTimelinePreview";
-import { FoldableDropDown } from "../../../../shared/components/FoldableDropDown/FoldableDropDown";
+import { ExpansionWindow } from "../../../../shared/components/Timeline/DonationsTimeline";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -23,6 +23,7 @@ export type DonationDetailsConfiguration = {
   impact_estimate_explanation_text: any[];
   impact_estimate_explanation_links: (LinkType | NavLink)[];
   impact_items_configuration: DonationImpactItemsConfiguration;
+  expansionWindow: ExpansionWindow;
 };
 
 export const DonationDetails: React.FC<{
@@ -46,7 +47,7 @@ export const DonationDetails: React.FC<{
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
-        <strong>{"SOME CUSTOM CONFIGURATION TITLE"}</strong>
+        <strong>{configuration.status_estimate_header}</strong>
         <span
           className={
             showStatusEstimateExplanation
@@ -55,7 +56,7 @@ export const DonationDetails: React.FC<{
           }
           onClick={() => setShowStatusEstimateExplanation(!showStatusEstimateExplanation)}
         >
-          {"SOME CUSTOM CONFIGURATION TITLE"}&nbsp;&nbsp;
+          {configuration.status_estimate_explanation_title}&nbsp;&nbsp;
         </span>
         <div className={style.captionStatus}></div>
         <AnimateHeight duration={500} height={showStatusEstimateExplanation ? "auto" : 0}>
