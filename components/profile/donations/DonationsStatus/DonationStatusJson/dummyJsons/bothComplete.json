@@ -43,6 +43,7 @@
         {
           "id": 4,
           "name": "charity_4",
+
           "charityInfo": "Dette er informasjom om charity nummer 4",
           "share": 0.1
         },

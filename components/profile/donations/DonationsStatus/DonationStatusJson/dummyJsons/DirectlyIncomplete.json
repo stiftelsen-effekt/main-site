@@ -1,4 +1,9 @@
-{
+{"giEffektivt": {
+  "provider": "Gi Effektivt",
+  "amount": 8000,
+  "receivedDate": "2020-01-01",
+  "involvedCharities": []
+},
   "direct": [
     {
       "provider": "GiveDirectly",

@@ -19,6 +19,7 @@ export const TimelineContainer = styled.div`
   width: 30rem;
   overflow-wrap: break-word;
   flex-wrap: wrap;
+  padding-right: 4rem;
 `;
 
 export const TimelineContainerLastNode = styled.div`
@@ -133,7 +134,7 @@ export const ProgressCircleSmall = styled.div`
 export const ProgressLine = styled.div`
   height: 96%;
   position: absolute;
-  top: 55%;
+  top: 52%;
   left: 0.66rem;
   width: 0.12rem;
   transform: translate(-50%, -50%);
@@ -155,7 +156,7 @@ export const ProgressLineDotted = styled.div`
   border: none;
   border-left: 0.125rem dotted black;
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 0.66rem;
   width: 0.125rem;
   transform: translate(-50%, -50%);

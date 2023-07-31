@@ -53,15 +53,18 @@ export function buildTimelineFromObj(
       }
     }
 
+    if (numCharities == numCharitiesReceived) {
+      completedStatus = true;
+    } else {
+      completedStatus = false;
+    }
+
     for (let charity = 0; charity < charityTitlesNotReceived.length; charity++) {
       charityTitles.push(charityTitlesNotReceived[charity]);
       infoTexts.push(DateNotReceivedInfo[charity]);
     }
 
     //OBS: Funker bare for 1 Provider!
-    if (numCharities == numCharitiesReceived) {
-      completedStatus = true;
-    }
   }
 
   let sidePoints = mapSidepoints(

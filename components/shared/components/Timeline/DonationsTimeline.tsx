@@ -171,7 +171,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       for (let provider = 0; provider < numProviders[i - 1]; provider++) {
         points4SameDistributer.push(
           <TimelineItem>
-            <ProgressCircle key={i} filled={fromGiEffektivt}></ProgressCircle>
+            <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
             <TimelineContainer>
               <FoldableDropDown
                 title={
