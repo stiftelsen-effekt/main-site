@@ -133,7 +133,7 @@ export const ProgressCircleSmall = styled.div`
 export const ProgressLine = styled.div`
   height: 96%;
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 0.66rem;
   width: 0.12rem;
   transform: translate(-50%, -50%);

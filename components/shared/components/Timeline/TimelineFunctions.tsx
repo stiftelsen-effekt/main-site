@@ -27,6 +27,8 @@ export function buildTimelineFromObj(
   let charityTitles = [];
   let sums = [];
   let amounts = [];
+  let infoTexts = [];
+  let DateNotReceivedInfo = [];
 
   for (let p = 0; p < Providers.length; p++) {
     let Provider = Providers[p];
@@ -38,14 +40,17 @@ export function buildTimelineFromObj(
       if (Provider.involvedCharities[i].date) {
         numCharitiesReceived++;
         charityTitles.push(Provider.involvedCharities[i].name);
+        infoTexts.push(Provider.involvedCharities[i].charityInfo);
         //dates.push(Provider.involvedCharities[i].date)
       } else {
         charityTitlesNotReceived.push(Provider.involvedCharities[i].name);
+        DateNotReceivedInfo.push(Provider.involvedCharities[i].charityInfo);
       }
     }
 
     for (let charity = 0; charity < charityTitlesNotReceived.length; charity++) {
       charityTitles.push(charityTitlesNotReceived[charity]);
+      infoTexts.push(DateNotReceivedInfo[charity]);
     }
 
     //OBS: Funker bare for 1 Provider!
@@ -54,7 +59,13 @@ export function buildTimelineFromObj(
     }
   }
 
-  let sidePoints = mapSidepoints(numCharitiesReceived, numCharities, charityTitles, sums);
+  let sidePoints = mapSidepoints(
+    numCharitiesReceived,
+    numCharities,
+    charityTitles,
+    sums,
+    infoTexts,
+  );
 
   return [
     completedStatus,
@@ -74,6 +85,7 @@ export function mapSidepoints(
   numCharities: number,
   charityTitles: string[],
   sums: number[],
+  infoTexts: string[],
 ): any[] {
   let sidePoints = [];
   for (let count = 0; count < numCharities; count++) {
@@ -93,9 +105,7 @@ export function mapSidepoints(
           <TimelineContainer>
             <FoldableDropDown
               title={"Penger ble overført til " + charityTitles[count]}
-              dropDownText={[
-                "loremIp sumTe xtSSSSSSSSSSSSDAS Dassdvasdvsa dvsadvasdvasdva sdjvnsadjvnasjdkh vhsjad vsad vsad vhjksd vkjs dvjs advjk sadjkv jksa jksda vjka dasdasda",
-              ]}
+              dropDownText={[infoTexts[count]]}
               smallText={sums[count] + "kr"}
               color={numCharitiesReceived > count ? "white" : "grey"}
             />

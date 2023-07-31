@@ -5,6 +5,7 @@ export interface Charity {
   name: string;
   date?: string;
   share: number;
+  charityInfo: string;
 }
 
 export interface Provider {
