@@ -32,6 +32,7 @@ export interface DonationInput {
 export interface Donation extends DonationInput {
   kid?: string;
   paymentProviderURL?: string;
+  swishOrderID?: string;
   isValid: boolean;
 }
 

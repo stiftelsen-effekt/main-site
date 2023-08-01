@@ -161,6 +161,7 @@ export type RegisterDonationResponse = {
   donorID: number;
   hasAnsweredReferral: boolean;
   paymentProviderUrl: string;
+  swishOrderID: string;
 };
 
 export const draftAgreementAction = actionCreator.async<undefined, DraftAgreementResponse, Error>(
