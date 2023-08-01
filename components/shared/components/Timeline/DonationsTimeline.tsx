@@ -64,7 +64,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
   let listOfBool = [];
   let fromGiEffektivt = false;
   let checkForBoth = false;
-
+  let checkNeedForProgressline = [];
 
   if (dataObj.smart) {
     numMainNodes++;
@@ -82,6 +82,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
     listOfBool.push(computedValuesSmart[0]);
     date.push(computedValuesSmart[8]);
     numProviders.push(computedValuesSmart[3].length);
+    checkNeedForProgressline.unshift(computedValuesSmart[9]);
     if (computedValuesSmart[0]) {
       numCompletedNodes++;
     }
@@ -103,6 +104,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       sidePoints.unshift(computedValuesDirect[7]);
       date.unshift(computedValuesDirect[8]);
       numProviders.unshift(computedValuesDirect[3].length);
+      checkNeedForProgressline.unshift(computedValuesDirect[9]);
     } else {
       numSideNodes.push(computedValuesDirect[1]);
 
@@ -112,6 +114,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       sidePoints.push(computedValuesDirect[7]);
       date.push(computedValuesDirect[8]);
       numProviders.push(computedValuesDirect[3].length);
+      checkNeedForProgressline.push(computedValuesDirect[9]);
     }
   }
 
@@ -132,7 +135,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
                 title={configuration.expansionWindow.mottatt_title}
                 dropDownText={configuration.expansionWindow.mottatt_undertitle}
                 smallText={
-                  (date.length > 0)
+                  date.length > 0
                     ? date[i][0] + " | " + amount[i] + configuration.date_and_amount
                     : amount[i] + configuration.date_and_amount
                 }
@@ -171,7 +174,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       for (let provider = 0; provider < numProviders[i - 1]; provider++) {
         points4SameDistributer.push(
           <TimelineContainer>
-            {provider == 1 && (
+            {checkNeedForProgressline[i - 1][provider] && (
               <ProgressLineOverlay style={{ top: "60%", height: "Calc(100% + 0.1rem)" }} />
             )}
             <TimelineItem>
@@ -204,13 +207,11 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             </TimelineContainer>
             <TimelineItem>
               <ProgressCircleLast key={i} filled={listOfBool[i - 1]}></ProgressCircleLast>
-              <TextInfo style={{ color: listOfBool[i - 1] ? "white" : "grey" }}>
-                <FoldableDropDown
-                  title={configuration.expansionWindow.fordeling_fullfort}
-                  dropDownText={configuration.expansionWindow.fordeling_fullfort_undertext}
-                  color={fromGiEffektivt ? "white" : "grey"}
-                />
-              </TextInfo>
+              <FoldableDropDown
+                title={configuration.expansionWindow.fordeling_fullfort}
+                dropDownText={configuration.expansionWindow.fordeling_fullfort_undertext}
+                color={fromGiEffektivt ? "white" : "grey"}
+              />
             </TimelineItem>
           </TimelineContainerWithSplit>,
         );
@@ -228,4 +229,3 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
 
   return <HeaderContainer>{points.map((p) => p)}</HeaderContainer>;
 };
-

@@ -24,8 +24,8 @@
 
 .impactExplanationContainer {
   display: flex;
-  flex-direction: column;
-  border-left: 1px;
+  flex-direction: flex-start;
+  border-left: 0.2rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
   max-width: 90%; /* Ensure the container does not exceed the parent's width */
@@ -39,6 +39,16 @@
 .smallText {
   font-size: 0.68rem;
   left: 0px;
+}
+
+.popUpText {
+  font-size: 0.7rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .timelineContainer {

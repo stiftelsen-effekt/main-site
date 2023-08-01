@@ -15,7 +15,7 @@ export const FoldableDropDown: React.FC<{
     if (Array.isArray(dropDownText)) {
       return <PortableText value={dropDownText} />;
     } else if (typeof dropDownText === "string") {
-      return <div>{dropDownText}</div>;
+      return <div className={style.popUpText}>{dropDownText}</div>;
     } else {
       return null; // Or some default content for unsupported types
     }

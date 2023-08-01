@@ -1,19 +1,20 @@
-{"giEffektivt": {
-  "provider": "Gi Effektivt",
-  "amount": 8000,
-  "receivedDate": "2020-01-01",
-  "involvedCharities": []
-},
+{
+  "giEffektivt": {
+    "provider": "Gi Effektivt",
+    "amount": 8792,
+    "receivedDate": "2020-01-01",
+    "involvedCharities": []
+  },
   "smart": [
     {
       "provider": "GiveWell for Smart fordeling",
-      "amount": 6000,
+      "amount": 8792,
       "receivedDate": "2021-01-01",
       "involvedCharities": []
     },
     {
       "provider": "Grant fordeling",
-      "amount": 6000,
+      "amount": 8792,
       "receivedDate": "2021-01-01",
       "involvedCharities": [
         {
