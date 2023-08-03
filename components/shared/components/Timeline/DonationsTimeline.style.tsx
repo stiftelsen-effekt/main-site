@@ -7,7 +7,6 @@ export const HeaderContainer = styled.div`
   flex-direction: column;
   height: 100%;
   align-items: flex-start;
-
   padding: 0.625rem 0.125rem;
 `;
 
@@ -78,18 +77,6 @@ export const ProgressLineHorizontalDotted = styled.div`
   align-items: center;
   margin-left: 0.8rem;
   margin-top: 0.625rem;
-`;
-
-export const ProgressCircleLarge = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 0.0625rem solid var(--primary);
-  background-color: ${(props: ProgressCircleProps) =>
-    props.filled ? `var(--primary)` : `var(--secondary)`};
-  border-radius: 50%;
-  position: relative;
-  z-index: 2;
-  margin-bottom 2.5rem;
 `;
 
 export const ProgressCircle = styled.div`
@@ -192,31 +179,6 @@ export const ProgressLineLastNode = styled.div`
   width: 0.125rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
-`;
-
-export const TextLarge = styled.div`
-  font-size: 1.25rem;
-}
-`;
-
-export const TextInfo = styled.div`
-font-size: 1rem;
-}
-`;
-
-export const TextInfo2 = styled.div`
-  font-size: 0.875rem;
-}
-`;
-export const TextInfo3 = styled.div`
-  font-size: .9rem;
-
-}
-`;
-
-export const TextSmall = styled.div`
-  font-size: .6rem;
-}
 `;
 
 export const TimelineContainerWithSplit = styled.div`

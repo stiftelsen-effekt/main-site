@@ -1,25 +1,14 @@
 import { jsonObject } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 import { buildTimelineFromObj } from "./TimelineFunctions";
-import { mapSidepoints, getProviderStatus } from "./TimelineFunctions";
-import style from "./DonationDetails.module.scss";
+import { getProviderStatus } from "./TimelineFunctions";
+
 import {
   HeaderContainer,
   TimelineContainer,
   TimelineItem,
-  ProgressCircleLarge,
-  ProgressCircleSmall,
   ProgressLine,
   ProgressLineDotted,
-  TextLarge,
-  TextSmall,
   ProgressCircle,
-  TextInfo,
-  TextInfo2,
-  TextInfo3,
-  TimelineRow,
-  ProgressLineHorizontal,
-  ProgressLineHorizontalDotted,
-  TimelineItemBranch,
   TimelineContainerWithSplit,
   TimelineContainerLastNode,
   ProgressLineDottedLastNode,
@@ -30,9 +19,6 @@ import {
 
 import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
 import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
-import { useState } from "react";
-import { DateBoxWrapper } from "../Widget/components/panes/PaymentPane/Vipps/VippsDatePicker/VippsDatePicker.style";
-import { data } from "cypress/types/jquery";
 
 export type ExpansionWindow = {
   mottatt_title: string;
@@ -52,34 +38,30 @@ interface DonationsTimelineProps {
 
 export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, configuration }) => {
   // Extracting values from json-object to build the timeline
-  let numMainNodes = 2;
-  let numCompletedNodes = 1;
-  let numSideNodes = [];
+  let numMainNodes = 2; // 2 nodes is fixed from the beginning - always a start- and an end-node
+  let numCompletedNodes = 1; //The first node is always completed since the timeline
   let providerTitles = [];
-  let amount = [dataObj.giEffektivt.amount];
-  let sidePoints = [];
+  let amount = [dataObj.giEffektivt.amount]; //Amounf for each provider
+  let sidePoints = []; // Node for each charity - it is a list of lists
   let date = [[dataObj.giEffektivt.receivedDate]];
 
   let numProviders = [];
-  let listOfBool = [];
+  let nodeStatusBooleans = [];
   let fromGiEffektivt = false;
   let checkForBoth = false;
   let checkNeedForProgressline = [];
 
   if (dataObj.smart) {
-    numMainNodes++;
+    numMainNodes++; //ADD A NEW NODE ON THE MAIN-TIMELINE
     if (getProviderStatus(dataObj.smart)[0]) {
       fromGiEffektivt = true;
     }
 
     const computedValuesSmart = buildTimelineFromObj(dataObj.smart, configuration);
-    numSideNodes.push(computedValuesSmart[1]);
-
     providerTitles.push(computedValuesSmart[3]);
-
     amount.push(computedValuesSmart[6][0]);
     sidePoints.push(computedValuesSmart[7]);
-    listOfBool.push(computedValuesSmart[0]);
+    nodeStatusBooleans.push(computedValuesSmart[0]);
     date.push(computedValuesSmart[8]);
     numProviders.push(computedValuesSmart[3].length);
     checkNeedForProgressline.unshift(computedValuesSmart[9]);
@@ -93,23 +75,17 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
     }
     const computedValuesDirect = buildTimelineFromObj(dataObj.direct, configuration);
     numMainNodes++;
-    listOfBool.push(computedValuesDirect[0]);
+    nodeStatusBooleans.push(computedValuesDirect[0]);
     if (computedValuesDirect[0]) {
       numCompletedNodes++;
-      numSideNodes.unshift(computedValuesDirect[1]);
-
       providerTitles.unshift(computedValuesDirect[3]);
-
       amount.unshift(computedValuesDirect[6][0]);
       sidePoints.unshift(computedValuesDirect[7]);
       date.unshift(computedValuesDirect[8]);
       numProviders.unshift(computedValuesDirect[3].length);
       checkNeedForProgressline.unshift(computedValuesDirect[9]);
     } else {
-      numSideNodes.push(computedValuesDirect[1]);
-
       providerTitles.push(computedValuesDirect[3]);
-
       amount.push(computedValuesDirect[6][0]);
       sidePoints.push(computedValuesDirect[7]);
       date.push(computedValuesDirect[8]);
@@ -132,7 +108,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
             <TimelineContainer>
               <FoldableDropDown
-                title={configuration.expansionWindow.mottatt_title}
+                title={configuration.expansionWindow.mottatt_title + dataObj.giEffektivt.provider}
                 dropDownText={configuration.expansionWindow.mottatt_undertitle}
                 smallText={
                   date.length > 0
@@ -206,7 +182,7 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
               {sidePoints[i - 1].map((sp) => sp)}
             </TimelineContainer>
             <TimelineItem>
-              <ProgressCircleLast key={i} filled={listOfBool[i - 1]}></ProgressCircleLast>
+              <ProgressCircleLast key={i} filled={nodeStatusBooleans[i - 1]}></ProgressCircleLast>
               <FoldableDropDown
                 title={configuration.expansionWindow.fordeling_fullfort}
                 dropDownText={configuration.expansionWindow.fordeling_fullfort_undertext}

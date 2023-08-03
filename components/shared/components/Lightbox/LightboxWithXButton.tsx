@@ -1,9 +1,8 @@
 import React from "react";
 import style from "./Lightbox.module.scss";
-import { EffektButton, EffektButtonType } from "../EffektButton/EffektButton";
 import { X } from "react-feather";
 
-export const LightboxWithoutBotton: React.FC<{
+export const LightboxWithXButton: React.FC<{
   children: React.ReactNode;
   open: boolean;
   onCancel?: () => void;

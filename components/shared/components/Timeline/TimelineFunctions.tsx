@@ -10,10 +10,7 @@ import {
   ProgressLineHorizontalDotted,
   ProgressCircleSmall,
   TimelineContainer,
-  TextInfo3,
-  TextSmall,
   ProgressLineOverlay,
-  ProgressLineOverlayFirst,
 } from "./DonationsTimeline.style";
 
 export function buildTimelineFromObj(
@@ -47,12 +44,12 @@ export function buildTimelineFromObj(
         charityTitles.push(Provider.involvedCharities[i].name);
         charityReceivedDates.push(Provider.involvedCharities[i].date);
         infoTexts.push(Provider.involvedCharities[i].charityInfo);
-        sums.push((Provider.amount * Provider.involvedCharities[i].share).toFixed(1)); //Calculate the charity amount based on share and amount from provider rounded to 2 decimals
+        sums.push((Provider.amount * Provider.involvedCharities[i].share).toFixed(0)); //round not tofixed //Calculate the charity amount based on share and amount from provider rounded to 2 decimals
       } else {
         dateNotReceived_charityTitles.push(Provider.involvedCharities[i].name);
         dateNotReceived_charityInfoInfo.push(Provider.involvedCharities[i].charityInfo);
         dateNotReceived_charityAmount.push(
-          (Provider.amount * Provider.involvedCharities[i].share).toFixed(1),
+          (Provider.amount * Provider.involvedCharities[i].share).toFixed(0),
         ); //Calculate the charity amount based on share and amount from provider rounded to 2 decimals
       }
     }

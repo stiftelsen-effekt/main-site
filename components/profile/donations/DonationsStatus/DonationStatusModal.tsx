@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
-//import { styled } from "styled-components";
-import { ActionButton } from "../../../shared/components/Widget/components/shared/ProgressBar/ProgressBar.style";
-import { PaneNumber } from "../../../shared/components/Widget/store/state";
 import { DonationsTimeline } from "../../../shared/components/Timeline/DonationsTimeline";
 import style from "./DonationsStatus.module.scss";
-import { LightboxWithoutBotton } from "../../../shared/components/Lightbox/LightboxWithoutBotton";
+import { LightboxWithXButton } from "../../../shared/components/Lightbox/LightboxWithXButton";
 import { TimelineProps } from "./DonationStatusJson/DonationStatusJsonProps";
 
 //import DonationsTimeline from "../../../shared/components/Timeline/DonationsTimeline.style";
@@ -23,12 +19,12 @@ export const DonationStatusModal: React.FC<TimelineProps> = ({
       <button onClick={() => setModalOpen(true)} className={style.caption}>
         {" "}
         {description}
-        <LightboxWithoutBotton open={modalOpen} onCancel={() => setModalOpen(false)}>
+        <LightboxWithXButton open={modalOpen} onCancel={() => setModalOpen(false)}>
           <div>
             <h5>{configuration.status_estimate_header}</h5>
             <DonationsTimeline dataObj={data} configuration={configuration} />
           </div>
-        </LightboxWithoutBotton>
+        </LightboxWithXButton>
       </button>
     </div>
   );

@@ -21,6 +21,7 @@
         {
           "id": 5,
           "name": "charity_5",
+          "date": "2021-03-01",
           "charityInfo": "Dette er litt informasjon om charity 5",
           "share": 0.2
         },
