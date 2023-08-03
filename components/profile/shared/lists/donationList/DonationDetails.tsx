@@ -43,7 +43,7 @@ export const DonationDetails: React.FC<{
     org: mapNameToOrgAbbriv(org.name) || org.name,
     sum: parseFloat(sum) * (parseFloat(org.share) / 100),
   }));
-  const dataFromRequest = getDonationStatus(0);
+  const dataFromRequest = getDonationStatus(7);
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
@@ -65,11 +65,7 @@ export const DonationDetails: React.FC<{
             <Links links={configuration?.impact_estimate_explanation_links}></Links>
           </div>
         </AnimateHeight>
-        <DonationsTimelinePreview
-          description="Donasjon mottatt av GiveWell" //TODO: THIS NEEDS TO BE IN SANITY
-          data={dataFromRequest}
-          configuration={configuration}
-        />
+        <DonationsTimelinePreview data={dataFromRequest} configuration={configuration} />
         <strong>{configuration.impact_estimate_header}</strong>
         <span
           className={

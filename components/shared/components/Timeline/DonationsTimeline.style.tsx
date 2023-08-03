@@ -7,7 +7,6 @@ export const HeaderContainer = styled.div`
   flex-direction: column;
   height: 100%;
   align-items: flex-start;
-
   padding: 0.625rem 0.125rem;
 `;
 
@@ -19,6 +18,7 @@ export const TimelineContainer = styled.div`
   width: 30rem;
   overflow-wrap: break-word;
   flex-wrap: wrap;
+  padding-right: 4rem;
 `;
 
 export const TimelineContainerLastNode = styled.div`
@@ -79,18 +79,6 @@ export const ProgressLineHorizontalDotted = styled.div`
   margin-top: 0.625rem;
 `;
 
-export const ProgressCircleLarge = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 0.0625rem solid var(--primary);
-  background-color: ${(props: ProgressCircleProps) =>
-    props.filled ? `var(--primary)` : `var(--secondary)`};
-  border-radius: 50%;
-  position: relative;
-  z-index: 2;
-  margin-bottom 2.5rem;
-`;
-
 export const ProgressCircle = styled.div`
   width: 1.1em;
   height: 1.1em;
@@ -133,7 +121,7 @@ export const ProgressCircleSmall = styled.div`
 export const ProgressLine = styled.div`
   height: 96%;
   position: absolute;
-  top: 55%;
+  top: 52%;
   left: 0.66rem;
   width: 0.12rem;
   transform: translate(-50%, -50%);
@@ -141,9 +129,17 @@ export const ProgressLine = styled.div`
 `;
 
 export const ProgressLineOverlay = styled.div`
-  height: 117%;
   position: absolute;
-  top: -35%;
+  top: 50%;
+  left: 0.66rem;
+  width: 0.125rem;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+`;
+export const ProgressLineOverlayFirst = styled.div`
+  height: 100%;
+  position: absolute;
+  top: -30%;
   left: 0.66rem;
   width: 0.125rem;
   transform: translate(-50%, -50%);
@@ -155,7 +151,7 @@ export const ProgressLineDotted = styled.div`
   border: none;
   border-left: 0.125rem dotted black;
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 0.66rem;
   width: 0.125rem;
   transform: translate(-50%, -50%);
@@ -183,31 +179,6 @@ export const ProgressLineLastNode = styled.div`
   width: 0.125rem;
   transform: translate(-50%, -50%);
   background: var(--primary);
-`;
-
-export const TextLarge = styled.div`
-  font-size: 1.25rem;
-}
-`;
-
-export const TextInfo = styled.div`
-font-size: 1rem;
-}
-`;
-
-export const TextInfo2 = styled.div`
-  font-size: 0.875rem;
-}
-`;
-export const TextInfo3 = styled.div`
-  font-size: .9rem;
-
-}
-`;
-
-export const TextSmall = styled.div`
-  font-size: .6rem;
-}
 `;
 
 export const TimelineContainerWithSplit = styled.div`

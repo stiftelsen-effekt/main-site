@@ -1,17 +1,25 @@
 {
+  "giEffektivt": {
+    "provider": "Gi Effektivt",
+    "amount": 8792,
+    "receivedDate": "2020-01-01",
+    "involvedCharities": []
+  },
   "smart": [
     {
       "provider": "GiveWell",
-      "amount": 6000,
+      "amount": 8792,
       "involvedCharities": [
         {
           "id": 1,
           "name": "charity_1",
+          "charityInfo": "Dette er litt informasjon om charity 1",
           "share": 0.8
         },
         {
           "id": 2,
           "name": "charity_2",
+          "charityInfo": "Dette er litt informasjon om charity 2",
           "share": 0.2
         }
       ]

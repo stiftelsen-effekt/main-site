@@ -10,27 +10,27 @@ import {
   ProgressLineHorizontalDotted,
   ProgressCircleSmall,
   TimelineContainer,
-  TextInfo3,
-  TextSmall,
   ProgressLineOverlay,
 } from "./DonationsTimeline.style";
 
 export function buildTimelineFromObj(
   Providers: Provider[],
   configuration: DonationDetailsConfiguration,
-): [boolean, number, number, string[], string[], number[], number[], any[], string[]] {
+): [boolean, number, number, string[], string[], number[], number[], any[], string[], boolean[]] {
   let completedStatus = false;
   let numCharitiesReceived = 0;
   let numCharities = 0;
   let providerTitles = [];
-  let charityTitlesNotReceived = [];
+  let dateNotReceived_charityTitles = [];
   let charityTitles = [];
   let sums = [];
   let amounts = [];
   let dates = [];
   let infoTexts = [];
-  let DateNotReceivedInfo = [];
+  let dateNotReceived_charityInfoInfo = [];
   let charityReceivedDates = [];
+  let needProgressline = [];
+  let dateNotReceived_charityAmount = [];
 
   for (let p = 0; p < Providers.length; p++) {
     let Provider = Providers[p];
@@ -39,28 +39,36 @@ export function buildTimelineFromObj(
     amounts.push(Provider.amount);
     dates.push(Provider.receivedDate);
     for (let i = 0; i < numCharities; i++) {
-      sums.push(Provider.amount * Provider.involvedCharities[i].share);
       if (Provider.involvedCharities[i].date) {
         numCharitiesReceived++;
         charityTitles.push(Provider.involvedCharities[i].name);
         charityReceivedDates.push(Provider.involvedCharities[i].date);
         infoTexts.push(Provider.involvedCharities[i].charityInfo);
-        //dates.push(Provider.involvedCharities[i].date)
+        sums.push((Provider.amount * Provider.involvedCharities[i].share).toFixed(0)); //round not tofixed //Calculate the charity amount based on share and amount from provider rounded to 2 decimals
       } else {
-        charityTitlesNotReceived.push(Provider.involvedCharities[i].name);
-        DateNotReceivedInfo.push(Provider.involvedCharities[i].charityInfo);
-        console.log(Provider.involvedCharities[i].charityInfo);
+        dateNotReceived_charityTitles.push(Provider.involvedCharities[i].name);
+        dateNotReceived_charityInfoInfo.push(Provider.involvedCharities[i].charityInfo);
+        dateNotReceived_charityAmount.push(
+          (Provider.amount * Provider.involvedCharities[i].share).toFixed(0),
+        ); //Calculate the charity amount based on share and amount from provider rounded to 2 decimals
       }
     }
-
-    for (let charity = 0; charity < charityTitlesNotReceived.length; charity++) {
-      charityTitles.push(charityTitlesNotReceived[charity]);
-      infoTexts.push(DateNotReceivedInfo[charity]);
+    if (numCharitiesReceived > 0) {
+      needProgressline.push(true);
+    } else {
+      needProgressline.push(false);
     }
 
-    //OBS: Funker bare for 1 Provider!
     if (numCharities == numCharitiesReceived) {
       completedStatus = true;
+    } else {
+      completedStatus = false;
+    }
+
+    for (let charity = 0; charity < dateNotReceived_charityTitles.length; charity++) {
+      charityTitles.push(dateNotReceived_charityTitles[charity]);
+      infoTexts.push(dateNotReceived_charityInfoInfo[charity]);
+      sums.push(dateNotReceived_charityAmount[charity]);
     }
   }
 
@@ -84,6 +92,7 @@ export function buildTimelineFromObj(
     amounts,
     sidePoints,
     dates,
+    needProgressline,
   ];
 }
 
@@ -101,7 +110,9 @@ export function mapSidepoints(
   for (let count = 0; count < numCharities; count++) {
     sidePoints.push(
       <TimelineContainer>
-        {count < numCharitiesReceived && <ProgressLineOverlay />}
+        {count < numCharitiesReceived - 1 && (
+          <ProgressLineOverlay style={{ top: "50%", height: "Calc(100% + 1.2rem)" }} />
+        )}
         <TimelineItemBranch>
           {numCharitiesReceived - 1 >= count ? (
             <ProgressLineHorizontal />

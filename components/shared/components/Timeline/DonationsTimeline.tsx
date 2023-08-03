@@ -1,37 +1,24 @@
 import { jsonObject } from "../../../profile/donations/DonationsStatus/DonationStatusJson/DonationStatusJsonProps";
 import { buildTimelineFromObj } from "./TimelineFunctions";
-import { mapSidepoints, getProviderStatus } from "./TimelineFunctions";
-import style from "./DonationDetails.module.scss";
+import { getProviderStatus } from "./TimelineFunctions";
+
 import {
   HeaderContainer,
   TimelineContainer,
   TimelineItem,
-  ProgressCircleLarge,
-  ProgressCircleSmall,
   ProgressLine,
   ProgressLineDotted,
-  TextLarge,
-  TextSmall,
   ProgressCircle,
-  TextInfo,
-  TextInfo2,
-  TextInfo3,
-  TimelineRow,
-  ProgressLineHorizontal,
-  ProgressLineHorizontalDotted,
-  TimelineItemBranch,
   TimelineContainerWithSplit,
   TimelineContainerLastNode,
   ProgressLineDottedLastNode,
   ProgressLineLastNode,
   ProgressCircleLast,
+  ProgressLineOverlay,
 } from "./DonationsTimeline.style";
 
 import { FoldableDropDown } from "../FoldableDropDown/FoldableDropDown";
 import { DonationDetailsConfiguration } from "../../../profile/shared/lists/donationList/DonationDetails";
-import { useState } from "react";
-import { DateBoxWrapper } from "../Widget/components/panes/PaymentPane/Vipps/VippsDatePicker/VippsDatePicker.style";
-import { data } from "cypress/types/jquery";
 
 export type ExpansionWindow = {
   mottatt_title: string;
@@ -51,37 +38,33 @@ interface DonationsTimelineProps {
 
 export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, configuration }) => {
   // Extracting values from json-object to build the timeline
-  let numMainNodes = 2;
-  let numCompletedNodes = 1;
-  let numSideNodes = [];
+  let numMainNodes = 2; // 2 nodes is fixed from the beginning - always a start- and an end-node
+  let numCompletedNodes = 1; //The first node is always completed since the timeline
   let providerTitles = [];
-  let amount = [dataObj.giEffektivt.amount];
-  let sidePoints = [];
+  let amount = [dataObj.giEffektivt.amount]; //Amounf for each provider
+  let sidePoints = []; // Node for each charity - it is a list of lists
   let date = [[dataObj.giEffektivt.receivedDate]];
 
   let numProviders = [];
-  let listOfBool = [];
+  let nodeStatusBooleans = [];
   let fromGiEffektivt = false;
   let checkForBoth = false;
-
-  const loremIpsumText = "TEXTLOREMIPSUM";
+  let checkNeedForProgressline = [];
 
   if (dataObj.smart) {
-    numMainNodes++;
+    numMainNodes++; //ADD A NEW NODE ON THE MAIN-TIMELINE
     if (getProviderStatus(dataObj.smart)[0]) {
       fromGiEffektivt = true;
     }
 
     const computedValuesSmart = buildTimelineFromObj(dataObj.smart, configuration);
-    numSideNodes.push(computedValuesSmart[1]);
-
     providerTitles.push(computedValuesSmart[3]);
-
     amount.push(computedValuesSmart[6][0]);
     sidePoints.push(computedValuesSmart[7]);
-    listOfBool.push(computedValuesSmart[0]);
+    nodeStatusBooleans.push(computedValuesSmart[0]);
     date.push(computedValuesSmart[8]);
     numProviders.push(computedValuesSmart[3].length);
+    checkNeedForProgressline.unshift(computedValuesSmart[9]);
     if (computedValuesSmart[0]) {
       numCompletedNodes++;
     }
@@ -92,26 +75,22 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
     }
     const computedValuesDirect = buildTimelineFromObj(dataObj.direct, configuration);
     numMainNodes++;
-    listOfBool.push(computedValuesDirect[0]);
+    nodeStatusBooleans.push(computedValuesDirect[0]);
     if (computedValuesDirect[0]) {
       numCompletedNodes++;
-      numSideNodes.unshift(computedValuesDirect[1]);
-
       providerTitles.unshift(computedValuesDirect[3]);
-
       amount.unshift(computedValuesDirect[6][0]);
       sidePoints.unshift(computedValuesDirect[7]);
       date.unshift(computedValuesDirect[8]);
       numProviders.unshift(computedValuesDirect[3].length);
+      checkNeedForProgressline.unshift(computedValuesDirect[9]);
     } else {
-      numSideNodes.push(computedValuesDirect[1]);
-
       providerTitles.push(computedValuesDirect[3]);
-
       amount.push(computedValuesDirect[6][0]);
       sidePoints.push(computedValuesDirect[7]);
       date.push(computedValuesDirect[8]);
       numProviders.push(computedValuesDirect[3].length);
+      checkNeedForProgressline.push(computedValuesDirect[9]);
     }
   }
 
@@ -129,10 +108,10 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
             <ProgressCircle key={i} filled={numCompletedNodes >= i}></ProgressCircle>
             <TimelineContainer>
               <FoldableDropDown
-                title={configuration.expansionWindow.mottatt_title}
+                title={configuration.expansionWindow.mottatt_title + dataObj.giEffektivt.provider}
                 dropDownText={configuration.expansionWindow.mottatt_undertitle}
                 smallText={
-                  sidePoints[0] > amount
+                  date.length > 0
                     ? date[i][0] + " | " + amount[i] + configuration.date_and_amount
                     : amount[i] + configuration.date_and_amount
                 }
@@ -170,23 +149,28 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
       let points4SameDistributer = [];
       for (let provider = 0; provider < numProviders[i - 1]; provider++) {
         points4SameDistributer.push(
-          <TimelineItem>
-            <ProgressCircle key={i} filled={fromGiEffektivt}></ProgressCircle>
-            <TimelineContainer>
-              <FoldableDropDown
-                title={
-                  configuration.expansionWindow.overfort_title + providerTitles[i - 1][provider]
-                }
-                dropDownText={configuration.expansionWindow.overfort_undetitle}
-                smallText={
-                  sidePoints[0] > amount
-                    ? date[i][provider] + " | " + amount[i] + configuration.date_and_amount
-                    : amount[i] + configuration.date_and_amount
-                }
-                color={fromGiEffektivt ? "white" : "grey"}
-              />
-            </TimelineContainer>
-          </TimelineItem>,
+          <TimelineContainer>
+            {checkNeedForProgressline[i - 1][provider] && (
+              <ProgressLineOverlay style={{ top: "60%", height: "Calc(100% + 0.1rem)" }} />
+            )}
+            <TimelineItem>
+              <ProgressCircle filled={fromGiEffektivt}></ProgressCircle>
+              <TimelineContainer>
+                <FoldableDropDown
+                  title={
+                    configuration.expansionWindow.overfort_title + providerTitles[i - 1][provider]
+                  }
+                  dropDownText={configuration.expansionWindow.overfort_undetitle}
+                  smallText={
+                    fromGiEffektivt
+                      ? date[i][provider] + " | " + amount[i] + configuration.date_and_amount
+                      : amount[i] + configuration.date_and_amount
+                  }
+                  color={fromGiEffektivt ? "white" : "grey"}
+                />
+              </TimelineContainer>
+            </TimelineItem>
+          </TimelineContainer>,
         );
       }
       if (checkForBoth) {
@@ -198,14 +182,12 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
               {sidePoints[i - 1].map((sp) => sp)}
             </TimelineContainer>
             <TimelineItem>
-              <ProgressCircleLast key={i} filled={listOfBool[i - 1]}></ProgressCircleLast>
-              <TextInfo style={{ color: listOfBool[i - 1] ? "white" : "grey" }}>
-                <FoldableDropDown
-                  title={configuration.expansionWindow.fordeling_fullfort}
-                  dropDownText={configuration.expansionWindow.fordeling_fullfort_undertext}
-                  color={fromGiEffektivt ? "white" : "grey"}
-                />
-              </TextInfo>
+              <ProgressCircleLast key={i} filled={nodeStatusBooleans[i - 1]}></ProgressCircleLast>
+              <FoldableDropDown
+                title={configuration.expansionWindow.fordeling_fullfort}
+                dropDownText={configuration.expansionWindow.fordeling_fullfort_undertext}
+                color={fromGiEffektivt ? "white" : "grey"}
+              />
             </TimelineItem>
           </TimelineContainerWithSplit>,
         );
@@ -223,22 +205,3 @@ export const DonationsTimeline: React.FC<DonationsTimelineProps> = ({ dataObj, c
 
   return <HeaderContainer>{points.map((p) => p)}</HeaderContainer>;
 };
-
-/*
-  <FoldableDropDown
-                title="Donasjonen mottatt av Gi Effektivt"
-                dropDownText={
-                  "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
-                }
-                smallText="6000kr"
-              />
-              */
-
-/*
-                      <FoldableDropDown
-              title={""+providerTitles[i - 1][provider]}
-              dropDownText={[loremIpsumText]}
-              smallText={amount[i - 1] + "kr"}
-              color={fromGiEffektivt ? "white" : "grey"}
-            />
-            */
