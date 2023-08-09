@@ -5,6 +5,7 @@ import { VippsAgreement } from "../state";
 export const SELECT_PAYMENT_METHOD = "SELECT_PAYMENT_METHOD";
 export const SELECT_TAX_DEDUCTION = "SELECT_TAX_DEDUCTION";
 export const SUBMIT_DONOR_INFO = "SUBMIT_DONOR_INFO";
+export const SUBMIT_PHONE_NUMBER = "SUBMIT_PHONE_NUMBER";
 export const SET_SHARES = "SET_SHARES";
 export const SET_SUM = "SET_SUM";
 export const SET_DUE_DAY = "SET_DUE_DAY";
@@ -38,6 +39,13 @@ interface SubmitDonorInfo {
     taxDeduction: boolean;
     ssn: string;
     newsletter: boolean;
+  };
+}
+
+interface SubmitPhoneNumber {
+  type: typeof SUBMIT_PHONE_NUMBER;
+  payload: {
+    phone: string;
   };
 }
 
@@ -115,6 +123,7 @@ export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
   | SubmitDonorInfo
+  | SubmitPhoneNumber
   | SetShares
   | SetSum
   | SetDueDay

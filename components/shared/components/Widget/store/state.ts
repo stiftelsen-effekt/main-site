@@ -26,11 +26,13 @@ export interface DonationInput {
   shares: OrganizationShare[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
+  phone?: string;
 }
 
 export interface Donation extends DonationInput {
   kid?: string;
   paymentProviderURL?: string;
+  swishOrderID?: string;
   isValid: boolean;
 }
 
@@ -46,6 +48,7 @@ export interface RegisterDonationObject {
   amount: number;
   organizations?: OrganizationShare[];
   dueDay?: number;
+  phone?: string;
 }
 
 export interface DonorInput {

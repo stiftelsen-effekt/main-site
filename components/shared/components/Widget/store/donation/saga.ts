@@ -138,6 +138,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       method: donation.method || PaymentMethod.BANK,
       amount: donation.sum || 0,
       recurring: donation.recurring,
+      phone: donation.phone,
     };
 
     if (donation.shareType === ShareType.CUSTOM) {

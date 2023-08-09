@@ -31,7 +31,26 @@ export type VippsPaymentMethod = {
 export type SwishPaymentMethod = {
   _id: "swish";
   selector_text: string;
-  title: string;
+  prompt: {
+    title: string;
+    text?: string;
+  };
+  success: {
+    title: string;
+    text?: string;
+  };
+  error: {
+    title: string;
+    text?: string;
+  };
+  declined: {
+    title: string;
+    text?: string;
+  };
+  cancelled: {
+    title: string;
+    text?: string;
+  };
 };
 
 export type WidgetPane1Props = {

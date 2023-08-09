@@ -14,6 +14,7 @@ import {
   SET_SHARE_TYPE,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
+  SUBMIT_PHONE_NUMBER,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -49,6 +50,15 @@ export function submitDonorInfo(data: {
   return {
     type: SUBMIT_DONOR_INFO,
     payload: data,
+  };
+}
+
+export function submitPhoneNumber(phone: string): DonationActionTypes {
+  return {
+    type: SUBMIT_PHONE_NUMBER,
+    payload: {
+      phone,
+    },
   };
 }
 
@@ -151,6 +161,7 @@ export type RegisterDonationResponse = {
   donorID: number;
   hasAnsweredReferral: boolean;
   paymentProviderUrl: string;
+  swishOrderID: string;
 };
 
 export const draftAgreementAction = actionCreator.async<undefined, DraftAgreementResponse, Error>(
