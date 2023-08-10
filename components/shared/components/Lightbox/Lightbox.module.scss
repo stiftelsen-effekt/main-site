@@ -11,10 +11,15 @@
   justify-content: center;
   align-items: center;
   cursor: default;
+  max-height: 85vh;
+  scrollbar-width: none;
 }
 
 .lightboxCloseButton {
-  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
 }
 
 .lightbox {
@@ -24,11 +29,25 @@
   flex-direction: column;
   margin: 0 5vw;
   max-height: 100vh;
-  max-width: 760px;
+  max-width: 47rem;
   padding: 2rem 3rem 3rem 3rem;
   border-radius: 10px;
-  overflow-y: visible;
   z-index: 2;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Hide the scrollbar */
+.lightbox::-webkit-scrollbar {
+  width: 0;
+}
+
+.lightbox::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.lightbox::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
 
 .button {

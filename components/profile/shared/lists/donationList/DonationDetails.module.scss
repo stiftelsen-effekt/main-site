@@ -41,6 +41,12 @@
   display: block;
 }
 
+.captionStatus {
+  user-select: none;
+  font-size: 0.7rem;
+  display: block;
+}
+
 .caption::after {
   content: "↓";
   display: inline-block;

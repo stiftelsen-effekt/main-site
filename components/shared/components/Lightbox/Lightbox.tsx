@@ -32,6 +32,7 @@ export const Lightbox: React.FC<{
           >
             {loading ? <LoadingButtonSpinner /> : onCancel ? "Bekreft" : "OK"}
           </EffektButton>
+
           {onCancel && (
             <EffektButton
               onClick={onCancel}

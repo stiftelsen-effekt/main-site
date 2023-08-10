@@ -4,6 +4,80 @@ export default {
   type: "object",
   fields: [
     {
+      name: "status_estimate_header",
+      title: "Status estimate header",
+      type: "string",
+    },
+    {
+      name: "date_and_amount",
+      title: "Date and amount",
+      type: "string",
+      description: "Use {{date}}  {{amount}} kr",
+    },
+    {
+      name: "status_estimate_explanation_title",
+      title: "Status estimate explanation title",
+      type: "string",
+    },
+    {
+      name: "status_estimate_explanation_text",
+      title: "Status estimate explanation text",
+      type: "array",
+      of: [{ type: "block" }],
+    },
+    {
+      name: "expansionWindow",
+      title: "Expansion Window",
+      type: "object",
+      fields: [
+        {
+          name: "mottatt_title",
+          title: "Mottatt title",
+          type: "string",
+        },
+        {
+          name: "mottatt_undertitle",
+          title: "Mottatt undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "overfort_title",
+          title: "Overfort title",
+          type: "string",
+        },
+        {
+          name: "overfort_undetitle",
+          title: "Overfort undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "fordeling_fullfort",
+          title: "Fordeling fullført",
+          type: "string",
+        },
+        {
+          name: "fordeling_fullfort_undertext",
+          title: "Fordeling fullført undertext",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "donasjon_fullfort",
+          title: "Donasjon fullfort",
+          type: "string",
+        },
+        {
+          name: "hele_donasjons_fullfort_undertitle",
+          title: "Donasjon fullfort undertitle",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+      ],
+    },
+
+    {
       name: "impact_estimate_header",
       title: "Impact estimate header",
       type: "string",
