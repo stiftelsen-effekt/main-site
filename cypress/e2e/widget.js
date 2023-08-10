@@ -318,6 +318,9 @@ describe("Widget", () => {
     cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);
     cy.get("[data-cy=email-input]").should("have.value", mockDonor.email);
 
+    cy.get("[data-cy=tax-deduction-checkbox]").click("left");
+    cy.get("[data-cy=ssn-input]").should("have.value", mockDonor.ssn);
+
     cy.get("[data-cy=bank-method]").click({ force: true });
     cy.wait(500);
 
