@@ -5,7 +5,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, X } from "react-feather";
 import { ResponsiveImage } from "../../shared/responsiveimage";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
+import {
+  EffektButton,
+  EffektButtonVariant,
+} from "../../shared/components/EffektButton/EffektButton";
 import { WidgetContext } from "../../main/layout/layout";
 import { useRouterContext } from "../../../context/RouterContext";
 import { MainNavbarGroup, NavLink } from "../../main/layout/navbar";
@@ -121,38 +124,10 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
               </li>
             ),
           )}
-          {/** 
-          <li onClick={() => setExpandMenu(false)}>
-            <Link href={dashboardPath.join("/")} passHref>
-              Donasjoner
-            </Link>
-          </li>
-          {agreementsPagePath ? (
-            <li onClick={() => setExpandMenu(false)}>
-              <Link href={agreementsPagePath.join("/")} passHref>
-                Avtaler
-              </Link>
-            </li>
-          ) : null}
-          {taxPagePath ? (
-            <li onClick={() => setExpandMenu(false)}>
-              <Link href={taxPagePath.join("/")} passHref>
-                Skatt
-              </Link>
-            </li>
-          ) : null}
-          {profilePagePath ? (
-            <li onClick={() => setExpandMenu(false)}>
-              <Link href={profilePagePath.join("/")} passHref>
-                Profil
-              </Link>
-            </li>
-          ) : null}
-          */}
           <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
             {user ? (
               <EffektButton
-                type={EffektButtonType.SECONDARY}
+                variant={EffektButtonVariant.SECONDARY}
                 onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
                 extraMargin={true}
               >
@@ -160,7 +135,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
               </EffektButton>
             ) : (
               <EffektButton
-                type={EffektButtonType.SECONDARY}
+                variant={EffektButtonVariant.SECONDARY}
                 onClick={() => loginWithRedirect({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
                 extraMargin={true}
               >

@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
+import PlausibleProvider from "next-plausible";
 import { State } from "../components/shared/components/Widget/store/state";
 import { donationReducer } from "../components/shared/components/Widget/store/donation/reducer";
 import { layoutReducer } from "../components/shared/components/Widget/store/layout/reducer";
@@ -69,14 +70,24 @@ function MyApp({
 
     pageProps.data.result = previewData;
 
+    const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
+
     return (
-      <Provider store={store}>
-        <RouterContext.Provider value={routerContextValue.current}>
-          <PageLayout {...appStaticProps.layoutProps}>
-            <Component {...pageProps} />
-          </PageLayout>
-        </RouterContext.Provider>
-      </Provider>
+      <PlausibleProvider
+        domain={plausibleDomain}
+        trackOutboundLinks={true}
+        taggedEvents={true}
+        trackLocalhost={true} // TODO: Remove when testing is done
+        enabled={true} // TODO: Remove when testing is done
+      >
+        <Provider store={store}>
+          <RouterContext.Provider value={routerContextValue.current}>
+            <PageLayout {...appStaticProps.layoutProps}>
+              <Component {...pageProps} />
+            </PageLayout>
+          </RouterContext.Provider>
+        </Provider>
+      </PlausibleProvider>
     );
   } else {
     return <Component {...pageProps} />;

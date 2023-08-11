@@ -1,3 +1,5 @@
+const { withPlausibleProxy } = require("next-plausible");
+
 const STUDIO_REWRITE = {
   source: "/studio/:path*",
   destination:
@@ -212,4 +214,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPlausibleProxy()(nextConfig);

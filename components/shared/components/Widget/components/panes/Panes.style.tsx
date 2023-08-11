@@ -5,6 +5,7 @@ export const Pane = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  white-space: normal;
 
   font-size: 18px;
   line-height: 30px;

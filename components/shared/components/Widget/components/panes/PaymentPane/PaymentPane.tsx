@@ -3,59 +3,52 @@ import { useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import {
-  WidgetPane3BankRecurringProps,
-  WidgetPane3BankSingleProps,
+  BankPaymentMethod,
+  SwishPaymentMethod,
+  VippsPaymentMethod,
   WidgetPane3ReferralsProps,
-  WidgetPane3VippsRecurringProps,
-  WidgetPane3VippsSingleProps,
+  WidgetProps,
 } from "../../../types/WidgetProps";
-import { Pane } from "../Panes.style";
 import { ResultPane } from "./Bank/ResultPane";
+import { SwishPane } from "./Swish/SwishPane";
 import { VippsPane } from "./Vipps/VippsPane";
 
 export const PaymentPane: React.FC<{
-  text: WidgetPane3BankRecurringProps &
-    WidgetPane3BankSingleProps &
-    WidgetPane3VippsRecurringProps &
-    WidgetPane3VippsSingleProps &
-    WidgetPane3ReferralsProps;
-}> = ({ text }) => {
+  referrals: WidgetPane3ReferralsProps;
+  paymentMethods: NonNullable<WidgetProps["methods"]>;
+}> = ({ referrals, paymentMethods }) => {
   const method = useSelector((state: State) => state.donation.method);
 
-  return (
-    <Pane>
-      {method === PaymentMethod.BANK && (
-        <ResultPane
-          text={{
-            pane3_bank_recurring_title: text.pane3_bank_recurring_title,
-            pane3_bank_recurring_selector_earliest_text:
-              text.pane3_bank_recurring_selector_earliest_text,
-            pane3_bank_recurring_selector_choose_date_text:
-              text.pane3_bank_recurring_selector_choose_date_text,
-            pane3_bank_recurring_button_text: text.pane3_bank_recurring_button_text,
-            pane3_bank_single_title: text.pane3_bank_single_title,
-            pane3_bank_single_kontonr_title: text.pane3_bank_single_kontonr_title,
-            pane3_bank_single_kid_title: text.pane3_bank_single_kid_title,
-            pane3_bank_single_explanatory_text: text.pane3_bank_single_explanatory_text,
-            pane3_referrals_title: text.pane3_referrals_title,
-          }}
-        />
-      )}
-      {method === PaymentMethod.VIPPS && (
-        <VippsPane
-          text={{
-            pane3_vipps_recurring_title: text.pane3_vipps_recurring_title,
-            pane3_vipps_recurring_selector_earliest_text:
-              text.pane3_vipps_recurring_selector_earliest_text,
-            pane3_vipps_recurring_selector_choose_date_text:
-              text.pane3_vipps_recurring_selector_choose_date_text,
-            pane3_vipps_recurring_button_text: text.pane3_vipps_recurring_button_text,
-            pane3_vipps_single_title: text.pane3_vipps_single_title,
-            pane3_vipps_single_button_text: text.pane3_vipps_single_button_text,
-            pane3_referrals_title: text.pane3_referrals_title,
-          }}
-        />
-      )}
-    </Pane>
-  );
+  switch (method) {
+    case PaymentMethod.BANK: {
+      const bankConfiguration = paymentMethods.find(
+        (method): method is BankPaymentMethod => method._id === "bank",
+      );
+      if (!bankConfiguration) {
+        throw new Error("Missing configuration for bank, but selected payment method is bank");
+      }
+      return <ResultPane config={bankConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.VIPPS: {
+      const vippsConfiguration = paymentMethods.find(
+        (method): method is VippsPaymentMethod => method._id === "vipps",
+      );
+      if (!vippsConfiguration) {
+        throw new Error("Missing configuration for Vipps, but selected payment method is vipps");
+      }
+      return <VippsPane config={vippsConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.SWISH: {
+      const swishConfiguration = paymentMethods.find(
+        (method): method is SwishPaymentMethod => method._id === "swish",
+      );
+      if (!swishConfiguration) {
+        throw new Error("Missing configuration for Swish, but selected payment method is swish");
+      }
+      return <SwishPane config={swishConfiguration} referrals={referrals} />;
+    }
+    default: {
+      throw new Error(`Unknown payment method: ${method}`);
+    }
+  }
 };

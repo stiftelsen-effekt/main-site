@@ -8,23 +8,38 @@ import { RecurringDonation } from "../../../types/Enums";
 import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
 import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
-import { EffektButton, EffektButtonType } from "../../../../EffektButton/EffektButton";
+import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
 import { SingleCauseAreaSelector } from "./ShareSelector/Single/SingleCauseAreaSelector";
 import { MultipleCauseAreasSelector } from "./ShareSelector/Multiple/MultipleCauseAreasSelector";
+import { usePlausible } from "next-plausible";
 
-export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => {
+export const DonationPane: React.FC<{
+  text: WidgetPane1Props;
+  enableRecurring: boolean;
+  enableSingle: boolean;
+}> = ({ text, enableRecurring, enableSingle }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
   const layout = useSelector((state: State) => state.layout);
+  const plausible = usePlausible();
 
   const suggestedSums = donation.recurring
     ? text.preset_amounts_recurring
     : text.preset_amounts_single;
 
   function onSubmit() {
+    plausible("SubmitDonationPane", {
+      props: {
+        recurring: donation.recurring,
+        sum: donation.sum,
+        shareType: donation.distributionCauseAreas
+          .map((c) => `${c.id}-${c.standardSplit}`)
+          .join(","),
+      },
+    });
     dispatch(nextPane());
   }
 
@@ -41,11 +56,13 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
                 title: text.monthly_donation_text,
                 value: RecurringDonation.RECURRING,
                 data_cy: "radio-recurring",
+                disabled: !enableRecurring,
               },
               {
                 title: text.single_donation_text,
                 value: RecurringDonation.NON_RECURRING,
                 data_cy: "radio-single",
+                disabled: !enableSingle,
               },
             ]}
             selected={donation.recurring}
@@ -57,7 +74,7 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
               {suggestedSums.map((suggested) => (
                 <div key={suggested.amount}>
                   <EffektButton
-                    type={EffektButtonType.SECONDARY}
+                    variant={EffektButtonVariant.SECONDARY}
                     selected={donation.sum === suggested.amount}
                     onClick={() => dispatch(setSum(suggested.amount))}
                     noMinWidth={true}

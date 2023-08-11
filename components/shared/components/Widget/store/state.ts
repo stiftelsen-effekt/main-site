@@ -23,15 +23,17 @@ export interface DonationInput {
   method?: PaymentMethod;
   sum?: number;
   recurring: RecurringDonation;
-  donor?: Donor;
+  donor: Donor;
   distributionCauseAreas: DistributionCauseArea[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
+  phone?: string;
 }
 
 export interface Donation extends DonationInput {
   kid?: string;
   paymentProviderURL?: string;
+  swishOrderID?: string;
   isValid: boolean;
 }
 
@@ -47,14 +49,15 @@ export interface RegisterDonationObject {
   amount: number;
   distributionCauseAreas: DistributionCauseArea[];
   dueDay?: number;
+  phone?: string;
 }
 
 export interface DonorInput {
   name?: string;
   email?: string;
-  taxDeduction?: boolean;
+  taxDeduction: boolean;
   ssn?: string;
-  newsletter?: boolean;
+  newsletter: boolean;
   dueDay?: number;
 }
 

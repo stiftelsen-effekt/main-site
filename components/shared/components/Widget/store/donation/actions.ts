@@ -12,10 +12,10 @@ import {
   SET_PAYMENT_PROVIDER_URL,
   SELECT_CUSTOM_SHARE,
   SET_SHARE_TYPE,
-  SET_DONATION_VALID,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SUBMIT_PHONE_NUMBER,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -42,21 +42,24 @@ export function selectTaxDeduction(taxDeduction: boolean): DonationActionTypes {
   };
 }
 
-export function submitDonorInfo(
-  name: string,
-  email: string,
-  taxDeduction: boolean,
-  ssn: string,
-  newsletter: boolean,
-): DonationActionTypes {
+export function submitDonorInfo(data: {
+  name: string;
+  email: string;
+  taxDeduction: boolean;
+  ssn: string;
+  newsletter: boolean;
+}): DonationActionTypes {
   return {
     type: SUBMIT_DONOR_INFO,
+    payload: data,
+  };
+}
+
+export function submitPhoneNumber(phone: string): DonationActionTypes {
+  return {
+    type: SUBMIT_PHONE_NUMBER,
     payload: {
-      name,
-      email,
-      taxDeduction,
-      ssn,
-      newsletter,
+      phone,
     },
   };
 }
@@ -161,15 +164,6 @@ export function setShareType(causeAreaId: number, standardSplit: boolean): Donat
   };
 }
 
-export function setDonationValid(isValid: boolean): DonationActionTypes {
-  return {
-    type: SET_DONATION_VALID,
-    payload: {
-      isValid,
-    },
-  };
-}
-
 export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActionTypes {
   return {
     type: SET_VIPPS_AGREEMENT,
@@ -188,6 +182,7 @@ export type RegisterDonationResponse = {
   donorID: number;
   hasAnsweredReferral: boolean;
   paymentProviderUrl: string;
+  swishOrderID: string;
 };
 
 export const draftAgreementAction = actionCreator.async<undefined, DraftAgreementResponse, Error>(

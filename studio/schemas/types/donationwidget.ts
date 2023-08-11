@@ -6,7 +6,6 @@ export default {
     {
       name: "pane1",
       title: "Pane 1",
-      default: true,
     },
     {
       name: "pane2",
@@ -17,16 +16,8 @@ export default {
       title: "Pane 3 - Bank recurring",
     },
     {
-      name: "pane3_vipps_recurring",
-      title: "Pane 3 - Vipps recurring",
-    },
-    {
       name: "pane3_bank_single",
       title: "Pane 3 - Bank single",
-    },
-    {
-      name: "pane3_vipps_single",
-      title: "Pane 3 - Vipps single",
     },
     {
       name: "referrals",
@@ -34,6 +25,22 @@ export default {
     },
   ],
   fields: [
+    {
+      name: "methods",
+      type: "array",
+      title: "Payment methods",
+      validation: (Rule: any) => Rule.required().min(1),
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "bank" }, { type: "vipps" }, { type: "swish" }],
+          validation: (Rule: any) => Rule.required(),
+          options: {
+            disableNew: true,
+          },
+        },
+      ],
+    },
     //Single / monthly donation text
     {
       name: "single_donation_text",
@@ -201,138 +208,12 @@ export default {
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
     },
-    // Payment method selector text pane 2
-    {
-      name: "payment_method_selector_bank_text",
-      title: "Payment method selector bank text",
-      type: "string",
-      group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "payment_method_selector_vipps_text",
-      title: "Payment method selector vipps text",
-      type: "string",
-      group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
     // Button text pane 2
     {
       name: "pane2_button_text",
       title: "Button text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Title pane 3 bank recurring
-    {
-      name: "pane3_bank_recurring_title",
-      title: "Title",
-      type: "string",
-      group: "pane3_bank_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Selector text pane 3 bank recurring
-    {
-      name: "pane3_bank_recurring_selector_earliest_text",
-      title: "Selector earliest text",
-      type: "string",
-      group: "pane3_bank_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "pane3_bank_recurring_selector_choose_date_text",
-      title: "Selector choose date text",
-      type: "string",
-      group: "pane3_bank_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Button text pane 3 bank recurring
-    {
-      name: "pane3_bank_recurring_button_text",
-      title: "Button text",
-      type: "string",
-      group: "pane3_bank_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Title pane 3 bank single
-    {
-      name: "pane3_bank_single_title",
-      title: "Title",
-      type: "string",
-      group: "pane3_bank_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Kontonr title pane 3 bank single
-    {
-      name: "pane3_bank_single_kontonr_title",
-      title: "Kontonr title",
-      type: "string",
-      group: "pane3_bank_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // KID title pane 3 bank single
-    {
-      name: "pane3_bank_single_kid_title",
-      title: "KID title",
-      type: "string",
-      group: "pane3_bank_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Explanatory text pane 3 bank single
-    {
-      name: "pane3_bank_single_explanatory_text",
-      title: "Explanatory text",
-      type: "text",
-      rows: 3,
-      group: "pane3_bank_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Title pane 3 vipps recurring
-    {
-      name: "pane3_vipps_recurring_title",
-      title: "Title",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Selector text pane 3 vipps recurring
-    {
-      name: "pane3_vipps_recurring_selector_earliest_text",
-      title: "Selector earliest text",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "pane3_vipps_recurring_selector_choose_date_text",
-      title: "Selector choose date text",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Button text pane 3 vipps recurring
-    {
-      name: "pane3_vipps_recurring_button_text",
-      title: "Button text",
-      type: "string",
-      group: "pane3_vipps_recurring",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Title pane 3 vipps single
-    {
-      name: "pane3_vipps_single_title",
-      title: "Title",
-      type: "string",
-      group: "pane3_vipps_single",
-      validation: (Rule: any) => Rule.required(),
-    },
-    // Button text pane 3 vipps single
-    {
-      name: "pane3_vipps_single_button_text",
-      title: "Button text",
-      type: "string",
-      group: "pane3_vipps_single",
       validation: (Rule: any) => Rule.required(),
     },
     // Referrals header pane 3
@@ -344,4 +225,11 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Donation widget",
+      };
+    },
+  },
 } as const;

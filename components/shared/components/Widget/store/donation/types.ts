@@ -7,6 +7,7 @@ export const SELECT_PAYMENT_METHOD = "SELECT_PAYMENT_METHOD";
 export const SELECT_TAX_DEDUCTION = "SELECT_TAX_DEDUCTION";
 export const SUBMIT_DONOR_INFO = "SUBMIT_DONOR_INFO";
 export const SET_CAUSE_AREA_PERCENTAGE_SHARE = "SET_CAUSE_AREA_PERCENTAGE_SHARE";
+export const SUBMIT_PHONE_NUMBER = "SUBMIT_PHONE_NUMBER";
 export const SET_SHARES = "SET_SHARES";
 export const SET_SUM = "SET_SUM";
 export const SET_DUE_DAY = "SET_DUE_DAY";
@@ -16,7 +17,6 @@ export const SET_DONOR_ID = "SET_DONOR_ID";
 export const SET_PAYMENT_PROVIDER_URL = "SET_PAYMENT_PROVIDER_URL";
 export const SELECT_CUSTOM_SHARE = "SELECT_CUSTOM_SHARE";
 export const SET_SHARE_TYPE = "SET_SHARE_TYPE";
-export const SET_DONATION_VALID = "SET_DONATION_VALID";
 export const SET_VIPPS_AGREEMENT = "SET_VIPPS_AGREEMENT";
 
 interface SelectPaymentMethod {
@@ -49,6 +49,13 @@ interface SetCauseAreaPercentageShare {
   payload: {
     causeAreaId: number;
     percentageShare: string;
+  };
+}
+
+interface SubmitPhoneNumber {
+  type: typeof SUBMIT_PHONE_NUMBER;
+  payload: {
+    phone: string;
   };
 }
 
@@ -118,13 +125,6 @@ interface SetShareType {
   };
 }
 
-interface SetDonationValid {
-  type: typeof SET_DONATION_VALID;
-  payload: {
-    isValid: boolean;
-  };
-}
-
 interface SetVippsAgreement {
   type: typeof SET_VIPPS_AGREEMENT;
   payload: {
@@ -137,6 +137,7 @@ export type DonationActionTypes =
   | SelectTaxDeduction
   | SubmitDonorInfo
   | SetCauseAreaPercentageShare
+  | SubmitPhoneNumber
   | SetShares
   | SetSum
   | SetDueDay
@@ -146,5 +147,4 @@ export type DonationActionTypes =
   | SetPaymentProviderURL
   | SelectCustomShare
   | SetShareType
-  | SetDonationValid
   | SetVippsAgreement;

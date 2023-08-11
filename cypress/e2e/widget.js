@@ -1,3 +1,5 @@
+import mockDonor from "../fixtures/donor.json";
+
 describe("Widget", () => {
   beforeEach(() => {
     cy.fixture("organizations")
@@ -291,5 +293,53 @@ describe("Widget", () => {
     cy.get("[data-cy=referral-button-1]").click();
     cy.get("[data-cy=referral-button-10]").click();
     cy.get("[data-cy=referral-text-input]").type("Referral text");
+  });
+
+  it("End-2-End for existing donor", () => {
+    cy.login();
+
+    cy.intercept("GET", "/donors/*/", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: mockDonor,
+      },
+    });
+
+    cy.visit("/min-side");
+    cy.wait(500);
+    cy.get("[data-cy=send-donation-button]").click();
+
+    const randomSum = Math.floor(Math.random() * 1000) + 100;
+    cy.pickSingleDonation();
+    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.nextWidgetPane();
+
+    cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);
+    cy.get("[data-cy=email-input]").should("have.value", mockDonor.email);
+
+    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.wait(500);
+
+    cy.intercept("POST", "/donations/register", (req) => {
+      expect(req.body).to.have.property("donor");
+      expect(req.body.donor).to.have.property("email", mockDonor.email);
+      expect(req.body.donor).to.have.property("name", mockDonor.name);
+
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: {
+            KID: "87397824",
+            donorID: mockDonor.id,
+            hasAnsweredReferral: false,
+            paymentProviderUrl: "",
+          },
+        },
+      });
+    }).as("registerDonation");
+
+    cy.nextWidgetPane();
   });
 });

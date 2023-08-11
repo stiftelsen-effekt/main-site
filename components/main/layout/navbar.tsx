@@ -5,7 +5,10 @@ import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { WidgetContext } from "./layout";
-import { EffektButton, EffektButtonType } from "../../shared/components/EffektButton/EffektButton";
+import {
+  EffektButton,
+  EffektButtonVariant,
+} from "../../shared/components/EffektButton/EffektButton";
 import { ResponsiveImage } from "../../shared/responsiveimage";
 import { useRouterContext } from "../../../context/RouterContext";
 
@@ -131,7 +134,10 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
           <li className={styles.buttonsWrapper}>
             <Link href={dashboardPath.join("/")} passHref>
               <a tabIndex={-1}>
-                <EffektButton type={EffektButtonType.SECONDARY} onClick={() => setExpanded(false)}>
+                <EffektButton
+                  variant={EffektButtonVariant.SECONDARY}
+                  onClick={() => setExpanded(false)}
+                >
                   Min side
                 </EffektButton>
               </a>

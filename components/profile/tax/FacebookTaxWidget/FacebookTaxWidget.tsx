@@ -10,7 +10,7 @@ import styles from "./FacebookTaxWidget.module.scss";
 import { useForm } from "react-hook-form";
 import { ErrorField } from "./ErrorField";
 import Validate from "validator";
-import { EffektButtonType } from "../../../shared/components/EffektButton/EffektButton";
+import { EffektButtonVariant } from "../../../shared/components/EffektButton/EffektButton";
 import { toast } from "react-toastify";
 import { AlertCircle, Check } from "react-feather";
 import { FacebookDonationRegistration, TaxUnit } from "../../../../models";
@@ -28,7 +28,14 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
   const [loadingAnimation, setLoadingAnimation] = useState(false);
   const [createTaxUnitModalOpen, setCreateTaxUnitModalOpen] = useState(false);
 
-  const { register, watch, errors, handleSubmit, reset, trigger } = useForm<{ paymentID: string }>({
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    trigger,
+  } = useForm<{ paymentID: string }>({
     mode: "all",
     defaultValues: { paymentID: "" },
   });
@@ -110,9 +117,8 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
         <InputFieldWrapper>
           <label htmlFor="paymentID">Betalings-ID fra Facebook eller Instagram</label>
           <TaxInput
-            name="paymentID"
             type="number"
-            ref={register({
+            {...register("paymentID", {
               required: true,
               minLength: 16,
               maxLength: 16,
@@ -131,7 +137,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
           onClick={() => {
             handleSubmit(paneSubmitted);
           }}
-          type={EffektButtonType.PRIMARY}
+          variant={EffektButtonVariant.PRIMARY}
           disabled={nextDisabled}
         >
           {loadingAnimation ? <LoadingButtonSpinner /> : "Registrer"}

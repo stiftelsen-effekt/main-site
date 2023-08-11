@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { InputFieldWrapper } from "../Forms.style";
 
 export const DonorForm = styled.form`
   margin: 0 auto;
@@ -18,7 +19,8 @@ export const DonorForm = styled.form`
   }
 
   input[type="text"],
-  input[type="email"] {
+  input[type="email"],
+  input[type="tel"] {
     background: var(--secondary);
     color: var(--primary);
     border: none;
@@ -62,4 +64,8 @@ export const CheckBoxGroupWrapper = styled.div`
   margin-bottom: 40px;
   display: grid;
   grid-auto-rows: max-content;
+`;
+
+export const StyledSwishInputFieldWrapper = styled(InputFieldWrapper)`
+  margin-top: 20px;
 `;

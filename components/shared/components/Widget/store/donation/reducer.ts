@@ -19,10 +19,10 @@ import {
   SET_PAYMENT_PROVIDER_URL,
   SET_SHARE_TYPE,
   SELECT_CUSTOM_SHARE,
-  SET_DONATION_VALID,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SUBMIT_PHONE_NUMBER,
 } from "./types";
 import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
@@ -52,8 +52,8 @@ const initialState: Donation = {
  */
 
 export const donationReducer: Reducer<Donation, DonationActionTypes> = (
-  state: Donation = initialState,
-  action: DonationActionTypes,
+  state = initialState,
+  action,
 ) => {
   if (isType(action, fetchCauseAreasAction.done)) {
     state = {
@@ -78,6 +78,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       ...state,
       kid: action.payload.result.KID,
       paymentProviderURL: action.payload.result.paymentProviderUrl,
+      swishOrderID: action.payload.result.swishOrderID,
       donor: {
         ...state.donor,
         donorID: action.payload.result.donorID,
@@ -120,6 +121,12 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
             return causeArea;
           }
         }),
+      };
+      break;
+    case SUBMIT_PHONE_NUMBER:
+      state = {
+        ...state,
+        phone: action.payload.phone,
       };
       break;
     case SET_SHARES:
@@ -185,9 +192,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
           return causeArea;
         }),
       };
-      break;
-    case SET_DONATION_VALID:
-      state = { ...state };
       break;
     case SET_VIPPS_AGREEMENT:
       state = {

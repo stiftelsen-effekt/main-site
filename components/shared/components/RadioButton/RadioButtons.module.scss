@@ -8,6 +8,12 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  cursor: pointer;
+}
+
+.radiobuttonwrapper:has(.radiobutton:disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .radiobutton {
@@ -33,7 +39,7 @@
   padding-left: 2em;
   line-height: calc(1.5em + 2px);
   position: relative;
-  cursor: pointer;
+  cursor: inherit;
   display: inline-block;
   vertical-align: top;
   margin-right: 16px;

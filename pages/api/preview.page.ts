@@ -49,14 +49,13 @@ export default async function preview(req: NextApiRequest, res: NextApiResponse)
     case "donations":
       const path = await getDonationsPagePath();
       if (path == null) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "Preview not supported for page, missing either dashboard path (slug) or donations path (slug)",
-          });
+        return res.status(400).json({
+          message:
+            "Preview not supported for page, missing either dashboard path (slug) or donations path (slug)",
+        });
       }
       res.writeHead(307, { Location: `/${path.join("/")}` });
+      break;
     default:
       return res.status(400).json({ message: "Preview not supported for page" });
   }

@@ -1,32 +1,28 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { LoadingButtonSpinner } from "../../../../Spinner/LoadingButtonSpinner";
 import { State } from "../../../store/state";
-import { StyledNextButton, StyledSpinner, StyledSubmitButton } from "./NavigationButtons.style";
+import { StyledNextButton, StyledSubmitButton } from "./NavigationButtons.style";
 
-export const NextButton: React.FC<{
-  id?: string;
-  children: React.ReactNode;
-  onClick: () => void;
-  disabled?: boolean;
-}> = ({ children, disabled, onClick }) => {
+export const NextButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
+  children,
+  ...props
+}) => {
   let loading = useSelector((state: State) => state.layout.loading);
 
   return (
-    <StyledNextButton onClick={onClick} disabled={disabled}>
-      {loading ? <LoadingButtonSpinner /> : children}
-    </StyledNextButton>
+    <StyledNextButton {...props}>{loading ? <LoadingButtonSpinner /> : children}</StyledNextButton>
   );
 };
 
-export const SubmitButton: React.FC<{
-  children: React.ReactNode;
-  onClick: (e: React.MouseEvent) => void;
-}> = ({ children, onClick }) => {
+export const SubmitButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
+  children,
+  ...props
+}) => {
   let loading = useSelector((state: State) => state.layout.loading);
 
   return (
-    <StyledSubmitButton onClick={onClick}>
+    <StyledSubmitButton {...props}>
       {loading ? <LoadingButtonSpinner /> : children}
     </StyledSubmitButton>
   );

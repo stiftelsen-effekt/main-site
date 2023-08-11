@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./Lightbox.module.scss";
-import { EffektButton, EffektButtonType } from "../EffektButton/EffektButton";
+import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
 import { X } from "react-feather";
 import { Spinner } from "../Spinner/Spinner";
 import { LoadingButtonSpinner } from "../Spinner/LoadingButtonSpinner";
@@ -33,7 +33,11 @@ export const Lightbox: React.FC<{
             {loading ? <LoadingButtonSpinner /> : onCancel ? "Bekreft" : "OK"}
           </EffektButton>
           {onCancel && (
-            <EffektButton onClick={onCancel} type={EffektButtonType.SECONDARY} cy="lightbox-cancel">
+            <EffektButton
+              onClick={onCancel}
+              variant={EffektButtonVariant.SECONDARY}
+              cy="lightbox-cancel"
+            >
               Avbryt
             </EffektButton>
           )}

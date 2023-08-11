@@ -16,15 +16,13 @@ import {
 import { PaymentInformation } from "./PaymentInformation";
 import { RecurringBankDonationForm } from "./RecurringForm";
 import { Referrals } from "../../../shared/Referrals/Referrals";
-import {
-  WidgetPane3BankRecurringProps,
-  WidgetPane3BankSingleProps,
-  WidgetPane3ReferralsProps,
-} from "../../../../types/WidgetProps";
+import { BankPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
+import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 
 export const ResultPane: React.FC<{
-  text: WidgetPane3BankRecurringProps & WidgetPane3BankSingleProps & WidgetPane3ReferralsProps;
-}> = ({ text }) => {
+  config: BankPaymentMethod;
+  referrals: WidgetPane3ReferralsProps;
+}> = ({ config, referrals }) => {
   const donation = useSelector((state: State) => state.donation);
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const donorID = useSelector((state: State) => state.donation.donor?.donorID);
@@ -43,12 +41,12 @@ export const ResultPane: React.FC<{
         {donation.recurring === RecurringDonation.RECURRING && (
           <>
             <div>
-              <PaneTitle>{text.pane3_bank_recurring_title}</PaneTitle>
+              <PaneTitle>{config.recurring_title}</PaneTitle>
               <div style={{ paddingTop: 20 }}>
                 <RadioButtonGroup
                   options={[
-                    { title: text.pane3_bank_recurring_selector_earliest_text, value: 0 },
-                    { title: text.pane3_bank_recurring_selector_choose_date_text, value: 1 },
+                    { title: config.recurring_selector_earliest_text, value: 0 },
+                    { title: config.recurring_selector_choose_date_text, value: 1 },
                   ]}
                   selected={chooseChargeDay}
                   onSelect={(option) => setChooseChargeDay(option)}
@@ -64,7 +62,7 @@ export const ResultPane: React.FC<{
             <div>
               <RecurringBankDonationForm
                 donation={donation}
-                buttonText={text.pane3_bank_recurring_button_text}
+                buttonText={config.recurring_button_text}
               />
             </div>
           </>
@@ -72,18 +70,18 @@ export const ResultPane: React.FC<{
 
         {donation.recurring === RecurringDonation.NON_RECURRING && (
           <div>
-            <PaneTitle>{text.pane3_bank_single_title}</PaneTitle>
+            <PaneTitle>{config.single_title}</PaneTitle>
             <PaymentInformation
               donation={donation}
-              accountTitle={text.pane3_bank_single_kontonr_title}
-              kidTitle={text.pane3_bank_single_kid_title}
+              accountTitle={config.single_kontonr_title}
+              kidTitle={config.single_kid_title}
             />
-            <InfoText>{text.pane3_bank_single_explanatory_text}</InfoText>
+            <InfoText>{config.single_explanatory_text}</InfoText>
           </div>
         )}
 
         {donation.recurring === RecurringDonation.NON_RECURRING &&
-          donation.donor?.email !== "anon@gieffektivt.no" && (
+          donation.donor?.email !== ANONYMOUS_DONOR.email && (
             <InfoText>{`Vi har også sendt en mail til ${donation.donor?.email} med informasjon om din donasjon. Sjekk søppelpost-mappen om du ikke har mottatt eposten i løpet av noen minutter.`}</InfoText>
           )}
 
@@ -91,7 +89,7 @@ export const ResultPane: React.FC<{
         {(!hasAnswerredReferral || donorID == 1464) && (
           <Referrals
             text={{
-              pane3_referrals_title: text.pane3_referrals_title,
+              pane3_referrals_title: referrals.pane3_referrals_title,
             }}
           />
         )}

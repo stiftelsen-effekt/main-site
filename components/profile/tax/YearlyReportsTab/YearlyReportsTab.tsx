@@ -15,8 +15,11 @@ import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
 import { TaxYearlyReportList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportList";
 import { TaxYearlyReportMobileList } from "../../shared/lists/taxYearlyReportsList/TaxYearlyReportMobileList";
 import styles from "./YearlyReportsTab.module.scss";
+import { AggregatedImpactTableConfiguration } from "../../donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
 
-export const YearlyReportsTab: React.FC = () => {
+export const YearlyReportsTab: React.FC<{
+  aggregatedImpactConfiguration: AggregatedImpactTableConfiguration;
+}> = ({ aggregatedImpactConfiguration }) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   const { donor } = useContext(DonorContext);
@@ -157,6 +160,7 @@ export const YearlyReportsTab: React.FC = () => {
                 donations={filteredDonations}
                 distribtionMap={distributionsMap}
                 report={report}
+                aggregateImpactConfig={aggregatedImpactConfiguration}
               />
             </div>
             <div className={styles.mobileList}>
@@ -169,6 +173,7 @@ export const YearlyReportsTab: React.FC = () => {
                 )}
                 distribtionMap={distributionsMap}
                 report={report}
+                aggregateImpactConfig={aggregatedImpactConfiguration}
               />
             </div>
           </>

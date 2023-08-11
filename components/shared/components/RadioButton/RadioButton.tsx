@@ -5,11 +5,12 @@ export const RadioButton: React.FC<{
   selected: boolean;
   name: string;
   title: string;
+  disabled?: boolean;
   data_cy: string;
   onSelect: () => void;
-}> = ({ selected, name, title, data_cy, onSelect }) => {
+}> = ({ selected, name, title, disabled, data_cy, onSelect }) => {
   return (
-    <div className={styles.radiobuttonwrapper}>
+    <label className={styles.radiobuttonwrapper}>
       <input
         data-cy={data_cy}
         type={"radio"}
@@ -17,11 +18,13 @@ export const RadioButton: React.FC<{
         title={title}
         className={styles.radiobutton}
         checked={selected}
-        onChange={onSelect}
+        disabled={disabled}
+        onChange={() => {
+          if (disabled) return;
+          onSelect();
+        }}
       />
-      <label className={styles.radiobuttonlabel} htmlFor={title} onClick={onSelect}>
-        {title}
-      </label>
-    </div>
+      <div className={styles.radiobuttonlabel}>{title}</div>
+    </label>
   );
 };

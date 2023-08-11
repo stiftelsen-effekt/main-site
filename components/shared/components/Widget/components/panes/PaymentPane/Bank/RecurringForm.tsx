@@ -4,12 +4,21 @@ import { Donation } from "../../../../store/state";
 import { API_URL } from "../../../../config/api";
 import { draftAvtaleGiroAction } from "../../../../store/donation/actions";
 import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
+import { usePlausible } from "next-plausible";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;
   buttonText: string;
 }> = ({ donation, buttonText }) => {
   const dispatch = useDispatch();
+  const plausible = usePlausible();
+
+  const onSubmit = (e: React.MouseEvent<Element, MouseEvent>) => {
+    plausible("DraftAvtalegiro");
+    plausible("CompleteDonation");
+    e.preventDefault();
+    dispatch(draftAvtaleGiroAction.started(undefined));
+  };
 
   return (
     <div>
@@ -37,14 +46,7 @@ export const RecurringBankDonationForm: React.FC<{
           value={`${API_URL}/avtalegiro/${donation.kid}/redirect`}
         />
         <input type="hidden" name="notificationDisabled" id="notificationDisabled" value="false" />
-        <SubmitButton
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(draftAvtaleGiroAction.started(undefined));
-          }}
-        >
-          {buttonText}
-        </SubmitButton>
+        <SubmitButton onClick={(e) => onSubmit(e)}>{buttonText}</SubmitButton>
       </form>
     </div>
   );

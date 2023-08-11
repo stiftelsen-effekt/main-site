@@ -3,11 +3,12 @@ import React from "react";
 import style from "./YearMenu.module.scss";
 import { useRouterContext } from "../../../../context/RouterContext";
 
-const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: boolean }> = ({
-  years,
-  selected,
-  mobile,
-}) => {
+const DonationYearMenu: React.FC<{
+  totalTitle: string;
+  years: number[];
+  selected: string;
+  mobile?: boolean;
+}> = ({ totalTitle, years, selected, mobile }) => {
   const { dashboardPath, donationsPagePath } = useRouterContext();
 
   years = years.sort((a, b) => b - a);
@@ -25,7 +26,7 @@ const DonationYearMenu: React.FC<{ years: number[]; selected: string; mobile?: b
         >
           <Link href={dashboardPath.join("/")} scroll={false} passHref>
             <a onClick={(e) => e.currentTarget.blur()}>
-              <span>Totalt</span>
+              <span>{totalTitle}</span>
             </a>
           </Link>
         </li>
