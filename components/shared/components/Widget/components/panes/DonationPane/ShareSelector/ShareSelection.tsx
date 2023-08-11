@@ -5,15 +5,16 @@ import { setShares } from "../../../../store/donation/actions";
 import { CauseAreaOrgs, State } from "../../../../store/state";
 import { ShareContainer, ShareInputContainer, ShareLink } from "./ShareSelection.style";
 import AnimateHeight from "react-animate-height";
+import { CauseArea } from "../../../../types/CauseArea";
 
-export const SharesSelection: React.FC<{ causeAreaOrgs: CauseAreaOrgs; open: boolean }> = ({
-  causeAreaOrgs,
+export const SharesSelection: React.FC<{ causeArea: CauseArea; open: boolean }> = ({
+  causeArea,
   open,
 }) => {
   const dispatch = useDispatch();
-  const organizations = causeAreaOrgs.organizations;
+  const organizations = causeArea.organizations;
   const shareState = useSelector((state: State) => state.donation.shares);
-  const shares = shareState.find((share) => share.causeArea === causeAreaOrgs.name);
+  const shares = shareState.find((share) => share.causeArea === causeArea.name);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {

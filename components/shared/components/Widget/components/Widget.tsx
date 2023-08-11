@@ -5,7 +5,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.server";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { WidgetContext } from "../../../../main/layout/layout";
-import { fetchOrganizationsAction } from "../store/layout/actions";
+import { fetchCauseAreasAction } from "../store/layout/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
@@ -70,7 +70,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   }, [widgetOpen, scaleWidget]);
 
   useEffect(() => {
-    dispatch(fetchOrganizationsAction.started(undefined));
+    dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 

@@ -9,10 +9,7 @@ import {
 import { Toggle } from "../../../../shared/Toggle/Toggle";
 import { setShareType } from "../../../../../store/donation/actions";
 import { ShareType } from "../../../../../types/Enums";
-import AnimateHeight from "react-animate-height";
 import { SharesSelection } from "../ShareSelection";
-import { SharesSum } from "../SharesSum";
-import { useRef } from "react";
 
 export const MultipleCauseAreasSelector: React.FC = () => {
   const layout = useSelector((state: State) => state.layout);
@@ -23,27 +20,27 @@ export const MultipleCauseAreasSelector: React.FC = () => {
 
   return (
     <>
-      {layout.causeAreas.map((causeAreaOrgs) => {
+      {layout.causeAreas.map((causeArea) => {
         const shareType = donation.shares.find(
-          (shares) => shares.causeArea === causeAreaOrgs.name,
+          (shares) => shares.causeArea === causeArea.name,
         )?.shareType;
 
         return (
-          <div key={causeAreaOrgs.name}>
+          <div key={causeArea.name}>
             <CauseAreaShareSelectionTitleWrapper>
-              <CauseAreaShareSelectionTitle>{causeAreaOrgs.name}</CauseAreaShareSelectionTitle>
+              <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
               <CauseAreaShareSelectionTitleSmartDistributionWrapper>
                 <span>Smart fordeling</span>
                 <Toggle
                   active={
-                    donation.shares.find((shares) => shares.causeArea === causeAreaOrgs.name)
-                      ?.shareType === ShareType.CUSTOM
+                    donation.shares.find((shares) => shares.causeArea === causeArea.name)
+                      ?.shareType === ShareType.STANDARD
                   }
                   onChange={(checked) => {
                     if (checked) {
-                      dispatch(setShareType(causeAreaOrgs.name, ShareType.CUSTOM));
+                      dispatch(setShareType(causeArea.name, ShareType.STANDARD));
                     } else {
-                      dispatch(setShareType(causeAreaOrgs.name, ShareType.STANDARD));
+                      dispatch(setShareType(causeArea.name, ShareType.CUSTOM));
                     }
                   }}
                 />
@@ -56,7 +53,7 @@ export const MultipleCauseAreasSelector: React.FC = () => {
               </span>
             </PercentageInputWrapper>
 
-            <SharesSelection causeAreaOrgs={causeAreaOrgs} open={shareType == ShareType.CUSTOM} />
+            <SharesSelection causeArea={causeArea} open={shareType == ShareType.CUSTOM} />
           </div>
         );
       })}

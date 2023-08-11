@@ -18,7 +18,7 @@ import {
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
-import { CauseAreaNames, VippsAgreement } from "../state";
+import { VippsAgreement } from "../state";
 
 const actionCreator = actionCreatorFactory();
 
@@ -59,10 +59,7 @@ export function submitDonorInfo(
   };
 }
 
-export function setShares(
-  causeAreaName: CauseAreaNames,
-  shares: OrganizationShare[],
-): DonationActionTypes {
+export function setShares(causeAreaName: string, shares: OrganizationShare[]): DonationActionTypes {
   return {
     type: SET_SHARES,
     payload: {
@@ -127,7 +124,7 @@ export function setPaymentProviderURL(url: string): DonationActionTypes {
 }
 
 export function selectCustomShare(
-  causeAreaName: CauseAreaNames,
+  causeAreaName: string,
   customShare: boolean,
 ): DonationActionTypes {
   return {
@@ -139,10 +136,7 @@ export function selectCustomShare(
   };
 }
 
-export function setShareType(
-  causeAreaName: CauseAreaNames,
-  shareType: ShareType,
-): DonationActionTypes {
+export function setShareType(causeAreaName: string, shareType: ShareType): DonationActionTypes {
   return {
     type: SET_SHARE_TYPE,
     payload: {

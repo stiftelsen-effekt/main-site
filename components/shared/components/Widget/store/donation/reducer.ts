@@ -3,7 +3,7 @@ import { isType } from "typescript-fsa";
 import { getEarliestPossibleChargeDate } from "../../components/panes/PaymentPane/Bank/AvtaleGiroDatePicker/avtalegirodates";
 import { RecurringDonation, ShareType } from "../../types/Enums";
 import { OrganizationShare } from "../../types/Temp";
-import { fetchOrganizationsAction } from "../layout/actions";
+import { fetchCauseAreasAction } from "../layout/actions";
 import { Donation } from "../state";
 import { registerDonationAction } from "./actions";
 import {
@@ -23,6 +23,7 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
 } from "./types";
+import { CauseArea } from "../../types/CauseArea";
 
 const initialState: Donation = {
   recurring: RecurringDonation.RECURRING,
@@ -51,31 +52,19 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   state: Donation = initialState,
   action: DonationActionTypes,
 ) => {
-  if (isType(action, fetchOrganizationsAction.done)) {
+  if (isType(action, fetchCauseAreasAction.done)) {
     state = {
       ...state,
-      shares: [
-        {
-          causeArea: "GlobalHealth",
-          shareType: ShareType.STANDARD,
-          organizationShares: action.payload.result.map(
-            (org): OrganizationShare => ({
-              id: org.id,
-              split: org.standardShare,
-            }),
-          ),
-        },
-        {
-          causeArea: "AnimalWelfare",
-          shareType: ShareType.STANDARD,
-          organizationShares: action.payload.result.map(
-            (org): OrganizationShare => ({
-              id: org.id,
-              split: org.standardShare,
-            }),
-          ),
-        },
-      ],
+      shares: action.payload.result.map((causeArea: CauseArea) => ({
+        causeArea: causeArea.name,
+        shareType: ShareType.STANDARD,
+        organizationShares: causeArea.organizations.map(
+          (org): OrganizationShare => ({
+            id: org.id,
+            split: org.standardShare ?? 0,
+          }),
+        ),
+      })),
     };
   }
 

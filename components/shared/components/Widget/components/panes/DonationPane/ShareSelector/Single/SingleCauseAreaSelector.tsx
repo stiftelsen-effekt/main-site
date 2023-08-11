@@ -11,12 +11,13 @@ export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
   const dispatch = useDispatch();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const donation = useSelector((state: State) => state.donation);
-  const shareType = donation.shares.find(
-    (shares) => shares.causeArea === causeAreaOrgs.name,
-  )?.shareType;
 
   if (!causeAreas) return null;
-  const causeAreaOrgs = causeAreas[0];
+  const causeArea = causeAreas[0];
+
+  const shareType = donation.shares.find(
+    (shares) => shares.causeArea === causeArea.name,
+  )?.shareType;
 
   return (
     <>
@@ -36,7 +37,7 @@ export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
           ]}
           selected={shareType}
           onSelect={(option) => {
-            dispatch(setShareType(causeAreaOrgs.name, option as ShareType));
+            dispatch(setShareType(causeArea.name, option as ShareType));
           }}
         />
       </ShareSelectionWrapper>
@@ -47,7 +48,7 @@ export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
         </div>
       )}
 
-      <SharesSelection causeAreaOrgs={causeAreaOrgs} open={shareType === ShareType.CUSTOM} />
+      <SharesSelection causeArea={causeArea} open={shareType === ShareType.CUSTOM} />
     </>
   );
 };

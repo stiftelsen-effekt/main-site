@@ -1,3 +1,4 @@
+import { CauseArea } from "../types/CauseArea";
 import { PaymentMethod, RecurringDonation, ShareType } from "../types/Enums";
 import { Organization } from "../types/Organization";
 import { OrganizationShare, ReferralType } from "../types/Temp";
@@ -14,7 +15,7 @@ export interface Layout {
   answeredReferral?: boolean;
   height: number;
   loading: boolean;
-  causeAreas?: CauseAreaOrgs[];
+  causeAreas?: CauseArea[];
 }
 
 export interface DonationInput {
@@ -23,7 +24,7 @@ export interface DonationInput {
   recurring: RecurringDonation;
   donor?: Donor;
   shares: {
-    causeArea: CauseAreaNames;
+    causeArea: string;
     shareType: ShareType;
     organizationShares: OrganizationShare[];
   }[];
@@ -93,8 +94,7 @@ export enum PaneNumber {
   ResultPane = 4,
 }
 
-export type CauseAreaNames = "GlobalHealth" | "Longtermism" | "AnimalWelfare" | "Meta";
 export type CauseAreaOrgs = {
-  name: CauseAreaNames;
+  name: string;
   organizations: Organization[];
 };
