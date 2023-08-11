@@ -133,6 +133,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const donation: Donation = yield select((state: State) => state.donation);
 
     const data: RegisterDonationObject = {
+      distributionCauseAreas: donation.distributionCauseAreas,
       donor: {
         name: donation.donor?.name,
         email: donation.donor?.email,
@@ -142,10 +143,6 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       amount: donation.sum ? donation.sum : 0,
       recurring: donation.recurring,
     };
-
-    if (donation.shareType === ShareType.CUSTOM) {
-      data.organizations = donation.shares;
-    }
 
     const request = yield call(fetch, `${API_URL}/donations/register`, {
       method: "POST",

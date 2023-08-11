@@ -15,10 +15,12 @@ import {
   SET_DONATION_VALID,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
+  SET_CAUSE_AREA_PERCENTAGE_SHARE,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
 import { VippsAgreement } from "../state";
+import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
 
 const actionCreator = actionCreatorFactory();
 
@@ -59,11 +61,14 @@ export function submitDonorInfo(
   };
 }
 
-export function setShares(causeAreaName: string, shares: OrganizationShare[]): DonationActionTypes {
+export function setShares(
+  causeAreaId: number,
+  shares: DistributionCauseAreaOrganization[],
+): DonationActionTypes {
   return {
     type: SET_SHARES,
     payload: {
-      causeAreaName,
+      causeAreaId,
       shares,
     },
   };
@@ -123,25 +128,35 @@ export function setPaymentProviderURL(url: string): DonationActionTypes {
   };
 }
 
-export function selectCustomShare(
-  causeAreaName: string,
-  customShare: boolean,
-): DonationActionTypes {
+export function selectCustomShare(causeAreaId: number, customShare: boolean): DonationActionTypes {
   return {
     type: SELECT_CUSTOM_SHARE,
     payload: {
-      causeAreaName,
+      causeAreaId,
       customShare,
     },
   };
 }
 
-export function setShareType(causeAreaName: string, shareType: ShareType): DonationActionTypes {
+export function setCauseAreaPercentageShare(
+  causeAreaId: number,
+  percentageShare: string,
+): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_PERCENTAGE_SHARE,
+    payload: {
+      causeAreaId,
+      percentageShare,
+    },
+  };
+}
+
+export function setShareType(causeAreaId: number, standardSplit: boolean): DonationActionTypes {
   return {
     type: SET_SHARE_TYPE,
     payload: {
-      causeAreaName,
-      shareType,
+      causeAreaId,
+      standardSplit,
     },
   };
 }

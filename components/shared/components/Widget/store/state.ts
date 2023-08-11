@@ -1,4 +1,5 @@
 import { CauseArea } from "../types/CauseArea";
+import { DistributionCauseArea } from "../types/DistributionCauseArea";
 import { PaymentMethod, RecurringDonation, ShareType } from "../types/Enums";
 import { Organization } from "../types/Organization";
 import { OrganizationShare, ReferralType } from "../types/Temp";
@@ -23,11 +24,7 @@ export interface DonationInput {
   sum?: number;
   recurring: RecurringDonation;
   donor?: Donor;
-  shares: {
-    causeArea: string;
-    shareType: ShareType;
-    organizationShares: OrganizationShare[];
-  }[];
+  distributionCauseAreas: DistributionCauseArea[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
 }
@@ -48,7 +45,7 @@ export interface RegisterDonationObject {
   method: PaymentMethod;
   recurring: RecurringDonation;
   amount: number;
-  organizations?: OrganizationShare[];
+  distributionCauseAreas: DistributionCauseArea[];
   dueDay?: number;
 }
 

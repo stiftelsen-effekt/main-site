@@ -7,8 +7,7 @@ import {
   PercentageInputWrapper,
 } from "./MultipleCauseAreasSelector.style";
 import { Toggle } from "../../../../shared/Toggle/Toggle";
-import { setShareType } from "../../../../../store/donation/actions";
-import { ShareType } from "../../../../../types/Enums";
+import { setCauseAreaPercentageShare, setShareType } from "../../../../../store/donation/actions";
 import { SharesSelection } from "../ShareSelection";
 
 export const MultipleCauseAreasSelector: React.FC = () => {
@@ -21,9 +20,13 @@ export const MultipleCauseAreasSelector: React.FC = () => {
   return (
     <>
       {layout.causeAreas.map((causeArea) => {
-        const shareType = donation.shares.find(
-          (shares) => shares.causeArea === causeArea.name,
-        )?.shareType;
+        const distributionCauseArea = donation.distributionCauseAreas.find(
+          (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
+        );
+
+        if (!distributionCauseArea) return <div>Missing cause are distribution in state</div>;
+
+        const standardSplit = distributionCauseArea.standardSplit;
 
         return (
           <div key={causeArea.name}>
@@ -32,15 +35,12 @@ export const MultipleCauseAreasSelector: React.FC = () => {
               <CauseAreaShareSelectionTitleSmartDistributionWrapper>
                 <span>Smart fordeling</span>
                 <Toggle
-                  active={
-                    donation.shares.find((shares) => shares.causeArea === causeArea.name)
-                      ?.shareType === ShareType.STANDARD
-                  }
+                  active={standardSplit}
                   onChange={(checked) => {
                     if (checked) {
-                      dispatch(setShareType(causeArea.name, ShareType.STANDARD));
+                      dispatch(setShareType(causeArea.id, true));
                     } else {
-                      dispatch(setShareType(causeArea.name, ShareType.CUSTOM));
+                      dispatch(setShareType(causeArea.id, false));
                     }
                   }}
                 />
@@ -49,11 +49,18 @@ export const MultipleCauseAreasSelector: React.FC = () => {
 
             <PercentageInputWrapper>
               <span>
-                <input type={"tel"} placeholder="0" />
+                <input
+                  type={"tel"}
+                  placeholder="0"
+                  value={distributionCauseArea.percentageShare}
+                  onChange={(e) => {
+                    dispatch(setCauseAreaPercentageShare(causeArea.id, e.target.value));
+                  }}
+                />
               </span>
             </PercentageInputWrapper>
 
-            <SharesSelection causeArea={causeArea} open={shareType == ShareType.CUSTOM} />
+            <SharesSelection causeArea={causeArea} open={!standardSplit} />
           </div>
         );
       })}
