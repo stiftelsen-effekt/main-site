@@ -90,7 +90,17 @@ export const DonationPane: React.FC<{ text: WidgetPane1Props }> = ({ text }) => 
 
           {layout.causeAreas?.length === 1 && false && <SingleCauseAreaSelector text={text} />}
           {((layout.causeAreas && layout.causeAreas?.length > 1) || true) && (
-            <MultipleCauseAreasSelector />
+            <MultipleCauseAreasSelector
+              configuration={{
+                smartDistribution: {
+                  label: "",
+                  description: [],
+                  links: {
+                    links: [],
+                  },
+                },
+              }}
+            />
           )}
         </div>
 
