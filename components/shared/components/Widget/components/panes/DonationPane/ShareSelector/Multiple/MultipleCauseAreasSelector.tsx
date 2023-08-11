@@ -9,8 +9,11 @@ import {
 import { Toggle } from "../../../../shared/Toggle/Toggle";
 import { setCauseAreaPercentageShare, setShareType } from "../../../../../store/donation/actions";
 import { SharesSelection } from "../ShareSelection";
+import { LinksProps } from "../../../../../../../../main/blocks/Links/Links";
 
-export const MultipleCauseAreasSelector: React.FC = () => {
+export const MultipleCauseAreasSelector: React.FC<{
+  configuration: { smartDistribution: { label: string; description: any[]; links: LinksProps } };
+}> = () => {
   const layout = useSelector((state: State) => state.layout);
   const donation = useSelector((state: State) => state.donation);
   const dispatch = useDispatch();
