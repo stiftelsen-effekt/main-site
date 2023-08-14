@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SumWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   margin-top: 10px;
 
   label {
@@ -90,5 +90,5 @@ export const InfoParagraph = styled.p`
 `;
 
 export const ShareSelectionWrapper = styled.div`
-  margin-top: 90px;
+  margin-top: 40px;
 `;

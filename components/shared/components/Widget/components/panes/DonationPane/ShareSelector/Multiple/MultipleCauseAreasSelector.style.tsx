@@ -1,5 +1,27 @@
 import styled from "styled-components";
 
+export const SmartDistributionExplanationWrapper = styled.div`
+  padding-bottom: 2rem;
+  font-size: 1rem;
+  color: var(--primary);
+`;
+
+export const SmartDistributionLabel = styled.span<{ expanded: boolean }>`
+  cursor: pointer;
+  display: block;
+  user-select: none;
+  font-size: 1.2rem;
+
+  /* UTF8 Arrow down as content */
+  &::after {
+    content: "↓";
+    display: inline-block;
+    margin-left: 10px;
+    transition: transform 0.2s ease-in-out;
+    transform: ${(props) => (props.expanded ? "rotate(180deg)" : "rotate(0deg)")};
+  }
+`;
+
 export const CauseAreaShareSelectionTitleWrapper = styled.div`
   display: flex;
   flex-direction: row;

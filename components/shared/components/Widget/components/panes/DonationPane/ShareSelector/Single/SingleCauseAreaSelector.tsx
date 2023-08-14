@@ -6,8 +6,13 @@ import { State } from "../../../../../store/state";
 import { ShareType } from "../../../../../types/Enums";
 import { SharesSelection } from "../ShareSelection";
 import { SharesSum } from "../SharesSum";
+import { SmartDistributionContext } from "../../../../../types/WidgetProps";
+import { PortableText } from "@portabletext/react";
+import { SharesSelectorContainer } from "./SingleCauseAreaSelector.style";
 
-export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
+export const SingleCauseAreaSelector: React.FC<{ configuration: SmartDistributionContext }> = ({
+  configuration,
+}) => {
   const dispatch = useDispatch();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const donation = useSelector((state: State) => state.donation);
@@ -15,40 +20,50 @@ export const SingleCauseAreaSelector: React.FC<{ text: any }> = ({ text }) => {
   if (!causeAreas) return null;
   const causeArea = causeAreas[0];
 
-  const shareType = donation.shares.find(
-    (shares) => shares.causeArea === causeArea.name,
-  )?.shareType;
+  const distributionCauseArea = donation.distributionCauseAreas.find(
+    (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
+  );
+
+  if (!distributionCauseArea) return <div>Missing cause are distribution in state</div>;
 
   return (
-    <>
-      <ShareSelectionWrapper>
-        <RadioButtonGroup
-          options={[
-            {
-              title: text.smart_fordeling_text,
-              value: ShareType.STANDARD,
-              data_cy: "radio-smart-share",
-            },
-            {
-              title: text.choose_your_own_text,
-              value: ShareType.CUSTOM,
-              data_cy: "radio-custom-share",
-            },
-          ]}
-          selected={shareType}
-          onSelect={(option) => {
-            dispatch(setShareType(causeArea.name, option as ShareType));
-          }}
-        />
-      </ShareSelectionWrapper>
+    <ShareSelectionWrapper>
+      <RadioButtonGroup
+        options={[
+          {
+            title: configuration.smart_distribution_radiobutton_text,
+            value: ShareType.STANDARD,
+            data_cy: "radio-smart-share",
+          },
+          {
+            title: configuration.custom_distribution_radiobutton_text,
+            value: ShareType.CUSTOM,
+            data_cy: "radio-custom-share",
+          },
+        ]}
+        selected={distributionCauseArea.standardSplit ? ShareType.STANDARD : ShareType.CUSTOM}
+        onSelect={(option) => {
+          dispatch(setShareType(causeArea.id, option == 1));
+        }}
+      />
 
-      {shareType === ShareType.STANDARD && (
+      {distributionCauseArea.standardSplit && (
         <div>
-          <InfoParagraph>{text.smart_fordeling_description}</InfoParagraph>
+          <InfoParagraph>
+            <PortableText value={configuration.smart_distribution_description} />
+          </InfoParagraph>
         </div>
       )}
 
-      <SharesSelection causeArea={causeArea} open={shareType === ShareType.CUSTOM} />
-    </>
+      {!distributionCauseArea.standardSplit && (
+        <SharesSelectorContainer>
+          <SharesSelection
+            causeArea={causeArea}
+            open={!distributionCauseArea.standardSplit}
+            scrollToWhenOpened={false}
+          />
+        </SharesSelectorContainer>
+      )}
+    </ShareSelectionWrapper>
   );
 };

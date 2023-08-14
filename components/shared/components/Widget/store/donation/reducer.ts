@@ -56,6 +56,13 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   action,
 ) => {
   if (isType(action, fetchCauseAreasAction.done)) {
+    console.log(
+      action.payload.result
+        .map((causeArea: CauseArea) =>
+          causeArea.organizations.map((o) => o.standardShare).join(","),
+        )
+        .join("|"),
+    );
     state = {
       ...state,
       distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({

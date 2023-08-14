@@ -217,9 +217,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               monthly_donation_text: widget.monthly_donation_text,
               preset_amounts_recurring: widget.preset_amounts_recurring,
               preset_amounts_single: widget.preset_amounts_single,
-              smart_fordeling_text: widget.smart_fordeling_text,
-              smart_fordeling_description: widget.smart_fordeling_description,
-              choose_your_own_text: widget.choose_your_own_text,
+              smart_distribution_context: widget.smart_distribution_context,
               pane1_button_text: widget.pane1_button_text,
             }}
             enableRecurring={availableRecurringOptions.recurring}

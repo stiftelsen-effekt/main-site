@@ -1,3 +1,6 @@
+import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
+import { NavLink } from "../../../../main/layout/navbar";
+
 export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
@@ -53,6 +56,14 @@ export type SwishPaymentMethod = {
   };
 };
 
+export type SmartDistributionContext = {
+  smart_distribution_radiobutton_text: string;
+  custom_distribution_radiobutton_text: string;
+  smart_distribution_label_text: string;
+  smart_distribution_description: any[];
+  smart_distribution_description_links: (LinkType | NavLink)[];
+};
+
 export type WidgetPane1Props = {
   single_donation_text: string;
   monthly_donation_text: string;
@@ -64,9 +75,7 @@ export type WidgetPane1Props = {
     amount: number;
     subtext: string;
   }>;
-  smart_fordeling_text: string;
-  smart_fordeling_description: string;
-  choose_your_own_text: string;
+  smart_distribution_context: SmartDistributionContext;
   pane1_button_text: string;
 };
 
