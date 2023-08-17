@@ -1,11 +1,17 @@
 import styled from "styled-components";
 
+export const ShareSelectionWrapper = styled.div`
+  display: grid;
+  grid-template-colums: 1fr;
+  grid-gap: 20px;
+  margin-bottom: 40px;
+`;
+
 export const ShareContainer = styled.div`
   display: grid;
   grid-auto-rows: 1fr;
   row-gap: 15px;
   align-items: flex-end;
-  margin-bottom: 40px;
 `;
 
 export const ShareLink = styled.a`
@@ -51,4 +57,10 @@ export const ShareInputContainer = styled.div`
     line-height: 36px;
     pointer-events: none;
   }
+`;
+
+export const ErrorContainer = styled.div`
+  margin-bottom: 10px;
+  color: red;
+  font-size: 0.8rem;
 `;

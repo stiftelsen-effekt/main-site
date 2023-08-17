@@ -159,6 +159,48 @@ export default {
         },
       ],
     },
+    {
+      name: "donation_input_error_templates",
+      title: "Donation input error templates",
+      type: "object",
+      group: "pane1",
+      fields: [
+        {
+          name: "donation_sum_error_template",
+          title: "Donation sum error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "donation_distribution_cause_areas_sum_error_template",
+          title: "Donation distribution cause areas sum error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description:
+            "{sum} will be replaced with the sum of the distribution cause areas, e.g. 'You have distributed {sum}% out of 100% between cause areas'",
+        },
+        {
+          name: "donation_distribution_cause_areas_negative_error_template",
+          title: "Donation distribution cause areas negative error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "donation_distribution_cause_areas_organization_sum_error_template",
+          title: "Donation distribution cause areas organization sum error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description:
+            "{sum} will be replaced with the sum of the distribution cause areas for the organization and {causeAreaName} will be replaced with the name of the cause area, e.g. 'You have distributed {sum}% out of 100% between organizations in {causeAreaName}'",
+        },
+        {
+          name: "donation_distribution_cause_areas_organization_negative_error_template",
+          title: "Donation distribution cause areas organization negative error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
     //Button text
     {
       name: "pane1_button_text",

@@ -11,21 +11,25 @@ import {
 import { Toggle } from "../../../../shared/Toggle/Toggle";
 import { setCauseAreaPercentageShare, setShareType } from "../../../../../store/donation/actions";
 import { SharesSelection } from "../ShareSelection";
-import { Links, LinksProps } from "../../../../../../../../main/blocks/Links/Links";
+import { Links } from "../../../../../../../../main/blocks/Links/Links";
 import { SmartDistributionContext } from "../../../../../types/WidgetProps";
 import { useState } from "react";
 import { PortableText } from "@portabletext/react";
 import AnimateHeight from "react-animate-height";
+import { ErrorText } from "../../DonationPane";
+import { filterErrorTextsForCauseArea } from "../../_util";
+import Validator from "validator";
 
 export const MultipleCauseAreasSelector: React.FC<{
   configuration: SmartDistributionContext;
-}> = ({ configuration }) => {
+  errorTexts: ErrorText[];
+}> = ({ configuration, errorTexts }) => {
   const [explanationOpen, setExplanationOpen] = useState(false);
   const layout = useSelector((state: State) => state.layout);
   const donation = useSelector((state: State) => state.donation);
   const dispatch = useDispatch();
 
-  if (!layout.causeAreas) return null;
+  if (!layout.causeAreas) return <span>No cause areas</span>;
 
   return (
     <>
@@ -76,14 +80,29 @@ export const MultipleCauseAreasSelector: React.FC<{
                   placeholder="0"
                   value={distributionCauseArea.percentageShare}
                   onChange={(e) => {
-                    dispatch(setCauseAreaPercentageShare(causeArea.id, e.target.value));
+                    let shareInput: string = distributionCauseArea.percentageShare;
+                    if (e.target.value === "") {
+                      shareInput = "0";
+                    } else if (Validator.isInt(e.target.value)) {
+                      const newShare = parseInt(e.target.value);
+                      if (newShare <= 100 && newShare >= 0) {
+                        shareInput = newShare.toString();
+                      }
+                    }
+
+                    dispatch(setCauseAreaPercentageShare(causeArea.id, shareInput));
                   }}
                 />
               </span>
             </PercentageInputWrapper>
 
             <AnimateHeight height={!standardSplit ? "auto" : 0} duration={300} animateOpacity>
-              <SharesSelection causeArea={causeArea} open={!standardSplit} scrollToWhenOpened />
+              <SharesSelection
+                causeArea={causeArea}
+                open={!standardSplit}
+                relevantErrorTexts={filterErrorTextsForCauseArea(errorTexts, causeArea.id)}
+                scrollToWhenOpened
+              />
             </AnimateHeight>
           </div>
         );

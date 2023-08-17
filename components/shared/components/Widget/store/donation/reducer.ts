@@ -27,6 +27,7 @@ import {
 import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
 import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
+import { CauseAreaShareSelectionTitle } from "../../components/panes/DonationPane/ShareSelector/Multiple/MultipleCauseAreasSelector.style";
 
 const initialState: Donation = {
   recurring: RecurringDonation.RECURRING,
@@ -34,7 +35,8 @@ const initialState: Donation = {
     taxDeduction: false,
     newsletter: false,
   },
-  isValid: false,
+  errors: [],
+  showErrors: false,
   distributionCauseAreas: [],
   dueDay: getEarliestPossibleChargeDate(),
   vippsAgreement: {
@@ -56,13 +58,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   action,
 ) => {
   if (isType(action, fetchCauseAreasAction.done)) {
-    console.log(
-      action.payload.result
-        .map((causeArea: CauseArea) =>
-          causeArea.organizations.map((o) => o.standardShare).join(","),
-        )
-        .join("|"),
-    );
     state = {
       ...state,
       distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({
@@ -217,23 +212,39 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
    * Validate donation below
    * Parts of the validation is done directly inside DonationPane
    */
-  if (!validateDistributionCauseAreasShareSumToHundred(state.distributionCauseAreas)) {
-    console.log(`Sum is not 100 for cause areas`);
-    return { ...state, isValid: false };
+  const errors: typeof state.errors = [];
+
+  const causeAreasDistributionSum = getCauseAreasDistributionSum(state.distributionCauseAreas);
+  if (causeAreasDistributionSum !== 100) {
+    errors.push({
+      type: "causeAreaSumError",
+      variables: { sum: causeAreasDistributionSum.toString() },
+    });
   }
-  if (!validateDistributionCauseAreasShareNotNegative(state.distributionCauseAreas)) {
-    console.log(`Share is negative for cause areas`);
-    return { ...state, isValid: false };
+  if (getDistributionCauseAreasShareNegative(state.distributionCauseAreas)) {
+    errors.push({ type: "causeAreaShareNegativeError" });
   }
   for (const causeArea of state.distributionCauseAreas) {
     if (!causeArea.standardSplit) {
-      if (!validateDistributionCauseAreaOrgsShareSumToHundred(causeArea.organizations)) {
-        console.log(`Sum is not 100 for orgs in cause area ${causeArea.id}`);
-        return { ...state, isValid: false };
+      const causeAreaOrgsDistributionSum = getDistributionCauseAreaOrgsShareSum(
+        causeArea.organizations,
+      );
+      if (causeAreaOrgsDistributionSum !== 100) {
+        errors.push({
+          type: "causeAreaOrganizationsSumError",
+          causeAreaId: causeArea.id,
+          variables: {
+            sum: causeAreaOrgsDistributionSum.toString(),
+            causeAreaName: causeArea.name,
+          },
+        });
       }
-      if (!validateDistributionCauseAreaOrgsShareNotNegative(causeArea.organizations)) {
-        console.log(`Share is negative for orgs in cause area ${causeArea.id}`);
-        return { ...state, isValid: false };
+      if (getDistributionCauseAreaOrgsShareNegative(causeArea.organizations)) {
+        errors.push({
+          type: "causeAreaOrganizationsShareNegativeError",
+          causeAreaId: causeArea.id,
+          variables: { causeAreaName: causeArea.name },
+        });
       }
     }
   }
@@ -241,46 +252,50 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   // Sum is checked for being an integer in DonorPane
   // If it is not an integer, sum is set to -1
   if (!state.sum || state.sum <= 0) {
-    return { ...state, isValid: false };
+    errors.push({ type: "donationSumError" });
   }
 
-  return { ...state, isValid: true };
+  if (errors.length > 0) {
+    return { ...state, errors };
+  }
+
+  return { ...state, errors: [] };
 };
 
-const validateDistributionCauseAreasShareSumToHundred = (
-  distributionCauseAreas: DistributionCauseArea[],
-): boolean => {
+const getCauseAreasDistributionSum = (distributionCauseAreas: DistributionCauseArea[]): number => {
   const sum = distributionCauseAreas.reduce(
-    (acc, causeArea) => acc + parseFloat(causeArea.percentageShare),
+    (acc, causeArea) => acc + cleanNaN(causeArea.percentageShare),
     0,
   );
-  return sum === 100;
+  return sum;
 };
 
-const validateDistributionCauseAreasShareNotNegative = (
+const getDistributionCauseAreasShareNegative = (
   distributionCauseAreas: DistributionCauseArea[],
 ): boolean => {
   const negativeShare = distributionCauseAreas.some(
     (causeArea) => parseFloat(causeArea.percentageShare) < 0,
   );
-  return !negativeShare;
+  return negativeShare;
 };
 
-const validateDistributionCauseAreaOrgsShareSumToHundred = (
+const getDistributionCauseAreaOrgsShareSum = (
   distributionCauseAreaOrgs: DistributionCauseAreaOrganization[],
-): boolean => {
+): number => {
   const sum = distributionCauseAreaOrgs.reduce(
-    (acc, org) => acc + parseFloat(org.percentageShare),
+    (acc, org) => acc + cleanNaN(org.percentageShare),
     0,
   );
-  return sum === 100;
+  return sum;
 };
 
-const validateDistributionCauseAreaOrgsShareNotNegative = (
+const getDistributionCauseAreaOrgsShareNegative = (
   distributionCauseAreaOrgs: DistributionCauseAreaOrganization[],
 ): boolean => {
   const negativeShare = distributionCauseAreaOrgs.some(
     (org) => parseFloat(org.percentageShare) < 0,
   );
-  return !negativeShare;
+  return negativeShare;
 };
+
+const cleanNaN = (number: string): number => (isNaN(parseFloat(number)) ? 0 : parseFloat(number));

@@ -66,6 +66,19 @@ export const SumButtonsWrapper = styled.div`
   }
 `;
 
+export const ErrorsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  padding: 30px 40px;
+  width: calc(100% + 80px);
+  position: relative;
+  left: -40px;
+  background: var(--primary);
+  color: red;
+  font-size: 0.8rem;
+`;
+
 export const ActionBar = styled.div`
   display: flex;
   flex-direction: row;
@@ -89,6 +102,6 @@ export const InfoParagraph = styled.p`
   }
 `;
 
-export const ShareSelectionWrapper = styled.div`
+export const ShareSelectionSpacer = styled.div`
   margin-top: 40px;
 `;

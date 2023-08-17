@@ -219,6 +219,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               preset_amounts_single: widget.preset_amounts_single,
               smart_distribution_context: widget.smart_distribution_context,
               pane1_button_text: widget.pane1_button_text,
+              donation_input_error_templates: widget.donation_input_error_templates,
             }}
             enableRecurring={availableRecurringOptions.recurring}
             enableSingle={availableRecurringOptions.single}

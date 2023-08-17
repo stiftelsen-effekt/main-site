@@ -34,8 +34,22 @@ export interface Donation extends DonationInput {
   kid?: string;
   paymentProviderURL?: string;
   swishOrderID?: string;
-  isValid: boolean;
+  // Array of objects with string keys and string values
+  errors: DonationError[];
+  showErrors: boolean;
 }
+
+export type DonationError = {
+  type: DonationErrorTypeNames;
+  causeAreaId?: number;
+  variables?: { [key: string]: string };
+};
+export type DonationErrorTypeNames =
+  | "causeAreaSumError"
+  | "causeAreaOrganizationsSumError"
+  | "causeAreaShareNegativeError"
+  | "causeAreaOrganizationsShareNegativeError"
+  | "donationSumError";
 
 export interface VippsAgreement {
   initialCharge: boolean;

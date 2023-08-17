@@ -77,6 +77,15 @@ export type WidgetPane1Props = {
   }>;
   smart_distribution_context: SmartDistributionContext;
   pane1_button_text: string;
+  donation_input_error_templates: DonationInputErrorTemplates;
+};
+
+export type DonationInputErrorTemplates = {
+  donation_sum_error_template: string;
+  donation_distribution_cause_areas_sum_error_template: string;
+  donation_distribution_cause_areas_negative_error_template: string;
+  donation_distribution_cause_areas_organization_sum_error_template: string;
+  donation_distribution_cause_areas_organization_negative_error_template: string;
 };
 
 export type WidgetPane2Props = {

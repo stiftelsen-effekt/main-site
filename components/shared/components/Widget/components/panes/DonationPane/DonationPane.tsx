@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Validator from "validator";
 import { setSum, setRecurring } from "../../../store/donation/actions";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
-import { State } from "../../../store/state";
+import { Donation, DonationError, DonationErrorTypeNames, State } from "../../../store/state";
 import { RecurringDonation } from "../../../types/Enums";
-import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
+import { ActionBar, ErrorsWrapper, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
 import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
-import { WidgetPane1Props } from "../../../types/WidgetProps";
+import { DonationInputErrorTemplates, WidgetPane1Props } from "../../../types/WidgetProps";
 import { thousandize } from "../../../../../../../util/formatting";
 import { SingleCauseAreaSelector } from "./ShareSelector/Single/SingleCauseAreaSelector";
 import { MultipleCauseAreasSelector } from "./ShareSelector/Multiple/MultipleCauseAreasSelector";
@@ -42,6 +42,8 @@ export const DonationPane: React.FC<{
     });
     dispatch(nextPane());
   }
+
+  const errorTexts = getErrorTexts(donation, text.donation_input_error_templates);
 
   return (
     <Pane>
@@ -106,16 +108,30 @@ export const DonationPane: React.FC<{
           </SumWrapper>
 
           {layout.causeAreas?.length === 1 && (
-            <SingleCauseAreaSelector configuration={text.smart_distribution_context} />
+            <SingleCauseAreaSelector
+              configuration={text.smart_distribution_context}
+              errorTexts={errorTexts}
+            />
           )}
           {layout.causeAreas && layout.causeAreas?.length > 1 && (
-            <MultipleCauseAreasSelector configuration={text.smart_distribution_context} />
+            <MultipleCauseAreasSelector
+              configuration={text.smart_distribution_context}
+              errorTexts={errorTexts}
+            />
           )}
         </div>
 
+        {errorTexts.length > 0 && (
+          <ErrorsWrapper>
+            {errorTexts.map((errorText) => (
+              <span key={errorText.error.type}>{errorText.text}</span>
+            ))}
+          </ErrorsWrapper>
+        )}
+
         <ActionBar data-cy="next-button-div">
           <NextButton
-            disabled={!donation.isValid}
+            disabled={donation.errors.length > 0}
             onClick={() => {
               onSubmit();
             }}
@@ -126,4 +142,44 @@ export const DonationPane: React.FC<{
       </PaneContainer>
     </Pane>
   );
+};
+
+export type ErrorText = { error: DonationError; text: string };
+const getErrorTexts = (donation: Donation, templates: DonationInputErrorTemplates): ErrorText[] => {
+  let errorTexts: ErrorText[] = [];
+  for (const error of donation.errors) {
+    let template: string;
+    switch (error.type) {
+      case "donationSumError":
+        template = templates.donation_sum_error_template;
+        break;
+      case "causeAreaSumError":
+        template = templates.donation_distribution_cause_areas_sum_error_template;
+        break;
+      case "causeAreaShareNegativeError":
+        template = templates.donation_distribution_cause_areas_negative_error_template;
+        break;
+      case "causeAreaOrganizationsSumError":
+        template = templates.donation_distribution_cause_areas_organization_sum_error_template;
+        break;
+      case "causeAreaOrganizationsShareNegativeError":
+        template = templates.donation_distribution_cause_areas_organization_negative_error_template;
+        break;
+      default:
+        template = "There is an error in the donation";
+        break;
+    }
+    let text: string = template;
+    if (error.variables) {
+      for (const [key, value] of Object.entries(error.variables)) {
+        // Replace all instances of the key with the value
+        text = text.replace(`{${key}}`, value);
+      }
+    }
+    errorTexts.push({
+      error,
+      text,
+    });
+  }
+  return errorTexts;
 };

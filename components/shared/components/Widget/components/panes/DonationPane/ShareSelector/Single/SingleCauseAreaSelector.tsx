@@ -1,18 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButtonGroup } from "../../../../../../RadioButton/RadioButtonGroup";
-import { InfoParagraph, ShareSelectionWrapper } from "../../DonationPane.style";
+import { InfoParagraph, ShareSelectionSpacer } from "../../DonationPane.style";
 import { setShareType } from "../../../../../store/donation/actions";
 import { State } from "../../../../../store/state";
 import { ShareType } from "../../../../../types/Enums";
 import { SharesSelection } from "../ShareSelection";
-import { SharesSum } from "../SharesSum";
 import { SmartDistributionContext } from "../../../../../types/WidgetProps";
 import { PortableText } from "@portabletext/react";
 import { SharesSelectorContainer } from "./SingleCauseAreaSelector.style";
+import { ErrorText } from "../../DonationPane";
+import { filterErrorTextsForCauseArea } from "../../_util";
 
-export const SingleCauseAreaSelector: React.FC<{ configuration: SmartDistributionContext }> = ({
-  configuration,
-}) => {
+export const SingleCauseAreaSelector: React.FC<{
+  configuration: SmartDistributionContext;
+  errorTexts: ErrorText[];
+}> = ({ configuration, errorTexts }) => {
   const dispatch = useDispatch();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const donation = useSelector((state: State) => state.donation);
@@ -27,7 +29,7 @@ export const SingleCauseAreaSelector: React.FC<{ configuration: SmartDistributio
   if (!distributionCauseArea) return <div>Missing cause are distribution in state</div>;
 
   return (
-    <ShareSelectionWrapper>
+    <ShareSelectionSpacer>
       <RadioButtonGroup
         options={[
           {
@@ -61,9 +63,10 @@ export const SingleCauseAreaSelector: React.FC<{ configuration: SmartDistributio
             causeArea={causeArea}
             open={!distributionCauseArea.standardSplit}
             scrollToWhenOpened={false}
+            relevantErrorTexts={filterErrorTextsForCauseArea(errorTexts, causeArea.id)}
           />
         </SharesSelectorContainer>
       )}
-    </ShareSelectionWrapper>
+    </ShareSelectionSpacer>
   );
 };
