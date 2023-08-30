@@ -305,7 +305,7 @@ describe("Widget", () => {
     cy.get("[data-cy=referral-text-input]").type("Referral text");
   });
 
-  it.only("End-2-End for existing donor", () => {
+  it("End-2-End for existing donor", () => {
     cy.login();
 
     cy.intercept("GET", "/donors/*/", {
