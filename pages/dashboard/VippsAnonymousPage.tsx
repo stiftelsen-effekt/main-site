@@ -36,15 +36,14 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
   return {
     appStaticProps,
     preview: preview,
+    navbar: await Navbar.getStaticProps({ preview }),
     data: {
       result: result,
       query: fetchVippsAnonymousPage,
       queryParams: {},
     },
   };
-})(({ data, preview }) => {
-  const settings = data.result.settings[0];
-  const dashboard = data.result.dashboard[0];
+})(({ data, navbar, preview }) => {
   const router = useRouter();
   const agreementCode = router.query["agreement-code"] as string;
   const page = data.result.vipps?.[0].anonymous_page;
@@ -68,7 +67,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar elements={dashboard.main_navigation} logo={settings.logo} />
+        <Navbar {...navbar} />
       </MainHeader>
 
       <PageContent>
@@ -139,8 +138,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
 });
 
 type FetchVippsAnonymousPageResult = {
-  settings: any[];
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   vipps?: Array<{
     anonymous_page: Record<string, any> & {
       slug: {
@@ -152,46 +150,9 @@ type FetchVippsAnonymousPageResult = {
 
 const fetchVippsAnonymousPage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
-    },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
     }
   },
   "vipps": *[_id == "vipps"] {
