@@ -91,6 +91,7 @@ export const DonationsPage = withStaticProps(
       appStaticProps,
       preview: preview,
       filterYear,
+      navbar: await Navbar.getStaticProps({ preview }),
       data: {
         result: result,
         query: fetchDonationsPage,
@@ -98,9 +99,8 @@ export const DonationsPage = withStaticProps(
       },
     };
   },
-)(({ data, filterYear }) => {
+)(({ data, navbar, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
-  const settings = data.result.settings[0];
 
   if (!data.result.dashboard || !data.result.dashboard[0]) {
     return (
@@ -110,7 +110,6 @@ export const DonationsPage = withStaticProps(
     );
   }
 
-  const dashboard = data.result.dashboard[0];
   const page = filterPageToSingleItem(data.result, false);
 
   if (!page)
@@ -201,7 +200,7 @@ export const DonationsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+          <Navbar {...navbar} />
         </MainHeader>
 
         <PageContent>
@@ -323,7 +322,7 @@ export const DonationsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbar} />
         <DonationYearMenu
           totalTitle={page.year_menu_total_title}
           years={years}
@@ -386,20 +385,16 @@ type DonationsPageData = {
 
 type FetchDonationsPageResult = {
   settings: {
-    logo: any;
     main_currency: string;
     main_locale: string;
   }[];
-  dashboard?: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
   page: DonationsPageData | DonationsPageData[] | null;
-  footer: any[];
-  widget: any[];
 };
 
 const fetchDonationsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
-    logo,
     main_currency,
     main_locale,
   },
@@ -407,23 +402,6 @@ const fetchDonationsPage = groq`
     dashboard_slug {
       current
     },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
   },
   "page": *[_id == "donations"] {
     ...,
