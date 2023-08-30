@@ -156,10 +156,12 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
   const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 100, { maxWait: 100 });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", debouncedScaleWidget);
-    }
-  });
+    window.addEventListener("resize", debouncedScaleWidget);
+
+    return () => {
+      window.removeEventListener("resize", debouncedScaleWidget);
+    };
+  }, [debouncedScaleWidget]);
 
   useEffect(() => {
     scaleWidget();
