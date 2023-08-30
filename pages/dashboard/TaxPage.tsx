@@ -66,6 +66,7 @@ export const TaxPage = withStaticProps(
       appStaticProps,
       preview: preview,
       subpath,
+      navbar: await Navbar.getStaticProps({ preview }),
       data: {
         result: result,
         query: fetchTaxPage,
@@ -73,9 +74,7 @@ export const TaxPage = withStaticProps(
       },
     };
   },
-)(({ data, subpath, preview }) => {
-  const settings = data.result.settings[0];
-  const dashboard = data.result.dashboard[0];
+)(({ data, navbar, subpath, preview }) => {
   const page = filterPageToSingleItem(data.result, preview);
 
   if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
@@ -122,7 +121,7 @@ export const TaxPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbar} />
         <TaxMenu mobile selected={menuChoice} choices={page.features}></TaxMenu>
       </MainHeader>
 
@@ -141,7 +140,6 @@ export const TaxPage = withStaticProps(
 
 type FetchTaxPageResult = {
   settings: Array<{
-    logo?: any;
     main_currency?: string;
   }>;
   page: Array<{
@@ -151,7 +149,7 @@ type FetchTaxPageResult = {
       current?: string;
     };
   }>;
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 
 export interface TaxFeatureProps {
