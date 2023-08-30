@@ -34,16 +34,16 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   return {
     appStaticProps,
     preview: preview,
+    navbar: await Navbar.getStaticProps({ preview }),
     data: {
       result,
       query: fetchArticles,
       queryParams: {},
     },
   };
-})(({ data, preview }) => {
+})(({ data, navbar, preview }) => {
   const page = data.result.page;
 
-  const settings = data.result.settings[0];
   const header = page.header;
   const articles = data.result.articles;
 
@@ -59,7 +59,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
           <CookieBanner />
-          <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+          <Navbar {...navbar} />
         </MainHeader>
 
         <PageHeader
@@ -104,26 +104,6 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
 
 const fetchArticles = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    },
-  },
   "page": *[_type == "articles"] {
     "slug": slug.current,
     header {
