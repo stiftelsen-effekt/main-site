@@ -13,21 +13,59 @@ import { WidgetContext } from "../../main/layout/layout";
 import { useRouterContext } from "../../../context/RouterContext";
 import { MainNavbarGroup, NavLink } from "../../main/layout/navbar";
 import AnimateHeight from "react-animate-height";
+import { withStaticProps } from "../../../util/withStaticProps";
+import { groq } from "next-sanity";
+import { getClient } from "../../../lib/sanity.server";
 
 export type ProfileNavbarItem = NavLink | MainNavbarGroup;
 
-export type ProfileNavbarProps = {
-  logo: SanityImageSource;
-  elements: ProfileNavbarItem[];
-};
+const fetchNavbar = groq`
+{
+  "settings": *[_type == "site_settings"] {
+    logo,
+  },
+  "dashboard": *[_id == "dashboard"] {
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
+          title,
+          "slug": page->slug.current
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
+  },
+}`;
 
-export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
-  const filteredElements = elements.filter((e) => e !== null);
+export const Navbar = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<{
+    settings: {
+      logo: SanityImageSource;
+    }[];
+    dashboard: {
+      main_navigation: ProfileNavbarItem[];
+    }[];
+  }>(fetchNavbar);
+  return {
+    data: {
+      elements: result.dashboard[0].main_navigation.filter((e) => e !== null),
+      logo: result.settings[0].logo,
+    },
+  };
+})(({ data: { elements, logo } }) => {
   const { dashboardPath, agreementsPagePath, taxPagePath, profilePagePath } = useRouterContext();
   const { user, logout, loginWithRedirect } = useAuth0();
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
-    filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
+    elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
   const setExpanded = (expanded: boolean) => {
@@ -78,7 +116,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
           </button>
         </div>
         <ul>
-          {filteredElements.map((el) =>
+          {elements.map((el) =>
             el._type === "navgroup" ? (
               <li
                 key={el._key}
@@ -154,4 +192,4 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
       </nav>
     </div>
   );
-};
+});
