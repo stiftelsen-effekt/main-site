@@ -26,13 +26,14 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   return {
     appStaticProps,
     preview: preview,
+    navbar: await Navbar.getStaticProps({ preview }),
     data: {
       result,
       query: fetchVipps,
       queryParams: {},
     },
   };
-})(({ data, preview }) => {
+})(({ data, navbar, preview }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -40,7 +41,6 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
     return <div>404{preview ? " - Attempting to load preview" : null}</div>;
   }
 
-  const settings = data.result.settings[0];
   const header = page.header;
 
   let email;
@@ -60,7 +60,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbar} />
       </MainHeader>
 
       <SectionContainer>
@@ -100,26 +100,6 @@ type FetchVippsResult = {
 
 const fetchVipps = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {
