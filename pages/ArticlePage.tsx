@@ -37,6 +37,7 @@ const ArticlePage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
+      navbar: await Navbar.getStaticProps({ preview }),
       data: {
         result,
         query: fetchArticle,
@@ -44,7 +45,7 @@ const ArticlePage = withStaticProps(
       },
     };
   },
-)(({ data, preview }) => {
+)(({ data, navbar, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -54,7 +55,6 @@ const ArticlePage = withStaticProps(
 
   const header = page.header;
   const content = page.content;
-  const settings = data.result.settings[0];
   const relatedArticles = data.result.relatedArticles;
 
   return (
@@ -72,7 +72,7 @@ const ArticlePage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbar} />
       </MainHeader>
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
@@ -93,26 +93,6 @@ const fetchArticles = groq`
 
 const fetchArticle = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,
