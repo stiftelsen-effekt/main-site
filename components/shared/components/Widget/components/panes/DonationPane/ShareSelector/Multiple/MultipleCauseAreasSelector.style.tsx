@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const CauseAreaSelectionWrapper = styled.div<{ separated: boolean }>`
+  margin-top: ${(props) => (props.separated ? "20px" : "0")};
+`;
+
 export const SmartDistributionExplanationWrapper = styled.div`
   padding-bottom: 2rem;
   font-size: 1rem;
@@ -45,7 +49,7 @@ export const CauseAreaShareSelectionTitleSmartDistributionWrapper = styled.div`
 `;
 
 export const PercentageInputWrapper = styled.div`
-  margin: 20px 0;
+  margin: 10px 0px 30px 0px;
 
   span {
     position: relative;

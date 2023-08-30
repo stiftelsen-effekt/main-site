@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../../../store/state";
 import {
+  CauseAreaSelectionWrapper,
   CauseAreaShareSelectionTitle,
   CauseAreaShareSelectionTitleSmartDistributionWrapper,
   CauseAreaShareSelectionTitleWrapper,
@@ -55,23 +56,29 @@ export const MultipleCauseAreasSelector: React.FC<{
         const standardSplit = distributionCauseArea.standardSplit;
 
         return (
-          <div key={causeArea.name} data-cy={"cause-area"}>
+          <CauseAreaSelectionWrapper
+            key={causeArea.name}
+            data-cy={"cause-area"}
+            separated={causeArea.organizations.length == 1}
+          >
             <CauseAreaShareSelectionTitleWrapper>
               <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
-              <CauseAreaShareSelectionTitleSmartDistributionWrapper>
-                <span>Smart fordeling</span>
-                <Toggle
-                  active={standardSplit}
-                  dataCy="smart-distribution-toggle"
-                  onChange={(checked) => {
-                    if (checked) {
-                      dispatch(setShareType(causeArea.id, true));
-                    } else {
-                      dispatch(setShareType(causeArea.id, false));
-                    }
-                  }}
-                />
-              </CauseAreaShareSelectionTitleSmartDistributionWrapper>
+              {causeArea.organizations.length > 1 && (
+                <CauseAreaShareSelectionTitleSmartDistributionWrapper>
+                  <span>Smart fordeling</span>
+                  <Toggle
+                    active={standardSplit}
+                    dataCy="smart-distribution-toggle"
+                    onChange={(checked) => {
+                      if (checked) {
+                        dispatch(setShareType(causeArea.id, true));
+                      } else {
+                        dispatch(setShareType(causeArea.id, false));
+                      }
+                    }}
+                  />
+                </CauseAreaShareSelectionTitleSmartDistributionWrapper>
+              )}
             </CauseAreaShareSelectionTitleWrapper>
 
             <PercentageInputWrapper>
@@ -97,15 +104,17 @@ export const MultipleCauseAreasSelector: React.FC<{
               </span>
             </PercentageInputWrapper>
 
-            <AnimateHeight height={!standardSplit ? "auto" : 0} duration={300} animateOpacity>
-              <SharesSelection
-                causeArea={causeArea}
-                open={!standardSplit}
-                relevantErrorTexts={filterErrorTextsForCauseArea(errorTexts, causeArea.id)}
-                scrollToWhenOpened
-              />
-            </AnimateHeight>
-          </div>
+            {causeArea.organizations.length > 1 && (
+              <AnimateHeight height={!standardSplit ? "auto" : 0} duration={300} animateOpacity>
+                <SharesSelection
+                  causeArea={causeArea}
+                  open={!standardSplit}
+                  relevantErrorTexts={filterErrorTextsForCauseArea(errorTexts, causeArea.id)}
+                  scrollToWhenOpened
+                />
+              </AnimateHeight>
+            )}
+          </CauseAreaSelectionWrapper>
         );
       })}
     </>
