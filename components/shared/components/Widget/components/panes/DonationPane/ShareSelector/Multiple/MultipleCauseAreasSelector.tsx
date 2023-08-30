@@ -55,13 +55,14 @@ export const MultipleCauseAreasSelector: React.FC<{
         const standardSplit = distributionCauseArea.standardSplit;
 
         return (
-          <div key={causeArea.name}>
+          <div key={causeArea.name} data-cy={"cause-area"}>
             <CauseAreaShareSelectionTitleWrapper>
               <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
               <CauseAreaShareSelectionTitleSmartDistributionWrapper>
                 <span>Smart fordeling</span>
                 <Toggle
                   active={standardSplit}
+                  dataCy="smart-distribution-toggle"
                   onChange={(checked) => {
                     if (checked) {
                       dispatch(setShareType(causeArea.id, true));
