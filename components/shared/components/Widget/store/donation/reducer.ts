@@ -58,12 +58,13 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   action,
 ) => {
   if (isType(action, fetchCauseAreasAction.done)) {
+    const topOrderedId = action.payload.result.sort((a, b) => a.ordering - b.ordering)[0].id;
     state = {
       ...state,
       distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({
         id: causeArea.id,
         name: causeArea.name,
-        percentageShare: "0",
+        percentageShare: causeArea.id === topOrderedId ? "100" : "0",
         standardSplit: true,
         organizations: causeArea.organizations.map(
           (org): DistributionCauseAreaOrganization => ({
