@@ -12,7 +12,7 @@ export const SmartDistributionExplanationWrapper = styled.div`
 
 export const SmartDistributionLabel = styled.span<{ expanded: boolean }>`
   cursor: pointer;
-  display: block;
+  display: inline-block;
   user-select: none;
   font-size: 18px;
 
