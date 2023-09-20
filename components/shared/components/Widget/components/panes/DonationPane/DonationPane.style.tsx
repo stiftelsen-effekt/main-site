@@ -76,7 +76,7 @@ export const ErrorsWrapper = styled.div`
   left: -40px;
   background: var(--primary);
   color: red;
-  font-size: 0.8rem;
+  font-size: 16px;
 `;
 
 export const ActionBar = styled.div`

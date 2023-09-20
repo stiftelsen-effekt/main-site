@@ -62,5 +62,5 @@ export const ShareInputContainer = styled.div`
 export const ErrorContainer = styled.div`
   margin-bottom: 10px;
   color: red;
-  font-size: 0.8rem;
+  font-size: 18px;
 `;

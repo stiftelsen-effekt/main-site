@@ -5,8 +5,8 @@ export const CauseAreaSelectionWrapper = styled.div<{ separated: boolean }>`
 `;
 
 export const SmartDistributionExplanationWrapper = styled.div`
-  padding-bottom: 2rem;
-  font-size: 1rem;
+  padding-bottom: 36px;
+  font-size: 18px;
   color: var(--primary);
 `;
 
@@ -14,7 +14,7 @@ export const SmartDistributionLabel = styled.span<{ expanded: boolean }>`
   cursor: pointer;
   display: block;
   user-select: none;
-  font-size: 1.2rem;
+  font-size: 18px;
 
   /* UTF8 Arrow down as content */
   &::after {
@@ -34,14 +34,14 @@ export const CauseAreaShareSelectionTitleWrapper = styled.div`
 `;
 
 export const CauseAreaShareSelectionTitle = styled.span`
-  font-size: 1.2rem;
+  font-size: 18px;
   margin-bottom: 0;
   margin-top: 0;
 `;
 
 export const CauseAreaShareSelectionTitleSmartDistributionWrapper = styled.div`
   display: grid;
-  font-size: 1rem;
+  font-size: 16px;
   grid-template-columns: max-content max-content;
   grid-gap: 10px;
   justify-content: flex-end;
