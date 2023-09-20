@@ -5,7 +5,6 @@ import {
   CauseAreaShareSelectionTitle,
   CauseAreaShareSelectionTitleSmartDistributionWrapper,
   CauseAreaShareSelectionTitleWrapper,
-  PercentageInputWrapper,
   SmartDistributionExplanationWrapper,
   SmartDistributionLabel,
 } from "./MultipleCauseAreasSelector.style";
@@ -19,7 +18,8 @@ import { PortableText } from "@portabletext/react";
 import AnimateHeight from "react-animate-height";
 import { ErrorText } from "../../DonationPane";
 import { filterErrorTextsForCauseArea } from "../../_util";
-import Validator from "validator";
+
+import { PercentageInput } from "../PercentageInput/PercentageInput";
 
 export const MultipleCauseAreasSelector: React.FC<{
   configuration: SmartDistributionContext;
@@ -86,28 +86,12 @@ export const MultipleCauseAreasSelector: React.FC<{
                 )}
               </CauseAreaShareSelectionTitleWrapper>
 
-              <PercentageInputWrapper>
-                <span>
-                  <input
-                    type={"tel"}
-                    placeholder="0"
-                    value={distributionCauseArea.percentageShare}
-                    onChange={(e) => {
-                      let shareInput: string = distributionCauseArea.percentageShare;
-                      if (e.target.value === "") {
-                        shareInput = "0";
-                      } else if (Validator.isInt(e.target.value)) {
-                        const newShare = parseInt(e.target.value);
-                        if (newShare <= 100 && newShare >= 0) {
-                          shareInput = newShare.toString();
-                        }
-                      }
-
-                      dispatch(setCauseAreaPercentageShare(causeArea.id, shareInput));
-                    }}
-                  />
-                </span>
-              </PercentageInputWrapper>
+              <PercentageInput
+                causeArea={distributionCauseArea}
+                onChange={(value) => {
+                  dispatch(setCauseAreaPercentageShare(causeArea.id, value));
+                }}
+              />
 
               {causeArea.organizations.length > 1 && (
                 <AnimateHeight height={!standardSplit ? "auto" : 0} duration={300} animateOpacity>
