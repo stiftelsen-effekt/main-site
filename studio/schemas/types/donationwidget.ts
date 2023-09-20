@@ -56,62 +56,74 @@ export default {
       group: "pane1",
       validation: (Rule: any) => Rule.required(),
     },
-    // 3 Preset donation amount values
     {
-      name: "preset_amounts_recurring",
-      title: "Preset amounts for recurring donations",
-      type: "array",
+      name: "amount_context",
+      title: "Donation amount inputs context",
+      type: "object",
       group: "pane1",
-      of: [
+      description: "Preset amounts are only used if there is only one cause area",
+      fields: [
         {
-          type: "object",
-          fields: [
+          name: "preset_amounts_recurring",
+          title: "Preset amounts for recurring donations",
+          type: "array",
+          of: [
             {
-              title: "Value",
-              name: "amount",
-              type: "number",
-            },
-            {
-              title: "Subtext",
-              name: "subtext",
-              type: "string",
+              type: "object",
+              fields: [
+                {
+                  title: "Value",
+                  name: "amount",
+                  type: "number",
+                },
+                {
+                  title: "Subtext",
+                  name: "subtext",
+                  type: "string",
+                },
+              ],
+              preview: {
+                select: {
+                  title: "amount",
+                  subtitle: "subtext",
+                },
+              },
             },
           ],
-          preview: {
-            select: {
-              title: "amount",
-              subtitle: "subtext",
-            },
-          },
         },
-      ],
-    },
-    {
-      name: "preset_amounts_single",
-      title: "Preset amounts for single donations",
-      type: "array",
-      group: "pane1",
-      of: [
         {
-          type: "object",
-          fields: [
+          name: "preset_amounts_single",
+          title: "Preset amounts for single donations",
+          type: "array",
+          of: [
             {
-              title: "Value",
-              name: "amount",
-              type: "number",
-            },
-            {
-              title: "Subtext",
-              name: "subtext",
-              type: "string",
+              type: "object",
+              fields: [
+                {
+                  title: "Value",
+                  name: "amount",
+                  type: "number",
+                },
+                {
+                  title: "Subtext",
+                  name: "subtext",
+                  type: "string",
+                },
+              ],
+              preview: {
+                select: {
+                  title: "amount",
+                  subtitle: "subtext",
+                },
+              },
             },
           ],
-          preview: {
-            select: {
-              title: "amount",
-              subtitle: "subtext",
-            },
-          },
+        },
+        {
+          name: "custom_amount_text",
+          title: "Custom amount text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
         },
       ],
     },

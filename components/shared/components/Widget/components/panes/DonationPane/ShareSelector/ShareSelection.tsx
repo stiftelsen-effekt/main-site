@@ -43,7 +43,7 @@ export const SharesSelection: React.FC<{
   if (!organizations) return <div>Ingen organisasjoner</div>;
 
   return (
-    <ShareSelectionWrapper>
+    <ShareSelectionWrapper data-error={relevantErrorTexts[0]?.error.type}>
       <ShareContainer ref={wrapperRef}>
         {distributionCauseArea.organizations.map((org) => (
           <ShareInputContainer key={org.id}>

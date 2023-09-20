@@ -64,17 +64,20 @@ export type SmartDistributionContext = {
   smart_distribution_description_links: (LinkType | NavLink)[];
 };
 
+type PresetAmount = {
+  amount: number;
+  subtext: string;
+};
+export type AmountContext = {
+  preset_amounts_recurring: Array<PresetAmount>;
+  preset_amounts_single: Array<PresetAmount>;
+  custom_amount_text: string;
+};
+
 export type WidgetPane1Props = {
   single_donation_text: string;
   monthly_donation_text: string;
-  preset_amounts_recurring: Array<{
-    amount: number;
-    subtext: string;
-  }>;
-  preset_amounts_single: Array<{
-    amount: number;
-    subtext: string;
-  }>;
+  amount_context: AmountContext;
   smart_distribution_context: SmartDistributionContext;
   pane1_button_text: string;
   donation_input_error_templates: DonationInputErrorTemplates;

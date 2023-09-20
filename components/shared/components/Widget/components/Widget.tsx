@@ -217,8 +217,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
             text={{
               single_donation_text: widget.single_donation_text,
               monthly_donation_text: widget.monthly_donation_text,
-              preset_amounts_recurring: widget.preset_amounts_recurring,
-              preset_amounts_single: widget.preset_amounts_single,
+              amount_context: widget.amount_context,
               smart_distribution_context: widget.smart_distribution_context,
               pane1_button_text: widget.pane1_button_text,
               donation_input_error_templates: widget.donation_input_error_templates,

@@ -27,8 +27,8 @@ export const DonationPane: React.FC<{
   const plausible = usePlausible();
 
   const suggestedSums = donation.recurring
-    ? text.preset_amounts_recurring
-    : text.preset_amounts_single;
+    ? text.amount_context.preset_amounts_recurring
+    : text.amount_context.preset_amounts_single;
 
   function onSubmit() {
     plausible("SubmitDonationPane", {
@@ -86,8 +86,12 @@ export const DonationPane: React.FC<{
               ))}
             </SumButtonsWrapper>
           )}
-          <SumWrapper>
-            <label htmlFor="sum">Annet beløp</label>
+          <SumWrapper
+            data-error={
+              errorTexts.find((error) => error.error.type === "donationSumError")?.error.type
+            }
+          >
+            <label htmlFor="sum">{text.amount_context.custom_amount_text}</label>
             <span>
               <input
                 name="sum"
@@ -124,7 +128,25 @@ export const DonationPane: React.FC<{
         {errorTexts.length > 0 && (
           <ErrorsWrapper>
             {errorTexts.map((errorText) => (
-              <span key={errorText.error.type}>{errorText.text}</span>
+              <button
+                key={errorText.error.type}
+                onClick={() => {
+                  /** Scroll to relevant section */
+                  const errorElement = document.querySelector(
+                    `[data-error=${errorText.error.type}]`,
+                  );
+                  if (errorElement) {
+                    errorElement.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                      inline: "nearest",
+                    });
+                  }
+                }}
+              >
+                <span>↑</span>
+                <span>{errorText.text}</span>
+              </button>
             ))}
           </ErrorsWrapper>
         )}

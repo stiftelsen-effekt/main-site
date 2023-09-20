@@ -46,77 +46,83 @@ export const MultipleCauseAreasSelector: React.FC<{
           <Links links={configuration.smart_distribution_description_links} />
         </AnimateHeight>
       </SmartDistributionExplanationWrapper>
-      {layout.causeAreas.map((causeArea) => {
-        const distributionCauseArea = donation.distributionCauseAreas.find(
-          (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
-        );
+      <div
+        data-error={
+          errorTexts.find((error) => error.error.type === "causeAreaSumError")?.error.type
+        }
+      >
+        {layout.causeAreas.map((causeArea) => {
+          const distributionCauseArea = donation.distributionCauseAreas.find(
+            (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
+          );
 
-        if (!distributionCauseArea) return <div>Missing cause are distribution in state</div>;
+          if (!distributionCauseArea) return <div>Missing cause are distribution in state</div>;
 
-        const standardSplit = distributionCauseArea.standardSplit;
+          const standardSplit = distributionCauseArea.standardSplit;
 
-        return (
-          <CauseAreaSelectionWrapper
-            key={causeArea.name}
-            data-cy={"cause-area"}
-            separated={causeArea.organizations.length == 1}
-          >
-            <CauseAreaShareSelectionTitleWrapper>
-              <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
-              {causeArea.organizations.length > 1 && (
-                <CauseAreaShareSelectionTitleSmartDistributionWrapper>
-                  <span>Smart fordeling</span>
-                  <Toggle
-                    active={standardSplit}
-                    dataCy="smart-distribution-toggle"
-                    onChange={(checked) => {
-                      if (checked) {
-                        dispatch(setShareType(causeArea.id, true));
-                      } else {
-                        dispatch(setShareType(causeArea.id, false));
+          return (
+            <CauseAreaSelectionWrapper
+              key={causeArea.name}
+              data-cy={"cause-area"}
+              separated={causeArea.organizations.length == 1}
+            >
+              <CauseAreaShareSelectionTitleWrapper>
+                <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
+                {causeArea.organizations.length > 1 && (
+                  <CauseAreaShareSelectionTitleSmartDistributionWrapper>
+                    <span>Smart fordeling</span>
+                    <Toggle
+                      active={standardSplit}
+                      dataCy="smart-distribution-toggle"
+                      onChange={(checked) => {
+                        if (checked) {
+                          dispatch(setShareType(causeArea.id, true));
+                        } else {
+                          dispatch(setShareType(causeArea.id, false));
+                        }
+                      }}
+                    />
+                  </CauseAreaShareSelectionTitleSmartDistributionWrapper>
+                )}
+              </CauseAreaShareSelectionTitleWrapper>
+
+              <PercentageInputWrapper>
+                <span>
+                  <input
+                    type={"tel"}
+                    placeholder="0"
+                    value={distributionCauseArea.percentageShare}
+                    onChange={(e) => {
+                      let shareInput: string = distributionCauseArea.percentageShare;
+                      if (e.target.value === "") {
+                        shareInput = "0";
+                      } else if (Validator.isInt(e.target.value)) {
+                        const newShare = parseInt(e.target.value);
+                        if (newShare <= 100 && newShare >= 0) {
+                          shareInput = newShare.toString();
+                        }
                       }
+
+                      dispatch(setCauseAreaPercentageShare(causeArea.id, shareInput));
                     }}
                   />
-                </CauseAreaShareSelectionTitleSmartDistributionWrapper>
+                </span>
+              </PercentageInputWrapper>
+
+              {causeArea.organizations.length > 1 && (
+                <AnimateHeight height={!standardSplit ? "auto" : 0} duration={300} animateOpacity>
+                  <SharesSelection
+                    causeArea={causeArea}
+                    open={!standardSplit}
+                    relevantErrorTexts={filterErrorTextsForCauseArea(errorTexts, causeArea.id)}
+                    scrollToWhenOpened
+                  />
+                </AnimateHeight>
               )}
-            </CauseAreaShareSelectionTitleWrapper>
-
-            <PercentageInputWrapper>
-              <span>
-                <input
-                  type={"tel"}
-                  placeholder="0"
-                  value={distributionCauseArea.percentageShare}
-                  onChange={(e) => {
-                    let shareInput: string = distributionCauseArea.percentageShare;
-                    if (e.target.value === "") {
-                      shareInput = "0";
-                    } else if (Validator.isInt(e.target.value)) {
-                      const newShare = parseInt(e.target.value);
-                      if (newShare <= 100 && newShare >= 0) {
-                        shareInput = newShare.toString();
-                      }
-                    }
-
-                    dispatch(setCauseAreaPercentageShare(causeArea.id, shareInput));
-                  }}
-                />
-              </span>
-            </PercentageInputWrapper>
-
-            {causeArea.organizations.length > 1 && (
-              <AnimateHeight height={!standardSplit ? "auto" : 0} duration={300} animateOpacity>
-                <SharesSelection
-                  causeArea={causeArea}
-                  open={!standardSplit}
-                  relevantErrorTexts={filterErrorTextsForCauseArea(errorTexts, causeArea.id)}
-                  scrollToWhenOpened
-                />
-              </AnimateHeight>
-            )}
-          </CauseAreaSelectionWrapper>
-        );
-      })}
+            </CauseAreaSelectionWrapper>
+          );
+        })}
+      </div>
     </>
   );
 };

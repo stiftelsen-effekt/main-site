@@ -4,7 +4,7 @@ export const SumWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
 
   label {
     font-size: 18px;
@@ -77,6 +77,22 @@ export const ErrorsWrapper = styled.div`
   background: var(--primary);
   color: red;
   font-size: 16px;
+
+  button {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+    align-items: start;
+    cursor: pointer;
+
+    &:focus {
+      outline: 1px solid red;
+    }
+
+    span {
+      text-align: left;
+    }
+  }
 `;
 
 export const ActionBar = styled.div`
