@@ -6,7 +6,14 @@ export const Toggle: React.FC<{
   dataCy?: string;
 }> = ({ active, onChange, dataCy }) => {
   return (
-    <StyledToggle onClick={() => onChange(!active)} active={active} data-cy={dataCy}>
+    <StyledToggle
+      onClick={(e) => {
+        e.currentTarget.blur();
+        onChange(!active);
+      }}
+      active={active}
+      data-cy={dataCy}
+    >
       <StyledToggleCircle active={active} />
     </StyledToggle>
   );

@@ -16,6 +16,10 @@ export const StyledToggle = styled.button<{ active: boolean }>`
     outline: 2px solid var(--primary);
     outline-offset: 3px;
   }
+
+  &:active {
+    outline: none;
+  }
 `;
 
 export const StyledToggleCircle = styled.div<{ active: boolean }>`
