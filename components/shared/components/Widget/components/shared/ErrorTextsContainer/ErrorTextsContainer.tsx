@@ -55,7 +55,7 @@ export const ErrorTextsContainer: React.FC<{ errorTexts: ErrorText[] }> = ({ err
         const text = errorTextMap[errorType as DonationErrorTypeNames].text;
 
         return (
-          <div>
+          <div key={errorType}>
             <AnimateHeight
               key={errorType}
               height={errorTextMap[errorType as DonationErrorTypeNames].visible ? "auto" : 0}
@@ -63,7 +63,6 @@ export const ErrorTextsContainer: React.FC<{ errorTexts: ErrorText[] }> = ({ err
               animateOpacity
             >
               <button
-                key={errorType}
                 onClick={(e) => {
                   e.currentTarget.blur();
                   /** Scroll to relevant section */
