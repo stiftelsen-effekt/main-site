@@ -180,9 +180,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.checkNextIsDisabled();
-    // cy.get("[data-cy=radio-custom-share]").click({ force: true });
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.get("[data-cy=cause-area]")
       .first()
       .find("[data-cy=smart-distribution-toggle]")
