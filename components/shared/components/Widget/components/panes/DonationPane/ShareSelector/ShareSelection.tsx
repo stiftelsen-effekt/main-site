@@ -55,19 +55,21 @@ export const SharesSelection: React.FC<{
       <ShareContainer ref={wrapperRef}>
         {distributionCauseArea.organizations.map((org) => (
           <ShareInputContainer key={org.id}>
-            <ShareLink
-              href={
-                organizations.filter((org) => org.id === org.id)[0].id === 12
-                  ? "https://gieffektivt.no/smart-fordeling"
-                  : `https://gieffektivt.no/topplista/#${organizations
-                      .filter((org) => org.id === org.id)[0]
-                      .name.replace(/ /g, "_")}`
-              }
-            >
-              <label htmlFor={org.id.toString()}>
-                {organizations.filter((o) => o.id === org.id)[0].name}
-              </label>
-            </ShareLink>
+            <div>
+              <ShareLink
+                href={
+                  organizations.filter((org) => org.id === org.id)[0].id === 12
+                    ? "https://gieffektivt.no/smart-fordeling"
+                    : `https://gieffektivt.no/topplista/#${organizations
+                        .filter((org) => org.id === org.id)[0]
+                        .name.replace(/ /g, "_")}`
+                }
+              >
+                <label htmlFor={org.id.toString()}>
+                  {organizations.filter((o) => o.id === org.id)[0].name}
+                </label>
+              </ShareLink>
+            </div>
             <input
               data-cy={`org-${org.id}`}
               type="tel"
