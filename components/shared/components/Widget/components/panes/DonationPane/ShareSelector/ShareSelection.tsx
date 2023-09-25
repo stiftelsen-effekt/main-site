@@ -25,11 +25,19 @@ export const SharesSelection: React.FC<{
   const distributionCauseAreas = useSelector(
     (state: State) => state.donation.distributionCauseAreas,
   );
+  const [lastErrorTexts, setLastErrorTexts] = React.useState<ErrorText[]>([]);
+
+  useEffect(() => {
+    if (relevantErrorTexts.length > 0) {
+      setLastErrorTexts(relevantErrorTexts);
+    }
+  }, [relevantErrorTexts]);
 
   const distributionCauseArea = distributionCauseAreas.find(
     (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
   );
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const hasError = relevantErrorTexts.length > 0;
 
   useEffect(() => {
     if (open && scrollToWhenOpened) {
@@ -84,11 +92,13 @@ export const SharesSelection: React.FC<{
           </ShareInputContainer>
         ))}
       </ShareContainer>
-      <ErrorContainer>
-        {relevantErrorTexts.map((errorText) => (
-          <div key={errorText.error.type}>{errorText.text}</div>
-        ))}
-      </ErrorContainer>
+      <AnimateHeight height={hasError ? "auto" : 0} duration={300} animateOpacity>
+        <ErrorContainer>
+          {lastErrorTexts.map((errorText) => (
+            <div key={errorText.error.type}>{errorText.text}</div>
+          ))}
+        </ErrorContainer>
+      </AnimateHeight>
     </ShareSelectionWrapper>
   );
 };

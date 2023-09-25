@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Validator from "validator";
 import { setSum, setRecurring } from "../../../store/donation/actions";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { Donation, DonationError, DonationErrorTypeNames, State } from "../../../store/state";
 import { RecurringDonation } from "../../../types/Enums";
-import { ActionBar, ErrorsWrapper, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
+import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
 import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
@@ -15,6 +15,7 @@ import { thousandize } from "../../../../../../../util/formatting";
 import { SingleCauseAreaSelector } from "./ShareSelector/Single/SingleCauseAreaSelector";
 import { MultipleCauseAreasSelector } from "./ShareSelector/Multiple/MultipleCauseAreasSelector";
 import { usePlausible } from "next-plausible";
+import { ErrorTextsContainer } from "../../shared/ErrorTextsContainer/ErrorTextsContainer";
 
 export const DonationPane: React.FC<{
   text: WidgetPane1Props;
@@ -125,31 +126,7 @@ export const DonationPane: React.FC<{
           )}
         </div>
 
-        {errorTexts.length > 0 && (
-          <ErrorsWrapper>
-            {errorTexts.map((errorText) => (
-              <button
-                key={errorText.error.type}
-                onClick={() => {
-                  /** Scroll to relevant section */
-                  const errorElement = document.querySelector(
-                    `[data-error=${errorText.error.type}]`,
-                  );
-                  if (errorElement) {
-                    errorElement.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                      inline: "nearest",
-                    });
-                  }
-                }}
-              >
-                <span>↑</span>
-                <span>{errorText.text}</span>
-              </button>
-            ))}
-          </ErrorsWrapper>
-        )}
+        <ErrorTextsContainer errorTexts={errorTexts} />
 
         <ActionBar data-cy="next-button-div">
           <NextButton

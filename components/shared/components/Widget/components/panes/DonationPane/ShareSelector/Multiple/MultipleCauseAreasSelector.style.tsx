@@ -51,6 +51,10 @@ export const CauseAreaShareSelectionTitleSmartDistributionWrapper = styled.div`
 export const PercentageInputWrapper = styled.div`
   margin: 10px 0px 30px 0px;
 
+  &[data-error] span input {
+    border-color: red;
+  }
+
   span {
     position: relative;
     display: inline-flex;
@@ -64,6 +68,7 @@ export const PercentageInputWrapper = styled.div`
       color: var(--primary);
       font-size: 28px;
       width: 100%;
+      transition: border-color 0.2s ease-in-out;
     }
     &:after {
       content: "%";

@@ -11,6 +11,10 @@ export const SumWrapper = styled.div`
     margin-bottom: 6px;
   }
 
+  &[data-error] span input {
+    border-color: red;
+  }
+
   span {
     position: relative;
     display: inline-flex;
@@ -24,6 +28,7 @@ export const SumWrapper = styled.div`
       color: var(--primary);
       font-size: 28px;
       width: 100%;
+      transition: border-color 0.2s ease-in-out;
     }
 
     &:after {
@@ -66,42 +71,12 @@ export const SumButtonsWrapper = styled.div`
   }
 `;
 
-export const ErrorsWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 10px;
-  padding: 30px 40px;
-  width: calc(100% + 80px);
-  position: relative;
-  left: -40px;
-  background: var(--primary);
-  color: red;
-  font-size: 16px;
-
-  button {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 10px;
-    align-items: start;
-    cursor: pointer;
-
-    &:focus {
-      outline: 1px solid red;
-    }
-
-    span {
-      text-align: left;
-    }
-  }
-`;
-
 export const ActionBar = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   align-self: flex-end;
-  justify-self: ;
   padding-top: 30px;
   padding-bottom: 30px;
 `;

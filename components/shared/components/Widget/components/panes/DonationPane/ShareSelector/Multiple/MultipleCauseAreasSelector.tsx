@@ -30,6 +30,9 @@ export const MultipleCauseAreasSelector: React.FC<{
   const donation = useSelector((state: State) => state.donation);
   const dispatch = useDispatch();
 
+  const causeAreaSumError = errorTexts.find((error) => error.error.type === "causeAreaSumError")
+    ?.error.type;
+
   if (!layout.causeAreas) return <span>No cause areas</span>;
 
   return (
@@ -46,11 +49,7 @@ export const MultipleCauseAreasSelector: React.FC<{
           <Links links={configuration.smart_distribution_description_links} />
         </AnimateHeight>
       </SmartDistributionExplanationWrapper>
-      <div
-        data-error={
-          errorTexts.find((error) => error.error.type === "causeAreaSumError")?.error.type
-        }
-      >
+      <div data-error={causeAreaSumError}>
         {layout.causeAreas.map((causeArea) => {
           const distributionCauseArea = donation.distributionCauseAreas.find(
             (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
@@ -86,7 +85,7 @@ export const MultipleCauseAreasSelector: React.FC<{
                 )}
               </CauseAreaShareSelectionTitleWrapper>
 
-              <PercentageInputWrapper>
+              <PercentageInputWrapper data-error={causeAreaSumError}>
                 <span>
                   <input
                     type={"tel"}
