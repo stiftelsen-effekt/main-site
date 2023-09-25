@@ -70,6 +70,7 @@ export const SharesSelection: React.FC<{
             </ShareLink>
             <input
               data-cy={`org-${org.id}`}
+              type="tel"
               name={org.id.toString()}
               placeholder="0"
               value={org.percentageShare}
