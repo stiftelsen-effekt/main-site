@@ -52,7 +52,7 @@ export const PercentageInputWrapper = styled.div`
   margin: 10px 0px 30px 0px;
 
   &[data-error] span input {
-    border-color: red;
+    border-color: #db0000;
   }
 
   span {

@@ -8,7 +8,7 @@ export const ErrorsWrapper = styled.div`
   left: -40px;
   position: relative;
   background: var(--primary);
-  color: red;
+  color: #db0000;
   font-size: 16px;
 
   & > div:has(div[aria-hidden="false"]) {

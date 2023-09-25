@@ -12,7 +12,7 @@ export const SumWrapper = styled.div`
   }
 
   &[data-error] span input {
-    border-color: red;
+    border-color: #db0000;
   }
 
   span {
