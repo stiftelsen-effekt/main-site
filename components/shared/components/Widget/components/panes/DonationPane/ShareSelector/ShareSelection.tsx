@@ -37,7 +37,7 @@ export const SharesSelection: React.FC<{
     (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
   );
   const wrapperRef = React.useRef<HTMLDivElement>(null);
-  const hasError = relevantErrorTexts.length > 0;
+  const hasError = relevantErrorTexts.length > 0 && lastErrorTexts.length > 0;
 
   useEffect(() => {
     if (open && scrollToWhenOpened) {
