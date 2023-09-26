@@ -7,7 +7,7 @@ export const ShareSelectionWrapper = styled.div`
   margin-bottom: 40px;
 
   &[data-error] input {
-    border-color: #db0000;
+    /* border-color: #db0000; */
   }
 `;
 
@@ -66,6 +66,5 @@ export const ShareInputContainer = styled.div`
 
 export const ErrorContainer = styled.div`
   margin-bottom: 10px;
-  color: #db0000;
   font-size: 18px;
 `;

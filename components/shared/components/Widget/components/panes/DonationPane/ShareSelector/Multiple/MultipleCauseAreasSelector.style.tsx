@@ -14,7 +14,7 @@ export const SmartDistributionLabel = styled.span<{ expanded: boolean }>`
   cursor: pointer;
   display: inline-block;
   user-select: none;
-  font-size: 18px;
+  font-size: 22px;
 
   /* UTF8 Arrow down as content */
   &::after {
@@ -34,14 +34,14 @@ export const CauseAreaShareSelectionTitleWrapper = styled.div`
 `;
 
 export const CauseAreaShareSelectionTitle = styled.span`
-  font-size: 18px;
+  font-size: 22px;
   margin-bottom: 0;
   margin-top: 0;
 `;
 
 export const CauseAreaShareSelectionTitleSmartDistributionWrapper = styled.div`
   display: grid;
-  font-size: 16px;
+  font-size: 18px;
   grid-template-columns: max-content max-content;
   grid-gap: 10px;
   justify-content: flex-end;
@@ -52,7 +52,7 @@ export const PercentageInputWrapper = styled.div`
   margin: 10px 0px 30px 0px;
 
   &[data-error] span input {
-    border-color: #db0000;
+    /* border-color: #db0000; */
   }
 
   span {
@@ -62,13 +62,14 @@ export const PercentageInputWrapper = styled.div`
 
     input {
       background: var(--secondary);
-      padding: 8px 20px;
+      padding: 12px 38px;
       border-radius: 10px;
       border: 1px solid var(--primary);
       color: var(--primary);
-      font-size: 28px;
+      font-size: 30px;
       width: 100%;
       transition: border-color 0.2s ease-in-out;
+      text-align: right;
     }
     &:after {
       content: "%";
@@ -80,7 +81,7 @@ export const PercentageInputWrapper = styled.div`
       align-items: center;
       justify-content: center;
       height: 100%;
-      font-size: 28px;
+      font-size: 30px;
     }
   }
 `;

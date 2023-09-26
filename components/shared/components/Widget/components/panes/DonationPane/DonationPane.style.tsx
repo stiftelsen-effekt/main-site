@@ -7,8 +7,8 @@ export const SumWrapper = styled.div`
   margin-top: 20px;
 
   label {
-    font-size: 18px;
-    margin-bottom: 6px;
+    font-size: 22px;
+    margin-bottom: 10px;
   }
 
   &[data-error] span input {
@@ -22,13 +22,14 @@ export const SumWrapper = styled.div`
 
     input {
       background: var(--secondary);
-      padding: 8px 20px;
+      padding: 12px 45px;
       border-radius: 10px;
       border: 1px solid var(--primary);
       color: var(--primary);
-      font-size: 28px;
+      font-size: 30px;
       width: 100%;
       transition: border-color 0.2s ease-in-out;
+      text-align: right;
     }
 
     &:after {
@@ -41,7 +42,7 @@ export const SumWrapper = styled.div`
       align-items: center;
       justify-content: center;
       height: 100%;
-      font-size: 28px;
+      font-size: 30px;
     }
   }
 `;
