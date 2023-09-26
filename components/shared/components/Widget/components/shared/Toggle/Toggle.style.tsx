@@ -4,9 +4,9 @@ export const StyledToggle = styled.button<{ active: boolean }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 44px;
-  height: 24px;
-  border-radius: 12px;
+  width: 50px;
+  height: 26px;
+  border-radius: 13px;
   background-color: ${({ active }) => (active ? "var(--primary)" : "var(--inactive)")};
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
@@ -23,9 +23,9 @@ export const StyledToggle = styled.button<{ active: boolean }>`
 `;
 
 export const StyledToggleCircle = styled.div<{ active: boolean }>`
-  height: 20px;
+  height: 22px;
   aspect-ratio: 1;
-  margin-left: 2px;
+  margin-left: 3px;
   border-radius: 50%;
   background-color: var(--secondary);
   transition: transform 0.2s ease-in-out;
