@@ -59,19 +59,33 @@ export const AutogiroPane: React.FC<{
       <RoundedBorder>
         <TextWrapper
           onClick={() => {
-            if (manualAutogiroSetupDate) {
+            if (typeof manualAutogiroSetupDate !== "undefined") {
               setManualAutogiroSetupDate(undefined);
             } else {
               setManualAutogiroSetupDate(25);
             }
           }}
+          style={{ cursor: "pointer" }}
         >
           <span>
-            Overføring den {manualAutogiroSetupDate ? manualAutogiroSetupDate : "25"}. hver måned
+            Overføring den{" "}
+            {typeof manualAutogiroSetupDate === "undefined"
+              ? "25."
+              : manualAutogiroSetupDate === 0
+              ? "siste dagen"
+              : `${manualAutogiroSetupDate}.`}{" "}
+            hver måned
           </span>
-          <span>▼</span>
+          <span
+            style={{
+              transition: "all 200ms",
+              rotate: typeof manualAutogiroSetupDate === "undefined" ? "180deg" : "0deg",
+            }}
+          >
+            ↓
+          </span>
         </TextWrapper>
-        <AnimateHeight height={manualAutogiroSetupDate ? "auto" : 0}>
+        <AnimateHeight height={typeof manualAutogiroSetupDate === "undefined" ? 0 : "auto"}>
           <DatePicker onChange={setManualAutogiroSetupDate} selected={manualAutogiroSetupDate} />
         </AnimateHeight>
       </RoundedBorder>
