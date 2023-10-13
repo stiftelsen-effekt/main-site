@@ -15,4 +15,5 @@ export enum PaymentMethod {
   BANK_UKID = 5,
   VIPPS = 6,
   SWISH = 11,
+  AUTOGIRO = 12,
 }

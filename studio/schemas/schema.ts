@@ -69,11 +69,12 @@ import taxstatements from "./dashboard/tax/taxstatements";
 import donationstabledetailsconfiguration from "./types/donationstabledetailsconfiguration";
 import bank from "./types/paymentmethods/bank";
 import swish from "./types/paymentmethods/swish";
+import autogiro from "./types/paymentmethods/autogiro";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
 
-const paymentMethods = [vipps, bank, swish] as const;
+const paymentMethods = [vipps, bank, swish, autogiro] as const;
 
 export const types = [
   teasers,

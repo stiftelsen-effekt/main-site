@@ -52,6 +52,9 @@ const widgetQuery = groq`
           _type == 'swish' => {
             ...
           },
+          _type == 'autogiro' => {
+            ...
+          },
         },
       }
     }

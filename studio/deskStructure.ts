@@ -177,6 +177,10 @@ export default () =>
                 .title("Swish")
                 .icon(PhoneCall)
                 .child(S.document().schemaType("swish").documentId("swish")),
+              S.listItem()
+                .title("Autogiro")
+                .icon(Briefcase)
+                .child(S.document().schemaType("autogiro").documentId("autogiro")),
             ]),
         ),
     ]);

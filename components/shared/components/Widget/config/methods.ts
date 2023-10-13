@@ -1,7 +1,7 @@
 import { RecurringDonation } from "../types/Enums";
 
 interface PaymentMethodConfiguration {
-  id: "bank" | "vipps" | "swish";
+  id: "bank" | "vipps" | "swish" | "autogiro";
   recurringOptions: RecurringDonation[];
 }
 
@@ -20,8 +20,14 @@ export const swishConfiguration: PaymentMethodConfiguration = {
   recurringOptions: [RecurringDonation.NON_RECURRING],
 };
 
+export const autogiroConfiguration: PaymentMethodConfiguration = {
+  id: "autogiro",
+  recurringOptions: [RecurringDonation.RECURRING],
+};
+
 export const paymentMethodConfigurations = [
   bankConfiguration,
   vippsConfiguration,
   swishConfiguration,
+  autogiroConfiguration,
 ];
