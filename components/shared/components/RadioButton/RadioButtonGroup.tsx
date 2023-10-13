@@ -26,11 +26,10 @@ export const RadioButtonGroup: React.FC<{
   return (
     <div className={wrapperClasses.join(" ")}>
       {options.map((option) => (
-        <div>
+        <div key={option.value}>
           <RadioButton
             data_cy={option.data_cy ? option.data_cy : ""}
             name={name}
-            key={option.value}
             title={option.title}
             selected={selected === option.value}
             disabled={option.disabled}
