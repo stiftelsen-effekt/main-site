@@ -1,0 +1,82 @@
+.splitview {
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  width: 100%;
+  margin: 50px 0;
+}
+
+.splitviewimage {
+  position: relative;
+  width: 100%;
+}
+
+.splitviewtext {
+  padding-right: 4rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.splitviewtext p {
+  font-weight: normal;
+  line-height: 180%;
+}
+
+.splitviewtext button {
+  margin-left: 0;
+}
+
+.swapped {
+  grid-template-columns: 4fr 6fr;
+}
+
+.swapped .splitviewtext {
+  grid-column: 2 / 2;
+  grid-row: 1 / 1;
+}
+
+.swapped .splitviewimage {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+}
+
+.darktext .splitviewtext {
+  color: var(--secondary);
+  background: var(--primary);
+}
+
+@media screen and (max-width: 1180px) {
+  .splitview {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content max-content;
+  }
+
+  .darktext {
+    width: calc(100% + 10vw);
+    position: relative;
+    left: 0;
+  }
+
+  .swapped .splitviewtext,
+  .splitviewtext {
+    grid-column: auto;
+    grid-row: 2/2;
+  }
+
+  .swapped .splitviewimage,
+  .splitviewimage {
+    grid-column: auto;
+    grid-row: 1/1;
+  }
+
+  .splitviewtext {
+    padding: 4rem 0;
+  }
+
+  .splitviewtext p {
+    max-width: 100%;
+  }
+}

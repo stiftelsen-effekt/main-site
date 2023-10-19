@@ -1,27 +1,18 @@
 import React from "react";
-import styles from "./SplitView.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { ResponsiveImage } from "../../../shared/responsiveimage";
+import styles from "./SplitViewHtml.module.scss";
 import { LinkType } from "../Links/Links";
 import { NavLink } from "../../layout/navbar";
 import { Links } from "../Links/Links";
+import { PortableText } from "@portabletext/react";
 
-export interface SplitView {
+export const SplitViewHtml: React.FC<{
   title: string;
   swapped?: boolean;
   darktext?: boolean;
-  paragraph: string;
+  paragraph: any[];
   links: (LinkType | NavLink)[];
-  image: SanityImageSource;
-}
-export const SplitView: React.FC<SplitView> = ({
-  title,
-  swapped,
-  darktext,
-  paragraph,
-  links,
-  image,
-}) => {
+  code: string;
+}> = ({ title, swapped, darktext, paragraph, links, code }) => {
   const classes = [styles.splitview];
   if (swapped) classes.push(styles.swapped);
 
@@ -32,13 +23,11 @@ export const SplitView: React.FC<SplitView> = ({
       <div className={styles.splitviewtext}>
         <div>
           <h4>{title}</h4>
-          <p>{paragraph}</p>
+          <PortableText value={paragraph} />
         </div>
         {links && <Links links={links} />}
       </div>
-      <div className={styles.splitviewimage}>
-        {image && <ResponsiveImage image={image} layout="responsive" />}
-      </div>
+      <div className={styles.splitviewcode} dangerouslySetInnerHTML={{ __html: code }}></div>
     </div>
   );
 };
