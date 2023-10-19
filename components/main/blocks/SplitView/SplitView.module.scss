@@ -11,7 +11,7 @@
 }
 
 .splitviewtext {
-  padding: 4rem;
+  padding: 0 4rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -21,7 +21,6 @@
 }
 
 .splitviewtext p {
-  font-size: 1.2rem;
   font-weight: normal;
   line-height: 180%;
   white-space: pre-wrap;
