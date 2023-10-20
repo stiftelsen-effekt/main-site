@@ -6,7 +6,7 @@ export default function resolveProductionUrl(doc: any) {
   console.log(baseUrl);
   try {
     if (!baseUrl) throw new Error("No SITE_URL or VERCEL_URL env var provided");
-    var previewUrl = new URL(baseUrl);
+    const previewUrl = new URL(baseUrl);
 
     previewUrl.pathname = `/api/preview`;
     previewUrl.searchParams.append(
@@ -15,9 +15,11 @@ export default function resolveProductionUrl(doc: any) {
     );
     previewUrl.searchParams.append(`slug`, doc?.slug?.current ?? "");
     previewUrl.searchParams.append(`type`, doc?._type);
+
+    return previewUrl.toString();
   } catch (e) {
     console.log(e);
   }
 
-  return previewUrl.toString();
+  return "";
 }
