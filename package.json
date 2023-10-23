@@ -23,7 +23,7 @@
     "@auth0/auth0-react": "^1.9.0",
     "@babel/preset-typescript": "^7.16.7",
     "@observablehq/plot": "^0.6.8",
-    "@portabletext/react": "^2.0.0",
+    "@portabletext/react": "^3.0.11",
     "@redux-devtools/extension": "^3.2.5",
     "@sanity/image-url": "^1.0.2",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
