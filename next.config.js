@@ -20,6 +20,19 @@ const nextConfig = {
     styledComponents: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
+  headers: async () => {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://gieffektivt.adoveo.com/",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       {
