@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./HTMLEmbed.module.scss";
 
-export interface NormalImage {
+export const HTMLEmbed: React.FC<{
   code: string;
   grayscale?: boolean;
-}
-export const HTMLEmbed: React.FC<NormalImage> = ({ code, grayscale }) => {
+}> = ({ code, grayscale }) => {
   const classNames = [styles.wrapper];
   if (grayscale) classNames.push(styles.grayscale);
 

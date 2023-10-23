@@ -53,6 +53,7 @@ export default {
         { type: "paragraph" },
         { type: "quote" },
         { type: "splitview" },
+        { type: "splitviewhtml" },
         { type: "columns" },
         { type: "links" },
         { type: "introsection" },
