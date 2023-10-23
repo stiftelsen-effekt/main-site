@@ -30,6 +30,7 @@ import { Teasers } from "./Teasers/Teasers";
 import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
+import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -92,6 +93,18 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         paragraph={block.paragraph}
                         links={block.links}
                         image={block.image}
+                        darktext={block.darktext}
+                      />
+                    );
+                  case "splitviewhtml":
+                    return (
+                      <SplitViewHtml
+                        key={block._key || block._id}
+                        title={block.title}
+                        swapped={block.swapped}
+                        paragraph={block.paragraph}
+                        links={block.links}
+                        code={block.htmlcode}
                         darktext={block.darktext}
                       />
                     );

@@ -69,6 +69,7 @@ import taxstatements from "./dashboard/tax/taxstatements";
 import donationstabledetailsconfiguration from "./types/donationstabledetailsconfiguration";
 import bank from "./types/paymentmethods/bank";
 import swish from "./types/paymentmethods/swish";
+import splitviewhtml from "./types/splitviewhtml";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -99,6 +100,7 @@ export const types = [
   contentsection,
   paragraph,
   splitview,
+  splitviewhtml,
   fullimage,
   normalimage,
   column,
