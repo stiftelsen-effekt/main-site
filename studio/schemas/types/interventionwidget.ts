@@ -21,5 +21,20 @@ export default {
       type: "array",
       of: [{ type: "intervention" }],
     },
+    {
+      name: "explanation_label",
+      type: "string",
+      title: "Explanation label",
+    },
+    {
+      name: "explanation_text",
+      type: "array",
+      of: [{ type: "block" }],
+    },
+    {
+      name: "explanation_links",
+      type: "array",
+      of: [{ type: "link" }, { type: "navitem" }],
+    },
   ],
 } as const;

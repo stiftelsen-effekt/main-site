@@ -229,6 +229,11 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             title={block.title}
                             default_sum={block.default_sum}
                             interventions={block.interventions}
+                            explanationLabel={block.explanation_label}
+                            explanationText={block.explanation_text}
+                            explanationLinks={block.explanation_links}
+                            currency={block.currency}
+                            locale={block.locale}
                           />
                         );
                       case "introsection": {

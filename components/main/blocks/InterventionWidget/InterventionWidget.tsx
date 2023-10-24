@@ -1,17 +1,29 @@
 import React, { useState } from "react";
 import styles from "./InterventionWidget.module.scss";
 import { InterventionWidgetOutput, SanityIntervention } from "./InterventionWidgetOutput";
+import { LinkType } from "../Links/Links";
+import { NavLink } from "../../layout/navbar";
 
 export interface InterventionWidgetProps {
   default_sum: number;
   title: string;
   interventions?: SanityIntervention[];
+  explanationLabel?: string;
+  explanationText?: string;
+  explanationLinks?: (LinkType | NavLink)[];
+  currency: string;
+  locale: string;
 }
 
 export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
   default_sum,
   title,
   interventions,
+  explanationLabel,
+  explanationText,
+  explanationLinks,
+  currency,
+  locale,
 }) => {
   const [sum, setSum] = useState(default_sum);
 
@@ -38,7 +50,15 @@ export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
           </div>
         </div>
         <div className={styles.output}>
-          <InterventionWidgetOutput sum={sum} interventions={interventions} />
+          <InterventionWidgetOutput
+            sum={sum}
+            interventions={interventions}
+            explanationLabel={explanationLabel}
+            explanationText={explanationText}
+            explanationLinks={explanationLinks}
+            currency={currency}
+            locale={locale}
+          />
         </div>
       </div>
     </div>
