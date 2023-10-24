@@ -35,7 +35,7 @@
 
 .navbar ul li .submenu {
   position: absolute;
-  width: 100%;
+  min-width: 100%;
   top: 100%;
   left: 0;
   background: var(--secondary);
