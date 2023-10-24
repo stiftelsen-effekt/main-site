@@ -65,7 +65,7 @@ export default () =>
           S.documentList()
             .title("Pages")
             .schemaType("generic_page")
-            .filter('_type == "generic_page" && !defined(categories)')
+            .filter('_type == "generic_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document()
@@ -137,7 +137,7 @@ export default () =>
           S.documentList()
             .title("Articles")
             .schemaType("article_page")
-            .filter('_type == "article_page" && !defined(categories)')
+            .filter('_type == "article_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document()
