@@ -61,7 +61,7 @@ const ArticlePage = withStaticProps(
     <>
       <SEO
         title={header.seoTitle || header.title}
-        titleTemplate={"%s | Gi Effektivt."}
+        titleTemplate={`%s | ${settings.title}`}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={
@@ -95,6 +95,7 @@ const fetchArticle = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+    title,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,

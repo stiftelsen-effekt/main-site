@@ -53,6 +53,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
     <>
       <SEO
         title={header.seoTitle || header.title}
+        titleTemplate={`${settings.title} | %s`}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
@@ -102,6 +103,7 @@ const fetchVipps = groq`
 {
   "settings": *[_type == "site_settings"] {
     logo,
+    title,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
