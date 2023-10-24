@@ -86,5 +86,14 @@ export default {
       group: "footer",
       of: [{ type: "navitem" }, { type: "link" }],
     },
+    {
+      title: "Footer column 4",
+      name: "footer_column_4",
+      description: "Select links for the fourth footer column",
+      type: "array",
+      group: "footer",
+      of: [{ type: "navitem" }, { type: "link" }],
+      validation: (Rule: any) => Rule.max(2),
+    },
   ],
 };

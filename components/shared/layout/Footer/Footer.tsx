@@ -15,6 +15,7 @@ export type FooterProps = {
   footer_column_1?: FooterItem[];
   footer_column_2?: FooterItem[];
   footer_column_3?: FooterItem[];
+  footer_column_4?: FooterItem[];
 };
 
 type QueryResult = {
@@ -50,7 +51,16 @@ const query = groq`
         _type == 'link' => @ {
           ...
         },
-      }
+      },
+      footer_column_4[] {
+        _type == 'navitem' => @ {
+          ...,
+          "slug": page->slug.current
+        },
+        _type == 'link' => @ {
+          ...
+        },
+      },
     }
   }
 `;
@@ -61,7 +71,7 @@ const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
   return {
     data: result.footer[0],
   };
-})(({ data: { footer_column_1, footer_column_2, footer_column_3 } }) => {
+})(({ data: { footer_column_1, footer_column_2, footer_column_3, footer_column_4 } }) => {
   return (
     <footer className={styles.grid} id={"footer"}>
       <div className={`${styles.category} ${styles.logo__bottom}`}>
@@ -138,18 +148,23 @@ const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
 
       <div className={`${styles.category} ${styles.utillity}`}>
         <ul>
-          <li>
-            {" "}
-            <Link href="/personvern" passHref>
-              Personvern
-            </Link>
-          </li>
-          <li>
-            {" "}
-            <Link href="/vilkar" passHref>
-              Vilkår
-            </Link>
-          </li>
+          {footer_column_4 &&
+            footer_column_4.map((footerItem) => {
+              return (
+                <li key={footerItem._key}>
+                  <Link
+                    href={
+                      footerItem._type === "navitem" ? `/${footerItem.slug}` : footerItem.url || "/"
+                    }
+                    passHref
+                  >
+                    <a target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}>
+                      {footerItem.title}
+                    </a>
+                  </Link>
+                </li>
+              );
+            })}
           <li>&nbsp;</li>
           <li>
             <a data-cy="navigate-to-top" href="#top">
