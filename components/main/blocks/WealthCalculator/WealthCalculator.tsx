@@ -19,16 +19,25 @@ import {
 import { wealthMountainGraphData } from "./data";
 import { taxTable } from "./taxTable";
 import styles from "./WealthCalculator.module.scss";
+import { LinkType } from "../Links/Links";
+import { NavLink } from "../../layout/navbar";
 
 export const WealthCalculator: React.FC<{
   showImpact: boolean;
-  interventions: SanityIntervention[];
+  intervention_configuration: {
+    interventions?: SanityIntervention[];
+    explanation_label?: string;
+    explanation_text?: string;
+    explanation_links?: (LinkType | NavLink)[];
+    currency: string;
+    locale: string;
+  };
   explanation?: any;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
 }> = ({
   showImpact,
-  interventions,
+  intervention_configuration,
   explanation,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
@@ -276,7 +285,7 @@ export const WealthCalculator: React.FC<{
           </AnimateHeight>
         </>
       )}
-      {showImpact && (
+      {showImpact && intervention_configuration && (
         <div className={styles.calculator__impact}>
           <div className={styles.calculator__impact__description}>
             <h3>Din impact.</h3>
@@ -297,7 +306,12 @@ export const WealthCalculator: React.FC<{
           <div className={styles.calculator__impact__output}>
             <InterventionWidgetOutput
               sum={postTaxIncome * (donationPercentage / 100)}
-              interventions={interventions}
+              interventions={intervention_configuration.interventions}
+              explanationLabel={intervention_configuration.explanation_label}
+              explanationText={intervention_configuration.explanation_text}
+              explanationLinks={intervention_configuration.explanation_links}
+              currency={intervention_configuration.currency}
+              locale={intervention_configuration.locale}
             />
           </div>
           <div className={styles.calculator__impact__description__button_mobile}>

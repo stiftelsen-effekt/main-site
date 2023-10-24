@@ -44,9 +44,31 @@ export default {
       title: "Show Impact",
     },
     {
-      name: "interventions",
-      type: "array",
-      of: [{ type: "intervention" }],
+      name: "intervention_configuration",
+      type: "object",
+      title: "Impact Configuration",
+      fields: [
+        {
+          name: "interventions",
+          type: "array",
+          of: [{ type: "intervention" }],
+        },
+        {
+          name: "explanation_label",
+          type: "string",
+          title: "Explanation label",
+        },
+        {
+          name: "explanation_text",
+          type: "array",
+          of: [{ type: "block" }],
+        },
+        {
+          name: "explanation_links",
+          type: "array",
+          of: [{ type: "link" }, { type: "navitem" }],
+        },
+      ],
     },
   ],
 } as const;

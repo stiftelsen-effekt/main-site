@@ -176,7 +176,6 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <WealthCalculator
                             key={block._key || block._id}
                             showImpact={block.show_impact}
-                            interventions={block.interventions}
                             explanation={block.data_explanation}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
@@ -184,6 +183,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            intervention_configuration={block.intervention_configuration}
                           />
                         );
                       case "wealthcalculatorteaser":
