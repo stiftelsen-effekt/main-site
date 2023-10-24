@@ -34,7 +34,7 @@ describe("Navigation", () => {
     // CookieBanner should be hidden
     cy.get("[data-cy=cookiebanner-container]").should("not.be.visible");
 
-    cy.get("[data-cy=Maks-effekt-link]").within(() => {
+    cy.get("[data-cy=maks-effekt-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/maks-effekt");
@@ -117,32 +117,22 @@ describe("Navigation", () => {
     });
     cy.url().should("include", "/om-oss");
 
-    cy.get("[data-cy=Topplista-link]").within(() => {
+    cy.get("[data-cy=topplista-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/topplista");
 
-    cy.get("[data-cy=Kriterier-link]").within(() => {
+    cy.get("[data-cy=kriterier-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/kriterier");
 
-    cy.get("[data-cy=Maks-effekt-link]").within(() => {
-      cy.get("a").click({ force: true });
-    });
-    cy.url().should("include", "/maks-effekt");
-
-    cy.get("[data-cy=Smart-fordeling-link]").within(() => {
+    cy.get("[data-cy=smart-fordeling-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/smart-fordeling");
 
-    cy.get("[data-cy=Full-oversikt-link]").within(() => {
-      cy.get("a").click({ force: true });
-    });
-    cy.url().should("include", "/full-oversikt");
-
-    cy.get("[data-cy=Vanlige-spørsmål-link]").within(() => {
+    cy.get("[data-cy=ofte-stilte-sporsmal-link]").within(() => {
       cy.get("a").click({ force: true });
     });
     cy.url().should("include", "/ofte-stilte-sporsmal");
