@@ -106,7 +106,7 @@ export const Navbar: React.FC<MainNavbarProps> = ({ elements, logo }) => {
                     <ul>
                       {el.items &&
                         el.items.map((subel) => (
-                          <li key={subel.title} data-cy={`${subel.title}-link`.replace(/ /g, "-")}>
+                          <li key={subel.title} data-cy={`${subel.slug}-link`.replace(/ /g, "-")}>
                             <Link href={`/${subel.slug}`} passHref>
                               <a
                                 onClick={(e) => {
