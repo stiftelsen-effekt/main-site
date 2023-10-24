@@ -175,6 +175,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         return (
                           <WealthCalculator
                             key={block._key || block._id}
+                            title={block.title}
                             showImpact={block.show_impact}
                             explanation={block.data_explanation}
                             afterDonationPercentileLabelTemplateString={

@@ -23,6 +23,7 @@ import { LinkType } from "../Links/Links";
 import { NavLink } from "../../layout/navbar";
 
 export const WealthCalculator: React.FC<{
+  title: string;
   showImpact: boolean;
   intervention_configuration: {
     interventions?: SanityIntervention[];
@@ -36,6 +37,7 @@ export const WealthCalculator: React.FC<{
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
 }> = ({
+  title,
   showImpact,
   intervention_configuration,
   explanation,
@@ -114,7 +116,7 @@ export const WealthCalculator: React.FC<{
       <div className={styles.calculator} data-cy="wealthcalculator-container">
         <div className={styles.calculator__input}>
           <div className={styles.calculator__input__inner}>
-            <h5>Rikdomskalkulator.</h5>
+            <h5>{title}</h5>
             <span className={styles.calculator__input__subtitle}>
               Hvor rik er du sammenlignet med resten av verden?
             </span>

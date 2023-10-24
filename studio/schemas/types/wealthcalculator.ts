@@ -8,6 +8,11 @@ export default {
   icon: DollarSign,
   fields: [
     {
+      name: "title",
+      type: "string",
+      title: "Title",
+    },
+    {
       name: "data_explanation",
       type: "reference",
       to: [{ type: "contentsection" }],
