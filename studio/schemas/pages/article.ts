@@ -15,6 +15,12 @@ export default {
       of: [{ type: "contentsection" }],
     },
     {
+      name: "category",
+      title: "Category",
+      type: "reference",
+      to: [{ type: "category" }],
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",
