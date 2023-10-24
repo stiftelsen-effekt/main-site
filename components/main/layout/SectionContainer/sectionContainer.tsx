@@ -7,6 +7,7 @@ export type SectionContainerProps = {
   nodivider?: boolean;
   padded?: boolean;
   ypadded?: boolean;
+  hidden?: boolean;
 };
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({

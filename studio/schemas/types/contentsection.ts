@@ -81,6 +81,13 @@ export default {
         editModal: "fullscreen",
       },
     },
+    {
+      name: "hidden",
+      type: "boolean",
+      title: "Hidden",
+      description: "Hide this section from the website",
+      initialValue: false,
+    },
   ],
   preview: {
     select: {
@@ -88,6 +95,7 @@ export default {
       inverted: "inverted",
       nodivider: "nodivider",
       blocks: "blocks",
+      hidden: "hidden",
     },
     component: ContentSectionPreview,
   },
