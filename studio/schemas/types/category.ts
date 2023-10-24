@@ -20,10 +20,10 @@ export default {
       title: "title",
       description: "description",
     },
-    prepare({ title, description }) {
+    prepare(selection: any) {
       return {
-        title: title,
-        subtitle: description,
+        title: selection.title,
+        subtitle: selection.description,
       };
     },
   },
