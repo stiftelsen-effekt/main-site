@@ -184,6 +184,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            defaultDonationPercentage={block.donation_percentage}
                           />
                         );
                       case "wealthcalculatorteaser":
