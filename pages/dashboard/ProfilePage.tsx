@@ -5,13 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
 import { ProfileInfo } from "../../components/profile/details/ProfileInfo/ProfileInfo";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { Navbar } from "../../components/profile/layout/navbar";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.server";
 import style from "../../styles/Profile.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { ProfileLayout } from "../../components/profile/layout/layout";
+import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getProfilePagePath() {
   const result = await getClient(false).fetch<FetchProfilePageResult>(fetchProfilePage);
@@ -31,16 +31,15 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
   return {
     appStaticProps,
     preview: preview,
+    navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
     data: {
       result: result,
       query: fetchProfilePage,
       queryParams: {},
     },
   };
-})(({ data, preview }) => {
+})(({ data, navbarData, preview }) => {
   const router = useRouter();
-  const settings = data.result.settings[0];
-  const dashboard = data.result.dashboard[0];
 
   if (!router.isFallback && !data) {
     return <div>Loading...</div>;
@@ -55,7 +54,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbarData} />
       </MainHeader>
 
       <PageContent>
@@ -69,37 +68,16 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
 });
 
 type FetchProfilePageResult = {
-  settings: any[];
   page: Array<{ slug?: { current?: string }; tax?: any; data?: any }>;
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 
 const fetchProfilePage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-  },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
   },
   "page": *[_id == "profile"] {
     slug {

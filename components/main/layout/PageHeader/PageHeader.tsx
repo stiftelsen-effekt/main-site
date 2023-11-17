@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./PageHeader.module.scss";
-import { NavLink } from "../navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links, LinkType } from "../../blocks/Links/Links";
 
 export const PageHeader: React.FC<{

@@ -1,33 +1,114 @@
 import React, { useContext, useState } from "react";
-import styles from "../../shared/layout/Navbar/Navbar.module.scss";
+import styles from "./Navbar.module.scss";
 import Link from "next/link";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, X } from "react-feather";
-import { ResponsiveImage } from "../../shared/responsiveimage";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import {
-  EffektButton,
-  EffektButtonVariant,
-} from "../../shared/components/EffektButton/EffektButton";
-import { WidgetContext } from "../../main/layout/layout";
-import { useRouterContext } from "../../../context/RouterContext";
-import { MainNavbarGroup, NavLink } from "../../main/layout/navbar";
 import AnimateHeight from "react-animate-height";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { WidgetContext } from "../../../main/layout/layout";
+import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
+import { ResponsiveImage } from "../../responsiveimage";
+import { useRouterContext } from "../../../../context/RouterContext";
+import { withStaticProps } from "../../../../util/withStaticProps";
+import { groq } from "next-sanity";
+import { getClient } from "../../../../lib/sanity.server";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export type ProfileNavbarItem = NavLink | MainNavbarGroup;
-
-export type ProfileNavbarProps = {
-  logo: SanityImageSource;
-  elements: ProfileNavbarItem[];
+export type NavLink = {
+  _type: "navitem";
+  _key: string;
+  title?: string;
+  pagetype?: string;
+  slug?: string;
 };
 
-export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
-  const filteredElements = elements.filter((e) => e !== null);
-  const { dashboardPath, agreementsPagePath, taxPagePath, profilePagePath } = useRouterContext();
-  const { user, logout, loginWithRedirect } = useAuth0();
+export type MainNavbarGroup = {
+  _type: "navgroup";
+  _key: string;
+  title: string;
+  items: NavLink[];
+};
+
+export type MainNavbarItem = NavLink | MainNavbarGroup;
+
+type QueryResult = {
+  settings: [
+    {
+      logo: SanityImageSource;
+      main_navigation: MainNavbarItem[];
+    },
+  ];
+  dashboard: [
+    {
+      main_navigation: MainNavbarItem[];
+    },
+  ];
+};
+
+const query = groq`
+  {
+    "dashboard": *[_id == "dashboard"] {
+      main_navigation[] {
+        _type == 'navgroup' => {
+          _type,
+          _key,
+          title,
+          items[]->{
+            title,
+            "slug": page->slug.current
+          },
+        },
+        _type != 'navgroup' => @ {
+          _type,
+          _key,
+          title,
+          "slug": page->slug.current
+        },
+      }
+    },
+    "settings": *[_type == "site_settings"] {
+      logo,
+      main_navigation[] {
+        _type == 'navgroup' => {
+          _type,
+          _key,
+          title,
+          items[]->{
+            title,
+            "slug": page->slug.current
+          },
+        },
+        _type != 'navgroup' => @ {
+          _type,
+          _key,
+          title,
+          "slug": page->slug.current
+        }
+      }
+    }
+  }
+`;
+
+export const Navbar = withStaticProps(
+  async ({ dashboard, preview }: { dashboard: boolean; preview: boolean }) => {
+    const result = await getClient(preview).fetch<QueryResult>(query);
+    const settings = result.settings[0];
+    const dashboardData = result.dashboard[0];
+    const elements = dashboard ? dashboardData.main_navigation : settings.main_navigation;
+
+    return {
+      dashboard,
+      elements: elements.filter((e) => e !== null),
+      logo: settings.logo,
+    };
+  },
+)(({ dashboard, elements, logo }) => {
+  const { dashboardPath } = useRouterContext();
+  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const { user, logout } = useAuth0();
+
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
-    filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
+    elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
   const setExpanded = (expanded: boolean) => {
@@ -45,8 +126,6 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
     }
   };
 
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
-
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
       <nav className={`${styles.navbar}`} data-cy="navbar">
@@ -60,7 +139,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
               <a onClick={(e) => e.currentTarget.blur()}>
                 <ResponsiveImage
                   image={logo}
-                  onClick={() => setExpandMenu(false)}
+                  onClick={() => setExpanded(false)}
                   priority
                   blur={false}
                 />
@@ -70,7 +149,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
           <button
             className={styles.expandBtn}
             onClick={(e) => {
-              setExpandMenu(!expandMenu);
+              setExpanded(!expandMenu);
               e.currentTarget.blur();
             }}
           >
@@ -78,7 +157,7 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
           </button>
         </div>
         <ul>
-          {filteredElements.map((el) =>
+          {elements.map((el) =>
             el._type === "navgroup" ? (
               <li
                 key={el._key}
@@ -96,11 +175,11 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
                         el.items
                           .filter((subel) => subel !== null)
                           .map((subel) => (
-                            <li
-                              key={subel.title}
-                              data-cy={`${subel.title}-link`.replace(/ /g, "-")}
-                            >
-                              <Link href={`${dashboardPath}/${subel.slug}`} passHref>
+                            <li key={subel.title} data-cy={`${subel.slug}-link`.replace(/ /g, "-")}>
+                              <Link
+                                href={[...(dashboard ? dashboardPath : []), subel.slug].join("/")}
+                                passHref
+                              >
                                 <a
                                   onClick={(e) => {
                                     e.currentTarget.blur();
@@ -118,13 +197,13 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
               </li>
             ) : (
               <li key={el._key} data-cy={`${el.slug}-link`}>
-                <Link href={`${dashboardPath}/${el.slug}`} passHref>
+                <Link href={[...(dashboard ? dashboardPath : []), el.slug].join("/")} passHref>
                   <a onClick={() => setExpanded(false)}>{el.title}</a>
                 </Link>
               </li>
             ),
           )}
-          <li className={styles.buttonsWrapper} onClick={() => setExpandMenu(false)}>
+          <li className={styles.buttonsWrapper}>
             {user ? (
               <EffektButton
                 variant={EffektButtonVariant.SECONDARY}
@@ -134,18 +213,21 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
                 Logg ut
               </EffektButton>
             ) : (
-              <EffektButton
-                variant={EffektButtonVariant.SECONDARY}
-                onClick={() => loginWithRedirect({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
-                extraMargin={true}
-              >
-                Logg inn
-              </EffektButton>
+              <Link href={dashboardPath.join("/")} passHref>
+                <a tabIndex={-1}>
+                  <EffektButton
+                    variant={EffektButtonVariant.SECONDARY}
+                    onClick={() => setExpanded(false)}
+                  >
+                    Min side
+                  </EffektButton>
+                </a>
+              </Link>
             )}
             <EffektButton
               cy="send-donation-button"
-              onClick={() => setWidgetOpen(true)}
               extraMargin={true}
+              onClick={() => setWidgetOpen(true)}
             >
               Send donasjon
             </EffektButton>
@@ -154,4 +236,4 @@ export const Navbar: React.FC<ProfileNavbarProps> = ({ elements, logo }) => {
       </nav>
     </div>
   );
-};
+});
