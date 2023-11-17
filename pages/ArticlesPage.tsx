@@ -10,7 +10,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -40,7 +40,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       query: fetchArticles,
       queryParams: {},
     },
-  };
+  } satisfies GeneralPageProps;
 })(({ data, navbarData, preview }) => {
   const page = data.result.page;
 

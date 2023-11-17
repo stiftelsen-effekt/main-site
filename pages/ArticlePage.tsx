@@ -13,7 +13,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -43,7 +43,7 @@ const ArticlePage = withStaticProps(
         query: fetchArticle,
         queryParams: { slug },
       },
-    };
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();

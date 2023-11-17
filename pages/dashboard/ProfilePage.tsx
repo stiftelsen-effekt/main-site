@@ -9,7 +9,7 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.server";
 import style from "../../styles/Profile.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { ProfileLayout } from "../../components/profile/layout/layout";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
@@ -37,7 +37,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
       query: fetchProfilePage,
       queryParams: {},
     },
-  };
+  } satisfies GeneralPageProps;
 })(({ data, navbarData, preview }) => {
   const router = useRouter();
 

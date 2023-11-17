@@ -18,7 +18,12 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.server";
 import style from "../../styles/Tax.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import {
+  GeneralPageProps,
+  LayoutType,
+  filterPageToSingleItem,
+  getAppStaticProps,
+} from "../_app.page";
 import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
@@ -72,7 +77,7 @@ export const TaxPage = withStaticProps(
         query: fetchTaxPage,
         queryParams: {},
       },
-    };
+    } satisfies GeneralPageProps;
   },
 )(({ data, subpath, navbarData, preview }) => {
   const page = filterPageToSingleItem(data.result, preview);

@@ -34,14 +34,20 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 sagaMiddleware.run(watchAll);
 
+export type GeneralPageProps = Record<string, unknown> & {
+  preview: boolean;
+  data?: {
+    result: Record<string, unknown> & { page?: any; footer?: any };
+    query: string;
+    queryParams: { slug?: string };
+  };
+  appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
+};
+
 function MyApp({
   Component,
   pageProps: { appStaticProps, preview, ...pageProps },
-}: AppProps<{
-  preview: boolean;
-  data?: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
-  appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
-}>) {
+}: AppProps<GeneralPageProps>) {
   const routerContextValue = useRef<RouterContextValue | null>(
     appStaticProps?.routerContext || null,
   );
@@ -56,7 +62,9 @@ function MyApp({
   );
 
   if (!appStaticProps) {
-    throw new Error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
+    console.error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
+
+    return <Component {...pageProps} />;
   }
 
   const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
@@ -110,7 +118,14 @@ export async function getAppStaticProps({
   return appStaticProps;
 }
 
-export const filterPageToSingleItem = <T,>(data: { page: T | T[] }, preview: boolean): T | null => {
+export const filterPageToSingleItem = <T,>(
+  data: { page?: T | T[] },
+  preview: boolean,
+): T | null => {
+  if (!data.page) {
+    return null;
+  }
+
   if (!Array.isArray(data.page)) {
     return data.page;
   }

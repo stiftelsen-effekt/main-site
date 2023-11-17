@@ -10,7 +10,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
@@ -32,7 +32,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
       query: fetchVipps,
       queryParams: {},
     },
-  };
+  } satisfies GeneralPageProps;
 })(({ data, preview, navbarData }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;

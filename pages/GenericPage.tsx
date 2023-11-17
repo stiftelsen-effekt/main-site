@@ -8,7 +8,7 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -37,7 +37,7 @@ export const GenericPage = withStaticProps(
         query: fetchGenericPage,
         queryParams: { slug },
       },
-    };
+    } satisfies GeneralPageProps;
   },
 )(({ data, preview, navbarData }) => {
   const page = data.result.page;

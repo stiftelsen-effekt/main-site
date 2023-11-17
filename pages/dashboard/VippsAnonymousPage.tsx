@@ -11,7 +11,7 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.server";
 import styles from "../../styles/Agreements.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getVippsAnonymousPagePath() {
@@ -42,7 +42,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       query: fetchVippsAnonymousPage,
       queryParams: {},
     },
-  };
+  } satisfies GeneralPageProps;
 })(({ data, navbarData, preview }) => {
   const dashboard = data.result.dashboard[0];
   const router = useRouter();

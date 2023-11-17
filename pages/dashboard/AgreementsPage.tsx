@@ -25,7 +25,7 @@ import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { ProfileLayout } from "../../components/profile/layout/layout";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
@@ -48,7 +48,7 @@ export const AgreementsPage = withStaticProps(
       appStaticProps,
       preview: preview,
       navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
-    };
+    } satisfies GeneralPageProps;
   },
 )(({ navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();

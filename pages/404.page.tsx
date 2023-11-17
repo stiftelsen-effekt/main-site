@@ -7,7 +7,7 @@ import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { getClient } from "../lib/sanity.server";
-import { getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   navbarData,
@@ -34,8 +34,8 @@ export const getStaticProps = async ({ preview = false }: GetStaticPropsContext)
     props: {
       appStaticProps,
       navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
-      preview: preview,
-    },
+      preview,
+    } satisfies GeneralPageProps,
   };
 };
 

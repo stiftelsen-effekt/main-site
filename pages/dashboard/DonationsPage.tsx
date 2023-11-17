@@ -1,7 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps, LayoutType } from "../_app.page";
+import {
+  filterPageToSingleItem,
+  GeneralPageProps,
+  getAppStaticProps,
+  LayoutType,
+} from "../_app.page";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
@@ -97,7 +102,7 @@ export const DonationsPage = withStaticProps(
         query: fetchDonationsPage,
         queryParams: {},
       },
-    };
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
