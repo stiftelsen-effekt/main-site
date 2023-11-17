@@ -40,7 +40,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       query: fetchArticles,
       queryParams: {},
     },
-  } satisfies GeneralPageProps;
+  }; // satisfies GeneralPageProps (requires next@13);;
 })(({ data, navbarData, preview }) => {
   const page = data.result.page;
 

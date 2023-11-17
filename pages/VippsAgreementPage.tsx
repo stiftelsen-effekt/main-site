@@ -32,7 +32,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
       query: fetchVipps,
       queryParams: {},
     },
-  } satisfies GeneralPageProps;
+  }; // satisfies GeneralPageProps (requires next@13);;
 })(({ data, preview, navbarData }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;

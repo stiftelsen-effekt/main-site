@@ -37,7 +37,7 @@ export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolea
       query: fetchProfilePage,
       queryParams: {},
     },
-  } satisfies GeneralPageProps;
+  }; // satisfies GeneralPageProps (requires next@13);;
 })(({ data, navbarData, preview }) => {
   const router = useRouter();
 

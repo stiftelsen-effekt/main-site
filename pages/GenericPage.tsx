@@ -37,7 +37,7 @@ export const GenericPage = withStaticProps(
         query: fetchGenericPage,
         queryParams: { slug },
       },
-    } satisfies GeneralPageProps;
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ data, preview, navbarData }) => {
   const page = data.result.page;

@@ -35,7 +35,7 @@ export const getStaticProps = async ({ preview = false }: GetStaticPropsContext)
       appStaticProps,
       navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
       preview,
-    } satisfies GeneralPageProps,
+    }, // satisfies GeneralPageProps (requires next@13);,
   };
 };
 

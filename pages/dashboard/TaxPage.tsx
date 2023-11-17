@@ -77,7 +77,7 @@ export const TaxPage = withStaticProps(
         query: fetchTaxPage,
         queryParams: {},
       },
-    } satisfies GeneralPageProps;
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ data, subpath, navbarData, preview }) => {
   const page = filterPageToSingleItem(data.result, preview);

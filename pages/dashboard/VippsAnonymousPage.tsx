@@ -42,7 +42,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       query: fetchVippsAnonymousPage,
       queryParams: {},
     },
-  } satisfies GeneralPageProps;
+  }; // satisfies GeneralPageProps (requires next@13);;
 })(({ data, navbarData, preview }) => {
   const dashboard = data.result.dashboard[0];
   const router = useRouter();

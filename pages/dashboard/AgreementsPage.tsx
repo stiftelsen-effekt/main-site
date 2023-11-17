@@ -48,7 +48,7 @@ export const AgreementsPage = withStaticProps(
       appStaticProps,
       preview: preview,
       navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
-    } satisfies GeneralPageProps;
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();

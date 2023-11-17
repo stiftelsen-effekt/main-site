@@ -43,7 +43,7 @@ const ArticlePage = withStaticProps(
         query: fetchArticle,
         queryParams: { slug },
       },
-    } satisfies GeneralPageProps;
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ data, navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();

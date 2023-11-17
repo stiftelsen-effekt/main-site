@@ -102,7 +102,7 @@ export const DonationsPage = withStaticProps(
         query: fetchDonationsPage,
         queryParams: {},
       },
-    } satisfies GeneralPageProps;
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ data, navbarData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
