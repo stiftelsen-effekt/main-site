@@ -48,12 +48,19 @@ export type VippsAgreement = {
 
 export type Distribution = {
   kid: string;
-  standardDistribution: boolean;
-  taxUnit: TaxUnit | null;
-  shares: {
+  donorId: number;
+  taxUnitId: number;
+  causeAreas: DistributionCauseArea[];
+};
+
+export type DistributionCauseArea = {
+  id: number;
+  standardSplit: boolean;
+  percentageShare: string;
+  organizations: {
     id: number;
-    name: string;
-    share: string;
+    name?: string;
+    percentageShare: string;
   }[];
 };
 

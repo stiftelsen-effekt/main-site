@@ -1,8 +1,9 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
 import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
-import { TaxUnit } from "./models";
+import { DistributionCauseArea, TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
+import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
 
 export interface Query<T> {
   (
@@ -214,6 +215,21 @@ export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
   };
 };
 
+export const useCauseAreas = (fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR<CauseArea[]>(`/causeareas/active/`, (url) =>
+    fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useAllOrganizations = (fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(`/organizations/all/`, (url) =>
     fetcher(url, fetchToken),
@@ -244,9 +260,9 @@ export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilen
   };
 };
 
-export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useTaxUnits = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR<TaxUnit[]>(
-    `/donors/${getUserId(user)}/taxunits/`,
+    user ? `/donors/${getUserId(user)}/taxunits/` : null,
     (url) => fetcher(url, fetchToken),
   );
 

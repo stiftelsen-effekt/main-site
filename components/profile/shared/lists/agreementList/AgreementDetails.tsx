@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Distribution, TaxUnit } from "../../../../../models";
-import { DistributionController } from "../../Distribution";
+import { DistributionController } from "../../DistributionCauseAreaInput/Distribution";
 import { toast } from "react-toastify";
 import {
   cancelAvtaleGiroAgreement,
@@ -12,27 +12,30 @@ import {
   updateVippsAgreementDistribution,
   updateVippsAgreementPrice,
 } from "./_queries";
-import { useAuth0, User } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useSWRConfig } from "swr";
 import { AlertCircle, Check, Info } from "react-feather";
-import { DatePickerInput } from "../../../../shared/components/DatePicker/DatePickerInput";
 import style from "./AgreementDetails.module.scss";
-import { EffektButton } from "../../../../shared/components/EffektButton/EffektButton";
+import {
+  EffektButton,
+  EffektButtonVariant,
+} from "../../../../shared/components/EffektButton/EffektButton";
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
-import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
-import { TaxUnitCreateModal } from "../../TaxUnitModal/TaxUnitCreateModal";
-import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/EffektCheckbox";
-import AnimateHeight from "react-animate-height";
+
 import { checkPaymentDate } from "../../../../../util/dates";
 import { getUserId } from "../../../../../lib/user";
+import { AgreementSingleCauseAreaDetails } from "./singleCauseAreaDetails/AgreementSingleCauseAreaDetails";
+import { useCauseAreas } from "../../../../../_queries";
+import { AgreementMultipleCauseAreaDetails } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
 
 export const AgreementDetails: React.FC<{
   type: "Vipps" | "AvtaleGiro";
   inputSum: number;
   inputDate: number;
   inputDistribution: Distribution;
+  taxUnits: TaxUnit[];
   endpoint: string;
-}> = ({ type, inputSum, inputDate, inputDistribution, endpoint }) => {
+}> = ({ type, inputSum, inputDate, inputDistribution, taxUnits, endpoint }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
   // Parse and stringify to make a deep copy of the object
@@ -40,32 +43,32 @@ export const AgreementDetails: React.FC<{
     JSON.parse(JSON.stringify(inputDistribution)),
   );
   const [day, setDay] = useState(inputDate);
-  const [sum, setSum] = useState(inputSum.toFixed(0));
-
-  const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
+  const [sum, setSum] = useState(inputSum);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [loadingChanges, setLoadingChanges] = useState(false);
 
-  /**
-   * Saves an agreement if any changes have been made.
-   * @returns a toast indicating whether the changes are saved or not.
-   */
-  /**
-   * Saves an agreement if any changes have been made.
-   * @returns a toast indicating whether the changes are saved or not.
-   */
+  const {
+    data: systemCauseAreas,
+    error: causeAreasError,
+    loading: causeAreasLoading,
+    isValidating: causeAreasIsValidating,
+  } = useCauseAreas(getAccessTokenSilently);
+
   const save = async () => {
     const token = await getAccessTokenSilently();
     const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution);
-    const sumChanged = parseFloat(sum) !== inputSum;
+    const sumChanged = sum !== inputSum;
     const dayChanged = day !== inputDate;
+
+    /*
     const distSum = distribution.shares.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
 
     if (distSum !== 100 || parseFloat(sum) < 1) {
       invalidInputToast();
       return;
     }
+    */
 
     if (!distributionChanged && !dayChanged && !sumChanged) {
       noChangesToast();
@@ -88,7 +91,7 @@ export const AgreementDetails: React.FC<{
       }
 
       if (sumChanged) {
-        result = await updateVippsAgreementPrice(endpoint, parseFloat(sum), token);
+        result = await updateVippsAgreementPrice(endpoint, sum, token);
       }
 
       if (result != null) {
@@ -111,7 +114,7 @@ export const AgreementDetails: React.FC<{
       }
 
       if (sumChanged) {
-        result = await updateAvtaleagreementAmount(endpoint, parseFloat(sum) * 100, token);
+        result = await updateAvtaleagreementAmount(endpoint, sum * 100, token);
       }
 
       if (result !== null) {
@@ -149,7 +152,27 @@ export const AgreementDetails: React.FC<{
     }
   };
 
-  if (!distribution.shares) {
+  if (causeAreasLoading) {
+    return (
+      <div className={style.errorWrapper}>
+        <p>Laster inn...</p>
+      </div>
+    );
+  } else if (causeAreasError) {
+    return (
+      <div className={style.errorWrapper}>
+        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
+      </div>
+    );
+  } else if (!systemCauseAreas) {
+    return (
+      <div className={style.errorWrapper}>
+        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
+      </div>
+    );
+  }
+
+  if (!distribution.causeAreas || distribution.causeAreas.some((c) => !c.organizations)) {
     return (
       <div className={style.errorWrapper}>
         <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
@@ -158,48 +181,37 @@ export const AgreementDetails: React.FC<{
   } else {
     return (
       <div className={style.wrapper} data-cy="agreement-list-details">
-        <div className={style.values}>
-          <div>
-            <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
-          </div>
-          <div>
-            <input
-              type="text"
-              defaultValue={inputSum}
-              onChange={(e) => setSum(e.target.value)}
-              data-cy="agreement-list-amount-input"
-            />
-            <span>kr</span>
-          </div>
-          <TaxUnitSelector
-            selected={distribution.taxUnit?.archived === null ? distribution.taxUnit : null}
-            onChange={(unit) => setDistribution({ ...distribution, taxUnit: unit })}
-            onAddNew={() => setAddTaxUnitOpen(true)}
-          />
-          <EffektCheckbox
-            checked={distribution.standardDistribution}
-            onChange={(standard: boolean) =>
-              setDistribution({ ...distribution, standardDistribution: standard })
-            }
-          >
-            Smart fordeling
-          </EffektCheckbox>
-        </div>
+        {systemCauseAreas.length > 1 && (
+          <AgreementSingleCauseAreaDetails
+            distribution={distribution}
+            setDistribution={setDistribution}
+            day={day}
+            setDay={setDay}
+            sum={sum}
+            setSum={setSum}
+            taxUnits={taxUnits}
+          ></AgreementSingleCauseAreaDetails>
+        )}
 
-        <AnimateHeight
-          height={!distribution.standardDistribution ? "auto" : 0}
-          animateOpacity={true}
-        >
-          <div className={style.distribution}>
-            <DistributionController
-              distribution={distribution}
-              onChange={(dist) => setDistribution(dist)}
-            />
-          </div>
-        </AnimateHeight>
+        {systemCauseAreas.length === 1 && (
+          <AgreementMultipleCauseAreaDetails
+            systemCauseAreas={systemCauseAreas}
+            distribution={distribution}
+            setDistribution={setDistribution}
+            day={day}
+            setDay={setDay}
+            sum={sum}
+            setSum={setSum}
+            taxUnits={taxUnits}
+          ></AgreementMultipleCauseAreaDetails>
+        )}
 
         <div className={style.actions}>
-          <EffektButton onClick={() => setLightboxOpen(true)} cy="btn-cancel-agreement">
+          <EffektButton
+            variant={EffektButtonVariant.SECONDARY}
+            onClick={() => setLightboxOpen(true)}
+            cy="btn-cancel-agreement"
+          >
             Avslutt avtale
           </EffektButton>
           <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
@@ -207,17 +219,6 @@ export const AgreementDetails: React.FC<{
           </EffektButton>
         </div>
 
-        {addTaxUnitOpen && (
-          <TaxUnitCreateModal
-            open={addTaxUnitOpen}
-            onFailure={() => {}}
-            onSuccess={(unit: TaxUnit) => {
-              setDistribution({ ...distribution, taxUnit: unit });
-              setAddTaxUnitOpen(false);
-            }}
-            onClose={() => setAddTaxUnitOpen(false)}
-          />
-        )}
         <Lightbox
           open={lightboxOpen}
           onConfirm={() => cancel()}
@@ -226,7 +227,7 @@ export const AgreementDetails: React.FC<{
           <div className={style.textWrapper}>
             <h5>Avslutt avtale</h5>
             <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
-            {checkPaymentDate(new Date(), day) ? (
+            {checkPaymentDate(new Date(), day) && type === "AvtaleGiro" ? (
               <p>
                 Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
                 sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i

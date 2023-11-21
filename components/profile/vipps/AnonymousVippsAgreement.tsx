@@ -7,7 +7,7 @@ import { DatePickerInput } from "../../shared/components/DatePicker/DatePickerIn
 import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../shared/components/EffektCheckbox/EffektCheckbox";
 import { Lightbox } from "../../shared/components/Lightbox/Lightbox";
-import { DistributionController } from "../shared/Distribution";
+import { DistributionController } from "../shared/DistributionCauseAreaInput/Distribution";
 import {
   updateAnonymousVippsAgreementDistribution,
   cancelAnonymousVippsAgreement,

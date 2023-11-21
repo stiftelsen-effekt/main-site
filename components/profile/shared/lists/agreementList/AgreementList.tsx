@@ -1,4 +1,4 @@
-import { AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../../../../models";
+import { AvtaleGiroAgreement, Distribution, TaxUnit, VippsAgreement } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
@@ -21,8 +21,18 @@ export const AgreementList: React.FC<{
   supplemental: string;
   emptyString: string;
   distributions: Map<string, Distribution>;
+  taxUnits: TaxUnit[];
   expandable?: boolean;
-}> = ({ avtalegiro, vipps, title, supplemental, emptyString, distributions, expandable }) => {
+}> = ({
+  avtalegiro,
+  vipps,
+  title,
+  supplemental,
+  emptyString,
+  distributions,
+  taxUnits,
+  expandable,
+}) => {
   const headers = [
     {
       label: "Type",
@@ -92,6 +102,7 @@ export const AgreementList: React.FC<{
         type={agreement.type}
         endpoint={agreement.endpoint}
         inputDistribution={distributions.get(agreement.KID) as Distribution}
+        taxUnits={taxUnits}
         inputSum={agreement.amount}
         inputDate={agreement.date}
       />
