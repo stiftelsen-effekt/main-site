@@ -74,6 +74,7 @@ export const GenericPage = withStaticProps(
         inngress={header.inngress}
         links={header.links}
         layout={header.layout}
+        coverPhoto={header.coverPhoto}
       />
 
       <BlockContentRenderer content={content} />
@@ -116,6 +117,9 @@ const fetchGenericPage = groq`
     header {
       ...,
       seoImage{
+        asset->,
+      },
+      pageHeader {
         asset->,
       },
       ${linksContentQuery}

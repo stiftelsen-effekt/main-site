@@ -22,6 +22,7 @@ export default {
       type: "string",
       title: "Title",
       group: "content",
+      hidden: ({ parent }: any) => parent.layout === "coverPhoto",
     },
     {
       name: "inngress",
@@ -29,6 +30,14 @@ export default {
       type: "text",
       rows: 3,
       group: "content",
+      hidden: ({ parent }: any) => parent.layout === "coverPhoto",
+    },
+    {
+      name: "coverPhoto",
+      title: "Cover photo",
+      type: "image",
+      group: "content",
+      hidden: ({ parent }: any) => parent.layout !== "coverPhoto",
     },
     {
       name: "layout",
@@ -36,7 +45,7 @@ export default {
       type: "string",
       group: "content",
       options: {
-        list: ["default", "centered", "hero"],
+        list: ["default", "centered", "hero", "coverPhoto"],
       },
       initialValue: "default",
     },
