@@ -4,8 +4,8 @@ import styles from "./InterventionWidget.module.scss";
 import { LinkType, Links } from "../Links/Links";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { thousandize } from "../../../../util/formatting";
-import { NavLink } from "../../layout/navbar";
 import { PortableText } from "@portabletext/react";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export type SanityIntervention = {
   title: string;
