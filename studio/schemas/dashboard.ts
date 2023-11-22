@@ -20,14 +20,6 @@ export default {
         "Entry point for dashboard. Please note that this must be an allowed redirect URI in Auth0.",
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
-    {
-      name: "tax_slug",
-      title: "Tax slug",
-      type: "slug",
-      initialValue: "taxes",
-      description: "Relative to dashboard",
-      validation: (Rule: any) => Rule.required().custom(isShallowSlug),
-    },
   ],
   preview: {
     select: {

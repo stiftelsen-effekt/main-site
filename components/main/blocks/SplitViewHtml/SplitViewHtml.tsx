@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./SplitViewHtml.module.scss";
 import { LinkType } from "../Links/Links";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links } from "../Links/Links";
 import { PortableText } from "@portabletext/react";
 
