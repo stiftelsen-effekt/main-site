@@ -3,7 +3,7 @@ import styles from "./SplitView.module.scss";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType } from "../Links/Links";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links } from "../Links/Links";
 
 export interface SplitView {

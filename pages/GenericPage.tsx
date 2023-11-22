@@ -2,13 +2,13 @@ import { groq } from "next-sanity";
 import { linksContentQuery, pageContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
-import { Navbar } from "../components/main/layout/navbar";
+import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -31,14 +31,15 @@ export const GenericPage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
       data: {
         result,
         query: fetchGenericPage,
         queryParams: { slug },
       },
-    };
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, preview }) => {
+)(({ data, preview, navbarData }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -47,7 +48,6 @@ export const GenericPage = withStaticProps(
 
   const header = page.header;
   const content = page.content;
-  const settings = data.result.settings[0];
 
   let cannonicalUrlDefault: string = `https://gieffektivt.no/${page.slug?.current ?? ""}`;
   if (page.slug?.current == "/") {
@@ -65,7 +65,7 @@ export const GenericPage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbarData} />
       </MainHeader>
 
       <PageHeader
@@ -91,26 +91,6 @@ const fetchGenericPages = groq`
 
 const fetchGenericPage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,
