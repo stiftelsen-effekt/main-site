@@ -18,6 +18,12 @@ export default {
       title: "Swapped",
     },
     {
+      name: "rowSwapped",
+      type: "boolean",
+      title: "Row Swapped",
+      description: "If checked text is on top in mobile view",
+    },
+    {
       name: "darktext",
       type: "boolean",
       title: "Dark text",

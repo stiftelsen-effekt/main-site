@@ -92,6 +92,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             title={block.title}
                             swapped={block.swapped}
+                            rowSwapped={block.rowSwapped}
                             paragraph={block.paragraph}
                             links={block.links}
                             image={block.image}
@@ -104,6 +105,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             title={block.title}
                             swapped={block.swapped}
+                            rowSwapped={block.rowSwapped}
                             paragraph={block.paragraph}
                             links={block.links}
                             code={block.htmlcode}

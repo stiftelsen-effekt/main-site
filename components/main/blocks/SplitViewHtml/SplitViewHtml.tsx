@@ -8,13 +8,17 @@ import { PortableText } from "@portabletext/react";
 export const SplitViewHtml: React.FC<{
   title: string;
   swapped?: boolean;
+  rowSwapped?: boolean;
   darktext?: boolean;
   paragraph: any[];
   links: (LinkType | NavLink)[];
   code: string;
-}> = ({ title, swapped, darktext, paragraph, links, code }) => {
+}> = ({ title, swapped, rowSwapped, darktext, paragraph, links, code }) => {
   const classes = [styles.splitview];
+
   if (swapped) classes.push(styles.swapped);
+
+  if (rowSwapped) classes.push(styles.rowSwapped);
 
   if (darktext) classes.push(styles.darktext);
 
