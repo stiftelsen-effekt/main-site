@@ -20,7 +20,7 @@ import { wealthMountainGraphData } from "./data";
 import { taxTable } from "./taxTable";
 import styles from "./WealthCalculator.module.scss";
 import { LinkType } from "../Links/Links";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export const WealthCalculator: React.FC<{
   title: string;

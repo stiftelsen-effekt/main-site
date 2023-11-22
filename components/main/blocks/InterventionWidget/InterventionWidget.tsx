@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./InterventionWidget.module.scss";
 import { InterventionWidgetOutput, SanityIntervention } from "./InterventionWidgetOutput";
 import { LinkType } from "../Links/Links";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export interface InterventionWidgetProps {
   default_sum: number;
