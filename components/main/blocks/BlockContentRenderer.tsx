@@ -177,8 +177,8 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         return (
                           <WealthCalculator
                             key={block._key || block._id}
+                            title={block.title}
                             showImpact={block.show_impact}
-                            interventions={block.interventions}
                             explanation={block.data_explanation}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
@@ -186,6 +186,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            intervention_configuration={block.intervention_configuration}
                             defaultDonationPercentage={block.donation_percentage}
                           />
                         );
@@ -232,6 +233,11 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             title={block.title}
                             default_sum={block.default_sum}
                             interventions={block.interventions}
+                            explanationLabel={block.explanation_label}
+                            explanationText={block.explanation_text}
+                            explanationLinks={block.explanation_links}
+                            currency={block.currency}
+                            locale={block.locale}
                           />
                         );
                       case "introsection": {
