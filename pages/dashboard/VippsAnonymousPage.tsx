@@ -6,13 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { linksContentQuery, useAnonymousVippsAgreement } from "../../_queries";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { ProfileLayout } from "../../components/profile/layout/layout";
-import { Navbar } from "../../components/profile/layout/navbar";
 import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.server";
 import styles from "../../styles/Agreements.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
+import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient(false).fetch<FetchVippsAnonymousPageResult>(
@@ -36,14 +36,14 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
   return {
     appStaticProps,
     preview: preview,
+    navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
     data: {
       result: result,
       query: fetchVippsAnonymousPage,
       queryParams: {},
     },
-  };
-})(({ data, preview }) => {
-  const settings = data.result.settings[0];
+  }; // satisfies GeneralPageProps (requires next@13);;
+})(({ data, navbarData, preview }) => {
   const dashboard = data.result.dashboard[0];
   const router = useRouter();
   const agreementCode = router.query["agreement-code"] as string;
@@ -68,7 +68,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar elements={dashboard.main_navigation} logo={settings.logo} />
+        <Navbar {...navbarData} />
       </MainHeader>
 
       <PageContent>
@@ -139,8 +139,7 @@ export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview:
 });
 
 type FetchVippsAnonymousPageResult = {
-  settings: any[];
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   vipps?: Array<{
     anonymous_page: Record<string, any> & {
       slug: {
@@ -152,47 +151,10 @@ type FetchVippsAnonymousPageResult = {
 
 const fetchVippsAnonymousPage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
   },
   "vipps": *[_id == "vipps"] {
     anonymous_page->{

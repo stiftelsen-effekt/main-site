@@ -2,7 +2,7 @@ import { groq } from "next-sanity";
 import { linksContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Navbar } from "../components/main/layout/navbar";
+import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
@@ -10,7 +10,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
@@ -26,13 +26,14 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
   return {
     appStaticProps,
     preview: preview,
+    navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
     data: {
       result,
       query: fetchVipps,
       queryParams: {},
     },
-  };
-})(({ data, preview }) => {
+  }; // satisfies GeneralPageProps (requires next@13);;
+})(({ data, preview, navbarData }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -40,7 +41,6 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
     return <div>404{preview ? " - Attempting to load preview" : null}</div>;
   }
 
-  const settings = data.result.settings[0];
   const header = page.header;
 
   let email;
@@ -60,7 +60,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbarData} />
       </MainHeader>
 
       <SectionContainer>
@@ -88,7 +88,6 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 });
 
 type FetchVippsResult = {
-  settings: any[];
   vipps?: Array<{
     agreement_page: Record<string, any> & {
       slug: {
@@ -100,26 +99,6 @@ type FetchVippsResult = {
 
 const fetchVipps = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {

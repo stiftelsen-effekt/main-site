@@ -36,6 +36,7 @@ export const WealthCalculator: React.FC<{
   explanation?: any;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
+  defaultDonationPercentage?: number;
 }> = ({
   title,
   showImpact,
@@ -43,12 +44,13 @@ export const WealthCalculator: React.FC<{
   explanation,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
+  defaultDonationPercentage = 10,
 }) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [numberOfAdults, setNumberOfParents] = useState(1);
-  const [donationPercentage, setDonationPercentage] = useState(10);
+  const [donationPercentage, setDonationPercentage] = useState(defaultDonationPercentage);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [chartSize, setChartSize] = useState<{

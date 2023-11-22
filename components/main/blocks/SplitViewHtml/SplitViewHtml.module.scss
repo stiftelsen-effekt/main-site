@@ -60,16 +60,26 @@
     left: 0;
   }
 
-  .swapped .splitviewtext,
+  .swapped:not(.rowSwapped) .splitviewtext,
   .splitviewtext {
     grid-column: auto;
     grid-row: 2/2;
   }
 
-  .swapped .splitviewimage,
+  .swapped:not(.rowSwapped) .splitviewimage,
   .splitviewimage {
     grid-column: auto;
     grid-row: 1/1;
+  }
+
+  .rowSwapped .splitviewtext {
+    grid-column: auto;
+    grid-row: 1/1;
+  }
+
+  .rowSwapped .splitviewimage {
+    grid-column: auto;
+    grid-row: 2/2;
   }
 
   .splitviewtext {

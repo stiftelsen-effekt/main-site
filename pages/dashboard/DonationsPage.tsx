@@ -1,7 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps, LayoutType } from "../_app.page";
+import {
+  filterPageToSingleItem,
+  GeneralPageProps,
+  getAppStaticProps,
+  LayoutType,
+} from "../_app.page";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
@@ -16,7 +21,6 @@ import {
 } from "../../_queries";
 import Head from "next/head";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { Navbar } from "../../components/profile/layout/navbar";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
@@ -33,6 +37,7 @@ import {
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
 import { groq } from "next-sanity";
+import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -91,14 +96,15 @@ export const DonationsPage = withStaticProps(
       appStaticProps,
       preview: preview,
       filterYear,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
       data: {
         result: result,
         query: fetchDonationsPage,
         queryParams: {},
       },
-    };
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, filterYear }) => {
+)(({ data, navbarData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const settings = data.result.settings[0];
 
@@ -201,7 +207,7 @@ export const DonationsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+          <Navbar {...navbarData} />
         </MainHeader>
 
         <PageContent>
@@ -323,7 +329,7 @@ export const DonationsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbarData} />
         <DonationYearMenu
           totalTitle={page.year_menu_total_title}
           years={years}
@@ -386,11 +392,10 @@ type DonationsPageData = {
 
 type FetchDonationsPageResult = {
   settings: {
-    logo: any;
     main_currency: string;
     main_locale: string;
   }[];
-  dashboard?: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
   page: DonationsPageData | DonationsPageData[] | null;
   footer: any[];
   widget: any[];
@@ -399,30 +404,12 @@ type FetchDonationsPageResult = {
 const fetchDonationsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
-    logo,
     main_currency,
     main_locale,
   },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
-    },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
     }
   },
   "page": *[_id == "donations"] {

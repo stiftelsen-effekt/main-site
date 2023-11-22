@@ -92,6 +92,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             title={block.title}
                             swapped={block.swapped}
+                            rowSwapped={block.rowSwapped}
                             paragraph={block.paragraph}
                             links={block.links}
                             image={block.image}
@@ -104,6 +105,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             title={block.title}
                             swapped={block.swapped}
+                            rowSwapped={block.rowSwapped}
                             paragraph={block.paragraph}
                             links={block.links}
                             code={block.htmlcode}
@@ -185,6 +187,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                               block.income_percentile_label_template_string
                             }
                             intervention_configuration={block.intervention_configuration}
+                            defaultDonationPercentage={block.donation_percentage}
                           />
                         );
                       case "wealthcalculatorteaser":
