@@ -46,6 +46,9 @@ export default async function preview(req: NextApiRequest, res: NextApiResponse)
     case "donationwidget":
       res.writeHead(307, { Location: `/` });
       break;
+    case "site_settings":
+      res.writeHead(307, { Location: `/` });
+      break;
     case "donations":
       const path = await getDonationsPagePath();
       if (path == null) {

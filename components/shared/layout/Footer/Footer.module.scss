@@ -1,17 +1,21 @@
+@use "sass:math";
+
 .grid {
   border-top: solid 1px var(--primary);
   margin-top: 60px;
   font-family: "ESKlarheitGrotesk", sans-serif;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-auto-columns: 1fr;
   grid-template-rows: repeat(2, max-content);
   column-gap: 50px;
+  row-gap: 1.5rem;
   padding-top: 80px;
   padding-bottom: 100px;
   position: relative;
   color: var(--primary);
   margin-left: 5vw;
   margin-right: 5vw;
+  padding-bottom: 10rem;
 }
 
 .category h3 {
@@ -28,8 +32,8 @@
 
 .category ul li,
 .category ul li a {
-  line-height: 28px;
-  font-size: 18px;
+  line-height: 2rem;
+  font-size: 1.2rem;
 }
 
 .category ul li a:hover {
@@ -53,15 +57,46 @@
   font-family: "ESKlarheitKurrent";
 }
 
-.newsletter {
-  grid-column: 2 / 4;
-  max-width: 360px;
+/* SASS loop over grid_n */
+/* Make newsletter take up one more than half the grid (excluding the leftmost symbol) if odd, or half if even */
+.grid_0 {
+  .newsletter {
+    grid-column: 2 / 3;
+  }
+
+  .sanity {
+    grid-column: 3 / 4;
+  }
+}
+.grid_1 {
+  .newsletter {
+    grid-column: 2 / 3;
+  }
+
+  .sanity {
+    grid-column: 3 / 4;
+  }
+}
+@for $i from 2 through 6 {
+  .grid_#{$i} {
+    .newsletter {
+      grid-column: 2 / #{math.ceil($i/2) + 2};
+    }
+
+    .sanity {
+      grid-column: #{math.ceil($i/2) + 2} / #{$i + 2};
+    }
+  }
 }
 
-/** ----- Sanity link --------*/
+.newsletter {
+  max-width: 360px;
+  grid-row: 2;
+}
+
 .sanity {
-  grid-column: 4 / 6;
-  font-size: 18px;
+  font-size: 1rem;
+  grid-row: 2;
 }
 
 .sanity a:link {
@@ -70,45 +105,62 @@
 
 @media only screen and (max-width: 1180px) {
   .grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, max-content);
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
     column-gap: 10px;
-    grid-row-gap: 50px;
+    grid-row-gap: 0.5rem;
     padding-top: 60px;
     margin-top: 50px;
-    font-size: 18px;
     padding-bottom: 100px;
-  }
-
-  .category {
-    font-size: 18px;
-  }
-
-  .newsletter {
-    grid-row: 1;
-    grid-column: 1 / 3;
-    max-width: initial;
-  }
-
-  .sanity {
-    grid-row: 4;
-    grid-column: 1 / 3;
-    font-size: 18px;
   }
 
   .logo__bottom {
     grid-row: auto;
-    grid-column: 1 / 3;
-  }
-
-  .logo__bottom {
-    grid-row: 5;
+    grid-column: 1;
+    padding-top: 2rem;
   }
 
   .logo__bottom figure p {
     font-size: 180px;
     line-height: 140px;
     text-align: center;
+  }
+
+  .newsletter {
+    grid-row: 1;
+    padding-bottom: 2rem;
+  }
+
+  .sanity {
+    padding: 2rem 0;
+  }
+
+  .grid_0,
+  .grid_1,
+  .grid_2,
+  .grid_3,
+  .grid_4,
+  .grid_5,
+  .grid_6 {
+    .newsletter {
+      grid-column: 1;
+    }
+
+    .sanity {
+      grid-column: 1;
+    }
+  }
+
+  @for $i from 0 through 6 {
+    .grid_#{$i} {
+      .sanity {
+        grid-row: #{$i + 2};
+      }
+
+      .logo__bottom {
+        grid-row: #{$i + 3};
+      }
+    }
   }
 }
 
