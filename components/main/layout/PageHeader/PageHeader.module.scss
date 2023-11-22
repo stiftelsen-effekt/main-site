@@ -87,6 +87,10 @@
   margin-bottom: 6px;
 }
 
+.pageheader.coverPhoto {
+  min-height: 300px;
+}
+
 @media only screen and (max-width: 1180px) {
   .pageheader.centered,
   .pageheader.pageheadermeta.centered {
@@ -152,6 +156,10 @@
   .pageheader.pageheadermeta.centered div p {
     margin-top: 0;
     margin-bottom: 30px;
+  }
+
+  .pageheader.coverPhoto {
+    min-height: 0;
   }
 }
 

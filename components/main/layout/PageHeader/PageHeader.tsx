@@ -2,13 +2,16 @@ import React from "react";
 import style from "./PageHeader.module.scss";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links, LinkType } from "../../blocks/Links/Links";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
-  layout?: "default" | "centered" | "hero";
+  layout?: "default" | "centered" | "hero" | "coverPhoto";
+  coverPhoto?: SanityImageSource;
   links?: (LinkType | NavLink)[];
-}> = ({ title, inngress, links, layout = "default" }) => {
+}> = ({ title, inngress, links, layout = "default", coverPhoto }) => {
   const hasmetacontent = inngress || links;
 
   return (
@@ -18,7 +21,10 @@ export const PageHeader: React.FC<{
       }`}
     >
       <div data-cy="header-container">
-        <h1>{title}</h1>
+        {layout !== "coverPhoto" && title && <h1>{title}</h1>}
+        {layout === "coverPhoto" && coverPhoto && (
+          <ResponsiveImage image={coverPhoto} alt={title} layout={"responsive"} />
+        )}
       </div>
       {hasmetacontent ? (
         <div>
