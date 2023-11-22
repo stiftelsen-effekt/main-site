@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import styles from "./InterventionWidget.module.scss";
-import { Links } from "../Links/Links";
+import { LinkType, Links } from "../Links/Links";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { thousandize } from "../../../../util/formatting";
+import { PortableText } from "@portabletext/react";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export type SanityIntervention = {
   title: string;
@@ -23,7 +25,12 @@ type Intervention = {
 export const InterventionWidgetOutput: React.FC<{
   sum: number;
   interventions: SanityIntervention[] | undefined;
-}> = ({ sum, interventions }) => {
+  explanationLabel?: string;
+  explanationText?: any;
+  explanationLinks?: (LinkType | NavLink)[];
+  currency: string;
+  locale: string;
+}> = ({ sum, interventions, explanationLabel, explanationLinks, explanationText, currency }) => {
   const [contextExpanded, setContextExpanded] = useState(false);
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
   const [selectedIntervention, setSelectedIntervention] = useState<string>(
@@ -34,7 +41,7 @@ export const InterventionWidgetOutput: React.FC<{
     if (interventions && interventions.length > 0) {
       const url = `https://impact.gieffektivt.no/api/evaluations?${interventions
         .map((i: any) => `charity_abbreviation=${i.abbreviation}&`)
-        .join("")}currency=NOK`;
+        .join("")}currency=${currency}`;
       fetch(url).then((res) => {
         res.json().then((data) => {
           const costs = new Map();
@@ -128,38 +135,15 @@ export const InterventionWidgetOutput: React.FC<{
                   className={contextExpanded ? styles.captionopen : ""}
                   onClick={() => setContextExpanded(!contextExpanded)}
                 >
-                  Hvordan er dette sammenlignet med andre organisasjoner?&nbsp;&nbsp;
+                  {explanationLabel}&nbsp;&nbsp;
                 </span>
               </div>
             </div>
             <AnimateHeight duration={300} height={contextExpanded ? "auto" : 0} animateOpacity>
               <div className={styles.context}>
-                Tallene er basert på analysene til GiveWell. De gir et omtrentlig bilde på hva våre
-                anbefalte organisasjoner får ut av pengene. Alle tre tiltak er topp anbefalt som de
-                mest kostnadseffektive måtene å redde liv eller forbedre den økonomiske situasjonen
-                til ekstremt fattige. Mange bistandsorganisasjoner viser til overdrevne og
-                misvisende tall i sin markedsføring. Bak våre tall ligger tusenvis av timer med
-                undersøkelser og inkluderer alle kostnader, inkludert planlegging, innkjøp,
-                distribusjon, opplæring og kontroll.
+                <PortableText value={explanationText} />
               </div>
-              <Links
-                links={[
-                  {
-                    _key: "givewell",
-                    _type: "link",
-                    title: "GiveWell's analyser",
-                    url: "https://www.givewell.org/impact-estimates",
-                    newtab: true,
-                  },
-                  {
-                    _key: "organiasjoner",
-                    _type: "navitem",
-                    title: "Anbefalte organisasjoner",
-                    pagetype: "organizations",
-                    slug: "organizations",
-                  },
-                ]}
-              ></Links>
+              {explanationLinks && <Links links={explanationLinks}></Links>}
             </AnimateHeight>
           </>
         )}

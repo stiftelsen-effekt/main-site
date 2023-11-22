@@ -7,7 +7,7 @@ import { calculateWealthPercentile } from "../WealthCalculator/WealthCalculator"
 import { PortableText } from "@portabletext/react";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import Link from "next/link";
 import { useRouterContext } from "../../../../context/RouterContext";
 

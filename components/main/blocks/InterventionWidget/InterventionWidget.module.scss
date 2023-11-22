@@ -175,7 +175,10 @@
 
 .output .context {
   padding-top: 30px;
-  font-size: 16px;
+
+  p {
+    font-size: 1rem;
+  }
 }
 
 @media only screen and (max-width: 1180px) {

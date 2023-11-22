@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { LinkType } from "../../../main/blocks/Links/Links";
-import { NavLink } from "../../../main/layout/navbar";
+import { NavLink } from "../../components/Navbar/Navbar";
 import styles from "./Footer.module.scss";
 import { NewsletterSignup } from "../../../main/blocks/NewsletterSignup/NewsletterSignup";
 import { withStaticProps } from "../../../../util/withStaticProps";

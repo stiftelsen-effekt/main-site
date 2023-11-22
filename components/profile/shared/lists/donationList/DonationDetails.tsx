@@ -8,7 +8,7 @@ import { mapNameToOrgAbbriv } from "../../../../../util/mappings";
 import AnimateHeight from "react-animate-height";
 import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
-import { NavLink } from "../../../../main/layout/navbar";
+import { NavLink } from "../../../../shared/components/Navbar/Navbar";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;

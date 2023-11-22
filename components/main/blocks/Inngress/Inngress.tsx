@@ -1,6 +1,6 @@
 import styles from "./Inngress.module.scss";
 
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { LinkType, Links } from "../Links/Links";
 import { PortableText } from "@portabletext/react";
 
