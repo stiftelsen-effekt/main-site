@@ -9,7 +9,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require("./cypress/plugins/index.js")(on, config);
     },
-    supportFile: "cypress/support/commands.js",
+    supportFile: "cypress/support/e2e.js",
     baseUrl: "http://localhost:3000",
     specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
   },
