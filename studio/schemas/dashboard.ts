@@ -12,6 +12,20 @@ export default {
       of: [{ type: "navitem" }, { type: "navgroup" }],
     },
     {
+      name: "dashboard_label",
+      title: "Dashboard label",
+      type: "string",
+      description: "Label for dashboard link in main menu",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "logout_label",
+      title: "Logout label",
+      type: "string",
+      description: "Label for logging out in main menu",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "dashboard_slug",
       title: "Dashboard slug",
       type: "slug",
@@ -23,7 +37,7 @@ export default {
   ],
   preview: {
     select: {
-      title: "dashboard_slug.current",
+      title: "dashboard_label",
     },
   },
 } as const;

@@ -67,10 +67,6 @@ function MyApp({
     return <Component {...pageProps} />;
   }
 
-  const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
-    appStaticProps.layout
-  ];
-
   if (previewData?.page && Array.isArray(previewData.page)) {
     previewData.page = filterPageToSingleItem(previewData, preview);
   }
@@ -91,9 +87,15 @@ function MyApp({
     >
       <Provider store={store}>
         <RouterContext.Provider value={routerContextValue.current}>
-          <PageLayout {...appStaticProps.layoutProps}>
-            <Component {...pageProps} />
-          </PageLayout>
+          {appStaticProps.layout === LayoutType.Default ? (
+            <Layout {...appStaticProps.layoutProps}>
+              <Component {...pageProps} />
+            </Layout>
+          ) : (
+            <ProfileLayout {...appStaticProps.layoutProps}>
+              <Component {...pageProps} />
+            </ProfileLayout>
+          )}
         </RouterContext.Provider>
       </Provider>
     </PlausibleProvider>
@@ -110,10 +112,15 @@ export async function getAppStaticProps({
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
-    layout,
-    layoutProps: await (layout === LayoutType.Default
-      ? Layout.getStaticProps({ preview })
-      : ProfileLayout.getStaticProps({ preview })),
+    ...(layout === LayoutType.Default
+      ? {
+          layout: LayoutType.Default as const,
+          layoutProps: await Layout.getStaticProps({ preview }),
+        }
+      : {
+          layout: LayoutType.Profile as const,
+          layoutProps: await ProfileLayout.getStaticProps({ preview }),
+        }),
   };
   return appStaticProps;
 }

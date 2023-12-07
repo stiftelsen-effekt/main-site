@@ -35,11 +35,14 @@ type QueryResult = {
     {
       logo: SanityImageSource;
       main_navigation: MainNavbarItem[];
+      donate_label: string;
     },
   ];
   dashboard: [
     {
       main_navigation: MainNavbarItem[];
+      dashboard_label: string;
+      logout_label: string;
     },
   ];
 };
@@ -47,6 +50,8 @@ type QueryResult = {
 const query = groq`
   {
     "dashboard": *[_id == "dashboard"] {
+      dashboard_label,
+      logout_label,
       main_navigation[] {
         _type == 'navgroup' => {
           _type,
@@ -67,6 +72,7 @@ const query = groq`
     },
     "settings": *[_type == "site_settings"] {
       logo,
+      donate_label,
       main_navigation[] {
         _type == 'navgroup' => {
           _type,
@@ -99,9 +105,14 @@ export const Navbar = withStaticProps(
       dashboard,
       elements: elements.filter((e) => e !== null),
       logo: settings.logo,
+      labels: {
+        donate: settings.donate_label,
+        dashboard: dashboardData.dashboard_label,
+        logout: dashboardData.logout_label,
+      },
     };
   },
-)(({ dashboard, elements, logo }) => {
+)(({ dashboard, elements, logo, labels }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const { user, logout } = useAuth0();
@@ -210,7 +221,7 @@ export const Navbar = withStaticProps(
                 onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
                 extraMargin={true}
               >
-                Logg ut
+                {labels.logout}
               </EffektButton>
             ) : (
               <Link href={dashboardPath.join("/")} passHref>
@@ -219,7 +230,7 @@ export const Navbar = withStaticProps(
                     variant={EffektButtonVariant.SECONDARY}
                     onClick={() => setExpanded(false)}
                   >
-                    Min side
+                    {labels.dashboard}
                   </EffektButton>
                 </a>
               </Link>
@@ -229,7 +240,7 @@ export const Navbar = withStaticProps(
               extraMargin={true}
               onClick={() => setWidgetOpen(true)}
             >
-              Send donasjon
+              {labels.donate}
             </EffektButton>
           </li>
         </ul>

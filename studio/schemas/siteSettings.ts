@@ -25,11 +25,25 @@ export default {
       type: "image",
     },
     {
-      title: "Main Navigation",
       name: "main_navigation",
+      title: "Main Navigation",
       description: "Select pages for the top menu",
       type: "array",
       of: [{ type: "navitem" }, { type: "navgroup" }],
+    },
+    {
+      name: "donate_label",
+      title: "Donate label",
+      type: "string",
+      description: "Label for donate button in main menu",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "donate_label_short",
+      title: "Donate label (Short)",
+      type: "string",
+      description: "Label for the floating donate button",
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "contact",
