@@ -16,11 +16,6 @@ interface Props extends ComponentProps<typeof WidgetType> {
 }
 
 export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
-  const followThreshold = 20;
-  const closeThreshold = 140;
-  const [initialY, setInitialY] = useState(0);
-  const [currentY, setCurrentY] = useState(0);
-  const [dragging, setDragging] = useState(false);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   // On initial load, have no animation
@@ -31,26 +26,21 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
   useEffect(() => setPaneStyle({ display: "block" }), []);
 
   useEffect(() => {
+    let timeoutId: any;
     if (widgetOpen) {
       setPaneStyle({ display: "block" });
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         setWidgetOpenClass(styles.widgetPaneOpen);
       }, 10);
     } else {
       setWidgetOpenClass("");
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         setPaneStyle({ display: "none" });
       }, 200);
     }
+
+    return () => clearTimeout(timeoutId);
   }, [widgetOpen]);
-
-  const delta = currentY - initialY;
-
-  if (widgetOpen && dragging)
-    setPaneStyle({
-      transform: `translateY(${Math.max(delta - followThreshold, 0)}px)`,
-      transition: "none",
-    });
 
   return (
     <aside
@@ -58,26 +48,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
       className={`${styles.widgetPane} ${widgetOpenClass}`}
       style={paneStyle}
     >
-      <div
-        className={styles.widgetPaneHeader}
-        onTouchStart={(e) => {
-          setInitialY(e.touches[0].clientY);
-          setCurrentY(e.touches[0].clientY);
-          setDragging(true);
-        }}
-        onTouchMove={(e) => {
-          setCurrentY(e.touches[0].clientY);
-          return false;
-        }}
-        onTouchEnd={(e) => {
-          setDragging(false);
-          if (delta > closeThreshold) {
-            setWidgetOpen(false);
-          }
-          setInitialY(0);
-          setCurrentY(0);
-        }}
-      ></div>
+      <div className={styles.widgetPaneHeader}></div>
       <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
         <Widget {...widgetProps} />
       </div>
