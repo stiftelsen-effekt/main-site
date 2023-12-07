@@ -33,7 +33,14 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
   return (
     <div className={containerClasses.join(" ")}>
       {isPreview && <PreviewBlock />}
-      <GiveButton inverted={false} onClick={() => setWidgetOpen(true)} />
+      <GiveButton
+        inverted={false}
+        onClick={() => {
+          console.log("Click");
+          console.log(widgetOpen, setWidgetOpen);
+          setWidgetOpen(true);
+        }}
+      />
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
         <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
           <WidgetPane {...widgetData} />
