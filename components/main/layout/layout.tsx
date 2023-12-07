@@ -36,8 +36,6 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
       <GiveButton
         inverted={false}
         onClick={() => {
-          console.log("Click");
-          console.log(widgetOpen, setWidgetOpen);
           setWidgetOpen(true);
         }}
       />
