@@ -71,6 +71,7 @@ import bank from "./types/paymentmethods/bank";
 import swish from "./types/paymentmethods/swish";
 import splitviewhtml from "./types/splitviewhtml";
 import category from "./types/category";
+import giftcardteaser from "./types/giftcardteaser";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -131,6 +132,7 @@ export const types = [
   metareceipt,
   taxdeduction,
   taxstatements,
+  giftcardteaser,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

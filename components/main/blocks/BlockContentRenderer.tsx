@@ -31,6 +31,7 @@ import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
+import { GiftCard } from "./GiftCard/GiftCard";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -274,6 +275,17 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <OrganizationsList
                             key={block._key || block._id}
                             organizations={block.organizations}
+                          />
+                        );
+                      }
+                      case "giftcardteaser": {
+                        return (
+                          <GiftCard
+                            key={block._key || block._id}
+                            title={block.title}
+                            description={block.description}
+                            image={block.image}
+                            links={block.links}
                           />
                         );
                       }

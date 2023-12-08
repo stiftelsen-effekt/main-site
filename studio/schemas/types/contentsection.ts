@@ -76,6 +76,7 @@ export default {
         { type: "giveblock" },
         { type: "givewellstamp" },
         { type: "organizationslist" },
+        { type: "giftcardteaser" },
       ],
       options: {
         editModal: "fullscreen",
