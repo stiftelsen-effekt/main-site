@@ -33,6 +33,26 @@ export const WealthCalculator: React.FC<{
     currency: string;
     locale: string;
   };
+  calculator_input_configuration: {
+    subtitle_label?: string;
+    income_input_configuration: {
+      placeholder?: string;
+      thousand_separator?: string;
+      currency_label?: string;
+    };
+    children_input_configuration: {
+      placeholder?: string;
+      options?: string[];
+    };
+    adults_input_configuration: {
+      placeholder?: string;
+      options?: string[];
+    };
+    donation_percentage_input_configuration: {
+      template_string?: string;
+      locale?: string;
+    };
+  };
   explanation?: any;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
