@@ -32,10 +32,4 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
   ],
-  preview: {
-    select: {
-      title: "quote",
-      subtitle: "quotee",
-    },
-  },
 } as const;
