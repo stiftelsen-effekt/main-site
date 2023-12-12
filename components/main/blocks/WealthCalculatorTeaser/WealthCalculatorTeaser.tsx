@@ -3,13 +3,13 @@ import styles from "./WealthCalculatorTeaser.module.scss";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { wealthMountainGraphData } from "../WealthCalculator/data";
-import { calculateWealthPercentile } from "../WealthCalculator/WealthCalculator";
 import { PortableText } from "@portabletext/react";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import Link from "next/link";
 import { useRouterContext } from "../../../../context/RouterContext";
+import { calculateWealthPercentile } from "../WealthCalculator/_util";
 
 export const WealthCalculatorTeaser: React.FC<{
   title: string;
@@ -117,6 +117,7 @@ export const WealthCalculatorTeaser: React.FC<{
             incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
             afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
             size={chartSize}
+            exchangeRate={10.5}
           />
         </div>
       </div>

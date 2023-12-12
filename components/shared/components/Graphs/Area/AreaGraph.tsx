@@ -9,9 +9,10 @@ const drawChart = (
   donationPercentage: number,
   incomePercentileLabelTemplateString: string,
   afterDonationPercentileLabelTemplateString: string,
+  exchangeRate: number,
   size: { width: number | undefined; height: number | undefined },
 ) => {
-  const incomeXPositon = lineInput / 365 / 10.5;
+  const incomeXPositon = lineInput / 365 / exchangeRate;
   const incomeAfterDonationXPosition = (lineInput * (1 - donationPercentage)) / 365 / 10.5;
   const dataMax = Math.max(...data.map((d) => d.y));
   // Browser window width smaller than or equal to 1180px
@@ -129,6 +130,7 @@ export const AreaChart: React.FC<{
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
   size: { width: number | undefined; height: number | undefined };
+  exchangeRate: number;
 }> = ({
   data,
   lineInput,
@@ -138,6 +140,7 @@ export const AreaChart: React.FC<{
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
   size,
+  exchangeRate,
 }) => {
   const [chart, setChart] = useState<Plot.Plot | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -152,6 +155,7 @@ export const AreaChart: React.FC<{
         donationPercentage,
         incomePercentileLabelTemplateString,
         afterDonationPercentileLabelTemplateString,
+        exchangeRate,
         size,
       );
       svgRef.current.replaceWith(newChart);
@@ -165,6 +169,7 @@ export const AreaChart: React.FC<{
         donationPercentage,
         incomePercentileLabelTemplateString,
         afterDonationPercentileLabelTemplateString,
+        exchangeRate,
         size,
       );
       (chart as any).replaceWith(newChart);
