@@ -20,7 +20,7 @@ export const GiftCard: React.FC<{
   return (
     <div className={styles.giftcard}>
       <div className={styles.giftcardimage}>
-        <ResponsiveImage image={image} />
+        <ResponsiveImage image={image} layout={"responsive"} />
       </div>
       <div className={styles.giftcardtext}>
         <div>
