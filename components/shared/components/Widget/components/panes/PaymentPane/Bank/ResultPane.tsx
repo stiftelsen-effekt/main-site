@@ -82,7 +82,7 @@ export const ResultPane: React.FC<{
 
         {donation.recurring === RecurringDonation.NON_RECURRING &&
           donation.donor?.email !== ANONYMOUS_DONOR.email && (
-            <InfoText>{`Vi har også sendt en mail til ${donation.donor?.email} med informasjon om din donasjon. Sjekk søppelpost-mappen om du ikke har mottatt eposten i løpet av noen minutter.`}</InfoText>
+            <InfoText>{`Vi har også sendt denne informasjonen til ${donation.donor?.email}. Sjekk søppelpost om du ikke har mottatt den etter 5 minutter.`}</InfoText>
           )}
 
         {/* Always show referrals for anonymous donors (ID 1464) */}
