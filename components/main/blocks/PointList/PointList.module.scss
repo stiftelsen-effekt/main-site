@@ -17,6 +17,12 @@
   }
 }
 
+.autogrid {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-flow: row;
+  row-gap: 3rem;
+}
+
 @media only screen and (min-width: 1520px) {
   @for $i from 4 through 12 {
     $columns-per-row: null;
