@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export const getNorwegianTaxEstimate = async (income: number) => {
   const response = await fetch("https://skatteberegning.app.skatteetaten.no/2023", {
     method: "POST",
@@ -231,4 +233,122 @@ export const getSwedishTaxEstimate = async (income: number) => {
     .find((node: any) => node.apiText === "resultatSkatteutrakningen")
     .leafs.find((leaf: any) => leaf.apiText === "slutligSkatt");
   return finalTaxLeaf ? finalTaxLeaf.value : null;
+};
+
+export type AdjustedPPPFactorResult = {
+  adjustedPPPfactor: number;
+  cumulativeInflation: number;
+  pppFactor: number;
+};
+
+export const getNorwegianAdjustedPPPconversionFactor =
+  async (): Promise<AdjustedPPPFactorResult> => {
+    const cumulativeInflation = await getNorwegianInflation2017();
+    const pppFactor = await getPPPfactor2017("NOR");
+
+    const adjustedPPPfactor = pppFactor * (1 + cumulativeInflation);
+
+    return {
+      adjustedPPPfactor,
+      cumulativeInflation,
+      pppFactor,
+    };
+  };
+
+export const getSwedishAdjustedPPPconversionFactor = async (): Promise<AdjustedPPPFactorResult> => {
+  const cumulativeInflation = await getSwedishInflation2017();
+  const pppFactor = await getPPPfactor2017("SE");
+
+  const adjustedPPPfactor = pppFactor * (1 + cumulativeInflation);
+
+  return {
+    adjustedPPPfactor,
+    cumulativeInflation,
+    pppFactor,
+  };
+};
+
+const getPPPfactor2017 = async (countryCode: string) => {
+  const pppFactor = await fetch(
+    `https://api.worldbank.org/v2/country/${countryCode}/indicator/PA.NUS.PPP?date=2017:2017&format=json`,
+  );
+
+  const json = await pppFactor.json();
+
+  console.log("2017 factor", json[1][0].value);
+
+  return json[1][0].value;
+};
+
+const getNorwegianInflation2017 = async () => {
+  let date = DateTime.local();
+
+  let attempts = 0;
+  while (attempts < 12) {
+    date = date.minus({ months: 1 });
+    const inflation = await fetch(
+      `https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=90&endYear=${date.year}&endMonth=${date.month}&language=nb`,
+    );
+    const json = await inflation.json();
+
+    if ("change" in json) {
+      // Percentage change from 2017
+      return json.change;
+    }
+    attempts++;
+  }
+
+  throw new Error("Could not find inflation rate for NOK");
+};
+
+const getSwedishInflation2017 = async () => {
+  let date = DateTime.local();
+
+  let attempts = 0;
+  while (attempts < 12) {
+    date = date.minus({ months: 1 });
+
+    const inflation = await fetch(
+      `https://api.scb.se/OV0104/v1/doris/sv/ssd/START/PR/PR0101/PR0101A/KPItotM`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          query: [
+            {
+              code: "ContentsCode",
+              selection: {
+                filter: "item",
+                values: ["000004VU"],
+              },
+            },
+            {
+              code: "Tid",
+              selection: {
+                filter: "item",
+                values: [`${date.year}M${date.month.toString().padStart(2, "0")}`, "2017M01"],
+              },
+            },
+          ],
+          response: {
+            format: "json",
+          },
+        }),
+      },
+    );
+
+    if (!inflation.ok) {
+      continue;
+    }
+
+    const json = await inflation.json();
+
+    if (json.data.length === 2) {
+      // Percentage change from 2017
+      return (json.data[1].values[0] - json.data[0].values[0]) / json.data[1].values[0];
+    }
+
+    attempts++;
+  }
+
+  throw new Error("Could not find inflation rate for SEK");
 };

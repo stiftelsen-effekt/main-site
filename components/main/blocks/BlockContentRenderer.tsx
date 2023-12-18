@@ -38,6 +38,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
       {content &&
         content.map(
           (section: SectionContainerProps & { _key: string; blocks: any }) =>
+            section &&
             !section.hidden && (
               <SectionContainer
                 key={section._key}
@@ -178,16 +179,21 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <WealthCalculator
                             key={block._key || block._id}
                             title={block.title}
-                            showImpact={block.show_impact}
-                            explanation={block.data_explanation}
+                            explanation={block.explanation}
+                            explenationLabel={block.explenation_label}
+                            xAxixLabel={block.x_axis_label}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
                             }
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            defaultDonationPercentage={block.default_donation_percentage}
+                            showImpact={block.show_impact}
                             intervention_configuration={block.intervention_configuration}
-                            defaultDonationPercentage={block.donation_percentage}
+                            calculator_input_configuration={block.calculator_input_configuration}
+                            currency={block.currency}
+                            locale={block.locale}
                           />
                         );
                       case "wealthcalculatorteaser":

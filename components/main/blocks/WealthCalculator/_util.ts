@@ -1,9 +1,12 @@
 import { getNorwegianTaxEstimate, getSwedishTaxEstimate } from "./_queries";
-import { taxTable } from "./taxTable";
 
-export const calculateWealthPercentile = (data: { x: number; y: number }[], income: number) => {
+export const calculateWealthPercentile = (
+  data: { x: number; y: number }[],
+  income: number,
+  adjustedPPPConversionFactor: number,
+) => {
   const dataSum = data.reduce((acc, curr) => acc + curr.y, 0);
-  const dailyIncome = income / 365 / 10.5;
+  const dailyIncome = income / 365 / adjustedPPPConversionFactor;
   const bucketsSumUpToLineInput = data
     .filter((d) => d.x <= dailyIncome)
     .reduce((acc, curr) => acc + curr.y, 0);

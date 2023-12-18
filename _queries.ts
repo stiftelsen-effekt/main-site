@@ -368,6 +368,8 @@ export const pageContentQuery = `content[] {
         "currency": *[ _type == "site_settings"][0].main_currency,
         "locale": *[ _type == "site_settings"][0].main_locale,
       },
+      "currency": *[ _type == "site_settings"][0].main_currency,
+      "locale": *[ _type == "site_settings"][0].main_locale,
     },
     _type == 'contributorlist' => {
       ...,

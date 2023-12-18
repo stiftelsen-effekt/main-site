@@ -35,6 +35,7 @@ export const WealthCalculatorTeaser: React.FC<{
     width: undefined,
     height: undefined,
   });
+  const [adjustedPPPConversionFactor, setAdjustedPPPConversionFactor] = useState<number>(1);
 
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -109,15 +110,20 @@ export const WealthCalculatorTeaser: React.FC<{
             data={wealthMountainGraphData}
             lineInput={medianIncome}
             donationPercentage={0.1}
-            wealthPercentile={calculateWealthPercentile(wealthMountainGraphData, medianIncome)}
+            wealthPercentile={calculateWealthPercentile(
+              wealthMountainGraphData,
+              medianIncome,
+              adjustedPPPConversionFactor,
+            )}
             afterDonationWealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               medianIncome * 0.9,
+              adjustedPPPConversionFactor,
             )}
             incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
             afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
             size={chartSize}
-            exchangeRate={10.5}
+            adjustedPPPConversionFactor={adjustedPPPConversionFactor}
           />
         </div>
       </div>

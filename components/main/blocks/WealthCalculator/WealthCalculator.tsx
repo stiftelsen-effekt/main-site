@@ -1,15 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { useDebouncedCallback } from "use-debounce";
-import { thousandize } from "../../../../util/formatting";
-import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
-import { WidgetContext } from "../../layout/layout";
 import { BlockContentRenderer } from "../BlockContentRenderer";
-import {
-  InterventionWidgetOutput,
-  SanityIntervention,
-} from "../InterventionWidget/InterventionWidgetOutput";
+import { SanityIntervention } from "../InterventionWidget/InterventionWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 import { LinkType } from "../Links/Links";
@@ -23,8 +17,14 @@ import {
 } from "./_util";
 import { WealthCalculatorSlider } from "./WealthCalculatorSlider";
 import { WealthCalculatorImpact } from "./WealthCalculatorImpact";
+import {
+  AdjustedPPPFactorResult,
+  getNorwegianAdjustedPPPconversionFactor,
+  getSwedishAdjustedPPPconversionFactor,
+} from "./_queries";
+import { DateTime } from "luxon";
 
-export const WealthCalculator: React.FC<{
+type WealthCalculatorProps = {
   title: string;
   showImpact: boolean;
   intervention_configuration: {
@@ -52,7 +52,6 @@ export const WealthCalculator: React.FC<{
     };
     donation_percentage_input_configuration: {
       template_string?: string;
-      locale?: string;
     };
   };
   incomePercentileLabelTemplateString: string;
@@ -61,7 +60,11 @@ export const WealthCalculator: React.FC<{
   explenationLabel?: string;
   explanation?: any;
   xAxixLabel?: string;
-}> = ({
+  currency: string;
+  locale: string;
+};
+
+export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   title,
   showImpact,
   intervention_configuration,
@@ -72,6 +75,8 @@ export const WealthCalculator: React.FC<{
   calculator_input_configuration,
   xAxixLabel,
   explenationLabel,
+  currency,
+  locale,
 }) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
@@ -80,8 +85,31 @@ export const WealthCalculator: React.FC<{
   const [donationPercentage, setDonationPercentage] = useState(defaultDonationPercentage);
   const [loadingPostTaxIncome, setLoadingPostTaxIncome] = useState(false);
   const [postTaxIncome, setPostTaxIncome] = useState<number>(0);
-
   const [explanationOpen, setExplanationOpen] = useState(false);
+  const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult | undefined>();
+
+  /**
+   * Get the adjusted PPP conversion factor for the locale.
+   */
+  useEffect(() => {
+    if (locale === "no") {
+      getNorwegianAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else if (locale === "se") {
+      getSwedishAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else {
+      console.error("Unsupported locale", locale);
+    }
+  }, [setPppConversion]);
+
+  /**
+   * When resizing the window, we need to update the chart size.
+   * This is because observable plot does not support responsive charts.
+   * We need to set the width and height of the chart to the width and height of the container.
+   */
   const [chartSize, setChartSize] = useState<{
     width: number | undefined;
     height: number | undefined;
@@ -89,9 +117,7 @@ export const WealthCalculator: React.FC<{
     width: undefined,
     height: undefined,
   });
-
   const outputRef = useRef<HTMLDivElement>(null);
-
   const updateSizing = () => {
     if (outputRef.current) {
       if (window && window.innerWidth > 1180) {
@@ -120,11 +146,9 @@ export const WealthCalculator: React.FC<{
       }
     }
   };
-
   useEffect(() => {
     debouncedSizingUpdate();
   }, [outputRef]);
-
   const debouncedSizingUpdate = useDebouncedCallback(() => updateSizing(), 100, {
     maxWait: 100,
     trailing: true,
@@ -133,19 +157,47 @@ export const WealthCalculator: React.FC<{
     if (typeof window !== "undefined") {
       window.addEventListener("resize", debouncedSizingUpdate);
     }
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", debouncedSizingUpdate);
+      }
+    };
   }, []);
 
-  useEffect(() => {
-    if (incomeInput) {
-      setLoadingPostTaxIncome(true);
-      getEstimatedPostTaxIncome(incomeInput, TaxJurisdiction.SE).then((res) => {
-        setPostTaxIncome(res);
-        setLoadingPostTaxIncome(false);
-      });
+  /**
+   * Calculate the post tax income. We use a debounced callback to avoid calculating the post tax income
+   * too many times when the user is typing.
+   */
+  const calculatePostTaxIncome = useDebouncedCallback(() => {
+    let taxJurisdiction: TaxJurisdiction;
+    if (locale === "no") {
+      taxJurisdiction = TaxJurisdiction.NO;
+    } else if (locale === "se") {
+      taxJurisdiction = TaxJurisdiction.SE;
+    } else {
+      console.error("Unsupported locale", locale);
+      return;
     }
-  }, [incomeInput, numberOfChildren, numberOfAdults]);
+    getEstimatedPostTaxIncome(income / numberOfAdults, taxJurisdiction).then((res) => {
+      setPostTaxIncome(res * numberOfAdults);
+      setLoadingPostTaxIncome(false);
+    });
+  }, 250);
 
+  useEffect(() => {
+    setLoadingPostTaxIncome(true);
+    calculatePostTaxIncome();
+  }, [incomeInput, numberOfAdults]);
+
+  /**
+   * Calculate the equvivalized income. This is the income after tax and adjusted for the number of adults and children
+   * in the household. We use the OECD modified scale to calculate the equvivalized income.
+   */
   const equvivalizedIncome = equvivalizeIncome(postTaxIncome, numberOfChildren, numberOfAdults);
+
+  if (!pppConversion) {
+    return <></>;
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -158,6 +210,7 @@ export const WealthCalculator: React.FC<{
           setNumberOfChildren={setNumberOfChildren}
           numberOfAdults={numberOfAdults}
           setNumberOfParents={setNumberOfParents}
+          loadingPostTaxIncome={loadingPostTaxIncome}
           outputRef={outputRef}
         ></WealthCalculatorInput>
         <WealthCalculatorSlider
@@ -176,45 +229,66 @@ export const WealthCalculator: React.FC<{
             wealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               equvivalizedIncome || 0,
+              pppConversion?.adjustedPPPfactor,
             )}
             afterDonationWealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               equvivalizedIncome * (1 - donationPercentage / 100),
+              pppConversion?.adjustedPPPfactor,
             )}
             size={chartSize}
             afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
             incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
-            exchangeRate={10.5}
+            adjustedPPPConversionFactor={pppConversion?.adjustedPPPfactor}
           />
         </div>
-        {explanation ? (
-          <div
-            className={
-              styles.calculator__explanation__toggle +
-              " " +
-              (explanationOpen ? styles.calculator__explanation__toggle_open : "")
-            }
-            data-cy="wealthcalculator-explanation-toggle"
-            onClick={() => setExplanationOpen(!explanationOpen)}
-          >
-            {explenationLabel}
-          </div>
-        ) : (
-          <></>
-        )}
+        <div
+          className={
+            styles.calculator__explanation__toggle +
+            " " +
+            (explanationOpen ? styles.calculator__explanation__toggle_open : "")
+          }
+          data-cy="wealthcalculator-explanation-toggle"
+          onClick={() => setExplanationOpen(!explanationOpen)}
+        >
+          {explenationLabel}
+        </div>
         <div className={styles.calculator__axis__label}>
           <span>{xAxixLabel} →</span>
         </div>
       </div>
-      {explanation && (
-        <>
-          <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
-            <div data-cy="wealthcalculator-explanation">
-              <BlockContentRenderer content={[explanation]} />
-            </div>
-          </AnimateHeight>
-        </>
-      )}
+      <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
+        <div>
+          <strong>Factors used in the calculation:</strong>
+          <table>
+            <tr>
+              <td>
+                <strong>
+                  Cumulative inflation 2017 - {DateTime.now().year} for {locale}
+                </strong>
+              </td>
+              <td>{pppConversion.cumulativeInflation.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  PPP conversion factor for 2017 {currency} to 2017 international dollar
+                </strong>
+              </td>
+              <td>{pppConversion.pppFactor.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Total adjusted ppp conversion factor</strong>
+              </td>
+              <td>{pppConversion.adjustedPPPfactor.toFixed(2)}</td>
+            </tr>
+          </table>
+        </div>
+        <div data-cy="wealthcalculator-explanation">
+          <BlockContentRenderer content={[explanation]} />
+        </div>
+      </AnimateHeight>
       {showImpact && intervention_configuration && (
         <WealthCalculatorImpact
           donationPercentage={donationPercentage}

@@ -5,6 +5,8 @@ import {
   EffektButton,
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 
 export const WealthCalculatorInput: React.FC<{
   title: string;
@@ -14,6 +16,7 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfChildren: (value: number) => void;
   numberOfAdults: number;
   setNumberOfParents: (value: number) => void;
+  loadingPostTaxIncome: boolean;
   outputRef: React.RefObject<HTMLDivElement>;
 }> = ({
   title,
@@ -23,6 +26,7 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfChildren,
   numberOfAdults,
   setNumberOfParents,
+  loadingPostTaxIncome,
   outputRef,
 }) => {
   return (
@@ -45,6 +49,11 @@ export const WealthCalculatorInput: React.FC<{
                 setIncomeInput(values.floatValue || 0);
               }}
             />
+            {loadingPostTaxIncome && (
+              <div className={styles.calculator__input__group__input__income__spinner}>
+                <LoadingButtonSpinner />
+              </div>
+            )}
             <span>kr</span>
           </div>
           <i>Oppgi total inntekt før skatt for husholdningen din.</i>

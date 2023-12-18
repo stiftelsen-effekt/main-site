@@ -74,6 +74,17 @@
   padding-top: 0.5rem;
 }
 
+.calculator__input__group__input__income__spinner {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  top: 0;
+  right: 1.5rem;
+  padding: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
 .calculator__input__group__percentage_input {
   display: inline;
   background: none;
