@@ -105,13 +105,20 @@ export const YearlyReportsTab: React.FC<{
 
         const eanDistribution: Distribution = {
           kid: "EAN Giverportal",
-          taxUnit: null,
-          standardDistribution: true,
-          shares: [
+          taxUnitId: null,
+          donorId: parseInt(donor.id),
+          causeAreas: [
             {
-              id: 12,
-              name: "GiveWell Top Charities Fund",
-              share: "100",
+              id: -1,
+              percentageShare: "100",
+              standardSplit: true,
+              organizations: [
+                {
+                  id: 1,
+                  name: "GiveWell",
+                  percentageShare: "100",
+                },
+              ],
             },
           ],
         };
@@ -169,7 +176,7 @@ export const YearlyReportsTab: React.FC<{
                 donations={donations.filter(
                   (donation: Donation) =>
                     new Date(donation.timestamp).getFullYear() === report.year &&
-                    distributionsMap.get(donation.KID)?.taxUnit,
+                    distributionsMap.get(donation.KID)?.taxUnitId,
                 )}
                 distribtionMap={distributionsMap}
                 report={report}

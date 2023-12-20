@@ -58,7 +58,13 @@ export const aggregateOrgSumByYearAndMonth = (
   donations.forEach((donation) => {
     const year = new Date(donation.timestamp).getFullYear();
     const month = new Date(donation.timestamp).getMonth();
-    const orgs = distributions.get(donation.KID)?.shares;
+    const globalHealthCauseArea = distributions
+      .get(donation.KID)
+      ?.causeAreas.filter((c) => c.id === 1)?.[0];
+
+    const orgs = globalHealthCauseArea?.organizations ?? [];
+    const globalHealthDistributionShare =
+      parseFloat(globalHealthCauseArea?.percentageShare ?? "0") / 100;
 
     if (orgs) {
       orgs.forEach((org) => {
@@ -90,7 +96,10 @@ export const aggregateOrgSumByYearAndMonth = (
                   name: allotment.charity.charity_name,
                   // The share we add to the organization is equivalent to the share of givewell grant * the share of the allotment
                   // E.g. GiveWell is 20% of donation distribution, AMF is 40% of the total grant, so the share we add to AMF is .2 * .4 = .08
-                  share: (parseFloat(org.share) * allotmentShare).toString(),
+                  percentageShare:
+                    parseFloat(org.percentageShare) *
+                    globalHealthDistributionShare *
+                    allotmentShare,
                 },
                 true,
               );
@@ -98,7 +107,17 @@ export const aggregateOrgSumByYearAndMonth = (
           }
         } else {
           // If organization is not GiveWell top charities fund, add the share of the donation to the organization
-          aggregated = addToAggregated(aggregated, donation, year, month, org, false);
+          aggregated = addToAggregated(
+            aggregated,
+            donation,
+            year,
+            month,
+            {
+              name: org.name as string,
+              percentageShare: parseFloat(org.percentageShare) * globalHealthDistributionShare,
+            },
+            false,
+          );
         }
       });
     }
@@ -122,7 +141,7 @@ const addToAggregated = (
   donation: Donation,
   year: number,
   month: number,
-  org: { name: string; share: string },
+  org: { name: string; percentageShare: number },
   smartdistribution: boolean,
 ) => {
   const key = `${year}-${month}`;
@@ -149,28 +168,28 @@ const addToAggregated = (
     };
   }
   // Add to the total sum of the organization, regardless of period
-  aggregated[org.name].sum += Math.round((parseFloat(org.share) / 100) * parseFloat(donation.sum));
+  aggregated[org.name].sum += Math.round((org.percentageShare / 100) * parseFloat(donation.sum));
   // Add to the sum of the organization for the period
   aggregated[org.name].periods[key].sum += Math.round(
-    (parseFloat(org.share) / 100) * parseFloat(donation.sum),
+    (org.percentageShare / 100) * parseFloat(donation.sum),
   );
   if (smartdistribution) {
     // Add to the smart distribution sum of the organization, regardless of period
     aggregated[org.name].smart_distribution_sum += Math.round(
-      (parseFloat(org.share) / 100) * parseFloat(donation.sum),
+      (org.percentageShare / 100) * parseFloat(donation.sum),
     );
     // Add to the smart distribution sum of the organization for the period
     aggregated[org.name].periods[key].smart_distribution_sum += Math.round(
-      (parseFloat(org.share) / 100) * parseFloat(donation.sum),
+      (org.percentageShare / 100) * parseFloat(donation.sum),
     );
   } else {
     // Add to the custom distribution sum of the organization, regardless of period
     aggregated[org.name].custom_sum += Math.round(
-      (parseFloat(org.share) / 100) * parseFloat(donation.sum),
+      (org.percentageShare / 100) * parseFloat(donation.sum),
     );
     // Add to the custom distribution sum of the organization for the period
     aggregated[org.name].periods[key].custom_sum += Math.round(
-      (parseFloat(org.share) / 100) * parseFloat(donation.sum),
+      (org.percentageShare / 100) * parseFloat(donation.sum),
     );
   }
 

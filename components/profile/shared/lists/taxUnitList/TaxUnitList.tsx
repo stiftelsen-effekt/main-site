@@ -19,19 +19,20 @@ export const TaxUnitList: React.FC<{
   const ssnType = unit.ssn.length === 11 ? "birthnr" : "orgnr";
   const headers = [
     {
-      label: ssnType === "birthnr" ? "Fødselsnummer" : "Organisasjonsnummer",
-      width: "25%",
-    },
-    {
-      label: "Antall donasjoner",
-      width: "25%",
+      label: "",
+      width: "10%",
     },
     {
       label: "Sum donasjoner",
-      width: "25%",
+      width: "30%",
     },
     {
       label: "Sum skattefradrag",
+      width: "30%",
+    },
+    {
+      label: "Sum skattefordel",
+      width: "30%",
     },
   ];
 
@@ -40,63 +41,78 @@ export const TaxUnitList: React.FC<{
   const currentYearDeductions = unit.taxDeductions?.find(
     (td) => td.year === new Date().getFullYear(),
   );
+  // Unit is personal ssn or orgnr
   const suplementalInformation =
-    currentYearDeductions && currentYearDeductions.taxDeduction > 0 ? (
-      <span>
-        {`I år kvalifiserer donasjoner på denne enheten deg til `}
-        <span style={{ whiteSpace: "nowrap" }}>
-          {thousandize(Math.round(currentYearDeductions.taxDeduction))}
-        </span>{" "}
-        kroner i skattefradrag
-      </span>
-    ) : (
-      ``
-    );
+    unit.ssn.length === 11
+      ? unit.ssn.replace(/(\d{6})(\d{5})/, "$1 $2")
+      : unit.ssn.replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
 
-  const rows: ListRow<TaxUnit>[] = [
-    {
-      id: unit.id.toString(),
-      defaultExpanded: false,
-      cells: [
-        { value: unit.ssn },
-        { value: thousandize(Math.round(unit.numDonations)) },
-        { value: thousandize(Math.round(unit.sumDonations)) + " kr" },
-        {
-          value:
-            thousandize(
-              Math.round(
-                unit.taxDeductions
-                  ? unit.taxDeductions.reduce((acc, deduction) => acc + deduction.taxDeduction, 0)
-                  : 0,
-              ),
-            ) + " kr",
-        },
-      ],
-      contextOptions: [
-        {
-          label: "Endre",
-          icon: <Edit2 size={16} />,
-        },
-        {
-          label: "Slett",
-          icon: <Trash2 size={16} />,
-        },
-      ],
-      onContextSelect: (option: string, element: TaxUnit) => {
-        switch (option) {
-          case "Endre":
-            setSelectedTaxUnit(element);
-            setEditModalOpen(true);
-            break;
-          case "Slett":
-            setSelectedTaxUnit(element);
-            setDeleteModalOpen(true);
-            break;
-        }
+  const filteredDeductions = unit.taxDeductions?.filter((d) => d.sumDonations > 0) || [];
+
+  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions, i) => ({
+    id: `${unit.id.toString()}${deductions.year}`,
+    defaultExpanded: false,
+    cells: [
+      { value: deductions.year.toString() },
+      { value: thousandize(Math.round(deductions.sumDonations)) + " kr" },
+      { value: thousandize(Math.round(deductions.deduction)) + " kr" },
+      { value: thousandize(Math.round(deductions.benefit)) + " kr" },
+    ],
+    contextOptions:
+      i === 0
+        ? [
+            {
+              label: "Endre",
+              icon: <Edit2 size={16} />,
+            },
+            {
+              label: "Slett",
+              icon: <Trash2 size={16} />,
+            },
+          ]
+        : undefined,
+    onContextSelect:
+      i === 0
+        ? (option: string, element: TaxUnit) => {
+            switch (option) {
+              case "Endre":
+                setSelectedTaxUnit(element);
+                setEditModalOpen(true);
+                break;
+              case "Slett":
+                setSelectedTaxUnit(element);
+                setDeleteModalOpen(true);
+                break;
+            }
+          }
+        : undefined,
+    element: unit,
+  }));
+
+  rows.push({
+    id: `${unit.id.toString()}total`,
+    defaultExpanded: false,
+    cells: [
+      { value: "Totalt" },
+      {
+        value:
+          thousandize(
+            Math.round(filteredDeductions.reduce((acc, cur) => acc + cur.sumDonations, 0)),
+          ) + " kr",
       },
-      element: unit,
-    },
-  ];
+      {
+        value:
+          thousandize(Math.round(filteredDeductions.reduce((acc, cur) => acc + cur.deduction, 0))) +
+          " kr",
+      },
+      {
+        value:
+          thousandize(Math.round(filteredDeductions.reduce((acc, cur) => acc + cur.benefit, 0))) +
+          " kr",
+      },
+    ],
+    element: unit,
+  });
 
   const emptyPlaceholder = (
     <div>

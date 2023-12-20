@@ -49,12 +49,13 @@ export type VippsAgreement = {
 export type Distribution = {
   kid: string;
   donorId: number;
-  taxUnitId: number;
+  taxUnitId: number | null;
   causeAreas: DistributionCauseArea[];
 };
 
 export type DistributionCauseArea = {
   id: number;
+  name?: string;
   standardSplit: boolean;
   percentageShare: string;
   organizations: {
@@ -117,7 +118,7 @@ export type TaxUnit = {
   sumDonations: number;
   registered: string;
   archived: string | null;
-  taxDeductions?: { year: number; sumDonations: number; taxDeduction: number }[];
+  taxDeductions?: { year: number; sumDonations: number; deduction: number; benefit: number }[];
 };
 
 export type TaxYearlyReport = {

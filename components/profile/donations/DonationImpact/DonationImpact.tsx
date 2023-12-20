@@ -1,9 +1,16 @@
 import React, { useCallback, useState } from "react";
 import useSWR from "swr";
-import { Donation, GiveWellGrant } from "../../../../models";
+import { Distribution, DistributionCauseArea, Donation, GiveWellGrant } from "../../../../models";
 import { thousandize } from "../../../../util/formatting";
 import style from "./DonationImpact.module.scss";
-import { DonationImpactItem, ImpactItemConfiguration } from "./DonationImpactItem";
+import {
+  DonationImpactGlobalHealthItem,
+  ImpactItemConfiguration,
+} from "./GlobalHealth/DonationImpactItemGlobalHealth";
+import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
+import DonationImpactGlobalHealth from "./GlobalHealth/DonationImpactGlobalHealth";
+import DonationImpactAnimalWelfare from "./AnimalWelfare/DonationImpactAnimalWelfare";
+import { mapNameToOrgAbbriv } from "../../../../util/mappings";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -17,115 +24,48 @@ export type DonationImpactItemsConfiguration = {
 
 const DonationImpact: React.FC<{
   donation: Donation;
-  distribution: { org: string; sum: number }[];
+  distribution: Distribution;
   timestamp: Date;
   configuration: DonationImpactItemsConfiguration;
 }> = ({ donation, distribution, timestamp, configuration }) => {
-  const { data, error, isValidating } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${
-      configuration.currency
-    }&language=${configuration.locale}&donation_year=${timestamp.getFullYear()}&donation_month=${
-      timestamp.getMonth() + 1
-    }`,
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    },
-  );
-
-  const [requiredPrecision, setRequiredPrecision] = useState(0);
-  const updatePrecision = useCallback(
-    (precision) => {
-      setRequiredPrecision(precision);
-    },
-    [setRequiredPrecision],
-  );
-
-  if (!data || isValidating) {
-    return <div key={`${donation.id}-impact`}>Loading...</div>;
-  }
-  if (error) {
-    return <div key={`${donation.id}-impact`}>{error}</div>;
-  }
-
-  /**
-   * If the donation has a component to the maximum impact fund, we must find the relevant grant
-   * and distribute the part of the donation to GiveWell to the distribution
-   */
-  const giveWellDist = distribution.find((d) => d.org === "GiveWell");
-  const filteredDistribution = distribution
-    .filter((d) => d.org !== "GiveWell")
-    .map((o) => ({ ...o }))
-    .sort(function (a, b) {
-      var key = "Drift";
-      if (a.org === key && b.org != key) return -1;
-      if (a.org != key && b.org === key) return 1;
-      return 0;
-    });
-
-  let spreadDistribution: { org: string; sum: number }[] = [...filteredDistribution];
-  if (giveWellDist) {
-    const relevantGrant = data?.max_impact_fund_grants[0];
-
-    if (!relevantGrant) {
-      return <div key={`${donation.id}-impact`}>Could not find relevant maximum impact grant</div>;
-    }
-
-    const grantTotal = relevantGrant.allotment_set.reduce((acc, grant) => {
-      return acc + grant.sum_in_cents;
-    }, 0);
-
-    relevantGrant.allotment_set.forEach((allotment) => {
-      const org = allotment.charity.abbreviation;
-      const sum = Math.round((allotment.sum_in_cents / grantTotal) * giveWellDist.sum);
-      const orgIndex = spreadDistribution.findIndex((d) => d.org === org);
-      if (orgIndex !== -1) {
-        spreadDistribution[orgIndex].sum += sum;
-      } else {
-        spreadDistribution.push({ org, sum });
-      }
-    });
-  }
-
   return (
-    <div className={style.container} key={`${donation.id}-impact`}>
-      {giveWellDist && (
-        <div className={style.smartdistributionlabel}>
-          <span>{configuration.smart_distribution_label}</span>
-          <strong>{`${thousandize(giveWellDist.sum || null)} kr`}</strong>
+    <>
+      {distribution.causeAreas.map((causeArea: DistributionCauseArea) => (
+        <div key={`${donation.id}-causarea${causeArea.id}-impact`}>
+          <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>
+          {causeArea.id === 1 && (
+            <DonationImpactGlobalHealth
+              key={`${donation.id}-causarea${causeArea.id}-impact`}
+              donation={donation}
+              distribution={causeArea.organizations.map((org) => ({
+                org: mapNameToOrgAbbriv(org.name as string),
+                sum:
+                  parseFloat(donation.sum) *
+                  (parseFloat(org.percentageShare) / 100) *
+                  (parseFloat(causeArea.percentageShare) / 100),
+              }))}
+              timestamp={timestamp}
+              configuration={configuration}
+            />
+          )}
+          {causeArea.id !== 1 && (
+            <DonationImpactAnimalWelfare
+              key={`${donation.id}-causarea${causeArea.id}-impact`}
+              donation={donation}
+              distribution={causeArea.organizations.map((org) => ({
+                org: org.name as string,
+                sum:
+                  parseFloat(donation.sum) *
+                  (parseFloat(org.percentageShare) / 100) *
+                  (parseFloat(causeArea.percentageShare) / 100),
+              }))}
+              timestamp={timestamp}
+              configuration={configuration}
+            />
+          )}
         </div>
-      )}
-      <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
-        <tbody>
-          {spreadDistribution.map((dist, i) => (
-            <React.Fragment key={`${donation.id}-impact-${dist.org}`}>
-              {dist.org !== "Drift" && (
-                <DonationImpactItem
-                  orgAbriv={dist.org}
-                  sumToOrg={dist.sum}
-                  donationTimestamp={timestamp}
-                  precision={requiredPrecision}
-                  signalRequiredPrecision={(precision) => {
-                    if (precision > requiredPrecision) updatePrecision(precision);
-                  }}
-                  configuration={configuration.impact_item_configuration}
-                />
-              )}
-              {dist.org === "Drift" && (
-                <tr>
-                  <td className={style.impact} colSpan={100}>
-                    <span>{configuration.operations_label}</span>
-                    <strong>{`${dist.sum} kr`}</strong>
-                  </td>
-                </tr>
-              )}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      ))}
+    </>
   );
 };
 
