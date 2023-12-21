@@ -71,7 +71,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       case "links":
                         return (
                           <div key={block._key} className={links.linksWrapper}>
-                            <p className="inngress">Les mer:</p>
+                            <p className="inngress">{block.title ?? "Les mer:"}</p>
                             <Links links={block.links}></Links>
                           </div>
                         );
