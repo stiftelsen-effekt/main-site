@@ -32,7 +32,9 @@ const DonationImpact: React.FC<{
     <>
       {distribution.causeAreas.map((causeArea: DistributionCauseArea) => (
         <div key={`${donation.id}-causarea${causeArea.id}-impact`}>
-          <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>
+          {distribution.causeAreas.length > 1 && (
+            <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>
+          )}
           {causeArea.id === 1 && (
             <DonationImpactGlobalHealth
               key={`${donation.id}-causarea${causeArea.id}-impact`}

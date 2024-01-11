@@ -47,10 +47,19 @@ export const DistributionController: React.FC<{
                   const percentageShare = parseFloat(e.target.value) || 0;
                   const organizations = [...causeArea.organizations];
                   const index = organizations.findIndex((o) => o.id === org.id);
-                  organizations[index] = {
-                    ...organizations[index],
-                    percentageShare: percentageShare.toFixed(0),
-                  };
+                  console.log(index);
+                  if (index === -1) {
+                    organizations.push({
+                      id: org.id,
+                      name: org.name,
+                      percentageShare: percentageShare.toFixed(0),
+                    });
+                  } else {
+                    organizations[index] = {
+                      ...organizations[index],
+                      percentageShare: percentageShare.toFixed(0),
+                    };
+                  }
                   onChange({ ...causeArea, organizations });
                 }}
                 data-cy="distribution-input"

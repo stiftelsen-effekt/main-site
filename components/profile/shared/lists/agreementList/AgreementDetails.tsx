@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Distribution, TaxUnit } from "../../../../../models";
 import { DistributionController } from "../../DistributionCauseAreaInput/Distribution";
 import { toast } from "react-toastify";
@@ -42,8 +42,15 @@ export const AgreementDetails: React.FC<{
   const [distribution, setDistribution] = useState<Distribution>(
     JSON.parse(JSON.stringify(inputDistribution)),
   );
+  const [lastSavedDistribution, setLastSavedDistribution] = useState<Distribution>(
+    JSON.parse(JSON.stringify(inputDistribution)),
+  );
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum);
+
+  useEffect(() => {
+    setLastSavedDistribution(JSON.parse(JSON.stringify(inputDistribution)));
+  }, [inputDistribution]);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [loadingChanges, setLoadingChanges] = useState(false);
@@ -57,18 +64,10 @@ export const AgreementDetails: React.FC<{
 
   const save = async () => {
     const token = await getAccessTokenSilently();
-    const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution);
+    const distributionChanged =
+      JSON.stringify(distribution) !== JSON.stringify(lastSavedDistribution);
     const sumChanged = sum !== inputSum;
     const dayChanged = day !== inputDate;
-
-    /*
-    const distSum = distribution.shares.reduce((acc, curr) => acc + parseFloat(curr.share), 0);
-
-    if (distSum !== 100 || parseFloat(sum) < 1) {
-      invalidInputToast();
-      return;
-    }
-    */
 
     if (!distributionChanged && !dayChanged && !sumChanged) {
       noChangesToast();
@@ -98,6 +97,7 @@ export const AgreementDetails: React.FC<{
         successToast();
         mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
         setLoadingChanges(false);
+        setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
         failureToast();
         setLoadingChanges(false);
@@ -121,6 +121,7 @@ export const AgreementDetails: React.FC<{
         successToast();
         mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
         setLoadingChanges(false);
+        setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
         failureToast();
         setLoadingChanges(false);
@@ -181,7 +182,7 @@ export const AgreementDetails: React.FC<{
   } else {
     return (
       <div className={style.wrapper} data-cy="agreement-list-details">
-        {systemCauseAreas.length > 1 && (
+        {systemCauseAreas.length === 1 && (
           <AgreementSingleCauseAreaDetails
             distribution={distribution}
             setDistribution={setDistribution}
@@ -193,7 +194,7 @@ export const AgreementDetails: React.FC<{
           ></AgreementSingleCauseAreaDetails>
         )}
 
-        {systemCauseAreas.length === 1 && (
+        {systemCauseAreas.length > 1 && (
           <AgreementMultipleCauseAreaDetails
             systemCauseAreas={systemCauseAreas}
             distribution={distribution}

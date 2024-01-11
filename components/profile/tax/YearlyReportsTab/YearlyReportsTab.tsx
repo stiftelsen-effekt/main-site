@@ -143,21 +143,23 @@ export const YearlyReportsTab: React.FC<{
           (donation: Donation) => new Date(donation.timestamp).getFullYear() === report.year,
         );
 
+        const currentYear = new Date().getFullYear();
+
         return (
           <>
-            {report.sumDonationsWithoutTaxUnit.sumDonations > 0 && (
+            {report.sumDonationsWithoutTaxUnit.sumDonations > 0 && report.year === currentYear - 1 && (
               <InfoBox>
                 <header>
                   <Info />
                   Donasjoner mangler skattenhet
                 </header>
                 <p>
-                  Du har donasjoner for skatteåret som kvalifiserer til skattefradrag, men mangler
+                  {/*Du har donasjoner for skatteåret som kvalifiserer til skattefradrag, men mangler
                   skatteenhet. Vi har rapportert alle donasjoner for 2022 til skattemyndighetene,
-                  men i 2023 vil du få skattefradrag på donasjoner du knytter til en skatteenhet.
-                  {/*report.units.length == 0
+            men i 2023 vil du få skattefradrag på donasjoner du knytter til en skatteenhet.*/}
+                  {report.units.length == 0
                     ? 'Registrer en skatteenhet i fanen til venstre i menyen under "skatt" og alle donasjoner vil knyttes til den. Ta kontakt på donasjon@gieffektivt.no om du ønsker å knytte donasjonene dine til flere skatteenheter.'
-                    : "Du har allerede en eller flere skatteenheter. Kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."*/}
+                    : "Du har allerede en eller flere skatteenheter. Kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet."}
                 </p>
               </InfoBox>
             )}

@@ -287,6 +287,8 @@ button {
 /* Print stylesheet */
 @page {
   size: A4 portrait;
+  background: var(--secondary);
+  margin: 10cm 0 0 0;
 }
 
 @media print {
@@ -299,6 +301,7 @@ button {
   body {
     font-size: 9px;
     line-height: 165%;
+    background: var(--secondary);
   }
 
   h1 {

@@ -49,47 +49,56 @@ export const TaxUnitList: React.FC<{
 
   const filteredDeductions = unit.taxDeductions?.filter((d) => d.sumDonations > 0) || [];
 
-  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions, i) => ({
-    id: `${unit.id.toString()}${deductions.year}`,
-    defaultExpanded: false,
-    cells: [
-      { value: deductions.year.toString() },
-      { value: thousandize(Math.round(deductions.sumDonations)) + " kr" },
-      { value: thousandize(Math.round(deductions.deduction)) + " kr" },
-      { value: thousandize(Math.round(deductions.benefit)) + " kr" },
+  const context = {
+    contextOptions: [
+      {
+        label: "Endre",
+        icon: <Edit2 size={16} />,
+      },
+      {
+        label: "Slett",
+        icon: <Trash2 size={16} />,
+      },
     ],
-    contextOptions:
-      i === 0
-        ? [
-            {
-              label: "Endre",
-              icon: <Edit2 size={16} />,
-            },
-            {
-              label: "Slett",
-              icon: <Trash2 size={16} />,
-            },
-          ]
-        : undefined,
-    onContextSelect:
-      i === 0
-        ? (option: string, element: TaxUnit) => {
-            switch (option) {
-              case "Endre":
-                setSelectedTaxUnit(element);
-                setEditModalOpen(true);
-                break;
-              case "Slett":
-                setSelectedTaxUnit(element);
-                setDeleteModalOpen(true);
-                break;
-            }
-          }
-        : undefined,
-    element: unit,
-  }));
+    onContextSelect: (option: string, element: TaxUnit) => {
+      switch (option) {
+        case "Endre":
+          setSelectedTaxUnit(element);
+          setEditModalOpen(true);
+          break;
+        case "Slett":
+          setSelectedTaxUnit(element);
+          setDeleteModalOpen(true);
+          break;
+      }
+    },
+  };
 
-  rows.push({
+  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions, i) => {
+    let row = {
+      id: `${unit.id.toString()}${deductions.year}`,
+      defaultExpanded: false,
+      cells: [
+        { value: deductions.year.toString() },
+        { value: thousandize(Math.round(deductions.sumDonations)) + " kr" },
+        { value: thousandize(Math.round(deductions.deduction)) + " kr" },
+        { value: thousandize(Math.round(deductions.benefit)) + " kr" },
+      ],
+
+      element: unit,
+    };
+
+    if (i === 0) {
+      row = {
+        ...row,
+        ...context,
+      };
+    }
+
+    return row;
+  });
+
+  let totalsRow = {
     id: `${unit.id.toString()}total`,
     defaultExpanded: false,
     cells: [
@@ -112,7 +121,16 @@ export const TaxUnitList: React.FC<{
       },
     ],
     element: unit,
-  });
+  };
+
+  if (filteredDeductions.length == 0) {
+    totalsRow = {
+      ...totalsRow,
+      ...context,
+    };
+  }
+
+  rows.push(totalsRow);
 
   const emptyPlaceholder = (
     <div>
