@@ -6,25 +6,30 @@ export const DonationsDistributionGraph: React.FC<{ sum: string; distribution: D
   sum,
   distribution,
 }) => {
-  const max = Math.max(...distribution.shares.map((org) => parseFloat(org.share)));
-  distribution.shares = distribution.shares.sort(
-    (a, b) => parseFloat(b.share) - parseFloat(a.share),
+  const max = Math.max(
+    ...distribution.causeAreas[0].organizations.map((org) => parseFloat(org.percentageShare)),
+  );
+  distribution.causeAreas[0].organizations = distribution.causeAreas[0].organizations.sort(
+    (a, b) => parseFloat(b.percentageShare) - parseFloat(a.percentageShare),
   );
 
   return (
     <div className={style.wrapper} data-cy="donation-distribution-graph">
       <div className={style.bars}>
-        {distribution.shares.map((dist) => (
+        {distribution.causeAreas[0].organizations.map((dist) => (
           <div
             key={dist.name}
             className={style.bar}
-            style={{ width: `${(parseFloat(dist.share) / max) * 100}%` }}
+            style={{ width: `${(parseFloat(dist.percentageShare) / max) * 100}%` }}
             data-cy="donation-distribution-graph-bar"
           >
             <div key={dist.name} className={style.label}>
               <div>{dist.name}</div>
               <div>
-                {thousandize(Math.round((parseFloat(dist.share) / 100) * parseFloat(sum)))} kr
+                {thousandize(
+                  Math.round((parseFloat(dist.percentageShare) / 100) * parseFloat(sum)),
+                )}{" "}
+                kr
               </div>
             </div>
           </div>
