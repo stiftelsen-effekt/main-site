@@ -69,7 +69,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
             }
 
             return (
-              <div>
+              <div key={`dist-${systemCauseArea.id}`}>
                 <div className={style.distributionCauseAreaInputHeader}>
                   <span>{systemCauseArea.name}</span>
                   <div className={style.valuesSmartDistributionToggle}>
