@@ -36,11 +36,9 @@ export const TaxYearlyReportList: React.FC<{
       {
         value: report.year === currentYear - 1 ? "Mangler enhet" : "Manglet enhet",
         tooltip:
-          report.year === currentYear - 1
-            ? `Du har donasjoner for skatteåret som kvalifiserer til skattefradrag, men mangler skatteenhet. Vi har rapportert alle donasjoner for ${
-                currentYear - 1
-              } til skattemyndighetene, men i ${currentYear} vil du få skattefradrag på donasjoner du knytter til en skatteenhet.`
-            : undefined,
+          report.units.length == 0
+            ? 'Registrer en skatteenhet i fanen til venstre i menyen under "skatt" og alle donasjoner vil knyttes til den. Ta kontakt på donasjon@gieffektivt.no om du ønsker å knytte donasjonene dine til flere skatteenheter.'
+            : "Du har allerede en eller flere skatteenheter. Kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet.",
       },
       { value: "-" },
       { value: "-" },
