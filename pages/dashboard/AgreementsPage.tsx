@@ -7,6 +7,7 @@ import {
   useAgreementsDistributions,
   useAvtalegiroAgreements,
   useOrganizations,
+  useTaxUnits,
   useVippsAgreements,
 } from "../../_queries";
 import { useContext, useState } from "react";
@@ -69,13 +70,6 @@ export const AgreementsPage = withStaticProps(
     error: vippsError,
   } = useVippsAgreements(user, getAccessTokenSilently);
 
-  const {
-    loading: organizationsLoading,
-    data: organizations,
-    isValidating: organizationsRefreshing,
-    error: organizationsError,
-  } = useOrganizations(getAccessTokenSilently);
-
   const kids = new Set<string>();
   if (vipps && avtaleGiro)
     [
@@ -95,9 +89,16 @@ export const AgreementsPage = withStaticProps(
     Array.from(kids),
   );
 
-  const loading = vippsLoading || avtaleGiroLoading || distributionsLoading || organizationsLoading;
+  const {
+    loading: taxUnitsLoading,
+    data: taxUnits,
+    isValidating: taxUnitsRefreshing,
+    error: taxUnitsError,
+  } = useTaxUnits(user, getAccessTokenSilently);
 
-  if (loading || !organizations || !distributions || !vipps || !avtaleGiro)
+  const loading = vippsLoading || avtaleGiroLoading || distributionsLoading || taxUnitsLoading;
+
+  if (loading || !distributions || !vipps || !avtaleGiro || !taxUnits)
     return (
       <>
         <Head>
@@ -133,7 +134,11 @@ export const AgreementsPage = withStaticProps(
     (agreement: VippsAgreement) => agreement.status === "ACTIVE",
   );
 
-  const distributionsMap = getDistributionMap(distributions, organizations);
+  // A map with kid as key and distribution as value
+  const distributionsMap = new Map<string, Distribution>();
+  distributions.forEach((distribution: Distribution) => {
+    distributionsMap.set(distribution.kid, distribution);
+  });
 
   const vippsPending = vipps.filter(
     (agreement: VippsAgreement) =>
@@ -147,15 +152,6 @@ export const AgreementsPage = withStaticProps(
       DateTime.fromISO(agreement.created).diff(DateTime.now(), "days").days > -7,
   );
   const pendingCount = vippsPending.length + avtalegiroPending.length;
-
-  const sciOrgId = 2;
-  const hasDistributionWithSCI = [...activeAvtalegiroAgreements, ...activeVippsAgreements]
-    .map((agreement) => distributionsMap.get(agreement.KID))
-    .some(
-      (distribution: Distribution | undefined) =>
-        distribution &&
-        distribution.shares.some((org) => org.id === sciOrgId && parseFloat(org.share) > 0),
-    );
 
   return (
     <>
@@ -177,37 +173,6 @@ export const AgreementsPage = withStaticProps(
         <div className={styles.container}>
           <h3 className={styles.header}>Faste avtaler</h3>
 
-          {hasDistributionWithSCI && (
-            <InfoBox>
-              <header>
-                <AlertTriangle size={24} color={"black"} />
-                SCI Foundation utgår som anbefalt organisasjon
-              </header>
-              <p>
-                Du har en aktiv donasjonsavtale til SCI Foundation. Vi anbefaler ikke lenger
-                donasjoner til SCI Foundation gjeldende fra 18.08.22 og vil slutte å tildele penger
-                til dem 31. oktober 2022. Les mer om denne endringen på{" "}
-                <Link
-                  href={`/${[...articlesPagePath, "nye-evalueringskriterier-for-topplista"]}`}
-                  passHref
-                >
-                  <a style={{ textDecoration: "underline" }}>bloggen vår</a>
-                </Link>
-                .
-              </p>
-              <br />
-              <p>
-                Donasjoner øremerket SCI Foundation blir fra og med 1. november 2022 i stedet følge{" "}
-                <Link href={"/smart-fordeling"} passHref>
-                  <a style={{ textDecoration: "underline" }}>Smart fordeling</a>
-                </Link>
-                . Om du ønsker en annen fordeling kan du oppdatere fordelingen på din faste
-                donasjon, eller fylle ut donasjonsskjemaet for en ny donasjon. Ta kontakt om du har
-                noen spørsmål.
-              </p>
-            </InfoBox>
-          )}
-
           {pendingCount >= 1 && (
             <InfoBox>
               <header>
@@ -228,6 +193,7 @@ export const AgreementsPage = withStaticProps(
               vipps={activeVippsAgreements}
               avtalegiro={activeAvtalegiroAgreements}
               distributions={distributionsMap}
+              taxUnits={taxUnits}
               supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
               emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
               expandable={true}
@@ -242,6 +208,7 @@ export const AgreementsPage = withStaticProps(
                 (agreement: AvtaleGiroAgreement) => agreement.cancelled !== null,
               )}
               distributions={distributionsMap}
+              taxUnits={taxUnits}
               supplemental={
                 "Dette er tidligere faste betalingsavtaler du har hatt med oss, som vi ikke lenger trekker deg for"
               }
@@ -274,32 +241,3 @@ const fetchAgreementsPage = groq`
   }
 }
 `;
-
-const getDistributionMap = (distributions: Distribution[], organizations: Organization[]) => {
-  const map = new Map<string, Distribution>();
-
-  for (let i = 0; i < distributions.length; i++) {
-    let dist = distributions[i];
-
-    let newDist: Distribution = {
-      kid: "",
-      standardDistribution: dist.standardDistribution,
-      taxUnit: dist.taxUnit,
-      shares: organizations.map((org) => ({
-        id: org.id,
-        name: org.name,
-        share: "0",
-      })),
-    };
-
-    for (let j = 0; j < dist.shares.length; j++) {
-      let org = dist.shares[j];
-      let index = newDist.shares.map((o) => o.id).indexOf(org.id);
-      if (newDist.shares[index]) newDist.shares[index].share = org.share;
-    }
-
-    map.set(dist.kid, { ...newDist });
-  }
-
-  return map;
-};

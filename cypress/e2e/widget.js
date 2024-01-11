@@ -2,17 +2,17 @@ import mockDonor from "../fixtures/donor.json";
 
 describe("Widget", () => {
   beforeEach(() => {
-    cy.fixture("organizations")
-      .then((organizations) => {
-        cy.intercept("GET", "/organizations/active", {
+    cy.fixture("cause_areas")
+      .then((causeAreas) => {
+        cy.intercept("GET", "/causeareas/active", {
           statusCode: 200,
           body: {
             status: 200,
-            content: organizations,
+            content: causeAreas,
           },
         });
       })
-      .as("registerDonation");
+      .as("getCauseAreas");
 
     cy.fixture("referrals").then((referrals) => {
       cy.intercept("GET", "/referrals/types", {
@@ -33,6 +33,7 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -84,6 +85,7 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -120,6 +122,7 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -150,6 +153,7 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -189,9 +193,13 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=radio-custom-share]").click({ force: true });
+    cy.get("[data-cy=cause-area]")
+      .first()
+      .find("[data-cy=smart-distribution-toggle]")
+      .click({ force: true });
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
+    cy.checkNextIsDisabled();
     cy.get("[data-cy=org-12]").type("{moveToStart}");
     cy.get("[data-cy=org-12]").type("-"); // should ignore negative numbers
     cy.get("[data-cy=org-11]").type(50);
@@ -231,10 +239,9 @@ describe("Widget", () => {
 
   it("End-2-End for all input fields", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.checkNextIsDisabled();
     cy.pickSingleDonation();
-    cy.checkNextIsDisabled();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.prevWidgetPane();
@@ -317,15 +324,122 @@ describe("Widget", () => {
         status: 200,
         content: mockDonor,
       },
+    }).as("getDonor");
+
+    cy.fixture("donations")
+      .then((donations) => {
+        cy.intercept("GET", "/donors/*/donations", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: donations,
+          },
+        });
+      })
+      .as("getDonations");
+
+    cy.fixture("aggregated")
+      .then((aggregateddonations) => {
+        cy.intercept("GET", "/donors/*/donations/aggregated", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: aggregateddonations,
+          },
+        });
+      })
+      .as("getAggregated");
+
+    cy.fixture("kids_donations")
+      .then((kids) => {
+        cy.intercept("GET", "/donors/*/distributions/*", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: kids,
+          },
+        });
+      })
+      .as("getDistribution");
+
+    cy.fixture("organizations").then((orgs) => {
+      cy.intercept("GET", "/organizations/active", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: orgs,
+        },
+      }).as("getOrganizations");
     });
 
-    cy.visit("/min-side");
+    cy.fixture("referrals").then((referrals) => {
+      cy.intercept("GET", "/referrals/types", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: referrals,
+        },
+      }).as("getReferrals");
+    });
+
+    cy.fixture("organizations").then((orgs) => {
+      cy.intercept("GET", "/organizations/all", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: orgs,
+        },
+      }).as("getOrganizations");
+    });
+
+    cy.fixture(`evaluations/evaluations.json`)
+      .then((evaluations) => {
+        cy.intercept(
+          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=*&language=*&donation_year=*&donation_month=*",
+          (req) => {
+            const [, abbriv, year, month] = req.url.match(
+              /.*abbreviation=(.*)\&currency.*year=(\d{4}).*month=(\d{1,2})/,
+            );
+            const filename = `${year}-${month}-${abbriv}`;
+            if (evaluations[filename]) {
+              req.reply(evaluations[filename]);
+            } else {
+              req.reply({ evaluations: [] });
+            }
+          },
+        ).as("getEvaluations");
+      })
+      .as("evaluationFixture");
+
+    cy.fixture("grants")
+      .then((grants) => {
+        cy.intercept(
+          "GET",
+          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=*&language=*&*",
+          {
+            statusCode: 200,
+            body: grants,
+          },
+        ).as("getGrants");
+      })
+      .as("grantsFixture");
+
     cy.wait(500);
+    cy.visit("/min-side");
+
+    cy.wait(
+      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getCauseAreas"],
+      {
+        timeout: 30000,
+      },
+    );
+
     cy.get("[data-cy=send-donation-button]").click();
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);
@@ -352,6 +466,18 @@ describe("Widget", () => {
         },
       });
     }).as("registerDonation");
+
+    cy.intercept("POST", "donations/bank/pending", (req) => {
+      expect(req.body).to.eql(`data={"KID":"87397824", "sum":${randomSum}}`);
+
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: "OK",
+        },
+      });
+    }).as("bankPending");
 
     cy.nextWidgetPane();
   });

@@ -1,5 +1,4 @@
 import actionCreatorFactory from "typescript-fsa";
-import { Organization } from "../../types/Organization";
 import {
   DECREMENT_CURRENT_PANE,
   INCREMENT_CURRENT_PANE,
@@ -8,6 +7,7 @@ import {
   SET_LOADING,
   SET_PANE_NUMBER,
 } from "./types";
+import { CauseArea } from "../../types/CauseArea";
 
 const actionCreator = actionCreatorFactory();
 
@@ -48,6 +48,6 @@ export function setLoading(loading: boolean): LayoutActionTypes {
   };
 }
 
-export const fetchOrganizationsAction = actionCreator.async<undefined, Organization[], Error>(
-  "FETCH_ORGANIZATIONS",
+export const fetchCauseAreasAction = actionCreator.async<undefined, CauseArea[], Error>(
+  "FETCH_CAUSEAREAS",
 );

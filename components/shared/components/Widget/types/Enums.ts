@@ -4,8 +4,8 @@ export enum RecurringDonation {
 }
 
 export enum ShareType {
-  STANDARD,
-  CUSTOM,
+  STANDARD = 1,
+  CUSTOM = 0,
 }
 
 export enum PaymentMethod {

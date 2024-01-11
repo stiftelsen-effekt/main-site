@@ -26,22 +26,23 @@
 
 .radiobutton:focus + label {
   outline: 2px solid var(--primary);
+  outline-offset: 4px;
 }
 
 .radiobutton:active {
   outline: 2px solid var(--primary);
+  outline-offset: 4px;
 }
 
 .radiobuttonlabel {
-  height: 1.5em;
+  height: calc(1.5em + 2px);
   padding-left: 2em;
-  padding-top: 0.25em;
+  line-height: calc(1.5em + 2px);
   position: relative;
   cursor: inherit;
   display: inline-block;
   vertical-align: top;
   margin-right: 16px;
-  line-height: 100%;
   font-size: 1em;
 }
 

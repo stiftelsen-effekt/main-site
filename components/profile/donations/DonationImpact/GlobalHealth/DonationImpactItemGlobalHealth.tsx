@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import style from "./DonationImpactItem.module.scss";
-import { thousandize, thousandizeString } from "../../../../util/formatting";
+import style from "./DonationImpactItemGlobalHealth.module.scss";
+import { thousandize, thousandizeString } from "../../../../../util/formatting";
 import useSWR from "swr";
-import { ImpactEvaluation } from "../../../../models";
+import { ImpactEvaluation } from "../../../../../models";
 import AnimateHeight from "react-animate-height";
-import { Links } from "../../../main/blocks/Links/Links";
+import { Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -19,7 +19,7 @@ export type ImpactItemConfiguration = {
   locale: string;
 };
 
-export const DonationImpactItem: React.FC<{
+export const DonationImpactGlobalHealthItem: React.FC<{
   orgAbriv: string;
   sumToOrg: number;
   donationTimestamp: Date;

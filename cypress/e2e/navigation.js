@@ -1,13 +1,13 @@
 describe("Navigation", () => {
   beforeEach(() => {
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
+    cy.fixture("cause_areas").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
         body: {
           status: 200,
-          content: orgs,
+          content: causeAreas,
         },
-      }).as("getOrganizations");
+      }).as("getCauseAreas");
     });
 
     cy.fixture("referrals").then((referrals) => {
@@ -22,7 +22,7 @@ describe("Navigation", () => {
 
     cy.visit(`/`);
 
-    cy.wait(["@getOrganizations", "@getReferrals"]);
+    cy.wait(["@getCauseAreas", "@getReferrals"]);
   });
 
   it("Tests if CookieBanner works correctly", () => {

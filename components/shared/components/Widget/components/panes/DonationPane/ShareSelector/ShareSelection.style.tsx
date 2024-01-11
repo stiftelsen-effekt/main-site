@@ -1,12 +1,20 @@
 import styled from "styled-components";
 
+export const ShareSelectionWrapper = styled.div`
+  display: grid;
+  grid-template-colums: 1fr;
+  grid-gap: 20px;
+  margin-bottom: 40px;
+
+  &[data-error] input {
+    /* border-color: #db0000; */
+  }
+`;
+
 export const ShareContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 1fr;
-  column-gap: 24px;
   row-gap: 15px;
-  margin-top: 50px;
   align-items: flex-end;
 `;
 
@@ -42,6 +50,7 @@ export const ShareInputContainer = styled.div`
     margin-left: 8px;
     text-align: right;
     padding-right: 22px;
+    transition: border-color 0.2s ease-in-out;
   }
 
   &::after {
@@ -53,4 +62,9 @@ export const ShareInputContainer = styled.div`
     line-height: 36px;
     pointer-events: none;
   }
+`;
+
+export const ErrorContainer = styled.div`
+  margin-bottom: 10px;
+  font-size: 18px;
 `;

@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
 import { registerDonationAction } from "../donation/actions";
 import { Layout } from "../state";
-import { fetchOrganizationsAction } from "./actions";
+import { fetchCauseAreasAction } from "./actions";
 import {
   SET_PANE_NUMBER,
   LayoutActionTypes,
@@ -30,11 +30,11 @@ const initialState: Layout = {
 export const layoutReducer: Reducer<Layout, LayoutActionTypes> = (
   state: Layout = initialState,
   action: LayoutActionTypes,
-) => {
-  if (isType(action, fetchOrganizationsAction.done)) {
+): Layout => {
+  if (isType(action, fetchCauseAreasAction.done)) {
     return {
       ...state,
-      organizations: action.payload.result,
+      causeAreas: action.payload.result,
     };
   }
 

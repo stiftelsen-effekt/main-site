@@ -18,6 +18,7 @@ import {
   useAllOrganizations,
   useDistributions,
   useDonations,
+  useTaxUnits,
 } from "../../_queries";
 import Head from "next/head";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
@@ -188,14 +189,26 @@ export const DonationsPage = withStaticProps(
     error: organizationsError,
   } = useAllOrganizations(getAccessTokenSilently);
 
+  const {
+    data: taxUnits,
+    loading: taxUnitsLoading,
+    isValidating: taxUnitsValidation,
+    error: taxUnitsError,
+  } = useTaxUnits(user, getAccessTokenSilently);
+
   /**
    * While data is loading, we show a spinner
    * In the future, we probably want to move this to a server side fetch
    */
 
-  const dataAvailable = donations && distributions && aggregatedDonations && donor && organizations;
+  const dataAvailable =
+    donations && distributions && aggregatedDonations && donor && organizations && taxUnits;
   const loading =
-    aggregatedLoading || donationsLoading || distributionsLoading || organizationsloading;
+    aggregatedLoading ||
+    donationsLoading ||
+    distributionsLoading ||
+    organizationsloading ||
+    taxUnitsLoading;
 
   if (!dataAvailable || loading)
     return (
@@ -285,6 +298,7 @@ export const DonationsPage = withStaticProps(
                   new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
               )}
             distributions={distributionsMap}
+            taxUnits={taxUnits}
             year={year.toString()}
             configuration={tableConfiguration}
             detailsConfiguration={page.donations_details_configuration}
@@ -312,6 +326,7 @@ export const DonationsPage = withStaticProps(
               new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
           )}
         distributions={distributionsMap}
+        taxUnits={taxUnits}
         year={filterYear}
         configuration={tableConfiguration}
         detailsConfiguration={page.donations_details_configuration}

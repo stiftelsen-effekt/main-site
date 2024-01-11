@@ -7,7 +7,7 @@ import { DatePickerInput } from "../../shared/components/DatePicker/DatePickerIn
 import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../shared/components/EffektCheckbox/EffektCheckbox";
 import { Lightbox } from "../../shared/components/Lightbox/Lightbox";
-import { DistributionController } from "../shared/Distribution";
+import { DistributionController } from "../shared/DistributionCauseAreaInput/Distribution";
 import {
   updateAnonymousVippsAgreementDistribution,
   cancelAnonymousVippsAgreement,
@@ -33,6 +33,10 @@ export const AnonymousVippsAgreement: React.FC<{
    * Saves an agreement if any changes have been made.
    * @returns a toast indicating whether the changes are saved or not.
    */
+
+  return <div>Midlertidig ute av drift, ta kontakt på donasjon@gieffektivt.no</div>;
+
+  /*
   const save = async () => {
     const distributionChanged = JSON.stringify(distribution) !== JSON.stringify(inputDistribution);
     const sumChanged = parseFloat(sum) !== inputSum;
@@ -163,6 +167,7 @@ export const AnonymousVippsAgreement: React.FC<{
       </div>
     );
   }
+  */
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
