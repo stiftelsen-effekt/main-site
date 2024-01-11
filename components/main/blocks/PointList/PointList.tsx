@@ -15,8 +15,23 @@ type PointListProps = {
 
 export const PointList: React.FC<PointListProps> = ({ points, options, numbered }) => {
   const layout = options?.layout || "left";
+
+  const classes = [elements.pointlistwrapper];
+
+  if (layout === "top") {
+    classes.push(elements.top);
+  }
+
+  /**
+   * We've used explicit rules for layouts up to 12 points.
+   * For layouts with more than 12 points, we'll use a auto grid layout.
+   */
+  if (points.length > 12) {
+    classes.push(elements.autogrid);
+  }
+
   return (
-    <div className={[elements.pointlistwrapper, layout === "top" ? elements.top : ""].join(" ")}>
+    <div className={classes.join(" ")}>
       {points.map((point, index) => (
         <PointListPoint
           key={`${index}-${point.heading}`}

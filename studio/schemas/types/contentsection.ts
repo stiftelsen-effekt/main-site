@@ -76,10 +76,18 @@ export default {
         { type: "giveblock" },
         { type: "givewellstamp" },
         { type: "organizationslist" },
+        { type: "giftcardteaser" },
       ],
       options: {
         editModal: "fullscreen",
       },
+    },
+    {
+      name: "hidden",
+      type: "boolean",
+      title: "Hidden",
+      description: "Hide this section from the website",
+      initialValue: false,
     },
   ],
   preview: {
@@ -88,6 +96,7 @@ export default {
       inverted: "inverted",
       nodivider: "nodivider",
       blocks: "blocks",
+      hidden: "hidden",
     },
     component: ContentSectionPreview,
   },

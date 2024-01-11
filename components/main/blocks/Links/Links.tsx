@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import elements from "./Links.module.scss";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { useRouterContext } from "../../../../context/RouterContext";
 
 export type LinkType = {

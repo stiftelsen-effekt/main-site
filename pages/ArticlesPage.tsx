@@ -3,14 +3,14 @@ import { linksContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Navbar } from "../components/main/layout/navbar";
+import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.server";
 import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -34,16 +34,16 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
   return {
     appStaticProps,
     preview: preview,
+    navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
     data: {
       result,
       query: fetchArticles,
       queryParams: {},
     },
-  };
-})(({ data, preview }) => {
+  }; // satisfies GeneralPageProps (requires next@13);;
+})(({ data, navbarData, preview }) => {
   const page = data.result.page;
 
-  const settings = data.result.settings[0];
   const header = page.header;
   const articles = data.result.articles;
 
@@ -59,7 +59,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
           <CookieBanner />
-          <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+          <Navbar {...navbarData} />
         </MainHeader>
 
         <PageHeader
@@ -104,26 +104,6 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
 
 const fetchArticles = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    },
-  },
   "page": *[_type == "articles"] {
     "slug": slug.current,
     header {

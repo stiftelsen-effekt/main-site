@@ -19,7 +19,6 @@ import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
-import { Navbar } from "../../components/profile/layout/navbar";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
@@ -27,8 +26,9 @@ import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { ProfileLayout } from "../../components/profile/layout/layout";
+import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getAgreementsPagePath() {
   const result = await getClient(false).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
@@ -44,24 +44,17 @@ export async function getAgreementsPagePath() {
 export const AgreementsPage = withStaticProps(
   async ({ preview = false }: GetStaticPropsContext<{ slug: string[] }>) => {
     const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-    const result = await getClient(preview).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
 
     return {
       appStaticProps,
       preview: preview,
-      data: {
-        result: result,
-        query: fetchAgreementsPage,
-        queryParams: {},
-      },
-    };
+      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, preview }) => {
+)(({ navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
-  const settings = data.result.settings[0];
-  const dashboard = data.result.dashboard[0];
 
   const {
     loading: avtaleGiroLoading,
@@ -115,7 +108,7 @@ export const AgreementsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+          <Navbar {...navbarData} />
           <AgreementsMenu
             selected={selected}
             onChange={(selected) => setSelected(selected)}
@@ -169,7 +162,7 @@ export const AgreementsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbarData} />
         <AgreementsMenu
           selected={selected}
           onChange={(selected) => setSelected(selected)}
@@ -230,39 +223,16 @@ export const AgreementsPage = withStaticProps(
 });
 
 type FetchAgreementsPageResult = {
-  settings: any[];
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   page?: Array<{ slug?: { current?: string } }>;
-  footer: any[];
-  widget: any[];
 };
 
 const fetchAgreementsPage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-  },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
   },
   "page": *[_id == "agreements"] {
     slug {

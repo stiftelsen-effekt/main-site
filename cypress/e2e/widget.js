@@ -69,6 +69,19 @@ describe("Widget", () => {
   });
 
   it("End-2-End recurring bank donation", () => {
+    /**
+     * Ignore iframeLoaded error on nets iframe
+     */
+    cy.origin("https://pvu.nets.no", () => {
+      cy.on("uncaught:exception", (e) => {
+        if (e.message.includes("iframeLoaded is not defined")) {
+          // we expected this error, so let's ignore it
+          // and let the test continue
+          return false;
+        }
+      });
+    });
+
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());

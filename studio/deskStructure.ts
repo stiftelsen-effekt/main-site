@@ -1,10 +1,12 @@
 import S from "@sanity/desk-tool/structure-builder";
 import {
   Activity,
+  Archive,
   Book,
   Bookmark,
   Briefcase,
   DollarSign,
+  File,
   Filter,
   HelpCircle,
   Lock,
@@ -25,19 +27,25 @@ export default () =>
     .title("GiEffektivt.no")
     .items([
       S.listItem()
-        .title("Custom pages")
+        .schemaType("generic_page")
+        .title("Pages")
         .icon(Book)
         .child(
-          S.list()
-            .title("Pages")
-            .items([
-              S.listItem()
-                .title("Articles")
-                .icon(Paperclip)
-                .child(
+          S.documentList()
+            .title("Pages by category")
+            .schemaType("generic_page")
+            .filter('_type == "category"')
+            .child((catId) =>
+              S.documentList()
+                .title("Pages")
+                .schemaType("generic_page")
+                .filter('_type == "generic_page" && category._ref == $catId')
+                .params({ catId })
+                .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
+                .child((id) =>
                   S.document()
-                    .schemaType("articles")
-                    .documentId("articles")
+                    .schemaType("generic_page")
+                    .documentId(id)
                     .views([
                       S.view.form(),
                       S.view
@@ -48,17 +56,16 @@ export default () =>
                         .title("Preview"),
                     ]),
                 ),
-            ]),
+            ),
         ),
       S.listItem()
-        .schemaType("generic_page")
-        .title("Generic pages")
-        .icon(Book)
+        .title("Pages without category")
+        .icon(Archive)
         .child(
           S.documentList()
             .title("Pages")
             .schemaType("generic_page")
-            .filter('_type == "generic_page"')
+            .filter('_type == "generic_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document()
@@ -75,15 +82,63 @@ export default () =>
                 ]),
             ),
         ),
+      S.divider(),
+      S.listItem()
+        .title("Articles page")
+        .icon(File)
+        .child(
+          S.document()
+            .schemaType("articles")
+            .documentId("articles")
+            .views([
+              S.view.form(),
+              S.view
+                .component(Iframe)
+                .options({
+                  url: (doc: any) => resolveProductionUrl(doc),
+                })
+                .title("Preview"),
+            ]),
+        ),
       S.listItem()
         .schemaType("article_page")
         .title("Articles")
-        .icon(Paperclip)
+        .icon(Book)
+        .child(
+          S.documentList()
+            .title("Articles by category")
+            .filter('_type == "category"')
+            .child((catId) =>
+              S.documentList()
+                .title("Articles")
+                .schemaType("article_page")
+                .filter('_type == "article_page" && category._ref == $catId')
+                .params({ catId })
+                .child((id) =>
+                  S.document()
+                    .schemaType("article_page")
+                    .documentId(id)
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(Iframe)
+                        .options({
+                          url: (doc: any) => resolveProductionUrl(doc),
+                        })
+                        .title("Preview"),
+                    ]),
+                ),
+            ),
+        ),
+      S.listItem()
+        .title("Articles without category")
+        .icon(Archive)
         .child(
           S.documentList()
             .title("Articles")
             .schemaType("article_page")
-            .filter('_type == "article_page"')
+            .filter('_type == "article_page" && !defined(category)')
+            .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document()
                 .schemaType("article_page")
@@ -99,6 +154,7 @@ export default () =>
                 ]),
             ),
         ),
+      S.divider(),
       S.listItem()
         .title("Dashboard")
         .icon(Lock)
@@ -131,11 +187,7 @@ export default () =>
                 .child(S.editor().id("tax").schemaType("tax").documentId("tax")),
             ]),
         ),
-      S.listItem()
-        .title("Bibliography")
-        .schemaType("citation")
-        .icon(Bookmark)
-        .child(S.documentTypeList("citation").title("Entries")),
+      S.divider(),
       S.listItem()
         .schemaType("donationwidget")
         .title("Donation widget")
@@ -154,10 +206,6 @@ export default () =>
                 .title("Preview"),
             ]),
         ),
-      S.listItem()
-        .title("Settings")
-        .icon(Settings)
-        .child(S.document().schemaType("site_settings").documentId("site_settings")),
       S.listItem()
         .title("Payment methods")
         .icon(Tool)
@@ -179,4 +227,17 @@ export default () =>
                 .child(S.document().schemaType("swish").documentId("swish")),
             ]),
         ),
+      S.listItem()
+        .title("Categories")
+        .icon(Filter)
+        .child(S.documentTypeList("category").title("Page and article categories")),
+      S.listItem()
+        .title("Bibliography")
+        .schemaType("citation")
+        .icon(Bookmark)
+        .child(S.documentTypeList("citation").title("Entries")),
+      S.listItem()
+        .title("Site settings")
+        .icon(Settings)
+        .child(S.document().schemaType("site_settings").documentId("site_settings")),
     ]);

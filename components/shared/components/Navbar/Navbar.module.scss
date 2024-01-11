@@ -22,8 +22,8 @@
   cursor: default;
   display: inline-block;
   text-decoration: none;
-  padding: 10px 25px;
-  font-size: 18px;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
   position: relative;
 }
 
@@ -35,12 +35,13 @@
 
 .navbar ul li .submenu {
   position: absolute;
-  width: 100%;
+  min-width: 100%;
   top: 100%;
   left: 0;
   background: var(--secondary);
   top: -1000px;
   padding-bottom: 20px;
+  padding-top: 0.4rem;
 }
 
 .navbar ul li .submenu:focus-within {
@@ -56,16 +57,14 @@
 }
 
 .navbar ul li .submenu ul li {
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 25px;
-  padding-right: 25px;
-  font-size: 16px;
+  padding: 0 0.875rem;
+  font-size: 0.8rem;
   display: block;
 }
 
 .navbar ul li .submenu ul li {
   padding-bottom: 0;
+  white-space: nowrap;
 }
 
 .navbar a.icon {
@@ -114,6 +113,7 @@
   border-bottom: none;
 }
 
+/* Mobile */
 @media only screen and (max-width: 1180px) {
   .navbarExpanded {
     background: var(--primary);
@@ -132,6 +132,7 @@
     justify-content: flex-start;
     height: auto;
     height: 100%;
+    overflow: scroll;
   }
 
   .expandBtn {
@@ -163,7 +164,8 @@
     font-weight: normal;
     display: flex;
     flex-direction: column;
-    padding-bottom: 70px;
+    padding-bottom: 2rem;
+    padding-top: 0.5rem;
   }
 
   .navbarExpanded .logoWrapper {
@@ -178,9 +180,10 @@
 
   .navbar ul li {
     display: block;
-    font-size: 20px;
     padding: 0;
-    margin-top: 14px;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
   }
 
   .navbar ul li a {
@@ -197,16 +200,23 @@
     position: static;
     flex-grow: 1;
     width: 100%;
-    padding-left: 10px;
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0;
     background: none;
-    padding-bottom: 10px;
   }
 
   .navbarExpanded ul li .submenu ul {
     display: block;
   }
 
-  .navbarExpanded ul li .submenu ul a {
+  .navbarExpanded ul li .submenu ul li {
+    font-size: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .navbarExpanded ul li .submenu ul li a {
     display: inline-block;
     width: 100%;
   }
@@ -219,15 +229,6 @@
   .navbar ul li.collapsedSubmenu button::after {
     transform: rotate(0deg);
     transition: 180ms all;
-  }
-
-  /* Style navigation menu links */
-  .navbar Link {
-    color: var(--primary);
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 28px;
-    display: block;
   }
 
   /* Style the active link (or home/logo) */
@@ -245,6 +246,7 @@
   }
 
   .navbar ul li.buttonsWrapper {
+    padding-top: 1.5rem;
     margin-left: 0;
     align-self: flex-start;
     display: flex;
@@ -263,37 +265,14 @@
   }
 }
 
-@media only screen and (max-width: 1600px) and (min-width: 1181px) {
-  .navbar ul li {
-    font-size: 15px;
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-
-  .navbar ul li .submenu ul li {
-    font-size: 15px;
-    padding-left: 18px;
-    padding-right: 18px;
-    margin-top: 6px;
-  }
-}
+/* Laoptop */
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .navbar .logoWrapper {
     width: 160px;
   }
-  .navbar ul li {
-    font-size: 14px;
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
-  .navbar ul li .submenu ul li {
-    font-size: 14px;
-    padding-left: 14px;
-    padding-right: 14px;
-  }
 }
 
+/* Over mobile */
 @media only screen and (min-width: 1180px) {
   .navbar ul li > div {
     height: auto !important;
@@ -307,6 +286,7 @@
   }
 }
 
+/* Large desktop */
 @media only screen and (min-width: 1920px) {
   .container {
     max-width: 1714px;

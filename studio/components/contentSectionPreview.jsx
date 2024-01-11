@@ -4,6 +4,7 @@ import Preview from "part:@sanity/base/preview";
 import schema from "part:@sanity/base/schema";
 import QueryContainer from "part:@sanity/base/query-container";
 import Spinner from "part:@sanity/components/loading/spinner";
+import { EyeOff } from "react-feather";
 // These are react components
 
 export const ContentSectionPreview = React.forwardRef((props, ref) => {
@@ -33,7 +34,31 @@ export const ContentSectionPreview = React.forwardRef((props, ref) => {
 
   return (
     <ThemeProvider scheme={props.value.inverted ? "dark" : "light"}>
-      <Card padding={2} radius={4}>
+      <Card padding={2} radius={4} style={{ position: "relative" }}>
+        {props.value.hidden && (
+          <div
+            style={{
+              position: "absolute",
+              top: "0",
+              left: "0",
+              width: "100%",
+              height: "100%",
+              background: "rgba(255,255,255,.9)",
+              zIndex: 100,
+            }}
+          >
+            <EyeOff
+              size={24}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                color: "black",
+              }}
+            />
+          </div>
+        )}
         <Stack space={4}>
           {hasHeader ? (
             <Stack>

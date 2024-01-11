@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 
 Cypress.Commands.add("login", (overrides = {}) => {
   cy.clearLocalStorage();
+  cy.ignorePlausibleTracking();
   Cypress.log({
     name: "loginAuth0",
   });
@@ -129,5 +130,11 @@ Cypress.Commands.add("pickRecurringDonation", pickRecurringDonation);
 Cypress.Commands.add("pickSingleDonation", pickSingleDonation);
 Cypress.Commands.add("pickAnonymous", pickAnonymous);
 Cypress.Commands.add("inputDonorValues", inputDonorValues);
+
+Cypress.Commands.add("ignorePlausibleTracking", () => {
+  cy.window().then((win) => {
+    win.localStorage.setItem("plausible_ignore", "true");
+  });
+});
 
 export {};

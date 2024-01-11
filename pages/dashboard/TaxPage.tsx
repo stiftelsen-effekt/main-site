@@ -7,7 +7,6 @@ import { LinksProps } from "../../components/main/blocks/Links/Links";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import { ProfileLayout } from "../../components/profile/layout/layout";
-import { Navbar } from "../../components/profile/layout/navbar";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
 import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
@@ -19,8 +18,14 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.server";
 import style from "../../styles/Tax.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import {
+  GeneralPageProps,
+  LayoutType,
+  filterPageToSingleItem,
+  getAppStaticProps,
+} from "../_app.page";
 import { getDashboardPagePath } from "./DonationsPage";
+import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getTaxPagePath(): Promise<string[]> {
   const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
@@ -65,17 +70,16 @@ export const TaxPage = withStaticProps(
     return {
       appStaticProps,
       preview: preview,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
       subpath,
       data: {
         result: result,
         query: fetchTaxPage,
         queryParams: {},
       },
-    };
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, subpath, preview }) => {
-  const settings = data.result.settings[0];
-  const dashboard = data.result.dashboard[0];
+)(({ data, subpath, navbarData, preview }) => {
   const page = filterPageToSingleItem(data.result, preview);
 
   if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
@@ -122,7 +126,7 @@ export const TaxPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbarData} />
         <TaxMenu mobile selected={menuChoice} choices={page.features}></TaxMenu>
       </MainHeader>
 
@@ -141,7 +145,6 @@ export const TaxPage = withStaticProps(
 
 type FetchTaxPageResult = {
   settings: Array<{
-    logo?: any;
     main_currency?: string;
   }>;
   page: Array<{
@@ -151,7 +154,7 @@ type FetchTaxPageResult = {
       current?: string;
     };
   }>;
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 
 export interface TaxFeatureProps {
@@ -190,30 +193,12 @@ export type TaxPageFeature = TaxUnitsData | TaxDeductionData | TaxStatementsData
 const fetchTaxPage = groq`
 {
   "settings": *[_type == "site_settings"] {
-    logo,
     main_currency,
   },
   "dashboard": *[_id == "dashboard"] {
-    tax_slug {
+    dashboard_slug {
       current
     },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
   },
   "page": *[_type == "tax"] {
     ...,

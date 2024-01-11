@@ -34,64 +34,72 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 sagaMiddleware.run(watchAll);
 
+export type GeneralPageProps = Record<string, unknown> & {
+  preview: boolean;
+  data?: {
+    result: Record<string, unknown> & { page?: any; footer?: any };
+    query: string;
+    queryParams: { slug?: string };
+  };
+  appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
+};
+
 function MyApp({
   Component,
   pageProps: { appStaticProps, preview, ...pageProps },
-}: AppProps<{
-  preview: boolean;
-  data: { result: { page: any; footer: any }; query: string; queryParams: { slug: string } };
-  appStaticProps?: Awaited<ReturnType<typeof getAppStaticProps>>;
-}>) {
+}: AppProps<GeneralPageProps>) {
   const routerContextValue = useRef<RouterContextValue | null>(
     appStaticProps?.routerContext || null,
   );
 
   const { data: previewData, loading: previewLoading } = usePreviewSubscription(
-    pageProps.data?.query,
+    pageProps.data?.query || "",
     {
       params: pageProps.data?.queryParams ?? {},
       initialData: pageProps.data?.result,
-      enabled: preview,
+      enabled: preview && !!pageProps.data?.query,
     },
   );
 
-  if (pageProps.data) {
-    if (!appStaticProps) {
-      throw new Error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
-    }
+  if (!appStaticProps) {
+    console.error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
 
-    const PageLayout = { [LayoutType.Default]: Layout, [LayoutType.Profile]: ProfileLayout }[
-      appStaticProps.layout
-    ];
-
-    if (Array.isArray(previewData.page)) {
-      previewData.page = filterPageToSingleItem(previewData, preview);
-    }
-
-    pageProps.data.result = previewData;
-
-    const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
-
-    return (
-      <PlausibleProvider
-        domain={plausibleDomain}
-        trackOutboundLinks={true}
-        taggedEvents={true}
-        trackLocalhost={true} // TODO: Remove when testing is done
-        enabled={true} // TODO: Remove when testing is done
-      >
-        <Provider store={store}>
-          <RouterContext.Provider value={routerContextValue.current}>
-            <PageLayout {...appStaticProps.layoutProps}>
-              <Component {...pageProps} />
-            </PageLayout>
-          </RouterContext.Provider>
-        </Provider>
-      </PlausibleProvider>
-    );
-  } else {
     return <Component {...pageProps} />;
   }
+
+  if (previewData?.page && Array.isArray(previewData.page)) {
+    previewData.page = filterPageToSingleItem(previewData, preview);
+  }
+
+  if (pageProps.data) {
+    pageProps.data.result = previewData;
+  }
+
+  const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
+
+  return (
+    <PlausibleProvider
+      domain={plausibleDomain}
+      trackOutboundLinks={true}
+      taggedEvents={true}
+      trackLocalhost={true} // TODO: Remove when testing is done
+      enabled={true} // TODO: Remove when testing is done
+    >
+      <Provider store={store}>
+        <RouterContext.Provider value={routerContextValue.current}>
+          {appStaticProps.layout === LayoutType.Default ? (
+            <Layout {...appStaticProps.layoutProps}>
+              <Component {...pageProps} />
+            </Layout>
+          ) : (
+            <ProfileLayout {...appStaticProps.layoutProps}>
+              <Component {...pageProps} />
+            </ProfileLayout>
+          )}
+        </RouterContext.Provider>
+      </Provider>
+    </PlausibleProvider>
+  );
 }
 
 export async function getAppStaticProps({
@@ -104,15 +112,27 @@ export async function getAppStaticProps({
   const routerContext = await fetchRouterContext();
   const appStaticProps = {
     routerContext,
-    layout,
-    layoutProps: await (layout === LayoutType.Default
-      ? Layout.getStaticProps({ preview })
-      : ProfileLayout.getStaticProps({ preview })),
+    ...(layout === LayoutType.Default
+      ? {
+          layout: LayoutType.Default as const,
+          layoutProps: await Layout.getStaticProps({ preview }),
+        }
+      : {
+          layout: LayoutType.Profile as const,
+          layoutProps: await ProfileLayout.getStaticProps({ preview }),
+        }),
   };
   return appStaticProps;
 }
 
-export const filterPageToSingleItem = <T,>(data: { page: T | T[] }, preview: boolean): T | null => {
+export const filterPageToSingleItem = <T,>(
+  data: { page?: T | T[] },
+  preview: boolean,
+): T | null => {
+  if (!data.page) {
+    return null;
+  }
+
   if (!Array.isArray(data.page)) {
     return data.page;
   }

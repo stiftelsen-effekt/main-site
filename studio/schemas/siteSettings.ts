@@ -25,11 +25,25 @@ export default {
       type: "image",
     },
     {
-      title: "Main Navigation",
       name: "main_navigation",
+      title: "Main Navigation",
       description: "Select pages for the top menu",
       type: "array",
       of: [{ type: "navitem" }, { type: "navgroup" }],
+    },
+    {
+      name: "donate_label",
+      title: "Donate label",
+      type: "string",
+      description: "Label for donate button in main menu",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "donate_label_short",
+      title: "Donate label (Short)",
+      type: "string",
+      description: "Label for the floating donate button",
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "contact",
@@ -63,28 +77,48 @@ export default {
       },
     },
     {
-      title: "Footer column 1",
-      name: "footer_column_1",
-      description: "Select links for the first footer column",
+      title: "Footer columns",
+      name: "footer_columns",
+      description: "Select links for the footer columns",
       type: "array",
       group: "footer",
-      of: [{ type: "navitem" }, { type: "link" }],
-    },
-    {
-      title: "Footer column 2",
-      name: "footer_column_2",
-      description: "Select links for the second footer column",
-      type: "array",
-      group: "footer",
-      of: [{ type: "navitem" }, { type: "link" }],
-    },
-    {
-      title: "Footer column 3",
-      name: "footer_column_3",
-      description: "Select links for the third footer column",
-      type: "array",
-      group: "footer",
-      of: [{ type: "navitem" }, { type: "link" }],
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              title: "Links",
+              name: "links",
+              type: "array",
+              of: [{ type: "navitem" }, { type: "link" }],
+            },
+          ],
+          preview: {
+            select: {
+              link0: "links.0.title",
+              link1: "links.1.title",
+              link2: "links.2.title",
+              link3: "links.3.title",
+              link4: "links.4.title",
+              link5: "links.5.title",
+            },
+            prepare: (props: any) => {
+              const values = Object.values(props).filter((prop: any) => prop !== undefined);
+              if (values.length === 0) {
+                return {
+                  title: "Empty column",
+                };
+              } else {
+                const joined = values.join(", ");
+                const title = joined.length > 60 ? joined.substring(0, 60) + "..." : joined;
+                return {
+                  title,
+                };
+              }
+            },
+          },
+        },
+      ],
     },
   ],
 };

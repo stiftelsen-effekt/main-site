@@ -1,11 +1,10 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import styles from "./GiveButton.module.scss";
 import { usePlausible } from "next-plausible";
 
-export const GiveButton: React.FC<{ inverted: boolean; onClick: () => void }> = ({
-  inverted,
-  onClick,
-}) => {
+export const GiveButton: React.FC<
+  PropsWithChildren<{ inverted: boolean; onClick: () => void }>
+> = ({ children, inverted, onClick }) => {
   const plausible = usePlausible();
 
   const handleClick = () => {
@@ -24,7 +23,7 @@ export const GiveButton: React.FC<{ inverted: boolean; onClick: () => void }> = 
       onClick={handleClick}
       data-cy="gi-button"
     >
-      Gi.
+      {children}
     </button>
   );
 };
