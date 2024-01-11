@@ -1,5 +1,5 @@
 import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
-import { NavLink } from "../../../../main/layout/navbar";
+import { NavLink } from "../../Navbar/Navbar";
 
 export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
