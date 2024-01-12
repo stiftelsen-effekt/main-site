@@ -14,6 +14,7 @@ import { useRouterContext } from "../../../../context/RouterContext";
 export const WealthCalculatorTeaser: React.FC<{
   title: string;
   description: any[];
+  axisLabel: string;
   link: NavLink;
   medianIncome: number;
   incomePercentileLabelTemplateString: string;
@@ -21,6 +22,7 @@ export const WealthCalculatorTeaser: React.FC<{
 }> = ({
   title,
   description,
+  axisLabel,
   link,
   medianIncome,
   incomePercentileLabelTemplateString,
@@ -121,7 +123,7 @@ export const WealthCalculatorTeaser: React.FC<{
         </div>
       </div>
       <div className={styles.axislabel}>
-        <span>Årsinntekt i kroner (logaritmisk skala) →</span>
+        <span>{axisLabel} →</span>
       </div>
       <div className={styles.mobileButton}>
         <Link

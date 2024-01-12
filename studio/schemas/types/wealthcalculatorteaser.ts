@@ -20,6 +20,11 @@ export default {
       of: [blocktype],
     },
     {
+      name: "axis_label",
+      type: "string",
+      title: "Axis Label",
+    },
+    {
       name: "median_income",
       type: "number",
       title: "Median Income",
