@@ -29,6 +29,12 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "kontonr",
+      title: "Kontonr",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "kid_title",
       title: "KID title",
       type: "string",

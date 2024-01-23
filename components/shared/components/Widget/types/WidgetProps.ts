@@ -18,6 +18,7 @@ export type BankPaymentMethod = {
   selector_text: string;
   title: string;
   kontonr_title: string;
+  kontonr: string;
   kid_title: string;
   explanatory_text: string;
 };
