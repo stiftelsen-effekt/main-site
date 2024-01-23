@@ -56,6 +56,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
+        titleTemplate={`${data.result.settings[0].title} | %s`}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -88,6 +89,9 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 });
 
 type FetchVippsResult = {
+  settings: Array<{
+    title: string;
+  }>;
   vipps?: Array<{
     agreement_page: Record<string, any> & {
       slug: {
@@ -99,6 +103,9 @@ type FetchVippsResult = {
 
 const fetchVipps = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+  },
   "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {

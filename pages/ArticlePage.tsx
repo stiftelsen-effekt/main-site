@@ -30,6 +30,7 @@ const ArticlePage = withStaticProps(
     let result = await getClient(preview).fetch<{
       page: any;
       relatedArticles: RelatedArticle[];
+      settings: { title: string }[];
     }>(fetchArticle, { slug });
 
     result = { ...result, page: filterPageToSingleItem(result, preview) };
@@ -61,7 +62,7 @@ const ArticlePage = withStaticProps(
     <>
       <SEO
         title={header.seoTitle || header.title}
-        titleTemplate={"%s | Gi Effektivt."}
+        titleTemplate={`%s | ${data.result.settings[0].title}`}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={
@@ -93,6 +94,9 @@ const fetchArticles = groq`
 
 const fetchArticle = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+  },
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,
