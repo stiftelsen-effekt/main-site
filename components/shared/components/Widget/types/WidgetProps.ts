@@ -1,7 +1,7 @@
 import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
 import { NavLink } from "../../Navbar/Navbar";
 
-export type WidgetProps = WidgetPane1Props &
+export type WidgetProps = { locale: "no" | "se" | "en" } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
     methods?: Array<

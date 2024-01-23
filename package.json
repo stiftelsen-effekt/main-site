@@ -40,6 +40,8 @@
     "next-sanity": "^1.1.0",
     "next-sanity-image": "^3.2.1",
     "next-seo": "^5.4.0",
+    "organisationsnummer": "^1.1.5",
+    "personnummer": "^3.2.1",
     "react": "17.0.2",
     "react-animate-height": "^3.1.1",
     "react-dom": "17.0.2",
