@@ -1,7 +1,7 @@
 import React from "react";
 import { Donation } from "../../../../store/state";
 import { RoundedBorder } from "../../../shared/Layout/Layout.style";
-import { TextWrapper } from "./ResultPane.style";
+import { TextWrapper } from "./BankPane.style";
 
 export const PaymentInformation: React.FC<{
   accountTitle: string;

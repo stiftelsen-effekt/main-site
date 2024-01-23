@@ -12,14 +12,6 @@ export default {
       title: "Pane 2",
     },
     {
-      name: "pane3_bank_recurring",
-      title: "Pane 3 - Bank recurring",
-    },
-    {
-      name: "pane3_bank_single",
-      title: "Pane 3 - Bank single",
-    },
-    {
       name: "referrals",
       title: "Referrals",
     },
@@ -33,7 +25,13 @@ export default {
       of: [
         {
           type: "reference",
-          to: [{ type: "bank" }, { type: "vipps" }, { type: "swish" }, { type: "autogiro" }],
+          to: [
+            { type: "bank" },
+            { type: "vipps" },
+            { type: "swish" },
+            { type: "autogiro" },
+            { type: "avtalegiro" },
+          ],
           validation: (Rule: any) => Rule.required(),
           options: {
             disableNew: true,

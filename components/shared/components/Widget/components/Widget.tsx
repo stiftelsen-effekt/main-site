@@ -55,6 +55,9 @@ const widgetQuery = groq`
           _type == 'autogiro' => {
             ...
           },
+          _type == 'avtalegiro' => {
+            ...
+          },
         },
       }
     }

@@ -5,21 +5,21 @@ export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
     methods?: Array<
-      BankPaymentMethod | VippsPaymentMethod | SwishPaymentMethod | AutoGiroPaymentMethod
+      | BankPaymentMethod
+      | VippsPaymentMethod
+      | SwishPaymentMethod
+      | AutoGiroPaymentMethod
+      | AvtaleGiroPaymentMethod
     >;
   };
 
 export type BankPaymentMethod = {
   _id: "bank";
   selector_text: string;
-  single_title: string;
-  single_kontonr_title: string;
-  single_kid_title: string;
-  single_explanatory_text: string;
-  recurring_title: string;
-  recurring_selector_earliest_text: string;
-  recurring_selector_choose_date_text: string;
-  recurring_button_text: string;
+  title: string;
+  kontonr_title: string;
+  kid_title: string;
+  explanatory_text: string;
 };
 
 export type VippsPaymentMethod = {
@@ -56,6 +56,15 @@ export type SwishPaymentMethod = {
     title: string;
     text?: string;
   };
+};
+
+export type AvtaleGiroPaymentMethod = {
+  _id: "avtalegiro";
+  selector_text: string;
+  title: string;
+  selector_earliest_text: string;
+  selector_choose_date_text: string;
+  button_text: string;
 };
 
 export type AutoGiroPaymentMethod = {
