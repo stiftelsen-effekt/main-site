@@ -35,6 +35,7 @@ export const BankPane: React.FC<{
             donation={donation}
             accountTitle={config.kontonr_title}
             kidTitle={config.kid_title}
+            accountNr={config.kontonr}
           />
           <InfoText>{config.explanatory_text}</InfoText>
         </div>
