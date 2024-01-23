@@ -5,7 +5,6 @@ import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { DonationDetails, DonationDetailsConfiguration } from "./DonationDetails";
-import tax from "../../../../../studio/schemas/dashboard/tax";
 
 export type TableFieldTypes = "string" | "sum" | "date" | "paymentmethod";
 
