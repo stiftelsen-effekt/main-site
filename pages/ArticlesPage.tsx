@@ -54,6 +54,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug}`}
+        titleTemplate={`${data.result.settings[0].title} | %s`}
       />
 
       <div className={styles.inverted}>
@@ -104,6 +105,9 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
 
 const fetchArticles = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+  },
   "page": *[_type == "articles"] {
     "slug": slug.current,
     header {
