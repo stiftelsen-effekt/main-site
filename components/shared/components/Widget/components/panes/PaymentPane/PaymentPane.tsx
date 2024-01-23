@@ -51,7 +51,6 @@ export const PaymentPane: React.FC<{
           "Missing configuration for AvtaleGiro, but selected payment method is avtalegiro",
         );
       }
-      console.log("avtaleGiroConfiguration", avtaleGiroConfiguration);
       return <AvtaleGiroPane config={avtaleGiroConfiguration} referrals={referrals} />;
     }
     case PaymentMethod.SWISH: {

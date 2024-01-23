@@ -194,8 +194,6 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   const widgetRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<string | null>(null);
 
-  console.log(methods);
-
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
 

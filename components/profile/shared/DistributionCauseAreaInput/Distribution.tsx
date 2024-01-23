@@ -47,7 +47,6 @@ export const DistributionController: React.FC<{
                   const percentageShare = parseFloat(e.target.value) || 0;
                   const organizations = [...causeArea.organizations];
                   const index = organizations.findIndex((o) => o.id === org.id);
-                  console.log(index);
                   if (index === -1) {
                     organizations.push({
                       id: org.id,
