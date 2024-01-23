@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import style from "./DatePicker.module.scss";
+import style from "./DatePickerInput.module.scss";
 import { DatePicker } from "./DatePicker";
+import { Calendar } from "react-feather";
 
 export const DatePickerInput: React.FC<{
   selected?: number;
@@ -34,6 +35,7 @@ export const DatePickerInput: React.FC<{
         onClick={() => setPickerOpen(true)}
         data-cy="date-picker-input"
       />
+      <Calendar />
     </div>
   );
 };

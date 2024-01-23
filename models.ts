@@ -48,12 +48,20 @@ export type VippsAgreement = {
 
 export type Distribution = {
   kid: string;
-  standardDistribution: boolean;
-  taxUnit: TaxUnit | null;
-  shares: {
+  donorId: number;
+  taxUnitId: number | null;
+  causeAreas: DistributionCauseArea[];
+};
+
+export type DistributionCauseArea = {
+  id: number;
+  name?: string;
+  standardSplit: boolean;
+  percentageShare: string;
+  organizations: {
     id: number;
-    name: string;
-    share: string;
+    name?: string;
+    percentageShare: string;
   }[];
 };
 
@@ -110,7 +118,7 @@ export type TaxUnit = {
   sumDonations: number;
   registered: string;
   archived: string | null;
-  taxDeductions?: { year: number; sumDonations: number; taxDeduction: number }[];
+  taxDeductions?: { year: number; sumDonations: number; deduction: number; benefit: number }[];
 };
 
 export type TaxYearlyReport = {

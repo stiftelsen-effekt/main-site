@@ -1,5 +1,5 @@
 import { PortableText } from "@portabletext/react";
-import { Distribution, Donation } from "../../../../../models";
+import { Distribution, Donation, TaxUnit } from "../../../../../models";
 import { onlyDate, thousandize } from "../../../../../util/formatting";
 import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
@@ -23,37 +23,46 @@ export type DonationsListConfiguration = {
 export const DonationList: React.FC<{
   donations: Donation[];
   distributions: Map<string, Distribution>;
+  taxUnits: TaxUnit[];
   year: string;
   configuration: DonationsListConfiguration;
   detailsConfiguration?: DonationDetailsConfiguration;
   firstOpen: boolean;
-}> = ({ donations, distributions, year, configuration, detailsConfiguration, firstOpen }) => {
+}> = ({
+  donations,
+  distributions,
+  taxUnits,
+  year,
+  configuration,
+  detailsConfiguration,
+  firstOpen,
+}) => {
   let taxDeductionText: JSX.Element | undefined = undefined;
 
-  let taxDeductions = 0;
-  let processedUnits = new Set<number>();
-  distributions.forEach((el) => {
-    // Get all unique tax units by id
-    if (typeof el.taxUnit !== "undefined") {
-      if (el.taxUnit?.archived == null && typeof el.taxUnit?.taxDeductions !== "undefined") {
-        if (!processedUnits.has(el.taxUnit.id)) {
-          el.taxUnit?.taxDeductions.forEach((deduction) => {
-            if (deduction.year === parseInt(year)) {
-              taxDeductions += deduction.taxDeduction;
-            }
-          });
-          processedUnits.add(el.taxUnit.id);
-        }
+  let taxDeductions = taxUnits.reduce(
+    (acc, unit) => {
+      const deduction = unit.taxDeductions?.find((td) => td.year === parseInt(year));
+      if (deduction) {
+        return {
+          yearlyDeduction: acc.yearlyDeduction + deduction.deduction,
+          yearlyBenefit: acc.yearlyBenefit + deduction.benefit,
+        };
+      } else {
+        return acc;
       }
-    }
-  });
-  if (taxDeductions > 0) {
+    },
+    { yearlyDeduction: 0, yearlyBenefit: 0 },
+  );
+
+  if (taxDeductions.yearlyDeduction > 0) {
     {
       /** TODO: Tax rules will differ for different juristictions. Update backend to support a structured format to reflect this. */
     }
     let taxDeductionTextSplit: string[];
     let taxDeductionSumElement: JSX.Element = (
-      <span style={{ whiteSpace: "nowrap" }}>{thousandize(Math.round(taxDeductions * 0.22))}</span>
+      <span style={{ whiteSpace: "nowrap" }}>
+        {thousandize(Math.round(taxDeductions.yearlyBenefit))}
+      </span>
     );
 
     if (year === new Date().getFullYear().toString()) {

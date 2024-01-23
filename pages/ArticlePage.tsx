@@ -6,14 +6,14 @@ import {
   RelatedArticle,
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
-import { Navbar } from "../components/main/layout/navbar";
+import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
 import { getClient } from "../lib/sanity.server";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -29,22 +29,23 @@ const ArticlePage = withStaticProps(
 
     let result = await getClient(preview).fetch<{
       page: any;
-      settings: any[];
       relatedArticles: RelatedArticle[];
     }>(fetchArticle, { slug });
+
     result = { ...result, page: filterPageToSingleItem(result, preview) };
 
     return {
       appStaticProps,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
       preview: preview,
       data: {
         result,
         query: fetchArticle,
         queryParams: { slug },
       },
-    };
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, preview }) => {
+)(({ data, navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -54,7 +55,6 @@ const ArticlePage = withStaticProps(
 
   const header = page.header;
   const content = page.content;
-  const settings = data.result.settings[0];
   const relatedArticles = data.result.relatedArticles;
 
   return (
@@ -72,7 +72,7 @@ const ArticlePage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbarData} />
       </MainHeader>
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
@@ -93,26 +93,6 @@ const fetchArticles = groq`
 
 const fetchArticle = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {
       ...,

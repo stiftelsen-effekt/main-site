@@ -138,7 +138,7 @@ export const DonorPane: React.FC<{
       dispatch(submitPhoneNumber(formattedPhone));
     }
 
-    if (isAnonymous || donation.isValid) {
+    if (isAnonymous || donation.errors.length === 0) {
       dispatch(registerDonationAction.started(undefined));
     } else {
       alert("Donation invalid");

@@ -3,12 +3,13 @@ import styles from "./SplitView.module.scss";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType } from "../Links/Links";
-import { NavLink } from "../../layout/navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links } from "../Links/Links";
 
 export interface SplitView {
   title: string;
   swapped?: boolean;
+  rowSwapped?: boolean;
   darktext?: boolean;
   paragraph: string;
   links: (LinkType | NavLink)[];
@@ -17,6 +18,7 @@ export interface SplitView {
 export const SplitView: React.FC<SplitView> = ({
   title,
   swapped,
+  rowSwapped,
   darktext,
   paragraph,
   links,
@@ -24,6 +26,8 @@ export const SplitView: React.FC<SplitView> = ({
 }) => {
   const classes = [styles.splitview];
   if (swapped) classes.push(styles.swapped);
+
+  if (rowSwapped) classes.push(styles.rowSwapped);
 
   if (darktext) classes.push(styles.darktext);
 

@@ -8,7 +8,7 @@ import { mapNameToOrgAbbriv } from "../../../../../util/mappings";
 import AnimateHeight from "react-animate-height";
 import { LinkType, Links } from "../../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
-import { NavLink } from "../../../../main/layout/navbar";
+import { NavLink } from "../../../../shared/components/Navbar/Navbar";
 
 export type DonationDetailsConfiguration = {
   impact_estimate_header: string;
@@ -29,11 +29,6 @@ export const DonationDetails: React.FC<{
 
   if (!distribution)
     return <span>Ingen distribusjon funnet for donasjon med KID {donation.KID}</span>;
-
-  const mappedDistribution = distribution.shares.map((org) => ({
-    org: mapNameToOrgAbbriv(org.name) || org.name,
-    sum: parseFloat(sum) * (parseFloat(org.share) / 100),
-  }));
 
   return (
     <div className={style.wrapper}>
@@ -58,7 +53,7 @@ export const DonationDetails: React.FC<{
 
         <DonationImpact
           donation={donation}
-          distribution={mappedDistribution}
+          distribution={distribution}
           timestamp={timestamp}
           configuration={configuration.impact_items_configuration}
         />

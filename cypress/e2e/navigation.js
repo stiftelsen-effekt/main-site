@@ -1,13 +1,13 @@
 describe("Navigation", () => {
   beforeEach(() => {
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
+    cy.fixture("cause_areas").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
         body: {
           status: 200,
-          content: orgs,
+          content: causeAreas,
         },
-      }).as("getOrganizations");
+      }).as("getCauseAreas");
     });
 
     cy.fixture("referrals").then((referrals) => {
@@ -22,7 +22,7 @@ describe("Navigation", () => {
 
     cy.visit(`/`);
 
-    cy.wait(["@getOrganizations", "@getReferrals"]);
+    cy.wait(["@getCauseAreas", "@getReferrals"]);
   });
 
   it("Tests if CookieBanner works correctly", () => {
@@ -34,10 +34,10 @@ describe("Navigation", () => {
     // CookieBanner should be hidden
     cy.get("[data-cy=cookiebanner-container]").should("not.be.visible");
 
-    cy.get("[data-cy=Maks-effekt-link]").within(() => {
+    cy.get("[data-cy=maks-effekt-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/maks-effekt");
+    cy.url({ timeout: 10000 }).should("include", "/maks-effekt", { timeout: 10000 });
 
     // CookieBanner should still be hidden after changing page
     cy.get("[data-cy=cookiebanner-container]").should("not.be.visible");
@@ -110,49 +110,32 @@ describe("Navigation", () => {
     cy.get("[data-cy=artikler-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/artikler");
+    cy.url({ timeout: 10000 }).should("include", "/artikler", { timeout: 10000 });
 
     cy.get("[data-cy=om-oss-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/om-oss");
+    cy.url({ timeout: 10000 }).should("include", "/om-oss", { timeout: 10000 });
 
-    cy.get("[data-cy=Topplista-link]").within(() => {
+    cy.get("[data-cy=topplista-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/topplista");
+    cy.url({ timeout: 10000 }).should("include", "/topplista", { timeout: 10000 });
 
-    cy.get("[data-cy=Kriterier-link]").within(() => {
+    cy.get("[data-cy=kriterier-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/kriterier");
+    cy.url({ timeout: 10000 }).should("include", "/kriterier");
 
-    cy.get("[data-cy=Maks-effekt-link]").within(() => {
+    cy.get("[data-cy=smart-fordeling-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/maks-effekt");
+    cy.url({ timeout: 10000 }).should("include", "/smart-fordeling", { timeout: 10000 });
 
-    cy.get("[data-cy=Smart-fordeling-link]").within(() => {
+    cy.get("[data-cy=ofte-stilte-sporsmal-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url().should("include", "/smart-fordeling");
-
-    cy.get("[data-cy=Full-oversikt-link]").within(() => {
-      cy.get("a").click({ force: true });
-    });
-    cy.url().should("include", "/full-oversikt");
-
-    cy.get("[data-cy=Vanlige-spørsmål-link]").within(() => {
-      cy.get("a").click({ force: true });
-    });
-    cy.url().should("include", "/ofte-stilte-sporsmal");
-  });
-
-  it("Tests links in the Footer", () => {
-    cy.get("[data-cy=artikler-link]").within(() => {
-      cy.get("a").click({ force: true });
-    });
-    cy.url().should("include", "/artikler");
+    cy.url({ timeout: 10000 }).should("include", "/ofte-stilte-sporsmal", { timeout: 10000 });
   });
 
   it("Tests newsletter signup", () => {

@@ -13,9 +13,9 @@ import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.server";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { WidgetContext } from "../../../../main/layout/layout";
+import { fetchCauseAreasAction } from "../store/layout/actions";
 import { paymentMethodConfigurations } from "../config/methods";
 import { setRecurring } from "../store/donation/actions";
-import { fetchOrganizationsAction } from "../store/layout/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
 import { RecurringDonation } from "../types/Enums";
@@ -197,7 +197,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
 
   useEffect(() => {
-    dispatch(fetchOrganizationsAction.started(undefined));
+    dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
@@ -220,12 +220,10 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
             text={{
               single_donation_text: widget.single_donation_text,
               monthly_donation_text: widget.monthly_donation_text,
-              preset_amounts_recurring: widget.preset_amounts_recurring,
-              preset_amounts_single: widget.preset_amounts_single,
-              smart_fordeling_text: widget.smart_fordeling_text,
-              smart_fordeling_description: widget.smart_fordeling_description,
-              choose_your_own_text: widget.choose_your_own_text,
+              amount_context: widget.amount_context,
+              smart_distribution_context: widget.smart_distribution_context,
               pane1_button_text: widget.pane1_button_text,
+              donation_input_error_templates: widget.donation_input_error_templates,
             }}
             enableRecurring={availableRecurringOptions.recurring}
             enableSingle={availableRecurringOptions.single}

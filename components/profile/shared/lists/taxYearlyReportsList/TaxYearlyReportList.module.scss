@@ -1,0 +1,6 @@
+/* Break page on print */
+@media print {
+  .wrapper {
+    page-break-inside: avoid;
+  }
+}

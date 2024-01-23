@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { Minus, Plus } from "react-feather";
 import { Links, LinkType } from "../../../main/blocks/Links/Links";
-import { NavLink } from "../../../main/layout/navbar";
+import { NavLink } from "../Navbar/Navbar";
 import elements from "./Expander.module.scss";
 
 export type ExpanderProps = {

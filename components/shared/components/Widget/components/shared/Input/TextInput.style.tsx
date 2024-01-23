@@ -103,6 +103,7 @@ export const TextInputField = styled.input`
   position: absolute;
   border-radius: 5px;
   left: 0px;
+  color: var(--primary);
 
   transition: box-shadow 180ms;
   &:focus {

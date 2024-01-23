@@ -7,6 +7,7 @@ import {
   useAgreementsDistributions,
   useAvtalegiroAgreements,
   useOrganizations,
+  useTaxUnits,
   useVippsAgreements,
 } from "../../_queries";
 import { useContext, useState } from "react";
@@ -18,7 +19,6 @@ import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
-import { Navbar } from "../../components/profile/layout/navbar";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import Link from "next/link";
@@ -26,8 +26,9 @@ import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { ProfileLayout } from "../../components/profile/layout/layout";
+import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getAgreementsPagePath() {
   const result = await getClient(false).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
@@ -43,24 +44,17 @@ export async function getAgreementsPagePath() {
 export const AgreementsPage = withStaticProps(
   async ({ preview = false }: GetStaticPropsContext<{ slug: string[] }>) => {
     const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-    const result = await getClient(preview).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
 
     return {
       appStaticProps,
       preview: preview,
-      data: {
-        result: result,
-        query: fetchAgreementsPage,
-        queryParams: {},
-      },
-    };
+      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
+    }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, preview }) => {
+)(({ navbarData, preview }) => {
   const { articlesPagePath } = useRouterContext();
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
-  const settings = data.result.settings[0];
-  const dashboard = data.result.dashboard[0];
 
   const {
     loading: avtaleGiroLoading,
@@ -75,13 +69,6 @@ export const AgreementsPage = withStaticProps(
     isValidating: vippsRefreshing,
     error: vippsError,
   } = useVippsAgreements(user, getAccessTokenSilently);
-
-  const {
-    loading: organizationsLoading,
-    data: organizations,
-    isValidating: organizationsRefreshing,
-    error: organizationsError,
-  } = useOrganizations(getAccessTokenSilently);
 
   const kids = new Set<string>();
   if (vipps && avtaleGiro)
@@ -102,9 +89,16 @@ export const AgreementsPage = withStaticProps(
     Array.from(kids),
   );
 
-  const loading = vippsLoading || avtaleGiroLoading || distributionsLoading || organizationsLoading;
+  const {
+    loading: taxUnitsLoading,
+    data: taxUnits,
+    isValidating: taxUnitsRefreshing,
+    error: taxUnitsError,
+  } = useTaxUnits(user, getAccessTokenSilently);
 
-  if (loading || !organizations || !distributions || !vipps || !avtaleGiro)
+  const loading = vippsLoading || avtaleGiroLoading || distributionsLoading || taxUnitsLoading;
+
+  if (loading || !distributions || !vipps || !avtaleGiro || !taxUnits)
     return (
       <>
         <Head>
@@ -114,7 +108,7 @@ export const AgreementsPage = withStaticProps(
         </Head>
 
         <MainHeader hideOnScroll={false}>
-          <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+          <Navbar {...navbarData} />
           <AgreementsMenu
             selected={selected}
             onChange={(selected) => setSelected(selected)}
@@ -140,7 +134,11 @@ export const AgreementsPage = withStaticProps(
     (agreement: VippsAgreement) => agreement.status === "ACTIVE",
   );
 
-  const distributionsMap = getDistributionMap(distributions, organizations);
+  // A map with kid as key and distribution as value
+  const distributionsMap = new Map<string, Distribution>();
+  distributions.forEach((distribution: Distribution) => {
+    distributionsMap.set(distribution.kid, distribution);
+  });
 
   const vippsPending = vipps.filter(
     (agreement: VippsAgreement) =>
@@ -155,15 +153,6 @@ export const AgreementsPage = withStaticProps(
   );
   const pendingCount = vippsPending.length + avtalegiroPending.length;
 
-  const sciOrgId = 2;
-  const hasDistributionWithSCI = [...activeAvtalegiroAgreements, ...activeVippsAgreements]
-    .map((agreement) => distributionsMap.get(agreement.KID))
-    .some(
-      (distribution: Distribution | undefined) =>
-        distribution &&
-        distribution.shares.some((org) => org.id === sciOrgId && parseFloat(org.share) > 0),
-    );
-
   return (
     <>
       <Head>
@@ -173,7 +162,7 @@ export const AgreementsPage = withStaticProps(
       </Head>
 
       <MainHeader hideOnScroll={false}>
-        <Navbar logo={settings.logo} elements={dashboard.main_navigation} />
+        <Navbar {...navbarData} />
         <AgreementsMenu
           selected={selected}
           onChange={(selected) => setSelected(selected)}
@@ -183,37 +172,6 @@ export const AgreementsPage = withStaticProps(
       <PageContent>
         <div className={styles.container}>
           <h3 className={styles.header}>Faste avtaler</h3>
-
-          {hasDistributionWithSCI && (
-            <InfoBox>
-              <header>
-                <AlertTriangle size={24} color={"black"} />
-                SCI Foundation utgår som anbefalt organisasjon
-              </header>
-              <p>
-                Du har en aktiv donasjonsavtale til SCI Foundation. Vi anbefaler ikke lenger
-                donasjoner til SCI Foundation gjeldende fra 18.08.22 og vil slutte å tildele penger
-                til dem 31. oktober 2022. Les mer om denne endringen på{" "}
-                <Link
-                  href={`/${[...articlesPagePath, "nye-evalueringskriterier-for-topplista"]}`}
-                  passHref
-                >
-                  <a style={{ textDecoration: "underline" }}>bloggen vår</a>
-                </Link>
-                .
-              </p>
-              <br />
-              <p>
-                Donasjoner øremerket SCI Foundation blir fra og med 1. november 2022 i stedet følge{" "}
-                <Link href={"/smart-fordeling"} passHref>
-                  <a style={{ textDecoration: "underline" }}>Smart fordeling</a>
-                </Link>
-                . Om du ønsker en annen fordeling kan du oppdatere fordelingen på din faste
-                donasjon, eller fylle ut donasjonsskjemaet for en ny donasjon. Ta kontakt om du har
-                noen spørsmål.
-              </p>
-            </InfoBox>
-          )}
 
           {pendingCount >= 1 && (
             <InfoBox>
@@ -235,6 +193,7 @@ export const AgreementsPage = withStaticProps(
               vipps={activeVippsAgreements}
               avtalegiro={activeAvtalegiroAgreements}
               distributions={distributionsMap}
+              taxUnits={taxUnits}
               supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
               emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
               expandable={true}
@@ -249,6 +208,7 @@ export const AgreementsPage = withStaticProps(
                 (agreement: AvtaleGiroAgreement) => agreement.cancelled !== null,
               )}
               distributions={distributionsMap}
+              taxUnits={taxUnits}
               supplemental={
                 "Dette er tidligere faste betalingsavtaler du har hatt med oss, som vi ikke lenger trekker deg for"
               }
@@ -263,39 +223,16 @@ export const AgreementsPage = withStaticProps(
 });
 
 type FetchAgreementsPageResult = {
-  settings: any[];
-  dashboard: Array<{ dashboard_slug?: { current?: string }; main_navigation: any[] }>;
+  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   page?: Array<{ slug?: { current?: string } }>;
-  footer: any[];
-  widget: any[];
 };
 
 const fetchAgreementsPage = groq`
 {
-  "settings": *[_type == "site_settings"] {
-    logo,
-  },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {
       current
     },
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
   },
   "page": *[_id == "agreements"] {
     slug {
@@ -304,32 +241,3 @@ const fetchAgreementsPage = groq`
   }
 }
 `;
-
-const getDistributionMap = (distributions: Distribution[], organizations: Organization[]) => {
-  const map = new Map<string, Distribution>();
-
-  for (let i = 0; i < distributions.length; i++) {
-    let dist = distributions[i];
-
-    let newDist: Distribution = {
-      kid: "",
-      standardDistribution: dist.standardDistribution,
-      taxUnit: dist.taxUnit,
-      shares: organizations.map((org) => ({
-        id: org.id,
-        name: org.name,
-        share: "0",
-      })),
-    };
-
-    for (let j = 0; j < dist.shares.length; j++) {
-      let org = dist.shares[j];
-      let index = newDist.shares.map((o) => o.id).indexOf(org.id);
-      if (newDist.shares[index]) newDist.shares[index].share = org.share;
-    }
-
-    map.set(dist.kid, { ...newDist });
-  }
-
-  return map;
-};

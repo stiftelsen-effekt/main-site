@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 
 Cypress.Commands.add("login", (overrides = {}) => {
   cy.clearLocalStorage();
+  cy.ignorePlausibleTracking();
   Cypress.log({
     name: "loginAuth0",
   });
@@ -110,7 +111,6 @@ const pickAnonymous = () => {
   cy.get("[data-cy=anon-checkbox]").click();
 };
 
-// TODO: Use this in a test
 const inputDonorValues = () => {
   cy.react("TextInput", { props: { name: "name" } }).type("Cypress Test");
   cy.react("TextInput", { props: { name: "email" } }).type(`cypress@testeffekt.no`);
@@ -130,5 +130,11 @@ Cypress.Commands.add("pickRecurringDonation", pickRecurringDonation);
 Cypress.Commands.add("pickSingleDonation", pickSingleDonation);
 Cypress.Commands.add("pickAnonymous", pickAnonymous);
 Cypress.Commands.add("inputDonorValues", inputDonorValues);
+
+Cypress.Commands.add("ignorePlausibleTracking", () => {
+  cy.window().then((win) => {
+    win.localStorage.setItem("plausible_ignore", "true");
+  });
+});
 
 export {};

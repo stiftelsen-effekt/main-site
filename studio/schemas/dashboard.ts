@@ -12,6 +12,20 @@ export default {
       of: [{ type: "navitem" }, { type: "navgroup" }],
     },
     {
+      name: "dashboard_label",
+      title: "Dashboard label",
+      type: "string",
+      description: "Label for dashboard link in main menu",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "logout_label",
+      title: "Logout label",
+      type: "string",
+      description: "Label for logging out in main menu",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "dashboard_slug",
       title: "Dashboard slug",
       type: "slug",
@@ -20,18 +34,10 @@ export default {
         "Entry point for dashboard. Please note that this must be an allowed redirect URI in Auth0.",
       validation: (Rule: any) => Rule.required().custom(isShallowSlug),
     },
-    {
-      name: "tax_slug",
-      title: "Tax slug",
-      type: "slug",
-      initialValue: "taxes",
-      description: "Relative to dashboard",
-      validation: (Rule: any) => Rule.required().custom(isShallowSlug),
-    },
   ],
   preview: {
     select: {
-      title: "dashboard_slug.current",
+      title: "dashboard_label",
     },
   },
 } as const;

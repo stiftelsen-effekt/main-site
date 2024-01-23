@@ -19,25 +19,38 @@ import {
 import { wealthMountainGraphData } from "./data";
 import { taxTable } from "./taxTable";
 import styles from "./WealthCalculator.module.scss";
+import { LinkType } from "../Links/Links";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export const WealthCalculator: React.FC<{
+  title: string;
   showImpact: boolean;
-  interventions: SanityIntervention[];
+  intervention_configuration: {
+    interventions?: SanityIntervention[];
+    explanation_label?: string;
+    explanation_text?: string;
+    explanation_links?: (LinkType | NavLink)[];
+    currency: string;
+    locale: string;
+  };
   explanation?: any;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
+  defaultDonationPercentage?: number;
 }> = ({
+  title,
   showImpact,
-  interventions,
+  intervention_configuration,
   explanation,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
+  defaultDonationPercentage = 10,
 }) => {
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [numberOfAdults, setNumberOfParents] = useState(1);
-  const [donationPercentage, setDonationPercentage] = useState(10);
+  const [donationPercentage, setDonationPercentage] = useState(defaultDonationPercentage);
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [chartSize, setChartSize] = useState<{
@@ -105,7 +118,7 @@ export const WealthCalculator: React.FC<{
       <div className={styles.calculator} data-cy="wealthcalculator-container">
         <div className={styles.calculator__input}>
           <div className={styles.calculator__input__inner}>
-            <h5>Rikdomskalkulator.</h5>
+            <h5>{title}</h5>
             <span className={styles.calculator__input__subtitle}>
               Hvor rik er du sammenlignet med resten av verden?
             </span>
@@ -200,7 +213,10 @@ export const WealthCalculator: React.FC<{
                     data-cy="wealthcalculator-donation-percentage-input"
                     onChange={(e) => {
                       if (e.target.value !== "" || !isNaN(parseInt(e.target.value))) {
-                        setDonationPercentage(parseInt(e.target.value));
+                        const value = parseInt(e.target.value);
+                        if (value > 0 && value <= 100) {
+                          setDonationPercentage(parseInt(e.target.value));
+                        }
                       } else if (e.target.value === "") {
                         setDonationPercentage(0);
                       }
@@ -276,7 +292,7 @@ export const WealthCalculator: React.FC<{
           </AnimateHeight>
         </>
       )}
-      {showImpact && (
+      {showImpact && intervention_configuration && (
         <div className={styles.calculator__impact}>
           <div className={styles.calculator__impact__description}>
             <h3>Din impact.</h3>
@@ -297,7 +313,12 @@ export const WealthCalculator: React.FC<{
           <div className={styles.calculator__impact__output}>
             <InterventionWidgetOutput
               sum={postTaxIncome * (donationPercentage / 100)}
-              interventions={interventions}
+              interventions={intervention_configuration.interventions}
+              explanationLabel={intervention_configuration.explanation_label}
+              explanationText={intervention_configuration.explanation_text}
+              explanationLinks={intervention_configuration.explanation_links}
+              currency={intervention_configuration.currency}
+              locale={intervention_configuration.locale}
             />
           </div>
           <div className={styles.calculator__impact__description__button_mobile}>

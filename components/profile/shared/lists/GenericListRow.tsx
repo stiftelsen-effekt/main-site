@@ -143,7 +143,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
       </tr>
       {expandable ? (
         <tr key={`${row.id}-expanded`}>
-          <td colSpan={row.cells.length} className={style.detailRowCell}>
+          <td colSpan={row.cells.length + 1} className={style.detailRowCell}>
             <AnimateHeight height={expanded ? "auto" : 0} animateOpacity={true}>
               {(expanded || isInView) && row.details}
             </AnimateHeight>

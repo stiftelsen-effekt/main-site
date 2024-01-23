@@ -3,20 +3,21 @@ import { groq } from "next-sanity";
 import React from "react";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 
-import { Navbar } from "../components/main/layout/navbar";
+import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { getClient } from "../lib/sanity.server";
-import { getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 
-const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ data, preview }) => {
-  const settings = data.result.settings[0];
-
+const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  navbarData,
+  preview,
+}) => {
   return (
     <>
       <MainHeader hideOnScroll={true}>
         <CookieBanner />
-        <Navbar logo={settings.logo} elements={settings["main_navigation"]} />
+        <Navbar {...navbarData} />
       </MainHeader>
 
       <SectionContainer>
@@ -28,44 +29,14 @@ const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ d
 
 export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {
   const appStaticProps = await getAppStaticProps({ preview });
-  let result = await getClient(preview).fetch(fetchNotFoundPage);
 
   return {
     props: {
       appStaticProps,
-      preview: preview,
-      data: {
-        result,
-        query: fetchNotFoundPage,
-        queryParams: {},
-      },
-    },
+      navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
+      preview,
+    }, // satisfies GeneralPageProps (requires next@13);,
   };
 };
-
-const fetchNotFoundPage = groq`
-{
-  "settings": *[_type == "site_settings"] {
-    logo,
-    main_navigation[] {
-      _type == 'navgroup' => {
-        _type,
-        _key,
-        title,
-        items[]->{
-          title,
-          "slug": page->slug.current
-        },
-      },
-      _type != 'navgroup' => @ {
-        _type,
-        _key,
-        title,
-        "slug": page->slug.current
-      },
-    }
-  },
-}
-`;
 
 export default Custom404;

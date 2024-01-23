@@ -21,7 +21,7 @@ export const TaxUnitMobileDetails: React.FC<{ taxUnit: TaxUnit }> = ({ taxUnit }
               Math.round(
                 taxUnit.taxDeductions
                   ? taxUnit.taxDeductions.reduce(
-                      (acc: number, deduction) => acc + deduction.taxDeduction,
+                      (acc: number, deduction) => acc + deduction.deduction,
                       0,
                     )
                   : 0,

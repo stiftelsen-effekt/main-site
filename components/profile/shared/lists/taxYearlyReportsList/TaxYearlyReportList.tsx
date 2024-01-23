@@ -27,13 +27,18 @@ export const TaxYearlyReportList: React.FC<{
     { label: "Sum donasjoner", width: "25%", align: "right" as "right" },
   ];
 
+  const currentYear = new Date().getFullYear();
+
   const rowMissingTaxUnits = {
     id: "missingTaxUnits",
     defaultExpanded: false,
     cells: [
       {
-        value: "Mangler enhet",
-        tooltip: `Du har donasjoner for skatteåret som kvalifiserer til skattefradrag, men mangler skatteenhet. Vi har rapportert alle donasjoner for 2022 til skattemyndighetene, men i 2023 vil du få skattefradrag på donasjoner du knytter til en skatteenhet.`,
+        value: report.year === currentYear - 1 ? "Mangler enhet" : "Manglet enhet",
+        tooltip:
+          report.units.length == 0
+            ? 'Registrer en skatteenhet i fanen til venstre i menyen under "skatt" og alle donasjoner vil knyttes til den. Ta kontakt på donasjon@gieffektivt.no om du ønsker å knytte donasjonene dine til flere skatteenheter.'
+            : "Du har allerede en eller flere skatteenheter. Kontakt oss på donasjon@gieffektivt.no for å knytte donasjonene dine til rett skatteenhet.",
       },
       { value: "-" },
       { value: "-" },
@@ -77,23 +82,25 @@ export const TaxYearlyReportList: React.FC<{
   );
 
   return (
-    <GenericList
-      title={report.year.toString()}
-      headers={headers}
-      rows={rows}
-      emptyPlaceholder={emptyPlaceholder}
-      expandable={true}
-      supplementalInformation={
-        <TaxYearlyReportListSupplemental
-          report={report}
-          donations={donations}
-          distribtionMap={distribtionMap}
-          aggregateImpactConfig={aggregateImpactConfig}
-        />
-      }
-      proportions={[30, 60]}
-    >
-      <TaxYearlyReportListBody report={report} />
-    </GenericList>
+    <div className={style.wrapper}>
+      <GenericList
+        title={report.year.toString()}
+        headers={headers}
+        rows={rows}
+        emptyPlaceholder={emptyPlaceholder}
+        expandable={true}
+        supplementalInformation={
+          <TaxYearlyReportListSupplemental
+            report={report}
+            donations={donations}
+            distribtionMap={distribtionMap}
+            aggregateImpactConfig={aggregateImpactConfig}
+          />
+        }
+        proportions={[30, 60]}
+      >
+        <TaxYearlyReportListBody report={report} />
+      </GenericList>
+    </div>
   );
 };

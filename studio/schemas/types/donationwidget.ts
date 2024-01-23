@@ -56,87 +56,162 @@ export default {
       group: "pane1",
       validation: (Rule: any) => Rule.required(),
     },
-    // 3 Preset donation amount values
     {
-      name: "preset_amounts_recurring",
-      title: "Preset amounts for recurring donations",
-      type: "array",
+      name: "amount_context",
+      title: "Donation amount inputs context",
+      type: "object",
       group: "pane1",
-      of: [
+      description: "Preset amounts are only used if there is only one cause area",
+      fields: [
         {
-          type: "object",
-          fields: [
+          name: "preset_amounts_recurring",
+          title: "Preset amounts for recurring donations",
+          type: "array",
+          of: [
             {
-              title: "Value",
-              name: "amount",
-              type: "number",
-            },
-            {
-              title: "Subtext",
-              name: "subtext",
-              type: "string",
+              type: "object",
+              fields: [
+                {
+                  title: "Value",
+                  name: "amount",
+                  type: "number",
+                },
+                {
+                  title: "Subtext",
+                  name: "subtext",
+                  type: "string",
+                },
+              ],
+              preview: {
+                select: {
+                  title: "amount",
+                  subtitle: "subtext",
+                },
+              },
             },
           ],
-          preview: {
-            select: {
-              title: "amount",
-              subtitle: "subtext",
+        },
+        {
+          name: "preset_amounts_single",
+          title: "Preset amounts for single donations",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                {
+                  title: "Value",
+                  name: "amount",
+                  type: "number",
+                },
+                {
+                  title: "Subtext",
+                  name: "subtext",
+                  type: "string",
+                },
+              ],
+              preview: {
+                select: {
+                  title: "amount",
+                  subtitle: "subtext",
+                },
+              },
             },
-          },
+          ],
+        },
+        {
+          name: "custom_amount_text",
+          title: "Custom amount text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
         },
       ],
     },
     {
-      name: "preset_amounts_single",
-      title: "Preset amounts for single donations",
-      type: "array",
+      name: "smart_distribution_context",
+      title: "Smart distribution context",
+      type: "object",
       group: "pane1",
-      of: [
+      fields: [
         {
-          type: "object",
-          fields: [
-            {
-              title: "Value",
-              name: "amount",
-              type: "number",
-            },
-            {
-              title: "Subtext",
-              name: "subtext",
-              type: "string",
-            },
-          ],
-          preview: {
-            select: {
-              title: "amount",
-              subtitle: "subtext",
-            },
-          },
+          name: "smart_distribution_radiobutton_text",
+          title: "Smart distribution radiobutton text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description: "Only used if there is only one cause area",
+        },
+        {
+          name: "custom_distribution_radiobutton_text",
+          title: "Custom distribution radiobutton text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description: "Only used if there is only one cause area",
+        },
+        {
+          name: "smart_distribution_label_text",
+          title: "Smart distribution label text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description: "Only used if there is more than one cause area",
+        },
+        {
+          name: "smart_distribution_description",
+          title: "Smart distribution description",
+          type: "array",
+          of: [{ type: "block" }],
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "smart_distribution_description_links",
+          title: "Smart distribution description links",
+          type: "array",
+          of: [{ type: "link" }],
+          validation: (Rule: any) => Rule.required(),
+          description: "Only used if there is more than one cause area",
         },
       ],
     },
-    //Smart fordeling / Choose your own text
     {
-      name: "smart_fordeling_text",
-      title: "Smart fordeling text",
-      type: "string",
+      name: "donation_input_error_templates",
+      title: "Donation input error templates",
+      type: "object",
       group: "pane1",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "choose_your_own_text",
-      title: "Choose your own text",
-      type: "string",
-      group: "pane1",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "smart_fordeling_description",
-      title: "Smart fordeling forklaring",
-      type: "text",
-      rows: 3,
-      group: "pane1",
-      validation: (Rule: any) => Rule.required(),
+      fields: [
+        {
+          name: "donation_sum_error_template",
+          title: "Donation sum error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "donation_distribution_cause_areas_sum_error_template",
+          title: "Donation distribution cause areas sum error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description:
+            "{sum} will be replaced with the sum of the distribution cause areas, e.g. 'You have distributed {sum}% out of 100% between cause areas'",
+        },
+        {
+          name: "donation_distribution_cause_areas_negative_error_template",
+          title: "Donation distribution cause areas negative error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "donation_distribution_cause_areas_organization_sum_error_template",
+          title: "Donation distribution cause areas organization sum error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+          description:
+            "{sum} will be replaced with the sum of the distribution cause areas for the organization and {causeAreaName} will be replaced with the name of the cause area, e.g. 'You have distributed {sum}% out of 100% between organizations in {causeAreaName}'",
+        },
+        {
+          name: "donation_distribution_cause_areas_organization_negative_error_template",
+          title: "Donation distribution cause areas organization negative error template",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
     },
     //Button text
     {
