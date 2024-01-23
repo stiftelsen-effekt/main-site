@@ -34,6 +34,7 @@ const widgetQuery = groq`
   {
     "widget": *[_type == "donationwidget"] {
       ...,
+      "locale": *[ _type == "site_settings"][0].main_locale,
       methods[] { 
         _type == 'reference' => @->{
           _type == 'bank' => {
@@ -60,7 +61,7 @@ const widgetQuery = groq`
           },
         },
       }
-    }
+    },
   }
 `;
 
@@ -232,6 +233,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
             enableSingle={availableRecurringOptions.single}
           />
           <DonorPane
+            locale={widget.locale}
             text={{
               anon_button_text: widget.anon_button_text,
               name_placeholder: widget.name_placeholder,

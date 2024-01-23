@@ -1,4 +1,6 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
+import Organisationsnummer from "organisationsnummer";
+import Personnummer from "personnummer";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -55,9 +57,10 @@ const formatSwedishPhoneNumber = (phoneNumber: string) => {
 };
 
 export const DonorPane: React.FC<{
+  locale: "en" | "no" | "se" | "et";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ text, paymentMethods }) => {
+}> = ({ locale, text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
@@ -82,6 +85,8 @@ export const DonorPane: React.FC<{
       phone: donation.phone,
     },
   });
+
+  console.log(errors);
 
   const plausible = usePlausible();
 
@@ -238,14 +243,17 @@ export const DonorPane: React.FC<{
                             required: false,
                             validate: (val) => {
                               const trimmed = val.toString().trim();
-                              return (
-                                !taxDeductionChecked ||
-                                (Validate.isInt(trimmed) &&
-                                  // Check if valid norwegian org or SSN (Social security number) based on check sum
-                                  // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
-                                  ((trimmed.length === 9 && validateOrg(trimmed)) ||
-                                    (trimmed.length === 11 && validateSsn(trimmed))))
-                              );
+                              if (taxDeductionChecked) {
+                                if (locale === "no") {
+                                  return validateSsnNo(trimmed);
+                                } else if (locale === "se") {
+                                  return validateSsnSe(trimmed);
+                                } else {
+                                  return true;
+                                }
+                              } else {
+                                return true;
+                              }
                             },
                           })}
                         />
@@ -343,4 +351,12 @@ export const DonorPane: React.FC<{
       </DonorForm>
     </Pane>
   );
+};
+
+const validateSsnNo = (ssn: string): boolean => {
+  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
+};
+
+const validateSsnSe = (ssn: string): boolean => {
+  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
 };
