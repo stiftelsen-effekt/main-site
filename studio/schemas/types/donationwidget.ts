@@ -281,6 +281,13 @@ export default {
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "privacy_policy_link",
+      title: "Privacy policy link",
+      type: "navitem",
+      group: "pane2",
+      validation: (Rule: any) => Rule.required(),
+    },
     // Button text pane 2
     {
       name: "pane2_button_text",

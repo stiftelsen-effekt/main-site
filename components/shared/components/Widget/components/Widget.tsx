@@ -60,6 +60,11 @@ const widgetQuery = groq`
             ...
           },
         },
+      },
+      privacy_policy_link {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
       }
     },
   }
@@ -243,6 +248,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
               tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
               newsletter_selector_text: widget.newsletter_selector_text,
               privacy_policy_text: widget.privacy_policy_text,
+              privacy_policy_link: widget.privacy_policy_link,
               pane2_button_text: widget.pane2_button_text,
             }}
             paymentMethods={availablePaymentMethods}

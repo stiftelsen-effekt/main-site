@@ -284,9 +284,15 @@ export const DonorPane: React.FC<{
                   </CheckBoxWrapper>
                   <div style={{ marginTop: "10px" }}>
                     {text.privacy_policy_text}{" "}
-                    <Link href={"/personvern"} passHref>
-                      <a style={{ textDecoration: "underline" }} target={"_blank"}>
-                        personvernserklæring ↗
+                    <Link href={`/${text.privacy_policy_link.slug}`} passHref>
+                      <a
+                        target={"_blank"}
+                        onClick={(e) => {
+                          e.currentTarget.blur();
+                        }}
+                        style={{ borderBottom: "1px solid var(--primary)" }}
+                      >
+                        {`${text.privacy_policy_link.title}  ↗`}
                       </a>
                     </Link>
                   </div>
