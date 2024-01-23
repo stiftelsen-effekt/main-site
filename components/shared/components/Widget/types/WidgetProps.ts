@@ -4,7 +4,9 @@ import { NavLink } from "../../Navbar/Navbar";
 export type WidgetProps = WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
-    methods?: Array<BankPaymentMethod | VippsPaymentMethod | SwishPaymentMethod>;
+    methods?: Array<
+      BankPaymentMethod | VippsPaymentMethod | SwishPaymentMethod | AutoGiroPaymentMethod
+    >;
   };
 
 export type BankPaymentMethod = {
@@ -54,6 +56,38 @@ export type SwishPaymentMethod = {
     title: string;
     text?: string;
   };
+};
+
+export type AutoGiroPaymentMethod = {
+  _id: "autogiro";
+  selector_text: string;
+  title: string;
+  manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
+  recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
+  recurring_form_option_config: AutogiroRecurringFormOptionConfig;
+};
+
+type AutogiroManualRecurringOptionConfig = {
+  title: string;
+  sum_label: string;
+  account_number_label: string;
+  payment_numberexplanatory_text: string;
+  payment_number_label: string;
+  instruction_text: any[];
+};
+
+type AutogiroRecurringManualOptionConfig = {
+  title: string;
+  explanation_text: any[];
+  payernumber_label: string;
+};
+
+type AutogiroRecurringFormOptionConfig = {
+  title: string;
+  explanation_text: any[];
+  payernumber_label: string;
+  button_text: string;
+  button_link: string;
 };
 
 export type SmartDistributionContext = {

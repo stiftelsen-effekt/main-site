@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import {
+  AutoGiroPaymentMethod,
   BankPaymentMethod,
   SwishPaymentMethod,
   VippsPaymentMethod,
@@ -12,6 +13,7 @@ import {
 import { ResultPane } from "./Bank/ResultPane";
 import { SwishPane } from "./Swish/SwishPane";
 import { VippsPane } from "./Vipps/VippsPane";
+import { AutogiroPane } from "./AutoGiro/AutogiroPane";
 
 export const PaymentPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
@@ -46,6 +48,17 @@ export const PaymentPane: React.FC<{
         throw new Error("Missing configuration for Swish, but selected payment method is swish");
       }
       return <SwishPane config={swishConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.AUTOGIRO: {
+      const autoGiroConfiguration = paymentMethods.find(
+        (method): method is AutoGiroPaymentMethod => method._id === "autogiro",
+      );
+      if (!autoGiroConfiguration) {
+        throw new Error(
+          "Missing configuration for Autogiro, but selected payment method is autogiro",
+        );
+      }
+      return <AutogiroPane config={autoGiroConfiguration} referrals={referrals} />;
     }
     default: {
       throw new Error(`Unknown payment method: ${method}`);

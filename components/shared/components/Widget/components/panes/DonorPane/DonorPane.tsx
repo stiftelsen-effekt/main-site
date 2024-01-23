@@ -104,9 +104,13 @@ export const DonorPane: React.FC<{
       if (donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
         if (data.method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+        if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
       }
       if (!donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (data.method === PaymentMethod.SWISH) {
+          plausible("SelectSwishSingle");
+        }
         if (data.method === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
           plausible("CompleteDonation");
@@ -296,6 +300,7 @@ export const DonorPane: React.FC<{
                       vipps: PaymentMethod.VIPPS,
                       bank: PaymentMethod.BANK,
                       swish: PaymentMethod.SWISH,
+                      autogiro: PaymentMethod.AUTOGIRO,
                     }[method._id],
                     data_cy: `${method._id}-method`,
                   }))}
