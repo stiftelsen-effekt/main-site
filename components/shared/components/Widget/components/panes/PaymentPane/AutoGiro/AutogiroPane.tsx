@@ -45,7 +45,7 @@ export const AutogiroPane: React.FC<{
       <RoundedBorder>
         <TextWrapper>
           <span>{config.manual_recurring_option_config.account_number_label}</span>
-          <span>1506 29 95960</span>
+          <span>9960-4219888700</span>
         </TextWrapper>
       </RoundedBorder>
       <span>{config.manual_recurring_option_config.payment_numberexplanatory_text}</span>
