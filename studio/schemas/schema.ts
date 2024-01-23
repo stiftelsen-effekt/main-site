@@ -73,11 +73,12 @@ import autogiro from "./types/paymentmethods/autogiro";
 import splitviewhtml from "./types/splitviewhtml";
 import category from "./types/category";
 import giftcardteaser from "./types/giftcardteaser";
+import avtalegiro from "./types/paymentmethods/avtalegiro";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
 
-const paymentMethods = [vipps, bank, swish, autogiro] as const;
+const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
 export const types = [
   category,

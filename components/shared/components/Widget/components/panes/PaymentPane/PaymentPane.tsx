@@ -4,16 +4,18 @@ import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import {
   AutoGiroPaymentMethod,
+  AvtaleGiroPaymentMethod,
   BankPaymentMethod,
   SwishPaymentMethod,
   VippsPaymentMethod,
   WidgetPane3ReferralsProps,
   WidgetProps,
 } from "../../../types/WidgetProps";
-import { ResultPane } from "./Bank/ResultPane";
 import { SwishPane } from "./Swish/SwishPane";
 import { VippsPane } from "./Vipps/VippsPane";
 import { AutogiroPane } from "./AutoGiro/AutogiroPane";
+import { AvtaleGiroPane } from "./AvtaleGiro/AvtaleGiroPane";
+import { BankPane } from "./Bank/BankPane";
 
 export const PaymentPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
@@ -29,7 +31,7 @@ export const PaymentPane: React.FC<{
       if (!bankConfiguration) {
         throw new Error("Missing configuration for bank, but selected payment method is bank");
       }
-      return <ResultPane config={bankConfiguration} referrals={referrals} />;
+      return <BankPane config={bankConfiguration} referrals={referrals} />;
     }
     case PaymentMethod.VIPPS: {
       const vippsConfiguration = paymentMethods.find(
@@ -39,6 +41,18 @@ export const PaymentPane: React.FC<{
         throw new Error("Missing configuration for Vipps, but selected payment method is vipps");
       }
       return <VippsPane config={vippsConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.AVTALEGIRO: {
+      const avtaleGiroConfiguration = paymentMethods.find(
+        (method): method is AvtaleGiroPaymentMethod => method._id === "avtalegiro",
+      );
+      if (!avtaleGiroConfiguration) {
+        throw new Error(
+          "Missing configuration for AvtaleGiro, but selected payment method is avtalegiro",
+        );
+      }
+      console.log("avtaleGiroConfiguration", avtaleGiroConfiguration);
+      return <AvtaleGiroPane config={avtaleGiroConfiguration} referrals={referrals} />;
     }
     case PaymentMethod.SWISH: {
       const swishConfiguration = paymentMethods.find(

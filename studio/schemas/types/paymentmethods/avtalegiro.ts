@@ -1,7 +1,7 @@
 export default {
-  name: "bank",
+  name: "avtalegiro",
   type: "document",
-  title: "Bank payment method",
+  title: "AvtaleGiro payment method",
   fields: [
     {
       name: "selector_text",
@@ -16,21 +16,20 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
-      name: "explanatory_text",
-      title: "Explanatory text",
-      type: "text",
-      rows: 3,
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "kontonr_title",
-      title: "Kontonr title",
+      name: "selector_earliest_text",
+      title: "Choose earliest",
       type: "string",
       validation: (Rule: any) => Rule.required(),
     },
     {
-      name: "kid_title",
-      title: "KID title",
+      name: "selector_choose_date_text",
+      title: "Choose date",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "button_text",
+      title: "Button text",
       type: "string",
       validation: (Rule: any) => Rule.required(),
     },
@@ -38,7 +37,7 @@ export default {
   preview: {
     prepare() {
       return {
-        title: "Bank",
+        title: "Avtalegiro",
       };
     },
   },

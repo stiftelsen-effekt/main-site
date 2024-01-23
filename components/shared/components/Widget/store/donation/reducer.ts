@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
-import { getEarliestPossibleChargeDate } from "../../components/panes/PaymentPane/Bank/AvtaleGiroDatePicker/avtalegirodates";
+import { getEarliestPossibleChargeDate } from "../../components/panes/PaymentPane/AvtaleGiro/AvtaleGiroDatePicker/avtalegirodates";
 import { RecurringDonation, ShareType } from "../../types/Enums";
 import { OrganizationShare } from "../../types/Temp";
 import { fetchCauseAreasAction } from "../layout/actions";

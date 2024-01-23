@@ -301,6 +301,7 @@ export const DonorPane: React.FC<{
                       bank: PaymentMethod.BANK,
                       swish: PaymentMethod.SWISH,
                       autogiro: PaymentMethod.AUTOGIRO,
+                      avtalegiro: PaymentMethod.AVTALEGIRO,
                     }[method._id],
                     data_cy: `${method._id}-method`,
                   }))}

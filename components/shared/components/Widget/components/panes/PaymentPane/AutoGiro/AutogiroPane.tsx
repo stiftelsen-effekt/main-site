@@ -7,7 +7,7 @@ import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { StyledPaneContent } from "./AutogiroPane.style";
 import { RadioButtonGroup } from "../../../../../RadioButton/RadioButtonGroup";
 import { RoundedBorder } from "../../../shared/Layout/Layout.style";
-import { TextWrapper } from "../Bank/ResultPane.style";
+import { TextWrapper } from "../Bank/BankPane.style";
 import { PortableText } from "@portabletext/react";
 import { thousandize } from "../../../../../../../../util/formatting";
 import LinkButton from "../../../../../EffektButton/LinkButton";

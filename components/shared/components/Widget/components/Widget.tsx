@@ -55,6 +55,9 @@ const widgetQuery = groq`
           _type == 'autogiro' => {
             ...
           },
+          _type == 'avtalegiro' => {
+            ...
+          },
         },
       }
     }
@@ -190,6 +193,8 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<string | null>(null);
+
+  console.log(methods);
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);

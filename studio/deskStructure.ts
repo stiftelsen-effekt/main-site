@@ -229,6 +229,10 @@ export default () =>
                 .title("Autogiro")
                 .icon(Briefcase)
                 .child(S.document().schemaType("autogiro").documentId("autogiro")),
+              S.listItem()
+                .title("AvtaleGiro")
+                .icon(Briefcase)
+                .child(S.document().schemaType("avtalegiro").documentId("avtalegiro")),
             ]),
         ),
       S.listItem()
