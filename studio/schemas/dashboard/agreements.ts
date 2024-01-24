@@ -6,6 +6,22 @@ export default {
   type: "document",
   fields: [
     {
+      name: "title",
+      title: "Title",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "active_list_configuration",
+      title: "Active List Configuration",
+      type: "agreementactivelistconfiguration",
+    },
+    {
+      name: "inactive_list_configuration",
+      title: "Inactive List Configuration",
+      type: "agreementinactivelistconfiguration",
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",

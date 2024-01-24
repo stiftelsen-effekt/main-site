@@ -26,7 +26,12 @@ import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
+import {
+  GeneralPageProps,
+  LayoutType,
+  filterPageToSingleItem,
+  getAppStaticProps,
+} from "../_app.page";
 import { ProfileLayout } from "../../components/profile/layout/layout";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
@@ -59,6 +64,7 @@ export const AgreementsPage = withStaticProps(
   },
 )(({ navbarData, data, preview }) => {
   const { articlesPagePath } = useRouterContext();
+  const page = filterPageToSingleItem(data.result, false);
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
 
@@ -177,7 +183,7 @@ export const AgreementsPage = withStaticProps(
 
       <PageContent>
         <div className={styles.container}>
-          <h3 className={styles.header}>Faste avtaler</h3>
+          <h3 className={styles.header}>{page?.title}</h3>
 
           {pendingCount >= 1 && (
             <InfoBox>
@@ -195,30 +201,28 @@ export const AgreementsPage = withStaticProps(
 
           {window.innerWidth > 1180 || selected === "Aktive avtaler" ? (
             <AgreementList
-              title={"Aktive"}
+              title={page?.active_list_configuration.title}
               vipps={activeVippsAgreements}
               avtalegiro={activeAvtalegiroAgreements}
               distributions={distributionsMap}
               taxUnits={taxUnits}
-              supplemental={"Dette er dine aktive betalingsavtaler du har med oss"}
-              emptyString={"Vi har ikke registrert noen aktive faste donasjonsavtaler på deg."}
+              supplemental={page?.active_list_configuration.subtitle_text}
+              emptyContent={page?.active_list_configuration.list_empty_content}
               expandable={true}
             />
           ) : null}
 
           {window.innerWidth > 1180 || selected === "Inaktive avtaler" ? (
             <AgreementList
-              title={"Inaktive"}
+              title={page?.inactive_list_configuration.title}
               vipps={vipps.filter((agreement: VippsAgreement) => agreement.status !== "ACTIVE")}
               avtalegiro={avtaleGiro.filter(
                 (agreement: AvtaleGiroAgreement) => agreement.cancelled !== null,
               )}
               distributions={distributionsMap}
               taxUnits={taxUnits}
-              supplemental={
-                "Dette er tidligere faste betalingsavtaler du har hatt med oss, som vi ikke lenger trekker deg for"
-              }
-              emptyString={"Vi har ikke registrert noen tidligere donasjonsavtaler på deg."}
+              supplemental={page?.inactive_list_configuration.subtitle_text}
+              emptyContent={page?.inactive_list_configuration.list_empty_content}
               expandable={false}
             />
           ) : null}
@@ -228,12 +232,19 @@ export const AgreementsPage = withStaticProps(
   );
 });
 
+type AgreementsPageData = {
+  title?: string;
+  active_list_configuration?: any;
+  inactive_list_configuration?: any;
+  slug?: { current?: string };
+};
+
 type FetchAgreementsPageResult = {
   settings: Array<{
     title?: string;
   }>;
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
-  page?: Array<{ slug?: { current?: string } }>;
+  page?: Array<AgreementsPageData>;
 };
 
 const fetchAgreementsPage = groq`
@@ -247,6 +258,7 @@ const fetchAgreementsPage = groq`
     },
   },
   "page": *[_id == "agreements"] {
+    ...,
     slug {
       current
     }

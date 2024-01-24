@@ -1,3 +1,4 @@
+import { PortableText } from "@portabletext/react";
 import { AvtaleGiroAgreement, Distribution, TaxUnit, VippsAgreement } from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
 import { GenericList } from "../GenericList";
@@ -19,7 +20,7 @@ export const AgreementList: React.FC<{
   vipps: VippsAgreement[];
   title: string;
   supplemental: string;
-  emptyString: string;
+  emptyContent: any[];
   distributions: Map<string, Distribution>;
   taxUnits: TaxUnit[];
   expandable?: boolean;
@@ -28,7 +29,7 @@ export const AgreementList: React.FC<{
   vipps,
   title,
   supplemental,
-  emptyString,
+  emptyContent,
   distributions,
   taxUnits,
   expandable,
@@ -112,11 +113,7 @@ export const AgreementList: React.FC<{
 
   const emptyPlaceholder = (
     <div data-cy="agreement-list-empty-placeholder">
-      <div>{emptyString}</div>
-      <div>
-        Mangler det avtaler vi ikke har registrert? Ta kontakt på{" "}
-        <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.
-      </div>
+      <PortableText value={emptyContent} />
     </div>
   );
 

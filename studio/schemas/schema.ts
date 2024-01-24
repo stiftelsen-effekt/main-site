@@ -74,6 +74,8 @@ import splitviewhtml from "./types/splitviewhtml";
 import category from "./types/category";
 import giftcardteaser from "./types/giftcardteaser";
 import avtalegiro from "./types/paymentmethods/avtalegiro";
+import agreementactivelist from "./types/lists/agreementactivelist";
+import agreementinactivelist from "./types/lists/agreementinactivelist";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -130,6 +132,8 @@ export const types = [
   aggregateestimatedimpact,
   donationstableconfiguration,
   donationstabledetailsconfiguration,
+  agreementactivelist,
+  agreementinactivelist,
   taxunits,
   metareceipt,
   taxdeduction,
