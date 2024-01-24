@@ -2,6 +2,7 @@ export default {
   name: "agreementactivelistconfiguration",
   title: "Agreement active list",
   type: "object",
+
   fields: [
     {
       name: "title",
@@ -107,4 +108,8 @@ export default {
       ],
     },
   ],
+  options: {
+    collapsible: true,
+    collapsed: true,
+  },
 };
