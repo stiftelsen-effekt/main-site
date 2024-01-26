@@ -76,7 +76,7 @@ export default {
         list: [
           { title: "English", value: "en" },
           { title: "Norwegian", value: "no" },
-          { title: "Swedish", value: "se" },
+          { title: "Swedish", value: "sv" },
           { title: "Estonian", value: "et" },
         ],
       },
