@@ -78,7 +78,7 @@ const query = groq`
           _type,
           _key,
           title,
-          items[]->{
+          items[] {
             title,
             "slug": page->slug.current
           },

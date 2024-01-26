@@ -18,6 +18,8 @@ type QueryResult = {
   data: {
     _id: string;
     footer_columns?: FooterProps;
+    footer_to_top_label?: string;
+    footer_newsletter_heading?: string;
   }[];
 };
 
@@ -37,6 +39,8 @@ export const footerQuery = groq`
           },
         }
       },
+      footer_to_top_label,
+      footer_newsletter_heading,
     }
   }
 `;
@@ -48,7 +52,7 @@ const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
   return {
     data: footer,
   };
-})(({ data: { footer_columns } }) => {
+})(({ data: { footer_columns, footer_to_top_label, footer_newsletter_heading } }) => {
   const columnCount = footer_columns ? footer_columns.filter((c) => c.links).length : 0;
 
   const gridClass = styles[`grid_${columnCount}`];
@@ -90,7 +94,7 @@ const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
                   <li>&nbsp;</li>
                   <li>
                     <a data-cy="navigate-to-top" href="#top">
-                      Til toppen &uarr;
+                      {footer_to_top_label} &uarr;
                     </a>
                   </li>
                 </>
@@ -99,7 +103,7 @@ const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
           </div>
         ))}
       <div className={styles.newsletter}>
-        <NewsletterSignup></NewsletterSignup>
+        <NewsletterSignup header={footer_newsletter_heading}></NewsletterSignup>
       </div>
       <div className={`${styles.category} ${styles.sanity}`}>
         Structured content powered by{" "}

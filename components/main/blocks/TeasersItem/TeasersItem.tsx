@@ -1,15 +1,15 @@
-import { useRouter } from "next/router";
 import React from "react";
 import elements from "./TeasersItem.module.scss";
-import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
+import { LinkType, Links } from "../Links/Links";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export interface TeasersItemProps {
   title: string;
   paragraph: string;
   disclaimer?: string;
-  link?: string;
+  links?: (LinkType | NavLink)[];
   image: SanityImageSource;
 }
 
@@ -17,11 +17,9 @@ export const TeasersItem: React.FC<TeasersItemProps> = ({
   title,
   paragraph,
   disclaimer,
-  link,
+  links,
   image,
 }) => {
-  const router = useRouter();
-
   return (
     <div className={elements.teaser}>
       <div className={elements.teaserimage}>
@@ -34,15 +32,7 @@ export const TeasersItem: React.FC<TeasersItemProps> = ({
         </div>
         <div>
           {disclaimer && <p className={elements.teaserdisclaimer}>{disclaimer}</p>}
-          {link && (
-            <EffektButton
-              onClick={() => {
-                router.push(link);
-              }}
-            >
-              Les mer
-            </EffektButton>
-          )}
+          {links && <Links links={links} buttons />}
         </div>
       </div>
     </div>

@@ -120,5 +120,17 @@ export default {
         },
       ],
     },
+    {
+      name: "footer_to_top_label",
+      title: "Footer to top label",
+      type: "string",
+      group: "footer",
+    },
+    {
+      name: "footer_newsletter_heading",
+      title: "Footer newsletter label",
+      type: "string",
+      group: "footer",
+    },
   ],
 };
