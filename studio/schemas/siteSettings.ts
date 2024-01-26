@@ -15,6 +15,11 @@ export default {
       type: "string",
     },
     {
+      name: "accent_color",
+      title: "Accent Color (hex)",
+      type: "string",
+    },
+    {
       name: "description",
       title: "Site Description",
       type: "text",
