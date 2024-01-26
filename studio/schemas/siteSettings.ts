@@ -15,6 +15,11 @@ export default {
       type: "string",
     },
     {
+      name: "accent_color",
+      title: "Accent Color (hex)",
+      type: "string",
+    },
+    {
       name: "description",
       title: "Site Description",
       type: "text",
@@ -71,7 +76,7 @@ export default {
         list: [
           { title: "English", value: "en" },
           { title: "Norwegian", value: "no" },
-          { title: "Swedish", value: "se" },
+          { title: "Swedish", value: "sv" },
           { title: "Estonian", value: "et" },
         ],
       },
@@ -119,6 +124,18 @@ export default {
           },
         },
       ],
+    },
+    {
+      name: "footer_to_top_label",
+      title: "Footer to top label",
+      type: "string",
+      group: "footer",
+    },
+    {
+      name: "footer_newsletter_heading",
+      title: "Footer newsletter label",
+      type: "string",
+      group: "footer",
     },
   ],
 };

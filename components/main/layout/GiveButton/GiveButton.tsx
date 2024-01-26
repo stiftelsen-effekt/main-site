@@ -3,8 +3,8 @@ import styles from "./GiveButton.module.scss";
 import { usePlausible } from "next-plausible";
 
 export const GiveButton: React.FC<
-  PropsWithChildren<{ inverted: boolean; onClick: () => void }>
-> = ({ children, inverted, onClick }) => {
+  PropsWithChildren<{ color: string; inverted: boolean; onClick: () => void }>
+> = ({ children, color, inverted, onClick }) => {
   const plausible = usePlausible();
 
   const handleClick = () => {
@@ -16,8 +16,18 @@ export const GiveButton: React.FC<
     onClick();
   };
 
+  let customStyles = {};
+  if (color) {
+    customStyles = {
+      backgroundColor: color,
+      color: "white",
+      border: "none",
+    };
+  }
+
   return (
     <button
+      style={customStyles}
       className={`${styles.givebutton} ${inverted ? styles.givebuttoninverted : null}`}
       title="Trykk for å åpne donasjonspanelet"
       onClick={handleClick}

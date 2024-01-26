@@ -16,6 +16,7 @@ type QueryResult = {
   settings: [
     {
       donate_label_short: string;
+      accent_color: string;
     },
   ];
 };
@@ -24,6 +25,7 @@ const query = groq`
   {
     "settings": *[_type == "site_settings"] {
       donate_label_short,
+      accent_color
     }
   }
 `;
@@ -35,11 +37,12 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
     footerData: await Footer.getStaticProps({ preview }),
     widgetData: await Widget.getStaticProps({ preview }),
     isPreview: preview,
-    labels: {
+    giveButton: {
       donate_label_short: settings.donate_label_short,
+      accent_color: settings.accent_color,
     },
   };
-})(({ children, footerData, widgetData, labels, isPreview }) => {
+})(({ children, footerData, widgetData, giveButton, isPreview }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
@@ -56,8 +59,12 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
   return (
     <div className={containerClasses.join(" ")}>
       {isPreview && <PreviewBlock />}
-      <GiveButton inverted={false} onClick={() => setWidgetOpen(true)}>
-        {labels.donate_label_short}
+      <GiveButton
+        inverted={false}
+        color={giveButton.accent_color}
+        onClick={() => setWidgetOpen(true)}
+      >
+        {giveButton.donate_label_short}
       </GiveButton>
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
         <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>

@@ -15,7 +15,7 @@ export default {
       name: "items",
       title: "Items",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "navitem" }] }],
+      of: [{ type: "navitem" }],
     },
   ],
 } as const;

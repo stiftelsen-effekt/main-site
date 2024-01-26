@@ -15,6 +15,7 @@ export const QuestionsAndAnswersGroup: React.FC<{ group: any }> = ({ group }) =>
               key={answer._key}
               title={answer.question}
               content={answer.answer}
+              linksTitle={answer.links_title}
               links={answer.links}
             />
           ))}

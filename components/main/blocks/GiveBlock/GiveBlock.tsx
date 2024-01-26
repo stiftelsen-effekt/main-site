@@ -5,9 +5,10 @@ import { WidgetContext } from "../../layout/layout";
 type GiveBlockProps = {
   heading: string;
   paragraph: string;
+  donateLabel: string;
 };
 
-export const GiveBlock: React.FC<GiveBlockProps> = ({ heading, paragraph }) => {
+export const GiveBlock: React.FC<GiveBlockProps> = ({ heading, paragraph, donateLabel }) => {
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
 
   return (
@@ -21,7 +22,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({ heading, paragraph }) => {
           setWidgetOpen(true);
         }}
       >
-        Gi.
+        {donateLabel || "Gi."}
       </button>
     </div>
   );
