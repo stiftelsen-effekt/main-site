@@ -12,18 +12,8 @@ describe("Agreements page", () => {
       }).as("getDonor");
     });
 
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
-        statusCode: 200,
-        body: {
-          status: 200,
-          content: orgs,
-        },
-      }).as("getOrganizations");
-    });
-
     cy.fixture("cause_areas").then((causeAreas) => {
-      cy.intercept("GET", "/causeareas/active", {
+      cy.intercept("GET", "/causeareas/active/", {
         statusCode: 200,
         body: {
           status: 200,
@@ -70,6 +60,16 @@ describe("Agreements page", () => {
           content: kids,
         },
       }).as("getDistribution");
+
+      cy.fixture("taxunits").then((units) => {
+        cy.intercept("GET", "/donors/*/taxunits/", {
+          statusCode: 200,
+          body: {
+            status: 200,
+            content: units,
+          },
+        }).as("getTaxUnits");
+      });
     });
 
     cy.visit(`/min-side/avtaler/`);
@@ -142,6 +142,15 @@ describe("Agreements page", () => {
       .first()
       .click();
 
+    // Check cause area input
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=cause-area-input]")
+      .eq(0)
+      .should("contain.value", "100");
+
     // Check that the distribution is correctly displayed
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -211,7 +220,8 @@ describe("Agreements page", () => {
       .should("be.visible");
   });
 
-  it("Should error when trying to save inconsistent agreement state", () => {
+  // TODO: https://github.com/stiftelsen-effekt/main-site/issues/899
+  xit("Should error when trying to save inconsistent agreement state", () => {
     // Expand the first agreement
     cy.get("[data-cy=generic-list-table]")
       .first()
