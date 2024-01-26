@@ -12,7 +12,7 @@ export default {
     {
       name: "prompt",
       title: "Prompt",
-      description: "The message shown before the user is redirected to Swish",
+      description: "The message shown when the Swish payment is initiated",
       type: "object",
       fields: [
         {
@@ -22,9 +22,16 @@ export default {
           validation: (Rule: any) => Rule.required(),
         },
         {
-          name: "text",
-          title: "Text",
+          name: "scan_text",
+          title: "Scan text",
           type: "string",
+          description: "Text prompting the user to scan the QR code",
+        },
+        {
+          name: "redirect_text",
+          title: "Redirect text",
+          type: "string",
+          description: "Text shown while user is redirected to Swish",
         },
       ],
     },

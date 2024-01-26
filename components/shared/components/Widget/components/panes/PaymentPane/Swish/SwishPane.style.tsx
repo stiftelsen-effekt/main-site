@@ -17,3 +17,9 @@ export const StyledSpinnerWrapper = styled.div`
   margin-top: auto;
   margin-bottom: 60px;
 `;
+
+export const Stack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;

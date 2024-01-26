@@ -39,7 +39,8 @@ export type SwishPaymentMethod = {
   selector_text: string;
   prompt: {
     title: string;
-    text?: string;
+    scan_text?: string;
+    redirect_text?: string;
   };
   success: {
     title: string;

@@ -27,13 +27,13 @@ export interface DonationInput {
   distributionCauseAreas: DistributionCauseArea[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
-  phone?: string;
 }
 
 export interface Donation extends DonationInput {
   kid?: string;
   paymentProviderURL?: string;
   swishOrderID?: string;
+  swishPaymentRequestToken?: string;
   // Array of objects with string keys and string values
   errors: DonationError[];
   showErrors: boolean;
@@ -63,7 +63,6 @@ export interface RegisterDonationObject {
   amount: number;
   distributionCauseAreas: DistributionCauseArea[];
   dueDay?: number;
-  phone?: string;
 }
 
 export interface DonorInput {
