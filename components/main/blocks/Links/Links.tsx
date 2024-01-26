@@ -19,6 +19,8 @@ export type LinksProps = {
 };
 
 export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
+  const { articlesPagePath } = useRouterContext();
+
   return (
     <ul className={elements.links}>
       {links &&
@@ -27,7 +29,7 @@ export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
           .map((link) => (
             <li key={link._key}>
               {buttons ? (
-                <LinkButton title={link.title ?? ""} url={getHref(link)} />
+                <LinkButton title={link.title ?? ""} url={getHref(link, articlesPagePath)} />
               ) : (
                 <LinkComponent link={link} />
               )}
@@ -44,7 +46,7 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
   const { articlesPagePath } = useRouterContext();
 
   return (
-    <Link href={getHref(link)} passHref>
+    <Link href={getHref(link, articlesPagePath)} passHref>
       <a
         target={link._type === "link" && link.newtab ? "_blank" : ""}
         onClick={(e) => {
@@ -59,9 +61,7 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
   );
 };
 
-const getHref = (link: NavLink | LinkType) => {
-  const { articlesPagePath } = useRouterContext();
-
+const getHref = (link: NavLink | LinkType, articlesPagePath: string[]) => {
   return link._type === "navitem"
     ? link.pagetype === "article_page"
       ? `/${[...articlesPagePath, link.slug].join("/")}`
