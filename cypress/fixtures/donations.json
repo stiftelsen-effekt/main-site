@@ -1506,7 +1506,7 @@
     "email": "account@harnes.me",
     "sum": "40000.00",
     "transactionCost": null,
-    "timestamp": "2022-04-22T00:00:00.000Z",
+    "timestamp": "2023-04-22T00:00:00.000Z",
     "paymentMethod": "Bank u/KID",
     "KID": "32245953",
     "metaOwnerId": 3
@@ -1662,7 +1662,7 @@
     "email": "account@harnes.me",
     "sum": "1000000.00",
     "transactionCost": null,
-    "timestamp": "2022-03-30T10:39:31.000Z",
+    "timestamp": "2023-03-30T10:39:31.000Z",
     "paymentMethod": "Facebook",
     "KID": "00002752162",
     "metaOwnerId": 3

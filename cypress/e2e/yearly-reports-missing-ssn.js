@@ -88,7 +88,7 @@ describe("Tax reports page missing ssn", () => {
       .first()
       .find(">tbody")
       .last()
-      .should("contain.text", "Mangler enhet");
+      .should("contain.text", "Manglet enhet");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find(">tbody")
