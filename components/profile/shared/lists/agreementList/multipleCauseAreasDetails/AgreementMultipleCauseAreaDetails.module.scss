@@ -60,7 +60,7 @@
 
 .causeAreas {
   & > div {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
   & div:first-child {
@@ -104,6 +104,10 @@
       position: absolute;
       right: 1.2rem;
     }
+  }
+
+  .distributionCauseAreaInputContainer {
+    padding: 2rem 0;
   }
 }
 

@@ -10,6 +10,10 @@ import { useState } from "react";
 import style from "./AgreementMultipleCauseAreaDetails.module.scss";
 import { CauseArea } from "../../../../../shared/components/Widget/types/CauseArea";
 
+export type AgreementMultipleCauseAreaDetailsConfiguration = {
+  smart_distribution_label: string;
+};
+
 export const AgreementMultipleCauseAreaDetails: React.FC<{
   systemCauseAreas: CauseArea[];
   distribution: Distribution;
@@ -19,7 +23,18 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
   sum: number;
   setSum: (sum: number) => void;
   taxUnits: TaxUnit[];
-}> = ({ systemCauseAreas, distribution, setDistribution, day, setDay, sum, setSum, taxUnits }) => {
+  configuration: AgreementMultipleCauseAreaDetailsConfiguration;
+}> = ({
+  systemCauseAreas,
+  distribution,
+  setDistribution,
+  day,
+  setDay,
+  sum,
+  setSum,
+  taxUnits,
+  configuration,
+}) => {
   const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
 
   const currentTaxUnit = taxUnits.find((unit) => unit.id === distribution.taxUnitId);
@@ -49,58 +64,42 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
           </div>
         </div>
         <div className={style.causeAreas}>
-          {systemCauseAreas.map((systemCauseArea, index) => {
-            let distributionCauseArea = distribution.causeAreas.find(
-              (distCauseArea) => distCauseArea.id === systemCauseArea.id,
-            );
-
-            if (!distributionCauseArea) {
-              distributionCauseArea = {
-                id: systemCauseArea.id,
-                standardSplit: true,
-                percentageShare: "0",
-                organizations: systemCauseArea.organizations.map((org) => {
-                  return {
-                    id: org.id,
-                    percentageShare: "0",
-                  };
-                }),
-              };
-            }
-
+          {distribution.causeAreas.map((causeArea, index) => {
+            const causeAreaHasMultipleOrganizations =
+              (systemCauseAreas.find((c) => c.id === causeArea.id)?.organizations.length || 0) > 1;
             return (
-              <div key={`dist-${systemCauseArea.id}`}>
+              <div key={`dist-${causeArea.id}`}>
                 <div className={style.distributionCauseAreaInputHeader}>
-                  <span>{systemCauseArea.name}</span>
-                  <div className={style.valuesSmartDistributionToggle}>
-                    <span>Smart fordeling</span>
-                    <Toggle
-                      active={distributionCauseArea.standardSplit}
-                      onChange={(active) =>
-                        setDistribution({
-                          ...distribution,
-                          causeAreas: distribution.causeAreas.map((c) => {
-                            if (distributionCauseArea && c.id === distributionCauseArea.id) {
-                              return { ...c, standardSplit: active };
-                            } else {
-                              return { ...c };
-                            }
-                          }),
-                        })
-                      }
-                    />
-                  </div>
+                  <span>{causeArea.name}</span>
+                  {causeAreaHasMultipleOrganizations && (
+                    <div className={style.valuesSmartDistributionToggle}>
+                      <span>{configuration.smart_distribution_label}</span>
+                      <Toggle
+                        active={causeArea.standardSplit}
+                        onChange={(active) =>
+                          setDistribution({
+                            ...distribution,
+                            causeAreas: distribution.causeAreas.map((c) => {
+                              if (causeArea && c.id === causeArea.id) {
+                                return { ...c, standardSplit: active };
+                              } else {
+                                return { ...c };
+                              }
+                            }),
+                          })
+                        }
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className={style.distributionCauseAreaInputPercentageShare}>
                   <input
                     type="text"
-                    value={
-                      Math.round(parseFloat(distributionCauseArea.percentageShare)).toString() || 0
-                    }
+                    value={Math.round(parseFloat(causeArea.percentageShare)).toString() || 0}
                     onChange={(e) => {
                       const percentageShare = parseFloat(e.target.value) || 0;
                       const causeAreas = [...distribution.causeAreas];
-                      const index = causeAreas.findIndex((c) => c.id === distributionCauseArea?.id);
+                      const index = causeAreas.findIndex((c) => c.id === causeArea?.id);
                       if (index === -1) {
                         return;
                       } else {
@@ -117,22 +116,24 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
                 </div>
                 <AnimateHeight
                   key={index}
-                  height={distributionCauseArea.standardSplit ? 0 : "auto"}
+                  height={causeArea.standardSplit ? 0 : "auto"}
                   animateOpacity={true}
                 >
-                  <DistributionController
-                    causeArea={distributionCauseArea}
-                    onChange={(causeArea) => {
-                      const causeAreas = [...distribution.causeAreas];
-                      const index = causeAreas.findIndex((c) => c.id === causeArea.id);
-                      if (index === -1) {
-                        causeAreas.push(causeArea);
-                      } else {
-                        causeAreas[index] = causeArea;
-                      }
-                      setDistribution({ ...distribution, causeAreas });
-                    }}
-                  ></DistributionController>
+                  <div className={style.distributionCauseAreaInputContainer}>
+                    <DistributionController
+                      causeArea={causeArea}
+                      onChange={(causeArea) => {
+                        const causeAreas = [...distribution.causeAreas];
+                        const index = causeAreas.findIndex((c) => c.id === causeArea.id);
+                        if (index === -1) {
+                          causeAreas.push(causeArea);
+                        } else {
+                          causeAreas[index] = causeArea;
+                        }
+                        setDistribution({ ...distribution, causeAreas });
+                      }}
+                    ></DistributionController>
+                  </div>
                 </AnimateHeight>
               </div>
             );

@@ -1,19 +1,25 @@
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
 import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
-import { AvtaleGiroAgreement, Distribution, Organization, VippsAgreement } from "../../models";
+import {
+  AutoGiroAgreement,
+  AvtaleGiroAgreement,
+  Distribution,
+  Organization,
+  VippsAgreement,
+} from "../../models";
 import { useAuth0, User } from "@auth0/auth0-react";
 import {
   useAgreementsDistributions,
+  useAutogiroAgreements,
   useAvtalegiroAgreements,
   useOrganizations,
   useTaxUnits,
   useVippsAgreements,
 } from "../../_queries";
-import { useContext, useState } from "react";
-import { ActivityContext } from "../../components/profile/layout/activityProvider";
+import { useState } from "react";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
-import { AlertTriangle, Clock } from "react-feather";
+import { Clock } from "react-feather";
 import AgreementsMenu from "../../components/profile/agreements/AgreementsMenu/AgreementsMenu";
 import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
@@ -21,18 +27,11 @@ import { getClient } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import Link from "next/link";
 import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import {
-  GeneralPageProps,
-  LayoutType,
-  filterPageToSingleItem,
-  getAppStaticProps,
-} from "../_app.page";
-import { ProfileLayout } from "../../components/profile/layout/layout";
+import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getAgreementsPagePath() {
@@ -63,7 +62,6 @@ export const AgreementsPage = withStaticProps(
     }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ navbarData, data, preview }) => {
-  const { articlesPagePath } = useRouterContext();
   const page = filterPageToSingleItem(data.result, false);
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
@@ -82,11 +80,19 @@ export const AgreementsPage = withStaticProps(
     error: vippsError,
   } = useVippsAgreements(user, getAccessTokenSilently);
 
+  const {
+    loading: autoGiroLoading,
+    data: autoGiro,
+    isValidating: autoGiroRefreshing,
+    error: autoGiroError,
+  } = useAutogiroAgreements(user, getAccessTokenSilently);
+
   const kids = new Set<string>();
-  if (vipps && avtaleGiro)
+  if (vipps && avtaleGiro && autoGiro)
     [
       ...vipps?.map((a: VippsAgreement) => a.KID),
       ...avtaleGiro?.map((a: AvtaleGiroAgreement) => a.KID),
+      ...autoGiro?.map((a: AutoGiroAgreement) => a.KID),
     ].map((kid) => kids.add(kid));
 
   const {
@@ -108,9 +114,10 @@ export const AgreementsPage = withStaticProps(
     error: taxUnitsError,
   } = useTaxUnits(user, getAccessTokenSilently);
 
-  const loading = vippsLoading || avtaleGiroLoading || distributionsLoading || taxUnitsLoading;
+  const loading =
+    vippsLoading || avtaleGiroLoading || distributionsLoading || taxUnitsLoading || autoGiroLoading;
 
-  if (loading || !distributions || !vipps || !avtaleGiro || !taxUnits)
+  if (loading || !distributions || !vipps || !avtaleGiro || !taxUnits || !autoGiro)
     return (
       <>
         <Head>
@@ -142,6 +149,10 @@ export const AgreementsPage = withStaticProps(
     (agreement: AvtaleGiroAgreement) => agreement.active === 1,
   );
 
+  const activeAutogiroAgreements: AutoGiroAgreement[] = autoGiro.filter(
+    (agreement: AutoGiroAgreement) => agreement.active === true,
+  );
+
   const activeVippsAgreements: VippsAgreement[] = vipps.filter(
     (agreement: VippsAgreement) => agreement.status === "ACTIVE",
   );
@@ -163,13 +174,18 @@ export const AgreementsPage = withStaticProps(
       agreement.cancelled === null &&
       DateTime.fromISO(agreement.created).diff(DateTime.now(), "days").days > -7,
   );
-  const pendingCount = vippsPending.length + avtalegiroPending.length;
+  const autoGiroPending = autoGiro.filter(
+    (agreement: AutoGiroAgreement) =>
+      !agreement.active &&
+      agreement.cancelled === null &&
+      DateTime.fromISO(agreement.created).diff(DateTime.now(), "days").days > -7,
+  );
+  const pendingCount = vippsPending.length + avtalegiroPending.length + autoGiroPending.length;
 
   return (
     <>
       <Head>
         <title>{data.result.settings[0].title} | Avtaler</title>
-        <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -189,41 +205,49 @@ export const AgreementsPage = withStaticProps(
             <InfoBox>
               <header>
                 <Clock size={24} color={"black"} />
-                {pendingCount} {pendingCount === 1 ? "avtale" : "avtaler"} bekreftes
+                {pendingCount === 1
+                  ? page?.pending_agreements_box_configuration.single_pending_agreement_title
+                  : page?.pending_agreements_box_configuration.multiple_pending_agreements_title_template.replace(
+                      "{{count}}",
+                      pendingCount.toString(),
+                    )}
               </header>
               <p>
-                Vi har registrert {pendingCount} {pendingCount === 1 ? "ny avtale" : "nye avtaler"}{" "}
-                på deg. Bankene bruker noen dager på å bekrefte opprettelse før avtalen din blir
-                aktivert.
+                {pendingCount === 1
+                  ? page?.pending_agreements_box_configuration.single_pending_agreement_text
+                  : page?.pending_agreements_box_configuration.multiple_pending_agreements_text_template.replace(
+                      "{{count}}",
+                      pendingCount.toString(),
+                    )}
               </p>
             </InfoBox>
           )}
 
           {window.innerWidth > 1180 || selected === "Aktive avtaler" ? (
             <AgreementList
-              title={page?.active_list_configuration.title}
               vipps={activeVippsAgreements}
               avtalegiro={activeAvtalegiroAgreements}
+              autogiro={activeAutogiroAgreements}
               distributions={distributionsMap}
               taxUnits={taxUnits}
-              supplemental={page?.active_list_configuration.subtitle_text}
-              emptyContent={page?.active_list_configuration.list_empty_content}
               expandable={true}
+              configuration={page?.active_list_configuration}
             />
           ) : null}
 
           {window.innerWidth > 1180 || selected === "Inaktive avtaler" ? (
             <AgreementList
-              title={page?.inactive_list_configuration.title}
               vipps={vipps.filter((agreement: VippsAgreement) => agreement.status !== "ACTIVE")}
               avtalegiro={avtaleGiro.filter(
                 (agreement: AvtaleGiroAgreement) => agreement.cancelled !== null,
               )}
+              autogiro={autoGiro.filter(
+                (agreement: AutoGiroAgreement) => agreement.cancelled !== null,
+              )}
               distributions={distributionsMap}
               taxUnits={taxUnits}
-              supplemental={page?.inactive_list_configuration.subtitle_text}
-              emptyContent={page?.inactive_list_configuration.list_empty_content}
               expandable={false}
+              configuration={page?.inactive_list_configuration}
             />
           ) : null}
         </div>
@@ -234,6 +258,12 @@ export const AgreementsPage = withStaticProps(
 
 type AgreementsPageData = {
   title?: string;
+  pending_agreements_box_configuration: {
+    single_pending_agreement_title: string;
+    multiple_pending_agreements_title_template: string;
+    single_pending_agreement_text: string;
+    multiple_pending_agreements_text_template: string;
+  };
   active_list_configuration?: any;
   inactive_list_configuration?: any;
   slug?: { current?: string };

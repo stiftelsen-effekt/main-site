@@ -1,6 +1,6 @@
 export default {
-  name: "agreementactivelistconfiguration",
-  title: "Agreement active list",
+  name: "agreementlistconfiguration",
+  title: "Agreement list",
   type: "object",
 
   fields: [
@@ -29,6 +29,10 @@ export default {
           type: "object",
           fields: [
             {
+              name: "title",
+              type: "string",
+            },
+            {
               name: "value",
               type: "string",
               options: {
@@ -44,6 +48,18 @@ export default {
                   {
                     title: "Agreement status",
                     value: "status",
+                  },
+                  {
+                    title: "Payment date",
+                    value: "date",
+                  },
+                  {
+                    title: "Agreement amount",
+                    value: "amount",
+                  },
+                  {
+                    title: "Agreement KID",
+                    value: "KID",
                   },
                   {
                     title: "Created at",
@@ -74,7 +90,7 @@ export default {
                     value: "sum",
                   },
                   {
-                    title: "Date",
+                    title: "Payment date",
                     value: "date",
                   },
                   {
@@ -83,6 +99,20 @@ export default {
                   },
                 ],
               },
+            },
+            {
+              name: "payment_date_format_template",
+              title: "Payment date format template",
+              type: "string",
+              description: "Use {{date}} to insert the date, e.g. 'The {{date}}th of the month'",
+              hidden: ({ parent }: any) => parent?.type !== "date",
+            },
+            {
+              name: "payment_date_last_day_of_month_template",
+              title: "Payment date last day of month template",
+              type: "string",
+              description: "E.g. 'Last day of the month'",
+              hidden: ({ parent }: any) => parent?.type !== "date",
             },
             {
               name: "width",
@@ -106,6 +136,12 @@ export default {
           },
         },
       ],
+    },
+    {
+      name: "details_configuration",
+      title: "Details configuration",
+      type: "agreementlistdetailsconfiguration",
+      description: "If omitted, row will not be exandable",
     },
   ],
   options: {
