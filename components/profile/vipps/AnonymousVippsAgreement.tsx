@@ -1,21 +1,5 @@
 import React, { useState } from "react";
-import AnimateHeight from "react-animate-height";
-import { Check, AlertCircle, Info } from "react-feather";
-import { toast } from "react-toastify";
 import { Distribution } from "../../../models";
-import { DatePickerInput } from "../../shared/components/DatePicker/DatePickerInput";
-import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
-import { EffektCheckbox } from "../../shared/components/EffektCheckbox/EffektCheckbox";
-import { Lightbox } from "../../shared/components/Lightbox/Lightbox";
-import { DistributionController } from "../shared/DistributionCauseAreaInput/Distribution";
-import {
-  updateAnonymousVippsAgreementDistribution,
-  cancelAnonymousVippsAgreement,
-  updateAnonymousVippsAgreementDay,
-  updateAnonymousVippsAgreementPrice,
-} from "../shared/lists/agreementList/_queries";
-import style from "./AnonymousVippsAgreement.module.scss";
-import { SumInput } from "../shared/SumInput/SumInput";
 
 export const AnonymousVippsAgreement: React.FC<{
   inputSum: number;
@@ -81,7 +65,7 @@ export const AnonymousVippsAgreement: React.FC<{
       }
 
       if (errorOccurred) {
-        partialFailureToast();
+        failureToast("Noen endringer feilet");
       } else {
         successToast();
       }
@@ -169,21 +153,3 @@ export const AnonymousVippsAgreement: React.FC<{
   }
   */
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });
-const partialFailureToast = () =>
-  toast.error("Noen endringer feilet", {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });
-const noChangesToast = () =>
-  toast.error("Ingen endringer", {
-    icon: <Info size={24} color={"black"} />,
-  });
-const invalidInputToast = () =>
-  toast.error("Ugyldig data inntastet", {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });

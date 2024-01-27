@@ -1,7 +1,13 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
+import { useSWRConfig } from "swr";
 import { Distribution, TaxUnit } from "../../../../../models";
-import { DistributionController } from "../../DistributionCauseAreaInput/Distribution";
-import { toast } from "react-toastify";
+import {
+  EffektButton,
+  EffektButtonVariant,
+} from "../../../../shared/components/EffektButton/EffektButton";
+import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
+import style from "./AgreementDetails.module.scss";
 import {
   cancelAvtaleGiroAgreement,
   cancelVippsAgreement,
@@ -12,21 +18,13 @@ import {
   updateVippsAgreementDistribution,
   updateVippsAgreementPrice,
 } from "./_queries";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useSWRConfig } from "swr";
-import { AlertCircle, Check, Info } from "react-feather";
-import style from "./AgreementDetails.module.scss";
-import {
-  EffektButton,
-  EffektButtonVariant,
-} from "../../../../shared/components/EffektButton/EffektButton";
-import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
 
-import { checkPaymentDate } from "../../../../../util/dates";
 import { getUserId } from "../../../../../lib/user";
-import { AgreementSingleCauseAreaDetails } from "./singleCauseAreaDetails/AgreementSingleCauseAreaDetails";
+import { checkPaymentDate } from "../../../../../util/dates";
 import { useCauseAreas } from "../../../../../_queries";
+import { failureToast, noChangesToast, successToast } from "../../toast";
 import { AgreementMultipleCauseAreaDetails } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
+import { AgreementSingleCauseAreaDetails } from "./singleCauseAreaDetails/AgreementSingleCauseAreaDetails";
 
 export const AgreementDetails: React.FC<{
   type: "Vipps" | "AvtaleGiro";
@@ -242,17 +240,3 @@ export const AgreementDetails: React.FC<{
     );
   }
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });
-const noChangesToast = () =>
-  toast.error("Ingen endringer", {
-    icon: <Info size={24} color={"black"} />,
-  });
-const invalidInputToast = () =>
-  toast.error("Ugyldig data inntastet", {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });
