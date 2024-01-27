@@ -77,10 +77,10 @@ describe("Tax reports page no data", () => {
   });
 
   it("should display custom message if no data", () => {
-    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2022");
+    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2023");
     cy.get("[data-cy=generic-list-empty-placeholder]").should(
       "contain.text",
-      "Vi har ikke registrert noen donasjoner på deg i 2022.",
+      "Vi har ikke registrert noen donasjoner på deg i 2023.",
     );
   });
 
