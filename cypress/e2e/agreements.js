@@ -231,11 +231,12 @@ describe("Agreements page", () => {
       .clear()
       .type("35");
 
-    cy.fixture("agreement_distribution_error").then((distributionError) => {
-      cy.intercept("PUT", "/vipps/agreement/*/distribution", {
-        statusCode: 400,
-        body: distributionError,
-      });
+    cy.intercept("PUT", "/vipps/agreement/*/distribution", {
+      statusCode: 400,
+      body: {
+        status: 400,
+        content: "Distribution does not sum to 100",
+      },
     });
 
     /**

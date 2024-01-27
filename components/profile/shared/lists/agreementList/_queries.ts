@@ -20,12 +20,10 @@ export const updateVippsAgreementDistribution = async (
       }),
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -47,11 +45,10 @@ export const updateVippsAgreementPrice = async (urlCode: string, sum: number, to
       }),
     });
 
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -73,12 +70,10 @@ export const updateVippsAgreementDay = async (urlCode: string, day: number, toke
       }),
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -97,12 +92,10 @@ export const cancelVippsAgreement = async (urlCode: string, token: string) => {
       credentials: "same-origin",
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -126,11 +119,10 @@ export const updateAnonymousVippsAgreementDistribution = async (
       }),
     });
 
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -151,11 +143,10 @@ export const updateAnonymousVippsAgreementPrice = async (urlCode: string, sum: n
       }),
     });
 
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -176,11 +167,10 @@ export const updateAnonymousVippsAgreementDay = async (urlCode: string, day: num
       }),
     });
 
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -198,11 +188,10 @@ export const cancelAnonymousVippsAgreement = async (urlCode: string) => {
       credentials: "same-origin",
     });
 
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -226,12 +215,10 @@ export const updateAvtalegiroAgreementDistribution = async (
       body: JSON.stringify(distribution),
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -253,12 +240,10 @@ export const updateAvtaleagreementPaymentDay = async (kid: string, day: number, 
       }),
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return result.content;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -280,12 +265,10 @@ export const updateAvtaleagreementAmount = async (kid: string, sum: number, toke
       }),
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return result.content;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }
@@ -307,12 +290,10 @@ export const cancelAvtaleGiroAgreement = async (kid: string, token: string) => {
       }),
     });
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
+    return {
+      ok: response.ok,
+      status: response.status,
+    };
   } catch (e) {
     return null;
   }

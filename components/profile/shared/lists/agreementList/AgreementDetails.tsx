@@ -77,7 +77,13 @@ export const AgreementDetails: React.FC<{
     setLoadingChanges(true);
 
     if (type == "Vipps") {
-      let result = null;
+      let result: Awaited<
+        ReturnType<
+          | typeof updateVippsAgreementDistribution
+          | typeof updateVippsAgreementDay
+          | typeof updateVippsAgreementPrice
+        >
+      > = null;
 
       if (distributionChanged) {
         result = await updateVippsAgreementDistribution(endpoint, distribution, token);
@@ -91,17 +97,23 @@ export const AgreementDetails: React.FC<{
         result = await updateVippsAgreementPrice(endpoint, sum, token);
       }
 
-      if (result != null) {
+      if (result?.ok) {
         successToast();
         mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast();
+        failureToast(result?.status === 400 ? "Ugyldig data inntastet" : undefined);
         setLoadingChanges(false);
       }
     } else if (type == "AvtaleGiro") {
-      let result = null;
+      let result: Awaited<
+        ReturnType<
+          | typeof updateAvtalegiroAgreementDistribution
+          | typeof updateAvtaleagreementPaymentDay
+          | typeof updateAvtaleagreementAmount
+        >
+      > = null;
 
       if (distributionChanged) {
         result = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token);
@@ -115,13 +127,13 @@ export const AgreementDetails: React.FC<{
         result = await updateAvtaleagreementAmount(endpoint, sum * 100, token);
       }
 
-      if (result !== null) {
+      if (result?.ok) {
         successToast();
         mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast();
+        failureToast(result?.status === 400 ? "Ugyldig data inntastet" : undefined);
         setLoadingChanges(false);
       }
     }
