@@ -2,7 +2,13 @@ name: e2e
 on:
   workflow_call:
     inputs:
-      domain:
+      group:
+        required: true
+        type: string
+      config-file:
+        required: true
+        type: string
+      base-url:
         required: true
         type: string
 jobs:
@@ -23,12 +29,12 @@ jobs:
       - name: Run Cypress 🌲
         uses: cypress-io/github-action@v5
         with:
-          config-file: "cypress-${{ inputs.domain }}.config.ts"
+          config-file: ${{ inputs.config-file }}
           record: true
           parallel: true
-          group: "GiEffektivt e2e tests (${{ inputs.domain }})"
+          group: ${{ inputs.group }}
         env:
-          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          CYPRESS_BASE_URL: ${{ inputs.base-url }}
           CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
           CYPRESS_AUTH_CLIENT_ID: ${{ secrets.CYPRESS_AUTH_CLIENT_ID }}
           CYPRESS_AUTH_CLIENT_SECRET: ${{ secrets.CYPRESS_AUTH_CLIENT_SECRET }}
