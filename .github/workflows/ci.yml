@@ -2,34 +2,17 @@ name: ci
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 on: [deployment_status]
 jobs:
-  e2e:
+  e2e-no:
     # only runs this job on successful deploy to main-site
     if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'main-site')
-    runs-on: ubuntu-latest
-    strategy:
-      # when one test fails, DO NOT cancel the other
-      # containers, because this will kill Cypress processes
-      # leaving Cypress Cloud hanging ...
-      # https://github.com/cypress-io/github-action/issues/48
-      fail-fast: false
-      matrix:
-        # run 3 copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5, 6]
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v1
-      - name: Run Cypress 🌲
-        uses: cypress-io/github-action@v5
-        with:
-          record: true
-          parallel: true
-          group: "GiEffektivt e2e tests"
-        env:
-          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
-          CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
-          CYPRESS_AUTH_CLIENT_ID: ${{ secrets.CYPRESS_AUTH_CLIENT_ID }}
-          CYPRESS_AUTH_CLIENT_SECRET: ${{ secrets.CYPRESS_AUTH_CLIENT_SECRET }}
-          CYPRESS_AUTH_AUDIENCE: ${{ secrets.CYPRESS_AUTH_AUDIENCE }}
-          CYPRESS_AUTH_USERNAME: ${{ secrets.CYPRESS_AUTH_USERNAME }}
-          CYPRESS_AUTH_PASSWORD: ${{ secrets.CYPRESS_AUTH_PASSWORD }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+    uses: ./github/workflows/e2e.yml
+    with:
+      domain: "no"
+    secrets: inherit
+  e2e-se:
+    # only runs this job on successful deploy to ge-effektivt
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'ge-effektivt')
+    uses: ./github/workflows/e2e.yml
+    with:
+      domain: "se"
+    secrets: inherit
