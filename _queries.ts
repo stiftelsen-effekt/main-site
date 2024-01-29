@@ -169,6 +169,25 @@ export const useAvtalegiroAgreements = (
   };
 };
 
+export const useAutogiroAgreements = (
+  user: User | undefined,
+  fetchToken: getAccessTokenSilently,
+) => {
+  const { data, error, isValidating } = useSWR(
+    user ? `/donors/${getUserId(user)}/recurring/autogiro/` : null,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useVippsAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     user ? `/donors/${getUserId(user)}/recurring/vipps/` : null,
