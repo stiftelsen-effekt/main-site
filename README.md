@@ -23,6 +23,7 @@
   - [Fetching and mutating data via the API](#fetching-and-mutating-data-via-the-api)
 - [Build and deployment ⚙️](#build-and-deployment-️)
 - [Testing 💥](#testing-)
+  - [Unit tests](#unit-tests)
   - [E2E](#e2e)
 
 ---
@@ -203,7 +204,11 @@ When editing content in sanity for the `production` dataset, a webhook triggers 
 
 ## Testing 💥
 
-Currently, only E2E tests are configured.
+Currently, we have two types of tests. Unit tests and end-to-end tests.
+
+### Unit tests
+
+Unit tests are located in the `__tests__` folder. We use [Jest](https://jestjs.io/) as our test runner. To run the tests, run `npm run test`.
 
 ### E2E
 
