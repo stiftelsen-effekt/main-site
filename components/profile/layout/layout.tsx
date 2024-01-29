@@ -15,6 +15,7 @@ import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
 import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
+import { getClient } from "../../../lib/sanity.server";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -28,13 +29,37 @@ const useShouldAuthenticate = (): boolean => {
   return shouldBypass;
 };
 
+type QueryResult = {
+  data: {
+    site_title: string;
+    login_error_configuration: {
+      login_abort_label: string;
+      login_button_label: string;
+    };
+  };
+};
+
+export const profileQuery = `
+  {
+    "data": {
+      "site_title": *[_type == "site_settings"][0].title,
+      "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
+    }
+  }
+`;
+
 export const ProfileLayout = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<QueryResult>(profileQuery);
+
+  console.log(result);
+
   return {
     footerData: await Footer.getStaticProps({ preview }),
     widgetData: await Widget.getStaticProps({ preview }),
+    profileData: result.data,
     isPreview: preview,
   };
-})(({ children, footerData, widgetData, isPreview }) => {
+})(({ children, footerData, widgetData, profileData, isPreview }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
@@ -67,7 +92,11 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
     >
       <div className={styles.container + " " + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
-          <UserWrapper skipAuthentication={bypassAuth}>
+          <UserWrapper
+            skipAuthentication={bypassAuth}
+            siteTitle={profileData.site_title}
+            loginErrorConfig={profileData.login_error_configuration}
+          >
             <DonorProvider>
               <ActivityProvider>
                 <ToastContainer
