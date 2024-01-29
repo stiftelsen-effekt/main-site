@@ -11,17 +11,19 @@
 
 [![Powered by Vercel](docs/vercel-banner.svg)](https://vercel.com?utm_source=effective-altruism-norway&utm_campaign=oss)
 
-# Table of Contents
+**Table of Contents**
 
-- [Getting started <g-emoji class="g-emoji" alias="zap" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png">⚡</g-emoji>](#getting-started-)
+- [Getting started ⚡](#getting-started-)
 - [Project structure](#project-structure)
   - [Pages](#pages)
   - [Components](#components)
-- [Sanity (Content Managment System) <g-emoji class="g-emoji" alias="book" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d6.png">📖</g-emoji>](#sanity-content-managment-system-)
-- [Profile page <g-emoji class="g-emoji" alias="people_holding_hands" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f91d-1f9d1.png">🧑‍🤝‍🧑</g-emoji>](#profile-page-)
+- [Sanity (Content Managment System) 📖](#sanity-content-managment-system-)
+  - [Sanity Studio](#sanity-studio)
+- [Profile page 🧑‍🤝‍🧑](#profile-page-)
   - [Fetching and mutating data via the API](#fetching-and-mutating-data-via-the-api)
-- [Build and deployment <g-emoji class="g-emoji" alias="gear" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2699.png">⚙️</g-emoji>](#build-and-deployment-️)
-- [Testing <g-emoji class="g-emoji" alias="boom" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a5.png">💥</g-emoji>](#testing-)
+- [Build and deployment ⚙️](#build-and-deployment-️)
+- [Testing 💥](#testing-)
+  - [E2E](#e2e)
 
 ---
 
@@ -200,3 +202,9 @@ This repository is connected to the [vercel edge cdn](https://vercel.com/). On a
 When editing content in sanity for the `production` dataset, a webhook triggers a build of the most recent version of the main branch. This generates static sites with the most recent content. Building typically takes somewhere in the range of 4 minutes.
 
 ## Testing 💥
+
+Currently, only E2E tests are configured.
+
+### E2E
+
+Tests can be found in the `cypress` folder. We utilize [Cypress](https://www.cypress.io/) for end-to-end testing. To execute the tests, initiate the development server by running `npm run dev` with either the Norwegian or Swedish production Sanity datasets specified in `.env.local`. After that, run either `npm run cypress:se` or `npm run cypress:no` to execute the tests for the corresponding domain.
