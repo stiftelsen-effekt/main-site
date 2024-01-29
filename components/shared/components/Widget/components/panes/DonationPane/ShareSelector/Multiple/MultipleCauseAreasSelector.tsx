@@ -69,7 +69,7 @@ export const MultipleCauseAreasSelector: React.FC<{
                 <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
                 {causeArea.organizations.length > 1 && (
                   <CauseAreaShareSelectionTitleSmartDistributionWrapper>
-                    <span>Smart fordeling</span>
+                    <span>{configuration.smart_distribution_label_text}</span>
                     <Toggle
                       active={standardSplit}
                       dataCy="smart-distribution-toggle"
