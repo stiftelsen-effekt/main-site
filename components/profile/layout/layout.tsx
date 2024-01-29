@@ -51,8 +51,6 @@ export const profileQuery = `
 export const ProfileLayout = withStaticProps(async ({ preview }: { preview: boolean }) => {
   const result = await getClient(preview).fetch<QueryResult>(profileQuery);
 
-  console.log(result);
-
   return {
     footerData: await Footer.getStaticProps({ preview }),
     widgetData: await Widget.getStaticProps({ preview }),
