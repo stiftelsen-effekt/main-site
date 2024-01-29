@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../../store/state";
 import { AutoGiroPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
@@ -13,6 +13,7 @@ import { thousandize } from "../../../../../../../../util/formatting";
 import LinkButton from "../../../../../EffektButton/LinkButton";
 import AnimateHeight from "react-animate-height";
 import { DatePicker } from "../../../shared/DatePicker/DatePicker";
+import { API_URL } from "../../../../config/api";
 
 enum AutoGiroOptions {
   MANUAL_TRANSACTION,
@@ -33,6 +34,18 @@ export const AutogiroPane: React.FC<{
   const [manualAutogiroSetupDate, setManualAutogiroSetupDate] = React.useState<number | undefined>(
     undefined,
   );
+
+  useEffect(() => {
+    fetch(`${API_URL}/autogiro/${donation.kid}/drafted/paymentdate`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        paymentDate: manualAutogiroSetupDate,
+      }),
+    });
+  }, [manualAutogiroSetupDate]);
 
   const manualTransactionContent = (
     <>
