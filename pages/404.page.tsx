@@ -22,17 +22,22 @@ const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       </MainHeader>
 
       <SectionContainer>
-        <h2 style={{ marginTop: "10vh" }}>Finner ikke siden</h2>
+        <h2 style={{ marginTop: "10vh" }}>
+          {missingPage.settings[0].not_found_title || "Page not found"}
+        </h2>
       </SectionContainer>
     </>
   );
 };
 
 const fetchMissingPage = groq`
+{
   "settings": *[_type == "site_settings"] {
     title,
     cookie_banner_configuration,
+    not_found_title,
   },
+}
 `;
 
 export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {

@@ -176,5 +176,10 @@ export default {
         },
       ],
     },
+    {
+      name: "not_found_title",
+      title: "Not found title",
+      type: "string",
+    },
   ],
 };
