@@ -65,7 +65,7 @@ export const GenericPage = withStaticProps(
       />
 
       <MainHeader hideOnScroll={true}>
-        <CookieBanner />
+        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
         <Navbar {...navbarData} />
       </MainHeader>
 
@@ -94,6 +94,7 @@ const fetchGenericPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
+    cookie_banner_configuration,
   },
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {

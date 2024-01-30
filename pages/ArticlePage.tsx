@@ -7,7 +7,10 @@ import {
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
-import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import {
+  CookieBanner,
+  CookieBannerConfiguration,
+} from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
@@ -30,7 +33,7 @@ const ArticlePage = withStaticProps(
     let result = await getClient(preview).fetch<{
       page: any;
       relatedArticles: RelatedArticle[];
-      settings: { title: string }[];
+      settings: { title: string; cookie_banner_configuration: CookieBannerConfiguration }[];
     }>(fetchArticle, { slug });
 
     result = { ...result, page: filterPageToSingleItem(result, preview) };
@@ -72,7 +75,7 @@ const ArticlePage = withStaticProps(
       />
 
       <MainHeader hideOnScroll={true}>
-        <CookieBanner />
+        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
         <Navbar {...navbarData} />
       </MainHeader>
 
@@ -96,6 +99,7 @@ const fetchArticle = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
+    cookie_banner_configuration,
   },
   "page": *[_type == "article_page"  && slug.current == $slug] {
     header {

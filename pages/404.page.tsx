@@ -7,16 +7,17 @@ import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { getClient } from "../lib/sanity.server";
-import { GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { getAppStaticProps } from "./_app.page";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   navbarData,
+  missingPage,
   preview,
 }) => {
   return (
     <>
       <MainHeader hideOnScroll={true}>
-        <CookieBanner />
+        <CookieBanner configuration={missingPage.settings[0].cookie_banner_configuration} />
         <Navbar {...navbarData} />
       </MainHeader>
 
@@ -27,12 +28,22 @@ const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   );
 };
 
+const fetchMissingPage = groq`
+  "settings": *[_type == "site_settings"] {
+    title,
+    cookie_banner_configuration,
+  },
+`;
+
 export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {
   const appStaticProps = await getAppStaticProps({ preview });
+
+  const result = await getClient(preview).fetch(fetchMissingPage);
 
   return {
     props: {
       appStaticProps,
+      missingPage: result,
       navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
       preview,
     }, // satisfies GeneralPageProps (requires next@13);,
