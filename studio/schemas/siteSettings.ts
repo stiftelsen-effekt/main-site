@@ -137,5 +137,17 @@ export default {
       type: "string",
       group: "footer",
     },
+    {
+      name: "footer_newsletter_form_url",
+      title: "Footer newsletter form url",
+      type: "string",
+      group: "footer",
+    },
+    {
+      name: "footer_newsletter_send_label",
+      title: "Footer newsletter send label",
+      type: "string",
+      group: "footer",
+    },
   ],
 };
