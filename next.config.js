@@ -349,6 +349,11 @@ const nextConfig = {
       { source: "/ge", destination: "/", permanent: true },
       { source: "/filantropi", destination: "/filantropisk-radgivning", permanent: true },
       { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
+      {
+        source: "/vi-behoever-prata-om-administrationskostnaderna",
+        destination: "/artiklar/vi-maste-prata-om-administrationskostnaderna",
+        permanent: true,
+      },
     ];
   },
 };
