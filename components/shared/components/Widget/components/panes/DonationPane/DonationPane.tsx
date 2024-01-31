@@ -16,6 +16,7 @@ import { SingleCauseAreaSelector } from "./ShareSelector/Single/SingleCauseAreaS
 import { MultipleCauseAreasSelector } from "./ShareSelector/Multiple/MultipleCauseAreasSelector";
 import { usePlausible } from "next-plausible";
 import { ErrorTextsContainer } from "../../shared/ErrorTextsContainer/ErrorTextsContainer";
+import { Spinner } from "../../../../Spinner/Spinner";
 
 export const DonationPane: React.FC<{
   text: WidgetPane1Props;
@@ -112,6 +113,18 @@ export const DonationPane: React.FC<{
             </span>
           </SumWrapper>
 
+          {!layout.causeAreas && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "5rem",
+              }}
+            >
+              <Spinner></Spinner>
+            </div>
+          )}
           {layout.causeAreas?.length === 1 && (
             <SingleCauseAreaSelector
               configuration={text.smart_distribution_context}
