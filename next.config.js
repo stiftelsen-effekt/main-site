@@ -349,7 +349,6 @@ const nextConfig = {
       { source: "/foretag", destination: "/foretag", permanent: true },
       { source: "/ge", destination: "/", permanent: true },
       { source: "/filantropi", destination: "/filantropisk-radgivning", permanent: true },
-      { source: "/faq", destination: "/vanliga-fragor", permanent: true },
       { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
     ];
   },
