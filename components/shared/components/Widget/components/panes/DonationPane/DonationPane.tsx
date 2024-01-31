@@ -56,16 +56,16 @@ export const DonationPane: React.FC<{
           <RadioButtonGroup
             options={[
               {
-                title: text.monthly_donation_text,
-                value: RecurringDonation.RECURRING,
-                data_cy: "radio-recurring",
-                disabled: !enableRecurring,
-              },
-              {
                 title: text.single_donation_text,
                 value: RecurringDonation.NON_RECURRING,
                 data_cy: "radio-single",
                 disabled: !enableSingle,
+              },
+              {
+                title: text.monthly_donation_text,
+                value: RecurringDonation.RECURRING,
+                data_cy: "radio-recurring",
+                disabled: !enableRecurring,
               },
             ]}
             selected={donation.recurring}
