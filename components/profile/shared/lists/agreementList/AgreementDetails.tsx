@@ -41,6 +41,7 @@ export type AgreementDetailsConfiguration = {
   toasts_configuration: {
     success_text: string;
     failure_text: string;
+    bad_input_failure_text?: string;
     no_changes_text: string;
   };
   agreement_cancel_lightbox: {
@@ -166,8 +167,10 @@ export const AgreementDetails: React.FC<{
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(result?.status === 400 ? "Ugyldig data inntastet" : undefined);
-        failureToast(configuration.toasts_configuration.failure_text);
+        failureToast(
+          (result?.status === 400 && configuration.toasts_configuration.bad_input_failure_text) ||
+            configuration.toasts_configuration.failure_text,
+        );
         setLoadingChanges(false);
       }
     } else if (type == "AvtaleGiro") {
@@ -197,7 +200,10 @@ export const AgreementDetails: React.FC<{
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(configuration.toasts_configuration.failure_text);
+        failureToast(
+          (result?.status === 400 && configuration.toasts_configuration.bad_input_failure_text) ||
+            configuration.toasts_configuration.failure_text,
+        );
         setLoadingChanges(false);
       }
     } else if (type == "AutoGiro") {
@@ -215,11 +221,14 @@ export const AgreementDetails: React.FC<{
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(configuration.toasts_configuration.failure_text);
+        failureToast(
+          (result?.status === 400 && configuration.toasts_configuration.bad_input_failure_text) ||
+            configuration.toasts_configuration.failure_text,
+        );
         setLoadingChanges(false);
       }
     } else {
-      failureToast("Uknown agreement type");
+      failureToast("Unknown agreement type");
       setLoadingChanges(false);
     }
   };
@@ -254,7 +263,7 @@ export const AgreementDetails: React.FC<{
         failureToast(configuration.toasts_configuration.failure_text);
       }
     } else {
-      failureToast("Uknown agreement type");
+      failureToast("Unknown agreement type");
     }
   };
 

@@ -240,8 +240,7 @@ describe("Agreements page", () => {
       .should("be.visible");
   });
 
-  // TODO: https://github.com/stiftelsen-effekt/main-site/issues/899
-  xit("Should error when trying to save inconsistent agreement state", () => {
+  it("Should error when trying to save inconsistent agreement state", () => {
     // Expand the first agreement
     cy.get("[data-cy=generic-list-table]")
       .first()
