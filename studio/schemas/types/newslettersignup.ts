@@ -14,7 +14,7 @@ export default {
     {
       name: "formurl",
       type: "string",
-      title: "Text",
+      title: "Form url",
     },
     {
       name: "sendlabel",
