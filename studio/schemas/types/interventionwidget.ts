@@ -12,6 +12,11 @@ export default {
       title: "Title",
     },
     {
+      name: "donation_label",
+      type: "string",
+      title: "Donation label",
+    },
+    {
       name: "default_sum",
       type: "number",
       title: "Default sum",

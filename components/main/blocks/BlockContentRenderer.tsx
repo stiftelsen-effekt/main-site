@@ -234,6 +234,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <InterventionWidget
                             key={block._key || block._id}
                             title={block.title}
+                            donationLabel={block.donation_label}
                             default_sum={block.default_sum}
                             interventions={block.interventions}
                             explanationLabel={block.explanation_label}
