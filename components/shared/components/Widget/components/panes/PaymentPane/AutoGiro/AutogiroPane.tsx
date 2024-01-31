@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../../store/state";
 import { AutoGiroPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
@@ -13,6 +13,8 @@ import { thousandize } from "../../../../../../../../util/formatting";
 import LinkButton from "../../../../../EffektButton/LinkButton";
 import AnimateHeight from "react-animate-height";
 import { DatePicker } from "../../../shared/DatePicker/DatePicker";
+import { API_URL } from "../../../../config/api";
+import { DateTime } from "luxon";
 
 enum AutoGiroOptions {
   MANUAL_TRANSACTION,
@@ -30,9 +32,20 @@ export const AutogiroPane: React.FC<{
   const [selectedAutogiroSetup, setSelectedAutogiroSetup] = React.useState<
     AutoGiroOptions | undefined
   >();
-  const [manualAutogiroSetupDate, setManualAutogiroSetupDate] = React.useState<number | undefined>(
-    undefined,
-  );
+  const [manualAutogiroSetupDate, setManualAutogiroSetupDate] = React.useState<number>();
+
+  useEffect(() => {
+    let date = manualAutogiroSetupDate ?? DateTime.now().plus({ days: 6 }).day;
+    fetch(`${API_URL}/autogiro/${donation.kid}/drafted/paymentdate`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        paymentDate: date,
+      }),
+    });
+  }, [manualAutogiroSetupDate]);
 
   const manualTransactionContent = (
     <>
@@ -62,19 +75,24 @@ export const AutogiroPane: React.FC<{
             if (typeof manualAutogiroSetupDate !== "undefined") {
               setManualAutogiroSetupDate(undefined);
             } else {
-              setManualAutogiroSetupDate(25);
+              setManualAutogiroSetupDate(DateTime.now().plus({ days: 6 }).day);
             }
           }}
           style={{ cursor: "pointer" }}
         >
           <span>
-            Overføring den{" "}
             {typeof manualAutogiroSetupDate === "undefined"
-              ? "25."
+              ? config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
+                  "{{date}}",
+                  DateTime.now().plus({ days: 6 }).day.toString(),
+                )
               : manualAutogiroSetupDate === 0
-              ? "siste dagen"
-              : `${manualAutogiroSetupDate}.`}{" "}
-            hver måned
+              ? config.recurring_manual_option_config.date_selector_config
+                  .payment_date_last_day_of_month_template
+              : config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
+                  "{{date}}",
+                  manualAutogiroSetupDate.toString(),
+                )}
           </span>
           <span
             style={{
@@ -86,7 +104,11 @@ export const AutogiroPane: React.FC<{
           </span>
         </TextWrapper>
         <AnimateHeight height={typeof manualAutogiroSetupDate === "undefined" ? 0 : "auto"}>
-          <DatePicker onChange={setManualAutogiroSetupDate} selected={manualAutogiroSetupDate} />
+          <DatePicker
+            onChange={setManualAutogiroSetupDate}
+            selected={manualAutogiroSetupDate}
+            configuration={config.recurring_manual_option_config.date_selector_config}
+          />
         </AnimateHeight>
       </RoundedBorder>
     </>

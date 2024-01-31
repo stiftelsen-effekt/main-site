@@ -1,4 +1,5 @@
 import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
+import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
 export type WidgetProps = { locale: "no" | "se" | "en" } & WidgetPane1Props &
@@ -29,6 +30,7 @@ export type VippsPaymentMethod = {
   recurring_title: string;
   recurring_selector_earliest_text: string;
   recurring_selector_choose_date_text: string;
+  recurring_selector_date_picker_configuration: DatePickerInputConfiguration;
   recurring_button_text: string;
   single_title: string;
   single_button_text: string;
@@ -65,6 +67,7 @@ export type AvtaleGiroPaymentMethod = {
   title: string;
   selector_earliest_text: string;
   selector_choose_date_text: string;
+  date_selector_configuration: DatePickerInputConfiguration;
   button_text: string;
 };
 
@@ -90,6 +93,7 @@ type AutogiroRecurringManualOptionConfig = {
   title: string;
   explanation_text: any[];
   payernumber_label: string;
+  date_selector_config: DatePickerInputConfiguration;
 };
 
 type AutogiroRecurringFormOptionConfig = {

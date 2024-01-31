@@ -1,13 +1,15 @@
 import React, { useRef } from "react";
 import { useClickOutsideAlerter } from "../../../../../../../hooks/useClickOutsideAlerter";
 import style from "./DatePicker.module.scss";
+import { DatePickerInputConfiguration } from "../../../../DatePicker/DatePickerInput";
 
 export const DatePicker: React.FC<{
   selected?: number;
   onChange: (selected: number) => void;
   onClickOutside?: () => void;
   className?: string;
-}> = ({ selected, onChange, onClickOutside, className }) => {
+  configuration: DatePickerInputConfiguration;
+}> = ({ selected, onChange, onClickOutside, className, configuration }) => {
   const dates = [...Array.from(Array(29).keys()).map((x) => x.toString())].slice(1, 29);
 
   const datepickerContainerRef = useRef<HTMLDivElement>(null);
@@ -51,7 +53,7 @@ export const DatePicker: React.FC<{
           }}
           data-cy="date-picker-button-last"
         >
-          Siste dag i måneden
+          {configuration.last_day_of_month_label}
         </button>
       </div>
     </div>

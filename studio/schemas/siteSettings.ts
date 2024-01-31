@@ -137,5 +137,49 @@ export default {
       type: "string",
       group: "footer",
     },
+    {
+      name: "footer_newsletter_form_url",
+      title: "Footer newsletter form url",
+      type: "string",
+      group: "footer",
+    },
+    {
+      name: "footer_newsletter_send_label",
+      title: "Footer newsletter send label",
+      type: "string",
+      group: "footer",
+    },
+    {
+      name: "cookie_banner_configuration",
+      title: "Cookie banner configuration",
+      type: "object",
+      fields: [
+        {
+          name: "title",
+          title: "Title",
+          type: "string",
+        },
+        {
+          name: "description",
+          title: "Description",
+          type: "string",
+        },
+        {
+          name: "accept_button_text",
+          title: "Accept button text",
+          type: "string",
+        },
+        {
+          name: "decline_button_text",
+          title: "Decline button text",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "not_found_title",
+      title: "Not found title",
+      type: "string",
+    },
   ],
 };

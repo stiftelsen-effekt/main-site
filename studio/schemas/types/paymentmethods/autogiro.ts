@@ -83,6 +83,13 @@ export default {
           type: "string",
           validation: (Rule: any) => Rule.required(),
         },
+        {
+          name: "date_selector_config",
+          title: "Date selector config",
+          type: "reference",
+          to: [{ type: "dateselectorconfig" }],
+          validation: (Rule: any) => Rule.required(),
+        },
       ],
     },
     {

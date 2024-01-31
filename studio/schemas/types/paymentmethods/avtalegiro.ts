@@ -28,6 +28,13 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "date_selector_configuration",
+      title: "Date selector configuration",
+      type: "reference",
+      to: [{ type: "dateselectorconfig" }],
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "button_text",
       title: "Button text",
       type: "string",

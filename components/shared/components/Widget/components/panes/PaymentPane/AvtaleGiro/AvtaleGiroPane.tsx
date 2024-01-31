@@ -49,7 +49,9 @@ export const AvtaleGiroPane: React.FC<{
             {chooseChargeDay === 0 && (
               <DateText>{formatChargeDay(getEarliestPossibleChargeDate())}</DateText>
             )}
-            {chooseChargeDay === 1 && <AvtaleGiroDatePicker />}
+            {chooseChargeDay === 1 && (
+              <AvtaleGiroDatePicker configuration={config.date_selector_configuration} />
+            )}
           </div>
         </div>
         <div>
