@@ -278,6 +278,11 @@ const nextConfig = {
         destination: "/rekommenderade-organisationer",
         permanent: false,
       },
+      {
+        source: "/en",
+        destination: "/",
+        permanent: false,
+      },
     ];
   },
 };
