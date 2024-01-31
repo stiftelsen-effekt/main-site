@@ -13,26 +13,35 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
   configuration,
 }) => {
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
-  const [localStorageLoaded, setLocalStorageLoaded] = useState(false);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const item = window.localStorage.getItem("gieffektivt-cookies-accepted");
+      console.log(item);
       if (item !== null) {
         if (item === "true") {
-          setCookiesAccepted(true);
+          setCookiesAccepted({
+            accepted: true,
+            loaded: true,
+          });
         } else if (item === "false") {
-          setCookiesAccepted(false);
+          setCookiesAccepted({
+            accepted: false,
+            loaded: true,
+          });
         }
+      } else {
+        setCookiesAccepted({
+          loaded: true,
+        });
       }
-      setLocalStorageLoaded(true);
     }
   }, []);
 
   return (
     <>
-      {cookiesAccepted === true && localStorageLoaded && typeof window !== "undefined" && (
+      {cookiesAccepted.accepted === true && (
         <>
           <Script
             strategy="afterInteractive"
@@ -50,41 +59,45 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
           </Script>
         </>
       )}
-      <div
-        data-cy="cookiebanner-container"
-        className={styles.container}
-        style={{ display: typeof cookiesAccepted === "undefined" ? "flex" : "none" }}
-      >
-        <div className={styles.content}>
-          <div>
-            <span>{configuration.title}</span>
-            <p>{configuration.description}</p>
-          </div>
-          <div>
-            <button
-              data-cy="decline-cookies"
-              onClick={() => {
-                window.localStorage.setItem("gieffektivt-cookies-accepted", "false");
-                setCookiesAccepted(false);
-              }}
-              style={{
-                marginRight: "1rem",
-              }}
-            >
-              {configuration.decline_button_text}
-            </button>
-            <button
-              data-cy="accept-cookies"
-              onClick={() => {
-                window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
-                setCookiesAccepted(true);
-              }}
-            >
-              {configuration.accept_button_text}
-            </button>
+      {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
+        <div data-cy="cookiebanner-container" className={styles.container}>
+          <div className={styles.content}>
+            <div>
+              <span>{configuration.title}</span>
+              <p>{configuration.description}</p>
+            </div>
+            <div>
+              <button
+                data-cy="decline-cookies"
+                onClick={() => {
+                  window.localStorage.setItem("gieffektivt-cookies-accepted", "false");
+                  setCookiesAccepted({
+                    accepted: false,
+                    loaded: true,
+                  });
+                }}
+                style={{
+                  marginRight: "1rem",
+                }}
+              >
+                {configuration.decline_button_text}
+              </button>
+              <button
+                data-cy="accept-cookies"
+                onClick={() => {
+                  window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
+                  setCookiesAccepted({
+                    accepted: true,
+                    loaded: true,
+                  });
+                }}
+              >
+                {configuration.accept_button_text}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

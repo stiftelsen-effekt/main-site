@@ -61,7 +61,10 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
-  const [cookiesAccepted, setCookiesAccepted] = useState(true);
+  const [cookiesAccepted, setCookiesAccepted] = useState({
+    accepted: true,
+    loaded: true,
+  });
   const bypassAuth = useShouldAuthenticate();
 
   let cacheLocation: CacheLocation = "memory";
