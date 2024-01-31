@@ -32,7 +32,7 @@ describe("Navigation", () => {
     cy.get("[data-cy=accept-cookies]").click();
 
     // CookieBanner should be hidden
-    cy.get("[data-cy=cookiebanner-container]").should("not.be.visible");
+    cy.get("[data-cy=cookiebanner-container]").should("not.exist");
 
     cy.get("[data-cy=maks-effekt-link]").within(() => {
       cy.get("a").click({ force: true });
@@ -40,12 +40,12 @@ describe("Navigation", () => {
     cy.url({ timeout: 10000 }).should("include", "/maks-effekt", { timeout: 10000 });
 
     // CookieBanner should still be hidden after changing page
-    cy.get("[data-cy=cookiebanner-container]").should("not.be.visible");
+    cy.get("[data-cy=cookiebanner-container]").should("not.exist");
 
     cy.reload();
 
     // CookieBanner should still be hidden after reloading
-    cy.get("[data-cy=cookiebanner-container]").should("not.be.visible");
+    cy.get("[data-cy=cookiebanner-container]").should("not.exist");
   });
 
   it("Tests if NavBar and scrolling works correctly", () => {

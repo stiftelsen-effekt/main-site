@@ -1,0 +1,68 @@
+[
+  {
+    "id": 4096,
+    "donorId": 27,
+    "name": "Christine Moore",
+    "ssn": "01129955131",
+    "registered": "2023-08-23T01:21:34.000Z",
+    "archived": null,
+    "sumDonations": "106901",
+    "numDonations": 73,
+    "taxDeductions": [
+      {
+        "year": 2016,
+        "sumDonations": 0,
+        "deduction": 0,
+        "benefit": 0
+      },
+      {
+        "year": 2017,
+        "sumDonations": 5711,
+        "deduction": 0,
+        "benefit": 0
+      },
+      {
+        "year": 2018,
+        "sumDonations": 2890,
+        "deduction": 0,
+        "benefit": 0
+      },
+      {
+        "year": 2019,
+        "sumDonations": 1840,
+        "deduction": 1840,
+        "benefit": 404.8
+      },
+      {
+        "year": 2020,
+        "sumDonations": 6650,
+        "deduction": 6650,
+        "benefit": 1463
+      },
+      {
+        "year": 2021,
+        "sumDonations": 32200,
+        "deduction": 32200,
+        "benefit": 7084
+      },
+      {
+        "year": 2023,
+        "sumDonations": 5150,
+        "deduction": 5150,
+        "benefit": 1133
+      },
+      {
+        "year": 2023,
+        "sumDonations": 48440,
+        "deduction": 25000,
+        "benefit": 5500
+      },
+      {
+        "year": 2024,
+        "sumDonations": 4020,
+        "deduction": 4020,
+        "benefit": 884.4
+      }
+    ]
+  }
+]
