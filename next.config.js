@@ -344,7 +344,6 @@ const nextConfig = {
       { source: "/organisationer/new-incentives", destination: "/global-halsa", permanent: true },
       { source: "/organisationer#djurvalfard", destination: "/djurvalfard", permanent: true },
       { source: "/organisationer#klimat", destination: "/klimat", permanent: true },
-      { source: "/om", destination: "/om-oss", permanent: true },
       { source: "/blogg", destination: "/artiklar", permanent: true },
       { source: "/foretag", destination: "/foretag", permanent: true },
       { source: "/ge", destination: "/", permanent: true },
