@@ -57,6 +57,18 @@
         "causeAreaId": 1
       },
       {
+        "id": 2,
+        "name": "SCI Foundation",
+        "abbreviation": "SCI",
+        "shortDescription": "SCI Foundation bekjemper neglisjerte tropesykdommer som blant annet sneglefeber ved bruk av kostnadseffektive medisiner i Jemen og Afrika sør for Sahara.",
+        "longDescription": "SCI Foundation",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/topplista",
+        "isActive": true,
+        "ordering": 5,
+        "causeAreaId": 1
+      },
+      {
         "id": 7,
         "name": "GiveDirectly",
         "abbreviation": "GD",

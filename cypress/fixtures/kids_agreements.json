@@ -1,140 +1,116 @@
 [
   {
     "kid": "51615227",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "70.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "30.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "70.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "30.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "16753477",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "20.000000000000"
-      },
-      {
-        "id": 10,
-        "name": "Hellen Keller International",
-        "share": "30.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "50.000000000000"
+        "id": 1,
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "20.000000000000"
+          },
+          {
+            "id": 10,
+            "name": "Hellen Keller International",
+            "percentageShare": "30.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "50.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "95231965",
-    "standardDistribution": false,
-    "shares": [
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "30.000000000000"
-      },
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "15.000000000000"
-      },
-      {
-        "id": 10,
-        "name": "Hellen Keller International",
-        "share": "25.000000000000"
-      },
-      {
-        "id": 4,
-        "name": "Malaria Consortium",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "30.000000000000"
-      },
-      {
-        "id": 7,
-        "name": "GiveDirectly",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 13,
-        "name": "GiveDirectly Borgerlønn",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 14,
-        "name": "New Incentives",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 11,
-        "name": "Drift av gieffektivt.no",
-        "share": "0.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "30.000000000000"
+          },
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "15.000000000000"
+          },
+          {
+            "id": 10,
+            "name": "Hellen Keller International",
+            "percentageShare": "25.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "30.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "000027848912260",
-    "standardDistribution": false,
-    "shares": [
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "10.000000000000"
-      },
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "90.000000000000"
-      },
-      {
-        "id": 10,
-        "name": "Hellen Keller International",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 4,
-        "name": "Malaria Consortium",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 7,
-        "name": "GiveDirectly",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 13,
-        "name": "GiveDirectly Borgerlønn",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 14,
-        "name": "New Incentives",
-        "share": "0.000000000000"
-      },
-      {
-        "id": 11,
-        "name": "Drift av gieffektivt.no",
-        "share": "0.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "10.000000000000"
+          },
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "90.000000000000"
+          }
+        ]
       }
     ]
   }

@@ -68,7 +68,7 @@ describe("Widget", () => {
     });
   });
 
-  it("End-2-End recurring bank donation", () => {
+  it("End-2-End recurring avtalegiro donation", () => {
     /**
      * Ignore iframeLoaded error on nets iframe
      */
@@ -89,7 +89,7 @@ describe("Widget", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=avtalegiro-method]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -361,16 +361,6 @@ describe("Widget", () => {
         });
       })
       .as("getDistribution");
-
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
-        statusCode: 200,
-        body: {
-          status: 200,
-          content: orgs,
-        },
-      }).as("getOrganizations");
-    });
 
     cy.fixture("referrals").then((referrals) => {
       cy.intercept("GET", "/referrals/types", {

@@ -119,7 +119,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
                       }
                       setDistribution({ ...distribution, causeAreas });
                     }}
-                    data-cy="distribution-input"
+                    data-cy="cause-area-input"
                   />
                   <span>%</span>
                 </div>

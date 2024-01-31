@@ -12,16 +12,6 @@ describe("Tax reports page missing ssn", () => {
       }).as("getDonor");
     });
 
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
-        statusCode: 200,
-        body: {
-          status: 200,
-          content: orgs,
-        },
-      }).as("getOrganizations");
-    });
-
     cy.fixture("cause_areas").then((causeAreas) => {
       cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
