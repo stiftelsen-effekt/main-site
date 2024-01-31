@@ -10,7 +10,21 @@ import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { WidgetPane } from "./WidgetPane/WidgetPane";
 
 export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
-export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
+export const CookiesAccepted = createContext<
+  [
+    {
+      accepted: boolean | undefined;
+      loaded: boolean;
+    },
+    any,
+  ]
+>([
+  {
+    accepted: undefined,
+    loaded: false,
+  },
+  () => {},
+]);
 
 type QueryResult = {
   settings: [
@@ -45,7 +59,10 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
 })(({ children, footerData, widgetData, giveButton, isPreview }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
-  const [cookiesAccepted, setCookiesAccepted] = useState(true);
+  const [cookiesAccepted, setCookiesAccepted] = useState({
+    accepted: undefined,
+    loaded: false,
+  });
 
   if (widgetOpen && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
@@ -54,7 +71,10 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
   }
 
   const containerClasses = [styles.container];
-  if (!cookiesAccepted) containerClasses.push(styles.containerCookieBanner);
+  if (cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined") {
+    console.log("Adding cookie banner class");
+    containerClasses.push(styles.containerCookieBanner);
+  }
 
   return (
     <div className={containerClasses.join(" ")}>

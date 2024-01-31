@@ -759,7 +759,7 @@
       }
     ]
   },
-  "2022-3-AMF": {
+  "2023-3-AMF": {
     "evaluations": [
       {
         "id": 5,
@@ -769,7 +769,7 @@
           "id": 2
         },
         "converted_cost_per_output": 43.106812399211606,
-        "exchange_rate_date": "2022-03-01",
+        "exchange_rate_date": "2023-03-01",
         "currency": "NOK",
         "language": "no",
         "start_year": 2021,
@@ -779,7 +779,7 @@
       }
     ]
   },
-  "2022-4-AMF": {
+  "2023-4-AMF": {
     "evaluations": [
       {
         "id": 5,
@@ -789,7 +789,7 @@
           "id": 2
         },
         "converted_cost_per_output": 42.66600072385089,
-        "exchange_rate_date": "2022-04-01",
+        "exchange_rate_date": "2023-04-01",
         "currency": "NOK",
         "language": "no",
         "start_year": 2021,

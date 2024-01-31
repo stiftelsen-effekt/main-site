@@ -32,7 +32,7 @@ export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organiza
 
               {organization.links && (
                 <>
-                  <p className="inngress">Les mer:</p>
+                  <p className="inngress">{organization.links_header}</p>
                   <Links links={organization.links} />
                 </>
               )}

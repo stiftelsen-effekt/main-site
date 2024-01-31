@@ -59,6 +59,11 @@ export default {
       type: "image",
     },
     {
+      name: "links_header",
+      title: "Links header",
+      type: "string",
+    },
+    {
       name: "links",
       title: "Links",
       type: "array",

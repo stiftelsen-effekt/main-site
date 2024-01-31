@@ -46,6 +46,7 @@ const widgetQuery = groq`
             recurring_title,
             recurring_selector_earliest_text,
             recurring_selector_choose_date_text,
+            recurring_selector_date_picker_configuration->,
             recurring_button_text,
             single_title,
             single_button_text,
@@ -54,10 +55,15 @@ const widgetQuery = groq`
             ...
           },
           _type == 'autogiro' => {
-            ...
+            ...,
+            recurring_manual_option_config {
+              ...,
+              date_selector_config->
+            }
           },
           _type == 'avtalegiro' => {
-            ...
+            ...,
+            date_selector_configuration->
           },
         },
       },

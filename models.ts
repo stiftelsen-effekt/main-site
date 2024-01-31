@@ -32,6 +32,19 @@ export type AvtaleGiroAgreement = {
   cancelled: string;
 };
 
+export type AutoGiroAgreement = {
+  ID: number;
+  mandateID: number;
+  KID: string;
+  amount: string;
+  payment_date: number;
+  notice: boolean;
+  active: boolean;
+  last_updated: string;
+  created: string;
+  cancelled: string;
+};
+
 export type VippsAgreement = {
   ID: number;
   status: "EXPIRED" | "PENDING" | "ACTIVE" | "STOPPED";

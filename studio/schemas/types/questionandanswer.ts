@@ -18,6 +18,11 @@ export default {
       rows: 5,
     },
     {
+      name: "links_title",
+      title: "Links title",
+      type: "string",
+    },
+    {
       name: "links",
       title: "Links",
       type: "array",

@@ -53,7 +53,9 @@ export const VippsPane: React.FC<{
                   }}
                 />
               </div>
-              {chooseChargeDay === 1 && <VippsDatePicker />}
+              {chooseChargeDay === 1 && (
+                <VippsDatePicker config={config.recurring_selector_date_picker_configuration} />
+              )}
               {draftError && <ErrorField text="Det har skjedd en feil, vennligst prøv på nytt" />}
             </div>
             <CenterDiv>
