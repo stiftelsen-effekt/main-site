@@ -11,6 +11,7 @@ import styles from "./TaxUnitModal.module.scss";
 import { AlertCircle, Check } from "react-feather";
 import { useTaxUnits } from "../../../../_queries";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { failureToast, successToast } from "../toast";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -145,7 +146,3 @@ export const TaxUnitEditModal: React.FC<{
     </Lightbox>
   );
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });

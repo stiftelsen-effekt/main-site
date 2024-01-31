@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { DonorContext } from "../donorProvider";
-import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
-import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
-import { saveDonor } from "../../_queries";
 import { useAuth0 } from "@auth0/auth0-react";
-import { AlertCircle, Check } from "react-feather";
-import { toast } from "react-toastify";
+import { useContext, useEffect, useState } from "react";
+import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
+import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
+import { saveDonor } from "../../_queries";
+import { DonorContext } from "../donorProvider";
 
+import { failureToast, successToast } from "../../shared/toast";
 import styles from "./MissingNameModal.module.scss";
 
 export const MissingNameModal: React.FC = () => {
@@ -62,7 +61,3 @@ export const MissingNameModal: React.FC = () => {
     </Lightbox>
   );
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });

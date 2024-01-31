@@ -1,6 +1,13 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
+import { useSWRConfig } from "swr";
 import { Distribution, TaxUnit } from "../../../../../models";
-import { toast } from "react-toastify";
+import {
+  EffektButton,
+  EffektButtonVariant,
+} from "../../../../shared/components/EffektButton/EffektButton";
+import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
+import style from "./AgreementDetails.module.scss";
 import {
   cancelAutoGiroAgreement,
   cancelAvtaleGiroAgreement,
@@ -13,24 +20,17 @@ import {
   updateVippsAgreementDistribution,
   updateVippsAgreementPrice,
 } from "./_queries";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useSWRConfig } from "swr";
-import { AlertCircle, Check, Info } from "react-feather";
-import style from "./AgreementDetails.module.scss";
-import {
-  EffektButton,
-  EffektButtonVariant,
-} from "../../../../shared/components/EffektButton/EffektButton";
-import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
-import { checkPaymentDate } from "../../../../../util/dates";
+
 import { getUserId } from "../../../../../lib/user";
-import { AgreementSingleCauseAreaDetails } from "./singleCauseAreaDetails/AgreementSingleCauseAreaDetails";
+import { checkPaymentDate } from "../../../../../util/dates";
 import { useCauseAreas } from "../../../../../_queries";
+import { DatePickerInputConfiguration } from "../../../../shared/components/DatePicker/DatePickerInput";
+import { failureToast, noChangesToast, successToast } from "../../toast";
 import {
   AgreementMultipleCauseAreaDetails,
   AgreementMultipleCauseAreaDetailsConfiguration,
 } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
-import { DatePickerInputConfiguration } from "../../../../shared/components/DatePicker/DatePickerInput";
+import { AgreementSingleCauseAreaDetails } from "./singleCauseAreaDetails/AgreementSingleCauseAreaDetails";
 
 export type AgreementDetailsConfiguration = {
   save_button_text: string;
@@ -41,6 +41,7 @@ export type AgreementDetailsConfiguration = {
   toasts_configuration: {
     success_text: string;
     failure_text: string;
+    bad_input_failure_text?: string;
     no_changes_text: string;
   };
   agreement_cancel_lightbox: {
@@ -140,7 +141,13 @@ export const AgreementDetails: React.FC<{
     setLoadingChanges(true);
 
     if (type == "Vipps") {
-      let result = null;
+      let result: Awaited<
+        ReturnType<
+          | typeof updateVippsAgreementDistribution
+          | typeof updateVippsAgreementDay
+          | typeof updateVippsAgreementPrice
+        >
+      > = null;
 
       if (distributionChanged) {
         result = await updateVippsAgreementDistribution(endpoint, distribution, token);
@@ -154,17 +161,26 @@ export const AgreementDetails: React.FC<{
         result = await updateVippsAgreementPrice(endpoint, sum, token);
       }
 
-      if (result != null) {
+      if (result?.ok) {
         successToast(configuration.toasts_configuration.success_text);
         mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(configuration.toasts_configuration.failure_text);
+        failureToast(
+          (result?.status === 400 && configuration.toasts_configuration.bad_input_failure_text) ||
+            configuration.toasts_configuration.failure_text,
+        );
         setLoadingChanges(false);
       }
     } else if (type == "AvtaleGiro") {
-      let result = null;
+      let result: Awaited<
+        ReturnType<
+          | typeof updateAvtalegiroAgreementDistribution
+          | typeof updateAvtaleagreementPaymentDay
+          | typeof updateAvtaleagreementAmount
+        >
+      > = null;
 
       if (distributionChanged) {
         result = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token);
@@ -178,13 +194,16 @@ export const AgreementDetails: React.FC<{
         result = await updateAvtaleagreementAmount(endpoint, sum * 100, token);
       }
 
-      if (result !== null) {
+      if (result?.ok) {
         successToast(configuration.toasts_configuration.success_text);
         mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(configuration.toasts_configuration.failure_text);
+        failureToast(
+          (result?.status === 400 && configuration.toasts_configuration.bad_input_failure_text) ||
+            configuration.toasts_configuration.failure_text,
+        );
         setLoadingChanges(false);
       }
     } else if (type == "AutoGiro") {
@@ -202,11 +221,14 @@ export const AgreementDetails: React.FC<{
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(configuration.toasts_configuration.failure_text);
+        failureToast(
+          (result?.status === 400 && configuration.toasts_configuration.bad_input_failure_text) ||
+            configuration.toasts_configuration.failure_text,
+        );
         setLoadingChanges(false);
       }
     } else {
-      failureToast("Uknown agreement type");
+      failureToast("Unknown agreement type");
       setLoadingChanges(false);
     }
   };
@@ -241,7 +263,7 @@ export const AgreementDetails: React.FC<{
         failureToast(configuration.toasts_configuration.failure_text);
       }
     } else {
-      failureToast("Uknown agreement type");
+      failureToast("Unknown agreement type");
     }
   };
 
@@ -332,16 +354,3 @@ export const AgreementDetails: React.FC<{
     );
   }
 };
-
-const saveAvtaleGiroAgreement = async () => {};
-
-const successToast = (text: string) =>
-  toast.success(text, { icon: <Check size={24} color={"black"} /> });
-const failureToast = (text: string) =>
-  toast.error(text, {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });
-const noChangesToast = (text: string) =>
-  toast.error(text, {
-    icon: <Info size={24} color={"black"} />,
-  });

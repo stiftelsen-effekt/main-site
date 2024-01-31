@@ -45,6 +45,12 @@ export default {
           validation: (Rule: any) => Rule.required(),
         },
         {
+          name: "bad_input_failure_text",
+          title: "Bad input failure text",
+          description: "Defaults to failure text if not set",
+          type: "string",
+        },
+        {
           name: "success_text",
           title: "Success text",
           type: "string",

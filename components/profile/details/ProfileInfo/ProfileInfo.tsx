@@ -1,13 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useState } from "react";
-import { AlertCircle, Check } from "react-feather";
-import { toast } from "react-toastify";
 import { Donor } from "../../../../models";
-import style from "./ProfileInfo.module.scss";
-import { DonorContext } from "../../layout/donorProvider";
-import { saveDonor } from "../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
+import { DonorContext } from "../../layout/donorProvider";
+import { failureToast, successToast } from "../../shared/toast";
+import { saveDonor } from "../../_queries";
+import style from "./ProfileInfo.module.scss";
 
 export const ProfileInfo: React.FC = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -65,7 +64,3 @@ export const ProfileInfo: React.FC = () => {
     </>
   );
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });

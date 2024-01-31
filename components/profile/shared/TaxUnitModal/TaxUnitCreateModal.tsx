@@ -4,14 +4,13 @@ import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
 import { createTaxUnit } from "../../_queries";
-import { toast } from "react-toastify";
 
-import styles from "./TaxUnitModal.module.scss";
-import { AlertCircle, Check } from "react-feather";
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
-import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { useTaxUnits } from "../../../../_queries";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { failureToast, successToast } from "../toast";
+import styles from "./TaxUnitModal.module.scss";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -132,7 +131,3 @@ export const TaxUnitCreateModal: React.FC<{
     </Lightbox>
   );
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });

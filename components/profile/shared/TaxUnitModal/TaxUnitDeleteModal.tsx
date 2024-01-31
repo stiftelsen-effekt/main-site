@@ -1,16 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import AnimateHeight from "react-animate-height";
-import { AlertCircle, Check } from "react-feather";
-import { toast } from "react-toastify";
-import { mutate } from "swr";
 import { TaxUnit } from "../../../../models";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
-import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
-import { DonorContext } from "../../layout/donorProvider";
-import { createTaxUnit, deleteTaxUnit } from "../../_queries";
+import { deleteTaxUnit } from "../../_queries";
 import { TaxUnitSelector } from "../TaxUnitSelector/TaxUnitSelector";
+import { failureToast, successToast } from "../toast";
 import { TaxUnitCreateModal } from "./TaxUnitCreateModal";
 
 import styles from "./TaxUnitModal.module.scss";
@@ -120,7 +116,3 @@ export const TaxUnitDeleteModal: React.FC<{
     </Lightbox>
   );
 };
-
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });

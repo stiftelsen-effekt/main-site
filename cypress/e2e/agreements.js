@@ -240,8 +240,7 @@ describe("Agreements page", () => {
       .should("be.visible");
   });
 
-  // TODO: https://github.com/stiftelsen-effekt/main-site/issues/899
-  xit("Should error when trying to save inconsistent agreement state", () => {
+  it("Should error when trying to save inconsistent agreement state", () => {
     // Expand the first agreement
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -261,11 +260,12 @@ describe("Agreements page", () => {
       .clear()
       .type("35");
 
-    cy.fixture("agreement_distribution_error").then((distributionError) => {
-      cy.intercept("PUT", "/vipps/agreement/*/distribution", {
-        statusCode: 400,
-        body: distributionError,
-      });
+    cy.intercept("PUT", "/vipps/agreement/*/distribution", {
+      statusCode: 400,
+      body: {
+        status: 400,
+        content: "Distribution does not sum to 100",
+      },
     });
 
     /**
