@@ -309,7 +309,7 @@
     "converted_cost_per_output": 813.0092146101439,
     "currency": "NOK",
     "language": "en",
-    "start_year": 2022,
+    "start_year": 2023,
     "start_month": 3,
     "cents_per_output": 8726,
     "charity": { "id": 4, "charity_name": "New Incentives", "abbreviation": "NI" }
@@ -324,7 +324,7 @@
     "converted_cost_per_output": 829.6868045041635,
     "currency": "NOK",
     "language": "en",
-    "start_year": 2022,
+    "start_year": 2023,
     "start_month": 4,
     "cents_per_output": 8905,
     "charity": { "id": 4, "charity_name": "New Incentives", "abbreviation": "NI" }

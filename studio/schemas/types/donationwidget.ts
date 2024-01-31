@@ -12,14 +12,6 @@ export default {
       title: "Pane 2",
     },
     {
-      name: "pane3_bank_recurring",
-      title: "Pane 3 - Bank recurring",
-    },
-    {
-      name: "pane3_bank_single",
-      title: "Pane 3 - Bank single",
-    },
-    {
       name: "referrals",
       title: "Referrals",
     },
@@ -33,7 +25,13 @@ export default {
       of: [
         {
           type: "reference",
-          to: [{ type: "bank" }, { type: "vipps" }, { type: "swish" }],
+          to: [
+            { type: "bank" },
+            { type: "vipps" },
+            { type: "swish" },
+            { type: "autogiro" },
+            { type: "avtalegiro" },
+          ],
           validation: (Rule: any) => Rule.required(),
           options: {
             disableNew: true,
@@ -280,6 +278,13 @@ export default {
       name: "privacy_policy_text",
       title: "Privacy policy text",
       type: "string",
+      group: "pane2",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "privacy_policy_link",
+      title: "Privacy policy link",
+      type: "navitem",
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
     },

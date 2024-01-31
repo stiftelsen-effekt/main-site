@@ -25,7 +25,14 @@ export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text 
 
   return (
     <div>
-      <div style={{ position: "relative", left: "-40px" }}>
+      <div
+        style={{
+          position: "relative",
+          left: "-40px",
+          marginTop: "1.5rem",
+          paddingBottom: "0.5rem",
+        }}
+      >
         <svg height="2" width="576" style={{ position: "absolute", left: "0", top: "0" }}>
           <g fill="none" stroke="currentcolor" strokeWidth="1">
             <path strokeDasharray="12,12" strokeDashoffset="6" d="M0 1 l576 0" />

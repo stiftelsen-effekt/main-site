@@ -10,12 +10,27 @@ import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { WidgetPane } from "./WidgetPane/WidgetPane";
 
 export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
-export const CookiesAccepted = createContext<[boolean, any]>([false, () => {}]);
+export const CookiesAccepted = createContext<
+  [
+    {
+      accepted: boolean | undefined;
+      loaded: boolean;
+    },
+    any,
+  ]
+>([
+  {
+    accepted: undefined,
+    loaded: false,
+  },
+  () => {},
+]);
 
 type QueryResult = {
   settings: [
     {
       donate_label_short: string;
+      accent_color: string;
     },
   ];
 };
@@ -24,6 +39,7 @@ const query = groq`
   {
     "settings": *[_type == "site_settings"] {
       donate_label_short,
+      accent_color
     }
   }
 `;
@@ -35,14 +51,18 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
     footerData: await Footer.getStaticProps({ preview }),
     widgetData: await Widget.getStaticProps({ preview }),
     isPreview: preview,
-    labels: {
+    giveButton: {
       donate_label_short: settings.donate_label_short,
+      accent_color: settings.accent_color,
     },
   };
-})(({ children, footerData, widgetData, labels, isPreview }) => {
+})(({ children, footerData, widgetData, giveButton, isPreview }) => {
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
-  const [cookiesAccepted, setCookiesAccepted] = useState(true);
+  const [cookiesAccepted, setCookiesAccepted] = useState({
+    accepted: undefined,
+    loaded: false,
+  });
 
   if (widgetOpen && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
@@ -51,13 +71,20 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
   }
 
   const containerClasses = [styles.container];
-  if (!cookiesAccepted) containerClasses.push(styles.containerCookieBanner);
+  if (cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined") {
+    console.log("Adding cookie banner class");
+    containerClasses.push(styles.containerCookieBanner);
+  }
 
   return (
     <div className={containerClasses.join(" ")}>
       {isPreview && <PreviewBlock />}
-      <GiveButton inverted={false} onClick={() => setWidgetOpen(true)}>
-        {labels.donate_label_short}
+      <GiveButton
+        inverted={false}
+        color={giveButton.accent_color}
+        onClick={() => setWidgetOpen(true)}
+      >
+        {giveButton.donate_label_short}
       </GiveButton>
       <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
         <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>

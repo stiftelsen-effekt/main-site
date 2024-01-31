@@ -9,9 +9,10 @@ const LinkButton: React.FC<{
   title: string;
   type?: ButtonType;
   squared?: boolean;
-}> = ({ url, title, type = "primary", squared }) => {
+  target?: string;
+}> = ({ url, title, type = "primary", squared, target }) => {
   return (
-    <Link href={url} passHref>
+    <Link href={url} target={target} passHref>
       <a
         className={`${styles.button} ${
           type == "primary"
@@ -22,6 +23,7 @@ const LinkButton: React.FC<{
             ? styles.buttontertiary
             : styles.buttonprimary
         } ${squared ? styles.button__squared : null}`}
+        target={target}
       >{`${title}`}</a>
     </Link>
   );

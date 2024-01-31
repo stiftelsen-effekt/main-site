@@ -1,23 +1,27 @@
 import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
+import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
-export type WidgetProps = WidgetPane1Props &
+export type WidgetProps = { locale: "no" | "se" | "en" } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
-    methods?: Array<BankPaymentMethod | VippsPaymentMethod | SwishPaymentMethod>;
+    methods?: Array<
+      | BankPaymentMethod
+      | VippsPaymentMethod
+      | SwishPaymentMethod
+      | AutoGiroPaymentMethod
+      | AvtaleGiroPaymentMethod
+    >;
   };
 
 export type BankPaymentMethod = {
   _id: "bank";
   selector_text: string;
-  single_title: string;
-  single_kontonr_title: string;
-  single_kid_title: string;
-  single_explanatory_text: string;
-  recurring_title: string;
-  recurring_selector_earliest_text: string;
-  recurring_selector_choose_date_text: string;
-  recurring_button_text: string;
+  title: string;
+  kontonr_title: string;
+  kontonr: string;
+  kid_title: string;
+  explanatory_text: string;
 };
 
 export type VippsPaymentMethod = {
@@ -26,6 +30,7 @@ export type VippsPaymentMethod = {
   recurring_title: string;
   recurring_selector_earliest_text: string;
   recurring_selector_choose_date_text: string;
+  recurring_selector_date_picker_configuration: DatePickerInputConfiguration;
   recurring_button_text: string;
   single_title: string;
   single_button_text: string;
@@ -54,6 +59,49 @@ export type SwishPaymentMethod = {
     title: string;
     text?: string;
   };
+};
+
+export type AvtaleGiroPaymentMethod = {
+  _id: "avtalegiro";
+  selector_text: string;
+  title: string;
+  selector_earliest_text: string;
+  selector_choose_date_text: string;
+  date_selector_configuration: DatePickerInputConfiguration;
+  button_text: string;
+};
+
+export type AutoGiroPaymentMethod = {
+  _id: "autogiro";
+  selector_text: string;
+  title: string;
+  manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
+  recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
+  recurring_form_option_config: AutogiroRecurringFormOptionConfig;
+};
+
+type AutogiroManualRecurringOptionConfig = {
+  title: string;
+  sum_label: string;
+  account_number_label: string;
+  payment_numberexplanatory_text: string;
+  payment_number_label: string;
+  instruction_text: any[];
+};
+
+type AutogiroRecurringManualOptionConfig = {
+  title: string;
+  explanation_text: any[];
+  payernumber_label: string;
+  date_selector_config: DatePickerInputConfiguration;
+};
+
+type AutogiroRecurringFormOptionConfig = {
+  title: string;
+  explanation_text: any[];
+  payernumber_label: string;
+  button_text: string;
+  button_link: string;
 };
 
 export type SmartDistributionContext = {
@@ -100,6 +148,7 @@ export type WidgetPane2Props = {
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
   privacy_policy_text: string;
+  privacy_policy_link: NavLink;
   pane2_button_text: string;
 };
 

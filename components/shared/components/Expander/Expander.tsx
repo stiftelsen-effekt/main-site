@@ -8,10 +8,11 @@ import elements from "./Expander.module.scss";
 export type ExpanderProps = {
   title: string;
   content: string;
+  linksTitle: string;
   links: (NavLink | LinkType)[];
 };
 
-export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => {
+export const Expander: React.FC<ExpanderProps> = ({ title, linksTitle, content, links }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -30,7 +31,7 @@ export const Expander: React.FC<ExpanderProps> = ({ title, content, links }) => 
           <p>{content}</p>
           {links ? (
             <>
-              <p className="inngress">Les mer:</p>
+              <p className="inngress">{linksTitle}</p>
               <Links links={links} />
             </>
           ) : null}

@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./Columns.module.scss";
-import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import { LinkType, Links } from "../Links/Links";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 export interface Columns {
-  columns: { _key: string; title: string; paragraph: string; link: string }[];
+  columns: { _key: string; title: string; paragraph: string; links: Array<LinkType | NavLink> }[];
 }
 export const Columns: React.FC<Columns> = ({ columns }) => {
   const router = useRouter();
@@ -16,15 +17,7 @@ export const Columns: React.FC<Columns> = ({ columns }) => {
             <h5>{column.title}</h5>
             <p>{column.paragraph}</p>
           </div>
-          {column.link && (
-            <EffektButton
-              onClick={() => {
-                router.push(column.link);
-              }}
-            >
-              Les mer
-            </EffektButton>
-          )}
+          {column.links && <Links links={column.links} />}
         </div>
       ))}
     </div>

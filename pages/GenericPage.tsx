@@ -61,10 +61,11 @@ export const GenericPage = withStaticProps(
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={header.cannonicalUrl ?? cannonicalUrlDefault}
+        titleTemplate={`${data.result.settings[0].title} | %s`}
       />
 
       <MainHeader hideOnScroll={true}>
-        <CookieBanner />
+        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
         <Navbar {...navbarData} />
       </MainHeader>
 
@@ -91,6 +92,10 @@ const fetchGenericPages = groq`
 
 const fetchGenericPage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+    cookie_banner_configuration,
+  },
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,

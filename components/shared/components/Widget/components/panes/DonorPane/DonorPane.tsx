@@ -1,4 +1,6 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
+import Organisationsnummer from "organisationsnummer";
+import Personnummer from "personnummer";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -55,9 +57,10 @@ const formatSwedishPhoneNumber = (phoneNumber: string) => {
 };
 
 export const DonorPane: React.FC<{
+  locale: "en" | "no" | "se" | "et";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ text, paymentMethods }) => {
+}> = ({ locale, text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
@@ -83,6 +86,8 @@ export const DonorPane: React.FC<{
     },
   });
 
+  console.log(errors);
+
   const plausible = usePlausible();
 
   const taxDeductionChecked = watch("taxDeduction");
@@ -104,9 +109,13 @@ export const DonorPane: React.FC<{
       if (donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
         if (data.method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+        if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
       }
       if (!donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (data.method === PaymentMethod.SWISH) {
+          plausible("SelectSwishSingle");
+        }
         if (data.method === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
           plausible("CompleteDonation");
@@ -234,14 +243,17 @@ export const DonorPane: React.FC<{
                             required: false,
                             validate: (val) => {
                               const trimmed = val.toString().trim();
-                              return (
-                                !taxDeductionChecked ||
-                                (Validate.isInt(trimmed) &&
-                                  // Check if valid norwegian org or SSN (Social security number) based on check sum
-                                  // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
-                                  ((trimmed.length === 9 && validateOrg(trimmed)) ||
-                                    (trimmed.length === 11 && validateSsn(trimmed))))
-                              );
+                              if (taxDeductionChecked) {
+                                if (locale === "no") {
+                                  return validateSsnNo(trimmed);
+                                } else if (locale === "se") {
+                                  return validateSsnSe(trimmed);
+                                } else {
+                                  return true;
+                                }
+                              } else {
+                                return true;
+                              }
                             },
                           })}
                         />
@@ -270,14 +282,22 @@ export const DonorPane: React.FC<{
                       checked={newsletterChecked}
                     />
                   </CheckBoxWrapper>
-                  <div style={{ marginTop: "10px" }}>
-                    {text.privacy_policy_text}{" "}
-                    <Link href={"/personvern"} passHref>
-                      <a style={{ textDecoration: "underline" }} target={"_blank"}>
-                        personvernserklæring ↗
-                      </a>
-                    </Link>
-                  </div>
+                  {text.privacy_policy_link && (
+                    <div style={{ marginTop: "10px" }}>
+                      {text.privacy_policy_text}{" "}
+                      <Link href={`/${text.privacy_policy_link.slug}`} passHref>
+                        <a
+                          target={"_blank"}
+                          onClick={(e) => {
+                            e.currentTarget.blur();
+                          }}
+                          style={{ borderBottom: "1px solid var(--primary)" }}
+                        >
+                          {`${text.privacy_policy_link.title}  ↗`}
+                        </a>
+                      </Link>
+                    </div>
+                  )}
                 </CheckBoxGroupWrapper>
               </>
             ) : null}
@@ -296,6 +316,8 @@ export const DonorPane: React.FC<{
                       vipps: PaymentMethod.VIPPS,
                       bank: PaymentMethod.BANK,
                       swish: PaymentMethod.SWISH,
+                      autogiro: PaymentMethod.AUTOGIRO,
+                      avtalegiro: PaymentMethod.AVTALEGIRO,
                     }[method._id],
                     data_cy: `${method._id}-method`,
                   }))}
@@ -337,4 +359,12 @@ export const DonorPane: React.FC<{
       </DonorForm>
     </Pane>
   );
+};
+
+const validateSsnNo = (ssn: string): boolean => {
+  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
+};
+
+const validateSsnSe = (ssn: string): boolean => {
+  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
 };

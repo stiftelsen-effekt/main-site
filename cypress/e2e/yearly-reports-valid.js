@@ -12,16 +12,6 @@ describe("Tax reports page valid", () => {
       }).as("getDonor");
     });
 
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
-        statusCode: 200,
-        body: {
-          status: 200,
-          content: orgs,
-        },
-      }).as("getOrganizations");
-    });
-
     cy.fixture("cause_areas").then((causeAreas) => {
       cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
@@ -87,7 +77,7 @@ describe("Tax reports page valid", () => {
   });
 
   it("should display correct information in unit table", () => {
-    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2022");
+    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2023");
 
     cy.get("[data-cy=generic-list-table]").first().find(">tbody").should("have.length", 2);
 

@@ -54,11 +54,12 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug}`}
+        titleTemplate={`${data.result.settings[0].title} | %s`}
       />
 
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
-          <CookieBanner />
+          <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
           <Navbar {...navbarData} />
         </MainHeader>
 
@@ -104,6 +105,10 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
 
 const fetchArticles = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+    cookie_banner_configuration,
+  },
   "page": *[_type == "articles"] {
     "slug": slug.current,
     header {

@@ -169,6 +169,25 @@ export const useAvtalegiroAgreements = (
   };
 };
 
+export const useAutogiroAgreements = (
+  user: User | undefined,
+  fetchToken: getAccessTokenSilently,
+) => {
+  const { data, error, isValidating } = useSWR(
+    user ? `/donors/${getUserId(user)}/recurring/autogiro/` : null,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useVippsAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     user ? `/donors/${getUserId(user)}/recurring/vipps/` : null,
@@ -338,6 +357,15 @@ export const pageContentQuery = `content[] {
     _type == 'questionandanswergroup' => {
       ${questionAndAnswerSelectionQuery}
     },
+    _type == 'columns' => {
+      ...,
+      columns[] {
+        ...,
+        links[] {
+          ${linksSelectorQuery}
+        }
+      }
+    },
     _type == 'paragraph' => @ {
       ...,
       content[] {
@@ -416,7 +444,23 @@ export const pageContentQuery = `content[] {
         ${linksSelectorQuery}
       },
     },
-    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'wealthcalculatorteaser' => @,
+    _type == 'giveblock' => {
+      ...,
+      "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+    },
+    _type == 'teasers' => {
+      ...,
+      teasers[] {
+        ...,
+        image {
+          asset->,
+        },
+        links[] {
+          ${linksSelectorQuery}
+        },
+      },
+    },
+    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'wealthcalculatorteaser' => @,
   }
 },
 `;

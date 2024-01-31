@@ -11,5 +11,15 @@ export default {
       type: "string",
       title: "Header",
     },
+    {
+      name: "formurl",
+      type: "string",
+      title: "Text",
+    },
+    {
+      name: "sendlabel",
+      type: "string",
+      title: "Button text",
+    },
   ],
 } as const;

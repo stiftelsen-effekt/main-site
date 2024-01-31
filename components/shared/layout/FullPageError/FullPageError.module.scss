@@ -12,6 +12,12 @@
   left: 0;
 }
 
-.fullpagewrapper button {
+.fullpagewrapper .buttons {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+}
+
+.fullpagewrapper .buttons button {
   margin-left: 0;
 }
