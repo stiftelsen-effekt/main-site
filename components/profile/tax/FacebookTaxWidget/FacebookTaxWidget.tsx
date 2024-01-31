@@ -19,6 +19,7 @@ import { registerFacebookDonation } from "../../_queries";
 import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 import { useTaxUnits } from "../../../../_queries";
+import { failureToast, successToast } from "../../shared/toast";
 
 export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -159,8 +160,3 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
     </div>
   );
 };
-
-const successToast = (msg: string) =>
-  toast.success(msg, { icon: <Check size={24} color={"black"} /> });
-const failureToast = (msg: string) =>
-  toast.error(msg, { icon: <AlertCircle size={24} color={"black"} /> });
