@@ -45,7 +45,7 @@ export const profileQuery = `
     "data": {
       "site_title": *[_type == "site_settings"][0].title,
       "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
-      "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_config
+      "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_configuration
     }
   }
 `;
