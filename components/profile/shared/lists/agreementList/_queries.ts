@@ -274,6 +274,42 @@ export const updateAvtaleagreementAmount = async (kid: string, sum: number, toke
   }
 };
 
+export const updateAutoGiroAgreement = async (
+  kid: string,
+  distribution: Distribution | null,
+  paymentDate: number | null,
+  amount: number | null,
+  token: string,
+) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+  try {
+    const response = await fetch(`${api}/autogiro/${kid}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        distribution: distribution,
+        paymentDate: paymentDate,
+        amount: amount,
+      }),
+    });
+
+    console.log(response);
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return result.content;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
 export const cancelAvtaleGiroAgreement = async (kid: string, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
@@ -294,6 +330,29 @@ export const cancelAvtaleGiroAgreement = async (kid: string, token: string) => {
       ok: response.ok,
       status: response.status,
     };
+  } catch (e) {
+    return null;
+  }
+};
+
+export const cancelAutoGiroAgreement = async (kid: string, token: string) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+  try {
+    const response = await fetch(`${api}/autogiro/${kid}/cancel`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+    });
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
   } catch (e) {
     return null;
   }

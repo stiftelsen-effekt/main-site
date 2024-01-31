@@ -5,27 +5,36 @@ import {
   EffektButton,
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
-import { group } from "console";
 
-export const LoginError: React.FC<{ message: string }> = ({ message }) => {
+export type LoginErrorConfig = {
+  login_abort_label: string;
+  login_button_label: string;
+};
+
+export const LoginError: React.FC<{
+  message: string;
+  siteTitle: string;
+  loginErrorConfig: LoginErrorConfig;
+}> = ({ message, siteTitle, loginErrorConfig }) => {
   const { loginWithRedirect, logout } = useAuth0();
 
   return (
     <div className={elements["center-wrapper"]}>
       <div className={elements["content"]}>
-        <h3>Gi Effektivt.</h3>
-        <h5>Gi Effektivt.</h5>
+        <h3>{siteTitle}</h3>
+        <h5>{siteTitle}</h5>
         <p>{message}</p>
 
         <div className={elements["button-group"]}>
+          <EffektButton onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}>
+            {loginErrorConfig.login_abort_label}
+          </EffektButton>
           <EffektButton
-            onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
+            onClick={loginWithRedirect}
+            cy="btn-login"
             variant={EffektButtonVariant.SECONDARY}
           >
-            Avbryt
-          </EffektButton>
-          <EffektButton onClick={loginWithRedirect} cy="btn-login">
-            Logg inn
+            {loginErrorConfig.login_button_label}
           </EffektButton>
         </div>
       </div>

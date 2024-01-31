@@ -2,7 +2,10 @@ import { TaxUnitSelector } from "../../../TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../../TaxUnitModal/TaxUnitCreateModal";
 import AnimateHeight from "react-animate-height";
 import { Toggle } from "../../../../../shared/components/Widget/components/shared/Toggle/Toggle";
-import { DatePickerInput } from "../../../../../shared/components/DatePicker/DatePickerInput";
+import {
+  DatePickerInput,
+  DatePickerInputConfiguration,
+} from "../../../../../shared/components/DatePicker/DatePickerInput";
 
 import style from "./AgreementSingleCauseAreaDetails.module.scss";
 import { Distribution, TaxUnit } from "../../../../../../models";
@@ -17,7 +20,17 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
   sum: number;
   setSum: (sum: number) => void;
   taxUnits: TaxUnit[];
-}> = ({ distribution, setDistribution, day, setDay, sum, setSum, taxUnits }) => {
+  dateSelectorConfig: DatePickerInputConfiguration;
+}> = ({
+  distribution,
+  setDistribution,
+  day,
+  setDay,
+  sum,
+  setSum,
+  taxUnits,
+  dateSelectorConfig,
+}) => {
   const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
 
   const currentTaxUnit = taxUnits.find((unit) => unit.id === distribution.taxUnitId);
@@ -26,7 +39,11 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
     <>
       <div className={style.values}>
         <div className={style.valuesDatePickerContainer}>
-          <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
+          <DatePickerInput
+            selected={day}
+            onChange={(date) => setDay(date)}
+            configuration={dateSelectorConfig}
+          />
         </div>
         <div className={style.valuesAmountContainer}>
           <input

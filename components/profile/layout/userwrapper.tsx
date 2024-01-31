@@ -1,14 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { FullPageSpinner } from "../../shared/layout/FullPageSpinner/FullPageSpinner";
-import { LoginError } from "./LoginError/LoginError";
+import { LoginError, LoginErrorConfig } from "./LoginError/LoginError";
 
 type PromptValues = "login" | "consent" | "none" | "select_account" | undefined;
 
-export const UserWrapper: React.FC<{ children: React.ReactNode; skipAuthentication?: boolean }> = ({
-  children,
-  skipAuthentication = false,
-}) => {
+export const UserWrapper: React.FC<{
+  children: React.ReactNode;
+  siteTitle: string;
+  loginErrorConfig: LoginErrorConfig;
+  skipAuthentication?: boolean;
+}> = ({ children, siteTitle, loginErrorConfig, skipAuthentication = false }) => {
   const { isLoading, isAuthenticated, loginWithRedirect, user, error } = useAuth0();
 
   let screenHint;
@@ -25,7 +27,14 @@ export const UserWrapper: React.FC<{ children: React.ReactNode; skipAuthenticati
       prompt: prompt ? prompt : undefined,
     });
 
-  if (error) return <LoginError message={error.message}></LoginError>;
+  if (error)
+    return (
+      <LoginError
+        message={error.message}
+        siteTitle={siteTitle}
+        loginErrorConfig={loginErrorConfig}
+      ></LoginError>
+    );
 
   if (!user && !skipAuthentication) return <FullPageSpinner />; // In the process of redirecting
 

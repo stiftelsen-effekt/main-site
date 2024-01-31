@@ -144,6 +144,8 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <NewsletterSignup
                             key={block._key || block._id}
                             header={block.header}
+                            formurl={block.formurl}
+                            sendlabel={block.sendlabel}
                           ></NewsletterSignup>
                         );
                       case "htmlembed":

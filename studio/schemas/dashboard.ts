@@ -26,6 +26,27 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "login_error_configuration",
+      title: "Login error configuration",
+      type: "object",
+      description:
+        "Configuration for login error messages, used for the email verification for example",
+      fields: [
+        {
+          name: "login_button_label",
+          title: "Login button label",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "login_abort_label",
+          title: "Login abort label",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
+    {
       name: "dashboard_slug",
       title: "Dashboard slug",
       type: "slug",

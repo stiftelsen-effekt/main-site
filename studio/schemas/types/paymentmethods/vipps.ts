@@ -55,6 +55,12 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "recurring_selector_date_picker_configuration",
+      title: "Recurring date picker configuration",
+      type: "reference",
+      to: [{ type: "dateselectorconfig" }],
+    },
+    {
       name: "recurring_button_text",
       title: "Recurring button text",
       type: "string",

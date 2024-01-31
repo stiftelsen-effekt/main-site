@@ -59,7 +59,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
 
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
-          <CookieBanner />
+          <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
           <Navbar {...navbarData} />
         </MainHeader>
 
@@ -107,6 +107,7 @@ const fetchArticles = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
+    cookie_banner_configuration,
   },
   "page": *[_type == "articles"] {
     "slug": slug.current,

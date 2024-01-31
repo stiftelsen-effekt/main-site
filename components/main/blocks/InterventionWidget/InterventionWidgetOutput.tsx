@@ -52,7 +52,7 @@ export const InterventionWidgetOutput: React.FC<{
               (e: any) => e.charity.abbreviation === i.abbreviation,
             );
             // Then order the list to get the most recent
-            const ordered = filtered.sort((a: any, b: any) => a.start_year - b.start_year);
+            const ordered = filtered.sort((a: any, b: any) => b.start_year - a.start_year);
             // Get the most recent evaluation
             const evaluation = ordered[0];
             // Set the cost to the most recent evaluation converted cost (cost in NOK per output)

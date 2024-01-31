@@ -3,23 +3,45 @@ import React, { useContext, useEffect, useState } from "react";
 import { CookiesAccepted } from "../../../main/layout/layout";
 import styles from "./CookieBanner.module.scss";
 
-export const CookieBanner: React.FC = () => {
+export type CookieBannerConfiguration = {
+  title: string;
+  description: string;
+  accept_button_text: string;
+  decline_button_text: string;
+};
+export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }> = ({
+  configuration,
+}) => {
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
-  const [localStorageLoaded, setLocalStorageLoaded] = useState(false);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   useEffect(() => {
-    setCookiesAccepted(
-      typeof window !== "undefined"
-        ? window.localStorage.getItem("gieffektivt-cookies-accepted") === "true"
-        : false,
-    );
-    setLocalStorageLoaded(true);
+    if (typeof window !== "undefined") {
+      const item = window.localStorage.getItem("gieffektivt-cookies-accepted");
+      console.log(item);
+      if (item !== null) {
+        if (item === "true") {
+          setCookiesAccepted({
+            accepted: true,
+            loaded: true,
+          });
+        } else if (item === "false") {
+          setCookiesAccepted({
+            accepted: false,
+            loaded: true,
+          });
+        }
+      } else {
+        setCookiesAccepted({
+          loaded: true,
+        });
+      }
+    }
   }, []);
 
   return (
     <>
-      {cookiesAccepted && localStorageLoaded && typeof window !== "undefined" && (
+      {cookiesAccepted.accepted === true && (
         <>
           <Script
             strategy="afterInteractive"
@@ -37,30 +59,45 @@ export const CookieBanner: React.FC = () => {
           </Script>
         </>
       )}
-      <div
-        data-cy="cookiebanner-container"
-        className={styles.container}
-        style={{ display: cookiesAccepted ? "none" : "flex" }}
-      >
-        <div className={styles.content}>
-          <div>
-            <span>Cookies</span>
-            <p>
-              Vi bruker informasjonskapsler (cookies) for å kunne tilby en så god brukeropplevelse
-              som mulig.
-            </p>
+      {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
+        <div data-cy="cookiebanner-container" className={styles.container}>
+          <div className={styles.content}>
+            <div>
+              <span>{configuration.title}</span>
+              <p>{configuration.description}</p>
+            </div>
+            <div>
+              <button
+                data-cy="decline-cookies"
+                onClick={() => {
+                  window.localStorage.setItem("gieffektivt-cookies-accepted", "false");
+                  setCookiesAccepted({
+                    accepted: false,
+                    loaded: true,
+                  });
+                }}
+                style={{
+                  marginRight: "1rem",
+                }}
+              >
+                {configuration.decline_button_text}
+              </button>
+              <button
+                data-cy="accept-cookies"
+                onClick={() => {
+                  window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
+                  setCookiesAccepted({
+                    accepted: true,
+                    loaded: true,
+                  });
+                }}
+              >
+                {configuration.accept_button_text}
+              </button>
+            </div>
           </div>
-          <button
-            data-cy="accept-cookies"
-            onClick={() => {
-              window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
-              setCookiesAccepted(true);
-            }}
-          >
-            Aksepter
-          </button>
         </div>
-      </div>
+      )}
     </>
   );
 };

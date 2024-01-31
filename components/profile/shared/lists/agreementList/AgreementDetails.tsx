@@ -9,8 +9,10 @@ import {
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
 import style from "./AgreementDetails.module.scss";
 import {
+  cancelAutoGiroAgreement,
   cancelAvtaleGiroAgreement,
   cancelVippsAgreement,
+  updateAutoGiroAgreement,
   updateAvtaleagreementAmount,
   updateAvtaleagreementPaymentDay,
   updateAvtalegiroAgreementDistribution,
@@ -22,18 +24,42 @@ import {
 import { getUserId } from "../../../../../lib/user";
 import { checkPaymentDate } from "../../../../../util/dates";
 import { useCauseAreas } from "../../../../../_queries";
+import { DatePickerInputConfiguration } from "../../../../shared/components/DatePicker/DatePickerInput";
 import { failureToast, noChangesToast, successToast } from "../../toast";
-import { AgreementMultipleCauseAreaDetails } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
+import {
+  AgreementMultipleCauseAreaDetails,
+  AgreementMultipleCauseAreaDetailsConfiguration,
+} from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
 import { AgreementSingleCauseAreaDetails } from "./singleCauseAreaDetails/AgreementSingleCauseAreaDetails";
 
+export type AgreementDetailsConfiguration = {
+  save_button_text: string;
+  cancel_button_text: string;
+  date_selector_configuration: DatePickerInputConfiguration;
+  loading_text: string;
+  error_text: string;
+  toasts_configuration: {
+    success_text: string;
+    failure_text: string;
+    no_changes_text: string;
+  };
+  agreement_cancel_lightbox: {
+    title: string;
+    text: string;
+    withdrawal_warning_text: string;
+  };
+  distribution_configuration: AgreementMultipleCauseAreaDetailsConfiguration;
+};
+
 export const AgreementDetails: React.FC<{
-  type: "Vipps" | "AvtaleGiro";
+  type: "Vipps" | "AvtaleGiro" | "AutoGiro";
   inputSum: number;
   inputDate: number;
   inputDistribution: Distribution;
   taxUnits: TaxUnit[];
   endpoint: string;
-}> = ({ type, inputSum, inputDate, inputDistribution, taxUnits, endpoint }) => {
+  configuration: AgreementDetailsConfiguration;
+}> = ({ type, inputSum, inputDate, inputDistribution, taxUnits, endpoint, configuration }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
   // Parse and stringify to make a deep copy of the object
@@ -60,6 +86,43 @@ export const AgreementDetails: React.FC<{
     isValidating: causeAreasIsValidating,
   } = useCauseAreas(getAccessTokenSilently);
 
+  useEffect(() => {
+    // Check if the distribution has all the system cause areas
+    // If not, add them
+    if (systemCauseAreas && inputDistribution && inputDistribution.causeAreas) {
+      const systemCauseAreaIds = systemCauseAreas.map((causeArea) => causeArea.id);
+      const distributionCauseAreaIds = inputDistribution.causeAreas.map(
+        (causeArea) => causeArea.id,
+      );
+
+      const missingCauseAreas = systemCauseAreaIds.filter(
+        (id) => !distributionCauseAreaIds.includes(id),
+      );
+
+      if (missingCauseAreas.length > 0) {
+        const newDistribution = JSON.parse(JSON.stringify(inputDistribution));
+        missingCauseAreas.forEach((id) => {
+          const systemCauseArea = systemCauseAreas.find((causeArea) => causeArea.id === id);
+          if (systemCauseArea) {
+            newDistribution.causeAreas.push({
+              id: systemCauseArea.id,
+              name: systemCauseArea.name,
+              standardSplit: true,
+              percentageShare: "0",
+              organizations: systemCauseArea.organizations.map((org) => {
+                return {
+                  id: org.id,
+                  percentageShare: org.standardShare?.toString() || "0",
+                };
+              }),
+            });
+          }
+        });
+        setDistribution(newDistribution);
+      }
+    }
+  }, [systemCauseAreas, inputDistribution]);
+
   const save = async () => {
     const token = await getAccessTokenSilently();
     const distributionChanged =
@@ -68,7 +131,7 @@ export const AgreementDetails: React.FC<{
     const dayChanged = day !== inputDate;
 
     if (!distributionChanged && !dayChanged && !sumChanged) {
-      noChangesToast();
+      noChangesToast(configuration.toasts_configuration.no_changes_text);
       return;
     }
 
@@ -98,12 +161,13 @@ export const AgreementDetails: React.FC<{
       }
 
       if (result?.ok) {
-        successToast();
+        successToast(configuration.toasts_configuration.success_text);
         mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
         failureToast(result?.status === 400 ? "Ugyldig data inntastet" : undefined);
+        failureToast(configuration.toasts_configuration.failure_text);
         setLoadingChanges(false);
       }
     } else if (type == "AvtaleGiro") {
@@ -128,14 +192,35 @@ export const AgreementDetails: React.FC<{
       }
 
       if (result?.ok) {
-        successToast();
+        successToast(configuration.toasts_configuration.success_text);
         mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
         setLoadingChanges(false);
         setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
       } else {
-        failureToast(result?.status === 400 ? "Ugyldig data inntastet" : undefined);
+        failureToast(configuration.toasts_configuration.failure_text);
         setLoadingChanges(false);
       }
+    } else if (type == "AutoGiro") {
+      let result = await updateAutoGiroAgreement(
+        endpoint,
+        distributionChanged ? distribution : null,
+        dayChanged ? day : null,
+        sumChanged ? sum : null,
+        token,
+      );
+
+      if (result !== null) {
+        successToast(configuration.toasts_configuration.success_text);
+        mutate(`/donors/${getUserId(user)}/recurring/autogiro/`);
+        setLoadingChanges(false);
+        setLastSavedDistribution(JSON.parse(JSON.stringify(distribution)));
+      } else {
+        failureToast(configuration.toasts_configuration.failure_text);
+        setLoadingChanges(false);
+      }
+    } else {
+      failureToast("Uknown agreement type");
+      setLoadingChanges(false);
     }
   };
 
@@ -147,38 +232,48 @@ export const AgreementDetails: React.FC<{
     if (type === "Vipps") {
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
-        successToast();
+        successToast(configuration.toasts_configuration.success_text);
         mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
       } else {
-        failureToast();
+        failureToast(configuration.toasts_configuration.failure_text);
       }
     } else if (type === "AvtaleGiro") {
       const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
-        successToast();
+        successToast(configuration.toasts_configuration.success_text);
         mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
       } else {
-        failureToast();
+        failureToast(configuration.toasts_configuration.failure_text);
       }
+    } else if (type === "AutoGiro") {
+      const cancelled = await cancelAutoGiroAgreement(endpoint, token);
+      if (cancelled) {
+        successToast(configuration.toasts_configuration.success_text);
+        mutate(`/donors/${getUserId(user)}/recurring/autogiro/`);
+      } else {
+        failureToast(configuration.toasts_configuration.failure_text);
+      }
+    } else {
+      failureToast("Uknown agreement type");
     }
   };
 
   if (causeAreasLoading) {
     return (
       <div className={style.errorWrapper}>
-        <p>Laster inn...</p>
+        <p>{configuration.loading_text}</p>
       </div>
     );
   } else if (causeAreasError) {
     return (
       <div className={style.errorWrapper}>
-        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
+        <p>{configuration.error_text}</p>
       </div>
     );
   } else if (!systemCauseAreas) {
     return (
       <div className={style.errorWrapper}>
-        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
+        <p>{configuration.error_text}</p>
       </div>
     );
   }
@@ -186,7 +281,7 @@ export const AgreementDetails: React.FC<{
   if (!distribution.causeAreas || distribution.causeAreas.some((c) => !c.organizations)) {
     return (
       <div className={style.errorWrapper}>
-        <p>Det oppstod en feil. Vennligst prøv igjen senere eller ta kontakt med oss.</p>
+        <p>{configuration.error_text}</p>
       </div>
     );
   } else {
@@ -201,6 +296,7 @@ export const AgreementDetails: React.FC<{
             sum={sum}
             setSum={setSum}
             taxUnits={taxUnits}
+            dateSelectorConfig={configuration.date_selector_configuration}
           ></AgreementSingleCauseAreaDetails>
         )}
 
@@ -214,6 +310,8 @@ export const AgreementDetails: React.FC<{
             sum={sum}
             setSum={setSum}
             taxUnits={taxUnits}
+            configuration={configuration.distribution_configuration}
+            dateSelectorConfig={configuration.date_selector_configuration}
           ></AgreementMultipleCauseAreaDetails>
         )}
 
@@ -223,10 +321,10 @@ export const AgreementDetails: React.FC<{
             onClick={() => setLightboxOpen(true)}
             cy="btn-cancel-agreement"
           >
-            Avslutt avtale
+            {configuration.cancel_button_text}
           </EffektButton>
           <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
-            {!loadingChanges ? "Lagre" : "Laster..."}
+            {!loadingChanges ? configuration.save_button_text : configuration.loading_text}
           </EffektButton>
         </div>
 
@@ -236,15 +334,10 @@ export const AgreementDetails: React.FC<{
           onCancel={() => setLightboxOpen(false)}
         >
           <div className={style.textWrapper}>
-            <h5>Avslutt avtale</h5>
-            <p>Hvis du avslutter din betalingsavtale hos oss vil vi slutte å trekke deg.</p>
+            <h5>{configuration.agreement_cancel_lightbox.title}</h5>
+            <p>{configuration.agreement_cancel_lightbox.text}</p>
             {checkPaymentDate(new Date(), day) && type === "AvtaleGiro" ? (
-              <p>
-                Denne avtalegiro avtalen har trekkdato nærmere enn 6 dager frem i tid. Vi allerede
-                sendt melding til banksystemene om å trekke deg. Dette skyldes tregheter i
-                registrering av trekk hos bankene. Om du ønsker refusjon på denne donasjonen kan du
-                ta kontakt på donasjon@gieffektivt.no
-              </p>
+              <p>{configuration.agreement_cancel_lightbox.withdrawal_warning_text}</p>
             ) : null}
           </div>
         </Lightbox>
