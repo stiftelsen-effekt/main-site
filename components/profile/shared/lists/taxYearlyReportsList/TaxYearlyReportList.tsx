@@ -76,8 +76,8 @@ export const TaxYearlyReportList: React.FC<{
 
   const emptyPlaceholder = (
     <div>
-      Vi har ikke registrert noen donasjoner på deg i 2022. Om dette ikke stemmer ta kontakt med oss
-      på donasjon@gieffektivt.no.
+      {`Vi har ikke registrert noen donasjoner på deg i ${report.year.toString()}. Om dette ikke stemmer ta kontakt med oss
+      på donasjon@gieffektivt.no.`}
     </div>
   );
 
