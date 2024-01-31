@@ -66,6 +66,7 @@ export type AvtaleGiroPaymentMethod = {
   title: string;
   selector_earliest_text: string;
   selector_choose_date_text: string;
+  date_selector_configuration: DatePickerInputConfiguration;
   button_text: string;
 };
 

@@ -283,6 +283,7 @@ export const AgreementDetails: React.FC<{
             sum={sum}
             setSum={setSum}
             taxUnits={taxUnits}
+            dateSelectorConfig={configuration.date_selector_configuration}
           ></AgreementSingleCauseAreaDetails>
         )}
 

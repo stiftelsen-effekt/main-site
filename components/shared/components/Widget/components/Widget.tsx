@@ -61,7 +61,8 @@ const widgetQuery = groq`
             }
           },
           _type == 'avtalegiro' => {
-            ...
+            ...,
+            date_selector_configuration->
           },
         },
       },
