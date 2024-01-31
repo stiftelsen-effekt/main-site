@@ -218,8 +218,6 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
 
   useDefaultPaymentMethodEffect(methods);
 
-  console.log(widget.methods);
-
   return (
     <div
       id="widget"
