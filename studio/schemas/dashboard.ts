@@ -12,6 +12,12 @@ export default {
       of: [{ type: "navitem" }, { type: "navgroup" }],
     },
     {
+      name: "dashboard_logo",
+      title: "Dashboard logo",
+      type: "image",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "dashboard_label",
       title: "Dashboard label",
       type: "string",

@@ -42,6 +42,7 @@ type QueryResult = {
   dashboard: [
     {
       main_navigation: MainNavbarItem[];
+      dashboard_logo: SanityImageSource;
       dashboard_label: string;
       logout_label: string;
     },
@@ -53,6 +54,7 @@ const query = groq`
     "dashboard": *[_id == "dashboard"] {
       dashboard_label,
       logout_label,
+      dashboard_logo,
       main_navigation[] {
         _type == 'navgroup' => {
           _type,
@@ -107,6 +109,7 @@ export const Navbar = withStaticProps(
       dashboard,
       elements: elements.filter((e) => e !== null),
       logo: settings.logo,
+      dashboardLogo: dashboardData.dashboard_logo,
       labels: {
         dashboard: dashboardData.dashboard_label,
         logout: dashboardData.logout_label,
@@ -117,7 +120,7 @@ export const Navbar = withStaticProps(
       },
     };
   },
-)(({ dashboard, elements, logo, labels, giveButton }) => {
+)(({ dashboard, elements, logo, dashboardLogo, labels, giveButton }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const { user, logout } = useAuth0();
@@ -164,7 +167,7 @@ export const Navbar = withStaticProps(
             <Link href="/" passHref>
               <a onClick={(e) => e.currentTarget.blur()}>
                 <ResponsiveImage
-                  image={logo}
+                  image={dashboard ? dashboardLogo : logo}
                   onClick={() => setExpanded(false)}
                   priority
                   blur={false}
