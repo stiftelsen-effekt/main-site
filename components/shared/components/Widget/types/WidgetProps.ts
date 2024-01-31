@@ -1,4 +1,5 @@
 import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
+import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
 export type WidgetProps = { locale: "no" | "se" | "en" } & WidgetPane1Props &
@@ -90,6 +91,7 @@ type AutogiroRecurringManualOptionConfig = {
   title: string;
   explanation_text: any[];
   payernumber_label: string;
+  date_selector_config: DatePickerInputConfiguration;
 };
 
 type AutogiroRecurringFormOptionConfig = {

@@ -54,7 +54,11 @@ const widgetQuery = groq`
             ...
           },
           _type == 'autogiro' => {
-            ...
+            ...,
+            recurring_manual_option_config {
+              ...,
+              date_selector_config->
+            }
           },
           _type == 'avtalegiro' => {
             ...
@@ -211,6 +215,8 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   }, [dispatch]);
 
   useDefaultPaymentMethodEffect(methods);
+
+  console.log(widget.methods);
 
   return (
     <div

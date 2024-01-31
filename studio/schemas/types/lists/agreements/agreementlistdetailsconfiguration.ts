@@ -16,6 +16,12 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "date_selector_configuration",
+      title: "Date selector configuration",
+      type: "reference",
+      to: [{ type: "dateselectorconfig" }],
+    },
+    {
       name: "loading_text",
       title: "Loading text",
       type: "string",

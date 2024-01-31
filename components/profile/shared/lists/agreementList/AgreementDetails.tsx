@@ -30,10 +30,12 @@ import {
   AgreementMultipleCauseAreaDetails,
   AgreementMultipleCauseAreaDetailsConfiguration,
 } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
+import { DatePickerInputConfiguration } from "../../../../shared/components/DatePicker/DatePickerInput";
 
 export type AgreementDetailsConfiguration = {
   save_button_text: string;
   cancel_button_text: string;
+  date_selector_configuration: DatePickerInputConfiguration;
   loading_text: string;
   error_text: string;
   toasts_configuration: {
@@ -295,6 +297,7 @@ export const AgreementDetails: React.FC<{
             setSum={setSum}
             taxUnits={taxUnits}
             configuration={configuration.distribution_configuration}
+            dateSelectorConfig={configuration.date_selector_configuration}
           ></AgreementMultipleCauseAreaDetails>
         )}
 

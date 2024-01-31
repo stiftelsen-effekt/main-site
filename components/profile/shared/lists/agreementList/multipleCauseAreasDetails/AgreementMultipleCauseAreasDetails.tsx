@@ -2,7 +2,10 @@ import { TaxUnitSelector } from "../../../TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../../TaxUnitModal/TaxUnitCreateModal";
 import AnimateHeight from "react-animate-height";
 import { Toggle } from "../../../../../shared/components/Widget/components/shared/Toggle/Toggle";
-import { DatePickerInput } from "../../../../../shared/components/DatePicker/DatePickerInput";
+import {
+  DatePickerInput,
+  DatePickerInputConfiguration,
+} from "../../../../../shared/components/DatePicker/DatePickerInput";
 import { Distribution, TaxUnit } from "../../../../../../models";
 import { DistributionController } from "../../../DistributionCauseAreaInput/Distribution";
 import { useState } from "react";
@@ -24,6 +27,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
   setSum: (sum: number) => void;
   taxUnits: TaxUnit[];
   configuration: AgreementMultipleCauseAreaDetailsConfiguration;
+  dateSelectorConfig: DatePickerInputConfiguration;
 }> = ({
   systemCauseAreas,
   distribution,
@@ -34,6 +38,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
   setSum,
   taxUnits,
   configuration,
+  dateSelectorConfig,
 }) => {
   const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
 
@@ -44,7 +49,11 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
       <div className={style.wrapper}>
         <div className={style.values}>
           <div className={style.valuesDatePickerContainer}>
-            <DatePickerInput selected={day} onChange={(date) => setDay(date)} />
+            <DatePickerInput
+              selected={day}
+              onChange={(date) => setDay(date)}
+              configuration={dateSelectorConfig}
+            />
           </div>
           <div className={style.valuesAmountContainer}>
             <input

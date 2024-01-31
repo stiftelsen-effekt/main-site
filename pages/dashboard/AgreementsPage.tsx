@@ -289,6 +289,15 @@ const fetchAgreementsPage = groq`
   },
   "page": *[_id == "agreements"] {
     ...,
+    active_list_configuration {
+      ...,
+      details_configuration {
+        ...,
+        date_selector_configuration->{
+          ...,
+        }
+      }
+    },
     slug {
       current
     }
