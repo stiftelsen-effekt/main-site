@@ -268,6 +268,16 @@ const nextConfig = {
         destination: "/artiklar/vilka-organisationer-samlar-in-mest-pengar",
         permanent: true,
       },
+      {
+        source: "/vilkor",
+        destination: "/integritetspolicy",
+        permanent: true,
+      },
+      {
+        source: "/organisationer",
+        destination: "/rekommenderade-organisationer",
+        permanent: false,
+      },
     ];
   },
 };
