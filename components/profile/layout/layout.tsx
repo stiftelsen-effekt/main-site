@@ -12,7 +12,7 @@ import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
-import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
+import { MissingNameModal, MissingNameModalConfig } from "./MissingNameModal/MissingNameModal";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import { getClient } from "../../../lib/sanity.server";
@@ -36,6 +36,7 @@ type QueryResult = {
       login_abort_label: string;
       login_button_label: string;
     };
+    missing_name_modal_config?: MissingNameModalConfig;
   };
 };
 
@@ -44,6 +45,7 @@ export const profileQuery = `
     "data": {
       "site_title": *[_type == "site_settings"][0].title,
       "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
+      "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_config
     }
   }
 `;
@@ -118,7 +120,9 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
                     <WidgetPane darkMode={true} {...widgetData} />
                     <main className={styles.main}>{children}</main>
-                    <MissingNameModal />
+                    {profileData.missing_name_modal_config && (
+                      <MissingNameModal config={profileData.missing_name_modal_config} />
+                    )}
                   </CookiesAccepted.Provider>
                 </WidgetContext.Provider>
                 <Footer {...footerData} />
