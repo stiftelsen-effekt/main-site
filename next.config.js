@@ -223,6 +223,51 @@ const nextConfig = {
         destination: "/min-side/avtaler",
         permanent: true,
       },
+      {
+        source: "/blogg/skanka-pengar-i-kris",
+        destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
+        permanent: true,
+      },
+      {
+        source: "/skanka-till-jordbavningen-i-turkiet",
+        destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
+        permanent: true,
+      },
+      {
+        source: "/blogg/donera-till-ukraina",
+        destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
+        permanent: true,
+      },
+      {
+        source: "/tre-anledningar-till-varfor-vi-bor-donera-pengar-till-valgorenhet",
+        destination: "/artiklar/tre-anledningar-till-att-ge",
+        permanent: true,
+      },
+      {
+        source: "/blogg/arbete-eller-tur",
+        destination: "/artiklar/arbete-eller-tur",
+        permanent: true,
+      },
+      {
+        source: "/globalojamlikhet",
+        destination: "/artiklar/global-ojamlikhet",
+        permanent: true,
+      },
+      {
+        source: "/blogg/prm_arvid_norin",
+        destination: "/artiklar/arvid-ger-mer-aen-halva-loenen-till-klimatet",
+        permanent: true,
+      },
+      {
+        source: "/kan-lycka-kpas-for-pengar",
+        destination: "/artiklar/kan-lycka-kopas-for-pengar",
+        permanent: true,
+      },
+      {
+        source: "/blogg/vilka-organisationer-samlar-in-mest-pengar",
+        destination: "/artiklar/vilka-organisationer-samlar-in-mest-pengar",
+        permanent: true,
+      },
     ];
   },
 };
