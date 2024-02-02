@@ -1,6 +1,7 @@
 import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
 import { CookiesAccepted } from "../../../main/layout/layout";
+import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
 
@@ -14,7 +15,8 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
   configuration,
 }) => {
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
-  const gaMeasurementId = process.env.NEXT_PUBLIC_GTM_ID;
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,8 +44,11 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
 
   return (
     <>
-      {cookiesAccepted.accepted === true && gaMeasurementId && (
-        <GoogleTagManager gtmId={gaMeasurementId} />
+      {cookiesAccepted.accepted === true && (
+        <>
+          {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+          {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
+        </>
       )}
       {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
         <div data-cy="cookiebanner-container" className={styles.container}>
