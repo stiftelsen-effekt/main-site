@@ -1,6 +1,7 @@
 import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
 import { CookiesAccepted } from "../../../main/layout/layout";
+import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
 
 export type CookieBannerConfiguration = {
@@ -37,27 +38,12 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
         });
       }
     }
-  }, []);
+  }, [setCookiesAccepted]);
 
   return (
     <>
-      {cookiesAccepted.accepted === true && (
-        <>
-          <Script
-            strategy="afterInteractive"
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-          ></Script>
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){window.dataLayer.push(arguments);}
-              gtag('js', new Date());
-    
-              gtag('config', '${gaMeasurementId}');
-        `}
-          </Script>
-        </>
+      {cookiesAccepted.accepted === true && gaMeasurementId && (
+        <GoogleTagManager gtmId={gaMeasurementId} />
       )}
       {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
         <div data-cy="cookiebanner-container" className={styles.container}>
