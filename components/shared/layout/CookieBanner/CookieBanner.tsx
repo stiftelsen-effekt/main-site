@@ -14,7 +14,7 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
   configuration,
 }) => {
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
-  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GTM_ID;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
