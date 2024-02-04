@@ -201,9 +201,9 @@ export const Navbar = withStaticProps(
             }}
           >
             {expandMenu ? (
-              <X size={32} color={lightLogo ? "white" : "black"} />
+              <X size={32} color={dashboard ? "black" : "white"} />
             ) : (
-              <Menu size={32} color={lightLogo ? "black" : "black"} />
+              <Menu size={32} color={dashboard ? "white" : "black"} />
             )}
           </button>
         </div>
