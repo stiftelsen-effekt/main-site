@@ -155,6 +155,8 @@ export const Navbar = withStaticProps(
     };
   }
 
+  const lightLogo = (dashboard && !expandMenu) || (!dashboard && expandMenu);
+
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
       <nav className={`${styles.navbar}`} data-cy="navbar">
@@ -163,18 +165,34 @@ export const Navbar = withStaticProps(
           onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
           onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
         >
-          <div className={styles.logoWrapperImage}>
-            <Link href="/" passHref>
-              <a onClick={(e) => e.currentTarget.blur()}>
-                <ResponsiveImage
-                  image={dashboard ? dashboardLogo : logo}
-                  onClick={() => setExpanded(false)}
-                  priority
-                  blur={false}
-                />
-              </a>
-            </Link>
-          </div>
+          {lightLogo && (
+            <div className={styles.logoWrapperImage}>
+              <Link href="/" passHref>
+                <a onClick={(e) => e.currentTarget.blur()}>
+                  <ResponsiveImage
+                    image={dashboardLogo}
+                    onClick={() => setExpanded(false)}
+                    priority
+                    blur={false}
+                  />
+                </a>
+              </Link>
+            </div>
+          )}
+          {!lightLogo && (
+            <div className={styles.logoWrapperImage}>
+              <Link href="/" passHref>
+                <a onClick={(e) => e.currentTarget.blur()}>
+                  <ResponsiveImage
+                    image={logo}
+                    onClick={() => setExpanded(false)}
+                    priority
+                    blur={false}
+                  />
+                </a>
+              </Link>
+            </div>
+          )}
           <button
             className={styles.expandBtn}
             onClick={(e) => {
@@ -182,7 +200,7 @@ export const Navbar = withStaticProps(
               e.currentTarget.blur();
             }}
           >
-            {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
+            {lightLogo ? <X size={32} color={"white"} /> : <Menu size={32} color={"black"} />}
           </button>
         </div>
         <ul>
