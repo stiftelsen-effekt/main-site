@@ -200,7 +200,11 @@ export const Navbar = withStaticProps(
               e.currentTarget.blur();
             }}
           >
-            {lightLogo ? <X size={32} color={"white"} /> : <Menu size={32} color={"black"} />}
+            {expandMenu ? (
+              <X size={32} color={lightLogo ? "white" : "black"} />
+            ) : (
+              <Menu size={32} color={lightLogo ? "black" : "black"} />
+            )}
           </button>
         </div>
         <ul>
