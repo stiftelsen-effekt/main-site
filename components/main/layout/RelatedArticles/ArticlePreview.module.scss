@@ -10,10 +10,12 @@
   margin-top: 20px;
 }
 
-.article h5 {
+.article h2 {
   font-weight: normal;
-  margin-top: 50px;
+  margin-top: 1rem;
   word-break: break-word;
+  font-size: 1.2rem;
+  line-height: 120%;
 }
 
 .article p {
@@ -21,7 +23,7 @@
 }
 
 @media only screen and (max-width: 1180px) {
-  .article h5 {
+  .article h2 {
     font-size: 24px;
     margin-top: 6px;
     margin-bottom: 0;
@@ -29,7 +31,7 @@
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .article h5 {
+  .article h2 {
     margin-top: 20px;
   }
 }

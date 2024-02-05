@@ -21,7 +21,7 @@ export const ArticlePreview: React.FC<{
             </span>
           </div>
         )}
-        <h5>{header.title}</h5>
+        <h2>{header.title}</h2>
         {inngress && <p>{inngress}</p>}
       </li>
     </Link>
