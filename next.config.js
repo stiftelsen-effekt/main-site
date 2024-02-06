@@ -92,7 +92,24 @@ const nextConfig = {
       },
       {
         source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "gieffetivt.no",
+          },
+        ],
         destination: "/artikler",
+        permanent: true,
+      },
+      {
+        source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/artiklar",
         permanent: true,
       },
       {
@@ -344,7 +361,6 @@ const nextConfig = {
       { source: "/organisationer/new-incentives", destination: "/global-halsa", permanent: true },
       { source: "/organisationer#djurvalfard", destination: "/djurvalfard", permanent: true },
       { source: "/organisationer#klimat", destination: "/klimat", permanent: true },
-      { source: "/blogg", destination: "/artiklar", permanent: true },
       { source: "/ge", destination: "/", permanent: true },
       { source: "/filantropi", destination: "/filantropisk-radgivning", permanent: true },
       { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
