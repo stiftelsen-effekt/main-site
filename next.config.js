@@ -67,7 +67,24 @@ const nextConfig = {
       },
       {
         source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
         destination: "/ofte-stilte-sporsmal",
+        permanent: true,
+      },
+      {
+        source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/vanliga-fragor",
         permanent: true,
       },
       {
@@ -246,7 +263,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/skanka-till-jordbavningen-i-turkiet",
+        source: "/blogg/skanka-till-jordbavningen-i-turkiet",
         destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
         permanent: true,
       },
@@ -369,6 +386,28 @@ const nextConfig = {
         source: "/vi-behoever-prata-om-administrationskostnaderna",
         destination: "/artiklar/vi-maste-prata-om-administrationskostnaderna",
         permanent: true,
+      },
+      {
+        source: "/arsrapport-2021",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/arsrapport-2022",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
       },
     ];
   },
