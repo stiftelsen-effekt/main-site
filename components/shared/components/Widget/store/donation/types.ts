@@ -7,7 +7,6 @@ export const SELECT_PAYMENT_METHOD = "SELECT_PAYMENT_METHOD";
 export const SELECT_TAX_DEDUCTION = "SELECT_TAX_DEDUCTION";
 export const SUBMIT_DONOR_INFO = "SUBMIT_DONOR_INFO";
 export const SET_CAUSE_AREA_PERCENTAGE_SHARE = "SET_CAUSE_AREA_PERCENTAGE_SHARE";
-export const SUBMIT_PHONE_NUMBER = "SUBMIT_PHONE_NUMBER";
 export const SET_SHARES = "SET_SHARES";
 export const SET_SUM = "SET_SUM";
 export const SET_DUE_DAY = "SET_DUE_DAY";
@@ -49,13 +48,6 @@ interface SetCauseAreaPercentageShare {
   payload: {
     causeAreaId: number;
     percentageShare: string;
-  };
-}
-
-interface SubmitPhoneNumber {
-  type: typeof SUBMIT_PHONE_NUMBER;
-  payload: {
-    phone: string;
   };
 }
 
@@ -137,7 +129,6 @@ export type DonationActionTypes =
   | SelectTaxDeduction
   | SubmitDonorInfo
   | SetCauseAreaPercentageShare
-  | SubmitPhoneNumber
   | SetShares
   | SetSum
   | SetDueDay

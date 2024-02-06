@@ -22,7 +22,6 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
-  SUBMIT_PHONE_NUMBER,
 } from "./types";
 import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
@@ -82,6 +81,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       kid: action.payload.result.KID,
       paymentProviderURL: action.payload.result.paymentProviderUrl,
       swishOrderID: action.payload.result.swishOrderID,
+      swishPaymentRequestToken: action.payload.result.swishPaymentRequestToken,
       donor: {
         ...state.donor,
         donorID: action.payload.result.donorID,
@@ -124,12 +124,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
             return causeArea;
           }
         }),
-      };
-      break;
-    case SUBMIT_PHONE_NUMBER:
-      state = {
-        ...state,
-        phone: action.payload.phone,
       };
       break;
     case SET_SHARES:

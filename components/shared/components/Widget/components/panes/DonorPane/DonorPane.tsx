@@ -14,7 +14,6 @@ import {
   registerDonationAction,
   selectPaymentMethod,
   submitDonorInfo,
-  submitPhoneNumber,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
@@ -35,25 +34,6 @@ import {
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
-};
-
-/**
- *
- * @param phoneNumber Any swedish format, e.g. 0701234567 or +46701234567
- * @return A swedish phone number in E164 number format, e.g. 46701234567
- */
-const formatSwedishPhoneNumber = (phoneNumber: string) => {
-  const isValidInput = Validate.isMobilePhone(phoneNumber, "sv-SE");
-  if (!isValidInput) {
-    return phoneNumber;
-  }
-  if (phoneNumber.startsWith("07")) {
-    return `46${phoneNumber.substring(1)}`;
-  } else if (phoneNumber.startsWith("+46")) {
-    return phoneNumber.substring(1);
-  } else {
-    return phoneNumber;
-  }
 };
 
 export const DonorPane: React.FC<{
@@ -82,7 +62,6 @@ export const DonorPane: React.FC<{
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
       method: donation.method,
-      phone: donation.phone,
     },
   });
 
@@ -137,11 +116,6 @@ export const DonorPane: React.FC<{
     );
 
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
-
-    if (data.phone) {
-      const formattedPhone = formatSwedishPhoneNumber(data.phone);
-      dispatch(submitPhoneNumber(formattedPhone));
-    }
 
     if (isAnonymous || donation.errors.length === 0) {
       dispatch(registerDonationAction.started(undefined));
@@ -323,29 +297,11 @@ export const DonorPane: React.FC<{
                   }))}
                   selected={field.value}
                   onSelect={(option) => {
-                    clearErrors(["phone"]);
                     field.onChange(option);
                   }}
                 />
               )}
             />
-            {selectedPaymentMethod === PaymentMethod.SWISH ? (
-              <StyledSwishInputFieldWrapper>
-                <input
-                  data-cy="phone-input"
-                  type="tel"
-                  placeholder={'Telefonnummer (ex. "0701234567")'}
-                  {...register("phone", {
-                    required: true,
-                    validate: (val) => {
-                      const trimmed = val?.trim();
-                      return trimmed && Validate.isMobilePhone(trimmed, "sv-SE");
-                    },
-                  })}
-                />
-                {errors.phone && <ErrorField text="Ugyldig telefonnummer" />}
-              </StyledSwishInputFieldWrapper>
-            ) : null}
           </div>
           <ActionBar data-cy="next-button-div">
             <NextButton
