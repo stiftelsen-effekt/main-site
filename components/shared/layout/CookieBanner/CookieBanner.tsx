@@ -1,6 +1,8 @@
 import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
 import { CookiesAccepted } from "../../../main/layout/layout";
+import { GoogleAnalytics } from "../GoogleAnalytics";
+import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
 
 export type CookieBannerConfiguration = {
@@ -14,6 +16,7 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
 }) => {
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -37,26 +40,14 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
         });
       }
     }
-  }, []);
+  }, [setCookiesAccepted]);
 
   return (
     <>
       {cookiesAccepted.accepted === true && (
         <>
-          <Script
-            strategy="afterInteractive"
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-          ></Script>
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){window.dataLayer.push(arguments);}
-              gtag('js', new Date());
-    
-              gtag('config', '${gaMeasurementId}');
-        `}
-          </Script>
+          {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+          {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
         </>
       )}
       {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (

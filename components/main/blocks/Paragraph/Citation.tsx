@@ -20,6 +20,8 @@ export const formatHarvardCitation = ({
   number,
   journal,
   timestamp,
+  serie,
+  number_in_serie,
   note,
   tabindex = -1,
 }: any) => {
@@ -38,6 +40,8 @@ export const formatHarvardCitation = ({
   const timestampString = timestamp ? ` (Tidsstempel: ${timestamp}) ` : "";
   const editionString = edition ? ` ${edition}. utgave, ` : "";
   const noteString = note ? `${note}` : "";
+  const serieString = serie ? ` ${serie} ` : "";
+  const numberInSerieString = number_in_serie ? `No. ${number_in_serie}. ` : "";
 
   return (
     <span className={elements.citation}>
@@ -174,6 +178,32 @@ export const formatHarvardCitation = ({
           ) : (
             <i>{titleString}</i>
           )}
+        </>
+      )}
+      {type === "workingpaper" && (
+        <>
+          <span>{authorString} </span>
+          <span style={{ whiteSpace: "nowrap" }}>{yearString}</span>
+          {url ? (
+            <a
+              href={url}
+              className={elements.citationLink}
+              target="_blank"
+              tabIndex={tabindex}
+              rel="noreferrer"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.currentTarget.blur();
+              }}
+            >
+              {titleString}
+            </a>
+          ) : (
+            <i>{titleString}</i>
+          )}
+          <span>{serieString}</span>
+          <span style={{ whiteSpace: "nowrap" }}>{numberInSerieString}</span>
+          <span>{accessDateString}</span>
         </>
       )}
       {type === "note" && <PortableText value={note} />}

@@ -39,6 +39,8 @@ import DonationsTotals from "../../components/profile/donations/DonationsTotal/D
 import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
 import { groq } from "next-sanity";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
+import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
+import { Info } from "react-feather";
 
 export async function getDashboardPagePath() {
   const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -359,6 +361,20 @@ export const DonationsPage = withStaticProps(
 
       <PageContent>
         <h3 className={style.header}>{page.title}</h3>
+
+        {settings.main_locale === "sv" && (
+          <div style={{ margin: "2rem 0" }}>
+            <InfoBox>
+              <div style={{ display: "flex", alignItems: "center", flexDirection: "row" }}>
+                <Info size={"1.4rem"} style={{ marginRight: "1rem" }} />
+                <span>
+                  Ännu är inte alla donationer registrerade i vår databas. Vi arbetar med att
+                  importera donationer från före 2023 och donationer från januari 2024.
+                </span>
+              </div>
+            </InfoBox>
+          </div>
+        )}
 
         <DonationYearMenu
           totalTitle={page.year_menu_total_title}
