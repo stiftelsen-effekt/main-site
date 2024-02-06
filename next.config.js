@@ -95,7 +95,7 @@ const nextConfig = {
         has: [
           {
             type: "host",
-            value: "gieffetivt.no",
+            value: "gieffektivt.no",
           },
         ],
         destination: "/artikler",
