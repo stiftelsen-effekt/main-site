@@ -14,7 +14,7 @@ export const RecurringBankDonationForm: React.FC<{
   const plausible = usePlausible();
 
   const onSubmit = (e: React.MouseEvent<Element, MouseEvent>) => {
-    plausible("DraftAutogiro");
+    plausible("DraftAvtaleGiro");
     plausible("CompleteDonation");
     e.preventDefault();
     dispatch(draftAvtaleGiroAction.started(undefined));
