@@ -64,6 +64,7 @@ export default {
         { type: "videoembed" },
         { type: "fullvideo" },
         { type: "testimonials" },
+        { type: "blocktable" },
         { type: "reference", to: [{ type: "contactinfo" }] },
         { type: "newslettersignup" },
         { type: "wealthcalculator" },

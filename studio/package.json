@@ -9,6 +9,7 @@
   "scripts": {
     "start": "sanity start",
     "build": "sanity build",
+    "installtable": "sanity install table",
     "edit": "export EDITOR=\"code -w\" && node scripts/editDocument.js",
     "list:pages": "node scripts/listPages.js"
   },
@@ -31,6 +32,7 @@
     "react-dom": "^17.0",
     "react-feather": "^2.0.9",
     "sanity-plugin-iframe-pane": "^1.0.16",
+    "sanity-plugin-table": "^2.3.0",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
