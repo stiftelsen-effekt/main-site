@@ -97,7 +97,8 @@
     "webpack": "^5.70.0"
   },
   "overrides": {
-    "@types/react": "^17.0.39"
+    "@types/react": "^17.0.39",
+    "@sanity/ui": "^0.37.22"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,json,md,css,scss,yml}": "prettier --write"
