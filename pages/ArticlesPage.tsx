@@ -55,6 +55,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
+        keywords={header.seoKeywords}
       />
 
       <div className={styles.inverted}>

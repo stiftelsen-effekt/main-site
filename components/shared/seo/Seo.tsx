@@ -8,6 +8,7 @@ export const SEO: React.FC<SEOMeta> = ({
   description,
   canonicalurl,
   imageAsset,
+  keywords,
 }) => {
   const images = [];
   if (imageAsset)
@@ -17,6 +18,14 @@ export const SEO: React.FC<SEOMeta> = ({
       height: 630,
       alt: title,
     });
+
+  const additionalMetaTags = [];
+  if (keywords)
+    additionalMetaTags.push({
+      name: "keywords",
+      content: keywords,
+    });
+
   return (
     <NextSeo
       title={title}
@@ -34,6 +43,7 @@ export const SEO: React.FC<SEOMeta> = ({
         site: "@gieffektivt",
         cardType: "summary_large_image",
       }}
+      additionalMetaTags={additionalMetaTags}
     ></NextSeo>
   );
 };
