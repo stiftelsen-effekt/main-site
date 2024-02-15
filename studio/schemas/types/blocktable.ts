@@ -20,7 +20,7 @@ export default {
           name: "subtitle",
           type: "string",
           title: "Subtitle",
-          hidden: ({ parent }) => !parent.title,
+          hidden: ({ parent }: any) => !parent.title,
         },
         {
           name: "containertype",
@@ -41,7 +41,7 @@ export default {
           title: "Fixed width",
           description:
             "The width of the table in rems. Only used if the width type is set to 'Fixed'.",
-          hidden: ({ parent }) => parent.containertype !== "fixed",
+          hidden: ({ parent }: any) => parent.containertype !== "fixed",
         },
       ],
     },
@@ -89,7 +89,7 @@ export default {
               firstrowfourthcell: "contents.rows[0].cells[3]",
               cellcount: "contents.rows[0].cells.length",
             },
-            prepare(selection) {
+            prepare(selection: any) {
               const {
                 headers,
                 firstrowfirstcell,
@@ -113,8 +113,8 @@ export default {
           },
         },
       ],
-      validation: (Rule) =>
-        Rule.custom((tables) => {
+      validation: (Rule: any) =>
+        Rule.custom((tables: any) => {
           let columnCounts = new Set();
           for (let table of tables) {
             let columnCount =
@@ -142,8 +142,8 @@ export default {
           type: "number",
         },
       ],
-      validation: (Rule) =>
-        Rule.custom((columnwidths, context) => {
+      validation: (Rule: any) =>
+        Rule.custom((columnwidths: any, context: any) => {
           if (!columnwidths) return true;
           if (columnwidths.length === 0) return true;
           let columnCounts = new Set();
@@ -190,7 +190,7 @@ export default {
       title: "configuration.title",
       subtitle: "configuration.subtitle",
     },
-    prepare(selection) {
+    prepare(selection: any) {
       const { title, subtitle } = selection;
       return {
         title: title || "Table",
