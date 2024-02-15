@@ -61,7 +61,7 @@ export default {
     {
       name: "seoKeywords",
       title: "SEO keywords",
-      type: "string",
+      type: "text",
       rows: 3,
       group: "seo",
       description: "Comma separated",
