@@ -2,7 +2,7 @@ import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
 import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
-export type WidgetProps = { locale: "no" | "se" | "en" } & WidgetPane1Props &
+export type WidgetProps = { locale: "no" | "sv" | "en" } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
     methods?: Array<
@@ -143,9 +143,12 @@ export type DonationInputErrorTemplates = {
 export type WidgetPane2Props = {
   anon_button_text: string;
   name_placeholder: string;
+  name_invalid_error_text: string;
   email_placeholder: string;
+  email_invalid_error_text: string;
   tax_deduction_selector_text: string;
   tax_deduction_ssn_placeholder: string;
+  tax_deduction_ssn_invalid_error_text: string;
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
   privacy_policy_text: string;
