@@ -72,6 +72,7 @@ const ArticlePage = withStaticProps(
           header.cannonicalUrl ??
           `https://gieffektivt.no/${[...articlesPagePath, page.slug.current].join("/")}`
         }
+        keywords={header.seoKeywords}
       />
 
       <MainHeader hideOnScroll={true}>

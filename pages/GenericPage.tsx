@@ -62,6 +62,7 @@ export const GenericPage = withStaticProps(
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={header.cannonicalUrl ?? cannonicalUrlDefault}
         titleTemplate={`${data.result.settings[0].title} | %s`}
+        keywords={header.seoKeywords}
       />
 
       <MainHeader hideOnScroll={true}>
