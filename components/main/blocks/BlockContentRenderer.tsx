@@ -13,7 +13,6 @@ import { Links } from "./Links/Links";
 import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
 import { PointList } from "./PointList/PointList";
-import { PointListPointProps } from "./PointList/PointListPoint";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
 import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
@@ -154,6 +153,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             code={block.htmlcode}
                             grayscale={block.grayscale}
+                            fullwidth={block.fullwidth}
                           />
                         );
                       case "columns":
