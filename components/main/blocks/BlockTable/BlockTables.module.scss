@@ -1,0 +1,119 @@
+.blockTable {
+  position: relative;
+  width: 100%;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+
+  /* Configuration relating to width */
+
+  &.column {
+    max-width: 760px;
+  }
+
+  &.full,
+  &.fixed {
+    max-width: 100%;
+  }
+
+  &.fixed {
+    table {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  /* Configuration relating to the title */
+  &.full {
+    &.hasTitle {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      gap: 3rem;
+
+      .titles {
+        border-top: 1px solid var(--primary);
+        width: 100%;
+
+        h5 {
+          margin-bottom: 0.25rem;
+        }
+
+        span {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  &.column,
+  &.fixed {
+    margin-top: 2rem;
+
+    &.hasTitle {
+      .titles {
+        width: 100%;
+        padding-bottom: 3rem;
+
+        h5 {
+          margin-top: 0;
+          margin-bottom: 0.25rem;
+        }
+
+        span {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  /* Configuration relating to the table contents */
+  .contentsWrapper {
+    overflow-x: hidden;
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .blockTable {
+    &.column {
+      max-width: 640px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .blockTable {
+    &.full {
+      &.hasTitle {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+        gap: 0;
+
+        .titles {
+          border-top: none;
+          padding-bottom: 3rem;
+
+          h5 {
+            margin-bottom: 0.25rem;
+          }
+
+          span {
+            font-size: 0.9rem;
+          }
+        }
+      }
+
+      .outerContents {
+        width: calc(100% + 10vw);
+        margin-left: -5vw;
+
+        .scrollRightButton {
+          right: 5vw;
+        }
+
+        .contents {
+          padding-left: 5vw;
+          padding-right: 5vw;
+        }
+      }
+    }
+  }
+}
