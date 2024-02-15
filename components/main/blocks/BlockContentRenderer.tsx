@@ -260,6 +260,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             heading={block.heading}
                             paragraph={block.paragraph}
                             donateLabel={block.donate_label_short}
+                            accentColor={block.accent_color}
                           />
                         );
                       }

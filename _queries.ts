@@ -447,6 +447,7 @@ export const pageContentQuery = `content[] {
     _type == 'giveblock' => {
       ...,
       "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+      "accent_color": *[ _type == "site_settings"][0].accent_color,
     },
     _type == 'teasers' => {
       ...,
