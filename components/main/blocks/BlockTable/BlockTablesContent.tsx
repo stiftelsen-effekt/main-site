@@ -20,10 +20,6 @@ export const BlockTablesContent: React.FC<{
   fixedStyles: CSSProperties;
   fixedWidths?: number[];
 }> = ({ config, contents, fixedStyles, fixedWidths }) => {
-  if (!contents) return null;
-
-  const { rows } = contents;
-
   const [hasScrolled, setHasScrolled] = useState(false);
   const [hasScroll, setHasScroll] = useState(false);
   const [scrollButtonDisplayed, setScrollButtonDisplayed] = useState(true);
@@ -66,6 +62,9 @@ export const BlockTablesContent: React.FC<{
     }
     return () => clearTimeout(timeoutId);
   }, [hasScrolled]);
+
+  if (!contents) return null;
+  const { rows } = contents;
 
   const outerContentsClasses = [styles.outerContents];
   if (hasScroll) {
