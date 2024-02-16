@@ -15,6 +15,8 @@ import AnimateHeight from "react-animate-height";
 import { DatePicker } from "../../../shared/DatePicker/DatePicker";
 import { API_URL } from "../../../../config/api";
 import { DateTime } from "luxon";
+import { usePlausible } from "next-plausible";
+import { EffektButton } from "../../../../../EffektButton/EffektButton";
 
 enum AutoGiroOptions {
   MANUAL_TRANSACTION,
@@ -28,6 +30,7 @@ export const AutogiroPane: React.FC<{
 }> = ({ referrals, config }) => {
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const donation = useSelector((state: State) => state.donation);
+  const plausible = usePlausible();
 
   const [selectedAutogiroSetup, setSelectedAutogiroSetup] = React.useState<
     AutoGiroOptions | undefined
@@ -117,11 +120,14 @@ export const AutogiroPane: React.FC<{
   const formAutogiroSetupContent = (
     <>
       <PortableText value={config.recurring_form_option_config.explanation_text} />
-      <LinkButton
-        url={config.recurring_form_option_config.button_link}
-        title={config.recurring_form_option_config.button_text}
-        target={"_blank"}
-      ></LinkButton>
+      <EffektButton
+        onClick={() => {
+          plausible("AutogiroBankGirotFormOpened");
+          window.open(config.recurring_form_option_config.button_link, "_blank");
+        }}
+      >
+        {config.recurring_form_option_config.button_text}
+      </EffektButton>
     </>
   );
 
@@ -157,7 +163,10 @@ export const AutogiroPane: React.FC<{
               },
             ]}
             selected={selectedAutogiroSetup}
-            onSelect={setSelectedAutogiroSetup}
+            onSelect={(selected) => {
+              plausible("AutogiroMethodeSelected" + selected);
+              setSelectedAutogiroSetup(selected);
+            }}
           />
         </StyledPaneContent>
         {/* Always show referrals for anonymous donors (ID 1464) */}
