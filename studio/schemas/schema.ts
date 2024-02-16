@@ -77,6 +77,7 @@ import avtalegiro from "./types/paymentmethods/avtalegiro";
 import agreementlistconfiguration from "./types/lists/agreements/agreementlistconfiguration";
 import agreementlistdetailsconfiguration from "./types/lists/agreements/agreementlistdetailsconfiguration";
 import dateselectorconfig from "./types/dateselectorconfig";
+import blocktables from "./types/blocktable";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -110,6 +111,7 @@ export const types = [
   splitview,
   splitviewhtml,
   fullimage,
+  blocktables,
   normalimage,
   column,
   columns,

@@ -45,7 +45,7 @@ const postPurchaseEvent = (kid?: string, value?: number) => {
 export const postMessageMiddleware: Middleware =
   ({ getState }) =>
   (next) =>
-  (action) => {
+  (action: any) => {
     const { donation, layout }: State = getState();
     switch (action.type) {
       case "SELECT_PAYMENT_METHOD":

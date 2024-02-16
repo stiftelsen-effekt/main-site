@@ -31,6 +31,7 @@ import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 import { GiftCard } from "./GiftCard/GiftCard";
+import { BlockTables } from "./BlockTable/BlockTables";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -163,6 +164,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <Testimonial
                             key={block._key || block._id}
                             testimonies={block.testimonials}
+                          />
+                        );
+                      case "blocktables":
+                        return (
+                          <BlockTables
+                            key={block._key || block._id}
+                            config={block.configuration}
+                            tables={block.tables}
+                            columnWidths={block.columnwidths}
                           />
                         );
                       case "teasers":

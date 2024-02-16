@@ -1,0 +1,143 @@
+.outerContents {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  margin-bottom: 4rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .contents {
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+
+    /* Scrollbar styling */
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      height: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    table {
+      border-top: 1px solid var(--primary);
+      width: 100%;
+      white-space: nowrap;
+
+      *:first-child {
+        tr {
+          th,
+          td {
+            padding-top: 1.25rem;
+          }
+        }
+      }
+
+      thead {
+        tr {
+          th {
+            text-align: right;
+            font-weight: normal;
+            font-size: 1.1rem;
+            padding-bottom: 0.75rem;
+            padding-left: 2rem;
+          }
+
+          th:first-child {
+            text-align: left;
+            padding-left: 0;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          td {
+            text-align: right;
+            padding: 0.25rem 0rem;
+            padding-left: 2rem;
+          }
+
+          td:first-child {
+            text-align: left;
+            padding-left: 0;
+          }
+        }
+
+        &.lastRow {
+          tr {
+            td {
+              border-top: 1px solid var(--primary);
+            }
+          }
+        }
+
+        &.secondLastRow {
+          tr {
+            td {
+              padding-bottom: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .scrollRightButton {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5rem;
+    height: 100%;
+    display: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: end;
+    transition: opacity 0.3s ease;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, var(--secondary) 100%);
+
+    span {
+      transition: transform 0.3s ease;
+      margin-right: 0.5rem;
+      animation: scrollRightButton 2s infinite;
+    }
+
+    @keyframes scrollRightButton {
+      0% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(0.5rem);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &.hasScroll {
+    .scrollRightButton {
+      display: flex;
+    }
+  }
+
+  &.hasScrolled {
+    .scrollRightButton {
+      opacity: 0;
+
+      span {
+        transform: translateX(1rem);
+      }
+    }
+  }
+}
