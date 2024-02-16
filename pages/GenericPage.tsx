@@ -49,11 +49,11 @@ export const GenericPage = withStaticProps(
   const header = page.header;
   const content = page.content;
 
-  let cannonicalUrlDefault: string = `https://${process.env.NEXT_PUBLIC_SITE_URL}${
+  let cannonicalUrlDefault: string = `${process.env.NEXT_PUBLIC_SITE_URL}/${
     page.slug?.current ?? ""
   }`;
   if (page.slug?.current == "/") {
-    cannonicalUrlDefault = `https://${process.env.NEXT_PUBLIC_SITE_URL}`;
+    cannonicalUrlDefault = `${process.env.NEXT_PUBLIC_SITE_URL}`;
   }
 
   return (
