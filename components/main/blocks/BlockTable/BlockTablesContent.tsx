@@ -1,6 +1,6 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./BlockTablesContent.module.scss";
-import { set } from "cypress/types/lodash";
+import { useDebouncedCallback } from "use-debounce";
 
 export type TableConfiguration = {
   headers?: boolean;
@@ -28,7 +28,7 @@ export const BlockTablesContent: React.FC<{
   const [scrollButtonTouchStart, setScrollButtonTouchStart] = useState(-1);
 
   /** A check to see if there is horizontal scroll in the table contents container */
-  const checkForScroll = () => {
+  const debouncedCheckForScroll = useDebouncedCallback(() => {
     if (contentsRef.current) {
       if (contentsRef.current.scrollWidth > contentsRef.current.clientWidth) {
         setHasScroll(true);
@@ -36,24 +36,26 @@ export const BlockTablesContent: React.FC<{
         setHasScroll(false);
       }
     }
-  };
+  }, 1000);
+
+  const onScroll = useCallback(() => {
+    if (contentsRef.current) {
+      contentsRef.current.removeEventListener("scroll", onScroll);
+      setHasScrolled(true);
+    }
+  }, [contentsRef]);
 
   // Check for scroll on mount
   useEffect(() => {
-    checkForScroll();
+    debouncedCheckForScroll();
   }, []);
 
   // Check for scroll on resize
   useEffect(() => {
     if (!contentsRef.current) return;
-    window.addEventListener("resize", checkForScroll);
-    contentsRef.current.addEventListener("scroll", () => {
-      if (contentsRef.current) {
-        setHasScrolled(true);
-        contentsRef.current.removeEventListener("scroll", () => {});
-      }
-    });
-    return () => window.removeEventListener("resize", checkForScroll);
+    window.addEventListener("resize", debouncedCheckForScroll);
+    contentsRef.current.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("resize", debouncedCheckForScroll);
   }, [contentsRef]);
 
   useEffect(() => {
@@ -66,7 +68,6 @@ export const BlockTablesContent: React.FC<{
   }, [hasScrolled]);
 
   if (!contents) return null;
-  const { rows } = contents;
 
   const outerContentsClasses = [styles.outerContents];
   if (hasScroll) {
@@ -80,7 +81,7 @@ export const BlockTablesContent: React.FC<{
     <div className={outerContentsClasses.join(" ")}>
       <div className={styles.contents} ref={contentsRef}>
         <table style={fixedStyles} cellSpacing={0}>
-          {rows.map((row, index) => {
+          {contents.rows.map((row, index) => {
             if (index === 0 && config && config.headers) {
               return (
                 <thead key={row._key}>
@@ -95,9 +96,9 @@ export const BlockTablesContent: React.FC<{
               );
             } else {
               const classes = [];
-              if (config && config.lastrow_seperator && index === rows.length - 1) {
+              if (config && config.lastrow_seperator && index === contents.rows.length - 1) {
                 classes.push(styles.lastRow);
-              } else if (config && config.lastrow_seperator && index === rows.length - 2) {
+              } else if (config && config.lastrow_seperator && index === contents.rows.length - 2) {
                 classes.push(styles.secondLastRow);
               }
               return (
@@ -130,7 +131,7 @@ export const BlockTablesContent: React.FC<{
             if (distance > 0) {
               contentsRef.current?.scrollBy({
                 left: distance,
-                behavior: "auto",
+                behavior: "instant",
               });
               setScrollButtonTouchStart(e.touches[0].clientX);
             }
