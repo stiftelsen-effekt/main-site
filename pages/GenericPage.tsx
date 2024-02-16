@@ -49,9 +49,11 @@ export const GenericPage = withStaticProps(
   const header = page.header;
   const content = page.content;
 
-  let cannonicalUrlDefault: string = `https://gieffektivt.no/${page.slug?.current ?? ""}`;
+  let cannonicalUrlDefault: string = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${
+    page.slug?.current ?? ""
+  }`;
   if (page.slug?.current == "/") {
-    cannonicalUrlDefault = "https://gieffektivt.no/";
+    cannonicalUrlDefault = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   }
 
   return (
