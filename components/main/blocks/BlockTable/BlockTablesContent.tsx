@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import styles from "./BlockTablesContent.module.scss";
+import { set } from "cypress/types/lodash";
 
 export type TableConfiguration = {
   headers?: boolean;
@@ -24,6 +25,7 @@ export const BlockTablesContent: React.FC<{
   const [hasScroll, setHasScroll] = useState(false);
   const [scrollButtonDisplayed, setScrollButtonDisplayed] = useState(true);
   const contentsRef = useRef<HTMLDivElement>(null);
+  const [scrollButtonTouchStart, setScrollButtonTouchStart] = useState(-1);
 
   /** A check to see if there is horizontal scroll in the table contents container */
   const checkForScroll = () => {
@@ -57,7 +59,7 @@ export const BlockTablesContent: React.FC<{
   useEffect(() => {
     if (hasScrolled) {
       var timeoutId = setTimeout(() => {
-        setScrollButtonDisplayed(false);
+        if (scrollButtonTouchStart === -1) setScrollButtonDisplayed(false);
       }, 500);
     }
     return () => clearTimeout(timeoutId);
@@ -119,6 +121,24 @@ export const BlockTablesContent: React.FC<{
           onClick={() =>
             contentsRef.current?.scrollBy({ left: Number.MAX_SAFE_INTEGER, behavior: "smooth" })
           }
+          onTouchStart={(e) => {
+            setScrollButtonTouchStart(e.touches[0].clientX);
+          }}
+          onTouchMove={(e) => {
+            // Pass touch move to parent
+            const distance = (e.touches[0].clientX - scrollButtonTouchStart) * -1;
+            if (distance > 0) {
+              contentsRef.current?.scrollBy({
+                left: distance,
+                behavior: "auto",
+              });
+              setScrollButtonTouchStart(e.touches[0].clientX);
+            }
+          }}
+          onTouchEnd={(e) => {
+            setScrollButtonTouchStart(-1);
+            if (hasScrolled) setScrollButtonDisplayed(false);
+          }}
         >
           {/* Arrow right UTF8 */}
           <span>&#10132;</span>
