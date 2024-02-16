@@ -236,8 +236,22 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "name_invalid_error_text",
+      title: "Name invalid error text",
+      type: "string",
+      group: "pane2",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "email_placeholder",
       title: "Email placeholder",
+      type: "string",
+      group: "pane2",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "email_invalid_error_text",
+      title: "Email invalid error text",
       type: "string",
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
@@ -253,6 +267,13 @@ export default {
     {
       name: "tax_deduction_ssn_placeholder",
       title: "Tax deduction ssn placeholder",
+      type: "string",
+      group: "pane2",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "tax_deduction_ssn_invalid_error_text",
+      title: "Tax deduction ssn invalid error text",
       type: "string",
       group: "pane2",
       validation: (Rule: any) => Rule.required(),

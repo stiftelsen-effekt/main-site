@@ -379,7 +379,17 @@ const nextConfig = {
       { source: "/organisationer#djurvalfard", destination: "/djurvalfard", permanent: true },
       { source: "/organisationer#klimat", destination: "/klimat", permanent: true },
       { source: "/ge", destination: "/", permanent: true },
-      { source: "/filantropi", destination: "/filantropisk-radgivning", permanent: true },
+      {
+        source: "/filantropi",
+        destination: "/filantropisk-radgivning",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: true,
+      },
       { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
       { source: "/om", destination: "/om-oss", permanent: true },
       {

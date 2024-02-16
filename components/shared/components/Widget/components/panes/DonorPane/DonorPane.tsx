@@ -37,7 +37,7 @@ const capitalizeNames = (string: string) => {
 };
 
 export const DonorPane: React.FC<{
-  locale: "en" | "no" | "se" | "et";
+  locale: "en" | "no" | "sv" | "et";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
@@ -163,7 +163,7 @@ export const DonorPane: React.FC<{
                     placeholder={text.name_placeholder}
                     {...register("name", { required: true, minLength: 3 })}
                   />
-                  {errors.name && <ErrorField text="Ugyldig navn" />}
+                  {errors.name && <ErrorField text={text.name_invalid_error_text} />}
                 </InputFieldWrapper>
                 <InputFieldWrapper>
                   <input
@@ -178,7 +178,7 @@ export const DonorPane: React.FC<{
                       },
                     })}
                   />
-                  {errors.email && <ErrorField text="Ugyldig epost" />}
+                  {errors.email && <ErrorField text={text.email_invalid_error_text} />}
                 </InputFieldWrapper>
                 <CheckBoxGroupWrapper>
                   <div>
@@ -220,7 +220,7 @@ export const DonorPane: React.FC<{
                               if (taxDeductionChecked) {
                                 if (locale === "no") {
                                   return validateSsnNo(trimmed);
-                                } else if (locale === "se") {
+                                } else if (locale === "sv") {
                                   return validateSsnSe(trimmed);
                                 } else {
                                   return true;
@@ -231,7 +231,9 @@ export const DonorPane: React.FC<{
                             },
                           })}
                         />
-                        {errors.ssn && <ErrorField text="Ugyldig fødselsnummer eller org.nr." />}
+                        {errors.ssn && (
+                          <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
+                        )}
                       </InputFieldWrapper>
                     )}
                   </div>

@@ -11,6 +11,7 @@ import { CenterDiv, Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { Stack, StyledPaneContent, StyledSpinnerWrapper } from "./SwishPane.style";
 import dynamic from "next/dynamic";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
+import { usePlausible } from "next-plausible";
 
 function isStringEnum<T extends string>(x: any, e: T[]): x is T {
   return e.includes(x);
@@ -64,6 +65,8 @@ export const SwishPane = dynamic<{
       const [{ isDesktop, isMobile }] = useDeviceSelectors();
       const [showQrCode, setShowQrCode] = useState(!isMobile);
 
+      const plausible = usePlausible();
+
       useEffect(() => {
         if (!token || !isMobile) return;
 
@@ -113,10 +116,22 @@ export const SwishPane = dynamic<{
                         </StyledSpinnerWrapper>
                         {token && !isDesktop ? (
                           <>
-                            <EffektButton onClick={() => triggerSwishApp(token)}>
+                            <EffektButton
+                              onClick={() => {
+                                plausible("DraftSwishAgreementInApp");
+                                plausible("CompleteDonation");
+                                triggerSwishApp(token);
+                              }}
+                            >
                               Öppna Swish
                             </EffektButton>
-                            <EffektButton onClick={() => setShowQrCode(true)}>
+                            <EffektButton
+                              onClick={() => {
+                                plausible("DraftSwishAgreementWithQR");
+                                plausible("CompleteDonation");
+                                setShowQrCode(true);
+                              }}
+                            >
                               Visa QR-kod istället
                             </EffektButton>
                           </>
