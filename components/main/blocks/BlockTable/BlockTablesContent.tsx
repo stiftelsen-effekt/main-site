@@ -131,7 +131,7 @@ export const BlockTablesContent: React.FC<{
             if (distance > 0) {
               contentsRef.current?.scrollBy({
                 left: distance,
-                behavior: "instant",
+                behavior: "auto",
               });
               setScrollButtonTouchStart(e.touches[0].clientX);
             }
