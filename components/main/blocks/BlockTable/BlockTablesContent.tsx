@@ -84,67 +84,25 @@ export const BlockTablesContent: React.FC<{
                 <thead key={row._key}>
                   <tr>
                     {row.cells.map((cell, index) => (
-                      <th
-                        key={index}
-                        style={{
-                          width:
-                            fixedWidths && fixedWidths[index] ? `${fixedWidths[index]}rem` : "auto",
-                        }}
-                      >
+                      <th key={index} style={getCellStyle(index, fixedWidths)}>
                         {cell}
                       </th>
                     ))}
                   </tr>
                 </thead>
               );
-            } else if (index === rows.length - 1 && config && config.lastrow_seperator) {
-              return (
-                <tbody key={row._key} className={styles.lastRow}>
-                  <tr>
-                    {row.cells.map((cell, index) => (
-                      <td
-                        key={index}
-                        style={{
-                          width:
-                            fixedWidths && fixedWidths[index] ? `${fixedWidths[index]}rem` : "auto",
-                        }}
-                      >
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              );
-            } else if (index === rows.length - 2 && config && config.lastrow_seperator) {
-              return (
-                <tbody key={row._key} className={styles.secondLastRow}>
-                  <tr>
-                    {row.cells.map((cell, index) => (
-                      <td
-                        key={index}
-                        style={{
-                          width:
-                            fixedWidths && fixedWidths[index] ? `${fixedWidths[index]}rem` : "auto",
-                        }}
-                      >
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              );
             } else {
+              const classes = [];
+              if (config && config.lastrow_seperator && index === rows.length - 1) {
+                classes.push(styles.lastRow);
+              } else if (config && config.lastrow_seperator && index === rows.length - 2) {
+                classes.push(styles.secondLastRow);
+              }
               return (
-                <tbody key={row._key}>
+                <tbody key={row._key} className={classes.join(" ")}>
                   <tr>
                     {row.cells.map((cell, index) => (
-                      <td
-                        key={index}
-                        style={{
-                          width:
-                            fixedWidths && fixedWidths[index] ? `${fixedWidths[index]}rem` : "auto",
-                        }}
-                      >
+                      <td key={index} style={getCellStyle(index, fixedWidths)}>
                         {cell}
                       </td>
                     ))}
@@ -168,4 +126,10 @@ export const BlockTablesContent: React.FC<{
       )}
     </div>
   );
+};
+
+const getCellStyle = (index: number, fixedWidths?: number[]): CSSProperties => {
+  return {
+    width: fixedWidths && fixedWidths[index] ? `${fixedWidths[index]}rem` : "auto",
+  };
 };
