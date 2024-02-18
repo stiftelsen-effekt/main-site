@@ -32,6 +32,19 @@ export type AvtaleGiroAgreement = {
   cancelled: string;
 };
 
+export type AutoGiroAgreement = {
+  ID: number;
+  mandateID: number;
+  KID: string;
+  amount: string;
+  payment_date: number;
+  notice: boolean;
+  active: boolean;
+  last_updated: string;
+  created: string;
+  cancelled: string;
+};
+
 export type VippsAgreement = {
   ID: number;
   status: "EXPIRED" | "PENDING" | "ACTIVE" | "STOPPED";
@@ -48,12 +61,20 @@ export type VippsAgreement = {
 
 export type Distribution = {
   kid: string;
-  standardDistribution: boolean;
-  taxUnit: TaxUnit | null;
-  shares: {
+  donorId: number;
+  taxUnitId: number | null;
+  causeAreas: DistributionCauseArea[];
+};
+
+export type DistributionCauseArea = {
+  id: number;
+  name?: string;
+  standardSplit: boolean;
+  percentageShare: string;
+  organizations: {
     id: number;
-    name: string;
-    share: string;
+    name?: string;
+    percentageShare: string;
   }[];
 };
 
@@ -92,6 +113,7 @@ export type SEOMeta = {
   description: string;
   imageAsset: SanityAsset;
   canonicalurl: string;
+  keywords?: string;
 };
 
 export type FacebookDonationRegistration = {
@@ -110,7 +132,7 @@ export type TaxUnit = {
   sumDonations: number;
   registered: string;
   archived: string | null;
-  taxDeductions?: { year: number; sumDonations: number; taxDeduction: number }[];
+  taxDeductions?: { year: number; sumDonations: number; deduction: number; benefit: number }[];
 };
 
 export type TaxYearlyReport = {

@@ -12,14 +12,14 @@ describe("Tax reports page valid", () => {
       }).as("getDonor");
     });
 
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
+    cy.fixture("cause_areas").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
         body: {
           status: 200,
-          content: orgs,
+          content: causeAreas,
         },
-      }).as("getOrganizations");
+      }).as("getCauseAreas");
     });
 
     cy.fixture("referrals").then((referrals) => {
@@ -71,16 +71,13 @@ describe("Tax reports page valid", () => {
     /**
      * Wait for initial data load
      */
-    cy.wait(
-      ["@getDonor", "@getOrganizations", "@getReports", "@getDonations", "@getDistribution"],
-      {
-        timeout: 30000,
-      },
-    );
+    cy.wait(["@getDonor", "@getCauseAreas", "@getReports", "@getDonations", "@getDistribution"], {
+      timeout: 30000,
+    });
   });
 
   it("should display correct information in unit table", () => {
-    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2022");
+    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2023");
 
     cy.get("[data-cy=generic-list-table]").first().find(">tbody").should("have.length", 2);
 

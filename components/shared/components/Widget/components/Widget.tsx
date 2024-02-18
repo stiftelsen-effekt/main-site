@@ -13,9 +13,9 @@ import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.server";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { WidgetContext } from "../../../../main/layout/layout";
+import { fetchCauseAreasAction } from "../store/layout/actions";
 import { paymentMethodConfigurations } from "../config/methods";
 import { setRecurring } from "../store/donation/actions";
-import { fetchOrganizationsAction } from "../store/layout/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
 import { RecurringDonation } from "../types/Enums";
@@ -34,6 +34,7 @@ const widgetQuery = groq`
   {
     "widget": *[_type == "donationwidget"] {
       ...,
+      "locale": *[ _type == "site_settings"][0].main_locale,
       methods[] { 
         _type == 'reference' => @->{
           _type == 'bank' => {
@@ -45,6 +46,7 @@ const widgetQuery = groq`
             recurring_title,
             recurring_selector_earliest_text,
             recurring_selector_choose_date_text,
+            recurring_selector_date_picker_configuration->,
             recurring_button_text,
             single_title,
             single_button_text,
@@ -52,9 +54,25 @@ const widgetQuery = groq`
           _type == 'swish' => {
             ...
           },
+          _type == 'autogiro' => {
+            ...,
+            recurring_manual_option_config {
+              ...,
+              date_selector_config->
+            }
+          },
+          _type == 'avtalegiro' => {
+            ...,
+            date_selector_configuration->
+          },
         },
+      },
+      privacy_policy_link {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
       }
-    }
+    },
   }
 `;
 
@@ -153,7 +171,7 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
 
   useEffect(() => scaleWidget, [widgetOpen, scaleWidget]);
 
-  const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 100, { maxWait: 100 });
+  const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 1000, { maxWait: 1000 });
 
   useEffect(() => {
     window.addEventListener("resize", debouncedScaleWidget);
@@ -194,7 +212,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
 
   useEffect(() => {
-    dispatch(fetchOrganizationsAction.started(undefined));
+    dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
@@ -217,26 +235,29 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
             text={{
               single_donation_text: widget.single_donation_text,
               monthly_donation_text: widget.monthly_donation_text,
-              preset_amounts_recurring: widget.preset_amounts_recurring,
-              preset_amounts_single: widget.preset_amounts_single,
-              smart_fordeling_text: widget.smart_fordeling_text,
-              smart_fordeling_description: widget.smart_fordeling_description,
-              choose_your_own_text: widget.choose_your_own_text,
+              amount_context: widget.amount_context,
+              smart_distribution_context: widget.smart_distribution_context,
               pane1_button_text: widget.pane1_button_text,
+              donation_input_error_templates: widget.donation_input_error_templates,
             }}
             enableRecurring={availableRecurringOptions.recurring}
             enableSingle={availableRecurringOptions.single}
           />
           <DonorPane
+            locale={widget.locale}
             text={{
               anon_button_text: widget.anon_button_text,
               name_placeholder: widget.name_placeholder,
+              name_invalid_error_text: widget.name_invalid_error_text,
               email_placeholder: widget.email_placeholder,
+              email_invalid_error_text: widget.email_invalid_error_text,
               tax_deduction_selector_text: widget.tax_deduction_selector_text,
               tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
+              tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
               tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
               newsletter_selector_text: widget.newsletter_selector_text,
               privacy_policy_text: widget.privacy_policy_text,
+              privacy_policy_link: widget.privacy_policy_link,
               pane2_button_text: widget.pane2_button_text,
             }}
             paymentMethods={availablePaymentMethods}

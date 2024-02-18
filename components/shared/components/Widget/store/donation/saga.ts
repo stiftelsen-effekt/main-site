@@ -134,16 +134,14 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const donation: Donation = yield select((state: State) => state.donation);
 
     const data: RegisterDonationObject = {
+      distributionCauseAreas: donation.distributionCauseAreas.filter(
+        (c) => parseFloat(c.percentageShare) > 0,
+      ),
       donor: donation.donor,
       method: donation.method || PaymentMethod.BANK,
       amount: donation.sum || 0,
       recurring: donation.recurring,
-      phone: donation.phone,
     };
-
-    if (donation.shareType === ShareType.CUSTOM) {
-      data.organizations = donation.shares;
-    }
 
     const request = yield call(fetch, `${API_URL}/donations/register`, {
       method: "POST",

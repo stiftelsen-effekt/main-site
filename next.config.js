@@ -67,7 +67,24 @@ const nextConfig = {
       },
       {
         source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
         destination: "/ofte-stilte-sporsmal",
+        permanent: true,
+      },
+      {
+        source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/vanliga-fragor",
         permanent: true,
       },
       {
@@ -92,7 +109,24 @@ const nextConfig = {
       },
       {
         source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
         destination: "/artikler",
+        permanent: true,
+      },
+      {
+        source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/artiklar",
         permanent: true,
       },
       {
@@ -222,6 +256,168 @@ const nextConfig = {
         source: "/profile/agreements",
         destination: "/min-side/avtaler",
         permanent: true,
+      },
+      {
+        source: "/blogg/skanka-pengar-i-kris",
+        destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
+        permanent: true,
+      },
+      {
+        source: "/blogg/skanka-till-jordbavningen-i-turkiet",
+        destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
+        permanent: true,
+      },
+      {
+        source: "/blogg/donera-till-ukraina",
+        destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
+        permanent: true,
+      },
+      {
+        source: "/tre-anledningar-till-varfor-vi-bor-donera-pengar-till-valgorenhet",
+        destination: "/artiklar/tre-anledningar-till-att-ge",
+        permanent: true,
+      },
+      {
+        source: "/blogg/arbete-eller-tur",
+        destination: "/artiklar/arbete-eller-tur",
+        permanent: true,
+      },
+      {
+        source: "/globalojamlikhet",
+        destination: "/artiklar/global-ojamlikhet",
+        permanent: true,
+      },
+      {
+        source: "/blogg/prm_arvid_norin",
+        destination: "/artiklar/arvid-ger-mer-aen-halva-loenen-till-klimatet",
+        permanent: true,
+      },
+      {
+        source: "/kan-lycka-kpas-for-pengar",
+        destination: "/artiklar/kan-lycka-kopas-for-pengar",
+        permanent: true,
+      },
+      {
+        source: "/blogg/vilka-organisationer-samlar-in-mest-pengar",
+        destination: "/artiklar/vilka-organisationer-samlar-in-mest-pengar",
+        permanent: true,
+      },
+      {
+        source: "/vilkor",
+        destination: "/integritetspolicy",
+        permanent: true,
+      },
+      {
+        source: "/organisationer",
+        destination: "/rekommenderade-organisationer",
+        permanent: false,
+      },
+      {
+        source: "/en",
+        destination: "/",
+        permanent: false,
+      },
+      { source: "/organisationer/faunalytics", destination: "/djurvalfard", permanent: true },
+      {
+        source: "/organisationer/wild-animal-initiative",
+        destination: "/djurvalfard",
+        permanent: true,
+      },
+      { source: "/organisationer/the-humane-league", destination: "/djurvalfard", permanent: true },
+      {
+        source: "/organisationer/djurvalfard/good-food-institute",
+        destination: "/djurvalfard",
+        permanent: true,
+      },
+      {
+        source: "/organisationer/ace-recommended-charity-fund",
+        destination: "/klimat",
+        permanent: true,
+      },
+      { source: "/organisationer/clean-air-task-force", destination: "/klimat", permanent: true },
+      {
+        source: "/organisationer/klimat/good-food-institute",
+        destination: "/klimat",
+        permanent: true,
+      },
+      {
+        source: "/organisationer/evergreen-collaborative",
+        destination: "/klimat",
+        permanent: true,
+      },
+      { source: "/organisationer/good-energy-collective", destination: "/klimat", permanent: true },
+      { source: "/organisationer/industrious-labs", destination: "/klimat", permanent: true },
+      {
+        source: "/organisationer/founders-pledge-climate-change-fund",
+        destination: "/klimat",
+        permanent: true,
+      },
+      { source: "/metod", destination: "/var-metod", permanent: true },
+      { source: "/varfr-ge-effektivt", destination: "/", permanent: true },
+      { source: "/organisationer#global-halsa", destination: "/global-halsa", permanent: true },
+      {
+        source: "/organisationer/against-malaria-foundation",
+        destination: "/global-halsa",
+        permanent: true,
+      },
+      {
+        source: "/organisationer/malaria-consortium",
+        destination: "/global-halsa",
+        permanent: true,
+      },
+      {
+        source: "/organisationer/helen-keller-international",
+        destination: "/global-halsa",
+        permanent: true,
+      },
+      {
+        source: "/organisationer/top-charities-all-grants-fund",
+        destination: "/global-halsa",
+        permanent: true,
+      },
+      { source: "/organisationer/new-incentives", destination: "/global-halsa", permanent: true },
+      { source: "/organisationer#djurvalfard", destination: "/djurvalfard", permanent: true },
+      { source: "/organisationer#klimat", destination: "/klimat", permanent: true },
+      { source: "/ge", destination: "/", permanent: true },
+      {
+        source: "/filantropi",
+        destination: "/filantropisk-radgivning",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: true,
+      },
+      { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
+      { source: "/om", destination: "/om-oss", permanent: true },
+      {
+        source: "/vi-behoever-prata-om-administrationskostnaderna",
+        destination: "/artiklar/vi-maste-prata-om-administrationskostnaderna",
+        permanent: true,
+      },
+      {
+        source: "/arsrapport-2021",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/arsrapport-2022",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
       },
     ];
   },

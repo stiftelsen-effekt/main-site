@@ -9,7 +9,16 @@ import { toast } from "react-toastify";
 
 import styles from "./MissingNameModal.module.scss";
 
-export const MissingNameModal: React.FC = () => {
+export type MissingNameModalConfig = {
+  title: string;
+  description: string;
+  confirm_label: string;
+  cancel_label: string;
+  failure_message: string;
+  success_message: string;
+};
+
+export const MissingNameModal: React.FC<{ config: MissingNameModalConfig }> = ({ config }) => {
   const { donor, setDonor } = useContext(DonorContext);
   const { user, getAccessTokenSilently } = useAuth0();
   const [name, setName] = useState("");
@@ -29,14 +38,14 @@ export const MissingNameModal: React.FC = () => {
       const token = await getAccessTokenSilently();
       const result = await saveDonor(updatedDonor, user, token);
       if (result === null) {
-        failureToast();
+        failureToast(config.failure_message);
       } else {
-        successToast();
+        successToast(config.success_message);
         setDonor(updatedDonor);
         setOpen(false);
       }
     } else {
-      failureToast();
+      failureToast(config.failure_message);
     }
     setLoading(false);
   };
@@ -44,17 +53,16 @@ export const MissingNameModal: React.FC = () => {
   return (
     <Lightbox
       open={open}
+      confirmLabel={config.confirm_label}
       onConfirm={saveName}
       valid={name.length > 0}
       loading={loading}
+      cancelLabel={config.cancel_label}
       onCancel={() => setOpen(false)}
     >
       <div className={styles.container}>
-        <h5>Navn mangler</h5>
-        <span>
-          Vi mangler ditt navn. Vi bruker navnet ditt til å drive støttefunksjoner, finne
-          facebook-donasjoner og slå sammen duplikate brukere i databasen vår.
-        </span>
+        <h5>{config.title}</h5>
+        <span>{config.description}</span>
         <div className={styles.inputContainer}>
           <EffektTextInput value={name} onChange={setName} />
         </div>
@@ -63,6 +71,7 @@ export const MissingNameModal: React.FC = () => {
   );
 };
 
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
+const successToast = (msg: string) =>
+  toast.success(msg, { icon: <Check size={24} color={"black"} /> });
+const failureToast = (msg: string) =>
+  toast.error(msg, { icon: <AlertCircle size={24} color={"black"} /> });

@@ -12,9 +12,10 @@ import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
-import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
+import { MissingNameModal, MissingNameModalConfig } from "./MissingNameModal/MissingNameModal";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
+import { getClient } from "../../../lib/sanity.server";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -28,17 +29,44 @@ const useShouldAuthenticate = (): boolean => {
   return shouldBypass;
 };
 
+type QueryResult = {
+  data: {
+    site_title: string;
+    login_error_configuration: {
+      login_abort_label: string;
+      login_button_label: string;
+    };
+    missing_name_modal_config?: MissingNameModalConfig;
+  };
+};
+
+export const profileQuery = `
+  {
+    "data": {
+      "site_title": *[_type == "site_settings"][0].title,
+      "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
+      "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_configuration
+    }
+  }
+`;
+
 export const ProfileLayout = withStaticProps(async ({ preview }: { preview: boolean }) => {
+  const result = await getClient(preview).fetch<QueryResult>(profileQuery);
+
   return {
     footerData: await Footer.getStaticProps({ preview }),
     widgetData: await Widget.getStaticProps({ preview }),
+    profileData: result.data,
     isPreview: preview,
   };
-})(({ children, footerData, widgetData, isPreview }) => {
+})(({ children, footerData, widgetData, profileData, isPreview }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
-  const [cookiesAccepted, setCookiesAccepted] = useState(true);
+  const [cookiesAccepted, setCookiesAccepted] = useState({
+    accepted: true,
+    loaded: true,
+  });
   const bypassAuth = useShouldAuthenticate();
 
   let cacheLocation: CacheLocation = "memory";
@@ -67,7 +95,11 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
     >
       <div className={styles.container + " " + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
-          <UserWrapper skipAuthentication={bypassAuth}>
+          <UserWrapper
+            skipAuthentication={bypassAuth}
+            siteTitle={profileData.site_title}
+            loginErrorConfig={profileData.login_error_configuration}
+          >
             <DonorProvider>
               <ActivityProvider>
                 <ToastContainer
@@ -88,7 +120,9 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
                     <WidgetPane darkMode={true} {...widgetData} />
                     <main className={styles.main}>{children}</main>
-                    <MissingNameModal />
+                    {profileData.missing_name_modal_config && (
+                      <MissingNameModal config={profileData.missing_name_modal_config} />
+                    )}
                   </CookiesAccepted.Provider>
                 </WidgetContext.Provider>
                 <Footer {...footerData} />

@@ -4,7 +4,10 @@ import { BlockContentRenderer } from "../components/main/blocks/BlockContentRend
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
-import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import {
+  CookieBanner,
+  CookieBannerConfiguration,
+} from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
@@ -56,10 +59,12 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
+        titleTemplate={`${data.result.settings[0].title} | %s`}
+        keywords={header.seoKeywords}
       />
 
       <MainHeader hideOnScroll={true}>
-        <CookieBanner />
+        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
         <Navbar {...navbarData} />
       </MainHeader>
 
@@ -88,6 +93,10 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
 });
 
 type FetchVippsResult = {
+  settings: Array<{
+    title: string;
+    cookie_banner_configuration: CookieBannerConfiguration;
+  }>;
   vipps?: Array<{
     agreement_page: Record<string, any> & {
       slug: {
@@ -99,6 +108,10 @@ type FetchVippsResult = {
 
 const fetchVipps = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+    cookie_banner_configuration,
+  },
   "vipps": *[_id == "vipps"] {
     agreement_page->{
       slug {

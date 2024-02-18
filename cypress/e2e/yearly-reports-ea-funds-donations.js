@@ -12,14 +12,14 @@ describe("Tax reports page with ea funds donations", () => {
       }).as("getDonor");
     });
 
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
+    cy.fixture("cause_areas").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
         body: {
           status: 200,
-          content: orgs,
+          content: causeAreas,
         },
-      }).as("getOrganizations");
+      }).as("getCauseAreas");
     });
 
     cy.fixture("referrals").then((referrals) => {
@@ -71,12 +71,9 @@ describe("Tax reports page with ea funds donations", () => {
     /**
      * Wait for initial data load
      */
-    cy.wait(
-      ["@getDonor", "@getOrganizations", "@getReports", "@getDonations", "@getDistribution"],
-      {
-        timeout: 30000,
-      },
-    );
+    cy.wait(["@getDonor", "@getCauseAreas", "@getReports", "@getDonations", "@getDistribution"], {
+      timeout: 30000,
+    });
   });
 
   it("should contain info icon with tooltip in unit table title", () => {

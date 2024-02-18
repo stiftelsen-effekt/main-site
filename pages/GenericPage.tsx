@@ -49,9 +49,11 @@ export const GenericPage = withStaticProps(
   const header = page.header;
   const content = page.content;
 
-  let cannonicalUrlDefault: string = `https://gieffektivt.no/${page.slug?.current ?? ""}`;
+  let cannonicalUrlDefault: string = `${process.env.NEXT_PUBLIC_SITE_URL}/${
+    page.slug?.current ?? ""
+  }`;
   if (page.slug?.current == "/") {
-    cannonicalUrlDefault = "https://gieffektivt.no/";
+    cannonicalUrlDefault = `${process.env.NEXT_PUBLIC_SITE_URL}`;
   }
 
   return (
@@ -61,10 +63,12 @@ export const GenericPage = withStaticProps(
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={header.cannonicalUrl ?? cannonicalUrlDefault}
+        titleTemplate={`${data.result.settings[0].title} | %s`}
+        keywords={header.seoKeywords}
       />
 
       <MainHeader hideOnScroll={true}>
-        <CookieBanner />
+        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
         <Navbar {...navbarData} />
       </MainHeader>
 
@@ -91,6 +95,10 @@ const fetchGenericPages = groq`
 
 const fetchGenericPage = groq`
 {
+  "settings": *[_type == "site_settings"] {
+    title,
+    cookie_banner_configuration,
+  },
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
       ...,

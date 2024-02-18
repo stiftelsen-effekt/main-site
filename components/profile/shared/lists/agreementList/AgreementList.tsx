@@ -1,8 +1,15 @@
-import { AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../../../../models";
+import { PortableText } from "@portabletext/react";
+import {
+  AutoGiroAgreement,
+  AvtaleGiroAgreement,
+  Distribution,
+  TaxUnit,
+  VippsAgreement,
+} from "../../../../../models";
 import { thousandize } from "../../../../../util/formatting";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
-import { AgreementDetails } from "./AgreementDetails";
+import { AgreementDetails, AgreementDetailsConfiguration } from "./AgreementDetails";
 
 type AgreementRow = {
   ID: number;
@@ -10,36 +17,40 @@ type AgreementRow = {
   KID: string;
   date: number;
   amount: number;
-  type: "Vipps" | "AvtaleGiro";
+  type: "Vipps" | "AvtaleGiro" | "AutoGiro";
   endpoint: string;
+};
+
+type AgreementListConfigurationColumn = {
+  title: string;
+  value: keyof AgreementRow;
+  type: "string" | "sum" | "date" | "paymentmethod";
+  width?: string;
+  payment_date_format_template?: string;
+  payment_date_last_day_of_month_template?: string;
+};
+
+type AgreementListConfiguration = {
+  title: string;
+  subtitle_text: string;
+  list_empty_content: any[];
+  columns: AgreementListConfigurationColumn[];
+  details_configuration: AgreementDetailsConfiguration;
 };
 
 export const AgreementList: React.FC<{
   avtalegiro: AvtaleGiroAgreement[];
   vipps: VippsAgreement[];
-  title: string;
-  supplemental: string;
-  emptyString: string;
+  autogiro: AutoGiroAgreement[];
   distributions: Map<string, Distribution>;
+  taxUnits: TaxUnit[];
   expandable?: boolean;
-}> = ({ avtalegiro, vipps, title, supplemental, emptyString, distributions, expandable }) => {
-  const headers = [
-    {
-      label: "Type",
-      width: "15%",
-    },
-    {
-      label: "Dato",
-      width: "25%",
-    },
-    {
-      label: "Sum",
-      width: "25%",
-    },
-    {
-      label: "KID",
-    },
-  ];
+  configuration: AgreementListConfiguration;
+}> = ({ avtalegiro, vipps, autogiro, distributions, taxUnits, expandable, configuration }) => {
+  const headers = configuration.columns.map((column) => ({
+    label: column.title,
+    width: column.width,
+  }));
 
   let vippsType = vipps.map(
     (entry): AgreementRow => ({
@@ -65,7 +76,21 @@ export const AgreementList: React.FC<{
     }),
   );
 
-  let rowData: AgreementRow[] = [...vippsType, ...giroType];
+  let autoGiroType = autogiro.map(
+    (entry: AutoGiroAgreement): AgreementRow => ({
+      ID: entry.ID,
+      status: entry.active,
+      KID: entry.KID,
+      date: entry.payment_date,
+      amount: parseFloat(entry.amount),
+      type: "AutoGiro",
+      endpoint: entry.KID,
+    }),
+  );
+
+  console.log(autoGiroType);
+
+  let rowData: AgreementRow[] = [...vippsType, ...giroType, ...autoGiroType];
 
   /**
    * Maps agreements into rows in the agreement table.
@@ -73,27 +98,18 @@ export const AgreementList: React.FC<{
   const rows: ListRow<AgreementRow>[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
     defaultExpanded: false,
-    cells: [
-      { value: agreement.type },
-      {
-        value:
-          agreement.date > 0
-            ? "Den " +
-              agreement.date // agreement.payment_date ||
-                .toString() +
-              ". hver måned"
-            : "Siste dagen i måneden",
-      },
-      { value: thousandize(agreement.amount) + " kr" },
-      { value: agreement.KID },
-    ],
+    cells: configuration.columns.map((column) => ({
+      value: formatColumnValue(column, agreement[column.value]),
+    })),
     details: (
       <AgreementDetails
         type={agreement.type}
         endpoint={agreement.endpoint}
         inputDistribution={distributions.get(agreement.KID) as Distribution}
+        taxUnits={taxUnits}
         inputSum={agreement.amount}
         inputDate={agreement.date}
+        configuration={configuration.details_configuration}
       />
     ),
     element: agreement,
@@ -101,23 +117,34 @@ export const AgreementList: React.FC<{
 
   const emptyPlaceholder = (
     <div data-cy="agreement-list-empty-placeholder">
-      <div>{emptyString}</div>
-      <div>
-        Mangler det avtaler vi ikke har registrert? Ta kontakt på{" "}
-        <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.
-      </div>
+      <PortableText value={configuration.list_empty_content} />
     </div>
   );
 
   return (
     <GenericList
       emptyPlaceholder={emptyPlaceholder}
-      title={title}
-      supplementalInformation={supplemental}
+      title={configuration.title}
+      supplementalInformation={configuration.subtitle_text}
       headers={headers}
       rows={rows}
       expandable={expandable}
       proportions={[20, 70]}
     />
   );
+};
+
+const formatColumnValue = (column: AgreementListConfigurationColumn, value: any) => {
+  switch (column.type) {
+    case "string":
+      return value;
+    case "sum":
+      return thousandize(Math.round(parseFloat(value))) + " kr";
+    case "date":
+      return value === 0
+        ? column.payment_date_last_day_of_month_template
+        : column.payment_date_format_template?.replaceAll("{{date}}", value);
+    case "paymentmethod":
+      return value;
+  }
 };

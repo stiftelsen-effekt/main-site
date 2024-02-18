@@ -1,13 +1,20 @@
 import React from "react";
 import styles from "./NewsletterSignup.module.scss";
 
-export const NewsletterSignup: React.FC<{ header?: string }> = ({ header }) => {
+export const NewsletterSignup: React.FC<{
+  header?: string;
+  formurl?: string;
+  sendlabel?: string;
+}> = ({ header, formurl, sendlabel }) => {
   /* This is a modified version of mailchimps embedded subscribe-element
     see docs/mailchimp.html for the original version */
+
+  if (!formurl) return <span>Newsletter missing formurl</span>;
+
   return (
     <form
       className={`${styles.category} ${styles.newsletter}`}
-      action="https://gieffektivt.us13.list-manage.com/subscribe/post?u=b187f08a296043edd3aa56680&amp;id=4c98331f9d"
+      action={formurl}
       method="post"
       id="mc-embedded-subscribe-form"
       name="mc-embedded-subscribe-form"
@@ -32,9 +39,8 @@ export const NewsletterSignup: React.FC<{ header?: string }> = ({ header }) => {
             type="submit"
             name="subscribe"
             id="mc-embedded-subscribe"
-            title="Send påmelding til nyhetsbrev"
           >
-            SEND&nbsp;→
+            {sendlabel}&nbsp;→
           </button>
         </div>
       </fieldset>

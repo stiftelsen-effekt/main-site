@@ -1,3 +1,4 @@
+import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { OrganizationShare } from "../../types/Temp";
 import { VippsAgreement } from "../state";
@@ -5,7 +6,7 @@ import { VippsAgreement } from "../state";
 export const SELECT_PAYMENT_METHOD = "SELECT_PAYMENT_METHOD";
 export const SELECT_TAX_DEDUCTION = "SELECT_TAX_DEDUCTION";
 export const SUBMIT_DONOR_INFO = "SUBMIT_DONOR_INFO";
-export const SUBMIT_PHONE_NUMBER = "SUBMIT_PHONE_NUMBER";
+export const SET_CAUSE_AREA_PERCENTAGE_SHARE = "SET_CAUSE_AREA_PERCENTAGE_SHARE";
 export const SET_SHARES = "SET_SHARES";
 export const SET_SUM = "SET_SUM";
 export const SET_DUE_DAY = "SET_DUE_DAY";
@@ -42,17 +43,19 @@ interface SubmitDonorInfo {
   };
 }
 
-interface SubmitPhoneNumber {
-  type: typeof SUBMIT_PHONE_NUMBER;
+interface SetCauseAreaPercentageShare {
+  type: typeof SET_CAUSE_AREA_PERCENTAGE_SHARE;
   payload: {
-    phone: string;
+    causeAreaId: number;
+    percentageShare: string;
   };
 }
 
 interface SetShares {
   type: typeof SET_SHARES;
   payload: {
-    shares: OrganizationShare[];
+    causeAreaId: number;
+    shares: DistributionCauseAreaOrganization[];
   };
 }
 
@@ -101,6 +104,7 @@ interface SetPaymentProviderURL {
 interface SelectCustomShare {
   type: typeof SELECT_CUSTOM_SHARE;
   payload: {
+    causeAreaId: number;
     customShare: boolean;
   };
 }
@@ -108,7 +112,8 @@ interface SelectCustomShare {
 interface SetShareType {
   type: typeof SET_SHARE_TYPE;
   payload: {
-    shareType: ShareType;
+    causeAreaId: number;
+    standardSplit: boolean;
   };
 }
 
@@ -123,7 +128,7 @@ export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
   | SubmitDonorInfo
-  | SubmitPhoneNumber
+  | SetCauseAreaPercentageShare
   | SetShares
   | SetSum
   | SetDueDay

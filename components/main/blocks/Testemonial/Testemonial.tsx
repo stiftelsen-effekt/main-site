@@ -62,7 +62,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
         >
           {testimonies.map(({ quotee, quotee_background, quote, image }) => (
             <div className={styles.testimonial} key={quotee}>
-              <h4 className={styles.testemonial__quote}>“{quote}”</h4>
+              {quote && <h4 className={styles.testemonial__quote}>“{quote}”</h4>}
               <div className={styles.testemonial__image}>
                 {image && <ResponsiveImage image={image} />}
               </div>

@@ -36,7 +36,7 @@ export const TaxYearlyReportListSupplemental: React.FC<{
         <h3 data-cy="yearly-tax-report-sum">
           {thousandize(report.units.reduce((acc, u) => acc + u.sumDonations, 0))} kr
         </h3>
-        <span>Totalt sum donert i 2022 som er skattefradragsgodkjent</span>
+        <span>Totalt sum donert i {report.year} som er skattefradragsgodkjent</span>
       </div>
       <div className={style.taxMessageInfo}>
         <span>

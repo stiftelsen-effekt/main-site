@@ -7,7 +7,8 @@ export const DatePicker: React.FC<{
   onChange: (selected: number) => void;
   onClickOutside?: () => void;
   className?: string;
-}> = ({ selected, onChange, onClickOutside, className }) => {
+  lastDayOfMonthLabel?: string;
+}> = ({ selected, onChange, onClickOutside, className, lastDayOfMonthLabel }) => {
   const dates = [...Array.from(Array(29).keys()).map((x) => x.toString())].slice(1, 29);
 
   const datepickerContainerRef = useRef<HTMLDivElement>(null);
@@ -51,7 +52,7 @@ export const DatePicker: React.FC<{
           }}
           data-cy="date-picker-button-last"
         >
-          Siste dag i måneden
+          {lastDayOfMonthLabel}
         </button>
       </div>
     </div>

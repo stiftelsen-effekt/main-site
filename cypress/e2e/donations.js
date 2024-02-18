@@ -50,14 +50,14 @@ describe("Donations page", () => {
       })
       .as("getDistribution");
 
-    cy.fixture("organizations").then((orgs) => {
-      cy.intercept("GET", "/organizations/active", {
+    cy.fixture("cause_areas").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/active", {
         statusCode: 200,
         body: {
           status: 200,
-          content: orgs,
+          content: causeAreas,
         },
-      }).as("getOrganizations");
+      }).as("getCauseAreas");
     });
 
     cy.fixture("referrals").then((referrals) => {
@@ -78,6 +78,16 @@ describe("Donations page", () => {
           content: orgs,
         },
       }).as("getOrganizations");
+    });
+
+    cy.fixture("taxunits").then((units) => {
+      cy.intercept("GET", "/donors/*/taxunits/", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: units,
+        },
+      }).as("getTaxUnits");
     });
 
     cy.fixture(`evaluations/evaluations.json`)
@@ -118,7 +128,7 @@ describe("Donations page", () => {
      * Wait for initial data load
      */
     cy.wait(
-      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getOrganizations"],
+      ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getCauseAreas"],
       {
         timeout: 30000,
       },

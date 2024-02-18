@@ -8,6 +8,12 @@ export default {
   icon: Link,
   fields: [
     {
+      name: "title",
+      title: "Title",
+      type: "string",
+      description: "Title for the links",
+    },
+    {
       name: "links",
       title: "Links",
       type: "array",

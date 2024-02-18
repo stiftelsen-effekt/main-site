@@ -16,7 +16,7 @@ export default {
       title: "Type",
       // validation: Rule => Rule.required(),
       options: {
-        list: ["book", "article", "website", "video", "podcast", "misc", "note"],
+        list: ["book", "article", "workingpaper", "website", "video", "podcast", "misc", "note"],
       },
     },
     {
@@ -37,8 +37,7 @@ export default {
       name: "journal",
       type: "string",
       title: "Journal",
-      hidden: ({ parent }: any) =>
-        typeof parent.type === "undefined" || parent.type !== "article" || parent.type === "note",
+      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "article",
     },
     {
       name: "year",
@@ -50,15 +49,13 @@ export default {
       name: "volume",
       type: "string",
       title: "Volume",
-      hidden: ({ parent }: any) =>
-        typeof parent.type === "undefined" || parent.type !== "article" || parent.type === "note",
+      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "article",
     },
     {
       name: "number",
       type: "string",
       title: "Number",
-      hidden: ({ parent }: any) =>
-        typeof parent.type === "undefined" || parent.type !== "article" || parent.type === "note",
+      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "article",
     },
     {
       name: "pages",
@@ -66,9 +63,7 @@ export default {
       title: "Pages",
       description: "E.g. 509-516",
       hidden: ({ parent }: any) =>
-        typeof parent.type === "undefined" ||
-        (parent.type !== "article" && parent.type !== "book") ||
-        parent.type === "note",
+        typeof parent.type === "undefined" || (parent.type !== "article" && parent.type !== "book"),
     },
     {
       name: "edition",
@@ -94,7 +89,9 @@ export default {
       name: "accessed",
       type: "datetime",
       title: "Accessed",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "website",
+      hidden: ({ parent }: any) =>
+        typeof parent.type === "undefined" ||
+        (parent.type !== "website" && parent.type !== "workingpaper"),
     },
     {
       name: "timestamp",
@@ -103,8 +100,23 @@ export default {
       description: "Optional timestamp for the cited information e.g. 32:45",
       hidden: ({ parent }: any) =>
         typeof parent.type === "undefined" ||
-        (parent.type !== "video" && parent.type !== "podcast") ||
-        parent.type === "note",
+        (parent.type !== "video" && parent.type !== "podcast"),
+    },
+    {
+      name: "serie",
+      type: "string",
+      title: "Serie",
+      hidden: ({ parent }: any) =>
+        typeof parent.type === "undefined" || parent.type !== "workingpaper",
+    },
+    {
+      name: "number_in_serie",
+      type: "string",
+      title: "Number in Serie",
+      hidden: ({ parent }: any) =>
+        typeof parent.type === "undefined" ||
+        parent.type !== "workingpaper" ||
+        typeof parent.serie === "undefined",
     },
     {
       name: "url",

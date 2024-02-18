@@ -1,35 +1,33 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./GiftCard.module.scss";
-import GiftImage from "./gave-cropped.png";
 import Link from "next/link";
 import Image from "next/image";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { ResponsiveImage } from "../../../shared/responsiveimage";
+import { LinkType, Links, LinksProps } from "../Links/Links";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
+import { PortableText } from "@portabletext/react";
 
-export const GiftCard: React.FC = () => {
+export const GiftCard: React.FC<{
+  title: string;
+  description: any[];
+  image: SanityImageSource;
+  links: (LinkType | NavLink)[];
+}> = ({ title, description, image, links }) => {
   const router = useRouter();
 
   return (
     <div className={styles.giftcard}>
       <div className={styles.giftcardimage}>
-        <Image src={GiftImage} />
+        <ResponsiveImage image={image} layout={"responsive"} />
       </div>
       <div className={styles.giftcardtext}>
         <div>
-          <h3>Gavekort.</h3>
-          <p>
-            Gi en gave til verden og noen du er glad i. Gjennomfør en donasjon som vanlig, last ned
-            malen vår under og print ut eller send digitalt.
-          </p>
+          <h3>{title}</h3>
+          <PortableText value={description} />
         </div>
-        <Link
-          href={
-            "https://drive.google.com/file/d/1Xaur4Fd1hXvfld_XMPrBK0-2y_Rp-V_v/view?usp=share_link"
-          }
-          target="_blank"
-          passHref
-        >
-          <a target={"_blank"}>→ Last ned mal til gavekort her</a>
-        </Link>
+        <Links links={links} />
       </div>
     </div>
   );

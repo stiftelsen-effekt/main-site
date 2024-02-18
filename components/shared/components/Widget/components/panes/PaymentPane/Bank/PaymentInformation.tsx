@@ -1,19 +1,20 @@
 import React from "react";
 import { Donation } from "../../../../store/state";
 import { RoundedBorder } from "../../../shared/Layout/Layout.style";
-import { TextWrapper } from "./ResultPane.style";
+import { TextWrapper } from "./BankPane.style";
 
 export const PaymentInformation: React.FC<{
   accountTitle: string;
   kidTitle: string;
   donation: Donation;
-}> = ({ donation, accountTitle, kidTitle }) => {
+  accountNr: string;
+}> = ({ donation, accountTitle, kidTitle, accountNr }) => {
   return (
     <>
       <RoundedBorder>
         <TextWrapper>
           <span>{accountTitle}</span>
-          <span>1506 29 95960</span>
+          <span>{accountNr}</span>
         </TextWrapper>
       </RoundedBorder>
       <RoundedBorder>

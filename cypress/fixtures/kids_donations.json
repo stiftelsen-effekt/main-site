@@ -1,207 +1,306 @@
 [
   {
     "kid": "74651480",
-    "standardDistribution": true,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "100.000000000000"
+        "id": 1,
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": true,
+        "organizations": [
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "100.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "29563244",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "50.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "50.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "50.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "50.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "189324340",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "10.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "10.000000000000"
-      },
-      {
-        "id": 3,
-        "name": "The End Fund",
-        "share": "10.000000000000"
-      },
-      {
-        "id": 4,
-        "name": "Malaria Consortium",
-        "share": "60.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "10.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "10.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "10.000000000000"
+          },
+          {
+            "id": 3,
+            "name": "The End Fund",
+            "percentageShare": "10.000000000000"
+          },
+          {
+            "id": 4,
+            "name": "Malaria Consortium",
+            "percentageShare": "60.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "10.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "92268267",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "35.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "30.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "35.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "35.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "30.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "35.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "973593270",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "25.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "10.000000000000"
-      },
-      {
-        "id": 3,
-        "name": "The End Fund",
-        "share": "10.000000000000"
-      },
-      {
-        "id": 11,
-        "name": "Drift av gieffektivt.no",
-        "share": "30.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "25.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "25.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "10.000000000000"
+          },
+          {
+            "id": 3,
+            "name": "The End Fund",
+            "percentageShare": "10.000000000000"
+          },
+          {
+            "id": 11,
+            "name": "Drift av gieffektivt.no",
+            "percentageShare": "30.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "25.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "32166183",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "63.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "37.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "63.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "37.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "889942150",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
-        "id": 6,
-        "name": "Sightsavers",
-        "share": "50.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "50.000000000000"
+        "id": 1,
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 6,
+            "name": "Sightsavers",
+            "percentageShare": "50.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "50.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "32245953",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "100.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "100.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "74289539",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "80.000000000000"
-      },
-      {
-        "id": 12,
-        "name": "GiveWells tildelingsfond",
-        "share": "20.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "80.000000000000"
+          },
+          {
+            "id": 12,
+            "name": "GiveWells tildelingsfond",
+            "percentageShare": "20.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "47666474",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "50.000000000000"
-      },
-      {
-        "id": 7,
-        "name": "GiveDirectly",
-        "share": "20.000000000000"
-      },
-      {
-        "id": 14,
-        "name": "New Incentives",
-        "share": "30.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "50.000000000000"
+          },
+          {
+            "id": 7,
+            "name": "GiveDirectly",
+            "percentageShare": "20.000000000000"
+          },
+          {
+            "id": 14,
+            "name": "New Incentives",
+            "percentageShare": "30.000000000000"
+          }
+        ]
       }
     ]
   },
   {
     "kid": "00002752162",
-    "standardDistribution": false,
-    "shares": [
+    "donorId": 27,
+    "taxUnitId": 4096,
+    "causeAreas": [
       {
         "id": 1,
-        "name": "Against Malaria Foundation",
-        "share": "50.000000000000"
-      },
-      {
-        "id": 2,
-        "name": "SCI Foundation",
-        "share": "50.000000000000"
+        "name": "Global helse",
+        "percentageShare": "100.000000000000000",
+        "standardSplit": false,
+        "organizations": [
+          {
+            "id": 1,
+            "name": "Against Malaria Foundation",
+            "percentageShare": "50.000000000000"
+          },
+          {
+            "id": 2,
+            "name": "SCI Foundation",
+            "percentageShare": "50.000000000000"
+          }
+        ]
       }
     ]
   }

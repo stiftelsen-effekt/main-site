@@ -1,0 +1,59 @@
+.datepicker-input-wrapper {
+  position: relative;
+  display: inline-block;
+
+  input {
+    z-index: 100;
+    padding-left: 2.5em !important;
+    border: none;
+    background: var(--secondary);
+    color: var(--primary);
+    font-size: 1em;
+    user-select: none;
+    font-family: "ESKlarheitGrotesk";
+    min-width: 14em;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  svg {
+    position: absolute;
+    left: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .datepicker-container {
+    position: absolute;
+    top: -240px;
+    left: 50%;
+    margin-left: calc(-280px / 2);
+    z-index: 1000;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .datepicker-input-wrapper {
+    position: static;
+    min-width: 100%;
+
+    input {
+      width: 100%;
+    }
+
+    .datepicker-container {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+    }
+  }
+}

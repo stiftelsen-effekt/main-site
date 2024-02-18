@@ -1,3 +1,5 @@
+import { CauseArea } from "../types/CauseArea";
+import { DistributionCauseArea } from "../types/DistributionCauseArea";
 import { PaymentMethod, RecurringDonation, ShareType } from "../types/Enums";
 import { Organization } from "../types/Organization";
 import { OrganizationShare, ReferralType } from "../types/Temp";
@@ -14,27 +16,40 @@ export interface Layout {
   answeredReferral?: boolean;
   height: number;
   loading: boolean;
-  organizations?: Organization[];
+  causeAreas?: CauseArea[];
 }
 
 export interface DonationInput {
   method?: PaymentMethod;
   sum?: number;
-  shareType: ShareType;
   recurring: RecurringDonation;
   donor: Donor;
-  shares: OrganizationShare[];
+  distributionCauseAreas: DistributionCauseArea[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
-  phone?: string;
 }
 
 export interface Donation extends DonationInput {
   kid?: string;
   paymentProviderURL?: string;
   swishOrderID?: string;
-  isValid: boolean;
+  swishPaymentRequestToken?: string;
+  // Array of objects with string keys and string values
+  errors: DonationError[];
+  showErrors: boolean;
 }
+
+export type DonationError = {
+  type: DonationErrorTypeNames;
+  causeAreaId?: number;
+  variables?: { [key: string]: string };
+};
+export type DonationErrorTypeNames =
+  | "causeAreaSumError"
+  | "causeAreaOrganizationsSumError"
+  | "causeAreaShareNegativeError"
+  | "causeAreaOrganizationsShareNegativeError"
+  | "donationSumError";
 
 export interface VippsAgreement {
   initialCharge: boolean;
@@ -46,9 +61,8 @@ export interface RegisterDonationObject {
   method: PaymentMethod;
   recurring: RecurringDonation;
   amount: number;
-  organizations?: OrganizationShare[];
+  distributionCauseAreas: DistributionCauseArea[];
   dueDay?: number;
-  phone?: string;
 }
 
 export interface DonorInput {
@@ -92,3 +106,8 @@ export enum PaneNumber {
   ReferralPane = 3,
   ResultPane = 4,
 }
+
+export type CauseAreaOrgs = {
+  name: string;
+  organizations: Organization[];
+};

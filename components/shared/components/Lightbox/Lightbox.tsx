@@ -10,9 +10,22 @@ export const Lightbox: React.FC<{
   open: boolean;
   valid?: boolean;
   loading?: boolean;
+  confirmLabel?: string;
+  okLabel?: string;
   onConfirm: () => void;
+  cancelLabel?: string;
   onCancel?: () => void;
-}> = ({ children, open, valid, loading, onConfirm, onCancel }) => {
+}> = ({
+  children,
+  open,
+  valid,
+  loading,
+  confirmLabel,
+  okLabel,
+  onConfirm,
+  cancelLabel,
+  onCancel,
+}) => {
   if (!open) return null;
 
   return (
@@ -30,7 +43,13 @@ export const Lightbox: React.FC<{
             cy="lightbox-confirm"
             disabled={typeof valid === "boolean" ? !valid : false}
           >
-            {loading ? <LoadingButtonSpinner /> : onCancel ? "Bekreft" : "OK"}
+            {loading ? (
+              <LoadingButtonSpinner />
+            ) : onCancel ? (
+              confirmLabel ?? "Bekreft"
+            ) : (
+              okLabel ?? "OK"
+            )}
           </EffektButton>
           {onCancel && (
             <EffektButton
@@ -38,7 +57,7 @@ export const Lightbox: React.FC<{
               variant={EffektButtonVariant.SECONDARY}
               cy="lightbox-cancel"
             >
-              Avbryt
+              {cancelLabel ?? "Avbryt"}
             </EffektButton>
           )}
         </div>

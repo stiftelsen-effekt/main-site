@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
-import { getEarliestPossibleChargeDate } from "../../components/panes/PaymentPane/Bank/AvtaleGiroDatePicker/avtalegirodates";
+import { getEarliestPossibleChargeDate } from "../../components/panes/PaymentPane/AvtaleGiro/AvtaleGiroDatePicker/avtalegirodates";
 import { RecurringDonation, ShareType } from "../../types/Enums";
 import { OrganizationShare } from "../../types/Temp";
-import { fetchOrganizationsAction } from "../layout/actions";
+import { fetchCauseAreasAction } from "../layout/actions";
 import { Donation } from "../state";
 import { registerDonationAction } from "./actions";
 import {
@@ -21,18 +21,22 @@ import {
   SELECT_CUSTOM_SHARE,
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
-  SUBMIT_PHONE_NUMBER,
+  SET_CAUSE_AREA_PERCENTAGE_SHARE,
 } from "./types";
+import { CauseArea } from "../../types/CauseArea";
+import { DistributionCauseArea } from "../../types/DistributionCauseArea";
+import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
+import { CauseAreaShareSelectionTitle } from "../../components/panes/DonationPane/ShareSelector/Multiple/MultipleCauseAreasSelector.style";
 
 const initialState: Donation = {
   recurring: RecurringDonation.RECURRING,
-  shareType: ShareType.STANDARD,
   donor: {
     taxDeduction: false,
     newsletter: false,
   },
-  isValid: false,
-  shares: [],
+  errors: [],
+  showErrors: false,
+  distributionCauseAreas: [],
   dueDay: getEarliestPossibleChargeDate(),
   vippsAgreement: {
     initialCharge: true,
@@ -52,15 +56,22 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   state = initialState,
   action,
 ) => {
-  if (isType(action, fetchOrganizationsAction.done)) {
+  if (isType(action, fetchCauseAreasAction.done)) {
+    const topOrderedId = action.payload.result.sort((a, b) => a.ordering - b.ordering)[0].id;
     state = {
       ...state,
-      shares: action.payload.result.map(
-        (org): OrganizationShare => ({
-          id: org.id,
-          split: org.standardShare,
-        }),
-      ),
+      distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({
+        id: causeArea.id,
+        name: causeArea.name,
+        percentageShare: causeArea.id === topOrderedId ? "100" : "0",
+        standardSplit: true,
+        organizations: causeArea.organizations.map(
+          (org): DistributionCauseAreaOrganization => ({
+            id: org.id,
+            percentageShare: org.standardShare?.toString() ?? "0",
+          }),
+        ),
+      })),
     };
   }
 
@@ -70,6 +81,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       kid: action.payload.result.KID,
       paymentProviderURL: action.payload.result.paymentProviderUrl,
       swishOrderID: action.payload.result.swishOrderID,
+      swishPaymentRequestToken: action.payload.result.swishPaymentRequestToken,
       donor: {
         ...state.donor,
         donorID: action.payload.result.donorID,
@@ -99,14 +111,35 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         },
       };
       break;
-    case SUBMIT_PHONE_NUMBER:
+    case SET_CAUSE_AREA_PERCENTAGE_SHARE:
       state = {
         ...state,
-        phone: action.payload.phone,
+        distributionCauseAreas: state.distributionCauseAreas.map((causeArea) => {
+          if (causeArea.id === action.payload.causeAreaId) {
+            return {
+              ...causeArea,
+              percentageShare: action.payload.percentageShare,
+            };
+          } else {
+            return causeArea;
+          }
+        }),
       };
       break;
     case SET_SHARES:
-      state = { ...state, shares: action.payload.shares };
+      state = {
+        ...state,
+        distributionCauseAreas: state.distributionCauseAreas.map((causeArea) => {
+          if (causeArea.id === action.payload.causeAreaId) {
+            return {
+              ...causeArea,
+              organizations: action.payload.shares,
+            };
+          } else {
+            return causeArea;
+          }
+        }),
+      };
       break;
     case SET_SUM:
       state = { ...state, sum: action.payload.sum };
@@ -130,10 +163,32 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = { ...state, paymentProviderURL: action.payload.url };
       break;
     case SET_SHARE_TYPE:
-      state = { ...state, shareType: action.payload.shareType };
+      state = {
+        ...state,
+        distributionCauseAreas: state.distributionCauseAreas.map((causeArea) => {
+          if (causeArea.id === action.payload.causeAreaId) {
+            return {
+              ...causeArea,
+              standardSplit: action.payload.standardSplit,
+            };
+          }
+          return causeArea;
+        }),
+      };
       break;
     case SELECT_CUSTOM_SHARE:
-      state = { ...state, shareType: ShareType.CUSTOM };
+      state = {
+        ...state,
+        distributionCauseAreas: state.distributionCauseAreas.map((causeArea) => {
+          if (causeArea.id === action.payload.causeAreaId) {
+            return {
+              ...causeArea,
+              shareType: action.payload.customShare ? ShareType.CUSTOM : ShareType.STANDARD,
+            };
+          }
+          return causeArea;
+        }),
+      };
       break;
     case SET_VIPPS_AGREEMENT:
       state = {
@@ -152,28 +207,90 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
    * Validate donation below
    * Parts of the validation is done directly inside DonationPane
    */
+  const errors: typeof state.errors = [];
 
-  if (
-    state.shareType === ShareType.CUSTOM &&
-    state.shares.reduce((acc, curr) => acc + curr.split, 0) !== 100
-  )
-    return { ...state, isValid: false };
-
-  let negativeShare = false;
-  state.shares.forEach((share) => {
-    if (share.split < 0) {
-      negativeShare = true;
+  const causeAreasDistributionSum = getCauseAreasDistributionSum(state.distributionCauseAreas);
+  if (causeAreasDistributionSum !== 100) {
+    errors.push({
+      type: "causeAreaSumError",
+      variables: { sum: causeAreasDistributionSum.toString() },
+    });
+  }
+  if (getDistributionCauseAreasShareNegative(state.distributionCauseAreas)) {
+    errors.push({ type: "causeAreaShareNegativeError" });
+  }
+  for (const causeArea of state.distributionCauseAreas) {
+    if (!causeArea.standardSplit) {
+      const causeAreaOrgsDistributionSum = getDistributionCauseAreaOrgsShareSum(
+        causeArea.organizations,
+      );
+      if (causeAreaOrgsDistributionSum !== 100) {
+        errors.push({
+          type: "causeAreaOrganizationsSumError",
+          causeAreaId: causeArea.id,
+          variables: {
+            sum: causeAreaOrgsDistributionSum.toString(),
+            causeAreaName: causeArea.name,
+          },
+        });
+      }
+      if (getDistributionCauseAreaOrgsShareNegative(causeArea.organizations)) {
+        errors.push({
+          type: "causeAreaOrganizationsShareNegativeError",
+          causeAreaId: causeArea.id,
+          variables: { causeAreaName: causeArea.name },
+        });
+      }
     }
-  });
-  if (negativeShare) {
-    return { ...state, isValid: false };
   }
 
   // Sum is checked for being an integer in DonorPane
   // If it is not an integer, sum is set to -1
   if (!state.sum || state.sum <= 0) {
-    return { ...state, isValid: false };
+    errors.push({ type: "donationSumError" });
   }
 
-  return { ...state, isValid: true };
+  if (errors.length > 0) {
+    return { ...state, errors };
+  }
+
+  return { ...state, errors: [] };
 };
+
+const getCauseAreasDistributionSum = (distributionCauseAreas: DistributionCauseArea[]): number => {
+  const sum = distributionCauseAreas.reduce(
+    (acc, causeArea) => acc + cleanNaN(causeArea.percentageShare),
+    0,
+  );
+  return sum;
+};
+
+const getDistributionCauseAreasShareNegative = (
+  distributionCauseAreas: DistributionCauseArea[],
+): boolean => {
+  const negativeShare = distributionCauseAreas.some(
+    (causeArea) => parseFloat(causeArea.percentageShare) < 0,
+  );
+  return negativeShare;
+};
+
+const getDistributionCauseAreaOrgsShareSum = (
+  distributionCauseAreaOrgs: DistributionCauseAreaOrganization[],
+): number => {
+  const sum = distributionCauseAreaOrgs.reduce(
+    (acc, org) => acc + cleanNaN(org.percentageShare),
+    0,
+  );
+  return sum;
+};
+
+const getDistributionCauseAreaOrgsShareNegative = (
+  distributionCauseAreaOrgs: DistributionCauseAreaOrganization[],
+): boolean => {
+  const negativeShare = distributionCauseAreaOrgs.some(
+    (org) => parseFloat(org.percentageShare) < 0,
+  );
+  return negativeShare;
+};
+
+const cleanNaN = (number: string): number => (isNaN(parseFloat(number)) ? 0 : parseFloat(number));

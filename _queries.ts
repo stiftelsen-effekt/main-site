@@ -1,8 +1,9 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
 import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
-import { TaxUnit } from "./models";
+import { DistributionCauseArea, TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
+import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
 
 export interface Query<T> {
   (
@@ -168,6 +169,25 @@ export const useAvtalegiroAgreements = (
   };
 };
 
+export const useAutogiroAgreements = (
+  user: User | undefined,
+  fetchToken: getAccessTokenSilently,
+) => {
+  const { data, error, isValidating } = useSWR(
+    user ? `/donors/${getUserId(user)}/recurring/autogiro/` : null,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useVippsAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     user ? `/donors/${getUserId(user)}/recurring/vipps/` : null,
@@ -214,6 +234,21 @@ export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
   };
 };
 
+export const useCauseAreas = (fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR<CauseArea[]>(`/causeareas/active/`, (url) =>
+    fetcher(url, fetchToken),
+  );
+
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useAllOrganizations = (fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(`/organizations/all/`, (url) =>
     fetcher(url, fetchToken),
@@ -244,9 +279,9 @@ export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilen
   };
 };
 
-export const useTaxUnits = (user: User, fetchToken: getAccessTokenSilently) => {
+export const useTaxUnits = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR<TaxUnit[]>(
-    `/donors/${getUserId(user)}/taxunits/`,
+    user ? `/donors/${getUserId(user)}/taxunits/` : null,
     (url) => fetcher(url, fetchToken),
   );
 
@@ -322,6 +357,15 @@ export const pageContentQuery = `content[] {
     _type == 'questionandanswergroup' => {
       ${questionAndAnswerSelectionQuery}
     },
+    _type == 'columns' => {
+      ...,
+      columns[] {
+        ...,
+        links[] {
+          ${linksSelectorQuery}
+        }
+      }
+    },
     _type == 'paragraph' => @ {
       ...,
       content[] {
@@ -393,7 +437,33 @@ export const pageContentQuery = `content[] {
       "currency": *[ _type == "site_settings"][0].main_currency,
       "locale": *[ _type == "site_settings"][0].main_locale,
     },
-    _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'wealthcalculatorteaser' => @,
+    _type == 'giftcardteaser' => {
+      ...,
+      image {
+        asset->,
+      },
+      links[] {
+        ${linksSelectorQuery}
+      },
+    },
+    _type == 'giveblock' => {
+      ...,
+      "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+      "accent_color": *[ _type == "site_settings"][0].accent_color,
+    },
+    _type == 'teasers' => {
+      ...,
+      teasers[] {
+        ...,
+        image {
+          asset->,
+        },
+        links[] {
+          ${linksSelectorQuery}
+        },
+      },
+    },
+    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'wealthcalculatorteaser' => @,
   }
 },
 `;

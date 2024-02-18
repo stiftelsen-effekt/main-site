@@ -18,7 +18,7 @@ export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organiza
                 <h4>{organization.name}</h4>
                 <h5>{organization.name}</h5>
 
-                <p className="inngress">{organization.subtitle}</p>
+                <p className={styles.interventionSubtitle}>{organization.subtitle}</p>
               </div>
               <div className={styles.intervention}>
                 <span className="detailheader">{organization.intervention_type}</span>
@@ -32,7 +32,7 @@ export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organiza
 
               {organization.links && (
                 <>
-                  <p className="inngress">Les mer:</p>
+                  <p className="inngress">{organization.links_header}</p>
                   <Links links={organization.links} />
                 </>
               )}

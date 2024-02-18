@@ -7,6 +7,7 @@ import { NavLink } from "../../../shared/components/Navbar/Navbar";
 export interface InterventionWidgetProps {
   default_sum: number;
   title: string;
+  donationLabel?: string;
   interventions?: SanityIntervention[];
   explanationLabel?: string;
   explanationText?: string;
@@ -18,6 +19,7 @@ export interface InterventionWidgetProps {
 export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
   default_sum,
   title,
+  donationLabel,
   interventions,
   explanationLabel,
   explanationText,
@@ -35,7 +37,7 @@ export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
       <div className={styles.grid}>
         <div className={styles.input}>
           <div className={styles.input}>
-            <label htmlFor="sum">Donasjon:</label>
+            <label htmlFor="sum">{donationLabel ?? "Donasjon"}:</label>
             <div className={styles.inputWrapper}>
               <input
                 data-cy="impact-input"

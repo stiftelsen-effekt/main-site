@@ -8,11 +8,12 @@ import { CheckBoxWrapper, HiddenCheckBox } from "../../../Forms.style";
 import { DateBoxWrapper, DateText, DateTextWrapper, Wrapper } from "./VippsDatePicker.style";
 import { formatDateText, getNextChargeDate, isIrregularChargeDay, showCheckBox } from "./dates";
 import { DatePicker } from "../../../../shared/DatePicker/DatePicker";
+import { DatePickerInputConfiguration } from "../../../../../../DatePicker/DatePickerInput";
 
 const tooltipText =
   "Vi kan av tekniske grunner ikke melde trekk 1-3 dager i forveien, så første trekkdato utsettes med én måned. Du kan velge en senere dato eller krysse av for også å bli trukket i dag.";
 
-export const VippsDatePicker: React.FC = () => {
+export const VippsDatePicker: React.FC<{ config: DatePickerInputConfiguration }> = ({ config }) => {
   const dispatch = useDispatch();
   const vippsAgreement = useSelector((state: State) => state.donation.vippsAgreement);
   const [selectedChargeDay, setSelectedChargeDay] = useState<number>(
@@ -80,17 +81,9 @@ export const VippsDatePicker: React.FC = () => {
             }
             setSelectedChargeDay(date);
           }}
+          configuration={config}
         />
       </DateBoxWrapper>
     </Wrapper>
   );
 };
-
-/**
- * () => {
-            if (!showCheckBox(0)) {
-              setinitialCharge(false);
-            }
-            setSelectedChargeDay(0);
-          }
- */

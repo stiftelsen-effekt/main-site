@@ -36,11 +36,13 @@ type QueryResult = {
       logo: SanityImageSource;
       main_navigation: MainNavbarItem[];
       donate_label: string;
+      accent_color: string;
     },
   ];
   dashboard: [
     {
       main_navigation: MainNavbarItem[];
+      dashboard_logo: SanityImageSource;
       dashboard_label: string;
       logout_label: string;
     },
@@ -52,6 +54,7 @@ const query = groq`
     "dashboard": *[_id == "dashboard"] {
       dashboard_label,
       logout_label,
+      dashboard_logo,
       main_navigation[] {
         _type == 'navgroup' => {
           _type,
@@ -73,12 +76,13 @@ const query = groq`
     "settings": *[_type == "site_settings"] {
       logo,
       donate_label,
+      accent_color,
       main_navigation[] {
         _type == 'navgroup' => {
           _type,
           _key,
           title,
-          items[]->{
+          items[] {
             title,
             "slug": page->slug.current
           },
@@ -105,14 +109,18 @@ export const Navbar = withStaticProps(
       dashboard,
       elements: elements.filter((e) => e !== null),
       logo: settings.logo,
+      dashboardLogo: dashboardData.dashboard_logo,
       labels: {
-        donate: settings.donate_label,
         dashboard: dashboardData.dashboard_label,
         logout: dashboardData.logout_label,
       },
+      giveButton: {
+        donate_label: settings.donate_label,
+        accent_color: settings.accent_color,
+      },
     };
   },
-)(({ dashboard, elements, logo, labels }) => {
+)(({ dashboard, elements, logo, dashboardLogo, labels, giveButton }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const { user, logout } = useAuth0();
@@ -137,6 +145,18 @@ export const Navbar = withStaticProps(
     }
   };
 
+  let giveButtonStyle = {};
+  if (giveButton.accent_color) {
+    giveButtonStyle = {
+      backgroundColor: giveButton.accent_color,
+      color: "white",
+      border: `1px solid ${giveButton.accent_color} !important`,
+      borderColor: giveButton.accent_color,
+    };
+  }
+
+  const lightLogo = (dashboard && !expandMenu) || (!dashboard && expandMenu);
+
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
       <nav className={`${styles.navbar}`} data-cy="navbar">
@@ -145,18 +165,34 @@ export const Navbar = withStaticProps(
           onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
           onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
         >
-          <div className={styles.logoWrapperImage}>
-            <Link href="/" passHref>
-              <a onClick={(e) => e.currentTarget.blur()}>
-                <ResponsiveImage
-                  image={logo}
-                  onClick={() => setExpanded(false)}
-                  priority
-                  blur={false}
-                />
-              </a>
-            </Link>
-          </div>
+          {lightLogo && (
+            <div className={styles.logoWrapperImage}>
+              <Link href="/" passHref>
+                <a onClick={(e) => e.currentTarget.blur()}>
+                  <ResponsiveImage
+                    image={dashboardLogo}
+                    onClick={() => setExpanded(false)}
+                    priority
+                    blur={false}
+                  />
+                </a>
+              </Link>
+            </div>
+          )}
+          {!lightLogo && (
+            <div className={styles.logoWrapperImage}>
+              <Link href="/" passHref>
+                <a onClick={(e) => e.currentTarget.blur()}>
+                  <ResponsiveImage
+                    image={logo}
+                    onClick={() => setExpanded(false)}
+                    priority
+                    blur={false}
+                  />
+                </a>
+              </Link>
+            </div>
+          )}
           <button
             className={styles.expandBtn}
             onClick={(e) => {
@@ -164,7 +200,11 @@ export const Navbar = withStaticProps(
               e.currentTarget.blur();
             }}
           >
-            {expandMenu ? <X size={32} color={"black"} /> : <Menu size={32} color={"black"} />}
+            {expandMenu ? (
+              <X size={32} color={dashboard ? "black" : "white"} />
+            ) : (
+              <Menu size={32} color={dashboard ? "white" : "black"} />
+            )}
           </button>
         </div>
         <ul>
@@ -239,8 +279,9 @@ export const Navbar = withStaticProps(
               cy="send-donation-button"
               extraMargin={true}
               onClick={() => setWidgetOpen(true)}
+              style={giveButtonStyle}
             >
-              {labels.donate}
+              {giveButton.donate_label}
             </EffektButton>
           </li>
         </ul>

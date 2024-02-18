@@ -13,7 +13,6 @@ import { Links } from "./Links/Links";
 import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
 import { PointList } from "./PointList/PointList";
-import { PointListPointProps } from "./PointList/PointListPoint";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
 import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
@@ -31,6 +30,8 @@ import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
+import { GiftCard } from "./GiftCard/GiftCard";
+import { BlockTables } from "./BlockTable/BlockTables";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -71,7 +72,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       case "links":
                         return (
                           <div key={block._key} className={links.linksWrapper}>
-                            <p className="inngress">Les mer:</p>
+                            <p className="inngress">{block.title ?? "Les mer:"}</p>
                             <Links links={block.links}></Links>
                           </div>
                         );
@@ -144,6 +145,8 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <NewsletterSignup
                             key={block._key || block._id}
                             header={block.header}
+                            formurl={block.formurl}
+                            sendlabel={block.sendlabel}
                           ></NewsletterSignup>
                         );
                       case "htmlembed":
@@ -152,6 +155,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             code={block.htmlcode}
                             grayscale={block.grayscale}
+                            fullwidth={block.fullwidth}
                           />
                         );
                       case "columns":
@@ -161,6 +165,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <Testimonial
                             key={block._key || block._id}
                             testimonies={block.testimonials}
+                          />
+                        );
+                      case "blocktables":
+                        return (
+                          <BlockTables
+                            key={block._key || block._id}
+                            config={block.configuration}
+                            tables={block.tables}
+                            columnWidths={block.columnwidths}
                           />
                         );
                       case "teasers":
@@ -237,6 +250,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <InterventionWidget
                             key={block._key || block._id}
                             title={block.title}
+                            donationLabel={block.donation_label}
                             default_sum={block.default_sum}
                             interventions={block.interventions}
                             explanationLabel={block.explanation_label}
@@ -261,6 +275,8 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             heading={block.heading}
                             paragraph={block.paragraph}
+                            donateLabel={block.donate_label_short}
+                            accentColor={block.accent_color}
                           />
                         );
                       }
@@ -280,6 +296,17 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <OrganizationsList
                             key={block._key || block._id}
                             organizations={block.organizations}
+                          />
+                        );
+                      }
+                      case "giftcardteaser": {
+                        return (
+                          <GiftCard
+                            key={block._key || block._id}
+                            title={block.title}
+                            description={block.description}
+                            image={block.image}
+                            links={block.links}
                           />
                         );
                       }

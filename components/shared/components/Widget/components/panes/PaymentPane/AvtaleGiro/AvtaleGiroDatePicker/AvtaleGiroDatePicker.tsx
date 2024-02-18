@@ -11,11 +11,14 @@ import {
   DateText,
 } from "../../Vipps/VippsDatePicker/VippsDatePicker.style";
 import { formatDateText, getNextChargeDate, isIrregularChargeDay } from "./avtalegirodates";
+import { DatePickerInputConfiguration } from "../../../../../../DatePicker/DatePickerInput";
 
 const tooltipText =
   "Vi må av tekniske grunner melde inn trekk til bankene tidligere enn din valgte trekkdato, derfor utsettes første trekk med én måned. Du kan velge en annen trekkdato om du ønsker å trekkes tidligere.";
 
-export const AvtaleGiroDatePicker: React.FC = () => {
+export const AvtaleGiroDatePicker: React.FC<{ configuration: DatePickerInputConfiguration }> = ({
+  configuration,
+}) => {
   const dispatch = useDispatch();
   const dueDay = useSelector((state: State) => state.donation.dueDay);
   const [selectedDueDay, setSelectedDueDay] = useState<number>(dueDay);
@@ -30,10 +33,9 @@ export const AvtaleGiroDatePicker: React.FC = () => {
     <Wrapper>
       <DateTextWrapper>
         <DateText>
-          Første trekk blir
-          {isIrregularChargeDay(selectedDueDay)
-            ? nextChargeDate && <strong>{` ${formatDateText(nextChargeDate)} `}</strong>
-            : nextChargeDate && ` ${formatDateText(nextChargeDate)} `}
+          {dueDay === 0
+            ? configuration.payment_date_last_day_of_month_template
+            : configuration.payment_date_format_template.replace("{{date}}", dueDay.toString())}
         </DateText>
         {isIrregularChargeDay(selectedDueDay) && <ToolTip text={tooltipText} />}
       </DateTextWrapper>
@@ -44,6 +46,7 @@ export const AvtaleGiroDatePicker: React.FC = () => {
             setSelectedDueDay(date);
           }}
           onClickOutside={() => {}}
+          configuration={configuration}
         />
       </DateBoxWrapper>
     </Wrapper>

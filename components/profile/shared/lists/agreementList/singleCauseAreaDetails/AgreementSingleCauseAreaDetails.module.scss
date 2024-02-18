@@ -1,0 +1,98 @@
+.values {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1.5rem;
+  font-size: 1rem;
+
+  & > div {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
+    &.valuesAmountContainer {
+      input {
+        width: 8em;
+      }
+
+      /* Currency label positioned to the right in the field */
+      span {
+        position: absolute;
+        right: 1.2rem;
+      }
+    }
+
+    &.valuesTaxUnitSelectorContainer {
+      flex-grow: 1;
+    }
+
+    &.valuesSmartDistributionToggle {
+      white-space: nowrap;
+
+      span {
+        margin-right: 1rem;
+        flex-shrink: 1;
+        line-height: 120%;
+      }
+
+      button {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  & > div:last-child {
+    justify-content: flex-end;
+  }
+
+  input {
+    background: var(--secondary);
+    color: var(--primary);
+    font-family: "ESKlarheitGrotesk";
+    box-sizing: border-box;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--primary);
+    padding: 0.5rem 1.2rem;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .values {
+    flex-direction: column;
+    row-gap: 1.5em;
+    font-size: 1rem;
+
+    input {
+      width: 100%;
+    }
+
+    & > div {
+      &.valuesDatePickerContainer {
+        width: 100%;
+
+        & > div {
+          width: 100%;
+        }
+      }
+
+      &.valuesAmountContainer {
+        input {
+          width: 100%;
+        }
+      }
+
+      &.valuesTaxUnitSelectorContainer {
+        width: 100%;
+
+        & > div {
+          width: 100%;
+        }
+      }
+
+      &:last-child {
+        justify-content: flex-start;
+      }
+    }
+  }
+}

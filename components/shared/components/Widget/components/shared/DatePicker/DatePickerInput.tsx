@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import style from "./DatePicker.module.scss";
 import { DatePicker } from "./DatePicker";
+import { DatePickerInputConfiguration } from "../../../../DatePicker/DatePickerInput";
 
 export const DatePickerInput: React.FC<{
   selected?: number;
   onChange: (selected: number) => void;
-}> = ({ selected, onChange }) => {
+  config: DatePickerInputConfiguration;
+}> = ({ selected, onChange, config }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   let textValue = "";
@@ -25,6 +27,7 @@ export const DatePickerInput: React.FC<{
             setPickerOpen(false);
           }}
           onClickOutside={() => setPickerOpen(false)}
+          configuration={config}
         />
       </div>
       <input

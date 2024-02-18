@@ -1,0 +1,239 @@
+[
+  {
+    "id": 1,
+    "name": "Global helse",
+    "shortDescription": "Global helse",
+    "longDescription": "Global helse",
+    "informationUrl": "https://gieffektivt.no/",
+    "isActive": true,
+    "ordering": 1,
+    "organizations": [
+      {
+        "id": 12,
+        "name": "GiveWell Top Charities Fund",
+        "abbreviation": "TCF",
+        "shortDescription": "GiveWell gjør en kontinuerlig vurdering av saksområder for å finne de mest trengende sakene, pengene utdeles så kvartalsvis til de mest effektive organisasjonene.",
+        "longDescription": "GiveWell",
+        "standardShare": 100,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 1
+      },
+      {
+        "id": 1,
+        "name": "Against Malaria Foundation",
+        "abbreviation": "AMF",
+        "shortDescription": "Against Malaria Foundation driver preventivt arbeid gjennom distribusjon av impregnerte malarianett. Studier viser at for 8kr beskyttes én person i minst ett år.",
+        "longDescription": "Mygnetting til folket",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 2,
+        "causeAreaId": 1
+      },
+      {
+        "id": 10,
+        "name": "Helen Keller International",
+        "abbreviation": "HKI",
+        "shortDescription": "Helen Keller International forebygger mangelsykdommer ved bruk av vitamin A-tilskudd, som er årsaken til halvparten av dødsfall blant barn under 5 år.",
+        "longDescription": "HKI",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 3,
+        "causeAreaId": 1
+      },
+      {
+        "id": 4,
+        "name": "Malaria Consortium",
+        "abbreviation": "MC",
+        "shortDescription": "Malaria Consortium utfører seasonal malaria chemoprevention (SMC) som forhindrer smitte  i Afrika, studier viser at denne metoden er svært kostnadseffektiv.",
+        "longDescription": "mc",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 4,
+        "causeAreaId": 1
+      },
+      {
+        "id": 2,
+        "name": "SCI Foundation",
+        "abbreviation": "SCI",
+        "shortDescription": "SCI Foundation bekjemper neglisjerte tropesykdommer som blant annet sneglefeber ved bruk av kostnadseffektive medisiner i Jemen og Afrika sør for Sahara.",
+        "longDescription": "SCI Foundation",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/topplista",
+        "isActive": true,
+        "ordering": 5,
+        "causeAreaId": 1
+      },
+      {
+        "id": 7,
+        "name": "GiveDirectly",
+        "abbreviation": "GD",
+        "shortDescription": "GiveDirectly utfører kontantoverføringer til ekstremt fattige i Kenya og Uganda, slik at mottakerne kan selv velge hvor de vil investere pengene sine.",
+        "longDescription": "GD",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 6,
+        "causeAreaId": 1
+      },
+      {
+        "id": 13,
+        "name": "GiveDirectly Borgerlønn",
+        "abbreviation": "UBI",
+        "shortDescription": "GiveDirectly utfører kontantoverføringer til ekstremt fattige, og driver dessuten et forsøksprosjekt med borgerlønn i Kenya (UBI). Velg dette alternativet om du vil støtte det prosjektet spesifikt.",
+        "longDescription": "GiveDirectly Borgerlønn",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 7,
+        "causeAreaId": 1
+      },
+      {
+        "id": 14,
+        "name": "New Incentives",
+        "abbreviation": "NI",
+        "shortDescription": "Når omsorgspersoner tar med et spedbarn til en klinikk for den første vaksinen, får de tilbud om å motta direkte kontantoverføringer hvis de fortsetter å komme tilbake i tråd med vaksinasjonsplanen.\n",
+        "longDescription": "NI",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 8,
+        "causeAreaId": 1
+      },
+      {
+        "id": 11,
+        "name": "Drift av Gi Effektivt",
+        "abbreviation": "Drift",
+        "shortDescription": "Penger donert til oss brukes til videre drift og utvikling av våre tjenester. ",
+        "longDescription": "gieffektivt.no",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 10,
+        "causeAreaId": 1
+      },
+      {
+        "id": 15,
+        "name": "GiveWell All Grants Fund",
+        "abbreviation": "AGF",
+        "shortDescription": "AGF",
+        "longDescription": "AGF",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 99,
+        "causeAreaId": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Animal welfare",
+    "shortDescription": "Animal welfare",
+    "longDescription": "Animal welfare",
+    "informationUrl": "https://www.charitynavigator.org/index.cfm?bay=content.view&cpid=49",
+    "isActive": true,
+    "ordering": 2,
+    "organizations": [
+      {
+        "id": 19,
+        "name": "Animal Charity Evaluators",
+        "abbreviation": "ACE",
+        "shortDescription": "ACE",
+        "longDescription": "ACE",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 0,
+        "causeAreaId": 2
+      },
+      {
+        "id": 17,
+        "name": "Good Food Institute",
+        "abbreviation": "GFI",
+        "shortDescription": "GFI",
+        "longDescription": "GFI",
+        "standardShare": 50,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 2
+      },
+      {
+        "id": 18,
+        "name": "The Humane League",
+        "abbreviation": "THL",
+        "shortDescription": "THL",
+        "longDescription": "THL",
+        "standardShare": 50,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 2,
+        "causeAreaId": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Future generations",
+    "shortDescription": "Future generations",
+    "longDescription": "Future generations",
+    "informationUrl": "https://www.charitynavigator.org/index.cfm?bay=content.view&cpid=50",
+    "isActive": true,
+    "ordering": 3,
+    "organizations": [
+      {
+        "id": 20,
+        "name": "Clean Air Task Force",
+        "abbreviation": "CATF",
+        "shortDescription": "CATF",
+        "longDescription": "CATF",
+        "standardShare": 100,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 3
+      },
+      {
+        "id": 21,
+        "name": "Coalition for Rainforest Nations",
+        "abbreviation": "CfRN",
+        "shortDescription": "CfRN",
+        "longDescription": "CfRN",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 2,
+        "causeAreaId": 3
+      },
+      {
+        "id": 22,
+        "name": "Cool Earth",
+        "abbreviation": "CE",
+        "shortDescription": "CE",
+        "longDescription": "CE",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 3,
+        "causeAreaId": 3
+      },
+      {
+        "id": 23,
+        "name": "The Nature Conservancy",
+        "abbreviation": "TNC",
+        "shortDescription": "TNC",
+        "longDescription": "TNC",
+        "standardShare": 0,
+        "informationUrl": "https://gieffektivt.no/organisasjoner",
+        "isActive": true,
+        "ordering": 4,
+        "causeAreaId": 3
+      }
+    ]
+  }
+]

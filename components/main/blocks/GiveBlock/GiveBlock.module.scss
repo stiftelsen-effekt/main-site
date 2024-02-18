@@ -7,6 +7,7 @@
   color: var(--secondary);
   width: 100%;
   position: relative;
+  padding: 0 10rem;
 }
 
 .container::before {
@@ -87,6 +88,10 @@
 }
 
 @media only screen and (max-width: 1180px) {
+  .container {
+    padding: 0 2rem;
+  }
+
   .container h3 {
     margin-top: 30px;
     margin-bottom: 20px;

@@ -1,4 +1,6 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
+import Organisationsnummer from "organisationsnummer";
+import Personnummer from "personnummer";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -12,7 +14,6 @@ import {
   registerDonationAction,
   selectPaymentMethod,
   submitDonorInfo,
-  submitPhoneNumber,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
@@ -35,29 +36,11 @@ const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
 
-/**
- *
- * @param phoneNumber Any swedish format, e.g. 0701234567 or +46701234567
- * @return A swedish phone number in E164 number format, e.g. 46701234567
- */
-const formatSwedishPhoneNumber = (phoneNumber: string) => {
-  const isValidInput = Validate.isMobilePhone(phoneNumber, "sv-SE");
-  if (!isValidInput) {
-    return phoneNumber;
-  }
-  if (phoneNumber.startsWith("07")) {
-    return `46${phoneNumber.substring(1)}`;
-  } else if (phoneNumber.startsWith("+46")) {
-    return phoneNumber.substring(1);
-  } else {
-    return phoneNumber;
-  }
-};
-
 export const DonorPane: React.FC<{
+  locale: "en" | "no" | "sv" | "et";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ text, paymentMethods }) => {
+}> = ({ locale, text, paymentMethods }) => {
   const dispatch = useDispatch();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
@@ -79,9 +62,10 @@ export const DonorPane: React.FC<{
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
       method: donation.method,
-      phone: donation.phone,
     },
   });
+
+  console.log(errors);
 
   const plausible = usePlausible();
 
@@ -104,9 +88,13 @@ export const DonorPane: React.FC<{
       if (donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
         if (data.method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
+        if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
       }
       if (!donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (data.method === PaymentMethod.SWISH) {
+          plausible("SelectSwishSingle");
+        }
         if (data.method === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
           plausible("CompleteDonation");
@@ -129,12 +117,7 @@ export const DonorPane: React.FC<{
 
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
-    if (data.phone) {
-      const formattedPhone = formatSwedishPhoneNumber(data.phone);
-      dispatch(submitPhoneNumber(formattedPhone));
-    }
-
-    if (isAnonymous || donation.isValid) {
+    if (isAnonymous || donation.errors.length === 0) {
       dispatch(registerDonationAction.started(undefined));
     } else {
       alert("Donation invalid");
@@ -180,7 +163,7 @@ export const DonorPane: React.FC<{
                     placeholder={text.name_placeholder}
                     {...register("name", { required: true, minLength: 3 })}
                   />
-                  {errors.name && <ErrorField text="Ugyldig navn" />}
+                  {errors.name && <ErrorField text={text.name_invalid_error_text} />}
                 </InputFieldWrapper>
                 <InputFieldWrapper>
                   <input
@@ -195,7 +178,7 @@ export const DonorPane: React.FC<{
                       },
                     })}
                   />
-                  {errors.email && <ErrorField text="Ugyldig epost" />}
+                  {errors.email && <ErrorField text={text.email_invalid_error_text} />}
                 </InputFieldWrapper>
                 <CheckBoxGroupWrapper>
                   <div>
@@ -234,18 +217,23 @@ export const DonorPane: React.FC<{
                             required: false,
                             validate: (val) => {
                               const trimmed = val.toString().trim();
-                              return (
-                                !taxDeductionChecked ||
-                                (Validate.isInt(trimmed) &&
-                                  // Check if valid norwegian org or SSN (Social security number) based on check sum
-                                  // Also accepts D numbers (which it probably should) and H numbers (which it probably should not)
-                                  ((trimmed.length === 9 && validateOrg(trimmed)) ||
-                                    (trimmed.length === 11 && validateSsn(trimmed))))
-                              );
+                              if (taxDeductionChecked) {
+                                if (locale === "no") {
+                                  return validateSsnNo(trimmed);
+                                } else if (locale === "sv") {
+                                  return validateSsnSe(trimmed);
+                                } else {
+                                  return true;
+                                }
+                              } else {
+                                return true;
+                              }
                             },
                           })}
                         />
-                        {errors.ssn && <ErrorField text="Ugyldig fødselsnummer eller org.nr." />}
+                        {errors.ssn && (
+                          <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
+                        )}
                       </InputFieldWrapper>
                     )}
                   </div>
@@ -270,14 +258,22 @@ export const DonorPane: React.FC<{
                       checked={newsletterChecked}
                     />
                   </CheckBoxWrapper>
-                  <div style={{ marginTop: "10px" }}>
-                    {text.privacy_policy_text}{" "}
-                    <Link href={"/personvern"} passHref>
-                      <a style={{ textDecoration: "underline" }} target={"_blank"}>
-                        personvernserklæring ↗
-                      </a>
-                    </Link>
-                  </div>
+                  {text.privacy_policy_link && (
+                    <div style={{ marginTop: "10px" }}>
+                      {text.privacy_policy_text}{" "}
+                      <Link href={`/${text.privacy_policy_link.slug}`} passHref>
+                        <a
+                          target={"_blank"}
+                          onClick={(e) => {
+                            e.currentTarget.blur();
+                          }}
+                          style={{ borderBottom: "1px solid var(--primary)" }}
+                        >
+                          {`${text.privacy_policy_link.title}  ↗`}
+                        </a>
+                      </Link>
+                    </div>
+                  )}
                 </CheckBoxGroupWrapper>
               </>
             ) : null}
@@ -296,34 +292,18 @@ export const DonorPane: React.FC<{
                       vipps: PaymentMethod.VIPPS,
                       bank: PaymentMethod.BANK,
                       swish: PaymentMethod.SWISH,
+                      autogiro: PaymentMethod.AUTOGIRO,
+                      avtalegiro: PaymentMethod.AVTALEGIRO,
                     }[method._id],
                     data_cy: `${method._id}-method`,
                   }))}
                   selected={field.value}
                   onSelect={(option) => {
-                    clearErrors(["phone"]);
                     field.onChange(option);
                   }}
                 />
               )}
             />
-            {selectedPaymentMethod === PaymentMethod.SWISH ? (
-              <StyledSwishInputFieldWrapper>
-                <input
-                  data-cy="phone-input"
-                  type="tel"
-                  placeholder={'Telefonnummer (ex. "0701234567")'}
-                  {...register("phone", {
-                    required: true,
-                    validate: (val) => {
-                      const trimmed = val?.trim();
-                      return trimmed && Validate.isMobilePhone(trimmed, "sv-SE");
-                    },
-                  })}
-                />
-                {errors.phone && <ErrorField text="Ugyldig telefonnummer" />}
-              </StyledSwishInputFieldWrapper>
-            ) : null}
           </div>
           <ActionBar data-cy="next-button-div">
             <NextButton
@@ -337,4 +317,12 @@ export const DonorPane: React.FC<{
       </DonorForm>
     </Pane>
   );
+};
+
+const validateSsnNo = (ssn: string): boolean => {
+  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
+};
+
+const validateSsnSe = (ssn: string): boolean => {
+  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
 };

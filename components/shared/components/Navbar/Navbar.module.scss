@@ -82,7 +82,6 @@
   height: 35px;
   width: 250px;
   position: relative;
-  filter: var(--primary-filter);
 }
 
 .navbar .logoWrapper:active {
@@ -169,7 +168,6 @@
   }
 
   .navbarExpanded .logoWrapper {
-    filter: var(--primary-filter) invert(1);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;

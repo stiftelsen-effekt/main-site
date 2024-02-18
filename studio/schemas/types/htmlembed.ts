@@ -13,6 +13,11 @@ export default {
       title: "HTML code",
     },
     {
+      name: "fullwidth",
+      type: "boolean",
+      title: "Full width",
+    },
+    {
       name: "grayscale",
       type: "boolean",
       title: "Grayscale",
