@@ -5,8 +5,25 @@ import {
   EffektButton,
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
-import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
+
+export type WealthCalculatorInputConfiguration = {
+  subtitle_label?: string;
+  income_input_configuration: {
+    placeholder?: string;
+    thousand_separator?: string;
+    currency_label?: string;
+    description?: string;
+  };
+  children_input_configuration: {
+    placeholder?: string;
+    options: string[];
+  };
+  adults_input_configuration: {
+    placeholder?: string;
+    options: string[];
+  };
+};
 
 export const WealthCalculatorInput: React.FC<{
   title: string;
@@ -17,6 +34,7 @@ export const WealthCalculatorInput: React.FC<{
   numberOfAdults: number;
   setNumberOfParents: (value: number) => void;
   loadingPostTaxIncome: boolean;
+  config: WealthCalculatorInputConfiguration;
   outputRef: React.RefObject<HTMLDivElement>;
 }> = ({
   title,
@@ -27,24 +45,23 @@ export const WealthCalculatorInput: React.FC<{
   numberOfAdults,
   setNumberOfParents,
   loadingPostTaxIncome,
+  config,
   outputRef,
 }) => {
   return (
     <div className={styles.calculator__input}>
       <div className={styles.calculator__input__inner}>
         <h5>{title}</h5>
-        <span className={styles.calculator__input__subtitle}>
-          Hvor rik er du sammenlignet med resten av verden?
-        </span>
+        <span className={styles.calculator__input__subtitle}>{config.subtitle_label}</span>
 
         <div className={styles.calculator__input__group} data-cy="wealthcalculator-income-input">
           <div className={styles.calculator__input__group__input__income__wrapper}>
             <NumericFormat
               type={"tel"}
-              placeholder={"Inntekt"}
+              placeholder={config.income_input_configuration.placeholder}
               value={incomeInput}
               className={styles.calculator__input__group__input__text}
-              thousandSeparator={" "}
+              thousandSeparator={config.income_input_configuration.thousand_separator}
               onValueChange={(values) => {
                 setIncomeInput(values.floatValue || 0);
               }}
@@ -54,39 +71,30 @@ export const WealthCalculatorInput: React.FC<{
                 <LoadingButtonSpinner />
               </div>
             )}
-            <span>kr</span>
+            <span>{config.income_input_configuration.currency_label}</span>
           </div>
-          <i>Oppgi total inntekt før skatt for husholdningen din.</i>
+          <i>{config.income_input_configuration.description}</i>
         </div>
 
         <div className={styles.calculator__input__group} data-cy="wealthcalculator-children-input">
           <EffektDropdown
-            placeholder={"Antall barn i husholdningen"}
-            options={[
-              "0 barn i husholdningen",
-              "1 barn i husholdningen",
-              "2 barn i husholdningen",
-              "3 barn i husholdningen",
-              "4 barn i husholdningen",
-              "5 barn i husholdningen",
-            ]}
-            value={numberOfChildren.toString() + " barn i husholdningen"}
-            onChange={(val: string) => setNumberOfChildren(parseInt(val[0]))}
+            placeholder={config.children_input_configuration.placeholder || "Children in household"}
+            options={config.children_input_configuration.options || []}
+            value={config.children_input_configuration.options[numberOfChildren]}
+            onChange={(val: string) =>
+              setNumberOfChildren(config.children_input_configuration.options.indexOf(val))
+            }
           ></EffektDropdown>
         </div>
 
         <div className={styles.calculator__input__group} data-cy="wealthcalculator-adults-input">
           <EffektDropdown
-            placeholder={"Antall voksne i husholdningen"}
-            options={[
-              "1 voksen i husholdningen",
-              "2 voksne i husholdningen",
-              "3 voksne i husholdningen",
-            ]}
-            value={`${numberOfAdults.toString()} ${
-              numberOfAdults === 1 ? "voksen" : "voksne"
-            } i husholdningen`}
-            onChange={(val: string) => setNumberOfParents(parseInt(val[0]))}
+            placeholder={config.adults_input_configuration.placeholder || "Adults in household"}
+            options={config.adults_input_configuration.options || []}
+            value={config.adults_input_configuration.options[numberOfAdults - 1]}
+            onChange={(val: string) =>
+              setNumberOfParents(config.adults_input_configuration.options.indexOf(val) + 1)
+            }
           ></EffektDropdown>
         </div>
 

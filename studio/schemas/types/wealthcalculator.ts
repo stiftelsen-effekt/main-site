@@ -13,6 +13,108 @@ export default {
       title: "Title",
     },
     {
+      name: "calculator_input_configuration",
+      type: "object",
+      title: "Calculator Input Configuration",
+      fields: [
+        {
+          name: "subtitle_label",
+          type: "string",
+          title: "Subtitle Label",
+        },
+        {
+          name: "income_input_configuration",
+          type: "object",
+          title: "Income Input Configuration",
+          fields: [
+            {
+              name: "placeholder",
+              type: "string",
+              title: "Placeholder",
+            },
+            {
+              name: "thousand_separator",
+              type: "string",
+              title: "Thousand Separator",
+            },
+            {
+              name: "currency_label",
+              type: "string",
+              title: "Currency Label",
+            },
+            {
+              name: "description",
+              type: "string",
+              title: "Description",
+            },
+          ],
+        },
+        {
+          name: "children_input_configuration",
+          type: "object",
+          title: "Children Input Configuration",
+          fields: [
+            {
+              name: "placeholder",
+              type: "string",
+              title: "Placeholder",
+            },
+            {
+              name: "options",
+              type: "array",
+              of: [{ type: "string" }],
+            },
+          ],
+        },
+        {
+          name: "adults_input_configuration",
+          type: "object",
+          title: "Adults Input Configuration",
+          fields: [
+            {
+              name: "placeholder",
+              type: "string",
+              title: "Placeholder",
+            },
+            {
+              name: "options",
+              type: "array",
+              of: [{ type: "string" }],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "slider_configuration",
+      type: "object",
+      title: "Slider Configuration",
+      fields: [
+        {
+          name: "donation_percentage_input_configuration",
+          type: "object",
+          title: "Donation Percentage Input Configuration",
+          fields: [
+            {
+              name: "template_string",
+              type: "string",
+              title: "Template String",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "x_axis_label",
+      type: "string",
+      title: "X Axis Label",
+    },
+    {
+      name: "data_explanation_label",
+      type: "string",
+      title: "Data Explanation Label",
+    },
+    {
       name: "data_explanation",
       type: "reference",
       to: [{ type: "contentsection" }],

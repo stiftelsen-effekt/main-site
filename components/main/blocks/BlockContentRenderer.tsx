@@ -192,9 +192,9 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <WealthCalculator
                             key={block._key || block._id}
                             title={block.title}
-                            explanation={block.explanation}
-                            explenationLabel={block.explenation_label}
-                            xAxixLabel={block.x_axis_label}
+                            data_explanation={block.data_explanation}
+                            data_explanation_label={block.data_explanation_label}
+                            x_axis_label={block.x_axis_label}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
                             }
@@ -205,6 +205,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             showImpact={block.show_impact}
                             intervention_configuration={block.intervention_configuration}
                             calculator_input_configuration={block.calculator_input_configuration}
+                            slider_configuration={block.slider_configuration}
                             currency={block.currency}
                             locale={block.locale}
                           />

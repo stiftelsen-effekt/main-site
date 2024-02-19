@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 export const getNorwegianTaxEstimate = async (income: number) => {
-  const response = await fetch("https://skatteberegning.app.skatteetaten.no/2023", {
+  const response = await fetch(`https://skatteberegning.app.skatteetaten.no/2023`, {
     method: "POST",
     body: JSON.stringify({
       skatteberegningsgrunnlag: {
@@ -32,6 +32,20 @@ export const getNorwegianTaxEstimate = async (income: number) => {
 };
 
 export const getSwedishTaxEstimate = async (income: number) => {
+  if (income < 0) {
+    return 0;
+  }
+  if (Number.isNaN(income)) {
+    return 0;
+  }
+  if (income === 0) {
+    return 0;
+  }
+  if (!Number.isFinite(income)) {
+    return 0;
+  }
+
+  const year = DateTime.local().year;
   const response = await fetch(
     "https://corsproxy.io/?https://app.skatteverket.se/rakna-skatt-client-skut-skatteutrakning/api/skatteberakning-fysisk/rakna-ut-skatt",
     {
@@ -59,12 +73,11 @@ export const getSwedishTaxEstimate = async (income: number) => {
         },
         grunduppgifter: {
           fodelsear: 1996,
-          inkomstar: 2023,
+          inkomstar: year,
           kommunkod: null,
           prognos: true,
           skatteAvgiftssatser: {
-            avgiftssatsBegravningsavgift: 0.258,
-            kommunalLandstingsSkattesats: 0.35,
+            kommunalLandstingsSkattesats: 32.37,
             summaKommunalskattAvgifter: null,
           },
           showRegionalSkattereduktion: false,
@@ -75,27 +88,27 @@ export const getSwedishTaxEstimate = async (income: number) => {
             allmanPensionTjanstepensionHittills: null,
             avdragenSkatt: null,
             kostnadsersattningarHittills: null,
-            loneinkomsterHittills: income.toString(),
+            loneinkomsterHittills: null,
             sjukAktivitetsersattningLonHittills: null,
             sjukAktivitetsersattningPensionHittills: null,
             sjukpenningAKassaMmHittills: null,
             period: {
-              fromDate: "2023-01-01",
-              tomDate: "2023-11-01",
+              fromDate: DateTime.local().startOf("year").toISODate(),
+              tomDate: DateTime.local().endOf("year").startOf("month").toISODate(),
             },
           },
           restenAvAret: {
             allmanPensionTjanstepensionResten: null,
-            inkomstFrom: "12",
-            isHelar: false,
+            inkomstFrom: null,
+            isHelar: true,
             kostnadsersattningarResten: null,
-            loneinkomsterResten: null,
+            loneinkomsterResten: income.toString(),
             sjukAktivitetsersattningLonResten: null,
             sjukAktivitetsersattningPensionResten: null,
             sjukpenningAKassaMmResten: null,
             period: {
-              fromDate: "2023-12-01",
-              tomDate: "2023-12-01",
+              fromDate: DateTime.local().endOf("year").startOf("month").toISODate(),
+              tomDate: DateTime.local().endOf("year").startOf("month").toISODate(),
             },
           },
         },
@@ -180,7 +193,7 @@ export const getSwedishTaxEstimate = async (income: number) => {
           antalDagarKarensFjortonDagar: null,
           antalDagarKarensNittioDagar: null,
           antalDagarKarensSextioDagar: null,
-          antalDagarKarensSjuDagar: 365,
+          antalDagarKarensSjuDagar: DateTime.local().isInLeapYear ? 366 : 365,
           antalDagarKarensTrettioDagar: null,
           helSjukAktivitetsersattning: false,
           manuelltUnderlagForSlfPaAktivNrvJanTillJun2019: null,
@@ -244,6 +257,7 @@ export type AdjustedPPPFactorResult = {
 export const getNorwegianAdjustedPPPconversionFactor =
   async (): Promise<AdjustedPPPFactorResult> => {
     const cumulativeInflation = await getNorwegianInflation2017();
+    console.log("cumulativeInflation", cumulativeInflation);
     const pppFactor = await getPPPfactor2017("NOR");
 
     const adjustedPPPfactor = pppFactor * (1 + cumulativeInflation);
@@ -269,6 +283,8 @@ export const getSwedishAdjustedPPPconversionFactor = async (): Promise<AdjustedP
 };
 
 const getPPPfactor2017 = async (countryCode: string) => {
+  /* API is broken, so we use a temporary value */
+  /*
   const pppFactor = await fetch(
     `https://api.worldbank.org/v2/country/${countryCode}/indicator/PA.NUS.PPP?date=2017:2017&format=json`,
   );
@@ -278,6 +294,14 @@ const getPPPfactor2017 = async (countryCode: string) => {
   console.log("2017 factor", json[1][0].value);
 
   return json[1][0].value;
+  */
+  if (countryCode === "NOR") {
+    return 9.7;
+  } else if (countryCode === "SE") {
+    return 8.9;
+  } else {
+    throw new Error("Invalid country code");
+  }
 };
 
 const getNorwegianInflation2017 = async () => {
@@ -287,11 +311,13 @@ const getNorwegianInflation2017 = async () => {
   while (attempts < 12) {
     date = date.minus({ months: 1 });
     const inflation = await fetch(
-      `https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=90&endYear=${date.year}&endMonth=${date.month}&language=nb`,
+      `https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=01&endYear=${date.year}&endMonth=${date.month}&language=nb`,
     );
     const json = await inflation.json();
 
-    if ("change" in json) {
+    console.log("inflation", json);
+
+    if ("change" in json && json.change !== "NaN") {
       // Percentage change from 2017
       return json.change;
     }

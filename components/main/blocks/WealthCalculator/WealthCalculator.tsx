@@ -8,14 +8,14 @@ import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 import { LinkType } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
-import { WealthCalculatorInput } from "./WealthCalculatorInput";
+import { WealthCalculatorInput, WealthCalculatorInputConfiguration } from "./WealthCalculatorInput";
 import {
   TaxJurisdiction,
   calculateWealthPercentile,
   equvivalizeIncome,
   getEstimatedPostTaxIncome,
 } from "./_util";
-import { WealthCalculatorSlider } from "./WealthCalculatorSlider";
+import { WealthCalculatorSlider, WealthCalculatorSliderConfig } from "./WealthCalculatorSlider";
 import { WealthCalculatorImpact } from "./WealthCalculatorImpact";
 import {
   AdjustedPPPFactorResult,
@@ -23,6 +23,7 @@ import {
   getSwedishAdjustedPPPconversionFactor,
 } from "./_queries";
 import { DateTime } from "luxon";
+import { thousandize } from "../../../../util/formatting";
 
 type WealthCalculatorProps = {
   title: string;
@@ -35,31 +36,14 @@ type WealthCalculatorProps = {
     currency: string;
     locale: string;
   };
-  calculator_input_configuration: {
-    subtitle_label?: string;
-    income_input_configuration: {
-      placeholder?: string;
-      thousand_separator?: string;
-      currency_label?: string;
-    };
-    children_input_configuration: {
-      placeholder?: string;
-      options?: string[];
-    };
-    adults_input_configuration: {
-      placeholder?: string;
-      options?: string[];
-    };
-    donation_percentage_input_configuration: {
-      template_string?: string;
-    };
-  };
+  calculator_input_configuration: WealthCalculatorInputConfiguration;
+  slider_configuration: WealthCalculatorSliderConfig;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
   defaultDonationPercentage?: number;
-  explenationLabel?: string;
-  explanation?: any;
-  xAxixLabel?: string;
+  data_explanation_label?: string;
+  data_explanation?: any;
+  x_axis_label?: string;
   currency: string;
   locale: string;
 };
@@ -68,13 +52,14 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   title,
   showImpact,
   intervention_configuration,
-  explanation,
+  data_explanation,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
   defaultDonationPercentage = 10,
   calculator_input_configuration,
-  xAxixLabel,
-  explenationLabel,
+  slider_configuration,
+  x_axis_label,
+  data_explanation_label,
   currency,
   locale,
 }) => {
@@ -96,7 +81,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       getNorwegianAdjustedPPPconversionFactor().then((res) => {
         setPppConversion(res);
       });
-    } else if (locale === "se") {
+    } else if (locale === "sv") {
       getSwedishAdjustedPPPconversionFactor().then((res) => {
         setPppConversion(res);
       });
@@ -172,7 +157,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     let taxJurisdiction: TaxJurisdiction;
     if (locale === "no") {
       taxJurisdiction = TaxJurisdiction.NO;
-    } else if (locale === "se") {
+    } else if (locale === "sv") {
       taxJurisdiction = TaxJurisdiction.SE;
     } else {
       console.error("Unsupported locale", locale);
@@ -212,6 +197,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           setNumberOfParents={setNumberOfParents}
           loadingPostTaxIncome={loadingPostTaxIncome}
           outputRef={outputRef}
+          config={calculator_input_configuration}
         ></WealthCalculatorInput>
         <WealthCalculatorSlider
           donationPercentage={donationPercentage}
@@ -219,6 +205,8 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           postTaxIncome={postTaxIncome}
           wealthMountainGraphData={wealthMountainGraphData}
           equvivalizedIncome={equvivalizedIncome}
+          adjustedPppFactor={pppConversion.adjustedPPPfactor}
+          config={slider_configuration}
         />
 
         <div className={styles.calculator__output} ref={outputRef} data-cy="wealthcalculator-graph">
@@ -251,10 +239,10 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           data-cy="wealthcalculator-explanation-toggle"
           onClick={() => setExplanationOpen(!explanationOpen)}
         >
-          {explenationLabel}
+          {data_explanation_label || "Explanation"}
         </div>
         <div className={styles.calculator__axis__label}>
-          <span>{xAxixLabel} →</span>
+          <span>{x_axis_label || "Yearly income (log scale)"} →</span>
         </div>
       </div>
       <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
@@ -283,10 +271,16 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
               </td>
               <td>{pppConversion.adjustedPPPfactor.toFixed(2)}</td>
             </tr>
+            <tr>
+              <td>
+                <strong>Estimated taxation</strong>
+              </td>
+              <td>{thousandize(income - postTaxIncome)}</td>
+            </tr>
           </table>
         </div>
         <div data-cy="wealthcalculator-explanation">
-          <BlockContentRenderer content={[explanation]} />
+          <BlockContentRenderer content={[data_explanation]} />
         </div>
       </AnimateHeight>
       {showImpact && intervention_configuration && (
