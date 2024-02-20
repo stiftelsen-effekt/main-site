@@ -246,6 +246,8 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
         </div>
       </div>
       <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
+        {/** Debug factors */}
+        {/** 
         <div>
           <strong>Factors used in the calculation:</strong>
           <table>
@@ -279,6 +281,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
             </tr>
           </table>
         </div>
+        */}
         <div data-cy="wealthcalculator-explanation">
           <BlockContentRenderer content={[data_explanation]} />
         </div>
