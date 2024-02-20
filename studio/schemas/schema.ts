@@ -78,6 +78,7 @@ import agreementlistconfiguration from "./types/lists/agreements/agreementlistco
 import agreementlistdetailsconfiguration from "./types/lists/agreements/agreementlistdetailsconfiguration";
 import dateselectorconfig from "./types/dateselectorconfig";
 import blocktables from "./types/blocktable";
+import discountratecomparison from "./types/discountratecomparison";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -143,6 +144,7 @@ export const types = [
   taxstatements,
   giftcardteaser,
   dateselectorconfig,
+  discountratecomparison,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

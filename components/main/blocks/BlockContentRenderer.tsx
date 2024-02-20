@@ -32,6 +32,7 @@ import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 import { GiftCard } from "./GiftCard/GiftCard";
 import { BlockTables } from "./BlockTable/BlockTables";
+import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -311,6 +312,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           />
                         );
                       }
+                      case "discountratecomparison":
+                        return (
+                          <DiscountRateComparison
+                            key={block._key || block._id}
+                            min={block.discount_rate_min}
+                            max={block.discount_rate_max}
+                          />
+                        );
                       default:
                         return block._type;
                     }
