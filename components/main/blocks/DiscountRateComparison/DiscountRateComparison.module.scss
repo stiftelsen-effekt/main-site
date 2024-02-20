@@ -1,0 +1,22 @@
+.wrapper {
+  max-width: 760px;
+  width: 100%;
+
+  .graph {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+    border-bottom: 1px solid var(--primary);
+
+    svg {
+      overflow: visible;
+    }
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    max-width: 640px;
+  }
+}
