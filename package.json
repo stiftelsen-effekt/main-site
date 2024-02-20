@@ -27,6 +27,7 @@
     "@redux-devtools/extension": "^3.2.5",
     "@sanity/image-url": "^1.0.2",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
+    "@stdlib/stats-base-dists-truncated-normal": "^0.2.0",
     "auth0": "^3.2.0",
     "auth0-js": "^9.19.0",
     "babel-jest": "^27.5.1",

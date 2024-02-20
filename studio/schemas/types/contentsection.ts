@@ -78,6 +78,7 @@ export default {
         { type: "givewellstamp" },
         { type: "organizationslist" },
         { type: "giftcardteaser" },
+        { type: "discountratecomparison" },
       ],
       options: {
         editModal: "fullscreen",
