@@ -59,7 +59,7 @@ export const WealthCalculatorSlider: React.FC<{
                 data-cy="wealthcalculator-donation-percentage-input"
                 onChange={(e) => {
                   if (e.target.value !== "" || !isNaN(parseInt(e.target.value))) {
-                    setDonationPercentage(parseInt(e.target.value));
+                    setDonationPercentage(Math.min(Math.max(parseInt(e.target.value), 0), 100));
                   } else if (e.target.value === "") {
                     setDonationPercentage(0);
                   }
