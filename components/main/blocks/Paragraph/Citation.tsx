@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
+import citation from "../../../../studio/schemas/types/citation";
 
 export const formatHarvardCitation = ({
   type,
@@ -304,7 +305,7 @@ export const Citation = (props: any): JSX.Element => {
           props.value.citations.map((citation: any, i: number) =>
             citation != null ? (
               <span
-                key={citation._key}
+                key={citation._id}
                 className={[
                   "extendedcitation",
                   highlighted ? elements.citationHighlighted : "",

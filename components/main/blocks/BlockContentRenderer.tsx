@@ -39,11 +39,11 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
     <>
       {content &&
         content.map(
-          (section: SectionContainerProps & { _key: string; blocks: any }) =>
+          (section: SectionContainerProps & { _key?: string; _id?: string; blocks: any }) =>
             section &&
             !section.hidden && (
               <SectionContainer
-                key={section._key}
+                key={section._key || section._id}
                 heading={section.heading}
                 inverted={section.inverted}
                 nodivider={section.nodivider}

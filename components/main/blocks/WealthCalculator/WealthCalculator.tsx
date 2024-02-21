@@ -56,7 +56,6 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   currency,
   locale,
 }) => {
-  console.log(intervention_configuration);
   const {
     calculator_input_configuration,
     slider_configuration,
