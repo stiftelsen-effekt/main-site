@@ -34,7 +34,19 @@ export default {
       intervention4: "interventions[3].title",
       intervention5: "interventions[4].title",
     },
-    prepare: ({ intervention1, intervention2, intervention3, intervention4, intervention5 }) => {
+    prepare: ({
+      intervention1,
+      intervention2,
+      intervention3,
+      intervention4,
+      intervention5,
+    }: {
+      intervention1: string;
+      intervention2: string;
+      intervention3: string;
+      intervention4: string;
+      intervention5: string;
+    }) => {
       const interventions = [
         intervention1,
         intervention2,
