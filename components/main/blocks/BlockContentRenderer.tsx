@@ -189,7 +189,6 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           />
                         );
                       case "wealthcalculator":
-                        console.log(block);
                         return (
                           <WealthCalculator
                             key={block._key || block._id}

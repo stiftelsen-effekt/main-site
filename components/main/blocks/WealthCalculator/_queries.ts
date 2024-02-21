@@ -270,7 +270,6 @@ export type AdjustedPPPFactorResult = {
 export const getNorwegianAdjustedPPPconversionFactor =
   async (): Promise<AdjustedPPPFactorResult> => {
     const cumulativeInflation = await getNorwegianInflation2017();
-    console.log("cumulativeInflation", cumulativeInflation);
     const pppFactor = await getPPPfactor2017("NOR");
 
     const adjustedPPPfactor = pppFactor * (1 + cumulativeInflation);
@@ -304,8 +303,6 @@ const getPPPfactor2017 = async (countryCode: string) => {
 
   const json = await pppFactor.json();
 
-  console.log("2017 factor", json[1][0].value);
-
   return json[1][0].value;
   */
   if (countryCode === "NOR") {
@@ -327,8 +324,6 @@ const getNorwegianInflation2017 = async () => {
       `https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=01&endYear=${date.year}&endMonth=${date.month}&language=nb`,
     );
     const json = await inflation.json();
-
-    console.log("inflation", json);
 
     if ("change" in json && json.change !== "NaN") {
       // Percentage change from 2017

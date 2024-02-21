@@ -88,8 +88,6 @@ export const AgreementList: React.FC<{
     }),
   );
 
-  console.log(autoGiroType);
-
   let rowData: AgreementRow[] = [...vippsType, ...giroType, ...autoGiroType];
 
   /**

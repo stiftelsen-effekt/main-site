@@ -32,8 +32,6 @@ export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
     return null;
   }
 
-  console.log(outputConfiguration);
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
