@@ -15,7 +15,7 @@ export default {
       name: "configuration",
       type: "reference",
       to: [{ type: "wealthcalculatorconfiguration" }],
-      validaton: (Rule) => Rule.required(),
+      validaton: (Rule: any) => Rule.required(),
     },
     {
       name: "intervention_configuration",
@@ -26,7 +26,7 @@ export default {
           name: "output_configuration",
           type: "reference",
           to: [{ type: "interventionwidgetoutputconfiguration" }],
-          validaton: (Rule) => Rule.required(),
+          validaton: (Rule: any) => Rule.required(),
         },
       ],
     },

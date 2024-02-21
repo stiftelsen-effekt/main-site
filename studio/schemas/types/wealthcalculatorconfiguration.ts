@@ -12,7 +12,7 @@ export default {
           name: "subtitle_label",
           type: "string",
           title: "Subtitle Label",
-          validation: (Rule) => Rule.required(),
+          validation: (Rule: any) => Rule.required(),
         },
         {
           name: "income_input_configuration",
