@@ -1,6 +1,19 @@
 import { DateTime } from "luxon";
 
 export const getNorwegianTaxEstimate = async (income: number) => {
+  if (income < 0) {
+    return 0;
+  }
+  if (Number.isNaN(income)) {
+    return 0;
+  }
+  if (income === 0) {
+    return 0;
+  }
+  if (!Number.isFinite(income)) {
+    return 0;
+  }
+
   const response = await fetch(`https://skatteberegning.app.skatteetaten.no/2023`, {
     method: "POST",
     body: JSON.stringify({
@@ -8,7 +21,7 @@ export const getNorwegianTaxEstimate = async (income: number) => {
         skatteberegningsgrunnlagsobjekt: [
           {
             tekniskNavn: "loennsinntektNaturalytelseMv",
-            beloep: income.toString(),
+            beloep: Math.round(income).toString(),
           },
         ],
       },
@@ -102,7 +115,7 @@ export const getSwedishTaxEstimate = async (income: number) => {
             inkomstFrom: null,
             isHelar: true,
             kostnadsersattningarResten: null,
-            loneinkomsterResten: income.toString(),
+            loneinkomsterResten: Math.round(income).toString(),
             sjukAktivitetsersattningLonResten: null,
             sjukAktivitetsersattningPensionResten: null,
             sjukpenningAKassaMmResten: null,
