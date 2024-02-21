@@ -30,8 +30,8 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-income-input]").find("input").should("be.empty");
 
-    cy.get("[data-cy=wealthcalculator-children-input]").should("contain.text", "0 barn");
-    cy.get("[data-cy=wealthcalculator-adults-input]").should("contain.text", "1 voksen");
+    cy.get("[data-cy=wealthcalculator-children-input]").should("contain.text", "Ingen barn");
+    cy.get("[data-cy=wealthcalculator-adults-input]").should("contain.text", "Én voksen");
 
     cy.get("[data-cy=wealthcalculator-graph]").should("not.contain.text", "Om du donerer");
 
@@ -45,11 +45,11 @@ describe("Navigation", () => {
     // We have some symbols in the font set to semibold numbers
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 10% avinntekten din er du blantde ϤϬϫϭ rikeste i verden.",
+      "Om du donerer 10% avinntekten din er du blantde ϦϬϣϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϤϬϦϭ rikeste i verden.",
+      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
     );
   });
 
@@ -61,7 +61,7 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 10% avinntekten din er du blantde ϩϭ rikeste i verden.",
+      "Om du donerer 10% avinntekten din er du blantde ϪϬϩϭ rikeste i verden.",
     );
   });
 
@@ -73,7 +73,7 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 10% avinntekten din er du blantde ϧϬϣϭ rikeste i verden.",
+      "Om du donerer 10% avinntekten din er du blantde ϨϬϪϭ rikeste i verden.",
     );
   });
 
@@ -84,11 +84,11 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 20% avinntekten din er du blantde ϥϬϪϭ rikeste i verden.",
+      "Om du donerer 20% avinntekten din er du blantde ϧϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϤϬϦϭ rikeste i verden.",
+      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
     );
   });
 
@@ -101,11 +101,11 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 25% avinntekten din er du blantde ϦϬϥϭ rikeste i verden.",
+      "Om du donerer 25% avinntekten din er du blantde ϧϬϨϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϤϬϦϭ rikeste i verden.",
+      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "25");
   });
@@ -117,11 +117,11 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 39% avinntekten din er du blantde ϨϬϣϭ rikeste i verden.",
+      "Om du donerer 39% avinntekten din er du blantde ϩϬϪϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϤϬϦϭ rikeste i verden.",
+      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "39");
   });
