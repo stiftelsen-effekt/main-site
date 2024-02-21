@@ -1,5 +1,3 @@
-import { select } from "d3";
-
 export default {
   type: "document",
   name: "interventionwidgetoutputconfiguration",
