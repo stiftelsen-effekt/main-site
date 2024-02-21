@@ -39,10 +39,11 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
     <>
       {content &&
         content.map(
-          (section: SectionContainerProps & { _key: string; blocks: any }) =>
+          (section: SectionContainerProps & { _key?: string; _id?: string; blocks: any }) =>
+            section &&
             !section.hidden && (
               <SectionContainer
-                key={section._key}
+                key={section._key || section._id}
                 heading={section.heading}
                 inverted={section.inverted}
                 nodivider={section.nodivider}
@@ -192,16 +193,10 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <WealthCalculator
                             key={block._key || block._id}
                             title={block.title}
-                            showImpact={block.show_impact}
-                            explanation={block.data_explanation}
-                            afterDonationPercentileLabelTemplateString={
-                              block.income_percentile_after_donation_label_template_string
-                            }
-                            incomePercentileLabelTemplateString={
-                              block.income_percentile_label_template_string
-                            }
+                            configuration={block.configuration}
                             intervention_configuration={block.intervention_configuration}
-                            defaultDonationPercentage={block.donation_percentage}
+                            currency={block.currency}
+                            locale={block.locale}
                           />
                         );
                       case "wealthcalculatorteaser":
@@ -212,12 +207,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             description={block.description}
                             link={block.button}
                             medianIncome={block.median_income}
+                            xAxisLabel={block.x_axis_label}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
                             }
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            locale={block.locale}
                           />
                         );
                       case "contributorlist":
@@ -247,10 +244,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             title={block.title}
                             donationLabel={block.donation_label}
                             default_sum={block.default_sum}
-                            interventions={block.interventions}
-                            explanationLabel={block.explanation_label}
-                            explanationText={block.explanation_text}
-                            explanationLinks={block.explanation_links}
+                            outputConfiguration={block.output_configuration}
                             currency={block.currency}
                             locale={block.locale}
                           />

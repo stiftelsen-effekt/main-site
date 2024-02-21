@@ -79,6 +79,8 @@ import agreementlistdetailsconfiguration from "./types/lists/agreements/agreemen
 import dateselectorconfig from "./types/dateselectorconfig";
 import blocktables from "./types/blocktable";
 import discountratecomparison from "./types/discountratecomparison";
+import wealthcalculatorconfiguration from "./types/wealthcalculatorconfiguration";
+import interventionwidgetoutputconfiguration from "./types/interventionwidgetoutputconfiguration";
 
 export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
@@ -118,6 +120,7 @@ export const types = [
   columns,
   intervention,
   interventionwidget,
+  interventionwidgetoutputconfiguration,
   testimonials,
   fullvideo,
   newslettersignup,
@@ -127,6 +130,7 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser,
+  wealthcalculatorconfiguration,
   contributorlist,
   inngress,
   giveblock,

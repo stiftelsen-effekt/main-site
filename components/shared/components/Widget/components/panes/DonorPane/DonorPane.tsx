@@ -65,8 +65,6 @@ export const DonorPane: React.FC<{
     },
   });
 
-  console.log(errors);
-
   const plausible = usePlausible();
 
   const taxDeductionChecked = watch("taxDeduction");

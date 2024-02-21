@@ -21,7 +21,6 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
   useEffect(() => {
     if (typeof window !== "undefined") {
       const item = window.localStorage.getItem("gieffektivt-cookies-accepted");
-      console.log(item);
       if (item !== null) {
         if (item === "true") {
           setCookiesAccepted({

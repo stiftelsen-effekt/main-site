@@ -22,24 +22,11 @@ export default {
       title: "Default sum",
     },
     {
-      name: "interventions",
-      type: "array",
-      of: [{ type: "intervention" }],
-    },
-    {
-      name: "explanation_label",
-      type: "string",
-      title: "Explanation label",
-    },
-    {
-      name: "explanation_text",
-      type: "array",
-      of: [{ type: "block" }],
-    },
-    {
-      name: "explanation_links",
-      type: "array",
-      of: [{ type: "link" }, { type: "navitem" }],
+      name: "output_configuration",
+      type: "reference",
+      description: "Configuration for the interventions that the widget will show.",
+      to: [{ type: "interventionwidgetoutputconfiguration" }],
+      validation: (Rule: any) => Rule.required(),
     },
   ],
 } as const;

@@ -3,13 +3,18 @@ import styles from "./WealthCalculatorTeaser.module.scss";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { wealthMountainGraphData } from "../WealthCalculator/data";
-import { calculateWealthPercentile } from "../WealthCalculator/WealthCalculator";
 import { PortableText } from "@portabletext/react";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import Link from "next/link";
 import { useRouterContext } from "../../../../context/RouterContext";
+import { calculateWealthPercentile } from "../WealthCalculator/_util";
+import {
+  AdjustedPPPFactorResult,
+  getNorwegianAdjustedPPPconversionFactor,
+  getSwedishAdjustedPPPconversionFactor,
+} from "../WealthCalculator/_queries";
 
 export const WealthCalculatorTeaser: React.FC<{
   title: string;
@@ -18,6 +23,8 @@ export const WealthCalculatorTeaser: React.FC<{
   medianIncome: number;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
+  xAxisLabel: string;
+  locale: string;
 }> = ({
   title,
   description,
@@ -25,6 +32,8 @@ export const WealthCalculatorTeaser: React.FC<{
   medianIncome,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
+  xAxisLabel,
+  locale,
 }) => {
   const { articlesPagePath } = useRouterContext();
 
@@ -35,6 +44,24 @@ export const WealthCalculatorTeaser: React.FC<{
     width: undefined,
     height: undefined,
   });
+  const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult | undefined>();
+
+  /**
+   * Get the adjusted PPP conversion factor for the locale.
+   */
+  useEffect(() => {
+    if (locale === "no") {
+      getNorwegianAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else if (locale === "sv") {
+      getSwedishAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else {
+      console.error("Unsupported locale", locale);
+    }
+  }, [setPppConversion]);
 
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -81,6 +108,10 @@ export const WealthCalculatorTeaser: React.FC<{
     }
   }, []);
 
+  if (!pppConversion) {
+    return null;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.inner}>
@@ -109,19 +140,25 @@ export const WealthCalculatorTeaser: React.FC<{
             data={wealthMountainGraphData}
             lineInput={medianIncome}
             donationPercentage={0.1}
-            wealthPercentile={calculateWealthPercentile(wealthMountainGraphData, medianIncome)}
+            wealthPercentile={calculateWealthPercentile(
+              wealthMountainGraphData,
+              medianIncome,
+              pppConversion.adjustedPPPfactor,
+            )}
             afterDonationWealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               medianIncome * 0.9,
+              pppConversion.adjustedPPPfactor,
             )}
             incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
             afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
             size={chartSize}
+            adjustedPPPConversionFactor={pppConversion.adjustedPPPfactor}
           />
         </div>
       </div>
       <div className={styles.axislabel}>
-        <span>Årsinntekt i kroner (logaritmisk skala) →</span>
+        <span>{xAxisLabel} →</span>
       </div>
       <div className={styles.mobileButton}>
         <Link

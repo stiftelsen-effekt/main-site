@@ -9,10 +9,12 @@ const drawChart = (
   donationPercentage: number,
   incomePercentileLabelTemplateString: string,
   afterDonationPercentileLabelTemplateString: string,
+  adjustedPPPConversionFactor: number,
   size: { width: number | undefined; height: number | undefined },
 ) => {
-  const incomeXPositon = lineInput / 365 / 10.5;
-  const incomeAfterDonationXPosition = (lineInput * (1 - donationPercentage)) / 365 / 10.5;
+  const incomeXPositon = lineInput / 365 / adjustedPPPConversionFactor;
+  const incomeAfterDonationXPosition =
+    (lineInput * (1 - donationPercentage)) / 365 / adjustedPPPConversionFactor;
   const dataMax = Math.max(...data.map((d) => d.y));
   // Browser window width smaller than or equal to 1180px
   const isMobile = window.innerWidth <= 1180;
@@ -91,7 +93,7 @@ const drawChart = (
       type: "log",
       domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
       insetRight: lineInput > 900000 && !isMobile ? 180 : 0,
-      transform: (dailyIncome: number) => dailyIncome * 365 * 10.5,
+      transform: (dailyIncome: number) => dailyIncome * 365 * adjustedPPPConversionFactor,
       label: null,
     },
     y: {
@@ -129,6 +131,7 @@ export const AreaChart: React.FC<{
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
   size: { width: number | undefined; height: number | undefined };
+  adjustedPPPConversionFactor: number;
 }> = ({
   data,
   lineInput,
@@ -138,6 +141,7 @@ export const AreaChart: React.FC<{
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
   size,
+  adjustedPPPConversionFactor,
 }) => {
   const [chart, setChart] = useState<Plot.Plot | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -152,6 +156,7 @@ export const AreaChart: React.FC<{
         donationPercentage,
         incomePercentileLabelTemplateString,
         afterDonationPercentileLabelTemplateString,
+        adjustedPPPConversionFactor,
         size,
       );
       svgRef.current.replaceWith(newChart);
@@ -165,6 +170,7 @@ export const AreaChart: React.FC<{
         donationPercentage,
         incomePercentileLabelTemplateString,
         afterDonationPercentileLabelTemplateString,
+        adjustedPPPConversionFactor,
         size,
       );
       (chart as any).replaceWith(newChart);
