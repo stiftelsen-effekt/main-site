@@ -1,4 +1,3 @@
-import { after, before } from "mocha";
 import { thousandize } from "../../../../util/formatting";
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
 import { calculateWealthPercentile } from "./_util";
