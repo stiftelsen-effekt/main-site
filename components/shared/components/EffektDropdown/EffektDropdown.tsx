@@ -1,7 +1,7 @@
-import { useState } from "react";
-import AnimateHeight from "react-animate-height";
+import { useRef, useState } from "react";
 import { ChevronDown } from "react-feather";
 import styles from "./EffektDropdown.module.scss";
+import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 
 export const EffektDropdown: React.FC<{
   placeholder: string;
@@ -13,6 +13,9 @@ export const EffektDropdown: React.FC<{
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(value);
   const [search, setSearch] = useState("");
+
+  const wrapperRef = useRef(null);
+  useClickOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -29,7 +32,7 @@ export const EffektDropdown: React.FC<{
   );
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={wrapperRef}>
       <div className={styles.dropdown}>
         <div className={styles.dropdown__input} onClick={toggleOpen}>
           <span className={styles.dropdown__input__text}>{selected || placeholder}</span>

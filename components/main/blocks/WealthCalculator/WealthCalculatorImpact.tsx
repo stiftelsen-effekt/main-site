@@ -3,23 +3,18 @@ import { thousandize } from "../../../../util/formatting";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import {
   InterventionWidgetOutput,
-  SanityIntervention,
+  InterventionWidgetOutputConfiguration,
 } from "../InterventionWidget/InterventionWidgetOutput";
 import { WidgetContext } from "../../layout/layout";
 
 import styles from "./WealthCalculator.module.scss";
-import { LinkType } from "../Links/Links";
-import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export const WealthCalculatorImpact: React.FC<{
   donationPercentage: number;
   setDonationPercentage: (value: number) => void;
   postTaxIncome: number;
   intervention_configuration: {
-    interventions?: SanityIntervention[];
-    explanation_label?: string;
-    explanation_text?: string;
-    explanation_links?: (LinkType | NavLink)[];
+    output_configuration: InterventionWidgetOutputConfiguration;
     currency: string;
     locale: string;
   };
@@ -45,10 +40,7 @@ export const WealthCalculatorImpact: React.FC<{
       <div className={styles.calculator__impact__output}>
         <InterventionWidgetOutput
           sum={postTaxIncome * (donationPercentage / 100)}
-          interventions={intervention_configuration.interventions}
-          explanationLabel={intervention_configuration.explanation_label}
-          explanationText={intervention_configuration.explanation_text}
-          explanationLinks={intervention_configuration.explanation_links}
+          configuration={intervention_configuration.output_configuration}
           currency={intervention_configuration.currency}
           locale={intervention_configuration.locale}
         />

@@ -30,6 +30,11 @@ export default {
       title: "Button",
     },
     {
+      name: "x_axis_label",
+      type: "string",
+      title: "X Axis Label",
+    },
+    {
       name: "income_percentile_label_template_string",
       type: "text",
       title: "Income Percentile Label Template String",

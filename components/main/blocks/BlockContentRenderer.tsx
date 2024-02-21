@@ -189,24 +189,13 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           />
                         );
                       case "wealthcalculator":
+                        console.log(block);
                         return (
                           <WealthCalculator
                             key={block._key || block._id}
                             title={block.title}
-                            data_explanation={block.data_explanation}
-                            data_explanation_label={block.data_explanation_label}
-                            x_axis_label={block.x_axis_label}
-                            afterDonationPercentileLabelTemplateString={
-                              block.income_percentile_after_donation_label_template_string
-                            }
-                            incomePercentileLabelTemplateString={
-                              block.income_percentile_label_template_string
-                            }
-                            defaultDonationPercentage={block.default_donation_percentage}
-                            showImpact={block.show_impact}
+                            configuration={block.configuration}
                             intervention_configuration={block.intervention_configuration}
-                            calculator_input_configuration={block.calculator_input_configuration}
-                            slider_configuration={block.slider_configuration}
                             currency={block.currency}
                             locale={block.locale}
                           />
@@ -219,12 +208,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             description={block.description}
                             link={block.button}
                             medianIncome={block.median_income}
+                            xAxisLabel={block.x_axis_label}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
                             }
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            locale={block.locale}
                           />
                         );
                       case "contributorlist":
@@ -254,10 +245,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             title={block.title}
                             donationLabel={block.donation_label}
                             default_sum={block.default_sum}
-                            interventions={block.interventions}
-                            explanationLabel={block.explanation_label}
-                            explanationText={block.explanation_text}
-                            explanationLinks={block.explanation_links}
+                            outputConfiguration={block.output_configuration}
                             currency={block.currency}
                             locale={block.locale}
                           />

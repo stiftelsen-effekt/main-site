@@ -7,6 +7,13 @@ import { thousandize } from "../../../../util/formatting";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
+export type InterventionWidgetOutputConfiguration = {
+  interventions: SanityIntervention[];
+  explanation_label: string;
+  explanation_text: any[];
+  explanation_links?: (LinkType | NavLink)[];
+};
+
 export type SanityIntervention = {
   title: string;
   organization_name: string;
@@ -24,13 +31,12 @@ type Intervention = {
 
 export const InterventionWidgetOutput: React.FC<{
   sum: number;
-  interventions: SanityIntervention[] | undefined;
-  explanationLabel?: string;
-  explanationText?: any;
-  explanationLinks?: (LinkType | NavLink)[];
+  configuration: InterventionWidgetOutputConfiguration;
   currency: string;
   locale: string;
-}> = ({ sum, interventions, explanationLabel, explanationLinks, explanationText, currency }) => {
+}> = ({ sum, configuration, currency }) => {
+  const { interventions, explanation_label, explanation_text, explanation_links } = configuration;
+
   const [contextExpanded, setContextExpanded] = useState(false);
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
   const [selectedIntervention, setSelectedIntervention] = useState<string>(
@@ -135,15 +141,15 @@ export const InterventionWidgetOutput: React.FC<{
                   className={contextExpanded ? styles.captionopen : ""}
                   onClick={() => setContextExpanded(!contextExpanded)}
                 >
-                  {explanationLabel}&nbsp;&nbsp;
+                  {explanation_label}&nbsp;&nbsp;
                 </span>
               </div>
             </div>
             <AnimateHeight duration={300} height={contextExpanded ? "auto" : 0} animateOpacity>
               <div className={styles.context}>
-                <PortableText value={explanationText} />
+                <PortableText value={explanation_text} />
               </div>
-              {explanationLinks && <Links links={explanationLinks}></Links>}
+              {explanation_links && <Links links={explanation_links}></Links>}
             </AnimateHeight>
           </>
         )}

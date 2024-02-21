@@ -3,7 +3,10 @@ import AnimateHeight from "react-animate-height";
 import { useDebouncedCallback } from "use-debounce";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { BlockContentRenderer } from "../BlockContentRenderer";
-import { SanityIntervention } from "../InterventionWidget/InterventionWidgetOutput";
+import {
+  InterventionWidgetOutputConfiguration,
+  SanityIntervention,
+} from "../InterventionWidget/InterventionWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 import { LinkType } from "../Links/Links";
@@ -22,52 +25,55 @@ import {
   getNorwegianAdjustedPPPconversionFactor,
   getSwedishAdjustedPPPconversionFactor,
 } from "./_queries";
-import { DateTime } from "luxon";
-import { thousandize } from "../../../../util/formatting";
 
-type WealthCalculatorProps = {
-  title: string;
-  showImpact: boolean;
-  intervention_configuration: {
-    interventions?: SanityIntervention[];
-    explanation_label?: string;
-    explanation_text?: string;
-    explanation_links?: (LinkType | NavLink)[];
-    currency: string;
-    locale: string;
-  };
+export type WealthCalculatorConfiguration = {
   calculator_input_configuration: WealthCalculatorInputConfiguration;
   slider_configuration: WealthCalculatorSliderConfig;
-  incomePercentileLabelTemplateString: string;
-  afterDonationPercentileLabelTemplateString: string;
-  defaultDonationPercentage?: number;
+  income_percentile_label_template_string: string;
+  income_percentile_after_donation_label_template_string: string;
+  default_donation_percentage?: number;
   data_explanation_label?: string;
   data_explanation?: any;
   x_axis_label?: string;
+};
+
+type WealthCalculatorProps = {
+  title: string;
+  configuration: WealthCalculatorConfiguration;
+  intervention_configuration: {
+    output_configuration: InterventionWidgetOutputConfiguration;
+    currency: string;
+    locale: string;
+  };
   currency: string;
   locale: string;
 };
 
 export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   title,
-  showImpact,
+  configuration,
   intervention_configuration,
-  data_explanation,
-  incomePercentileLabelTemplateString,
-  afterDonationPercentileLabelTemplateString,
-  defaultDonationPercentage = 10,
-  calculator_input_configuration,
-  slider_configuration,
-  x_axis_label,
-  data_explanation_label,
   currency,
   locale,
 }) => {
+  console.log(configuration, intervention_configuration, currency, locale);
+
+  const {
+    calculator_input_configuration,
+    slider_configuration,
+    income_percentile_label_template_string,
+    income_percentile_after_donation_label_template_string,
+    default_donation_percentage,
+    data_explanation_label,
+    data_explanation,
+    x_axis_label,
+  } = configuration;
+
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [numberOfAdults, setNumberOfParents] = useState(1);
-  const [donationPercentage, setDonationPercentage] = useState(defaultDonationPercentage);
+  const [donationPercentage, setDonationPercentage] = useState(default_donation_percentage || 10);
   const [loadingPostTaxIncome, setLoadingPostTaxIncome] = useState(false);
   const [postTaxIncome, setPostTaxIncome] = useState<number>(0);
   const [explanationOpen, setExplanationOpen] = useState(false);
@@ -225,8 +231,10 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
               pppConversion?.adjustedPPPfactor,
             )}
             size={chartSize}
-            afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
-            incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
+            afterDonationPercentileLabelTemplateString={
+              income_percentile_after_donation_label_template_string
+            }
+            incomePercentileLabelTemplateString={income_percentile_label_template_string}
             adjustedPPPConversionFactor={pppConversion?.adjustedPPPfactor}
           />
         </div>
@@ -286,7 +294,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           <BlockContentRenderer content={[data_explanation]} />
         </div>
       </AnimateHeight>
-      {showImpact && intervention_configuration && (
+      {intervention_configuration && (
         <WealthCalculatorImpact
           donationPercentage={donationPercentage}
           setDonationPercentage={setDonationPercentage}

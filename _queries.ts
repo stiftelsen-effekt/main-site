@@ -386,29 +386,38 @@ export const pageContentQuery = `content[] {
     },
     _type == 'wealthcalculator' => {
       ...,
-      data_explanation {
-        _type == 'reference' => @->{
-          ...,
-          blocks[] {
-            _type == 'paragraph' => @ {
-              ...,
-              content[] {
+      configuration->{
+        ...,
+        data_explanation {
+          _type == 'reference' => @->{
+            ...,
+            blocks[] {
+              _type == 'paragraph' => @ {
                 ...,
-                markDefs[] {
-                  _type == 'citation' => @ {
-                    ...,
-                    "citations": citations[]->
-                  },
-                  ${linksSelectorQuery}
-                  _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+                content[] {
+                  ...,
+                  markDefs[] {
+                    _type == 'citation' => @ {
+                      ...,
+                      "citations": citations[]->
+                    },
+                    ${linksSelectorQuery}
+                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+                  }
                 }
-              }
-            },
-          }
+              },
+            }
+          },
         },
       },
-      intervention_configuration {
+      intervention_configuration -> {
         ...,
+        output_configuration->{
+          ...,
+          explanation_links[] {
+            ${linksSelectorQuery}
+          },
+        },
         "currency": *[ _type == "site_settings"][0].main_currency,
         "locale": *[ _type == "site_settings"][0].main_locale,
       },
@@ -430,10 +439,17 @@ export const pageContentQuery = `content[] {
       ...,
       button {
         ${linksSelectorQuery}
-      }
+      },
+      "locale": *[ _type == "site_settings"][0].main_locale,
     },
     _type == 'interventionwidget' => {
       ...,
+      output_configuration->{
+        ...,
+        explanation_links[] {
+          ${linksSelectorQuery}
+        },
+      },
       "currency": *[ _type == "site_settings"][0].main_currency,
       "locale": *[ _type == "site_settings"][0].main_locale,
     },
@@ -463,7 +479,7 @@ export const pageContentQuery = `content[] {
         },
       },
     },
-    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'wealthcalculatorteaser' => @,
+    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' => @,
   }
 },
 `;
