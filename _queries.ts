@@ -410,7 +410,7 @@ export const pageContentQuery = `content[] {
           },
         },
       },
-      intervention_configuration -> {
+      intervention_configuration {
         ...,
         output_configuration->{
           ...,
