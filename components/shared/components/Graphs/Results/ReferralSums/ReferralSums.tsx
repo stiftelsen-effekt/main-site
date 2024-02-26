@@ -5,6 +5,9 @@ import { useState } from "react";
 import * as Plot from "@observablehq/plot";
 import AnimateHeight from "react-animate-height";
 import { BlockTablesContent } from "../../../../../main/blocks/BlockTable/BlockTablesContent";
+import styles from "./ReferralSums.module.scss";
+import resultsStyle from "../Shared.module.scss";
+import { useDebouncedCallback } from "use-debounce";
 
 export type ReferralSumsResult = {
   Year: number;
@@ -37,8 +40,7 @@ export type ReferralSumsResult = {
 
 export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ referralSums }) => {
   const graphRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [size, setSize] = useState({ width: 0, height: 0 });
   const [explenationOpen, setExplenationOpen] = useState(false);
   const [tableDisplayed, setTableDisplayed] = useState(false);
 
@@ -74,10 +76,22 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ refer
     .filter((el) => el.sum && el.num)
     .sort((a, b) => b.sum - a.sum);
 
+  const resizeGraph = useCallback(() => {
+    if (graphRef.current) {
+      graphRef.current.innerHTML = "";
+      setSize({ width: graphRef.current!.clientWidth, height: graphRef.current!.clientHeight });
+    }
+  }, [graphRef]);
+  const debouncedResizeGraph = useDebouncedCallback(() => resizeGraph(), 1000);
+
   useEffect(() => {
     if (graphRef.current) {
-      setWidth(graphRef.current.clientWidth);
-      setHeight(graphRef.current.clientHeight);
+      setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
+      window.addEventListener("resize", () => {
+        if (graphRef.current) {
+          debouncedResizeGraph();
+        }
+      });
     }
   }, [graphRef]);
 
@@ -85,13 +99,13 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ refer
     (filteredReferralSums: { type: string; sum: number; num: number; year: number }[]) => {
       if (graphRef.current) {
         const plot = Plot.plot({
-          width: width,
-          height: height,
-          marginRight: 0,
-          marginLeft: 0,
+          width: size.width,
+          height: size.height,
+          marginRight: size.width >= 760 ? 0 : 80,
+          marginLeft: size.width >= 760 ? 0 : 110,
           style: {
             background: "transparent",
-            fontSize: "12px",
+            fontSize: getRemInPixels() * 0.8 + "px",
             overflow: "visible",
           },
           color: {
@@ -112,13 +126,18 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ refer
             label: null,
             tickFormat: (t) => t.toString(),
           },
+          fy: {
+            label: null,
+            tickFormat: (t) => t.toString(),
+          },
           marks: [
             Plot.frame(),
             Plot.gridX({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }),
             Plot.barX(filteredReferralSums, {
               y: "type",
               x: "sum",
-              fx: "year",
+              fx: size.width >= 760 ? "year" : null,
+              fy: size.width < 760 ? "year" : null,
             }),
           ],
         });
@@ -126,7 +145,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ refer
         graphRef.current.appendChild(plot);
       }
     },
-    [graphRef, width, height],
+    [graphRef, size],
   );
 
   useEffect(() => {
@@ -134,8 +153,8 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ refer
   }, [filteredReferralSums, drawGraph]);
 
   return (
-    <div style={{ width: "760px", margin: "5rem 0" }}>
-      <div ref={graphRef} style={{ width: "760px", height: "350px" }} />
+    <div className={resultsStyle.wrapper}>
+      <div ref={graphRef} className={styles.graph} />
       <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem", marginTop: "2rem" }}>
         <i>
           Data: En kort beskrivelse av grafen her, med noen kilder muligerns som kan vises utdypet i
@@ -234,3 +253,5 @@ const mapTypeToLabel = (type: string) => {
       return type;
   }
 };
+
+const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);

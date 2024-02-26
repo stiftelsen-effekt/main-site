@@ -6,8 +6,6 @@ import * as Plot from "@observablehq/plot";
 import * as d3 from "d3";
 import textures from "textures";
 import { thousandize } from "../../../../../../util/formatting";
-import AnimateHeight from "react-animate-height";
-import { BlockTablesContent } from "../../../../../main/blocks/BlockTable/BlockTablesContent";
 import styles from "./Outputs.module.scss";
 import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
