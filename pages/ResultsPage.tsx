@@ -46,14 +46,18 @@ export const ResultsPage = withStaticProps(async ({ preview }: { preview: boolea
   let result = await getClient(preview).fetch(fetchResults);
   result = { ...result, page: filterPageToSingleItem(result, preview) };
 
-  const dailyDonationsResult = await fetch(`http://localhost:5050/results/donations/daily`);
+  const dailyDonationsResult = await fetch(
+    `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/daily`,
+  );
   const dailyDonations = await dailyDonationsResult.json();
 
-  const referralSumsResult = await fetch(`http://localhost:5050/results/referrals/sums`);
+  const referralSumsResult = await fetch(
+    `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/referrals/sums`,
+  );
   const referralSums = await referralSumsResult.json();
 
   const monthlyDonationsPerOutputResult = await fetch(
-    `http://localhost:5050/results/donations/monthly/outputs`,
+    `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/monthly/outputs`,
   );
   const monthlyDonationsPerOutput = await monthlyDonationsPerOutputResult.json();
 
