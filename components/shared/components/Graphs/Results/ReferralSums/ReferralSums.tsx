@@ -38,7 +38,9 @@ export type ReferralSumsResult = {
   Updated: string;
 };
 
-export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ referralSums }) => {
+export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
+  referralSums,
+}) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [explenationOpen, setExplenationOpen] = useState(false);
@@ -59,8 +61,8 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSums[] }> = ({ refer
         const type = split[split.length - 2];
         return {
           type,
-          sum: el[`Total_sum_${type}_ref` as keyof ReferralSums] as number,
-          num: el[`Num_Donors_${type}_ref` as keyof ReferralSums] as number,
+          sum: el[`Total_sum_${type}_ref` as keyof ReferralSumsResult] as number,
+          num: el[`Num_Donors_${type}_ref` as keyof ReferralSumsResult] as number,
           year: el.Year,
         };
       });

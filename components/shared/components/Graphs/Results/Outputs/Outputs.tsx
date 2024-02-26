@@ -153,7 +153,7 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
           },
           x: {
             domain: [new Date(2016, 0, 1), new Date(currentYear + 1, 0, 1)],
-            ticks: false,
+            ticks: [],
             label: null,
           },
           style: {
@@ -166,35 +166,31 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
             Plot.gridY({ strokeOpacity: 1, strokeWidth: 0.5, ticks: size.width < 760 ? 0 : 5 }),
             Plot.rectY(
               data,
-              Plot.binX(
-                { y: "sum" },
-                {
-                  x: "period",
-                  y: "numberOfOutputs",
-                  fill: "via",
-                  interval: "year",
-                  stroke: "black",
-                  insetLeft: 10,
-                  insetRight: 10,
-                },
-              ),
+              Plot.binX({ y: "sum" }, {
+                x: "period",
+                y: "numberOfOutputs",
+                fill: "via",
+                interval: "year",
+                stroke: "black",
+                insetLeft: 10,
+                insetRight: 10,
+              } as any),
             ),
             Plot.text(
               data,
-              Plot.binX(
-                { y: "sum" },
-                {
-                  x: "period",
-                  y: "numberOfOutputs",
-                  stroke: "#fafafa",
-                  strokeWidth: 5,
-                  fill: "black",
-                  text: (d) =>
-                    thousandize(Math.round(d.reduce((acc, el) => acc + el.numberOfOutputs, 0))),
-                  dy: -15,
-                  interval: "year",
-                },
-              ),
+              Plot.binX({ y: "sum" }, {
+                x: "period",
+                y: "numberOfOutputs",
+                stroke: "#fafafa",
+                strokeWidth: 5,
+                fill: "black",
+                text: (d: any) =>
+                  thousandize(
+                    Math.round(d.reduce((acc: number, el: any) => acc + el.numberOfOutputs, 0)),
+                  ),
+                dy: -15,
+                interval: "year",
+              } as any),
             ),
             Plot.text(years, {
               x: "period",
@@ -205,11 +201,12 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
           ],
         };
 
-        const range = plotConfig.color?.range?.slice();
+        const range = (plotConfig.color?.range as any).slice();
 
         if (range) {
-          plotConfig.color.range.forEach(
-            (texture, i) => texture.url && (plotConfig.color.range[i] = texture.url()),
+          ((plotConfig.color as any).range as any[]).forEach(
+            (texture, i) =>
+              texture.url && (((plotConfig.color as any).range as any)[i] = texture.url()),
           );
         }
 
