@@ -81,8 +81,22 @@ import blocktables from "./types/blocktable";
 import discountratecomparison from "./types/discountratecomparison";
 import wealthcalculatorconfiguration from "./types/wealthcalculatorconfiguration";
 import interventionwidgetoutputconfiguration from "./types/interventionwidgetoutputconfiguration";
+import results from "./pages/results";
+import graphcontext from "./types/results/graphcontext";
+import cumulativedonationsgraph from "./types/results/cumulativedonationsgraph";
+import resultsoutput from "./types/results/resultsoutput";
+import resultssection from "./types/results/resultssection";
+import referralgraph from "./types/results/referralgraph";
 
-export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
+export const pages = [
+  generic,
+  support,
+  criteria,
+  article,
+  articles,
+  results,
+  vippsagreement,
+] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
@@ -149,6 +163,11 @@ export const types = [
   giftcardteaser,
   dateselectorconfig,
   discountratecomparison,
+  graphcontext,
+  cumulativedonationsgraph,
+  resultsoutput,
+  resultssection,
+  referralgraph,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

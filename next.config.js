@@ -211,12 +211,6 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: "/resultater",
-        destination:
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vS6Wiw_6vcspIHq6J2byvqmlDFadG5sF4cFQvwhm2z21ZYbfBW0tQknixlu2hV6lDi_TV16iwUYcJ3W/pubhtml?gid=880180721&single=true",
-        permanent: false,
-      },
-      {
         source: "/aarsrapport",
         destination: "https://gieffektivt.no/arsrapporter",
         permanent: false,

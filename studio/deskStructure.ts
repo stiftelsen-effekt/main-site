@@ -2,6 +2,7 @@ import S from "@sanity/desk-tool/structure-builder";
 import {
   Activity,
   Archive,
+  BarChart,
   Book,
   Bookmark,
   Briefcase,
@@ -153,6 +154,24 @@ export default () =>
                     .title("Preview"),
                 ]),
             ),
+        ),
+      S.divider(),
+      S.listItem()
+        .title("Results")
+        .icon(BarChart)
+        .child(
+          S.document()
+            .schemaType("results")
+            .documentId("results")
+            .views([
+              S.view.form(),
+              S.view
+                .component(Iframe)
+                .options({
+                  url: (doc: any) => resolveProductionUrl(doc),
+                })
+                .title("Preview"),
+            ]),
         ),
       S.divider(),
       S.listItem()

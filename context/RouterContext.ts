@@ -6,6 +6,7 @@ import { getAgreementsPagePath } from "../pages/dashboard/AgreementsPage";
 import { getTaxPagePath } from "../pages/dashboard/TaxPage";
 import { getProfilePagePath } from "../pages/dashboard/ProfilePage";
 import { getVippsAnonymousPagePath } from "../pages/dashboard/VippsAnonymousPage";
+import { getResultsPagePath } from "../pages/ResultsPage";
 
 export type RouterContextValue = Awaited<ReturnType<typeof fetchRouterContext>>;
 
@@ -26,6 +27,7 @@ type AwaitedPromises<T extends Record<string, Promise<unknown>>> = {
 export const fetchRouterContext = async () => {
   const promises = {
     articlesPagePath: getArticlesPagePath(),
+    resultsPagePath: getResultsPagePath(),
     vippsAgreementPagePath: getVippsAgreementPagePath(),
     dashboardPath: getDashboardPagePath(),
     donationsPagePath: getDonationsPagePath(),
