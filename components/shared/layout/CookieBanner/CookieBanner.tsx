@@ -1,15 +1,20 @@
-import Script from "next/script";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { CookiesAccepted } from "../../../main/layout/layout";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
+import { NavLink } from "../../components/Navbar/Navbar";
+import Link from "next/link";
+import { LinkComponent } from "../../../main/blocks/Links/Links";
 
 export type CookieBannerConfiguration = {
   title: string;
   description: string;
+  privacy_policy_link: NavLink;
   accept_button_text: string;
   decline_button_text: string;
+  last_major_change: string;
+  expired_template: string;
 };
 export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }> = ({
   configuration,
@@ -21,15 +26,29 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
   useEffect(() => {
     if (typeof window !== "undefined") {
       const item = window.localStorage.getItem("gieffektivt-cookies-accepted");
+      const acceptedDateItem = window.localStorage.getItem("gieffektivt-cookies-accepted-date");
       if (item !== null) {
-        if (item === "true") {
+        const acceptedDate = acceptedDateItem ? new Date(acceptedDateItem) : new Date(1970, 0, 1);
+        const lastMajorChange = configuration.last_major_change
+          ? new Date(configuration.last_major_change)
+          : new Date(1970, 0, 1);
+        const expired = acceptedDate < lastMajorChange;
+        if (item === "true" && !expired) {
           setCookiesAccepted({
             accepted: true,
+            loaded: true,
+          });
+        } else if (item === "true" && expired) {
+          setCookiesAccepted({
+            expired: true,
+            lastMajorChange: lastMajorChange,
             loaded: true,
           });
         } else if (item === "false") {
           setCookiesAccepted({
             accepted: false,
+            expired: false,
+            lastMajorChange: lastMajorChange,
             loaded: true,
           });
         }
@@ -41,9 +60,20 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
     }
   }, [setCookiesAccepted]);
 
+  let privacyPolicyLink = configuration.privacy_policy_link;
+  if (cookiesAccepted.expired && cookiesAccepted.lastMajorChange) {
+    privacyPolicyLink = {
+      ...configuration.privacy_policy_link,
+      title: `${configuration.privacy_policy_link.title} ${configuration.expired_template.replace(
+        "{date}",
+        cookiesAccepted.lastMajorChange.toLocaleDateString("no-NB"),
+      )}`,
+    };
+  }
+
   return (
     <>
-      {cookiesAccepted.accepted === true && (
+      {cookiesAccepted.accepted === true && cookiesAccepted.expired !== false && (
         <>
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
           {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
@@ -52,17 +82,19 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
       {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
         <div data-cy="cookiebanner-container" className={styles.container}>
           <div className={styles.content}>
-            <div>
-              <span>{configuration.title}</span>
+            <div className={styles.description}>
+              <span className={styles.title}>{configuration.title}</span>
               <p>{configuration.description}</p>
+              <LinkComponent link={privacyPolicyLink} style={{ border: "none" }} />
             </div>
-            <div>
+            <div className={styles.buttonsWrapper}>
               <button
                 data-cy="decline-cookies"
                 onClick={() => {
                   window.localStorage.setItem("gieffektivt-cookies-accepted", "false");
                   setCookiesAccepted({
                     accepted: false,
+                    expired: false,
                     loaded: true,
                   });
                 }}
@@ -76,8 +108,13 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
                 data-cy="accept-cookies"
                 onClick={() => {
                   window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
+                  window.localStorage.setItem(
+                    "gieffektivt-cookies-accepted-date",
+                    new Date().toISOString(),
+                  );
                   setCookiesAccepted({
                     accepted: true,
+                    expired: false,
                     loaded: true,
                   });
                 }}

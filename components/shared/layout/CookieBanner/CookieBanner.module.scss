@@ -17,19 +17,30 @@
   width: 100%;
 }
 
-.content > div {
+.content .description {
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 1rem;
 }
 
-.content > div span {
+.content .title {
   margin-right: 60px;
 }
 
 .content button {
   text-decoration: underline;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 1920px) {
+  .content {
+    max-width: 1714px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media only screen and (max-width: 1180px) {
@@ -42,19 +53,22 @@
     padding-bottom: 8px;
   }
 
-  .content > div {
+  .content > .description {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-  }
-}
+    gap: 0.4rem;
 
-@media only screen and (min-width: 1920px) {
-  .content {
-    max-width: 1714px;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    p {
+      margin: 0;
+    }
+  }
+
+  .content > .buttonsWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem 0;
   }
 }

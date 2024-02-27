@@ -97,7 +97,13 @@ const fetchGenericPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration,
+    cookie_banner_configuration {
+      ...,
+      privacy_policy_link {
+        ...,
+        "slug": page->slug.current
+      }
+    },
   },
   "page": *[_type == "generic_page" && slug.current == $slug] {
     header {
