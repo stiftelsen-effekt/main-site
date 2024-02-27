@@ -83,7 +83,11 @@ const ArticlePage = withStaticProps(
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
 
       <BlockContentRenderer content={content} />
-      <RelatedArticles relatedArticles={relatedArticles} />
+      <RelatedArticles
+        relatedArticles={relatedArticles}
+        relatedArticlesLabel={page.related_articles_label}
+        seeAllArticlesLabel={page.see_all_articles_label}
+      />
     </>
   );
 });
@@ -110,6 +114,8 @@ const fetchArticle = groq`
       },
     },
     ${pageContentQuery}
+    "related_articles_label": *[_id=="articles"][0].related_articles_label,
+    "see_all_articles_label": *[_id=="articles"][0].see_all_articles_label,
     slug { current },
   },
   "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {
