@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../../store/state";
 import { AutoGiroPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
@@ -36,6 +36,7 @@ export const AutogiroPane: React.FC<{
     AutoGiroOptions | undefined
   >();
   const [manualAutogiroSetupDate, setManualAutogiroSetupDate] = React.useState<number>();
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     let date = manualAutogiroSetupDate ?? DateTime.now().plus({ days: 6 }).day;
@@ -66,6 +67,15 @@ export const AutogiroPane: React.FC<{
       </RoundedBorder>
       <span>{config.manual_recurring_option_config.payment_numberexplanatory_text}</span>
       <PortableText value={config.manual_recurring_option_config.instruction_text} />
+      <EffektButton
+        onClick={() => {
+          plausible("CompleteDonation");
+          setHasSubmitted(true);
+        }}
+        style={{ fontSize: 18, marginTop: 10, padding: 14 }}
+      >
+        {config.manual_recurring_option_config.complete_button_text}
+      </EffektButton>
     </>
   );
 
@@ -114,6 +124,16 @@ export const AutogiroPane: React.FC<{
           />
         </AnimateHeight>
       </RoundedBorder>
+
+      <EffektButton
+        onClick={() => {
+          plausible("CompleteDonation");
+          setHasSubmitted(true);
+        }}
+        style={{ fontSize: 18, marginTop: 10, padding: 14 }}
+      >
+        {config.recurring_manual_option_config.complete_button_text}
+      </EffektButton>
     </>
   );
 
@@ -124,7 +144,9 @@ export const AutogiroPane: React.FC<{
         onClick={() => {
           plausible("AutogiroBankGirotFormOpened");
           window.open(config.recurring_form_option_config.button_link, "_blank");
+          setHasSubmitted(true);
         }}
+        style={{ fontSize: 18, marginTop: 10, padding: 14 }}
       >
         {config.recurring_form_option_config.button_text}
       </EffektButton>
@@ -137,37 +159,43 @@ export const AutogiroPane: React.FC<{
         <StyledPaneContent>
           <PaneTitle>{config.title}</PaneTitle>
 
-          <RoundedBorder>
-            <TextWrapper>
-              <span>{config.manual_recurring_option_config.payment_number_label}</span>
-              <span>{donation.kid}</span>
-            </TextWrapper>
-          </RoundedBorder>
+          <AnimateHeight height={hasSubmitted ? 0 : "auto"} animateOpacity={true}>
+            <RoundedBorder>
+              <TextWrapper>
+                <span>{config.manual_recurring_option_config.payment_number_label}</span>
+                <span>{donation.kid}</span>
+              </TextWrapper>
+            </RoundedBorder>
 
-          <RadioButtonGroup
-            options={[
-              {
-                title: config.manual_recurring_option_config.title,
-                value: AutoGiroOptions.MANUAL_TRANSACTION,
-                content: manualTransactionContent,
-              },
-              {
-                title: config.recurring_manual_option_config.title,
-                value: AutoGiroOptions.MANUAL_AUTOGIRO_SETUP,
-                content: manualAutogiroSetupContent,
-              },
-              {
-                title: config.recurring_form_option_config.title,
-                value: AutoGiroOptions.FORM_AUTOGIRO_SETUP,
-                content: formAutogiroSetupContent,
-              },
-            ]}
-            selected={selectedAutogiroSetup}
-            onSelect={(selected) => {
-              plausible("AutogiroMethodeSelected" + selected);
-              setSelectedAutogiroSetup(selected);
-            }}
-          />
+            <RadioButtonGroup
+              options={[
+                {
+                  title: config.manual_recurring_option_config.title,
+                  value: AutoGiroOptions.MANUAL_TRANSACTION,
+                  content: manualTransactionContent,
+                },
+                {
+                  title: config.recurring_manual_option_config.title,
+                  value: AutoGiroOptions.MANUAL_AUTOGIRO_SETUP,
+                  content: manualAutogiroSetupContent,
+                },
+                {
+                  title: config.recurring_form_option_config.title,
+                  value: AutoGiroOptions.FORM_AUTOGIRO_SETUP,
+                  content: formAutogiroSetupContent,
+                },
+              ]}
+              selected={selectedAutogiroSetup}
+              onSelect={(selected) => {
+                plausible("AutogiroMethodeSelected" + selected);
+                setSelectedAutogiroSetup(selected);
+              }}
+            />
+          </AnimateHeight>
+
+          <AnimateHeight height={hasSubmitted ? "auto" : 0} animateOpacity={true}>
+            <PortableText value={config.completed_text} />
+          </AnimateHeight>
         </StyledPaneContent>
         {/* Always show referrals for anonymous donors (ID 1464) */}
         {(!hasAnswerredReferral || donation.donor.donorID == 1464) && (
