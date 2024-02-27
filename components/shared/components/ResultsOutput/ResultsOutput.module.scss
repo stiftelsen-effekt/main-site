@@ -37,6 +37,8 @@
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .wrapper {
+    padding-bottom: 6rem;
+
     .header {
       padding: 4rem 0;
       .inner {
@@ -48,9 +50,12 @@
 
 @media screen and (max-width: 1180px) {
   .wrapper {
+    padding-bottom: 0rem;
+
     .header {
-      margin-top: 8rem;
+      margin-top: 2rem;
       width: calc(100% + 10vw);
+      margin-bottom: 1rem;
 
       .inner {
         gap: 1rem;

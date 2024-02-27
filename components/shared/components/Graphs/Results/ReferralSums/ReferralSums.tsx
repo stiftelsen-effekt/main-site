@@ -100,15 +100,16 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
   const drawGraph = useCallback(
     (filteredReferralSums: { type: string; sum: number; num: number; year: number }[]) => {
       if (graphRef.current) {
-        const plot = Plot.plot({
+        const config: Plot.PlotOptions = {
           width: size.width,
           height: size.height,
-          marginRight: size.width >= 760 ? 0 : 80,
-          marginLeft: size.width >= 760 ? 0 : 110,
+          marginRight: 0,
+          marginLeft: 0,
           style: {
             background: "transparent",
             fontSize: getRemInPixels() * 0.8 + "px",
             overflow: "visible",
+            fontFamily: "ESKlarheitGrotesk, sans-serif",
           },
           color: {
             legend: true,
@@ -117,12 +118,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
             label: null,
             tickFormat: (t) => mapTypeToLabel(t),
             domain: Array.from(new Set(filteredReferralSums.map((el) => el.type))),
-          },
-          x: {
-            legend: true,
-            tickFormat: (t) => Math.round(t / 1000000) + " mill",
-            label: null,
-            tickSpacing: 100,
+            ticks: size.width >= 760 ? undefined : [],
           },
           fx: {
             label: null,
@@ -130,11 +126,10 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
           },
           fy: {
             label: null,
-            tickFormat: (t) => t.toString(),
+            ticks: [],
           },
           marks: [
             Plot.frame(),
-            Plot.gridX({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }),
             Plot.barX(filteredReferralSums, {
               y: "type",
               x: "sum",
@@ -142,7 +137,65 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
               fy: size.width < 760 ? "year" : null,
             }),
           ],
-        });
+        };
+
+        if (size.width < 760 && config.marks) {
+          config.marks.push(
+            Plot.text(
+              filteredReferralSums,
+              Plot.selectFirst({
+                fy: "year",
+                text: (d) => d.year.toString(),
+                frameAnchor: "bottom-right",
+                dx: -getRemInPixels() * 0.8,
+                dy: -getRemInPixels() * 0.8,
+                fontWeight: "bold",
+                fontSize: getRemInPixels(),
+              }),
+            ),
+          );
+          config.marks.push(
+            Plot.text(filteredReferralSums, {
+              x: (d) => 0,
+              y: "type",
+              fy: "year",
+              text: (d) => mapTypeToLabel(d.type),
+              textAnchor: "start",
+              dx: 5,
+              mixBlendMode: "difference",
+              fill: "white",
+            }),
+          );
+          config.marks.push(
+            Plot.axisX({
+              textAnchor: "start",
+              tickFormat: (t) => Math.round(t / 1000000) + " mill",
+              label: null,
+              tickSpacing: 50,
+            }),
+          ),
+            config.marks.push(
+              Plot.axisX({
+                anchor: "top",
+                textAnchor: "start",
+                tickFormat: (t) => Math.round(t / 1000000) + " mill",
+                label: null,
+                tickSpacing: 50,
+              }),
+            );
+        } else if (config.marks) {
+          config.marks.push(Plot.gridX({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }));
+          config.marks.push(
+            Plot.axisX({
+              tickFormat: (t) => Math.round(t / 1000000) + " mill",
+              label: null,
+              tickSpacing: 100,
+            }),
+          );
+        }
+
+        const plot = Plot.plot(config);
+
         graphRef.current.innerHTML = "";
         graphRef.current.appendChild(plot);
       }

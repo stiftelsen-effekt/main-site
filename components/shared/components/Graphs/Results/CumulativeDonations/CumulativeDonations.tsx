@@ -68,6 +68,7 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
             background: "transparent",
             fontSize: "12px",
             overflow: "visible",
+            fontFamily: "ESKlarheitGrotesk, sans-serif",
           },
           color: {
             legend: true,
@@ -95,7 +96,7 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
               ticks: dayCount
                 .map((d) => d + 1)
                 .filter((d, i) => (size.width >= 760 ? i : i % 2 === 0)),
-              tickFormat: (t, i) => Plot.formatMonth("no-NB")(size.width >= 760 ? i : i * 2),
+              tickFormat: (t, i) => Plot.formatMonth("no-NB")(size.width >= 760 ? i + 1 : i * 2),
               textAnchor: "start",
             }),
             Plot.text(yearlyMaxes, {

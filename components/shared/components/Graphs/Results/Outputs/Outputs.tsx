@@ -46,8 +46,10 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
   monthlyDonationsPerOutput,
 }) => {
   const graphRef = useRef<HTMLDivElement>(null);
+  const innerGraph = useRef<HTMLDivElement>(null);
   const legendRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const [requiredWidth, setRequiredWidth] = useState<null | number>(null);
 
   const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
     () =>
@@ -90,11 +92,11 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
   );
 
   const resizeGraph = useCallback(() => {
-    if (graphRef.current) {
-      graphRef.current.innerHTML = "";
+    if (innerGraph.current && graphRef.current) {
+      innerGraph.current.innerHTML = "";
       setSize({ width: graphRef.current!.clientWidth, height: graphRef.current!.clientHeight });
     }
-  }, [graphRef]);
+  }, [graphRef, innerGraph]);
   const debouncedResizeGraph = useDebouncedCallback(() => resizeGraph(), 1000);
 
   useEffect(() => {
@@ -109,24 +111,38 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
   }, [graphRef]);
 
   const drawGraph = useCallback(
-    (
-      data: {
-        via: string;
-        organization: string;
-        period: Date;
-        numberOfOutputs: number;
-        sum: number;
-      }[],
-    ) => {
-      if (graphRef.current && legendRef.current) {
+    (data: TransformedMonthlyDonationsPerOutput) => {
+      if (graphRef.current && legendRef.current && innerGraph.current) {
         const currentYear = new Date().getFullYear();
         const years = Array.from(new Array(currentYear + 1 - 2016), (x, i) => ({
           period: new Date(2016 + i, 6, 1),
           y: 0,
         }));
 
+        // Filter years depending on the width of the graph
+        const requiredWidthPerYear = getRemInPixels() * 3;
+
+        /*
+        const yearsToDisplay = Math.floor(size.width / requiredWidthPerYear);
+
+        // Remove the first years if there are too many
+        if (years.length > yearsToDisplay) {
+          years.splice(0, years.length - yearsToDisplay);
+        }
+
+        if (years.length == 0) {
+          return 
+        }
+        */
+        const requiredWidth = years.length * requiredWidthPerYear;
+        if (requiredWidth > size.width) {
+          setRequiredWidth(requiredWidth);
+        } else {
+          setRequiredWidth(null);
+        }
+
         let plotConfig: Plot.PlotOptions = {
-          width: size.width,
+          width: Math.max(size.width, requiredWidth),
           height: size.height,
           color: {
             domain: ["direct", "smartDistribution"],
@@ -135,6 +151,11 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
               textures.circles().lighter().stroke("#000").background("#fafafa").size(5).id("dots"),
             ],
             tickFormat(t, i) {
+              if (size.width < 760) {
+                if (t === "direct") return "Direkte fra donorer";
+                if (t === "smartDistribution") return "Fordelt via smart fordeling";
+                return t;
+              }
               if (t === "direct") return monthlyDonationsPerOutput.output + " direkte fra donorer";
               if (t === "smartDistribution")
                 return monthlyDonationsPerOutput.output + " fordelt via smart fordeling";
@@ -142,8 +163,11 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
             },
             type: "ordinal",
           },
-          marginLeft: 0,
           marginRight: 0,
+          marginLeft: 0,
+          marginTop: 30,
+          insetLeft: size.width < 760 ? window.outerWidth * 0.05 : 0,
+          insetRight: size.width < 760 ? window.outerWidth * 0.05 : 0,
           y: {
             label: null,
             labelAnchor: "top",
@@ -152,7 +176,10 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
             ticks: size.width < 760 ? 0 : 5,
           },
           x: {
-            domain: [new Date(2016, 0, 1), new Date(currentYear + 1, 0, 1)],
+            domain: [
+              new Date(years[0].period.getFullYear(), 0, 1),
+              new Date(currentYear + 1, 0, 1),
+            ],
             ticks: [],
             label: null,
           },
@@ -160,6 +187,7 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
             background: "transparent",
             fontSize: getRemInPixels() * 0.8 + "px",
             overflow: "visible",
+            fontFamily: "ESKlarheitGrotesk",
           },
           marks: [
             Plot.ruleY([0]),
@@ -172,8 +200,8 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
                 fill: "via",
                 interval: "year",
                 stroke: "black",
-                insetLeft: 10,
-                insetRight: 10,
+                insetLeft: size.width < 760 ? 5 : 10,
+                insetRight: size.width < 760 ? 5 : 10,
               } as any),
             ),
             Plot.text(
@@ -211,6 +239,7 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
         }
 
         const plot = Plot.plot(plotConfig);
+
         const legend = Plot.legend({
           color: plotConfig.color,
           swatchSize: getRemInPixels(),
@@ -228,23 +257,41 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
 
         legend.style.marginTop = "1rem";
         legend.style.marginBottom = "2rem";
+        legend.style.fontFamily = "ESKlarheitGrotesk";
 
-        graphRef.current.innerHTML = "";
-        graphRef.current.appendChild(plot);
+        innerGraph.current.innerHTML = "";
+        innerGraph.current.appendChild(plot);
         legendRef.current.innerHTML = "";
         legendRef.current.appendChild(legend);
       }
     },
-    [graphRef, legendRef, size],
+    [graphRef, legendRef, innerGraph, size],
   );
 
   useEffect(() => {
     drawGraph(transformedMonthlyDonationsPerOutput);
   }, [transformedMonthlyDonationsPerOutput, drawGraph]);
 
+  useEffect(() => {
+    if (requiredWidth && graphRef.current) {
+      graphRef.current.scrollTo({ left: Number.MAX_SAFE_INTEGER });
+    }
+  }, [requiredWidth, graphRef]);
+
   return (
     <div className={resultsStyle.wrapper}>
-      <div ref={graphRef} className={styles.graph} />
+      <div ref={graphRef} className={styles.graph}>
+        <div
+          ref={innerGraph}
+          className={styles.innerGraph}
+          style={{ width: requiredWidth ?? undefined }}
+        ></div>
+      </div>
+      {requiredWidth && (
+        <div className={styles.swipeHint}>
+          <span>←</span> <i>Sveip for å se hele grafen</i>
+        </div>
+      )}
       <div ref={legendRef}></div>
       <GraphContext
         context={{

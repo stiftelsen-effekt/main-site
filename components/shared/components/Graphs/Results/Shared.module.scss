@@ -9,3 +9,9 @@
     max-width: 760px;
   }
 }
+
+@media screen and (max-width: 1180px) {
+  .wrapper {
+    padding: 2rem 0;
+  }
+}

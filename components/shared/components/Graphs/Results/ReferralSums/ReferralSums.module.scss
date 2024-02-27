@@ -1,7 +1,7 @@
 .graph {
   width: 100%;
   aspect-ratio: 16/9;
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
@@ -12,7 +12,8 @@
 
 @media screen and (max-width: 1180px) {
   .graph {
-    aspect-ratio: 3/4;
+    aspect-ratio: 3/8;
     width: 100%;
+    margin-top: 0;
   }
 }
