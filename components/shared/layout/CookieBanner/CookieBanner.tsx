@@ -4,8 +4,8 @@ import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
 import { NavLink } from "../../components/Navbar/Navbar";
-import Link from "next/link";
 import { LinkComponent } from "../../../main/blocks/Links/Links";
+import { HotJar } from "../HotJar";
 
 export type CookieBannerConfiguration = {
   title: string;
@@ -22,6 +22,7 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
   const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -73,10 +74,11 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
 
   return (
     <>
-      {cookiesAccepted.accepted === true && cookiesAccepted.expired !== false && (
+      {cookiesAccepted.accepted === true && cookiesAccepted.expired !== true && (
         <>
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
           {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
+          {hotjarId ? <HotJar hotjarId={hotjarId} /> : null}
         </>
       )}
       {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
