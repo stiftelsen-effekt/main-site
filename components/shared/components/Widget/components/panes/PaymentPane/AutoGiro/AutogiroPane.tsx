@@ -166,7 +166,9 @@ export const AutogiroPane: React.FC<{
                 <span>{donation.kid}</span>
               </TextWrapper>
             </RoundedBorder>
-
+            <i>Välj ett av nedan alternativ:</i>
+            <br />
+            <br />
             <RadioButtonGroup
               options={[
                 {
