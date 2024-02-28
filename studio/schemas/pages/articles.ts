@@ -21,6 +21,18 @@ export default {
       to: [{ type: "category" }],
     },
     {
+      name: "related_articles_label",
+      title: "Related articles label",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "see_all_articles_label",
+      title: "See all articles label",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",

@@ -165,6 +165,11 @@ export default {
           type: "string",
         },
         {
+          name: "privacy_policy_link",
+          title: "Privacy policy link",
+          type: "navitem",
+        },
+        {
           name: "accept_button_text",
           title: "Accept button text",
           type: "string",
@@ -173,6 +178,18 @@ export default {
           name: "decline_button_text",
           title: "Decline button text",
           type: "string",
+        },
+        {
+          name: "last_major_change",
+          title: "Last major change",
+          type: "date",
+        },
+        {
+          name: "expired_template",
+          title: "Expired template",
+          type: "string",
+          description:
+            "Template to prepend to the description when the cookie banner is expired, using {date} as a placeholder for the date of the last major change",
         },
       ],
     },

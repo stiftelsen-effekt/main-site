@@ -34,7 +34,13 @@ const fetchMissingPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration,
+    cookie_banner_configuration {
+      ...,
+      privacy_policy_link {
+        ...,
+        "slug": page->slug.current
+      }
+    },
     not_found_title,
   },
 }

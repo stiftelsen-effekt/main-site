@@ -64,8 +64,10 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
   const [widgetOpen, setWidgetOpen] = useState(false);
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState({
-    accepted: true,
-    loaded: true,
+    accepted: undefined,
+    expired: undefined,
+    lastMajorChange: undefined,
+    loaded: false,
   });
   const bypassAuth = useShouldAuthenticate();
 

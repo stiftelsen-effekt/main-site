@@ -79,6 +79,7 @@ export type AutoGiroPaymentMethod = {
   manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
   recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
   recurring_form_option_config: AutogiroRecurringFormOptionConfig;
+  completed_text: any[];
 };
 
 type AutogiroManualRecurringOptionConfig = {
@@ -88,6 +89,7 @@ type AutogiroManualRecurringOptionConfig = {
   payment_numberexplanatory_text: string;
   payment_number_label: string;
   instruction_text: any[];
+  complete_button_text: string;
 };
 
 type AutogiroRecurringManualOptionConfig = {
@@ -95,6 +97,7 @@ type AutogiroRecurringManualOptionConfig = {
   explanation_text: any[];
   payernumber_label: string;
   date_selector_config: DatePickerInputConfiguration;
+  complete_button_text: string;
 };
 
 type AutogiroRecurringFormOptionConfig = {

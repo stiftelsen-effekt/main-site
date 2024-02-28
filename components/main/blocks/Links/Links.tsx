@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { CSSProperties } from "react";
 import elements from "./Links.module.scss";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { useRouterContext } from "../../../../context/RouterContext";
@@ -39,10 +39,11 @@ export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
   );
 };
 
-export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: string }> = ({
-  link,
-  children,
-}) => {
+export const LinkComponent: React.FC<{
+  link: LinkType | NavLink;
+  children?: string;
+  style?: CSSProperties;
+}> = ({ link, children, style }) => {
   const { articlesPagePath } = useRouterContext();
 
   return (
@@ -52,6 +53,7 @@ export const LinkComponent: React.FC<{ link: LinkType | NavLink; children?: stri
         onClick={(e) => {
           e.currentTarget.blur();
         }}
+        style={style}
       >
         {link.title
           ? `→ ${link.title}`

@@ -14,19 +14,21 @@ export type RelatedArticle = {
   slug: string;
 };
 
-export const RelatedArticles: React.FC<{ relatedArticles: RelatedArticle[] }> = ({
-  relatedArticles,
-}) => {
+export const RelatedArticles: React.FC<{
+  relatedArticles: RelatedArticle[];
+  relatedArticlesLabel: string;
+  seeAllArticlesLabel: string;
+}> = ({ relatedArticles, relatedArticlesLabel, seeAllArticlesLabel }) => {
   const { articlesPagePath } = useRouterContext();
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h4>Relaterte artikler</h4>
+        <h4>{relatedArticlesLabel}</h4>
         <div className={styles.viewall}>
           <Link href={`/${articlesPagePath.join("/")}`} passHref>
             <a>
-              <span>Se alle</span>
+              <span>{seeAllArticlesLabel}</span>
               <div>→</div>
             </a>
           </Link>
