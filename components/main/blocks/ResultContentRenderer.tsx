@@ -129,6 +129,7 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                           <ResultsOutput
                             key={block._key || block._id}
                             graphData={data}
+                            outputCountries={block.output_countries}
                             description={block.description}
                           ></ResultsOutput>
                         );
