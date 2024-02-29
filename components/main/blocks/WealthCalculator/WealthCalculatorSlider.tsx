@@ -1,5 +1,6 @@
 import { thousandize } from "../../../../util/formatting";
 import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
+import { WealthCalculatorPeriodAdjustment } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { calculateWealthPercentile } from "./_util";
 import styles from "./WealthCalculator.module.scss";
 
@@ -19,6 +20,7 @@ export const WealthCalculatorSlider: React.FC<{
   }[];
   equvivalizedIncome: number;
   adjustedPppFactor: number;
+  periodAdjustment: WealthCalculatorPeriodAdjustment;
   config: WealthCalculatorSliderConfig;
 }> = ({
   donationPercentage,
@@ -27,6 +29,7 @@ export const WealthCalculatorSlider: React.FC<{
   wealthMountainGraphData,
   equvivalizedIncome,
   adjustedPppFactor,
+  periodAdjustment,
   config,
 }) => {
   const [beforeInput, afterInput] =
@@ -41,6 +44,7 @@ export const WealthCalculatorSlider: React.FC<{
   const wealthPercentile = calculateWealthPercentile(
     wealthMountainGraphData,
     equvivalizedIncome * (1 - donationPercentage / 100),
+    periodAdjustment,
     adjustedPppFactor,
   ).toLocaleString("no-NB");
 

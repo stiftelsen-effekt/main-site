@@ -149,6 +149,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           postTaxIncome={postTaxIncome}
           wealthMountainGraphData={wealthMountainGraphData}
           equvivalizedIncome={equvivalizedIncome}
+          periodAdjustment={periodAdjustment}
           adjustedPppFactor={pppConversion.adjustedPPPfactor}
           config={slider_configuration}
         />
