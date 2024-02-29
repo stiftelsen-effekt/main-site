@@ -191,7 +191,6 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                         );
                       case "wealthcalculator":
                         let calcPeriod: WealthCalculatorPeriodAdjustment;
-                        console.log(block.configuration);
                         if (
                           block.configuration.calculator_input_configuration.period === "yearly"
                         ) {
