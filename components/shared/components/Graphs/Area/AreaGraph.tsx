@@ -12,11 +12,12 @@ const drawChart = (
   incomePercentileLabelTemplateString: string,
   afterDonationPercentileLabelTemplateString: string,
   adjustedPPPConversionFactor: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
   size: { width: number | undefined; height: number | undefined },
 ) => {
-  const incomeXPositon = lineInput / 365 / adjustedPPPConversionFactor;
+  const incomeXPositon = lineInput / periodAdjustment / adjustedPPPConversionFactor;
   const incomeAfterDonationXPosition =
-    (lineInput * (1 - donationPercentage)) / 365 / adjustedPPPConversionFactor;
+    (lineInput * (1 - donationPercentage)) / periodAdjustment / adjustedPPPConversionFactor;
   const dataMax = Math.max(...data.map((d) => d.y));
   // Browser window width smaller than or equal to 1180px
   const isMobile = window.innerWidth <= 1180;
@@ -36,7 +37,7 @@ const drawChart = (
     .replace("{percentile}", wealthPercentileText)
     .replace("{donationpercentage}", donationPercentageText);
 
-  const labelLineWidth = 12;
+  const labelLineWidth = 13;
   const labelLineNumber = Math.round(
     afterDonationLabel.length / (labelLineWidth * 1.5) +
       incomePercentileLabel.length / (labelLineWidth * 1.5),
@@ -52,7 +53,7 @@ const drawChart = (
   const adjustedBelowMax = adjustedMax * ((numberOfLinesInChart - 4) / numberOfLinesInChart);
 
   let incomeMarkers: any[] = [];
-  if (lineInput >= 1000) {
+  if (lineInput >= 2.7 * periodAdjustment) {
     incomeMarkers = [
       Plot.ruleX([incomeXPositon], {
         y: adjustedBelowMax,
@@ -87,6 +88,12 @@ const drawChart = (
     ];
   }
 
+  const domainLower = 2.6 * periodAdjustment;
+  const domainUpper = isMobile
+    ? Math.max(5480 * periodAdjustment, lineInput)
+    : Math.max(8219 * periodAdjustment, lineInput);
+  const shouldInsetRight = lineInput > 2465 * periodAdjustment && !isMobile;
+
   const chart = Plot.plot({
     height: size.height,
     width: size.width,
@@ -94,9 +101,10 @@ const drawChart = (
     padding: 20,
     x: {
       type: "log",
-      domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
-      insetRight: lineInput > 900000 && !isMobile ? 180 : 0,
-      transform: (dailyIncome: number) => dailyIncome * 365 * adjustedPPPConversionFactor,
+      domain: [domainLower, domainUpper],
+      insetRight: shouldInsetRight ? 180 : 0,
+      transform: (dailyIncome: number) =>
+        dailyIncome * periodAdjustment * adjustedPPPConversionFactor,
       label: null,
     },
     y: {
@@ -134,6 +142,7 @@ export const AreaChart: React.FC<{
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
   adjustedPPPConversionFactor: number;
+  periodAdjustment: WealthCalculatorPeriodAdjustment;
 }> = ({
   data,
   lineInput,
@@ -143,6 +152,7 @@ export const AreaChart: React.FC<{
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
   adjustedPPPConversionFactor,
+  periodAdjustment,
 }) => {
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -173,6 +183,7 @@ export const AreaChart: React.FC<{
         incomePercentileLabelTemplateString,
         afterDonationPercentileLabelTemplateString,
         adjustedPPPConversionFactor,
+        periodAdjustment,
         size,
       );
 
@@ -258,3 +269,8 @@ const convertNumberToBoldText = (number: number, percentage: boolean = false) =>
 const getBrowserRemSizeInPx = (rems: number = 1) => {
   return rems * parseFloat(getComputedStyle(document.documentElement).fontSize);
 };
+
+export enum WealthCalculatorPeriodAdjustment {
+  MONTHLY = 365 / 12,
+  YEARLY = 365,
+}

@@ -15,6 +15,14 @@ export default {
           validation: (Rule: any) => Rule.required(),
         },
         {
+          name: "period",
+          type: "string",
+          title: "Period type",
+          options: {
+            list: ["monthly", "yearly"],
+          },
+        },
+        {
           name: "income_input_configuration",
           type: "object",
           title: "Income Input Configuration",

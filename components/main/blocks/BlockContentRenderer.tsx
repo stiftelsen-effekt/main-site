@@ -33,6 +33,7 @@ import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 import { GiftCard } from "./GiftCard/GiftCard";
 import { BlockTables } from "./BlockTable/BlockTables";
 import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
+import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -189,17 +190,37 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           />
                         );
                       case "wealthcalculator":
+                        let calcPeriod: WealthCalculatorPeriodAdjustment;
+                        if (
+                          block.configuration.calculator_input_configuration.period === "yearly"
+                        ) {
+                          calcPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
+                        } else if (
+                          block.configuration.calculator_input_configuration.period === "monthly"
+                        ) {
+                          calcPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
+                        } else {
+                          return <span>Unknown period {block.period} for wealth calculation</span>;
+                        }
                         return (
                           <WealthCalculator
                             key={block._key || block._id}
                             title={block.title}
                             configuration={block.configuration}
                             intervention_configuration={block.intervention_configuration}
-                            currency={block.currency}
+                            periodAdjustment={calcPeriod}
                             locale={block.locale}
                           />
                         );
                       case "wealthcalculatorteaser":
+                        let teaserPeriod: WealthCalculatorPeriodAdjustment;
+                        if (block.period === "yearly") {
+                          teaserPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
+                        } else if (block.period === "monthly") {
+                          teaserPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
+                        } else {
+                          return <span>Unknown period {block.period} for wealth calculation</span>;
+                        }
                         return (
                           <WealthCalculatorTeaser
                             key={block._key || block._id}
@@ -215,6 +236,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                               block.income_percentile_label_template_string
                             }
                             locale={block.locale}
+                            periodAdjustment={teaserPeriod}
                           />
                         );
                       case "contributorlist":
