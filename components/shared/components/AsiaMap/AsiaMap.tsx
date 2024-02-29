@@ -45,7 +45,7 @@ export const AsiaMap: React.FC<{ highlightedCountries: string[] }> = ({ highligh
       version="1.1"
       x="0px"
       y="0px"
-      viewBox="534.80899 407.713989 172.527008 281.494019"
+      viewBox="534.80899 407.713989 172.527008 155.494019"
       id="world-map"
     >
       <g>
