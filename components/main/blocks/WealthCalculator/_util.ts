@@ -1,12 +1,14 @@
+import { WealthCalculatorPeriodAdjustment } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { getNorwegianTaxEstimate, getSwedishTaxEstimate } from "./_queries";
 
 export const calculateWealthPercentile = (
   data: { x: number; y: number }[],
   income: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
   adjustedPPPConversionFactor: number,
 ) => {
   const dataSum = data.reduce((acc, curr) => acc + curr.y, 0);
-  const dailyIncome = income / 365 / adjustedPPPConversionFactor;
+  const dailyIncome = income / periodAdjustment / adjustedPPPConversionFactor;
   const bucketsSumUpToLineInput = data
     .filter((d) => d.x <= dailyIncome)
     .reduce((acc, curr) => acc + curr.y, 0);
@@ -42,15 +44,19 @@ export const equvivalizeIncome = (
   return equvivalizedIncome;
 };
 
-export const getEstimatedPostTaxIncome = async (income: number, jurisdiction: TaxJurisdiction) => {
+export const getEstimatedPostTaxIncome = async (
+  income: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
+  jurisdiction: TaxJurisdiction,
+) => {
   // Round income to nearest 1000
   let tax = 0;
   switch (jurisdiction) {
     case TaxJurisdiction.SE:
-      tax = await getSwedishTaxEstimate(income);
+      tax = await getSwedishTaxEstimate(income, periodAdjustment);
       break;
     case TaxJurisdiction.NO:
-      tax = await getNorwegianTaxEstimate(income);
+      tax = await getNorwegianTaxEstimate(income, periodAdjustment);
       break;
     default:
       return income;

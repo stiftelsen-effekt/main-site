@@ -30,6 +30,14 @@ export default {
       title: "Button",
     },
     {
+      name: "period",
+      type: "string",
+      title: "Period type",
+      options: {
+        list: ["monthly", "yearly"],
+      },
+    },
+    {
       name: "x_axis_label",
       type: "string",
       title: "X Axis Label",

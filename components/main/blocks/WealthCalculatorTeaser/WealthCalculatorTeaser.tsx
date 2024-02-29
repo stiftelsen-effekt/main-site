@@ -1,7 +1,10 @@
 import styles from "./WealthCalculatorTeaser.module.scss";
 
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
-import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
+import {
+  AreaChart,
+  WealthCalculatorPeriodAdjustment,
+} from "../../../shared/components/Graphs/Area/AreaGraph";
 import { wealthMountainGraphData } from "../WealthCalculator/data";
 import { PortableText } from "@portabletext/react";
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +26,7 @@ export const WealthCalculatorTeaser: React.FC<{
   medianIncome: number;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
+  periodAdjustment: WealthCalculatorPeriodAdjustment;
   xAxisLabel: string;
   locale: string;
 }> = ({
@@ -32,6 +36,7 @@ export const WealthCalculatorTeaser: React.FC<{
   medianIncome,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
+  periodAdjustment,
   xAxisLabel,
   locale,
 }) => {
@@ -98,16 +103,19 @@ export const WealthCalculatorTeaser: React.FC<{
             wealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               medianIncome,
+              periodAdjustment,
               pppConversion.adjustedPPPfactor,
             )}
             afterDonationWealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               medianIncome * 0.9,
+              periodAdjustment,
               pppConversion.adjustedPPPfactor,
             )}
             incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
             afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
             adjustedPPPConversionFactor={pppConversion.adjustedPPPfactor}
+            periodAdjustment={periodAdjustment}
           />
         </div>
       </div>

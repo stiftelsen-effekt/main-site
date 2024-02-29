@@ -1,16 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { useDebouncedCallback } from "use-debounce";
-import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
-import { BlockContentRenderer } from "../BlockContentRenderer";
 import {
-  InterventionWidgetOutputConfiguration,
-  SanityIntervention,
-} from "../InterventionWidget/InterventionWidgetOutput";
+  AreaChart,
+  WealthCalculatorPeriodAdjustment,
+} from "../../../shared/components/Graphs/Area/AreaGraph";
+import { BlockContentRenderer } from "../BlockContentRenderer";
+import { InterventionWidgetOutputConfiguration } from "../InterventionWidget/InterventionWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
-import { LinkType } from "../Links/Links";
-import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { WealthCalculatorInput, WealthCalculatorInputConfiguration } from "./WealthCalculatorInput";
 import {
   TaxJurisdiction,
@@ -45,7 +43,7 @@ type WealthCalculatorProps = {
     currency: string;
     locale: string;
   };
-  currency: string;
+  periodAdjustment: WealthCalculatorPeriodAdjustment;
   locale: string;
 };
 
@@ -53,7 +51,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   title,
   configuration,
   intervention_configuration,
-  currency,
+  periodAdjustment,
   locale,
 }) => {
   const {
@@ -108,10 +106,12 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       console.error("Unsupported locale", locale);
       return;
     }
-    getEstimatedPostTaxIncome(income / numberOfAdults, taxJurisdiction).then((res) => {
-      setPostTaxIncome(res * numberOfAdults);
-      setLoadingPostTaxIncome(false);
-    });
+    getEstimatedPostTaxIncome(income / numberOfAdults, periodAdjustment, taxJurisdiction).then(
+      (res) => {
+        setPostTaxIncome(res * numberOfAdults);
+        setLoadingPostTaxIncome(false);
+      },
+    );
   }, 250);
 
   useEffect(() => {
@@ -161,11 +161,13 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
             wealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               equvivalizedIncome || 0,
+              periodAdjustment,
               pppConversion?.adjustedPPPfactor,
             )}
             afterDonationWealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               equvivalizedIncome * (1 - donationPercentage / 100),
+              periodAdjustment,
               pppConversion?.adjustedPPPfactor,
             )}
             afterDonationPercentileLabelTemplateString={
@@ -173,6 +175,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
             }
             incomePercentileLabelTemplateString={income_percentile_label_template_string}
             adjustedPPPConversionFactor={pppConversion?.adjustedPPPfactor}
+            periodAdjustment={periodAdjustment}
           />
         </div>
         <div
