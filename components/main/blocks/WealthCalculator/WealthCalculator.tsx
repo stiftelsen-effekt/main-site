@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { useDebouncedCallback } from "use-debounce";
 import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
@@ -95,65 +95,6 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   }, [setPppConversion]);
 
   /**
-   * When resizing the window, we need to update the chart size.
-   * This is because observable plot does not support responsive charts.
-   * We need to set the width and height of the chart to the width and height of the container.
-   */
-  const [chartSize, setChartSize] = useState<{
-    width: number | undefined;
-    height: number | undefined;
-  }>({
-    width: undefined,
-    height: undefined,
-  });
-  const outputRef = useRef<HTMLDivElement>(null);
-  const updateSizing = () => {
-    if (outputRef.current) {
-      if (window && window.innerWidth > 1180) {
-        setChartSize({
-          width: outputRef.current.offsetWidth,
-          height: 0,
-        });
-        setTimeout(() => {
-          if (outputRef.current) {
-            setChartSize({
-              width: outputRef.current.offsetWidth,
-              height: Math.floor(outputRef.current.offsetHeight) - 1,
-            });
-          } else {
-            setChartSize({
-              width: chartSize.width || 640,
-              height: chartSize.width || 640,
-            });
-          }
-        }, 1);
-      } else {
-        setChartSize({
-          width: outputRef.current.offsetWidth,
-          height: Math.floor(outputRef.current.offsetWidth) - 1,
-        });
-      }
-    }
-  };
-  useEffect(() => {
-    debouncedSizingUpdate();
-  }, [outputRef]);
-  const debouncedSizingUpdate = useDebouncedCallback(() => updateSizing(), 100, {
-    maxWait: 100,
-    trailing: true,
-  });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", debouncedSizingUpdate);
-    }
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", debouncedSizingUpdate);
-      }
-    };
-  }, []);
-
-  /**
    * Calculate the post tax income. We use a debounced callback to avoid calculating the post tax income
    * too many times when the user is typing.
    */
@@ -200,7 +141,6 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           numberOfAdults={numberOfAdults}
           setNumberOfParents={setNumberOfParents}
           loadingPostTaxIncome={loadingPostTaxIncome}
-          outputRef={outputRef}
           config={calculator_input_configuration}
         ></WealthCalculatorInput>
         <WealthCalculatorSlider
@@ -213,7 +153,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           config={slider_configuration}
         />
 
-        <div className={styles.calculator__output} ref={outputRef} data-cy="wealthcalculator-graph">
+        <div className={styles.calculator__output} data-cy="wealthcalculator-graph">
           <AreaChart
             data={wealthMountainGraphData}
             lineInput={equvivalizedIncome || 0}
@@ -228,7 +168,6 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
               equvivalizedIncome * (1 - donationPercentage / 100),
               pppConversion?.adjustedPPPfactor,
             )}
-            size={chartSize}
             afterDonationPercentileLabelTemplateString={
               income_percentile_after_donation_label_template_string
             }

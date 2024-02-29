@@ -63,51 +63,6 @@ export const WealthCalculatorTeaser: React.FC<{
     }
   }, [setPppConversion]);
 
-  const outputRef = useRef<HTMLDivElement>(null);
-
-  const updateSizing = () => {
-    if (outputRef.current) {
-      if (window && window.innerWidth > 1180) {
-        setChartSize({
-          width: outputRef.current.offsetWidth,
-          height: 0,
-        });
-        setTimeout(() => {
-          if (outputRef.current) {
-            setChartSize({
-              width: outputRef.current.offsetWidth,
-              height: outputRef.current.offsetHeight,
-            });
-          } else {
-            setChartSize({
-              width: chartSize.width || 640,
-              height: chartSize.width || 640,
-            });
-          }
-        }, 1);
-      } else {
-        setChartSize({
-          width: outputRef.current.offsetWidth,
-          height: outputRef.current.offsetWidth,
-        });
-      }
-    }
-  };
-
-  useEffect(() => {
-    debouncedSizingUpdate();
-  }, [outputRef]);
-
-  const debouncedSizingUpdate = useDebouncedCallback(() => updateSizing(), 1000, {
-    maxWait: 1000,
-    trailing: true,
-  });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", debouncedSizingUpdate);
-    }
-  }, []);
-
   if (!pppConversion) {
     return null;
   }
@@ -135,7 +90,7 @@ export const WealthCalculatorTeaser: React.FC<{
             </Link>
           </div>
         </div>
-        <div className={styles.graph} ref={outputRef}>
+        <div className={styles.graph}>
           <AreaChart
             data={wealthMountainGraphData}
             lineInput={medianIncome}
@@ -152,7 +107,6 @@ export const WealthCalculatorTeaser: React.FC<{
             )}
             incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
             afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
-            size={chartSize}
             adjustedPPPConversionFactor={pppConversion.adjustedPPPfactor}
           />
         </div>

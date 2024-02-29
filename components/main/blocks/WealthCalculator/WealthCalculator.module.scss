@@ -207,12 +207,14 @@
     margin-top: 1.5rem;
     grid-row: 2;
     grid-column: 1;
+    aspect-ratio: 1 / 1;
 
     &::before {
       content: "Global inntektsdistribusjon";
       text-transform: uppercase;
       margin-bottom: 1.5rem;
       display: block;
+      position: absolute;
     }
   }
 

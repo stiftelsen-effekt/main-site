@@ -23,6 +23,8 @@
     .graph {
       position: relative;
       bottom: -1.56rem;
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -52,7 +54,6 @@
     .inner {
       grid-template-columns: 1fr;
       grid-template-rows: max-content max-content;
-      grid-row-gap: 2rem;
       grid-column-gap: 0;
       border-bottom: none;
 
@@ -62,6 +63,7 @@
 
       .graph {
         bottom: 0;
+        aspect-ratio: 7 / 8;
       }
     }
     .axislabel {

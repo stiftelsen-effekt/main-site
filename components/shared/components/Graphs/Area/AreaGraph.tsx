@@ -1,5 +1,7 @@
 import * as Plot from "@observablehq/plot";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getRemInPixels } from "../../../../main/blocks/Paragraph/Citation";
+import { useDebouncedCallback } from "use-debounce";
 
 const drawChart = (
   data: { x: number; y: number }[],
@@ -88,6 +90,7 @@ const drawChart = (
   const chart = Plot.plot({
     height: size.height,
     width: size.width,
+    marginTop: isMobile ? getRemInPixels() * 3 : 0,
     padding: 20,
     x: {
       type: "log",
@@ -130,7 +133,6 @@ export const AreaChart: React.FC<{
   afterDonationWealthPercentile: number;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
-  size: { width: number | undefined; height: number | undefined };
   adjustedPPPConversionFactor: number;
 }> = ({
   data,
@@ -140,49 +142,63 @@ export const AreaChart: React.FC<{
   afterDonationWealthPercentile,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
-  size,
   adjustedPPPConversionFactor,
 }) => {
-  const [chart, setChart] = useState<Plot.Plot | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
+
+  const drawGraph = useCallback(() => {
+    if (outputRef.current) {
+      if (!outputRef.current.parentElement) {
+        return;
+      }
+
+      /**
+       * Get width from parent element
+       */
+      outputRef.current.innerHTML = "";
+      const width = outputRef.current.parentElement.clientWidth;
+      const height = outputRef.current.parentElement.clientHeight - 1;
+
+      const size = {
+        width: width,
+        height: height,
+      };
+
+      const chart = drawChart(
+        data,
+        lineInput,
+        wealthPercentile,
+        afterDonationWealthPercentile,
+        donationPercentage,
+        incomePercentileLabelTemplateString,
+        afterDonationPercentileLabelTemplateString,
+        adjustedPPPConversionFactor,
+        size,
+      );
+
+      outputRef.current.appendChild(chart);
+    }
+  }, [outputRef, lineInput, donationPercentage]);
+
+  const debouncedDrawGraph = useDebouncedCallback(drawGraph, 100, {
+    trailing: true,
+  });
 
   useEffect(() => {
-    if (svgRef.current && !chart) {
-      const newChart = drawChart(
-        data,
-        lineInput,
-        wealthPercentile,
-        afterDonationWealthPercentile,
-        donationPercentage,
-        incomePercentileLabelTemplateString,
-        afterDonationPercentileLabelTemplateString,
-        adjustedPPPConversionFactor,
-        size,
-      );
-      svgRef.current.replaceWith(newChart);
-      setChart(newChart);
-    } else if (svgRef.current && chart) {
-      const newChart = drawChart(
-        data,
-        lineInput,
-        wealthPercentile,
-        afterDonationWealthPercentile,
-        donationPercentage,
-        incomePercentileLabelTemplateString,
-        afterDonationPercentileLabelTemplateString,
-        adjustedPPPConversionFactor,
-        size,
-      );
-      (chart as any).replaceWith(newChart);
-      setChart(newChart);
-    }
-  }, [svgRef, lineInput, donationPercentage, size]);
+    drawGraph();
+  }, [outputRef, lineInput, donationPercentage]);
 
-  return (
-    <div>
-      <svg ref={svgRef} />
-    </div>
-  );
+  useEffect(() => {
+    if (outputRef.current && outputRef.current.parentElement) {
+      const observer = new ResizeObserver((entries) => {
+        debouncedDrawGraph();
+      });
+
+      observer.observe(outputRef.current.parentElement);
+    }
+  }, [outputRef, debouncedDrawGraph]);
+
+  return <div ref={outputRef}></div>;
 };
 
 const convertNumberToBoldText = (number: number, percentage: boolean = false) => {
