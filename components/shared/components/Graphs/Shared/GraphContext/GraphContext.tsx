@@ -1,41 +1,3 @@
-/**
- *     {
-      type: "string",
-      name: "description",
-      title: "Description",
-      description: "A short description of the graph with main source if applicable"
-    },
-    {
-      type: "string",
-      name: "detailed_description_label",
-      title: "Detailed description label",
-      description: "The label for the detailed description expander"
-    },
-    {
-      type: "array",
-      name: "detailed_description",
-      title: "Detailed description",
-      of: [{ type: "block" }],
-    },
-    {
-      type: "boolean",
-      name: "allow_table",
-      title: "Allow table view of data",
-    },
-    {
-      type: "string",
-      name: "table_label",
-      title: "Table label",
-      description: "The label for the table expander"
-    },
-    {
-      type: "string",
-      name: "table_close_label",
-      title: "Table close label",
-      description: "The label for the table close label"
-    }
- */
-
 import { useState } from "react";
 import {
   BlockTableContents,
@@ -43,6 +5,9 @@ import {
 } from "../../../../../main/blocks/BlockTable/BlockTablesContent";
 import AnimateHeight from "react-animate-height";
 import { PortableText } from "@portabletext/react";
+import styles from "./GraphContext.module.scss";
+import { EffektButton } from "../../../EffektButton/EffektButton";
+import { Download } from "react-feather";
 
 export type GraphContextData = {
   description: string;
@@ -61,13 +26,14 @@ export const GraphContext: React.FC<{
   const [tableDisplayed, setTableDisplayed] = useState(false);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem", marginTop: "2rem" }}>
+    <div className={styles.wrapper}>
       <i>{context.description}</i>
-      <span
+      <button
         onClick={(e) => {
           setExplenationOpen(!explenationOpen);
+          e.currentTarget.blur();
         }}
-        style={{ cursor: "pointer", marginTop: "0.25rem" }}
+        className={styles.detailedDescriptionLabel}
       >
         {context.detailed_description_label}{" "}
         <span
@@ -79,20 +45,51 @@ export const GraphContext: React.FC<{
         >
           ↓
         </span>
-      </span>
+      </button>
       <AnimateHeight height={explenationOpen ? "auto" : 0}>
         <PortableText value={context.detailed_description} />
       </AnimateHeight>
       {context.allow_table && (
         <>
-          <span
-            onClick={(e) => {
-              setTableDisplayed(!tableDisplayed);
-            }}
-            style={{ cursor: "pointer", textDecoration: "underline", marginBottom: "1rem" }}
-          >
-            {tableDisplayed ? context.table_close_label : context.table_label}
-          </span>
+          <div className={styles.actions}>
+            <button
+              onClick={(e) => {
+                setTableDisplayed(!tableDisplayed);
+                e.currentTarget.blur();
+              }}
+              className={styles.tableButton}
+            >
+              {tableDisplayed ? context.table_close_label : context.table_label}
+            </button>
+            {tableDisplayed && (
+              <EffektButton
+                onClick={() => {
+                  const csv = tableContents.rows
+                    .map((row) =>
+                      row.cells
+                        .map((c) => {
+                          // If cell is a number, return it as is
+                          if (!isNaN(Number(c))) return c;
+                          // Escape double quotes by doubling them
+                          return `"${c.replace(/"/g, '""')}"`;
+                        })
+                        .join(","),
+                    )
+                    .join("\n");
+                  const blob = new Blob([csv], { type: "text/csv" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = "data.csv";
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+              >
+                Last ned CSV&nbsp;&nbsp;
+                <Download size={"0.8rem"} />
+              </EffektButton>
+            )}
+          </div>
           {tableDisplayed && (
             <BlockTablesContent
               fixedStyles={{}}

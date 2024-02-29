@@ -1,0 +1,52 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 2rem;
+
+  .detailedDescriptionLabel {
+    border: none;
+    margin-top: 0.25rem;
+    cursor: pointer;
+    display: inline-block;
+    text-align: left;
+    width: auto;
+
+    &:focus {
+      outline: 2px solid var(--primary);
+    }
+
+    &:active {
+      outline: none;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+
+    .tableButton {
+      border-bottom: 0;
+      text-decoration: underline;
+      user-select: none;
+      cursor: pointer;
+      padding: 0.4rem 0;
+      font-size: 1rem;
+
+      &:focus {
+        outline: 2px solid var(--primary);
+      }
+
+      &:active {
+        outline: none;
+      }
+    }
+
+    button {
+      font-size: 0.8rem;
+    }
+  }
+}
