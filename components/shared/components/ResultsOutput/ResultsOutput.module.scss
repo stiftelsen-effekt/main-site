@@ -18,7 +18,7 @@
 
     .inner {
       display: grid;
-      grid-template-columns: 6fr 3fr;
+      grid-template-columns: 6fr 4fr;
       gap: 2rem;
       width: 100%;
       max-width: 960px;
@@ -37,67 +37,40 @@
           font-size: 2rem;
         }
       }
+    }
+  }
 
-      .mapWrapper {
+  .organizations {
+    display: flex;
+    flex-direction: column;
+    max-width: 960px;
+    width: 100%;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+
+    h4 {
+      margin-bottom: 0rem;
+    }
+
+    p {
+      margin-bottom: 3rem;
+    }
+
+    .organization {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      width: 100%;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+
+      .overview {
         display: flex;
-        align-items: flex-start;
-        padding-top: 2rem;
+        flex-direction: column;
+      }
 
-        & > div {
-          width: 100%;
-
-          & > div {
-            width: 100%;
-          }
-        }
-
-        .mapsContainer {
-          position: relative;
-          width: 100%;
-
-          .nextMap,
-          .prevMap {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 0.8rem;
-            cursor: pointer;
-            padding-left: 1rem;
-            padding-bottom: 1rem;
-            z-index: 10;
-            text-shadow: 1px 1px 1px #000, -1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000,
-              1px 0px 1px #000, -1px 0px 1px #000, 0px 1px 1px #000, 0px -1px 1px #000;
-          }
-
-          .mapsTrack {
-            width: 100%;
-
-            .map {
-              position: absolute;
-              width: 100%;
-
-              svg {
-                width: 100%;
-              }
-
-              opacity: 0;
-              transition: all 0.3s ease;
-
-              &:first-child {
-                transform: translateX(-10%);
-              }
-
-              &:last-child {
-                transform: translateX(10%);
-              }
-
-              &.activeMap {
-                opacity: 1;
-                transform: translateX(0);
-              }
-            }
-          }
-        }
+      .sparkline {
+        width: 100%;
+        height: 5rem;
       }
     }
   }
@@ -113,6 +86,10 @@
       .inner {
         max-width: 760px;
       }
+    }
+
+    .organizations {
+      max-width: 760px;
     }
   }
 }
@@ -140,6 +117,28 @@
           .outputName {
             font-size: 1.3rem;
           }
+        }
+      }
+    }
+
+    .organizations {
+      width: 100%;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+
+      .organization {
+        grid-template-columns: 1fr;
+        padding-top: 2rem;
+        padding-bottom: 4rem;
+        row-gap: 2rem;
+
+        .overview {
+          gap: 0.3rem;
+        }
+
+        .sparkline {
+          width: 100vw;
+          margin-left: -5vw;
         }
       }
     }

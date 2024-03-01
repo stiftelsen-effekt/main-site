@@ -10,6 +10,7 @@ import styles from "./Outputs.module.scss";
 import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
 import { GraphContext } from "../../Shared/GraphContext/GraphContext";
+import { TransformedMonthlyDonationsPerOutput } from "../../../ResultsOutput/ResultsOutput";
 
 export type MonthlyDonationsPerOutputResult = {
   output: string;
@@ -34,61 +35,19 @@ type AggregatedOutputResult = {
   }[];
 };
 
-type TransformedMonthlyDonationsPerOutput = {
-  via: string;
-  organization: string;
-  period: Date;
-  numberOfOutputs: number;
-  sum: number;
-}[];
-
-export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerOutputResult }> = ({
-  monthlyDonationsPerOutput,
-}) => {
+export const Outputs: React.FC<{
+  transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
+  output: string;
+}> = ({ transformedMonthlyDonationsPerOutput, output }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const legendRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [requiredWidth, setRequiredWidth] = useState<null | number>(null);
 
-  const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
-    () =>
-      monthlyDonationsPerOutput.monthly.flatMap((el) => {
-        return el.organizations.flatMap((org) => {
-          return Object.entries(org).flatMap(([key, value]) => {
-            return [
-              {
-                via: "direct",
-                organization: key,
-                period: new Date(
-                  parseInt(el.period.split("-")[0]),
-                  parseInt(el.period.split("-")[1]),
-                  1,
-                ),
-                numberOfOutputs: value.direct.numberOfOutputs,
-                sum: value.direct.sum,
-              },
-              {
-                via: "smartDistribution",
-                organization: key,
-                period: new Date(
-                  parseInt(el.period.split("-")[0]),
-                  parseInt(el.period.split("-")[1]),
-                  1,
-                ),
-                numberOfOutputs: value.smartDistribution.numberOfOutputs,
-                sum: value.smartDistribution.sum,
-              },
-            ];
-          });
-        });
-      }),
-    [monthlyDonationsPerOutput],
-  );
   const tableContents = useMemo(
-    () =>
-      computeTableContents(transformedMonthlyDonationsPerOutput, monthlyDonationsPerOutput.output),
-    [transformedMonthlyDonationsPerOutput, monthlyDonationsPerOutput.output],
+    () => computeTableContents(transformedMonthlyDonationsPerOutput, output),
+    [transformedMonthlyDonationsPerOutput, output],
   );
 
   const resizeGraph = useCallback(() => {
@@ -156,9 +115,8 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
                 if (t === "smartDistribution") return "Fordelt via smart fordeling";
                 return t;
               }
-              if (t === "direct") return monthlyDonationsPerOutput.output + " direkte fra donorer";
-              if (t === "smartDistribution")
-                return monthlyDonationsPerOutput.output + " fordelt via smart fordeling";
+              if (t === "direct") return output + " direkte fra donorer";
+              if (t === "smartDistribution") return output + " fordelt via smart fordeling";
               return t;
             },
             type: "ordinal",
@@ -296,9 +254,7 @@ export const Outputs: React.FC<{ monthlyDonationsPerOutput: MonthlyDonationsPerO
       <GraphContext
         context={{
           description:
-            "Data: Estimert antall " +
-            monthlyDonationsPerOutput.output +
-            " per år fra donasjoner til Gi Effektivt.",
+            "Data: Estimert antall " + output + " per år fra donasjoner til Gi Effektivt.",
           detailed_description_label: "Hva ligger bak disse tallene?",
           detailed_description: [],
           allow_table: true,

@@ -1,11 +1,12 @@
 import * as d3 from "d3";
-import React, { useEffect, useMemo } from "react";
+import React, { MouseEventHandler, useEffect, useMemo } from "react";
 import textures from "textures";
 import styles from "./AfricaMap.module.scss";
 
-export const AfricaMap: React.FC<{ highlightedCountries: string[] }> = ({
-  highlightedCountries,
-}) => {
+export const AfricaMap: React.FC<{
+  highlightedCountries: string[];
+  setHoveredCountry: (country: { name: string; x: number; y: number } | null) => void;
+}> = ({ highlightedCountries, setHoveredCountry }) => {
   const mapRef = React.useRef<null | SVGSVGElement>(null);
 
   const t = useMemo(
@@ -13,15 +14,35 @@ export const AfricaMap: React.FC<{ highlightedCountries: string[] }> = ({
     [],
   );
 
+  const computeHoveredCountry = (e: any, country: string) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    // Set x and y relative to the parents parent position
+    const x =
+      mouseX -
+      ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().left +
+      getRemInPixels();
+    const y =
+      mouseY -
+      ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().top +
+      getRemInPixels() * 3;
+
+    setHoveredCountry({ name: country, x, y });
+  };
+
   useEffect(() => {
     const map = mapRef.current;
     if (map) {
       // Select all children of root g element
       const countries = Array.from(map.querySelectorAll("svg > g > *"));
-      console.log(countries);
       countries.forEach((country) => {
         if (highlightedCountries.includes(country.id)) {
           country.setAttribute("fill", t.url());
+          country.addEventListener("mousemove", (e) =>
+            computeHoveredCountry(e, (countryCodeToName as any)[country.id]),
+          );
+          country.addEventListener("mouseleave", () => setHoveredCountry(null));
         } else {
           country.removeAttribute("fill");
         }
@@ -280,3 +301,62 @@ export const AfricaMap: React.FC<{ highlightedCountries: string[] }> = ({
     </svg>
   );
 };
+
+const countryCodeToName = {
+  ao: "Angola",
+  bf: "Burkina Faso",
+  bi: "Burundi",
+  bj: "Benin",
+  bw: "Botswana",
+  cd: "Democratic Republic of the Congo",
+  cf: "Central African Republic",
+  cg: "Republic of the Congo",
+  ci: "Ivory Coast",
+  cm: "Cameroon",
+  cv: "Cape Verde",
+  dj: "Djibouti",
+  dz: "Algeria",
+  eg: "Egypt",
+  er: "Eritrea",
+  et: "Ethiopia",
+  ga: "Gabon",
+  gh: "Ghana",
+  gm: "The Gambia",
+  gn: "Guinea",
+  gq: "Equatorial Guinea",
+  gw: "Guinea-Bissau",
+  ke: "Kenya",
+  km: "Comoros",
+  lr: "Liberia",
+  ls: "Lesotho",
+  ly: "Libya",
+  mg: "Madagascar",
+  ml: "Mali",
+  mr: "Mauritania",
+  mu: "Mauritius",
+  mw: "Malawi",
+  mz: "Mozambique",
+  na: "Namibia",
+  ne: "Niger",
+  ng: "Nigeria",
+  rw: "Rwanda",
+  sc: "Seychelles",
+  sd: "Sudan",
+  sl: "Sierra Leone",
+  sn: "Senegal",
+  so: "Somalia",
+  ss: "South Sudan",
+  st: "São Tomé and Príncipe",
+  sz: "Swaziland",
+  td: "Chad",
+  tg: "Togo",
+  tn: "Tunisia",
+  tz: "Tanzania",
+  ug: "Uganda",
+  za: "South Africa",
+  zm: "Zambia",
+  zw: "Zimbabwe",
+  _somaliland: "Somaliland",
+};
+
+const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);

@@ -6,51 +6,56 @@ import { AfricaMap } from "../AfricaMap/AfricaMap";
 import { AsiaMap } from "../AsiaMap/AsiaMap";
 import { useEffect, useMemo, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
+import { ResultsOutputMaps } from "./Maps/ResultsOutputMaps";
+import { OrganizationSparkline } from "../Graphs/Results/OrganizationSparkline/OrganizationSparkline";
+
+export type TransformedMonthlyDonationsPerOutput = {
+  via: string;
+  organization: string;
+  period: Date;
+  numberOfOutputs: number;
+  sum: number;
+}[];
 
 export const ResultsOutput: React.FC<{
   graphData: MonthlyDonationsPerOutputResult;
   outputCountries: string[];
   description: any[];
 }> = ({ graphData, outputCountries, description }) => {
-  const [activeMap, setActiveMap] = useState(0);
-  const [mapHeight, setMapHeight] = useState(0);
-  const mapWrapperRef = useRef<HTMLDivElement>(null);
-
-  const maps = useMemo(() => {
-    const maps: { name: string; component: any }[] = [];
-    if (outputCountries) {
-      for (const country of outputCountries) {
-        if (AsiaSet.has(country)) {
-          if (maps.some((m) => m.name === "Asia")) continue;
-          maps.push({
-            name: "Asia",
-            component: (
-              <AsiaMap
-                highlightedCountries={outputCountries.filter((c) => AsiaSet.has(c))}
-              ></AsiaMap>
-            ),
+  const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
+    () =>
+      graphData.monthly.flatMap((el) => {
+        return el.organizations.flatMap((org) => {
+          return Object.entries(org).flatMap(([key, value]) => {
+            return [
+              {
+                via: "direct",
+                organization: key,
+                period: new Date(
+                  parseInt(el.period.split("-")[0]),
+                  parseInt(el.period.split("-")[1]),
+                  1,
+                ),
+                numberOfOutputs: value.direct.numberOfOutputs,
+                sum: value.direct.sum,
+              },
+              {
+                via: "smartDistribution",
+                organization: key,
+                period: new Date(
+                  parseInt(el.period.split("-")[0]),
+                  parseInt(el.period.split("-")[1]),
+                  1,
+                ),
+                numberOfOutputs: value.smartDistribution.numberOfOutputs,
+                sum: value.smartDistribution.sum,
+              },
+            ];
           });
-        } else if (AfricaSet.has(country)) {
-          if (maps.some((m) => m.name === "Afrika")) continue;
-          maps.push({
-            name: "Afrika",
-            component: (
-              <AfricaMap
-                highlightedCountries={outputCountries.filter((c) => AfricaSet.has(c))}
-              ></AfricaMap>
-            ),
-          });
-        }
-      }
-    }
-    return maps;
-  }, [outputCountries]);
-
-  useEffect(() => {
-    if (mapWrapperRef.current) {
-      setMapHeight(mapWrapperRef.current.querySelector(`.${styles.activeMap}`)?.clientHeight || 0);
-    }
-  }, [activeMap]);
+        });
+      }),
+    [graphData],
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -65,147 +70,66 @@ export const ResultsOutput: React.FC<{
             </div>
             <PortableText value={description} />
           </div>
-          <div className={styles.mapWrapper} ref={mapWrapperRef}>
-            <AnimateHeight height={mapHeight || "auto"} animateOpacity>
-              <div className={styles.mapsContainer}>
-                {activeMap !== maps.length - 1 && (
-                  <button className={styles.nextMap} onClick={() => setActiveMap(activeMap + 1)}>
-                    {maps[activeMap + 1].name} →
-                  </button>
-                )}
-                {activeMap !== 0 && (
-                  <button className={styles.prevMap} onClick={() => setActiveMap(activeMap - 1)}>
-                    ← {maps[activeMap - 1].name}
-                  </button>
-                )}
-                <div className={styles.mapsTrack}>
-                  {maps.map((map, i) => (
-                    <div
-                      key={map.name}
-                      className={styles.map + " " + (activeMap === i ? styles.activeMap : "")}
-                    >
-                      {map.component}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimateHeight>
-          </div>
+          <ResultsOutputMaps outputCountries={outputCountries} />
         </div>
       </div>
-      <Outputs monthlyDonationsPerOutput={graphData}></Outputs>
+      <Outputs
+        transformedMonthlyDonationsPerOutput={transformedMonthlyDonationsPerOutput}
+        output={graphData.output}
+      ></Outputs>
+
+      <div className={styles.organizations}>
+        <h4>Organisasjoner</h4>
+        <p>
+          Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med{" "}
+          {graphData.output.toLowerCase()}.
+        </p>
+        {graphData.total.organizations
+          .map((o) => Object.entries(o))
+          .map(([[organization, value]], i) => (
+            <div key={organization} className={styles.organization}>
+              <div className={styles.overview}>
+                <strong>{orgAbbrivToName(organization)}</strong>
+                <span>{thousandize(value.direct.sum)} kr direkte fra donorer</span>
+                <span>{thousandize(value.smartDistribution.sum)} kr via smart fordeling</span>
+              </div>
+              <div className={styles.sparkline}>
+                <OrganizationSparkline
+                  transformedMonthlyDonationsPerOutput={transformedMonthlyDonationsPerOutput.filter(
+                    (t) => t.organization === organization,
+                  )}
+                ></OrganizationSparkline>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
 
-const AsiaSet = new Set([
-  "af",
-  "am",
-  "az",
-  "bh",
-  "bd",
-  "bt",
-  "bn",
-  "kh",
-  "cn",
-  "cy",
-  "ge",
-  "in",
-  "id",
-  "ir",
-  "iq",
-  "il",
-  "jp",
-  "jo",
-  "kz",
-  "kp",
-  "kr",
-  "kw",
-  "kg",
-  "la",
-  "lb",
-  "my",
-  "mv",
-  "mn",
-  "mm",
-  "np",
-  "om",
-  "pk",
-  "ps",
-  "ph",
-  "qa",
-  "sa",
-  "sg",
-  "lk",
-  "sy",
-  "tw",
-  "tj",
-  "th",
-  "tl",
-  "tr",
-  "tm",
-  "ae",
-  "uz",
-  "vn",
-  "ye",
-]);
-const AfricaSet = new Set([
-  "dz",
-  "ao",
-  "bj",
-  "bw",
-  "bf",
-  "bi",
-  "cv",
-  "cm",
-  "cf",
-  "td",
-  "km",
-  "cd",
-  "cg",
-  "ci",
-  "dj",
-  "eg",
-  "gq",
-  "er",
-  "sz",
-  "et",
-  "ga",
-  "gm",
-  "gh",
-  "gn",
-  "gw",
-  "ke",
-  "ls",
-  "lr",
-  "ly",
-  "mg",
-  "mw",
-  "ml",
-  "mr",
-  "mu",
-  "yt",
-  "ma",
-  "mz",
-  "na",
-  "ne",
-  "ng",
-  "re",
-  "rw",
-  "sh",
-  "st",
-  "sn",
-  "sc",
-  "sl",
-  "so",
-  "za",
-  "ss",
-  "sd",
-  "tz",
-  "tg",
-  "tn",
-  "ug",
-  "eh",
-  "zm",
-  "zw",
-]);
+const orgAbbrivToName = (abbriv: string) => {
+  switch (abbriv) {
+    case "hki":
+      return "Hellen Keller International";
+    case "sight":
+      return "Sightsavers";
+    case "amf":
+      return "Against Malaria Foundation";
+    case "sci":
+      return "SCI Foundation";
+    case "mc":
+      return "Malaria Consortium";
+    case "ni":
+      return "New Incentives";
+    case "dtw":
+      return "Deworm the World";
+    case "end":
+      return "Evidence Action the END Fund";
+    case "gd":
+      return "GiveDirectly";
+    case "ubi":
+      return "GiveDirectly Borgerlønn";
+    default:
+      return abbriv;
+  }
+};

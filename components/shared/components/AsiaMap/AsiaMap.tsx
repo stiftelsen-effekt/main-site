@@ -3,13 +3,33 @@ import React, { useEffect, useMemo } from "react";
 import textures from "textures";
 import styles from "./AsiaMap.module.scss";
 
-export const AsiaMap: React.FC<{ highlightedCountries: string[] }> = ({ highlightedCountries }) => {
+export const AsiaMap: React.FC<{
+  highlightedCountries: string[];
+  setHoveredCountry: (country: { name: string; x: number; y: number } | null) => void;
+}> = ({ highlightedCountries, setHoveredCountry }) => {
   const mapRef = React.useRef<null | SVGSVGElement>(null);
 
   const t = useMemo(
     () => textures.lines().strokeWidth(1).stroke("black").background("#fafafa").size(3),
     [],
   );
+
+  const computeHoveredCountry = (e: any, country: string) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    // Set x and y relative to the parents parent position
+    const x =
+      mouseX -
+      ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().left +
+      getRemInPixels();
+    const y =
+      mouseY -
+      ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().top +
+      getRemInPixels() * 3;
+
+    setHoveredCountry({ name: country, x, y });
+  };
 
   useEffect(() => {
     const map = mapRef.current;
@@ -20,6 +40,10 @@ export const AsiaMap: React.FC<{ highlightedCountries: string[] }> = ({ highligh
       countries.forEach((country) => {
         if (highlightedCountries.includes(country.id)) {
           country.setAttribute("fill", t.url());
+          country.addEventListener("mousemove", (e) =>
+            computeHoveredCountry(e, (countryCodeToName as any)[country.id]),
+          );
+          country.addEventListener("mouseleave", () => setHoveredCountry(null));
         } else {
           country.removeAttribute("fill");
         }
@@ -266,3 +290,56 @@ export const AsiaMap: React.FC<{ highlightedCountries: string[] }> = ({ highligh
     </svg>
   );
 };
+
+const countryCodeToName = {
+  af: "Afghanistan",
+  am: "Armenia",
+  az: "Azerbaijan",
+  bh: "Bahrain",
+  bd: "Bangladesh",
+  bn: "Brunei",
+  bt: "Bhutan",
+  cn: "China",
+  cy: "Cyprus",
+  ge: "Georgia",
+  id: "Indonesia",
+  il: "Israel",
+  in: "India",
+  iq: "Iraq",
+  ir: "Iran",
+  jp: "Japan",
+  jo: "Jordan",
+  kz: "Kazakhstan",
+  kp: "North Korea",
+  kr: "South Korea",
+  kw: "Kuwait",
+  kg: "Kyrgyzstan",
+  la: "Laos",
+  lb: "Lebanon",
+  my: "Malaysia",
+  mv: "Maldives",
+  mn: "Mongolia",
+  mm: "Myanmar",
+  np: "Nepal",
+  om: "Oman",
+  pk: "Pakistan",
+  ph: "Philippines",
+  qa: "Qatar",
+  ru: "Russia",
+  sa: "Saudi Arabia",
+  sg: "Singapore",
+  lk: "Sri Lanka",
+  sy: "Syria",
+  tj: "Tajikistan",
+  th: "Thailand",
+  tl: "Timor-Leste",
+  tm: "Turkmenistan",
+  tr: "Turkey",
+  tw: "Taiwan",
+  ae: "United Arab Emirates",
+  uz: "Uzbekistan",
+  vn: "Vietnam",
+  ye: "Yemen",
+};
+
+const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);

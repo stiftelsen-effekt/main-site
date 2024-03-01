@@ -1,0 +1,74 @@
+.mapWrapper {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2rem;
+  position: relative;
+  .hoveredCountry {
+    position: absolute;
+    z-index: 10;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    color: var(--primary);
+    background: var(--secondary);
+    display: inline-block;
+    width: auto;
+    white-space: nowrap;
+  }
+
+  & > div {
+    width: 100%;
+
+    & > div {
+      width: 100%;
+    }
+  }
+
+  .mapsContainer {
+    position: relative;
+    width: 100%;
+
+    .nextMap,
+    .prevMap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding-left: 1rem;
+      padding-bottom: 1rem;
+      z-index: 10;
+      text-shadow: 1px 1px 1px #000, -1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000,
+        1px 0px 1px #000, -1px 0px 1px #000, 0px 1px 1px #000, 0px -1px 1px #000;
+    }
+
+    .mapsTrack {
+      width: 100%;
+
+      .map {
+        position: absolute;
+        width: 100%;
+
+        svg {
+          width: 100%;
+        }
+
+        opacity: 0;
+        transition: all 0.3s ease;
+
+        &:first-child {
+          transform: translateX(-10%);
+        }
+
+        &:last-child {
+          transform: translateX(10%);
+        }
+
+        &.activeMap {
+          opacity: 1;
+          transform: translateX(0);
+          z-index: 2;
+        }
+      }
+    }
+  }
+}
