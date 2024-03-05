@@ -109,7 +109,7 @@ export const Outputs: React.FC<{
           setRequiredWidth(null);
         }
 
-        const annotationFill = textures.lines().lighter().stroke("#000").background("#fafafa");
+        const annotationFill = "#fafafa";
         const annotationMarks =
           graphAnnotations?.flatMap((annotation) => {
             const from = annotation.date_from
@@ -133,7 +133,7 @@ export const Outputs: React.FC<{
                 x2: "x2",
                 y1: "y1",
                 y2: "y2",
-                fill: annotationFill.url(),
+                fill: annotationFill,
                 stroke: "none",
               },
             );
@@ -146,7 +146,7 @@ export const Outputs: React.FC<{
             const titleText = Plot.text(
               [
                 {
-                  x: to,
+                  x: from,
                   y: maxOutputsInYear * 1.1,
                 },
               ],
@@ -156,7 +156,7 @@ export const Outputs: React.FC<{
                 text: (d) => annotation.title,
                 textAnchor: "start",
                 dy: 15,
-                dx: 10,
+                dx: getRemInPixels(),
                 fill: "black",
               },
             );
@@ -164,7 +164,7 @@ export const Outputs: React.FC<{
             const descriptionText = Plot.text(
               [
                 {
-                  x: to,
+                  x: from,
                   y: maxOutputsInYear * 1.1,
                 },
               ],
@@ -173,8 +173,8 @@ export const Outputs: React.FC<{
                 y: "y",
                 text: (d) => annotation.description,
                 textAnchor: "start",
-                dy: 30,
-                dx: 10,
+                dy: getRemInPixels() * 2,
+                dx: getRemInPixels(),
                 lineWidth: 16,
                 fontSize: getRemInPixels() * 0.6,
                 lineAnchor: "top",
