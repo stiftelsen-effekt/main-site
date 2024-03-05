@@ -34,11 +34,11 @@
       right: 0;
       font-size: 0.8rem;
       cursor: pointer;
-      padding-left: 1rem;
       padding-bottom: 1rem;
       z-index: 10;
-      text-shadow: 1px 1px 1px #000, -1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000,
-        1px 0px 1px #000, -1px 0px 1px #000, 0px 1px 1px #000, 0px -1px 1px #000;
+      background: black;
+      width: 4rem;
+      text-align: right;
     }
 
     .mapsTrack {

@@ -16,6 +16,7 @@ export const OrganizationSparkline: React.FC<{
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const [requiredWidth, setRequiredWidth] = useState<null | number>(null);
 
   const resizeGraph = useCallback(() => {
     if (innerGraph.current && graphRef.current) {
@@ -45,8 +46,22 @@ export const OrganizationSparkline: React.FC<{
           y: 0,
         }));
 
+        const requiredWidthPerYear = getRemInPixels() * 3;
+
+        const requiredWidth = years.length * requiredWidthPerYear;
+        if (requiredWidth > size.width) {
+          setRequiredWidth(requiredWidth);
+        } else {
+          setRequiredWidth(null);
+        }
+
         let plotConfig: Plot.PlotOptions = {
-          width: size.width,
+          width:
+            size.width < 1180
+              ? requiredWidth > size.width
+                ? requiredWidth
+                : size.width
+              : size.width,
           height: size.height,
           color: {
             domain: ["direct", "smartDistribution"],
@@ -63,9 +78,9 @@ export const OrganizationSparkline: React.FC<{
           },
           marginRight: 0,
           marginLeft: 0,
-          marginBottom: 0,
-          insetLeft: 0,
-          insetRight: 0,
+          marginBottom: window.innerWidth < 1180 ? getRemInPixels() * 1.5 : 0,
+          insetLeft: window.innerWidth < 1180 ? window.innerWidth * 0.025 : 0,
+          insetRight: window.innerWidth < 1180 ? window.innerWidth * 0.025 : 0,
           y: {
             label: null,
             labelAnchor: "top",
@@ -190,11 +205,22 @@ export const OrganizationSparkline: React.FC<{
     if (graphRef.current) {
       graphRef.current.scrollTo({ left: Number.MAX_SAFE_INTEGER });
     }
-  }, [graphRef]);
+  }, [graphRef, requiredWidth]);
 
   return (
-    <div ref={graphRef} className={styles.graph}>
-      <div ref={innerGraph} className={styles.innerGraph}></div>
+    <div className={styles.graphWrapper}>
+      <div ref={graphRef} className={styles.graph}>
+        <div
+          ref={innerGraph}
+          className={styles.innerGraph}
+          style={{ width: requiredWidth ?? undefined }}
+        ></div>
+      </div>
+      {requiredWidth && (
+        <div className={styles.swipeHint}>
+          <span>←</span> <i>Sveip for å se hele grafen</i>
+        </div>
+      )}
     </div>
   );
 };

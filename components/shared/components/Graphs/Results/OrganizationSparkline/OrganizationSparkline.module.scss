@@ -1,4 +1,28 @@
-.graph {
+.graphWrapper {
   width: 100%;
   height: 100%;
+
+  .graph {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.swipeHint {
+  font-size: 0.75rem;
+}
+
+@media screen and (max-width: 1180px) {
+  .graphWrapper {
+    width: 90vw;
+    height: auto;
+    white-space: nowrap;
+    .graph {
+      width: calc(100% + 10vw);
+      margin-left: -5vw;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      height: 10rem;
+    }
+  }
 }
