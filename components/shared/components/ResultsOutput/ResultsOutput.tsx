@@ -90,8 +90,10 @@ export const ResultsOutput: React.FC<{
             <div key={organization} className={styles.organization}>
               <div className={styles.overview}>
                 <strong>{orgAbbrivToName(organization)}</strong>
-                <span>{thousandize(value.direct.sum)} kr direkte fra donorer</span>
-                <span>{thousandize(value.smartDistribution.sum)} kr via smart fordeling</span>
+                <span>{thousandize(Math.round(value.direct.sum))} kr direkte fra donorer</span>
+                <span>
+                  {thousandize(Math.round(value.smartDistribution.sum))} kr via smart fordeling
+                </span>
               </div>
               <div className={styles.sparkline}>
                 <OrganizationSparkline
