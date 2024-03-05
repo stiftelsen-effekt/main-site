@@ -234,9 +234,90 @@ export default {
       },
     },
     {
+      type: "array",
+      name: "graph_annotations",
+      title: "Graph Annotations",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              type: "string",
+              name: "title",
+              title: "Title",
+            },
+            {
+              type: "string",
+              name: "description",
+              title: "Description",
+            },
+            {
+              type: "date",
+              name: "date_from",
+              title: "Date From",
+            },
+            {
+              type: "date",
+              name: "date_to",
+              title: "Date To",
+            },
+          ],
+        },
+      ],
+    },
+    {
       type: "graphcontext",
       name: "graphcontext",
       title: "Graph Context",
+    },
+    {
+      type: "array",
+      title: "Organization links",
+      description: "Matches the organization on abreviation and inserts the provided link",
+      name: "organization_links",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              type: "string",
+              name: "abbreviation",
+              title: "Org Abbreviation",
+              options: {
+                list: [
+                  "agf",
+                  "amf",
+                  "drift",
+                  "dtw",
+                  "end",
+                  "fem",
+                  "gd",
+                  "gdzf",
+                  "hki",
+                  "mc",
+                  "ni",
+                  "nls",
+                  "phc",
+                  "sci",
+                  "sight",
+                  "tcf",
+                  "ubi",
+                ],
+              },
+            },
+            {
+              type: "navitem",
+              name: "link",
+              title: "Link",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "links",
+      name: "links",
+      title: "Links",
     },
   ],
 };

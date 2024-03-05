@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { linksContentQuery } from "../_queries";
+import { linksContentQuery, linksSelectorQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
@@ -126,7 +126,21 @@ const fetchResults = groq`
       ...,
       blocks[] {
         _type == 'reference' => @->,
-        _type != 'reference' => @,
+        _type == 'resultsoutput' => {
+          ...,
+          organization_links[] {
+            ...,
+            link {
+              ...,
+              ${linksSelectorQuery}
+            },
+          },
+          links {
+            ...,
+            ${linksContentQuery}
+          },
+        },
+        _type != 'resultsoutput' && _type != 'reference' => @,
       },
     },
     header {
@@ -139,25 +153,3 @@ const fetchResults = groq`
   },
 }
 `;
-
-/*
-
-      <SectionContainer heading="Kumulativt donasjonsvolum per år" ypadded>
-        <div className={styles.results}>
-          <CumulativeDonations dailyDonations={graphData.dailyDonations}></CumulativeDonations>
-        </div>
-      </SectionContainer>
-      <SectionContainer heading="Donasjonsvolum per år og referanse" ypadded>
-        <ReferralSums referralSums={graphData.referralSums}></ReferralSums>
-      </SectionContainer>
-      <SectionContainer ypadded>
-      {
-        graphData.monthlyDonationsPerOutput.map((monthlyDonationsPerOrg: MonthlyDonationsPerOutputResult) => {
-          return (
-            <ResultsOutput key={monthlyDonationsPerOrg.output} graphData={monthlyDonationsPerOrg} description={[]}></ResultsOutput>
-          );
-        })
-      }
-      </SectionContainer>
-
-      */

@@ -1,5 +1,9 @@
 import { PortableText } from "@portabletext/react";
-import { MonthlyDonationsPerOutputResult, Outputs } from "../Graphs/Results/Outputs/Outputs";
+import {
+  MonthlyDonationsPerOutputResult,
+  OutputGraphAnnotation,
+  Outputs,
+} from "../Graphs/Results/Outputs/Outputs";
 import styles from "./ResultsOutput.module.scss";
 import { thousandize } from "../../../../util/formatting";
 import { AfricaMap } from "../AfricaMap/AfricaMap";
@@ -8,6 +12,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ResultsOutputMaps } from "./Maps/ResultsOutputMaps";
 import { OrganizationSparkline } from "../Graphs/Results/OrganizationSparkline/OrganizationSparkline";
+import { LinkComponent, Links, LinksProps } from "../../../main/blocks/Links/Links";
+import { GraphContextData } from "../Graphs/Shared/GraphContext/GraphContext";
+import { NavLink } from "../Navbar/Navbar";
 
 export type TransformedMonthlyDonationsPerOutput = {
   via: string;
@@ -21,7 +28,24 @@ export const ResultsOutput: React.FC<{
   graphData: MonthlyDonationsPerOutputResult;
   outputCountries: string[];
   description: any[];
-}> = ({ graphData, outputCountries, description }) => {
+  graphAnnotations?: OutputGraphAnnotation[];
+  graphContext: GraphContextData;
+  organizationLinks?: {
+    abbreviation: string;
+    link: NavLink;
+  }[];
+  links?: LinksProps & {
+    title?: string;
+  };
+}> = ({
+  graphData,
+  outputCountries,
+  description,
+  graphAnnotations,
+  graphContext,
+  organizationLinks,
+  links,
+}) => {
   const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
     () =>
       graphData.monthly.flatMap((el) => {
@@ -76,6 +100,8 @@ export const ResultsOutput: React.FC<{
       <Outputs
         transformedMonthlyDonationsPerOutput={transformedMonthlyDonationsPerOutput}
         output={graphData.output}
+        graphAnnotations={graphAnnotations}
+        graphContext={graphContext}
       ></Outputs>
 
       <div className={styles.organizations}>
@@ -86,24 +112,41 @@ export const ResultsOutput: React.FC<{
         </p>
         {graphData.total.organizations
           .map((o) => Object.entries(o))
-          .map(([[organization, value]], i) => (
-            <div key={organization} className={styles.organization}>
-              <div className={styles.overview}>
-                <strong>{orgAbbrivToName(organization)}</strong>
-                <span>{thousandize(Math.round(value.direct.sum))} kr direkte fra donorer</span>
-                <span>
-                  {thousandize(Math.round(value.smartDistribution.sum))} kr via smart fordeling
-                </span>
-              </div>
-              <div className={styles.sparkline}>
-                <OrganizationSparkline
-                  transformedMonthlyDonationsPerOutput={transformedMonthlyDonationsPerOutput.filter(
-                    (t) => t.organization === organization,
+          .map(([[organization, value]], i) => {
+            const orgLink = organizationLinks
+              ? organizationLinks.find((l) => l.abbreviation === organization)
+              : null;
+
+            return (
+              <div key={organization} className={styles.organization}>
+                <div className={styles.overview}>
+                  <strong>{orgAbbrivToName(organization)}</strong>
+                  <span>{thousandize(Math.round(value.direct.sum))} kr direkte fra donorer</span>
+                  <span>
+                    {thousandize(Math.round(value.smartDistribution.sum))} kr via smart fordeling
+                  </span>
+                  {orgLink && (
+                    <div className={styles.orgLink}>
+                      <LinkComponent link={orgLink?.link} />
+                    </div>
                   )}
-                ></OrganizationSparkline>
+                </div>
+                <div className={styles.sparkline}>
+                  <OrganizationSparkline
+                    transformedMonthlyDonationsPerOutput={transformedMonthlyDonationsPerOutput.filter(
+                      (t) => t.organization === organization,
+                    )}
+                  ></OrganizationSparkline>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+        {links && links.links.length > 0 && (
+          <div className={styles.linksWrapper}>
+            <p className="inngress">{links.title ?? "Les mer:"}</p>
+            <Links links={links.links}></Links>
+          </div>
+        )}
       </div>
     </div>
   );

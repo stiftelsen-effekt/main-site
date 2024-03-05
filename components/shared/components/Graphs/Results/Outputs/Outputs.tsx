@@ -9,7 +9,7 @@ import { thousandize } from "../../../../../../util/formatting";
 import styles from "./Outputs.module.scss";
 import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
-import { GraphContext } from "../../Shared/GraphContext/GraphContext";
+import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphContext";
 import { TransformedMonthlyDonationsPerOutput } from "../../../ResultsOutput/ResultsOutput";
 
 export type MonthlyDonationsPerOutputResult = {
@@ -35,10 +35,19 @@ type AggregatedOutputResult = {
   }[];
 };
 
+export type OutputGraphAnnotation = {
+  title: string;
+  description: string;
+  date_from?: string;
+  date_to?: string;
+};
+
 export const Outputs: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
   output: string;
-}> = ({ transformedMonthlyDonationsPerOutput, output }) => {
+  graphAnnotations?: OutputGraphAnnotation[];
+  graphContext: GraphContextData;
+}> = ({ transformedMonthlyDonationsPerOutput, output, graphAnnotations, graphContext }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const legendRef = useRef<HTMLDivElement>(null);
@@ -49,6 +58,18 @@ export const Outputs: React.FC<{
     () => computeTableContents(transformedMonthlyDonationsPerOutput, output),
     [transformedMonthlyDonationsPerOutput, output],
   );
+
+  const maxOutputsInYear = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const years = Array.from(new Array(currentYear + 1 - 2016)).map((_, i) => 2016 + i);
+    const yearlyMaxes = years.map((year) =>
+      transformedMonthlyDonationsPerOutput
+        .filter((d) => d.period.getFullYear() === year)
+        .reduce((acc, el) => acc + el.numberOfOutputs, 0),
+    );
+    console.log(output, yearlyMaxes);
+    return Math.max(...yearlyMaxes);
+  }, [transformedMonthlyDonationsPerOutput]);
 
   const resizeGraph = useCallback(() => {
     if (innerGraph.current && graphRef.current) {
@@ -81,24 +102,89 @@ export const Outputs: React.FC<{
         // Filter years depending on the width of the graph
         const requiredWidthPerYear = getRemInPixels() * 3;
 
-        /*
-        const yearsToDisplay = Math.floor(size.width / requiredWidthPerYear);
-
-        // Remove the first years if there are too many
-        if (years.length > yearsToDisplay) {
-          years.splice(0, years.length - yearsToDisplay);
-        }
-
-        if (years.length == 0) {
-          return 
-        }
-        */
         const requiredWidth = years.length * requiredWidthPerYear;
         if (requiredWidth > size.width) {
           setRequiredWidth(requiredWidth);
         } else {
           setRequiredWidth(null);
         }
+
+        const annotationFill = textures.lines().lighter().stroke("#000").background("#fafafa");
+        const annotationMarks =
+          graphAnnotations?.flatMap((annotation) => {
+            const from = annotation.date_from
+              ? new Date(annotation.date_from)
+              : new Date(years[0].period.getFullYear(), 0, 1);
+            const to = annotation.date_to
+              ? new Date(annotation.date_to)
+              : new Date(currentYear + 1, 0, 1);
+
+            const areaMark = Plot.rect(
+              [
+                {
+                  x1: from,
+                  x2: to,
+                  y1: 0,
+                  y2: maxOutputsInYear * 1.1,
+                },
+              ],
+              {
+                x1: "x1",
+                x2: "x2",
+                y1: "y1",
+                y2: "y2",
+                fill: annotationFill.url(),
+                stroke: "none",
+              },
+            );
+
+            const ruleY = Plot.ruleX([from], {
+              stroke: "black",
+              strokeWidth: 1,
+            });
+
+            const titleText = Plot.text(
+              [
+                {
+                  x: to,
+                  y: maxOutputsInYear * 1.1,
+                },
+              ],
+              {
+                x: "x",
+                y: "y",
+                text: (d) => annotation.title,
+                textAnchor: "start",
+                dy: 15,
+                dx: 10,
+                fill: "black",
+              },
+            );
+
+            const descriptionText = Plot.text(
+              [
+                {
+                  x: to,
+                  y: maxOutputsInYear * 1.1,
+                },
+              ],
+              {
+                x: "x",
+                y: "y",
+                text: (d) => annotation.description,
+                textAnchor: "start",
+                dy: 30,
+                dx: 10,
+                lineWidth: 16,
+                fontSize: getRemInPixels() * 0.6,
+                lineAnchor: "top",
+                lineHeight: 1.5,
+                fill: "black",
+              },
+            );
+
+            return [areaMark, ruleY, titleText, descriptionText];
+          }) || [];
 
         let plotConfig: Plot.PlotOptions = {
           width: Math.max(size.width, requiredWidth),
@@ -108,6 +194,7 @@ export const Outputs: React.FC<{
             range: [
               "#000",
               textures.circles().lighter().stroke("#000").background("#fafafa").size(5).id("dots"),
+              annotationFill,
             ],
             tickFormat(t, i) {
               if (size.width < 760) {
@@ -148,12 +235,12 @@ export const Outputs: React.FC<{
             fontFamily: "ESKlarheitGrotesk",
           },
           marks: [
-            Plot.ruleY([0]),
             Plot.gridY({ strokeOpacity: 1, strokeWidth: 0.5, ticks: size.width < 760 ? 0 : 5 }),
+            ...annotationMarks,
             Plot.rectY(
               data,
               Plot.binX({ y: "sum" }, {
-                x: "period",
+                x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
                 y: "numberOfOutputs",
                 fill: "via",
                 interval: "year",
@@ -165,7 +252,7 @@ export const Outputs: React.FC<{
             Plot.text(
               data,
               Plot.binX({ y: "sum" }, {
-                x: "period",
+                x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
                 y: "numberOfOutputs",
                 stroke: "#fafafa",
                 strokeWidth: 5,
@@ -184,6 +271,7 @@ export const Outputs: React.FC<{
               text: (d) => d.period.getFullYear().toString(),
               dy: 15,
             }),
+            Plot.ruleY([0]),
           ],
         };
 
@@ -251,18 +339,7 @@ export const Outputs: React.FC<{
         </div>
       )}
       <div ref={legendRef}></div>
-      <GraphContext
-        context={{
-          description:
-            "Data: Estimert antall " + output + " per år fra donasjoner til Gi Effektivt.",
-          detailed_description_label: "Hva ligger bak disse tallene?",
-          detailed_description: [],
-          allow_table: true,
-          table_label: "Se data som tabell",
-          table_close_label: "Skjul tabell",
-        }}
-        tableContents={tableContents}
-      />
+      <GraphContext context={graphContext} tableContents={tableContents} />
     </div>
   );
 };

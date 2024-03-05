@@ -93,7 +93,7 @@ export const OrganizationSparkline: React.FC<{
                 { y: "sum" },
                 {
                   y: "sum",
-                  x: "period",
+                  x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
                   fill: "via",
                   interval: "year",
                   stroke: "black",
@@ -105,16 +105,34 @@ export const OrganizationSparkline: React.FC<{
             Plot.text(
               data,
               Plot.binX({ y: "sum" }, {
-                x: "period",
+                x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
                 y: "sum",
                 stroke: "#fafafa",
                 strokeWidth: 5,
                 fill: "black",
                 text: (d: any) =>
-                  thousandize(Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0))),
+                  formatShortSum(d.reduce((acc: number, el: any) => acc + el.sum, 0)),
                 dy: -15,
                 interval: "year",
               } as any),
+            ),
+            // Full unrounded when hovering using Plot.pointerX
+            Plot.text(
+              data,
+              Plot.pointerX(
+                Plot.binX({ y: "sum" }, {
+                  x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
+                  y: "sum",
+                  stroke: "#fafafa",
+                  strokeWidth: 20,
+                  fontWeight: "bold",
+                  fill: "black",
+                  text: (d: any) =>
+                    thousandize(Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0))),
+                  dy: -15,
+                  interval: "year",
+                } as any),
+              ),
             ),
             Plot.text(years, {
               x: "period",
@@ -122,10 +140,22 @@ export const OrganizationSparkline: React.FC<{
               text: (d) => d.period.getFullYear().toString(),
               dy: 15,
             }),
+            // Bold year when hovering using Plot.pointerX
+            Plot.text(
+              years,
+              Plot.pointerX({
+                x: "period",
+                y: "y",
+                text: (d) => d.period.getFullYear().toString(),
+                dy: 15,
+                fontWeight: "bold",
+              }),
+            ),
             Plot.axisY({
               anchor: "right",
               tickFormat: (t) => {
-                if (t < 1000000) return thousandize(t);
+                if (t === 0) return "0";
+                if (t < 1000000) return t / 1000 + " k";
                 if (t < 1000000000) return t / 1000000 + " mill";
                 if (t < 1000000000000) return t / 1000000000 + " mrd";
                 return t / 1000000000000 + " t";
@@ -153,7 +183,6 @@ export const OrganizationSparkline: React.FC<{
   );
 
   useEffect(() => {
-    console.log(transformedMonthlyDonationsPerOutput);
     drawGraph(transformedMonthlyDonationsPerOutput);
   }, [transformedMonthlyDonationsPerOutput, drawGraph]);
 
@@ -171,3 +200,9 @@ export const OrganizationSparkline: React.FC<{
 };
 
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+const formatShortSum = (sum: number) => {
+  // Return rounded k for thousands, m with 2 decimals for millions, b with 2 decimals for billions
+  if (sum < 1000000) return thousandize(Math.round(sum / 1000)) + " k";
+  if (sum < 1000000000) return (sum / 1000000).toFixed(2) + " mill";
+  return (sum / 1000000000).toFixed(2) + " mrd";
+};

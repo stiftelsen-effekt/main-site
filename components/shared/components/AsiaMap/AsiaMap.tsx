@@ -36,7 +36,6 @@ export const AsiaMap: React.FC<{
     if (map) {
       // Select all children of root g element
       const countries = Array.from(map.querySelectorAll("svg > g > *"));
-      console.log(countries);
       countries.forEach((country) => {
         if (highlightedCountries.includes(country.id)) {
           country.setAttribute("fill", t.url());

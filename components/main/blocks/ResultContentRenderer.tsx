@@ -131,6 +131,10 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             graphData={data}
                             outputCountries={block.output_countries}
                             description={block.description}
+                            graphAnnotations={block.graph_annotations}
+                            graphContext={block.graphcontext}
+                            organizationLinks={block.organization_links}
+                            links={block.links}
                           ></ResultsOutput>
                         );
                       case "referralgraph":
