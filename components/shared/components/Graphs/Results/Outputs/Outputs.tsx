@@ -95,9 +95,11 @@ export const Outputs: React.FC<{
       if (graphRef.current && legendRef.current && innerGraph.current) {
         const currentYear = new Date().getFullYear();
         const years = Array.from(new Array(currentYear + 1 - 2016), (x, i) => ({
-          period: new Date(2016 + i, 6, 1),
+          period: new Date(2016 + i, 0, 1),
           y: 0,
         }));
+
+        const thresholds = [...years.map((y) => y.period), new Date(currentYear + 1, 0, 1)];
 
         // Filter years depending on the width of the graph
         const requiredWidthPerYear = getRemInPixels() * 3;
@@ -240,10 +242,10 @@ export const Outputs: React.FC<{
             Plot.rectY(
               data,
               Plot.binX({ y: "sum" }, {
-                x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
+                x: "period",
+                thresholds: thresholds,
                 y: "numberOfOutputs",
                 fill: "via",
-                interval: "year",
                 stroke: "black",
                 insetLeft: size.width < 760 ? 5 : 10,
                 insetRight: size.width < 760 ? 5 : 10,
@@ -252,7 +254,8 @@ export const Outputs: React.FC<{
             Plot.text(
               data,
               Plot.binX({ y: "sum" }, {
-                x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
+                x: "period",
+                thresholds: thresholds,
                 y: "numberOfOutputs",
                 stroke: "#fafafa",
                 strokeWidth: 5,
@@ -262,11 +265,11 @@ export const Outputs: React.FC<{
                     Math.round(d.reduce((acc: number, el: any) => acc + el.numberOfOutputs, 0)),
                   ),
                 dy: -15,
-                interval: "year",
               } as any),
             ),
             Plot.text(years, {
-              x: "period",
+              // X is middle of the year to center it under bar
+              x: (d) => new Date(d.period.getFullYear(), 6, 1),
               y: "y",
               text: (d) => d.period.getFullYear().toString(),
               dy: 15,
@@ -356,7 +359,7 @@ const computeTableContents = (data: TransformedMonthlyDonationsPerOutput, output
         _key: r.period + r.organization,
         _type: "row",
         cells: [
-          r.period.getFullYear().toString() + "-" + r.period.getMonth().toString(),
+          r.period.getFullYear().toString() + "-" + (r.period.getMonth() + 1).toString(),
           r.organization,
           r.numberOfOutputs.toFixed(2),
           r.via === "direct" ? "Direkte fordelt" : "Smart fordeling",

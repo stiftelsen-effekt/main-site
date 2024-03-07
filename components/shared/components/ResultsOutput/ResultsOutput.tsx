@@ -57,7 +57,7 @@ export const ResultsOutput: React.FC<{
                 organization: key,
                 period: new Date(
                   parseInt(el.period.split("-")[0]),
-                  parseInt(el.period.split("-")[1]),
+                  parseInt(el.period.split("-")[1]) - 1,
                   1,
                 ),
                 numberOfOutputs: value.direct.numberOfOutputs,
@@ -68,7 +68,7 @@ export const ResultsOutput: React.FC<{
                 organization: key,
                 period: new Date(
                   parseInt(el.period.split("-")[0]),
-                  parseInt(el.period.split("-")[1]),
+                  parseInt(el.period.split("-")[1]) - 1,
                   1,
                 ),
                 numberOfOutputs: value.smartDistribution.numberOfOutputs,

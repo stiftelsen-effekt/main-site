@@ -42,9 +42,11 @@ export const OrganizationSparkline: React.FC<{
       if (graphRef.current && innerGraph.current) {
         const currentYear = new Date().getFullYear();
         const years = Array.from(new Array(currentYear + 1 - 2016), (x, i) => ({
-          period: new Date(2016 + i, 6, 1),
+          period: new Date(2016 + i, 0, 1),
           y: 0,
         }));
+
+        const thresholds = [...years.map((y) => y.period), new Date(currentYear + 1, 0, 1)];
 
         const requiredWidthPerYear = getRemInPixels() * 3;
 
@@ -91,8 +93,8 @@ export const OrganizationSparkline: React.FC<{
               new Date(years[0].period.getFullYear(), 0, 1),
               new Date(currentYear + 1, 0, 1),
             ],
-            label: null,
             ticks: [],
+            label: null,
           },
           style: {
             background: "transparent",
@@ -107,10 +109,10 @@ export const OrganizationSparkline: React.FC<{
               Plot.binX(
                 { y: "sum" },
                 {
+                  x: "period",
                   y: "sum",
-                  x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
+                  thresholds: thresholds,
                   fill: "via",
-                  interval: "year",
                   stroke: "black",
                   insetLeft: getRemInPixels() * 0.5,
                   insetRight: getRemInPixels() * 0.5,
@@ -120,15 +122,15 @@ export const OrganizationSparkline: React.FC<{
             Plot.text(
               data,
               Plot.binX({ y: "sum" }, {
-                x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
+                x: "period",
                 y: "sum",
+                thresholds: thresholds,
                 stroke: "#fafafa",
                 strokeWidth: 5,
                 fill: "black",
                 text: (d: any) =>
                   formatShortSum(d.reduce((acc: number, el: any) => acc + el.sum, 0)),
                 dy: -15,
-                interval: "year",
               } as any),
             ),
             // Full unrounded when hovering using Plot.pointerX
@@ -136,8 +138,9 @@ export const OrganizationSparkline: React.FC<{
               data,
               Plot.pointerX(
                 Plot.binX({ y: "sum" }, {
-                  x: (d: any) => new Date(d.period.getFullYear(), 5, 1),
+                  x: "period",
                   y: "sum",
+                  thresholds: thresholds,
                   stroke: "#fafafa",
                   strokeWidth: 20,
                   fontWeight: "bold",
@@ -145,12 +148,12 @@ export const OrganizationSparkline: React.FC<{
                   text: (d: any) =>
                     thousandize(Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0))),
                   dy: -15,
-                  interval: "year",
                 } as any),
               ),
             ),
             Plot.text(years, {
-              x: "period",
+              // X is middle of the year to center it under bar
+              x: (d) => new Date(d.period.getFullYear(), 6, 1),
               y: "y",
               text: (d) => d.period.getFullYear().toString(),
               dy: 15,
@@ -159,7 +162,7 @@ export const OrganizationSparkline: React.FC<{
             Plot.text(
               years,
               Plot.pointerX({
-                x: "period",
+                x: (d) => new Date(d.period.getFullYear(), 6, 1),
                 y: "y",
                 text: (d) => d.period.getFullYear().toString(),
                 dy: 15,
@@ -170,6 +173,7 @@ export const OrganizationSparkline: React.FC<{
               anchor: "right",
               tickFormat: (t) => {
                 if (t === 0) return "0";
+                if (t < 1000) return t;
                 if (t < 1000000) return t / 1000 + " k";
                 if (t < 1000000000) return t / 1000000 + " mill";
                 if (t < 1000000000000) return t / 1000000000 + " mrd";
@@ -227,7 +231,7 @@ export const OrganizationSparkline: React.FC<{
 
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 const formatShortSum = (sum: number) => {
-  // Return rounded k for thousands, m with 2 decimals for millions, b with 2 decimals for billions
+  if (sum < 1000) return sum;
   if (sum < 1000000) return thousandize(Math.round(sum / 1000)) + " k";
   if (sum < 1000000000) return (sum / 1000000).toFixed(2) + " mill";
   return (sum / 1000000000).toFixed(2) + " mrd";
