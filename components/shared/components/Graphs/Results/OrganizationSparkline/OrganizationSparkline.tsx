@@ -229,6 +229,66 @@ export const OrganizationSparkline: React.FC<{
   );
 };
 
+export const OrganizationSparklineLegend: React.FC = () => {
+  const legendRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (legendRef.current) {
+      const plotConfig: Plot.PlotOptions = {
+        color: {
+          domain: ["direct", "smartDistribution"],
+          range: [
+            "#000",
+            textures.circles().lighter().stroke("#000").background("#fafafa").size(5).id("dots"),
+          ],
+          tickFormat(t, i) {
+            if (t === "direct") return "Donasjoner direkte fra donorer";
+            if (t === "smartDistribution") return "Donasjoner via smart fordeling";
+            return t;
+          },
+          type: "ordinal",
+        },
+      };
+
+      const range = (plotConfig.color?.range as any).slice();
+
+      if (range) {
+        ((plotConfig.color as any).range as any[]).forEach(
+          (texture, i) =>
+            texture.url && (((plotConfig.color as any).range as any)[i] = texture.url()),
+        );
+      }
+
+      const legend = Plot.legend({
+        color: plotConfig.color,
+        swatchSize: getRemInPixels() * 0.8,
+        style: { fontSize: getRemInPixels() * 0.8 + "px" },
+      });
+
+      if (range) {
+        for (const val of range) {
+          if (val.apply) {
+            d3.select(legend).selectAll("svg").call(val);
+          }
+        }
+      }
+
+      legend.style.marginTop = "0rem";
+      legend.style.marginBottom = "2rem";
+      legend.style.fontFamily = "ESKlarheitGrotesk";
+
+      legendRef.current.innerHTML = "";
+      legendRef.current.appendChild(legend);
+    }
+  }, [legendRef]);
+
+  return (
+    <div className={styles.legendWrapper}>
+      <div ref={legendRef} className={styles.legend}></div>
+    </div>
+  );
+};
+
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 const formatShortSum = (sum: number) => {
   if (sum < 1000) return sum;

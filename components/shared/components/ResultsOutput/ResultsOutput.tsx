@@ -11,7 +11,10 @@ import { AsiaMap } from "../AsiaMap/AsiaMap";
 import { useEffect, useMemo, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ResultsOutputMaps } from "./Maps/ResultsOutputMaps";
-import { OrganizationSparkline } from "../Graphs/Results/OrganizationSparkline/OrganizationSparkline";
+import {
+  OrganizationSparkline,
+  OrganizationSparklineLegend,
+} from "../Graphs/Results/OrganizationSparkline/OrganizationSparkline";
 import { LinkComponent, Links, LinksProps } from "../../../main/blocks/Links/Links";
 import { GraphContextData } from "../Graphs/Shared/GraphContext/GraphContext";
 import { NavLink } from "../Navbar/Navbar";
@@ -110,6 +113,7 @@ export const ResultsOutput: React.FC<{
           Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med{" "}
           {graphData.output.toLowerCase()}.
         </p>
+        <OrganizationSparklineLegend />
         {graphData.total.organizations
           .map((o) => Object.entries(o))
           .map(([[organization, value]], i) => {
