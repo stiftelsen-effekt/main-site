@@ -38,6 +38,12 @@ export default {
       description: "The label for the table close label",
     },
   ],
+  preview: {
+    select: {
+      title: "description",
+      subtitle: "detailed_description",
+    },
+  },
   initialValue: {
     allow_table: true,
     detailed_description_label: "Se detaljert beskrivelse av grafen",

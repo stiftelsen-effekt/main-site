@@ -1,6 +1,9 @@
+import { BarChart } from "react-feather";
+
 export default {
   type: "object",
   name: "resultsoutput",
+  icon: BarChart,
   fields: [
     {
       type: "string",
@@ -320,4 +323,10 @@ export default {
       title: "Links",
     },
   ],
+  preview: {
+    select: {
+      title: "outputType",
+      subtitle: "description",
+    },
+  },
 };
