@@ -328,4 +328,30 @@ export const customComponentRenderers = {
     link: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
     navitem: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
   },
+  types: {
+    latex: (props: any) => {
+      useEffect(() => {
+        const link = document.createElement("link");
+        link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+
+        return () => {
+          document.head.removeChild(link);
+        };
+      }, []);
+      return (
+        <span
+          dangerouslySetInnerHTML={{ __html: props.value.renderedHtml }}
+          style={{
+            padding: "3rem",
+            textAlign: "center",
+            display: "block",
+            width: "100%",
+          }}
+        ></span>
+      );
+    },
+  },
 };

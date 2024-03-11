@@ -1,5 +1,7 @@
-import { Bookmark, ExternalLink, Link, Link2 } from "react-feather";
+import { Bookmark, Divide, ExternalLink, Link } from "react-feather";
 import { CitationRenderer } from "../../components/citationRenderer";
+import KatexInput from "../../components/KatexInput";
+import { KatexRenderer } from "../../components/KatexRenderer";
 
 export const blocktype = {
   type: "block",

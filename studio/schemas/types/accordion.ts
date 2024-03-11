@@ -1,16 +1,15 @@
-import { Type } from "react-feather";
 import { blocktype } from "./blockcontent";
 
 export default {
-  title: "Paragraph",
-  name: "paragraph",
+  name: "accordion",
   type: "object",
-  icon: Type,
+  title: "Accordion",
   fields: [
     {
       name: "title",
-      title: "Title",
       type: "string",
+      title: "Title",
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "content",
@@ -22,7 +21,11 @@ export default {
   preview: {
     select: {
       title: "title",
-      subtitle: "content.0.children.0.text",
+    },
+    prepare({ title }: { title: string }) {
+      return {
+        title,
+      };
     },
   },
-} as const;
+};

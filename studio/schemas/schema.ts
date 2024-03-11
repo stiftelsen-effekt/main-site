@@ -87,6 +87,8 @@ import cumulativedonationsgraph from "./types/results/cumulativedonationsgraph";
 import resultsoutput from "./types/results/resultsoutput";
 import resultssection from "./types/results/resultssection";
 import referralgraph from "./types/results/referralgraph";
+import latex from "./types/latex";
+import accordion from "./types/accordion";
 
 export const pages = [
   generic,
@@ -168,6 +170,8 @@ export const types = [
   resultsoutput,
   resultssection,
   referralgraph,
+  latex,
+  accordion,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
