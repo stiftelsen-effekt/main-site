@@ -183,7 +183,7 @@ export const CumulativeDonations: React.FC<{
                       currency: "NOK",
                       maximumFractionDigits: 0,
                     },
-                  )}\n${d.doy}`,
+                  )}`,
               }),
             ),
             Plot.dot(
