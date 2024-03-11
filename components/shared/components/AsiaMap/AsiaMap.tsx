@@ -14,6 +14,22 @@ export const AsiaMap: React.FC<{
     [],
   );
 
+  /** If any arabian countries are highlighted, shift the viewbox to x 480 to make sure they are visible */
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map) {
+      if (
+        highlightedCountries.some((country) =>
+          ["ae", "iq", "ir", "jo", "kw", "om", "qa", "sa", "sy", "ye"].includes(country),
+        )
+      ) {
+        map.setAttribute("viewBox", "480 407.713989 172.527008 155.494019");
+      } else {
+        map.setAttribute("viewBox", "534.80899 407.713989 172.527008 155.494019");
+      }
+    }
+  }, [highlightedCountries]);
+
   const computeHoveredCountry = (e: any, country: string) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;

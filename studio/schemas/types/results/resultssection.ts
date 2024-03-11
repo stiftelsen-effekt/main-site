@@ -57,6 +57,7 @@ export default {
         { type: "cumulativedonationsgraph" },
         { type: "resultsoutput" },
         { type: "referralgraph" },
+        { type: "giveblock" },
         { type: "reference", to: [{ type: "contactinfo" }] },
       ],
       options: {

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { BlockTablesContent } from "../../../../../main/blocks/BlockTable/BlockT
 import styles from "./ReferralSums.module.scss";
 import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
+import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphContext";
 
 export type ReferralSumsResult = {
   Year: number;
@@ -38,45 +39,58 @@ export type ReferralSumsResult = {
   Updated: string;
 };
 
-export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
-  referralSums,
-}) => {
+type ReferralGraphData = {
+  type: string;
+  sum: number;
+  num: number;
+  year: number;
+};
+
+export const ReferralSums: React.FC<{
+  referralSums: ReferralSumsResult[];
+  graphContext: GraphContextData;
+}> = ({ referralSums, graphContext }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const [explenationOpen, setExplenationOpen] = useState(false);
-  const [tableDisplayed, setTableDisplayed] = useState(false);
 
-  /**
-   * Transform the referral sums into a format that can be used by the graph
-   * We use type to indicate the type, sum to indicate sum for the type and num to indicate number of donors
-   * Year is the year
-   */
-  const transformedReferralSums = referralSums.flatMap((el) => {
-    return Object.entries(el)
-      .filter(
-        ([key, value]) => (key.startsWith("Total") || key.startsWith("Num")) && key.endsWith("ref"),
-      )
-      .map(([key, value]) => {
-        const split = key.split("_");
-        const type = split[split.length - 2];
-        return {
-          type,
-          sum: el[`Total_sum_${type}_ref` as keyof ReferralSumsResult] as number,
-          num: el[`Num_Donors_${type}_ref` as keyof ReferralSumsResult] as number,
-          year: el.Year,
-        };
-      });
-  });
+  const graphData = useMemo(() => {
+    /**
+     * Transform the referral sums into a format that can be used by the graph
+     * We use type to indicate the type, sum to indicate sum for the type and num to indicate number of donors
+     * Year is the year
+     */
+    const transformedReferralSums = referralSums.flatMap((el) => {
+      return Object.entries(el)
+        .filter(
+          ([key, value]) =>
+            (key.startsWith("Total") || key.startsWith("Num")) && key.endsWith("ref"),
+        )
+        .map(([key, value]) => {
+          const split = key.split("_");
+          const type = split[split.length - 2];
+          return {
+            type,
+            sum: el[`Total_sum_${type}_ref` as keyof ReferralSumsResult] as number,
+            num: el[`Num_Donors_${type}_ref` as keyof ReferralSumsResult] as number,
+            year: el.Year,
+          };
+        });
+    });
 
-  /** Remove duplicates */
-  const uniqueReferralSums = transformedReferralSums.filter(
-    (el, i, arr) => arr.findIndex((e) => e.type === el.type && e.year === el.year) === i,
-  );
+    /** Remove duplicates */
+    const uniqueReferralSums = transformedReferralSums.filter(
+      (el, i, arr) => arr.findIndex((e) => e.type === el.type && e.year === el.year) === i,
+    );
 
-  /** Filter those missing sum or number */
-  const filteredReferralSums = uniqueReferralSums
-    .filter((el) => el.sum && el.num)
-    .sort((a, b) => b.sum - a.sum);
+    /** Filter those missing sum or number */
+    const filteredReferralSums = uniqueReferralSums
+      .filter((el) => el.sum && el.num)
+      .sort((a, b) => b.sum - a.sum);
+
+    return filteredReferralSums;
+  }, [referralSums]);
+
+  const tableContents = useMemo(() => getTableContents(graphData), [graphData]);
 
   const resizeGraph = useCallback(() => {
     if (graphRef.current) {
@@ -98,7 +112,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
   }, [graphRef]);
 
   const drawGraph = useCallback(
-    (filteredReferralSums: { type: string; sum: number; num: number; year: number }[]) => {
+    (graphData: ReferralGraphData[]) => {
       if (graphRef.current) {
         const config: Plot.PlotOptions = {
           width: size.width,
@@ -117,7 +131,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
           y: {
             label: null,
             tickFormat: (t) => mapTypeToLabel(t),
-            domain: Array.from(new Set(filteredReferralSums.map((el) => el.type))),
+            domain: Array.from(new Set(graphData.map((el) => el.type))),
             ticks: size.width >= 760 ? undefined : [],
           },
           fx: {
@@ -130,7 +144,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
           },
           marks: [
             Plot.frame(),
-            Plot.barX(filteredReferralSums, {
+            Plot.barX(graphData, {
               y: "type",
               x: "sum",
               fx: size.width >= 760 ? "year" : null,
@@ -142,7 +156,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
         if (size.width < 760 && config.marks) {
           config.marks.push(
             Plot.text(
-              filteredReferralSums,
+              graphData,
               Plot.selectFirst({
                 fy: "year",
                 text: (d) => d.year.toString(),
@@ -155,7 +169,7 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
             ),
           );
           config.marks.push(
-            Plot.text(filteredReferralSums, {
+            Plot.text(graphData, {
               x: (d) => 0,
               y: "type",
               fy: "year",
@@ -204,84 +218,13 @@ export const ReferralSums: React.FC<{ referralSums: ReferralSumsResult[] }> = ({
   );
 
   useEffect(() => {
-    drawGraph(filteredReferralSums);
-  }, [filteredReferralSums, drawGraph]);
+    drawGraph(graphData);
+  }, [graphData, drawGraph]);
 
   return (
     <div className={resultsStyle.wrapper}>
       <div ref={graphRef} className={styles.graph} />
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem", marginTop: "2rem" }}>
-        <i>
-          Data: En kort beskrivelse av grafen her, med noen kilder muligerns som kan vises utdypet i
-          som en fotnote.
-        </i>
-        <span
-          onClick={(e) => {
-            setExplenationOpen(!explenationOpen);
-          }}
-          style={{ cursor: "pointer" }}
-        >
-          Se detaljert beskrivelse av grafen{" "}
-          <span
-            style={{
-              display: "inline-block",
-              transition: "all 200ms",
-              transform: `rotate(${explenationOpen ? "180deg" : "0deg"})`,
-            }}
-          >
-            ↓
-          </span>
-        </span>
-        <AnimateHeight height={explenationOpen ? "auto" : 0}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nunc nec varius
-            tincidunt, nunc purus luct us odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac nunc nec varius
-            tincidunt, nunc purus luctus odio, eget tincidunt nunc velit ac.
-          </p>
-        </AnimateHeight>
-        <span
-          onClick={(e) => {
-            setTableDisplayed(!tableDisplayed);
-          }}
-          style={{ cursor: "pointer", textDecoration: "underline", marginBottom: "1rem" }}
-        >
-          {tableDisplayed ? "Skjul tabell" : "Få data som tabell"}
-        </span>
-        {tableDisplayed && (
-          <BlockTablesContent
-            fixedStyles={{}}
-            config={{ headers: true }}
-            contents={{
-              rows: [
-                {
-                  _key: "header",
-                  _type: "row",
-                  cells: ["År", "Type", "Sum donasjoner", "Antall donasjoner"],
-                },
-                ...filteredReferralSums.map((r) => ({
-                  _key: r.year + r.type,
-                  _type: "row",
-                  cells: [
-                    r.year.toString(),
-                    mapTypeToLabel(r.type),
-                    r.sum.toFixed(2),
-                    r.num.toFixed(0),
-                  ],
-                })),
-              ],
-            }}
-          />
-        )}
-      </div>
+      <GraphContext context={graphContext} tableContents={tableContents}></GraphContext>
     </div>
   );
 };
@@ -307,6 +250,23 @@ const mapTypeToLabel = (type: string) => {
     default:
       return type;
   }
+};
+
+const getTableContents = (graphData: ReferralGraphData[]) => {
+  return {
+    rows: [
+      {
+        _key: "header",
+        _type: "row",
+        cells: ["År", "Type", "Sum donasjoner", "Antall donasjoner"],
+      },
+      ...graphData.map((r) => ({
+        _key: r.year + r.type,
+        _type: "row",
+        cells: [r.year.toString(), mapTypeToLabel(r.type), r.sum.toFixed(2), r.num.toFixed(0)],
+      })),
+    ],
+  };
 };
 
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);

@@ -4,38 +4,14 @@ import {
   SectionContainerProps,
   SectionContainer,
 } from "../layout/SectionContainer/sectionContainer";
-import { Columns } from "./Columns/Columns";
 import { ContactInfo } from "./Contact/Contact";
 import { FullImage } from "./FullImage/FullImage";
-import { FullVideo } from "./FullVideo/FullVideo";
-import { HTMLEmbed } from "./HTMLEmbed/HTMLEmbed";
 import { Links } from "./Links/Links";
 import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
-import { PointList } from "./PointList/PointList";
-import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
-import { Quote } from "./Quote/Quote";
-import { SplitView } from "./SplitView/SplitView";
-import { Testimonial } from "./Testemonial/Testemonial";
-import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
-import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
-import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
-import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
-import { InterventionWidget } from "./InterventionWidget/InterventionWidget";
-import { IntroSection } from "./IntroSection/IntroSection";
-import { Contributors } from "./Contributors/Contributors";
-import { Inngress } from "./Inngress/Inngress";
-import { Teasers } from "./Teasers/Teasers";
 import { GiveBlock } from "./GiveBlock/GiveBlock";
-import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
-import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
-import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
-import { GiftCard } from "./GiftCard/GiftCard";
-import { BlockTables } from "./BlockTable/BlockTables";
-import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
 import { ResultsGraphData } from "../../../pages/ResultsPage";
 import { CumulativeDonations } from "../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations";
-import graphcontext from "../../../studio/schemas/types/results/graphcontext";
 import { ResultsOutput } from "../../shared/components/ResultsOutput/ResultsOutput";
 import { ReferralSums } from "../../shared/components/Graphs/Results/ReferralSums/ReferralSums";
 
@@ -116,6 +92,7 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                           <CumulativeDonations
                             key={block._key || block._id}
                             dailyDonations={graphData.dailyDonations}
+                            graphContext={block.graphcontext}
                           />
                         );
                       case "resultsoutput":
@@ -142,6 +119,7 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                           <ReferralSums
                             key={block._key || block._id}
                             referralSums={graphData.referralSums}
+                            graphContext={block.graphcontext}
                           />
                         );
                       default:
@@ -163,8 +141,6 @@ const mapSanityOutputToDataOutput = (output: string) => {
       return "Ormekurer";
     case "Cash":
       return "Dollar mottatt";
-    case "Cash zakat":
-      return "Dollar mottatt som zakat";
     case "Vitamin A":
       return "A-vitamintilskudd";
     case "Malaria treatment":

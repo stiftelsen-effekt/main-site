@@ -178,6 +178,8 @@ const orgAbbrivToName = (abbriv: string) => {
       return "GiveDirectly";
     case "ubi":
       return "GiveDirectly Borgerlønn";
+    case "gdzf":
+      return "GiveDirectly Zakat Fund";
     default:
       return abbriv;
   }

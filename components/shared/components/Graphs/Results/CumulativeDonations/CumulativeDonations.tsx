@@ -8,15 +8,15 @@ import { BlockTablesContent } from "../../../../../main/blocks/BlockTable/BlockT
 import styles from "./CumulativeDonations.module.scss";
 import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
-import { GraphContext } from "../../Shared/GraphContext/GraphContext";
+import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphContext";
+import { getRemInPixels } from "../../../../../main/blocks/Paragraph/Citation";
 
 export type DailyDonations = { date: string; sum: string }[];
 
-export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> = ({
-  dailyDonations,
-}) => {
-  const [explenationOpen, setExplenationOpen] = useState(false);
-  const [tableDisplayed, setTableDisplayed] = useState(false);
+export const CumulativeDonations: React.FC<{
+  dailyDonations: DailyDonations;
+  graphContext: GraphContextData;
+}> = ({ dailyDonations, graphContext }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -82,6 +82,7 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
           },
           x: {
             label: null,
+            domain: [0, 366],
           },
           marks: [
             Plot.ruleY([0]),
@@ -93,11 +94,17 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
             }),
             Plot.gridY({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }),
             Plot.axisX({
-              ticks: dayCount
-                .map((d) => d + 1)
-                .filter((d, i) => (size.width >= 760 ? i : i % 2 === 0)),
-              tickFormat: (t, i) => Plot.formatMonth("no-NB")(size.width >= 760 ? i + 1 : i * 2),
+              ticks: [
+                0,
+                ...dayCount
+                  .map((d) => d)
+                  .filter((d, i) => (size.width >= 760 ? i : i % 2 === 0 && i > 1)),
+              ],
+              tickFormat: (t, i) =>
+                Plot.formatMonth("no-NB")(size.width >= 760 ? i : i * 2).padStart(5, " "),
               textAnchor: "start",
+              tickSize: getRemInPixels(),
+              tickPadding: -getRemInPixels() * 0.7,
             }),
             Plot.text(yearlyMaxes, {
               y: "adjustedCumulativeSum",
@@ -141,7 +148,8 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
               y1: "cumulativeSum",
               y2: "adjustedCumulativeSum",
               x1: "doy",
-              x2: (d) => d.doy + (size.width < 760 ? 40 : 10),
+              x2: (d) =>
+                d.doy + (size.width < 760 ? Math.round(10 + (size.width - 760) * (20 / -385)) : 10),
               dx: 5,
               strokeWidth: 0.5,
             }),
@@ -175,7 +183,7 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
                       currency: "NOK",
                       maximumFractionDigits: 0,
                     },
-                  )}`,
+                  )}\n${d.doy}`,
               }),
             ),
             Plot.dot(
@@ -213,17 +221,7 @@ export const CumulativeDonations: React.FC<{ dailyDonations: DailyDonations }> =
   return (
     <div className={resultsStyle.wrapper}>
       <div ref={graphRef} className={styles.graph} />
-      <GraphContext
-        context={{
-          description: "Kumulativt donasjonsvolum per år",
-          detailed_description_label: "Se detaljert beskrivelse av grafen",
-          detailed_description: [],
-          allow_table: true,
-          table_label: "Se data som tabell",
-          table_close_label: "Skjul tabell",
-        }}
-        tableContents={tableContents}
-      />
+      <GraphContext context={graphContext} tableContents={tableContents} />
     </div>
   );
 };
@@ -249,14 +247,13 @@ const getDaysInMonth = (leap: boolean) => {
 
 const dayCount = getDaysInMonth(true).reduce(
   (acc, val, i) => {
-    if (i > 0) {
-      acc.push(acc[i - 1] + val);
+    if (i !== 11) {
+      acc.push(acc[i] + val);
     }
     return acc;
   },
   [0],
 );
-const daysInYear = Array.from(new Array(366)).map((e, i) => i);
 
 const isLeapYear = (year: number) => {
   if ((year & 3) != 0) return false;
@@ -266,8 +263,7 @@ const isLeapYear = (year: number) => {
 const getDOY = (date: Date) => {
   var mn = date.getMonth();
   var dn = date.getDate();
-  var dayOfYear = dayCount[mn] + dn;
-  if (mn > 1 && isLeapYear(date.getFullYear())) dayOfYear++;
+  var dayOfYear = dayCount[mn] + dn - 1;
   return dayOfYear;
 };
 
@@ -288,8 +284,7 @@ const binDonations = (don: any[]) =>
     }
     acc.push({
       date: el.date,
-      doy:
-        getDOY(el.date) + (!isLeapYear(el.date.getFullYear()) && el.date.getMonth() >= 1 ? 1 : 0),
+      doy: getDOY(el.date),
       year: el.year,
       cumulativeSum: sum,
     });
