@@ -80,8 +80,11 @@ export const ResultsPage = withStaticProps(async ({ preview }: { preview: boolea
 })(({ data, navbarData, preview }) => {
   const page = data.result.page;
 
+  if (!page) {
+    return <div>Page not found</div>;
+  }
+
   const header = page.header;
-  const results = data.result;
   const graphData = data.graphData;
 
   return (
