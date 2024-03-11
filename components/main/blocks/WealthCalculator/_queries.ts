@@ -1,6 +1,10 @@
 import { DateTime } from "luxon";
+import { WealthCalculatorPeriodAdjustment } from "../../../shared/components/Graphs/Area/AreaGraph";
 
-export const getNorwegianTaxEstimate = async (income: number) => {
+export const getNorwegianTaxEstimate = async (
+  income: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
+) => {
   if (income < 0) {
     return 0;
   }
@@ -14,6 +18,9 @@ export const getNorwegianTaxEstimate = async (income: number) => {
     return 0;
   }
 
+  const adjustedIncome =
+    periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY ? income * 12 : income;
+
   const response = await fetch(`https://skatteberegning.app.skatteetaten.no/2023`, {
     method: "POST",
     body: JSON.stringify({
@@ -21,7 +28,7 @@ export const getNorwegianTaxEstimate = async (income: number) => {
         skatteberegningsgrunnlagsobjekt: [
           {
             tekniskNavn: "loennsinntektNaturalytelseMv",
-            beloep: Math.round(income).toString(),
+            beloep: Math.round(adjustedIncome).toString(),
           },
         ],
       },
@@ -41,10 +48,17 @@ export const getNorwegianTaxEstimate = async (income: number) => {
 
   const json = await response.json();
 
+  if (periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY) {
+    return json.hovedperson.beregnetSkatt.beregnetSkatt / 12;
+  }
+
   return json.hovedperson.beregnetSkatt.beregnetSkatt;
 };
 
-export const getSwedishTaxEstimate = async (income: number) => {
+export const getSwedishTaxEstimate = async (
+  income: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
+) => {
   if (income < 0) {
     return 0;
   }
@@ -57,6 +71,9 @@ export const getSwedishTaxEstimate = async (income: number) => {
   if (!Number.isFinite(income)) {
     return 0;
   }
+
+  const adjustedIncome =
+    periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY ? income * 12 : income;
 
   const year = DateTime.local().year;
   const response = await fetch(
@@ -115,7 +132,7 @@ export const getSwedishTaxEstimate = async (income: number) => {
             inkomstFrom: null,
             isHelar: true,
             kostnadsersattningarResten: null,
-            loneinkomsterResten: Math.round(income).toString(),
+            loneinkomsterResten: Math.round(adjustedIncome).toString(),
             sjukAktivitetsersattningLonResten: null,
             sjukAktivitetsersattningPensionResten: null,
             sjukpenningAKassaMmResten: null,
@@ -258,6 +275,11 @@ export const getSwedishTaxEstimate = async (income: number) => {
   const finalTaxLeaf = json.leafs
     .find((node: any) => node.apiText === "resultatSkatteutrakningen")
     .leafs.find((leaf: any) => leaf.apiText === "slutligSkatt");
+
+  if (periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY) {
+    return finalTaxLeaf ? finalTaxLeaf.value / 12 : null;
+  }
+
   return finalTaxLeaf ? finalTaxLeaf.value : null;
 };
 

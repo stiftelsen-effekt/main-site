@@ -6,6 +6,7 @@ import {
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
+import { useCallback, useRef } from "react";
 
 export type WealthCalculatorInputConfiguration = {
   subtitle_label?: string;
@@ -35,7 +36,6 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfParents: (value: number) => void;
   loadingPostTaxIncome: boolean;
   config: WealthCalculatorInputConfiguration;
-  outputRef: React.RefObject<HTMLDivElement>;
 }> = ({
   title,
   incomeInput,
@@ -46,8 +46,18 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfParents,
   loadingPostTaxIncome,
   config,
-  outputRef,
 }) => {
+  const calculateButtonRef = useRef<HTMLDivElement>(null);
+
+  const scrollToOutput = useCallback(() => {
+    if (calculateButtonRef.current) {
+      window.scrollTo({
+        top: calculateButtonRef.current.offsetTop + calculateButtonRef.current.clientHeight + 60,
+        behavior: "smooth",
+      });
+    }
+  }, [calculateButtonRef]);
+
   return (
     <div className={styles.calculator__input}>
       <div className={styles.calculator__input__inner}>
@@ -102,16 +112,9 @@ export const WealthCalculatorInput: React.FC<{
           className={[styles.calculator__input__group, styles.calculator__input__group_mobile].join(
             " ",
           )}
+          ref={calculateButtonRef}
         >
-          <EffektButton
-            onClick={() => {
-              window.scrollTo({
-                top: (outputRef.current?.offsetTop || 0) - 60,
-                behavior: "smooth",
-              });
-            }}
-            variant={EffektButtonVariant.SECONDARY}
-          >
+          <EffektButton onClick={scrollToOutput} variant={EffektButtonVariant.SECONDARY}>
             Beregn
           </EffektButton>
         </div>

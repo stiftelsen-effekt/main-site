@@ -49,7 +49,7 @@ describe("Navigation", () => {
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
+      "Du er i dag blant de ϥϬϤϭrikeste i verden.",
     );
   });
 
@@ -88,7 +88,7 @@ describe("Navigation", () => {
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
+      "Du er i dag blant de ϥϬϤϭrikeste i verden.",
     );
   });
 
@@ -105,7 +105,7 @@ describe("Navigation", () => {
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
+      "Du er i dag blant de ϥϬϤϭrikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "25");
   });
@@ -121,7 +121,7 @@ describe("Navigation", () => {
     );
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Du er i dag blant deϥϬϤϭ rikeste i verden.",
+      "Du er i dag blant de ϥϬϤϭrikeste i verden.",
     );
     cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "39");
   });
