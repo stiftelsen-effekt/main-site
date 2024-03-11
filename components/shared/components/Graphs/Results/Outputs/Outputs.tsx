@@ -104,12 +104,7 @@ export const Outputs: React.FC<{
         // Filter years depending on the width of the graph
         const requiredWidthPerYear = getRemInPixels() * 3;
 
-        const requiredWidth = years.length * requiredWidthPerYear;
-        if (requiredWidth > size.width) {
-          setRequiredWidth(requiredWidth);
-        } else {
-          setRequiredWidth(null);
-        }
+        let requiredWidth = years.length * requiredWidthPerYear;
 
         const annotationFill = "#fafafa";
         const annotationMarks =
@@ -188,6 +183,39 @@ export const Outputs: React.FC<{
             return [areaMark, ruleY, titleText, descriptionText];
           }) || [];
 
+        /** We need to add additional margin to the right if we have annotations
+         *  that are wider than the graph itself. This is because the annotations
+         *  are drawn outside the graph, and we need to make sure they are visible.
+         *  Check if the annotations start at the last or second to last year, and
+         *  add the required margin to the right of the graph.
+         */
+        let additionalInsetRight = 0;
+        if (graphAnnotations && graphAnnotations.length > 0 && size.width < 760) {
+          const maximumAnnotationYearFrom = Math.max(
+            0,
+            ...graphAnnotations
+              .filter((a) => a.date_from)
+              .map((a) => new Date(a.date_from as string).getFullYear()),
+          );
+
+          if (maximumAnnotationYearFrom >= currentYear - 2) {
+            // Line width is 16 rem * 0.5 (fontsize is 0.5rem), and we need to add some margin to the right
+            // We subtract the width of each year from current date to the annotation start date
+            // This is given by the requiredWidthPerYear variable
+            additionalInsetRight =
+              16 * (getRemInPixels() * 0.5) -
+              (currentYear - maximumAnnotationYearFrom) * requiredWidthPerYear;
+            // We then update the required width to include the additional margin
+            requiredWidth += additionalInsetRight;
+          }
+        }
+
+        if (requiredWidth > size.width) {
+          setRequiredWidth(requiredWidth);
+        } else {
+          setRequiredWidth(null);
+        }
+
         let plotConfig: Plot.PlotOptions = {
           width: Math.max(size.width, requiredWidth),
           height: size.height,
@@ -214,7 +242,7 @@ export const Outputs: React.FC<{
           marginLeft: 0,
           marginTop: 30,
           insetLeft: size.width < 760 ? window.outerWidth * 0.05 : 0,
-          insetRight: size.width < 760 ? window.outerWidth * 0.05 : 0,
+          insetRight: (size.width < 760 ? window.outerWidth * 0.05 : 0) + additionalInsetRight,
           y: {
             label: null,
             labelAnchor: "top",
