@@ -10,10 +10,12 @@ import { AgreementsPage } from "./dashboard/AgreementsPage";
 import { ProfilePage } from "./dashboard/ProfilePage";
 import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
 import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
+import { ResultsPage } from "./ResultsPage";
 
 enum PageType {
   GenericPage = "generic",
   ArticlesPage = "articles",
+  ResultsPage = "results",
   ArticlePage = "article",
   VippsAgreementPage = "vipps-agreement",
   VippsAnonymousPage = "vipps-anonymous",
@@ -31,6 +33,8 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
       return <ArticlesPage {...props} />;
     case PageType.ArticlePage:
       return <ArticlePage {...props} />;
+    case PageType.ResultsPage:
+      return <ResultsPage {...props} />;
     case PageType.VippsAgreementPage:
       return <VippsAgreementPage {...props} />;
     case PageType.AgreementsPage:
@@ -53,6 +57,7 @@ function compareArrays<T>(a: T[], b: T[]) {
 const inferPageTypeFromPath = async (path: string[]) => {
   const {
     articlesPagePath,
+    resultsPagePath,
     vippsAgreementPagePath,
     dashboardPath,
     agreementsPagePath,
@@ -73,6 +78,9 @@ const inferPageTypeFromPath = async (path: string[]) => {
 
   const isArticlesPage = compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath);
   if (isArticlesPage) return PageType.ArticlesPage;
+
+  const isResultsPage = compareArrays(path.slice(0, resultsPagePath.length), resultsPagePath);
+  if (isResultsPage) return PageType.ResultsPage;
 
   const isDashboard = dashboardPath
     ? compareArrays(path.slice(0, dashboardPath.length), dashboardPath)
@@ -134,6 +142,15 @@ export const getStaticProps = async ({
     case PageType.ArticlePage: {
       const slug = path.slice(1).join("/");
       const props = await ArticlePage.getStaticProps({ preview, slug });
+      return {
+        props: {
+          ...props,
+          pageType,
+        },
+      } as const;
+    }
+    case PageType.ResultsPage: {
+      const props = await ResultsPage.getStaticProps({ preview });
       return {
         props: {
           ...props,

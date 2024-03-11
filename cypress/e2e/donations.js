@@ -190,7 +190,7 @@ describe("Donations page", () => {
     }).should("have.length", 6);
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "307");
+      .should("contain.text", "118");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
       .should("contain.text", "A-vitamintilskudd");

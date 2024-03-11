@@ -1,0 +1,155 @@
+.wrapper {
+  padding-bottom: 8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: var(--secondary);
+    width: 100%;
+    padding: 6rem 0;
+    margin-bottom: 2rem;
+
+    .inner {
+      display: grid;
+      grid-template-columns: 6fr 4fr;
+      gap: 2rem;
+      width: 100%;
+      max-width: 960px;
+
+      .outputsWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .outputNumber {
+          font-size: 6rem;
+          margin-bottom: 1rem;
+        }
+
+        .outputName {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
+  .organizations {
+    display: flex;
+    flex-direction: column;
+    max-width: 960px;
+    width: 100%;
+    margin-top: 0rem;
+    margin-bottom: 5rem;
+
+    h4 {
+      margin-bottom: 0rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    .organization {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      width: 100%;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+
+      .overview {
+        display: flex;
+        flex-direction: column;
+
+        .orgLink {
+          margin-top: 0.5rem;
+        }
+      }
+
+      .sparkline {
+        width: 100%;
+        height: 6rem;
+      }
+    }
+  }
+
+  .linksWrapper {
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    padding-bottom: 6rem;
+
+    .header {
+      padding: 4rem 0;
+
+      .inner {
+        max-width: 760px;
+      }
+    }
+
+    .organizations {
+      max-width: 760px;
+    }
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .wrapper {
+    padding-bottom: 0rem;
+
+    .header {
+      margin-top: 2rem;
+      width: calc(100% + 10vw);
+      margin-bottom: 1rem;
+
+      .inner {
+        gap: 1rem;
+        padding: 0 2rem;
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+
+        .outputsWrapper {
+          .outputNumber {
+            font-size: 4rem;
+          }
+
+          .outputName {
+            font-size: 1.3rem;
+          }
+        }
+      }
+    }
+
+    .organizations {
+      width: 100%;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+
+      .organization {
+        grid-template-columns: 1fr;
+        padding-top: 2rem;
+        padding-bottom: 4rem;
+        row-gap: 2rem;
+
+        .overview {
+          gap: 0.3rem;
+        }
+
+        .sparkline {
+          height: auto;
+        }
+      }
+    }
+  }
+}

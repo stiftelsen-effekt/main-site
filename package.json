@@ -61,6 +61,7 @@
     "sass": "^1.53.0",
     "styled-components": "^5.3.5",
     "swr": "^1.2.2",
+    "textures": "^1.2.3",
     "use-debounce": "^8.0.1",
     "validator": "^13.7.0"
   },

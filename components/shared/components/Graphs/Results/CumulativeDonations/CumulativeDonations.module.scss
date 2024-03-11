@@ -1,0 +1,16 @@
+.graph {
+  width: 100%;
+  aspect-ratio: 16/11;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .graph {
+    aspect-ratio: 16/11;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .graph {
+    aspect-ratio: 1/1;
+  }
+}
