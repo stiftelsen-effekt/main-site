@@ -23,11 +23,11 @@ const nextConfig = {
   headers: async () => {
     return [
       {
-        source: "/(.*)",
+        source: "(.*)",
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://gieffektivt.adoveo.com/",
+            value: "frame-ancestors 'none'; frame-src '*';",
           },
         ],
       },
