@@ -13,7 +13,7 @@ export default {
       name: "latex",
       type: "text",
       title: "Latex",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "renderedHtml",
