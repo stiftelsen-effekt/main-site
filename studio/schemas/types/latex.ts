@@ -1,6 +1,6 @@
 import { Divide } from "react-feather";
-import KatexInput from "../../components/KatexInput";
-import { KatexPreview } from "../../components/KatexPreview";
+import KatexInput from "../../components/katexInput";
+import { KatexPreview } from "../../components/katexPreview";
 
 export default {
   name: "latex",
