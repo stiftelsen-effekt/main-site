@@ -51,6 +51,7 @@ export default {
       title: "Content",
       of: [
         { type: "paragraph" },
+        { type: "accordion" },
         { type: "quote" },
         { type: "splitview" },
         { type: "splitviewhtml" },

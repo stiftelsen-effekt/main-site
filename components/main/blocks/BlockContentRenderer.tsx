@@ -34,6 +34,7 @@ import { GiftCard } from "./GiftCard/GiftCard";
 import { BlockTables } from "./BlockTable/BlockTables";
 import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
 import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
+import { Accordion } from "./Accordion/Accordion";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -57,6 +58,10 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       case "paragraph":
                         return (
                           <Paragraph key={block._key} title={block.title} blocks={block.content} />
+                        );
+                      case "accordion":
+                        return (
+                          <Accordion key={block._key} title={block.title} blocks={block.content} />
                         );
                       case "videoembed":
                         return (
