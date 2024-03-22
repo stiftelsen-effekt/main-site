@@ -324,10 +324,13 @@ export const Citation = (props: any): JSX.Element => {
 
 const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
   useEffect(() => {
+    if (document.getElementById("katex-styles-link")) return;
+
     const link = document.createElement("link");
     link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
     link.type = "text/css";
     link.rel = "stylesheet";
+    link.id = "katex-styles-link";
     document.head.appendChild(link);
 
     return () => {
