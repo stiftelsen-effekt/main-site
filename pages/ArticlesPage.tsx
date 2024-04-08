@@ -129,7 +129,7 @@ const fetchArticles = groq`
   "articles": *[_type == "article_page"] | order(header.published desc) {
     header,
     "slug": slug.current,
-    "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...3].text, "\n"),
+    "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...5].text, " "),
   }
 }
 `;
