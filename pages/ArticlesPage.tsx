@@ -53,7 +53,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
-        canonicalurl={`https://gieffektivt.no/${page.slug}`}
+        canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
       />
@@ -61,7 +61,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
           <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-          <Navbar {...navbarData} />
+          <Navbar {...navbarData} useDashboardLogo />
         </MainHeader>
 
         <PageHeader
@@ -129,7 +129,7 @@ const fetchArticles = groq`
   "articles": *[_type == "article_page"] | order(header.published desc) {
     header,
     "slug": slug.current,
-    "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...3].text, "\n"),
+    "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...5].text, " "),
   }
 }
 `;
