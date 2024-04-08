@@ -9,7 +9,6 @@ import {
   DollarSign,
   File,
   Filter,
-  HelpCircle,
   Lock,
   Paperclip,
   Phone,
@@ -17,8 +16,6 @@ import {
   Settings,
   Tool,
   User,
-  Users,
-  Zap,
 } from "react-feather";
 import Iframe from "sanity-plugin-iframe-pane";
 import resolveProductionUrl from "./resolveProductionUrl";

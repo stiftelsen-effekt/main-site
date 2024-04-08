@@ -14,5 +14,23 @@ export default function resolveProductionUrl(doc: any) {
   previewUrl.searchParams.append(`slug`, doc?.slug?.current ?? "");
   previewUrl.searchParams.append(`type`, doc?._type);
 
+  if (doc?._type === "article_page") {
+    let articleSlug;
+
+    // Temporary work-around until sanity 3 upgrade and async callback
+    // Checking which project we are in to determine the article slug, this is the NO project
+    if (process.env.SANITY_STUDIO_API_PROJECT_ID === "vf0df6h3") {
+      articleSlug = "artikler";
+    }
+    // Checking which project we are in to determine the article slug, this is the SE project
+    else if (process.env.SANITY_STUDIO_API_PROJECT_ID === "9reyurp9") {
+      articleSlug = "artiklar";
+    } else {
+      throw new Error("Unknown project ID");
+    }
+
+    previewUrl.searchParams.append(`articleSlug`, articleSlug);
+  }
+
   return previewUrl.toString();
 }
