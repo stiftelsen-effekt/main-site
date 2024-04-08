@@ -99,7 +99,15 @@ const query = groq`
 `;
 
 export const Navbar = withStaticProps(
-  async ({ dashboard, preview }: { dashboard: boolean; preview: boolean }) => {
+  async ({
+    dashboard,
+    useDashboardLogo,
+    preview,
+  }: {
+    dashboard: boolean;
+    preview: boolean;
+    useDashboardLogo?: boolean;
+  }) => {
     const result = await getClient(preview).fetch<QueryResult>(query);
     const settings = result.settings[0];
     const dashboardData = result.dashboard[0];
@@ -110,6 +118,7 @@ export const Navbar = withStaticProps(
       elements: elements.filter((e) => e !== null),
       logo: settings.logo,
       dashboardLogo: dashboardData.dashboard_logo,
+      useDashboardLogo: useDashboardLogo || null,
       labels: {
         dashboard: dashboardData.dashboard_label,
         logout: dashboardData.logout_label,
@@ -120,7 +129,7 @@ export const Navbar = withStaticProps(
       },
     };
   },
-)(({ dashboard, elements, logo, dashboardLogo, labels, giveButton }) => {
+)(({ dashboard, elements, logo, dashboardLogo, labels, giveButton, useDashboardLogo }) => {
   const { dashboardPath } = useRouterContext();
   const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
   const { user, logout } = useAuth0();
@@ -155,7 +164,9 @@ export const Navbar = withStaticProps(
     };
   }
 
-  const lightLogo = (dashboard && !expandMenu) || (!dashboard && expandMenu);
+  const lightLogo =
+    ((useDashboardLogo || dashboard) && !expandMenu) ||
+    (!useDashboardLogo && !dashboard && expandMenu);
 
   return (
     <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
@@ -201,9 +212,9 @@ export const Navbar = withStaticProps(
             }}
           >
             {expandMenu ? (
-              <X size={32} color={dashboard ? "black" : "white"} />
+              <X size={32} color={dashboard || useDashboardLogo ? "black" : "white"} />
             ) : (
-              <Menu size={32} color={dashboard ? "white" : "black"} />
+              <Menu size={32} color={dashboard || useDashboardLogo ? "white" : "black"} />
             )}
           </button>
         </div>

@@ -61,7 +61,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
       <div className={styles.inverted}>
         <MainHeader hideOnScroll={true}>
           <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-          <Navbar {...navbarData} />
+          <Navbar {...navbarData} useDashboardLogo />
         </MainHeader>
 
         <PageHeader
