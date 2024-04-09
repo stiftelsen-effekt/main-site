@@ -1,9 +1,10 @@
-import { blocktype } from "./blockcontent";
+import { ChevronDown } from "react-feather";
 
 export default {
   name: "accordion",
   type: "object",
   title: "Accordion",
+  icon: ChevronDown,
   fields: [
     {
       name: "title",

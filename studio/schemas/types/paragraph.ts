@@ -24,5 +24,11 @@ export default {
       title: "title",
       subtitle: "content.0.children.0.text",
     },
+    prepare({ title, subtitle }) {
+      return {
+        title: title || " ",
+        subtitle,
+      };
+    },
   },
 } as const;

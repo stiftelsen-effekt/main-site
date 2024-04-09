@@ -61,7 +61,6 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
 };
 
 export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks }) => {
-  console.log(blocks);
   return (
     <>
       {blocks.map((block: any) => {
