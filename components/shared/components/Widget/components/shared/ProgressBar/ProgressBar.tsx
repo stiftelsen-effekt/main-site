@@ -17,7 +17,7 @@ export const ProgressBar: React.FC = () => {
   const numberOfPanes = 3;
   const dispatch = useDispatch();
   const paneNumber = useSelector((state: State) => state.layout.paneNumber);
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const [tooltip, setTooltip] = useContext(WidgetTooltipContext);
 
   const points = [];
@@ -46,7 +46,7 @@ export const ProgressBar: React.FC = () => {
       <ActionButton
         data-cy="close-widget"
         onClick={(e) => {
-          setWidgetOpen(false);
+          setWidgetContext({ ...widgetContext, open: false });
           e.currentTarget.blur();
         }}
       >
