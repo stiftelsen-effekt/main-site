@@ -8,7 +8,7 @@ import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
 import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
-import { CookiesAccepted, WidgetContext } from "../../main/layout/layout";
+import { CookiesAccepted, WidgetContext, WidgetContextType } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
@@ -61,7 +61,10 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
   };
 })(({ children, footerData, widgetData, profileData, isPreview }) => {
   const { dashboardPath } = useRouterContext();
-  const [widgetOpen, setWidgetOpen] = useState(false);
+  const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
+    open: false,
+    prefilled: null,
+  });
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState({
     accepted: undefined,
@@ -118,9 +121,13 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
                 {isPreview && <PreviewBlock />}
-                <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
+                <WidgetContext.Provider value={[widgetContext, setWidgetContext]}>
                   <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-                    <WidgetPane darkMode={true} {...widgetData} />
+                    <WidgetPane
+                      darkMode={true}
+                      {...widgetData}
+                      prefilled={widgetContext.prefilled}
+                    />
                     <main className={styles.main}>{children}</main>
                     {profileData.missing_name_modal_config && (
                       <MissingNameModal config={profileData.missing_name_modal_config} />

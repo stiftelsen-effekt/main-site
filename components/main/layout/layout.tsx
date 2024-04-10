@@ -9,7 +9,7 @@ import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { PrefilledDistribution, WidgetPane } from "./WidgetPane/WidgetPane";
 
-type WidgetContextType = {
+export type WidgetContextType = {
   open: boolean;
   prefilled: PrefilledDistribution | null;
 };
