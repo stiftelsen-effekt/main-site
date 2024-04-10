@@ -13,7 +13,7 @@
 
 .organization {
   padding-top: 6rem;
-  margin-bottom: 60px;
+  margin-bottom: 4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 50px;
@@ -30,7 +30,6 @@
 .intervention {
   display: flex;
   flex-direction: column;
-  padding-bottom: 16px;
 }
 
 .intervention h1 {
@@ -39,6 +38,11 @@
 
 .interventionSubtitle {
   margin-bottom: 10em;
+}
+
+.buttonWrapper {
+  display: flex;
+  padding-top: 2rem;
 }
 
 @media only screen and (max-width: 1180px) {

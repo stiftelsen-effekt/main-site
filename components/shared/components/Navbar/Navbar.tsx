@@ -131,7 +131,7 @@ export const Navbar = withStaticProps(
   },
 )(({ dashboard, elements, logo, dashboardLogo, labels, giveButton, useDashboardLogo }) => {
   const { dashboardPath } = useRouterContext();
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const { user, logout } = useAuth0();
 
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
@@ -289,7 +289,7 @@ export const Navbar = withStaticProps(
             <EffektButton
               cy="send-donation-button"
               extraMargin={true}
-              onClick={() => setWidgetOpen(true)}
+              onClick={() => setWidgetContext({ open: true, prefilled: null })}
               style={giveButtonStyle}
             >
               {giveButton.donate_label}

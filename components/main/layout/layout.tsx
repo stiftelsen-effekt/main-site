@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { createContext, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useState } from "react";
 import { getClient } from "../../../lib/sanity.server";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
@@ -7,9 +7,16 @@ import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
-import { WidgetPane } from "./WidgetPane/WidgetPane";
+import { PrefilledDistribution, WidgetPane } from "./WidgetPane/WidgetPane";
 
-export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
+type WidgetContextType = {
+  open: boolean;
+  prefilled: PrefilledDistribution | null;
+};
+
+export const WidgetContext = createContext<
+  [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
+>([{ open: false, prefilled: null }, () => {}]);
 export const CookiesAccepted = createContext<
   [
     {
@@ -61,7 +68,10 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
     },
   };
 })(({ children, footerData, widgetData, giveButton, isPreview }) => {
-  const [widgetOpen, setWidgetOpen] = useState(false);
+  const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
+    open: false,
+    prefilled: null,
+  });
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState({
     accepted: undefined,
@@ -70,7 +80,7 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
     loaded: false,
   });
 
-  if (widgetOpen && window.innerWidth < 1180) {
+  if (widgetContext.open && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
   } else if (typeof document !== "undefined") {
     document.body.style.overflow = "auto";
@@ -87,13 +97,13 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
       <GiveButton
         inverted={false}
         color={giveButton.accent_color}
-        onClick={() => setWidgetOpen(true)}
+        onClick={() => setWidgetContext({ open: true, prefilled: null })}
       >
         {giveButton.donate_label_short}
       </GiveButton>
-      <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
+      <WidgetContext.Provider value={[widgetContext, setWidgetContext]}>
         <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-          <WidgetPane {...widgetData} />
+          <WidgetPane {...widgetData} prefilled={widgetContext.prefilled} />
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
       </WidgetContext.Provider>
