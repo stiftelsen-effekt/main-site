@@ -19,7 +19,7 @@ export const WealthCalculatorImpact: React.FC<{
     locale: string;
   };
 }> = ({ donationPercentage, setDonationPercentage, postTaxIncome, intervention_configuration }) => {
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   return (
     <div className={styles.calculator__impact}>
@@ -34,7 +34,9 @@ export const WealthCalculatorImpact: React.FC<{
           className={styles.calculator__impact__description__button_desktop}
           data-cy="wealthcalculator-impact-create-agreement-button"
         >
-          <EffektButton onClick={() => setWidgetOpen(true)}>Sett opp fast donasjon</EffektButton>
+          <EffektButton onClick={() => setWidgetContext({ open: true, prefilled: null })}>
+            Sett opp fast donasjon
+          </EffektButton>
         </div>
       </div>
       <div className={styles.calculator__impact__output}>
@@ -46,7 +48,9 @@ export const WealthCalculatorImpact: React.FC<{
         />
       </div>
       <div className={styles.calculator__impact__description__button_mobile}>
-        <EffektButton onClick={() => setWidgetOpen(true)}>Sett opp fast donasjon</EffektButton>
+        <EffektButton onClick={() => setWidgetContext({ open: true, prefilled: null })}>
+          Sett opp fast donasjon
+        </EffektButton>
       </div>
     </div>
   );
