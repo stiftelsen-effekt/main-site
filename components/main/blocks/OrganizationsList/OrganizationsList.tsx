@@ -31,7 +31,7 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   return (
-    <div className={styles.organizationWrapper}>
+    <div className={styles.organizationWrapper} data-cy="organizations-list">
       {organizations &&
         organizations.map((organization) => (
           <div
@@ -64,6 +64,7 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
               {organization.widget_button && (
                 <div className={styles.buttonWrapper}>
                   <EffektButton
+                    data-cy={`organizations-list-button-${organization.widget_button.organization_id}`}
                     onClick={() => {
                       setWidgetContext({
                         open: true,

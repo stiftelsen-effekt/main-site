@@ -7,6 +7,7 @@
     "informationUrl": "https://gieffektivt.no/",
     "isActive": true,
     "ordering": 1,
+    "standardPercentageShare": 100,
     "organizations": [
       {
         "id": 12,
