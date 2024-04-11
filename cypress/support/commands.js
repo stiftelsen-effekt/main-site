@@ -69,9 +69,11 @@ Cypress.Commands.add("login", (overrides = {}) => {
 const getState = () => cy.window().its("store").invoke("getState");
 
 const nextWidgetPane = () => {
-  cy.get("[data-cy=next-button-div]").within(() => {
-    cy.get("button").click();
-  });
+  cy.get("[data-cy=next-button-div]")
+    .last()
+    .within(() => {
+      cy.get("button").click();
+    });
 };
 
 const prevWidgetPane = () => {
