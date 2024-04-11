@@ -35,6 +35,7 @@ import { BlockTables } from "./BlockTable/BlockTables";
 import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
 import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
 import { Accordion } from "./Accordion/Accordion";
+import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -242,6 +243,17 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             }
                             locale={block.locale}
                             periodAdjustment={teaserPeriod}
+                          />
+                        );
+                      case "philantropicteaser":
+                        return (
+                          <PhilantropicTeaser
+                            key={block._key || block._id}
+                            title={block.title}
+                            description={block.description}
+                            links={block.links}
+                            button={block.button}
+                            people={block.people}
                           />
                         );
                       case "contributorlist":

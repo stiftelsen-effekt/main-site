@@ -63,7 +63,7 @@ export const LinkComponent: React.FC<{
   );
 };
 
-const getHref = (link: NavLink | LinkType, articlesPagePath: string[]) => {
+export const getHref = (link: NavLink | LinkType, articlesPagePath: string[]) => {
   return link._type === "navitem"
     ? link.pagetype === "article_page"
       ? `/${[...articlesPagePath, link.slug].join("/")}`
