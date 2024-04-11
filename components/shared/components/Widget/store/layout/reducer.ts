@@ -31,15 +31,11 @@ export const layoutReducer: Reducer<Layout, LayoutActionTypes> = (
   state: Layout = initialState,
   action: LayoutActionTypes,
 ): Layout => {
-  console.log("action", action);
   if (isType(action, fetchCauseAreasAction.done)) {
-    console.log("action", action);
     return {
       ...state,
       causeAreas: action.payload.result,
     };
-  } else if (isType(action, fetchCauseAreasAction.failed)) {
-    console.log("action", action);
   }
 
   switch (action.type) {
