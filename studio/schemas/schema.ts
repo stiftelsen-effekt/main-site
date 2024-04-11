@@ -89,6 +89,7 @@ import resultssection from "./types/results/resultssection";
 import referralgraph from "./types/results/referralgraph";
 import latex from "./types/latex";
 import accordion from "./types/accordion";
+import philantropicteaser from "./types/philantropicteaser";
 
 export const pages = [
   generic,
@@ -172,6 +173,7 @@ export const types = [
   referralgraph,
   latex,
   accordion,
+  philantropicteaser,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

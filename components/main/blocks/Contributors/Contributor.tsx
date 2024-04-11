@@ -18,13 +18,14 @@ const contributorImageBuilder = (imageUrlBuilder: ImageUrlBuilder) => {
   return imageUrlBuilder.width(400).height(490).saturation(-100).fit("clip");
 };
 
-export const Contributor: React.FC<ContributorType> = ({
+export const Contributor: React.FC<ContributorType & { contactLink?: boolean }> = ({
   image,
   displayImage = true,
   name,
   email,
   subrole,
   additional,
+  contactLink = false,
 }) => {
   return (
     <div className={styles.contributor}>
@@ -36,7 +37,16 @@ export const Contributor: React.FC<ContributorType> = ({
       <span className={styles.contributor__title}>{name}</span>
       <span className={styles.contributor__subrole + " detailheader"}>{subrole ?? ""}</span>
       <span className={styles.contributor__additional + " detailheader"}>{additional ?? ""}</span>
-      <span className={styles.contributor__email + " caption"}>{email ?? ""}</span>
+      {contactLink ? (
+        <a href={`mailto:${email}`}>
+          <span className={styles.contributor__email + " caption"}>
+            → Ta kontakt
+            <span className={styles.contributor__email_name}> med {name.split(" ")[0]}</span>
+          </span>
+        </a>
+      ) : (
+        <span className={styles.contributor__email + " caption"}>{email ?? ""}</span>
+      )}
     </div>
   );
 };
