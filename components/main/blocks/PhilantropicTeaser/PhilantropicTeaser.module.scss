@@ -29,15 +29,16 @@
 @media (max-width: 1180px) {
   .container {
     grid-template-columns: 1fr;
-    grid-gap: 2rem;
+    grid-gap: 4rem;
     width: 100%;
 
     .description {
       padding-right: 0;
+      gap: 0.5rem;
     }
 
     .people {
-      grid-gap: 3rem;
+      grid-gap: 1rem;
     }
   }
 }
