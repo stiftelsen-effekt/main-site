@@ -23,6 +23,15 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "explanatory_text_email_template",
+      title: "Explanatory text email template",
+      type: "text",
+      rows: 3,
+      validation: (Rule: any) => Rule.required(),
+      description:
+        "This text tells the donor that an email has been sent with further details. Replaces {email} with the donors email address.",
+    },
+    {
       name: "kontonr_title",
       title: "Kontonr title",
       type: "string",

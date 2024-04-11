@@ -22,6 +22,7 @@ export type BankPaymentMethod = {
   kontonr: string;
   kid_title: string;
   explanatory_text: string;
+  explanatory_text_email_template: string;
 };
 
 export type VippsPaymentMethod = {
