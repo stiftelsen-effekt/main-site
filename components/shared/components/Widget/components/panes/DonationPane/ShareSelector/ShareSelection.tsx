@@ -56,15 +56,7 @@ export const SharesSelection: React.FC<{
         {distributionCauseArea.organizations.map((org) => (
           <ShareInputContainer key={org.id}>
             <div>
-              <ShareLink
-                href={
-                  organizations.filter((org) => org.id === org.id)[0].id === 12
-                    ? "https://gieffektivt.no/smart-fordeling"
-                    : `https://gieffektivt.no/topplista/#${organizations
-                        .filter((org) => org.id === org.id)[0]
-                        .name.replace(/ /g, "_")}`
-                }
-              >
+              <ShareLink href={org.informationUrl}>
                 <label htmlFor={org.id.toString()}>
                   {organizations.filter((o) => o.id === org.id)[0].name}
                 </label>

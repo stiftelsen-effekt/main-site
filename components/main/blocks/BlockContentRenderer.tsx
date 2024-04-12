@@ -13,7 +13,6 @@ import { Links } from "./Links/Links";
 import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
 import { PointList } from "./PointList/PointList";
-import { PointListPointProps } from "./PointList/PointListPoint";
 import { QuestionsAndAnswersGroup } from "./QuestionAndAnswers/QuestionAndAnswers";
 import { Quote } from "./Quote/Quote";
 import { SplitView } from "./SplitView/SplitView";
@@ -32,16 +31,22 @@ import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 import { GiftCard } from "./GiftCard/GiftCard";
+import { BlockTables } from "./BlockTable/BlockTables";
+import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
+import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
+import { Accordion } from "./Accordion/Accordion";
+import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
     <>
       {content &&
         content.map(
-          (section: SectionContainerProps & { _key: string; blocks: any }) =>
+          (section: SectionContainerProps & { _key?: string; _id?: string; blocks: any }) =>
+            section &&
             !section.hidden && (
               <SectionContainer
-                key={section._key}
+                key={section._key || section._id}
                 heading={section.heading}
                 inverted={section.inverted}
                 nodivider={section.nodivider}
@@ -54,6 +59,10 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                       case "paragraph":
                         return (
                           <Paragraph key={block._key} title={block.title} blocks={block.content} />
+                        );
+                      case "accordion":
+                        return (
+                          <Accordion key={block._key} title={block.title} blocks={block.content} />
                         );
                       case "videoembed":
                         return (
@@ -154,6 +163,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             code={block.htmlcode}
                             grayscale={block.grayscale}
+                            fullwidth={block.fullwidth}
                           />
                         );
                       case "columns":
@@ -163,6 +173,15 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <Testimonial
                             key={block._key || block._id}
                             testimonies={block.testimonials}
+                          />
+                        );
+                      case "blocktables":
+                        return (
+                          <BlockTables
+                            key={block._key || block._id}
+                            config={block.configuration}
+                            tables={block.tables}
+                            columnWidths={block.columnwidths}
                           />
                         );
                       case "teasers":
@@ -177,23 +196,37 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           />
                         );
                       case "wealthcalculator":
+                        let calcPeriod: WealthCalculatorPeriodAdjustment;
+                        if (
+                          block.configuration.calculator_input_configuration.period === "yearly"
+                        ) {
+                          calcPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
+                        } else if (
+                          block.configuration.calculator_input_configuration.period === "monthly"
+                        ) {
+                          calcPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
+                        } else {
+                          return <span>Unknown period {block.period} for wealth calculation</span>;
+                        }
                         return (
                           <WealthCalculator
                             key={block._key || block._id}
                             title={block.title}
-                            showImpact={block.show_impact}
-                            explanation={block.data_explanation}
-                            afterDonationPercentileLabelTemplateString={
-                              block.income_percentile_after_donation_label_template_string
-                            }
-                            incomePercentileLabelTemplateString={
-                              block.income_percentile_label_template_string
-                            }
+                            configuration={block.configuration}
                             intervention_configuration={block.intervention_configuration}
-                            defaultDonationPercentage={block.donation_percentage}
+                            periodAdjustment={calcPeriod}
+                            locale={block.locale}
                           />
                         );
                       case "wealthcalculatorteaser":
+                        let teaserPeriod: WealthCalculatorPeriodAdjustment;
+                        if (block.period === "yearly") {
+                          teaserPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
+                        } else if (block.period === "monthly") {
+                          teaserPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
+                        } else {
+                          return <span>Unknown period {block.period} for wealth calculation</span>;
+                        }
                         return (
                           <WealthCalculatorTeaser
                             key={block._key || block._id}
@@ -201,12 +234,26 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             description={block.description}
                             link={block.button}
                             medianIncome={block.median_income}
+                            xAxisLabel={block.x_axis_label}
                             afterDonationPercentileLabelTemplateString={
                               block.income_percentile_after_donation_label_template_string
                             }
                             incomePercentileLabelTemplateString={
                               block.income_percentile_label_template_string
                             }
+                            locale={block.locale}
+                            periodAdjustment={teaserPeriod}
+                          />
+                        );
+                      case "philantropicteaser":
+                        return (
+                          <PhilantropicTeaser
+                            key={block._key || block._id}
+                            title={block.title}
+                            description={block.description}
+                            links={block.links}
+                            button={block.button}
+                            people={block.people}
                           />
                         );
                       case "contributorlist":
@@ -234,11 +281,9 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           <InterventionWidget
                             key={block._key || block._id}
                             title={block.title}
+                            donationLabel={block.donation_label}
                             default_sum={block.default_sum}
-                            interventions={block.interventions}
-                            explanationLabel={block.explanation_label}
-                            explanationText={block.explanation_text}
-                            explanationLinks={block.explanation_links}
+                            outputConfiguration={block.output_configuration}
                             currency={block.currency}
                             locale={block.locale}
                           />
@@ -259,6 +304,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             heading={block.heading}
                             paragraph={block.paragraph}
                             donateLabel={block.donate_label_short}
+                            accentColor={block.accent_color}
                           />
                         );
                       }
@@ -292,6 +338,14 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                           />
                         );
                       }
+                      case "discountratecomparison":
+                        return (
+                          <DiscountRateComparison
+                            key={block._key || block._id}
+                            min={block.discount_rate_min}
+                            max={block.discount_rate_max}
+                          />
+                        );
                       default:
                         return block._type;
                     }

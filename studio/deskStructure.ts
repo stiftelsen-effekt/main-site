@@ -2,13 +2,13 @@ import S from "@sanity/desk-tool/structure-builder";
 import {
   Activity,
   Archive,
+  BarChart,
   Book,
   Bookmark,
   Briefcase,
   DollarSign,
   File,
   Filter,
-  HelpCircle,
   Lock,
   Paperclip,
   Phone,
@@ -16,8 +16,6 @@ import {
   Settings,
   Tool,
   User,
-  Users,
-  Zap,
 } from "react-feather";
 import Iframe from "sanity-plugin-iframe-pane";
 import resolveProductionUrl from "./resolveProductionUrl";
@@ -153,6 +151,24 @@ export default () =>
                     .title("Preview"),
                 ]),
             ),
+        ),
+      S.divider(),
+      S.listItem()
+        .title("Results")
+        .icon(BarChart)
+        .child(
+          S.document()
+            .schemaType("results")
+            .documentId("results")
+            .views([
+              S.view.form(),
+              S.view
+                .component(Iframe)
+                .options({
+                  url: (doc: any) => resolveProductionUrl(doc),
+                })
+                .title("Preview"),
+            ]),
         ),
       S.divider(),
       S.listItem()

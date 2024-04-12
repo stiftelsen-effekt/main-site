@@ -141,7 +141,6 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       method: donation.method || PaymentMethod.BANK,
       amount: donation.sum || 0,
       recurring: donation.recurring,
-      phone: donation.phone,
     };
 
     const request = yield call(fetch, `${API_URL}/donations/register`, {

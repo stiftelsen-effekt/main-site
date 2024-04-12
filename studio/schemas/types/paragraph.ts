@@ -16,7 +16,7 @@ export default {
       name: "content",
       title: "Content",
       type: "array",
-      of: [blocktype],
+      of: [blocktype, { type: "latex" }],
     },
   ],
   preview: {

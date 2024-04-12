@@ -23,11 +23,11 @@ const nextConfig = {
   headers: async () => {
     return [
       {
-        source: "/(.*)",
+        source: "/:path*",
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://gieffektivt.adoveo.com/",
+            value: "frame-ancestors 'none'",
           },
         ],
       },
@@ -67,7 +67,24 @@ const nextConfig = {
       },
       {
         source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
         destination: "/ofte-stilte-sporsmal",
+        permanent: true,
+      },
+      {
+        source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/vanliga-fragor",
         permanent: true,
       },
       {
@@ -92,7 +109,24 @@ const nextConfig = {
       },
       {
         source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
         destination: "/artikler",
+        permanent: true,
+      },
+      {
+        source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/artiklar",
         permanent: true,
       },
       {
@@ -177,12 +211,6 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: "/resultater",
-        destination:
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vS6Wiw_6vcspIHq6J2byvqmlDFadG5sF4cFQvwhm2z21ZYbfBW0tQknixlu2hV6lDi_TV16iwUYcJ3W/pubhtml?gid=880180721&single=true",
-        permanent: false,
-      },
-      {
         source: "/aarsrapport",
         destination: "https://gieffektivt.no/arsrapporter",
         permanent: false,
@@ -229,7 +257,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/skanka-till-jordbavningen-i-turkiet",
+        source: "/blogg/skanka-till-jordbavningen-i-turkiet",
         destination: "/artiklar/kriser-media-och-viljan-att-hjaelpa",
         permanent: true,
       },
@@ -344,14 +372,46 @@ const nextConfig = {
       { source: "/organisationer/new-incentives", destination: "/global-halsa", permanent: true },
       { source: "/organisationer#djurvalfard", destination: "/djurvalfard", permanent: true },
       { source: "/organisationer#klimat", destination: "/klimat", permanent: true },
-      { source: "/blogg", destination: "/artiklar", permanent: true },
       { source: "/ge", destination: "/", permanent: true },
-      { source: "/filantropi", destination: "/filantropisk-radgivning", permanent: true },
+      {
+        source: "/filantropi",
+        destination: "/filantropisk-radgivning",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: true,
+      },
       { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
+      { source: "/om", destination: "/om-oss", permanent: true },
       {
         source: "/vi-behoever-prata-om-administrationskostnaderna",
         destination: "/artiklar/vi-maste-prata-om-administrationskostnaderna",
         permanent: true,
+      },
+      {
+        source: "/arsrapport-2021",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/arsrapport-2022",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
       },
     ];
   },

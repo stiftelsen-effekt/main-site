@@ -13,17 +13,19 @@ export const ArticlePreview: React.FC<{
 
   return (
     <Link key={slug} href={`/${[...articlesPagePath, slug].join("/")}`} passHref>
-      <li className={styles.article}>
-        {header.published && (
-          <div className={styles.article__meta}>
-            <span className="detailheader">
-              {new Date(header.published).toLocaleDateString("NO-nb")}
-            </span>
-          </div>
-        )}
-        <h5>{header.title}</h5>
-        {inngress && <p>{inngress}</p>}
-      </li>
+      <a style={{ border: "none" }}>
+        <li className={styles.article}>
+          {header.published && (
+            <div className={styles.article__meta}>
+              <span className="detailheader">
+                {new Date(header.published).toLocaleDateString("NO-nb")}
+              </span>
+            </div>
+          )}
+          <h2>{header.title}</h2>
+          {inngress && <p>{inngress}</p>}
+        </li>
+      </a>
     </Link>
   );
 };

@@ -1,0 +1,129 @@
+.calculator__input__group__percentage_slider {
+  margin-top: 1rem;
+}
+
+.calculator__input__group__percentage_slider__labels_wrapper {
+  position: relative;
+}
+
+.calculator__input__group__percentage_slider__graph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% + 0.75rem + 1px);
+  width: 100%;
+}
+
+.calculator__input__group__percentage_slider__labels {
+  display: grid;
+  grid-template-columns: 1fr repeat(7, 2fr) 1fr;
+}
+
+.calculator__input__group__percentage_slider__labels_label {
+  text-align: center;
+  mix-blend-mode: difference;
+  color: var(--secondary);
+}
+
+.calculator__input__group__percentage_slider__labels_label:first-child {
+  text-align: left;
+}
+
+.calculator__input__group__percentage_slider__labels_label:last-child {
+  text-align: right;
+}
+
+.calculator__input__group__percentage_slider__track {
+  height: 2rem;
+  position: relative;
+  left: -0.75rem;
+  width: calc(100% + 1.5rem);
+  padding-top: 0.75rem;
+}
+
+.calculator__input__group__percentage_slider__bars {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  margin: 0 0.75rem;
+  position: absolute;
+  top: 0.75rem;
+  width: calc(100% - 1.5rem);
+}
+
+.calculator__input__group__percentage_slider__bars__bar {
+  background: var(--secondary);
+  height: 0.5rem;
+  border: 1px solid var(--primary);
+}
+
+.calculator__input__group__percentage_slider__track__fill {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  margin: 0 0.5rem;
+  position: absolute;
+  top: 0.75rem;
+  width: calc(100% - 1rem);
+}
+
+.calculator__input__group__percentage_slider__track__fill__bar {
+  background: var(--primary);
+  height: 0.5rem;
+  border-right: 1px solid var(--secondary);
+}
+
+.calculator__input__group__percentage_slider__handle {
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  background: var(--primary);
+  border: 1px solid var(--secondary);
+  border-radius: 50%;
+  position: absolute;
+  top: 0.25rem;
+  left: 0;
+}
+
+/** Smaller handle for standard deviation slider */
+.calculator__input__group__percentage_slider__handle__stdv {
+  height: 0.75rem;
+  width: 0.75rem;
+  cursor: pointer;
+  background: var(--secondary);
+  border: 1px solid var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 0.625rem;
+  left: 0.375rem;
+}
+
+.calculator__input__group__percentage_slider__handle__stdv_left {
+}
+
+.calculator__input__group__percentage_slider__handle__stdv_right {
+}
+
+.calculator__input__group__percentage_slider__outputs {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 1rem;
+  margin-top: 0rem;
+}
+
+.calculator__input__group__percentage_slider__outputs_output {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 0.8rem;
+}
+
+@media screen and (max-width: 1180px) {
+  .calculator__input__group__percentage_slider__handle {
+    height: 1.5rem;
+    width: 1.5rem;
+    top: 0.25rem;
+    transform: translateX(0.75rem);
+  }
+
+  .calculator__input__group__percentage_slider__track {
+    left: -0.75rem;
+    width: calc(100% + 1.5rem);
+  }
+}

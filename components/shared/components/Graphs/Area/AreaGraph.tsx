@@ -1,5 +1,7 @@
 import * as Plot from "@observablehq/plot";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getRemInPixels } from "../../../../main/blocks/Paragraph/Citation";
+import { useDebouncedCallback } from "use-debounce";
 
 const drawChart = (
   data: { x: number; y: number }[],
@@ -9,10 +11,13 @@ const drawChart = (
   donationPercentage: number,
   incomePercentileLabelTemplateString: string,
   afterDonationPercentileLabelTemplateString: string,
+  adjustedPPPConversionFactor: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
   size: { width: number | undefined; height: number | undefined },
 ) => {
-  const incomeXPositon = lineInput / 365 / 10.5;
-  const incomeAfterDonationXPosition = (lineInput * (1 - donationPercentage)) / 365 / 10.5;
+  const incomeXPositon = lineInput / periodAdjustment / adjustedPPPConversionFactor;
+  const incomeAfterDonationXPosition =
+    (lineInput * (1 - donationPercentage)) / periodAdjustment / adjustedPPPConversionFactor;
   const dataMax = Math.max(...data.map((d) => d.y));
   // Browser window width smaller than or equal to 1180px
   const isMobile = window.innerWidth <= 1180;
@@ -32,7 +37,7 @@ const drawChart = (
     .replace("{percentile}", wealthPercentileText)
     .replace("{donationpercentage}", donationPercentageText);
 
-  const labelLineWidth = 12;
+  const labelLineWidth = 13;
   const labelLineNumber = Math.round(
     afterDonationLabel.length / (labelLineWidth * 1.5) +
       incomePercentileLabel.length / (labelLineWidth * 1.5),
@@ -48,7 +53,7 @@ const drawChart = (
   const adjustedBelowMax = adjustedMax * ((numberOfLinesInChart - 4) / numberOfLinesInChart);
 
   let incomeMarkers: any[] = [];
-  if (lineInput >= 1000) {
+  if (lineInput >= 2.7 * periodAdjustment) {
     incomeMarkers = [
       Plot.ruleX([incomeXPositon], {
         y: adjustedBelowMax,
@@ -83,15 +88,23 @@ const drawChart = (
     ];
   }
 
+  const domainLower = 2.6 * periodAdjustment;
+  const domainUpper = isMobile
+    ? Math.max(5480 * periodAdjustment, lineInput)
+    : Math.max(8219 * periodAdjustment, lineInput);
+  const shouldInsetRight = lineInput > 2465 * periodAdjustment && !isMobile;
+
   const chart = Plot.plot({
     height: size.height,
     width: size.width,
+    marginTop: isMobile ? getRemInPixels() * 3 : 0,
     padding: 20,
     x: {
       type: "log",
-      domain: [1000, isMobile ? Math.max(2000000, lineInput) : Math.max(4000000, lineInput)],
-      insetRight: lineInput > 900000 && !isMobile ? 180 : 0,
-      transform: (dailyIncome: number) => dailyIncome * 365 * 10.5,
+      domain: [domainLower, domainUpper],
+      insetRight: shouldInsetRight ? 180 : 0,
+      transform: (dailyIncome: number) =>
+        dailyIncome * periodAdjustment * adjustedPPPConversionFactor,
       label: null,
     },
     y: {
@@ -128,7 +141,8 @@ export const AreaChart: React.FC<{
   afterDonationWealthPercentile: number;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
-  size: { width: number | undefined; height: number | undefined };
+  adjustedPPPConversionFactor: number;
+  periodAdjustment: WealthCalculatorPeriodAdjustment;
 }> = ({
   data,
   lineInput,
@@ -137,46 +151,65 @@ export const AreaChart: React.FC<{
   afterDonationWealthPercentile,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
-  size,
+  adjustedPPPConversionFactor,
+  periodAdjustment,
 }) => {
-  const [chart, setChart] = useState<Plot.Plot | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
+
+  const drawGraph = useCallback(() => {
+    if (outputRef.current) {
+      if (!outputRef.current.parentElement) {
+        return;
+      }
+
+      /**
+       * Get width from parent element
+       */
+      outputRef.current.innerHTML = "";
+      const width = outputRef.current.parentElement.clientWidth;
+      const height = outputRef.current.parentElement.clientHeight - 1;
+
+      const size = {
+        width: width,
+        height: height,
+      };
+
+      const chart = drawChart(
+        data,
+        lineInput,
+        wealthPercentile,
+        afterDonationWealthPercentile,
+        donationPercentage,
+        incomePercentileLabelTemplateString,
+        afterDonationPercentileLabelTemplateString,
+        adjustedPPPConversionFactor,
+        periodAdjustment,
+        size,
+      );
+
+      outputRef.current.appendChild(chart);
+    }
+  }, [outputRef, lineInput, donationPercentage]);
+
+  const debouncedDrawGraph = useDebouncedCallback(drawGraph, 100, {
+    trailing: true,
+  });
 
   useEffect(() => {
-    if (svgRef.current && !chart) {
-      const newChart = drawChart(
-        data,
-        lineInput,
-        wealthPercentile,
-        afterDonationWealthPercentile,
-        donationPercentage,
-        incomePercentileLabelTemplateString,
-        afterDonationPercentileLabelTemplateString,
-        size,
-      );
-      svgRef.current.replaceWith(newChart);
-      setChart(newChart);
-    } else if (svgRef.current && chart) {
-      const newChart = drawChart(
-        data,
-        lineInput,
-        wealthPercentile,
-        afterDonationWealthPercentile,
-        donationPercentage,
-        incomePercentileLabelTemplateString,
-        afterDonationPercentileLabelTemplateString,
-        size,
-      );
-      (chart as any).replaceWith(newChart);
-      setChart(newChart);
-    }
-  }, [svgRef, lineInput, donationPercentage, size]);
+    drawGraph();
+  }, [outputRef, lineInput, donationPercentage]);
 
-  return (
-    <div>
-      <svg ref={svgRef} />
-    </div>
-  );
+  useEffect(() => {
+    if (outputRef.current && outputRef.current.parentElement) {
+      const observer = new ResizeObserver((entries) => {
+        debouncedDrawGraph();
+      });
+
+      observer.observe(outputRef.current.parentElement);
+    }
+  }, [outputRef, debouncedDrawGraph]);
+
+  return <div ref={outputRef}></div>;
 };
 
 const convertNumberToBoldText = (number: number, percentage: boolean = false) => {
@@ -236,3 +269,8 @@ const convertNumberToBoldText = (number: number, percentage: boolean = false) =>
 const getBrowserRemSizeInPx = (rems: number = 1) => {
   return rems * parseFloat(getComputedStyle(document.documentElement).fontSize);
 };
+
+export enum WealthCalculatorPeriodAdjustment {
+  MONTHLY = 365 / 12,
+  YEARLY = 365,
+}

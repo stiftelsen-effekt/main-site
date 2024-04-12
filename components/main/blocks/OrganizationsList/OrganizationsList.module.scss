@@ -24,6 +24,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-right: 50px;
 }
 
 .intervention {
@@ -34,6 +35,10 @@
 
 .intervention h1 {
   margin: 0;
+}
+
+.interventionSubtitle {
+  margin-bottom: 10em;
 }
 
 @media only screen and (max-width: 1180px) {
@@ -59,6 +64,10 @@
 
   .intervention {
     margin-top: 20px;
+  }
+
+  .interventionSubtitle {
+    margin-bottom: 2em;
   }
 
   .organization:last-child {

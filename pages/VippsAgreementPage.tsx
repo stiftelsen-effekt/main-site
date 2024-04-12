@@ -60,6 +60,8 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
+        keywords={header.seoKeywords}
+        siteName={data.result.settings[0].title}
       />
 
       <MainHeader hideOnScroll={true}>
@@ -109,7 +111,13 @@ const fetchVipps = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration,
+    cookie_banner_configuration {
+      ...,
+      privacy_policy_link {
+        ...,
+        "slug": page->slug.current
+      }
+    },
   },
   "vipps": *[_id == "vipps"] {
     agreement_page->{

@@ -30,6 +30,19 @@ export default {
       title: "Button",
     },
     {
+      name: "period",
+      type: "string",
+      title: "Period type",
+      options: {
+        list: ["monthly", "yearly"],
+      },
+    },
+    {
+      name: "x_axis_label",
+      type: "string",
+      title: "X Axis Label",
+    },
+    {
       name: "income_percentile_label_template_string",
       type: "text",
       title: "Income Percentile Label Template String",

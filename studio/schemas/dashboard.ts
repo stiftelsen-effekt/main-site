@@ -12,6 +12,12 @@ export default {
       of: [{ type: "navitem" }, { type: "navgroup" }],
     },
     {
+      name: "dashboard_logo",
+      title: "Dashboard logo",
+      type: "image",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "dashboard_label",
       title: "Dashboard label",
       type: "string",
@@ -41,6 +47,51 @@ export default {
         {
           name: "login_abort_label",
           title: "Login abort label",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
+    {
+      name: "missing_name_modal_configuration",
+      title: "Missing name modal configuration",
+      type: "object",
+      description:
+        "Configuration for the modal that asks for a name when the user does not have one",
+      fields: [
+        {
+          name: "title",
+          title: "Title",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "description",
+          title: "Description",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "confirm_label",
+          title: "Confirm label",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "cancel_label",
+          title: "Cancel label",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "failure_message",
+          title: "Failure message",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "success_message",
+          title: "Success message",
           type: "string",
           validation: (Rule: any) => Rule.required(),
         },

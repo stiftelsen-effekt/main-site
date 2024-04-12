@@ -1,0 +1,42 @@
+.accordion {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--primary);
+  border-bottom: 1px solid var(--primary);
+  margin-bottom: 50px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 0;
+
+    h2 {
+      font-size: 1rem;
+      margin: 0;
+      line-height: normal;
+    }
+
+    span {
+      display: inline-block;
+      transition: all 200ms;
+    }
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .accordion {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .accordion {
+    margin-bottom: 20px;
+  }
+}

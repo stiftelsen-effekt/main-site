@@ -1,0 +1,24 @@
+.graph {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.swipeHint {
+  font-size: 0.75rem;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .graph {
+    aspect-ratio: 16/9;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .graph {
+    aspect-ratio: 1/1;
+    width: calc(100% + 10vw);
+    margin-left: -5vw;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+}

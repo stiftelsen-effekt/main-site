@@ -41,7 +41,12 @@ export default async function preview(req: NextApiRequest, res: NextApiResponse)
       res.writeHead(307, { Location: `/${slugWithoutSlash}` ?? `/` });
       break;
     case "article_page":
-      res.writeHead(307, { Location: `/artikler/${slugWithoutSlash}` ?? `/` });
+      const articleSlug = req.query.articleSlug;
+      if (!articleSlug) {
+        return res.status(400).json({ message: "Missing configured article slug for preview" });
+      } else {
+        res.writeHead(307, { Location: `/${articleSlug}/${slugWithoutSlash}` ?? `/` });
+      }
       break;
     case "donationwidget":
       res.writeHead(307, { Location: `/` });

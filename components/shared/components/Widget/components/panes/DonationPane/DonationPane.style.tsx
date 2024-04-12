@@ -51,7 +51,7 @@ export const SumButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 75px;
   align-items: flex-start;
 
   div {

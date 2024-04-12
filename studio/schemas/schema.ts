@@ -77,8 +77,29 @@ import avtalegiro from "./types/paymentmethods/avtalegiro";
 import agreementlistconfiguration from "./types/lists/agreements/agreementlistconfiguration";
 import agreementlistdetailsconfiguration from "./types/lists/agreements/agreementlistdetailsconfiguration";
 import dateselectorconfig from "./types/dateselectorconfig";
+import blocktables from "./types/blocktable";
+import discountratecomparison from "./types/discountratecomparison";
+import wealthcalculatorconfiguration from "./types/wealthcalculatorconfiguration";
+import interventionwidgetoutputconfiguration from "./types/interventionwidgetoutputconfiguration";
+import results from "./pages/results";
+import graphcontext from "./types/results/graphcontext";
+import cumulativedonationsgraph from "./types/results/cumulativedonationsgraph";
+import resultsoutput from "./types/results/resultsoutput";
+import resultssection from "./types/results/resultssection";
+import referralgraph from "./types/results/referralgraph";
+import latex from "./types/latex";
+import accordion from "./types/accordion";
+import philantropicteaser from "./types/philantropicteaser";
 
-export const pages = [generic, support, criteria, article, articles, vippsagreement] as const;
+export const pages = [
+  generic,
+  support,
+  criteria,
+  article,
+  articles,
+  results,
+  vippsagreement,
+] as const;
 export const dashboardpages = [donations, agreements, profile, tax] as const;
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
@@ -110,11 +131,13 @@ export const types = [
   splitview,
   splitviewhtml,
   fullimage,
+  blocktables,
   normalimage,
   column,
   columns,
   intervention,
   interventionwidget,
+  interventionwidgetoutputconfiguration,
   testimonials,
   fullvideo,
   newslettersignup,
@@ -124,6 +147,7 @@ export const types = [
   citation,
   wealthcalculator,
   wealthcalculatorteaser,
+  wealthcalculatorconfiguration,
   contributorlist,
   inngress,
   giveblock,
@@ -141,6 +165,15 @@ export const types = [
   taxstatements,
   giftcardteaser,
   dateselectorconfig,
+  discountratecomparison,
+  graphcontext,
+  cumulativedonationsgraph,
+  resultsoutput,
+  resultssection,
+  referralgraph,
+  latex,
+  accordion,
+  philantropicteaser,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

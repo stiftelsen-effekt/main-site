@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
+import citation from "../../../../studio/schemas/types/citation";
 
 export const formatHarvardCitation = ({
   type,
@@ -20,6 +21,8 @@ export const formatHarvardCitation = ({
   number,
   journal,
   timestamp,
+  serie,
+  number_in_serie,
   note,
   tabindex = -1,
 }: any) => {
@@ -38,6 +41,8 @@ export const formatHarvardCitation = ({
   const timestampString = timestamp ? ` (Tidsstempel: ${timestamp}) ` : "";
   const editionString = edition ? ` ${edition}. utgave, ` : "";
   const noteString = note ? `${note}` : "";
+  const serieString = serie ? ` ${serie} ` : "";
+  const numberInSerieString = number_in_serie ? `No. ${number_in_serie}. ` : "";
 
   return (
     <span className={elements.citation}>
@@ -176,6 +181,32 @@ export const formatHarvardCitation = ({
           )}
         </>
       )}
+      {type === "workingpaper" && (
+        <>
+          <span>{authorString} </span>
+          <span style={{ whiteSpace: "nowrap" }}>{yearString}</span>
+          {url ? (
+            <a
+              href={url}
+              className={elements.citationLink}
+              target="_blank"
+              tabIndex={tabindex}
+              rel="noreferrer"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.currentTarget.blur();
+              }}
+            >
+              {titleString}
+            </a>
+          ) : (
+            <i>{titleString}</i>
+          )}
+          <span>{serieString}</span>
+          <span style={{ whiteSpace: "nowrap" }}>{numberInSerieString}</span>
+          <span>{accessDateString}</span>
+        </>
+      )}
       {type === "note" && <PortableText value={note} />}
     </span>
   );
@@ -274,7 +305,7 @@ export const Citation = (props: any): JSX.Element => {
           props.value.citations.map((citation: any, i: number) =>
             citation != null ? (
               <span
-                key={citation._key}
+                key={citation._id}
                 className={[
                   "extendedcitation",
                   highlighted ? elements.citationHighlighted : "",
@@ -291,10 +322,41 @@ export const Citation = (props: any): JSX.Element => {
   );
 };
 
+const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
+  useEffect(() => {
+    if (document.getElementById("katex-styles-link")) return;
+
+    const link = document.createElement("link");
+    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.id = "katex-styles-link";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+  return (
+    <span
+      dangerouslySetInnerHTML={{ __html: value.renderedHtml }}
+      style={{
+        padding: "3rem",
+        textAlign: "center",
+        display: "block",
+        width: "100%",
+      }}
+    ></span>
+  );
+};
+
 export const customComponentRenderers = {
   marks: {
     citation: Citation,
     link: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
     navitem: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
+  },
+  types: {
+    latex: Latex,
   },
 };

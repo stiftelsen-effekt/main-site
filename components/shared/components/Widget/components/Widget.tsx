@@ -171,7 +171,7 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
 
   useEffect(() => scaleWidget, [widgetOpen, scaleWidget]);
 
-  const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 100, { maxWait: 100 });
+  const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 1000, { maxWait: 1000 });
 
   useEffect(() => {
     window.addEventListener("resize", debouncedScaleWidget);
@@ -248,9 +248,12 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
             text={{
               anon_button_text: widget.anon_button_text,
               name_placeholder: widget.name_placeholder,
+              name_invalid_error_text: widget.name_invalid_error_text,
               email_placeholder: widget.email_placeholder,
+              email_invalid_error_text: widget.email_invalid_error_text,
               tax_deduction_selector_text: widget.tax_deduction_selector_text,
               tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
+              tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
               tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
               newsletter_selector_text: widget.newsletter_selector_text,
               privacy_policy_text: widget.privacy_policy_text,

@@ -113,6 +113,8 @@ export type SEOMeta = {
   description: string;
   imageAsset: SanityAsset;
   canonicalurl: string;
+  keywords?: string;
+  siteName: string;
 };
 
 export type FacebookDonationRegistration = {

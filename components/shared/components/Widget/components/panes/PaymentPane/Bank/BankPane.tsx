@@ -40,8 +40,10 @@ export const BankPane: React.FC<{
           <InfoText>{config.explanatory_text}</InfoText>
         </div>
 
-        {donation.donor?.email !== ANONYMOUS_DONOR.email && (
-          <InfoText>{`Vi har også sendt denne informasjonen til ${donation.donor?.email}. Sjekk søppelpost om du ikke har mottatt den etter 5 minutter.`}</InfoText>
+        {donation.donor?.email !== ANONYMOUS_DONOR.email && donation.donor?.email && (
+          <InfoText>
+            {config.explanatory_text_email_template.replaceAll("{email}", donation.donor.email)}
+          </InfoText>
         )}
 
         {/* Always show referrals for anonymous donors (ID 1464) */}

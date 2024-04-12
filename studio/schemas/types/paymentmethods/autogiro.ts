@@ -57,6 +57,12 @@ export default {
           of: [{ type: "block" }],
           validation: (Rule: any) => Rule.required(),
         },
+        {
+          name: "complete_button_text",
+          title: "Complete button text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
       ],
     },
     {
@@ -88,6 +94,12 @@ export default {
           title: "Date selector config",
           type: "reference",
           to: [{ type: "dateselectorconfig" }],
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "complete_button_text",
+          title: "Complete button text",
+          type: "string",
           validation: (Rule: any) => Rule.required(),
         },
       ],
@@ -129,6 +141,13 @@ export default {
           validation: (Rule: any) => Rule.required(),
         },
       ],
+    },
+    {
+      name: "completed_text",
+      title: "Completed text",
+      type: "array",
+      of: [{ type: "block" }],
+      validation: (Rule: any) => Rule.required(),
     },
   ],
 };

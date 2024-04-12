@@ -2,7 +2,7 @@ import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
 import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
-export type WidgetProps = { locale: "no" | "se" | "en" } & WidgetPane1Props &
+export type WidgetProps = { locale: "no" | "sv" | "en" } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
     methods?: Array<
@@ -22,6 +22,7 @@ export type BankPaymentMethod = {
   kontonr: string;
   kid_title: string;
   explanatory_text: string;
+  explanatory_text_email_template: string;
 };
 
 export type VippsPaymentMethod = {
@@ -41,7 +42,8 @@ export type SwishPaymentMethod = {
   selector_text: string;
   prompt: {
     title: string;
-    text?: string;
+    scan_text?: string;
+    redirect_text?: string;
   };
   success: {
     title: string;
@@ -78,6 +80,7 @@ export type AutoGiroPaymentMethod = {
   manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
   recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
   recurring_form_option_config: AutogiroRecurringFormOptionConfig;
+  completed_text: any[];
 };
 
 type AutogiroManualRecurringOptionConfig = {
@@ -87,6 +90,7 @@ type AutogiroManualRecurringOptionConfig = {
   payment_numberexplanatory_text: string;
   payment_number_label: string;
   instruction_text: any[];
+  complete_button_text: string;
 };
 
 type AutogiroRecurringManualOptionConfig = {
@@ -94,6 +98,7 @@ type AutogiroRecurringManualOptionConfig = {
   explanation_text: any[];
   payernumber_label: string;
   date_selector_config: DatePickerInputConfiguration;
+  complete_button_text: string;
 };
 
 type AutogiroRecurringFormOptionConfig = {
@@ -142,9 +147,12 @@ export type DonationInputErrorTemplates = {
 export type WidgetPane2Props = {
   anon_button_text: string;
   name_placeholder: string;
+  name_invalid_error_text: string;
   email_placeholder: string;
+  email_invalid_error_text: string;
   tax_deduction_selector_text: string;
   tax_deduction_ssn_placeholder: string;
+  tax_deduction_ssn_invalid_error_text: string;
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
   privacy_policy_text: string;

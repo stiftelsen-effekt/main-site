@@ -1,252 +1,160 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
-import { NumericFormat } from "react-number-format";
 import { useDebouncedCallback } from "use-debounce";
-import { thousandize } from "../../../../util/formatting";
 import {
-  EffektButton,
-  EffektButtonVariant,
-} from "../../../shared/components/EffektButton/EffektButton";
-import { EffektDropdown } from "../../../shared/components/EffektDropdown/EffektDropdown";
-import { EffektSlider } from "../../../shared/components/EffektSlider/EffektSlider";
-import { AreaChart } from "../../../shared/components/Graphs/Area/AreaGraph";
-import { WidgetContext } from "../../layout/layout";
+  AreaChart,
+  WealthCalculatorPeriodAdjustment,
+} from "../../../shared/components/Graphs/Area/AreaGraph";
 import { BlockContentRenderer } from "../BlockContentRenderer";
-import {
-  InterventionWidgetOutput,
-  SanityIntervention,
-} from "../InterventionWidget/InterventionWidgetOutput";
+import { InterventionWidgetOutputConfiguration } from "../InterventionWidget/InterventionWidgetOutput";
 import { wealthMountainGraphData } from "./data";
-import { taxTable } from "./taxTable";
 import styles from "./WealthCalculator.module.scss";
-import { LinkType } from "../Links/Links";
-import { NavLink } from "../../../shared/components/Navbar/Navbar";
+import { WealthCalculatorInput, WealthCalculatorInputConfiguration } from "./WealthCalculatorInput";
+import {
+  TaxJurisdiction,
+  calculateWealthPercentile,
+  equvivalizeIncome,
+  getEstimatedPostTaxIncome,
+} from "./_util";
+import { WealthCalculatorSlider, WealthCalculatorSliderConfig } from "./WealthCalculatorSlider";
+import { WealthCalculatorImpact } from "./WealthCalculatorImpact";
+import {
+  AdjustedPPPFactorResult,
+  getNorwegianAdjustedPPPconversionFactor,
+  getSwedishAdjustedPPPconversionFactor,
+} from "./_queries";
 
-export const WealthCalculator: React.FC<{
+export type WealthCalculatorConfiguration = {
+  calculator_input_configuration: WealthCalculatorInputConfiguration;
+  slider_configuration: WealthCalculatorSliderConfig;
+  income_percentile_label_template_string: string;
+  income_percentile_after_donation_label_template_string: string;
+  default_donation_percentage?: number;
+  data_explanation_label?: string;
+  data_explanation?: any;
+  x_axis_label?: string;
+};
+
+type WealthCalculatorProps = {
   title: string;
-  showImpact: boolean;
+  configuration: WealthCalculatorConfiguration;
   intervention_configuration: {
-    interventions?: SanityIntervention[];
-    explanation_label?: string;
-    explanation_text?: string;
-    explanation_links?: (LinkType | NavLink)[];
+    output_configuration: InterventionWidgetOutputConfiguration;
     currency: string;
     locale: string;
   };
-  explanation?: any;
-  incomePercentileLabelTemplateString: string;
-  afterDonationPercentileLabelTemplateString: string;
-  defaultDonationPercentage?: number;
-}> = ({
+  periodAdjustment: WealthCalculatorPeriodAdjustment;
+  locale: string;
+};
+
+export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   title,
-  showImpact,
+  configuration,
   intervention_configuration,
-  explanation,
-  incomePercentileLabelTemplateString,
-  afterDonationPercentileLabelTemplateString,
-  defaultDonationPercentage = 10,
+  periodAdjustment,
+  locale,
 }) => {
+  const {
+    calculator_input_configuration,
+    slider_configuration,
+    income_percentile_label_template_string,
+    income_percentile_after_donation_label_template_string,
+    default_donation_percentage,
+    data_explanation_label,
+    data_explanation,
+    x_axis_label,
+  } = configuration;
+
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
   const income = incomeInput || 0;
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [numberOfAdults, setNumberOfParents] = useState(1);
-  const [donationPercentage, setDonationPercentage] = useState(defaultDonationPercentage);
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [donationPercentage, setDonationPercentage] = useState(default_donation_percentage || 10);
+  const [loadingPostTaxIncome, setLoadingPostTaxIncome] = useState(false);
+  const [postTaxIncome, setPostTaxIncome] = useState<number>(0);
   const [explanationOpen, setExplanationOpen] = useState(false);
-  const [chartSize, setChartSize] = useState<{
-    width: number | undefined;
-    height: number | undefined;
-  }>({
-    width: undefined,
-    height: undefined,
-  });
+  const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult | undefined>();
 
-  const outputRef = useRef<HTMLDivElement>(null);
-
-  const updateSizing = () => {
-    if (outputRef.current) {
-      if (window && window.innerWidth > 1180) {
-        setChartSize({
-          width: outputRef.current.offsetWidth,
-          height: 0,
-        });
-        setTimeout(() => {
-          if (outputRef.current) {
-            setChartSize({
-              width: outputRef.current.offsetWidth,
-              height: Math.floor(outputRef.current.offsetHeight) - 1,
-            });
-          } else {
-            setChartSize({
-              width: chartSize.width || 640,
-              height: chartSize.width || 640,
-            });
-          }
-        }, 1);
-      } else {
-        setChartSize({
-          width: outputRef.current.offsetWidth,
-          height: Math.floor(outputRef.current.offsetWidth) - 1,
-        });
-      }
+  /**
+   * Get the adjusted PPP conversion factor for the locale.
+   */
+  useEffect(() => {
+    if (locale === "no") {
+      getNorwegianAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else if (locale === "sv") {
+      getSwedishAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else {
+      console.error("Unsupported locale", locale);
     }
-  };
+  }, [setPppConversion]);
+
+  /**
+   * Calculate the post tax income. We use a debounced callback to avoid calculating the post tax income
+   * too many times when the user is typing.
+   */
+  const calculatePostTaxIncome = useDebouncedCallback(() => {
+    let taxJurisdiction: TaxJurisdiction;
+    if (locale === "no") {
+      taxJurisdiction = TaxJurisdiction.NO;
+    } else if (locale === "sv") {
+      taxJurisdiction = TaxJurisdiction.SE;
+    } else {
+      console.error("Unsupported locale", locale);
+      return;
+    }
+    getEstimatedPostTaxIncome(income / numberOfAdults, periodAdjustment, taxJurisdiction).then(
+      (res) => {
+        setPostTaxIncome(res * numberOfAdults);
+        setLoadingPostTaxIncome(false);
+      },
+    );
+  }, 250);
 
   useEffect(() => {
-    debouncedSizingUpdate();
-  }, [outputRef]);
+    setLoadingPostTaxIncome(true);
+    calculatePostTaxIncome();
+  }, [incomeInput, numberOfAdults]);
 
-  const debouncedSizingUpdate = useDebouncedCallback(() => updateSizing(), 100, {
-    maxWait: 100,
-    trailing: true,
-  });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", debouncedSizingUpdate);
-    }
-  }, []);
-
-  let postTaxIncome: number = 0;
-  for (let i = 0; i < numberOfAdults; i++) {
-    postTaxIncome += getEstimatedPostTaxIncome(income / numberOfAdults);
-  }
-
+  /**
+   * Calculate the equvivalized income. This is the income after tax and adjusted for the number of adults and children
+   * in the household. We use the OECD modified scale to calculate the equvivalized income.
+   */
   const equvivalizedIncome = equvivalizeIncome(postTaxIncome, numberOfChildren, numberOfAdults);
+
+  if (!pppConversion) {
+    return <></>;
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.calculator} data-cy="wealthcalculator-container">
-        <div className={styles.calculator__input}>
-          <div className={styles.calculator__input__inner}>
-            <h5>{title}</h5>
-            <span className={styles.calculator__input__subtitle}>
-              Hvor rik er du sammenlignet med resten av verden?
-            </span>
+        <WealthCalculatorInput
+          title={title}
+          incomeInput={incomeInput}
+          setIncomeInput={setIncomeInput}
+          numberOfChildren={numberOfChildren}
+          setNumberOfChildren={setNumberOfChildren}
+          numberOfAdults={numberOfAdults}
+          setNumberOfParents={setNumberOfParents}
+          loadingPostTaxIncome={loadingPostTaxIncome}
+          config={calculator_input_configuration}
+        ></WealthCalculatorInput>
+        <WealthCalculatorSlider
+          donationPercentage={donationPercentage}
+          setDonationPercentage={setDonationPercentage}
+          postTaxIncome={postTaxIncome}
+          wealthMountainGraphData={wealthMountainGraphData}
+          equvivalizedIncome={equvivalizedIncome}
+          periodAdjustment={periodAdjustment}
+          adjustedPppFactor={pppConversion.adjustedPPPfactor}
+          config={slider_configuration}
+        />
 
-            <div
-              className={styles.calculator__input__group}
-              data-cy="wealthcalculator-income-input"
-            >
-              <div className={styles.calculator__input__group__input__income__wrapper}>
-                <NumericFormat
-                  type={"tel"}
-                  placeholder={"Inntekt"}
-                  value={incomeInput}
-                  className={styles.calculator__input__group__input__text}
-                  thousandSeparator={" "}
-                  onValueChange={(values) => {
-                    setIncomeInput(values.floatValue);
-                  }}
-                />
-                <span>kr</span>
-              </div>
-              <i>Oppgi total inntekt før skatt for husholdningen din.</i>
-            </div>
-
-            <div
-              className={styles.calculator__input__group}
-              data-cy="wealthcalculator-children-input"
-            >
-              <EffektDropdown
-                placeholder={"Antall barn i husholdningen"}
-                options={[
-                  "0 barn i husholdningen",
-                  "1 barn i husholdningen",
-                  "2 barn i husholdningen",
-                  "3 barn i husholdningen",
-                  "4 barn i husholdningen",
-                  "5 barn i husholdningen",
-                ]}
-                value={numberOfChildren.toString() + " barn i husholdningen"}
-                onChange={(val: string) => setNumberOfChildren(parseInt(val[0]))}
-              ></EffektDropdown>
-            </div>
-
-            <div
-              className={styles.calculator__input__group}
-              data-cy="wealthcalculator-adults-input"
-            >
-              <EffektDropdown
-                placeholder={"Antall voksne i husholdningen"}
-                options={[
-                  "1 voksen i husholdningen",
-                  "2 voksne i husholdningen",
-                  "3 voksne i husholdningen",
-                ]}
-                value={`${numberOfAdults.toString()} ${
-                  numberOfAdults === 1 ? "voksen" : "voksne"
-                } i husholdningen`}
-                onChange={(val: string) => setNumberOfParents(parseInt(val[0]))}
-              ></EffektDropdown>
-            </div>
-
-            <div
-              className={[
-                styles.calculator__input__group,
-                styles.calculator__input__group_mobile,
-              ].join(" ")}
-            >
-              <EffektButton
-                onClick={() => {
-                  window.scrollTo({
-                    top: (outputRef.current?.offsetTop || 0) - 60,
-                    behavior: "smooth",
-                  });
-                }}
-                variant={EffektButtonVariant.SECONDARY}
-              >
-                Beregn
-              </EffektButton>
-            </div>
-          </div>
-        </div>
-        <div className={[styles.calculator__input, styles.calculator__input_slider].join(" ")}>
-          <div className={styles.calculator__input__inner}>
-            <div className={styles.calculator__input__group}>
-              <div className={styles.calculator__input__group__percentage_text}>
-                <span>Om du ga bort </span>
-                <div className={styles.calculator__input__group__percentage_input_wrapper}>
-                  <input
-                    type={"text"}
-                    className={styles.calculator__input__group__percentage_input}
-                    value={donationPercentage.toString()}
-                    data-cy="wealthcalculator-donation-percentage-input"
-                    onChange={(e) => {
-                      if (e.target.value !== "" || !isNaN(parseInt(e.target.value))) {
-                        const value = parseInt(e.target.value);
-                        if (value > 0 && value <= 100) {
-                          setDonationPercentage(parseInt(e.target.value));
-                        }
-                      } else if (e.target.value === "") {
-                        setDonationPercentage(0);
-                      }
-                    }}
-                  />
-                  <span>%</span>
-                </div>
-                <span>
-                  av din inntekt etter estimert skatt kan du donere{" "}
-                  {thousandize(Math.round(postTaxIncome * (donationPercentage / 100)))} kr til
-                  effektiv bistand i året og fortsatt være blant de{" "}
-                  {calculateWealthPercentile(
-                    wealthMountainGraphData,
-                    equvivalizedIncome * (1 - donationPercentage / 100),
-                  ).toLocaleString("no-NB")}
-                  % rikeste i verden.
-                </span>
-              </div>
-
-              <EffektSlider
-                min={0}
-                max={50}
-                value={donationPercentage}
-                onChange={setDonationPercentage}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.calculator__output} ref={outputRef} data-cy="wealthcalculator-graph">
+        <div className={styles.calculator__output} data-cy="wealthcalculator-graph">
           <AreaChart
             data={wealthMountainGraphData}
             lineInput={equvivalizedIncome || 0}
@@ -254,131 +162,87 @@ export const WealthCalculator: React.FC<{
             wealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               equvivalizedIncome || 0,
+              periodAdjustment,
+              pppConversion?.adjustedPPPfactor,
             )}
             afterDonationWealthPercentile={calculateWealthPercentile(
               wealthMountainGraphData,
               equvivalizedIncome * (1 - donationPercentage / 100),
+              periodAdjustment,
+              pppConversion?.adjustedPPPfactor,
             )}
-            size={chartSize}
-            afterDonationPercentileLabelTemplateString={afterDonationPercentileLabelTemplateString}
-            incomePercentileLabelTemplateString={incomePercentileLabelTemplateString}
+            afterDonationPercentileLabelTemplateString={
+              income_percentile_after_donation_label_template_string
+            }
+            incomePercentileLabelTemplateString={income_percentile_label_template_string}
+            adjustedPPPConversionFactor={pppConversion?.adjustedPPPfactor}
+            periodAdjustment={periodAdjustment}
           />
         </div>
-        {explanation ? (
-          <div
-            className={
-              styles.calculator__explanation__toggle +
-              " " +
-              (explanationOpen ? styles.calculator__explanation__toggle_open : "")
-            }
-            data-cy="wealthcalculator-explanation-toggle"
-            onClick={() => setExplanationOpen(!explanationOpen)}
-          >
-            Hvordan regner vi ut hvor rik du er?
-          </div>
-        ) : (
-          <></>
-        )}
+        <div
+          className={
+            styles.calculator__explanation__toggle +
+            " " +
+            (explanationOpen ? styles.calculator__explanation__toggle_open : "")
+          }
+          data-cy="wealthcalculator-explanation-toggle"
+          onClick={() => setExplanationOpen(!explanationOpen)}
+        >
+          {data_explanation_label || "Explanation"}
+        </div>
         <div className={styles.calculator__axis__label}>
-          <span>Ekvivalisert årsinntekt i kroner (logaritmisk skala) →</span>
+          <span>{x_axis_label || "Yearly income (log scale)"} →</span>
         </div>
       </div>
-      {explanation && (
-        <>
-          <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
-            <div data-cy="wealthcalculator-explanation">
-              <BlockContentRenderer content={[explanation]} />
-            </div>
-          </AnimateHeight>
-        </>
-      )}
-      {showImpact && intervention_configuration && (
-        <div className={styles.calculator__impact}>
-          <div className={styles.calculator__impact__description}>
-            <h3>Din impact.</h3>
-            <p>
-              Med {thousandize(Math.round(postTaxIncome * (donationPercentage / 100)))} kroner i
-              året donert til effektiv bistand kan du påvirke mange liv der det trengs mest du kan
-              for eksempel bidra med myggnett, A-vitamin tilskudd eller vaksinering.
-            </p>
-            <div
-              className={styles.calculator__impact__description__button_desktop}
-              data-cy="wealthcalculator-impact-create-agreement-button"
-            >
-              <EffektButton onClick={() => setWidgetOpen(true)}>
-                Sett opp fast donasjon
-              </EffektButton>
-            </div>
-          </div>
-          <div className={styles.calculator__impact__output}>
-            <InterventionWidgetOutput
-              sum={postTaxIncome * (donationPercentage / 100)}
-              interventions={intervention_configuration.interventions}
-              explanationLabel={intervention_configuration.explanation_label}
-              explanationText={intervention_configuration.explanation_text}
-              explanationLinks={intervention_configuration.explanation_links}
-              currency={intervention_configuration.currency}
-              locale={intervention_configuration.locale}
-            />
-          </div>
-          <div className={styles.calculator__impact__description__button_mobile}>
-            <EffektButton onClick={() => setWidgetOpen(true)}>Sett opp fast donasjon</EffektButton>
-          </div>
+      <AnimateHeight height={explanationOpen ? "auto" : 0} duration={500}>
+        {/** Debug factors */}
+        {/** 
+        <div>
+          <strong>Factors used in the calculation:</strong>
+          <table>
+            <tr>
+              <td>
+                <strong>
+                  Cumulative inflation 2017 - {DateTime.now().year} for {locale}
+                </strong>
+              </td>
+              <td>{pppConversion.cumulativeInflation.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  PPP conversion factor for 2017 {currency} to 2017 international dollar
+                </strong>
+              </td>
+              <td>{pppConversion.pppFactor.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Total adjusted ppp conversion factor</strong>
+              </td>
+              <td>{pppConversion.adjustedPPPfactor.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Estimated taxation</strong>
+              </td>
+              <td>{thousandize(income - postTaxIncome)}</td>
+            </tr>
+          </table>
         </div>
+        */}
+        <div data-cy="wealthcalculator-explanation">
+          <BlockContentRenderer content={[data_explanation]} />
+        </div>
+      </AnimateHeight>
+      {intervention_configuration && (
+        <WealthCalculatorImpact
+          donationPercentage={donationPercentage}
+          setDonationPercentage={setDonationPercentage}
+          postTaxIncome={postTaxIncome}
+          intervention_configuration={intervention_configuration}
+        />
       )}
     </div>
   );
-};
-
-export const calculateWealthPercentile = (data: { x: number; y: number }[], income: number) => {
-  const dataSum = data.reduce((acc, curr) => acc + curr.y, 0);
-  const dailyIncome = income / 365 / 10.5;
-  const bucketsSumUpToLineInput = data
-    .filter((d) => d.x <= dailyIncome)
-    .reduce((acc, curr) => acc + curr.y, 0);
-
-  const bucketAfterLineInputIndex = data.findIndex((d) => d.x > dailyIncome);
-
-  let linearInterpolationAdd = 0;
-  if (bucketAfterLineInputIndex > -1) {
-    const positionBetweenBuckets =
-      (dailyIncome - data[bucketAfterLineInputIndex - 1].x) /
-      (data[bucketAfterLineInputIndex].x - data[bucketAfterLineInputIndex - 1].x);
-
-    linearInterpolationAdd = data[bucketAfterLineInputIndex].y * positionBetweenBuckets;
-  }
-
-  const totalSum = bucketsSumUpToLineInput + linearInterpolationAdd;
-
-  let lineInputWealthPercentile = (1 - totalSum / dataSum) * 100;
-  // Round to 2 decimals
-  lineInputWealthPercentile = Math.round(lineInputWealthPercentile * 10) / 10;
-
-  return lineInputWealthPercentile;
-};
-
-const equvivalizeIncome = (income: number, numberOfChildren: number, numberOfAdults: number) => {
-  // Using OECD-modified scale for equvivalize income
-  // https://en.wikipedia.org/wiki/Equivalisation
-  const equvivalizedIncome = income / (1 + 0.3 * numberOfChildren + 0.5 * (numberOfAdults - 1));
-  return equvivalizedIncome;
-};
-
-const getEstimatedPostTaxIncome = (income: number) => {
-  // Round income to nearest 1000
-  const roundedIncome = Math.round(income / 1000) * 1000;
-
-  if (roundedIncome < 50000) return income;
-  if (roundedIncome > 9999000) {
-    const topTableTax = taxTable[taxTable.length - 1];
-    const surplusIncome = income - 9999000;
-    const surplusTax = surplusIncome * 0.475;
-    return income - topTableTax - surplusTax;
-  }
-
-  const taxIndex = (roundedIncome - 50000) / 1000;
-
-  const tax = taxTable[taxIndex];
-
-  return income - tax;
 };

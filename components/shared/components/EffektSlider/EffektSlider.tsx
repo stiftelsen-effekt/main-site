@@ -11,6 +11,7 @@ export const EffektSlider: React.FC<{
 }> = ({ min, max, onChange, value }) => {
   const [sliderWidth, setSliderWidth] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
 
   const scaledValue = Math.min((value - min) / (max - min), 1);
 
@@ -95,8 +96,10 @@ export const EffektSlider: React.FC<{
             onChange(Math.round((data.x / sliderWidth) * (min + (max - min))));
           }}
           position={{ x: scaledValue * sliderWidth, y: 0 }}
+          nodeRef={handleRef}
         >
           <div
+            ref={handleRef}
             className={styles.calculator__input__group__percentage_slider__handle}
             data-cy="slider-handle"
           ></div>

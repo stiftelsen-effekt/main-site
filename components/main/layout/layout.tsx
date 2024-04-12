@@ -14,6 +14,8 @@ export const CookiesAccepted = createContext<
   [
     {
       accepted: boolean | undefined;
+      expired: boolean | undefined;
+      lastMajorChange: Date | undefined;
       loaded: boolean;
     },
     any,
@@ -21,6 +23,8 @@ export const CookiesAccepted = createContext<
 >([
   {
     accepted: undefined,
+    expired: undefined,
+    lastMajorChange: undefined,
     loaded: false,
   },
   () => {},
@@ -61,6 +65,8 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
   // Set true as default to prevent flashing on first render
   const [cookiesAccepted, setCookiesAccepted] = useState({
     accepted: undefined,
+    expired: undefined,
+    lastMajorChange: undefined,
     loaded: false,
   });
 
@@ -72,7 +78,6 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
 
   const containerClasses = [styles.container];
   if (cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined") {
-    console.log("Adding cookie banner class");
     containerClasses.push(styles.containerCookieBanner);
   }
 

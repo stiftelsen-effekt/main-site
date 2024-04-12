@@ -9,7 +9,19 @@ import { saveDonor } from "../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 
-export const ProfileInfo: React.FC = () => {
+export type ProfilePageInfoConfiguration = {
+  name_label: string;
+  email_label: string;
+  newsletter_label: string;
+  save_button_label: string;
+  success_message: string;
+  failure_message: string;
+};
+
+export const ProfileInfo: React.FC<{
+  config: ProfilePageInfoConfiguration;
+  titleTemplate: string;
+}> = ({ config, titleTemplate }) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   const { donor: initialDonor, setDonor: setGlobalDonor } = useContext(DonorContext);
@@ -21,19 +33,21 @@ export const ProfileInfo: React.FC = () => {
     const token = await getAccessTokenSilently();
     const result = await saveDonor(donor, user, token);
     if (result === null) {
-      failureToast();
+      failureToast(config.failure_message);
     } else {
-      successToast();
+      successToast(config.success_message);
       setGlobalDonor(donor);
     }
   };
 
   return (
     <>
-      <h3 className={style.header}>Hei{donor.name ? " " + donor.name.split(" ")[0] : ""}!</h3>
+      <h3 className={style.header}>
+        {titleTemplate.replace("{{name}}", donor.name ? " " + donor.name.split(" ")[0] : "")}
+      </h3>
       <section className={style.personalInfo}>
         <div className={style.inputContainer}>
-          Ditt navn
+          {config.name_label}
           <input
             id="name"
             type="text"
@@ -45,7 +59,7 @@ export const ProfileInfo: React.FC = () => {
           />
         </div>
         <div className={style.inputContainer}>
-          E-post
+          {config.email_label}
           <input id="email" type="email" disabled value={donor.email} className={style.input} />
         </div>
         <div className={style.inputContainer}>
@@ -55,17 +69,18 @@ export const ProfileInfo: React.FC = () => {
               setDonor({ ...donor, newsletter: !donor.newsletter });
             }}
           >
-            Send meg nyhetsbrev på e-post
+            {config.newsletter_label}
           </EffektCheckbox>
         </div>
         <EffektButton role={"submit"} onClick={save} cy="btn-save">
-          Lagre
+          {config.save_button_label}
         </EffektButton>
       </section>
     </>
   );
 };
 
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
+const successToast = (msg: string) =>
+  toast.success(msg, { icon: <Check size={24} color={"black"} /> });
+const failureToast = (msg: string) =>
+  toast.error(msg, { icon: <AlertCircle size={24} color={"black"} /> });
