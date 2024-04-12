@@ -73,6 +73,7 @@ const ArticlePage = withStaticProps(
           `https://gieffektivt.no/${[...articlesPagePath, page.slug.current].join("/")}`
         }
         keywords={header.seoKeywords}
+        siteName={data.result.settings[0].title}
       />
 
       <MainHeader hideOnScroll={true}>

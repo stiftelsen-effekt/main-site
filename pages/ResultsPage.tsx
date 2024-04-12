@@ -96,6 +96,7 @@ export const ResultsPage = withStaticProps(async ({ preview }: { preview: boolea
         canonicalurl={`https://gieffektivt.no/${page.slug}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
+        siteName={data.result.settings[0].title}
       />
 
       <div className={styles.inverted}>
