@@ -28,7 +28,7 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
       const ArticlesPage = dynamic(() => import("./ArticlesPage").then((mod) => mod.ArticlesPage));
       return <ArticlesPage {...props} />;
     case PageType.ArticlePage:
-      const ArticlePage = dynamic(() => import("./ArticlePage").then((mod) => mod.ArticlePage));
+      const ArticlePage = dynamic(() => import("./ArticlePage").then((mod) => mod.default));
       return <ArticlePage {...props} />;
     case PageType.ResultsPage:
       const ResultsPage = dynamic(() => import("./ResultsPage").then((mod) => mod.ResultsPage));
