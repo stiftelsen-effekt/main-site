@@ -5,7 +5,7 @@ jobs:
   e2e-no:
     # only runs this job on successful deploy to main-site
     if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'main-site')
-    uses: ./github/workflows/e2e.yml
+    uses: ./.github/workflows/e2e.yml
     with:
       group: "GiEffektivt e2e tests"
       base-url: ${{ github.event.deployment_status.target_url }}
@@ -14,7 +14,7 @@ jobs:
   e2e-se:
     # only runs this job on successful deploy to ge-effektivt
     if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'ge-effektivt')
-    uses: ./github/workflows/e2e.yml
+    uses: ./.github/workflows/e2e.yml
     with:
       group: "GeEffektivt e2e tests"
       base-url: ${{ github.event.deployment_status.target_url }}
