@@ -11,20 +11,17 @@
 
 [![Powered by Vercel](docs/vercel-banner.svg)](https://vercel.com?utm_source=effective-altruism-norway&utm_campaign=oss)
 
-**Table of Contents**
+# Table of Contents
 
-- [Getting started ⚡](#getting-started-)
+- [Getting started <g-emoji class="g-emoji" alias="zap" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png">⚡</g-emoji>](#getting-started-)
 - [Project structure](#project-structure)
   - [Pages](#pages)
   - [Components](#components)
-- [Sanity (Content Managment System) 📖](#sanity-content-managment-system-)
-  - [Sanity Studio](#sanity-studio)
-- [Profile page 🧑‍🤝‍🧑](#profile-page-)
+- [Sanity (Content Managment System) <g-emoji class="g-emoji" alias="book" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d6.png">📖</g-emoji>](#sanity-content-managment-system-)
+- [Profile page <g-emoji class="g-emoji" alias="people_holding_hands" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f91d-1f9d1.png">🧑‍🤝‍🧑</g-emoji>](#profile-page-)
   - [Fetching and mutating data via the API](#fetching-and-mutating-data-via-the-api)
-- [Build and deployment ⚙️](#build-and-deployment-️)
-- [Testing 💥](#testing-)
-  - [Unit tests](#unit-tests)
-  - [E2E](#e2e)
+- [Build and deployment <g-emoji class="g-emoji" alias="gear" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2699.png">⚙️</g-emoji>](#build-and-deployment-️)
+- [Testing <g-emoji class="g-emoji" alias="boom" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a5.png">💥</g-emoji>](#testing-)
 
 ---
 
