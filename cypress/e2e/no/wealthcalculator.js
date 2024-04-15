@@ -20,6 +20,17 @@ describe("Navigation", () => {
       }).as("getReferrals");
     });
 
+    cy.fixture("inflation").then((inflation) => {
+      cy.intercept(
+        "GET",
+        "https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=01&endYear=*&endMonth=*&language=nb",
+        {
+          statusCode: 200,
+          body: inflation,
+        },
+      ).as("getInflation");
+    });
+
     cy.visit(`/rikdomskalkulator`);
 
     cy.wait(["@getCauseAreas", "@getReferrals"]);
