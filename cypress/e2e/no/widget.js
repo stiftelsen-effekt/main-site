@@ -288,6 +288,7 @@ describe("Widget", () => {
     cy.prevWidgetPane();
     cy.get("[data-cy=ssn-input]").clear();
     cy.get("[data-cy=ssn-input]").type("1234567890"); // 10 digits invalid snn
+    cy.nextWidgetPane();
     cy.checkNextIsDisabled();
 
     cy.get("[data-cy=ssn-input]").clear();
