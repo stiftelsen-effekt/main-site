@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { Auth0Provider, CacheLocation } from "@auth0/auth0-react";
@@ -8,7 +8,12 @@ import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
 import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
-import { CookiesAccepted, WidgetContext, WidgetContextType } from "../../main/layout/layout";
+import {
+  CookiesAccepted,
+  CookiesAcceptedContextType,
+  WidgetContext,
+  WidgetContextType,
+} from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
@@ -61,17 +66,25 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
   };
 })(({ children, footerData, widgetData, profileData, isPreview }) => {
   const { dashboardPath } = useRouterContext();
+
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
   });
-  // Set true as default to prevent flashing on first render
-  const [cookiesAccepted, setCookiesAccepted] = useState({
+  const widgetContextValue = useMemo<
+    [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
+  >(() => [widgetContext, setWidgetContext], [widgetContext]);
+
+  const [cookiesAccepted, setCookiesAccepted] = useState<CookiesAcceptedContextType>({
     accepted: undefined,
     expired: undefined,
     lastMajorChange: undefined,
     loaded: false,
   });
+  const cookiesAcceptedValue = useMemo<
+    [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
+  >(() => [cookiesAccepted, setCookiesAccepted], [cookiesAccepted]);
+
   const bypassAuth = useShouldAuthenticate();
 
   let cacheLocation: CacheLocation = "memory";
@@ -121,8 +134,8 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
                 {isPreview && <PreviewBlock />}
-                <WidgetContext.Provider value={[widgetContext, setWidgetContext]}>
-                  <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
+                <WidgetContext.Provider value={widgetContextValue}>
+                  <CookiesAccepted.Provider value={cookiesAcceptedValue}>
                     <WidgetPane
                       darkMode={true}
                       {...widgetData}
