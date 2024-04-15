@@ -1,4 +1,4 @@
-import mockDonor from "../fixtures/donor.json";
+import mockDonor from "../../fixtures/no/donor.json";
 
 describe("Widget", () => {
   beforeEach(() => {

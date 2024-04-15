@@ -56,6 +56,7 @@ export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boole
         canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
+        siteName={data.result.settings[0].title}
       />
 
       <div className={styles.inverted}>

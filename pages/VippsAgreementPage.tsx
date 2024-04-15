@@ -61,6 +61,7 @@ export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boo
         canonicalurl={`https://gieffektivt.no/${page.slug.current}}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
+        siteName={data.result.settings[0].title}
       />
 
       <MainHeader hideOnScroll={true}>
