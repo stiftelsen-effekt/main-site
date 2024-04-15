@@ -200,3 +200,13 @@ This repository is connected to the [vercel edge cdn](https://vercel.com/). On a
 When editing content in sanity for the `production` dataset, a webhook triggers a build of the most recent version of the main branch. This generates static sites with the most recent content. Building typically takes somewhere in the range of 4 minutes.
 
 ## Testing 💥
+
+Currently, we have two types of tests. Unit tests and end-to-end tests.
+
+### Unit tests
+
+Unit tests are located in the `__tests__` folder. We use [Jest](https://jestjs.io/) as our test runner. To run the tests, run `npm run test`.
+
+### E2E
+
+Tests can be found in the `cypress` folder. We utilize [Cypress](https://www.cypress.io/) for end-to-end testing. To execute the tests, initiate the development server by running `npm run dev` with either the Norwegian or Swedish production Sanity datasets specified in `.env.local`. After that, run either `npm run cypress:se` or `npm run cypress:no` to execute the tests for the corresponding domain.
