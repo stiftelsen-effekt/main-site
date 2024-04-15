@@ -343,7 +343,9 @@ const getNorwegianInflation2017 = async () => {
   while (attempts < 12) {
     date = date.minus({ months: 1 });
     const inflation = await fetch(
-      `https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=01&endYear=${date.year}&endMonth=${date.month}&language=nb`,
+      `https://corsproxy.io/?https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen/_/service/mimir/kpi?startValue=100&startYear=2017&startMonth=01&endYear=${
+        date.year
+      }&endMonth=${date.month.toString().padStart(2, "0")}&language=nb`,
     );
     const json = await inflation.json();
 
