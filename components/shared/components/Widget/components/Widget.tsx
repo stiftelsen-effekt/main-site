@@ -253,8 +253,6 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
             }
           });
 
-          console.log(newCauseAreaOrganizations);
-
           dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
         } else {
           dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));

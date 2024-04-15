@@ -67,7 +67,6 @@ export const Outputs: React.FC<{
         .filter((d) => d.period.getFullYear() === year)
         .reduce((acc, el) => acc + el.numberOfOutputs, 0),
     );
-    console.log(output, yearlyMaxes);
     return Math.max(...yearlyMaxes);
   }, [transformedMonthlyDonationsPerOutput]);
 
