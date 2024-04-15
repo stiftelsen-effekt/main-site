@@ -271,7 +271,7 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
         return causeArea;
       });
     }
-  }, [widgetContext]);
+  }, [widgetContext.prefilled]);
 
   useDefaultPaymentMethodEffect(methods);
 
