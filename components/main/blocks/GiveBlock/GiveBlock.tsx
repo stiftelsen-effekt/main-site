@@ -16,7 +16,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
   donateLabel,
   accentColor,
 }) => {
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   let accentStyles: CSSProperties = {};
   if (accentColor) {
@@ -35,7 +35,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
         className={styles.button}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.currentTarget.blur();
-          setWidgetOpen(true);
+          setWidgetContext({ open: true, prefilled: null });
         }}
         style={accentStyles}
       >

@@ -36,11 +36,13 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
         const expired = acceptedDate < lastMajorChange;
         if (item === "true" && !expired) {
           setCookiesAccepted({
+            ...cookiesAccepted,
             accepted: true,
             loaded: true,
           });
         } else if (item === "true" && expired) {
           setCookiesAccepted({
+            ...cookiesAccepted,
             expired: true,
             lastMajorChange: lastMajorChange,
             loaded: true,
@@ -55,6 +57,7 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
         }
       } else {
         setCookiesAccepted({
+          ...cookiesAccepted,
           loaded: true,
         });
       }
@@ -95,6 +98,7 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
                 onClick={() => {
                   window.localStorage.setItem("gieffektivt-cookies-accepted", "false");
                   setCookiesAccepted({
+                    ...cookiesAccepted,
                     accepted: false,
                     expired: false,
                     loaded: true,
@@ -115,6 +119,7 @@ export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }
                     new Date().toISOString(),
                   );
                   setCookiesAccepted({
+                    ...cookiesAccepted,
                     accepted: true,
                     expired: false,
                     loaded: true,

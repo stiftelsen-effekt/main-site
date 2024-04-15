@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { createContext, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useState, useMemo } from "react";
 import { getClient } from "../../../lib/sanity.server";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
@@ -7,19 +7,26 @@ import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
-import { WidgetPane } from "./WidgetPane/WidgetPane";
+import { PrefilledDistribution, WidgetPane } from "./WidgetPane/WidgetPane";
 
-export const WidgetContext = createContext<[boolean, any]>([false, () => {}]);
+export type WidgetContextType = {
+  open: boolean;
+  prefilled: PrefilledDistribution | null;
+};
+
+export const WidgetContext = createContext<
+  [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
+>([{ open: false, prefilled: null }, () => {}]);
+
+export type CookiesAcceptedContextType = {
+  accepted: boolean | undefined;
+  expired: boolean | undefined;
+  lastMajorChange: Date | undefined;
+  loaded: boolean;
+};
+
 export const CookiesAccepted = createContext<
-  [
-    {
-      accepted: boolean | undefined;
-      expired: boolean | undefined;
-      lastMajorChange: Date | undefined;
-      loaded: boolean;
-    },
-    any,
-  ]
+  [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
 >([
   {
     accepted: undefined,
@@ -61,16 +68,25 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
     },
   };
 })(({ children, footerData, widgetData, giveButton, isPreview }) => {
-  const [widgetOpen, setWidgetOpen] = useState(false);
-  // Set true as default to prevent flashing on first render
-  const [cookiesAccepted, setCookiesAccepted] = useState({
+  const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
+    open: false,
+    prefilled: null,
+  });
+  const widgetContextValue = useMemo<
+    [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
+  >(() => [widgetContext, setWidgetContext], [widgetContext]);
+
+  const [cookiesAccepted, setCookiesAccepted] = useState<CookiesAcceptedContextType>({
     accepted: undefined,
     expired: undefined,
     lastMajorChange: undefined,
     loaded: false,
   });
+  const cookiesAcceptedValue = useMemo<
+    [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
+  >(() => [cookiesAccepted, setCookiesAccepted], [cookiesAccepted]);
 
-  if (widgetOpen && window.innerWidth < 1180) {
+  if (widgetContext.open && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
   } else if (typeof document !== "undefined") {
     document.body.style.overflow = "auto";
@@ -87,13 +103,13 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
       <GiveButton
         inverted={false}
         color={giveButton.accent_color}
-        onClick={() => setWidgetOpen(true)}
+        onClick={() => setWidgetContext({ open: true, prefilled: null })}
       >
         {giveButton.donate_label_short}
       </GiveButton>
-      <WidgetContext.Provider value={[widgetOpen, setWidgetOpen]}>
-        <CookiesAccepted.Provider value={[cookiesAccepted, setCookiesAccepted]}>
-          <WidgetPane {...widgetData} />
+      <WidgetContext.Provider value={widgetContextValue}>
+        <CookiesAccepted.Provider value={cookiesAcceptedValue}>
+          <WidgetPane {...widgetData} prefilled={widgetContext.prefilled} />
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
       </WidgetContext.Provider>

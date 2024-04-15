@@ -199,6 +199,7 @@ describe("Widget", () => {
       .click({ force: true });
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
+    cy.nextWidgetPane();
     cy.checkNextIsDisabled();
     cy.get("[data-cy=org-12]").type("{moveToStart}");
     cy.get("[data-cy=org-12]").type("-"); // should ignore negative numbers
@@ -247,6 +248,7 @@ describe("Widget", () => {
     cy.prevWidgetPane();
     cy.get("[data-cy=donation-sum-input]").clear();
     cy.get("[data-cy=donation-sum-input]").type(0);
+    cy.nextWidgetPane();
     cy.checkNextIsDisabled();
     cy.get("[data-cy=donation-sum-input]").type(1);
     cy.nextWidgetPane();
@@ -286,6 +288,7 @@ describe("Widget", () => {
     cy.prevWidgetPane();
     cy.get("[data-cy=ssn-input]").clear();
     cy.get("[data-cy=ssn-input]").type("1234567890"); // 10 digits invalid snn
+    cy.nextWidgetPane();
     cy.checkNextIsDisabled();
 
     cy.get("[data-cy=ssn-input]").clear();

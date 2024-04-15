@@ -11,12 +11,19 @@ const Widget = dynamic<Props>(
   },
 );
 
+export type PrefilledDistribution = {
+  causeAreaId: number;
+  share: number;
+  organizations: { organizationId: number; share: number }[];
+}[];
+
 interface Props extends ComponentProps<typeof WidgetType> {
   darkMode?: boolean;
+  prefilled: PrefilledDistribution | null;
 }
 
 export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   // On initial load, have no animation
   // Then reset on render
@@ -27,11 +34,11 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
 
   useEffect(() => {
     let timeoutId: any;
-    if (widgetOpen) {
+    if (widgetContext.open) {
       setPaneStyle({ display: "block" });
       timeoutId = setTimeout(() => {
         setWidgetOpenClass(styles.widgetPaneOpen);
-      }, 10);
+      }, 20);
     } else {
       setWidgetOpenClass("");
       timeoutId = setTimeout(() => {
@@ -40,7 +47,7 @@ export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
     }
 
     return () => clearTimeout(timeoutId);
-  }, [widgetOpen]);
+  }, [widgetContext]);
 
   return (
     <aside

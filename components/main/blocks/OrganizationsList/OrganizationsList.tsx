@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Links } from "../Links/Links";
 import styles from "./OrganizationsList.module.scss";
 import { PortableText } from "@portabletext/react";
+import { WidgetContext } from "../../layout/layout";
+import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 
-export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organizations }) => {
+type OrganizationWidgetButton = {
+  label: string;
+  cause_area_id: number;
+  organization_id: number;
+};
+
+type Organization = {
+  _id: string;
+  name: string;
+  subtitle: string;
+  invervention_cost: string;
+  intervention_effect: string;
+  intervention_type: string;
+  oneliner: string;
+  content: any;
+  links: any;
+  links_header: string;
+  widget_button: OrganizationWidgetButton;
+};
+
+export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
+  organizations,
+}) => {
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+
   return (
-    <div className={styles.organizationWrapper}>
+    <div className={styles.organizationWrapper} data-cy="organizations-list">
       {organizations &&
-        organizations.map((organization: any) => (
+        organizations.map((organization) => (
           <div
             key={organization._id}
             id={organization.name.replace(/ /g, "_")}
@@ -29,12 +55,38 @@ export const OrganizationsList: React.FC<{ organizations: any[] }> = ({ organiza
             <div className={styles.description}>
               <p className="inngress">{organization.oneliner}</p>
               <PortableText value={organization.content}></PortableText>
-
               {organization.links && (
                 <>
                   <p className="inngress">{organization.links_header}</p>
                   <Links links={organization.links} />
                 </>
+              )}
+              {organization.widget_button && (
+                <div className={styles.buttonWrapper}>
+                  <EffektButton
+                    data-cy={`organizations-list-button-${organization.widget_button.organization_id}`}
+                    onClick={() => {
+                      setWidgetContext({
+                        open: true,
+                        prefilled: [
+                          {
+                            causeAreaId: organization.widget_button.cause_area_id,
+                            share: 100,
+                            organizations: [
+                              {
+                                organizationId: organization.widget_button.organization_id,
+                                share: 100,
+                              },
+                            ],
+                          },
+                        ],
+                      });
+                    }}
+                    fullWidth
+                  >
+                    {organization.widget_button.label}
+                  </EffektButton>
+                </div>
               )}
             </div>
           </div>

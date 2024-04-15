@@ -15,7 +15,12 @@ import { withStaticProps } from "../../../../../util/withStaticProps";
 import { WidgetContext } from "../../../../main/layout/layout";
 import { fetchCauseAreasAction } from "../store/layout/actions";
 import { paymentMethodConfigurations } from "../config/methods";
-import { setRecurring } from "../store/donation/actions";
+import {
+  setCauseAreaPercentageShare,
+  setRecurring,
+  setShareType,
+  setShares,
+} from "../store/donation/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
 import { RecurringDonation } from "../types/Enums";
@@ -147,7 +152,7 @@ const useDefaultPaymentMethodEffect = (paymentMethods: NonNullable<WidgetProps["
  * Scale the widget to fit the screen
  */
 const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
-  const [widgetOpen, setWidgetOpen] = useContext(WidgetContext);
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const [scalingFactor, setScalingFactor] = useState(1);
   const [scaledHeight, setScaledHeight] = useState(979);
   const [lastHeight, setLastHeight] = useState(979);
@@ -169,7 +174,7 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
     setLastHeight(window.innerHeight);
   }, [setScalingFactor, setScaledHeight, scalingFactor, scaledHeight, setLastWidth, setLastHeight]);
 
-  useEffect(() => scaleWidget, [widgetOpen, scaleWidget]);
+  useEffect(() => scaleWidget, [widgetContext.open, scaleWidget]);
 
   const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 1000, { maxWait: 1000 });
 
@@ -183,7 +188,7 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
 
   useEffect(() => {
     scaleWidget();
-  }, [widgetOpen, scaleWidget]);
+  }, [widgetContext, scaleWidget]);
 
   return useMemo(() => ({ scaledHeight, scalingFactor }), [scaledHeight, scalingFactor]);
 };
@@ -203,11 +208,15 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
   };
 })(({ widget, methods }) => {
   const dispatch = useDispatch();
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<string | null>(null);
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
+  const distributionCauseAreas = useSelector(
+    (state: State) => state.donation.distributionCauseAreas,
+  );
 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
 
@@ -215,6 +224,52 @@ export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) 
     dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (widgetContext.prefilled && distributionCauseAreas.length > 0) {
+      const prefilled = widgetContext.prefilled;
+      // Overwrite distribution cause areas with prefilled data
+      distributionCauseAreas.forEach((causeArea) => {
+        const prefilledCauseArea = prefilled.find(
+          (prefilledCauseArea) => prefilledCauseArea.causeAreaId === causeArea.id,
+        );
+        if (prefilledCauseArea) {
+          dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
+          dispatch(setShareType(causeArea.id, false));
+          let newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
+            const prefilledOrganization = prefilledCauseArea.organizations.find(
+              (prefilledOrganization) => prefilledOrganization.organizationId === organization.id,
+            );
+            if (prefilledOrganization) {
+              return {
+                ...organization,
+                percentageShare: prefilledOrganization.share.toString(),
+              };
+            } else {
+              return {
+                ...organization,
+                percentageShare: "0",
+              };
+            }
+          });
+
+          dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
+        } else {
+          dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
+          dispatch(setShareType(causeArea.id, true));
+          let newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
+            return {
+              ...organization,
+              percentageShare: "0",
+            };
+          });
+
+          dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
+        }
+        return causeArea;
+      });
+    }
+  }, [widgetContext.prefilled]);
 
   useDefaultPaymentMethodEffect(methods);
 
