@@ -43,6 +43,81 @@ describe("Organizations Page", () => {
     });
   });
 
+  it("Should maintain custom chosen distribution when closing and opening widget again", () => {
+    cy.wait(100);
+
+    cy.get('[data-cy="organizations-list-button-1"]').click(); // Clicks the AMF button in the organization list
+
+    cy.pickSingleDonation();
+
+    cy.get("[data-cy=org-1]").clear();
+    cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=org-12]").clear();
+    cy.get("[data-cy=org-12]").type("50");
+
+    cy.get("[data-cy=close-widget]").click();
+
+    cy.wait(250);
+
+    cy.get("[data-cy=gi-button]").click();
+
+    cy.wait(250);
+
+    cy.get("[data-cy=org-1]").should("have.value", "50");
+    cy.get("[data-cy=org-12]").should("have.value", "50");
+  });
+
+  it("Should maintain custom chosen distribution when navigating back and forth", () => {
+    cy.wait(100);
+
+    cy.get('[data-cy="organizations-list-button-1"]').click(); // Clicks the AMF button in the organization list
+
+    cy.pickSingleDonation();
+
+    cy.get("[data-cy=org-1]").clear();
+
+    cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=org-12]").clear();
+    cy.get("[data-cy=org-12]").type("50");
+
+    const randomSum = Math.floor(Math.random() * 1000) + 100;
+    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+
+    cy.nextWidgetPane();
+
+    cy.get("[data-cy=back-button]").click();
+
+    cy.wait(250);
+
+    cy.get("[data-cy=org-1]").should("have.value", "50");
+    cy.get("[data-cy=org-12]").should("have.value", "50");
+  });
+
+  it("Should have different prefilled distribution if first choosing AMF, then creating a custom distribution, then closing the widget and then choosing HKI", () => {
+    cy.wait(100);
+
+    cy.get('[data-cy="organizations-list-button-1"]').click(); // Clicks the AMF button in the organization list
+
+    cy.pickSingleDonation();
+
+    cy.get("[data-cy=org-1]").clear();
+    cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=org-12]").clear();
+    cy.get("[data-cy=org-12]").type("50");
+
+    cy.get("[data-cy=close-widget]").click();
+
+    cy.wait(250);
+
+    cy.get('[data-cy="organizations-list-button-10"]').click(); // Clicks the HKI button in the organization list
+
+    cy.wait(250);
+
+    cy.get("[data-cy=org-10]").should("have.value", "100");
+    cy.get("[data-cy=org-1]").should("have.value", "0");
+    cy.get("[data-cy=org-12]").should("have.value", "0");
+  });
+
   it("End-2-End donation with AMF selected from organization list", () => {
     cy.wait(100);
 

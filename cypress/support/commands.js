@@ -73,11 +73,13 @@ const nextWidgetPane = () => {
     .last()
     .within(() => {
       cy.get("button").click();
+      cy.wait(250);
     });
 };
 
 const prevWidgetPane = () => {
   cy.get("[data-cy=back-button]").click();
+  cy.wait(250);
 };
 
 const checkNextIsDisabled = () => {
