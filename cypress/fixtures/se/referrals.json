@@ -1,0 +1,67 @@
+[
+  {
+    "id": 28,
+    "name": "Google",
+    "ordering": null
+  },
+  {
+    "id": 29,
+    "name": "Från en vän",
+    "ordering": null
+  },
+  {
+    "id": 30,
+    "name": "Effektiv Altruism Sverige",
+    "ordering": null
+  },
+  {
+    "id": 31,
+    "name": "Facebook",
+    "ordering": null
+  },
+  {
+    "id": 32,
+    "name": "Twitter",
+    "ordering": null
+  },
+  {
+    "id": 33,
+    "name": "LinkedIn",
+    "ordering": null
+  },
+  {
+    "id": 34,
+    "name": "Podcast",
+    "ordering": null
+  },
+  {
+    "id": 35,
+    "name": "Blogg",
+    "ordering": null
+  },
+  {
+    "id": 36,
+    "name": "Instagram",
+    "ordering": null
+  },
+  {
+    "id": 37,
+    "name": "Siri Helle",
+    "ordering": null
+  },
+  {
+    "id": 38,
+    "name": "Erik Angner",
+    "ordering": null
+  },
+  {
+    "id": 39,
+    "name": "José Gonzáles",
+    "ordering": null
+  },
+  {
+    "id": 10,
+    "name": "Annat",
+    "ordering": 99
+  }
+]

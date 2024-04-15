@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "name": "Global hälsa",
+    "shortDescription": "Global hälsa",
+    "longDescription": "Global hälsa",
+    "informationUrl": "https://geeffektivt.se/global-halsa",
+    "isActive": true,
+    "ordering": 1,
+    "standardPercentageShare": 100,
+    "organizations": [
+      {
+        "id": 12,
+        "name": "GiveWell Top Charities Fund",
+        "abbreviation": "TCF",
+        "shortDescription": "GiveWell gjør en kontinuerlig vurdering av saksområder for å finne de mest trengende sakene, pengene utdeles så kvartalsvis til de mest effektive organisasjonene.",
+        "longDescription": "GiveWell",
+        "standardShare": 50,
+        "informationUrl": "https://geeffektivt.se/global-halsa",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 1
+      },
+      {
+        "id": 15,
+        "name": "GiveWell All Grants Fund",
+        "abbreviation": "AGF",
+        "shortDescription": "AGF",
+        "longDescription": "AGF",
+        "standardShare": 50,
+        "informationUrl": "https://geeffektivt.se/global-halsa",
+        "isActive": true,
+        "ordering": 2,
+        "causeAreaId": 1
+      },
+      {
+        "id": 1,
+        "name": "Against Malaria Foundation",
+        "abbreviation": "AMF",
+        "shortDescription": "Against Malaria Foundation driver preventivt arbeid gjennom distribusjon av impregnerte malarianett. Studier viser at for 8kr beskyttes én person i minst ett år.",
+        "longDescription": "Mygnetting til folket",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/global-halsa",
+        "isActive": true,
+        "ordering": 3,
+        "causeAreaId": 1
+      },
+      {
+        "id": 14,
+        "name": "New Incentives",
+        "abbreviation": "NI",
+        "shortDescription": "Når omsorgspersoner tar med et spedbarn til en klinikk for den første vaksinen, får de tilbud om å motta direkte kontantoverføringer hvis de fortsetter å komme tilbake i tråd med vaksinasjonsplanen.\n",
+        "longDescription": "NI",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/global-halsa",
+        "isActive": true,
+        "ordering": 5,
+        "causeAreaId": 1
+      },
+      {
+        "id": 10,
+        "name": "Helen Keller International",
+        "abbreviation": "HKI",
+        "shortDescription": "Helen Keller International forebygger mangelsykdommer ved bruk av vitamin A-tilskudd, som er årsaken til halvparten av dødsfall blant barn under 5 år.",
+        "longDescription": "HKI",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/global-halsa",
+        "isActive": true,
+        "ordering": 6,
+        "causeAreaId": 1
+      },
+      {
+        "id": 4,
+        "name": "Malaria Consortium",
+        "abbreviation": "MC",
+        "shortDescription": "Malaria Consortium utfører seasonal malaria chemoprevention (SMC) som forhindrer smitte  i Afrika, studier viser at denne metoden er svært kostnadseffektiv.",
+        "longDescription": "mc",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/global-halsa",
+        "isActive": true,
+        "ordering": 7,
+        "causeAreaId": 1
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Klimat",
+    "shortDescription": "Klimat",
+    "longDescription": "Future generations",
+    "informationUrl": "https://geeffektivt.se/klimat",
+    "isActive": true,
+    "ordering": 2,
+    "standardPercentageShare": 0,
+    "organizations": [
+      {
+        "id": 20,
+        "name": "Clean Air Task Force",
+        "abbreviation": "CATF",
+        "shortDescription": "CATF",
+        "longDescription": "CATF",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/klimat",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 3
+      },
+      {
+        "id": 26,
+        "name": "Founders Pledge Climate Change Fund",
+        "abbreviation": "FPCL",
+        "shortDescription": "FPCL",
+        "longDescription": "FPCL",
+        "standardShare": 100,
+        "informationUrl": "https://geeffektivt.se/klimat",
+        "isActive": true,
+        "ordering": 6,
+        "causeAreaId": 3
+      },
+      {
+        "id": 36,
+        "name": "Industrious Labs ",
+        "abbreviation": "IL",
+        "shortDescription": "IL",
+        "longDescription": "IL",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/klimat",
+        "isActive": true,
+        "ordering": 99,
+        "causeAreaId": 3
+      },
+      {
+        "id": 37,
+        "name": "Good Energy Collective",
+        "abbreviation": "GEC",
+        "shortDescription": "GEC",
+        "longDescription": "GEC",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/klimat",
+        "isActive": true,
+        "ordering": 99,
+        "causeAreaId": 3
+      },
+      {
+        "id": 41,
+        "name": "Project Innerspace",
+        "abbreviation": "PIS",
+        "shortDescription": "PIS",
+        "longDescription": "PIS",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/klimat",
+        "isActive": true,
+        "ordering": 99,
+        "causeAreaId": 3
+      },
+      {
+        "id": 42,
+        "name": "Opportunity Green",
+        "abbreviation": "OGR",
+        "shortDescription": "OGR",
+        "longDescription": "OGR",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/klimat",
+        "isActive": true,
+        "ordering": 99,
+        "causeAreaId": 3
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Djurvälfärd",
+    "shortDescription": "Djurvälfärd",
+    "longDescription": "Djurvälfärd",
+    "informationUrl": "https://geeffektivt.se/djurvalfard",
+    "isActive": true,
+    "ordering": 3,
+    "standardPercentageShare": 0,
+    "organizations": [
+      {
+        "id": 19,
+        "name": "ACE Recommended Charity Fund",
+        "abbreviation": "ACE",
+        "shortDescription": "ACE",
+        "longDescription": "ACE",
+        "standardShare": 100,
+        "informationUrl": "https://geeffektivt.se/djurvelferd",
+        "isActive": true,
+        "ordering": 0,
+        "causeAreaId": 2
+      },
+      {
+        "id": 17,
+        "name": "Good Food Institute",
+        "abbreviation": "GFI",
+        "shortDescription": "GFI",
+        "longDescription": "GFI",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/djurvelferd",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 2
+      },
+      {
+        "id": 18,
+        "name": "The Humane League",
+        "abbreviation": "THL",
+        "shortDescription": "THL",
+        "longDescription": "THL",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/djurvelferd",
+        "isActive": true,
+        "ordering": 2,
+        "causeAreaId": 2
+      },
+      {
+        "id": 25,
+        "name": "Faunalytics",
+        "abbreviation": "FN",
+        "shortDescription": "FN",
+        "longDescription": "FN",
+        "standardShare": 0,
+        "informationUrl": "https://geeffektivt.se/djurvelferd",
+        "isActive": true,
+        "ordering": 4,
+        "causeAreaId": 2
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Stöd Ge Effektivt",
+    "shortDescription": "Drift",
+    "longDescription": "Stöd Ge Effektivt",
+    "informationUrl": "https://geeffektivt.se",
+    "isActive": true,
+    "ordering": 4,
+    "standardPercentageShare": 0,
+    "organizations": [
+      {
+        "id": 27,
+        "name": "Drift",
+        "abbreviation": "Drift",
+        "shortDescription": "Drift",
+        "longDescription": "Drift",
+        "standardShare": 100,
+        "informationUrl": "https://geeffektivt.se/",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 4
+      }
+    ]
+  }
+]
