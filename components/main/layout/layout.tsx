@@ -41,6 +41,7 @@ type QueryResult = {
   settings: [
     {
       donate_label_short: string;
+      donate_label_title: string;
       accent_color: string;
     },
   ];
@@ -50,6 +51,7 @@ const query = groq`
   {
     "settings": *[_type == "site_settings"] {
       donate_label_short,
+      donate_label_title,
       accent_color
     }
   }
@@ -64,6 +66,7 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
     isPreview: preview,
     giveButton: {
       donate_label_short: settings.donate_label_short,
+      donate_label_title: settings.donate_label_title,
       accent_color: settings.accent_color,
     },
   };
@@ -103,6 +106,7 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
       <GiveButton
         inverted={false}
         color={giveButton.accent_color}
+        title={giveButton.donate_label_title}
         onClick={() => setWidgetContext({ open: true, prefilled: null })}
       >
         {giveButton.donate_label_short}
