@@ -112,7 +112,7 @@ export const AutogiroPane: React.FC<{
           <span
             style={{
               transition: "all 200ms",
-              rotate: typeof manualAutogiroSetupDate === "undefined" ? "180deg" : "0deg",
+              rotate: typeof manualAutogiroSetupDate === "undefined" ? "0deg" : "180deg",
             }}
           >
             ↓
