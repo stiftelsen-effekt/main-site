@@ -106,7 +106,10 @@ export const DonationPane: React.FC<{
                 autoComplete="off"
                 data-cy="donation-sum-input"
                 onChange={(e) => {
-                  if (Number.isInteger(e.target.value) === true && parseInt(e.target.value) > 0) {
+                  if (
+                    Number.isInteger(parseInt(e.target.value)) === true &&
+                    parseInt(e.target.value) > 0
+                  ) {
                     dispatch(setSum(parseInt(e.target.value)));
                   } else {
                     dispatch(setSum(-1));

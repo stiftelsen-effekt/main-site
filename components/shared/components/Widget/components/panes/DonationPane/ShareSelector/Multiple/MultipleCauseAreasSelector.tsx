@@ -95,7 +95,7 @@ export const MultipleCauseAreasSelector: React.FC<{
                       let shareInput: string = distributionCauseArea.percentageShare;
                       if (e.target.value === "") {
                         shareInput = "0";
-                      } else if (Number.isInteger(e.target.value)) {
+                      } else if (Number.isInteger(parseInt(e.target.value))) {
                         const newShare = parseInt(e.target.value);
                         if (newShare <= 100 && newShare >= 0) {
                           shareInput = newShare.toString();

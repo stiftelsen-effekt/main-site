@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React, { useRef } from "react";
-import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import PlausibleProvider from "next-plausible";
 import { State } from "../components/shared/components/Widget/store/state";
@@ -16,6 +15,7 @@ import { RouterContext, RouterContextValue, fetchRouterContext } from "../contex
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { Layout } from "../components/main/layout/layout";
 import { Tuple, combineReducers, configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
 
 export enum LayoutType {
   Default = "default",

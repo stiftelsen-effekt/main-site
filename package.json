@@ -65,7 +65,7 @@
     "@types/jest": "^29.5.12",
     "@types/luxon": "^3.4.2",
     "@types/node": "18.15.11",
-    "@types/react": "^17.0.39",
+    "@types/react": "^18.2.79",
     "@types/styled-components": "^5.1.25",
     "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",

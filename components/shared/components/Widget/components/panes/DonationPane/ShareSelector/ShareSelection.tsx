@@ -73,7 +73,7 @@ export const SharesSelection: React.FC<{
 
                 if (e.target.value === "") {
                   newOrganizationShares[index].percentageShare = "0";
-                } else if (Number.isInteger(e.target.value)) {
+                } else if (Number.isInteger(parseInt(e.target.value))) {
                   const newSplit = parseInt(e.target.value);
                   if (newSplit <= 100 && newSplit >= 0) {
                     newOrganizationShares[index].percentageShare = newSplit.toString();
