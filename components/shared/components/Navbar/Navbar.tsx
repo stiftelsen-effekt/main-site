@@ -178,29 +178,25 @@ export const Navbar = withStaticProps(
         >
           {lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link href="/" passHref>
-                <a onClick={(e) => e.currentTarget.blur()}>
-                  <ResponsiveImage
-                    image={dashboardLogo}
-                    onClick={() => setExpanded(false)}
-                    priority
-                    blur={false}
-                  />
-                </a>
+              <Link href="/" passHref onClick={(e) => e.currentTarget.blur()}>
+                <ResponsiveImage
+                  image={dashboardLogo}
+                  onClick={() => setExpanded(false)}
+                  priority
+                  blur={false}
+                />
               </Link>
             </div>
           )}
           {!lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link href="/" passHref>
-                <a onClick={(e) => e.currentTarget.blur()}>
-                  <ResponsiveImage
-                    image={logo}
-                    onClick={() => setExpanded(false)}
-                    priority
-                    blur={false}
-                  />
-                </a>
+              <Link href="/" passHref onClick={(e) => e.currentTarget.blur()}>
+                <ResponsiveImage
+                  image={logo}
+                  onClick={() => setExpanded(false)}
+                  priority
+                  blur={false}
+                />
               </Link>
             </div>
           )}
@@ -241,15 +237,12 @@ export const Navbar = withStaticProps(
                               <Link
                                 href={[...(dashboard ? dashboardPath : []), subel.slug].join("/")}
                                 passHref
+                                onClick={(e) => {
+                                  e.currentTarget.blur();
+                                  setExpanded(false);
+                                }}
                               >
-                                <a
-                                  onClick={(e) => {
-                                    e.currentTarget.blur();
-                                    setExpanded(false);
-                                  }}
-                                >
-                                  {subel.title}
-                                </a>
+                                {subel.title}
                               </Link>
                             </li>
                           ))}
@@ -259,8 +252,12 @@ export const Navbar = withStaticProps(
               </li>
             ) : (
               <li key={el._key} data-cy={`${el.slug}-link`}>
-                <Link href={[...(dashboard ? dashboardPath : []), el.slug].join("/")} passHref>
-                  <a onClick={() => setExpanded(false)}>{el.title}</a>
+                <Link
+                  href={[...(dashboard ? dashboardPath : []), el.slug].join("/")}
+                  passHref
+                  onClick={() => setExpanded(false)}
+                >
+                  {el.title}
                 </Link>
               </li>
             ),
@@ -275,15 +272,13 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              <Link href={dashboardPath.join("/")} passHref>
-                <a tabIndex={-1}>
-                  <EffektButton
-                    variant={EffektButtonVariant.SECONDARY}
-                    onClick={() => setExpanded(false)}
-                  >
-                    {labels.dashboard}
-                  </EffektButton>
-                </a>
+              <Link href={dashboardPath.join("/")} passHref tabIndex={-1}>
+                <EffektButton
+                  variant={EffektButtonVariant.SECONDARY}
+                  onClick={() => setExpanded(false)}
+                >
+                  {labels.dashboard}
+                </EffektButton>
               </Link>
             )}
             <EffektButton

@@ -24,10 +24,13 @@ const DonationYearMenu: React.FC<{
           onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
           onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
         >
-          <Link href={dashboardPath.join("/")} scroll={false} passHref>
-            <a onClick={(e) => e.currentTarget.blur()}>
-              <span>{totalTitle}</span>
-            </a>
+          <Link
+            href={dashboardPath.join("/")}
+            scroll={false}
+            passHref
+            onClick={(e) => e.currentTarget.blur()}
+          >
+            <span>{totalTitle}</span>
           </Link>
         </li>
 
@@ -44,10 +47,9 @@ const DonationYearMenu: React.FC<{
               }}
               scroll={false}
               passHref
+              onClick={(e) => e.currentTarget.blur()}
             >
-              <a onClick={(e) => e.currentTarget.blur()}>
-                <span>{year}</span>
-              </a>
+              <span>{year}</span>
             </Link>
           </li>
         ))}

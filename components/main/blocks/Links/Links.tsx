@@ -47,18 +47,18 @@ export const LinkComponent: React.FC<{
   const { articlesPagePath } = useRouterContext();
 
   return (
-    <Link href={getHref(link, articlesPagePath)} passHref>
-      <a
-        target={link._type === "link" && link.newtab ? "_blank" : ""}
-        onClick={(e) => {
-          e.currentTarget.blur();
-        }}
-        style={style}
-      >
-        {link.title
-          ? `→ ${link.title}`
-          : `${children}${link._type === "link" && link.newtab ? " ↗" : ""}`}
-      </a>
+    <Link
+      href={getHref(link, articlesPagePath)}
+      passHref
+      target={link._type === "link" && link.newtab ? "_blank" : ""}
+      onClick={(e) => {
+        e.currentTarget.blur();
+      }}
+      style={style}
+    >
+      {link.title
+        ? `→ ${link.title}`
+        : `${children}${link._type === "link" && link.newtab ? " ↗" : ""}`}
     </Link>
   );
 };

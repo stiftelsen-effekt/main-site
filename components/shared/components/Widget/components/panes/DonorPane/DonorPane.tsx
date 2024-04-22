@@ -259,16 +259,16 @@ export const DonorPane: React.FC<{
                   {text.privacy_policy_link && (
                     <div style={{ marginTop: "10px" }}>
                       {text.privacy_policy_text}{" "}
-                      <Link href={`/${text.privacy_policy_link.slug}`} passHref>
-                        <a
-                          target={"_blank"}
-                          onClick={(e) => {
-                            e.currentTarget.blur();
-                          }}
-                          style={{ borderBottom: "1px solid var(--primary)" }}
-                        >
-                          {`${text.privacy_policy_link.title}  ↗`}
-                        </a>
+                      <Link
+                        href={`/${text.privacy_policy_link.slug}`}
+                        passHref
+                        target={"_blank"}
+                        onClick={(e) => {
+                          e.currentTarget.blur();
+                        }}
+                        style={{ borderBottom: "1px solid var(--primary)" }}
+                      >
+                        {`${text.privacy_policy_link.title}  ↗`}
                       </Link>
                     </div>
                   )}

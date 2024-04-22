@@ -13,16 +13,16 @@ export const DataInfo: React.FC<{ page: ProfilePage }> = ({ page }) => {
           <strong>{page.tax_subtitle}</strong>
           <PortableText value={page.tax} />
 
-          <Link href={page.tax_link ?? "/"} passHref>
-            <a target={"_blank"}>{page.read_more_label} →</a>
+          <Link href={page.tax_link ?? "/"} passHref target={"_blank"}>
+            {page.read_more_label}→
           </Link>
         </section>
         <section className={style.privacy}>
           <strong>{page.data_subtitle}</strong>
           <PortableText value={page.data} />
 
-          <Link href={page.data_link ?? "/"} passHref>
-            <a target={"_blank"}>{page.read_more_label} →</a>
+          <Link href={page.data_link ?? "/"} passHref target={"_blank"}>
+            {page.read_more_label}→
           </Link>
         </section>
       </div>

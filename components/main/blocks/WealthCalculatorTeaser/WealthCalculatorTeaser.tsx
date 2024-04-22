@@ -89,9 +89,7 @@ export const WealthCalculatorTeaser: React.FC<{
               }
               passHref
             >
-              <a>
-                <EffektButton onClick={() => {}}>{link.title}</EffektButton>
-              </a>
+              <EffektButton onClick={() => {}}>{link.title}</EffektButton>
             </Link>
           </div>
         </div>
@@ -131,11 +129,9 @@ export const WealthCalculatorTeaser: React.FC<{
           }
           passHref
         >
-          <a>
-            <EffektButton onClick={() => {}} fullWidth>
-              {link.title}
-            </EffektButton>
-          </a>
+          <EffektButton onClick={() => {}} fullWidth>
+            {link.title}
+          </EffektButton>
         </Link>
       </div>
     </div>

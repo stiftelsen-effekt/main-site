@@ -92,14 +92,9 @@ const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
                               : footerItem.url || "/"
                           }
                           passHref
+                          target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}
                         >
-                          <a
-                            target={
-                              footerItem._type === "link" && footerItem.newtab ? "_blank" : ""
-                            }
-                          >
-                            {footerItem.title}
-                          </a>
+                          {footerItem.title}
                         </Link>
                       </li>
                     );
