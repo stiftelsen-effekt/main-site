@@ -3,7 +3,7 @@ import styles from "./Navbar.module.scss";
 import Link from "next/link";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { WidgetContext } from "../../../main/layout/layout";
 import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
 import { ResponsiveImage } from "../../responsiveimage";
@@ -33,7 +33,7 @@ export type MainNavbarItem = NavLink | MainNavbarGroup;
 type QueryResult = {
   settings: [
     {
-      logo: SanityImageSource;
+      logo: SanityImageObject;
       main_navigation: MainNavbarItem[];
       donate_label: string;
       accent_color: string;
@@ -42,7 +42,7 @@ type QueryResult = {
   dashboard: [
     {
       main_navigation: MainNavbarItem[];
-      dashboard_logo: SanityImageSource;
+      dashboard_logo: SanityImageObject;
       dashboard_label: string;
       logout_label: string;
     },
@@ -183,7 +183,6 @@ export const Navbar = withStaticProps(
                   image={dashboardLogo}
                   onClick={() => setExpanded(false)}
                   priority
-                  blur={false}
                 />
               </Link>
             </div>
@@ -191,12 +190,7 @@ export const Navbar = withStaticProps(
           {!lightLogo && (
             <div className={styles.logoWrapperImage}>
               <Link href="/" passHref onClick={(e) => e.currentTarget.blur()}>
-                <ResponsiveImage
-                  image={logo}
-                  onClick={() => setExpanded(false)}
-                  priority
-                  blur={false}
-                />
+                <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
               </Link>
             </div>
           )}
@@ -266,7 +260,9 @@ export const Navbar = withStaticProps(
             {user ? (
               <EffektButton
                 variant={EffektButtonVariant.SECONDARY}
-                onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}
+                onClick={() =>
+                  logout({ logoutParams: { returnTo: process.env.NEXT_PUBLIC_SITE_URL } })
+                }
                 extraMargin={true}
               >
                 {labels.logout}

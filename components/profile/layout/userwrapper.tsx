@@ -23,8 +23,10 @@ export const UserWrapper: React.FC<{
 
   if (!isAuthenticated && !isLoading && !error && !skipAuthentication)
     loginWithRedirect({
-      screen_hint: screenHint ? screenHint : undefined,
-      prompt: prompt ? prompt : undefined,
+      authorizationParams: {
+        screen_hint: screenHint ? screenHint : undefined,
+        prompt: prompt ? prompt : undefined,
+      },
     });
 
   if (error)

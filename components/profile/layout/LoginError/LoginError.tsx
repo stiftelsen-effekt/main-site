@@ -26,11 +26,13 @@ export const LoginError: React.FC<{
         <p>{message}</p>
 
         <div className={elements["button-group"]}>
-          <EffektButton onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_SITE_URL })}>
+          <EffektButton
+            onClick={() => logout({ logoutParams: { returnTo: process.env.NEXT_PUBLIC_SITE_URL } })}
+          >
             {loginErrorConfig.login_abort_label}
           </EffektButton>
           <EffektButton
-            onClick={loginWithRedirect}
+            onClick={() => loginWithRedirect()}
             cy="btn-login"
             variant={EffektButtonVariant.SECONDARY}
           >

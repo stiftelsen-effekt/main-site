@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Testemonial.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { PortableText } from "@portabletext/react";
 
@@ -8,7 +8,7 @@ export interface Testimony {
   quotee: string;
   quotee_background: any;
   quote: string;
-  image: SanityImageSource;
+  image: SanityImageObject;
 }
 
 export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonies }) => {

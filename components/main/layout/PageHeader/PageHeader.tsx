@@ -2,14 +2,14 @@ import React from "react";
 import style from "./PageHeader.module.scss";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links, LinkType } from "../../blocks/Links/Links";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
   layout?: "default" | "centered" | "hero" | "coverPhoto";
-  coverPhoto?: SanityImageSource;
+  coverPhoto?: SanityImageObject;
   links?: (LinkType | NavLink)[];
 }> = ({ title, inngress, links, layout = "default", coverPhoto }) => {
   const hasmetacontent = inngress || links;

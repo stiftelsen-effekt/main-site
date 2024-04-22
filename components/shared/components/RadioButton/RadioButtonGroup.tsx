@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./RadioButtons.module.scss";
 import { RadioButton } from "./RadioButton";
-import { wrap } from "cypress/types/lodash";
 import AnimateHeight from "react-animate-height";
 
 export const RadioButtonGroup: React.FC<{

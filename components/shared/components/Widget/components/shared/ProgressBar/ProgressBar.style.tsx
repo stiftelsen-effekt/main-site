@@ -25,7 +25,9 @@ export const ProgressContainer = styled.div`
 interface ProgressCircleProps {
   filled: boolean;
 }
-export const ProgressCircle = styled.div`
+
+/** Typed */
+export const ProgressCircle = styled.div<ProgressCircleProps>`
   width: 20px;
   height: 20px;
   border: 1px solid var(--primary);
@@ -45,7 +47,11 @@ export const ProgressLine = styled.div`
   background: var(--primary);
 `;
 
-export const ActionButton = styled.button`
+interface ActionButtonProps {
+  active?: boolean;
+}
+
+export const ActionButton = styled.button<ActionButtonProps>`
   font-size: 40px;
   line-height: 40px;
   padding: 8px;
@@ -80,7 +86,3 @@ export const TooltipWrapper = styled.div`
   font-size: 18px;
   border-radius: 10px;
 `;
-
-interface ActionButtonProps {
-  active?: boolean;
-}

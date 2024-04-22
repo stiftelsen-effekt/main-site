@@ -1,7 +1,7 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
-import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
-import { DistributionCauseArea, TaxUnit } from "./models";
+import { apiResult, getAccessTokenSilently } from "./hooks/useApi";
+import { TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
 import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
 

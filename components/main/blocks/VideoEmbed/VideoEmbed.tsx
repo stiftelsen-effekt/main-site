@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import elements from "./VideoEmbed.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import YouTube from "react-youtube";
 
-export const VideoEmbed: React.FC<{ id: string; thumbnail: SanityImageSource }> = ({
+export const VideoEmbed: React.FC<{ id: string; thumbnail: SanityImageObject }> = ({
   id,
   thumbnail,
 }) => {

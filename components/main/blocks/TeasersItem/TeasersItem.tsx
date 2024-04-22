@@ -1,6 +1,6 @@
 import React from "react";
 import elements from "./TeasersItem.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType, Links } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
@@ -10,7 +10,7 @@ export interface TeasersItemProps {
   paragraph: string;
   disclaimer?: string;
   links?: (LinkType | NavLink)[];
-  image: SanityImageSource;
+  image: SanityImageObject;
 }
 
 export const TeasersItem: React.FC<TeasersItemProps> = ({

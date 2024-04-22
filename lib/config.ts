@@ -1,6 +1,6 @@
-import { ProjectConfig } from "next-sanity";
+import { ClientConfig } from "next-sanity";
 
-export const projectConfig: ProjectConfig = {
+export const projectConfig: ClientConfig = {
   /**
    * Find your project ID and dataset in `sanity.json` in your studio project.
    * These are considered “public”, but you can use environment variables

@@ -22,7 +22,7 @@ export interface TextInputWrapperProps {
   clustered?: boolean;
 }
 
-export const TextInputWrapper = styled.div`
+export const TextInputWrapper = styled.div<TextInputWrapperProps>`
   display: block;
   margin-bottom: 5px;
   font-size: 15px;
@@ -82,7 +82,7 @@ export const TextInputWrapper = styled.div`
   }
 `;
 
-export const TextInputField = styled.input`
+export const TextInputField = styled.input<TextInputProps>`
   z-index: 1;
   font-size: inherit;
   padding: 20px;

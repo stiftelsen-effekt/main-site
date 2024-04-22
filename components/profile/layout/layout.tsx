@@ -102,12 +102,13 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN || ""}
       clientId={process.env.NEXT_PUBLIC_AUTH_CLIENT_ID || ""}
-      audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE || ""}
-      redirectUri={
-        typeof window !== "undefined"
-          ? [window.location.origin, ...dashboardPath, ""].join("/")
-          : undefined
-      }
+      authorizationParams={{
+        audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE || "",
+        redirect_uri:
+          typeof window !== "undefined"
+            ? [window.location.origin, ...dashboardPath, ""].join("/")
+            : undefined,
+      }}
       onRedirectCallback={onRedirectCallback}
       cacheLocation={cacheLocation}
     >

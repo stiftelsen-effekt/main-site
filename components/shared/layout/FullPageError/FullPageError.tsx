@@ -15,7 +15,9 @@ export const FullPageError: React.FC<{ error?: string }> = ({ error }) => {
       <div className={style.buttons}>
         <EffektButton onClick={() => router.push("/")}>Ta meg tilbake til forsiden</EffektButton>
         {user && (
-          <EffektButton onClick={() => logout({ returnTo: window.location.origin })}>
+          <EffektButton
+            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+          >
             Logg ut
           </EffektButton>
         )}

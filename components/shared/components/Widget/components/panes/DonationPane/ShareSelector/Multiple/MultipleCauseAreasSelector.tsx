@@ -19,7 +19,6 @@ import { PortableText } from "@portabletext/react";
 import AnimateHeight from "react-animate-height";
 import { ErrorText } from "../../DonationPane";
 import { filterErrorTextsForCauseArea } from "../../_util";
-import Validator from "validator";
 
 export const MultipleCauseAreasSelector: React.FC<{
   configuration: SmartDistributionContext;
@@ -55,7 +54,8 @@ export const MultipleCauseAreasSelector: React.FC<{
             (distributionCauseArea) => distributionCauseArea.id === causeArea.id,
           );
 
-          if (!distributionCauseArea) return <div>Missing cause are distribution in state</div>;
+          if (!distributionCauseArea)
+            return <div key={causeArea.name}>Missing cause are distribution in state</div>;
 
           const standardSplit = distributionCauseArea.standardSplit;
 
@@ -95,7 +95,7 @@ export const MultipleCauseAreasSelector: React.FC<{
                       let shareInput: string = distributionCauseArea.percentageShare;
                       if (e.target.value === "") {
                         shareInput = "0";
-                      } else if (Validator.isInt(e.target.value)) {
+                      } else if (Number.isInteger(e.target.value)) {
                         const newShare = parseInt(e.target.value);
                         if (newShare <= 100 && newShare >= 0) {
                           shareInput = newShare.toString();
