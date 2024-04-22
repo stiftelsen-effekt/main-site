@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React, { useRef } from "react";
-import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import PlausibleProvider from "next-plausible";
@@ -15,23 +14,24 @@ import { referralReducer } from "../components/shared/components/Widget/store/re
 // import { usePreviewSubscription } from "../lib/sanity";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
-import { composeWithDevTools } from "@redux-devtools/extension";
 import { Layout } from "../components/main/layout/layout";
+import { Tuple, combineReducers, configureStore } from "@reduxjs/toolkit";
 
 export enum LayoutType {
   Default = "default",
   Profile = "profile",
 }
 
-const rootReducer = combineReducers<State>({
-  donation: donationReducer,
-  layout: layoutReducer,
-  error: errorReducer,
-  referrals: referralReducer,
-});
-
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+const store = configureStore<State>({
+  reducer: combineReducers({
+    donation: donationReducer,
+    layout: layoutReducer,
+    error: errorReducer,
+    referrals: referralReducer,
+  }) as any,
+  middleware: () => new Tuple(sagaMiddleware),
+});
 sagaMiddleware.run(watchAll);
 
 export type GeneralPageProps = Record<string, unknown> & {

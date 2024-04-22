@@ -1,9 +1,4 @@
 import React, { Fragment } from "react";
-import { Text, Stack, ThemeProvider, Card } from "@sanity/ui";
-import Preview from "part:@sanity/base/preview";
-import schema from "part:@sanity/base/schema";
-import QueryContainer from "part:@sanity/base/query-container";
-import Spinner from "part:@sanity/components/loading/spinner";
 import { EyeOff } from "react-feather";
 // These are react components
 

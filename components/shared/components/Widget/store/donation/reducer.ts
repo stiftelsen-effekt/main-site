@@ -1,8 +1,6 @@
-import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
 import { getEarliestPossibleChargeDate } from "../../components/panes/PaymentPane/AvtaleGiro/AvtaleGiroDatePicker/avtalegirodates";
 import { RecurringDonation, ShareType } from "../../types/Enums";
-import { OrganizationShare } from "../../types/Temp";
 import { fetchCauseAreasAction } from "../layout/actions";
 import { Donation } from "../state";
 import { registerDonationAction } from "./actions";
@@ -27,6 +25,7 @@ import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
 import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
 import { CauseAreaShareSelectionTitle } from "../../components/panes/DonationPane/ShareSelector/Multiple/MultipleCauseAreasSelector.style";
+import { Reducer } from "@reduxjs/toolkit";
 
 const initialState: Donation = {
   recurring: RecurringDonation.RECURRING,

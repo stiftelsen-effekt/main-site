@@ -1,4 +1,4 @@
-import { Reducer } from "redux";
+import { Reducer } from "@reduxjs/toolkit";
 import { Error } from "../state";
 import { ErrorActionTypes, SET_ERROR } from "./types";
 

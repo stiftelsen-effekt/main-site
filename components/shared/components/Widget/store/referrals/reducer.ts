@@ -1,8 +1,8 @@
-import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
 import { Referrals } from "../state";
 import { fetchReferralsAction } from "./actions";
 import { ReferralActionTypes, SELECT_REFERRAL, SET_OTHER_TEXT } from "./types";
+import { Reducer } from "@reduxjs/toolkit";
 
 const initialState: Referrals = {
   websiteSession: new Date().getTime().toString(),

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TextInput, Card, Stack } from "@sanity/ui";
 import katex from "katex";
-import PatchEvent, { set, unset } from "part:@sanity/form-builder/patch-event";
 
 const createPatchFrom = (value) => PatchEvent.from(value === "" ? unset() : set(value));
 

@@ -1,4 +1,3 @@
-import S from "@sanity/desk-tool/structure-builder";
 import {
   Activity,
   Archive,
@@ -17,10 +16,9 @@ import {
   Tool,
   User,
 } from "react-feather";
-import Iframe from "sanity-plugin-iframe-pane";
 import resolveProductionUrl from "./resolveProductionUrl";
 
-export default () =>
+export const deskStructure = (S) =>
   S.list()
     .title("GiEffektivt.no")
     .items([
@@ -41,18 +39,17 @@ export default () =>
                 .params({ catId })
                 .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
                 .child((id) =>
-                  S.document()
-                    .schemaType("generic_page")
-                    .documentId(id)
-                    .views([
-                      S.view.form(),
+                  S.document().schemaType("generic_page").documentId(id).views([
+                    S.view.form(),
+                    /*
                       S.view
                         .component(Iframe)
                         .options({
                           url: (doc: any) => resolveProductionUrl(doc),
                         })
                         .title("Preview"),
-                    ]),
+                      */
+                  ]),
                 ),
             ),
         ),
@@ -66,18 +63,17 @@ export default () =>
             .filter('_type == "generic_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
-              S.document()
-                .schemaType("generic_page")
-                .documentId(id)
-                .views([
-                  S.view.form(),
+              S.document().schemaType("generic_page").documentId(id).views([
+                S.view.form(),
+                /*
                   S.view
                     .component(Iframe)
                     .options({
                       url: (doc: any) => resolveProductionUrl(doc),
                     })
                     .title("Preview"),
-                ]),
+                  */
+              ]),
             ),
         ),
       S.divider(),
@@ -85,18 +81,17 @@ export default () =>
         .title("Articles page")
         .icon(File)
         .child(
-          S.document()
-            .schemaType("articles")
-            .documentId("articles")
-            .views([
-              S.view.form(),
+          S.document().schemaType("articles").documentId("articles").views([
+            S.view.form(),
+            /*
               S.view
                 .component(Iframe)
                 .options({
                   url: (doc: any) => resolveProductionUrl(doc),
                 })
                 .title("Preview"),
-            ]),
+              */
+          ]),
         ),
       S.listItem()
         .schemaType("article_page")
@@ -113,18 +108,17 @@ export default () =>
                 .filter('_type == "article_page" && category._ref == $catId')
                 .params({ catId })
                 .child((id) =>
-                  S.document()
-                    .schemaType("article_page")
-                    .documentId(id)
-                    .views([
-                      S.view.form(),
+                  S.document().schemaType("article_page").documentId(id).views([
+                    S.view.form(),
+                    /*
                       S.view
                         .component(Iframe)
                         .options({
                           url: (doc: any) => resolveProductionUrl(doc),
                         })
                         .title("Preview"),
-                    ]),
+                      */
+                  ]),
                 ),
             ),
         ),
@@ -138,18 +132,17 @@ export default () =>
             .filter('_type == "article_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
-              S.document()
-                .schemaType("article_page")
-                .documentId(id)
-                .views([
-                  S.view.form(),
+              S.document().schemaType("article_page").documentId(id).views([
+                S.view.form(),
+                /*
                   S.view
                     .component(Iframe)
                     .options({
                       url: (doc: any) => resolveProductionUrl(doc),
                     })
                     .title("Preview"),
-                ]),
+                    */
+              ]),
             ),
         ),
       S.divider(),
@@ -157,18 +150,17 @@ export default () =>
         .title("Results")
         .icon(BarChart)
         .child(
-          S.document()
-            .schemaType("results")
-            .documentId("results")
-            .views([
-              S.view.form(),
+          S.document().schemaType("results").documentId("results").views([
+            S.view.form(),
+            /*
               S.view
                 .component(Iframe)
                 .options({
                   url: (doc: any) => resolveProductionUrl(doc),
                 })
                 .title("Preview"),
-            ]),
+                */
+          ]),
         ),
       S.divider(),
       S.listItem()
@@ -209,18 +201,17 @@ export default () =>
         .title("Donation widget")
         .icon(DollarSign)
         .child(
-          S.document()
-            .schemaType("donationwidget")
-            .documentId("donationwidget")
-            .views([
-              S.view.form(),
+          S.document().schemaType("donationwidget").documentId("donationwidget").views([
+            S.view.form(),
+            /*
               S.view
                 .component(Iframe)
                 .options({
                   url: (doc: any) => resolveProductionUrl(doc),
                 })
                 .title("Preview"),
-            ]),
+                */
+          ]),
         ),
       S.listItem()
         .title("Payment methods")
