@@ -12,7 +12,7 @@ import { errorReducer } from "../components/shared/components/Widget/store/error
 import { watchAll } from "../components/shared/components/Widget/store/root.saga";
 import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
 
-import { usePreviewSubscription } from "../lib/sanity";
+// import { usePreviewSubscription } from "../lib/sanity";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { composeWithDevTools } from "@redux-devtools/extension";
@@ -52,6 +52,7 @@ function MyApp({
     appStaticProps?.routerContext || null,
   );
 
+  /*
   const { data: previewData, loading: previewLoading } = usePreviewSubscription(
     pageProps.data?.query || "",
     {
@@ -60,6 +61,7 @@ function MyApp({
       enabled: preview && !!pageProps.data?.query,
     },
   );
+  */
 
   if (!appStaticProps) {
     console.error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
@@ -67,6 +69,7 @@ function MyApp({
     return <Component {...pageProps} />;
   }
 
+  /*
   if (previewData?.page && Array.isArray(previewData.page)) {
     previewData.page = filterPageToSingleItem(previewData, preview);
   }
@@ -74,6 +77,7 @@ function MyApp({
   if (pageProps.data) {
     pageProps.data.result = previewData;
   }
+  */
 
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
 
