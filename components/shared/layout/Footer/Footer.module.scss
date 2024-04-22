@@ -80,11 +80,11 @@
 @for $i from 2 through 6 {
   .grid_#{$i} {
     .newsletter {
-      grid-column: 2 / #{math.ceil($i/2) + 2};
+      grid-column: 2 / #{math.ceil(math.div($i, 2)) + 2};
     }
 
     .sanity {
-      grid-column: #{math.ceil($i/2) + 2} / #{$i + 2};
+      grid-column: #{math.ceil(math.div($i, 2)) + 2} / #{$i + 2};
     }
   }
 }

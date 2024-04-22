@@ -1,21 +1,16 @@
 import React from "react";
 import styles from "./Contributor.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
-import { ImageUrlBuilder } from "next-sanity-image";
 
 export type ContributorType = {
   _id: string;
-  image: SanityImageSource;
+  image: SanityImageObject;
   displayImage?: boolean;
   name: string;
   email?: string;
   subrole?: string;
   additional?: string;
-};
-
-const contributorImageBuilder = (imageUrlBuilder: ImageUrlBuilder) => {
-  return imageUrlBuilder.width(400).height(490).saturation(-100).fit("clip");
 };
 
 export const Contributor: React.FC<ContributorType & { contactLink?: boolean }> = ({
@@ -31,7 +26,7 @@ export const Contributor: React.FC<ContributorType & { contactLink?: boolean }> 
     <div className={styles.contributor}>
       {image != null && displayImage && (
         <div className={styles.contributor__image}>
-          <ResponsiveImage layout="fill" image={image} urlBuilder={contributorImageBuilder} />
+          <ResponsiveImage layout="fill" image={image} />
         </div>
       )}
       <span className={styles.contributor__title}>{name}</span>

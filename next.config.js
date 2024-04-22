@@ -13,7 +13,13 @@ const nextConfig = {
   reactStrictMode: true,
   rewrites: () => [STUDIO_REWRITE],
   images: {
-    domains: ["cdn.sanity.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
+    ],
+    dangerouslyAllowSVG: true,
   },
   compiler: {
     // ssr and displayName are configured by default
