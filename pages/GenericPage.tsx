@@ -110,7 +110,9 @@ const fetchGenericPage = groq`
     header {
       ...,
       seoImage{
-        asset->,
+        asset->{
+          url
+        },
       },
       pageHeader {
         asset->,

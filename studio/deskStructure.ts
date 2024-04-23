@@ -130,7 +130,6 @@ export const deskStructure = (S) =>
             .title("Articles")
             .schemaType("article_page")
             .filter('_type == "article_page" && !defined(category)')
-            .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
               S.document().schemaType("article_page").documentId(id).views([
                 S.view.form(),

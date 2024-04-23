@@ -96,12 +96,14 @@ export default {
   ],
   preview: {
     select: {
-      title: "heading",
+      heading: "heading",
       inverted: "inverted",
       nodivider: "nodivider",
       blocks: "blocks",
       hidden: "hidden",
     },
-    component: ContentSectionPreview,
+  },
+  components: {
+    preview: ContentSectionPreview,
   },
 } as const;

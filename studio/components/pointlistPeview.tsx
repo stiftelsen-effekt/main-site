@@ -1,10 +1,12 @@
 import React from "react";
 import { Grid, Stack, Text, Flex, Box, Card } from "@sanity/ui";
 import { List } from "react-feather";
+import { PreviewProps } from "sanity";
+import { Pointlist } from "../sanity.types";
 // These are react components
 
-export const PointlistPreview = React.forwardRef((props, ref) => {
-  if (!props.value.points)
+export const PointlistPreview = (props: PreviewProps & { points: Pointlist["points"] }) => {
+  if (!props.points)
     return (
       <Text>
         <List size={24} />
@@ -13,18 +15,31 @@ export const PointlistPreview = React.forwardRef((props, ref) => {
 
   const maxpoints = 5;
   const maxcharacters = 50;
-  const npoints = Math.min(props.value.points.length, maxpoints);
-  const overflowing = props.value.points.length - npoints;
+  const npoints = Math.min(props.points.length, maxpoints);
+  const overflowing = props.points.length - npoints;
   const subtitlelength = Math.round(maxcharacters / npoints);
   const titlelength = Math.round(maxcharacters / npoints - 2);
 
   return (
     <Flex direction={"row"} align={"center"}>
-      <Box style={{ flexShrink: 0 }}>
-        <List size={24} />
+      <Box
+        style={{
+          flexShrink: 0,
+          outlineWidth: 1,
+          width: "2.0625rem",
+          height: "2.0625rem",
+          minWidth: "2.0625rem",
+          borderRadius: "0.0625rem",
+          boxSizing: "border-box",
+          boxShadow: "inset 0 0 0 1px var(--card-fg-color)",
+          opacity: 0.1,
+        }}
+        padding={1}
+      >
+        <List size={"1rem"} />
       </Box>
       <Grid columns={npoints + (overflowing > 0 ? 1 : 0)} marginLeft={3}>
-        {props.value.points.slice(0, npoints).map((p) => (
+        {props.points.slice(0, npoints).map((p) => (
           <Stack rows={2} space={2} marginRight={2}>
             <Text size={1} style={{ whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
               {p.heading
@@ -50,4 +65,4 @@ export const PointlistPreview = React.forwardRef((props, ref) => {
       </Grid>
     </Flex>
   );
-});
+};

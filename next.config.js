@@ -15,6 +15,15 @@ const STUDIO_REWRITE = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    turbo: {
+      rules: {
+        "*.scss": {
+          loaders: ["sass-loader"],
+        },
+      },
+    },
+  },
   rewrites: () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
@@ -24,10 +33,6 @@ const nextConfig = {
       },
     ],
     dangerouslyAllowSVG: true,
-  },
-  compiler: {
-    // ssr and displayName are configured by default
-    styledComponents: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   headers: async () => {

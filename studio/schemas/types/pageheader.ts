@@ -1,4 +1,5 @@
 import { Sunset } from "react-feather";
+import { Pageheader } from "../../sanity.types";
 
 export default {
   name: "pageheader",
@@ -22,7 +23,7 @@ export default {
       type: "string",
       title: "Title",
       group: "content",
-      hidden: ({ parent }: any) => parent.layout === "coverPhoto",
+      hidden: ({ parent }: { parent: Pageheader }) => parent.layout === "coverPhoto",
     },
     {
       name: "inngress",
@@ -30,14 +31,14 @@ export default {
       type: "text",
       rows: 3,
       group: "content",
-      hidden: ({ parent }: any) => parent.layout === "coverPhoto",
+      hidden: ({ parent }: { parent: Pageheader }) => parent.layout === "coverPhoto",
     },
     {
       name: "coverPhoto",
       title: "Cover photo",
       type: "image",
       group: "content",
-      hidden: ({ parent }: any) => parent.layout !== "coverPhoto",
+      hidden: ({ parent }: { parent: Pageheader }) => parent.layout === "coverPhoto",
     },
     {
       name: "layout",

@@ -332,7 +332,7 @@ export const questionAndAnswerSelectionQuery = `
     ${linksContentQuery}
 } `;
 
-export const pageContentQuery = `content[] {
+export const pageContentQuery = `content[hidden!=true] {
   ...,
   blocks[] {
     _type == 'reference' => @->,
@@ -455,9 +455,6 @@ export const pageContentQuery = `content[] {
     },
     _type == 'giftcardteaser' => {
       ...,
-      image {
-        asset->,
-      },
       links[] {
         ${linksSelectorQuery}
       },
@@ -471,9 +468,6 @@ export const pageContentQuery = `content[] {
       ...,
       teasers[] {
         ...,
-        image {
-          asset->,
-        },
         links[] {
           ${linksSelectorQuery}
         },

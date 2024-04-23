@@ -42,6 +42,8 @@ export default {
       numbered: "numbered",
       points: "points",
     },
-    component: PointlistPreview,
+  },
+  components: {
+    preview: PointlistPreview,
   },
 } as const;

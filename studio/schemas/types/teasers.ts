@@ -19,6 +19,8 @@ export default {
     select: {
       teasers: "teasers",
     },
-    component: TeasersPreview,
+  },
+  components: {
+    preview: TeasersPreview,
   },
 } as const;
