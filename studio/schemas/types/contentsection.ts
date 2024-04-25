@@ -72,6 +72,7 @@ export default {
         { type: "contributorlist" },
         { type: "inngress" },
         { type: "wealthcalculatorteaser" },
+        { type: "philantropicteaser" },
         { type: "htmlembed" },
         { type: "teasers" },
         { type: "interventionwidget" },
@@ -80,6 +81,7 @@ export default {
         { type: "organizationslist" },
         { type: "giftcardteaser" },
         { type: "discountratecomparison" },
+        { type: "itncoverage" },
       ],
       options: {
         editModal: "fullscreen",

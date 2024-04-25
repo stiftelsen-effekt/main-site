@@ -27,6 +27,7 @@ export const DonationPane: React.FC<{
   const donation = useSelector((state: State) => state.donation);
   const layout = useSelector((state: State) => state.layout);
   const plausible = usePlausible();
+  const [showErrors, setShowErrors] = useState(false);
 
   const suggestedSums = donation.recurring
     ? text.amount_context.preset_amounts_recurring
@@ -45,7 +46,10 @@ export const DonationPane: React.FC<{
     dispatch(nextPane());
   }
 
-  const errorTexts = getErrorTexts(donation, text.donation_input_error_templates);
+  let errorTexts: ErrorText[] = [];
+  if (showErrors) {
+    errorTexts = getErrorTexts(donation, text.donation_input_error_templates);
+  }
 
   return (
     <Pane>
@@ -143,9 +147,13 @@ export const DonationPane: React.FC<{
 
         <ActionBar data-cy="next-button-div">
           <NextButton
-            disabled={donation.errors.length > 0}
+            disabled={showErrors && donation.errors.length > 0}
             onClick={() => {
-              onSubmit();
+              if (donation.errors.length > 0) {
+                setShowErrors(true);
+              } else {
+                onSubmit();
+              }
             }}
           >
             {text.pane1_button_text}

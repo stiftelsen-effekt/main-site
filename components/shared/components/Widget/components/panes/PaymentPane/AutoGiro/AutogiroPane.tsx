@@ -56,13 +56,13 @@ export const AutogiroPane: React.FC<{
       <RoundedBorder>
         <TextWrapper>
           <span>{config.manual_recurring_option_config.sum_label}</span>
-          <span>{thousandize(donation.sum || 0)} kr</span>
+          <span data-cy="autogiro-manual-sum">{thousandize(donation.sum || 0)} kr</span>
         </TextWrapper>
       </RoundedBorder>
       <RoundedBorder>
         <TextWrapper>
           <span>{config.manual_recurring_option_config.account_number_label}</span>
-          <span>9960-4219888700</span>
+          <span data-cy="autogiro-manual-bank-account">9960-4219888700</span>
         </TextWrapper>
       </RoundedBorder>
       <span>{config.manual_recurring_option_config.payment_numberexplanatory_text}</span>
@@ -73,6 +73,7 @@ export const AutogiroPane: React.FC<{
           setHasSubmitted(true);
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
+        data-cy="autogiro-manual-transaction-setup-complete-button"
       >
         {config.manual_recurring_option_config.complete_button_text}
       </EffektButton>
@@ -82,7 +83,7 @@ export const AutogiroPane: React.FC<{
   const manualAutogiroSetupContent = (
     <>
       <PortableText value={config.recurring_manual_option_config.explanation_text} />
-      <RoundedBorder>
+      <RoundedBorder data-cy="autogiro-manual-setup-date-selector-wrapper">
         <TextWrapper
           onClick={() => {
             if (typeof manualAutogiroSetupDate !== "undefined") {
@@ -92,6 +93,7 @@ export const AutogiroPane: React.FC<{
             }
           }}
           style={{ cursor: "pointer" }}
+          data-cy="autogiro-manual-setup-date-selector-button"
         >
           <span>
             {typeof manualAutogiroSetupDate === "undefined"
@@ -110,7 +112,7 @@ export const AutogiroPane: React.FC<{
           <span
             style={{
               transition: "all 200ms",
-              rotate: typeof manualAutogiroSetupDate === "undefined" ? "180deg" : "0deg",
+              rotate: typeof manualAutogiroSetupDate === "undefined" ? "0deg" : "180deg",
             }}
           >
             ↓
@@ -131,6 +133,7 @@ export const AutogiroPane: React.FC<{
           setHasSubmitted(true);
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
+        data-cy="autogiro-manual-setup-complete-button"
       >
         {config.recurring_manual_option_config.complete_button_text}
       </EffektButton>
@@ -147,6 +150,7 @@ export const AutogiroPane: React.FC<{
           setHasSubmitted(true);
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
+        data-cy="autogiro-form-setup-button"
       >
         {config.recurring_form_option_config.button_text}
       </EffektButton>
@@ -163,7 +167,7 @@ export const AutogiroPane: React.FC<{
             <RoundedBorder>
               <TextWrapper>
                 <span>{config.manual_recurring_option_config.payment_number_label}</span>
-                <span>{donation.kid}</span>
+                <span data-cy="autogiro-kid">{donation.kid}</span>
               </TextWrapper>
             </RoundedBorder>
             <i>Välj ett av nedan alternativ:</i>
@@ -175,16 +179,19 @@ export const AutogiroPane: React.FC<{
                   title: config.manual_recurring_option_config.title,
                   value: AutoGiroOptions.MANUAL_TRANSACTION,
                   content: manualTransactionContent,
+                  data_cy: "autogiro-radio-manual-transaction",
                 },
                 {
                   title: config.recurring_manual_option_config.title,
                   value: AutoGiroOptions.MANUAL_AUTOGIRO_SETUP,
                   content: manualAutogiroSetupContent,
+                  data_cy: "autogiro-radio-manual-autogiro-setup",
                 },
                 {
                   title: config.recurring_form_option_config.title,
                   value: AutoGiroOptions.FORM_AUTOGIRO_SETUP,
                   content: formAutogiroSetupContent,
+                  data_cy: "autogiro-radio-form-autogiro-setup",
                 },
               ]}
               selected={selectedAutogiroSetup}
@@ -196,7 +203,9 @@ export const AutogiroPane: React.FC<{
           </AnimateHeight>
 
           <AnimateHeight height={hasSubmitted ? "auto" : 0} animateOpacity={true}>
-            <PortableText value={config.completed_text} />
+            <div data-cy="autogiro-completed-text">
+              <PortableText value={config.completed_text} />
+            </div>
           </AnimateHeight>
         </StyledPaneContent>
         {/* Always show referrals for anonymous donors (ID 1464) */}

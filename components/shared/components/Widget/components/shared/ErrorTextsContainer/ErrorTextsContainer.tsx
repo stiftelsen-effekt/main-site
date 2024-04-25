@@ -49,7 +49,7 @@ export const ErrorTextsContainer: React.FC<{ errorTexts: ErrorText[] }> = ({ err
   }, [errorTexts]);
 
   return (
-    <ErrorsWrapper>
+    <ErrorsWrapper data-cy="donation-error-texts-container">
       <div>{/** Only used as a helper for css selectors */}</div>
       {Object.keys(errorTextMap).map((errorType) => {
         const text = errorTextMap[errorType as DonationErrorTypeNames].text;

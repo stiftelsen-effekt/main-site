@@ -51,6 +51,13 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "donate_label_title",
+      title: "Donate label title",
+      type: "string",
+      description: "Alt text for the donate button",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "contact",
       title: "Contact info",
       type: "reference",

@@ -369,7 +369,8 @@ export const DonationsPage = withStaticProps(
                 <Info size={"1.4rem"} style={{ marginRight: "1rem" }} />
                 <span>
                   Ännu är inte alla donationer registrerade i vår databas. Vi arbetar med att
-                  importera donationer från före 2023 och donationer från januari 2024.
+                  importera donationer från före 2023. Om du saknar en donation, vänligen kontakta
+                  oss på <a href="mailto:donationer@geeffektivt.se">donationer@geeffektivt.se</a>.
                 </span>
               </div>
             </InfoBox>

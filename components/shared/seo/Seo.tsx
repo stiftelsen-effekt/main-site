@@ -9,6 +9,7 @@ export const SEO: React.FC<SEOMeta> = ({
   canonicalurl,
   imageAsset,
   keywords,
+  siteName,
 }) => {
   const images = [];
   if (imageAsset)
@@ -37,7 +38,7 @@ export const SEO: React.FC<SEOMeta> = ({
         title: title,
         description: description,
         images: images,
-        site_name: "Gi Effektivt.",
+        site_name: siteName,
       }}
       twitter={{
         site: "@gieffektivt",

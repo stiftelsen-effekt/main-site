@@ -70,6 +70,28 @@ export default {
       of: [{ type: "link" }],
     },
     {
+      name: "widget_button",
+      title: "Widget button",
+      type: "object",
+      fields: [
+        {
+          name: "label",
+          title: "Label",
+          type: "string",
+        },
+        {
+          name: "cause_area_id",
+          title: "Cause area id",
+          type: "number",
+        },
+        {
+          name: "organization_id",
+          title: "Organization id",
+          type: "number",
+        },
+      ],
+    },
+    {
       name: "active",
       title: "Active",
       type: "boolean",
