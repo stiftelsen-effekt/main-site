@@ -53,11 +53,8 @@ export const ITNCoverage: React.FC<{
           {images.map((image, i) => (
             <div
               className={styles.image}
+              key={i}
               style={{
-                // F.ex. 3 images
-                // If slider is at 50, then the second image should be at 100% opacity, and the others at 0% opacity
-                // If slider is at 75, then the second image should be at 50% opacity, and the third at 50% opacity
-                // Check if the image should be hidden first
                 opacity: i === current ? currentOpacity : i === next ? nextOpacity : 0,
                 zIndex: i === current ? 1 : 0,
               }}
