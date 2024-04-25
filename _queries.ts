@@ -479,6 +479,26 @@ export const pageContentQuery = `content[] {
         },
       },
     },
+    _type == 'accordion' => {
+      ...,
+      blocks[] {
+        _type == 'paragraph' => @ {
+          ...,
+          content[] {
+            ...,
+            markDefs[] {
+              _type == 'citation' => @ {
+                ...,
+                "citations": citations[]->
+              },
+              ${linksSelectorQuery}
+              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+            }
+          }
+        },
+        _type != 'paragraph' => @,
+      }
+    },
     _type == 'philantropicteaser' => {
       ...,
       button {
@@ -489,7 +509,7 @@ export const pageContentQuery = `content[] {
       },
       people[]->,
     },
-    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'philantropicteaser' => @,
+    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'philantropicteaser' => @,
   }
 },
 `;

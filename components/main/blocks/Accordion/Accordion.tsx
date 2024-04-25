@@ -3,6 +3,7 @@ import AnimateHeight from "react-animate-height";
 import { customComponentRenderers } from "../Paragraph/Citation";
 import { useState } from "react";
 import styles from "./Accordion.module.scss";
+import { BlockContentRenderer, SectionBlockContentRenderer } from "../BlockContentRenderer";
 
 export const Accordion: React.FC<{ title: string; blocks: any[] }> = ({ title, blocks }) => {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ export const Accordion: React.FC<{ title: string; blocks: any[] }> = ({ title, b
       </div>
       <AnimateHeight duration={500} height={open ? "auto" : 0}>
         <div className={styles.content}>
-          <PortableText value={blocks || []} components={customComponentRenderers}></PortableText>
+          <SectionBlockContentRenderer blocks={blocks} />
         </div>
       </AnimateHeight>
     </div>
