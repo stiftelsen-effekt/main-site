@@ -311,6 +311,18 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           }
+          case "philantropicteaser": {
+            return (
+              <PhilantropicTeaser
+                key={block._key || block._id}
+                title={block.title}
+                description={block.description}
+                links={block.links}
+                button={block.button}
+                people={block.people}
+              />
+            );
+          }
           case "discountratecomparison":
             return (
               <DiscountRateComparison
