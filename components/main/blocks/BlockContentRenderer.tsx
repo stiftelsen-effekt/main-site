@@ -36,6 +36,7 @@ import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateCom
 import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
 import { Accordion } from "./Accordion/Accordion";
 import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
+import { ITNCoverage } from "./ITNCoverage/ITNCoverage";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -344,6 +345,19 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                             key={block._key || block._id}
                             min={block.discount_rate_min}
                             max={block.discount_rate_max}
+                          />
+                        );
+                      case "itncoverage":
+                        return (
+                          <ITNCoverage
+                            key={block._key || block._id}
+                            title={block.title}
+                            subtitle={block.subtitle}
+                            images={block.images}
+                            range={[block.start_year, block.end_year]}
+                            mapExplenation={block.map_explenation}
+                            graphExplenation={block.graph_explenation}
+                            caption={block.caption}
                           />
                         );
                       default:

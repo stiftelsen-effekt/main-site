@@ -23,7 +23,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
     "@babel/preset-typescript": "^7.16.7",
-    "@observablehq/plot": "^0.6.8",
+    "@observablehq/plot": "^0.6.14",
     "@portabletext/react": "^3.0.11",
     "@redux-devtools/extension": "^3.2.5",
     "@sanity/image-url": "^1.0.2",
@@ -32,7 +32,7 @@
     "auth0": "^3.2.0",
     "auth0-js": "^9.19.0",
     "babel-jest": "^27.5.1",
-    "d3": "^7.8.2",
+    "d3": "^7.9.0",
     "identity-obj-proxy": "^3.0.0",
     "jwt-decode": "^3.1.2",
     "luxon": "^2.3.0",

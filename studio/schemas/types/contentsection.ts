@@ -81,6 +81,7 @@ export default {
         { type: "organizationslist" },
         { type: "giftcardteaser" },
         { type: "discountratecomparison" },
+        { type: "itncoverage" },
       ],
       options: {
         editModal: "fullscreen",
