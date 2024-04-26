@@ -25,7 +25,7 @@ export const RecurringBankDonationForm: React.FC<{
       <form
         data-cy="avtalegiro-form"
         id="avtalegiro-form"
-        action="pvu.avtalegiro.no/ecsa/start"
+        action="https://pvu.avtalegiro.no/ecsa/start"
         method="post"
         target="_parent"
         style={{ paddingBottom: 30, display: "flex", justifyContent: "center" }}
