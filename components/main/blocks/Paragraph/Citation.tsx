@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
-import citation from "../../../../studio/schemas/types/citation";
 
 export const formatHarvardCitation = ({
   type,
@@ -215,13 +214,24 @@ export const formatHarvardCitation = ({
 export const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 export const reflowCitations = () => {
+  if ((window as any)._citationReflowTimeout) {
+    clearTimeout((window as any)._citationReflowTimeout);
+  }
+  (window as any)._citationReflowTimeout = setTimeout(reflowCitationsExecute, 1000);
+};
+
+const reflowCitationsExecute = () => {
   if (typeof window === "undefined") return;
   if (window.innerWidth < 1180) return;
-  const citations = document.querySelectorAll(".extendedcitation");
+
+  console.log("Reflowing citations", +new Date());
+
+  let citations = Array.from(document.querySelectorAll<HTMLSpanElement>(".extendedcitation"));
   // First reset them
   citations.forEach((citation) => {
     (citation as HTMLElement).style.transform = "translateY(-1.5rem)";
   });
+  citations = citations.filter((citation) => citation.offsetParent !== null);
   for (let i = 0; i < citations.length; i++) {
     const citation = citations[i] as HTMLElement;
     if (i > 0) {
@@ -235,7 +245,7 @@ export const reflowCitations = () => {
   }
 };
 
-export const Citation = (props: any): JSX.Element => {
+export const Citation = (props: any) => {
   const [index, setIndex] = useState(1);
   const [highlighted, setHighlighted] = useState(false);
   const extendedRef = useRef<HTMLElement | null>(null);
@@ -277,7 +287,7 @@ export const Citation = (props: any): JSX.Element => {
   }, [extendedRef]);
 
   return (
-    <React.Fragment>
+    <>
       <cite
         style={{ cursor: "pointer" }}
         ref={extendedRef}
@@ -318,7 +328,7 @@ export const Citation = (props: any): JSX.Element => {
             ) : null,
           )}
       </cite>
-    </React.Fragment>
+    </>
   );
 };
 
