@@ -391,6 +391,11 @@ const RenderLatex: React.FC<any> = ({ text }) => {
 };
 
 export const customComponentRenderers = {
+  block: {
+    normal: (props: any) => (
+      <div style={{ marginBlockStart: "1em", marginBlockEnd: "1rem" }}>{props.children}</div>
+    ),
+  },
   marks: {
     citation: Citation,
     link: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,

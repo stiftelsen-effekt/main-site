@@ -32,9 +32,6 @@ export const blocktype = {
             ],
           },
         ],
-        blockEditor: {
-          render: CitationRenderer,
-        },
       },
       {
         name: "link",

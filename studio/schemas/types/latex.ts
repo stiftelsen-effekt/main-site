@@ -1,13 +1,17 @@
 import { Divide } from "react-feather";
 import KatexInput from "../../components/katexInput";
 import { KatexPreview } from "../../components/katexPreview";
+import { TexIcon } from "../../components/texIcon";
 
 export default {
   name: "latex",
   type: "object",
-  icon: Divide,
-  title: "Latex",
-  inputComponent: KatexInput,
+  icon: TexIcon,
+  title: "Block",
+  components: {
+    input: KatexInput,
+    preview: KatexPreview,
+  },
   fields: [
     {
       name: "latex",
@@ -27,6 +31,5 @@ export default {
       latex: "latex",
       renderedHtml: "renderedHtml",
     },
-    component: KatexPreview,
   },
 } as const;

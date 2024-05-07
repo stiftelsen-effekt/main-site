@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { TextInput, Card, Stack } from "@sanity/ui";
 import katex from "katex";
+import { ObjectInputProps, set, unset } from "sanity";
 
-const createPatchFrom = (value) => PatchEvent.from(value === "" ? unset() : set(value));
+const KatexInput = (props: ObjectInputProps) => {
+  const { value, onChange, readOnly } = props;
+  const [input, setInput] = useState(value?.latex || "");
 
-const KatexInput = React.forwardRef((props, ref) => {
-  const { type, value, onChange } = props;
-  const [input, setInput] = useState(value.latex || "");
-
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setInput(newValue);
 
@@ -16,26 +15,17 @@ const KatexInput = React.forwardRef((props, ref) => {
     try {
       renderedHtml = katex.renderToString(newValue, { throwOnError: false });
     } catch (e) {
-      // Handle errors or simply use a placeholder/error message in renderedHtml
       renderedHtml = `<span class="katex-error">Invalid LaTeX expression</span>`;
     }
 
     onChange(
-      createPatchFrom({
-        _type: type.name,
-        _key: value._key,
+      set({
+        _key: value?._key,
+        _type: value?._type,
         latex: newValue,
         renderedHtml: renderedHtml,
       }),
     );
-  };
-
-  const renderKatex = () => {
-    try {
-      return { __html: katex.renderToString(input, { throwOnError: false }) };
-    } catch (e) {
-      return { __html: `<span class="katex-error">${e.message}</span>` };
-    }
   };
 
   useEffect(() => {
@@ -45,17 +35,28 @@ const KatexInput = React.forwardRef((props, ref) => {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 
-    return () => document.head.removeChild(link);
+    return () => {
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+    };
   }, []);
 
   return (
     <Stack space={3}>
-      <TextInput value={input} onChange={handleChange} placeholder="Enter LaTeX code" ref={ref} />
+      <TextInput
+        value={input}
+        onChange={handleChange}
+        placeholder="Enter LaTeX code"
+        readOnly={readOnly}
+      />
       <Card tone="transparent" padding={4} shadow={1}>
-        <div dangerouslySetInnerHTML={renderKatex()} />
+        <div
+          dangerouslySetInnerHTML={{ __html: katex.renderToString(input, { throwOnError: false }) }}
+        />
       </Card>
     </Stack>
   );
-});
+};
 
 export default KatexInput;
