@@ -5,6 +5,7 @@
 /studio/node_modules
 /.pnp
 .pnp.js
+/studio/.sanity
 
 # testing
 /coverage
@@ -43,3 +44,4 @@ yarn-error.log*
 cypress.env.json
 cypress.env.json
 .sentryclirc
+
