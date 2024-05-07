@@ -23,7 +23,8 @@ export default {
       type: "string",
       title: "Title",
       group: "content",
-      hidden: ({ parent }: { parent: Pageheader }) => parent.layout === "coverPhoto",
+      hidden: ({ parent }: { parent?: Pageheader }) =>
+        parent ? parent.layout === "coverPhoto" : false,
     },
     {
       name: "inngress",
@@ -31,14 +32,16 @@ export default {
       type: "text",
       rows: 3,
       group: "content",
-      hidden: ({ parent }: { parent: Pageheader }) => parent.layout === "coverPhoto",
+      hidden: ({ parent }: { parent: Pageheader }) =>
+        parent ? parent.layout === "coverPhoto" : false,
     },
     {
       name: "coverPhoto",
       title: "Cover photo",
       type: "image",
       group: "content",
-      hidden: ({ parent }: { parent: Pageheader }) => parent.layout === "coverPhoto",
+      hidden: ({ parent }: { parent: Pageheader }) =>
+        parent ? parent.layout !== "coverPhoto" : true,
     },
     {
       name: "layout",

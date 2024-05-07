@@ -18,4 +18,10 @@ export default {
       title: "Paragraph",
     },
   ],
+  preview: {
+    select: {
+      title: "heading",
+      subtitle: "paragraph",
+    },
+  },
 } as const;

@@ -71,6 +71,8 @@ export default {
         })),
       };
     },
-    component: OrganizationsListPreview,
+  },
+  components: {
+    preview: OrganizationsListPreview,
   },
 } as const;

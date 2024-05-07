@@ -1,5 +1,6 @@
 import { FileText } from "react-feather";
 import { ContentSectionPreview } from "../../components/contentSectionPreview";
+import { useMemo } from "react";
 
 export default {
   name: "contentsection",
@@ -84,7 +85,7 @@ export default {
         { type: "itncoverage" },
       ],
       options: {
-        editModal: "fullscreen",
+        modal: "fullscreen",
       },
     },
     {
@@ -97,6 +98,7 @@ export default {
   ],
   preview: {
     select: {
+      _key: "_key",
       heading: "heading",
       inverted: "inverted",
       nodivider: "nodivider",

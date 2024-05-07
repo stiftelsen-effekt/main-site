@@ -1,7 +1,7 @@
-import { Card, Stack, ThemeProvider, Text } from "@sanity/ui";
-import React from "react";
+import { Card, Stack, ThemeProvider, Text, BoundaryElementProvider } from "@sanity/ui";
+import React, { useEffect, useMemo } from "react";
 import { EyeOff } from "react-feather";
-import { Preview, PreviewProps } from "sanity";
+import { DefaultPreview, Preview, PreviewProps, Reference, useClient } from "sanity";
 import { schemas } from "../schemas/schema";
 
 export const ContentSectionPreview = (
@@ -11,34 +11,10 @@ export const ContentSectionPreview = (
     heading?: string;
     nodivider?: string;
     blocks?: any[];
+    _key?: string;
   },
 ) => {
   const hasHeader = !props.nodivider || props.heading;
-
-  const referencePreview = (id) => (
-    /*
-    <QueryContainer query="*[_id==$id]" params={{ id }}>
-      {({ result, loading }) =>
-        loading ? (
-          <Spinner center message="Loading items…" />
-        ) : (
-          result && (
-            <div>
-              {result.documents.map((document) => (
-                <Fragment key={document._id}>
-                  <Preview value={document} type={schema.get(document._type)} />
-                </Fragment>
-              ))}
-            </div>
-          )
-        )
-      }
-    </QueryContainer>
-    */
-    <div>
-      <Text size={1}>Referanse til {id}</Text>
-    </div>
-  );
 
   return (
     <ThemeProvider scheme={props.inverted ? "dark" : "light"}>
@@ -67,9 +43,9 @@ export const ContentSectionPreview = (
             />
           </div>
         )}
-        <Stack space={4}>
+        <Stack space={1}>
           {hasHeader ? (
-            <Stack>
+            <Stack marginBottom={props.heading ? 3 : 0}>
               {props.nodivider ? null : (
                 <div
                   style={{
@@ -86,15 +62,21 @@ export const ContentSectionPreview = (
           ) : null}
           {props.blocks
             ? props.blocks.map((b) => {
-                console.log(schemas);
+                if (b._type === "reference") {
+                  return <ReferencePreview {...b} key={b._ref} />;
+                }
+
                 const schemaType = schemas.filter((s) => s.name == b._type)[0];
                 if (!schemaType) {
                   return <Text size={1}>Missing schema type {b._type}</Text>;
                 } else {
-                  return b._type !== "reference" ? (
-                    <Preview value={b} schemaType={schemaType} />
-                  ) : (
-                    referencePreview(b._ref)
+                  return (
+                    <Preview
+                      value={b}
+                      schemaType={schemaType}
+                      key={b._key}
+                      skipVisibilityCheck={true}
+                    />
                   );
                 }
               })
@@ -105,15 +87,31 @@ export const ContentSectionPreview = (
   );
 };
 
-/**
- *           
-          {props.blocks
-            ? props.blocks.map((b) =>
-                b._type !== "reference" ? (
-                  <Preview value={b} type={b} />
-                ) : (
-                  referencePreview(b._ref)
-                ),
-              )
-            : null}
- */
+const ReferencePreview = (props: Reference) => {
+  const client = useClient({ apiVersion: "2021-03-25" });
+
+  const [doc, setDoc] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    client.getDocument(props._ref).then((d) => {
+      setDoc(d);
+      setLoading(false);
+
+      console.log(d);
+    });
+  }, [setDoc, setLoading, client, props._ref]);
+
+  if (loading) {
+    return <DefaultPreview media={true} isPlaceholder={true} />;
+  }
+  if (!doc) {
+    return <Text size={1}>Missing document</Text>;
+  }
+  const schemaType = schemas.filter((s) => s.name == doc._type)[0];
+  if (!schemaType) {
+    return <Text size={1}>Missing schema type {doc._type}</Text>;
+  } else {
+    return <Preview value={doc} schemaType={schemaType} skipVisibilityCheck={true} />;
+  }
+};

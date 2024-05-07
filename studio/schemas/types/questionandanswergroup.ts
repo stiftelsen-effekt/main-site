@@ -14,7 +14,7 @@ export default {
     },
     {
       name: "answers",
-      title: "Question and andswers",
+      title: "Question and answers",
       type: "array",
       of: [{ type: "questionandanswer" }],
     },
@@ -24,6 +24,8 @@ export default {
       title: "title",
       answers: "answers",
     },
-    component: QuestionAndAnswerGroupPreview,
+  },
+  components: {
+    preview: QuestionAndAnswerGroupPreview,
   },
 } as const;

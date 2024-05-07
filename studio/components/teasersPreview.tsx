@@ -17,7 +17,14 @@ export const TeasersPreview = (props: PreviewProps & { teasers: Teasers["teasers
     <Flex direction={"row"} align={"center"}>
       <Grid rows={props.teasers.length} gap={3} flex={1}>
         {props.teasers.map((p, i) => (
-          <Flex direction={"row"} justify={"space-between"} align={"center"} gap={1} flex={1}>
+          <Flex
+            direction={"row"}
+            justify={"space-between"}
+            align={"center"}
+            gap={1}
+            flex={1}
+            key={p._key}
+          >
             <Box style={{ flexShrink: 0, order: i % 2 == 0 ? 0 : 1 }}>
               <Image size={32} />
             </Box>

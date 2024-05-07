@@ -70,6 +70,8 @@ export default {
         })),
       };
     },
-    component: TestimonialsPreview,
+  },
+  components: {
+    preview: TestimonialsPreview,
   },
 } as const;

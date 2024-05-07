@@ -1,11 +1,10 @@
 import React from "react";
 import { Stack, Text, Flex, Box } from "@sanity/ui";
 import { Type } from "react-feather";
-// These are react components
+import { PreviewProps } from "sanity";
 
-export const ParagraphPreview = React.forwardRef((props, ref) => {
-  const heading = props.value.title;
-  const subtitle = props.value.subtitle;
+export const ParagraphPreview = (props: PreviewProps & { heading: string; subtitle: string }) => {
+  const { heading, subtitle } = props;
 
   return (
     <Flex direction={"row"} align={"center"}>
@@ -22,4 +21,4 @@ export const ParagraphPreview = React.forwardRef((props, ref) => {
       </Box>
     </Flex>
   );
-});
+};

@@ -20,10 +20,7 @@ export default {
       of: [{ type: "link" }, { type: "navitem" }],
     },
   ],
-  preview: {
-    select: {
-      links: "links",
-    },
-    component: LinksPreview,
+  components: {
+    preview: LinksPreview,
   },
 } as const;

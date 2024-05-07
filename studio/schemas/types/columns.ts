@@ -17,6 +17,8 @@ export default {
     select: {
       columns: "columns",
     },
-    component: ColumnsPreview,
+  },
+  components: {
+    preview: ColumnsPreview,
   },
 } as const;
