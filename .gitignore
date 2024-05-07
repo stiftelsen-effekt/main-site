@@ -45,3 +45,4 @@ cypress.env.json
 cypress.env.json
 .sentryclirc
 
+studio/.sanity/runtime/app.js
