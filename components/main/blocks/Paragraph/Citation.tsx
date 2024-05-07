@@ -1,9 +1,10 @@
 import { PortableText } from "@portabletext/react";
-import React from "react";
+import React, { useMemo } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
+import katex from "katex";
 
 export const formatHarvardCitation = ({
   type,
@@ -342,10 +343,6 @@ const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
     link.rel = "stylesheet";
     link.id = "katex-styles-link";
     document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
   }, []);
   return (
     <span
@@ -360,11 +357,45 @@ const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
   );
 };
 
+const RenderLatex: React.FC<any> = ({ text }) => {
+  useEffect(() => {
+    if (document.getElementById("katex-styles-link")) return;
+
+    const link = document.createElement("link");
+    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.id = "katex-styles-link";
+    document.head.appendChild(link);
+  }, []);
+
+  const renderedHtml = useMemo(() => {
+    try {
+      return katex.renderToString(text, {
+        throwOnError: false,
+      });
+    } catch (e: any) {
+      return `<span style="color: red;">${e.message}</span>`;
+    }
+  }, [text]);
+  // Debug props
+  return (
+    <span
+      dangerouslySetInnerHTML={{ __html: renderedHtml }}
+      style={{
+        display: "inline-block",
+        fontSize: "1rem",
+      }}
+    ></span>
+  );
+};
+
 export const customComponentRenderers = {
   marks: {
     citation: Citation,
     link: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
     navitem: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,
+    math: RenderLatex,
   },
   types: {
     latex: Latex,
