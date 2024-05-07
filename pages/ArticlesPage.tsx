@@ -127,7 +127,7 @@ const fetchArticles = groq`
       ${linksContentQuery}
     },
   },
-  "articles": *[_type == "article_page"] | order(header.published desc) {
+  "articles": *[_type == "article_page" && hidden != true] | order(header.published desc) {
     header,
     "slug": slug.current,
     "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...5].text, " "),

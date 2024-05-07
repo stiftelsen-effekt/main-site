@@ -74,6 +74,7 @@ import referralgraph from "./types/results/referralgraph";
 import latex from "./types/latex";
 import accordion from "./types/accordion";
 import philantropicteaser from "./types/philantropicteaser";
+import itncoverage from "./types/itncoverage";
 import { pages } from "./pages/_pages";
 import { dashboardpages } from "./dashboard/_dashboardPages";
 
@@ -149,6 +150,7 @@ export const types = [
   latex,
   accordion,
   philantropicteaser,
+  itncoverage,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

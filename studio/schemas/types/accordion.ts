@@ -1,9 +1,10 @@
-import { blocktype } from "./blockcontent";
+import { ChevronDown } from "react-feather";
 
 export default {
   name: "accordion",
   type: "object",
   title: "Accordion",
+  icon: ChevronDown,
   fields: [
     {
       name: "title",
@@ -12,10 +13,25 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
-      name: "content",
-      title: "Content",
+      name: "blocks",
       type: "array",
-      of: [blocktype, { type: "latex" }],
+      title: "Content",
+      of: [
+        { type: "paragraph" },
+        { type: "quote" },
+        { type: "columns" },
+        { type: "links" },
+        { type: "normalimage" },
+        { type: "pointlist" },
+        { type: "videoembed" },
+        { type: "fullvideo" },
+        { type: "blocktables" },
+        { type: "newslettersignup" },
+        { type: "htmlembed" },
+      ],
+      options: {
+        editModal: "fullscreen",
+      },
     },
   ],
   preview: {

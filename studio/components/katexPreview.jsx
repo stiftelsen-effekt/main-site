@@ -5,6 +5,15 @@ export const KatexPreview = (props) => {
   const { value } = props;
 
   useEffect(() => {
+    /** Check if  css is already loaded */
+    if (
+      document.querySelector(
+        "link[href='https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css']",
+      )
+    ) {
+      return;
+    }
+
     const link = document.createElement("link");
     link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
     link.type = "text/css";

@@ -1,9 +1,19 @@
-import { Bookmark, Divide, ExternalLink, Link } from "react-feather";
+import { Bookmark, ExternalLink, Link } from "react-feather";
 import { CitationRenderer } from "../../components/citationRenderer";
+import { MathRenderer } from "../../components/mathRenderer";
+import { TexIcon } from "../../components/texIcon";
 
 export const blocktype = {
   type: "block",
   marks: {
+    decorators: [
+      { title: "Strong", value: "strong" },
+      { title: "Emphasis", value: "em" },
+      { title: "Code", value: "code" },
+      { title: "Underline", value: "underline" },
+      { title: "Strike", value: "strike-through" },
+      { title: "Math", value: "math", blockEditor: { render: MathRenderer, icon: TexIcon } },
+    ],
     annotations: [
       {
         name: "citation",

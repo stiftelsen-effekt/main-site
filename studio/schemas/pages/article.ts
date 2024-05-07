@@ -21,6 +21,13 @@ export default {
       to: [{ type: "category" }],
     },
     {
+      name: "hidden",
+      title: "Hidden",
+      type: "boolean",
+      description:
+        "Hide article from the list of articles (article will still be accessible via direct link)",
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",
