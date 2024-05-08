@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import React, { useRef } from "react";
+import React, { Suspense, lazy, useRef } from "react";
 import createSagaMiddleware from "redux-saga";
 import PlausibleProvider from "next-plausible";
 import { State } from "../components/shared/components/Widget/store/state";
@@ -16,6 +16,9 @@ import { ProfileLayout } from "../components/profile/layout/layout";
 import { Layout } from "../components/main/layout/layout";
 import { Tuple, combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import { VisualEditing } from "next-sanity";
+
+const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
 
 export enum LayoutType {
   Default = "default",
@@ -36,6 +39,8 @@ sagaMiddleware.run(watchAll);
 
 export type GeneralPageProps = Record<string, unknown> & {
   preview: boolean;
+  draftMode: boolean;
+  token: string;
   data?: {
     result: Record<string, unknown> & { page?: any; footer?: any };
     query: string;
@@ -52,34 +57,45 @@ function MyApp({
     appStaticProps?.routerContext || null,
   );
 
-  /*
-  const { data: previewData, loading: previewLoading } = usePreviewSubscription(
-    pageProps.data?.query || "",
-    {
-      params: pageProps.data?.queryParams ?? {},
-      initialData: pageProps.data?.result,
-      enabled: preview && !!pageProps.data?.query,
-    },
-  );
-  */
-
   if (!appStaticProps) {
     console.error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
 
     return <Component {...pageProps} />;
   }
 
-  /*
-  if (previewData?.page && Array.isArray(previewData.page)) {
-    previewData.page = filterPageToSingleItem(previewData, preview);
-  }
-
-  if (pageProps.data) {
-    pageProps.data.result = previewData;
-  }
-  */
-
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
+
+  if (pageProps.draftMode) {
+    console.log("Draft mode is enabled");
+    return (
+      <PreviewProvider token={pageProps.token}>
+        <PlausibleProvider
+          domain={plausibleDomain}
+          trackOutboundLinks={true}
+          taggedEvents={true}
+          trackLocalhost={true} // TODO: Remove when testing is done
+          enabled={true} // TODO: Remove when testing is done
+        >
+          <Provider store={store}>
+            <RouterContext.Provider value={routerContextValue.current}>
+              {appStaticProps.layout === LayoutType.Default ? (
+                <Layout {...appStaticProps.layoutProps}>
+                  <Component {...pageProps} />
+                </Layout>
+              ) : (
+                <ProfileLayout {...appStaticProps.layoutProps}>
+                  <Component {...pageProps} />
+                </ProfileLayout>
+              )}
+            </RouterContext.Provider>
+          </Provider>
+        </PlausibleProvider>
+        <Suspense>
+          <VisualEditing zIndex={Number.MAX_SAFE_INTEGER} />
+        </Suspense>
+      </PreviewProvider>
+    );
+  }
 
   return (
     <PlausibleProvider
@@ -107,10 +123,10 @@ function MyApp({
 }
 
 export async function getAppStaticProps({
-  preview,
+  draftMode = false,
   layout = LayoutType.Default,
 }: {
-  preview: boolean;
+  draftMode: boolean;
   layout?: LayoutType;
 }) {
   const routerContext = await fetchRouterContext();
@@ -119,11 +135,11 @@ export async function getAppStaticProps({
     ...(layout === LayoutType.Default
       ? {
           layout: LayoutType.Default as const,
-          layoutProps: await Layout.getStaticProps({ preview }),
+          layoutProps: await Layout.getStaticProps({ draftMode }),
         }
       : {
           layout: LayoutType.Profile as const,
-          layoutProps: await ProfileLayout.getStaticProps({ preview }),
+          layoutProps: await ProfileLayout.getStaticProps({ draftMode }),
         }),
   };
   return appStaticProps;

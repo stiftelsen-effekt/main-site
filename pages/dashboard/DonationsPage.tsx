@@ -10,7 +10,7 @@ import {
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import { useContext, useEffect, useState } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {

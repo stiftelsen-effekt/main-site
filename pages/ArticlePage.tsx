@@ -14,7 +14,7 @@ import {
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
 

@@ -6,12 +6,13 @@ import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { token } from "../token";
 
 export const getGenericPagePaths = async () => {
-  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
+  const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
   const slugs = data.pages.map((page) => page.slug.current);
@@ -20,18 +21,27 @@ export const getGenericPagePaths = async () => {
 };
 
 export const GenericPage = withStaticProps(
-  async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ preview });
+  async ({ path, draftMode = false }: { path: string[]; draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode });
 
     const slug = path.join("/") || "/";
 
-    let result = await getClient(preview).fetch(fetchGenericPage, { slug });
-    result = { ...result, page: filterPageToSingleItem(result, preview) };
+    const client = getClient(draftMode ? token : undefined);
+
+    let result = await client.fetch(
+      fetchGenericPage,
+      { slug },
+      { perspective: "previewDrafts", resultSourceMap: true },
+    );
+
+    if (result.page) {
+      console.log(JSON.stringify(result.page.content, null, 2));
+    }
 
     return {
       appStaticProps,
-      preview: preview,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
         query: fetchGenericPage,
@@ -39,11 +49,11 @@ export const GenericPage = withStaticProps(
       },
     }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, preview, navbarData }) => {
+)(({ data, draftMode, navbarData }) => {
   const page = data.result.page;
 
   if (!page) {
-    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+    return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
   }
 
   const header = page.header;
@@ -97,6 +107,7 @@ const fetchGenericPages = groq`
 const fetchGenericPage = groq`
 {
   "settings": *[_type == "site_settings"] {
+    ...,
     title,
     cookie_banner_configuration {
       ...,
@@ -106,7 +117,8 @@ const fetchGenericPage = groq`
       }
     },
   },
-  "page": *[_type == "generic_page" && slug.current == $slug] {
+  "page": *[_type == "generic_page" && slug.current == $slug][0] {
+    ...,
     header {
       ...,
       seoImage{

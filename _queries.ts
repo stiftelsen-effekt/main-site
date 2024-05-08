@@ -427,7 +427,15 @@ export const pageContentQuery = `content[hidden!=true] {
     _type == 'contributorlist' => {
       ...,
       role->,
-      contributors[]->
+      contributors[]->{
+        ...,
+        image {
+          asset->{
+            ...,
+            metadata
+          }
+        }
+      }
     },
     _type == 'inngress' => {
       ...,

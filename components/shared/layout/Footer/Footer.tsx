@@ -5,8 +5,9 @@ import { NavLink } from "../../components/Navbar/Navbar";
 import styles from "./Footer.module.scss";
 import { NewsletterSignup } from "../../../main/blocks/NewsletterSignup/NewsletterSignup";
 import { withStaticProps } from "../../../../util/withStaticProps";
-import { getClient } from "../../../../lib/sanity.server";
+import { getClient } from "../../../../lib/sanity.client";
 import { groq } from "next-sanity";
+import { token } from "../../../../token";
 
 export type FooterItem = NavLink | LinkType;
 export type FooterProps = {
@@ -49,8 +50,8 @@ export const footerQuery = groq`
   }
 `;
 
-const Footer = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const result = await getClient(preview).fetch<QueryResult>(footerQuery);
+const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
+  const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(footerQuery);
 
   const footer = result.data[0];
   return {

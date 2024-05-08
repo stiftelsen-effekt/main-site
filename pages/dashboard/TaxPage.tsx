@@ -15,7 +15,7 @@ import TaxMenu from "../../components/profile/tax/TaxMenu/TaxMenu";
 import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import style from "../../styles/Tax.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import {

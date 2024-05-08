@@ -6,7 +6,7 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import { getAppStaticProps } from "./_app.page";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({

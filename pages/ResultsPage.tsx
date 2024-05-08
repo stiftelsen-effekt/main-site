@@ -6,7 +6,7 @@ import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import styles from "../styles/Results.module.css";
 import { withStaticProps } from "../util/withStaticProps";
 import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";

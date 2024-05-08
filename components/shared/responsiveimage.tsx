@@ -2,15 +2,17 @@ import React from "react";
 import { useNextSanityImage } from "next-sanity-image";
 import { SanityAsset, SanityImageObject } from "@sanity/image-url/lib/types/types";
 import Image from "next/image";
-import { sanityClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 
 export const ResponsiveImage: React.FC<{
   image: SanityImageObject;
   alt?: string;
   onClick?: () => void;
   priority?: boolean;
-  layout?: "intrinsic" | "fill" | "responsive" | "fixed";
-}> = ({ image, alt, onClick, priority, layout = "fill" }) => {
+  sizes?: string;
+  layout?: "intrinsic" | "fill" | "responsive" | "fixed" | "cover";
+}> = ({ image, alt, onClick, priority, sizes, layout = "fill" }) => {
+  const sanityClient = getClient();
   let imageProps = useNextSanityImage(sanityClient, image);
 
   let lqip = null;
@@ -31,7 +33,23 @@ export const ResponsiveImage: React.FC<{
         onClick={onClick}
         priority={priority}
         blurDataURL={lqip}
-        sizes="100vw, 1920px, 1440px, 800px, 400px"
+        placeholder={lqip ? "blur" : "empty"}
+        objectFit="contain"
+        sizes={sizes}
+      />
+    );
+  } else if (layout === "cover") {
+    return (
+      <Image
+        src={imageProps.src}
+        fill
+        alt={alt || "Image"}
+        onClick={onClick}
+        priority={priority}
+        blurDataURL={lqip}
+        placeholder={lqip ? "blur" : "empty"}
+        objectFit="cover"
+        sizes={sizes}
       />
     );
   }
@@ -40,11 +58,13 @@ export const ResponsiveImage: React.FC<{
     <Image
       {...imageProps}
       layout={layout}
-      sizes="100vw, 1920px, 1440px, 800px, 400px"
       alt={alt || "Image"}
       onClick={onClick}
       priority={priority}
       blurDataURL={lqip}
+      placeholder={lqip ? "blur" : "empty"}
+      style={{ width: "100%", height: "auto" }}
+      sizes={sizes}
     />
   );
 };

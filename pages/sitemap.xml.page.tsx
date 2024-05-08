@@ -1,5 +1,5 @@
 import groq from "groq";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import { RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 
 export default function SiteMap() {

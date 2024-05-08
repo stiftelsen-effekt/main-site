@@ -37,6 +37,7 @@ import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs
 import { Accordion } from "./Accordion/Accordion";
 import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 import { ITNCoverage } from "./ITNCoverage/ITNCoverage";
+import { createDataAttribute } from "@sanity/visual-editing";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (

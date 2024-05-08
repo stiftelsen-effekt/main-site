@@ -10,8 +10,9 @@ import { ResponsiveImage } from "../../responsiveimage";
 import { useRouterContext } from "../../../../context/RouterContext";
 import { withStaticProps } from "../../../../util/withStaticProps";
 import { groq } from "next-sanity";
-import { getClient } from "../../../../lib/sanity.server";
+import { getClient } from "../../../../lib/sanity.client";
 import { useAuth0 } from "@auth0/auth0-react";
+import { token } from "../../../../token";
 
 export type NavLink = {
   _type: "navitem";
@@ -102,13 +103,13 @@ export const Navbar = withStaticProps(
   async ({
     dashboard,
     useDashboardLogo,
-    preview,
+    draftMode = false,
   }: {
     dashboard: boolean;
-    preview: boolean;
+    draftMode: boolean;
     useDashboardLogo?: boolean;
   }) => {
-    const result = await getClient(preview).fetch<QueryResult>(query);
+    const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
     const settings = result.settings[0];
     const dashboardData = result.dashboard[0];
     const elements = dashboard ? dashboardData.main_navigation : settings.main_navigation;

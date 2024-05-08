@@ -26,7 +26,7 @@ export const Contributor: React.FC<ContributorType & { contactLink?: boolean }> 
     <div className={styles.contributor}>
       {image != null && displayImage && (
         <div className={styles.contributor__image}>
-          <ResponsiveImage layout="fill" image={image} />
+          <ResponsiveImage layout="cover" image={image} sizes="90vw 240px 160px" />
         </div>
       )}
       <span className={styles.contributor__title}>{name}</span>

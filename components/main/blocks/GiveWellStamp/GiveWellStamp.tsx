@@ -22,13 +22,13 @@ export const GiveWellStamp: React.FC<GiveWellStampProps> = ({
       <div className={style.context}>
         <Links links={links}></Links>
         <div className={style.stamp}>
-          <Image src={Stamp} alt="" />
+          <Image src={Stamp} alt="" style={{ objectFit: "contain" }} fill={true} />
         </div>
       </div>
       <div className={style.quote}>
         <div className={style.quoteText}>
           <div className={style.logo}>
-            <Image src={GiveWellLogo} alt="GiveWell" />
+            <Image src={GiveWellLogo} alt="GiveWell" style={{ objectFit: "contain" }} fill={true} />
           </div>
           <figure>
             <blockquote>

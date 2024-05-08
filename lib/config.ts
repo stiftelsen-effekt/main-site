@@ -10,4 +10,5 @@ export const projectConfig: ClientConfig = {
    **/
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "dev",
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  apiVersion: "2024-05-05",
 };

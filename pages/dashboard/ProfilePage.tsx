@@ -9,7 +9,7 @@ import {
 } from "../../components/profile/details/ProfileInfo/ProfileInfo";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import style from "../../styles/Profile.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";

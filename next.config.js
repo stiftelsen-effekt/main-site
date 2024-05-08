@@ -15,15 +15,6 @@ const STUDIO_REWRITE = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    turbo: {
-      rules: {
-        "*.scss": {
-          loaders: ["sass-loader"],
-        },
-      },
-    },
-  },
   rewrites: () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
@@ -35,6 +26,8 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
+  /*
+  TODO: Specify sanity studio location as allowed, disallow others
   headers: async () => {
     return [
       {
@@ -48,6 +41,7 @@ const nextConfig = {
       },
     ];
   },
+  */
   async redirects() {
     return [
       {

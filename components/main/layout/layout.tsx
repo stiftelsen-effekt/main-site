@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 import { Dispatch, SetStateAction, createContext, useState, useMemo } from "react";
-import { getClient } from "../../../lib/sanity.server";
+import { getClient } from "../../../lib/sanity.client";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import Footer from "../../shared/layout/Footer/Footer";
@@ -8,6 +8,7 @@ import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { PrefilledDistribution, WidgetPane } from "./WidgetPane/WidgetPane";
+import { token } from "../../../token";
 
 export type WidgetContextType = {
   open: boolean;
@@ -57,20 +58,21 @@ const query = groq`
   }
 `;
 
-export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const result = await getClient(preview).fetch<QueryResult>(query);
+export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
+  const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
   const settings = result.settings[0];
   return {
-    footerData: await Footer.getStaticProps({ preview }),
-    widgetData: await Widget.getStaticProps({ preview }),
-    isPreview: preview,
+    footerData: await Footer.getStaticProps({ draftMode }),
+    widgetData: await Widget.getStaticProps({ draftMode }),
+    // isPreview: preview,
     giveButton: {
       donate_label_short: settings.donate_label_short,
       donate_label_title: settings.donate_label_title,
       accent_color: settings.accent_color,
     },
+    draftMode,
   };
-})(({ children, footerData, widgetData, giveButton, isPreview }) => {
+})(({ children, footerData, widgetData, giveButton, draftMode }) => {
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
@@ -102,7 +104,7 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
 
   return (
     <div className={containerClasses.join(" ")}>
-      {isPreview && <PreviewBlock />}
+      {draftMode && <PreviewBlock />}
       <GiveButton
         inverted={false}
         color={giveButton.accent_color}

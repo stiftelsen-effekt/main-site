@@ -8,7 +8,7 @@ import { PageContent } from "../../components/profile/layout/PageContent/PageCon
 import { ProfileLayout } from "../../components/profile/layout/layout";
 import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import styles from "../../styles/Agreements.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";

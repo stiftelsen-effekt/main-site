@@ -20,7 +20,8 @@ import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
 import { MissingNameModal, MissingNameModalConfig } from "./MissingNameModal/MissingNameModal";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
-import { getClient } from "../../../lib/sanity.server";
+import { getClient } from "../../../lib/sanity.client";
+import { token } from "../../../token";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -55,16 +56,18 @@ export const profileQuery = `
   }
 `;
 
-export const ProfileLayout = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const result = await getClient(preview).fetch<QueryResult>(profileQuery);
+export const ProfileLayout = withStaticProps(
+  async ({ draftMode = false }: { draftMode: boolean }) => {
+    const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(profileQuery);
 
-  return {
-    footerData: await Footer.getStaticProps({ preview }),
-    widgetData: await Widget.getStaticProps({ preview }),
-    profileData: result.data,
-    isPreview: preview,
-  };
-})(({ children, footerData, widgetData, profileData, isPreview }) => {
+    return {
+      footerData: await Footer.getStaticProps({ draftMode }),
+      widgetData: await Widget.getStaticProps({ draftMode }),
+      profileData: result.data,
+      draftMode,
+    };
+  },
+)(({ children, footerData, widgetData, profileData, draftMode }) => {
   const { dashboardPath } = useRouterContext();
 
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
@@ -134,7 +137,7 @@ export const ProfileLayout = withStaticProps(async ({ preview }: { preview: bool
                   closeButton={false}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
-                {isPreview && <PreviewBlock />}
+                {draftMode && <PreviewBlock />}
                 <WidgetContext.Provider value={widgetContextValue}>
                   <CookiesAccepted.Provider value={cookiesAcceptedValue}>
                     <WidgetPane

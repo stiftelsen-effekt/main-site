@@ -23,7 +23,7 @@ import { Clock } from "react-feather";
 import AgreementsMenu from "../../components/profile/agreements/AgreementsMenu/AgreementsMenu";
 import styles from "../../styles/Agreements.module.css";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import { groq } from "next-sanity";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";

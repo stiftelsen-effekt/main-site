@@ -113,7 +113,7 @@ const inferPageTypeFromPath = async (path: string[]) => {
 };
 
 export const getStaticProps = async ({
-  preview = false,
+  draftMode = false,
   params,
 }: GetStaticPropsContext<{ slug: string[] }>) => {
   const path = params?.slug ?? [];
@@ -122,7 +122,7 @@ export const getStaticProps = async ({
 
   switch (pageType) {
     case PageType.GenericPage: {
-      const props = await GenericPage.getStaticProps({ preview, path });
+      const props = await GenericPage.getStaticProps({ draftMode, path });
       return {
         props: {
           ...props,
