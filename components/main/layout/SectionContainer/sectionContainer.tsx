@@ -8,6 +8,7 @@ export type SectionContainerProps = {
   padded?: boolean;
   ypadded?: boolean;
   hidden?: boolean;
+  children: React.ReactNode;
 };
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
