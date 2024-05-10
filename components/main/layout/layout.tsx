@@ -7,8 +7,10 @@ import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
-import { PrefilledDistribution, WidgetPane } from "./WidgetPane/WidgetPane";
+import { PrefilledDistribution, WidgetPane, WidgetPaneProps } from "./WidgetPane/WidgetPane";
 import { token } from "../../../token";
+import { useLiveQuery } from "next-sanity/preview";
+import React from "react";
 
 export type WidgetContextType = {
   open: boolean;
@@ -62,8 +64,8 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
   const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
   const settings = result.settings[0];
   return {
-    footerData: await Footer.getStaticProps({ draftMode }),
-    widgetData: await Widget.getStaticProps({ draftMode }),
+    footer: await Footer.getStaticProps({ draftMode }),
+    widget: await Widget.getStaticProps({ draftMode }),
     // isPreview: preview,
     giveButton: {
       donate_label_short: settings.donate_label_short,
@@ -72,7 +74,7 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
     },
     draftMode,
   };
-})(({ children, footerData, widgetData, giveButton, draftMode }) => {
+})(({ children, footer, widget, giveButton, draftMode }) => {
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
@@ -115,11 +117,37 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
       </GiveButton>
       <WidgetContext.Provider value={widgetContextValue}>
         <CookiesAccepted.Provider value={cookiesAcceptedValue}>
-          <WidgetPane {...widgetData} prefilled={widgetContext.prefilled} />
+          {draftMode ? (
+            <PreviewWidgetPane {...widget} prefilled={widgetContext.prefilled} />
+          ) : (
+            <WidgetPane {...widget} prefilled={widgetContext.prefilled} />
+          )}
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
       </WidgetContext.Provider>
-      <Footer {...footerData} />
+      {draftMode ? <PreviewFooter {...footer} /> : <Footer {...footer} />}
     </div>
   );
 });
+
+const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <Footer {...(props as any)} />;
+};
+
+const PreviewWidgetPane: React.FC<
+  Awaited<ReturnType<typeof Widget.getStaticProps>> & WidgetPaneProps
+> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <WidgetPane {...(props as any)} />;
+};

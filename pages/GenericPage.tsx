@@ -8,8 +8,9 @@ import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
+import { useLiveQuery } from "next-sanity/preview";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -34,14 +35,10 @@ export const GenericPage = withStaticProps(
       { perspective: "previewDrafts", resultSourceMap: true },
     );
 
-    if (result.page) {
-      console.log(JSON.stringify(result.page.content, null, 2));
-    }
-
     return {
       appStaticProps,
       draftMode,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
         query: fetchGenericPage,
@@ -49,7 +46,7 @@ export const GenericPage = withStaticProps(
       },
     }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, draftMode, navbarData }) => {
+)(({ data, navbar, draftMode }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -80,7 +77,7 @@ export const GenericPage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-        <Navbar {...navbarData} />
+        {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
       <PageHeader
@@ -136,3 +133,13 @@ const fetchGenericPage = groq`
   }
 }
 `;
+
+const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticProps>>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <Navbar {...(props as any)} />;
+};

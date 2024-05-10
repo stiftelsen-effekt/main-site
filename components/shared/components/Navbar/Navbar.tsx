@@ -32,71 +32,67 @@ export type MainNavbarGroup = {
 export type MainNavbarItem = NavLink | MainNavbarGroup;
 
 type QueryResult = {
-  settings: [
-    {
-      logo: SanityImageObject;
-      main_navigation: MainNavbarItem[];
-      donate_label: string;
-      accent_color: string;
-    },
-  ];
-  dashboard: [
-    {
-      main_navigation: MainNavbarItem[];
-      dashboard_logo: SanityImageObject;
-      dashboard_label: string;
-      logout_label: string;
-    },
-  ];
+  settings: {
+    logo: SanityImageObject;
+    main_navigation: MainNavbarItem[];
+    donate_label: string;
+    accent_color: string;
+  };
+  dashboard: {
+    main_navigation: MainNavbarItem[];
+    dashboard_logo: SanityImageObject;
+    dashboard_label: string;
+    logout_label: string;
+  };
 };
 
 const query = groq`
-  {
-    "dashboard": *[_id == "dashboard"] {
-      dashboard_label,
-      logout_label,
-      dashboard_logo,
-      main_navigation[] {
-        _type == 'navgroup' => {
-          _type,
-          _key,
-          title,
-          items[]->{
-            title,
-            "slug": page->slug.current
-          },
-        },
-        _type != 'navgroup' => @ {
-          _type,
-          _key,
+{
+  "dashboard": *[_id == "dashboard"][0] {
+    dashboard_label,
+    logout_label,
+    dashboard_logo,
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[]->{
           title,
           "slug": page->slug.current
         },
-      }
-    },
-    "settings": *[_type == "site_settings"] {
-      logo,
-      donate_label,
-      accent_color,
-      main_navigation[] {
-        _type == 'navgroup' => {
-          _type,
-          _key,
-          title,
-          items[] {
-            title,
-            "slug": page->slug.current
-          },
-        },
-        _type != 'navgroup' => @ {
-          _type,
-          _key,
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
+      },
+    }
+  },
+  "settings": *[_type == "site_settings"][0] {
+    logo,
+    donate_label,
+    accent_color,
+    main_navigation[] {
+      _type == 'navgroup' => {
+        _type,
+        _key,
+        title,
+        items[] {
           title,
           "slug": page->slug.current
-        }
+        },
+      },
+      _type != 'navgroup' => @ {
+        _type,
+        _key,
+        title,
+        "slug": page->slug.current
       }
     }
   }
+}
 `;
 
 export const Navbar = withStaticProps(
@@ -110,34 +106,45 @@ export const Navbar = withStaticProps(
     useDashboardLogo?: boolean;
   }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
-    const settings = result.settings[0];
-    const dashboardData = result.dashboard[0];
-    const elements = dashboard ? dashboardData.main_navigation : settings.main_navigation;
 
     return {
       dashboard,
-      elements: elements.filter((e) => e !== null),
-      logo: settings.logo,
-      dashboardLogo: dashboardData.dashboard_logo,
       useDashboardLogo: useDashboardLogo || null,
-      labels: {
-        dashboard: dashboardData.dashboard_label,
-        logout: dashboardData.logout_label,
-      },
-      giveButton: {
-        donate_label: settings.donate_label,
-        accent_color: settings.accent_color,
+      data: {
+        result,
+        query,
       },
     };
   },
-)(({ dashboard, elements, logo, dashboardLogo, labels, giveButton, useDashboardLogo }) => {
+)(({ data, dashboard, useDashboardLogo }) => {
+  const settingsData = data.result.settings;
+  const dashboardData = data.result.dashboard;
+
+  let filteredElements = dashboard
+    ? data.result.dashboard.main_navigation
+    : data.result.settings.main_navigation;
+  filteredElements = filteredElements.filter((e) => e !== null);
+  const logo = data.result.settings.logo;
+
+  const dashboardLogo = data.result.dashboard.dashboard_logo;
+
+  const labels = {
+    dashboard: dashboardData.dashboard_label,
+    logout: dashboardData.logout_label,
+  };
+
+  const giveButton = {
+    donate_label: settingsData.donate_label,
+    accent_color: settingsData.accent_color,
+  };
+
   const { dashboardPath } = useRouterContext();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const { user, logout } = useAuth0();
 
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
-    elements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
+    filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
   const setExpanded = (expanded: boolean) => {
@@ -210,7 +217,7 @@ export const Navbar = withStaticProps(
           </button>
         </div>
         <ul>
-          {elements.map((el) =>
+          {filteredElements.map((el) =>
             el._type === "navgroup" ? (
               <li
                 key={el._key}

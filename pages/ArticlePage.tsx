@@ -16,7 +16,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
 import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { getAppStaticProps } from "./_app.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -35,8 +35,6 @@ const ArticlePage = withStaticProps(
       relatedArticles: RelatedArticle[];
       settings: { title: string; cookie_banner_configuration: CookieBannerConfiguration }[];
     }>(fetchArticle, { slug });
-
-    result = { ...result, page: filterPageToSingleItem(result, preview) };
 
     return {
       appStaticProps,

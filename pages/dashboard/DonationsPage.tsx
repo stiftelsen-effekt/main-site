@@ -1,12 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import {
-  filterPageToSingleItem,
-  GeneralPageProps,
-  getAppStaticProps,
-  LayoutType,
-} from "../_app.page";
+import { getAppStaticProps, LayoutType } from "../_app.page";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
@@ -54,11 +49,10 @@ export async function getDashboardPagePath() {
 
 export async function getDonationsPagePath() {
   let result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
-  let filteredResult = { ...result, page: filterPageToSingleItem(result, false) };
 
   const dashboardPath = await getDashboardPagePath();
 
-  const donationsSlug = filteredResult.page?.slug?.current;
+  const donationsSlug = result.page?.slug?.current;
 
   if (!donationsSlug) return null;
 
@@ -120,7 +114,7 @@ export const DonationsPage = withStaticProps(
   }
 
   const dashboard = data.result.dashboard[0];
-  const page = filterPageToSingleItem(data.result, false);
+  const page = data.result.page;
 
   if (!page)
     return (
@@ -433,7 +427,7 @@ type FetchDonationsPageResult = {
     title: string;
   }[];
   dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
-  page: DonationsPageData | DonationsPageData[] | null;
+  page: DonationsPageData | null;
   footer: any[];
   widget: any[];
 };

@@ -18,12 +18,7 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.client";
 import style from "../../styles/Tax.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import {
-  GeneralPageProps,
-  LayoutType,
-  filterPageToSingleItem,
-  getAppStaticProps,
-} from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
@@ -33,7 +28,7 @@ export async function getTaxPagePath(): Promise<string[]> {
 
   const { dashboard: [dashboard] = [] } = result;
 
-  const page = filterPageToSingleItem(result, false);
+  const page = result.page;
 
   const taxSlug = page?.slug?.current;
 
@@ -48,7 +43,7 @@ export async function getTaxPageSubPaths(): Promise<string[][]> {
 
   const { dashboard: [dashboard] = [] } = result;
 
-  const page = filterPageToSingleItem(result, false);
+  const page = result.page;
 
   const taxSlug = page?.slug?.current;
 
@@ -148,13 +143,13 @@ type FetchTaxPageResult = {
     main_currency?: string;
     title?: string;
   }>;
-  page: Array<{
+  page: {
     title?: string;
     features?: TaxPageFeature[];
     slug?: {
       current?: string;
     };
-  }>;
+  };
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 

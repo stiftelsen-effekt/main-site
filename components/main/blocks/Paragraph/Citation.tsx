@@ -225,8 +225,6 @@ const reflowCitationsExecute = () => {
   if (typeof window === "undefined") return;
   if (window.innerWidth < 1180) return;
 
-  console.log("Reflowing citations", +new Date());
-
   let citations = Array.from(document.querySelectorAll<HTMLSpanElement>(".extendedcitation"));
   // First reset them
   citations.forEach((citation) => {

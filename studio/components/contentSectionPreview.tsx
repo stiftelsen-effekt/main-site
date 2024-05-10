@@ -97,8 +97,6 @@ const ReferencePreview = (props: Reference) => {
     client.getDocument(props._ref).then((d) => {
       setDoc(d);
       setLoading(false);
-
-      console.log(d);
     });
   }, [setDoc, setLoading, client, props._ref]);
 

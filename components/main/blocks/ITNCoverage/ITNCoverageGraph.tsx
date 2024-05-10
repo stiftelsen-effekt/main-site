@@ -54,8 +54,6 @@ export const ITNCoverageGraph: React.FC<{ year: number }> = ({ year }) => {
     if (container.current) {
       const interpolated = interpolateData(year, data);
 
-      console.log(size.width, size.height);
-
       const chart = Plot.plot({
         y: {
           ticks: [0, 20, 40, 60],

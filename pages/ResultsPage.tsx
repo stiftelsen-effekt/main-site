@@ -9,7 +9,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.client";
 import styles from "../styles/Results.module.css";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, getAppStaticProps } from "./_app.page";
+import { getAppStaticProps } from "./_app.page";
 import {
   CumulativeDonations,
   DailyDonations,

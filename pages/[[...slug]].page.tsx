@@ -11,6 +11,8 @@ import { ProfilePage } from "./dashboard/ProfilePage";
 import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
 import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
 import { ResultsPage } from "./ResultsPage";
+import { useLiveQuery } from "next-sanity/preview";
+import { useIsEnabled } from "@sanity/preview-kit";
 
 enum PageType {
   GenericPage = "generic",
@@ -26,6 +28,12 @@ enum PageType {
 }
 
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  if (props.appStaticProps?.layoutProps?.draftMode || true) {
+    if (props.pageType === PageType.GenericPage) {
+      return <PreviewGenericPage {...props} />;
+    }
+  }
+
   switch (props.pageType) {
     case PageType.GenericPage:
       return <GenericPage {...props} />;
@@ -48,6 +56,16 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
     case PageType.TaxPage:
       return <TaxPage {...props} />;
   }
+};
+
+const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <GenericPage {...(props as any)} />;
 };
 
 function compareArrays<T>(a: T[], b: T[]) {

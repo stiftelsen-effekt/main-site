@@ -42,7 +42,7 @@ export type GeneralPageProps = Record<string, unknown> & {
   draftMode: boolean;
   token: string;
   data?: {
-    result: Record<string, unknown> & { page?: any; footer?: any };
+    result: Record<string, unknown>;
     query: string;
     queryParams: { slug?: string };
   };
@@ -66,7 +66,6 @@ function MyApp({
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
 
   if (pageProps.draftMode) {
-    console.log("Draft mode is enabled");
     return (
       <PreviewProvider token={pageProps.token}>
         <PlausibleProvider
@@ -144,32 +143,5 @@ export async function getAppStaticProps({
   };
   return appStaticProps;
 }
-
-export const filterPageToSingleItem = <T,>(
-  data: { page?: T | T[] },
-  preview: boolean,
-): T | null => {
-  if (!data.page) {
-    return null;
-  }
-
-  if (!Array.isArray(data.page)) {
-    return data.page;
-  }
-
-  if (data.page.length === 1) {
-    return data.page[0];
-  }
-
-  if (data.page.length === 0) {
-    return null;
-  }
-
-  if (preview) {
-    return data.page.find((item: any) => item._id.startsWith("drafts.")) || data.page[0];
-  }
-
-  return data.page[0];
-};
 
 export default MyApp;

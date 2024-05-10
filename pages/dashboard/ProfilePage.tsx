@@ -12,7 +12,7 @@ import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.client";
 import style from "../../styles/Profile.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getProfilePagePath() {

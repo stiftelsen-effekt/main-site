@@ -32,54 +32,48 @@ import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
 
-type QueryResult = {
-  widget: [WidgetProps];
-};
-
 const widgetQuery = groq`
-  {
-    "widget": *[_type == "donationwidget"] {
-      ...,
-      "locale": *[ _type == "site_settings"][0].main_locale,
-      methods[] { 
-        _type == 'reference' => @->{
-          _type == 'bank' => {
-            ...
-          },
-          _type == 'vipps' => {
-            _id,
-            selector_text,
-            recurring_title,
-            recurring_selector_earliest_text,
-            recurring_selector_choose_date_text,
-            recurring_selector_date_picker_configuration->,
-            recurring_button_text,
-            single_title,
-            single_button_text,
-          },
-          _type == 'swish' => {
-            ...
-          },
-          _type == 'autogiro' => {
-            ...,
-            recurring_manual_option_config {
-              ...,
-              date_selector_config->
-            }
-          },
-          _type == 'avtalegiro' => {
-            ...,
-            date_selector_configuration->
-          },
-        },
+*[_type == "donationwidget"][0] {
+  ...,
+  "locale": *[ _type == "site_settings"][0].main_locale,
+  methods[] { 
+    _type == 'reference' => @->{
+      _type == 'bank' => {
+        ...
       },
-      privacy_policy_link {
+      _type == 'vipps' => {
+        _id,
+        selector_text,
+        recurring_title,
+        recurring_selector_earliest_text,
+        recurring_selector_choose_date_text,
+        recurring_selector_date_picker_configuration->,
+        recurring_button_text,
+        single_title,
+        single_button_text,
+      },
+      _type == 'swish' => {
+        ...
+      },
+      _type == 'autogiro' => {
         ...,
-        "slug": page->slug.current,
-        "pagetype": page->_type,
-      }
+        recurring_manual_option_config {
+          ...,
+          date_selector_config->
+        }
+      },
+      _type == 'avtalegiro' => {
+        ...,
+        date_selector_configuration->
+      },
     },
+  },
+  privacy_policy_link {
+    ...,
+    "slug": page->slug.current,
+    "pagetype": page->_type,
   }
+}
 `;
 
 export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
@@ -195,19 +189,26 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
 };
 
 export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean }) => {
-  const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(widgetQuery);
+  const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
-  const widget = result.widget[0];
-
-  if (!widget.methods?.length) {
+  if (!result.methods?.length) {
     throw new Error("No payment methods found");
   }
 
   return {
-    widget,
-    methods: widget.methods,
+    data: {
+      result,
+      query: widgetQuery,
+    },
   };
-})(({ widget, methods }) => {
+})(({ data }) => {
+  const widget = data.result;
+  const methods = data.result.methods;
+
+  if (!methods) {
+    throw new Error("No payment methods found");
+  }
+
   const dispatch = useDispatch();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);

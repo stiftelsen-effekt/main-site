@@ -10,7 +10,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.client";
 import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 
 const fetchArticlesPageSlug = groq`
 {

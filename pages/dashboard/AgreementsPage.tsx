@@ -31,7 +31,7 @@ import { DateTime } from "luxon";
 import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, filterPageToSingleItem, getAppStaticProps } from "../_app.page";
+import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 
 export async function getAgreementsPagePath() {
