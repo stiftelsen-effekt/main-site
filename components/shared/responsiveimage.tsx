@@ -34,8 +34,8 @@ export const ResponsiveImage: React.FC<{
         priority={priority}
         blurDataURL={lqip}
         placeholder={lqip ? "blur" : "empty"}
-        objectFit="contain"
-        sizes={sizes}
+        style={{ objectFit: "contain" }}
+        sizes={sizes ?? "100vw 1920w 1000w 800w 600w 400w"}
       />
     );
   } else if (layout === "cover") {
@@ -48,8 +48,8 @@ export const ResponsiveImage: React.FC<{
         priority={priority}
         blurDataURL={lqip}
         placeholder={lqip ? "blur" : "empty"}
-        objectFit="cover"
-        sizes={sizes}
+        style={{ objectFit: "cover" }}
+        sizes={sizes ?? "100vw 1920w 1000w 800w 600w 400w"}
       />
     );
   }

@@ -31,6 +31,7 @@ import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
+import { StyleSheetManager } from "styled-components";
 
 const widgetQuery = groq`
 *[_type == "donationwidget"][0] {

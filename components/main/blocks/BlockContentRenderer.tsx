@@ -194,7 +194,9 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             } else if (block.configuration.calculator_input_configuration.period === "monthly") {
               calcPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
             } else {
-              return <span>Unknown period {block.period} for wealth calculation</span>;
+              return (
+                <span key={block._key}>Unknown period {block.period} for wealth calculation</span>
+              );
             }
             return (
               <WealthCalculator
@@ -213,7 +215,9 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             } else if (block.period === "monthly") {
               teaserPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
             } else {
-              return <span>Unknown period {block.period} for wealth calculation</span>;
+              return (
+                <span key={block._key}>Unknown period {block.period} for wealth calculation</span>
+              );
             }
             return (
               <WealthCalculatorTeaser

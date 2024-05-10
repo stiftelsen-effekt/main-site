@@ -38,7 +38,7 @@ export const MultipleCauseAreasSelector: React.FC<{
     <>
       <SmartDistributionExplanationWrapper>
         <SmartDistributionLabel
-          expanded={explanationOpen}
+          expanded={explanationOpen.toString()}
           onClick={() => setExplanationOpen(!explanationOpen)}
         >
           {configuration.smart_distribution_label_text}
@@ -63,7 +63,7 @@ export const MultipleCauseAreasSelector: React.FC<{
             <CauseAreaSelectionWrapper
               key={causeArea.name}
               data-cy={"cause-area"}
-              separated={causeArea.organizations.length == 1}
+              separated={(causeArea.organizations.length == 1).toString()}
             >
               <CauseAreaShareSelectionTitleWrapper>
                 <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>

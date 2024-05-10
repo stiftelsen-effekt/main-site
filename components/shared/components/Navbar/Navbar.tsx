@@ -186,7 +186,12 @@ export const Navbar = withStaticProps(
         >
           {lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link href="/" passHref onClick={(e) => e.currentTarget.blur()}>
+              <Link
+                href="/"
+                passHref
+                onClick={(e) => e.currentTarget.blur()}
+                style={{ position: "relative" }}
+              >
                 <ResponsiveImage
                   image={dashboardLogo}
                   onClick={() => setExpanded(false)}
@@ -197,7 +202,17 @@ export const Navbar = withStaticProps(
           )}
           {!lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link href="/" passHref onClick={(e) => e.currentTarget.blur()}>
+              <Link
+                href="/"
+                passHref
+                onClick={(e) => e.currentTarget.blur()}
+                style={{
+                  position: "relative",
+                  height: "100%",
+                  width: "100%",
+                  display: "inline-block",
+                }}
+              >
                 <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
               </Link>
             </div>
