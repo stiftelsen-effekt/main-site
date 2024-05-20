@@ -119,7 +119,7 @@ const fetchGenericPage = groq`
         asset->,
       },
       ${linksContentQuery},
-      "accent_color": *[_type == "site_settings"].accent_color,
+      "accent_color": *[_type == "site_settings"][0].accent_color,
     },
     ${pageContentQuery}
     slug { current },
