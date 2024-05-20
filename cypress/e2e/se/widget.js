@@ -108,7 +108,6 @@ describe("Widget", () => {
 
     cy.get("[data-cy=autogiro-radio-manual-transaction]").should("exist");
     cy.get("[data-cy=autogiro-radio-manual-autogiro-setup]").should("exist");
-    cy.get("[data-cy=autogiro-radio-form-autogiro-setup]").should("exist");
 
     cy.get("[data-cy=autogiro-radio-manual-transaction]").click({ force: true });
     cy.get("[data-cy=autogiro-manual-sum]").should(($sum) => {
@@ -140,9 +139,6 @@ describe("Widget", () => {
     cy.wait("@draftAutoGiroPaymentDate");
 
     cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("contain.text", "10");
-
-    cy.get("[data-cy=autogiro-radio-form-autogiro-setup]").click({ force: true });
-    cy.get("[data-cy=autogiro-form-setup-button]").should("be.visible");
 
     cy.get("[data-cy=autogiro-radio-manual-transaction]").click({ force: true });
     cy.get("[data-cy=autogiro-manual-transaction-setup-complete-button").click();
