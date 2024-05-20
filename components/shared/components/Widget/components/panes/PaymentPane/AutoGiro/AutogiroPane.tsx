@@ -21,7 +21,6 @@ import { EffektButton } from "../../../../../EffektButton/EffektButton";
 enum AutoGiroOptions {
   MANUAL_TRANSACTION,
   MANUAL_AUTOGIRO_SETUP,
-  FORM_AUTOGIRO_SETUP,
 }
 
 export const AutogiroPane: React.FC<{
@@ -59,13 +58,7 @@ export const AutogiroPane: React.FC<{
           <span data-cy="autogiro-manual-sum">{thousandize(donation.sum || 0)} kr</span>
         </TextWrapper>
       </RoundedBorder>
-      <RoundedBorder>
-        <TextWrapper>
-          <span>{config.manual_recurring_option_config.account_number_label}</span>
-          <span data-cy="autogiro-manual-bank-account">9960-4219888700</span>
-        </TextWrapper>
-      </RoundedBorder>
-      <span>{config.manual_recurring_option_config.payment_numberexplanatory_text}</span>
+      <span>{config.manual_recurring_option_config.payer_numberexplanatory_text}</span>
       <PortableText value={config.manual_recurring_option_config.instruction_text} />
       <EffektButton
         onClick={() => {
@@ -140,23 +133,6 @@ export const AutogiroPane: React.FC<{
     </>
   );
 
-  const formAutogiroSetupContent = (
-    <>
-      <PortableText value={config.recurring_form_option_config.explanation_text} />
-      <EffektButton
-        onClick={() => {
-          plausible("AutogiroBankGirotFormOpened");
-          window.open(config.recurring_form_option_config.button_link, "_blank");
-          setHasSubmitted(true);
-        }}
-        style={{ fontSize: 18, marginTop: 10, padding: 14 }}
-        data-cy="autogiro-form-setup-button"
-      >
-        {config.recurring_form_option_config.button_text}
-      </EffektButton>
-    </>
-  );
-
   return (
     <Pane>
       <PaneContainer>
@@ -166,8 +142,14 @@ export const AutogiroPane: React.FC<{
           <AnimateHeight height={hasSubmitted ? 0 : "auto"} animateOpacity={true}>
             <RoundedBorder>
               <TextWrapper>
-                <span>{config.manual_recurring_option_config.payment_number_label}</span>
+                <span>{config.payer_number_label}</span>
                 <span data-cy="autogiro-kid">{donation.kid}</span>
+              </TextWrapper>
+            </RoundedBorder>
+            <RoundedBorder>
+              <TextWrapper>
+                <span>{config.account_number_label}</span>
+                <span data-cy="autogiro-manual-bank-account">{config.account_number}</span>
               </TextWrapper>
             </RoundedBorder>
             <i>Välj ett av nedan alternativ:</i>
@@ -176,22 +158,16 @@ export const AutogiroPane: React.FC<{
             <RadioButtonGroup
               options={[
                 {
-                  title: config.manual_recurring_option_config.title,
-                  value: AutoGiroOptions.MANUAL_TRANSACTION,
-                  content: manualTransactionContent,
-                  data_cy: "autogiro-radio-manual-transaction",
-                },
-                {
                   title: config.recurring_manual_option_config.title,
                   value: AutoGiroOptions.MANUAL_AUTOGIRO_SETUP,
                   content: manualAutogiroSetupContent,
                   data_cy: "autogiro-radio-manual-autogiro-setup",
                 },
                 {
-                  title: config.recurring_form_option_config.title,
-                  value: AutoGiroOptions.FORM_AUTOGIRO_SETUP,
-                  content: formAutogiroSetupContent,
-                  data_cy: "autogiro-radio-form-autogiro-setup",
+                  title: config.manual_recurring_option_config.title,
+                  value: AutoGiroOptions.MANUAL_TRANSACTION,
+                  content: manualTransactionContent,
+                  data_cy: "autogiro-radio-manual-transaction",
                 },
               ]}
               selected={selectedAutogiroSetup}

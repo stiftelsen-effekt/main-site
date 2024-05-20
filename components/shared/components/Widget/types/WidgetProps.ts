@@ -77,18 +77,18 @@ export type AutoGiroPaymentMethod = {
   _id: "autogiro";
   selector_text: string;
   title: string;
+  payer_number_label: string;
+  account_number_label: string;
+  account_number: string;
   manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
   recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
-  recurring_form_option_config: AutogiroRecurringFormOptionConfig;
   completed_text: any[];
 };
 
 type AutogiroManualRecurringOptionConfig = {
   title: string;
   sum_label: string;
-  account_number_label: string;
-  payment_numberexplanatory_text: string;
-  payment_number_label: string;
+  payer_numberexplanatory_text: string;
   instruction_text: any[];
   complete_button_text: string;
 };
@@ -96,17 +96,8 @@ type AutogiroManualRecurringOptionConfig = {
 type AutogiroRecurringManualOptionConfig = {
   title: string;
   explanation_text: any[];
-  payernumber_label: string;
   date_selector_config: DatePickerInputConfiguration;
   complete_button_text: string;
-};
-
-type AutogiroRecurringFormOptionConfig = {
-  title: string;
-  explanation_text: any[];
-  payernumber_label: string;
-  button_text: string;
-  button_link: string;
 };
 
 export type SmartDistributionContext = {

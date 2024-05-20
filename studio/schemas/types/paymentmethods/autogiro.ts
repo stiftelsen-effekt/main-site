@@ -16,6 +16,24 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "account_number_label",
+      title: "Account number label",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "account_number",
+      title: "Account number",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "payer_number_label",
+      title: "Payer number label",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "manual_recurring_option_config",
       title: "Manual recurring option config",
       type: "object",
@@ -33,21 +51,9 @@ export default {
           validation: (Rule: any) => Rule.required(),
         },
         {
-          name: "account_number_label",
-          title: "Account number label",
-          type: "string",
-          validation: (Rule: any) => Rule.required(),
-        },
-        {
-          name: "payment_numberexplanatory_text",
-          title: "Payment number explanatory text",
+          name: "payer_numberexplanatory_text",
+          title: "Payer number explanatory text",
           type: "text",
-          validation: (Rule: any) => Rule.required(),
-        },
-        {
-          name: "payment_number_label",
-          title: "Payment number label",
-          type: "string",
           validation: (Rule: any) => Rule.required(),
         },
         {
@@ -81,12 +87,6 @@ export default {
           title: "Explanation text",
           type: "array",
           of: [{ type: "block" }],
-          validation: (Rule: any) => Rule.required(),
-        },
-        {
-          name: "payernumber_label",
-          title: "Payernumber label",
-          type: "string",
           validation: (Rule: any) => Rule.required(),
         },
         {
