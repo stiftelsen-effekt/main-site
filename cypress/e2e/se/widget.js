@@ -69,7 +69,7 @@ describe("Widget", () => {
   });
 
   it("End-2-End recurring autogiro donation", () => {
-    const randomSum = 1037; //Math.floor(Math.random() * 1000) + 100;
+    const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
     cy.get("[data-cy=cause-area]").first().type("100");
@@ -117,13 +117,16 @@ describe("Widget", () => {
       const sum = sumtext.replace(/\D/g, "");
       expect(sum).to.be.eq(randomSum.toString());
     });
-    cy.get("[data-cy=autogiro-manual-bank-account").should("contain.text", "9960-4219888700");
+    cy.get("[data-cy=autogiro-manual-bank-account").should("contain.text", "52323524");
 
     cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("not.be.visible");
 
     cy.get("[data-cy=autogiro-radio-manual-autogiro-setup]").click({ force: true });
     cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("be.visible");
-    cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("contain.text", "21");
+    cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should(
+      "contain.text",
+      "varje månad",
+    );
 
     cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").click({ force: true });
 

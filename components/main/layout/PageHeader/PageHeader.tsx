@@ -44,7 +44,11 @@ export const PageHeader: React.FC<{
           {inngress ? <p className="inngress">{inngress}</p> : null}
           {links ? <Links links={links} /> : null}
           {layout === "hero" && cta_type === "open_widget" ? (
-            <OpenWidgetButton label={cta_label} accent_color={accent_color} />
+            <OpenWidgetButton
+              label={cta_label}
+              accent_color={accent_color}
+              cy={"hero-cta-open-widget"}
+            />
           ) : null}
         </div>
       ) : null}
