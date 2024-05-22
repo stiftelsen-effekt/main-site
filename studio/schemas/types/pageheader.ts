@@ -40,6 +40,22 @@ export default {
       hidden: ({ parent }: any) => parent.layout !== "coverPhoto",
     },
     {
+      name: "cta_label",
+      title: "CTA label",
+      type: "string",
+      group: "content",
+    },
+    /** In future we might want to add link and navitem to CTA */
+    {
+      name: "cta_type",
+      title: "CTA type",
+      type: "string",
+      group: "content",
+      options: {
+        list: [{ title: "Open widget", value: "open_widget" }],
+      },
+    },
+    {
       name: "layout",
       title: "Layout",
       type: "string",
