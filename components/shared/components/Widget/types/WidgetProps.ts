@@ -23,6 +23,9 @@ export type BankPaymentMethod = {
   kid_title: string;
   explanatory_text: string;
   explanatory_text_email_template: string;
+  bank_transfer_setup_button_text: string;
+  completed_title: string;
+  bank_transfer_completed_info_text: string;
 };
 
 export type VippsPaymentMethod = {

@@ -49,6 +49,25 @@ export default {
       type: "string",
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "bank_transfer_setup_button_text",
+      title: "Bank transfer setup button text",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "completed_title",
+      title: "Completed title",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "bank_transfer_completed_info_text",
+      title: "Bank transfer completed info text",
+      type: "text",
+      rows: 3,
+      validation: (Rule: any) => Rule.required(),
+    },
   ],
   preview: {
     prepare() {

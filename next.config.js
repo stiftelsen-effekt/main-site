@@ -417,4 +417,6 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlausibleProxy()(nextConfig);
+module.exports = withPlausibleProxy({
+  revenue: true,
+})(nextConfig);

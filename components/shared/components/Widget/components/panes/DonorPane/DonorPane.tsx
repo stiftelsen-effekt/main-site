@@ -95,7 +95,6 @@ export const DonorPane: React.FC<{
         }
         if (data.method === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
-          plausible("CompleteDonation");
         }
       }
     }
