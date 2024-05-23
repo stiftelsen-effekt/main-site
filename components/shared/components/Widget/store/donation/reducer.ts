@@ -29,7 +29,7 @@ import { DistributionCauseAreaOrganization } from "../../types/DistributionCause
 import { CauseAreaShareSelectionTitle } from "../../components/panes/DonationPane/ShareSelector/Multiple/MultipleCauseAreasSelector.style";
 
 const initialState: Donation = {
-  recurring: RecurringDonation.RECURRING,
+  recurring: RecurringDonation.NON_RECURRING,
   donor: {
     taxDeduction: false,
     newsletter: false,
