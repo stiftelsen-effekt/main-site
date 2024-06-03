@@ -89,11 +89,15 @@ describe("Navigation", () => {
     cy.get("[data-cy=header]").should("be.visible");
   });
 
-  it("Tests buttons for opening and closing Widget", () => {
+  it("Tests buttons for opening and closing Widget from menu", () => {
     // Widget should be closed
     cy.get("[data-cy=widget-pane]").should("not.be.visible");
 
+    // Click button in menu
     cy.get("[data-cy=send-donation-button]").click();
+
+    // Wait for widget to open
+    cy.wait(200);
 
     // Widget should be open
     cy.get("[data-cy=widget-pane]").should("be.visible");
@@ -102,11 +106,36 @@ describe("Navigation", () => {
 
     // Widget should be closed
     cy.get("[data-cy=widget-pane]").should("not.be.visible");
+  });
 
-    // Wait for animation to complete
+  it("Tests buttons for opening and closing Widget from floating button ", () => {
+    // Widget should be closed
+    cy.get("[data-cy=widget-pane]").should("not.be.visible");
+
+    // Click floating button
+    cy.get("[data-cy=gi-button]").click();
+
+    // Wait for widget to open
     cy.wait(200);
 
-    cy.get("[data-cy=gi-button]").click();
+    // Widget should be open
+    cy.get("[data-cy=widget-pane]").should("be.visible");
+
+    cy.get("[data-cy=close-widget]").click();
+
+    // Widget should be closed
+    cy.get("[data-cy=widget-pane]").should("not.be.visible");
+  });
+
+  it("Tests buttons for opening and closing Widget from hero CTA", () => {
+    // Widget should be closed
+    cy.get("[data-cy=widget-pane]").should("not.be.visible");
+
+    // Click hero CTA
+    cy.get("[data-cy=hero-cta-open-widget]").click();
+
+    // Wait for widget to open
+    cy.wait(200);
 
     // Widget should be open
     cy.get("[data-cy=widget-pane]").should("be.visible");

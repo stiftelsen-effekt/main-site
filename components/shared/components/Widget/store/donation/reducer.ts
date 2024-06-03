@@ -28,7 +28,7 @@ import { CauseAreaShareSelectionTitle } from "../../components/panes/DonationPan
 import { Reducer } from "@reduxjs/toolkit";
 
 const initialState: Donation = {
-  recurring: RecurringDonation.RECURRING,
+  recurring: RecurringDonation.NON_RECURRING,
   donor: {
     taxDeduction: false,
     newsletter: false,

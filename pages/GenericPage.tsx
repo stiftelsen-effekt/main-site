@@ -86,6 +86,9 @@ export const GenericPage = withStaticProps(
         links={header.links}
         layout={header.layout}
         coverPhoto={header.coverPhoto}
+        cta_type={header.cta_type}
+        cta_label={header.cta_label}
+        accent_color={header.accent_color}
       />
 
       <BlockContentRenderer content={content} />
@@ -126,7 +129,8 @@ const fetchGenericPage = groq`
       pageHeader {
         asset->,
       },
-      ${linksContentQuery}
+      ${linksContentQuery},
+      "accent_color": *[_type == "site_settings"][0].accent_color,
     },
     ${pageContentQuery}
     slug { current },
