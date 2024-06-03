@@ -37,6 +37,7 @@ import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs
 import { Accordion } from "./Accordion/Accordion";
 import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 import { ITNCoverage } from "./ITNCoverage/ITNCoverage";
+import { stegaClean } from "@sanity/client/stega";
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -196,9 +197,13 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "wealthcalculator":
             let calcPeriod: WealthCalculatorPeriodAdjustment;
-            if (block.configuration.calculator_input_configuration.period === "yearly") {
+            if (
+              stegaClean(block.configuration.calculator_input_configuration.period) === "yearly"
+            ) {
               calcPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
-            } else if (block.configuration.calculator_input_configuration.period === "monthly") {
+            } else if (
+              stegaClean(block.configuration.calculator_input_configuration.period) === "monthly"
+            ) {
               calcPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
             } else {
               return (
@@ -217,9 +222,9 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "wealthcalculatorteaser":
             let teaserPeriod: WealthCalculatorPeriodAdjustment;
-            if (block.period === "yearly") {
+            if (stegaClean(block.period) === "yearly") {
               teaserPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
-            } else if (block.period === "monthly") {
+            } else if (stegaClean(block.period) === "monthly") {
               teaserPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
             } else {
               return (
