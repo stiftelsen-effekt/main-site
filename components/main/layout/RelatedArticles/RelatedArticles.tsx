@@ -22,7 +22,7 @@ export const RelatedArticles: React.FC<{
   const { articlesPagePath } = useRouterContext();
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-toc-id="related">
       <div className={styles.header}>
         <h4>{relatedArticlesLabel}</h4>
         <div className={styles.viewall}>

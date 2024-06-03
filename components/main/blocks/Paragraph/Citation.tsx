@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
-import katex from "katex";
 
 export const formatHarvardCitation = ({
   type,
@@ -356,6 +355,8 @@ const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
 };
 
 const RenderLatex: React.FC<any> = ({ text }) => {
+  const [renderedHtml, setRenderedHtml] = useState("");
+
   useEffect(() => {
     if (document.getElementById("katex-styles-link")) return;
 
@@ -367,14 +368,14 @@ const RenderLatex: React.FC<any> = ({ text }) => {
     document.head.appendChild(link);
   }, []);
 
-  const renderedHtml = useMemo(() => {
-    try {
-      return katex.renderToString(text, {
-        throwOnError: false,
-      });
-    } catch (e: any) {
-      return `<span style="color: red;">${e.message}</span>`;
-    }
+  useEffect(() => {
+    import("katex").then((katex) => {
+      try {
+        setRenderedHtml(katex.default.renderToString(text, { throwOnError: false }));
+      } catch (e: any) {
+        setRenderedHtml(`<span style="color: red;">${e.message}</span>`);
+      }
+    });
   }, [text]);
   // Debug props
   return (

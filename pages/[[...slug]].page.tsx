@@ -34,27 +34,27 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
     }
   }
 
-  switch (props.pageType) {
+  switch (props.pageType as PageType) {
     case PageType.GenericPage:
-      return <GenericPage {...props} />;
+      return <GenericPage {...(props as any)} />;
     case PageType.ArticlesPage:
       return <ArticlesPage {...props} />;
     case PageType.ArticlePage:
-      return <ArticlePage {...props} />;
+      return <ArticlePage {...(props as any)} />;
     case PageType.ResultsPage:
-      return <ResultsPage {...props} />;
+      return <ResultsPage {...(props as any)} />;
     case PageType.VippsAgreementPage:
-      return <VippsAgreementPage {...props} />;
+      return <VippsAgreementPage {...(props as any)} />;
     case PageType.AgreementsPage:
-      return <AgreementsPage {...props} />;
+      return <AgreementsPage {...(props as any)} />;
     case PageType.VippsAnonymousPage:
-      return <VippsAnonymousPage {...props} />;
+      return <VippsAnonymousPage {...(props as any)} />;
     case PageType.DonationsPage:
-      return <DonationsPage {...props} />;
+      return <DonationsPage {...(props as any)} />;
     case PageType.ProfilePage:
-      return <ProfilePage {...props} />;
+      return <ProfilePage {...(props as any)} />;
     case PageType.TaxPage:
-      return <TaxPage {...props} />;
+      return <TaxPage {...(props as any)} />;
   }
 };
 
@@ -149,7 +149,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.ArticlesPage: {
-      const props = await ArticlesPage.getStaticProps({ preview });
+      const props = await ArticlesPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -159,7 +159,7 @@ export const getStaticProps = async ({
     }
     case PageType.ArticlePage: {
       const slug = path.slice(1).join("/");
-      const props = await ArticlePage.getStaticProps({ preview, slug });
+      const props = await ArticlePage.getStaticProps({ draftMode, slug });
       return {
         props: {
           ...props,
@@ -168,7 +168,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.ResultsPage: {
-      const props = await ResultsPage.getStaticProps({ preview });
+      const props = await ResultsPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -177,7 +177,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.VippsAgreementPage: {
-      const props = await VippsAgreementPage.getStaticProps({ preview });
+      const props = await VippsAgreementPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -186,7 +186,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.VippsAnonymousPage: {
-      const props = await VippsAnonymousPage.getStaticProps({ preview });
+      const props = await VippsAnonymousPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -195,7 +195,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.DonationsPage: {
-      const props = await DonationsPage.getStaticProps({ preview, path });
+      const props = await DonationsPage.getStaticProps({ draftMode, path });
       return {
         props: {
           ...props,
@@ -204,7 +204,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.AgreementsPage: {
-      const props = await AgreementsPage.getStaticProps({ preview });
+      const props = await AgreementsPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -213,7 +213,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.ProfilePage: {
-      const props = await ProfilePage.getStaticProps({ preview });
+      const props = await ProfilePage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -222,7 +222,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.TaxPage: {
-      const props = await TaxPage.getStaticProps({ preview, path });
+      const props = await TaxPage.getStaticProps({ draftMode, path });
       return {
         props: {
           ...props,

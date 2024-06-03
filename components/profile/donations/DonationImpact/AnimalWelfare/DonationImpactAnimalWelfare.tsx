@@ -27,7 +27,7 @@ const DonationImpactAnimalWelfare: React.FC<{
 }> = ({ donation, distribution, timestamp, configuration }) => {
   const [requiredPrecision, setRequiredPrecision] = useState(0);
   const updatePrecision = useCallback(
-    (precision) => {
+    (precision: number) => {
       setRequiredPrecision(precision);
     },
     [setRequiredPrecision],

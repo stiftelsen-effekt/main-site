@@ -41,7 +41,7 @@ const DonationImpactGlobalHealth: React.FC<{
 
   const [requiredPrecision, setRequiredPrecision] = useState(0);
   const updatePrecision = useCallback(
-    (precision) => {
+    (precision: number) => {
       setRequiredPrecision(precision);
     },
     [setRequiredPrecision],

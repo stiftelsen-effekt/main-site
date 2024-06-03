@@ -1,13 +1,10 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { Bookmark } from "react-feather";
 
-export const CitationRenderer = (props) => {
-  if (!props) {
-    return null;
-  }
+export const CitationRenderer: React.FC<{ children: ReactElement }> = ({ children }) => {
   return (
     <span>
-      {props.children}
+      {children}
       <sup>
         <Bookmark size={12} />
       </sup>

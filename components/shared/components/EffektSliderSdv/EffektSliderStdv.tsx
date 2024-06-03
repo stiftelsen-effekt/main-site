@@ -2,7 +2,6 @@ import styles from "./EffektSliderStdv.module.scss";
 import Draggable from "react-draggable";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { pdf } from "@stdlib/stats-base-dists-truncated-normal";
 import * as Plot from "@observablehq/plot";
 
 /**
@@ -219,12 +218,14 @@ export const EffektSliderStdv: React.FC<{
   );
 };
 
-const drawGraph = (
+const drawGraph = async (
   ref: HTMLDivElement,
   min: number,
   max: number,
   discountRate: { mean: number; stdv: number },
 ) => {
+  const { pdf } = await import("@stdlib/stats-base-dists-truncated-normal");
+
   const data = Array.from(Array(101)).map((_, i) => {
     const pct = i * 0.08;
     return { x: pct, y: pdf(pct, min, max, discountRate.mean, discountRate.stdv) };

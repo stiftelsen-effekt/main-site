@@ -1,19 +1,12 @@
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
 import { AgreementList } from "../../components/profile/shared/lists/agreementList/AgreementList";
-import {
-  AutoGiroAgreement,
-  AvtaleGiroAgreement,
-  Distribution,
-  Organization,
-  VippsAgreement,
-} from "../../models";
-import { useAuth0, User } from "@auth0/auth0-react";
+import { AutoGiroAgreement, AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../models";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   useAgreementsDistributions,
   useAutogiroAgreements,
   useAvtalegiroAgreements,
-  useOrganizations,
   useTaxUnits,
   useVippsAgreements,
 } from "../../_queries";
@@ -28,17 +21,17 @@ import { groq } from "next-sanity";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { DateTime } from "luxon";
-import { useRouterContext } from "../../context/RouterContext";
 import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
+import { token } from "../../token";
 
 export async function getAgreementsPagePath() {
-  const result = await getClient(false).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
+  const result = await getClient().fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
 
   const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
-  const agreementsSlug = result?.page?.[0]?.slug?.current;
+  const agreementsSlug = result?.page?.slug?.current;
 
   if (!dashboardSlug || !agreementsSlug) return null;
 
@@ -46,14 +39,16 @@ export async function getAgreementsPagePath() {
 }
 
 export const AgreementsPage = withStaticProps(
-  async ({ preview = false }: GetStaticPropsContext<{ slug: string[] }>) => {
-    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-    const result = await getClient(preview).fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
+  async ({ draftMode = false }: GetStaticPropsContext<{ slug: string[] }>) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchAgreementsPageResult>(
+      fetchAgreementsPage,
+    );
 
     return {
       appStaticProps,
-      preview: preview,
-      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
         result: result,
         query: fetchAgreementsPage,
@@ -61,8 +56,8 @@ export const AgreementsPage = withStaticProps(
       },
     }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ navbarData, data, preview }) => {
-  const page = filterPageToSingleItem(data.result, false);
+)(({ navbarData, data, draftMode }) => {
+  const page = data.result.page;
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<"Aktive avtaler" | "Inaktive avtaler">("Aktive avtaler");
 
@@ -274,7 +269,7 @@ type FetchAgreementsPageResult = {
     title?: string;
   }>;
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
-  page?: Array<AgreementsPageData>;
+  page?: AgreementsPageData;
 };
 
 const fetchAgreementsPage = groq`
@@ -287,7 +282,7 @@ const fetchAgreementsPage = groq`
       current
     },
   },
-  "page": *[_id == "agreements"] {
+  "page": *[_id == "agreements"][0] {
     ...,
     active_list_configuration {
       ...,

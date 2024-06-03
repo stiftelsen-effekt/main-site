@@ -21,9 +21,10 @@ import { withStaticProps } from "../../util/withStaticProps";
 import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
+import { token } from "../../token";
 
 export async function getTaxPagePath(): Promise<string[]> {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
+  const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
   const dashboardPath = await getDashboardPagePath();
 
   const { dashboard: [dashboard] = [] } = result;
@@ -38,7 +39,7 @@ export async function getTaxPagePath(): Promise<string[]> {
 }
 
 export async function getTaxPageSubPaths(): Promise<string[][]> {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
+  const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
   const dashboardPath = await getDashboardPagePath();
 
   const { dashboard: [dashboard] = [] } = result;
@@ -54,9 +55,11 @@ export async function getTaxPageSubPaths(): Promise<string[][]> {
 }
 
 export const TaxPage = withStaticProps(
-  async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-    const result = await getClient(preview).fetch<FetchTaxPageResult>(fetchTaxPage);
+  async ({ draftMode = false, path }: { draftMode: boolean; path: string[] }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchTaxPageResult>(
+      fetchTaxPage,
+    );
 
     const taxPath = await getTaxPagePath();
 
@@ -64,8 +67,8 @@ export const TaxPage = withStaticProps(
 
     return {
       appStaticProps,
-      preview: preview,
-      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       subpath,
       data: {
         result: result,
@@ -74,8 +77,8 @@ export const TaxPage = withStaticProps(
       },
     }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, subpath, navbarData, preview }) => {
-  const page = filterPageToSingleItem(data.result, preview);
+)(({ data, subpath, navbarData, draftMode }) => {
+  const page = data.result.page;
 
   if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
 

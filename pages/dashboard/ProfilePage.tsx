@@ -14,34 +14,39 @@ import style from "../../styles/Profile.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
+import { token } from "../../token";
 
 export async function getProfilePagePath() {
-  const result = await getClient(false).fetch<FetchProfilePageResult>(fetchProfilePage);
+  const result = await getClient().fetch<FetchProfilePageResult>(fetchProfilePage);
 
   const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
-  const slug = result?.page?.[0]?.slug?.current;
+  const slug = result?.page?.slug?.current;
 
   if (!dashboardSlug || !slug) return null;
 
   return [dashboardSlug, slug];
 }
 
-export const ProfilePage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-  const result = await getClient(preview).fetch<FetchProfilePageResult>(fetchProfilePage);
+export const ProfilePage = withStaticProps(
+  async ({ draftMode = false }: { draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchProfilePageResult>(
+      fetchProfilePage,
+    );
 
-  return {
-    appStaticProps,
-    preview: preview,
-    navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
-    data: {
-      result: result,
-      query: fetchProfilePage,
-      queryParams: {},
-    },
-  }; // satisfies GeneralPageProps (requires next@13);;
-})(({ data, navbarData, preview }) => {
-  const page = filterPageToSingleItem(data.result, preview);
+    return {
+      appStaticProps,
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
+      data: {
+        result: result,
+        query: fetchProfilePage,
+        queryParams: {},
+      },
+    }; // satisfies GeneralPageProps (requires next@13);;
+  },
+)(({ data, navbarData, draftMode }) => {
+  const page = data.result.page;
 
   if (!data) return <div>Missing data.</div>;
   if (!page) return <div>Missing page data.</div>;
@@ -85,7 +90,7 @@ export type ProfilePage = {
 
 type FetchProfilePageResult = {
   settings: Array<{ title?: string }>;
-  page: Array<ProfilePage>;
+  page: ProfilePage;
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 

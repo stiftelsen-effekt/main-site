@@ -70,7 +70,14 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
       {blocks.map((block: any) => {
         switch (block._type) {
           case "paragraph":
-            return <Paragraph key={block._key} title={block.title} blocks={block.content} />;
+            return (
+              <Paragraph
+                key={block._key}
+                tocKey={block._key}
+                title={block.title}
+                blocks={block.content}
+              />
+            );
           case "accordion":
             return <Accordion key={block._key} title={block.title} blocks={block.blocks} />;
           case "videoembed":

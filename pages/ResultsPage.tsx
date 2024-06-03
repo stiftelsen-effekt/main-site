@@ -20,6 +20,7 @@ import {
 } from "../components/shared/components/Graphs/Results/ReferralSums/ReferralSums";
 import { ResultContentRenderer } from "../components/main/blocks/ResultContentRenderer";
 import { MonthlyDonationsPerOutputResult } from "../components/shared/components/Graphs/Results/Outputs/Outputs";
+import { token } from "../token";
 
 const fetchResultsPageSlug = groq`
 {
@@ -30,7 +31,7 @@ const fetchResultsPageSlug = groq`
 `;
 
 export const getResultsPagePath = async () => {
-  const { page } = await getClient(false).fetch<{ page: { slug: string } }>(fetchResultsPageSlug);
+  const { page } = await getClient().fetch<{ page: { slug: string } }>(fetchResultsPageSlug);
   return page.slug.split("/");
 };
 
@@ -40,44 +41,45 @@ export type ResultsGraphData = {
   monthlyDonationsPerOutput: MonthlyDonationsPerOutputResult[];
 };
 
-export const ResultsPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({ preview });
+export const ResultsPage = withStaticProps(
+  async ({ draftMode = false }: { draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode });
 
-  let result = await getClient(preview).fetch(fetchResults);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
+    let result = await getClient(draftMode ? token : undefined).fetch(fetchResults);
 
-  const dailyDonationsResult = await fetch(
-    `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/daily`,
-  );
-  const dailyDonations = await dailyDonationsResult.json();
+    const dailyDonationsResult = await fetch(
+      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/daily`,
+    );
+    const dailyDonations = await dailyDonationsResult.json();
 
-  const referralSumsResult = await fetch(
-    `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/referrals/sums`,
-  );
-  const referralSums = await referralSumsResult.json();
+    const referralSumsResult = await fetch(
+      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/referrals/sums`,
+    );
+    const referralSums = await referralSumsResult.json();
 
-  const monthlyDonationsPerOutputResult = await fetch(
-    `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/monthly/outputs`,
-  );
-  const monthlyDonationsPerOutput = await monthlyDonationsPerOutputResult.json();
+    const monthlyDonationsPerOutputResult = await fetch(
+      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/monthly/outputs`,
+    );
+    const monthlyDonationsPerOutput = await monthlyDonationsPerOutputResult.json();
 
-  return {
-    appStaticProps,
-    preview: preview,
-    navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
-    data: {
-      result,
-      query: fetchResults,
-      queryParams: {},
-      graphData: {
-        dailyDonations: dailyDonations.content as DailyDonations,
-        referralSums: referralSums.content as ReferralSumsResult[],
-        monthlyDonationsPerOutput:
-          monthlyDonationsPerOutput.content as MonthlyDonationsPerOutputResult[],
+    return {
+      appStaticProps,
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      data: {
+        result,
+        query: fetchResults,
+        queryParams: {},
+        graphData: {
+          dailyDonations: dailyDonations.content as DailyDonations,
+          referralSums: referralSums.content as ReferralSumsResult[],
+          monthlyDonationsPerOutput:
+            monthlyDonationsPerOutput.content as MonthlyDonationsPerOutputResult[],
+        },
       },
-    },
-  }; // satisfies GeneralPageProps (requires next@13);;
-})(({ data, navbarData, preview }) => {
+    }; // satisfies GeneralPageProps (requires next@13);;
+  },
+)(({ data, navbarData, draftMode }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -124,7 +126,7 @@ const fetchResults = groq`
     title,
     cookie_banner_configuration,
   },
-  "page": *[_type == "results"] {
+  "page": *[_type == "results"][0] {
     "slug": slug.current,
     content[] {
       ...,

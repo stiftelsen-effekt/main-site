@@ -8,11 +8,12 @@ import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBan
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { getClient } from "../lib/sanity.client";
 import { getAppStaticProps } from "./_app.page";
+import { token } from "../token";
 
 const Custom404: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   navbarData,
   missingPage,
-  preview,
+  draftMode,
 }) => {
   return (
     <>
@@ -46,17 +47,17 @@ const fetchMissingPage = groq`
 }
 `;
 
-export const getStaticProps = async ({ preview = false }: GetStaticPropsContext) => {
-  const appStaticProps = await getAppStaticProps({ preview });
+export const getStaticProps = async ({ draftMode = false }: GetStaticPropsContext) => {
+  const appStaticProps = await getAppStaticProps({ draftMode });
 
-  const result = await getClient(preview).fetch(fetchMissingPage);
+  const result = await getClient(draftMode ? token : undefined).fetch(fetchMissingPage);
 
   return {
     props: {
       appStaticProps,
       missingPage: result,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
-      preview,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      draftMode,
     }, // satisfies GeneralPageProps (requires next@13);,
   };
 };

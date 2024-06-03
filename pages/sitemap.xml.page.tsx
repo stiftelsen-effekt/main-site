@@ -19,7 +19,7 @@ const siteMapQuery = groq`{
 
 export async function getServerSideProps({ res }: any) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  const { pages } = await getClient(false).fetch(siteMapQuery);
+  const { pages } = await getClient().fetch(siteMapQuery);
   const routerContext = await fetchRouterContext();
 
   const locations = pages.map((page: any) => {

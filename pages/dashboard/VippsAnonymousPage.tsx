@@ -13,11 +13,10 @@ import styles from "../../styles/Agreements.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
+import { token } from "../../token";
 
 export async function getVippsAnonymousPagePath() {
-  const result = await getClient(false).fetch<FetchVippsAnonymousPageResult>(
-    fetchVippsAnonymousPage,
-  );
+  const result = await getClient().fetch<FetchVippsAnonymousPageResult>(fetchVippsAnonymousPage);
 
   const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
   const slug = result?.vipps?.[0]?.anonymous_page?.slug.current;
@@ -27,30 +26,32 @@ export async function getVippsAnonymousPagePath() {
   return [dashboardSlug, slug];
 }
 
-export const VippsAnonymousPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-  const result = await getClient(preview).fetch<FetchVippsAnonymousPageResult>(
-    fetchVippsAnonymousPage,
-  );
+export const VippsAnonymousPage = withStaticProps(
+  async ({ draftMode = false }: { draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+    const result = await getClient(
+      draftMode ? token : undefined,
+    ).fetch<FetchVippsAnonymousPageResult>(fetchVippsAnonymousPage);
 
-  return {
-    appStaticProps,
-    preview: preview,
-    navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
-    data: {
-      result: result,
-      query: fetchVippsAnonymousPage,
-      queryParams: {},
-    },
-  }; // satisfies GeneralPageProps (requires next@13);;
-})(({ data, navbarData, preview }) => {
+    return {
+      appStaticProps,
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
+      data: {
+        result: result,
+        query: fetchVippsAnonymousPage,
+        queryParams: {},
+      },
+    }; // satisfies GeneralPageProps (requires next@13);;
+  },
+)(({ data, navbarData, draftMode }) => {
   const dashboard = data.result.dashboard[0];
   const router = useRouter();
   const agreementCode = router.query["agreement-code"] as string;
   const page = data.result.vipps?.[0].anonymous_page;
 
   if (!page) {
-    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+    return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
   }
 
   const { loading, data: agreementData, error } = useAnonymousVippsAgreement(agreementCode);
