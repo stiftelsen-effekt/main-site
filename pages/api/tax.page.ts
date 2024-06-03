@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 export default async function tax(req: NextApiRequest, res: NextApiResponse) {
   if (req?.query?.locale === "SV") {
     try {
-      console.log(req.body);
       const result = await fetch(
         `https://app.skatteverket.se/rakna-skatt-client-skut-skatteutrakning/api/skatteberakning-fysisk/rakna-ut-skatt`,
         {
