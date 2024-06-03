@@ -26,9 +26,6 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
-  compiler: {
-    optimizeImports: true,
-  },
   experimental: {
     optimizePackageImports: ["d3", "@observablehq/plot"],
   },
