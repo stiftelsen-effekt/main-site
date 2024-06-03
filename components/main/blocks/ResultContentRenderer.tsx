@@ -39,7 +39,12 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                     switch (block._type) {
                       case "paragraph":
                         return (
-                          <Paragraph key={block._key} title={block.title} blocks={block.content} />
+                          <Paragraph
+                            tocKey={block._key}
+                            key={block._key}
+                            title={block.title}
+                            blocks={block.content}
+                          />
                         );
                       case "links":
                         return (
