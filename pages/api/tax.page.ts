@@ -22,10 +22,7 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
   } else if (req?.query?.locale === "NO") {
     try {
       const result = await fetch(`https://skatteberegning.app.skatteetaten.no/2023`, {
-        body: JSON.stringify(req.body),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: req.body,
         method: "POST",
       });
       const data = await result.json();
