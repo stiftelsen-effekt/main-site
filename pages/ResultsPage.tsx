@@ -1,7 +1,6 @@
 import { groq } from "next-sanity";
 import { linksContentQuery, linksSelectorQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
-import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
@@ -10,14 +9,8 @@ import { getClient } from "../lib/sanity.client";
 import styles from "../styles/Results.module.css";
 import { withStaticProps } from "../util/withStaticProps";
 import { getAppStaticProps } from "./_app.page";
-import {
-  CumulativeDonations,
-  DailyDonations,
-} from "../components/shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations";
-import {
-  ReferralSums,
-  ReferralSumsResult,
-} from "../components/shared/components/Graphs/Results/ReferralSums/ReferralSums";
+import { DailyDonations } from "../components/shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations";
+import { ReferralSumsResult } from "../components/shared/components/Graphs/Results/ReferralSums/ReferralSums";
 import { ResultContentRenderer } from "../components/main/blocks/ResultContentRenderer";
 import { MonthlyDonationsPerOutputResult } from "../components/shared/components/Graphs/Results/Outputs/Outputs";
 import { token } from "../token";
