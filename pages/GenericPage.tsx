@@ -11,13 +11,14 @@ import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { useLiveQuery } from "next-sanity/preview";
+import { stegaClean } from "@sanity/client/stega";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
-  const slugs = data.pages.map((page) => page.slug.current);
-  const paths = slugs.map((slug) => slug.split("/"));
+  const slugs = data.pages.map((page) => stegaClean(page.slug.current));
+  const paths = slugs.map((slug) => stegaClean(slug).split("/"));
   return paths;
 };
 

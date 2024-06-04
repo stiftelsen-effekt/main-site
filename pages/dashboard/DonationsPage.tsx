@@ -37,6 +37,7 @@ import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Info } from "react-feather";
 import { token } from "../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export async function getDashboardPagePath() {
   const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -57,7 +58,10 @@ export async function getDonationsPagePath() {
 
   if (!donationsSlug) return null;
 
-  return [...dashboardPath, ...donationsSlug.split("/")];
+  return [
+    ...dashboardPath.map((component) => stegaClean(component)),
+    ...donationsSlug.split("/").map((component) => stegaClean(component)),
+  ];
 }
 
 export async function getDonationsPageSubpaths() {
@@ -67,7 +71,10 @@ export async function getDonationsPageSubpaths() {
 
   const years = getYearPaths();
 
-  return years.map((year) => [...donationsPagePath, year]);
+  return years.map((year) => [
+    ...donationsPagePath.map((component) => stegaClean(component)),
+    stegaClean(year),
+  ]);
 }
 
 const getYearPaths = () => {

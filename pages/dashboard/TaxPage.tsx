@@ -22,6 +22,7 @@ import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export async function getTaxPagePath(): Promise<string[]> {
   const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
@@ -46,12 +47,16 @@ export async function getTaxPageSubPaths(): Promise<string[][]> {
 
   const page = result.page;
 
-  const taxSlug = page?.slug?.current;
+  const taxSlug = stegaClean(page?.slug?.current);
 
   if (!taxSlug) return [];
   if (!page.features) return [];
 
-  return page.features.map((f) => [...dashboardPath, ...taxSlug.split("/"), f.slug.current]);
+  return page.features.map((f) => [
+    ...dashboardPath.map((component) => stegaClean(component)),
+    ...taxSlug.split("/").map((component) => stegaClean(component)),
+    f.slug.current,
+  ]);
 }
 
 export const TaxPage = withStaticProps(

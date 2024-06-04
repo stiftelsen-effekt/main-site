@@ -19,13 +19,17 @@ import { withStaticProps } from "../util/withStaticProps";
 import { getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { TOC } from "../components/main/layout/TOC/TOC";
+import { stegaClean } from "@sanity/client/stega";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchArticles,
   );
 
-  return data.pages.map((page) => [...articlesPagePath, page.slug.current]);
+  return data.pages.map((page) => [
+    ...articlesPagePath.map((component) => stegaClean(component)),
+    stegaClean(page.slug.current),
+  ]);
 };
 
 // Get TOC by traversing every property of the content object recursively and look for title. Return a flat array of titles, and the key path of the object with a title.
