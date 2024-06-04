@@ -80,8 +80,6 @@ const ArticlePage = withStaticProps(
     }; // satisfies GeneralPageProps (requires next@13);;
   },
 )(({ data, navbarData, draftMode }) => {
-  console.log(data.toc);
-
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
