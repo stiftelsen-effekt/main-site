@@ -14,12 +14,13 @@ import { withStaticProps } from "../../util/withStaticProps";
 import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient().fetch<FetchVippsAnonymousPageResult>(fetchVippsAnonymousPage);
 
-  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
-  const slug = result?.vipps?.[0]?.anonymous_page?.slug.current;
+  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
+  const slug = stegaClean(result?.vipps?.[0]?.anonymous_page?.slug.current);
 
   if (!dashboardSlug || !slug) return null;
 

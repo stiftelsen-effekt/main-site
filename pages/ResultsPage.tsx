@@ -21,6 +21,7 @@ import {
 import { ResultContentRenderer } from "../components/main/blocks/ResultContentRenderer";
 import { MonthlyDonationsPerOutputResult } from "../components/shared/components/Graphs/Results/Outputs/Outputs";
 import { token } from "../token";
+import { stegaClean } from "@sanity/client/stega";
 
 const fetchResultsPageSlug = groq`
 {
@@ -32,7 +33,7 @@ const fetchResultsPageSlug = groq`
 
 export const getResultsPagePath = async () => {
   const { page } = await getClient().fetch<{ page: { slug: string } }>(fetchResultsPageSlug);
-  return page.slug.split("/");
+  return stegaClean(page.slug).split("/");
 };
 
 export type ResultsGraphData = {

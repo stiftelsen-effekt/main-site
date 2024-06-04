@@ -42,7 +42,7 @@ import { stegaClean } from "@sanity/client/stega";
 export async function getDashboardPagePath() {
   const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
 
-  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
 
   if (!dashboardSlug) throw new Error("Dashboard slug not found");
 

@@ -26,12 +26,13 @@ import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export async function getAgreementsPagePath() {
   const result = await getClient().fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
 
-  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
-  const agreementsSlug = result?.page?.slug?.current;
+  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
+  const agreementsSlug = stegaClean(result?.page?.slug?.current);
 
   if (!dashboardSlug || !agreementsSlug) return null;
 
