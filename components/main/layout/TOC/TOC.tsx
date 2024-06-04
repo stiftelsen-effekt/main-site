@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import styles from "./TOC.module.scss";
+import { CSSProperties } from "styled-components";
 
 // Function to get 1rem value from the browser and memoize it
 const useRemValue = () => {
@@ -29,7 +30,11 @@ const useScrollPosition = () => {
 };
 
 const useElementPositions = () => {
-  const [positions, setPositions] = useState({
+  const [positions, setPositions] = useState<{
+    articleStart: number;
+    articleEnd: number;
+    headerPositions: Record<string, number>;
+  }>({
     articleStart: 0,
     articleEnd: 0,
     headerPositions: {},
@@ -87,7 +92,7 @@ export const TOC: React.FC<{ items: { title: string; _key: string }[] }> = ({ it
     return Math.min(Math.max(scrollbarPosition * maxTranslateValue, 0), maxTranslateValue);
   }, [isClient, scrollPosition, articleStart, articleEnd, margin, scrollIndicatorHeight]);
 
-  const clientStyles = useMemo(() => {
+  const clientStyles = useMemo<CSSProperties>(() => {
     if (!isClient) return { position: "absolute", top: "1rem" };
 
     const position =
