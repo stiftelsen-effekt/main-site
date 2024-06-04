@@ -11,9 +11,22 @@ import { NormalImage } from "./NormalImage/NormalImage";
 import { Paragraph } from "./Paragraph/Paragraph";
 import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { ResultsGraphData } from "../../../pages/ResultsPage";
-import { CumulativeDonations } from "../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations";
-import { ResultsOutput } from "../../shared/components/ResultsOutput/ResultsOutput";
-import { ReferralSums } from "../../shared/components/Graphs/Results/ReferralSums/ReferralSums";
+import dynamic from "next/dynamic";
+
+/** Dynamic imports */
+const CumulativeDonations = dynamic(() =>
+  import("../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations").then(
+    (mod) => mod.CumulativeDonations,
+  ),
+);
+const ResultsOutput = dynamic(() =>
+  import("../../shared/components/ResultsOutput/ResultsOutput").then((mod) => mod.ResultsOutput),
+);
+const ReferralSums = dynamic(() =>
+  import("../../shared/components/Graphs/Results/ReferralSums/ReferralSums").then(
+    (mod) => mod.ReferralSums,
+  ),
+);
 
 export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsGraphData }> = ({
   content,

@@ -3,6 +3,7 @@ import AnimateHeight from "react-animate-height";
 import { AfricaMap } from "../../AfricaMap/AfricaMap";
 import { AsiaMap } from "../../AsiaMap/AsiaMap";
 import styles from "./ResultsOutputMaps.module.scss";
+import { stegaClean } from "@sanity/client/stega";
 
 export const ResultsOutputMaps: React.FC<{ outputCountries: string[] }> = ({ outputCountries }) => {
   const [activeMap, setActiveMap] = useState(0);
@@ -17,25 +18,25 @@ export const ResultsOutputMaps: React.FC<{ outputCountries: string[] }> = ({ out
   const maps = useMemo(() => {
     const maps: { name: string; component: any }[] = [];
     if (outputCountries) {
-      for (const country of outputCountries) {
+      for (const country of outputCountries.map(stegaClean)) {
         if (AsiaSet.has(country)) {
-          if (maps.some((m) => m.name === "Asia")) continue;
+          if (maps.some((m) => stegaClean(m.name) === "Asia")) continue;
           maps.push({
             name: "Asia",
             component: (
               <AsiaMap
-                highlightedCountries={outputCountries.filter((c) => AsiaSet.has(c))}
+                highlightedCountries={outputCountries.filter((c) => AsiaSet.has(stegaClean(c)))}
                 setHoveredCountry={setHoveredCountry}
               ></AsiaMap>
             ),
           });
         } else if (AfricaSet.has(country)) {
-          if (maps.some((m) => m.name === "Afrika")) continue;
+          if (maps.some((m) => stegaClean(m.name) === "Afrika")) continue;
           maps.push({
             name: "Afrika",
             component: (
               <AfricaMap
-                highlightedCountries={outputCountries.filter((c) => AfricaSet.has(c))}
+                highlightedCountries={outputCountries.filter((c) => AfricaSet.has(stegaClean(c)))}
                 setHoveredCountry={setHoveredCountry}
               ></AfricaMap>
             ),
