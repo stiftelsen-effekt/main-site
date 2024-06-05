@@ -41,13 +41,11 @@ export const CookiesAccepted = createContext<
 ]);
 
 type QueryResult = {
-  settings: [
-    {
-      donate_label_short: string;
-      donate_label_title: string;
-      accent_color: string;
-    },
-  ];
+  settings: {
+    donate_label_short: string;
+    donate_label_title: string;
+    accent_color: string;
+  };
 };
 
 const query = groq`
@@ -62,7 +60,7 @@ const query = groq`
 
 export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
   const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
-  const settings = result.settings[0];
+  const settings = result.settings;
   return {
     footer: await Footer.getStaticProps({ draftMode }),
     widget: await Widget.getStaticProps({ draftMode }),

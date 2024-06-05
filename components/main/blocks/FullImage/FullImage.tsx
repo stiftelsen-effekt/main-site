@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React from "react";
 import styles from "./FullImage.module.scss";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
@@ -9,7 +8,7 @@ export interface FullImage {
   image: SanityImageObject;
 }
 export const FullImage: React.FC<FullImage> = ({ alt, image }) => {
-  const router = useRouter();
+  console.log(image);
 
   return (
     <div className={styles.wrapper}>

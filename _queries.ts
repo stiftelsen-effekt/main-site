@@ -338,7 +338,17 @@ export const pageContentQuery = `content[hidden!=true] {
     _type == 'reference' => @->,
     _type == 'testimonials' =>  {
       ...,
-      testimonials[]->,
+      testimonials[]->{
+        ...,
+        image {
+          asset->{
+            _id,
+            metadata {
+              lqip
+            }
+          }
+        }
+      },
     },
     _type == 'organizationslist' =>  {
       ...,
@@ -431,8 +441,10 @@ export const pageContentQuery = `content[hidden!=true] {
         ...,
         image {
           asset->{
-            ...,
-            metadata
+            _id,
+            metadata {
+              lqip
+            }
           }
         }
       }
@@ -467,6 +479,28 @@ export const pageContentQuery = `content[hidden!=true] {
         ${linksSelectorQuery}
       },
     },
+    _type == 'normalimage' => {
+      ...,
+      image {
+        asset -> {
+          _id,
+          metadata {
+            lqip
+          }
+        }
+      },
+    },
+    _type == 'fullimage' => {
+      ...,
+      image {
+        asset -> {
+          _id,
+          metadata {
+            lqip
+          }
+        }
+      },
+    },
     _type == 'giveblock' => {
       ...,
       "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
@@ -476,6 +510,14 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       teasers[] {
         ...,
+        image {
+          asset -> {
+            _id,
+            metadata {
+              lqip
+            }
+          }
+        },
         links[] {
           ${linksSelectorQuery}
         },
@@ -511,7 +553,7 @@ export const pageContentQuery = `content[hidden!=true] {
       },
       people[]->,
     },
-    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'philantropicteaser' => @,
+    _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'philantropicteaser' => @,
   }
 },
 `;

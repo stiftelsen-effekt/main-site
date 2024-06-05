@@ -11,10 +11,10 @@ export interface NormalImage {
   grayscale?: boolean;
 }
 export const NormalImage: React.FC<NormalImage> = ({ alt, image, caption, grayscale }) => {
-  const router = useRouter();
-
   const classNames = [styles.wrapper];
   if (grayscale) classNames.push(styles.grayscale);
+
+  console.log(image);
 
   return (
     <div className={classNames.join(" ")}>
