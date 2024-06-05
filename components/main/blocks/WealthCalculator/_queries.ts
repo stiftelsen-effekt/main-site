@@ -21,7 +21,7 @@ export const getNorwegianTaxEstimate = async (
   const adjustedIncome =
     periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY ? income * 12 : income;
 
-  const response = await fetch(`https://skatteberegning.app.skatteetaten.no/2023`, {
+  const response = await fetch(`/api/tax?locale=NO`, {
     method: "POST",
     body: JSON.stringify({
       skatteberegningsgrunnlag: {
@@ -76,199 +76,196 @@ export const getSwedishTaxEstimate = async (
     periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY ? income * 12 : income;
 
   const year = DateTime.local().year;
-  const response = await fetch(
-    "https://corsproxy.io/?https://app.skatteverket.se/rakna-skatt-client-skut-skatteutrakning/api/skatteberakning-fysisk/rakna-ut-skatt",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        allmannaAvdrag: {
-          socialforsakringsavgifter: null,
-        },
-        avdragKapital: {
-          forlustAktierFondandelarMarknadsnoterade: null,
-          forlustFondandelarInteMarknadsnoterade: null,
-          forlustNaringsfastighetNaringsbostadsratt: null,
-          forlustSmahusBostadsratt: null,
-          investeraravdrag: null,
-          ranteutgifter: null,
-        },
-        avdragTjanst: {
-          dubbelBosattning: null,
-          ovrigaUtgifterBrutto: null,
-          resorTillOchFranArbetetBrutto: null,
-          tjansteresor: null,
-        },
-        grunduppgifter: {
-          fodelsear: 1996,
-          inkomstar: year,
-          kommunkod: null,
-          prognos: true,
-          skatteAvgiftssatser: {
-            kommunalLandstingsSkattesats: 32.37,
-            summaKommunalskattAvgifter: null,
-          },
-          showRegionalSkattereduktion: false,
-          skattesatserTyp: "0",
-        },
-        tjansteinkomster: {
-          hittillsUnderAret: {
-            allmanPensionTjanstepensionHittills: null,
-            avdragenSkatt: null,
-            kostnadsersattningarHittills: null,
-            loneinkomsterHittills: null,
-            sjukAktivitetsersattningLonHittills: null,
-            sjukAktivitetsersattningPensionHittills: null,
-            sjukpenningAKassaMmHittills: null,
-            period: {
-              fromDate: DateTime.local().startOf("year").toISODate(),
-              tomDate: DateTime.local().endOf("year").startOf("month").toISODate(),
-            },
-          },
-          restenAvAret: {
-            allmanPensionTjanstepensionResten: null,
-            inkomstFrom: null,
-            isHelar: true,
-            kostnadsersattningarResten: null,
-            loneinkomsterResten: Math.round(adjustedIncome).toString(),
-            sjukAktivitetsersattningLonResten: null,
-            sjukAktivitetsersattningPensionResten: null,
-            sjukpenningAKassaMmResten: null,
-            period: {
-              fromDate: DateTime.local().endOf("year").startOf("month").toISODate(),
-              tomDate: DateTime.local().endOf("year").startOf("month").toISODate(),
-            },
-          },
-        },
-        ovrigaTjansteinkomster: {
-          ersattningFranVinstandelsstiftelseMmUtanPgiOchJobbskatteavdrag: null,
-          hobbyinkomster: null,
-          inkomsterFranFamansbolag: null,
-          ovrigaInkomsterUtanPgi: null,
-        },
-        inkomsterKapital: {
-          egenInbetalningSkatt: null,
-          inkomstUthyrningPrivatbostad: null,
-          inkomstrantor: null,
-          inkomstrantorSkatteavdrag: null,
-          trettioProcentAvInkomstrantorSkatteavdrag: null,
-          inkomstrantorUtanSkatteavdrag: null,
-          schablonintakt: null,
-          vinstAktierFondandelarMarknadsnoterade: null,
-          vinstFondandelarInteMarknadsnoterade: null,
-          vinstNaringsfastighetNaringsbostadsratt: null,
-          vinstSmahusBostadsratt: null,
-        },
-        naringsfastigheter: {
-          underlagFastighetsavgift: {
-            fastighetsavgiftHalvHyreshus: null,
-            fastighetsavgiftHelHyreshus: null,
-          },
-          underlagFastighetsskatt: {
-            fastighetsskattHyreshusTomt: null,
-            fastighetsskattIndustri: null,
-            fastighetsskattLokal: null,
-            fastighetsskattVatten: null,
-            fastighetsskattVind: null,
-          },
-        },
-        naringsverksamhet: {
-          aktivNaringsverksamhet: {
-            overskottAktivNaringsverksamhet: null,
-            sjukpenningAktivNaringsverksamhet: "",
-          },
-          allmannaAvdragDto: {
-            allmantAvdragUnderskottNaringsverksamhet: null,
-          },
-          arbetsgivareSocialaAvgifter: {
-            inkomsterIngaSocialaAvgifter: null,
-            kostnaderIngaSocialaAvgifter: null,
-          },
-          avkastningsskattPensionskostnader: {
-            underlagAvkastningsskattPension: null,
-          },
-          nedsattningEgenavgifter: {
-            regionaltNedsattningsbelopp: null,
-          },
-          passivNaringsverksamhet: {
-            overskottPassivNaringsverksamhet: null,
-          },
-          rantefordelning: {
-            negativRantefordelning: null,
-            positivRantefordelning: null,
-          },
-          sarskildLoneskattPensionskostnader: {
-            underlagPensionskostnaderAnstallda: null,
-            underlagPensionskostnaderEgen: null,
-          },
-          underlagExpansionsfondsskatt: {
-            minskningExpansionsfond: null,
-            okningExpansionsfond: null,
-            underlagAterforingExpansionsfondsskatt: null,
-          },
-          skattereduktionForInvesteringarIInventarier: {
-            underlagInvesteringarInventarier: null,
-          },
-        },
-        skattOvrigt: {
-          avrakningUtlandskSkatt: null,
-          egenInbetalningSkatt: null,
-          preliminarSkatt: null,
-        },
-        pensionsforhallandenKarensuppgifter: {
-          allmanPensionHelaAret: false,
-          antalDagarKarensEnDag: null,
-          antalDagarKarensFjortonDagar: null,
-          antalDagarKarensNittioDagar: null,
-          antalDagarKarensSextioDagar: null,
-          antalDagarKarensSjuDagar: DateTime.local().isInLeapYear ? 366 : 365,
-          antalDagarKarensTrettioDagar: null,
-          helSjukAktivitetsersattning: false,
-          manuelltUnderlagForSlfPaAktivNrvJanTillJun2019: null,
-        },
-        smahusAgarlagenhet: {
-          underlagFastighetsavgift: {
-            fastighetsavgiftHalvSmahus: null,
-            fastighetsavgiftHelSmahus: null,
-            skrivenHelaAret: null,
-            underlagSkattereduktionFastighetsavgiftHalvAvgift: "",
-            underlagSkattereduktionFastighetsavgiftHelAvgift: "",
-          },
-          underlagFastighetsskatt: {
-            fastighetsskattSmahusTomt: null,
-          },
-        },
-        underlagSkattreduktion: {
-          fackforeningsavgift: null,
-          preliminarFornybarElkWh: null,
-          rotarbeteFaktura: null,
-          rutarbeteFaktura: null,
-          rotarbeteForman: null,
-          rutarbeteForman: null,
-          gava: null,
-          akassa: null,
-          hasAvdragFromArbetsgivare: false,
-          regionalSkattereduktion: false,
-        },
-        uppgifterAvlidnaSjomanUtInvandrade: {
-          avlidenAr: null,
-          bosattManader: "12",
-          dagarFjarrfart: null,
-          dagarNarfart: null,
-          inUtvandrad: false,
-          invandradManad: null,
-          utvandradManad: null,
-          folkbokford: true,
-        },
-        utlandskForsakringAvkastningsskatt: {
-          skatteunderlagKapitalforsakring: null,
-          skatteunderlagPensionsforsakring: null,
-        },
-      }),
+  const response = await fetch("/api/tax?locale=SV", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      allmannaAvdrag: {
+        socialforsakringsavgifter: null,
+      },
+      avdragKapital: {
+        forlustAktierFondandelarMarknadsnoterade: null,
+        forlustFondandelarInteMarknadsnoterade: null,
+        forlustNaringsfastighetNaringsbostadsratt: null,
+        forlustSmahusBostadsratt: null,
+        investeraravdrag: null,
+        ranteutgifter: null,
+      },
+      avdragTjanst: {
+        dubbelBosattning: null,
+        ovrigaUtgifterBrutto: null,
+        resorTillOchFranArbetetBrutto: null,
+        tjansteresor: null,
+      },
+      grunduppgifter: {
+        fodelsear: 1996,
+        inkomstar: year,
+        kommunkod: null,
+        prognos: true,
+        skatteAvgiftssatser: {
+          kommunalLandstingsSkattesats: 32.37,
+          summaKommunalskattAvgifter: null,
+        },
+        showRegionalSkattereduktion: false,
+        skattesatserTyp: "0",
+      },
+      tjansteinkomster: {
+        hittillsUnderAret: {
+          allmanPensionTjanstepensionHittills: null,
+          avdragenSkatt: null,
+          kostnadsersattningarHittills: null,
+          loneinkomsterHittills: null,
+          sjukAktivitetsersattningLonHittills: null,
+          sjukAktivitetsersattningPensionHittills: null,
+          sjukpenningAKassaMmHittills: null,
+          period: {
+            fromDate: DateTime.local().startOf("year").toISODate(),
+            tomDate: DateTime.local().endOf("year").startOf("month").toISODate(),
+          },
+        },
+        restenAvAret: {
+          allmanPensionTjanstepensionResten: null,
+          inkomstFrom: null,
+          isHelar: true,
+          kostnadsersattningarResten: null,
+          loneinkomsterResten: Math.round(adjustedIncome).toString(),
+          sjukAktivitetsersattningLonResten: null,
+          sjukAktivitetsersattningPensionResten: null,
+          sjukpenningAKassaMmResten: null,
+          period: {
+            fromDate: DateTime.local().endOf("year").startOf("month").toISODate(),
+            tomDate: DateTime.local().endOf("year").startOf("month").toISODate(),
+          },
+        },
+      },
+      ovrigaTjansteinkomster: {
+        ersattningFranVinstandelsstiftelseMmUtanPgiOchJobbskatteavdrag: null,
+        hobbyinkomster: null,
+        inkomsterFranFamansbolag: null,
+        ovrigaInkomsterUtanPgi: null,
+      },
+      inkomsterKapital: {
+        egenInbetalningSkatt: null,
+        inkomstUthyrningPrivatbostad: null,
+        inkomstrantor: null,
+        inkomstrantorSkatteavdrag: null,
+        trettioProcentAvInkomstrantorSkatteavdrag: null,
+        inkomstrantorUtanSkatteavdrag: null,
+        schablonintakt: null,
+        vinstAktierFondandelarMarknadsnoterade: null,
+        vinstFondandelarInteMarknadsnoterade: null,
+        vinstNaringsfastighetNaringsbostadsratt: null,
+        vinstSmahusBostadsratt: null,
+      },
+      naringsfastigheter: {
+        underlagFastighetsavgift: {
+          fastighetsavgiftHalvHyreshus: null,
+          fastighetsavgiftHelHyreshus: null,
+        },
+        underlagFastighetsskatt: {
+          fastighetsskattHyreshusTomt: null,
+          fastighetsskattIndustri: null,
+          fastighetsskattLokal: null,
+          fastighetsskattVatten: null,
+          fastighetsskattVind: null,
+        },
+      },
+      naringsverksamhet: {
+        aktivNaringsverksamhet: {
+          overskottAktivNaringsverksamhet: null,
+          sjukpenningAktivNaringsverksamhet: "",
+        },
+        allmannaAvdragDto: {
+          allmantAvdragUnderskottNaringsverksamhet: null,
+        },
+        arbetsgivareSocialaAvgifter: {
+          inkomsterIngaSocialaAvgifter: null,
+          kostnaderIngaSocialaAvgifter: null,
+        },
+        avkastningsskattPensionskostnader: {
+          underlagAvkastningsskattPension: null,
+        },
+        nedsattningEgenavgifter: {
+          regionaltNedsattningsbelopp: null,
+        },
+        passivNaringsverksamhet: {
+          overskottPassivNaringsverksamhet: null,
+        },
+        rantefordelning: {
+          negativRantefordelning: null,
+          positivRantefordelning: null,
+        },
+        sarskildLoneskattPensionskostnader: {
+          underlagPensionskostnaderAnstallda: null,
+          underlagPensionskostnaderEgen: null,
+        },
+        underlagExpansionsfondsskatt: {
+          minskningExpansionsfond: null,
+          okningExpansionsfond: null,
+          underlagAterforingExpansionsfondsskatt: null,
+        },
+        skattereduktionForInvesteringarIInventarier: {
+          underlagInvesteringarInventarier: null,
+        },
+      },
+      skattOvrigt: {
+        avrakningUtlandskSkatt: null,
+        egenInbetalningSkatt: null,
+        preliminarSkatt: null,
+      },
+      pensionsforhallandenKarensuppgifter: {
+        allmanPensionHelaAret: false,
+        antalDagarKarensEnDag: null,
+        antalDagarKarensFjortonDagar: null,
+        antalDagarKarensNittioDagar: null,
+        antalDagarKarensSextioDagar: null,
+        antalDagarKarensSjuDagar: DateTime.local().isInLeapYear ? 366 : 365,
+        antalDagarKarensTrettioDagar: null,
+        helSjukAktivitetsersattning: false,
+        manuelltUnderlagForSlfPaAktivNrvJanTillJun2019: null,
+      },
+      smahusAgarlagenhet: {
+        underlagFastighetsavgift: {
+          fastighetsavgiftHalvSmahus: null,
+          fastighetsavgiftHelSmahus: null,
+          skrivenHelaAret: null,
+          underlagSkattereduktionFastighetsavgiftHalvAvgift: "",
+          underlagSkattereduktionFastighetsavgiftHelAvgift: "",
+        },
+        underlagFastighetsskatt: {
+          fastighetsskattSmahusTomt: null,
+        },
+      },
+      underlagSkattreduktion: {
+        fackforeningsavgift: null,
+        preliminarFornybarElkWh: null,
+        rotarbeteFaktura: null,
+        rutarbeteFaktura: null,
+        rotarbeteForman: null,
+        rutarbeteForman: null,
+        gava: null,
+        akassa: null,
+        hasAvdragFromArbetsgivare: false,
+        regionalSkattereduktion: false,
+      },
+      uppgifterAvlidnaSjomanUtInvandrade: {
+        avlidenAr: null,
+        bosattManader: "12",
+        dagarFjarrfart: null,
+        dagarNarfart: null,
+        inUtvandrad: false,
+        invandradManad: null,
+        utvandradManad: null,
+        folkbokford: true,
+      },
+      utlandskForsakringAvkastningsskatt: {
+        skatteunderlagKapitalforsakring: null,
+        skatteunderlagPensionsforsakring: null,
+      },
+    }),
+  });
 
   const json = await response.json();
 

@@ -116,7 +116,7 @@ describe("Widget", () => {
       const sum = sumtext.replace(/\D/g, "");
       expect(sum).to.be.eq(randomSum.toString());
     });
-    cy.get("[data-cy=autogiro-manual-bank-account").should("contain.text", "52323524");
+    cy.get("[data-cy=autogiro-manual-bank-account").should("contain.text", "5232-3524");
 
     cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("not.be.visible");
 
