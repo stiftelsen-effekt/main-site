@@ -28,11 +28,15 @@ export async function getTaxPagePath(): Promise<string[]> {
   const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
   const dashboardPath = await getDashboardPagePath();
 
+  console.log("dashboardPath", dashboardPath);
+
   const { dashboard: [dashboard] = [] } = result;
 
   const page = result.page;
 
-  const taxSlug = page?.slug?.current;
+  const taxSlug = stegaClean(page?.slug?.current);
+
+  console.log("taxSlug", taxSlug);
 
   if (!taxSlug) return [];
 
@@ -205,7 +209,7 @@ const fetchTaxPage = groq`
       current
     },
   },
-  "page": *[_type == "tax"] {
+  "page": *[_type == "tax"][0] {
     ...,
     title,
     features[] {

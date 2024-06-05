@@ -52,7 +52,7 @@ type QueryResult = {
 
 const query = groq`
   {
-    "settings": *[_type == "site_settings"] {
+    "settings": *[_type == "site_settings"][0] {
       donate_label_short,
       donate_label_title,
       accent_color

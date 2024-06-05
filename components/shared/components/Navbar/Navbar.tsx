@@ -190,7 +190,12 @@ export const Navbar = withStaticProps(
                 href="/"
                 passHref
                 onClick={(e) => e.currentTarget.blur()}
-                style={{ position: "relative" }}
+                style={{
+                  position: "relative",
+                  height: "100%",
+                  width: "100%",
+                  display: "inline-block",
+                }}
               >
                 <ResponsiveImage
                   image={dashboardLogo}

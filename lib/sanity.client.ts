@@ -5,7 +5,7 @@ export function getClient(previewToken?: string): SanityClient {
   return createClient({
     ...projectConfig,
     useCdn: !previewToken,
-    perspective: "previewDrafts",
+    perspective: previewToken ? "previewDrafts" : "published",
     stega: {
       enabled: previewToken ? true : false,
       studioUrl: "http://localhost:3333",

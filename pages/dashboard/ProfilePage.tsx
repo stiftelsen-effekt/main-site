@@ -104,7 +104,7 @@ const fetchProfilePage = groq`
       current
     },
   },
-  "page": *[_id == "profile"] {
+  "page": *[_id == "profile"][0] {
     ...,
     slug {
       current

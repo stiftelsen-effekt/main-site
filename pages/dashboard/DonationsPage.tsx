@@ -454,7 +454,7 @@ const fetchDonationsPage = groq`
       current
     }
   },
-  "page": *[_id == "donations"] {
+  "page": *[_id == "donations"][0] {
     ...,
     aggregate_estimated_impact->{
       ...,
