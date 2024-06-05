@@ -14,8 +14,6 @@ export const NormalImage: React.FC<NormalImage> = ({ alt, image, caption, graysc
   const classNames = [styles.wrapper];
   if (grayscale) classNames.push(styles.grayscale);
 
-  console.log(image);
-
   return (
     <div className={classNames.join(" ")}>
       <ResponsiveImage image={image} alt={alt} layout={"responsive"} />

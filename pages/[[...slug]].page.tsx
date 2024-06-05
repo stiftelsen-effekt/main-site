@@ -138,8 +138,6 @@ export const getStaticProps = async ({
 
   const pageType = await inferPageTypeFromPath(path);
 
-  console.log("pageType", pageType);
-
   switch (pageType) {
     case PageType.GenericPage: {
       const props = await GenericPage.getStaticProps({ draftMode, path });
@@ -224,7 +222,6 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.TaxPage: {
-      console.log("TaxPage.getStaticProps");
       const props = await TaxPage.getStaticProps({ draftMode, path });
       return {
         props: {

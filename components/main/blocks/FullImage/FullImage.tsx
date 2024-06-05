@@ -8,8 +8,6 @@ export interface FullImage {
   image: SanityImageObject;
 }
 export const FullImage: React.FC<FullImage> = ({ alt, image }) => {
-  console.log(image);
-
   return (
     <div className={styles.wrapper}>
       <ResponsiveImage image={image} alt={alt} layout={"responsive"} />

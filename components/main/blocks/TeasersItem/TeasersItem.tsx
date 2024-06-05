@@ -20,7 +20,6 @@ export const TeasersItem: React.FC<TeasersItemProps> = ({
   links,
   image,
 }) => {
-  console.log(image);
   return (
     <div className={elements.teaser}>
       <div className={elements.teaserimage}>
