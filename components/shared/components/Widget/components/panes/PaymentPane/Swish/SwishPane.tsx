@@ -119,7 +119,6 @@ export const SwishPane = dynamic<{
                             <EffektButton
                               onClick={() => {
                                 plausible("DraftSwishAgreementInApp");
-                                plausible("CompleteDonation");
                                 triggerSwishApp(token);
                               }}
                             >
@@ -128,7 +127,6 @@ export const SwishPane = dynamic<{
                             <EffektButton
                               onClick={() => {
                                 plausible("DraftSwishAgreementWithQR");
-                                plausible("CompleteDonation");
                                 setShowQrCode(true);
                               }}
                             >

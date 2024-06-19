@@ -74,6 +74,7 @@ function MyApp({
           taggedEvents={true}
           trackLocalhost={true} // TODO: Remove when testing is done
           enabled={true} // TODO: Remove when testing is done
+          revenue={true}
         >
           <Provider store={store}>
             <RouterContext.Provider value={routerContextValue.current}>
@@ -103,6 +104,7 @@ function MyApp({
       taggedEvents={true}
       trackLocalhost={true} // TODO: Remove when testing is done
       enabled={true} // TODO: Remove when testing is done
+      revenue={true}
     >
       <Provider store={store}>
         <RouterContext.Provider value={routerContextValue.current}>

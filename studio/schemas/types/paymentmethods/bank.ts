@@ -49,6 +49,25 @@ export default {
       type: "string",
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "button_text",
+      title: "Button text",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "completed_title",
+      title: "Completed title",
+      type: "string",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "completed_text",
+      title: "Completed text",
+      type: "text",
+      rows: 3,
+      validation: (Rule: any) => Rule.required(),
+    },
   ],
   preview: {
     prepare() {

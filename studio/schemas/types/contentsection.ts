@@ -83,6 +83,7 @@ export default {
         { type: "giftcardteaser" },
         { type: "discountratecomparison" },
         { type: "itncoverage" },
+        { type: "plausiblerevenuetracker" },
       ],
       options: {
         modal: "fullscreen",

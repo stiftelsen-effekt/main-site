@@ -19,3 +19,10 @@ export const TextWrapper = styled.div`
   justify-content: space-between;
   font-size: 24px;
 `;
+
+export const CompleteButtonWrapper = styled.div`
+  padding-top: 32px;
+  padding-bottom: 16px;
+  display: flex;
+  justify-content: center;
+`;

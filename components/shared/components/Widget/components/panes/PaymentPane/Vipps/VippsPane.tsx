@@ -64,7 +64,6 @@ export const VippsPane: React.FC<{
                   onClick={async () => {
                     if (recurring === RecurringDonation.RECURRING) {
                       plausible("DraftVippsRecurringAgreement");
-                      plausible("CompleteDonation");
                       dispatch(draftAgreementAction.started(undefined));
                     }
                     (document.activeElement as HTMLElement).blur();
@@ -86,7 +85,6 @@ export const VippsPane: React.FC<{
                 <SubmitButton
                   onClick={async () => {
                     plausible("InitiateSingleVippsPayment");
-                    plausible("CompleteDonation");
                     if (recurring === RecurringDonation.NON_RECURRING && paymentProviderURL) {
                       window.location.href = paymentProviderURL;
                     }

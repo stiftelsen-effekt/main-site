@@ -35,6 +35,7 @@ import { Accordion } from "./Accordion/Accordion";
 import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 import { stegaClean } from "@sanity/client/stega";
 import dynamic from "next/dynamic";
+import { PlausibleRevenueTracker } from "./PlausibleRevenueTracker/PlausibleRevenueTracker";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -378,6 +379,10 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 graphExplenation={block.graph_explenation}
                 caption={block.caption}
               />
+            );
+          case "plausiblerevenuetracker":
+            return (
+              <PlausibleRevenueTracker key={block._key} enabled={block.enabled} type={block.type} />
             );
           default:
             return block._type;

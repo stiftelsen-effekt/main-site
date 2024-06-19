@@ -77,6 +77,7 @@ import philantropicteaser from "./types/philantropicteaser";
 import itncoverage from "./types/itncoverage";
 import { pages } from "./pages/_pages";
 import { dashboardpages } from "./dashboard/_dashboardPages";
+import plausiblerevenuetracker from "./types/plausiblerevenuetracker";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -151,6 +152,7 @@ export const types = [
   accordion,
   philantropicteaser,
   itncoverage,
+  plausiblerevenuetracker,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

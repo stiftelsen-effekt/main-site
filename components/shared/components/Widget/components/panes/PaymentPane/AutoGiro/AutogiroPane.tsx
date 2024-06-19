@@ -62,7 +62,6 @@ export const AutogiroPane: React.FC<{
       <PortableText value={config.manual_recurring_option_config.instruction_text} />
       <EffektButton
         onClick={() => {
-          plausible("CompleteDonation");
           setHasSubmitted(true);
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
@@ -122,7 +121,6 @@ export const AutogiroPane: React.FC<{
 
       <EffektButton
         onClick={() => {
-          plausible("CompleteDonation");
           setHasSubmitted(true);
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
