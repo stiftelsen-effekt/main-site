@@ -117,7 +117,7 @@ const ArticlePage = withStaticProps(
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
 
-      {data.toc && <TOC items={data.toc}></TOC>}
+      {/*data.toc && <TOC items={data.toc}></TOC> */}
 
       <BlockContentRenderer content={content} />
       <RelatedArticles
