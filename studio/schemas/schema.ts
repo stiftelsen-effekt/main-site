@@ -1,8 +1,3 @@
-// First, we must import the schema creator
-import createSchema from "part:@sanity/base/schema-creator";
-
-// Then import schema types from any plugins that might expose them
-import schemaTypes from "all:part:@sanity/base/schema-type";
 import contributor from "./types/contributor";
 import keyPoint from "./types/key-point";
 import organization from "./types/organization";
@@ -19,12 +14,9 @@ import navgroup from "./types/navgroup";
 import pageheader from "./types/pageheader";
 import questionandanswer from "./types/questionandanswer";
 import questionandanswergroup from "./types/questionandanswergroup";
-import support from "./pages/support";
-import generic from "./pages/generic";
 import contactinfo from "./types/contactinfo";
 import videoembed from "./types/videoembed";
 import contentsection from "./types/contentsection";
-import criteria from "./pages/criteria";
 import paragraph from "./types/paragraph";
 import pointlistpoint from "./types/pointlistpoint";
 import links from "./types/links";
@@ -36,14 +28,11 @@ import intervention from "./types/intervention";
 import interventionwidget from "./types/interventionwidget";
 import testimonials from "./types/testimonials";
 import articleheader from "./types/articleheader";
-import article from "./pages/article";
-import articles from "./pages/articles";
 import normalimage from "./types/normalimage";
 import fullvideo from "./types/fullvideo";
 import htmlembed from "./types/htmlembed";
 import donationwidget from "./types/donationwidget";
 import quote from "./types/quote";
-import vippsagreement from "./pages/vippsagreement";
 import citation from "./types/citation";
 import newslettersignup from "./types/newslettersignup";
 import wealthcalculator from "./types/wealthcalculator";
@@ -57,11 +46,7 @@ import vipps from "./types/paymentmethods/vipps";
 import vippsAnonymous from "./dashboard/vipps-anonymous";
 import aggregateestimatedimpact from "./types/aggregateestimatedimpact";
 import donationstableconfiguration from "./types/donationstableconfiguration";
-import donations from "./dashboard/donations";
-import agreements from "./dashboard/agreements";
-import profile from "./dashboard/profile";
 import dashboard from "./dashboard";
-import tax from "./dashboard/tax";
 import taxunits from "./dashboard/tax/taxunits";
 import metareceipt from "./dashboard/tax/metareceipt";
 import taxdeduction from "./dashboard/tax/taxdeduction";
@@ -81,7 +66,6 @@ import blocktables from "./types/blocktable";
 import discountratecomparison from "./types/discountratecomparison";
 import wealthcalculatorconfiguration from "./types/wealthcalculatorconfiguration";
 import interventionwidgetoutputconfiguration from "./types/interventionwidgetoutputconfiguration";
-import results from "./pages/results";
 import graphcontext from "./types/results/graphcontext";
 import cumulativedonationsgraph from "./types/results/cumulativedonationsgraph";
 import resultsoutput from "./types/results/resultsoutput";
@@ -91,17 +75,8 @@ import latex from "./types/latex";
 import accordion from "./types/accordion";
 import philantropicteaser from "./types/philantropicteaser";
 import itncoverage from "./types/itncoverage";
-
-export const pages = [
-  generic,
-  support,
-  criteria,
-  article,
-  articles,
-  results,
-  vippsagreement,
-] as const;
-export const dashboardpages = [donations, agreements, profile, tax] as const;
+import { pages } from "./pages/_pages";
+import { dashboardpages } from "./dashboard/_dashboardPages";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -179,17 +154,11 @@ export const types = [
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
-export default createSchema({
-  // We name our schema
-  name: "default",
-  // Then proceed to concatenate our document type
-  // to the ones provided by any plugins that are installed
-  types: schemaTypes.concat(
-    pages,
-    dashboardpages,
-    types,
-    paymentMethods,
-    [siteSettings],
-    [dashboard],
-  ),
-});
+export const schemas: any[] = [
+  ...pages,
+  ...dashboardpages,
+  ...types,
+  ...paymentMethods,
+  siteSettings,
+  dashboard,
+];

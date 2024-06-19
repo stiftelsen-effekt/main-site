@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
-import katex from "katex";
 
 export const formatHarvardCitation = ({
   type,
@@ -225,8 +224,6 @@ const reflowCitationsExecute = () => {
   if (typeof window === "undefined") return;
   if (window.innerWidth < 1180) return;
 
-  console.log("Reflowing citations", +new Date());
-
   let citations = Array.from(document.querySelectorAll<HTMLSpanElement>(".extendedcitation"));
   // First reset them
   citations.forEach((citation) => {
@@ -358,6 +355,8 @@ const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
 };
 
 const RenderLatex: React.FC<any> = ({ text }) => {
+  const [renderedHtml, setRenderedHtml] = useState("");
+
   useEffect(() => {
     if (document.getElementById("katex-styles-link")) return;
 
@@ -369,14 +368,14 @@ const RenderLatex: React.FC<any> = ({ text }) => {
     document.head.appendChild(link);
   }, []);
 
-  const renderedHtml = useMemo(() => {
-    try {
-      return katex.renderToString(text, {
-        throwOnError: false,
-      });
-    } catch (e: any) {
-      return `<span style="color: red;">${e.message}</span>`;
-    }
+  useEffect(() => {
+    import("katex").then((katex) => {
+      try {
+        setRenderedHtml(katex.default.renderToString(text, { throwOnError: false }));
+      } catch (e: any) {
+        setRenderedHtml(`<span style="color: red;">${e.message}</span>`);
+      }
+    });
   }, [text]);
   // Debug props
   return (
@@ -391,6 +390,11 @@ const RenderLatex: React.FC<any> = ({ text }) => {
 };
 
 export const customComponentRenderers = {
+  block: {
+    normal: (props: any) => (
+      <div style={{ marginBlockStart: "1em", marginBlockEnd: "1rem" }}>{props.children}</div>
+    ),
+  },
   marks: {
     citation: Citation,
     link: (props: any) => <LinkComponent link={props.value}>{props.children}</LinkComponent>,

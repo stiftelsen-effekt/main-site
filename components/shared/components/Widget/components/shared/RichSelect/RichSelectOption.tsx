@@ -7,6 +7,7 @@ export interface OptionProps {
   // An enum
   value: number;
   selected?: boolean;
+  children: React.ReactNode;
   select?: (value: number) => void;
 }
 

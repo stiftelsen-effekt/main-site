@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import elements from "./Paragraph.module.scss";
-import { PortableText, PortableTextComponents } from "@portabletext/react";
+import { PortableText } from "@portabletext/react";
 import { useDebouncedCallback } from "use-debounce";
-import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { customComponentRenderers, reflowCitations } from "./Citation";
 
 export type ParagraphProps = {
+  tocKey: string;
   title: string;
   blocks: any[];
 };
 
-export const Paragraph: React.FC<ParagraphProps> = ({ title, blocks }) => {
+export const Paragraph: React.FC<ParagraphProps> = ({ title, tocKey, blocks }) => {
   const debounceReflowCitations = useDebouncedCallback(
     () => {
       reflowCitations();
@@ -35,7 +35,9 @@ export const Paragraph: React.FC<ParagraphProps> = ({ title, blocks }) => {
 
   return (
     <div className={elements.paragraphwrapper}>
-      <p className="inngress">{title}</p>
+      <p className="inngress" data-toc-key={tocKey}>
+        {title}
+      </p>
       <PortableText value={blocks || []} components={customComponentRenderers}></PortableText>
     </div>
   );

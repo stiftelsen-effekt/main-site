@@ -1,16 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import {
-  filterPageToSingleItem,
-  GeneralPageProps,
-  getAppStaticProps,
-  LayoutType,
-} from "../_app.page";
+import { getAppStaticProps, LayoutType } from "../_app.page";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import { useContext, useEffect, useState } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
@@ -41,11 +36,13 @@ import { groq } from "next-sanity";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Info } from "react-feather";
+import { token } from "../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export async function getDashboardPagePath() {
-  const result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
+  const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
 
-  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
 
   if (!dashboardSlug) throw new Error("Dashboard slug not found");
 
@@ -53,16 +50,18 @@ export async function getDashboardPagePath() {
 }
 
 export async function getDonationsPagePath() {
-  let result = await getClient(false).fetch<FetchDonationsPageResult>(fetchDonationsPage);
-  let filteredResult = { ...result, page: filterPageToSingleItem(result, false) };
+  let result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
 
   const dashboardPath = await getDashboardPagePath();
 
-  const donationsSlug = filteredResult.page?.slug?.current;
+  const donationsSlug = result.page?.slug?.current;
 
   if (!donationsSlug) return null;
 
-  return [...dashboardPath, ...donationsSlug.split("/")];
+  return [
+    ...dashboardPath.map((component) => stegaClean(component)),
+    ...donationsSlug.split("/").map((component) => stegaClean(component)),
+  ];
 }
 
 export async function getDonationsPageSubpaths() {
@@ -72,7 +71,10 @@ export async function getDonationsPageSubpaths() {
 
   const years = getYearPaths();
 
-  return years.map((year) => [...donationsPagePath, year]);
+  return years.map((year) => [
+    ...donationsPagePath.map((component) => stegaClean(component)),
+    stegaClean(year),
+  ]);
 }
 
 const getYearPaths = () => {
@@ -86,9 +88,11 @@ const getYearPaths = () => {
 };
 
 export const DonationsPage = withStaticProps(
-  async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-    const result = await getClient(preview).fetch<FetchDonationsPageResult>(fetchDonationsPage);
+  async ({ draftMode = false, path }: { draftMode: boolean; path: string[] }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchDonationsPageResult>(
+      fetchDonationsPage,
+    );
 
     const donationsPagePath = await getDonationsPagePath();
 
@@ -97,9 +101,9 @@ export const DonationsPage = withStaticProps(
 
     return {
       appStaticProps,
-      preview: preview,
+      draftMode,
       filterYear,
-      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
+      navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
         result: result,
         query: fetchDonationsPage,
@@ -120,7 +124,7 @@ export const DonationsPage = withStaticProps(
   }
 
   const dashboard = data.result.dashboard[0];
-  const page = filterPageToSingleItem(data.result, false);
+  const page = data.result.page;
 
   if (!page)
     return (
@@ -433,7 +437,7 @@ type FetchDonationsPageResult = {
     title: string;
   }[];
   dashboard?: Array<{ dashboard_slug?: { current?: string } }>;
-  page: DonationsPageData | DonationsPageData[] | null;
+  page: DonationsPageData | null;
   footer: any[];
   widget: any[];
 };
@@ -450,7 +454,7 @@ const fetchDonationsPage = groq`
       current
     }
   },
-  "page": *[_id == "donations"] {
+  "page": *[_id == "donations"][0] {
     ...,
     aggregate_estimated_impact->{
       ...,

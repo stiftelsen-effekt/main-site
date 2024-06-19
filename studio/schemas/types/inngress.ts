@@ -24,4 +24,10 @@ export default {
       title: "Sidelinks",
     },
   ],
+  preview: {
+    select: {
+      title: "heading",
+      subtitle: "body",
+    },
+  },
 } as const;

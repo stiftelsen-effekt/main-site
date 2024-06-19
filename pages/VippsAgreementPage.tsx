@@ -11,37 +11,42 @@ import {
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { token } from "../token";
 
 export const getVippsAgreementPagePath = async () => {
-  const result = await getClient(false).fetch<FetchVippsResult>(fetchVipps);
+  const result = await getClient().fetch<FetchVippsResult>(fetchVipps);
   const vipps = result.vipps?.[0];
   const slug = vipps?.agreement_page?.slug?.current;
   return slug?.split("/") || null;
 };
 
-export const VippsAgreement = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({ preview });
-  const result = await getClient(preview).fetch<FetchVippsResult>(fetchVipps);
+export const VippsAgreement = withStaticProps(
+  async ({ draftMode = false }: { draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode });
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchVippsResult>(
+      fetchVipps,
+    );
 
-  return {
-    appStaticProps,
-    preview: preview,
-    navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
-    data: {
-      result,
-      query: fetchVipps,
-      queryParams: {},
-    },
-  }; // satisfies GeneralPageProps (requires next@13);;
-})(({ data, preview, navbarData }) => {
+    return {
+      appStaticProps,
+      draftMode: draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      data: {
+        result,
+        query: fetchVipps,
+        queryParams: {},
+      },
+    }; // satisfies GeneralPageProps (requires next@13);;
+  },
+)(({ data, draftMode, navbarData }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
   if (!page) {
-    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+    return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
   }
 
   const header = page.header;

@@ -12,7 +12,7 @@ export const blocktype = {
       { title: "Code", value: "code" },
       { title: "Underline", value: "underline" },
       { title: "Strike", value: "strike-through" },
-      { title: "Math", value: "math", blockEditor: { render: MathRenderer, icon: TexIcon } },
+      { title: "Math", value: "math", component: MathRenderer, icon: TexIcon },
     ],
     annotations: [
       {
@@ -32,9 +32,6 @@ export const blocktype = {
             ],
           },
         ],
-        blockEditor: {
-          render: CitationRenderer,
-        },
       },
       {
         name: "link",

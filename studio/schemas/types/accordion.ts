@@ -30,7 +30,7 @@ export default {
         { type: "htmlembed" },
       ],
       options: {
-        editModal: "fullscreen",
+        modal: "fullscreen",
       },
     },
   ],

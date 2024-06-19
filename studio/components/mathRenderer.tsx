@@ -21,7 +21,9 @@ export const MathRenderer = (props) => {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 
-    return () => document.head.removeChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   if (!props || !props.children) {
@@ -46,7 +48,12 @@ export const MathRenderer = (props) => {
         size={14}
         onMouseEnter={() => setShowPreview(true)}
         onMouseLeave={() => setShowPreview(false)}
-        style={{ margin: "0 0.25rem", verticalAlign: "baseline" }}
+        style={{
+          padding: "0.25rem",
+          margin: "0 0.1rem",
+          verticalAlign: "text-bottom",
+          cursor: "context-menu",
+        }}
       />
       {/* A rendered preview */}
       <span
@@ -55,11 +62,12 @@ export const MathRenderer = (props) => {
           padding: "0.25rem 0.5rem",
           border: "1px solid #ccc",
           position: "absolute",
-          top: "0",
+          top: "-100%",
           right: "0",
           backgroundColor: "#fff",
           zIndex: "1000",
-          transform: "translateX(calc(100% + 1rem))",
+          transform: "translateX(calc(100% + 0.25rem)) translateY(50%)",
+          whiteSpace: "nowrap",
         }}
         dangerouslySetInnerHTML={{ __html: html }}
       />

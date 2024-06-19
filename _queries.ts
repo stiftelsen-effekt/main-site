@@ -1,7 +1,7 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
-import { apiResult, getAccessTokenSilently, useApi } from "./hooks/useApi";
-import { DistributionCauseArea, TaxUnit } from "./models";
+import { apiResult, getAccessTokenSilently } from "./hooks/useApi";
+import { TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
 import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
 
@@ -332,13 +332,23 @@ export const questionAndAnswerSelectionQuery = `
     ${linksContentQuery}
 } `;
 
-export const pageContentQuery = `content[] {
+export const pageContentQuery = `content[hidden!=true] {
   ...,
   blocks[] {
     _type == 'reference' => @->,
     _type == 'testimonials' =>  {
       ...,
-      testimonials[]->,
+      testimonials[]->{
+        ...,
+        image {
+          asset->{
+            _id,
+            metadata {
+              lqip
+            }
+          }
+        }
+      },
     },
     _type == 'organizationslist' =>  {
       ...,
@@ -427,7 +437,17 @@ export const pageContentQuery = `content[] {
     _type == 'contributorlist' => {
       ...,
       role->,
-      contributors[]->
+      contributors[]->{
+        ...,
+        image {
+          asset->{
+            _id,
+            metadata {
+              lqip
+            }
+          }
+        }
+      }
     },
     _type == 'inngress' => {
       ...,
@@ -455,11 +475,30 @@ export const pageContentQuery = `content[] {
     },
     _type == 'giftcardteaser' => {
       ...,
-      image {
-        asset->,
-      },
       links[] {
         ${linksSelectorQuery}
+      },
+    },
+    _type == 'normalimage' => {
+      ...,
+      image {
+        asset -> {
+          _id,
+          metadata {
+            lqip
+          }
+        }
+      },
+    },
+    _type == 'fullimage' => {
+      ...,
+      image {
+        asset -> {
+          _id,
+          metadata {
+            lqip
+          }
+        }
       },
     },
     _type == 'giveblock' => {
@@ -472,7 +511,12 @@ export const pageContentQuery = `content[] {
       teasers[] {
         ...,
         image {
-          asset->,
+          asset -> {
+            _id,
+            metadata {
+              lqip
+            }
+          }
         },
         links[] {
           ${linksSelectorQuery}
@@ -509,7 +553,7 @@ export const pageContentQuery = `content[] {
       },
       people[]->,
     },
-    _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'philantropicteaser' => @,
+    _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'philantropicteaser' => @,
   }
 },
 `;

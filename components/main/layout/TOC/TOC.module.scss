@@ -1,0 +1,66 @@
+.toc {
+  position: fixed;
+  height: calc(100vh - 2rem);
+  width: calc((100vw - 760px) / 2 - 4rem);
+  margin-left: 2vw;
+  border-left: 1px solid var(--primary);
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+    transform: translateX(-0.85rem);
+    margin-top: 1rem;
+    position: relative;
+    height: 100%;
+
+    li {
+      padding: 0.2rem 0;
+      padding-left: 0.75rem;
+      line-height: 1rem;
+      transition: all 0.2s;
+      background: var(--secondary);
+      margin-bottom: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      transition: all 0.2s;
+      z-index: 10;
+
+      &:hover {
+        cursor: pointer;
+
+        &::before {
+          opacity: 1;
+          transform: translateY(0) translateX(-20%);
+        }
+      }
+
+      &::before {
+        /* Arrow right symbol UTF-8 */
+        content: "\2192";
+        position: absolute;
+        line-height: 0.7rem;
+        top: 0.2rem;
+        transform: translateY(0) translateX(-40%);
+        left: 0;
+        opacity: 0;
+        transition: all 0.2s;
+      }
+    }
+  }
+
+  .scrollIndicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-2px);
+    width: 3px;
+    height: 10rem;
+    background: var(--primary);
+  }
+}

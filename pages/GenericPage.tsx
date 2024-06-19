@@ -6,32 +6,40 @@ import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { token } from "../token";
+import { useLiveQuery } from "next-sanity/preview";
+import { stegaClean } from "@sanity/client/stega";
 
 export const getGenericPagePaths = async () => {
-  const data = await getClient(false).fetch<{ pages: Array<{ slug: { current: string } }> }>(
+  const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
     fetchGenericPages,
   );
-  const slugs = data.pages.map((page) => page.slug.current);
-  const paths = slugs.map((slug) => slug.split("/"));
+  const slugs = data.pages.map((page) => stegaClean(page.slug.current));
+  const paths = slugs.map((slug) => stegaClean(slug).split("/"));
   return paths;
 };
 
 export const GenericPage = withStaticProps(
-  async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ preview });
+  async ({ path, draftMode = false }: { path: string[]; draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode });
 
     const slug = path.join("/") || "/";
 
-    let result = await getClient(preview).fetch(fetchGenericPage, { slug });
-    result = { ...result, page: filterPageToSingleItem(result, preview) };
+    const client = getClient(draftMode ? token : undefined);
+
+    let result = await client.fetch(
+      fetchGenericPage,
+      { slug },
+      { perspective: "previewDrafts", resultSourceMap: true },
+    );
 
     return {
       appStaticProps,
-      preview: preview,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
+      draftMode,
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
         query: fetchGenericPage,
@@ -39,11 +47,11 @@ export const GenericPage = withStaticProps(
       },
     }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, preview, navbarData }) => {
+)(({ data, navbar, draftMode }) => {
   const page = data.result.page;
 
   if (!page) {
-    return <div>404{preview ? " - Attempting to load preview" : null}</div>;
+    return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
   }
 
   const header = page.header;
@@ -70,7 +78,7 @@ export const GenericPage = withStaticProps(
 
       <MainHeader hideOnScroll={true}>
         <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-        <Navbar {...navbarData} />
+        {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
       <PageHeader
@@ -100,6 +108,7 @@ const fetchGenericPages = groq`
 const fetchGenericPage = groq`
 {
   "settings": *[_type == "site_settings"] {
+    ...,
     title,
     cookie_banner_configuration {
       ...,
@@ -109,11 +118,14 @@ const fetchGenericPage = groq`
       }
     },
   },
-  "page": *[_type == "generic_page" && slug.current == $slug] {
+  "page": *[_type == "generic_page" && slug.current == $slug][0] {
+    ...,
     header {
       ...,
       seoImage{
-        asset->,
+        asset->{
+          url
+        },
       },
       pageHeader {
         asset->,
@@ -126,3 +138,13 @@ const fetchGenericPage = groq`
   }
 }
 `;
+
+const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticProps>>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <Navbar {...(props as any)} />;
+};

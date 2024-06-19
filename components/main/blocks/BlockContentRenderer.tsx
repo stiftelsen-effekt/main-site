@@ -19,8 +19,6 @@ import { SplitView } from "./SplitView/SplitView";
 import { Testimonial } from "./Testemonial/Testemonial";
 import { VideoEmbed } from "./VideoEmbed/VideoEmbed";
 import { NewsletterSignup } from "./NewsletterSignup/NewsletterSignup";
-import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
-import { WealthCalculatorTeaser } from "./WealthCalculatorTeaser/WealthCalculatorTeaser";
 import { InterventionWidget } from "./InterventionWidget/InterventionWidget";
 import { IntroSection } from "./IntroSection/IntroSection";
 import { Contributors } from "./Contributors/Contributors";
@@ -32,11 +30,29 @@ import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 import { GiftCard } from "./GiftCard/GiftCard";
 import { BlockTables } from "./BlockTable/BlockTables";
-import { DiscountRateComparison } from "./DiscountRateComparison/DiscountRateComparison";
 import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
 import { Accordion } from "./Accordion/Accordion";
 import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
-import { ITNCoverage } from "./ITNCoverage/ITNCoverage";
+import { stegaClean } from "@sanity/client/stega";
+import dynamic from "next/dynamic";
+
+/* Dynamic imports */
+const WealthCalculator = dynamic(() =>
+  import("./WealthCalculator/WealthCalculator").then((mod) => mod.WealthCalculator),
+);
+const WealthCalculatorTeaser = dynamic(() =>
+  import("./WealthCalculatorTeaser/WealthCalculatorTeaser").then(
+    (mod) => mod.WealthCalculatorTeaser,
+  ),
+);
+const DiscountRateComparison = dynamic(() =>
+  import("./DiscountRateComparison/DiscountRateComparison").then(
+    (mod) => mod.DiscountRateComparison,
+  ),
+);
+const ITNCoverage = dynamic(() =>
+  import("./ITNCoverage/ITNCoverage").then((mod) => mod.ITNCoverage),
+);
 
 export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) => {
   return (
@@ -54,7 +70,7 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
                 padded={section.padded}
                 ypadded={section.ypadded}
               >
-                {section.blocks && <SectionBlockContentRenderer blocks={section.blocks} />}
+                <SectionBlockContentRenderer blocks={section.blocks} />
               </SectionContainer>
             ),
         )}
@@ -63,12 +79,21 @@ export const BlockContentRenderer: React.FC<{ content: any }> = ({ content }) =>
 };
 
 export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks }) => {
+  if (!blocks) return null;
+
   return (
     <>
       {blocks.map((block: any) => {
         switch (block._type) {
           case "paragraph":
-            return <Paragraph key={block._key} title={block.title} blocks={block.content} />;
+            return (
+              <Paragraph
+                key={block._key}
+                tocKey={block._key}
+                title={block.title}
+                blocks={block.content}
+              />
+            );
           case "accordion":
             return <Accordion key={block._key} title={block.title} blocks={block.blocks} />;
           case "videoembed":
@@ -187,12 +212,18 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "wealthcalculator":
             let calcPeriod: WealthCalculatorPeriodAdjustment;
-            if (block.configuration.calculator_input_configuration.period === "yearly") {
+            if (
+              stegaClean(block.configuration.calculator_input_configuration.period) === "yearly"
+            ) {
               calcPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
-            } else if (block.configuration.calculator_input_configuration.period === "monthly") {
+            } else if (
+              stegaClean(block.configuration.calculator_input_configuration.period) === "monthly"
+            ) {
               calcPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
             } else {
-              return <span>Unknown period {block.period} for wealth calculation</span>;
+              return (
+                <span key={block._key}>Unknown period {block.period} for wealth calculation</span>
+              );
             }
             return (
               <WealthCalculator
@@ -201,17 +232,19 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 configuration={block.configuration}
                 intervention_configuration={block.intervention_configuration}
                 periodAdjustment={calcPeriod}
-                locale={block.locale}
+                locale={stegaClean(block.locale)}
               />
             );
           case "wealthcalculatorteaser":
             let teaserPeriod: WealthCalculatorPeriodAdjustment;
-            if (block.period === "yearly") {
+            if (stegaClean(block.period) === "yearly") {
               teaserPeriod = WealthCalculatorPeriodAdjustment.YEARLY;
-            } else if (block.period === "monthly") {
+            } else if (stegaClean(block.period) === "monthly") {
               teaserPeriod = WealthCalculatorPeriodAdjustment.MONTHLY;
             } else {
-              return <span>Unknown period {block.period} for wealth calculation</span>;
+              return (
+                <span key={block._key}>Unknown period {block.period} for wealth calculation</span>
+              );
             }
             return (
               <WealthCalculatorTeaser
@@ -221,11 +254,13 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 link={block.button}
                 medianIncome={block.median_income}
                 xAxisLabel={block.x_axis_label}
-                afterDonationPercentileLabelTemplateString={
-                  block.income_percentile_after_donation_label_template_string
-                }
-                incomePercentileLabelTemplateString={block.income_percentile_label_template_string}
-                locale={block.locale}
+                afterDonationPercentileLabelTemplateString={stegaClean(
+                  block.income_percentile_after_donation_label_template_string,
+                )}
+                incomePercentileLabelTemplateString={stegaClean(
+                  block.income_percentile_label_template_string,
+                )}
+                locale={stegaClean(block.locale)}
                 periodAdjustment={teaserPeriod}
               />
             );

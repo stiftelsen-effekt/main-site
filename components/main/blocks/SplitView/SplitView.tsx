@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./SplitView.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
@@ -13,7 +13,7 @@ export interface SplitView {
   darktext?: boolean;
   paragraph: string;
   links: (LinkType | NavLink)[];
-  image: SanityImageSource;
+  image: SanityImageObject;
 }
 export const SplitView: React.FC<SplitView> = ({
   title,

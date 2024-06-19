@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Validator from "validator";
 import { setShares } from "../../../../store/donation/actions";
 import { State } from "../../../../store/state";
 import {
@@ -74,7 +73,7 @@ export const SharesSelection: React.FC<{
 
                 if (e.target.value === "") {
                   newOrganizationShares[index].percentageShare = "0";
-                } else if (Validator.isInt(e.target.value)) {
+                } else if (Number.isInteger(parseInt(e.target.value))) {
                   const newSplit = parseInt(e.target.value);
                   if (newSplit <= 100 && newSplit >= 0) {
                     newOrganizationShares[index].percentageShare = newSplit.toString();

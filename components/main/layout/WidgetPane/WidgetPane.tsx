@@ -4,7 +4,7 @@ import type { Widget as WidgetType } from "../../../shared/components/Widget/com
 import { WidgetContext } from "../layout";
 import styles from "./WidgetPane.module.scss";
 
-const Widget = dynamic<Props>(
+const Widget = dynamic<WidgetPaneProps>(
   () => import("../../../shared/components/Widget/components/Widget").then((mod) => mod.Widget),
   {
     ssr: false,
@@ -17,12 +17,12 @@ export type PrefilledDistribution = {
   organizations: { organizationId: number; share: number }[];
 }[];
 
-interface Props extends ComponentProps<typeof WidgetType> {
+export interface WidgetPaneProps extends ComponentProps<typeof WidgetType> {
   darkMode?: boolean;
   prefilled: PrefilledDistribution | null;
 }
 
-export const WidgetPane: React.FC<Props> = ({ darkMode, ...widgetProps }) => {
+export const WidgetPane: React.FC<WidgetPaneProps> = ({ darkMode, ...widgetProps }) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   // On initial load, have no animation

@@ -1,4 +1,8 @@
 const { withPlausibleProxy } = require("next-plausible");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+const { defaultConfig } = require("next/dist/server/config-shared");
 
 const STUDIO_REWRITE = {
   source: "/studio/:path*",
@@ -13,13 +17,20 @@ const nextConfig = {
   reactStrictMode: true,
   rewrites: () => [STUDIO_REWRITE],
   images: {
-    domains: ["cdn.sanity.io"],
-  },
-  compiler: {
-    // ssr and displayName are configured by default
-    styledComponents: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
+    ],
+    dangerouslyAllowSVG: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
+  experimental: {
+    optimizePackageImports: ["d3", "@observablehq/plot"],
+  },
+  /*
+  TODO: Specify sanity studio location as allowed, disallow others
   headers: async () => {
     return [
       {
@@ -33,6 +44,7 @@ const nextConfig = {
       },
     ];
   },
+  */
   async redirects() {
     return [
       {
@@ -417,4 +429,6 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlausibleProxy()(nextConfig);
+module.exports = (phase, defaultConfig) => {
+  return withBundleAnalyzer(withPlausibleProxy()(nextConfig));
+};

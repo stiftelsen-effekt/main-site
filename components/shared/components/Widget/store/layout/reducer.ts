@@ -1,4 +1,3 @@
-import { Reducer } from "redux";
 import { isType } from "typescript-fsa";
 import { registerDonationAction } from "../donation/actions";
 import { Layout } from "../state";
@@ -12,6 +11,7 @@ import {
   DECREMENT_CURRENT_PANE,
   SET_LOADING,
 } from "./types";
+import { Reducer } from "@reduxjs/toolkit";
 
 const initialState: Layout = {
   paneNumber: 0,

@@ -1,5 +1,3 @@
-import moment from "moment";
-
 const months = [
   "januar",
   "februar",
@@ -35,7 +33,11 @@ export function hasTimeToProcess(dueDate: Date, todayDate: Date = new Date()): b
 }
 
 export function formatDate(date: Date): string {
-  return moment(date).format("DD.MM.YYYY");
+  return new Intl.DateTimeFormat("no-NB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(date);
 }
 
 export function formatDateText(date: Date): string {

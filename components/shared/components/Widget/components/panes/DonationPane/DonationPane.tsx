@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Validator from "validator";
 import { setSum, setRecurring } from "../../../store/donation/actions";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { Donation, DonationError, DonationErrorTypeNames, State } from "../../../store/state";
@@ -107,7 +106,10 @@ export const DonationPane: React.FC<{
                 autoComplete="off"
                 data-cy="donation-sum-input"
                 onChange={(e) => {
-                  if (Validator.isInt(e.target.value) === true && parseInt(e.target.value) > 0) {
+                  if (
+                    Number.isInteger(parseInt(e.target.value)) === true &&
+                    parseInt(e.target.value) > 0
+                  ) {
                     dispatch(setSum(parseInt(e.target.value)));
                   } else {
                     dispatch(setSum(-1));

@@ -1,8 +1,12 @@
 import React from "react";
 import { Text, Flex, Stack, Box } from "@sanity/ui";
 import { Code } from "react-feather";
+import { PreviewProps } from "sanity";
+import { Htmlembed } from "../sanity.types";
 
-export const HTMLEmbedPreview = React.forwardRef((props, ref) => {
+export const HTMLEmbedPreview = (props: PreviewProps & Htmlembed) => {
+  const { htmlcode } = props;
+
   return (
     <Flex direction={"row"} align={"center"}>
       <Box style={{ flexShrink: 0 }}>
@@ -10,9 +14,9 @@ export const HTMLEmbedPreview = React.forwardRef((props, ref) => {
       </Box>
       <Stack marginLeft={3}>
         <Text textOverflow={"ellipsis"} size={1} style={{ fontFamily: "monospace" }}>
-          {props.value.htmlcode || "-"}
+          {htmlcode || "-"}
         </Text>
       </Stack>
     </Flex>
   );
-});
+};

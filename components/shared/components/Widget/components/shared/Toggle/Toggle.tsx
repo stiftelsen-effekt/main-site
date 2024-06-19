@@ -11,10 +11,10 @@ export const Toggle: React.FC<{
         e.currentTarget.blur();
         onChange(!active);
       }}
-      active={active}
+      active={active.toString()}
       data-cy={dataCy}
     >
-      <StyledToggleCircle active={active} />
+      <StyledToggleCircle active={active.toString()} />
     </StyledToggle>
   );
 };

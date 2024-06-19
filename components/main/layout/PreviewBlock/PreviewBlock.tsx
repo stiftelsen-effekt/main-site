@@ -9,11 +9,9 @@ export const PreviewBlock: React.FC = () => {
       <Eye size={"0.8rem"} />
       <span>In preview</span>
       <span className={styles.divider}>|</span>
-      <Link href="/api/exit-preview" passHref>
-        <a className={styles.exitLink}>
-          <span>Exit preview</span>
-          <LogOut size={"0.8rem"} />
-        </a>
+      <Link href="/api/exit-preview" passHref className={styles.exitLink}>
+        <span>Exit preview</span>
+        <LogOut size={"0.8rem"} />
       </Link>
     </div>
   );

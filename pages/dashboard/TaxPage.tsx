@@ -15,27 +15,24 @@ import TaxMenu from "../../components/profile/tax/TaxMenu/TaxMenu";
 import { TaxUnitsTab } from "../../components/profile/tax/TaxUnitsTab/TaxUnitsTab";
 import { YearlyReportsTab } from "../../components/profile/tax/YearlyReportsTab/YearlyReportsTab";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
-import { getClient } from "../../lib/sanity.server";
+import { getClient } from "../../lib/sanity.client";
 import style from "../../styles/Tax.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import {
-  GeneralPageProps,
-  LayoutType,
-  filterPageToSingleItem,
-  getAppStaticProps,
-} from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
+import { token } from "../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export async function getTaxPagePath(): Promise<string[]> {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
+  const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
   const dashboardPath = await getDashboardPagePath();
 
   const { dashboard: [dashboard] = [] } = result;
 
-  const page = filterPageToSingleItem(result, false);
+  const page = result.page;
 
-  const taxSlug = page?.slug?.current;
+  const taxSlug = stegaClean(page?.slug?.current);
 
   if (!taxSlug) return [];
 
@@ -43,25 +40,31 @@ export async function getTaxPagePath(): Promise<string[]> {
 }
 
 export async function getTaxPageSubPaths(): Promise<string[][]> {
-  const result = await getClient(false).fetch<FetchTaxPageResult>(fetchTaxPage);
+  const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
   const dashboardPath = await getDashboardPagePath();
 
   const { dashboard: [dashboard] = [] } = result;
 
-  const page = filterPageToSingleItem(result, false);
+  const page = result.page;
 
-  const taxSlug = page?.slug?.current;
+  const taxSlug = stegaClean(page?.slug?.current);
 
   if (!taxSlug) return [];
   if (!page.features) return [];
 
-  return page.features.map((f) => [...dashboardPath, ...taxSlug.split("/"), f.slug.current]);
+  return page.features.map((f) => [
+    ...dashboardPath.map((component) => stegaClean(component)),
+    ...taxSlug.split("/").map((component) => stegaClean(component)),
+    f.slug.current,
+  ]);
 }
 
 export const TaxPage = withStaticProps(
-  async ({ preview, path }: { preview: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ preview, layout: LayoutType.Profile });
-    const result = await getClient(preview).fetch<FetchTaxPageResult>(fetchTaxPage);
+  async ({ draftMode = false, path }: { draftMode: boolean; path: string[] }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchTaxPageResult>(
+      fetchTaxPage,
+    );
 
     const taxPath = await getTaxPagePath();
 
@@ -69,8 +72,8 @@ export const TaxPage = withStaticProps(
 
     return {
       appStaticProps,
-      preview: preview,
-      navbarData: await Navbar.getStaticProps({ dashboard: true, preview }),
+      draftMode,
+      navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       subpath,
       data: {
         result: result,
@@ -79,8 +82,8 @@ export const TaxPage = withStaticProps(
       },
     }; // satisfies GeneralPageProps (requires next@13);;
   },
-)(({ data, subpath, navbarData, preview }) => {
-  const page = filterPageToSingleItem(data.result, preview);
+)(({ data, subpath, navbarData, draftMode }) => {
+  const page = data.result.page;
 
   if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
 
@@ -148,13 +151,13 @@ type FetchTaxPageResult = {
     main_currency?: string;
     title?: string;
   }>;
-  page: Array<{
+  page: {
     title?: string;
     features?: TaxPageFeature[];
     slug?: {
       current?: string;
     };
-  }>;
+  };
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
 };
 
@@ -202,7 +205,7 @@ const fetchTaxPage = groq`
       current
     },
   },
-  "page": *[_type == "tax"] {
+  "page": *[_type == "tax"][0] {
     ...,
     title,
     features[] {

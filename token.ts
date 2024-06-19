@@ -1,0 +1,4 @@
+export const token =
+  process.env.SANITY_API_READ_TOKEN ||
+  process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN ||
+  "skTryNTwY4oa7eetqGATCQU1qapuZFuHOtc7Lw0iLMq9woJsSuO8pYMnVjSgodkuZAzduzmsyfzw9hSrZXk39YPqevxpcDIHy6WMVg0qPL7XBo9fFOH1PeSuEzhkXy4xDMih0pzTeK2NJI12MQEDcsuPDTZfFX5AN06m35rcG8TAa9kWaYxi";

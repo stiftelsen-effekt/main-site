@@ -1,7 +1,4 @@
-import sanityClient from "part:@sanity/base/client";
 import { User } from "react-feather";
-
-const client = sanityClient.withConfig({ apiVersion: "2021-08-06" });
 
 export default {
   name: "contributorlist",
@@ -10,6 +7,8 @@ export default {
   icon: User,
   validation: (Rule: any) =>
     Rule.custom(async (fields: any) => {
+      /* TODO: migrate */
+      /*
       const referencedContributors: any[] = await client.fetch(
         `*[_id in ${JSON.stringify(fields.contributors.map((c: any) => c._ref))}]`,
       );
@@ -19,6 +18,8 @@ export default {
       } else {
         return true;
       }
+      */
+      return true;
     }),
   fields: [
     {

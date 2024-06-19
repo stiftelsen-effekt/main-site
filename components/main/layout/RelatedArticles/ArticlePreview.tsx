@@ -12,20 +12,23 @@ export const ArticlePreview: React.FC<{
   const { articlesPagePath } = useRouterContext();
 
   return (
-    <Link key={slug} href={`/${[...articlesPagePath, slug].join("/")}`} passHref>
-      <a style={{ border: "none" }}>
-        <li className={styles.article}>
-          {header.published && (
-            <div className={styles.article__meta}>
-              <span className="detailheader">
-                {new Date(header.published).toLocaleDateString("NO-nb")}
-              </span>
-            </div>
-          )}
-          <h2>{header.title}</h2>
-          {inngress && <p>{inngress}</p>}
-        </li>
-      </a>
+    <Link
+      key={slug}
+      href={`/${[...articlesPagePath, slug].join("/")}`}
+      passHref
+      style={{ border: "none" }}
+    >
+      <li className={styles.article}>
+        {header.published && (
+          <div className={styles.article__meta}>
+            <span className="detailheader">
+              {new Date(header.published).toLocaleDateString("NO-nb")}
+            </span>
+          </div>
+        )}
+        <h2>{header.title}</h2>
+        {inngress && <p>{inngress}</p>}
+      </li>
     </Link>
   );
 };

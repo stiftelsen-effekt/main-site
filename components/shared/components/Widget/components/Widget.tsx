@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
-import { getClient } from "../../../../../lib/sanity.server";
+import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { WidgetContext } from "../../../../main/layout/layout";
 import { fetchCauseAreasAction } from "../store/layout/actions";
@@ -30,55 +30,51 @@ import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
-
-type QueryResult = {
-  widget: [WidgetProps];
-};
+import { token } from "../../../../../token";
+import { StyleSheetManager } from "styled-components";
 
 const widgetQuery = groq`
-  {
-    "widget": *[_type == "donationwidget"] {
-      ...,
-      "locale": *[ _type == "site_settings"][0].main_locale,
-      methods[] { 
-        _type == 'reference' => @->{
-          _type == 'bank' => {
-            ...
-          },
-          _type == 'vipps' => {
-            _id,
-            selector_text,
-            recurring_title,
-            recurring_selector_earliest_text,
-            recurring_selector_choose_date_text,
-            recurring_selector_date_picker_configuration->,
-            recurring_button_text,
-            single_title,
-            single_button_text,
-          },
-          _type == 'swish' => {
-            ...
-          },
-          _type == 'autogiro' => {
-            ...,
-            recurring_manual_option_config {
-              ...,
-              date_selector_config->
-            }
-          },
-          _type == 'avtalegiro' => {
-            ...,
-            date_selector_configuration->
-          },
-        },
+*[_type == "donationwidget"][0] {
+  ...,
+  "locale": *[ _type == "site_settings"][0].main_locale,
+  methods[] { 
+    _type == 'reference' => @->{
+      _type == 'bank' => {
+        ...
       },
-      privacy_policy_link {
+      _type == 'vipps' => {
+        _id,
+        selector_text,
+        recurring_title,
+        recurring_selector_earliest_text,
+        recurring_selector_choose_date_text,
+        recurring_selector_date_picker_configuration->,
+        recurring_button_text,
+        single_title,
+        single_button_text,
+      },
+      _type == 'swish' => {
+        ...
+      },
+      _type == 'autogiro' => {
         ...,
-        "slug": page->slug.current,
-        "pagetype": page->_type,
-      }
+        recurring_manual_option_config {
+          ...,
+          date_selector_config->
+        }
+      },
+      _type == 'avtalegiro' => {
+        ...,
+        date_selector_configuration->
+      },
     },
+  },
+  privacy_policy_link {
+    ...,
+    "slug": page->slug.current,
+    "pagetype": page->_type,
   }
+}
 `;
 
 export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
@@ -193,20 +189,27 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
   return useMemo(() => ({ scaledHeight, scalingFactor }), [scaledHeight, scalingFactor]);
 };
 
-export const Widget = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const result = await getClient(preview).fetch<QueryResult>(widgetQuery);
+export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean }) => {
+  const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
-  const widget = result.widget[0];
-
-  if (!widget.methods?.length) {
+  if (!result.methods?.length) {
     throw new Error("No payment methods found");
   }
 
   return {
-    widget,
-    methods: widget.methods,
+    data: {
+      result,
+      query: widgetQuery,
+    },
   };
-})(({ widget, methods }) => {
+})(({ data }) => {
+  const widget = data.result;
+  const methods = data.result.methods;
+
+  if (!methods) {
+    throw new Error("No payment methods found");
+  }
+
   const dispatch = useDispatch();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);

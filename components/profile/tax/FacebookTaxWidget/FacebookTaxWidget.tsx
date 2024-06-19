@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  InfoText,
-  InputFieldWrapper,
-  LoadingButtonSpinner,
-  SubmitButton,
-  TaxInput,
-} from "./Forms.style";
+import { InputFieldWrapper, LoadingButtonSpinner, SubmitButton, TaxInput } from "./Forms.style";
 import styles from "./FacebookTaxWidget.module.scss";
 import { useForm } from "react-hook-form";
-import { ErrorField } from "./ErrorField";
-import Validate from "validator";
 import { EffektButtonVariant } from "../../../shared/components/EffektButton/EffektButton";
 import { toast } from "react-toastify";
 import { AlertCircle, Check } from "react-feather";
-import { FacebookDonationRegistration, TaxUnit } from "../../../../models";
+import { TaxUnit } from "../../../../models";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { registerFacebookDonation } from "../../_queries";
 import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";

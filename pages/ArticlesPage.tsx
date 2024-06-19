@@ -7,10 +7,11 @@ import { Navbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
-import { getClient } from "../lib/sanity.server";
+import { getClient } from "../lib/sanity.client";
 import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
-import { filterPageToSingleItem, GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
+import { token } from "../token";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -21,27 +22,28 @@ const fetchArticlesPageSlug = groq`
 `;
 
 export const getArticlesPagePath = async () => {
-  const { page } = await getClient(false).fetch<{ page: { slug: string } }>(fetchArticlesPageSlug);
+  const { page } = await getClient().fetch<{ page: { slug: string } }>(fetchArticlesPageSlug);
   return page.slug.split("/");
 };
 
-export const ArticlesPage = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const appStaticProps = await getAppStaticProps({ preview });
+export const ArticlesPage = withStaticProps(
+  async ({ draftMode = false }: { draftMode: boolean }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode });
 
-  let result = await getClient(preview).fetch(fetchArticles);
-  result = { ...result, page: filterPageToSingleItem(result, preview) };
+    let result = await getClient(draftMode ? token : undefined).fetch(fetchArticles);
 
-  return {
-    appStaticProps,
-    preview: preview,
-    navbarData: await Navbar.getStaticProps({ dashboard: false, preview }),
-    data: {
-      result,
-      query: fetchArticles,
-      queryParams: {},
-    },
-  }; // satisfies GeneralPageProps (requires next@13);;
-})(({ data, navbarData, preview }) => {
+    return {
+      appStaticProps,
+      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      data: {
+        result,
+        query: fetchArticles,
+        queryParams: {},
+      },
+      draftMode,
+    }; // satisfies GeneralPageProps (requires next@13);;
+  },
+)(({ data, navbarData, draftMode }) => {
   const page = data.result.page;
 
   const header = page.header;
@@ -117,7 +119,7 @@ const fetchArticles = groq`
       }
     },
   },
-  "page": *[_type == "articles"] {
+  "page": *[_type == "articles"][0] {
     "slug": slug.current,
     header {
       ...,

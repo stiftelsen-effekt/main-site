@@ -22,7 +22,7 @@ export const ProgressBar: React.FC = () => {
 
   const points = [];
   for (let i = 0; i < numberOfPanes; i++) {
-    points.push(<ProgressCircle key={i} filled={paneNumber >= i} />);
+    points.push(<ProgressCircle key={i} filled={(paneNumber >= i).toString()} />);
   }
 
   return (
@@ -31,7 +31,7 @@ export const ProgressBar: React.FC = () => {
       <ActionButton
         data-cy="back-button"
         disabled={paneNumber === 0}
-        active={paneNumber === 0}
+        active={(paneNumber === 0).toString()}
         onClick={(e) => {
           dispatch(prevPane());
           e.currentTarget.blur();

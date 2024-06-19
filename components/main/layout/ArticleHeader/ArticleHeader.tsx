@@ -7,7 +7,7 @@ export const ArticleHeader: React.FC<{
   published?: string;
 }> = ({ title, inngress, published }) => {
   return (
-    <section className={style.articleheader}>
+    <section className={style.articleheader} data-toc-id="header">
       <div>
         <h1>{title}</h1>
       </div>

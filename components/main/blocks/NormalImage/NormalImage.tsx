@@ -1,18 +1,16 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./NormalImage.module.scss";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 export interface NormalImage {
   alt: string;
-  image: SanityImageSource;
+  image: SanityImageObject;
   caption: string;
   grayscale?: boolean;
 }
 export const NormalImage: React.FC<NormalImage> = ({ alt, image, caption, grayscale }) => {
-  const router = useRouter();
-
   const classNames = [styles.wrapper];
   if (grayscale) classNames.push(styles.grayscale);
 

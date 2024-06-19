@@ -45,8 +45,8 @@ export const CustomCheckBox: React.FC<CheckBoxProps> = ({
         <CheckBoxLabel>
           {`${label} `}
           {hyperlink && (
-            <Link href={hyperlink.url} passHref>
-              <a target="_blank">{`${hyperlink.text} ↗`}</a>
+            <Link href={hyperlink.url} passHref target="_blank">
+              {`${hyperlink.text} ↗`}
             </Link>
           )}
         </CheckBoxLabel>

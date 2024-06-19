@@ -11,6 +11,8 @@ import { ProfilePage } from "./dashboard/ProfilePage";
 import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
 import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
 import { ResultsPage } from "./ResultsPage";
+import { useLiveQuery } from "next-sanity/preview";
+import { useIsEnabled } from "@sanity/preview-kit";
 
 enum PageType {
   GenericPage = "generic",
@@ -26,28 +28,44 @@ enum PageType {
 }
 
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  switch (props.pageType) {
+  if (props.appStaticProps?.layoutProps?.draftMode || true) {
+    if (props.pageType === PageType.GenericPage) {
+      return <PreviewGenericPage {...props} />;
+    }
+  }
+
+  switch (props.pageType as PageType) {
     case PageType.GenericPage:
-      return <GenericPage {...props} />;
+      return <GenericPage {...(props as any)} />;
     case PageType.ArticlesPage:
       return <ArticlesPage {...props} />;
     case PageType.ArticlePage:
-      return <ArticlePage {...props} />;
+      return <ArticlePage {...(props as any)} />;
     case PageType.ResultsPage:
-      return <ResultsPage {...props} />;
+      return <ResultsPage {...(props as any)} />;
     case PageType.VippsAgreementPage:
-      return <VippsAgreementPage {...props} />;
+      return <VippsAgreementPage {...(props as any)} />;
     case PageType.AgreementsPage:
-      return <AgreementsPage {...props} />;
+      return <AgreementsPage {...(props as any)} />;
     case PageType.VippsAnonymousPage:
-      return <VippsAnonymousPage {...props} />;
+      return <VippsAnonymousPage {...(props as any)} />;
     case PageType.DonationsPage:
-      return <DonationsPage {...props} />;
+      return <DonationsPage {...(props as any)} />;
     case PageType.ProfilePage:
-      return <ProfilePage {...props} />;
+      return <ProfilePage {...(props as any)} />;
     case PageType.TaxPage:
-      return <TaxPage {...props} />;
+      return <TaxPage {...(props as any)} />;
   }
+};
+
+const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <GenericPage {...(props as any)} />;
 };
 
 function compareArrays<T>(a: T[], b: T[]) {
@@ -113,7 +131,7 @@ const inferPageTypeFromPath = async (path: string[]) => {
 };
 
 export const getStaticProps = async ({
-  preview = false,
+  draftMode = false,
   params,
 }: GetStaticPropsContext<{ slug: string[] }>) => {
   const path = params?.slug ?? [];
@@ -122,7 +140,7 @@ export const getStaticProps = async ({
 
   switch (pageType) {
     case PageType.GenericPage: {
-      const props = await GenericPage.getStaticProps({ preview, path });
+      const props = await GenericPage.getStaticProps({ draftMode, path });
       return {
         props: {
           ...props,
@@ -131,7 +149,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.ArticlesPage: {
-      const props = await ArticlesPage.getStaticProps({ preview });
+      const props = await ArticlesPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -141,7 +159,7 @@ export const getStaticProps = async ({
     }
     case PageType.ArticlePage: {
       const slug = path.slice(1).join("/");
-      const props = await ArticlePage.getStaticProps({ preview, slug });
+      const props = await ArticlePage.getStaticProps({ draftMode, slug });
       return {
         props: {
           ...props,
@@ -150,7 +168,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.ResultsPage: {
-      const props = await ResultsPage.getStaticProps({ preview });
+      const props = await ResultsPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -159,7 +177,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.VippsAgreementPage: {
-      const props = await VippsAgreementPage.getStaticProps({ preview });
+      const props = await VippsAgreementPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -168,7 +186,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.VippsAnonymousPage: {
-      const props = await VippsAnonymousPage.getStaticProps({ preview });
+      const props = await VippsAnonymousPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -177,7 +195,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.DonationsPage: {
-      const props = await DonationsPage.getStaticProps({ preview, path });
+      const props = await DonationsPage.getStaticProps({ draftMode, path });
       return {
         props: {
           ...props,
@@ -186,7 +204,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.AgreementsPage: {
-      const props = await AgreementsPage.getStaticProps({ preview });
+      const props = await AgreementsPage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -195,7 +213,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.ProfilePage: {
-      const props = await ProfilePage.getStaticProps({ preview });
+      const props = await ProfilePage.getStaticProps({ draftMode });
       return {
         props: {
           ...props,
@@ -204,7 +222,7 @@ export const getStaticProps = async ({
       } as const;
     }
     case PageType.TaxPage: {
-      const props = await TaxPage.getStaticProps({ preview, path });
+      const props = await TaxPage.getStaticProps({ draftMode, path });
       return {
         props: {
           ...props,

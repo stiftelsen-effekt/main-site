@@ -6,7 +6,6 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import Validate from "validator";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
@@ -24,12 +23,7 @@ import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import {
-  ActionBar,
-  CheckBoxGroupWrapper,
-  DonorForm,
-  StyledSwishInputFieldWrapper,
-} from "./DonorPane.style";
+import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -172,7 +166,7 @@ export const DonorPane: React.FC<{
                       required: true,
                       validate: (val) => {
                         const trimmed = val.trim();
-                        return Validate.isEmail(trimmed);
+                        return /@/.test(trimmed);
                       },
                     })}
                   />
@@ -259,16 +253,16 @@ export const DonorPane: React.FC<{
                   {text.privacy_policy_link && (
                     <div style={{ marginTop: "10px" }}>
                       {text.privacy_policy_text}{" "}
-                      <Link href={`/${text.privacy_policy_link.slug}`} passHref>
-                        <a
-                          target={"_blank"}
-                          onClick={(e) => {
-                            e.currentTarget.blur();
-                          }}
-                          style={{ borderBottom: "1px solid var(--primary)" }}
-                        >
-                          {`${text.privacy_policy_link.title}  ↗`}
-                        </a>
+                      <Link
+                        href={`/${text.privacy_policy_link.slug}`}
+                        passHref
+                        target={"_blank"}
+                        onClick={(e) => {
+                          e.currentTarget.blur();
+                        }}
+                        style={{ borderBottom: "1px solid var(--primary)" }}
+                      >
+                        {`${text.privacy_policy_link.title}  ↗`}
                       </Link>
                     </div>
                   )}

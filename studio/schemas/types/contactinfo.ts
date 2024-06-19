@@ -32,6 +32,8 @@ export default {
       phone: "phone",
       email: "email",
     },
-    component: ContactPreview,
+  },
+  components: {
+    preview: ContactPreview,
   },
 } as const;

@@ -29,4 +29,10 @@ export default {
       of: [{ type: "link" }, { type: "navitem" }],
     },
   ],
+  preview: {
+    select: {
+      title: "question",
+      subtitle: "answer",
+    },
+  },
 } as const;

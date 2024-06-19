@@ -1,4 +1,4 @@
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 import styles from "./ITNCoverage.module.scss";
@@ -10,7 +10,7 @@ import { ITNCoverageGraph } from "./ITNCoverageGraph";
 export const ITNCoverage: React.FC<{
   title: string;
   subtitle: string;
-  images: SanityImageSource[];
+  images: SanityImageObject[];
   range: [number, number];
   mapExplenation?: string;
   graphExplenation?: string;

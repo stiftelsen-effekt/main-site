@@ -1,13 +1,16 @@
 import { groq } from "next-sanity";
 import { Dispatch, SetStateAction, createContext, useState, useMemo } from "react";
-import { getClient } from "../../../lib/sanity.server";
+import { getClient } from "../../../lib/sanity.client";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import Footer from "../../shared/layout/Footer/Footer";
 import styles from "../../shared/layout/Layout/Layout.module.scss";
 import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
-import { PrefilledDistribution, WidgetPane } from "./WidgetPane/WidgetPane";
+import { PrefilledDistribution, WidgetPane, WidgetPaneProps } from "./WidgetPane/WidgetPane";
+import { token } from "../../../token";
+import { useLiveQuery } from "next-sanity/preview";
+import React from "react";
 
 export type WidgetContextType = {
   open: boolean;
@@ -38,18 +41,16 @@ export const CookiesAccepted = createContext<
 ]);
 
 type QueryResult = {
-  settings: [
-    {
-      donate_label_short: string;
-      donate_label_title: string;
-      accent_color: string;
-    },
-  ];
+  settings: {
+    donate_label_short: string;
+    donate_label_title: string;
+    accent_color: string;
+  };
 };
 
 const query = groq`
   {
-    "settings": *[_type == "site_settings"] {
+    "settings": *[_type == "site_settings"][0] {
       donate_label_short,
       donate_label_title,
       accent_color
@@ -57,20 +58,21 @@ const query = groq`
   }
 `;
 
-export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) => {
-  const result = await getClient(preview).fetch<QueryResult>(query);
-  const settings = result.settings[0];
+export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
+  const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
+  const settings = result.settings;
   return {
-    footerData: await Footer.getStaticProps({ preview }),
-    widgetData: await Widget.getStaticProps({ preview }),
-    isPreview: preview,
+    footer: await Footer.getStaticProps({ draftMode }),
+    widget: await Widget.getStaticProps({ draftMode }),
+    // isPreview: preview,
     giveButton: {
       donate_label_short: settings.donate_label_short,
       donate_label_title: settings.donate_label_title,
       accent_color: settings.accent_color,
     },
+    draftMode,
   };
-})(({ children, footerData, widgetData, giveButton, isPreview }) => {
+})(({ children, footer, widget, giveButton, draftMode }) => {
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
@@ -102,7 +104,7 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
 
   return (
     <div className={containerClasses.join(" ")}>
-      {isPreview && <PreviewBlock />}
+      {draftMode && <PreviewBlock />}
       <GiveButton
         inverted={false}
         color={giveButton.accent_color}
@@ -113,11 +115,37 @@ export const Layout = withStaticProps(async ({ preview }: { preview: boolean }) 
       </GiveButton>
       <WidgetContext.Provider value={widgetContextValue}>
         <CookiesAccepted.Provider value={cookiesAcceptedValue}>
-          <WidgetPane {...widgetData} prefilled={widgetContext.prefilled} />
+          {draftMode ? (
+            <PreviewWidgetPane {...widget} prefilled={widgetContext.prefilled} />
+          ) : (
+            <WidgetPane {...widget} prefilled={widgetContext.prefilled} />
+          )}
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
       </WidgetContext.Provider>
-      <Footer {...footerData} />
+      {draftMode ? <PreviewFooter {...footer} /> : <Footer {...footer} />}
     </div>
   );
 });
+
+const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <Footer {...(props as any)} />;
+};
+
+const PreviewWidgetPane: React.FC<
+  Awaited<ReturnType<typeof Widget.getStaticProps>> & WidgetPaneProps
+> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <WidgetPane {...(props as any)} />;
+};

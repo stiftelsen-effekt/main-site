@@ -61,7 +61,7 @@ export default {
         { type: "reference", to: [{ type: "contactinfo" }] },
       ],
       options: {
-        editModal: "fullscreen",
+        modal: "fullscreen",
       },
     },
     {
@@ -80,6 +80,8 @@ export default {
       blocks: "blocks",
       hidden: "hidden",
     },
-    component: ContentSectionPreview,
+  },
+  components: {
+    preview: ContentSectionPreview,
   },
 } as const;

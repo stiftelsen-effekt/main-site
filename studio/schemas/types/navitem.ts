@@ -1,5 +1,6 @@
 import { Link } from "react-feather";
-import { dashboardpages, pages } from "../schema";
+import { pages } from "../pages/_pages";
+import { dashboardpages } from "../dashboard/_dashboardPages";
 
 export default {
   name: "navitem",

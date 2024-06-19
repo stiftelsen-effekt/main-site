@@ -23,14 +23,18 @@ export const ProgressContainer = styled.div`
 `;
 
 interface ProgressCircleProps {
-  filled: boolean;
+  filled: string;
 }
-export const ProgressCircle = styled.div`
+
+/** Typed */
+export const ProgressCircle = styled.div.withConfig({
+  shouldForwardProp: (prop, defaultValidatorFn) => !["filled"].includes(prop),
+})<ProgressCircleProps>`
   width: 20px;
   height: 20px;
   border: 1px solid var(--primary);
   background: ${(props: ProgressCircleProps) =>
-    props.filled ? `var(--primary)` : `var(--secondary)`};
+    props.filled === "true" ? `var(--primary)` : `var(--secondary)`};
   border-radius: 50%;
   position: relative;
   z-index: 2;
@@ -45,7 +49,13 @@ export const ProgressLine = styled.div`
   background: var(--primary);
 `;
 
-export const ActionButton = styled.button`
+interface ActionButtonProps {
+  active?: string;
+}
+
+export const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop, defaultValidatorFn) => !["active"].includes(prop),
+})<ActionButtonProps>`
   font-size: 40px;
   line-height: 40px;
   padding: 8px;
@@ -53,9 +63,10 @@ export const ActionButton = styled.button`
   color: var(--primary);
   border: none;
   transition: all 200ms ease-in-out;
-  transform: ${(props: ActionButtonProps) => (props.active ? `translateX(-50%)` : `translateX(0)`)};
-  opacity: ${(props: ActionButtonProps) => (props.active ? "0" : "1")};
-  cursor: ${(props: ActionButtonProps) => (props.active ? "auto" : "pointer")};
+  transform: ${(props: ActionButtonProps) =>
+    props.active === "true" ? `translateX(-50%)` : `translateX(0)`};
+  opacity: ${(props: ActionButtonProps) => (props.active === "true" ? "0" : "1")};
+  cursor: ${(props: ActionButtonProps) => (props.active === "true" ? "auto" : "pointer")};
   outline: none;
 
   &:focus {
@@ -80,7 +91,3 @@ export const TooltipWrapper = styled.div`
   font-size: 18px;
   border-radius: 10px;
 `;
-
-interface ActionButtonProps {
-  active?: boolean;
-}

@@ -6,9 +6,7 @@ export default {
   type: "document",
   title: "citation",
   icon: Bookmark,
-  blockEditor: {
-    render: CitationRenderer,
-  },
+  component: CitationRenderer,
   fields: [
     {
       type: "string",
@@ -140,7 +138,7 @@ export default {
     },
   ],
   options: {
-    editModal: "dialog",
+    modal: "dialog",
     preview: {
       select: {
         title: "title",

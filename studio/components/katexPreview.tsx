@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { Box } from "@sanity/ui";
+import { PreviewProps } from "sanity";
+import { Latex } from "../sanity.types";
 
-export const KatexPreview = (props) => {
-  const { value } = props;
+export const KatexPreview = (props: PreviewProps & Latex) => {
+  const { renderedHtml } = props;
 
   useEffect(() => {
     /** Check if  css is already loaded */
@@ -20,9 +22,11 @@ export const KatexPreview = (props) => {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 
-    return () => document.head.removeChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
-  if (!value.renderedHtml) return <span>Invalid LaTeX expression</span>;
-  return <Box padding={1} dangerouslySetInnerHTML={{ __html: value.renderedHtml }} />;
+  if (!renderedHtml) return <span>Invalid LaTeX expression</span>;
+  return <Box padding={1} dangerouslySetInnerHTML={{ __html: renderedHtml }} />;
 };

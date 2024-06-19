@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
-export const CauseAreaSelectionWrapper = styled.div<{ separated: boolean }>`
-  margin-top: ${(props) => (props.separated ? "20px" : "0")};
+export const CauseAreaSelectionWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop, defaultValidatorFn) => !["separated"].includes(prop),
+})<{ separated: string }>`
+  margin-top: ${(props) => (props.separated === "true" ? "20px" : "0")};
 `;
 
 export const SmartDistributionExplanationWrapper = styled.div`
@@ -10,7 +12,9 @@ export const SmartDistributionExplanationWrapper = styled.div`
   color: var(--primary);
 `;
 
-export const SmartDistributionLabel = styled.span<{ expanded: boolean }>`
+export const SmartDistributionLabel = styled.span.withConfig({
+  shouldForwardProp: (prop, defaultValidatorFn) => !["expanded"].includes(prop),
+})<{ expanded: string }>`
   cursor: pointer;
   display: inline-block;
   user-select: none;
@@ -22,7 +26,7 @@ export const SmartDistributionLabel = styled.span<{ expanded: boolean }>`
     display: inline-block;
     margin-left: 10px;
     transition: transform 0.2s ease-in-out;
-    transform: ${(props) => (props.expanded ? "rotate(180deg)" : "rotate(0deg)")};
+    transform: ${(props) => (props.expanded === "true" ? "rotate(180deg)" : "rotate(0deg)")};
   }
 `;
 
