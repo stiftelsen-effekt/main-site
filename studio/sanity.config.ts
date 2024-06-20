@@ -19,7 +19,7 @@ export default defineConfig({
     table(),
     presentationTool({
       previewUrl: {
-        origin: "http://localhost:3000",
+        origin: process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3000",
         draftMode: {
           enable: "/api/draft",
         },
