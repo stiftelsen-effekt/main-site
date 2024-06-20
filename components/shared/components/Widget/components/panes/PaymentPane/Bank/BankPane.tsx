@@ -76,14 +76,11 @@ export const BankPane: React.FC<{
           </AnimateHeight>
         </div>
 
-        {/* Always show referrals for anonymous donors (ID 1464) */}
-        {(!hasAnswerredReferral || donorID == 1464) && (
-          <Referrals
-            text={{
-              pane3_referrals_title: referrals.pane3_referrals_title,
-            }}
-          />
-        )}
+        <Referrals
+          text={{
+            pane3_referrals_title: referrals.pane3_referrals_title,
+          }}
+        />
       </PaneContainer>
     </Pane>
   );
