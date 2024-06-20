@@ -10,6 +10,7 @@ export default defineConfig({
   title: process.env.SANITY_STUDIO_TITLE,
   projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
   dataset: process.env.SANITY_STUDIO_API_DATASET,
+  basePath: "/studio",
   plugins: [
     structureTool({
       structure: deskStructure,
