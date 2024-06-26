@@ -305,6 +305,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
             locale={widget.locale}
             text={{
               anon_button_text: widget.anon_button_text,
+              anon_button_text_tooltip: widget.anon_button_text_tooltip,
               name_placeholder: widget.name_placeholder,
               name_invalid_error_text: widget.name_invalid_error_text,
               email_placeholder: widget.email_placeholder,

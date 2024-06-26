@@ -143,6 +143,7 @@ export const DonorPane: React.FC<{
                 />
                 <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
               </CheckBoxWrapper>
+              <ToolTip text={text.anon_button_text_tooltip} />
             </div>
 
             {!isAnonymous ? (

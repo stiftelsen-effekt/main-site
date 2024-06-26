@@ -90,4 +90,5 @@ export const TooltipWrapper = styled.div`
   z-index: 100;
   font-size: 18px;
   border-radius: 10px;
+  pointer-events: none;
 `;

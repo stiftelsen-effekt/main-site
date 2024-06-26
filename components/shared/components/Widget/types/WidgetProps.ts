@@ -140,6 +140,7 @@ export type DonationInputErrorTemplates = {
 
 export type WidgetPane2Props = {
   anon_button_text: string;
+  anon_button_text_tooltip: string;
   name_placeholder: string;
   name_invalid_error_text: string;
   email_placeholder: string;

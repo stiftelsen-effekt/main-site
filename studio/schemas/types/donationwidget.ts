@@ -227,6 +227,14 @@ export default {
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "anon_button_text_tooltip",
+      title: "Anon button text tooltip",
+      type: "text",
+      group: "pane2",
+      rows: 3,
+      validation: (Rule: any) => Rule.required(),
+    },
     // Placeholders on name and email pane 2
     {
       name: "name_placeholder",
