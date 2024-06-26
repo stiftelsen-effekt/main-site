@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
-import { WidgetContext } from "../../../../main/layout/layout";
+import { WidgetContext, WidgetContextType } from "../../../../main/layout/layout";
 import { fetchCauseAreasAction } from "../store/layout/actions";
 import { paymentMethodConfigurations } from "../config/methods";
 import {
@@ -32,6 +32,8 @@ import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
 import { StyleSheetManager } from "styled-components";
+import { useRouter } from "next/router";
+import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 
 const widgetQuery = groq`
 *[_type == "donationwidget"][0] {
@@ -210,10 +212,12 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
     throw new Error("No payment methods found");
   }
 
+  const router = useRouter();
   const dispatch = useDispatch();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<string | null>(null);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas);
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
@@ -273,6 +277,46 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
       });
     }
   }, [widgetContext.prefilled]);
+
+  /** Look at the URL and look for a query param
+   *  that specifies a payment distribution to prefill
+   *  If found, set the distribution cause areas and organizations
+   *  to the prefilled values.
+   *  Find the corresponding cause area and organization in the state
+   *  Use next router to look at the query params
+   *
+   *  The format of the query param is:
+   *  distribution=causeAreaId:share:organizationId-share:organizationId-share
+   *
+   *  E.g.
+   *  1:100:4-50:1-25:12-25
+   *
+   *  This would set cause area 1 to 100% and distribute the shares
+   *  between organizations 4, 1 and 12 with 50%, 25% and 25% respectively
+   */
+  useEffect(() => {
+    const query = router.query;
+    if (query && query["distribution"] && causeAreas) {
+      const distribution = query["distribution"] as string;
+      const prefilledDistribution: PrefilledDistribution = distribution
+        .split(",")
+        .map((prefilledCauseArea) => {
+          const [causeAreaId, share, ...organizations] = prefilledCauseArea.split(":");
+          return {
+            causeAreaId: parseInt(causeAreaId),
+            share: parseFloat(share),
+            organizations: organizations.map((organization) => {
+              const [organizationId, share] = organization.split("-");
+              return {
+                organizationId: parseInt(organizationId),
+                share: parseFloat(share),
+              };
+            }),
+          };
+        });
+      setWidgetContext({ open: true, prefilled: prefilledDistribution });
+    }
+  }, [router.query, causeAreas]);
 
   useDefaultPaymentMethodEffect(methods);
 
