@@ -2,3 +2,16 @@
   width: 100%;
   height: 100%;
 }
+
+.label {
+  display: none;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  position: absolute;
+}
+
+@media screen and (max-width: 1180px) {
+  .label {
+    display: block;
+  }
+}
