@@ -106,6 +106,12 @@ export default {
             },
           ],
         },
+        {
+          name: "calculate_button_label",
+          type: "string",
+          title: "Calculate Button Label",
+          validation: (Rule: any) => Rule.required(),
+        },
       ],
     },
     {
@@ -128,6 +134,11 @@ export default {
           ],
         },
       ],
+    },
+    {
+      name: "chart_label",
+      type: "string",
+      title: "Chart Label",
     },
     {
       name: "x_axis_label",

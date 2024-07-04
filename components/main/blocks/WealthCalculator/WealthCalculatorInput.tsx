@@ -24,6 +24,7 @@ export type WealthCalculatorInputConfiguration = {
     placeholder?: string;
     options: string[];
   };
+  calculate_button_label?: string;
 };
 
 export const WealthCalculatorInput: React.FC<{
@@ -115,7 +116,7 @@ export const WealthCalculatorInput: React.FC<{
           ref={calculateButtonRef}
         >
           <EffektButton onClick={scrollToOutput} variant={EffektButtonVariant.SECONDARY}>
-            Beregn
+            {config.calculate_button_label}
           </EffektButton>
         </div>
       </div>

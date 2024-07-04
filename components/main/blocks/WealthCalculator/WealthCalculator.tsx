@@ -33,6 +33,7 @@ export type WealthCalculatorConfiguration = {
   data_explanation_label?: string;
   data_explanation?: any;
   x_axis_label?: string;
+  chart_label?: string;
 };
 
 type WealthCalculatorProps = {
@@ -63,6 +64,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     data_explanation_label,
     data_explanation,
     x_axis_label,
+    chart_label,
   } = configuration;
 
   const [incomeInput, setIncomeInput] = useState<number | undefined>();
@@ -171,6 +173,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
               periodAdjustment,
               pppConversion?.adjustedPPPfactor,
             )}
+            label={chart_label}
             afterDonationPercentileLabelTemplateString={
               income_percentile_after_donation_label_template_string
             }

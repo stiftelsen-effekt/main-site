@@ -2,6 +2,7 @@ import * as Plot from "@observablehq/plot";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getRemInPixels } from "../../../../main/blocks/Paragraph/Citation";
 import { useDebouncedCallback } from "use-debounce";
+import styles from "./AreaGraph.module.scss";
 
 const drawChart = (
   data: { x: number; y: number }[],
@@ -139,6 +140,7 @@ export const AreaChart: React.FC<{
   donationPercentage: number;
   wealthPercentile: number;
   afterDonationWealthPercentile: number;
+  label?: string;
   incomePercentileLabelTemplateString: string;
   afterDonationPercentileLabelTemplateString: string;
   adjustedPPPConversionFactor: number;
@@ -149,6 +151,7 @@ export const AreaChart: React.FC<{
   donationPercentage,
   wealthPercentile,
   afterDonationWealthPercentile,
+  label,
   incomePercentileLabelTemplateString,
   afterDonationPercentileLabelTemplateString,
   adjustedPPPConversionFactor,
@@ -209,7 +212,12 @@ export const AreaChart: React.FC<{
     }
   }, [outputRef, debouncedDrawGraph]);
 
-  return <div ref={outputRef}></div>;
+  return (
+    <>
+      {label ? <span className={styles.label}>{label}</span> : null}
+      <div ref={outputRef}></div>
+    </>
+  );
 };
 
 const convertNumberToBoldText = (number: number, percentage: boolean = false) => {
