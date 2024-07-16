@@ -4,10 +4,18 @@ import { useEffect } from "react";
 
 export const PlausibleRevenueTracker: React.FC<{
   enabled?: boolean;
+  locale: string;
   type: "agreement" | "donation";
-}> = ({ enabled, type }) => {
+}> = ({ enabled, locale, type }) => {
   const plausible = usePlausible();
   const router = useRouter();
+
+  let currency = "NOK";
+  if (locale === "sv") {
+    currency = "SEK";
+  }
+
+  console.log(locale);
 
   useEffect(() => {
     if (enabled) {
@@ -15,7 +23,7 @@ export const PlausibleRevenueTracker: React.FC<{
       if (revenue && method && recurring && kid) {
         plausible(type === "donation" ? "CompletedDonation" : "StartedAgreement", {
           revenue: {
-            currency: "NOK",
+            currency: currency,
             amount: parseFloat(revenue as string),
           },
           props: {

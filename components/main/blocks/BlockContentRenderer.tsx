@@ -382,7 +382,12 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "plausiblerevenuetracker":
             return (
-              <PlausibleRevenueTracker key={block._key} enabled={block.enabled} type={block.type} />
+              <PlausibleRevenueTracker
+                key={block._key}
+                enabled={block.enabled}
+                type={block.type}
+                locale={block.locale}
+              />
             );
           default:
             return block._type;
