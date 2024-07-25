@@ -9,11 +9,9 @@ export default function PreviewProvider({
   children: React.ReactNode;
   token: string;
 }) {
-  const actualToken =
-    "skTryNTwY4oa7eetqGATCQU1qapuZFuHOtc7Lw0iLMq9woJsSuO8pYMnVjSgodkuZAzduzmsyfzw9hSrZXk39YPqevxpcDIHy6WMVg0qPL7XBo9fFOH1PeSuEzhkXy4xDMih0pzTeK2NJI12MQEDcsuPDTZfFX5AN06m35rcG8TAa9kWaYxi";
-  const client = useMemo(() => getClient(actualToken), [actualToken]);
+  const client = useMemo(() => getClient(token), [token]);
   return (
-    <LiveQueryProvider client={client} token={actualToken}>
+    <LiveQueryProvider client={client} token={token}>
       {children}
     </LiveQueryProvider>
   );
