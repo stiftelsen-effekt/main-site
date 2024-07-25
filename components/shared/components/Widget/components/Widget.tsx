@@ -42,7 +42,8 @@ const widgetQuery = groq`
   methods[] { 
     _type == 'reference' => @->{
       _type == 'bank' => {
-        ...
+        ...,
+        "locale": *[ _type == "site_settings"][0].main_locale,
       },
       _type == 'vipps' => {
         _id,

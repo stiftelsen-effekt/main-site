@@ -26,6 +26,7 @@ export type BankPaymentMethod = {
   button_text: string;
   completed_title: string;
   completed_text: string;
+  locale: string;
 };
 
 export type VippsPaymentMethod = {

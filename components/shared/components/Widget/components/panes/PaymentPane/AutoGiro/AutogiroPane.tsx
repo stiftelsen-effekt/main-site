@@ -63,6 +63,19 @@ export const AutogiroPane: React.FC<{
       <EffektButton
         onClick={() => {
           setHasSubmitted(true);
+          if (donation.sum) {
+            plausible("StartedAgreement", {
+              revenue: {
+                currency: "SEK",
+                amount: donation.sum,
+              },
+              props: {
+                method: "Autogiro",
+                recurring: true,
+                kid: donation.kid,
+              },
+            });
+          }
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
         data-cy="autogiro-manual-transaction-setup-complete-button"
@@ -122,6 +135,19 @@ export const AutogiroPane: React.FC<{
       <EffektButton
         onClick={() => {
           setHasSubmitted(true);
+          if (donation.sum) {
+            plausible("StartedAgreement", {
+              revenue: {
+                currency: "SEK",
+                amount: donation.sum,
+              },
+              props: {
+                method: "Autogiro",
+                recurring: true,
+                kid: donation.kid,
+              },
+            });
+          }
         }}
         style={{ fontSize: 18, marginTop: 10, padding: 14 }}
         data-cy="autogiro-manual-setup-complete-button"

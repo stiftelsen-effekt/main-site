@@ -20,15 +20,18 @@ export const BankPane: React.FC<{
 }> = ({ config, referrals }) => {
   const plausible = usePlausible();
   const donation = useSelector((state: State) => state.donation);
-  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
-  const donorID = useSelector((state: State) => state.donation.donor?.donorID);
   const [hasCompletedTransaction, setHasCompletedTransaction] = useState(false);
+
+  let currency = "NOK";
+  if (config.locale === "sv") {
+    currency = "SEK";
+  }
 
   useEffect(() => {
     if (hasCompletedTransaction && donation.sum && donation.kid) {
       plausible("CompletedDonation", {
         revenue: {
-          currency: "NOK",
+          currency: currency,
           amount: donation.sum,
         },
         props: {
