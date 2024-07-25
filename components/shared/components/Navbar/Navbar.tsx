@@ -13,6 +13,7 @@ import { groq } from "next-sanity";
 import { getClient } from "../../../../lib/sanity.client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { token } from "../../../../token";
+import { stegaClean } from "@sanity/client/stega";
 
 export type NavLink = {
   _type: "navitem";
@@ -135,7 +136,7 @@ export const Navbar = withStaticProps(
 
   const giveButton = {
     donate_label: settingsData.donate_label,
-    accent_color: settingsData.accent_color,
+    accent_color: stegaClean(settingsData.accent_color),
   };
 
   const { dashboardPath } = useRouterContext();

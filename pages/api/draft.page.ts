@@ -23,6 +23,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse<s
   if (!isValid) {
     return res.status(401).send("Invalid secret");
   }
+  console.log("Redirecting to", redirectTo);
   // Enable Draft Mode by setting the cookies
   res.setDraftMode({ enable: true });
   res.writeHead(307, { Location: redirectTo });

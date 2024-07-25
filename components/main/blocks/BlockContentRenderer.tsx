@@ -313,7 +313,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 heading={block.heading}
                 paragraph={block.paragraph}
                 donateLabel={block.donate_label_short}
-                accentColor={block.accent_color}
+                accentColor={stegaClean(block.accent_color)}
               />
             );
           }

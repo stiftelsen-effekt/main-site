@@ -89,7 +89,7 @@ export const GenericPage = withStaticProps(
         coverPhoto={header.coverPhoto}
         cta_type={header.cta_type}
         cta_label={header.cta_label}
-        accent_color={header.accent_color}
+        accent_color={stegaClean(header.accent_color)}
       />
 
       <BlockContentRenderer content={content} />

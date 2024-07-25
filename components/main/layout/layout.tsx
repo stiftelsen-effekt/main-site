@@ -11,6 +11,7 @@ import { PrefilledDistribution, WidgetPane, WidgetPaneProps } from "./WidgetPane
 import { token } from "../../../token";
 import { useLiveQuery } from "next-sanity/preview";
 import React from "react";
+import { stegaClean } from "@sanity/client/stega";
 
 export type WidgetContextType = {
   open: boolean;
@@ -59,6 +60,9 @@ const query = groq`
 `;
 
 export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
+  console.log(token, draftMode);
+  console.log(process.env.SANITY_API_READ_TOKEN, process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN);
+
   const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
   const settings = result.settings;
   return {
@@ -68,7 +72,7 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
     giveButton: {
       donate_label_short: settings.donate_label_short,
       donate_label_title: settings.donate_label_title,
-      accent_color: settings.accent_color,
+      accent_color: stegaClean(settings.accent_color),
     },
     draftMode,
   };
