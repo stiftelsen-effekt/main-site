@@ -32,7 +32,9 @@ export default defineConfig({
         const [result] = await client.fetch(query, params);
 
         if (result) {
-          return `${process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3000"}/${slug}`;
+          return `${
+            process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3333"
+          }/studio/presentation?preview=/${slug}`;
         }
       } else if (document._type === "article_page") {
         const slug = (document as Article_page).slug.current;
@@ -49,8 +51,8 @@ export default defineConfig({
 
         if (result && articlesSlug) {
           return `${
-            process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3000"
-          }/${articlesSlug}/${slug}`;
+            process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3333"
+          }/studio/presentation?preview=/${articlesSlug}/${slug}`;
         }
       }
     },
