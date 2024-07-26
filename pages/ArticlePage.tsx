@@ -104,7 +104,9 @@ const ArticlePage = withStaticProps(
         imageAsset={header.seoImage ? header.seoImage.asset : undefined}
         canonicalurl={
           header.cannonicalUrl ??
-          `https://gieffektivt.no/${[...articlesPagePath, page.slug.current].join("/")}`
+          `${process.env.NEXT_PUBLIC_SITE_URL}/${[...articlesPagePath, page.slug.current].join(
+            "/",
+          )}`
         }
         keywords={header.seoKeywords}
         siteName={data.result.settings[0].title}

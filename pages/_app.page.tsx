@@ -66,6 +66,10 @@ function MyApp({
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
 
   if (pageProps.draftMode) {
+    if (!pageProps.token) {
+      pageProps.token = process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN || "";
+    }
+
     return (
       <PreviewProvider token={pageProps.token}>
         <PlausibleProvider
