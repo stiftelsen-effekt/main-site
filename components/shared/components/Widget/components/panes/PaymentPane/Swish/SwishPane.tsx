@@ -58,6 +58,7 @@ export const SwishPane = dynamic<{
       const donorID = useSelector((state: State) => state.donation.donor?.donorID);
       const orderID = useSelector((state: State) => state.donation.swishOrderID);
       const token = useSelector((state: State) => state.donation.swishPaymentRequestToken);
+      const donation = useSelector((state: State) => state.donation);
       const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
 
       const status = useSwishStatus(orderID);
@@ -72,6 +73,26 @@ export const SwishPane = dynamic<{
 
         triggerSwishApp(token);
       }, [isMobile, token]);
+
+      useEffect(() => {
+        if (
+          status &&
+          isStringEnum(status, ["PAID", "DECLINED", "ERROR", "CANCELLED"]) &&
+          status === "PAID"
+        ) {
+          plausible("CompletedDonation", {
+            revenue: {
+              currency: "SEK",
+              amount: donation.sum || 0,
+            },
+            props: {
+              method: "swish",
+              recurring: false,
+              kid: donation.kid,
+            },
+          });
+        }
+      }, [status]);
 
       const title =
         status && isStringEnum(status, ["PAID", "DECLINED", "ERROR", "CANCELLED"])
