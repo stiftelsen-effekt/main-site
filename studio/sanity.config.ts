@@ -73,12 +73,24 @@ export default defineConfig({
       resolve: {
         mainDocuments: defineDocuments([
           {
+            route: "/artikler",
+            type: "articles",
+          },
+          {
+            route: "/resultater",
+            type: "results",
+          },
+          {
             route: "/:slug",
             filter: `_type == "generic_page" && slug.current == $slug`,
           },
           {
             route: "/",
             filter: `_type == "generic_page" && slug.current == "/"`,
+          },
+          {
+            route: "/artikler/:slug",
+            filter: `_type == "article_page" && slug.current == $slug`,
           },
         ]),
       },

@@ -30,11 +30,7 @@ export const GenericPage = withStaticProps(
 
     const client = getClient(draftMode ? token : undefined);
 
-    let result = await client.fetch(
-      fetchGenericPage,
-      { slug },
-      { perspective: "previewDrafts", resultSourceMap: true },
-    );
+    let result = await client.fetch(fetchGenericPage, { slug });
 
     return {
       appStaticProps,

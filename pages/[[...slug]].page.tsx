@@ -29,8 +29,15 @@ enum PageType {
 
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   if (props.appStaticProps?.layoutProps?.draftMode || true) {
-    if (props.pageType === PageType.GenericPage) {
-      return <PreviewGenericPage {...props} />;
+    switch (props.pageType as PageType) {
+      case PageType.GenericPage:
+        return <PreviewGenericPage {...(props as any)} />;
+      case PageType.ArticlesPage:
+        return <PreviewArticlesPage {...(props as any)} />;
+      case PageType.ArticlePage:
+        return <PreviewArticlePage {...(props as any)} />;
+      case PageType.ResultsPage:
+        return <PreviewResultsPage {...(props as any)} />;
     }
   }
 
@@ -38,7 +45,7 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
     case PageType.GenericPage:
       return <GenericPage {...(props as any)} />;
     case PageType.ArticlesPage:
-      return <ArticlesPage {...props} />;
+      return <ArticlesPage {...(props as any)} />;
     case PageType.ArticlePage:
       return <ArticlePage {...(props as any)} />;
     case PageType.ResultsPage:
@@ -66,6 +73,36 @@ const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps
   }
 
   return <GenericPage {...(props as any)} />;
+};
+
+const PreviewArticlesPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <ArticlesPage {...(props as any)} />;
+};
+
+const PreviewArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <ArticlePage {...(props as any)} />;
+};
+
+const PreviewResultsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <ResultsPage {...(props as any)} />;
 };
 
 function compareArrays<T>(a: T[], b: T[]) {
