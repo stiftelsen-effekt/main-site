@@ -77,6 +77,10 @@ export default defineConfig({
             type: "articles",
           },
           {
+            route: "/artiklar",
+            type: "articles",
+          },
+          {
             route: "/resultater",
             type: "results",
           },
@@ -90,6 +94,10 @@ export default defineConfig({
           },
           {
             route: "/artikler/:slug",
+            filter: `_type == "article_page" && slug.current == $slug`,
+          },
+          {
+            route: "/artiklar/:slug",
             filter: `_type == "article_page" && slug.current == $slug`,
           },
         ]),
