@@ -40,7 +40,7 @@ sagaMiddleware.run(watchAll);
 export type GeneralPageProps = Record<string, unknown> & {
   preview: boolean;
   draftMode: boolean;
-  token: string;
+  token: string | null;
   data?: {
     result: Record<string, unknown>;
     query: string;

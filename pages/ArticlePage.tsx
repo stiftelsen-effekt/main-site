@@ -16,7 +16,7 @@ import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
 import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
-import { getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { TOC } from "../components/main/layout/TOC/TOC";
 import { stegaClean } from "@sanity/client/stega";
@@ -67,21 +67,18 @@ const ArticlePage = withStaticProps(
       settings: { title: string; cookie_banner_configuration: CookieBannerConfiguration }[];
     }>(fetchArticle, { slug });
 
-    const toc = getTOC(result.page.content).filter(
-      (el) => el.title !== undefined && el.title.trim() !== "",
-    );
-
     return {
       appStaticProps,
       navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       draftMode,
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       data: {
         result,
-        toc,
         query: fetchArticle,
         queryParams: { slug },
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, draftMode }) => {
   const { articlesPagePath } = useRouterContext();

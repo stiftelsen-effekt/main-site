@@ -15,8 +15,6 @@ export const PlausibleRevenueTracker: React.FC<{
     currency = "SEK";
   }
 
-  console.log(locale);
-
   useEffect(() => {
     if (enabled) {
       const { revenue, method, recurring, kid } = router.query;

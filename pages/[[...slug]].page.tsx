@@ -12,7 +12,6 @@ import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
 import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
 import { ResultsPage } from "./ResultsPage";
 import { useLiveQuery } from "next-sanity/preview";
-import { useIsEnabled } from "@sanity/preview-kit";
 
 enum PageType {
   GenericPage = "generic",
@@ -183,6 +182,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ArticlesPage: {
@@ -192,6 +192,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ArticlePage: {
@@ -202,6 +203,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ResultsPage: {
@@ -211,6 +213,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.VippsAgreementPage: {
@@ -220,6 +223,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.VippsAnonymousPage: {
@@ -229,6 +233,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.DonationsPage: {
@@ -238,6 +243,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.AgreementsPage: {
@@ -247,6 +253,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ProfilePage: {
@@ -256,6 +263,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.TaxPage: {
@@ -265,6 +273,7 @@ export const getStaticProps = async ({
           ...props,
           pageType,
         },
+        revalidate: draftMode ? 1 : 3600,
       } as const;
     }
   }
@@ -292,7 +301,7 @@ export async function getStaticPaths() {
         params: { slug: path },
       };
     }),
-    fallback: false,
+    fallback: "blocking",
   };
 }
 

@@ -35,13 +35,15 @@ export const ArticlesPage = withStaticProps(
     return {
       appStaticProps,
       navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       data: {
         result,
         query: fetchArticles,
         queryParams: {},
       },
       draftMode,
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, draftMode }) => {
   const page = data.result.page;

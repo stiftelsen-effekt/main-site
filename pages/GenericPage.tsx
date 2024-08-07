@@ -35,13 +35,15 @@ export const GenericPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
         query: fetchGenericPage,
         queryParams: { slug },
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbar, draftMode }) => {
   const page = data.result.page;
