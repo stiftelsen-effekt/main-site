@@ -59,7 +59,7 @@ export const SharesSelection: React.FC<{
           return (
             <ShareInputContainer key={org.id}>
               <div>
-                <ShareLink href={organization.informationUrl}>
+                <ShareLink href={organization.informationUrl} target="_blank">
                   <label htmlFor={org.id.toString()}>{organization.widgetDisplayName}</label>
                 </ShareLink>
                 {organization.widgetContext && <ToolTip text={organization.widgetContext} />}
