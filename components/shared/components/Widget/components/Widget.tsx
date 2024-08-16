@@ -31,7 +31,6 @@ import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
-import { StyleSheetManager } from "styled-components";
 import { useRouter } from "next/router";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { TooltipWrapper } from "./shared/ProgressBar/ProgressBar.style";

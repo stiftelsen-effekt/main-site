@@ -142,8 +142,8 @@ export const DonorPane: React.FC<{
                   })}
                 />
                 <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
+                <ToolTip text={text.anon_button_text_tooltip} />
               </CheckBoxWrapper>
-              <ToolTip text={text.anon_button_text_tooltip} />
             </div>
 
             {!isAnonymous ? (
@@ -195,8 +195,9 @@ export const DonorPane: React.FC<{
                         label={text.tax_deduction_selector_text}
                         checked={taxDeductionChecked}
                       />
+                      {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
                     </CheckBoxWrapper>
-                    {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
+
                     {taxDeductionChecked && (
                       <InputFieldWrapper>
                         <input

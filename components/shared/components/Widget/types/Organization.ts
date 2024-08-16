@@ -7,6 +7,8 @@ export interface Organization {
   standardShare?: number;
   /** @description The organization name */
   name: string;
+  widgetDisplayName?: string;
+  widgetContext?: string;
   /** @description The organization abbreviation */
   abbreviation?: string;
   /** @description The organization short description */
