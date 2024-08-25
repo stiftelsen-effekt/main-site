@@ -31,9 +31,9 @@ import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
-import { StyleSheetManager } from "styled-components";
 import { useRouter } from "next/router";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
+import { TooltipWrapper } from "./shared/ProgressBar/ProgressBar.style";
 
 const widgetQuery = groq`
 *[_type == "donationwidget"][0] {
@@ -227,6 +227,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
   );
 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
+  const { scrollPosition } = useWidgetScrollObserver(widgetRef);
 
   useEffect(() => {
     dispatch(fetchCauseAreasAction.started(undefined));
@@ -332,6 +333,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
       }}
     >
       <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
+        {tooltip !== null && <TooltipWrapper top={20 + scrollPosition}>{tooltip}</TooltipWrapper>}
         <ProgressBar />
         <Carousel minHeight={scaledHeight - 116}>
           <DonationPane
@@ -377,3 +379,34 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
     </div>
   );
 });
+
+export const useWidgetScrollObserver = (elementRef: any) => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const observers = useRef(new Set());
+
+  const handleScroll = useCallback((event: any) => {
+    const newPosition = event.target.scrollTop;
+    setScrollPosition(newPosition);
+    observers.current.forEach((observer: any) => observer(newPosition));
+  }, []);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (element) {
+      element.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (element) {
+        element.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [elementRef, handleScroll]);
+
+  const subscribe = useCallback((observer: any) => {
+    observers.current.add(observer);
+    return () => observers.current.delete(observer);
+  }, []);
+
+  return { scrollPosition, subscribe };
+};

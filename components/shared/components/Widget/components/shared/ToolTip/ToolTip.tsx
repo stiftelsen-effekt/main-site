@@ -4,11 +4,9 @@ import { WidgetTooltipContext } from "../../Widget";
 import { ToolTipIcon } from "./ToolTipIcon";
 
 const ToolTipWrapper = styled.div`
-  vertical-align: middle;
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
-  margin-bottom: 12px;
 `;
 
 export const ToolTip: React.FC<{ text: string }> = ({ text }) => {

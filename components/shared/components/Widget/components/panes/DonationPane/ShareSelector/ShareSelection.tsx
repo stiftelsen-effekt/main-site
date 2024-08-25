@@ -12,6 +12,7 @@ import {
 import AnimateHeight from "react-animate-height";
 import { CauseArea } from "../../../../types/CauseArea";
 import { ErrorText } from "../DonationPane";
+import { ToolTip } from "../../../shared/ToolTip/ToolTip";
 
 export const SharesSelection: React.FC<{
   causeArea: CauseArea;
@@ -52,39 +53,42 @@ export const SharesSelection: React.FC<{
   return (
     <ShareSelectionWrapper data-error={relevantErrorTexts[0]?.error.type}>
       <ShareContainer ref={wrapperRef}>
-        {distributionCauseArea.organizations.map((org) => (
-          <ShareInputContainer key={org.id}>
-            <div>
-              <ShareLink href={org.informationUrl}>
-                <label htmlFor={org.id.toString()}>
-                  {organizations.filter((o) => o.id === org.id)[0].name}
-                </label>
-              </ShareLink>
-            </div>
-            <input
-              data-cy={`org-${org.id}`}
-              type="tel"
-              name={org.id.toString()}
-              placeholder="0"
-              value={org.percentageShare}
-              onChange={(e) => {
-                const newOrganizationShares = [...distributionCauseArea.organizations];
-                const index = newOrganizationShares.map((s) => s.id).indexOf(org.id);
+        {distributionCauseArea.organizations.map((org) => {
+          const organization = organizations.find((o) => o.id === org.id);
+          if (!organization) return null;
+          return (
+            <ShareInputContainer key={org.id}>
+              <div>
+                <ShareLink href={organization.informationUrl} target="_blank">
+                  <label htmlFor={org.id.toString()}>{organization.widgetDisplayName}</label>
+                </ShareLink>
+                {organization.widgetContext && <ToolTip text={organization.widgetContext} />}
+              </div>
+              <input
+                data-cy={`org-${org.id}`}
+                type="tel"
+                name={org.id.toString()}
+                placeholder="0"
+                value={org.percentageShare}
+                onChange={(e) => {
+                  const newOrganizationShares = [...distributionCauseArea.organizations];
+                  const index = newOrganizationShares.map((s) => s.id).indexOf(org.id);
 
-                if (e.target.value === "") {
-                  newOrganizationShares[index].percentageShare = "0";
-                } else if (Number.isInteger(parseInt(e.target.value))) {
-                  const newSplit = parseInt(e.target.value);
-                  if (newSplit <= 100 && newSplit >= 0) {
-                    newOrganizationShares[index].percentageShare = newSplit.toString();
+                  if (e.target.value === "") {
+                    newOrganizationShares[index].percentageShare = "0";
+                  } else if (Number.isInteger(parseInt(e.target.value))) {
+                    const newSplit = parseInt(e.target.value);
+                    if (newSplit <= 100 && newSplit >= 0) {
+                      newOrganizationShares[index].percentageShare = newSplit.toString();
+                    }
                   }
-                }
 
-                dispatch(setShares(distributionCauseArea.id, newOrganizationShares));
-              }}
-            />
-          </ShareInputContainer>
-        ))}
+                  dispatch(setShares(distributionCauseArea.id, newOrganizationShares));
+                }}
+              />
+            </ShareInputContainer>
+          );
+        })}
       </ShareContainer>
       <AnimateHeight height={hasError ? "auto" : 0} duration={300} animateOpacity>
         <ErrorContainer>

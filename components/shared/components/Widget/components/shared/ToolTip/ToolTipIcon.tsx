@@ -9,8 +9,7 @@ const TooltipIconButton = styled.button.attrs({
   pointer-events: all;
   background: transparent;
   height: 100%;
-  vertical-align: center;
-  margin-left: 10px;
+  vertical-align: middle;
   padding: 0 10px;
 
   &:hover {
@@ -25,13 +24,14 @@ const TooltipIconButton = styled.button.attrs({
 
 const TooltipInnerIcon = styled.div`
   border: 1px solid var(--primary);
-  width: 34px;
-  height: 34px;
+  width: 2em;
+  height: 2em;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 0.8em;
+  vertical-align: middle;
 `;
 
 interface ToolIconProps {

@@ -79,16 +79,19 @@ export const ActionButton = styled.button.withConfig({
   }
 `;
 
-export const TooltipWrapper = styled.div`
+export const TooltipWrapper = styled.div<{
+  top: number;
+}>`
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: ${(props) => Math.round(props.top)}px;
+  margin-left: 20px;
+  margin-right: 20px;
   right: 20px;
   background: var(--primary);
   color: var(--secondary);
   padding: 40px;
-  z-index: 100;
   font-size: 18px;
   border-radius: 10px;
   pointer-events: none;
+  z-index: 100;
 `;
