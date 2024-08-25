@@ -32,7 +32,7 @@ export const DistributionController: React.FC<{
       <div className={style.grid}>
         {currentCauseAreaOrgs.map((org) => (
           <div key={org.id} className={style["share-wrapper"]}>
-            <span>{org.name}</span>
+            <span>{org.widgetDisplayName}</span>
             <div>
               <input
                 type="text"
