@@ -19,6 +19,10 @@ export const BlockTables: React.FC<{
   tables: BlockTablesTable[];
   columnWidths?: number[];
 }> = ({ config, tables, columnWidths }) => {
+  if (!config) {
+    return null;
+  }
+
   const classes = [styles.blockTable];
   if (config.containertype === "column") {
     classes.push(styles.column);
