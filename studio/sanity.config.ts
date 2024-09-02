@@ -11,7 +11,7 @@ const siteUrl =
   process.env.SANITY_STUDIO_VERCEL_ENV === "production"
     ? process.env.SANITY_STUDIO_SITE_URL
     : process.env.SANITY_STUDIO_VERCEL_ENV === "preview"
-    ? process.env.SANITY_STUDIO_VERCEL_URL
+    ? "https://" + process.env.SANITY_STUDIO_VERCEL_URL
     : "http://localhost:3000";
 
 export default defineConfig({
