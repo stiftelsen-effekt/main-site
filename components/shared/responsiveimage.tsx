@@ -5,19 +5,19 @@ import Image from "next/image";
 import { getClient } from "../../lib/sanity.client";
 
 export const ResponsiveImage: React.FC<{
-  image?: SanityImageObject;
+  image: SanityImageObject;
   alt?: string;
   onClick?: () => void;
   priority?: boolean;
   sizes?: string;
   layout?: "intrinsic" | "fill" | "responsive" | "fixed" | "cover";
 }> = ({ image, alt, onClick, priority, sizes, layout = "fill" }) => {
+  const sanityClient = getClient();
+  let imageProps = useNextSanityImage(sanityClient, image);
+
   if (!image) {
     return null;
   }
-
-  const sanityClient = getClient();
-  let imageProps = useNextSanityImage(sanityClient, image);
 
   let lqip = null;
   if (
