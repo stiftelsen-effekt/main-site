@@ -1,22 +1,39 @@
 .teaser {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 6rem;
   align-items: center;
   width: 100%;
+  padding: 1rem 5rem;
 }
 
-.teaserimage {
+.teaser.inverted {
   background: var(--primary);
+  color: var(--secondary);
   position: relative;
+}
+
+.teaser.inverted::before {
+  background: var(--primary);
   width: 100%;
-  aspect-ratio: 12/ 9;
+  height: 5rem;
+  position: absolute;
+  content: "";
+  top: -5rem;
+  left: 0;
+}
+
+.teaser.inverted::after {
+  background: var(--primary);
+  width: 100%;
+  height: 5rem;
+  position: absolute;
+  content: "";
+  bottom: -5rem;
+  left: 0;
 }
 
 .teasertext {
-  padding: 40px;
-  padding-left: 100px;
-  padding-right: 140px;
-  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -46,22 +63,24 @@
 }
 
 .teaserimage {
-  background: var(--primary);
+  background: gray;
   position: relative;
   width: 100%;
-  aspect-ratio: 12/ 9;
+  aspect-ratio: 4 / 5;
+  z-index: 10;
+  justify-self: flex-end;
+}
+
+.teaser.inverted .teaserimage {
+  justify-self: flex-start;
 }
 
 .teasertext {
-  padding: 40px;
-  padding-left: 100px;
-  padding-right: 140px;
-  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
 }
 
@@ -75,8 +94,12 @@
 }
 
 .teasertext .teaserdisclaimer {
-  margin-top: 20px;
-  font-size: 16px;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+.teaser.inverted .teaserlinks {
+  filter: invert(1);
 }
 
 @media only screen and (max-width: 1180px) {
@@ -87,7 +110,22 @@
     grid-template-columns: none;
     grid-template-rows: max-content max-content;
     width: 100%;
-    margin-bottom: 40px;
+    padding: 0;
+  }
+
+  .teaser.inverted::before {
+    height: 100%;
+    width: 5vw;
+    left: -5vw;
+    top: 0;
+  }
+
+  .teaser.inverted::after {
+    height: 100%;
+    width: 5vw;
+    right: -5vw;
+    left: auto;
+    bottom: 0;
   }
 
   .teaser:last-child {
@@ -96,28 +134,22 @@
 
   .teaserimage {
     grid-row: 1;
-    aspect-ratio: 4 / 3;
+    transform: translateY(-2rem);
+    aspect-ratio: 1/1;
   }
 
   .teasertext {
     padding: 20px 0px;
     max-width: auto;
     grid-row: 2;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .teasertext h3 {
+    margin-top: 0;
   }
 
   .teasertext p {
     margin-top: 0;
-    font-size: 16px;
-  }
-}
-
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .teasertext {
-    padding-left: 60px;
-  }
-
-  .teasertext p {
-    margin-top: 30px;
   }
 }

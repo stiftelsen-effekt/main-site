@@ -15,6 +15,10 @@ export const ResponsiveImage: React.FC<{
   const sanityClient = getClient();
   let imageProps = useNextSanityImage(sanityClient, image);
 
+  if (!image) {
+    return null;
+  }
+
   let lqip = null;
   if (
     image.asset &&

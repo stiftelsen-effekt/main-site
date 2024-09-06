@@ -7,6 +7,13 @@ import { table } from "@sanity/table";
 import { defineDocuments, presentationTool } from "sanity/presentation";
 import { Article_page, Articles, Generic_page } from "./sanity.types";
 
+const siteUrl =
+  process.env.SANITY_STUDIO_VERCEL_ENV === "production"
+    ? process.env.SANITY_STUDIO_SITE_URL
+    : process.env.SANITY_STUDIO_VERCEL_ENV === "preview"
+    ? "https://" + process.env.SANITY_STUDIO_VERCEL_URL
+    : "http://localhost:3000";
+
 export default defineConfig({
   title: process.env.SANITY_STUDIO_TITLE,
   projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
@@ -32,9 +39,7 @@ export default defineConfig({
         const [result] = await client.fetch(query, params);
 
         if (result) {
-          return `${
-            process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3333"
-          }/studio/presentation?preview=/${slug}`;
+          return `${siteUrl}/studio/presentation?preview=/${slug}`;
         }
       } else if (document._type === "article_page") {
         const slug = (document as Article_page).slug.current;
@@ -50,9 +55,7 @@ export default defineConfig({
         const articlesSlug = (articlesOverview as Articles).slug.current;
 
         if (result && articlesSlug) {
-          return `${
-            process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3333"
-          }/studio/presentation?preview=/${articlesSlug}/${slug}`;
+          return `${siteUrl}/studio/presentation?preview=/${articlesSlug}/${slug}`;
         }
       }
     },
@@ -65,7 +68,7 @@ export default defineConfig({
     table(),
     presentationTool({
       previewUrl: {
-        origin: process.env.SANITY_STUDIO_SITE_URL || "http://localhost:3000",
+        origin: siteUrl,
         draftMode: {
           enable: "/api/draft",
         },
