@@ -16,7 +16,6 @@ import {
   Tool,
   User,
 } from "react-feather";
-import resolveProductionUrl from "./resolveProductionUrl";
 
 export const deskStructure = (S) =>
   S.list()
@@ -39,17 +38,7 @@ export const deskStructure = (S) =>
                 .params({ catId })
                 .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
                 .child((id) =>
-                  S.document().schemaType("generic_page").documentId(id).views([
-                    S.view.form(),
-                    /*
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                      */
-                  ]),
+                  S.document().schemaType("generic_page").documentId(id).views([S.view.form()]),
                 ),
             ),
         ),
@@ -63,36 +52,14 @@ export const deskStructure = (S) =>
             .filter('_type == "generic_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
-              S.document().schemaType("generic_page").documentId(id).views([
-                S.view.form(),
-                /*
-                  S.view
-                    .component(Iframe)
-                    .options({
-                      url: (doc: any) => resolveProductionUrl(doc),
-                    })
-                    .title("Preview"),
-                  */
-              ]),
+              S.document().schemaType("generic_page").documentId(id).views([S.view.form()]),
             ),
         ),
       S.divider(),
       S.listItem()
         .title("Articles page")
         .icon(File)
-        .child(
-          S.document().schemaType("articles").documentId("articles").views([
-            S.view.form(),
-            /*
-              S.view
-                .component(Iframe)
-                .options({
-                  url: (doc: any) => resolveProductionUrl(doc),
-                })
-                .title("Preview"),
-              */
-          ]),
-        ),
+        .child(S.document().schemaType("articles").documentId("articles").views([S.view.form()])),
       S.listItem()
         .schemaType("article_page")
         .title("Articles")
@@ -108,17 +75,7 @@ export const deskStructure = (S) =>
                 .filter('_type == "article_page" && category._ref == $catId')
                 .params({ catId })
                 .child((id) =>
-                  S.document().schemaType("article_page").documentId(id).views([
-                    S.view.form(),
-                    /*
-                      S.view
-                        .component(Iframe)
-                        .options({
-                          url: (doc: any) => resolveProductionUrl(doc),
-                        })
-                        .title("Preview"),
-                      */
-                  ]),
+                  S.document().schemaType("article_page").documentId(id).views([S.view.form()]),
                 ),
             ),
         ),
@@ -131,36 +88,14 @@ export const deskStructure = (S) =>
             .schemaType("article_page")
             .filter('_type == "article_page" && !defined(category)')
             .child((id) =>
-              S.document().schemaType("article_page").documentId(id).views([
-                S.view.form(),
-                /*
-                  S.view
-                    .component(Iframe)
-                    .options({
-                      url: (doc: any) => resolveProductionUrl(doc),
-                    })
-                    .title("Preview"),
-                    */
-              ]),
+              S.document().schemaType("article_page").documentId(id).views([S.view.form()]),
             ),
         ),
       S.divider(),
       S.listItem()
         .title("Results")
         .icon(BarChart)
-        .child(
-          S.document().schemaType("results").documentId("results").views([
-            S.view.form(),
-            /*
-              S.view
-                .component(Iframe)
-                .options({
-                  url: (doc: any) => resolveProductionUrl(doc),
-                })
-                .title("Preview"),
-                */
-          ]),
-        ),
+        .child(S.document().schemaType("results").documentId("results").views([S.view.form()])),
       S.divider(),
       S.listItem()
         .title("Dashboard")
@@ -200,17 +135,10 @@ export const deskStructure = (S) =>
         .title("Donation widget")
         .icon(DollarSign)
         .child(
-          S.document().schemaType("donationwidget").documentId("donationwidget").views([
-            S.view.form(),
-            /*
-              S.view
-                .component(Iframe)
-                .options({
-                  url: (doc: any) => resolveProductionUrl(doc),
-                })
-                .title("Preview"),
-                */
-          ]),
+          S.document()
+            .schemaType("donationwidget")
+            .documentId("donationwidget")
+            .views([S.view.form()]),
         ),
       S.listItem()
         .title("Payment methods")

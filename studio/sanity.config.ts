@@ -42,7 +42,7 @@ export default defineConfig({
           return `${siteUrl}/studio/presentation?preview=/${slug}`;
         }
       } else if (document._type === "article_page") {
-        const slug = (document as Article_page).slug.current;
+        const slug = (document as Article_page).slug?.current || "";
         const query = `*[_type == "article_page" && slug.current == $slug]`;
         const params = { slug };
 
