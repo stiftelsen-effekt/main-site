@@ -38,14 +38,16 @@ export default async function preview(req: NextApiRequest, res: NextApiResponse)
       res.writeHead(307, { Location: `/vippsavtale?email=example@email.com` });
       break;
     case "generic_page":
-      res.writeHead(307, { Location: `/${slugWithoutSlash}` ?? `/` });
+      res.writeHead(307, { Location: slugWithoutSlash ? `/${slugWithoutSlash}` : `/` });
       break;
     case "article_page":
       const articleSlug = req.query.articleSlug;
       if (!articleSlug) {
         return res.status(400).json({ message: "Missing configured article slug for preview" });
       } else {
-        res.writeHead(307, { Location: `/${articleSlug}/${slugWithoutSlash}` ?? `/` });
+        res.writeHead(307, {
+          Location: articleSlug && slugWithoutSlash ? `/${articleSlug}/${slugWithoutSlash}` : `/`,
+        });
       }
       break;
     case "donationwidget":
