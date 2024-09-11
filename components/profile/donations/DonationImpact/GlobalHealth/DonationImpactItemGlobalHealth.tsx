@@ -21,6 +21,7 @@ export type ImpactItemConfiguration = {
 
 export const DonationImpactGlobalHealthItem: React.FC<{
   orgAbriv: string;
+  orgName: string;
   sumToOrg: number;
   donationTimestamp: Date;
   precision: number;
@@ -28,6 +29,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   configuration: ImpactItemConfiguration;
 }> = ({
   orgAbriv,
+  orgName,
   sumToOrg,
   donationTimestamp,
   precision,
@@ -94,7 +96,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
                 {" "}
                 {configuration.output_subheading_format_string
                   .replace("{{sum}}", thousandize(Math.round(sumToOrg)))
-                  .replace("{{org}}", orgAbriv)}
+                  .replace("{{org}}", orgName)}
               </span>
               <span
                 className={[style.impactDetailsExpandText, showDetails ? style.expanded : ""].join(

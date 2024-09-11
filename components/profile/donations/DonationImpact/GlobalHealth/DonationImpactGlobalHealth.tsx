@@ -21,7 +21,7 @@ export type DonationImpactItemsConfiguration = {
 
 const DonationImpactGlobalHealth: React.FC<{
   donation: Donation;
-  distribution: { org: string; sum: number }[];
+  distribution: { org: string; orgName: string; sum: number }[];
   timestamp: Date;
   configuration: DonationImpactItemsConfiguration;
 }> = ({ donation, distribution, timestamp, configuration }) => {
@@ -108,6 +108,7 @@ const DonationImpactGlobalHealth: React.FC<{
               {dist.org !== "Drift" && (
                 <DonationImpactGlobalHealthItem
                   orgAbriv={dist.org}
+                  orgName={dist.org}
                   sumToOrg={dist.sum}
                   donationTimestamp={timestamp}
                   precision={requiredPrecision}
@@ -121,7 +122,7 @@ const DonationImpactGlobalHealth: React.FC<{
                 <tr>
                   <td className={style.impact} colSpan={100}>
                     <span>{configuration.operations_label}</span>
-                    <strong>{`${Math.round(dist.sum)} kr`}</strong>
+                    <strong>{`${thousandize(Math.round(dist.sum))} kr`}</strong>
                   </td>
                 </tr>
               )}

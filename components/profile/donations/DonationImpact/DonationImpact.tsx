@@ -41,6 +41,7 @@ const DonationImpact: React.FC<{
               donation={donation}
               distribution={causeArea.organizations.map((org) => ({
                 org: mapNameToOrgAbbriv(org.name as string),
+                orgName: org.name ?? "unknown",
                 sum:
                   parseFloat(donation.sum) *
                   (parseFloat(org.percentageShare) / 100) *
