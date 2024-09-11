@@ -55,7 +55,7 @@ const DonationImpactAnimalWelfare: React.FC<{
       {giveWellDist && (
         <div className={style.smartdistributionlabel}>
           <span>{configuration.smart_distribution_label}</span>
-          <strong>{`${thousandize(giveWellDist.sum || null)} kr`}</strong>
+          <strong>{`${thousandize(Math.round(giveWellDist.sum) || null)} kr`}</strong>
         </div>
       )}
       <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">

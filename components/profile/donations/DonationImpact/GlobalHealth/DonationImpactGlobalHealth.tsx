@@ -98,7 +98,7 @@ const DonationImpactGlobalHealth: React.FC<{
       {giveWellDist && (
         <div className={style.smartdistributionlabel}>
           <span>{configuration.smart_distribution_label}</span>
-          <strong>{`${thousandize(giveWellDist.sum || null)} kr`}</strong>
+          <strong>{`${thousandize(Math.round(giveWellDist.sum) || null)} kr`}</strong>
         </div>
       )}
       <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
@@ -121,7 +121,7 @@ const DonationImpactGlobalHealth: React.FC<{
                 <tr>
                   <td className={style.impact} colSpan={100}>
                     <span>{configuration.operations_label}</span>
-                    <strong>{`${dist.sum} kr`}</strong>
+                    <strong>{`${Math.round(dist.sum)} kr`}</strong>
                   </td>
                 </tr>
               )}
