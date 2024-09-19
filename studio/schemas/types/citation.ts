@@ -139,31 +139,31 @@ export default {
   ],
   options: {
     modal: "dialog",
-    preview: {
-      select: {
-        title: "title",
-        author: "author",
-        year: "year",
-        type: "type",
-        note: "note",
-        notetitle: "notetitle",
-      },
-      prepare(selection: any) {
-        const { author, year, title, type, note, notetitle } = selection;
-        const noteBlocks = (note || []).find((block: any) => block._type === "block");
-        return {
-          title: type != "note" ? `${author ?? "-"} (${year ?? "-"})` : notetitle,
-          subtitle:
-            type != "note"
-              ? title
-              : noteBlocks
-              ? noteBlocks.children
-                  .filter((child: any) => child._type === "span")
-                  .map((span: any) => span.text)
-                  .join("")
-              : "No content",
-        };
-      },
+  },
+  preview: {
+    select: {
+      title: "title",
+      author: "author",
+      year: "year",
+      type: "type",
+      note: "note",
+      notetitle: "notetitle",
+    },
+    prepare(selection: any) {
+      const { author, year, title, type, note, notetitle } = selection;
+      const noteBlocks = (note || []).find((block: any) => block._type === "block");
+      return {
+        title: type != "note" ? `${author ?? "-"} (${year ?? "-"})` : notetitle,
+        subtitle:
+          type != "note"
+            ? title
+            : noteBlocks
+            ? noteBlocks.children
+                .filter((child: any) => child._type === "span")
+                .map((span: any) => span.text)
+                .join("")
+            : "No content",
+      };
     },
   },
 } as const;

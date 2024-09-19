@@ -6,6 +6,7 @@ import { deskStructure } from "./deskStructure";
 import { table } from "@sanity/table";
 import { defineDocuments, presentationTool } from "sanity/presentation";
 import { Article_page, Articles, Generic_page } from "./sanity.types";
+import { documentActions } from "./document.actions";
 
 const siteUrl =
   process.env.SANITY_STUDIO_VERCEL_ENV === "production"
@@ -59,6 +60,7 @@ export default defineConfig({
         }
       }
     },
+    actions: documentActions,
   },
   plugins: [
     structureTool({

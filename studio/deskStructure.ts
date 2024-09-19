@@ -28,12 +28,14 @@ export const deskStructure = (S) =>
         .child(
           S.documentList()
             .title("Pages by category")
+            .apiVersion("v2024-09-19")
             .schemaType("generic_page")
             .filter('_type == "category"')
             .child((catId) =>
               S.documentList()
                 .title("Pages")
                 .schemaType("generic_page")
+                .apiVersion("v2024-09-19")
                 .filter('_type == "generic_page" && category._ref == $catId')
                 .params({ catId })
                 .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
@@ -49,6 +51,7 @@ export const deskStructure = (S) =>
           S.documentList()
             .title("Pages")
             .schemaType("generic_page")
+            .apiVersion("v2024-09-19")
             .filter('_type == "generic_page" && !defined(category)')
             .defaultOrdering([{ field: "sitemap_priority", direction: "desc" }])
             .child((id) =>
@@ -67,11 +70,13 @@ export const deskStructure = (S) =>
         .child(
           S.documentList()
             .title("Articles by category")
+            .apiVersion("v2024-09-19")
             .filter('_type == "category"')
             .child((catId) =>
               S.documentList()
                 .title("Articles")
                 .schemaType("article_page")
+                .apiVersion("v2024-09-19")
                 .filter('_type == "article_page" && category._ref == $catId')
                 .params({ catId })
                 .child((id) =>
@@ -86,6 +91,7 @@ export const deskStructure = (S) =>
           S.documentList()
             .title("Articles")
             .schemaType("article_page")
+            .apiVersion("v2024-09-19")
             .filter('_type == "article_page" && !defined(category)')
             .child((id) =>
               S.document().schemaType("article_page").documentId(id).views([S.view.form()]),
