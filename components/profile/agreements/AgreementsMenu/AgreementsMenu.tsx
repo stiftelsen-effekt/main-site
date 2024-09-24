@@ -1,24 +1,35 @@
 import React from "react";
 import style from "./AgreementsMenu.module.scss";
 
+export enum AgreementsMenuOptions {
+  ACTIVE_AGREEMENTS,
+  INACTIVE_AGREEMENTS,
+}
+
 const AgreementsMenu: React.FC<{
-  selected: "Aktive avtaler" | "Inaktive avtaler";
-  onChange: (selected: "Aktive avtaler" | "Inaktive avtaler") => void;
-}> = ({ selected, onChange }) => {
+  selected: AgreementsMenuOptions;
+  activeLabel: string;
+  inactiveLabel: string;
+  onChange: (selected: AgreementsMenuOptions) => void;
+}> = ({ selected, activeLabel, inactiveLabel, onChange }) => {
   return (
     <div className={style.menu}>
       <ul>
         <li
-          className={selected == "Aktive avtaler" ? style["menu-selected"] : ""}
-          onClick={() => onChange("Aktive avtaler")}
+          className={
+            selected == AgreementsMenuOptions.ACTIVE_AGREEMENTS ? style["menu-selected"] : ""
+          }
+          onClick={() => onChange(AgreementsMenuOptions.ACTIVE_AGREEMENTS)}
         >
-          <span>Aktive avtaler</span>
+          <span>{activeLabel}</span>
         </li>
         <li
-          className={selected == "Inaktive avtaler" ? style["menu-selected"] : ""}
-          onClick={() => onChange("Inaktive avtaler")}
+          className={
+            selected == AgreementsMenuOptions.INACTIVE_AGREEMENTS ? style["menu-selected"] : ""
+          }
+          onClick={() => onChange(AgreementsMenuOptions.INACTIVE_AGREEMENTS)}
         >
-          <span>Inaktive avtaler</span>
+          <span>{inactiveLabel}</span>
         </li>
       </ul>
     </div>

@@ -23,6 +23,8 @@ enum AutoGiroOptions {
   MANUAL_AUTOGIRO_SETUP,
 }
 
+const DEFAULT_DATE = 28;
+
 export const AutogiroPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
   config: AutoGiroPaymentMethod;
@@ -38,7 +40,7 @@ export const AutogiroPane: React.FC<{
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
-    let date = manualAutogiroSetupDate ?? DateTime.now().plus({ days: 6 }).day;
+    let date = manualAutogiroSetupDate ?? DEFAULT_DATE;
     fetch(`${API_URL}/autogiro/${donation.kid}/drafted/paymentdate`, {
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +96,7 @@ export const AutogiroPane: React.FC<{
             if (typeof manualAutogiroSetupDate !== "undefined") {
               setManualAutogiroSetupDate(undefined);
             } else {
-              setManualAutogiroSetupDate(DateTime.now().plus({ days: 6 }).day);
+              setManualAutogiroSetupDate(DEFAULT_DATE);
             }
           }}
           style={{ cursor: "pointer" }}
@@ -104,7 +106,7 @@ export const AutogiroPane: React.FC<{
             {typeof manualAutogiroSetupDate === "undefined"
               ? config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
                   "{{date}}",
-                  DateTime.now().plus({ days: 6 }).day.toString(),
+                  DEFAULT_DATE.toString(),
                 )
               : manualAutogiroSetupDate === 0
               ? config.recurring_manual_option_config.date_selector_config

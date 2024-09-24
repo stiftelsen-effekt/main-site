@@ -19,6 +19,7 @@ import { PortableText } from "@portabletext/react";
 import AnimateHeight from "react-animate-height";
 import { ErrorText } from "../../DonationPane";
 import { filterErrorTextsForCauseArea } from "../../_util";
+import { ToolTip } from "../../../../shared/ToolTip/ToolTip";
 
 export const MultipleCauseAreasSelector: React.FC<{
   configuration: SmartDistributionContext;
@@ -66,7 +67,10 @@ export const MultipleCauseAreasSelector: React.FC<{
               separated={(causeArea.organizations.length == 1).toString()}
             >
               <CauseAreaShareSelectionTitleWrapper>
-                <CauseAreaShareSelectionTitle>{causeArea.name}</CauseAreaShareSelectionTitle>
+                <CauseAreaShareSelectionTitle>
+                  {causeArea.widgetDisplayName || causeArea.name}{" "}
+                  {causeArea.widgetContext && <ToolTip text={causeArea.widgetContext} />}
+                </CauseAreaShareSelectionTitle>
                 {causeArea.organizations.length > 1 && (
                   <CauseAreaShareSelectionTitleSmartDistributionWrapper>
                     <span>{configuration.smart_distribution_label_text}</span>

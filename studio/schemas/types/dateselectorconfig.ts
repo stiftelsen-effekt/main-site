@@ -11,10 +11,17 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "payment_last_date_of_month_option",
+      title: "Payment last date of month option",
+      type: "boolean",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: "payment_date_last_day_of_month_template",
       title: "Payment date last day of month template",
       type: "string",
       description: "E.g. 'Last day of the month'",
+      hidden: ({ document }: any) => !document.payment_last_date_of_month_option,
       validation: (Rule: any) => Rule.required(),
     },
     {
@@ -22,6 +29,7 @@ export default {
       title: "Last day of month label",
       type: "string",
       description: "E.g. 'Last day of the month'",
+      hidden: ({ document }: any) => !document.payment_last_date_of_month_option,
       validation: (Rule: any) => Rule.required(),
     },
   ],

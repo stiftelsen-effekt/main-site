@@ -10,7 +10,10 @@ export const DatePicker: React.FC<{
   className?: string;
   configuration: DatePickerInputConfiguration;
 }> = ({ selected, onChange, onClickOutside, className, configuration }) => {
-  const dates = [...Array.from(Array(29).keys()).map((x) => x.toString())].slice(1, 29);
+  const dates = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28,
+  ];
 
   const datepickerContainerRef = useRef<HTMLDivElement>(null);
   useClickOutsideAlerter(datepickerContainerRef, onClickOutside ? onClickOutside : () => {});
@@ -27,35 +30,37 @@ export const DatePicker: React.FC<{
           tabIndex={0}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.currentTarget.blur();
-            onChange(parseInt(date));
+            onChange(date);
           }}
           className={
             style["datepicker-button"] +
             " " +
-            (selected?.toString() === date ? style["datepicker-button--selected"] : "")
+            (selected === date ? style["datepicker-button--selected"] : "")
           }
           data-cy={`date-picker-button-${date}`}
         >
           {date}
         </button>
       ))}
-      <div className={style["datepicker-last-row"]}>
-        <button
-          tabIndex={0}
-          className={
-            style["datepicker-button-last"] +
-            " " +
-            (selected === 0 ? style["datepicker-button-last--selected"] : "")
-          }
-          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            e.currentTarget.blur();
-            onChange(0);
-          }}
-          data-cy="date-picker-button-last"
-        >
-          {configuration.last_day_of_month_label}
-        </button>
-      </div>
+      {configuration.payment_last_date_of_month_option && (
+        <div className={style["datepicker-last-row"]}>
+          <button
+            tabIndex={0}
+            className={
+              style["datepicker-button-last"] +
+              " " +
+              (selected === 0 ? style["datepicker-button-last--selected"] : "")
+            }
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.currentTarget.blur();
+              onChange(0);
+            }}
+            data-cy="date-picker-button-last"
+          >
+            {configuration.last_day_of_month_label}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
