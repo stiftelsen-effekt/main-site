@@ -52,7 +52,7 @@ export const getEstimatedPostTaxIncome = async (
   // Round income to nearest 1000
   let tax = 0;
   switch (jurisdiction) {
-    case TaxJurisdiction.SE:
+    case TaxJurisdiction.SV:
       tax = await getSwedishTaxEstimate(income, periodAdjustment);
       break;
     case TaxJurisdiction.NO:
@@ -67,5 +67,5 @@ export const getEstimatedPostTaxIncome = async (
 
 export enum TaxJurisdiction {
   NO = "Norway",
-  SE = "Sweden",
+  SV = "Sweden",
 }

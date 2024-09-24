@@ -326,7 +326,7 @@ const getPPPfactor2017 = async (countryCode: string) => {
   */
   if (countryCode === "NOR") {
     return 9.7;
-  } else if (countryCode === "SE") {
+  } else if (countryCode === "SV") {
     return 8.9;
   } else {
     throw new Error("Invalid country code");
