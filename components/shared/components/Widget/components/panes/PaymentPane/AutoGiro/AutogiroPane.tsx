@@ -23,13 +23,12 @@ enum AutoGiroOptions {
   MANUAL_AUTOGIRO_SETUP,
 }
 
-const DEFAULT_DATE = 28;
+const DEFAULT_DATE = 27;
 
 export const AutogiroPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
   config: AutoGiroPaymentMethod;
 }> = ({ referrals, config }) => {
-  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const donation = useSelector((state: State) => state.donation);
   const plausible = usePlausible();
 
