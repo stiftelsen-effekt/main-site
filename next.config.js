@@ -425,6 +425,39 @@ const nextConfig = {
         ],
         permanent: false,
       },
+      {
+        source: "/globalhalsa",
+        destination: "/global-halsa",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/globalhälsa",
+        destination: "/global-halsa",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/global-hälsa",
+        destination: "/global-halsa",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
     ];
   },
 };
