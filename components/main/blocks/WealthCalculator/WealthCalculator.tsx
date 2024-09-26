@@ -103,7 +103,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     if (locale === "no") {
       taxJurisdiction = TaxJurisdiction.NO;
     } else if (locale === "sv") {
-      taxJurisdiction = TaxJurisdiction.SE;
+      taxJurisdiction = TaxJurisdiction.SV;
     } else {
       console.error("Unsupported locale", locale);
       return;
