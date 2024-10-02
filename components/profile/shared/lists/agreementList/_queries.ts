@@ -223,7 +223,9 @@ export const updateAvtalegiroAgreementDistribution = async (
         Authorization: `Bearer ${token}`,
       },
       credentials: "same-origin",
-      body: JSON.stringify(distribution),
+      body: JSON.stringify({
+        distribution: distribution,
+      }),
     });
 
     const result = await response.json();
