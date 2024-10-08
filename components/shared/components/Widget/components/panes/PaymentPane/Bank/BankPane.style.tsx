@@ -35,11 +35,4 @@ export const CompleteButton = styled.button`
   min-width: 140px;
   background-color: var(--primary);
   color: var(--secondary);
-
-  @media only screen and (max-width: 768px) {
-    font-size: 25px;
-    padding: 18px 68px;
-    border-radius: 60px;
-    min-width: 210px;
-  }
 `;
