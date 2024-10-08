@@ -45,10 +45,10 @@ describe("Navigation", () => {
     // CookieBanner should be hidden
     cy.get("[data-cy=cookiebanner-container]").should("not.exist");
 
-    cy.get("[data-cy=maks-effekt-link]").within(() => {
+    cy.get("[data-cy=var-metode-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url({ timeout: 10000 }).should("include", "/maks-effekt", { timeout: 10000 });
+    cy.url({ timeout: 10000 }).should("include", "/var-metode", { timeout: 10000 });
 
     // CookieBanner should still be hidden after changing page
     cy.get("[data-cy=cookiebanner-container]").should("not.exist");
@@ -162,10 +162,10 @@ describe("Navigation", () => {
     });
     cy.url({ timeout: 10000 }).should("include", "/topplista", { timeout: 10000 });
 
-    cy.get("[data-cy=kriterier-link]").within(() => {
+    cy.get("[data-cy=var-metode-link]").within(() => {
       cy.get("a").click({ force: true });
     });
-    cy.url({ timeout: 10000 }).should("include", "/kriterier");
+    cy.url({ timeout: 10000 }).should("include", "/var-metode", { timeout: 10000 });
 
     cy.get("[data-cy=smart-fordeling-link]").within(() => {
       cy.get("a").click({ force: true });
