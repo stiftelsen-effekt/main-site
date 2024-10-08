@@ -11,7 +11,7 @@ import { BankPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/
 import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 import AnimateHeight from "react-animate-height";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
-import { CompleteButtonWrapper } from "./BankPane.style";
+import { CompleteButton, CompleteButtonWrapper } from "./BankPane.style";
 import { usePlausible } from "next-plausible";
 
 export const BankPane: React.FC<{
@@ -64,13 +64,13 @@ export const BankPane: React.FC<{
             )}
 
             <CompleteButtonWrapper>
-              <EffektButton
+              <CompleteButton
                 onClick={() => {
                   setHasCompletedTransaction(true);
                 }}
               >
                 {config.button_text}
-              </EffektButton>
+              </CompleteButton>
             </CompleteButtonWrapper>
           </AnimateHeight>
           <AnimateHeight height={hasCompletedTransaction ? "auto" : 0}>

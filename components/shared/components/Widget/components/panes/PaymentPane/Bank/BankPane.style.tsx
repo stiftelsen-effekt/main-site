@@ -21,8 +21,25 @@ export const TextWrapper = styled.div`
 `;
 
 export const CompleteButtonWrapper = styled.div`
-  padding-top: 32px;
+  padding-top: 40px;
   padding-bottom: 16px;
   display: flex;
   justify-content: center;
+`;
+
+export const CompleteButton = styled.button`
+  cursor: pointer;
+  font-size: 20px;
+  padding: 14px 40px;
+  border-radius: 45px;
+  min-width: 140px;
+  background-color: var(--primary);
+  color: var(--secondary);
+
+  @media only screen and (max-width: 768px) {
+    font-size: 25px;
+    padding: 18px 68px;
+    border-radius: 60px;
+    min-width: 210px;
+  }
 `;
