@@ -302,7 +302,7 @@ export const getNorwegianAdjustedPPPconversionFactor =
 
 export const getSwedishAdjustedPPPconversionFactor = async (): Promise<AdjustedPPPFactorResult> => {
   const cumulativeInflation = await getSwedishInflation2017();
-  const pppFactor = await getPPPfactor2017("SE");
+  const pppFactor = await getPPPfactor2017("SV");
 
   const adjustedPPPfactor = pppFactor * (1 + cumulativeInflation);
 

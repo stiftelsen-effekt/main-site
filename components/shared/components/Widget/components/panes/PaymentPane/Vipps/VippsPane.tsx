@@ -100,7 +100,8 @@ export const VippsPane: React.FC<{
 
         <Referrals
           text={{
-            pane3_referrals_title: referrals.pane3_referrals_title,
+            referrals_title: referrals.referrals_title,
+            other_referral_input_placeholder: referrals.other_referral_input_placeholder,
           }}
         />
       </PaneContainer>

@@ -370,7 +370,8 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
           />
           <PaymentPane
             referrals={{
-              pane3_referrals_title: widget.pane3_referrals_title,
+              referrals_title: widget.referrals_title,
+              other_referral_input_placeholder: widget.other_referral_input_placeholder,
             }}
             paymentMethods={availablePaymentMethods}
           />

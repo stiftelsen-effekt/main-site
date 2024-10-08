@@ -157,5 +157,6 @@ export type WidgetPane2Props = {
 };
 
 export type WidgetPane3ReferralsProps = {
-  pane3_referrals_title: string;
+  referrals_title: string;
+  other_referral_input_placeholder: string;
 };

@@ -11,9 +11,9 @@ export const ReferralButtonsWrapper = styled.div`
 `;
 
 export const ReferralTextInput = styled.input`
-  padding: 10px 10px 10px 10px;
+  padding: 10px 18px 10px 18px;
   margin: 0;
-  font-size: 16px;
+  font-size: 20px;
   background-color: var(--secondary);
   color: var(--primary);
   border: 1px solid var(--primary);
@@ -22,5 +22,13 @@ export const ReferralTextInput = styled.input`
 
   &:hover {
     cursor: text;
+  }
+
+  @media only screen and (max-width: 1520px) and (min-width: 1181px) {
+    font-size: 14px;
+  }
+
+  @media only screen and (max-width: 1180px) {
+    font-size: 14px;
   }
 `;

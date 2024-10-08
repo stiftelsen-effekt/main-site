@@ -3,7 +3,7 @@
   border-radius: 48px;
   font-family: "ESKlarheitGrotesk";
   font-size: 20x;
-  padding: 8px 18px;
+  padding: 8px 24px;
   cursor: pointer;
   box-sizing: border-box;
   display: inline-flex;
@@ -11,11 +11,19 @@
   align-items: center;
   justify-content: center;
   min-width: 7em;
+  transition: padding 100ms;
 }
 
 .button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+.button::before {
+  content: "✓";
+  width: 0;
+  opacity: 0;
+  transition: all 100ms;
 }
 
 .buttonprimary {
@@ -29,12 +37,14 @@
   outline: 2px solid var(--primary);
 }
 
-.buttonprimary:hover,
-.buttonprimary:active {
-  color: var(--primary);
-  background-color: var(--secondary);
-  border: 1px solid var(--primary) !important;
-  outline: none;
+@media (hover: hover) and (pointer: fine) {
+  .buttonprimary:hover,
+  .buttonprimary:active {
+    color: var(--primary);
+    background-color: var(--secondary);
+    border: 1px solid var(--primary) !important;
+    outline: none;
+  }
 }
 
 .buttonsecondary {
@@ -50,14 +60,16 @@
   outline: 2px solid var(--primary);
 }
 
-.buttonsecondary:hover,
-.buttonsecondary:active {
-  color: var(--secondary);
-  background-color: var(--primary);
-  /* !! dashed 1px is too small value 
-  to match the aperance in the design criteria */
-  border: 1px solid var(--secondary) !important;
-  outline: none;
+@media (hover: hover) and (pointer: fine) {
+  .buttonsecondary:hover,
+  .buttonsecondary:active {
+    color: var(--secondary);
+    background-color: var(--primary);
+    /* !! dashed 1px is too small value 
+    to match the aperance in the design criteria */
+    border: 1px solid var(--secondary) !important;
+    outline: none;
+  }
 }
 
 .buttonsecondary--selected {
@@ -88,6 +100,14 @@
   color: var(--secondary);
   background-color: var(--primary);
   border: 1px solid var(--secondary);
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.selected::before {
+  width: 20px;
+  opacity: 1;
+  margin-right: 4px;
 }
 
 .button__squared {
@@ -119,5 +139,15 @@
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .button {
     font-size: 14px;
+    padding: 8px 18px;
+  }
+
+  .selected {
+    padding-left: 10px;
+    padding-right: 8px;
+  }
+
+  .selected::before {
+    width: 10px;
   }
 }

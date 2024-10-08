@@ -40,57 +40,66 @@ export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text 
           Sorry, your browser does not support inline SVG.
         </svg>
       </div>
-      <PaneTitle>{text.pane3_referrals_title}</PaneTitle>
+      <PaneTitle>{text.referrals_title}</PaneTitle>
       <ReferralButtonsWrapper>
-        {referrals?.map((ref) => (
-          <EffektButton
-            squared
-            variant={EffektButtonVariant.SECONDARY}
-            cy={`referral-button-${ref.id}`}
-            key={ref.id}
-            selected={selectedReferrals.includes(ref.id)}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              if (selectedReferrals.includes(ref.id)) {
-                const refData: ReferralData = {
-                  referralID: ref.id,
-                  active: false,
-                };
-                dispatch(selectReferralAction(refData));
-                dispatch(submitReferralAction.started(refData));
-              } else {
-                const refData: ReferralData = {
-                  referralID: ref.id,
-                  active: true,
-                };
-                dispatch(selectReferralAction(refData));
-                dispatch(submitReferralAction.started(refData));
-              }
+        {referrals
+          ?.filter((ref) => ref.id !== OTHER_REFERRAL_ID)
+          .map((ref) => (
+            <EffektButton
+              squared
+              variant={EffektButtonVariant.SECONDARY}
+              cy={`referral-button-${ref.id}`}
+              key={ref.id}
+              selected={selectedReferrals.includes(ref.id)}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                if (selectedReferrals.includes(ref.id)) {
+                  const refData: ReferralData = {
+                    referralID: ref.id,
+                    active: false,
+                  };
+                  dispatch(selectReferralAction(refData));
+                  dispatch(submitReferralAction.started(refData));
+                } else {
+                  const refData: ReferralData = {
+                    referralID: ref.id,
+                    active: true,
+                  };
+                  dispatch(selectReferralAction(refData));
+                  dispatch(submitReferralAction.started(refData));
+                }
 
-              e.currentTarget.blur();
-            }}
-          >
-            {ref.name}
-          </EffektButton>
-        ))}
+                e.currentTarget.blur();
+              }}
+            >
+              {ref.name}
+            </EffektButton>
+          ))}
       </ReferralButtonsWrapper>
-      {selectedReferrals.includes(OTHER_REFERRAL_ID) && (
-        <ReferralTextInput
-          data-cy="referral-text-input"
-          type="text"
-          placeholder="Skriv inn"
-          value={otherText}
-          onChange={(e) => {
-            dispatch(setOtherText(e.currentTarget.value));
+      <ReferralTextInput
+        data-cy="referral-text-input"
+        type="text"
+        placeholder={text.other_referral_input_placeholder}
+        value={otherText}
+        onChange={(e) => {
+          dispatch(setOtherText(e.currentTarget.value));
+          if (e.currentTarget.value.trim() !== "") {
             dispatch(
               submitReferralAction.started({
-                referralID: 10,
+                referralID: OTHER_REFERRAL_ID,
                 active: true,
                 comment: e.currentTarget.value,
               }),
             );
-          }}
-        />
-      )}
+          } else {
+            dispatch(
+              submitReferralAction.started({
+                referralID: OTHER_REFERRAL_ID,
+                active: false,
+              }),
+            );
+          }
+        }}
+      />
     </div>
   );
 };

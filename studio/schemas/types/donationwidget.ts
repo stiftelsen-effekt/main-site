@@ -1,3 +1,5 @@
+import { group } from "console";
+
 export default {
   name: "donationwidget",
   type: "document",
@@ -327,9 +329,17 @@ export default {
     },
     // Referrals header pane 3
     {
-      name: "pane3_referrals_title",
+      name: "referrals_title",
       title: "Referrals header",
       type: "string",
+      group: "referrals",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "other_referral_input_placeholder",
+      title: "Placeholder other input field",
+      type: "string",
+      description: "Placeholder in the free text input field for other referrals",
       group: "referrals",
       validation: (Rule: any) => Rule.required(),
     },
