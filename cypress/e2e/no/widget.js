@@ -314,7 +314,6 @@ describe("Widget", () => {
     }).as("postReferrals");
 
     cy.get("[data-cy=referral-button-1]").click();
-    cy.get("[data-cy=referral-button-10]").click();
     cy.get("[data-cy=referral-text-input]").type("Referral text");
   });
 
