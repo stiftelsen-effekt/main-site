@@ -86,7 +86,7 @@ export const TooltipWrapper = styled.div<{
 }>`
   position: absolute;
   top: ${(props) => Math.round(props.top)}px;
-  margin-left: 20px;
+  margin-left: 40px;
   margin-right: 20px;
   right: 20px;
   font-size: 18px;
