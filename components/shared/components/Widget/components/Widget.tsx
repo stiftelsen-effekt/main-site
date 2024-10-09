@@ -33,7 +33,11 @@ import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
 import { useRouter } from "next/router";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
-import { TooltipWrapper } from "./shared/ProgressBar/ProgressBar.style";
+import {
+  TooltipContent,
+  TooltipLink,
+  TooltipWrapper,
+} from "./shared/ProgressBar/ProgressBar.style";
 
 const widgetQuery = groq`
 *[_type == "donationwidget"][0] {
@@ -80,7 +84,10 @@ const widgetQuery = groq`
 }
 `;
 
-export const WidgetTooltipContext = createContext<[string | null, any]>([null, () => {}]);
+export const WidgetTooltipContext = createContext<[{ text: string; link?: string } | null, any]>([
+  null,
+  () => {},
+]);
 
 /**
  * Determine available recurring options based on the configured payment methods
@@ -217,7 +224,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
   const dispatch = useDispatch();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);
-  const [tooltip, setTooltip] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
@@ -333,7 +340,16 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
       }}
     >
       <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
-        {tooltip !== null && <TooltipWrapper top={20 + scrollPosition}>{tooltip}</TooltipWrapper>}
+        {tooltip !== null && (
+          <TooltipWrapper top={20 + scrollPosition}>
+            <TooltipContent>{tooltip.text}</TooltipContent>
+            {tooltip.link && (
+              <TooltipLink href={tooltip.link} target="_blank">
+                Les mer ↗
+              </TooltipLink>
+            )}
+          </TooltipWrapper>
+        )}
         <ProgressBar />
         <Carousel minHeight={scaledHeight - 116}>
           <DonationPane

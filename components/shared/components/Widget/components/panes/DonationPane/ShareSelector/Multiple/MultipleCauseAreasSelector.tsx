@@ -69,10 +69,16 @@ export const MultipleCauseAreasSelector: React.FC<{
             >
               <CauseAreaShareSelectionTitleWrapper>
                 <CauseAreaShareSelectionTitle>
-                  <Link href={causeArea.informationUrl}>
+                  <Link
+                    href={causeArea.informationUrl}
+                    target="_blank"
+                    onClick={() => alert("Hello")}
+                  >
                     {causeArea.widgetDisplayName || causeArea.name}
                   </Link>{" "}
-                  {causeArea.widgetContext && <ToolTip text={causeArea.widgetContext} />}
+                  {causeArea.widgetContext && (
+                    <ToolTip text={causeArea.widgetContext} linkUrl={causeArea.informationUrl} />
+                  )}
                 </CauseAreaShareSelectionTitle>
                 {causeArea.organizations.length > 1 && (
                   <CauseAreaShareSelectionTitleSmartDistributionWrapper>

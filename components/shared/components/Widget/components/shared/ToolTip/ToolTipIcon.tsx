@@ -35,18 +35,38 @@ const TooltipInnerIcon = styled.div`
 `;
 
 interface ToolIconProps {
-  handleTouch: () => void;
-  handleHover: (open: boolean) => void;
-  handleFocus: () => void;
-  handleBlur: () => void;
+  toggleTooltip: (state: boolean) => void;
+  onClick: () => void;
 }
-export function ToolTipIcon({ handleTouch, handleHover, handleFocus, handleBlur }: ToolIconProps) {
+export function ToolTipIcon({ toggleTooltip, onClick }: ToolIconProps) {
   return (
     <TooltipIconButton
-      onMouseEnter={() => handleHover(true)}
-      onMouseLeave={() => handleHover(false)}
-      onFocus={() => handleFocus()}
-      onBlur={() => handleBlur()}
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") {
+          e.currentTarget.focus();
+        }
+      }}
+      onFocus={() => toggleTooltip(true)}
+      // Small timeout to prevent tooltip from closing when clicking on the tooltip link
+      onBlur={() => setTimeout(() => toggleTooltip(false), 100)}
+      onPointerDown={(e) => {
+        if (e.pointerType === "mouse") {
+          onClick();
+        } else {
+          if (e.currentTarget === document.activeElement) {
+            e.currentTarget.blur();
+            e.preventDefault();
+          } else {
+            e.currentTarget.focus();
+            e.preventDefault();
+          }
+        }
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") {
+          e.currentTarget.blur();
+        }
+      }}
     >
       <TooltipInnerIcon>?</TooltipInnerIcon>
     </TooltipIconButton>

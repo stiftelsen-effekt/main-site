@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { orange20 } from "../../../config/colors";
+import exp from "constants";
+import Link from "next/link";
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -87,11 +89,36 @@ export const TooltipWrapper = styled.div<{
   margin-left: 20px;
   margin-right: 20px;
   right: 20px;
+  font-size: 18px;
+  z-index: 100;
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+export const TooltipContent = styled.div`
   background: var(--primary);
   color: var(--secondary);
   padding: 40px;
-  font-size: 18px;
-  border-radius: 10px;
-  pointer-events: none;
-  z-index: 100;
+  /* pointer-events: none; */
+  width: 100%;
+
+  @media (pointer: coarse) {
+    padding-bottom: 30px;
+  }
+`;
+
+export const TooltipLink = styled(Link)`
+  background: var(--secondary);
+  color: var(--primary);
+  padding: 20px 40px;
+  width: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid var(--primary);
+  display: block;
+  z-index: 101;
+
+  @media (pointer: fine) {
+    display: none;
+  }
 `;
