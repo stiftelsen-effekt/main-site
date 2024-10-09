@@ -103,7 +103,7 @@ export const TooltipContent = styled.div`
   width: 100%;
 
   @media (pointer: coarse) {
-    padding-bottom: 30px;
+    padding-bottom: 20px;
   }
 `;
 

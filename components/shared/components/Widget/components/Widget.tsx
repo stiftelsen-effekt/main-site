@@ -329,6 +329,18 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
 
   useDefaultPaymentMethodEffect(methods);
 
+  let tooltipReadmoreText: string;
+  switch (widget.locale) {
+    case "no":
+      tooltipReadmoreText = "Les mer";
+      break;
+    case "sv":
+      tooltipReadmoreText = "Läs mer";
+      break;
+    default:
+      tooltipReadmoreText = "Read more";
+  }
+
   return (
     <div
       id="widget"
@@ -345,7 +357,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
             <TooltipContent>{tooltip.text}</TooltipContent>
             {tooltip.link && (
               <TooltipLink href={tooltip.link} target="_blank">
-                Les mer ↗
+                {tooltipReadmoreText} ↗
               </TooltipLink>
             )}
           </TooltipWrapper>
