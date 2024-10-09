@@ -46,9 +46,10 @@ export function ToolTipIcon({ toggleTooltip, onClick }: ToolIconProps) {
           e.currentTarget.focus();
         }
       }}
-      onFocus={() => toggleTooltip(true)}
       // Small timeout to prevent tooltip from closing when clicking on the tooltip link
-      onBlur={() => setTimeout(() => toggleTooltip(false), 100)}
+      onBlur={() => setTimeout(() => toggleTooltip(false), 10)}
+      // Slighly longer timeout to make sure the tooltip is not closed when clicking on a second tooltip icon
+      onFocus={() => setTimeout(() => toggleTooltip(true), 20)}
       onPointerDown={(e) => {
         if (e.pointerType === "mouse") {
           onClick();
