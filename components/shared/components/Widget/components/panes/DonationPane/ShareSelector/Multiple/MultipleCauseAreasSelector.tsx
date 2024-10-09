@@ -20,6 +20,7 @@ import AnimateHeight from "react-animate-height";
 import { ErrorText } from "../../DonationPane";
 import { filterErrorTextsForCauseArea } from "../../_util";
 import { ToolTip } from "../../../../shared/ToolTip/ToolTip";
+import Link from "next/link";
 
 export const MultipleCauseAreasSelector: React.FC<{
   configuration: SmartDistributionContext;
@@ -68,7 +69,9 @@ export const MultipleCauseAreasSelector: React.FC<{
             >
               <CauseAreaShareSelectionTitleWrapper>
                 <CauseAreaShareSelectionTitle>
-                  {causeArea.widgetDisplayName || causeArea.name}{" "}
+                  <Link href={causeArea.informationUrl}>
+                    {causeArea.widgetDisplayName || causeArea.name}
+                  </Link>{" "}
                   {causeArea.widgetContext && <ToolTip text={causeArea.widgetContext} />}
                 </CauseAreaShareSelectionTitle>
                 {causeArea.organizations.length > 1 && (
