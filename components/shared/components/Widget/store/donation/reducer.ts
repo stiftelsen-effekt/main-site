@@ -62,7 +62,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({
         id: causeArea.id,
         name: causeArea.name,
-        percentageShare: causeArea.id === topOrderedId ? "100" : "0",
+        percentageShare: causeArea.standardPercentageShare?.toString() ?? "0",
         standardSplit: true,
         organizations: causeArea.organizations.map(
           (org): DistributionCauseAreaOrganization => ({
