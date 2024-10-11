@@ -86,8 +86,8 @@ export const TooltipWrapper = styled.div<{
 }>`
   position: absolute;
   top: ${(props) => Math.round(props.top)}px;
-  margin-left: 40px;
-  margin-right: 20px;
+  margin-left: 30px;
+  margin-right: 10px;
   right: 20px;
   font-size: 18px;
   z-index: 100;
@@ -114,7 +114,6 @@ export const TooltipLink = styled(Link)`
   width: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border: 1px solid var(--secondary);
   display: block;
   z-index: 101;
   text-decoration: underline;
