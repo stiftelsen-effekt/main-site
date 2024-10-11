@@ -108,15 +108,16 @@ export const TooltipContent = styled.div`
 `;
 
 export const TooltipLink = styled(Link)`
-  background: var(--secondary);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--secondary);
   padding: 20px 40px;
   width: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--secondary);
   display: block;
   z-index: 101;
+  text-decoration: underline;
 
   @media (pointer: fine) {
     display: none;
