@@ -212,6 +212,12 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "wealthcalculator":
+            if (!block.configuration) {
+              return <span key={block._key}>No configuration for wealth calculator</span>;
+            }
+            if (!block.configuration.calculator_input_configuration) {
+              return <span key={block._key}>No input configuration for wealth calculator</span>;
+            }
             let calcPeriod: WealthCalculatorPeriodAdjustment;
             if (
               stegaClean(block.configuration.calculator_input_configuration.period) === "yearly"
