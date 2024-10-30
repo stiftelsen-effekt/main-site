@@ -39,6 +39,14 @@ export default {
   preview: {
     select: {
       title: "header.title",
+      seoTitle: "header.seoTitle",
+      media: "header.coverPhoto",
+    },
+    prepare: (selection: { title: string; seoTitle: string; media: any }) => {
+      return {
+        title: selection.title || selection.seoTitle || undefined,
+        media: selection.media,
+      };
     },
   },
 } as const;

@@ -9,7 +9,7 @@ import { OpenWidgetButton } from "../../../shared/components/OpenWidgetButton/Op
 export const PageHeader: React.FC<{
   title: string;
   inngress?: string;
-  layout?: "default" | "centered" | "hero" | "coverPhoto";
+  layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
   coverPhoto?: SanityImageObject;
   cta_type?: "link" | "navitem" | "open_widget";
   cta_label?: string;
@@ -26,6 +26,10 @@ export const PageHeader: React.FC<{
   coverPhoto,
 }) => {
   const hasmetacontent = inngress || links;
+
+  if (layout === "noheader") {
+    return null;
+  }
 
   return (
     <section
