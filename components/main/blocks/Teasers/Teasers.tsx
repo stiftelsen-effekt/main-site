@@ -7,13 +7,12 @@ export const Teasers: React.FC<{ teasers: Array<TeasersItemProps & { _key: any }
 }) => {
   return (
     <div className={styles.teasers}>
-      {teasers.map(({ _key, id, title, paragraph, disclaimer, links, image }, i) => (
+      {teasers.map(({ _key, id, title, paragraph, links, image }, i) => (
         <TeasersItem
           key={_key}
           id={id}
           title={title}
           paragraph={paragraph}
-          disclaimer={disclaimer}
           links={links}
           image={image}
           inverted={i % 2 !== 0}

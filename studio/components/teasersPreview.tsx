@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Stack, Text, Flex, Box, Card } from "@sanity/ui";
 import { Layers, Image } from "react-feather";
 import { PreviewProps } from "sanity";
-import { Teasers } from "../sanity.types";
+import { Teasers, Teasersitem } from "../sanity.types";
 // These are react components
 
 export const TeasersPreview = (props: PreviewProps & { teasers: Teasers["teasers"] }) => {
@@ -44,7 +44,7 @@ export const TeasersPreview = (props: PreviewProps & { teasers: Teasers["teasers
                       display: "block",
                     }}
                   >
-                    {p.paragraph ?? "-"}
+                    {p.paragraph ? getSubtitle(p) : "-"}
                   </span>
                 </Text>
               </Stack>
@@ -55,6 +55,22 @@ export const TeasersPreview = (props: PreviewProps & { teasers: Teasers["teasers
       </Grid>
     </Flex>
   );
+};
+
+const getSubtitle = (teaseritem: Teasersitem) => {
+  if (Array.isArray(teaseritem.paragraph)) {
+    // PortableText, string together the text
+    const text = teaseritem.paragraph.reduce((acc, block) => {
+      if (block._type === "block") {
+        return acc + block.children.map((child) => child.text).join("");
+      }
+      return acc;
+    }, "");
+    return text;
+  } else {
+    // String, return as is
+    return teaseritem.paragraph;
+  }
 };
 
 const Icon = (

@@ -1,3 +1,5 @@
+import { blocktype } from "./blockcontent";
+
 export default {
   name: "teasersitem",
   type: "object",
@@ -16,15 +18,19 @@ export default {
     },
     {
       name: "paragraph",
-      type: "text",
-      rows: 3,
       title: "Paragraph",
-    },
-    {
-      name: "disclaimer",
-      type: "text",
-      rows: 2,
-      title: "Disclaimer",
+      type: "array",
+      of: [
+        {
+          ...blocktype,
+          marks: {
+            ...blocktype.marks,
+            annotations: blocktype.marks.annotations.filter(
+              (annotation) => annotation.name !== "citation",
+            ),
+          },
+        },
+      ],
     },
     {
       name: "image",

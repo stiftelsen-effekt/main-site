@@ -44,7 +44,7 @@ export default {
       type: "image",
       group: "content",
       hidden: ({ parent }: { parent: Pageheader }) =>
-        parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
+        parent ? parent.layout !== "coverPhoto" : true,
     },
     {
       name: "cta_label",

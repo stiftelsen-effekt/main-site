@@ -1,5 +1,4 @@
 import { Bookmark, ExternalLink, Link } from "react-feather";
-import { CitationRenderer } from "../../components/citationRenderer";
 import { MathRenderer } from "../../components/mathRenderer";
 import { TexIcon } from "../../components/texIcon";
 

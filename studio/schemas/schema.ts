@@ -83,8 +83,6 @@ const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
 export const types = [
   category,
-  teasers,
-  teasersitem,
   testimonial,
   contributor,
   introsection,
@@ -153,6 +151,8 @@ export const types = [
   philantropicteaser,
   itncoverage,
   plausiblerevenuetracker,
+  teasers,
+  teasersitem,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
