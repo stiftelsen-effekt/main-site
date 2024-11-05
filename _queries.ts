@@ -352,7 +352,14 @@ export const pageContentQuery = `content[hidden!=true] {
     },
     _type == 'organizationslist' =>  {
       ...,
-      organizations[]->,
+      organizations[]->{
+        ...,
+        "organization_page_slug": organization_page->{
+          slug {
+            current
+          }
+        },
+      },
     },
     _type == 'opendistributionbutton' =>  {
       ...,

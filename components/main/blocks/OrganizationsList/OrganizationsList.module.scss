@@ -3,12 +3,8 @@
   padding-top: 10px;
 }
 
-.organizationWrapper h5 {
-  display: none;
-}
-
 .organizationWrapper h4 {
-  display: block;
+  margin-top: 0;
 }
 
 .organization {
@@ -20,11 +16,45 @@
   border-top: 1px solid var(--primary);
 }
 
+.organization .headerwrapper {
+  h4,
+  h5 {
+    &::after {
+      /* Arrow right */
+      content: "→";
+      font-family: "ESKlarheitGrotesk";
+      margin-left: 0rem;
+      opacity: 0;
+      vertical-align: text-top;
+      line-height: 100%;
+      transition: all 0.15s;
+    }
+
+    &:hover {
+      &::after {
+        margin-left: 0.75rem;
+        opacity: 1;
+      }
+    }
+  }
+}
+
 .meta {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding-right: 50px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  p:first-child {
+    margin-top: 0;
+  }
 }
 
 .intervention {
@@ -43,17 +73,14 @@
 .buttonWrapper {
   display: flex;
   padding-top: 2rem;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  padding-bottom: 0.25rem; /* Account for line height on the left column */
 }
 
 @media only screen and (max-width: 1180px) {
-  .organizationWrapper h5 {
-    display: block;
-  }
-
-  .organizationWrapper h4 {
-    display: none;
-  }
-
   .grid {
     display: flex;
     flex-direction: column;
@@ -62,8 +89,21 @@
   .organization {
     display: flex;
     flex-direction: column;
-    margin-bottom: 30px;
-    padding-top: 2rem;
+    margin-bottom: 5rem;
+    padding-top: 4rem;
+  }
+
+  .organization .meta {
+    margin-bottom: 4rem;
+  }
+
+  .organization .headerwrapper {
+    h4,
+    h5 {
+      &::after {
+        display: none;
+      }
+    }
   }
 
   .intervention {
