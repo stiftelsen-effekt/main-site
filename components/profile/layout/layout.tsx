@@ -73,6 +73,7 @@ export const ProfileLayout = withStaticProps(
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
+    prefilledSum: null,
   });
   const widgetContextValue = useMemo<
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
@@ -144,6 +145,7 @@ export const ProfileLayout = withStaticProps(
                       darkMode={true}
                       {...widgetData}
                       prefilled={widgetContext.prefilled}
+                      prefilledSum={widgetContext.prefilledSum}
                     />
                     <main className={styles.main}>{children}</main>
                     {profileData.missing_name_modal_config && (

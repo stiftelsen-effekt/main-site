@@ -20,6 +20,7 @@ import {
   setRecurring,
   setShareType,
   setShares,
+  setSum,
 } from "../store/donation/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
@@ -287,6 +288,12 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
     }
   }, [widgetContext.prefilled]);
 
+  useEffect(() => {
+    if (widgetContext.prefilledSum !== null) {
+      dispatch(setSum(widgetContext.prefilledSum));
+    }
+  }, [widgetContext.prefilledSum]);
+
   /** Look at the URL and look for a query param
    *  that specifies a payment distribution to prefill
    *  If found, set the distribution cause areas and organizations
@@ -323,7 +330,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
             }),
           };
         });
-      setWidgetContext({ open: true, prefilled: prefilledDistribution });
+      setWidgetContext({ open: true, prefilled: prefilledDistribution, prefilledSum: null });
     }
   }, [router.query, causeAreas]);
 

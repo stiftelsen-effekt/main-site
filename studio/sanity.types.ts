@@ -1661,12 +1661,6 @@ export type Givewellstamp = {
   quotee_position?: string;
 };
 
-export type Giveblock = {
-  _type: "giveblock";
-  heading?: string;
-  paragraph?: string;
-};
-
 export type Inngress = {
   _type: "inngress";
   heading?: string;
@@ -3757,6 +3751,12 @@ export type Organization = {
     cause_area_id?: number;
     organization_id?: number;
   };
+  organization_page?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "generic_page";
+  };
   active?: boolean;
 };
 
@@ -5232,9 +5232,16 @@ export type Articles = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "category";
   };
+  default_give_block?: Giveblock;
   related_articles_label?: string;
   see_all_articles_label?: string;
   slug?: Slug;
+};
+
+export type Giveblock = {
+  _type: "giveblock";
+  heading?: string;
+  paragraph?: string;
 };
 
 export type Article_page = {
@@ -7378,7 +7385,6 @@ export type AllSanitySchemaTypes =
   | Opendistributionbutton
   | Organizationslist
   | Givewellstamp
-  | Giveblock
   | Inngress
   | Contributorlist
   | Wealthcalculatorteaser
@@ -7430,6 +7436,7 @@ export type AllSanitySchemaTypes =
   | Vippsagreement
   | Results
   | Articles
+  | Giveblock
   | Article_page
   | Criteria
   | Support

@@ -21,6 +21,11 @@ export default {
       to: [{ type: "category" }],
     },
     {
+      name: "default_give_block",
+      title: "Default give block",
+      type: "giveblock",
+    },
+    {
       name: "related_articles_label",
       title: "Related articles label",
       type: "string",

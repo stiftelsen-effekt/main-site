@@ -44,6 +44,7 @@ export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
             setWidgetContext({
               open: true,
               prefilled: prefilled,
+              prefilledSum: null,
             });
           }}
         >

@@ -20,6 +20,8 @@ import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { TOC } from "../components/main/layout/TOC/TOC";
 import { stegaClean } from "@sanity/client/stega";
+import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -64,7 +66,12 @@ const ArticlePage = withStaticProps(
     let result = await getClient(draftMode ? token : undefined).fetch<{
       page: any;
       relatedArticles: RelatedArticle[];
-      settings: { title: string; cookie_banner_configuration: CookieBannerConfiguration }[];
+      settings: {
+        title: string;
+        cookie_banner_configuration: CookieBannerConfiguration;
+        donate_label: string;
+        accent_color?: string;
+      }[];
     }>(fetchArticle, { slug });
 
     return {
@@ -119,6 +126,16 @@ const ArticlePage = withStaticProps(
       {/*data.toc && <TOC items={data.toc}></TOC> */}
 
       <BlockContentRenderer content={content} />
+
+      <SectionContainer>
+        <GiveBlock
+          heading={page.default_give_block.heading}
+          paragraph={page.default_give_block.paragraph}
+          donateLabel={data.result.settings[0].donate_label}
+          accentColor={data.result.settings[0].accent_color}
+        ></GiveBlock>
+      </SectionContainer>
+
       <RelatedArticles
         relatedArticles={relatedArticles}
         relatedArticlesLabel={page.related_articles_label}
@@ -147,6 +164,8 @@ const fetchArticle = groq`
         "slug": page->slug.current
       }
     },
+    donate_label,
+    accent_color
   },
   "page": *[_type == "article_page"  && slug.current == $slug][0] {
     header {
@@ -158,6 +177,7 @@ const fetchArticle = groq`
     ${pageContentQuery}
     "related_articles_label": *[_id=="articles"][0].related_articles_label,
     "see_all_articles_label": *[_id=="articles"][0].see_all_articles_label,
+    "default_give_block": *[_id=="articles"][0].default_give_block,
     slug { current },
   },
   "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {

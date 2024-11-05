@@ -435,6 +435,8 @@ export const pageContentQuery = `content[hidden!=true] {
         ...,
         output_configuration->{
           ...,
+          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+          "locale": *[ _type == "site_settings"][0].main_locale,
           explanation_links[] {
             ${linksSelectorQuery}
           },
@@ -477,6 +479,8 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       output_configuration->{
         ...,
+        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+        "locale": *[ _type == "site_settings"][0].main_locale,
         explanation_links[] {
           ${linksSelectorQuery}
         },
@@ -514,7 +518,7 @@ export const pageContentQuery = `content[hidden!=true] {
     },
     _type == 'giveblock' => {
       ...,
-      "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+      "donate_label_short": *[ _type == "site_settings"][0].donate_label,
       "accent_color": *[ _type == "site_settings"][0].accent_color,
     },
     _type == 'teasers' => {

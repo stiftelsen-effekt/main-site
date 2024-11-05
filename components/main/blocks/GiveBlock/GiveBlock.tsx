@@ -35,7 +35,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
         className={styles.button}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.currentTarget.blur();
-          setWidgetContext({ open: true, prefilled: null });
+          setWidgetContext({ open: true, prefilled: null, prefilledSum: null });
         }}
         style={accentStyles}
       >

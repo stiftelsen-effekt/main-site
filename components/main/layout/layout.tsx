@@ -16,11 +16,12 @@ import { stegaClean } from "@sanity/client/stega";
 export type WidgetContextType = {
   open: boolean;
   prefilled: PrefilledDistribution | null;
+  prefilledSum: number | null;
 };
 
 export const WidgetContext = createContext<
   [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
->([{ open: false, prefilled: null }, () => {}]);
+>([{ open: false, prefilled: null, prefilledSum: null }, () => {}]);
 
 export type CookiesAcceptedContextType = {
   accepted: boolean | undefined;
@@ -77,6 +78,7 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
+    prefilledSum: null,
   });
   const widgetContextValue = useMemo<
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
@@ -110,16 +112,24 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
         inverted={false}
         color={giveButton.accent_color}
         title={giveButton.donate_label_title}
-        onClick={() => setWidgetContext({ open: true, prefilled: null })}
+        onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
       >
         {giveButton.donate_label_short}
       </GiveButton>
       <WidgetContext.Provider value={widgetContextValue}>
         <CookiesAccepted.Provider value={cookiesAcceptedValue}>
           {draftMode ? (
-            <PreviewWidgetPane {...widget} prefilled={widgetContext.prefilled} />
+            <PreviewWidgetPane
+              {...widget}
+              prefilled={widgetContext.prefilled}
+              prefilledSum={widgetContext.prefilledSum}
+            />
           ) : (
-            <WidgetPane {...widget} prefilled={widgetContext.prefilled} />
+            <WidgetPane
+              {...widget}
+              prefilled={widgetContext.prefilled}
+              prefilledSum={widgetContext.prefilledSum}
+            />
           )}
           <main className={styles.main}>{children}</main>
         </CookiesAccepted.Provider>
