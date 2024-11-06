@@ -183,6 +183,12 @@
 
 .output .giveButtonWrapper {
   margin-top: 3rem;
+
+  button {
+    font-size: 1rem;
+    padding: 0.75rem 4rem;
+    font-weight: bold;
+  }
 }
 
 @media only screen and (max-width: 1180px) {
