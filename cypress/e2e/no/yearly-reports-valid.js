@@ -66,7 +66,8 @@ describe("Tax reports page valid", () => {
       })
       .as("getDistribution");
 
-    cy.visit(`/min-side/skatt/aarsoppgaver`, {
+    cy.visit({
+      url: `/min-side/skatt/aarsoppgaver`,
       headers: {
         "x-vercel-skip-toolbar": "1",
       },

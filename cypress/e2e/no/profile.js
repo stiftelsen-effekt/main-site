@@ -14,7 +14,8 @@ describe("Profile page", () => {
       })
       .as("getDonor");
 
-    cy.visit(`/min-side/profil/`, {
+    cy.visit({
+      url: `/min-side/profil/`,
       headers: {
         "x-vercel-skip-toolbar": "1",
       },

@@ -24,7 +24,8 @@ describe("Widget", () => {
       }).as("getReferrals");
     });
 
-    cy.visit("/", {
+    cy.visit({
+      url: "/",
       headers: {
         "x-vercel-skip-toolbar": "1",
       },
@@ -420,7 +421,8 @@ describe("Widget", () => {
       .as("grantsFixture");
 
     cy.wait(500);
-    cy.visit("/min-side", {
+    cy.visit({
+      url: "/min-side",
       headers: {
         "x-vercel-skip-toolbar": "1",
       },

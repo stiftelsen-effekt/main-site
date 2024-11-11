@@ -11,7 +11,8 @@ describe("InterventionWidget", () => {
       })
       .as("getImpactEvaluations");
 
-    cy.visit(`/`, {
+    cy.visit({
+      url: "/",
       headers: {
         "x-vercel-skip-toolbar": "1",
       },

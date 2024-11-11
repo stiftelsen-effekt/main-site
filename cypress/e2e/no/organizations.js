@@ -21,7 +21,8 @@ describe("Organizations Page", () => {
         },
       }).as("getReferrals");
     });
-    cy.visit("/topplista", {
+    cy.visit({
+      url: "/topplista",
       headers: {
         "x-vercel-skip-toolbar": "1",
       },

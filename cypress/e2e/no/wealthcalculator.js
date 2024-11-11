@@ -31,7 +31,8 @@ describe("Navigation", () => {
       ).as("getInflation");
     });
 
-    cy.visit(`/rikdomskalkulator`, {
+    cy.visit({
+      url: `/rikdomskalkulator`,
       headers: {
         "x-vercel-skip-toolbar": "1",
       },

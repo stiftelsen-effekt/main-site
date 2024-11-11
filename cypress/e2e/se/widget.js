@@ -24,7 +24,8 @@ describe("Widget", () => {
       }).as("getReferrals");
     });
 
-    cy.visit("/", {
+    cy.visit({
+      url: "/",
       headers: {
         "x-vercel-skip-toolbar": "1",
       },
