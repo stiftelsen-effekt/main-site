@@ -297,7 +297,7 @@ export default {
                   "fem",
                   "gd",
                   "gdzf",
-                  "gdcaf",
+                  "gdcsf",
                   "hki",
                   "mc",
                   "ni",
