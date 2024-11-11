@@ -4,6 +4,7 @@ import { EffektButton } from "../../../shared/components/EffektButton/EffektButt
 import { WidgetContext } from "../../layout/layout";
 import { PrefilledDistribution } from "../../layout/WidgetPane/WidgetPane";
 import styles from "./OpenDistributionButton.module.scss";
+import { usePlausible } from "next-plausible";
 
 export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
   text,
@@ -13,6 +14,7 @@ export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
   distribution_cause_areas,
 }) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const plausible = usePlausible();
 
   if (!distribution_cause_areas) {
     return null;
@@ -41,6 +43,16 @@ export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
       <div className={styles.buttonContainer}>
         <EffektButton
           onClick={() => {
+            plausible("OpenDonationWidget", {
+              props: {
+                page: window.location.pathname,
+              },
+            });
+            plausible("OpenDonationWidgetPrefilledDistributionCTA", {
+              props: {
+                page: window.location.pathname,
+              },
+            });
             setWidgetContext({
               open: true,
               prefilled: prefilled,

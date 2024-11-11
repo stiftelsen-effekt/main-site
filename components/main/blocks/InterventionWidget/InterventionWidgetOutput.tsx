@@ -9,6 +9,7 @@ import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { stegaClean } from "@sanity/client/stega";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { WidgetContext } from "../../layout/layout";
+import { usePlausible } from "next-plausible";
 
 export type InterventionWidgetOutputConfiguration = {
   interventions: SanityIntervention[];
@@ -57,6 +58,7 @@ export const InterventionWidgetOutput: React.FC<{
     interventions ? interventions[0].title : "",
   );
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const plausible = usePlausible();
 
   useEffect(() => {
     if (interventions && interventions.length > 0) {
@@ -183,6 +185,16 @@ export const InterventionWidgetOutput: React.FC<{
               <div className={styles.giveButtonWrapper}>
                 <EffektButton
                   onClick={() => {
+                    plausible("OpenDonationWidget", {
+                      props: {
+                        page: window.location.pathname,
+                      },
+                    });
+                    plausible("OpenDonationWidgetInterventionWidgetCTA", {
+                      props: {
+                        page: window.location.pathname,
+                      },
+                    });
                     setWidgetContext({
                       open: true,
                       prefilled: [
