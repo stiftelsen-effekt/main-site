@@ -9,6 +9,10 @@
   width: 100%;
 
   flex-direction: column;
+
+  h2 {
+    margin-bottom: 0rem;
+  }
 }
 
 .container.inverted {
@@ -39,4 +43,10 @@
 
 .outputInfo {
   margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .container {
+    max-width: 640px;
+  }
 }

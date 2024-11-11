@@ -136,7 +136,7 @@ const ShareList: React.FC<{
           open={showNonPrefilledShares}
           data-cy="show-all-organizations-button"
         >
-          Vis alle organisasjoner
+          Vis alle
         </ShowAllOrganizations>
 
         <AnimateHeight height={showNonPrefilledShares ? "auto" : 0} duration={300} animateOpacity>
