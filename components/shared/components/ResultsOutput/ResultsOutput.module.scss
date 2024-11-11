@@ -56,6 +56,26 @@
       margin-bottom: 1rem;
     }
 
+    .headerControls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-direction: row;
+
+      .normalizeYAxis {
+        display: flex;
+        font-size: 0.8rem;
+        flex-direction: row;
+        align-items: center;
+
+        .toggleWrapper {
+          transform: scale(0.8);
+          transform-origin: left;
+        }
+      }
+    }
+
     .organization {
       display: grid;
       grid-template-columns: 2fr 3fr;
@@ -135,6 +155,12 @@
       width: 100%;
       margin-bottom: 2rem;
       margin-top: 2rem;
+
+      .headerControls {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+      }
 
       .organization {
         grid-template-columns: 1fr;

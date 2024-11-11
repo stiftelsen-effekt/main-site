@@ -17,6 +17,7 @@ export const mapNameToOrgAbbriv = (name: string): string => {
     "Drift av Gi Effektivt": "Drift",
     "GiveWell All Grants Fund": "AGF",
     "Family Empowerment Media": "FEM",
+    "GiveDirectly Climate Survival Fund": "GDCSF",
   };
   return (map as { [key: string]: string })[name] ?? name;
 };

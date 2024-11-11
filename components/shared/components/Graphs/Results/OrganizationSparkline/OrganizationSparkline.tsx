@@ -12,7 +12,8 @@ import { TransformedMonthlyDonationsPerOutput } from "../../../ResultsOutput/Res
 
 export const OrganizationSparkline: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
-}> = ({ transformedMonthlyDonationsPerOutput }) => {
+  maxY?: number;
+}> = ({ transformedMonthlyDonationsPerOutput, maxY }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -183,6 +184,13 @@ export const OrganizationSparkline: React.FC<{
           ],
         };
 
+        if (maxY) {
+          plotConfig.y = {
+            ...plotConfig.y,
+            domain: [0, maxY],
+          };
+        }
+
         const range = (plotConfig.color?.range as any).slice();
 
         if (range) {
@@ -198,7 +206,7 @@ export const OrganizationSparkline: React.FC<{
         innerGraph.current.appendChild(plot);
       }
     },
-    [graphRef, innerGraph, size],
+    [graphRef, innerGraph, size, maxY],
   );
 
   useEffect(() => {
@@ -274,7 +282,7 @@ export const OrganizationSparklineLegend: React.FC = () => {
       }
 
       legend.style.marginTop = "0rem";
-      legend.style.marginBottom = "2rem";
+      legend.style.marginBottom = "0rem";
       legend.style.fontFamily = "ESKlarheitGrotesk";
 
       legendRef.current.innerHTML = "";
