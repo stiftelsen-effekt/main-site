@@ -14,7 +14,11 @@ describe("Profile page", () => {
       })
       .as("getDonor");
 
-    cy.visit(`/min-side/profil/`);
+    cy.visit(`/min-side/profil/`, {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
 
     /**
      * Wait for initial data load

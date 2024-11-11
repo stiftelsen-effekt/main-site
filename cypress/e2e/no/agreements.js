@@ -82,7 +82,11 @@ describe("Agreements page", () => {
       });
     });
 
-    cy.visit(`/min-side/avtaler/`);
+    cy.visit(`/min-side/avtaler/`, {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
 
     /**
      * Wait for initial data load

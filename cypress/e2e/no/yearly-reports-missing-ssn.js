@@ -66,7 +66,11 @@ describe("Tax reports page missing ssn", () => {
       })
       .as("getDistribution");
 
-    cy.visit(`/min-side/skatt/aarsoppgaver`);
+    cy.visit(`/min-side/skatt/aarsoppgaver`, {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
 
     /**
      * Wait for initial data load

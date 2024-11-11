@@ -24,7 +24,11 @@ describe("Widget", () => {
       }).as("getReferrals");
     });
 
-    cy.visit("/");
+    cy.visit("/", {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
     cy.wait(500);
     cy.get("[data-cy=gi-button]").click();
   });

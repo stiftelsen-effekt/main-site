@@ -122,7 +122,11 @@ describe("Donations page", () => {
       })
       .as("grantsFixture");
 
-    cy.visit(`/min-side/`);
+    cy.visit(`/min-side/`, {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
 
     /**
      * Wait for initial data load

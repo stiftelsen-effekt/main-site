@@ -23,8 +23,4 @@ import "cypress-localstorage-commands";
 
 beforeEach(() => {
   cy.ignorePlausibleTracking();
-  cy.intercept({ url: "**", middleware: true }, (req) => {
-    req.headers["x-vercel-skip-toolbar"] = "1";
-    req.continue();
-  });
 });

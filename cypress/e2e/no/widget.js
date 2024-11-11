@@ -24,7 +24,11 @@ describe("Widget", () => {
       }).as("getReferrals");
     });
 
-    cy.visit("/");
+    cy.visit("/", {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
     cy.wait(500);
     cy.get("[data-cy=gi-button]").click();
   });
@@ -416,7 +420,11 @@ describe("Widget", () => {
       .as("grantsFixture");
 
     cy.wait(500);
-    cy.visit("/min-side");
+    cy.visit("/min-side", {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
 
     cy.wait(
       ["@getDonor", "@getDonations", "@getAggregated", "@getDistribution", "@getCauseAreas"],

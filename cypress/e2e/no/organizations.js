@@ -21,7 +21,11 @@ describe("Organizations Page", () => {
         },
       }).as("getReferrals");
     });
-    cy.visit("/topplista");
+    cy.visit("/topplista", {
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
     cy.wait("@getCauseAreas");
     cy.wait("@getReferrals");
   });
