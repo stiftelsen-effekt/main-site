@@ -18,7 +18,6 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { TOC } from "../components/main/layout/TOC/TOC";
 import { stegaClean } from "@sanity/client/stega";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
@@ -32,31 +31,6 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
     ...articlesPagePath.map((component) => stegaClean(component)),
     stegaClean(page.slug.current),
   ]);
-};
-
-// Get TOC by traversing every property of the content object recursively and look for title. Return a flat array of titles, and the key path of the object with a title.
-const getTOC = (
-  content: any & { _key: string; _type: string },
-): Array<{ title: string; _key: string }> => {
-  if (!content) return [];
-  if (content._type === "citation" && content._type !== "link") return [];
-
-  const result = Object.entries(content as object).reduce(
-    (acc: Array<{ title: string; _key: string }>, [key, value]) => {
-      if (key === "title") {
-        return [{ title: value, _key: content._key || "toc" }, ...acc];
-      }
-
-      if (typeof value === "object") {
-        return [...acc, ...getTOC(value)];
-      }
-
-      return acc;
-    },
-    [],
-  );
-
-  return result;
 };
 
 const ArticlePage = withStaticProps(
@@ -122,8 +96,6 @@ const ArticlePage = withStaticProps(
       </MainHeader>
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
-
-      {/*data.toc && <TOC items={data.toc}></TOC> */}
 
       <BlockContentRenderer content={content} />
 
