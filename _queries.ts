@@ -352,7 +352,18 @@ export const pageContentQuery = `content[hidden!=true] {
     },
     _type == 'organizationslist' =>  {
       ...,
-      organizations[]->,
+      organizations[]->{
+        ...,
+        "organization_page_slug": organization_page->{
+          slug {
+            current
+          }
+        },
+      },
+    },
+    _type == 'opendistributionbutton' =>  {
+      ...,
+      organization->,
     },
     _type == 'fullvideo' =>  {
       ...,
@@ -424,6 +435,8 @@ export const pageContentQuery = `content[hidden!=true] {
         ...,
         output_configuration->{
           ...,
+          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+          "locale": *[ _type == "site_settings"][0].main_locale,
           explanation_links[] {
             ${linksSelectorQuery}
           },
@@ -466,6 +479,8 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       output_configuration->{
         ...,
+        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+        "locale": *[ _type == "site_settings"][0].main_locale,
         explanation_links[] {
           ${linksSelectorQuery}
         },
@@ -503,7 +518,7 @@ export const pageContentQuery = `content[hidden!=true] {
     },
     _type == 'giveblock' => {
       ...,
-      "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+      "donate_label_short": *[ _type == "site_settings"][0].donate_label,
       "accent_color": *[ _type == "site_settings"][0].accent_color,
     },
     _type == 'teasers' => {
@@ -557,7 +572,7 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       "locale": *[ _type == "site_settings"][0].main_locale,
     },
-    _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' => @,
+    _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' => @,
   }
 },
 `;

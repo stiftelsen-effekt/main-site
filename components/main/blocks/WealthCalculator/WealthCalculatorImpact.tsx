@@ -8,6 +8,7 @@ import {
 import { WidgetContext } from "../../layout/layout";
 
 import styles from "./WealthCalculator.module.scss";
+import { usePlausible } from "next-plausible";
 
 export const WealthCalculatorImpact: React.FC<{
   donationPercentage: number;
@@ -20,6 +21,7 @@ export const WealthCalculatorImpact: React.FC<{
   };
 }> = ({ donationPercentage, setDonationPercentage, postTaxIncome, intervention_configuration }) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const plausible = usePlausible();
 
   return (
     <div className={styles.calculator__impact}>
@@ -34,7 +36,21 @@ export const WealthCalculatorImpact: React.FC<{
           className={styles.calculator__impact__description__button_desktop}
           data-cy="wealthcalculator-impact-create-agreement-button"
         >
-          <EffektButton onClick={() => setWidgetContext({ open: true, prefilled: null })}>
+          <EffektButton
+            onClick={() => {
+              plausible("OpenDonationWidget", {
+                props: {
+                  page: window.location.pathname,
+                },
+              });
+              plausible("OpenDonationWidgetWealthCalculatorImpactCTA", {
+                props: {
+                  page: window.location.pathname,
+                },
+              });
+              setWidgetContext({ open: true, prefilled: null, prefilledSum: null });
+            }}
+          >
             Sett opp fast donasjon
           </EffektButton>
         </div>
@@ -48,7 +64,9 @@ export const WealthCalculatorImpact: React.FC<{
         />
       </div>
       <div className={styles.calculator__impact__description__button_mobile}>
-        <EffektButton onClick={() => setWidgetContext({ open: true, prefilled: null })}>
+        <EffektButton
+          onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
+        >
           Sett opp fast donasjon
         </EffektButton>
       </div>

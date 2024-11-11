@@ -243,7 +243,13 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           donationPercentage={donationPercentage}
           setDonationPercentage={setDonationPercentage}
           postTaxIncome={postTaxIncome}
-          intervention_configuration={intervention_configuration}
+          intervention_configuration={{
+            ...intervention_configuration,
+            output_configuration: {
+              ...intervention_configuration.output_configuration,
+              donate_button: false, // Override the donate button to not show on wealth calculator, since there is already a donate button in the calculator
+            },
+          }}
         />
       )}
     </div>

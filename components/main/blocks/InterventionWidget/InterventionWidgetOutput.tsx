@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import styles from "./InterventionWidget.module.scss";
 import { LinkType, Links } from "../Links/Links";
@@ -7,12 +7,18 @@ import { thousandize } from "../../../../util/formatting";
 import { PortableText } from "@portabletext/react";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { stegaClean } from "@sanity/client/stega";
+import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import { WidgetContext } from "../../layout/layout";
+import { usePlausible } from "next-plausible";
 
 export type InterventionWidgetOutputConfiguration = {
   interventions: SanityIntervention[];
   explanation_label: string;
   explanation_text: any[];
   explanation_links?: (LinkType | NavLink)[];
+  donate_button?: boolean;
+  donate_label_short?: string;
+  locale: string;
 };
 
 export type SanityIntervention = {
@@ -20,6 +26,8 @@ export type SanityIntervention = {
   organization_name: string;
   abbreviation: string;
   template_string: string;
+  organization_id: number;
+  cause_area_id: number;
 };
 
 type Intervention = {
@@ -28,6 +36,9 @@ type Intervention = {
   abbreviation: string;
   pricePerOutput?: number;
   outputStringTemplate: string;
+  organizationId: number;
+  causeAreaId: number;
+  shortDescription: string;
 };
 
 export const InterventionWidgetOutput: React.FC<{
@@ -40,19 +51,25 @@ export const InterventionWidgetOutput: React.FC<{
 
   const [contextExpanded, setContextExpanded] = useState(false);
   const [interventionCosts, setInterventionCosts] = useState<Map<string, number>>(new Map());
+  const [interventionShortDescriptions, setInterventionShortDescriptions] = useState<
+    Map<string, string>
+  >(new Map());
   const [selectedIntervention, setSelectedIntervention] = useState<string>(
     interventions ? interventions[0].title : "",
   );
+  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const plausible = usePlausible();
 
   useEffect(() => {
     if (interventions && interventions.length > 0) {
       const url = `https://impact.gieffektivt.no/api/evaluations?${interventions
         .map((i: any) => `charity_abbreviation=${stegaClean(i.abbreviation)}&`)
-        .join("")}currency=${stegaClean(currency)}`;
+        .join("")}currency=${stegaClean(currency)}&language=${stegaClean(configuration.locale)}`;
       fetch(url)
         .then((res) => {
           res.json().then((data) => {
             const costs = new Map();
+            const shortDescriptions = new Map();
             const evaluations = data.evaluations;
             interventions.forEach((i: SanityIntervention) => {
               // For each intervention, filter the evaluations for a given charity
@@ -65,8 +82,13 @@ export const InterventionWidgetOutput: React.FC<{
               const evaluation = ordered[0];
               // Set the cost to the most recent evaluation converted cost (cost in NOK per output)
               costs.set(stegaClean(i.abbreviation), evaluation.converted_cost_per_output);
+              shortDescriptions.set(
+                stegaClean(i.abbreviation),
+                evaluation.intervention.short_description,
+              );
             });
             setInterventionCosts(costs);
+            setInterventionShortDescriptions(shortDescriptions);
           });
         })
         .catch((err) => {
@@ -85,6 +107,9 @@ export const InterventionWidgetOutput: React.FC<{
     pricePerOutput: interventionCosts.get(stegaClean(i.abbreviation)),
     outputStringTemplate: i.template_string,
     organizationName: i.organization_name,
+    organizationId: i.organization_id,
+    causeAreaId: i.cause_area_id,
+    shortDescription: interventionShortDescriptions.get(stegaClean(i.abbreviation)) || "",
   }));
 
   const currentIntervention = mappedInterventions.find(
@@ -156,6 +181,44 @@ export const InterventionWidgetOutput: React.FC<{
               </div>
               {explanation_links && <Links links={explanation_links}></Links>}
             </AnimateHeight>
+            {configuration.donate_button && (
+              <div className={styles.giveButtonWrapper}>
+                <EffektButton
+                  onClick={() => {
+                    plausible("OpenDonationWidget", {
+                      props: {
+                        page: window.location.pathname,
+                      },
+                    });
+                    plausible("OpenDonationWidgetInterventionWidgetCTA", {
+                      props: {
+                        page: window.location.pathname,
+                      },
+                    });
+                    setWidgetContext({
+                      open: true,
+                      prefilled: [
+                        {
+                          causeAreaId: currentIntervention.causeAreaId,
+                          share: 100,
+                          organizations: [
+                            {
+                              organizationId: currentIntervention.organizationId,
+                              share: 100,
+                            },
+                          ],
+                        },
+                      ],
+                      prefilledSum: sum,
+                    });
+                  }}
+                >
+                  {configuration.donate_label_short?.replace(".", "") || "Gi"}{" "}
+                  {thousandize(parseInt(outputString))}{" "}
+                  {currentIntervention.shortDescription.toLowerCase()}
+                </EffektButton>
+              </div>
+            )}
           </>
         )}
       </div>

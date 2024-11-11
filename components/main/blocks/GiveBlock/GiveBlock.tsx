@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import styles from "./GiveBlock.module.scss";
 import { WidgetContext } from "../../layout/layout";
 import { CSSProperties } from "styled-components";
+import { usePlausible } from "next-plausible";
 
 type GiveBlockProps = {
   heading: string;
@@ -17,6 +18,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
   accentColor,
 }) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const plausible = usePlausible();
 
   let accentStyles: CSSProperties = {};
   if (accentColor) {
@@ -35,7 +37,17 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
         className={styles.button}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.currentTarget.blur();
-          setWidgetContext({ open: true, prefilled: null });
+          plausible("OpenDonationWidget", {
+            props: {
+              page: window.location.pathname,
+            },
+          });
+          plausible("OpenDonationWidgetGiveBlockCTA", {
+            props: {
+              page: window.location.pathname,
+            },
+          });
+          setWidgetContext({ open: true, prefilled: null, prefilledSum: null });
         }}
         style={accentStyles}
       >

@@ -54,11 +54,76 @@ export type Dashboard = {
   _rev: string;
   main_navigation?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
     | ({
         _key: string;
@@ -114,11 +179,76 @@ export type Site_settings = {
   };
   main_navigation?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
     | ({
         _key: string;
@@ -138,18 +268,83 @@ export type Site_settings = {
   footer_columns?: Array<{
     links?: Array<
       | {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
           _key: string;
-          [internalGroqTypeReferenceTo]?: "navitem";
         }
       | {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
           _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
         }
     >;
     _key: string;
@@ -162,10 +357,75 @@ export type Site_settings = {
     title?: string;
     description?: string;
     privacy_policy_link?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "navitem";
+      title?: string;
+      page?:
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "generic_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "support";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "criteria";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "article_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "articles";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "results";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "vippsagreement";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "donations";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "agreements";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "profile";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "tax";
+          };
+      _type: "navitem";
     };
     accept_button_text?: string;
     decline_button_text?: string;
@@ -202,12 +462,13 @@ export type Autogiro = {
   _rev: string;
   selector_text?: string;
   title?: string;
+  account_number_label?: string;
+  account_number?: string;
+  payer_number_label?: string;
   manual_recurring_option_config?: {
     title?: string;
     sum_label?: string;
-    account_number_label?: string;
-    payment_numberexplanatory_text?: string;
-    payment_number_label?: string;
+    payer_numberexplanatory_text?: string;
     instruction_text?: Array<{
       children?: Array<{
         marks?: Array<string>;
@@ -248,7 +509,6 @@ export type Autogiro = {
       _type: "block";
       _key: string;
     }>;
-    payernumber_label?: string;
     date_selector_config?: {
       _ref: string;
       _type: "reference";
@@ -344,6 +604,9 @@ export type Bank = {
   kontonr_title?: string;
   kontonr?: string;
   kid_title?: string;
+  button_text?: string;
+  completed_title?: string;
+  completed_text?: string;
 };
 
 export type Vipps = {
@@ -379,6 +642,260 @@ export type Vipps = {
   single_button_text?: string;
 };
 
+export type Teasersitem = {
+  _type: "teasersitem";
+  title?: string;
+  paragraph?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  links?: Array<
+    | {
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
+        _key: string;
+      }
+    | {
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
+        _key: string;
+      }
+  >;
+};
+
+export type Teasers = {
+  _id: string;
+  _type: "teasers";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  teasers?: Array<
+    {
+      _key: string;
+    } & Teasersitem
+  >;
+};
+
+export type Plausiblerevenuetracker = {
+  _id: string;
+  _type: "plausiblerevenuetracker";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  type?: "donation" | "agreement";
+  enabled?: boolean;
+};
+
+export type Itncoverage = {
+  _type: "itncoverage";
+  title?: string;
+  subtitle?: string;
+  start_year?: number;
+  end_year?: number;
+  images?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
+  map_explenation?: string;
+  graph_explenation?: string;
+  caption?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
 export type Philantropicteaser = {
   _id: string;
   _type: "philantropicteaser";
@@ -406,27 +923,157 @@ export type Philantropicteaser = {
   }>;
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
   button?: {
     text?: string;
     link?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "navitem";
+      title?: string;
+      page?:
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "generic_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "support";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "criteria";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "article_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "articles";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "results";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "vippsagreement";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "donations";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "agreements";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "profile";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "tax";
+          };
+      _type: "navitem";
     };
   };
   people?: Array<{
@@ -441,50 +1088,50 @@ export type Philantropicteaser = {
 export type Accordion = {
   _type: "accordion";
   title?: string;
-  content?: Array<
+  blocks?: Array<
+    | ({
+        _key: string;
+      } & Paragraph)
+    | ({
+        _key: string;
+      } & Quote)
+    | ({
+        _key: string;
+      } & Columns)
+    | ({
+        _key: string;
+      } & Links)
+    | ({
+        _key: string;
+      } & Normalimage)
     | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<
-          | {
-              citations?: Array<{
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "citation";
-              }>;
-              _type: "citation";
-              _key: string;
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
+        numbered?: boolean;
+        options?: {
+          layout?: "left" | "top";
+        };
+        points?: Array<
+          {
+            _key: string;
+          } & Pointlistpoint
         >;
-        level?: number;
-        _type: "block";
+        _type: "pointlist";
         _key: string;
       }
     | ({
         _key: string;
-      } & Latex)
+      } & Videoembed)
+    | ({
+        _key: string;
+      } & Fullvideo)
+    | ({
+        _key: string;
+      } & Blocktables)
+    | ({
+        _key: string;
+      } & Newslettersignup)
+    | ({
+        _key: string;
+      } & Htmlembed)
   >;
 };
 
@@ -604,10 +1251,75 @@ export type Resultsoutput = {
       | "tcf"
       | "ubi";
     link?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "navitem";
+      title?: string;
+      page?:
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "generic_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "support";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "criteria";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "article_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "articles";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "results";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "vippsagreement";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "donations";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "agreements";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "profile";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "tax";
+          };
+      _type: "navitem";
     };
     _key: string;
   }>;
@@ -683,18 +1395,83 @@ export type Giftcardteaser = {
   }>;
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
   image?: {
@@ -785,6 +1562,7 @@ export type Dateselectorconfig = {
   _updatedAt: string;
   _rev: string;
   payment_date_format_template?: string;
+  payment_last_date_of_month_option?: boolean;
   payment_date_last_day_of_month_template?: string;
   last_day_of_month_label?: string;
 };
@@ -826,6 +1604,34 @@ export type VippsAnonymous = {
   slug?: Slug;
 };
 
+export type Opendistributionbutton = {
+  _id: string;
+  _type: "opendistributionbutton";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  text?: string;
+  organization?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "organization";
+  };
+  display_output_info?: boolean;
+  inverted?: boolean;
+  distribution_cause_areas?: Array<{
+    cause_area_id?: number;
+    cause_area_percentage?: number;
+    cause_area_default_distribution?: boolean;
+    cause_area_organizations?: Array<{
+      organization_id?: number;
+      organization_percentage?: number;
+      _key: string;
+    }>;
+    _key: string;
+  }>;
+};
+
 export type Organizationslist = {
   _type: "organizationslist";
   organizations?: Array<{
@@ -844,21 +1650,15 @@ export type Givewellstamp = {
   _updatedAt: string;
   _rev: string;
   links?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    title?: string;
+    url?: string;
+    newtab?: boolean;
+    _type: "link";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "link";
   }>;
   quote?: string;
   quotee?: string;
   quotee_position?: string;
-};
-
-export type Giveblock = {
-  _type: "giveblock";
-  heading?: string;
-  paragraph?: string;
 };
 
 export type Inngress = {
@@ -884,18 +1684,83 @@ export type Inngress = {
   }>;
   sidelinks?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -947,18 +1812,83 @@ export type Wealthcalculatorteaser = {
           _key: string;
         }
       | {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
           _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
         }
       | {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
           _key: string;
-          [internalGroqTypeReferenceTo]?: "navitem";
         }
     >;
     level?: number;
@@ -967,10 +1897,75 @@ export type Wealthcalculatorteaser = {
   }>;
   median_income?: number;
   button?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "navitem";
+    title?: string;
+    page?:
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "support";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "criteria";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "article_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "articles";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "results";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "vippsagreement";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "donations";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "agreements";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "profile";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "tax";
+        };
+    _type: "navitem";
   };
   period?: "monthly" | "yearly";
   x_axis_label?: string;
@@ -1020,12 +2015,14 @@ export type Wealthcalculatorconfiguration = {
       placeholder?: string;
       options?: Array<string>;
     };
+    calculate_button_label?: string;
   };
   slider_configuration?: {
     donation_percentage_input_configuration?: {
       template_string?: string;
     };
   };
+  chart_label?: string;
   x_axis_label?: string;
   data_explanation_label?: string;
   data_explanation?: {
@@ -1165,11 +2162,11 @@ export type Donationwidget = {
       _key: string;
     }>;
     smart_distribution_description_links?: Array<{
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
+      title?: string;
+      url?: string;
+      newtab?: boolean;
+      _type: "link";
       _key: string;
-      [internalGroqTypeReferenceTo]?: "link";
     }>;
   };
   donation_input_error_templates?: {
@@ -1181,6 +2178,7 @@ export type Donationwidget = {
   };
   pane1_button_text?: string;
   anon_button_text?: string;
+  anon_button_text_tooltip?: string;
   name_placeholder?: string;
   name_invalid_error_text?: string;
   email_placeholder?: string;
@@ -1192,13 +2190,79 @@ export type Donationwidget = {
   newsletter_selector_text?: string;
   privacy_policy_text?: string;
   privacy_policy_link?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "navitem";
+    title?: string;
+    page?:
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "support";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "criteria";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "article_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "articles";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "results";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "vippsagreement";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "donations";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "agreements";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "profile";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "tax";
+        };
+    _type: "navitem";
   };
   pane2_button_text?: string;
-  pane3_referrals_title?: string;
+  referrals_title?: string;
+  other_referral_input_placeholder?: string;
 };
 
 export type Htmlembed = {
@@ -1276,18 +2340,83 @@ export type Column = {
   paragraph?: string;
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -1373,18 +2502,83 @@ export type Splitviewhtml = {
   htmlcode?: string;
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -1409,18 +2603,83 @@ export type Splitview = {
   };
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -1451,18 +2710,83 @@ export type Paragraph = {
               _key: string;
             }
           | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
+              title?: string;
+              url?: string;
+              newtab?: boolean;
+              _type: "link";
               _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
             }
           | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
               _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
             }
         >;
         level?: number;
@@ -1521,11 +2845,17 @@ export type Contentsection = {
         _key: string;
       } & Questionandanswergroup)
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        numbered?: boolean;
+        options?: {
+          layout?: "left" | "top";
+        };
+        points?: Array<
+          {
+            _key: string;
+          } & Pointlistpoint
+        >;
+        _type: "pointlist";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "pointlist";
       }
     | ({
         _key: string;
@@ -1553,11 +2883,22 @@ export type Contentsection = {
         _key: string;
       } & Wealthcalculator)
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        role?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "role";
+        };
+        contributors?: Array<{
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contributor";
+        }>;
+        displayimages?: boolean;
+        _type: "contributorlist";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "contributorlist";
       }
     | ({
         _key: string;
@@ -1566,21 +2907,201 @@ export type Contentsection = {
         _key: string;
       } & Wealthcalculatorteaser)
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        links?: Array<
+          | {
+              title?: string;
+              url?: string;
+              newtab?: boolean;
+              _type: "link";
+              _key: string;
+            }
+          | {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
+              _key: string;
+            }
+        >;
+        button?: {
+          text?: string;
+          link?: {
+            title?: string;
+            page?:
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "generic_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "support";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "criteria";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "article_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "articles";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "results";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "vippsagreement";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "donations";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "agreements";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "profile";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "tax";
+                };
+            _type: "navitem";
+          };
+        };
+        people?: Array<{
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contributor";
+        }>;
+        _type: "philantropicteaser";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "philantropicteaser";
       }
     | ({
         _key: string;
       } & Htmlembed)
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        teasers?: Array<
+          {
+            _key: string;
+          } & Teasersitem
+        >;
+        _type: "teasers";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "teasers";
       }
     | ({
         _key: string;
@@ -1589,28 +3110,175 @@ export type Contentsection = {
         _key: string;
       } & Giveblock)
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        links?: Array<{
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }>;
+        quote?: string;
+        quotee?: string;
+        quotee_position?: string;
+        _type: "givewellstamp";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "givewellstamp";
       }
     | ({
         _key: string;
       } & Organizationslist)
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        text?: string;
+        organization?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "organization";
+        };
+        display_output_info?: boolean;
+        inverted?: boolean;
+        distribution_cause_areas?: Array<{
+          cause_area_id?: number;
+          cause_area_percentage?: number;
+          cause_area_default_distribution?: boolean;
+          cause_area_organizations?: Array<{
+            organization_id?: number;
+            organization_percentage?: number;
+            _key: string;
+          }>;
+          _key: string;
+        }>;
+        _type: "opendistributionbutton";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "giftcardteaser";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        links?: Array<
+          | {
+              title?: string;
+              url?: string;
+              newtab?: boolean;
+              _type: "link";
+              _key: string;
+            }
+          | {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
+              _key: string;
+            }
+        >;
+        image?: {
+          asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          };
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        _type: "giftcardteaser";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "discountratecomparison";
+      }
+    | {
+        discount_rate_min?: number;
+        discount_rate_max?: number;
+        _type: "discountratecomparison";
+        _key: string;
+      }
+    | ({
+        _key: string;
+      } & Itncoverage)
+    | {
+        type?: "donation" | "agreement";
+        enabled?: boolean;
+        _type: "plausiblerevenuetracker";
+        _key: string;
       }
   >;
   hidden?: boolean;
@@ -1649,18 +3317,83 @@ export type Questionandanswer = {
   links_title?: string;
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -1709,21 +3442,88 @@ export type Pageheader = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  layout?: "default" | "centered" | "hero" | "coverPhoto";
+  cta_label?: string;
+  cta_type?: "open_widget";
+  layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
   seoTitle?: string;
@@ -1747,11 +3547,76 @@ export type Navgroup = {
   _type: "navgroup";
   title?: string;
   items?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    title?: string;
+    page?:
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "support";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "criteria";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "article_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "articles";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "results";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "vippsagreement";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "donations";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "agreements";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "profile";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "tax";
+        };
+    _type: "navitem";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "navitem";
   }>;
 };
 
@@ -1875,16 +3740,22 @@ export type Organization = {
   };
   links_header?: string;
   links?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    title?: string;
+    url?: string;
+    newtab?: boolean;
+    _type: "link";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "link";
   }>;
   widget_button?: {
     label?: string;
     cause_area_id?: number;
     organization_id?: number;
+  };
+  organization_page?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "generic_page";
   };
   active?: boolean;
 };
@@ -1894,18 +3765,83 @@ export type Links = {
   title?: string;
   links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -2033,72 +3969,6 @@ export type Testimonial = {
     _type: "block";
     _key: string;
   }>;
-};
-
-export type Teasersitem = {
-  _type: "teasersitem";
-  title?: string;
-  paragraph?:
-    | string
-    | Array<{
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }>;
-  disclaimer?: string;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  links?: Array<
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
-      }
-  >;
-};
-
-export type Teasers = {
-  _id: string;
-  _type: "teasers";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  teasers?: Array<
-    {
-      _key: string;
-    } & Teasersitem
-  >;
 };
 
 export type Tax = {
@@ -2292,18 +4162,83 @@ export type Donationstabledetailsconfiguration = {
   }>;
   impact_estimate_explanation_links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
   impact_items_configuration?: {
@@ -2396,17 +4331,600 @@ export type Vippsagreement = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "pageheader";
+    title?: string;
+    inngress?: string;
+    coverPhoto?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cta_label?: string;
+    cta_type?: "open_widget";
+    layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
+    links?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoKeywords?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "pageheader";
   };
   content?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    heading?: string;
+    nodivider?: boolean;
+    inverted?: boolean;
+    padded?: boolean;
+    ypadded?: boolean;
+    blocks?: Array<
+      | ({
+          _key: string;
+        } & Paragraph)
+      | ({
+          _key: string;
+        } & Accordion)
+      | ({
+          _key: string;
+        } & Quote)
+      | ({
+          _key: string;
+        } & Splitview)
+      | ({
+          _key: string;
+        } & Splitviewhtml)
+      | ({
+          _key: string;
+        } & Columns)
+      | ({
+          _key: string;
+        } & Links)
+      | ({
+          _key: string;
+        } & Introsection)
+      | ({
+          _key: string;
+        } & Fullimage)
+      | ({
+          _key: string;
+        } & Normalimage)
+      | ({
+          _key: string;
+        } & Questionandanswergroup)
+      | {
+          numbered?: boolean;
+          options?: {
+            layout?: "left" | "top";
+          };
+          points?: Array<
+            {
+              _key: string;
+            } & Pointlistpoint
+          >;
+          _type: "pointlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Videoembed)
+      | ({
+          _key: string;
+        } & Fullvideo)
+      | ({
+          _key: string;
+        } & Testimonials)
+      | ({
+          _key: string;
+        } & Blocktables)
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contactinfo";
+        }
+      | ({
+          _key: string;
+        } & Newslettersignup)
+      | ({
+          _key: string;
+        } & Wealthcalculator)
+      | {
+          role?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "role";
+          };
+          contributors?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          displayimages?: boolean;
+          _type: "contributorlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Inngress)
+      | ({
+          _key: string;
+        } & Wealthcalculatorteaser)
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          button?: {
+            text?: string;
+            link?: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
+            };
+          };
+          people?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          _type: "philantropicteaser";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Htmlembed)
+      | {
+          teasers?: Array<
+            {
+              _key: string;
+            } & Teasersitem
+          >;
+          _type: "teasers";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Interventionwidget)
+      | ({
+          _key: string;
+        } & Giveblock)
+      | {
+          links?: Array<{
+            title?: string;
+            url?: string;
+            newtab?: boolean;
+            _type: "link";
+            _key: string;
+          }>;
+          quote?: string;
+          quotee?: string;
+          quotee_position?: string;
+          _type: "givewellstamp";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Organizationslist)
+      | {
+          text?: string;
+          organization?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "organization";
+          };
+          display_output_info?: boolean;
+          inverted?: boolean;
+          distribution_cause_areas?: Array<{
+            cause_area_id?: number;
+            cause_area_percentage?: number;
+            cause_area_default_distribution?: boolean;
+            cause_area_organizations?: Array<{
+              organization_id?: number;
+              organization_percentage?: number;
+              _key: string;
+            }>;
+            _key: string;
+          }>;
+          _type: "opendistributionbutton";
+          _key: string;
+        }
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          image?: {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          _type: "giftcardteaser";
+          _key: string;
+        }
+      | {
+          discount_rate_min?: number;
+          discount_rate_max?: number;
+          _type: "discountratecomparison";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Itncoverage)
+      | {
+          type?: "donation" | "agreement";
+          enabled?: boolean;
+          _type: "plausiblerevenuetracker";
+          _key: string;
+        }
+    >;
+    hidden?: boolean;
+    _type: "contentsection";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "contentsection";
   }>;
   sitemap_priority?: number;
   slug?: Slug;
@@ -2419,17 +4937,162 @@ export type Results = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "pageheader";
+    title?: string;
+    inngress?: string;
+    coverPhoto?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cta_label?: string;
+    cta_type?: "open_widget";
+    layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
+    links?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoKeywords?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "pageheader";
   };
   content?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    heading?: string;
+    nodivider?: boolean;
+    inverted?: boolean;
+    padded?: boolean;
+    ypadded?: boolean;
+    blocks?: Array<
+      | ({
+          _key: string;
+        } & Paragraph)
+      | ({
+          _key: string;
+        } & Links)
+      | ({
+          _key: string;
+        } & Normalimage)
+      | ({
+          _key: string;
+        } & Fullimage)
+      | ({
+          _key: string;
+        } & Cumulativedonationsgraph)
+      | ({
+          _key: string;
+        } & Resultsoutput)
+      | ({
+          _key: string;
+        } & Referralgraph)
+      | ({
+          _key: string;
+        } & Giveblock)
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contactinfo";
+        }
+    >;
+    hidden?: boolean;
+    _type: "resultssection";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "resultssection";
   }>;
   sitemap_priority?: number;
   category?: {
@@ -2448,10 +5111,119 @@ export type Articles = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "pageheader";
+    title?: string;
+    inngress?: string;
+    coverPhoto?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cta_label?: string;
+    cta_type?: "open_widget";
+    layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
+    links?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoKeywords?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "pageheader";
   };
   sitemap_priority?: number;
   category?: {
@@ -2460,9 +5232,16 @@ export type Articles = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "category";
   };
+  default_give_block?: Giveblock;
   related_articles_label?: string;
   see_all_articles_label?: string;
   slug?: Slug;
+};
+
+export type Giveblock = {
+  _type: "giveblock";
+  heading?: string;
+  paragraph?: string;
 };
 
 export type Article_page = {
@@ -2472,17 +5251,505 @@ export type Article_page = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "articleheader";
+    title?: string;
+    inngress?: string;
+    published?: string;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "articleheader";
   };
   content?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    heading?: string;
+    nodivider?: boolean;
+    inverted?: boolean;
+    padded?: boolean;
+    ypadded?: boolean;
+    blocks?: Array<
+      | ({
+          _key: string;
+        } & Paragraph)
+      | ({
+          _key: string;
+        } & Accordion)
+      | ({
+          _key: string;
+        } & Quote)
+      | ({
+          _key: string;
+        } & Splitview)
+      | ({
+          _key: string;
+        } & Splitviewhtml)
+      | ({
+          _key: string;
+        } & Columns)
+      | ({
+          _key: string;
+        } & Links)
+      | ({
+          _key: string;
+        } & Introsection)
+      | ({
+          _key: string;
+        } & Fullimage)
+      | ({
+          _key: string;
+        } & Normalimage)
+      | ({
+          _key: string;
+        } & Questionandanswergroup)
+      | {
+          numbered?: boolean;
+          options?: {
+            layout?: "left" | "top";
+          };
+          points?: Array<
+            {
+              _key: string;
+            } & Pointlistpoint
+          >;
+          _type: "pointlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Videoembed)
+      | ({
+          _key: string;
+        } & Fullvideo)
+      | ({
+          _key: string;
+        } & Testimonials)
+      | ({
+          _key: string;
+        } & Blocktables)
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contactinfo";
+        }
+      | ({
+          _key: string;
+        } & Newslettersignup)
+      | ({
+          _key: string;
+        } & Wealthcalculator)
+      | {
+          role?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "role";
+          };
+          contributors?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          displayimages?: boolean;
+          _type: "contributorlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Inngress)
+      | ({
+          _key: string;
+        } & Wealthcalculatorteaser)
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          button?: {
+            text?: string;
+            link?: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
+            };
+          };
+          people?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          _type: "philantropicteaser";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Htmlembed)
+      | {
+          teasers?: Array<
+            {
+              _key: string;
+            } & Teasersitem
+          >;
+          _type: "teasers";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Interventionwidget)
+      | ({
+          _key: string;
+        } & Giveblock)
+      | {
+          links?: Array<{
+            title?: string;
+            url?: string;
+            newtab?: boolean;
+            _type: "link";
+            _key: string;
+          }>;
+          quote?: string;
+          quotee?: string;
+          quotee_position?: string;
+          _type: "givewellstamp";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Organizationslist)
+      | {
+          text?: string;
+          organization?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "organization";
+          };
+          display_output_info?: boolean;
+          inverted?: boolean;
+          distribution_cause_areas?: Array<{
+            cause_area_id?: number;
+            cause_area_percentage?: number;
+            cause_area_default_distribution?: boolean;
+            cause_area_organizations?: Array<{
+              organization_id?: number;
+              organization_percentage?: number;
+              _key: string;
+            }>;
+            _key: string;
+          }>;
+          _type: "opendistributionbutton";
+          _key: string;
+        }
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          image?: {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          _type: "giftcardteaser";
+          _key: string;
+        }
+      | {
+          discount_rate_min?: number;
+          discount_rate_max?: number;
+          _type: "discountratecomparison";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Itncoverage)
+      | {
+          type?: "donation" | "agreement";
+          enabled?: boolean;
+          _type: "plausiblerevenuetracker";
+          _key: string;
+        }
+    >;
+    hidden?: boolean;
+    _type: "contentsection";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "contentsection";
   }>;
   category?: {
     _ref: string;
@@ -2490,6 +5757,7 @@ export type Article_page = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "category";
   };
+  hidden?: boolean;
   slug?: Slug;
 };
 
@@ -2500,17 +5768,600 @@ export type Criteria = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "pageheader";
+    title?: string;
+    inngress?: string;
+    coverPhoto?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cta_label?: string;
+    cta_type?: "open_widget";
+    layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
+    links?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoKeywords?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "pageheader";
   };
   content?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    heading?: string;
+    nodivider?: boolean;
+    inverted?: boolean;
+    padded?: boolean;
+    ypadded?: boolean;
+    blocks?: Array<
+      | ({
+          _key: string;
+        } & Paragraph)
+      | ({
+          _key: string;
+        } & Accordion)
+      | ({
+          _key: string;
+        } & Quote)
+      | ({
+          _key: string;
+        } & Splitview)
+      | ({
+          _key: string;
+        } & Splitviewhtml)
+      | ({
+          _key: string;
+        } & Columns)
+      | ({
+          _key: string;
+        } & Links)
+      | ({
+          _key: string;
+        } & Introsection)
+      | ({
+          _key: string;
+        } & Fullimage)
+      | ({
+          _key: string;
+        } & Normalimage)
+      | ({
+          _key: string;
+        } & Questionandanswergroup)
+      | {
+          numbered?: boolean;
+          options?: {
+            layout?: "left" | "top";
+          };
+          points?: Array<
+            {
+              _key: string;
+            } & Pointlistpoint
+          >;
+          _type: "pointlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Videoembed)
+      | ({
+          _key: string;
+        } & Fullvideo)
+      | ({
+          _key: string;
+        } & Testimonials)
+      | ({
+          _key: string;
+        } & Blocktables)
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contactinfo";
+        }
+      | ({
+          _key: string;
+        } & Newslettersignup)
+      | ({
+          _key: string;
+        } & Wealthcalculator)
+      | {
+          role?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "role";
+          };
+          contributors?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          displayimages?: boolean;
+          _type: "contributorlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Inngress)
+      | ({
+          _key: string;
+        } & Wealthcalculatorteaser)
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          button?: {
+            text?: string;
+            link?: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
+            };
+          };
+          people?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          _type: "philantropicteaser";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Htmlembed)
+      | {
+          teasers?: Array<
+            {
+              _key: string;
+            } & Teasersitem
+          >;
+          _type: "teasers";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Interventionwidget)
+      | ({
+          _key: string;
+        } & Giveblock)
+      | {
+          links?: Array<{
+            title?: string;
+            url?: string;
+            newtab?: boolean;
+            _type: "link";
+            _key: string;
+          }>;
+          quote?: string;
+          quotee?: string;
+          quotee_position?: string;
+          _type: "givewellstamp";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Organizationslist)
+      | {
+          text?: string;
+          organization?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "organization";
+          };
+          display_output_info?: boolean;
+          inverted?: boolean;
+          distribution_cause_areas?: Array<{
+            cause_area_id?: number;
+            cause_area_percentage?: number;
+            cause_area_default_distribution?: boolean;
+            cause_area_organizations?: Array<{
+              organization_id?: number;
+              organization_percentage?: number;
+              _key: string;
+            }>;
+            _key: string;
+          }>;
+          _type: "opendistributionbutton";
+          _key: string;
+        }
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          image?: {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          _type: "giftcardteaser";
+          _key: string;
+        }
+      | {
+          discount_rate_min?: number;
+          discount_rate_max?: number;
+          _type: "discountratecomparison";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Itncoverage)
+      | {
+          type?: "donation" | "agreement";
+          enabled?: boolean;
+          _type: "plausiblerevenuetracker";
+          _key: string;
+        }
+    >;
+    hidden?: boolean;
+    _type: "contentsection";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "contentsection";
   }>;
   sitemap_priority?: number;
   slug?: Slug;
@@ -2523,10 +6374,119 @@ export type Support = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "pageheader";
+    title?: string;
+    inngress?: string;
+    coverPhoto?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cta_label?: string;
+    cta_type?: "open_widget";
+    layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
+    links?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoKeywords?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "pageheader";
   };
   questionandanswergroups?: Array<
     {
@@ -2562,17 +6522,600 @@ export type Generic_page = {
   _updatedAt: string;
   _rev: string;
   header?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "pageheader";
+    title?: string;
+    inngress?: string;
+    coverPhoto?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cta_label?: string;
+    cta_type?: "open_widget";
+    layout?: "default" | "centered" | "hero" | "coverPhoto" | "noheader";
+    links?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoKeywords?: string;
+    seoImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    cannonicalUrl?: string;
+    _type: "pageheader";
   };
   content?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+    heading?: string;
+    nodivider?: boolean;
+    inverted?: boolean;
+    padded?: boolean;
+    ypadded?: boolean;
+    blocks?: Array<
+      | ({
+          _key: string;
+        } & Paragraph)
+      | ({
+          _key: string;
+        } & Accordion)
+      | ({
+          _key: string;
+        } & Quote)
+      | ({
+          _key: string;
+        } & Splitview)
+      | ({
+          _key: string;
+        } & Splitviewhtml)
+      | ({
+          _key: string;
+        } & Columns)
+      | ({
+          _key: string;
+        } & Links)
+      | ({
+          _key: string;
+        } & Introsection)
+      | ({
+          _key: string;
+        } & Fullimage)
+      | ({
+          _key: string;
+        } & Normalimage)
+      | ({
+          _key: string;
+        } & Questionandanswergroup)
+      | {
+          numbered?: boolean;
+          options?: {
+            layout?: "left" | "top";
+          };
+          points?: Array<
+            {
+              _key: string;
+            } & Pointlistpoint
+          >;
+          _type: "pointlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Videoembed)
+      | ({
+          _key: string;
+        } & Fullvideo)
+      | ({
+          _key: string;
+        } & Testimonials)
+      | ({
+          _key: string;
+        } & Blocktables)
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          _key: string;
+          [internalGroqTypeReferenceTo]?: "contactinfo";
+        }
+      | ({
+          _key: string;
+        } & Newslettersignup)
+      | ({
+          _key: string;
+        } & Wealthcalculator)
+      | {
+          role?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "role";
+          };
+          contributors?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          displayimages?: boolean;
+          _type: "contributorlist";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Inngress)
+      | ({
+          _key: string;
+        } & Wealthcalculatorteaser)
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          button?: {
+            text?: string;
+            link?: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  };
+              _type: "navitem";
+            };
+          };
+          people?: Array<{
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            _key: string;
+            [internalGroqTypeReferenceTo]?: "contributor";
+          }>;
+          _type: "philantropicteaser";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Htmlembed)
+      | {
+          teasers?: Array<
+            {
+              _key: string;
+            } & Teasersitem
+          >;
+          _type: "teasers";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Interventionwidget)
+      | ({
+          _key: string;
+        } & Giveblock)
+      | {
+          links?: Array<{
+            title?: string;
+            url?: string;
+            newtab?: boolean;
+            _type: "link";
+            _key: string;
+          }>;
+          quote?: string;
+          quotee?: string;
+          quotee_position?: string;
+          _type: "givewellstamp";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Organizationslist)
+      | {
+          text?: string;
+          organization?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "organization";
+          };
+          display_output_info?: boolean;
+          inverted?: boolean;
+          distribution_cause_areas?: Array<{
+            cause_area_id?: number;
+            cause_area_percentage?: number;
+            cause_area_default_distribution?: boolean;
+            cause_area_organizations?: Array<{
+              organization_id?: number;
+              organization_percentage?: number;
+              _key: string;
+            }>;
+            _key: string;
+          }>;
+          _type: "opendistributionbutton";
+          _key: string;
+        }
+      | {
+          title?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          links?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          image?: {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          _type: "giftcardteaser";
+          _key: string;
+        }
+      | {
+          discount_rate_min?: number;
+          discount_rate_max?: number;
+          _type: "discountratecomparison";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Itncoverage)
+      | {
+          type?: "donation" | "agreement";
+          enabled?: boolean;
+          _type: "plausiblerevenuetracker";
+          _key: string;
+        }
+    >;
+    hidden?: boolean;
+    _type: "contentsection";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "contentsection";
   }>;
   sitemap_priority?: number;
   category?: {
@@ -2632,18 +7175,83 @@ export type Interventionwidgetoutputconfiguration = {
   }>;
   explanation_links?: Array<
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
       }
     | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
         _key: string;
-        [internalGroqTypeReferenceTo]?: "navitem";
       }
   >;
 };
@@ -2727,12 +7335,6 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type Document = {
-  _type: "reference";
-  _ref: string;
-  _weak?: boolean;
-};
-
 export type Table = {
   _type: "table";
   rows?: Array<
@@ -2746,5866 +7348,109 @@ export type TableRow = {
   _type: "tableRow";
   cells?: Array<string>;
 };
+
+export type AllSanitySchemaTypes =
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | Geopoint
+  | Dashboard
+  | Site_settings
+  | Avtalegiro
+  | Autogiro
+  | Swish
+  | Bank
+  | Vipps
+  | Teasersitem
+  | Teasers
+  | Plausiblerevenuetracker
+  | Itncoverage
+  | Philantropicteaser
+  | Accordion
+  | Latex
+  | Referralgraph
+  | Resultssection
+  | Resultsoutput
+  | Cumulativedonationsgraph
+  | Graphcontext
+  | Discountratecomparison
+  | Giftcardteaser
+  | Taxstatements
+  | Abouttaxdeductions
+  | Metareceipt
+  | Taxunits
+  | Dateselectorconfig
+  | Agreementlistdetailsconfiguration
+  | VippsAnonymous
+  | Opendistributionbutton
+  | Organizationslist
+  | Givewellstamp
+  | Inngress
+  | Contributorlist
+  | Wealthcalculatorteaser
+  | Wealthcalculator
+  | Wealthcalculatorconfiguration
+  | Citation
+  | Quote
+  | Donationwidget
+  | Htmlembed
+  | Newslettersignup
+  | Fullvideo
+  | Testimonials
+  | Interventionwidget
+  | Intervention
+  | Columns
+  | Column
+  | Normalimage
+  | Blocktables
+  | Fullimage
+  | Splitviewhtml
+  | Splitview
+  | Paragraph
+  | Contentsection
+  | Videoembed
+  | Questionandanswergroup
+  | Questionandanswer
+  | Articleheader
+  | Pageheader
+  | Navgroup
+  | Navitem
+  | Organization
+  | Links
+  | Link
+  | Pointlistpoint
+  | Pointlist
+  | Key_point
+  | Introsection
+  | Contributor
+  | Role
+  | Testimonial
+  | Tax
+  | Profile
+  | Agreements
+  | Agreementlistconfiguration
+  | Donations
+  | Donationstabledetailsconfiguration
+  | Donationstableconfiguration
+  | Aggregateestimatedimpact
+  | Vippsagreement
+  | Results
+  | Articles
+  | Giveblock
+  | Article_page
+  | Criteria
+  | Support
+  | Contactinfo
+  | Generic_page
+  | Slug
+  | Category
+  | Interventionwidgetoutputconfiguration
+  | SanityFileAsset
+  | SanityImageCrop
+  | SanityImageHotspot
+  | SanityImageAsset
+  | SanityAssetSourceData
+  | SanityImageMetadata
+  | Table
+  | TableRow;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-
-// Source: pages/404.page.tsx
-// Variable: fetchMissingPage
-// Query: {  "settings": *[_type == "site_settings"] {    title,    cookie_banner_configuration {      ...,      privacy_policy_link {        ...,        "slug": page->slug.current      }    },    not_found_title,  },}
-export type FetchMissingPageResult = {
-  settings: Array<{
-    title: string | null;
-    cookie_banner_configuration: {
-      title?: string;
-      description?: string;
-      privacy_policy_link: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        slug: null;
-      } | null;
-      accept_button_text?: string;
-      decline_button_text?: string;
-      last_major_change?: string;
-      expired_template?: string;
-    } | null;
-    not_found_title: string | null;
-  }>;
-};
-
-// Source: pages/sitemap.xml.page.tsx
-// Variable: siteMapQuery
-// Query: {  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path('drafts.**'))]{        _updatedAt,        "slug": slug.current,        sitemap_priority,        "type": _type,        _id,    }}
-export type SiteMapQueryResult = {
-  pages: Array<
-    | {
-        _updatedAt: string;
-        slug: string | null;
-        sitemap_priority: null;
-        type: "article_page";
-        _id: string;
-      }
-    | {
-        _updatedAt: string;
-        slug: string | null;
-        sitemap_priority: number | null;
-        type: "articles";
-        _id: string;
-      }
-    | {
-        _updatedAt: string;
-        slug: string | null;
-        sitemap_priority: number | null;
-        type: "generic_page";
-        _id: string;
-      }
-  >;
-};
-
-// Source: pages/dashboard/AgreementsPage.tsx
-// Variable: fetchAgreementsPage
-// Query: {  "settings": *[_type == "site_settings"] {    title,  },  "dashboard": *[_id == "dashboard"] {    dashboard_slug {      current    },  },  "page": *[_id == "agreements"] {    ...,    active_list_configuration {      ...,      details_configuration {        ...,        date_selector_configuration->{          ...,        }      }    },    slug {      current    }  }}
-export type FetchAgreementsPageResult = {
-  settings: Array<{
-    title: string | null;
-  }>;
-  dashboard: Array<
-    | {
-        dashboard_slug: null;
-      }
-    | {
-        dashboard_slug: {
-          current: string | null;
-        } | null;
-      }
-  >;
-  page: Array<
-    | {
-        _id: string;
-        _type: "aggregateestimatedimpact";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        org_grant_template_string?: string;
-        org_direct_template_string?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "agreements";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        pending_agreements_box_configuration?: {
-          single_pending_agreement_title?: string;
-          multiple_pending_agreements_title_template?: string;
-          single_pending_agreement_text?: string;
-          multiple_pending_agreements_text_template?: string;
-        };
-        active_list_configuration: {
-          _type: "agreementlistconfiguration";
-          title?: string;
-          subtitle_text?: string;
-          list_empty_content?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          columns?: Array<{
-            title?: string;
-            value?:
-              | "amount"
-              | "createdAt"
-              | "createdBy"
-              | "date"
-              | "id"
-              | "KID"
-              | "status"
-              | "type"
-              | "updatedAt";
-            type?: "date" | "paymentmethod" | "string" | "sum";
-            payment_date_format_template?: string;
-            payment_date_last_day_of_month_template?: string;
-            width?: number;
-            _key: string;
-          }>;
-          details_configuration: {
-            _type: "agreementlistdetailsconfiguration";
-            save_button_text?: string;
-            cancel_button_text?: string;
-            date_selector_configuration: {
-              _id: string;
-              _type: "dateselectorconfig";
-              _createdAt: string;
-              _updatedAt: string;
-              _rev: string;
-              payment_date_format_template?: string;
-              payment_date_last_day_of_month_template?: string;
-              last_day_of_month_label?: string;
-            } | null;
-            loading_text?: string;
-            error_text?: string;
-            toasts_configuration?: {
-              failure_text?: string;
-              success_text?: string;
-              no_change_text?: string;
-            };
-            agreement_cancel_lightbox?: {
-              title?: string;
-              text?: string;
-              withdrawal_warning_text?: string;
-            };
-            distribution_configuration?: {
-              smart_distribution_label?: string;
-            };
-          } | null;
-        } | null;
-        inactive_list_configuration?: Agreementlistconfiguration;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "article_page";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "articleheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "articleheader";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        inngress?: string;
-        published?: string;
-        seoTitle?: string;
-        seoDescription?: string;
-        seoImage?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        cannonicalUrl?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "articles";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        related_articles_label?: string;
-        see_all_articles_label?: string;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "autogiro";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        manual_recurring_option_config?: {
-          title?: string;
-          sum_label?: string;
-          account_number_label?: string;
-          payment_numberexplanatory_text?: string;
-          payment_number_label?: string;
-          instruction_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          complete_button_text?: string;
-        };
-        recurring_manual_option_config?: {
-          title?: string;
-          explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          payernumber_label?: string;
-          date_selector_config?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-          };
-          complete_button_text?: string;
-        };
-        recurring_form_option_config?: {
-          title?: string;
-          explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          payernumber_label?: string;
-          button_text?: string;
-          button_link?: string;
-        };
-        completed_text?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "avtalegiro";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        selector_earliest_text?: string;
-        selector_choose_date_text?: string;
-        date_selector_configuration?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-        };
-        button_text?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "bank";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        explanatory_text?: string;
-        explanatory_text_email_template?: string;
-        kontonr_title?: string;
-        kontonr?: string;
-        kid_title?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "category";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "citation";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        type?:
-          | "article"
-          | "book"
-          | "misc"
-          | "note"
-          | "podcast"
-          | "video"
-          | "website"
-          | "workingpaper";
-        author?: string;
-        title?: string;
-        journal?: string;
-        year?: string;
-        volume?: string;
-        number?: string;
-        pages?: string;
-        edition?: number;
-        publisher?: string;
-        address?: string;
-        accessed?: string;
-        timestamp?: string;
-        serie?: string;
-        number_in_serie?: string;
-        url?: string;
-        notetitle?: string;
-        note?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contactinfo";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: string;
-        phone?: string;
-        email?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contentsection";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heading?: string;
-        nodivider?: boolean;
-        inverted?: boolean;
-        padded?: boolean;
-        ypadded?: boolean;
-        blocks?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contactinfo";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contributorlist";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "discountratecomparison";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "giftcardteaser";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "givewellstamp";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "philantropicteaser";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "pointlist";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "teasers";
-            }
-          | ({
-              _key: string;
-            } & Accordion)
-          | ({
-              _key: string;
-            } & Blocktables)
-          | ({
-              _key: string;
-            } & Columns)
-          | ({
-              _key: string;
-            } & Fullimage)
-          | ({
-              _key: string;
-            } & Fullvideo)
-          | ({
-              _key: string;
-            } & Giveblock)
-          | ({
-              _key: string;
-            } & Htmlembed)
-          | ({
-              _key: string;
-            } & Inngress)
-          | ({
-              _key: string;
-            } & Interventionwidget)
-          | ({
-              _key: string;
-            } & Introsection)
-          | ({
-              _key: string;
-            } & Links)
-          | ({
-              _key: string;
-            } & Newslettersignup)
-          | ({
-              _key: string;
-            } & Normalimage)
-          | ({
-              _key: string;
-            } & Organizationslist)
-          | ({
-              _key: string;
-            } & Paragraph)
-          | ({
-              _key: string;
-            } & Questionandanswergroup)
-          | ({
-              _key: string;
-            } & Quote)
-          | ({
-              _key: string;
-            } & Splitview)
-          | ({
-              _key: string;
-            } & Splitviewhtml)
-          | ({
-              _key: string;
-            } & Testimonials)
-          | ({
-              _key: string;
-            } & Videoembed)
-          | ({
-              _key: string;
-            } & Wealthcalculator)
-          | ({
-              _key: string;
-            } & Wealthcalculatorteaser)
-        >;
-        hidden?: boolean;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contributor";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        name?: string;
-        email?: string;
-        role?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "role";
-        };
-        subrole?: string;
-        order?: number;
-        additional?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contributorlist";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        role?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "role";
-        };
-        contributors?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contributor";
-        }>;
-        displayimages?: boolean;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "criteria";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "dashboard";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        main_navigation?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-          | ({
-              _key: string;
-            } & Navgroup)
-        >;
-        dashboard_logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        dashboard_label?: string;
-        logout_label?: string;
-        login_error_configuration?: {
-          login_button_label?: string;
-          login_abort_label?: string;
-        };
-        missing_name_modal_configuration?: {
-          title?: string;
-          description?: string;
-          confirm_label?: string;
-          cancel_label?: string;
-          failure_message?: string;
-          success_message?: string;
-        };
-        dashboard_slug?: Slug;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "dateselectorconfig";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        payment_date_format_template?: string;
-        payment_date_last_day_of_month_template?: string;
-        last_day_of_month_label?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "discountratecomparison";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        discount_rate_min?: number;
-        discount_rate_max?: number;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "donations";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        year_menu_total_title?: string;
-        aggregate_estimated_impact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "aggregateestimatedimpact";
-        };
-        sum_all_times_template_string?: string;
-        sum_year_template_string?: string;
-        desktop_donations_table_configuration?: Donationstableconfiguration;
-        mobile_donations_table_configuration?: Donationstableconfiguration;
-        donations_details_configuration?: Donationstabledetailsconfiguration;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "donationwidget";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        methods?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "autogiro";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "avtalegiro";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "bank";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "swish";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vipps";
-            }
-        >;
-        single_donation_text?: string;
-        monthly_donation_text?: string;
-        amount_context?: {
-          preset_amounts_recurring?: Array<{
-            amount?: number;
-            subtext?: string;
-            _key: string;
-          }>;
-          preset_amounts_single?: Array<{
-            amount?: number;
-            subtext?: string;
-            _key: string;
-          }>;
-          custom_amount_text?: string;
-        };
-        smart_distribution_context?: {
-          smart_distribution_radiobutton_text?: string;
-          custom_distribution_radiobutton_text?: string;
-          smart_distribution_label_text?: string;
-          smart_distribution_description?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          smart_distribution_description_links?: Array<{
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            _key: string;
-            [internalGroqTypeReferenceTo]?: "link";
-          }>;
-        };
-        donation_input_error_templates?: {
-          donation_sum_error_template?: string;
-          donation_distribution_cause_areas_sum_error_template?: string;
-          donation_distribution_cause_areas_negative_error_template?: string;
-          donation_distribution_cause_areas_organization_sum_error_template?: string;
-          donation_distribution_cause_areas_organization_negative_error_template?: string;
-        };
-        pane1_button_text?: string;
-        anon_button_text?: string;
-        name_placeholder?: string;
-        name_invalid_error_text?: string;
-        email_placeholder?: string;
-        email_invalid_error_text?: string;
-        tax_deduction_selector_text?: string;
-        tax_deduction_ssn_placeholder?: string;
-        tax_deduction_ssn_invalid_error_text?: string;
-        tax_deduction_tooltip_text?: string;
-        newsletter_selector_text?: string;
-        privacy_policy_text?: string;
-        privacy_policy_link?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "navitem";
-        };
-        pane2_button_text?: string;
-        pane3_referrals_title?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "generic_page";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "giftcardteaser";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "givewellstamp";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        links?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
-        }>;
-        quote?: string;
-        quotee?: string;
-        quotee_position?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "interventionwidgetoutputconfiguration";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        interventions?: Array<
-          {
-            _key: string;
-          } & Intervention
-        >;
-        explanation_label?: string;
-        explanation_text?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        explanation_links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "link";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        url?: string;
-        newtab?: boolean;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "navitem";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        page?:
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "agreements";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "article_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "articles";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "criteria";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "donations";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "generic_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "profile";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "results";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "support";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "tax";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vippsagreement";
-            };
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "organization";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name?: string;
-        subtitle?: string;
-        abbriviation?: string;
-        oneliner?: string;
-        content?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        intervention_type?: string;
-        invervention_cost?: string;
-        intervention_effect?: string;
-        logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        links_header?: string;
-        links?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
-        }>;
-        widget_button?: {
-          label?: string;
-          cause_area_id?: number;
-          organization_id?: number;
-        };
-        active?: boolean;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "pageheader";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        inngress?: string;
-        coverPhoto?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        layout?: "centered" | "coverPhoto" | "default" | "hero";
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        seoTitle?: string;
-        seoDescription?: string;
-        seoKeywords?: string;
-        seoImage?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        cannonicalUrl?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "philantropicteaser";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        button?: {
-          text?: string;
-          link?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "navitem";
-          };
-        };
-        people?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contributor";
-        }>;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "pointlist";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        numbered?: boolean;
-        options?: {
-          layout?: "left" | "top";
-        };
-        points?: Array<
-          {
-            _key: string;
-          } & Pointlistpoint
-        >;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "profile";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title_template?: string;
-        info_configuration?: {
-          name_label?: string;
-          email_label?: string;
-          newsletter_label?: string;
-          save_button_label?: string;
-          success_message?: string;
-          failure_message?: string;
-        };
-        info_title?: string;
-        tax_subtitle?: string;
-        tax?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        tax_link?: string;
-        data_subtitle?: string;
-        data?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        data_link?: string;
-        read_more_label?: string;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "results";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "resultssection";
-        }>;
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "resultssection";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heading?: string;
-        nodivider?: boolean;
-        inverted?: boolean;
-        padded?: boolean;
-        ypadded?: boolean;
-        blocks?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contactinfo";
-            }
-          | ({
-              _key: string;
-            } & Cumulativedonationsgraph)
-          | ({
-              _key: string;
-            } & Fullimage)
-          | ({
-              _key: string;
-            } & Giveblock)
-          | ({
-              _key: string;
-            } & Links)
-          | ({
-              _key: string;
-            } & Normalimage)
-          | ({
-              _key: string;
-            } & Paragraph)
-          | ({
-              _key: string;
-            } & Referralgraph)
-          | ({
-              _key: string;
-            } & Resultsoutput)
-        >;
-        hidden?: boolean;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "role";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        id?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "sanity.fileAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        source?: SanityAssetSourceData;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "site_settings";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        accent_color?: string;
-        description?: string;
-        logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        main_navigation?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-          | ({
-              _key: string;
-            } & Navgroup)
-        >;
-        donate_label?: string;
-        donate_label_short?: string;
-        donate_label_title?: string;
-        contact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contactinfo";
-        };
-        main_currency?: "DKK" | "EUR" | "NOK" | "SEK" | "USD";
-        main_locale?: "en" | "et" | "no" | "sv";
-        footer_columns?: Array<{
-          links?: Array<
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "link";
-              }
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "navitem";
-              }
-          >;
-          _key: string;
-        }>;
-        footer_to_top_label?: string;
-        footer_newsletter_heading?: string;
-        footer_newsletter_form_url?: string;
-        footer_newsletter_send_label?: string;
-        cookie_banner_configuration?: {
-          title?: string;
-          description?: string;
-          privacy_policy_link?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "navitem";
-          };
-          accept_button_text?: string;
-          decline_button_text?: string;
-          last_major_change?: string;
-          expired_template?: string;
-        };
-        not_found_title?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "support";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        questionandanswergroups?: Array<
-          {
-            _key: string;
-          } & Questionandanswergroup
-        >;
-        contact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contactinfo";
-        };
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "swish";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        prompt?: {
-          title?: string;
-          scan_text?: string;
-          redirect_text?: string;
-        };
-        success?: {
-          title?: string;
-          text?: string;
-        };
-        error?: {
-          title?: string;
-          text?: string;
-        };
-        declined?: {
-          title?: string;
-          text?: string;
-        };
-        cancelled?: {
-          title?: string;
-          text?: string;
-        };
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "tax";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        features?: Array<
-          | ({
-              _key: string;
-            } & Abouttaxdeductions)
-          | ({
-              _key: string;
-            } & Metareceipt)
-          | ({
-              _key: string;
-            } & Taxstatements)
-          | ({
-              _key: string;
-            } & Taxunits)
-        >;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "teasers";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        teasers?: Array<
-          {
-            _key: string;
-          } & Teasersitem
-        >;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "testimonial";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        quote?: string;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        quotee?: string;
-        quotee_background?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "vipps-anonymous";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: string;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "vipps";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        agreement_page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "vippsagreement";
-        };
-        anonymous_page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "vipps-anonymous";
-        };
-        selector_text?: string;
-        recurring_title?: string;
-        recurring_selector_earliest_text?: string;
-        recurring_selector_choose_date_text?: string;
-        recurring_selector_date_picker_configuration?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-        };
-        recurring_button_text?: string;
-        single_title?: string;
-        single_button_text?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "vippsagreement";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-        active_list_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "wealthcalculatorconfiguration";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        calculator_input_configuration?: {
-          subtitle_label?: string;
-          period?: "monthly" | "yearly";
-          income_input_configuration?: {
-            placeholder?: string;
-            thousand_separator?: string;
-            currency_label?: string;
-            description?: string;
-          };
-          children_input_configuration?: {
-            placeholder?: string;
-            options?: Array<string>;
-          };
-          adults_input_configuration?: {
-            placeholder?: string;
-            options?: Array<string>;
-          };
-        };
-        slider_configuration?: {
-          donation_percentage_input_configuration?: {
-            template_string?: string;
-          };
-        };
-        x_axis_label?: string;
-        data_explanation_label?: string;
-        data_explanation?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        };
-        donation_percentage?: number;
-        income_percentile_label_template_string?: string;
-        income_percentile_after_donation_label_template_string?: string;
-        active_list_configuration: null;
-        slug: null;
-      }
-  >;
-};
-
-// Source: pages/dashboard/DonationsPage.tsx
-// Variable: fetchDonationsPage
-// Query: {  "settings": *[_type == "site_settings"] {    main_currency,    main_locale,    title,  },  "dashboard": *[_id == "dashboard"] {    dashboard_slug {      current    }  },  "page": *[_id == "donations"] {    ...,    aggregate_estimated_impact->{      ...,      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    desktop_donations_table_configuration,    mobile_donations_table_configuration,    donations_details_configuration {      ...,      impact_items_configuration {        ...,        "currency": *[ _type == "site_settings"][0].main_currency,        "locale": *[ _type == "site_settings"][0].main_locale,        impact_item_configuration {          ...,          "currency": *[ _type == "site_settings"][0].main_currency,          "locale": *[ _type == "site_settings"][0].main_locale,        }      }    },    slug {      current    }  },}
-export type FetchDonationsPageResult = {
-  settings: Array<{
-    main_currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-    main_locale: "en" | "et" | "no" | "sv" | null;
-    title: string | null;
-  }>;
-  dashboard: Array<
-    | {
-        dashboard_slug: null;
-      }
-    | {
-        dashboard_slug: {
-          current: string | null;
-        } | null;
-      }
-  >;
-  page: Array<
-    | {
-        _id: string;
-        _type: "aggregateestimatedimpact";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        org_grant_template_string?: string;
-        org_direct_template_string?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "agreements";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        pending_agreements_box_configuration?: {
-          single_pending_agreement_title?: string;
-          multiple_pending_agreements_title_template?: string;
-          single_pending_agreement_text?: string;
-          multiple_pending_agreements_text_template?: string;
-        };
-        active_list_configuration?: Agreementlistconfiguration;
-        inactive_list_configuration?: Agreementlistconfiguration;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "article_page";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "articleheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "articleheader";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        inngress?: string;
-        published?: string;
-        seoTitle?: string;
-        seoDescription?: string;
-        seoImage?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        cannonicalUrl?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "articles";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        related_articles_label?: string;
-        see_all_articles_label?: string;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "autogiro";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        manual_recurring_option_config?: {
-          title?: string;
-          sum_label?: string;
-          account_number_label?: string;
-          payment_numberexplanatory_text?: string;
-          payment_number_label?: string;
-          instruction_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          complete_button_text?: string;
-        };
-        recurring_manual_option_config?: {
-          title?: string;
-          explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          payernumber_label?: string;
-          date_selector_config?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-          };
-          complete_button_text?: string;
-        };
-        recurring_form_option_config?: {
-          title?: string;
-          explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          payernumber_label?: string;
-          button_text?: string;
-          button_link?: string;
-        };
-        completed_text?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "avtalegiro";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        selector_earliest_text?: string;
-        selector_choose_date_text?: string;
-        date_selector_configuration?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-        };
-        button_text?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "bank";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        explanatory_text?: string;
-        explanatory_text_email_template?: string;
-        kontonr_title?: string;
-        kontonr?: string;
-        kid_title?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "category";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "citation";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        type?:
-          | "article"
-          | "book"
-          | "misc"
-          | "note"
-          | "podcast"
-          | "video"
-          | "website"
-          | "workingpaper";
-        author?: string;
-        title?: string;
-        journal?: string;
-        year?: string;
-        volume?: string;
-        number?: string;
-        pages?: string;
-        edition?: number;
-        publisher?: string;
-        address?: string;
-        accessed?: string;
-        timestamp?: string;
-        serie?: string;
-        number_in_serie?: string;
-        url?: string;
-        notetitle?: string;
-        note?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contactinfo";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: string;
-        phone?: string;
-        email?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contentsection";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heading?: string;
-        nodivider?: boolean;
-        inverted?: boolean;
-        padded?: boolean;
-        ypadded?: boolean;
-        blocks?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contactinfo";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contributorlist";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "discountratecomparison";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "giftcardteaser";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "givewellstamp";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "philantropicteaser";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "pointlist";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "teasers";
-            }
-          | ({
-              _key: string;
-            } & Accordion)
-          | ({
-              _key: string;
-            } & Blocktables)
-          | ({
-              _key: string;
-            } & Columns)
-          | ({
-              _key: string;
-            } & Fullimage)
-          | ({
-              _key: string;
-            } & Fullvideo)
-          | ({
-              _key: string;
-            } & Giveblock)
-          | ({
-              _key: string;
-            } & Htmlembed)
-          | ({
-              _key: string;
-            } & Inngress)
-          | ({
-              _key: string;
-            } & Interventionwidget)
-          | ({
-              _key: string;
-            } & Introsection)
-          | ({
-              _key: string;
-            } & Links)
-          | ({
-              _key: string;
-            } & Newslettersignup)
-          | ({
-              _key: string;
-            } & Normalimage)
-          | ({
-              _key: string;
-            } & Organizationslist)
-          | ({
-              _key: string;
-            } & Paragraph)
-          | ({
-              _key: string;
-            } & Questionandanswergroup)
-          | ({
-              _key: string;
-            } & Quote)
-          | ({
-              _key: string;
-            } & Splitview)
-          | ({
-              _key: string;
-            } & Splitviewhtml)
-          | ({
-              _key: string;
-            } & Testimonials)
-          | ({
-              _key: string;
-            } & Videoembed)
-          | ({
-              _key: string;
-            } & Wealthcalculator)
-          | ({
-              _key: string;
-            } & Wealthcalculatorteaser)
-        >;
-        hidden?: boolean;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contributor";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        name?: string;
-        email?: string;
-        role?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "role";
-        };
-        subrole?: string;
-        order?: number;
-        additional?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contributorlist";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        role?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "role";
-        };
-        contributors?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contributor";
-        }>;
-        displayimages?: boolean;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "criteria";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "dashboard";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        main_navigation?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-          | ({
-              _key: string;
-            } & Navgroup)
-        >;
-        dashboard_logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        dashboard_label?: string;
-        logout_label?: string;
-        login_error_configuration?: {
-          login_button_label?: string;
-          login_abort_label?: string;
-        };
-        missing_name_modal_configuration?: {
-          title?: string;
-          description?: string;
-          confirm_label?: string;
-          cancel_label?: string;
-          failure_message?: string;
-          success_message?: string;
-        };
-        dashboard_slug?: Slug;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "dateselectorconfig";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        payment_date_format_template?: string;
-        payment_date_last_day_of_month_template?: string;
-        last_day_of_month_label?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "discountratecomparison";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        discount_rate_min?: number;
-        discount_rate_max?: number;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "donations";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        year_menu_total_title?: string;
-        aggregate_estimated_impact: {
-          _id: string;
-          _type: "aggregateestimatedimpact";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          title?: string;
-          org_grant_template_string?: string;
-          org_direct_template_string?: string;
-          currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-          locale: "en" | "et" | "no" | "sv" | null;
-        } | null;
-        sum_all_times_template_string?: string;
-        sum_year_template_string?: string;
-        desktop_donations_table_configuration: Donationstableconfiguration | null;
-        mobile_donations_table_configuration: Donationstableconfiguration | null;
-        donations_details_configuration: {
-          _type: "donationstabledetailsconfiguration";
-          impact_estimate_header?: string;
-          impact_estimate_explanation_title?: string;
-          impact_estimate_explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          impact_estimate_explanation_links?: Array<
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "link";
-              }
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "navitem";
-              }
-          >;
-          impact_items_configuration: {
-            smart_distribution_label?: string;
-            operations_label?: string;
-            impact_item_configuration: {
-              output_subheading_format_string?: string;
-              missing_evaluation_header?: string;
-              missing_impact_evaluation_text?: Array<{
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                listItem?: "bullet" | "number";
-                markDefs?: Array<{
-                  href?: string;
-                  _type: "link";
-                  _key: string;
-                }>;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }>;
-              about_org_link_title_format_string?: string;
-              about_org_link_url_format_string?: string;
-              currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-              locale: "en" | "et" | "no" | "sv" | null;
-            } | null;
-            currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-            locale: "en" | "et" | "no" | "sv" | null;
-          } | null;
-        } | null;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "donationwidget";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        methods?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "autogiro";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "avtalegiro";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "bank";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "swish";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vipps";
-            }
-        >;
-        single_donation_text?: string;
-        monthly_donation_text?: string;
-        amount_context?: {
-          preset_amounts_recurring?: Array<{
-            amount?: number;
-            subtext?: string;
-            _key: string;
-          }>;
-          preset_amounts_single?: Array<{
-            amount?: number;
-            subtext?: string;
-            _key: string;
-          }>;
-          custom_amount_text?: string;
-        };
-        smart_distribution_context?: {
-          smart_distribution_radiobutton_text?: string;
-          custom_distribution_radiobutton_text?: string;
-          smart_distribution_label_text?: string;
-          smart_distribution_description?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          smart_distribution_description_links?: Array<{
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            _key: string;
-            [internalGroqTypeReferenceTo]?: "link";
-          }>;
-        };
-        donation_input_error_templates?: {
-          donation_sum_error_template?: string;
-          donation_distribution_cause_areas_sum_error_template?: string;
-          donation_distribution_cause_areas_negative_error_template?: string;
-          donation_distribution_cause_areas_organization_sum_error_template?: string;
-          donation_distribution_cause_areas_organization_negative_error_template?: string;
-        };
-        pane1_button_text?: string;
-        anon_button_text?: string;
-        name_placeholder?: string;
-        name_invalid_error_text?: string;
-        email_placeholder?: string;
-        email_invalid_error_text?: string;
-        tax_deduction_selector_text?: string;
-        tax_deduction_ssn_placeholder?: string;
-        tax_deduction_ssn_invalid_error_text?: string;
-        tax_deduction_tooltip_text?: string;
-        newsletter_selector_text?: string;
-        privacy_policy_text?: string;
-        privacy_policy_link?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "navitem";
-        };
-        pane2_button_text?: string;
-        pane3_referrals_title?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "generic_page";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "giftcardteaser";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "givewellstamp";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        links?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
-        }>;
-        quote?: string;
-        quotee?: string;
-        quotee_position?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "interventionwidgetoutputconfiguration";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        interventions?: Array<
-          {
-            _key: string;
-          } & Intervention
-        >;
-        explanation_label?: string;
-        explanation_text?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        explanation_links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "link";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        url?: string;
-        newtab?: boolean;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "navitem";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        page?:
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "agreements";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "article_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "articles";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "criteria";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "donations";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "generic_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "profile";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "results";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "support";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "tax";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vippsagreement";
-            };
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "organization";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name?: string;
-        subtitle?: string;
-        abbriviation?: string;
-        oneliner?: string;
-        content?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        intervention_type?: string;
-        invervention_cost?: string;
-        intervention_effect?: string;
-        logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        links_header?: string;
-        links?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
-        }>;
-        widget_button?: {
-          label?: string;
-          cause_area_id?: number;
-          organization_id?: number;
-        };
-        active?: boolean;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "pageheader";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        inngress?: string;
-        coverPhoto?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        layout?: "centered" | "coverPhoto" | "default" | "hero";
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        seoTitle?: string;
-        seoDescription?: string;
-        seoKeywords?: string;
-        seoImage?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        cannonicalUrl?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "philantropicteaser";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        button?: {
-          text?: string;
-          link?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "navitem";
-          };
-        };
-        people?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contributor";
-        }>;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "pointlist";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        numbered?: boolean;
-        options?: {
-          layout?: "left" | "top";
-        };
-        points?: Array<
-          {
-            _key: string;
-          } & Pointlistpoint
-        >;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "profile";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title_template?: string;
-        info_configuration?: {
-          name_label?: string;
-          email_label?: string;
-          newsletter_label?: string;
-          save_button_label?: string;
-          success_message?: string;
-          failure_message?: string;
-        };
-        info_title?: string;
-        tax_subtitle?: string;
-        tax?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        tax_link?: string;
-        data_subtitle?: string;
-        data?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        data_link?: string;
-        read_more_label?: string;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "results";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "resultssection";
-        }>;
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "resultssection";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heading?: string;
-        nodivider?: boolean;
-        inverted?: boolean;
-        padded?: boolean;
-        ypadded?: boolean;
-        blocks?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contactinfo";
-            }
-          | ({
-              _key: string;
-            } & Cumulativedonationsgraph)
-          | ({
-              _key: string;
-            } & Fullimage)
-          | ({
-              _key: string;
-            } & Giveblock)
-          | ({
-              _key: string;
-            } & Links)
-          | ({
-              _key: string;
-            } & Normalimage)
-          | ({
-              _key: string;
-            } & Paragraph)
-          | ({
-              _key: string;
-            } & Referralgraph)
-          | ({
-              _key: string;
-            } & Resultsoutput)
-        >;
-        hidden?: boolean;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "role";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        id?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "sanity.fileAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        source?: SanityAssetSourceData;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "site_settings";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        accent_color?: string;
-        description?: string;
-        logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        main_navigation?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-          | ({
-              _key: string;
-            } & Navgroup)
-        >;
-        donate_label?: string;
-        donate_label_short?: string;
-        donate_label_title?: string;
-        contact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contactinfo";
-        };
-        main_currency?: "DKK" | "EUR" | "NOK" | "SEK" | "USD";
-        main_locale?: "en" | "et" | "no" | "sv";
-        footer_columns?: Array<{
-          links?: Array<
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "link";
-              }
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "navitem";
-              }
-          >;
-          _key: string;
-        }>;
-        footer_to_top_label?: string;
-        footer_newsletter_heading?: string;
-        footer_newsletter_form_url?: string;
-        footer_newsletter_send_label?: string;
-        cookie_banner_configuration?: {
-          title?: string;
-          description?: string;
-          privacy_policy_link?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "navitem";
-          };
-          accept_button_text?: string;
-          decline_button_text?: string;
-          last_major_change?: string;
-          expired_template?: string;
-        };
-        not_found_title?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "support";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        questionandanswergroups?: Array<
-          {
-            _key: string;
-          } & Questionandanswergroup
-        >;
-        contact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contactinfo";
-        };
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "swish";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        prompt?: {
-          title?: string;
-          scan_text?: string;
-          redirect_text?: string;
-        };
-        success?: {
-          title?: string;
-          text?: string;
-        };
-        error?: {
-          title?: string;
-          text?: string;
-        };
-        declined?: {
-          title?: string;
-          text?: string;
-        };
-        cancelled?: {
-          title?: string;
-          text?: string;
-        };
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "tax";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        features?: Array<
-          | ({
-              _key: string;
-            } & Abouttaxdeductions)
-          | ({
-              _key: string;
-            } & Metareceipt)
-          | ({
-              _key: string;
-            } & Taxstatements)
-          | ({
-              _key: string;
-            } & Taxunits)
-        >;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "teasers";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        teasers?: Array<
-          {
-            _key: string;
-          } & Teasersitem
-        >;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "testimonial";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        quote?: string;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        quotee?: string;
-        quotee_background?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "vipps-anonymous";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: string;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "vipps";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        agreement_page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "vippsagreement";
-        };
-        anonymous_page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "vipps-anonymous";
-        };
-        selector_text?: string;
-        recurring_title?: string;
-        recurring_selector_earliest_text?: string;
-        recurring_selector_choose_date_text?: string;
-        recurring_selector_date_picker_configuration?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-        };
-        recurring_button_text?: string;
-        single_title?: string;
-        single_button_text?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "vippsagreement";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-      }
-    | {
-        _id: string;
-        _type: "wealthcalculatorconfiguration";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        calculator_input_configuration?: {
-          subtitle_label?: string;
-          period?: "monthly" | "yearly";
-          income_input_configuration?: {
-            placeholder?: string;
-            thousand_separator?: string;
-            currency_label?: string;
-            description?: string;
-          };
-          children_input_configuration?: {
-            placeholder?: string;
-            options?: Array<string>;
-          };
-          adults_input_configuration?: {
-            placeholder?: string;
-            options?: Array<string>;
-          };
-        };
-        slider_configuration?: {
-          donation_percentage_input_configuration?: {
-            template_string?: string;
-          };
-        };
-        x_axis_label?: string;
-        data_explanation_label?: string;
-        data_explanation?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        };
-        donation_percentage?: number;
-        income_percentile_label_template_string?: string;
-        income_percentile_after_donation_label_template_string?: string;
-        aggregate_estimated_impact: null;
-        desktop_donations_table_configuration: null;
-        mobile_donations_table_configuration: null;
-        donations_details_configuration: null;
-        slug: null;
-      }
-  >;
-};
-
-// Source: pages/dashboard/ProfilePage.tsx
-// Variable: fetchProfilePage
-// Query: {  "settings": *[_type == "site_settings"] {    title,  },  "dashboard": *[_id == "dashboard"] {    dashboard_slug {      current    },  },  "page": *[_id == "profile"] {    ...,    slug {      current    },  },}
-export type FetchProfilePageResult = {
-  settings: Array<{
-    title: string | null;
-  }>;
-  dashboard: Array<
-    | {
-        dashboard_slug: null;
-      }
-    | {
-        dashboard_slug: {
-          current: string | null;
-        } | null;
-      }
-  >;
-  page: Array<
-    | {
-        _id: string;
-        _type: "aggregateestimatedimpact";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        org_grant_template_string?: string;
-        org_direct_template_string?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "agreements";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        pending_agreements_box_configuration?: {
-          single_pending_agreement_title?: string;
-          multiple_pending_agreements_title_template?: string;
-          single_pending_agreement_text?: string;
-          multiple_pending_agreements_text_template?: string;
-        };
-        active_list_configuration?: Agreementlistconfiguration;
-        inactive_list_configuration?: Agreementlistconfiguration;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "article_page";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "articleheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "articleheader";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        inngress?: string;
-        published?: string;
-        seoTitle?: string;
-        seoDescription?: string;
-        seoImage?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        cannonicalUrl?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "articles";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        related_articles_label?: string;
-        see_all_articles_label?: string;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "autogiro";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        manual_recurring_option_config?: {
-          title?: string;
-          sum_label?: string;
-          account_number_label?: string;
-          payment_numberexplanatory_text?: string;
-          payment_number_label?: string;
-          instruction_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          complete_button_text?: string;
-        };
-        recurring_manual_option_config?: {
-          title?: string;
-          explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          payernumber_label?: string;
-          date_selector_config?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-          };
-          complete_button_text?: string;
-        };
-        recurring_form_option_config?: {
-          title?: string;
-          explanation_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          payernumber_label?: string;
-          button_text?: string;
-          button_link?: string;
-        };
-        completed_text?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "avtalegiro";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        selector_earliest_text?: string;
-        selector_choose_date_text?: string;
-        date_selector_configuration?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-        };
-        button_text?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "bank";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        title?: string;
-        explanatory_text?: string;
-        explanatory_text_email_template?: string;
-        kontonr_title?: string;
-        kontonr?: string;
-        kid_title?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "category";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "citation";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        type?:
-          | "article"
-          | "book"
-          | "misc"
-          | "note"
-          | "podcast"
-          | "video"
-          | "website"
-          | "workingpaper";
-        author?: string;
-        title?: string;
-        journal?: string;
-        year?: string;
-        volume?: string;
-        number?: string;
-        pages?: string;
-        edition?: number;
-        publisher?: string;
-        address?: string;
-        accessed?: string;
-        timestamp?: string;
-        serie?: string;
-        number_in_serie?: string;
-        url?: string;
-        notetitle?: string;
-        note?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contactinfo";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: string;
-        phone?: string;
-        email?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contentsection";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heading?: string;
-        nodivider?: boolean;
-        inverted?: boolean;
-        padded?: boolean;
-        ypadded?: boolean;
-        blocks?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contactinfo";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contributorlist";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "discountratecomparison";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "giftcardteaser";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "givewellstamp";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "philantropicteaser";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "pointlist";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "teasers";
-            }
-          | ({
-              _key: string;
-            } & Accordion)
-          | ({
-              _key: string;
-            } & Blocktables)
-          | ({
-              _key: string;
-            } & Columns)
-          | ({
-              _key: string;
-            } & Fullimage)
-          | ({
-              _key: string;
-            } & Fullvideo)
-          | ({
-              _key: string;
-            } & Giveblock)
-          | ({
-              _key: string;
-            } & Htmlembed)
-          | ({
-              _key: string;
-            } & Inngress)
-          | ({
-              _key: string;
-            } & Interventionwidget)
-          | ({
-              _key: string;
-            } & Introsection)
-          | ({
-              _key: string;
-            } & Links)
-          | ({
-              _key: string;
-            } & Newslettersignup)
-          | ({
-              _key: string;
-            } & Normalimage)
-          | ({
-              _key: string;
-            } & Organizationslist)
-          | ({
-              _key: string;
-            } & Paragraph)
-          | ({
-              _key: string;
-            } & Questionandanswergroup)
-          | ({
-              _key: string;
-            } & Quote)
-          | ({
-              _key: string;
-            } & Splitview)
-          | ({
-              _key: string;
-            } & Splitviewhtml)
-          | ({
-              _key: string;
-            } & Testimonials)
-          | ({
-              _key: string;
-            } & Videoembed)
-          | ({
-              _key: string;
-            } & Wealthcalculator)
-          | ({
-              _key: string;
-            } & Wealthcalculatorteaser)
-        >;
-        hidden?: boolean;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contributor";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        name?: string;
-        email?: string;
-        role?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "role";
-        };
-        subrole?: string;
-        order?: number;
-        additional?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "contributorlist";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        role?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "role";
-        };
-        contributors?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contributor";
-        }>;
-        displayimages?: boolean;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "criteria";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "dashboard";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        main_navigation?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-          | ({
-              _key: string;
-            } & Navgroup)
-        >;
-        dashboard_logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        dashboard_label?: string;
-        logout_label?: string;
-        login_error_configuration?: {
-          login_button_label?: string;
-          login_abort_label?: string;
-        };
-        missing_name_modal_configuration?: {
-          title?: string;
-          description?: string;
-          confirm_label?: string;
-          cancel_label?: string;
-          failure_message?: string;
-          success_message?: string;
-        };
-        dashboard_slug?: Slug;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "dateselectorconfig";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        payment_date_format_template?: string;
-        payment_date_last_day_of_month_template?: string;
-        last_day_of_month_label?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "discountratecomparison";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        discount_rate_min?: number;
-        discount_rate_max?: number;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "donations";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        year_menu_total_title?: string;
-        aggregate_estimated_impact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "aggregateestimatedimpact";
-        };
-        sum_all_times_template_string?: string;
-        sum_year_template_string?: string;
-        desktop_donations_table_configuration?: Donationstableconfiguration;
-        mobile_donations_table_configuration?: Donationstableconfiguration;
-        donations_details_configuration?: Donationstabledetailsconfiguration;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "donationwidget";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        methods?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "autogiro";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "avtalegiro";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "bank";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "swish";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vipps";
-            }
-        >;
-        single_donation_text?: string;
-        monthly_donation_text?: string;
-        amount_context?: {
-          preset_amounts_recurring?: Array<{
-            amount?: number;
-            subtext?: string;
-            _key: string;
-          }>;
-          preset_amounts_single?: Array<{
-            amount?: number;
-            subtext?: string;
-            _key: string;
-          }>;
-          custom_amount_text?: string;
-        };
-        smart_distribution_context?: {
-          smart_distribution_radiobutton_text?: string;
-          custom_distribution_radiobutton_text?: string;
-          smart_distribution_label_text?: string;
-          smart_distribution_description?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          smart_distribution_description_links?: Array<{
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            _key: string;
-            [internalGroqTypeReferenceTo]?: "link";
-          }>;
-        };
-        donation_input_error_templates?: {
-          donation_sum_error_template?: string;
-          donation_distribution_cause_areas_sum_error_template?: string;
-          donation_distribution_cause_areas_negative_error_template?: string;
-          donation_distribution_cause_areas_organization_sum_error_template?: string;
-          donation_distribution_cause_areas_organization_negative_error_template?: string;
-        };
-        pane1_button_text?: string;
-        anon_button_text?: string;
-        name_placeholder?: string;
-        name_invalid_error_text?: string;
-        email_placeholder?: string;
-        email_invalid_error_text?: string;
-        tax_deduction_selector_text?: string;
-        tax_deduction_ssn_placeholder?: string;
-        tax_deduction_ssn_invalid_error_text?: string;
-        tax_deduction_tooltip_text?: string;
-        newsletter_selector_text?: string;
-        privacy_policy_text?: string;
-        privacy_policy_link?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "navitem";
-        };
-        pane2_button_text?: string;
-        pane3_referrals_title?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "generic_page";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "giftcardteaser";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "givewellstamp";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        links?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
-        }>;
-        quote?: string;
-        quotee?: string;
-        quotee_position?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "interventionwidgetoutputconfiguration";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        interventions?: Array<
-          {
-            _key: string;
-          } & Intervention
-        >;
-        explanation_label?: string;
-        explanation_text?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        explanation_links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "link";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        url?: string;
-        newtab?: boolean;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "navitem";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        page?:
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "agreements";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "article_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "articles";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "criteria";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "donations";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "generic_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "profile";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "results";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "support";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "tax";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vippsagreement";
-            };
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "organization";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name?: string;
-        subtitle?: string;
-        abbriviation?: string;
-        oneliner?: string;
-        content?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        intervention_type?: string;
-        invervention_cost?: string;
-        intervention_effect?: string;
-        logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        links_header?: string;
-        links?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "link";
-        }>;
-        widget_button?: {
-          label?: string;
-          cause_area_id?: number;
-          organization_id?: number;
-        };
-        active?: boolean;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "pageheader";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        inngress?: string;
-        coverPhoto?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        layout?: "centered" | "coverPhoto" | "default" | "hero";
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        seoTitle?: string;
-        seoDescription?: string;
-        seoKeywords?: string;
-        seoImage?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        cannonicalUrl?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "philantropicteaser";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        description?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        links?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "link";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-        >;
-        button?: {
-          text?: string;
-          link?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "navitem";
-          };
-        };
-        people?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contributor";
-        }>;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "pointlist";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        numbered?: boolean;
-        options?: {
-          layout?: "left" | "top";
-        };
-        points?: Array<
-          {
-            _key: string;
-          } & Pointlistpoint
-        >;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "profile";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title_template?: string;
-        info_configuration?: {
-          name_label?: string;
-          email_label?: string;
-          newsletter_label?: string;
-          save_button_label?: string;
-          success_message?: string;
-          failure_message?: string;
-        };
-        info_title?: string;
-        tax_subtitle?: string;
-        tax?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        tax_link?: string;
-        data_subtitle?: string;
-        data?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        data_link?: string;
-        read_more_label?: string;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "results";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "resultssection";
-        }>;
-        sitemap_priority?: number;
-        category?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "category";
-        };
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "resultssection";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heading?: string;
-        nodivider?: boolean;
-        inverted?: boolean;
-        padded?: boolean;
-        ypadded?: boolean;
-        blocks?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "contactinfo";
-            }
-          | ({
-              _key: string;
-            } & Cumulativedonationsgraph)
-          | ({
-              _key: string;
-            } & Fullimage)
-          | ({
-              _key: string;
-            } & Giveblock)
-          | ({
-              _key: string;
-            } & Links)
-          | ({
-              _key: string;
-            } & Normalimage)
-          | ({
-              _key: string;
-            } & Paragraph)
-          | ({
-              _key: string;
-            } & Referralgraph)
-          | ({
-              _key: string;
-            } & Resultsoutput)
-        >;
-        hidden?: boolean;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "role";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        id?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "sanity.fileAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        source?: SanityAssetSourceData;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "site_settings";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        accent_color?: string;
-        description?: string;
-        logo?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        main_navigation?: Array<
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              _key: string;
-              [internalGroqTypeReferenceTo]?: "navitem";
-            }
-          | ({
-              _key: string;
-            } & Navgroup)
-        >;
-        donate_label?: string;
-        donate_label_short?: string;
-        donate_label_title?: string;
-        contact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contactinfo";
-        };
-        main_currency?: "DKK" | "EUR" | "NOK" | "SEK" | "USD";
-        main_locale?: "en" | "et" | "no" | "sv";
-        footer_columns?: Array<{
-          links?: Array<
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "link";
-              }
-            | {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                _key: string;
-                [internalGroqTypeReferenceTo]?: "navitem";
-              }
-          >;
-          _key: string;
-        }>;
-        footer_to_top_label?: string;
-        footer_newsletter_heading?: string;
-        footer_newsletter_form_url?: string;
-        footer_newsletter_send_label?: string;
-        cookie_banner_configuration?: {
-          title?: string;
-          description?: string;
-          privacy_policy_link?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "navitem";
-          };
-          accept_button_text?: string;
-          decline_button_text?: string;
-          last_major_change?: string;
-          expired_template?: string;
-        };
-        not_found_title?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "support";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        questionandanswergroups?: Array<
-          {
-            _key: string;
-          } & Questionandanswergroup
-        >;
-        contact?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contactinfo";
-        };
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "swish";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        selector_text?: string;
-        prompt?: {
-          title?: string;
-          scan_text?: string;
-          redirect_text?: string;
-        };
-        success?: {
-          title?: string;
-          text?: string;
-        };
-        error?: {
-          title?: string;
-          text?: string;
-        };
-        declined?: {
-          title?: string;
-          text?: string;
-        };
-        cancelled?: {
-          title?: string;
-          text?: string;
-        };
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "tax";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title?: string;
-        features?: Array<
-          | ({
-              _key: string;
-            } & Abouttaxdeductions)
-          | ({
-              _key: string;
-            } & Metareceipt)
-          | ({
-              _key: string;
-            } & Taxstatements)
-          | ({
-              _key: string;
-            } & Taxunits)
-        >;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "teasers";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        teasers?: Array<
-          {
-            _key: string;
-          } & Teasersitem
-        >;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "testimonial";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        quote?: string;
-        image?: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        };
-        quotee?: string;
-        quotee_background?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "vipps-anonymous";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: string;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "vipps";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        agreement_page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "vippsagreement";
-        };
-        anonymous_page?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "vipps-anonymous";
-        };
-        selector_text?: string;
-        recurring_title?: string;
-        recurring_selector_earliest_text?: string;
-        recurring_selector_choose_date_text?: string;
-        recurring_selector_date_picker_configuration?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "dateselectorconfig";
-        };
-        recurring_button_text?: string;
-        single_title?: string;
-        single_button_text?: string;
-        slug: null;
-      }
-    | {
-        _id: string;
-        _type: "vippsagreement";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        header?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "pageheader";
-        };
-        content?: Array<{
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          _key: string;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        }>;
-        sitemap_priority?: number;
-        slug: {
-          current: string | null;
-        } | null;
-      }
-    | {
-        _id: string;
-        _type: "wealthcalculatorconfiguration";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        calculator_input_configuration?: {
-          subtitle_label?: string;
-          period?: "monthly" | "yearly";
-          income_input_configuration?: {
-            placeholder?: string;
-            thousand_separator?: string;
-            currency_label?: string;
-            description?: string;
-          };
-          children_input_configuration?: {
-            placeholder?: string;
-            options?: Array<string>;
-          };
-          adults_input_configuration?: {
-            placeholder?: string;
-            options?: Array<string>;
-          };
-        };
-        slider_configuration?: {
-          donation_percentage_input_configuration?: {
-            template_string?: string;
-          };
-        };
-        x_axis_label?: string;
-        data_explanation_label?: string;
-        data_explanation?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "contentsection";
-        };
-        donation_percentage?: number;
-        income_percentile_label_template_string?: string;
-        income_percentile_after_donation_label_template_string?: string;
-        slug: null;
-      }
-  >;
-};
-
-// Source: components/main/layout/layout.tsx
-// Variable: query
-// Query:   {    "settings": *[_type == "site_settings"] {      donate_label_short,      donate_label_title,      accent_color    }  }
-export type QueryResult = {
-  settings: Array<{
-    donate_label_short: string | null;
-    donate_label_title: string | null;
-    accent_color: string | null;
-  }>;
-};
-
-// Source: components/shared/layout/Footer/Footer.tsx
-// Variable: footerQuery
-// Query:   {    "data": *[_type == "site_settings"] {      _id,      footer_columns[] {        _key,        links[] {          _type == 'navitem' => @ {            ...,            "slug": page->slug.current          },          _type == 'link' => @ {            ...          },        }      },      footer_to_top_label,      footer_newsletter_heading,      footer_newsletter_form_url,      footer_newsletter_send_label    }  }
-export type FooterQueryResult = {
-  data: Array<{
-    _id: string;
-    footer_columns: Array<{
-      _key: string;
-      links: Array<{}> | null;
-    }> | null;
-    footer_to_top_label: string | null;
-    footer_newsletter_heading: string | null;
-    footer_newsletter_form_url: string | null;
-    footer_newsletter_send_label: string | null;
-  }>;
-};
-
-// Source: components/shared/components/Widget/components/Widget.tsx
-// Variable: widgetQuery
-// Query:   {    "widget": *[_type == "donationwidget"] {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,      methods[] {         _type == 'reference' => @->{          _type == 'bank' => {            ...          },          _type == 'vipps' => {            _id,            selector_text,            recurring_title,            recurring_selector_earliest_text,            recurring_selector_choose_date_text,            recurring_selector_date_picker_configuration->,            recurring_button_text,            single_title,            single_button_text,          },          _type == 'swish' => {            ...          },          _type == 'autogiro' => {            ...,            recurring_manual_option_config {              ...,              date_selector_config->            }          },          _type == 'avtalegiro' => {            ...,            date_selector_configuration->          },        },      },      privacy_policy_link {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      }    },  }
-export type WidgetQueryResult = {
-  widget: Array<{
-    _id: string;
-    _type: "donationwidget";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    methods: Array<
-      | {
-          _id: string;
-          _type: "autogiro";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          selector_text?: string;
-          title?: string;
-          manual_recurring_option_config?: {
-            title?: string;
-            sum_label?: string;
-            account_number_label?: string;
-            payment_numberexplanatory_text?: string;
-            payment_number_label?: string;
-            instruction_text?: Array<{
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-              listItem?: "bullet" | "number";
-              markDefs?: Array<{
-                href?: string;
-                _type: "link";
-                _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-            }>;
-            complete_button_text?: string;
-          };
-          recurring_manual_option_config: {
-            title?: string;
-            explanation_text?: Array<{
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-              listItem?: "bullet" | "number";
-              markDefs?: Array<{
-                href?: string;
-                _type: "link";
-                _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-            }>;
-            payernumber_label?: string;
-            date_selector_config: {
-              _id: string;
-              _type: "dateselectorconfig";
-              _createdAt: string;
-              _updatedAt: string;
-              _rev: string;
-              payment_date_format_template?: string;
-              payment_date_last_day_of_month_template?: string;
-              last_day_of_month_label?: string;
-            } | null;
-            complete_button_text?: string;
-          } | null;
-          recurring_form_option_config?: {
-            title?: string;
-            explanation_text?: Array<{
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-              listItem?: "bullet" | "number";
-              markDefs?: Array<{
-                href?: string;
-                _type: "link";
-                _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-            }>;
-            payernumber_label?: string;
-            button_text?: string;
-            button_link?: string;
-          };
-          completed_text?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-        }
-      | {
-          _id: string;
-          _type: "avtalegiro";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          selector_text?: string;
-          title?: string;
-          selector_earliest_text?: string;
-          selector_choose_date_text?: string;
-          date_selector_configuration: {
-            _id: string;
-            _type: "dateselectorconfig";
-            _createdAt: string;
-            _updatedAt: string;
-            _rev: string;
-            payment_date_format_template?: string;
-            payment_date_last_day_of_month_template?: string;
-            last_day_of_month_label?: string;
-          } | null;
-          button_text?: string;
-        }
-      | {
-          _id: string;
-          _type: "bank";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          selector_text?: string;
-          title?: string;
-          explanatory_text?: string;
-          explanatory_text_email_template?: string;
-          kontonr_title?: string;
-          kontonr?: string;
-          kid_title?: string;
-        }
-      | {
-          _id: string;
-          _type: "swish";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          selector_text?: string;
-          prompt?: {
-            title?: string;
-            scan_text?: string;
-            redirect_text?: string;
-          };
-          success?: {
-            title?: string;
-            text?: string;
-          };
-          error?: {
-            title?: string;
-            text?: string;
-          };
-          declined?: {
-            title?: string;
-            text?: string;
-          };
-          cancelled?: {
-            title?: string;
-            text?: string;
-          };
-        }
-      | {
-          _id: string;
-          selector_text: string | null;
-          recurring_title: string | null;
-          recurring_selector_earliest_text: string | null;
-          recurring_selector_choose_date_text: string | null;
-          recurring_selector_date_picker_configuration: {
-            _id: string;
-            _type: "dateselectorconfig";
-            _createdAt: string;
-            _updatedAt: string;
-            _rev: string;
-            payment_date_format_template?: string;
-            payment_date_last_day_of_month_template?: string;
-            last_day_of_month_label?: string;
-          } | null;
-          recurring_button_text: string | null;
-          single_title: string | null;
-          single_button_text: string | null;
-        }
-    > | null;
-    single_donation_text?: string;
-    monthly_donation_text?: string;
-    amount_context?: {
-      preset_amounts_recurring?: Array<{
-        amount?: number;
-        subtext?: string;
-        _key: string;
-      }>;
-      preset_amounts_single?: Array<{
-        amount?: number;
-        subtext?: string;
-        _key: string;
-      }>;
-      custom_amount_text?: string;
-    };
-    smart_distribution_context?: {
-      smart_distribution_radiobutton_text?: string;
-      custom_distribution_radiobutton_text?: string;
-      smart_distribution_label_text?: string;
-      smart_distribution_description?: Array<{
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }>;
-      smart_distribution_description_links?: Array<{
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        _key: string;
-        [internalGroqTypeReferenceTo]?: "link";
-      }>;
-    };
-    donation_input_error_templates?: {
-      donation_sum_error_template?: string;
-      donation_distribution_cause_areas_sum_error_template?: string;
-      donation_distribution_cause_areas_negative_error_template?: string;
-      donation_distribution_cause_areas_organization_sum_error_template?: string;
-      donation_distribution_cause_areas_organization_negative_error_template?: string;
-    };
-    pane1_button_text?: string;
-    anon_button_text?: string;
-    name_placeholder?: string;
-    name_invalid_error_text?: string;
-    email_placeholder?: string;
-    email_invalid_error_text?: string;
-    tax_deduction_selector_text?: string;
-    tax_deduction_ssn_placeholder?: string;
-    tax_deduction_ssn_invalid_error_text?: string;
-    tax_deduction_tooltip_text?: string;
-    newsletter_selector_text?: string;
-    privacy_policy_text?: string;
-    privacy_policy_link: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      slug: null;
-      pagetype: null;
-    } | null;
-    pane2_button_text?: string;
-    pane3_referrals_title?: string;
-    locale: "en" | "et" | "no" | "sv" | null;
-  }>;
-};

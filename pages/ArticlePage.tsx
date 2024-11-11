@@ -18,8 +18,9 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { TOC } from "../components/main/layout/TOC/TOC";
 import { stegaClean } from "@sanity/client/stega";
+import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
+import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -32,31 +33,6 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
   ]);
 };
 
-// Get TOC by traversing every property of the content object recursively and look for title. Return a flat array of titles, and the key path of the object with a title.
-const getTOC = (
-  content: any & { _key: string; _type: string },
-): Array<{ title: string; _key: string }> => {
-  if (!content) return [];
-  if (content._type === "citation" && content._type !== "link") return [];
-
-  const result = Object.entries(content as object).reduce(
-    (acc: Array<{ title: string; _key: string }>, [key, value]) => {
-      if (key === "title") {
-        return [{ title: value, _key: content._key || "toc" }, ...acc];
-      }
-
-      if (typeof value === "object") {
-        return [...acc, ...getTOC(value)];
-      }
-
-      return acc;
-    },
-    [],
-  );
-
-  return result;
-};
-
 const ArticlePage = withStaticProps(
   async ({ slug, draftMode = false }: { slug: string; draftMode: boolean }) => {
     const appStaticProps = await getAppStaticProps({ draftMode });
@@ -64,7 +40,12 @@ const ArticlePage = withStaticProps(
     let result = await getClient(draftMode ? token : undefined).fetch<{
       page: any;
       relatedArticles: RelatedArticle[];
-      settings: { title: string; cookie_banner_configuration: CookieBannerConfiguration }[];
+      settings: {
+        title: string;
+        cookie_banner_configuration: CookieBannerConfiguration;
+        donate_label: string;
+        accent_color?: string;
+      }[];
     }>(fetchArticle, { slug });
 
     return {
@@ -116,9 +97,17 @@ const ArticlePage = withStaticProps(
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
 
-      {/*data.toc && <TOC items={data.toc}></TOC> */}
-
       <BlockContentRenderer content={content} />
+
+      <SectionContainer>
+        <GiveBlock
+          heading={page.default_give_block.heading}
+          paragraph={page.default_give_block.paragraph}
+          donateLabel={data.result.settings[0].donate_label}
+          accentColor={data.result.settings[0].accent_color}
+        ></GiveBlock>
+      </SectionContainer>
+
       <RelatedArticles
         relatedArticles={relatedArticles}
         relatedArticlesLabel={page.related_articles_label}
@@ -147,6 +136,8 @@ const fetchArticle = groq`
         "slug": page->slug.current
       }
     },
+    donate_label,
+    accent_color
   },
   "page": *[_type == "article_page"  && slug.current == $slug][0] {
     header {
@@ -158,6 +149,7 @@ const fetchArticle = groq`
     ${pageContentQuery}
     "related_articles_label": *[_id=="articles"][0].related_articles_label,
     "see_all_articles_label": *[_id=="articles"][0].see_all_articles_label,
+    "default_give_block": *[_id=="articles"][0].default_give_block,
     slug { current },
   },
   "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {

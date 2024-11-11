@@ -1,0 +1,52 @@
+.container {
+  margin: 2rem 0;
+
+  position: relative;
+  width: 100%;
+  display: flex;
+
+  max-width: 760px;
+  width: 100%;
+
+  flex-direction: column;
+
+  h2 {
+    margin-bottom: 0rem;
+  }
+}
+
+.container.inverted {
+  color: var(--secondary);
+  background: var(--primary);
+  padding: 2rem 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -5rem;
+    width: 5rem;
+    height: 100%;
+    background: var(--primary);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -5rem;
+    width: 5rem;
+    height: 100%;
+    background: var(--primary);
+  }
+}
+
+.outputInfo {
+  margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .container {
+    max-width: 640px;
+  }
+}

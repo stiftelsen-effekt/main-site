@@ -78,6 +78,7 @@ import itncoverage from "./types/itncoverage";
 import { pages } from "./pages/_pages";
 import { dashboardpages } from "./dashboard/_dashboardPages";
 import plausiblerevenuetracker from "./types/plausiblerevenuetracker";
+import opendistributionbutton from "./types/opendistributionbutton";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -128,6 +129,7 @@ export const types = [
   giveblock,
   givewellstamp,
   organizationslist,
+  opendistributionbutton,
   vippsAnonymous,
   aggregateestimatedimpact,
   donationstableconfiguration,

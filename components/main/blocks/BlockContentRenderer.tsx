@@ -36,6 +36,8 @@ import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 import { stegaClean } from "@sanity/client/stega";
 import dynamic from "next/dynamic";
 import { PlausibleRevenueTracker } from "./PlausibleRevenueTracker/PlausibleRevenueTracker";
+import { OpenDistributionButton } from "./OpenDistributionButton/OpenDistributionButton";
+import { Opendistributionbutton } from "../../../studio/sanity.types";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -339,6 +341,14 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               <OrganizationsList
                 key={block._key || block._id}
                 organizations={block.organizations}
+              />
+            );
+          }
+          case "opendistributionbutton": {
+            return (
+              <OpenDistributionButton
+                key={block._key || block._id}
+                {...(block as Opendistributionbutton)}
               />
             );
           }

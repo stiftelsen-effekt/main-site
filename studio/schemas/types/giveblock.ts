@@ -1,4 +1,4 @@
-import { Star, Zap } from "react-feather";
+import { Star } from "react-feather";
 
 export default {
   name: "giveblock",

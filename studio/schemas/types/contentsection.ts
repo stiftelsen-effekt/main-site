@@ -80,6 +80,7 @@ export default {
         { type: "giveblock" },
         { type: "givewellstamp" },
         { type: "organizationslist" },
+        { type: "opendistributionbutton" },
         { type: "giftcardteaser" },
         { type: "discountratecomparison" },
         { type: "itncoverage" },

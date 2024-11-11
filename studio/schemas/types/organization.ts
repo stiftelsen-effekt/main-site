@@ -92,6 +92,12 @@ export default {
       ],
     },
     {
+      name: "organization_page",
+      title: "Organization page",
+      type: "reference",
+      to: [{ type: "generic_page" }],
+    },
+    {
       name: "active",
       title: "Active",
       type: "boolean",

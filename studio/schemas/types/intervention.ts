@@ -24,5 +24,15 @@ export default {
       rows: 2,
       title: "Template string",
     },
+    {
+      name: "organization_id",
+      type: "number",
+      title: "Organization ID",
+    },
+    {
+      name: "cause_area_id",
+      type: "number",
+      title: "Cause area ID",
+    },
   ],
 } as const;

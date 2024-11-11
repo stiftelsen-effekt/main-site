@@ -11,7 +11,12 @@ describe("InterventionWidget", () => {
       })
       .as("getImpactEvaluations");
 
-    cy.visit(`/`);
+    cy.visit({
+      url: "/",
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
   });
 
   it("Should by default show more than 0 intervention output", () => {

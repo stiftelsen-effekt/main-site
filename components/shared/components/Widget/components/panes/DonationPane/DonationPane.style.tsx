@@ -63,6 +63,10 @@ export const SumButtonsWrapper = styled.div`
       margin: 0;
       border-radius: 10px;
       font-size: 28px;
+
+      &::before {
+        font-size: 16px;
+      }
     }
 
     i {

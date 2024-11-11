@@ -19,6 +19,10 @@ export default {
       of: [{ type: "block" }],
     },
     {
+      name: "donate_button",
+      type: "boolean",
+    },
+    {
       name: "explanation_links",
       type: "array",
       of: [{ type: "link" }, { type: "navitem" }],

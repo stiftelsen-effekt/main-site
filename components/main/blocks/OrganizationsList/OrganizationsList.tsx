@@ -4,6 +4,7 @@ import styles from "./OrganizationsList.module.scss";
 import { PortableText } from "@portabletext/react";
 import { WidgetContext } from "../../layout/layout";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import Link from "next/link";
 
 type OrganizationWidgetButton = {
   label: string;
@@ -23,6 +24,11 @@ type Organization = {
   links: any;
   links_header: string;
   widget_button: OrganizationWidgetButton;
+  organization_page_slug?: {
+    slug?: {
+      current: string;
+    };
+  };
 };
 
 export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
@@ -41,8 +47,17 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
           >
             <div className={styles.meta}>
               <div>
-                <h4>{organization.name}</h4>
-                <h5>{organization.name}</h5>
+                {organization.organization_page_slug ? (
+                  <div className={styles.headerwrapper}>
+                    <Link href={`/${organization.organization_page_slug.slug?.current}`}>
+                      <h4>{organization.name}</h4>
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    <h4>{organization.name}</h4>
+                  </>
+                )}
 
                 <p className={styles.interventionSubtitle}>{organization.subtitle}</p>
               </div>
@@ -53,11 +68,13 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
               </div>
             </div>
             <div className={styles.description}>
-              <p className="inngress">{organization.oneliner}</p>
+              {organization.oneliner && <p className="inngress">{organization.oneliner}</p>}
               <PortableText value={organization.content}></PortableText>
               {organization.links && (
                 <>
-                  <p className="inngress">{organization.links_header}</p>
+                  {organization.links_header && (
+                    <p className="inngress">{organization.links_header}</p>
+                  )}
                   <Links links={organization.links} />
                 </>
               )}
@@ -68,6 +85,7 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
                     onClick={() => {
                       setWidgetContext({
                         open: true,
+                        prefilledSum: null,
                         prefilled: [
                           {
                             causeAreaId: organization.widget_button.cause_area_id,

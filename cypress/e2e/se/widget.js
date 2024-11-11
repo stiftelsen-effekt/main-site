@@ -1,5 +1,3 @@
-import mockDonor from "../../fixtures/no/donor.json";
-
 describe("Widget", () => {
   beforeEach(() => {
     cy.fixture("cause_areas")
@@ -24,7 +22,12 @@ describe("Widget", () => {
       }).as("getReferrals");
     });
 
-    cy.visit("/");
+    cy.visit({
+      url: "/",
+      headers: {
+        "x-vercel-skip-toolbar": "1",
+      },
+    });
     cy.wait(500);
     cy.get("[data-cy=gi-button]").click();
   });

@@ -20,6 +20,7 @@ export type PrefilledDistribution = {
 export interface WidgetPaneProps extends ComponentProps<typeof WidgetType> {
   darkMode?: boolean;
   prefilled: PrefilledDistribution | null;
+  prefilledSum: number | null;
 }
 
 export const WidgetPane: React.FC<WidgetPaneProps> = ({ darkMode, ...widgetProps }) => {
