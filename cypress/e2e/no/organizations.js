@@ -52,6 +52,7 @@ describe("Organizations Page", () => {
 
     cy.get("[data-cy=org-1]").clear();
     cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=show-all-organizations-button]").click();
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type("50");
 
@@ -77,6 +78,7 @@ describe("Organizations Page", () => {
     cy.get("[data-cy=org-1]").clear();
 
     cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=show-all-organizations-button]").click();
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type("50");
 
@@ -102,6 +104,7 @@ describe("Organizations Page", () => {
 
     cy.get("[data-cy=org-1]").clear();
     cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=show-all-organizations-button]").click();
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type("50");
 
@@ -194,6 +197,7 @@ describe("Organizations Page", () => {
 
     cy.get("[data-cy=org-1]").clear();
     cy.get("[data-cy=org-1]").type("50");
+    cy.get("[data-cy=show-all-organizations-button]").click();
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type("50");
 

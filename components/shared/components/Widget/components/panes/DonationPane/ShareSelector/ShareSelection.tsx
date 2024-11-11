@@ -134,6 +134,7 @@ const ShareList: React.FC<{
         <ShowAllOrganizations
           onClick={() => setShowNonPrefilledShares(!showNonPrefilledShares)}
           open={showNonPrefilledShares}
+          data-cy="show-all-organizations-button"
         >
           Vis alle organisasjoner
         </ShowAllOrganizations>
