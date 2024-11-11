@@ -6,10 +6,7 @@ import {
 } from "../Graphs/Results/Outputs/Outputs";
 import styles from "./ResultsOutput.module.scss";
 import { thousandize } from "../../../../util/formatting";
-import { AfricaMap } from "../AfricaMap/AfricaMap";
-import { AsiaMap } from "../AsiaMap/AsiaMap";
-import { useEffect, useMemo, useRef, useState } from "react";
-import AnimateHeight from "react-animate-height";
+import { useMemo, useState } from "react";
 import { ResultsOutputMaps } from "./Maps/ResultsOutputMaps";
 import {
   OrganizationSparkline,
@@ -18,6 +15,7 @@ import {
 import { LinkComponent, Links, LinksProps } from "../../../main/blocks/Links/Links";
 import { GraphContextData } from "../Graphs/Shared/GraphContext/GraphContext";
 import { NavLink } from "../Navbar/Navbar";
+import { Toggle } from "../Widget/components/shared/Toggle/Toggle";
 
 export type TransformedMonthlyDonationsPerOutput = {
   via: string;
@@ -83,6 +81,23 @@ export const ResultsOutput: React.FC<{
       }),
     [graphData],
   );
+  const maxY = useMemo(() => {
+    const groupedByPeriod = transformedMonthlyDonationsPerOutput.reduce<{ [key: string]: number }>(
+      (acc, curr) => {
+        const year = curr.period.getFullYear().toString();
+        const org = curr.organization;
+        acc[`${year}-${org}`] = (acc[`${year}-${org}`] || 0) + curr.sum;
+        return acc;
+      },
+      {},
+    );
+
+    return Math.ceil(Math.max(...Object.values(groupedByPeriod), 0));
+  }, [transformedMonthlyDonationsPerOutput]);
+
+  console.log(`maxY: ${maxY} for ${graphData.output}`);
+
+  const [normalizeYAxis, setNormalizeYAxis] = useState(false);
 
   return (
     <div className={styles.wrapper}>
@@ -113,7 +128,20 @@ export const ResultsOutput: React.FC<{
           Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med{" "}
           {graphData.output.toLowerCase()}.
         </p>
-        <OrganizationSparklineLegend />
+        <div className={styles.headerControls}>
+          <OrganizationSparklineLegend />
+          {graphData.total.organizations.length > 1 && (
+            <div className={styles.normalizeYAxis}>
+              <div className={styles.toggleWrapper}>
+                <Toggle
+                  active={normalizeYAxis}
+                  onChange={(active: boolean) => setNormalizeYAxis(active)}
+                />
+              </div>
+              Standardiser y-akse
+            </div>
+          )}
+        </div>
         {graphData.total.organizations
           .map((o) => Object.entries(o))
           .map(([[organization, value]], i) => {
@@ -140,6 +168,7 @@ export const ResultsOutput: React.FC<{
                     transformedMonthlyDonationsPerOutput={transformedMonthlyDonationsPerOutput.filter(
                       (t) => t.organization === organization,
                     )}
+                    maxY={normalizeYAxis ? maxY : undefined}
                   ></OrganizationSparkline>
                 </div>
               </div>
