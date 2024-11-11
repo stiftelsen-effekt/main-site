@@ -18,12 +18,32 @@ export const ShareContainer = styled.div`
   align-items: flex-end;
 `;
 
+export const PrefilledSharesWrapper = styled.div`
+  display: grid;
+  grid-auto-rows: max-content;
+  row-gap: 10px;
+`;
+
 export const ShareLink = styled.a`
   border: none !important;
 
   &:hover > label {
     cursor: pointer;
     text-decoration: underline;
+  }
+`;
+
+export const ShowAllOrganizations = styled.span<{ open?: boolean }>`
+  cursor: pointer;
+  user-select: none;
+  font-size: 16px;
+
+  &::after {
+    content: "↓";
+    display: inline-block;
+    transition: transform 0.2s ease-in-out;
+    margin-left: 10px;
+    transform: ${({ open }) => (open ? "rotate(180deg)" : "rotate(0)")};
   }
 `;
 
