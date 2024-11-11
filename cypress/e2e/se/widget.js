@@ -1,5 +1,3 @@
-import mockDonor from "../../fixtures/no/donor.json";
-
 describe("Widget", () => {
   beforeEach(() => {
     cy.fixture("cause_areas")
