@@ -89,17 +89,23 @@
 
 @media only screen and (max-width: 1180px) {
   .container {
-    padding: 0 2rem;
+    padding: 0 5vw;
+    width: 100vw;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .container h3 {
     margin-top: 30px;
     margin-bottom: 20px;
-    max-width: 80%;
+    font-size: 2rem;
+    text-align: left;
   }
 
   .container p {
     margin-bottom: 0;
+    margin-top: 0;
+    font-size: 1rem;
   }
 
   .container::before {
@@ -110,5 +116,9 @@
   .container::after {
     height: 45px;
     bottom: -45px;
+  }
+
+  .button {
+    font-size: 1rem;
   }
 }
