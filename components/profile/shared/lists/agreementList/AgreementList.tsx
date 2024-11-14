@@ -6,10 +6,15 @@ import {
   TaxUnit,
   VippsAgreement,
 } from "../../../../../models";
-import { thousandize } from "../../../../../util/formatting";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { AgreementDetails, AgreementDetailsConfiguration } from "./AgreementDetails";
+import { useState } from "react";
+import { StoppedAgreementFeedback } from "../../../agreements/StoppedAgreementFeedback/StoppedAgreementFeedback";
+import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
+import { thousandize } from "../../../../../util/formatting";
+
+export type AgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
 
 type AgreementRow = {
   ID: number;
@@ -17,7 +22,7 @@ type AgreementRow = {
   KID: string;
   date: number;
   amount: number;
-  type: "Vipps" | "AvtaleGiro" | "AutoGiro";
+  type: AgreementTypes;
   endpoint: string;
 };
 
@@ -47,6 +52,12 @@ export const AgreementList: React.FC<{
   expandable?: boolean;
   configuration: AgreementListConfiguration;
 }> = ({ avtalegiro, vipps, autogiro, distributions, taxUnits, expandable, configuration }) => {
+  const [agreementCancelled, setAgreementCancelled] = useState<{
+    agreementType: AgreementTypes;
+    agreementId: string;
+    agreementKid: string;
+  } | null>(null);
+
   const headers = configuration.columns.map((column) => ({
     label: column.title,
     width: column.width,
@@ -102,12 +113,25 @@ export const AgreementList: React.FC<{
     details: (
       <AgreementDetails
         type={agreement.type}
+        agreementKid={agreement.KID}
         endpoint={agreement.endpoint}
+        agreementId={agreement.ID.toString()}
         inputDistribution={distributions.get(agreement.KID) as Distribution}
         taxUnits={taxUnits}
         inputSum={agreement.amount}
         inputDate={agreement.date}
         configuration={configuration.details_configuration}
+        agreementCancelled={(
+          agreementType: AgreementTypes,
+          agreementId: string,
+          agreementKid: string,
+        ) =>
+          setAgreementCancelled({
+            agreementType: agreementType,
+            agreementId: agreementId,
+            agreementKid: agreementKid,
+          })
+        }
       />
     ),
     element: agreement,
@@ -120,15 +144,30 @@ export const AgreementList: React.FC<{
   );
 
   return (
-    <GenericList
-      emptyPlaceholder={emptyPlaceholder}
-      title={configuration.title}
-      supplementalInformation={configuration.subtitle_text}
-      headers={headers}
-      rows={rows}
-      expandable={expandable}
-      proportions={[20, 70]}
-    />
+    <>
+      <GenericList
+        emptyPlaceholder={emptyPlaceholder}
+        title={configuration.title}
+        supplementalInformation={configuration.subtitle_text}
+        headers={headers}
+        rows={rows}
+        expandable={expandable}
+        proportions={[20, 70]}
+      />
+      <Lightbox
+        open={!!agreementCancelled}
+        onConfirm={() => setAgreementCancelled(null)}
+        onCancel={() => setAgreementCancelled(null)}
+      >
+        {agreementCancelled && (
+          <StoppedAgreementFeedback
+            agreementType={agreementCancelled.agreementType}
+            agreementId={agreementCancelled.agreementId}
+            KID={agreementCancelled.agreementKid}
+          />
+        )}
+      </Lightbox>
+    </>
   );
 };
 

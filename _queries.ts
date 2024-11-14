@@ -219,6 +219,18 @@ export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
   };
 };
 
+export const useAgreementFeedbackTypes = () => {
+  const { data, error, isValidating } = useSWR(`/agreementfeedback/types`, (url) => fetcher(url));
+  const loading = !data && !error;
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
 export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(`/organizations/active/`, (url) =>
     fetcher(url, fetchToken),
