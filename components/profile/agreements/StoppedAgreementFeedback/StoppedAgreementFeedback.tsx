@@ -40,18 +40,6 @@ export const StoppedAgreementFeedback = ({
   const { loading, isValidating, data, error } = useAgreementFeedbackTypes();
   const { getAccessTokenSilently } = useAuth0();
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (!data) {
-    return <div>No data</div>;
-  }
-
   const [selectedFeedback, setSelectedFeedback] = useState<FeedbackSelection[]>([]);
   const operationQueue = useRef<QueuedOperation[]>([]);
   const processingQueue = useRef<boolean>(false);
@@ -199,6 +187,18 @@ export const StoppedAgreementFeedback = ({
       ]);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <div>No data</div>;
+  }
 
   return (
     <div>
