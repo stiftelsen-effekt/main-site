@@ -24,6 +24,9 @@ export const getNorwegianTaxEstimate = async (
   try {
     const response = await fetch(`/api/tax?locale=NO`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ income: adjustedIncome }),
     });
 

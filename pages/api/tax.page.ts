@@ -6,14 +6,9 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
   if (!req.body) {
     return res.status(400).json({ error: "Invalid request, missing request body" });
   }
-  let income: number;
-  try {
-    income = JSON.parse(req.body).income;
-    if (!income) {
-      return res.status(400).json({ error: "Invalid request, missing income" });
-    }
-  } catch (error) {
-    return res.status(400).json({ error: "Invalid request, invalid JSON" });
+  let income: number = req.body.income;
+  if (!income) {
+    return res.status(400).json({ error: "Invalid request, missing income" });
   }
 
   const cacheKey = `tax-${req.query.locale}-${income}`;
