@@ -63,5 +63,5 @@ export const PageHeader: React.FC<{
 export const ctaButtonStyleOverrides = {
   alignSelf: "start",
   padding: ".75rem 4rem",
-  marginTop: "2rem",
+  marginTop: "1rem",
 };
