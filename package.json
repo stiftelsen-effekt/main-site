@@ -16,7 +16,8 @@
     "test": "jest",
     "format": "prettier --write \"./**/*{js,ts,jsx,tsx,json,md,css,scss,yml}\"",
     "prepare": "husky install",
-    "analyze": "cross-env ANALYZE=true npm run build"
+    "analyze": "cross-env ANALYZE=true npm run build",
+    "generate:wealthmountain": "npx tsx components/main/blocks/WealthCalculator/data/processInput.ts"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
