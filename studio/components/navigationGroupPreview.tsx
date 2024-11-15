@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PreviewProps } from "sanity";
 import { Card, Flex, Stack, Text } from "@sanity/ui";
 import { Clock, Eye, List } from "react-feather";
@@ -41,24 +41,46 @@ export const NavigationGroupPreview = (
     item7slug,
     item8slug,
     item9slug,
-  ].filter(Boolean);
+  ];
 
   const [loading, setLoading] = useState(true);
   const [pageViews, setPageViews] = useState<null | number>(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetchPageViews(slugs)
-      .then((pageViews) => {
-        setPageViews(pageViews);
-      })
-      .catch((err) => {
+    let isMounted = true;
+
+    const loadPageViews = async () => {
+      try {
+        setLoading(true);
+        const views = await fetchPageViews(slugs.filter(Boolean));
+        if (isMounted) {
+          setPageViews(views);
+        }
+      } catch (err) {
         console.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [props, setLoading, fetchPageViews]);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadPageViews();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    item1slug,
+    item2slug,
+    item3slug,
+    item4slug,
+    item5slug,
+    item6slug,
+    item7slug,
+    item8slug,
+    item9slug,
+  ]);
 
   return (
     <Flex padding={2} align="center">

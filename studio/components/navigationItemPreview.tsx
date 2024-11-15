@@ -23,7 +23,7 @@ export const NavigationItemPreview = (props: PreviewProps & { title: string; slu
       .finally(() => {
         setLoading(false);
       });
-  }, [props.slug, setLoading]);
+  }, [slug, setLoading]);
 
   return (
     <Flex padding={2} align="center">
