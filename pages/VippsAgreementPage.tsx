@@ -23,7 +23,7 @@ export const getVippsAgreementPagePath = async () => {
   return slug?.split("/") || null;
 };
 
-export const VippsAgreement = withStaticProps(
+export const VippsAgreementPage = withStaticProps(
   async ({ draftMode = false }: { draftMode: boolean }) => {
     const appStaticProps = await getAppStaticProps({ draftMode });
     const result = await getClient(draftMode ? token : undefined).fetch<FetchVippsResult>(
@@ -141,5 +141,3 @@ const fetchVipps = groq`
   }
 }
 `;
-
-export default VippsAgreement;

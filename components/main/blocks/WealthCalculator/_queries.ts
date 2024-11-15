@@ -24,24 +24,54 @@ export const getNorwegianTaxEstimate = async (
   const response = await fetch(`/api/tax?locale=NO`, {
     method: "POST",
     body: JSON.stringify({
-      skatteberegningsgrunnlag: {
-        skatteberegningsgrunnlagsobjekt: [
+      inntektsaar: "2024",
+      tekniskInntektsaar: 2023,
+      visningsdata: {
+        arbeidsgiver: [
           {
-            tekniskNavn: "loennsinntektNaturalytelseMv",
-            beloep: Math.round(adjustedIncome).toString(),
+            digest: "a1c6687301bb5a7a177c05743539babb",
+            id: "arbeidsgiver-id-1",
+            organisasjonsnavn: "arbeidsgiver",
+            samledeYtelserFraArbeidsgiverPerBehandlingsart: [
+              {
+                behandlingsart: "LONN",
+                beloep: {
+                  beloep: "0",
+                  beloepIValuta: Math.round(adjustedIncome).toString(),
+                  valutakurs: "1",
+                  valutakode: "NOK",
+                  trygdeEllerSkattemessigUnntak: "",
+                  metodeVedDobbeltbeskatning: "",
+                },
+                id: "loennstype-id-1",
+              },
+            ],
           },
         ],
+        inntektsaar: "2024",
+        konto: [
+          {
+            bankensNavn: "bankensNavn",
+            digest: "f18932676174cc9958ac7aa4c94a367d",
+            id: "konto-id-1",
+            innskudd: {
+              beloep: "0",
+              beloepIValuta: "0",
+              valutakurs: "1",
+            },
+            kontonummer: "kontonr",
+          },
+        ],
+        partsnummer: "0",
+        skatteplikt: {
+          skattepliktTilNorge: "global",
+          skattested: "0301",
+          tolvdelVedArbeidsoppholdINorge: "12",
+        },
       },
       skatteplikt: {
-        skattesubjekt: {
-          personligSkattesubjekt: {
-            skattepliktTilNorge: "GLOBAL",
-            alderIInntektsaar: "27",
-            tolvdelVedArbeidsoppholdINorge: "12",
-          },
-          skattested: "0301",
-          skattestedITiltakssone: false,
-        },
+        alder: 28,
+        skattestedITiltakssone: false,
       },
     }),
   });
@@ -49,10 +79,10 @@ export const getNorwegianTaxEstimate = async (
   const json = await response.json();
 
   if (periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY) {
-    return json.hovedperson.beregnetSkatt.beregnetSkatt / 12;
+    return json.beregningsresultat.beregnetSkatt.beregnetSkatt / 12;
   }
 
-  return json.hovedperson.beregnetSkatt.beregnetSkatt;
+  return json.beregningsresultat.beregnetSkatt.beregnetSkatt;
 };
 
 export const getSwedishTaxEstimate = async (

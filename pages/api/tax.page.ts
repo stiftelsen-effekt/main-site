@@ -20,10 +20,13 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
     }
   } else if (req?.query?.locale === "NO") {
     try {
-      const result = await fetch(`https://skatteberegning.app.skatteetaten.no/2023`, {
-        body: req.body,
-        method: "POST",
-      });
+      const result = await fetch(
+        `https://skattekalkulator.formueinntekt.skatt.skatteetaten.no/api/skattemelding-core/skatteberegner`,
+        {
+          body: req.body,
+          method: "POST",
+        },
+      );
       const data = await result.json();
       return res.status(200).json(data);
     } catch (error) {

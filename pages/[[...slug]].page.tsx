@@ -1,10 +1,9 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { fetchRouterContext } from "../context/RouterContext";
-import ArticlePage, { getArticlePaths } from "./ArticlePage";
+import { ArticlePage, getArticlePaths } from "./ArticlePage";
 import { GenericPage, getGenericPagePaths } from "./GenericPage";
-import { getAppStaticProps } from "./_app.page";
 import { ArticlesPage } from "./ArticlesPage";
-import VippsAgreementPage, { getVippsAgreementPagePath } from "./VippsAgreementPage";
+import { VippsAgreementPage } from "./VippsAgreementPage";
 import { DonationsPage, getDonationsPageSubpaths } from "./dashboard/DonationsPage";
 import { AgreementsPage } from "./dashboard/AgreementsPage";
 import { ProfilePage } from "./dashboard/ProfilePage";

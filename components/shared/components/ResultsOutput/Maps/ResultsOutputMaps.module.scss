@@ -47,13 +47,12 @@
       .map {
         position: absolute;
         width: 100%;
+        opacity: 0;
+        transition: all 0.3s ease;
 
         svg {
           width: 100%;
         }
-
-        opacity: 0;
-        transition: all 0.3s ease;
 
         &:first-child {
           transform: translateX(-10%);
