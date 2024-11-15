@@ -77,6 +77,7 @@
     "@types/styled-components": "^5.1.25",
     "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",
+    "csv-parse": "^5.5.6",
     "cypress": "^13.7.2",
     "cypress-dotenv": "^2.0.0",
     "cypress-localstorage-commands": "^1.7.0",
