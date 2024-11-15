@@ -33,6 +33,7 @@
     "@sanity/visual-editing": "^2.1.9",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
     "@stdlib/stats-base-dists-truncated-normal": "^0.2.0",
+    "@vercel/kv": "^3.0.0",
     "babel-jest": "^29.7.0",
     "d3": "^7.8.2",
     "jwt-decode": "^3.1.2",
