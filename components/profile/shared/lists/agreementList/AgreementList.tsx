@@ -33,6 +33,7 @@ type AgreementListConfigurationColumn = {
   width?: string;
   payment_date_format_template?: string;
   payment_date_last_day_of_month_template?: string;
+  hide_on_mobile?: boolean;
 };
 
 type AgreementListConfiguration = {
@@ -58,7 +59,11 @@ export const AgreementList: React.FC<{
     agreementKid: string;
   } | null>(null);
 
-  const headers = configuration.columns.map((column) => ({
+  const columns = configuration.columns.filter(
+    (column) => window && !(window.innerWidth < 1180 && column.hide_on_mobile),
+  );
+
+  const headers = columns.map((column) => ({
     label: column.title,
     width: column.width,
   }));
@@ -107,7 +112,7 @@ export const AgreementList: React.FC<{
   const rows: ListRow<AgreementRow>[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
     defaultExpanded: false,
-    cells: configuration.columns.map((column) => ({
+    cells: columns.map((column) => ({
       value: formatColumnValue(column, agreement[column.value]),
     })),
     details: (
