@@ -55,12 +55,9 @@ describe("Navigation", () => {
     // We have some symbols in the font set to semibold numbers
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 10% avinntekten din er du blantde ",
+      "Om du donerer 10% avinntekten din er du blant",
     );
-    cy.get("[data-cy=wealthcalculator-graph]").should(
-      "contain.text",
-      "Du er i dag blant de ϥϬϤϭrikeste i verden.",
-    );
+    cy.get("[data-cy=wealthcalculator-graph]").should("contain.text", "Du er i dag blant");
   });
 
   it("Should update graph when children is changed", () => {
@@ -71,7 +68,7 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 10% avinntekten din er du blantde ",
+      "Om du donerer 10% avinntekten din er du blant",
     );
   });
 
@@ -83,7 +80,7 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 10% avinntekten din er du blantde",
+      "Om du donerer 10% avinntekten din er du blant",
     );
   });
 
@@ -94,7 +91,7 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 20% avinntekten din er du blantde ϧϭ rikeste i verden.",
+      "Om du donerer 20% avinntekten din er du blant",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should("contain.text", "Du er i dag blant");
   });
@@ -108,10 +105,10 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 25% avinntekten din er du blantde ϧϬϨϭ rikeste i verden.",
+      "Om du donerer 24% avinntekten din er du blant",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should("contain.text", "Du er i dag blant");
-    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "25");
+    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "24");
   });
 
   it("Should allow users to tap the slider track to change percentage", () => {
@@ -121,10 +118,10 @@ describe("Navigation", () => {
 
     cy.get("[data-cy=wealthcalculator-graph]").should(
       "contain.text",
-      "Om du donerer 39% avinntekten din er du blantde",
+      "Om du donerer 38% avinntekten din er du blant",
     );
     cy.get("[data-cy=wealthcalculator-graph]").should("contain.text", "Du er i dag blant");
-    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "39");
+    cy.get("[data-cy=wealthcalculator-donation-percentage-input]").should("have.value", "38");
   });
 
   it("Should be possible to expand and collapse the explanation", () => {
