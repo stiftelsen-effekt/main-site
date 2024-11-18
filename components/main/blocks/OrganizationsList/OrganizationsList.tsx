@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 import { WidgetContext } from "../../layout/layout";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import Link from "next/link";
+import { usePlausible } from "next-plausible";
 
 type OrganizationWidgetButton = {
   label: string;
@@ -34,6 +35,7 @@ type Organization = {
 export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
   organizations,
 }) => {
+  const plausible = usePlausible();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   return (
@@ -83,6 +85,16 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
                   <EffektButton
                     data-cy={`organizations-list-button-${organization.widget_button.organization_id}`}
                     onClick={() => {
+                      plausible("OpenDonationWidget", {
+                        props: {
+                          page: window.location.pathname,
+                        },
+                      });
+                      plausible("OpenDonationWidgetOrganizationListCTA", {
+                        props: {
+                          page: window.location.pathname,
+                        },
+                      });
                       setWidgetContext({
                         open: true,
                         prefilledSum: null,
