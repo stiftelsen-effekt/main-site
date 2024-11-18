@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/studio' && npm i --prefix studio && cross-env SANITY_STUDIO_SITE_URL=$NEXT_PUBLIC_SITE_URL SANITY_STUDIO_VERCEL_ENV=$VERCEL_ENV SANITY_STUDIO_VERCEL_URL=$VERCEL_URL SANITY_STUDIO_EFFEKT_API_URL=$SANITY_STUDIO_EFFEKT_API_URL npm run build --prefix studio -- ../public/studio -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/studio' && npm i --prefix studio && dotenv -e .env.sanity.build -- npm run build --prefix studio -- ../public/studio -y && echo 'Done'",
     "build": "next build",
     "sanity": "dotenv -e .env.local npm run start -- --prefix studio",
     "sanity:edit": "dotenv -e .env.local npm run edit -- --prefix studio",
@@ -16,7 +16,8 @@
     "test": "jest",
     "format": "prettier --write \"./**/*{js,ts,jsx,tsx,json,md,css,scss,yml}\"",
     "prepare": "husky install",
-    "analyze": "cross-env ANALYZE=true npm run build"
+    "analyze": "cross-env ANALYZE=true npm run build",
+    "generate:wealthmountain": "npx tsx components/main/blocks/WealthCalculator/data/processInput.ts"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
@@ -32,6 +33,7 @@
     "@sanity/visual-editing": "^2.1.9",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
     "@stdlib/stats-base-dists-truncated-normal": "^0.2.0",
+    "@vercel/kv": "^3.0.0",
     "babel-jest": "^29.7.0",
     "d3": "^7.8.2",
     "jwt-decode": "^3.1.2",
@@ -75,6 +77,7 @@
     "@types/styled-components": "^5.1.25",
     "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",
+    "csv-parse": "^5.5.6",
     "cypress": "^13.7.2",
     "cypress-dotenv": "^2.0.0",
     "cypress-localstorage-commands": "^1.7.0",

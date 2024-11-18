@@ -1,3 +1,5 @@
+import { GenericPagePreview } from "../../components/genericPagePreview";
+
 export default {
   title: "Article",
   name: "article_page",
@@ -40,6 +42,17 @@ export default {
   preview: {
     select: {
       title: "header.title",
+      seoTitle: "header.seoTitle",
+      slug: "slug.current",
     },
+    prepare: (selection: { title: string; seoTitle; slug: string }) => {
+      return {
+        title: selection.title || selection.seoTitle || undefined,
+        slug: `artikler/${selection.slug}`,
+      };
+    },
+  },
+  components: {
+    preview: GenericPagePreview,
   },
 } as const;

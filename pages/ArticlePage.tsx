@@ -33,7 +33,7 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
   ]);
 };
 
-const ArticlePage = withStaticProps(
+export const ArticlePage = withStaticProps(
   async ({ slug, draftMode = false }: { slug: string; draftMode: boolean }) => {
     const appStaticProps = await getAppStaticProps({ draftMode });
 
@@ -158,5 +158,3 @@ const fetchArticle = groq`
   }
 }
 `;
-
-export default ArticlePage;
