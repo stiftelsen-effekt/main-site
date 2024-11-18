@@ -87,6 +87,31 @@ export default {
       ],
     },
     {
+      name: "agreement_cancelled_lightbox",
+      title: "Agreement cancelled lightbox",
+      type: "object",
+      fields: [
+        {
+          name: "title",
+          title: "Title",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "text",
+          title: "Text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "lightbox_button_text",
+          title: "Lightbox button text",
+          type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
+    {
       name: "distribution_configuration",
       title: "Distribution configuration",
       type: "object",

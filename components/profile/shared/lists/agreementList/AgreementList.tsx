@@ -154,19 +154,26 @@ export const AgreementList: React.FC<{
         expandable={expandable}
         proportions={[20, 70]}
       />
-      <Lightbox
-        open={!!agreementCancelled}
-        onConfirm={() => setAgreementCancelled(null)}
-        onCancel={() => setAgreementCancelled(null)}
-      >
-        {agreementCancelled && (
-          <StoppedAgreementFeedback
-            agreementType={agreementCancelled.agreementType}
-            agreementId={agreementCancelled.agreementId}
-            KID={agreementCancelled.agreementKid}
-          />
+      {configuration.details_configuration &&
+        configuration.details_configuration.agreement_cancelled_lightbox && (
+          <Lightbox
+            open={!!agreementCancelled}
+            onConfirm={() => setAgreementCancelled(null)}
+            confirmLabel={
+              configuration.details_configuration.agreement_cancelled_lightbox.lightbox_button_text
+            }
+          >
+            {agreementCancelled && (
+              <StoppedAgreementFeedback
+                title={configuration.details_configuration.agreement_cancelled_lightbox.title}
+                text={configuration.details_configuration.agreement_cancelled_lightbox.text}
+                agreementType={agreementCancelled.agreementType}
+                agreementId={agreementCancelled.agreementId}
+                KID={agreementCancelled.agreementKid}
+              />
+            )}
+          </Lightbox>
         )}
-      </Lightbox>
     </>
   );
 };

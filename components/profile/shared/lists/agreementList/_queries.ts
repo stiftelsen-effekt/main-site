@@ -383,6 +383,7 @@ export const addStoppedAgreementFeedback = async (
   KID: string,
   agreementType: AgreementTypes,
   reasonId: number,
+  otherComment: string | undefined,
   token: string,
 ) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
@@ -399,6 +400,7 @@ export const addStoppedAgreementFeedback = async (
         agreementId: agreementId,
         agreementType: agreementType,
         reasonId: reasonId,
+        otherComment: otherComment,
       }),
     });
 

@@ -3,7 +3,19 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
   font-size: 0.8rem;
-  padding-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+.otherFeedback {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 2rem;
+
+  label {
+    margin-bottom: 0.5rem;
+  }
 }
 
 @media only screen and (max-width: 1180px) {

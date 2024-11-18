@@ -220,7 +220,13 @@ export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
 };
 
 export const useAgreementFeedbackTypes = () => {
-  const { data, error, isValidating } = useSWR(`/agreementfeedback/types`, (url) => fetcher(url));
+  const { data, error, isValidating } = useSWR<
+    {
+      ID: number;
+      name: string;
+      isOther: boolean;
+    }[]
+  >(`/agreementfeedback/types`, (url) => fetcher(url));
   const loading = !data && !error;
 
   return {

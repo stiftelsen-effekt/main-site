@@ -49,6 +49,11 @@ export type AgreementDetailsConfiguration = {
     text: string;
     withdrawal_warning_text: string;
   };
+  agreement_cancelled_lightbox: {
+    title: string;
+    text: string;
+    lightbox_button_text: string;
+  };
   distribution_configuration: AgreementMultipleCauseAreaDetailsConfiguration;
 };
 

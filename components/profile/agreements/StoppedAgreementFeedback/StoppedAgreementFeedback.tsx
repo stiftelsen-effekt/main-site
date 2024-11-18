@@ -13,9 +13,13 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
 import { AlertCircle } from "react-feather";
+import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
+import { useDebouncedCallback } from "use-debounce";
+import { add } from "cypress/types/lodash";
 
 interface FeedbackSelection {
   feedbackTypeId: number;
+  otherComement?: string;
   backendId: string | undefined;
 }
 
@@ -23,6 +27,7 @@ type OperationType = "add" | "delete";
 
 interface QueuedOperation {
   feedbackTypeId: number;
+  otherComement?: string;
   type: OperationType;
   backendId?: string; // For delete operations
   timestamp: number;
@@ -33,6 +38,8 @@ export const StoppedAgreementFeedback = ({
   KID,
   agreementType,
 }: {
+  title: string;
+  text: string;
   agreementId: string;
   KID: string;
   agreementType: AgreementTypes;
@@ -41,6 +48,7 @@ export const StoppedAgreementFeedback = ({
   const { getAccessTokenSilently } = useAuth0();
 
   const [selectedFeedback, setSelectedFeedback] = useState<FeedbackSelection[]>([]);
+  const [otherComment, setOtherComment] = useState<string | undefined>(undefined);
   const operationQueue = useRef<QueuedOperation[]>([]);
   const processingQueue = useRef<boolean>(false);
 
@@ -48,6 +56,30 @@ export const StoppedAgreementFeedback = ({
     operationQueue.current.push(operation);
     processQueue();
   };
+
+  const debouncedSetOtherComment = useDebouncedCallback(
+    (val: string, feedbackId: number, existingBackendId?: string) => {
+      if (val === "" || val === undefined || val === null) {
+        if (existingBackendId) {
+          addToQueue({
+            feedbackTypeId: feedbackId,
+            type: "delete",
+            timestamp: Date.now(),
+            backendId: existingBackendId,
+          });
+        }
+      } else {
+        addToQueue({
+          feedbackTypeId: feedbackId,
+          type: "add",
+          otherComement: val,
+          timestamp: Date.now(),
+        });
+      }
+    },
+    750,
+    { trailing: true },
+  );
 
   const processQueue = async () => {
     if (processingQueue.current || operationQueue.current.length === 0) {
@@ -66,6 +98,7 @@ export const StoppedAgreementFeedback = ({
           KID,
           agreementType,
           operation.feedbackTypeId,
+          operation.otherComement,
           token,
         );
 
@@ -209,19 +242,59 @@ export const StoppedAgreementFeedback = ({
           avslutter din avtale, slik at vi kan utvikle oss videre.
         </p>
         <div className={styles.grid}>
-          {data.map((feedbackType: { ID: number; name: string }) => {
-            return (
-              <EffektButton
-                key={feedbackType.ID}
-                squared
-                onClick={() => handleFeedbackToggle(feedbackType.ID)}
-                selected={selectedFeedback.some((f) => f.feedbackTypeId === feedbackType.ID)}
-                variant={EffektButtonVariant.SECONDARY}
-              >
-                {feedbackType.name}
-              </EffektButton>
-            );
-          })}
+          {data
+            .filter((d) => !d.isOther)
+            .map((feedbackType: { ID: number; name: string }) => {
+              return (
+                <EffektButton
+                  key={feedbackType.ID}
+                  squared
+                  onClick={() => handleFeedbackToggle(feedbackType.ID)}
+                  selected={selectedFeedback.some((f) => f.feedbackTypeId === feedbackType.ID)}
+                  variant={EffektButtonVariant.SECONDARY}
+                >
+                  {feedbackType.name}
+                </EffektButton>
+              );
+            })}
+        </div>
+        <div className={styles.otherFeedback}>
+          {data
+            .filter((d) => d.isOther)
+            .map((feedbackType: { ID: number; name: string }) => {
+              return (
+                <>
+                  <label>{feedbackType.name}:</label>
+                  <EffektTextInput
+                    key={feedbackType.ID}
+                    value={otherComment}
+                    onChange={(val) => {
+                      const existingSelection = selectedFeedback.find(
+                        (f) => f.feedbackTypeId === feedbackType.ID,
+                      );
+                      if (existingSelection) {
+                        setSelectedFeedback((prev) =>
+                          prev.map((f) =>
+                            f.feedbackTypeId === feedbackType.ID ? { ...f, otherComement: val } : f,
+                          ),
+                        );
+                        debouncedSetOtherComment(val, feedbackType.ID, existingSelection.backendId);
+                      } else {
+                        setSelectedFeedback((prev) => [
+                          ...prev,
+                          {
+                            feedbackTypeId: feedbackType.ID,
+                            otherComement: val,
+                            backendId: undefined,
+                          },
+                        ]);
+                        debouncedSetOtherComment(val, feedbackType.ID);
+                      }
+                    }}
+                  />
+                </>
+              );
+            })}
         </div>
       </div>
     </div>
