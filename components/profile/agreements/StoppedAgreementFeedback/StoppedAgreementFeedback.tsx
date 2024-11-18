@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 import { AlertCircle } from "react-feather";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
 import { useDebouncedCallback } from "use-debounce";
-import { add } from "cypress/types/lodash";
 
 interface FeedbackSelection {
   feedbackTypeId: number;
