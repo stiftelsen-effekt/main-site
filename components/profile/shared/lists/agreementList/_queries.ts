@@ -1,4 +1,5 @@
 import { Distribution } from "../../../../../models";
+import { AgreementTypes } from "./AgreementList";
 
 export const updateVippsAgreementDistribution = async (
   urlCode: string,
@@ -374,5 +375,70 @@ export const cancelAutoGiroAgreement = async (kid: string, token: string) => {
     }
   } catch (e) {
     return null;
+  }
+};
+
+export const addStoppedAgreementFeedback = async (
+  agreementId: string,
+  KID: string,
+  agreementType: AgreementTypes,
+  reasonId: number,
+  otherComment: string | undefined,
+  token: string,
+) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/agreementfeedback/stopped/${KID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        agreementId: agreementId,
+        agreementType: agreementType,
+        reasonId: reasonId,
+        otherComment: otherComment,
+      }),
+    });
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      throw new Error("Failed to add feedback");
+    } else {
+      return result.content; // Inserted id of the feedback record in DB
+    }
+  } catch (e) {
+    throw new Error("Failed to add feedback");
+  }
+};
+
+export const deleteStoppedAgreementFeedback = async (
+  feedbackId: string,
+  KID: string,
+  token: string,
+) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/agreementfeedback/stopped/${KID}/${feedbackId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+    });
+
+    // It's also okay if the feedback is not found, as it might have been deleted already
+    if (response.status !== 200 && response.status !== 404) {
+      throw new Error("Failed to delete feedback");
+    } else {
+      return true;
+    }
+  } catch (e) {
+    throw new Error("Failed to delete feedback");
   }
 };

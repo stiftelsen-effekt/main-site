@@ -119,6 +119,11 @@ export default {
               title: "Column width in % (optional)",
               type: "number",
             },
+            {
+              name: "hide_on_mobile",
+              title: "Hide on mobile",
+              type: "boolean",
+            },
           ],
           preview: {
             select: {

@@ -6,10 +6,15 @@ import {
   TaxUnit,
   VippsAgreement,
 } from "../../../../../models";
-import { thousandize } from "../../../../../util/formatting";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { AgreementDetails, AgreementDetailsConfiguration } from "./AgreementDetails";
+import { useState } from "react";
+import { StoppedAgreementFeedback } from "../../../agreements/StoppedAgreementFeedback/StoppedAgreementFeedback";
+import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
+import { thousandize } from "../../../../../util/formatting";
+
+export type AgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
 
 type AgreementRow = {
   ID: number;
@@ -17,7 +22,7 @@ type AgreementRow = {
   KID: string;
   date: number;
   amount: number;
-  type: "Vipps" | "AvtaleGiro" | "AutoGiro";
+  type: AgreementTypes;
   endpoint: string;
 };
 
@@ -28,6 +33,7 @@ type AgreementListConfigurationColumn = {
   width?: string;
   payment_date_format_template?: string;
   payment_date_last_day_of_month_template?: string;
+  hide_on_mobile?: boolean;
 };
 
 type AgreementListConfiguration = {
@@ -47,7 +53,17 @@ export const AgreementList: React.FC<{
   expandable?: boolean;
   configuration: AgreementListConfiguration;
 }> = ({ avtalegiro, vipps, autogiro, distributions, taxUnits, expandable, configuration }) => {
-  const headers = configuration.columns.map((column) => ({
+  const [agreementCancelled, setAgreementCancelled] = useState<{
+    agreementType: AgreementTypes;
+    agreementId: string;
+    agreementKid: string;
+  } | null>(null);
+
+  const columns = configuration.columns.filter(
+    (column) => window && !(window.innerWidth < 1180 && column.hide_on_mobile),
+  );
+
+  const headers = columns.map((column) => ({
     label: column.title,
     width: column.width,
   }));
@@ -96,18 +112,31 @@ export const AgreementList: React.FC<{
   const rows: ListRow<AgreementRow>[] = rowData.map((agreement) => ({
     id: agreement.ID.toString(),
     defaultExpanded: false,
-    cells: configuration.columns.map((column) => ({
+    cells: columns.map((column) => ({
       value: formatColumnValue(column, agreement[column.value]),
     })),
     details: (
       <AgreementDetails
         type={agreement.type}
+        agreementKid={agreement.KID}
         endpoint={agreement.endpoint}
+        agreementId={agreement.ID.toString()}
         inputDistribution={distributions.get(agreement.KID) as Distribution}
         taxUnits={taxUnits}
         inputSum={agreement.amount}
         inputDate={agreement.date}
         configuration={configuration.details_configuration}
+        agreementCancelled={(
+          agreementType: AgreementTypes,
+          agreementId: string,
+          agreementKid: string,
+        ) =>
+          setAgreementCancelled({
+            agreementType: agreementType,
+            agreementId: agreementId,
+            agreementKid: agreementKid,
+          })
+        }
       />
     ),
     element: agreement,
@@ -120,15 +149,37 @@ export const AgreementList: React.FC<{
   );
 
   return (
-    <GenericList
-      emptyPlaceholder={emptyPlaceholder}
-      title={configuration.title}
-      supplementalInformation={configuration.subtitle_text}
-      headers={headers}
-      rows={rows}
-      expandable={expandable}
-      proportions={[20, 70]}
-    />
+    <>
+      <GenericList
+        emptyPlaceholder={emptyPlaceholder}
+        title={configuration.title}
+        supplementalInformation={configuration.subtitle_text}
+        headers={headers}
+        rows={rows}
+        expandable={expandable}
+        proportions={[20, 70]}
+      />
+      {configuration.details_configuration &&
+        configuration.details_configuration.agreement_cancelled_lightbox && (
+          <Lightbox
+            open={!!agreementCancelled}
+            onConfirm={() => setAgreementCancelled(null)}
+            confirmLabel={
+              configuration.details_configuration.agreement_cancelled_lightbox.lightbox_button_text
+            }
+          >
+            {agreementCancelled && (
+              <StoppedAgreementFeedback
+                title={configuration.details_configuration.agreement_cancelled_lightbox.title}
+                text={configuration.details_configuration.agreement_cancelled_lightbox.text}
+                agreementType={agreementCancelled.agreementType}
+                agreementId={agreementCancelled.agreementId}
+                KID={agreementCancelled.agreementKid}
+              />
+            )}
+          </Lightbox>
+        )}
+    </>
   );
 };
 

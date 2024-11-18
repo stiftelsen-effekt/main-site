@@ -31,6 +31,7 @@ import {
   AgreementMultipleCauseAreaDetailsConfiguration,
 } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
 import { DatePickerInputConfiguration } from "../../../../shared/components/DatePicker/DatePickerInput";
+import { AgreementTypes } from "./AgreementList";
 
 export type AgreementDetailsConfiguration = {
   save_button_text: string;
@@ -48,18 +49,37 @@ export type AgreementDetailsConfiguration = {
     text: string;
     withdrawal_warning_text: string;
   };
+  agreement_cancelled_lightbox: {
+    title: string;
+    text: string;
+    lightbox_button_text: string;
+  };
   distribution_configuration: AgreementMultipleCauseAreaDetailsConfiguration;
 };
 
 export const AgreementDetails: React.FC<{
-  type: "Vipps" | "AvtaleGiro" | "AutoGiro";
+  type: AgreementTypes;
+  agreementId: string;
+  agreementKid: string;
   inputSum: number;
   inputDate: number;
   inputDistribution: Distribution;
   taxUnits: TaxUnit[];
   endpoint: string;
+  agreementCancelled: (type: AgreementTypes, agreementId: string, agreementKid: string) => void;
   configuration: AgreementDetailsConfiguration;
-}> = ({ type, inputSum, inputDate, inputDistribution, taxUnits, endpoint, configuration }) => {
+}> = ({
+  type,
+  agreementId,
+  agreementKid,
+  inputSum,
+  inputDate,
+  inputDistribution,
+  taxUnits,
+  endpoint,
+  agreementCancelled,
+  configuration,
+}) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
   // Parse and stringify to make a deep copy of the object
@@ -220,6 +240,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {
         successToast(configuration.toasts_configuration.success_text);
+        agreementCancelled(type, agreementId, agreementKid);
         mutate(`/donors/${getUserId(user)}/recurring/vipps/`);
       } else {
         failureToast(configuration.toasts_configuration.failure_text);
@@ -228,6 +249,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelAvtaleGiroAgreement(endpoint, token);
       if (cancelled) {
         successToast(configuration.toasts_configuration.success_text);
+        agreementCancelled(type, agreementId, agreementKid);
         mutate(`/donors/${getUserId(user)}/recurring/avtalegiro/`);
       } else {
         failureToast(configuration.toasts_configuration.failure_text);
@@ -236,6 +258,7 @@ export const AgreementDetails: React.FC<{
       const cancelled = await cancelAutoGiroAgreement(endpoint, token);
       if (cancelled) {
         successToast(configuration.toasts_configuration.success_text);
+        agreementCancelled(type, agreementId, agreementKid);
         mutate(`/donors/${getUserId(user)}/recurring/autogiro/`);
       } else {
         failureToast(configuration.toasts_configuration.failure_text);
@@ -332,8 +355,6 @@ export const AgreementDetails: React.FC<{
     );
   }
 };
-
-const saveAvtaleGiroAgreement = async () => {};
 
 const successToast = (text: string) =>
   toast.success(text, { icon: <Check size={24} color={"black"} /> });

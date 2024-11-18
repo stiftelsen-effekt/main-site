@@ -112,35 +112,41 @@
 }
 
 @media only screen and (max-width: 1180px) {
-  .values {
-    flex-direction: column;
-    row-gap: 1.5em;
-    font-size: 1rem;
+  .wrapper {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 2rem;
 
-    input {
-      width: 100%;
-    }
+    .values {
+      flex-direction: column;
+      row-gap: 1.5em;
+      font-size: 1rem;
 
-    & > div {
-      &.valuesDatePickerContainer {
+      input {
         width: 100%;
-
-        & > div {
-          width: 100%;
-        }
       }
 
-      &.valuesAmountContainer {
-        input {
+      & > div {
+        &.valuesDatePickerContainer {
           width: 100%;
+
+          & > div {
+            width: 100%;
+          }
         }
-      }
 
-      &.valuesTaxUnitSelectorContainer {
-        width: 100%;
+        &.valuesAmountContainer {
+          input {
+            width: 100%;
+          }
+        }
 
-        & > div {
+        &.valuesTaxUnitSelectorContainer {
           width: 100%;
+
+          & > div {
+            width: 100%;
+          }
         }
       }
     }
