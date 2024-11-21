@@ -21,9 +21,6 @@ export const CumulativeDonations: React.FC<{
   const resizeGraph = useCallback(() => {
     if (graphRef.current) {
       graphRef.current.innerHTML = "";
-      console.log(
-        `Resizing graph to ${graphRef.current.clientWidth}x${graphRef.current.clientHeight}`,
-      );
       setSize({ width: graphRef.current!.clientWidth, height: graphRef.current!.clientHeight });
     }
   }, [graphRef]);
@@ -34,7 +31,6 @@ export const CumulativeDonations: React.FC<{
       setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
       const resizeObserver = new ResizeObserver((entries) => {
         const newWidth = entries[0].contentRect.width;
-        console.log(newWidth, size.width);
         if (newWidth !== size.width) {
           debouncedResizeGraph();
         }
