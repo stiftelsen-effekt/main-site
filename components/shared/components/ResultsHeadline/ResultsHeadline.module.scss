@@ -1,0 +1,63 @@
+.wrapper {
+  width: 100%;
+  max-width: 960px;
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .subheader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      margin: 0;
+    }
+
+    .donorcount {
+      font-size: 1.8rem;
+    }
+
+    .lastupdated {
+      font-size: 0.8rem;
+    }
+  }
+
+  .outputs {
+    margin-top: 2rem;
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    max-width: 760px;
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .wrapper {
+    padding: 0;
+    align-items: flex-start;
+
+    h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    .subheader {
+      gap: 0.25rem;
+      align-items: flex-start;
+
+      .donorcount {
+        font-size: 1.2rem;
+      }
+
+      .lastupdated {
+        font-size: 0.6rem;
+      }
+    }
+  }
+}
