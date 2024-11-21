@@ -26,7 +26,6 @@ const CumulativeDonationsSkeleton = () => {
         overflow: "hidden",
       }}
     >
-      LOADING!
       <div
         style={{
           position: "absolute",

@@ -43,7 +43,7 @@ export const CumulativeDonations: React.FC<{
       resizeObserver.observe(graphRef.current);
       return () => resizeObserver.disconnect();
     }
-  }, [graphRef]);
+  }, [graphRef.current]);
 
   const transformedDonations = useMemo(() => transformDonations(dailyDonations), [dailyDonations]);
   const cumulativebinneddonations = useMemo(
