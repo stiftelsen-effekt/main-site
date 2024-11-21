@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import links from "./Links/Links.module.scss";
 import {
   SectionContainerProps,
@@ -13,6 +13,41 @@ import { GiveBlock } from "./GiveBlock/GiveBlock";
 import { ResultsGraphData } from "../../../pages/ResultsPage";
 import dynamic from "next/dynamic";
 import { stegaClean } from "@sanity/client/stega";
+import { ResultsHeadline } from "../../shared/components/ResultsHeadline/ResultsHeadline";
+
+const CumulativeDonationsSkeleton = () => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "670px",
+        backgroundColor: "#f3f4f6",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      LOADING!
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "-100%",
+          width: "100%",
+          height: "100%",
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)",
+          animation: "shimmer 1s infinite",
+        }}
+      />
+      <style>{`
+        @keyframes shimmer {
+          100% {
+            transform: translateX(200%);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
 
 /** Dynamic imports */
 const CumulativeDonations = dynamic(() =>
@@ -67,6 +102,30 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             <Links links={block.links}></Links>
                           </div>
                         );
+                      case "resultsheadline":
+                        const totalOutputs = block.outputs.map((output: string) => {
+                          const data = graphData.monthlyDonationsPerOutput.find(
+                            (o) => o.output === mapSanityOutputToDataOutput(output),
+                          );
+                          if (!data) {
+                            return "Did not find data for output type " + output;
+                          }
+                          return {
+                            name:
+                              data.output.indexOf("vitamin") > -1
+                                ? data.output
+                                : data.output.toLowerCase(),
+                            outputs: data.total.numberOfOutputs,
+                          };
+                        });
+
+                        return (
+                          <ResultsHeadline
+                            key={block._key || block._id}
+                            headlineNumbers={graphData.resultsHeadlineNumbers}
+                            totalOutputs={totalOutputs}
+                          />
+                        );
                       case "contactinfo":
                         return (
                           <ContactInfo
@@ -108,11 +167,13 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                       }
                       case "cumulativedonationsgraph":
                         return (
-                          <CumulativeDonations
-                            key={block._key || block._id}
-                            dailyDonations={graphData.dailyDonations}
-                            graphContext={block.graphcontext}
-                          />
+                          <Suspense fallback={<CumulativeDonationsSkeleton />}>
+                            <CumulativeDonations
+                              key={block._key || block._id}
+                              dailyDonations={graphData.dailyDonations}
+                              graphContext={block.graphcontext}
+                            />
+                          </Suspense>
                         );
                       case "resultsoutput":
                         const data = graphData.monthlyDonationsPerOutput.find(

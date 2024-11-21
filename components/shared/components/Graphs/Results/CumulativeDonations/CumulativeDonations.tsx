@@ -3,8 +3,6 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as Plot from "@observablehq/plot";
-import AnimateHeight from "react-animate-height";
-import { BlockTablesContent } from "../../../../../main/blocks/BlockTable/BlockTablesContent";
 import styles from "./CumulativeDonations.module.scss";
 import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
@@ -23,6 +21,9 @@ export const CumulativeDonations: React.FC<{
   const resizeGraph = useCallback(() => {
     if (graphRef.current) {
       graphRef.current.innerHTML = "";
+      console.log(
+        `Resizing graph to ${graphRef.current.clientWidth}x${graphRef.current.clientHeight}`,
+      );
       setSize({ width: graphRef.current!.clientWidth, height: graphRef.current!.clientHeight });
     }
   }, [graphRef]);
@@ -31,11 +32,16 @@ export const CumulativeDonations: React.FC<{
   useEffect(() => {
     if (graphRef.current) {
       setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
-      window.addEventListener("resize", () => {
-        if (graphRef.current) {
+      const resizeObserver = new ResizeObserver((entries) => {
+        const newWidth = entries[0].contentRect.width;
+        console.log(newWidth, size.width);
+        if (newWidth !== size.width) {
           debouncedResizeGraph();
         }
       });
+
+      resizeObserver.observe(graphRef.current);
+      return () => resizeObserver.disconnect();
     }
   }, [graphRef]);
 
@@ -254,11 +260,6 @@ const dayCount = getDaysInMonth(true).reduce(
   },
   [0],
 );
-
-const isLeapYear = (year: number) => {
-  if ((year & 3) != 0) return false;
-  return year % 100 != 0 || year % 400 == 0;
-};
 
 const getDOY = (date: Date) => {
   var mn = date.getMonth();

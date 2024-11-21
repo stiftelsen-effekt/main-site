@@ -15,6 +15,7 @@ import { ResultContentRenderer } from "../components/main/blocks/ResultContentRe
 import { MonthlyDonationsPerOutputResult } from "../components/shared/components/Graphs/Results/Outputs/Outputs";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
+import { ResultsHadlineNumbers } from "../components/shared/components/ResultsHeadline/ResultsHeadline";
 
 const fetchResultsPageSlug = groq`
 {
@@ -33,6 +34,7 @@ export type ResultsGraphData = {
   dailyDonations: DailyDonations;
   referralSums: ReferralSumsResult[];
   monthlyDonationsPerOutput: MonthlyDonationsPerOutputResult[];
+  resultsHeadlineNumbers: ResultsHadlineNumbers;
 };
 
 export const ResultsPage = withStaticProps(
@@ -56,6 +58,11 @@ export const ResultsPage = withStaticProps(
     );
     const monthlyDonationsPerOutput = await monthlyDonationsPerOutputResult.json();
 
+    const resultsHeadlineNumbersResult = await fetch(
+      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/headline`,
+    );
+    const resultsHeadlineNumbers = await resultsHeadlineNumbersResult.json();
+
     return {
       appStaticProps,
       draftMode,
@@ -69,6 +76,7 @@ export const ResultsPage = withStaticProps(
           referralSums: referralSums.content as ReferralSumsResult[],
           monthlyDonationsPerOutput:
             monthlyDonationsPerOutput.content as MonthlyDonationsPerOutputResult[],
+          resultsHeadlineNumbers: resultsHeadlineNumbers.content as ResultsHadlineNumbers,
         },
       },
     }; // satisfies GeneralPageProps (requires next@13);;
@@ -105,7 +113,7 @@ export const ResultsPage = withStaticProps(
           title={header.title}
           inngress={header.inngress}
           links={header.links}
-          layout={header.centered ? "centered" : "default"}
+          layout={header.layout}
         />
       </div>
 

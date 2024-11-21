@@ -79,6 +79,7 @@ import { pages } from "./pages/_pages";
 import { dashboardpages } from "./dashboard/_dashboardPages";
 import plausiblerevenuetracker from "./types/plausiblerevenuetracker";
 import opendistributionbutton from "./types/opendistributionbutton";
+import resultsheadline from "./types/results/resultsheadline";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -146,6 +147,7 @@ export const types = [
   graphcontext,
   cumulativedonationsgraph,
   resultsoutput,
+  resultsheadline,
   resultssection,
   referralgraph,
   latex,

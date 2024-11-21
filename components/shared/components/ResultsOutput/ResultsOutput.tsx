@@ -95,8 +95,6 @@ export const ResultsOutput: React.FC<{
     return Math.ceil(Math.max(...Object.values(groupedByPeriod), 0));
   }, [transformedMonthlyDonationsPerOutput]);
 
-  console.log(`maxY: ${maxY} for ${graphData.output}`);
-
   const [normalizeYAxis, setNormalizeYAxis] = useState(false);
 
   return (

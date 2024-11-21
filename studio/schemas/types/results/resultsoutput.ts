@@ -1,28 +1,12 @@
 import { BarChart } from "react-feather";
+import { outputType } from "./_outputtype";
 
 export default {
   type: "object",
   name: "resultsoutput",
   icon: BarChart,
   fields: [
-    {
-      type: "string",
-      name: "outputType",
-      title: "Output Type",
-      options: {
-        list: [
-          "Bednets",
-          "Deworming",
-          "Cash",
-          "Cash zakat",
-          "Cash climate fund",
-          "Vitamin A",
-          "Malaria treatment",
-          "Vaccinations",
-          "Years of food fortification",
-        ],
-      },
-    },
+    outputType,
     {
       type: "array",
       name: "description",

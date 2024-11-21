@@ -54,6 +54,7 @@ export default {
         { type: "links" },
         { type: "normalimage" },
         { type: "fullimage" },
+        { type: "resultsheadline" },
         { type: "cumulativedonationsgraph" },
         { type: "resultsoutput" },
         { type: "referralgraph" },
