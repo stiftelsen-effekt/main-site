@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import React, { Suspense, lazy, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useRef } from "react";
 import createSagaMiddleware from "redux-saga";
 import PlausibleProvider from "next-plausible";
 import { State } from "../components/shared/components/Widget/store/state";
@@ -57,6 +57,24 @@ function MyApp({
     appStaticProps?.routerContext || null,
   );
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        navigator.sendBeacon(
+          "https://plausible.io/api/event",
+          JSON.stringify({
+            name: "visibility_hidden",
+            url: window.location.href,
+            domain: window.location.hostname,
+          }),
+        );
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
   if (!appStaticProps) {
     console.error(`appStaticProps is not defined - did you forget to use getAppStaticProps?`);
 
@@ -106,8 +124,6 @@ function MyApp({
       domain={plausibleDomain}
       trackOutboundLinks={true}
       taggedEvents={true}
-      trackLocalhost={true} // TODO: Remove when testing is done
-      enabled={true} // TODO: Remove when testing is done
       revenue={true}
     >
       <Provider store={store}>
