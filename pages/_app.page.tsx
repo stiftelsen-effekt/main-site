@@ -94,8 +94,6 @@ function MyApp({
           domain={plausibleDomain}
           trackOutboundLinks={true}
           taggedEvents={true}
-          trackLocalhost={true} // TODO: Remove when testing is done
-          enabled={true} // TODO: Remove when testing is done
           revenue={true}
         >
           <Provider store={store}>
