@@ -84,6 +84,7 @@ export default {
         { type: "giftcardteaser" },
         { type: "discountratecomparison" },
         { type: "itncoverage" },
+        { type: "fundraiserchart" },
         { type: "plausiblerevenuetracker" },
       ],
       options: {

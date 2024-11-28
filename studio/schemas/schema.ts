@@ -80,6 +80,7 @@ import { dashboardpages } from "./dashboard/_dashboardPages";
 import plausiblerevenuetracker from "./types/plausiblerevenuetracker";
 import opendistributionbutton from "./types/opendistributionbutton";
 import resultsheadline from "./types/results/resultsheadline";
+import fundraiserchart from "./types/fundraiserchart";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -127,6 +128,7 @@ export const types = [
   wealthcalculatorconfiguration,
   contributorlist,
   inngress,
+  fundraiserchart,
   giveblock,
   givewellstamp,
   organizationslist,

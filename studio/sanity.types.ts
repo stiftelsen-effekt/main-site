@@ -1172,6 +1172,9 @@ export type Resultssection = {
       } & Fullimage)
     | ({
         _key: string;
+      } & Resultsheadline)
+    | ({
+        _key: string;
       } & Cumulativedonationsgraph)
     | ({
         _key: string;
@@ -1193,6 +1196,22 @@ export type Resultssection = {
   hidden?: boolean;
 };
 
+export type Resultsheadline = {
+  _type: "resultsheadline";
+  donors_label_template?: string;
+  outputs?: Array<
+    | "Bednets"
+    | "Deworming"
+    | "Cash"
+    | "Cash zakat"
+    | "Cash climate fund"
+    | "Vitamin A"
+    | "Malaria treatment"
+    | "Vaccinations"
+    | "Years of food fortification"
+  >;
+};
+
 export type Resultsoutput = {
   _type: "resultsoutput";
   outputType?:
@@ -1200,6 +1219,7 @@ export type Resultsoutput = {
     | "Deworming"
     | "Cash"
     | "Cash zakat"
+    | "Cash climate fund"
     | "Vitamin A"
     | "Malaria treatment"
     | "Vaccinations"
@@ -1241,6 +1261,7 @@ export type Resultsoutput = {
       | "fem"
       | "gd"
       | "gdzf"
+      | "gdcsf"
       | "hki"
       | "mc"
       | "ni"
@@ -1589,6 +1610,11 @@ export type Agreementlistdetailsconfiguration = {
     text?: string;
     withdrawal_warning_text?: string;
   };
+  agreement_cancelled_lightbox?: {
+    title?: string;
+    text?: string;
+    lightbox_button_text?: string;
+  };
   distribution_configuration?: {
     smart_distribution_label?: string;
   };
@@ -1659,6 +1685,23 @@ export type Givewellstamp = {
   quote?: string;
   quotee?: string;
   quotee_position?: string;
+};
+
+export type Fundraiserchart = {
+  _type: "fundraiserchart";
+  heading?: string;
+  fundraisers?: Array<{
+    name?: string;
+    fundraiser_page?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "generic_page";
+    };
+    fundraiser_id?: number;
+    _key: string;
+  }>;
+  caption_template?: string;
 };
 
 export type Inngress = {
@@ -2323,6 +2366,8 @@ export type Intervention = {
   organization_name?: string;
   abbreviation?: string;
   template_string?: string;
+  organization_id?: number;
+  cause_area_id?: number;
 };
 
 export type Columns = {
@@ -3274,6 +3319,9 @@ export type Contentsection = {
     | ({
         _key: string;
       } & Itncoverage)
+    | ({
+        _key: string;
+      } & Fundraiserchart)
     | {
         type?: "donation" | "agreement";
         enabled?: boolean;
@@ -4111,6 +4159,7 @@ export type Agreementlistconfiguration = {
     payment_date_format_template?: string;
     payment_date_last_day_of_month_template?: string;
     width?: number;
+    hide_on_mobile?: boolean;
     _key: string;
   }>;
   details_configuration?: Agreementlistdetailsconfiguration;
@@ -4915,6 +4964,9 @@ export type Vippsagreement = {
       | ({
           _key: string;
         } & Itncoverage)
+      | ({
+          _key: string;
+        } & Fundraiserchart)
       | {
           type?: "donation" | "agreement";
           enabled?: boolean;
@@ -5070,6 +5122,9 @@ export type Results = {
       | ({
           _key: string;
         } & Fullimage)
+      | ({
+          _key: string;
+        } & Resultsheadline)
       | ({
           _key: string;
         } & Cumulativedonationsgraph)
@@ -5740,6 +5795,9 @@ export type Article_page = {
       | ({
           _key: string;
         } & Itncoverage)
+      | ({
+          _key: string;
+        } & Fundraiserchart)
       | {
           type?: "donation" | "agreement";
           enabled?: boolean;
@@ -6352,6 +6410,9 @@ export type Criteria = {
       | ({
           _key: string;
         } & Itncoverage)
+      | ({
+          _key: string;
+        } & Fundraiserchart)
       | {
           type?: "donation" | "agreement";
           enabled?: boolean;
@@ -7106,6 +7167,9 @@ export type Generic_page = {
       | ({
           _key: string;
         } & Itncoverage)
+      | ({
+          _key: string;
+        } & Fundraiserchart)
       | {
           type?: "donation" | "agreement";
           enabled?: boolean;
@@ -7173,6 +7237,7 @@ export type Interventionwidgetoutputconfiguration = {
     _type: "block";
     _key: string;
   }>;
+  donate_button?: boolean;
   explanation_links?: Array<
     | {
         title?: string;
@@ -7370,6 +7435,7 @@ export type AllSanitySchemaTypes =
   | Latex
   | Referralgraph
   | Resultssection
+  | Resultsheadline
   | Resultsoutput
   | Cumulativedonationsgraph
   | Graphcontext
@@ -7385,6 +7451,7 @@ export type AllSanitySchemaTypes =
   | Opendistributionbutton
   | Organizationslist
   | Givewellstamp
+  | Fundraiserchart
   | Inngress
   | Contributorlist
   | Wealthcalculatorteaser

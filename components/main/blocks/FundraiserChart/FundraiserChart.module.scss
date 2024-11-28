@@ -1,0 +1,35 @@
+.wrapper {
+  max-width: 760px;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 0rem;
+}
+
+.graphWrapper {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  position: relative;
+}
+
+.caption {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .wrapper {
+    max-width: 100%;
+  }
+
+  .graphWrapper {
+    aspect-ratio: 1 / 1;
+  }
+}
