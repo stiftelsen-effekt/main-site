@@ -38,7 +38,7 @@ export const FullVideo: React.FC<{ video: SanityAsset; alt: string }> = ({ video
           playsInline
           preload="metadata"
         >
-          <source src={video.url} type={"video/mp4"}></source>
+          <source src={`${video.url}#t=0.01`} type={"video/mp4"}></source>
         </video>
       </div>
       <span className="caption">{alt}</span>
