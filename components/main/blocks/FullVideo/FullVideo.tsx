@@ -36,6 +36,7 @@ export const FullVideo: React.FC<{ video: SanityAsset; alt: string }> = ({ video
             setPlaying(false);
           }}
           playsInline
+          preload="metadata"
         >
           <source src={video.url} type={"video/mp4"}></source>
         </video>
