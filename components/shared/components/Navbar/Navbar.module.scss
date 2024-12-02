@@ -270,6 +270,36 @@
   .navbar ul li.buttonsWrapper button:first-child {
     margin-left: 0;
   }
+
+  .navbarExpanded .navbar > ul > li {
+    opacity: 0;
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  /* Stagger the animations for each list item */
+  .navbarExpanded .navbar > ul > li:nth-child(1) {
+    animation-delay: 0.025s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(3) {
+    animation-delay: 0.075s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(4) {
+    animation-delay: 0.1s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(5) {
+    animation-delay: 0.125s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(6) {
+    animation-delay: 0.15s;
+  }
+
+  .navbarExpanded .navbar > ul > li:last-child {
+    animation: slideUp 0.3s ease-out forwards;
+    animation-delay: 0s;
+  }
 }
 
 /* Laoptop */
@@ -316,5 +346,28 @@
   .navbar .logoWrapper {
     height: 26px;
     width: 176px;
+  }
+}
+
+/* Animation keyframes for sliding in from right */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
