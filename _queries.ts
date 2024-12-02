@@ -343,6 +343,25 @@ export const linksContentQuery = `links[] {
   ${linksSelectorQuery}
 }`;
 
+export const pageBannersContentQuery = `
+  cookie_banner_configuration {
+    ...,
+    privacy_policy_link {
+      ...,
+      "slug": page->slug.current,
+      "pagetype": page->_type,
+    }
+  },
+  general_banner-> {
+    ...,
+    link {
+      ...,
+      "slug": page->slug.current,
+      "pagetype": page->_type,
+    }
+  }
+`;
+
 export const questionAndAnswerSelectionQuery = `
   ...,
   answers[] {

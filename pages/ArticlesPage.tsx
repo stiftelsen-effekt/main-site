@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { linksContentQuery } from "../_queries";
+import { linksContentQuery, pageBannersContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
@@ -64,8 +64,11 @@ export const ArticlesPage = withStaticProps(
       />
 
       <div className={styles.inverted}>
-        <MainHeader hideOnScroll={true}>
-          <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
+        <MainHeader
+          hideOnScroll={true}
+          cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+          generalBannerConfig={data.result.settings[0].general_banner}
+        >
           <Navbar {...navbarData} useDashboardLogo />
         </MainHeader>
 
@@ -113,13 +116,7 @@ const fetchArticles = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration {
-      ...,
-      privacy_policy_link {
-        ...,
-        "slug": page->slug.current
-      }
-    },
+    ${pageBannersContentQuery}
   },
   "page": *[_type == "articles"][0] {
     "slug": slug.current,

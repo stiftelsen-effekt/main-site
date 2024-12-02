@@ -81,6 +81,7 @@ import plausiblerevenuetracker from "./types/plausiblerevenuetracker";
 import opendistributionbutton from "./types/opendistributionbutton";
 import resultsheadline from "./types/results/resultsheadline";
 import fundraiserchart from "./types/fundraiserchart";
+import generalbanner from "./types/generalbanner";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -106,6 +107,7 @@ export const types = [
   videoembed,
   contentsection,
   paragraph,
+  generalbanner,
   splitview,
   splitviewhtml,
   fullimage,

@@ -14,6 +14,7 @@ import { getClient } from "../../../../lib/sanity.client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
+import { CustomLink } from "../CustomLink/CustomLink";
 
 export type NavLink = {
   _type: "navitem";
@@ -257,7 +258,7 @@ export const Navbar = withStaticProps(
                           .filter((subel) => subel !== null)
                           .map((subel) => (
                             <li key={subel.title} data-cy={`${subel.slug}-link`.replace(/ /g, "-")}>
-                              <Link
+                              <CustomLink
                                 href={[...(dashboard ? dashboardPath : []), subel.slug].join("/")}
                                 passHref
                                 onClick={(e) => {
@@ -266,7 +267,7 @@ export const Navbar = withStaticProps(
                                 }}
                               >
                                 {subel.title}
-                              </Link>
+                              </CustomLink>
                             </li>
                           ))}
                     </ul>
@@ -275,13 +276,13 @@ export const Navbar = withStaticProps(
               </li>
             ) : (
               <li key={el._key} data-cy={`${el.slug}-link`}>
-                <Link
+                <CustomLink
                   href={[...(dashboard ? dashboardPath : []), el.slug].join("/")}
                   passHref
                   onClick={() => setExpanded(false)}
                 >
                   {el.title}
-                </Link>
+                </CustomLink>
               </li>
             ),
           )}

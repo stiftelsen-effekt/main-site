@@ -17,6 +17,7 @@ import { Layout } from "../components/main/layout/layout";
 import { Tuple, combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { VisualEditing } from "next-sanity";
+import { ConsentState } from "../middleware.page";
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
 
@@ -40,6 +41,7 @@ sagaMiddleware.run(watchAll);
 export type GeneralPageProps = Record<string, unknown> & {
   preview: boolean;
   draftMode: boolean;
+  consentState: ConsentState;
   token: string | null;
   data?: {
     result: Record<string, unknown>;
@@ -58,21 +60,23 @@ function MyApp({
   );
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        navigator.sendBeacon(
-          "https://plausible.io/api/event",
-          JSON.stringify({
-            name: "visibility_hidden",
-            url: window.location.href,
-            domain: window.location.hostname,
-          }),
-        );
-      }
-    };
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === "hidden") {
+          navigator.sendBeacon(
+            "https://plausible.io/api/event",
+            JSON.stringify({
+              name: "visibility_hidden",
+              url: window.location.href,
+              domain: window.location.hostname,
+            }),
+          );
+        }
+      };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }
   }, []);
 
   if (!appStaticProps) {
@@ -95,6 +99,7 @@ function MyApp({
           trackOutboundLinks={true}
           taggedEvents={true}
           revenue={true}
+          trackLocalhost={false}
         >
           <Provider store={store}>
             <RouterContext.Provider value={routerContextValue.current}>
@@ -143,9 +148,11 @@ function MyApp({
 
 export async function getAppStaticProps({
   draftMode = false,
+  consentState,
   layout = LayoutType.Default,
 }: {
   draftMode: boolean;
+  consentState: ConsentState;
   layout?: LayoutType;
 }) {
   const routerContext = await fetchRouterContext();
@@ -154,7 +161,7 @@ export async function getAppStaticProps({
     ...(layout === LayoutType.Default
       ? {
           layout: LayoutType.Default as const,
-          layoutProps: await Layout.getStaticProps({ draftMode }),
+          layoutProps: await Layout.getStaticProps({ draftMode, consentState }),
         }
       : {
           layout: LayoutType.Profile as const,

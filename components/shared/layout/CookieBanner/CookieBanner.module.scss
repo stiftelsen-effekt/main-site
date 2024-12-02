@@ -1,6 +1,6 @@
 .container {
-  background-color: #000;
-  color: #fafafa;
+  background-color: var(--primary);
+  color: var(--secondary);
   text-align: center;
   padding: 6px 0;
   font-size: 12px;
@@ -15,22 +15,30 @@
   align-items: center;
   padding: 0 5vw;
   width: 100%;
-}
 
-.content .description {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-}
+  .title {
+    margin-right: 60px;
+  }
 
-.content .title {
-  margin-right: 60px;
-}
+  .description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 1rem;
+  }
 
-.content button {
-  text-decoration: underline;
-  cursor: pointer;
+  .buttonsWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    flex: 1;
+
+    button {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 }
 
 @media only screen and (min-width: 1920px) {
@@ -49,26 +57,29 @@
     text-align: left;
     justify-content: flex-start;
     align-items: flex-start;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
+    padding: 0.5rem 5vw;
+    gap: 0.5rem;
 
-  .content > .description {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 0.4rem;
-
-    p {
-      margin: 0;
+    .title {
+      display: none;
     }
-  }
 
-  .content > .buttonsWrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    padding: 1rem 0;
+    .description {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 0.4rem;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .buttonsWrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+    }
   }
 }

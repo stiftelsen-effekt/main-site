@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { linksContentQuery, pageContentQuery } from "../_queries";
+import { linksContentQuery, pageBannersContentQuery, pageContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
@@ -12,6 +12,7 @@ import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { useLiveQuery } from "next-sanity/preview";
 import { stegaClean } from "@sanity/client/stega";
+import { ConsentState } from "../middleware.page";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -23,8 +24,16 @@ export const getGenericPagePaths = async () => {
 };
 
 export const GenericPage = withStaticProps(
-  async ({ path, draftMode = false }: { path: string[]; draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    path,
+    consentState,
+    draftMode = false,
+  }: {
+    path: string[];
+    consentState: ConsentState;
+    draftMode: boolean;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     const slug = path.join("/") || "/";
 
@@ -35,6 +44,7 @@ export const GenericPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
+      consentState,
       preview: draftMode,
       token: draftMode ? token ?? null : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
@@ -45,7 +55,7 @@ export const GenericPage = withStaticProps(
       },
     } satisfies GeneralPageProps;
   },
-)(({ data, navbar, draftMode }) => {
+)(({ data, navbar, draftMode, consentState }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -74,8 +84,12 @@ export const GenericPage = withStaticProps(
         siteName={data.result.settings[0].title}
       />
 
-      <MainHeader hideOnScroll={true}>
-        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
+      <MainHeader
+        initialConsentState={consentState}
+        hideOnScroll={true}
+        cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+        generalBannerConfig={data.result.settings[0].general_banner}
+      >
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
@@ -108,13 +122,7 @@ const fetchGenericPage = groq`
   "settings": *[_type == "site_settings"] {
     ...,
     title,
-    cookie_banner_configuration {
-      ...,
-      privacy_policy_link {
-        ...,
-        "slug": page->slug.current
-      }
-    },
+    ${pageBannersContentQuery}
   },
   "page": *[_type == "generic_page" && slug.current == $slug][0] {
     ...,

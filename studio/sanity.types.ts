@@ -254,6 +254,7 @@ export type Site_settings = {
         _key: string;
       } & Navgroup)
   >;
+  general_banner?: Generalbanner;
   donate_label?: string;
   donate_label_short?: string;
   donate_label_title?: string;
@@ -2727,6 +2728,83 @@ export type Splitview = {
         _key: string;
       }
   >;
+};
+
+export type Generalbanner = {
+  _type: "generalbanner";
+  title?: string;
+  description?: string;
+  link?: {
+    title?: string;
+    page?:
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "support";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "criteria";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "article_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "articles";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "results";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "vippsagreement";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "donations";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "agreements";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "profile";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "tax";
+        };
+    _type: "navitem";
+  };
 };
 
 export type Paragraph = {
@@ -7473,6 +7551,7 @@ export type AllSanitySchemaTypes =
   | Fullimage
   | Splitviewhtml
   | Splitview
+  | Generalbanner
   | Paragraph
   | Contentsection
   | Videoembed
