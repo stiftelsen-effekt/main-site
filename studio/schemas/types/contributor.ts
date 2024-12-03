@@ -20,6 +20,11 @@ export default {
       title: "Email",
     },
     {
+      name: "phone",
+      type: "string",
+      title: "Phone",
+    },
+    {
       name: "role",
       type: "reference",
       title: "Role",
