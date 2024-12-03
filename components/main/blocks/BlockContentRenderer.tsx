@@ -276,7 +276,6 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "teamintroduction":
-            console.log(block);
             return (
               <TeamIntroduction
                 key={block._key || block._id}
