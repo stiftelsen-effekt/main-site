@@ -44,11 +44,7 @@
   padding-top: 0.4rem;
 }
 
-.navbar ul li .submenu:focus-within {
-  top: auto;
-  display: block;
-}
-
+.navbar ul li .submenu:focus-within,
 .navbar ul li:hover .submenu,
 .navbar ul li:focus .submenu,
 .navbar ul li.expandedSubmenu .submenu {
@@ -60,9 +56,6 @@
   padding: 0 0.875rem;
   font-size: 0.8rem;
   display: block;
-}
-
-.navbar ul li .submenu ul li {
   padding-bottom: 0;
   white-space: nowrap;
 }
@@ -320,6 +313,26 @@
   .navbar ul li > div > div {
     display: block !important;
     opacity: 1 !important;
+  }
+
+  .navbar ul li .submenu:focus-within,
+  .navbar ul li:hover .submenu,
+  .navbar ul li:focus .submenu,
+  .navbar ul li.expandedSubmenu .submenu {
+    ul li {
+      animation: slideIn 0.2s ease-out forwards;
+    }
+  }
+
+  .navbar ul li .submenu ul li {
+    opacity: 0;
+    transform: translateY(-1rem);
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: 0.025s * $i;
+      }
+    }
   }
 }
 
