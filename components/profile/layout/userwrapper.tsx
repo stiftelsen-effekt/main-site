@@ -14,17 +14,20 @@ export const UserWrapper: React.FC<{
   const { isLoading, isAuthenticated, loginWithRedirect, user, error } = useAuth0();
 
   let screenHint;
+  let loginHint;
   let prompt: PromptValues;
   if (typeof window !== "undefined") {
     let urlParams = new URLSearchParams(window.location.search);
     screenHint = urlParams.get("screen_hint");
     prompt = urlParams.get("prompt") as PromptValues;
+    loginHint = urlParams.get("login_hint");
   }
 
   if (!isAuthenticated && !isLoading && !error && !skipAuthentication)
     loginWithRedirect({
       authorizationParams: {
         screen_hint: screenHint ? screenHint : undefined,
+        login_hint: loginHint ? loginHint : undefined,
         prompt: prompt ? prompt : undefined,
       },
     });
