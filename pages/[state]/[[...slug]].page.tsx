@@ -242,7 +242,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.VippsAnonymousPage: {
-      const props = await VippsAnonymousPage.getStaticProps({ draftMode });
+      const props = await VippsAnonymousPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
@@ -253,7 +253,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.DonationsPage: {
-      const props = await DonationsPage.getStaticProps({ draftMode, path });
+      const props = await DonationsPage.getStaticProps({ draftMode, consentState, path });
       return {
         props: {
           ...props,
@@ -264,7 +264,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.AgreementsPage: {
-      const props = await AgreementsPage.getStaticProps({ draftMode });
+      const props = await AgreementsPage.getStaticProps({ draftMode, consentState, slug: path });
       return {
         props: {
           ...props,
@@ -275,7 +275,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.ProfilePage: {
-      const props = await ProfilePage.getStaticProps({ draftMode });
+      const props = await ProfilePage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
@@ -286,7 +286,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.TaxPage: {
-      const props = await TaxPage.getStaticProps({ draftMode, path });
+      const props = await TaxPage.getStaticProps({ draftMode, path, consentState });
       return {
         props: {
           ...props,
