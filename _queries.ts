@@ -423,6 +423,16 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       ${linksContentQuery}
     },
+    _type == 'splitviewhtml' => {
+      ...,
+      paragraph[] {
+        ...,
+        markDefs[] {
+          ${linksSelectorQuery}
+          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+        }
+      }
+    },
     _type == 'wealthcalculator' => {
       ...,
       configuration->{
@@ -616,7 +626,7 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       "locale": *[ _type == "site_settings"][0].main_locale,
     },
-    _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' => @,
+    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' => @,
   }
 },
 `;

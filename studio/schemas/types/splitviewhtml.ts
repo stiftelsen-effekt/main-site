@@ -1,4 +1,5 @@
 import { Columns } from "react-feather";
+import { blocktype } from "./blockcontent";
 
 export default {
   name: "splitviewhtml",
@@ -37,7 +38,17 @@ export default {
       name: "paragraph",
       type: "array",
       title: "Paragraph",
-      of: [{ type: "block" }],
+      of: [
+        {
+          ...blocktype,
+          marks: {
+            ...blocktype.marks,
+            annotations: blocktype.marks.annotations.filter(
+              (annotation) => annotation.name !== "citation",
+            ),
+          },
+        },
+      ],
     },
     {
       name: "htmlcode",
