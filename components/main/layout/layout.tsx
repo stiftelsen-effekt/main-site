@@ -66,7 +66,7 @@ const query = groq`
 `;
 
 const BannerMarginTopInitialValues = {
-  desktop: 68,
+  desktop: 74,
   laptop: 62,
   mobile: 114,
 };

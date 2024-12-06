@@ -20,12 +20,10 @@ export type CookieBannerConfiguration = {
 };
 export const CookieBanner: React.FC<{
   configuration: CookieBannerConfiguration;
-  initialConsentState: ConsentState;
-}> = ({ configuration, initialConsentState }) => {
-  if (!configuration) return null;
-
+}> = ({ configuration }) => {
   const [bannerContext, setBannerContext] = useContext(BannerContext);
 
+  if (!configuration) return null;
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID;

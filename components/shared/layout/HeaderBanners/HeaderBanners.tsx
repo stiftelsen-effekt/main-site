@@ -11,7 +11,7 @@ export const HeaderBanners: React.FC<{
   cookieBannerConfig: CookieBannerConfiguration;
   initialConsentState: ConsentState;
   generalBannerConfig?: Generalbanner & { link: NavLink };
-}> = ({ cookieBannerConfig, initialConsentState, generalBannerConfig }) => {
+}> = ({ cookieBannerConfig, generalBannerConfig }) => {
   const bannerContainerRef = useRef<HTMLDivElement | null>(null);
   const [bannerContext, setBannerContext] = useContext(BannerContext);
   useElementHeight(bannerContainerRef, (height) => {
@@ -27,7 +27,7 @@ export const HeaderBanners: React.FC<{
 
   return (
     <div ref={bannerContainerRef}>
-      <CookieBanner configuration={cookieBannerConfig} initialConsentState={initialConsentState} />
+      <CookieBanner configuration={cookieBannerConfig} />
       {showGeneralBanner && generalBannerConfig && (
         <GeneralBanner configuration={generalBannerConfig} />
       )}
