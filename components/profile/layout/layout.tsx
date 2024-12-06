@@ -11,7 +11,6 @@ import { SWRConfig } from "swr";
 import {
   BanerContextType,
   BannerContext,
-  getInitialBannerMarginTop,
   WidgetContext,
   WidgetContextType,
 } from "../../main/layout/layout";
@@ -95,8 +94,6 @@ export const ProfileLayout = withStaticProps(
     consentExpired: false,
     privacyPolicyLastMajorChange: undefined,
     generalBannerDismissed: false,
-    layoutPaddingTop:
-      consentState === "undecided" || profileData.general_banner ? getInitialBannerMarginTop() : 0,
   });
 
   const bypassAuth = useShouldAuthenticate();
