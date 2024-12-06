@@ -3,14 +3,13 @@
   top: 0;
   left: 0;
   display: flex;
-  gap: 8px;
   align-items: flex-start;
   height: 100%;
   width: 100%;
   flex-direction: column;
-  padding-top: 1.5rem;
-  padding-bottom: 2.5rem;
-  gap: 1rem;
+  padding-bottom: 2rem;
+  z-index: 100;
+  border-left: 1px solid black;
 }
 
 .fundraiserBar {
@@ -18,7 +17,29 @@
   width: 100%;
   background-color: #e0e0e0;
   position: relative;
-  overflow: hidden;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+
+  .fundraiserName {
+    height: 1.5rem;
+    width: 14rem;
+    position: absolute;
+    left: 1rem;
+    top: -2.2rem;
+    overflow: hidden;
+    background-color: #e0e0e0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 0.5s infinite;
+    }
+  }
 
   &::after {
     content: "";

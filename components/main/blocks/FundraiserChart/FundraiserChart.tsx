@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { FundraiserChartSkeleton } from "./ChartSkeleton";
 import styles from "./FundraiserChart.module.scss";
 import dynamic from "next/dynamic";
+import { useRemSize } from "../../../../hooks/useRemSize";
 
 const FundraiserChartElement = dynamic(
   () => import("./Chart").then((mod) => mod.FundraiserChartElement),
@@ -19,6 +20,13 @@ export const FundraiserChart: React.FC<Fundraiserchart> = (props) => {
     Map<number, { name: string; page_slug: string }>
   >(new Map());
   const graphWrapperRef = useRef<HTMLDivElement | null>(null);
+  const remSize = useRemSize();
+  const [graphHeight, setGraphHeight] = useState((props.fundraisers?.length || 0) * remSize * 8);
+
+  useEffect(() => {
+    // Update height whenever rem size or fundraisers change
+    setGraphHeight((props.fundraisers?.length || 0) * remSize * 8);
+  }, [props.fundraisers?.length, remSize]); // Add getRemInPixels if it's memoized/stable
 
   useEffect(() => {
     if (props.fundraisers) {
@@ -72,9 +80,7 @@ export const FundraiserChart: React.FC<Fundraiserchart> = (props) => {
 
   return (
     <div className={styles.wrapper}>
-      <h5 className={styles.header}>{props.heading}</h5>
-      <div ref={graphWrapperRef} className={styles.graphWrapper}>
-        {/*<FundraiserChartSkeleton numberOfFundraisers={props.fundraisers?.length || 0} />*/}
+      <div ref={graphWrapperRef} className={styles.graphWrapper} style={{ height: graphHeight }}>
         {graph}
       </div>
       <div className={styles.caption}>

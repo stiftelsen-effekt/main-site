@@ -12,7 +12,9 @@ export const FundraiserChartSkeleton: React.FC<{ numberOfFundraisers: number }> 
         style={{
           width: `${((numberOfFundraisers - i) / numberOfFundraisers) * 90 + 10}%`,
         }}
-      ></div>,
+      >
+        <div className={style.fundraiserName}></div>
+      </div>,
     );
   }
 
