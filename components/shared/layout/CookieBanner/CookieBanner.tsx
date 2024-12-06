@@ -8,6 +8,7 @@ import { HotJar } from "../HotJar";
 import { ConsentState } from "../../../../middleware.page";
 import { setCookie } from "cookies-next";
 import { BannerContext } from "../../../main/layout/layout";
+import { MetaPixel } from "../MetaPixel";
 
 export type CookieBannerConfiguration = {
   title: string;
@@ -27,6 +28,7 @@ export const CookieBanner: React.FC<{
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID;
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
   const setConsent = (state: ConsentState) => {
     setCookie("gieffektivt-cookies-accepted", state === "accepted" ? "true" : "false", {
@@ -55,6 +57,7 @@ export const CookieBanner: React.FC<{
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
           {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
           {hotjarId ? <HotJar hotjarId={hotjarId} /> : null}
+          {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
         </>
       )}
       {bannerContext.consentState === "undecided" && (
