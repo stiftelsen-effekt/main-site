@@ -3,7 +3,6 @@ import { linksContentQuery, pageBannersContentQuery, pageContentQuery } from "..
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { Navbar } from "../components/shared/components/Navbar/Navbar";
-import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.client";
@@ -40,6 +39,11 @@ export const GenericPage = withStaticProps(
     const client = getClient(draftMode ? token : undefined);
 
     let result = await client.fetch(fetchGenericPage, { slug });
+
+    // Do not show the general banner if it is the same as the current page
+    if (result.settings[0].general_banner.link.slug == slug) {
+      result.settings[0].general_banner = null;
+    }
 
     return {
       appStaticProps,

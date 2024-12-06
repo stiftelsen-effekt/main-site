@@ -12,6 +12,7 @@ import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
+import { ConsentState } from "../middleware.page";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -27,8 +28,14 @@ export const getArticlesPagePath = async () => {
 };
 
 export const ArticlesPage = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     let result = await getClient(draftMode ? token : undefined).fetch(fetchArticles);
 
@@ -43,9 +50,10 @@ export const ArticlesPage = withStaticProps(
         queryParams: {},
       },
       draftMode,
+      consentState,
     } satisfies GeneralPageProps;
   },
-)(({ data, navbarData, draftMode }) => {
+)(({ data, navbarData, consentState }) => {
   const page = data.result.page;
 
   const header = page.header;
@@ -68,6 +76,7 @@ export const ArticlesPage = withStaticProps(
           hideOnScroll={true}
           cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
           generalBannerConfig={data.result.settings[0].general_banner}
+          initialConsentState={consentState}
         >
           <Navbar {...navbarData} useDashboardLogo />
         </MainHeader>

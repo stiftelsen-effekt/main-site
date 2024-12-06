@@ -2,24 +2,26 @@ import React, { useContext, useState } from "react";
 import styles from "./GeneralBanner.module.scss";
 import { Generalbanner } from "../../../../studio/sanity.types";
 import { NavLink } from "../../components/Navbar/Navbar";
-import Link from "next/link";
-import { CookiesAccepted } from "../../../main/layout/layout";
+import { CustomLink } from "../../components/CustomLink/CustomLink";
+import { BannerContext } from "../../../main/layout/layout";
 
 export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: NavLink } }> = ({
   configuration,
 }) => {
-  const [dismissed, setDismissed] = useState(false);
-  const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
+  const [bannerContext, setBannerContext] = useContext(BannerContext);
 
-  if (!cookiesAccepted.loaded || typeof cookiesAccepted.accepted === "undefined" || dismissed)
-    return null;
+  if (bannerContext.generalBannerDismissed) return null;
 
   return (
     <>
-      <Link
+      <CustomLink
         href={configuration.link.slug as string}
         onClick={() => {
-          setDismissed(true);
+          setBannerContext((prev) => ({
+            ...prev,
+            generalBannerDismissed: true,
+            layoutPaddingTop: 0,
+          }));
         }}
       >
         <div data-cy="generalbanner-container" className={styles.container}>
@@ -34,7 +36,11 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  setDismissed(true);
+                  setBannerContext((prev) => ({
+                    ...prev,
+                    generalBannerDismissed: true,
+                    layoutPaddingTop: 0,
+                  }));
                 }}
               >
                 ✕
@@ -42,7 +48,7 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
             </div>
           </div>
         </div>
-      </Link>
+      </CustomLink>
     </>
   );
 };

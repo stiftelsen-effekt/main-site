@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { useElementHeight } from "../../../../hooks/useElementHeight";
-import { LayoutPaddingTop } from "../../../main/layout/layout";
+import { BannerContext } from "../../../main/layout/layout";
 import { CookieBanner, CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
 import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
 import { Generalbanner } from "../../../../studio/sanity.types";
@@ -13,17 +13,24 @@ export const HeaderBanners: React.FC<{
   generalBannerConfig?: Generalbanner & { link: NavLink };
 }> = ({ cookieBannerConfig, initialConsentState, generalBannerConfig }) => {
   const bannerContainerRef = useRef<HTMLDivElement | null>(null);
-  const [layoutPaddingTop, setLayoutPaddingTop] = useContext(LayoutPaddingTop);
+  const [bannerContext, setBannerContext] = useContext(BannerContext);
   useElementHeight(bannerContainerRef, (height) => {
-    if (Math.round(layoutPaddingTop) !== Math.round(height)) {
-      setLayoutPaddingTop(height);
+    if (Math.round(bannerContext.layoutPaddingTop) !== Math.round(height)) {
+      setBannerContext((prev) => ({ ...prev, layoutPaddingTop: height }));
     }
   });
+
+  let showGeneralBanner = false;
+  if (bannerContext.consentState !== "undecided") {
+    showGeneralBanner = true;
+  }
 
   return (
     <div ref={bannerContainerRef}>
       <CookieBanner configuration={cookieBannerConfig} initialConsentState={initialConsentState} />
-      {generalBannerConfig && <GeneralBanner configuration={generalBannerConfig} />}
+      {showGeneralBanner && generalBannerConfig && (
+        <GeneralBanner configuration={generalBannerConfig} />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
@@ -7,6 +7,7 @@ import { LinkComponent } from "../../../main/blocks/Links/Links";
 import { HotJar } from "../HotJar";
 import { ConsentState } from "../../../../middleware.page";
 import { setCookie } from "cookies-next";
+import { BannerContext } from "../../../main/layout/layout";
 
 export type CookieBannerConfiguration = {
   title: string;
@@ -23,43 +24,42 @@ export const CookieBanner: React.FC<{
 }> = ({ configuration, initialConsentState }) => {
   if (!configuration) return null;
 
+  const [bannerContext, setBannerContext] = useContext(BannerContext);
+
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID;
-
-  const [consentState, setConsentState] = useState(initialConsentState);
 
   const setConsent = (state: ConsentState) => {
     setCookie("gieffektivt-cookies-accepted", state === "accepted" ? "true" : "false", {
       sameSite: "strict",
       expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
     });
-    setConsentState(state);
+    setBannerContext((prev) => ({ ...prev, consentState: state }));
   };
 
   let privacyPolicyLink = configuration.privacy_policy_link;
-  /*
-  if (cookiesAccepted.expired && cookiesAccepted.lastMajorChange) {
+
+  if (bannerContext.consentExpired && bannerContext.privacyPolicyLastMajorChange) {
     privacyPolicyLink = {
       ...configuration.privacy_policy_link,
       title: `${configuration.privacy_policy_link.title} ${configuration.expired_template.replace(
         "{date}",
-        cookiesAccepted.lastMajorChange.toLocaleDateString("no-NB"),
+        bannerContext.privacyPolicyLastMajorChange.toLocaleDateString("no-NB"),
       )}`,
     };
   }
-    */
 
   return (
     <>
-      {consentState === "accepted" && (
+      {bannerContext.consentState === "accepted" && !bannerContext.consentExpired && (
         <>
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
           {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
           {hotjarId ? <HotJar hotjarId={hotjarId} /> : null}
         </>
       )}
-      {consentState === "undecided" && (
+      {bannerContext.consentState === "undecided" && (
         <div data-cy="cookiebanner-container" className={styles.container}>
           <div className={styles.content}>
             <div className={styles.description}>
@@ -75,7 +75,7 @@ export const CookieBanner: React.FC<{
                     setConsent("rejected" as ConsentState);
                   }}
                   style={{
-                    marginRight: "1rem",
+                    marginRight: "2rem",
                   }}
                 >
                   {configuration.decline_button_text}

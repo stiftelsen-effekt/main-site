@@ -24,27 +24,24 @@ export const WidgetContext = createContext<
   [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
 >([{ open: false, prefilled: null, prefilledSum: null }, () => {}]);
 
-export type CookiesAcceptedContextType = {
-  accepted: boolean | undefined;
-  expired: boolean | undefined;
-  lastMajorChange: Date | undefined;
-  loaded: boolean;
+export type BanerContextType = {
+  consentState: ConsentState;
+  consentExpired: boolean;
+  privacyPolicyLastMajorChange: Date | undefined;
+  generalBannerDismissed: boolean;
+  layoutPaddingTop: number;
 };
 
-export const CookiesAccepted = createContext<
-  [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
+export const BannerContext = createContext<
+  [BanerContextType, Dispatch<SetStateAction<BanerContextType>>]
 >([
   {
-    accepted: undefined,
-    expired: undefined,
-    lastMajorChange: undefined,
-    loaded: false,
+    consentState: "undecided",
+    consentExpired: false,
+    privacyPolicyLastMajorChange: undefined,
+    generalBannerDismissed: false,
+    layoutPaddingTop: 0,
   },
-  () => {},
-]);
-
-export const LayoutPaddingTop = createContext<[number, Dispatch<SetStateAction<number>>]>([
-  0,
   () => {},
 ]);
 
@@ -122,19 +119,14 @@ export const Layout = withStaticProps(
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
   >(() => [widgetContext, setWidgetContext], [widgetContext]);
 
-  const [cookiesAccepted, setCookiesAccepted] = useState<CookiesAcceptedContextType>({
-    accepted: undefined,
-    expired: undefined,
-    lastMajorChange: undefined,
-    loaded: false,
+  const [banners, setBanners] = useState<BanerContextType>({
+    consentState,
+    consentExpired: false,
+    privacyPolicyLastMajorChange: undefined,
+    generalBannerDismissed: false,
+    layoutPaddingTop:
+      consentState === "undecided" || general_banner ? getInitialBannerMarginTop() : 0,
   });
-  const cookiesAcceptedValue = useMemo<
-    [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
-  >(() => [cookiesAccepted, setCookiesAccepted], [cookiesAccepted]);
-
-  const [paddingTopState, setPaddingTopState] = useState(
-    consentState === "undecided" || general_banner ? getInitialBannerMarginTop() : 0,
-  );
 
   if (widgetContext.open && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
@@ -143,7 +135,7 @@ export const Layout = withStaticProps(
   }
 
   return (
-    <div className={styles.container} style={{ marginTop: paddingTopState }}>
+    <div className={styles.container} style={{ marginTop: banners.layoutPaddingTop }}>
       {draftMode && <PreviewBlock />}
       <GiveButton
         inverted={false}
@@ -154,24 +146,22 @@ export const Layout = withStaticProps(
         {giveButton.donate_label_short}
       </GiveButton>
       <WidgetContext.Provider value={widgetContextValue}>
-        <CookiesAccepted.Provider value={cookiesAcceptedValue}>
-          <LayoutPaddingTop.Provider value={[paddingTopState, setPaddingTopState]}>
-            {draftMode ? (
-              <PreviewWidgetPane
-                {...widget}
-                prefilled={widgetContext.prefilled}
-                prefilledSum={widgetContext.prefilledSum}
-              />
-            ) : (
-              <WidgetPane
-                {...widget}
-                prefilled={widgetContext.prefilled}
-                prefilledSum={widgetContext.prefilledSum}
-              />
-            )}
-            <main className={styles.main}>{children}</main>
-          </LayoutPaddingTop.Provider>
-        </CookiesAccepted.Provider>
+        <BannerContext.Provider value={[banners, setBanners]}>
+          {draftMode ? (
+            <PreviewWidgetPane
+              {...widget}
+              prefilled={widgetContext.prefilled}
+              prefilledSum={widgetContext.prefilledSum}
+            />
+          ) : (
+            <WidgetPane
+              {...widget}
+              prefilled={widgetContext.prefilled}
+              prefilledSum={widgetContext.prefilledSum}
+            />
+          )}
+          <main className={styles.main}>{children}</main>
+        </BannerContext.Provider>
       </WidgetContext.Provider>
       {draftMode ? <PreviewFooter {...footer} /> : <Footer {...footer} />}
     </div>

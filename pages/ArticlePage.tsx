@@ -23,6 +23,7 @@ import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { Generalbanner } from "../studio/sanity.types";
 import { GeneralBanner } from "../components/shared/layout/GeneralBanner/GeneralBanner";
+import { ConsentState } from "../middleware.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -36,8 +37,16 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
 };
 
 export const ArticlePage = withStaticProps(
-  async ({ slug, draftMode = false }: { slug: string; draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    slug,
+    draftMode = false,
+    consentState,
+  }: {
+    slug: string;
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     let result = await getClient(draftMode ? token : undefined).fetch<{
       page: any;
@@ -55,6 +64,7 @@ export const ArticlePage = withStaticProps(
       appStaticProps,
       navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       draftMode,
+      consentState,
       preview: draftMode,
       token: draftMode ? token ?? null : null,
       data: {
@@ -64,7 +74,7 @@ export const ArticlePage = withStaticProps(
       },
     } satisfies GeneralPageProps;
   },
-)(({ data, navbarData, draftMode }) => {
+)(({ data, navbarData, draftMode, consentState }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -97,6 +107,7 @@ export const ArticlePage = withStaticProps(
         hideOnScroll={true}
         cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
         generalBannerConfig={data.result.settings[0].general_banner}
+        initialConsentState={consentState}
       >
         <Navbar {...navbarData} />
       </MainHeader>

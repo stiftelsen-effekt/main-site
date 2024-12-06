@@ -188,7 +188,7 @@ export const Navbar = withStaticProps(
         >
           {lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link
+              <CustomLink
                 href="/"
                 passHref
                 onClick={(e) => e.currentTarget.blur()}
@@ -204,12 +204,12 @@ export const Navbar = withStaticProps(
                   onClick={() => setExpanded(false)}
                   priority
                 />
-              </Link>
+              </CustomLink>
             </div>
           )}
           {!lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link
+              <CustomLink
                 href="/"
                 passHref
                 onClick={(e) => e.currentTarget.blur()}
@@ -221,7 +221,7 @@ export const Navbar = withStaticProps(
                 }}
               >
                 <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
-              </Link>
+              </CustomLink>
             </div>
           )}
           <button
@@ -298,14 +298,14 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              <Link href={dashboardPath.join("/")} passHref tabIndex={-1}>
+              <CustomLink href={dashboardPath.join("/")} passHref tabIndex={-1}>
                 <EffektButton
                   variant={EffektButtonVariant.SECONDARY}
                   onClick={() => setExpanded(false)}
                 >
                   {labels.dashboard}
                 </EffektButton>
-              </Link>
+              </CustomLink>
             )}
             <EffektButton
               cy="send-donation-button"

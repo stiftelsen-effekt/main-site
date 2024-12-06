@@ -191,7 +191,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.ArticlesPage: {
-      const props = await ArticlesPage.getStaticProps({ draftMode });
+      const props = await ArticlesPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
@@ -203,7 +203,7 @@ export const getStaticProps = async (
     }
     case PageType.ArticlePage: {
       const slug = path.slice(1).join("/");
-      const props = await ArticlePage.getStaticProps({ draftMode, slug });
+      const props = await ArticlePage.getStaticProps({ draftMode, consentState, slug });
       return {
         props: {
           ...props,
@@ -214,7 +214,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.ResultsPage: {
-      const props = await ResultsPage.getStaticProps({ draftMode });
+      const props = await ResultsPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
