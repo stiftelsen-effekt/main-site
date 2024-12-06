@@ -50,10 +50,9 @@ export const ArticlesPage = withStaticProps(
         queryParams: {},
       },
       draftMode,
-      consentState,
     } satisfies GeneralPageProps;
   },
-)(({ data, navbar, consentState, draftMode }) => {
+)(({ data, navbar, draftMode }) => {
   const page = data.result.page;
 
   const header = page.header;
@@ -76,7 +75,6 @@ export const ArticlesPage = withStaticProps(
           hideOnScroll={true}
           cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
           generalBannerConfig={data.result.settings[0].general_banner}
-          initialConsentState={consentState}
         >
           {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
         </MainHeader>

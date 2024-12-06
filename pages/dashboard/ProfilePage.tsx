@@ -1,6 +1,5 @@
 import { groq } from "next-sanity";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import "react-toastify/dist/ReactToastify.css";
 import { DataInfo } from "../../components/profile/details/DataInfo/DataInfo";
 import {
@@ -15,6 +14,7 @@ import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
+import { ConsentState } from "../../middleware.page";
 
 export async function getProfilePagePath() {
   const result = await getClient().fetch<FetchProfilePageResult>(fetchProfilePage);
@@ -28,8 +28,18 @@ export async function getProfilePagePath() {
 }
 
 export const ProfilePage = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({
+      draftMode,
+      consentState,
+      layout: LayoutType.Profile,
+    });
     const result = await getClient(draftMode ? token : undefined).fetch<FetchProfilePageResult>(
       fetchProfilePage,
     );

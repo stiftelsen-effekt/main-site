@@ -41,7 +41,6 @@ sagaMiddleware.run(watchAll);
 export type GeneralPageProps = Record<string, unknown> & {
   preview: boolean;
   draftMode: boolean;
-  consentState: ConsentState;
   token: string | null;
   data?: {
     result: Record<string, unknown>;

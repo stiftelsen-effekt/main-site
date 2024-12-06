@@ -42,7 +42,6 @@ export const VippsAgreementPage = withStaticProps(
       draftMode: draftMode,
       preview: draftMode,
       token: draftMode ? token ?? null : null,
-      consentState: consentState,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
@@ -51,7 +50,7 @@ export const VippsAgreementPage = withStaticProps(
       },
     } satisfies GeneralPageProps;
   },
-)(({ data, draftMode, navbar, consentState }) => {
+)(({ data, draftMode, navbar }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -80,7 +79,6 @@ export const VippsAgreementPage = withStaticProps(
       />
 
       <MainHeader
-        initialConsentState={consentState}
         hideOnScroll={true}
         cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
         generalBannerConfig={data.result.settings[0].general_banner}

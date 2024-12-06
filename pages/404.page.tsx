@@ -47,7 +47,6 @@ export const getStaticProps: GetStaticProps<Custom404Props> = async () => {
     props: {
       appStaticProps,
       draftMode,
-      consentState,
       preview: draftMode,
       token: null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
@@ -61,13 +60,12 @@ export const getStaticProps: GetStaticProps<Custom404Props> = async () => {
   };
 };
 
-export default function Custom404({ data, navbar, draftMode, consentState }: Custom404Props) {
+export default function Custom404({ data, navbar, draftMode }: Custom404Props) {
   const settings = data.result.settings[0];
 
   const navigationItems = navbar.data.result.settings.main_navigation;
 
   /** Create a table based on the main navigation */
-  const columnCount = navigationItems.length;
   const columns = navigationItems.map((item) =>
     item._type === "navgroup"
       ? [
@@ -98,7 +96,6 @@ export default function Custom404({ data, navbar, draftMode, consentState }: Cus
       />
 
       <MainHeader
-        initialConsentState={consentState}
         hideOnScroll={true}
         cookieBannerConfig={settings.cookie_banner_configuration}
         generalBannerConfig={settings.general_banner}

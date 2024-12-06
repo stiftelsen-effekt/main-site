@@ -5,11 +5,9 @@ import { CookieBanner, CookieBannerConfiguration } from "../CookieBanner/CookieB
 import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
 import { Generalbanner } from "../../../../studio/sanity.types";
 import { NavLink } from "../../components/Navbar/Navbar";
-import { ConsentState } from "../../../../middleware.page";
 
 export const HeaderBanners: React.FC<{
-  cookieBannerConfig: CookieBannerConfiguration;
-  initialConsentState: ConsentState;
+  cookieBannerConfig?: CookieBannerConfiguration;
   generalBannerConfig?: Generalbanner & { link: NavLink };
 }> = ({ cookieBannerConfig, generalBannerConfig }) => {
   const bannerContainerRef = useRef<HTMLDivElement | null>(null);
@@ -27,7 +25,7 @@ export const HeaderBanners: React.FC<{
 
   return (
     <div ref={bannerContainerRef}>
-      <CookieBanner configuration={cookieBannerConfig} />
+      {cookieBannerConfig && <CookieBanner configuration={cookieBannerConfig} />}
       {showGeneralBanner && generalBannerConfig && (
         <GeneralBanner configuration={generalBannerConfig} />
       )}

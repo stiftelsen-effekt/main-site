@@ -64,7 +64,6 @@ export const ArticlePage = withStaticProps(
       appStaticProps,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       draftMode,
-      consentState,
       preview: draftMode,
       token: draftMode ? token ?? null : null,
       data: {
@@ -74,7 +73,7 @@ export const ArticlePage = withStaticProps(
       },
     } satisfies GeneralPageProps;
   },
-)(({ data, navbar, draftMode, consentState }) => {
+)(({ data, navbar, draftMode }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -107,7 +106,6 @@ export const ArticlePage = withStaticProps(
         hideOnScroll={true}
         cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
         generalBannerConfig={data.result.settings[0].general_banner}
-        initialConsentState={consentState}
       >
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>

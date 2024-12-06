@@ -11,10 +11,9 @@ import { ConsentState } from "../../../../middleware.page";
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
   hideOnScroll: boolean;
-  cookieBannerConfig: CookieBannerConfiguration;
-  initialConsentState: ConsentState;
+  cookieBannerConfig?: CookieBannerConfiguration;
   generalBannerConfig?: Generalbanner & { link: NavLink };
-}> = ({ children, hideOnScroll, cookieBannerConfig, initialConsentState, generalBannerConfig }) => {
+}> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig }) => {
   const router = useRouter();
 
   const [navbarShrinked, setNavbarShrinked] = useState(false);
@@ -63,7 +62,6 @@ export const MainHeader: React.FC<{
     <div data-cy="header" className={classes.join(" ")}>
       <HeaderBanners
         cookieBannerConfig={cookieBannerConfig}
-        initialConsentState={initialConsentState}
         generalBannerConfig={generalBannerConfig}
       />
       {children}

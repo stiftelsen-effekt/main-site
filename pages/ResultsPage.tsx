@@ -17,7 +17,6 @@ import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHadlineNumbers } from "../components/shared/components/ResultsHeadline/ResultsHeadline";
 import { ConsentState } from "../middleware.page";
-import { useLiveQuery } from "next-sanity/preview";
 
 const fetchResultsPageSlug = groq`
 {
@@ -80,7 +79,6 @@ export const ResultsPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
-      consentState,
       preview: draftMode,
       token: draftMode ? token ?? null : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
@@ -98,7 +96,7 @@ export const ResultsPage = withStaticProps(
       },
     } satisfies ResultsPageProps;
   },
-)(({ data, navbar, draftMode, consentState }) => {
+)(({ data, navbar, draftMode }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -122,7 +120,6 @@ export const ResultsPage = withStaticProps(
 
       <div className={styles.inverted}>
         <MainHeader
-          initialConsentState={consentState}
           hideOnScroll={true}
           cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
           generalBannerConfig={data.result.settings[0].general_banner}
