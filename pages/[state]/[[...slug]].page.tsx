@@ -1,16 +1,18 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
-import { fetchRouterContext } from "../context/RouterContext";
-import { ArticlePage, getArticlePaths } from "./ArticlePage";
-import { GenericPage, getGenericPagePaths } from "./GenericPage";
-import { ArticlesPage } from "./ArticlesPage";
-import { VippsAgreementPage } from "./VippsAgreementPage";
-import { DonationsPage, getDonationsPageSubpaths } from "./dashboard/DonationsPage";
-import { AgreementsPage } from "./dashboard/AgreementsPage";
-import { ProfilePage } from "./dashboard/ProfilePage";
-import { TaxPage, getTaxPageSubPaths } from "./dashboard/TaxPage";
-import { VippsAnonymousPage } from "./dashboard/VippsAnonymousPage";
-import { ResultsPage } from "./ResultsPage";
+import { fetchRouterContext } from "../../context/RouterContext";
+import { ArticlePage, getArticlePaths } from "../ArticlePage";
+import { GenericPage, getGenericPagePaths } from "../GenericPage";
+import { ArticlesPage } from "../ArticlesPage";
+import { VippsAgreementPage } from "../VippsAgreementPage";
+import { DonationsPage, getDonationsPageSubpaths } from "../dashboard/DonationsPage";
+import { AgreementsPage } from "../dashboard/AgreementsPage";
+import { ProfilePage } from "../dashboard/ProfilePage";
+import { TaxPage, getTaxPageSubPaths } from "../dashboard/TaxPage";
+import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
+import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "next-sanity/preview";
+import { ConsentState } from "../../middleware.page";
+import NotFoundPage from "../404.page";
 
 enum PageType {
   GenericPage = "generic",
@@ -165,112 +167,131 @@ const inferPageTypeFromPath = async (path: string[]) => {
   return PageType.GenericPage;
 };
 
-export const getStaticProps = async ({
-  draftMode = false,
-  params,
-}: GetStaticPropsContext<{ slug: string[] }>) => {
-  const path = params?.slug ?? [];
+export const getStaticProps = async (
+  ctx: GetStaticPropsContext<{
+    slug: string[];
+    state: ConsentState;
+  }>,
+) => {
+  const path = ctx.params?.slug ?? [];
+  const draftMode = ctx.draftMode ?? false;
+  const consentState = ctx.params?.state ?? "undecided";
 
   const pageType = await inferPageTypeFromPath(path);
 
   switch (pageType) {
     case PageType.GenericPage: {
-      const props = await GenericPage.getStaticProps({ draftMode, path });
+      const props = await GenericPage.getStaticProps({ draftMode, consentState, path });
+      if (!props.data.result.page && !draftMode) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ArticlesPage: {
-      const props = await ArticlesPage.getStaticProps({ draftMode });
+      const props = await ArticlesPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ArticlePage: {
       const slug = path.slice(1).join("/");
-      const props = await ArticlePage.getStaticProps({ draftMode, slug });
+      const props = await ArticlePage.getStaticProps({ draftMode, consentState, slug });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ResultsPage: {
-      const props = await ResultsPage.getStaticProps({ draftMode });
+      const props = await ResultsPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.VippsAgreementPage: {
-      const props = await VippsAgreementPage.getStaticProps({ draftMode });
+      const props = await VippsAgreementPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.VippsAnonymousPage: {
-      const props = await VippsAnonymousPage.getStaticProps({ draftMode });
+      const props = await VippsAnonymousPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.DonationsPage: {
-      const props = await DonationsPage.getStaticProps({ draftMode, path });
+      const props = await DonationsPage.getStaticProps({ draftMode, consentState, path });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.AgreementsPage: {
-      const props = await AgreementsPage.getStaticProps({ draftMode });
+      const props = await AgreementsPage.getStaticProps({ draftMode, consentState, slug: path });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.ProfilePage: {
-      const props = await ProfilePage.getStaticProps({ draftMode });
+      const props = await ProfilePage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
     }
     case PageType.TaxPage: {
-      const props = await TaxPage.getStaticProps({ draftMode, path });
+      const props = await TaxPage.getStaticProps({ draftMode, path, consentState });
       return {
         props: {
           ...props,
           pageType,
+          consentState,
         },
         revalidate: draftMode ? 1 : 3600,
       } as const;
@@ -281,7 +302,7 @@ export const getStaticProps = async ({
 export async function getStaticPaths() {
   const routerContext = await fetchRouterContext();
 
-  const paths = await Promise.all([
+  const basePaths = await Promise.all([
     getGenericPagePaths(),
     getArticlePaths(routerContext.articlesPagePath),
     getDonationsPageSubpaths(),
@@ -294,12 +315,17 @@ export async function getStaticPaths() {
     ...(Object.values(routerContext).filter((path) => path !== null) as string[][]),
   ]);
 
+  const consentStates: ConsentState[] = ["accepted", "rejected", "undecided"];
+
   return {
-    paths: paths.map((path) => {
-      return {
-        params: { slug: path },
-      };
-    }),
+    paths: basePaths.flatMap((path) =>
+      consentStates.map((state) => ({
+        params: {
+          slug: path,
+          state,
+        },
+      })),
+    ),
     fallback: "blocking",
   };
 }

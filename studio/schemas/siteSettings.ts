@@ -37,6 +37,12 @@ export default {
       of: [{ type: "navitem" }, { type: "navgroup" }],
     },
     {
+      name: "general_banner",
+      title: "General Banner",
+      type: "reference",
+      to: [{ type: "generalbanner" }],
+    },
+    {
       name: "donate_label",
       title: "Donate label",
       type: "string",

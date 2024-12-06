@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { Dispatch, SetStateAction, createContext, useState, useMemo } from "react";
+import { Dispatch, SetStateAction, createContext, useState, useMemo, useEffect } from "react";
 import { getClient } from "../../../lib/sanity.client";
 import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
@@ -12,6 +12,7 @@ import { token } from "../../../token";
 import { useLiveQuery } from "next-sanity/preview";
 import React from "react";
 import { stegaClean } from "@sanity/client/stega";
+import { ConsentState } from "../../../middleware.page";
 
 export type WidgetContextType = {
   open: boolean;
@@ -23,21 +24,21 @@ export const WidgetContext = createContext<
   [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
 >([{ open: false, prefilled: null, prefilledSum: null }, () => {}]);
 
-export type CookiesAcceptedContextType = {
-  accepted: boolean | undefined;
-  expired: boolean | undefined;
-  lastMajorChange: Date | undefined;
-  loaded: boolean;
+export type BanerContextType = {
+  consentState: ConsentState;
+  consentExpired: boolean;
+  privacyPolicyLastMajorChange: Date | undefined;
+  generalBannerDismissed: boolean;
 };
 
-export const CookiesAccepted = createContext<
-  [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
+export const BannerContext = createContext<
+  [BanerContextType, Dispatch<SetStateAction<BanerContextType>>]
 >([
   {
-    accepted: undefined,
-    expired: undefined,
-    lastMajorChange: undefined,
-    loaded: false,
+    consentState: "undecided",
+    consentExpired: false,
+    privacyPolicyLastMajorChange: undefined,
+    generalBannerDismissed: false,
   },
   () => {},
 ]);
@@ -47,6 +48,7 @@ type QueryResult = {
     donate_label_short: string;
     donate_label_title: string;
     accent_color: string;
+    general_banner?: any;
   };
 };
 
@@ -55,26 +57,37 @@ const query = groq`
     "settings": *[_type == "site_settings"][0] {
       donate_label_short,
       donate_label_title,
-      accent_color
+      accent_color,
+      general_banner
     }
   }
 `;
 
-export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
-  const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
-  const settings = result.settings;
-  return {
-    footer: await Footer.getStaticProps({ draftMode }),
-    widget: await Widget.getStaticProps({ draftMode }),
-    // isPreview: preview,
-    giveButton: {
-      donate_label_short: settings.donate_label_short,
-      donate_label_title: settings.donate_label_title,
-      accent_color: stegaClean(settings.accent_color),
-    },
-    draftMode,
-  };
-})(({ children, footer, widget, giveButton, draftMode }) => {
+export const Layout = withStaticProps(
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
+    const settings = result.settings;
+    return {
+      footer: await Footer.getStaticProps({ draftMode }),
+      widget: await Widget.getStaticProps({ draftMode }),
+      // isPreview: preview,
+      giveButton: {
+        donate_label_short: settings.donate_label_short,
+        donate_label_title: settings.donate_label_title,
+        accent_color: stegaClean(settings.accent_color),
+      },
+      general_banner: settings.general_banner,
+      draftMode,
+      consentState,
+    };
+  },
+)(({ children, footer, widget, giveButton, general_banner, consentState, draftMode }) => {
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
@@ -84,15 +97,12 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
   >(() => [widgetContext, setWidgetContext], [widgetContext]);
 
-  const [cookiesAccepted, setCookiesAccepted] = useState<CookiesAcceptedContextType>({
-    accepted: undefined,
-    expired: undefined,
-    lastMajorChange: undefined,
-    loaded: false,
+  const [banners, setBanners] = useState<BanerContextType>({
+    consentState,
+    consentExpired: false,
+    privacyPolicyLastMajorChange: undefined,
+    generalBannerDismissed: false,
   });
-  const cookiesAcceptedValue = useMemo<
-    [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
-  >(() => [cookiesAccepted, setCookiesAccepted], [cookiesAccepted]);
 
   if (widgetContext.open && window.innerWidth < 1180) {
     document.body.style.overflow = "hidden";
@@ -100,13 +110,8 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
     document.body.style.overflow = "auto";
   }
 
-  const containerClasses = [styles.container];
-  if (cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined") {
-    containerClasses.push(styles.containerCookieBanner);
-  }
-
   return (
-    <div className={containerClasses.join(" ")}>
+    <div className={styles.container}>
       {draftMode && <PreviewBlock />}
       <GiveButton
         inverted={false}
@@ -117,7 +122,7 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
         {giveButton.donate_label_short}
       </GiveButton>
       <WidgetContext.Provider value={widgetContextValue}>
-        <CookiesAccepted.Provider value={cookiesAcceptedValue}>
+        <BannerContext.Provider value={[banners, setBanners]}>
           {draftMode ? (
             <PreviewWidgetPane
               {...widget}
@@ -132,7 +137,7 @@ export const Layout = withStaticProps(async ({ draftMode = false }: { draftMode:
             />
           )}
           <main className={styles.main}>{children}</main>
-        </CookiesAccepted.Provider>
+        </BannerContext.Provider>
       </WidgetContext.Provider>
       {draftMode ? <PreviewFooter {...footer} /> : <Footer {...footer} />}
     </div>

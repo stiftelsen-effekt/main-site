@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import "react-toastify/dist/ReactToastify.css";
 import { linksContentQuery, useAnonymousVippsAgreement } from "../../_queries";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { ProfileLayout } from "../../components/profile/layout/layout";
 import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.client";
@@ -15,6 +14,7 @@ import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
+import { ConsentState } from "../../middleware.page";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient().fetch<FetchVippsAnonymousPageResult>(fetchVippsAnonymousPage);
@@ -28,8 +28,18 @@ export async function getVippsAnonymousPagePath() {
 }
 
 export const VippsAnonymousPage = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({
+      draftMode,
+      consentState,
+      layout: LayoutType.Profile,
+    });
     const result = await getClient(
       draftMode ? token : undefined,
     ).fetch<FetchVippsAnonymousPageResult>(fetchVippsAnonymousPage);
@@ -37,13 +47,15 @@ export const VippsAnonymousPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
         result: result,
         query: fetchVippsAnonymousPage,
         queryParams: {},
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, draftMode }) => {
   const dashboard = data.result.dashboard[0];

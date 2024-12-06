@@ -1,8 +1,8 @@
 import { groq } from "next-sanity";
-import { linksContentQuery } from "../_queries";
+import { linksContentQuery, pageBannersContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Navbar } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
 import {
   CookieBanner,
@@ -15,6 +15,7 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
+import { ConsentState } from "../middleware.page";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient().fetch<FetchVippsResult>(fetchVipps);
@@ -24,8 +25,14 @@ export const getVippsAgreementPagePath = async () => {
 };
 
 export const VippsAgreementPage = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
     const result = await getClient(draftMode ? token : undefined).fetch<FetchVippsResult>(
       fetchVipps,
     );
@@ -33,15 +40,17 @@ export const VippsAgreementPage = withStaticProps(
     return {
       appStaticProps,
       draftMode: draftMode,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
         query: fetchVipps,
         queryParams: {},
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
-)(({ data, draftMode, navbarData }) => {
+)(({ data, draftMode, navbar }) => {
   const { dashboardPath } = useRouterContext();
   const page = data.result.vipps?.[0].agreement_page;
 
@@ -69,9 +78,12 @@ export const VippsAgreementPage = withStaticProps(
         siteName={data.result.settings[0].title}
       />
 
-      <MainHeader hideOnScroll={true}>
-        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-        <Navbar {...navbarData} />
+      <MainHeader
+        hideOnScroll={true}
+        cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+        generalBannerConfig={data.result.settings[0].general_banner}
+      >
+        {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
       <SectionContainer>
@@ -102,6 +114,7 @@ type FetchVippsResult = {
   settings: Array<{
     title: string;
     cookie_banner_configuration: CookieBannerConfiguration;
+    general_banner: any;
   }>;
   vipps?: Array<{
     agreement_page: Record<string, any> & {
@@ -116,13 +129,7 @@ const fetchVipps = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration {
-      ...,
-      privacy_policy_link {
-        ...,
-        "slug": page->slug.current
-      }
-    },
+    ${pageBannersContentQuery}
   },
   "vipps": *[_id == "vipps"] {
     agreement_page->{

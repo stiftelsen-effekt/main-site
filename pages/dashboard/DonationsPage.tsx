@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import style from "../../styles/Donations.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
-import { getAppStaticProps, LayoutType } from "../_app.page";
+import { GeneralPageProps, getAppStaticProps, LayoutType } from "../_app.page";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
@@ -38,6 +38,7 @@ import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Info } from "react-feather";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
+import { ConsentState } from "../../middleware.page";
 
 export async function getDashboardPagePath() {
   const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -88,8 +89,20 @@ const getYearPaths = () => {
 };
 
 export const DonationsPage = withStaticProps(
-  async ({ draftMode = false, path }: { draftMode: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+  async ({
+    draftMode = false,
+    path,
+    consentState,
+  }: {
+    draftMode: boolean;
+    path: string[];
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({
+      draftMode,
+      consentState,
+      layout: LayoutType.Profile,
+    });
     const result = await getClient(draftMode ? token : undefined).fetch<FetchDonationsPageResult>(
       fetchDonationsPage,
     );
@@ -102,6 +115,8 @@ export const DonationsPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       filterYear,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
@@ -109,7 +124,7 @@ export const DonationsPage = withStaticProps(
         query: fetchDonationsPage,
         queryParams: {},
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();

@@ -1,0 +1,49 @@
+.header {
+  font-size: 3rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.table {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 2rem;
+}
+
+.column .cell {
+  padding-top: 0.5rem;
+}
+
+.column .cell a:link {
+  border-bottom: 1px solid var(--primary);
+}
+
+.column .cell:first-child {
+  font-weight: bold;
+}
+
+@media (max-width: 1180px) {
+  .container {
+    gap: 1rem;
+    justify-content: start;
+    width: 100%;
+  }
+
+  .header {
+    font-size: 2rem;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .table {
+    grid-auto-flow: row;
+    width: 100%;
+    gap: 1rem;
+  }
+}

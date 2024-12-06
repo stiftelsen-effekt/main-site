@@ -6,7 +6,6 @@ import { linksContentQuery } from "../../_queries";
 import { LinksProps } from "../../components/main/blocks/Links/Links";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
-import { ProfileLayout } from "../../components/profile/layout/layout";
 import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/ErrorMessage";
 import { FacebookTab } from "../../components/profile/tax/FacebookTab/FacebookTab";
 import { TaxDeductionsTab } from "../../components/profile/tax/TaxDeductionsTab/TaxDeductionsTab";
@@ -23,6 +22,7 @@ import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
+import { ConsentState } from "../../middleware.page";
 
 export async function getTaxPagePath(): Promise<string[]> {
   const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
@@ -60,8 +60,20 @@ export async function getTaxPageSubPaths(): Promise<string[][]> {
 }
 
 export const TaxPage = withStaticProps(
-  async ({ draftMode = false, path }: { draftMode: boolean; path: string[] }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+  async ({
+    draftMode = false,
+    path,
+    consentState,
+  }: {
+    draftMode: boolean;
+    path: string[];
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({
+      draftMode,
+      consentState,
+      layout: LayoutType.Profile,
+    });
     const result = await getClient(draftMode ? token : undefined).fetch<FetchTaxPageResult>(
       fetchTaxPage,
     );
@@ -73,6 +85,8 @@ export const TaxPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       subpath,
       data: {
@@ -80,7 +94,7 @@ export const TaxPage = withStaticProps(
         query: fetchTaxPage,
         queryParams: {},
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ data, subpath, navbarData, draftMode }) => {
   const page = data.result.page;
