@@ -6,7 +6,7 @@ import {
   RelatedArticle,
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
-import { Navbar, NavLink } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, NavLink, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import {
   CookieBanner,
   CookieBannerConfiguration,
@@ -62,7 +62,7 @@ export const ArticlePage = withStaticProps(
 
     return {
       appStaticProps,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       draftMode,
       consentState,
       preview: draftMode,
@@ -74,7 +74,7 @@ export const ArticlePage = withStaticProps(
       },
     } satisfies GeneralPageProps;
   },
-)(({ data, navbarData, draftMode, consentState }) => {
+)(({ data, navbar, draftMode, consentState }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -109,7 +109,7 @@ export const ArticlePage = withStaticProps(
         generalBannerConfig={data.result.settings[0].general_banner}
         initialConsentState={consentState}
       >
-        <Navbar {...navbarData} />
+        {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />

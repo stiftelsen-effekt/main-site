@@ -165,7 +165,7 @@ export async function getAppStaticProps({
         }
       : {
           layout: LayoutType.Profile as const,
-          layoutProps: await ProfileLayout.getStaticProps({ draftMode }),
+          layoutProps: await ProfileLayout.getStaticProps({ draftMode, consentState }),
         }),
   };
   return appStaticProps;

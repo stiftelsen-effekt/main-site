@@ -111,8 +111,8 @@ export type SEOMeta = {
   title: string;
   titleTemplate?: string;
   description: string;
-  imageAsset: SanityAsset;
-  canonicalurl: string;
+  imageAsset?: SanityAsset;
+  canonicalurl?: string;
   keywords?: string;
   siteName: string;
 };

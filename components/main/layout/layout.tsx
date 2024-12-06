@@ -71,7 +71,7 @@ const BannerMarginTopInitialValues = {
   mobile: 114,
 };
 
-const getInitialBannerMarginTop = () => {
+export const getInitialBannerMarginTop = () => {
   if (typeof window === "undefined") {
     return 114;
   }

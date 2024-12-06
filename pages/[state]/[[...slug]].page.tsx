@@ -12,6 +12,7 @@ import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "next-sanity/preview";
 import { ConsentState } from "../../middleware.page";
+import NotFoundPage from "../404.page";
 
 enum PageType {
   GenericPage = "generic",
@@ -181,6 +182,11 @@ export const getStaticProps = async (
   switch (pageType) {
     case PageType.GenericPage: {
       const props = await GenericPage.getStaticProps({ draftMode, consentState, path });
+      if (!props.data.result.page && !draftMode) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
           ...props,
@@ -225,7 +231,7 @@ export const getStaticProps = async (
       } as const;
     }
     case PageType.VippsAgreementPage: {
-      const props = await VippsAgreementPage.getStaticProps({ draftMode });
+      const props = await VippsAgreementPage.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,

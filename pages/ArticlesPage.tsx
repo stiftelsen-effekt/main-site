@@ -3,7 +3,7 @@ import { linksContentQuery, pageBannersContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Navbar } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
@@ -41,7 +41,7 @@ export const ArticlesPage = withStaticProps(
 
     return {
       appStaticProps,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       preview: draftMode,
       token: draftMode ? token ?? null : null,
       data: {
@@ -53,7 +53,7 @@ export const ArticlesPage = withStaticProps(
       consentState,
     } satisfies GeneralPageProps;
   },
-)(({ data, navbarData, consentState }) => {
+)(({ data, navbar, consentState, draftMode }) => {
   const page = data.result.page;
 
   const header = page.header;
@@ -78,7 +78,7 @@ export const ArticlesPage = withStaticProps(
           generalBannerConfig={data.result.settings[0].general_banner}
           initialConsentState={consentState}
         >
-          <Navbar {...navbarData} useDashboardLogo />
+          {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
         </MainHeader>
 
         <PageHeader

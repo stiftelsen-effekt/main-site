@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 import { linksContentQuery, linksSelectorQuery, pageBannersContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
-import { Navbar } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
@@ -182,13 +182,3 @@ const fetchResults = groq`
   },
 }
 `;
-
-const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticProps>>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query);
-
-  if (result) {
-    props.data.result = result;
-  }
-
-  return <Navbar {...(props as any)} />;
-};

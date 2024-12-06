@@ -9,8 +9,9 @@ import { ActivityProvider } from "./activityProvider";
 import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
 import {
-  CookiesAccepted,
-  CookiesAcceptedContextType,
+  BanerContextType,
+  BannerContext,
+  getInitialBannerMarginTop,
   WidgetContext,
   WidgetContextType,
 } from "../../main/layout/layout";
@@ -22,6 +23,7 @@ import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import { getClient } from "../../../lib/sanity.client";
 import { token } from "../../../token";
+import { ConsentState } from "../../../middleware.page";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   Router.replace(appState?.returnTo || dashboardPath.join("/"));
@@ -42,6 +44,7 @@ type QueryResult = {
       login_abort_label: string;
       login_button_label: string;
     };
+    general_banner?: any;
     missing_name_modal_config?: MissingNameModalConfig;
   };
 };
@@ -50,6 +53,7 @@ export const profileQuery = `
   {
     "data": {
       "site_title": *[_type == "site_settings"][0].title,
+      "general_banner": *[_type == "site_settings"][0].general_banner->,
       "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
       "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_configuration
     }
@@ -57,17 +61,24 @@ export const profileQuery = `
 `;
 
 export const ProfileLayout = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(profileQuery);
 
     return {
       footerData: await Footer.getStaticProps({ draftMode }),
       widgetData: await Widget.getStaticProps({ draftMode }),
       profileData: result.data,
+      consentState,
       draftMode,
     };
   },
-)(({ children, footerData, widgetData, profileData, draftMode }) => {
+)(({ children, footerData, widgetData, profileData, consentState, draftMode }) => {
   const { dashboardPath } = useRouterContext();
 
   const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
@@ -79,15 +90,14 @@ export const ProfileLayout = withStaticProps(
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
   >(() => [widgetContext, setWidgetContext], [widgetContext]);
 
-  const [cookiesAccepted, setCookiesAccepted] = useState<CookiesAcceptedContextType>({
-    accepted: undefined,
-    expired: undefined,
-    lastMajorChange: undefined,
-    loaded: false,
+  const [banners, setBanners] = useState<BanerContextType>({
+    consentState,
+    consentExpired: false,
+    privacyPolicyLastMajorChange: undefined,
+    generalBannerDismissed: false,
+    layoutPaddingTop:
+      consentState === "undecided" || profileData.general_banner ? getInitialBannerMarginTop() : 0,
   });
-  const cookiesAcceptedValue = useMemo<
-    [CookiesAcceptedContextType, Dispatch<SetStateAction<CookiesAcceptedContextType>>]
-  >(() => [cookiesAccepted, setCookiesAccepted], [cookiesAccepted]);
 
   const bypassAuth = useShouldAuthenticate();
 
@@ -140,7 +150,7 @@ export const ProfileLayout = withStaticProps(
                 />
                 {draftMode && <PreviewBlock />}
                 <WidgetContext.Provider value={widgetContextValue}>
-                  <CookiesAccepted.Provider value={cookiesAcceptedValue}>
+                  <BannerContext.Provider value={[banners, setBanners]}>
                     <WidgetPane
                       darkMode={true}
                       {...widgetData}
@@ -151,7 +161,7 @@ export const ProfileLayout = withStaticProps(
                     {profileData.missing_name_modal_config && (
                       <MissingNameModal config={profileData.missing_name_modal_config} />
                     )}
-                  </CookiesAccepted.Provider>
+                  </BannerContext.Provider>
                 </WidgetContext.Provider>
                 <Footer {...footerData} />
               </ActivityProvider>
