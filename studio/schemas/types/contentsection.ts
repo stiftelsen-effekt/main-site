@@ -82,6 +82,7 @@ export default {
         { type: "organizationslist" },
         { type: "opendistributionbutton" },
         { type: "giftcardteaser" },
+        { type: "teamintroduction" },
         { type: "discountratecomparison" },
         { type: "itncoverage" },
         { type: "fundraiserchart" },

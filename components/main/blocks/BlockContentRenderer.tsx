@@ -39,6 +39,7 @@ import { PlausibleRevenueTracker } from "./PlausibleRevenueTracker/PlausibleReve
 import { OpenDistributionButton } from "./OpenDistributionButton/OpenDistributionButton";
 import { Fundraiserchart, Opendistributionbutton } from "../../../studio/sanity.types";
 import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
+import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -272,6 +273,15 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 )}
                 locale={stegaClean(block.locale)}
                 periodAdjustment={teaserPeriod}
+              />
+            );
+          case "teamintroduction":
+            return (
+              <TeamIntroduction
+                key={block._key || block._id}
+                contributor={block.contributor}
+                content={block.content}
+                links={block.links}
               />
             );
           case "contributorlist":

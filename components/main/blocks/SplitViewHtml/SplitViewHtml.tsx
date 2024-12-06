@@ -4,6 +4,7 @@ import { LinkType } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links } from "../Links/Links";
 import { PortableText } from "@portabletext/react";
+import { customComponentRenderers } from "../Paragraph/Citation";
 
 export const SplitViewHtml: React.FC<{
   title: string;
@@ -27,7 +28,7 @@ export const SplitViewHtml: React.FC<{
       <div className={styles.splitviewtext}>
         <div>
           <h4>{title}</h4>
-          <PortableText value={paragraph} />
+          <PortableText value={paragraph} components={customComponentRenderers} />
         </div>
         {links && <Links links={links} />}
       </div>

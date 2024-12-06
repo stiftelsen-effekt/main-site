@@ -231,11 +231,12 @@ export const Navbar = withStaticProps(
               e.currentTarget.blur();
             }}
           >
-            {expandMenu ? (
+            <AnimatedMenuIcon isOpen={expandMenu} />
+            {/*expandMenu ? (
               <X size={32} color={dashboard || useDashboardLogo ? "black" : "white"} />
             ) : (
               <Menu size={32} color={dashboard || useDashboardLogo ? "white" : "black"} />
-            )}
+            )*/}
           </button>
         </div>
         <ul>
@@ -321,3 +322,43 @@ export const Navbar = withStaticProps(
     </div>
   );
 });
+
+const AnimatedMenuIcon = ({ isOpen }: { isOpen: boolean }) => {
+  const lineStyles = {
+    transition: "all 200ms ease",
+    transformOrigin: "center",
+  };
+
+  const topLineStyles = {
+    ...lineStyles,
+    transform: isOpen ? "translateY(4px) translateX(-5px) rotate(45deg)" : "none",
+  };
+
+  const middleLineStyles = {
+    ...lineStyles,
+    opacity: isOpen ? 0 : 1,
+  };
+
+  const bottomLineStyles = {
+    ...lineStyles,
+    transform: isOpen ? "translateY(-4px) translateX(-5px) rotate(-45deg)" : "none",
+  };
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="3" y1="6" x2="21" y2="6" style={topLineStyles} />
+      <line x1="3" y1="12" x2="21" y2="12" style={middleLineStyles} />
+      <line x1="3" y1="18" x2="21" y2="18" style={bottomLineStyles} />
+    </svg>
+  );
+};

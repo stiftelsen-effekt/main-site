@@ -1,16 +1,26 @@
-.graph {
+.graphContainer {
   width: 100%;
   aspect-ratio: 16/11;
+  position: relative;
+
+  .graph {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .graph {
+  .graphContainer {
     aspect-ratio: 16/11;
   }
 }
 
 @media screen and (max-width: 1180px) {
-  .graph {
+  .graphContainer {
     aspect-ratio: 1/1;
   }
 }

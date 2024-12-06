@@ -44,11 +44,7 @@
   padding-top: 0.4rem;
 }
 
-.navbar ul li .submenu:focus-within {
-  top: auto;
-  display: block;
-}
-
+.navbar ul li .submenu:focus-within,
 .navbar ul li:hover .submenu,
 .navbar ul li:focus .submenu,
 .navbar ul li.expandedSubmenu .submenu {
@@ -60,9 +56,6 @@
   padding: 0 0.875rem;
   font-size: 0.8rem;
   display: block;
-}
-
-.navbar ul li .submenu ul li {
   padding-bottom: 0;
   white-space: nowrap;
 }
@@ -270,6 +263,36 @@
   .navbar ul li.buttonsWrapper button:first-child {
     margin-left: 0;
   }
+
+  .navbarExpanded .navbar > ul > li {
+    opacity: 0;
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  /* Stagger the animations for each list item */
+  .navbarExpanded .navbar > ul > li:nth-child(1) {
+    animation-delay: 0.025s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(3) {
+    animation-delay: 0.075s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(4) {
+    animation-delay: 0.1s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(5) {
+    animation-delay: 0.125s;
+  }
+  .navbarExpanded .navbar > ul > li:nth-child(6) {
+    animation-delay: 0.15s;
+  }
+
+  .navbarExpanded .navbar > ul > li:last-child {
+    animation: slideUp 0.3s ease-out forwards;
+    animation-delay: 0s;
+  }
 }
 
 /* Laoptop */
@@ -290,6 +313,26 @@
   .navbar ul li > div > div {
     display: block !important;
     opacity: 1 !important;
+  }
+
+  .navbar ul li .submenu:focus-within,
+  .navbar ul li:hover .submenu,
+  .navbar ul li:focus .submenu,
+  .navbar ul li.expandedSubmenu .submenu {
+    ul li {
+      animation: slideIn 0.2s ease-out forwards;
+    }
+  }
+
+  .navbar ul li .submenu ul li {
+    opacity: 0;
+    transform: translateY(-1rem);
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: 0.025s * $i;
+      }
+    }
   }
 }
 
@@ -316,5 +359,28 @@
   .navbar .logoWrapper {
     height: 26px;
     width: 176px;
+  }
+}
+
+/* Animation keyframes for sliding in from right */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

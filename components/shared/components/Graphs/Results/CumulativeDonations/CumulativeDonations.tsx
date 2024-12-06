@@ -8,27 +8,31 @@ import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
 import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphContext";
 import { getRemInPixels } from "../../../../../main/blocks/Paragraph/Citation";
-
+import * as d3 from "d3";
+import { DateTime } from "luxon";
 export type DailyDonations = { date: string; sum: string }[];
 
 export const CumulativeDonations: React.FC<{
   dailyDonations: DailyDonations;
   graphContext: GraphContextData;
 }> = ({ dailyDonations, graphContext }) => {
+  const graphContainerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   const resizeGraph = useCallback(() => {
-    if (graphRef.current) {
-      graphRef.current.innerHTML = "";
+    if (graphContainerRef.current) {
       setSize({ width: graphRef.current!.clientWidth, height: graphRef.current!.clientHeight });
     }
-  }, [graphRef]);
-  const debouncedResizeGraph = useDebouncedCallback(() => resizeGraph(), 1000);
+  }, [graphContainerRef.current]);
+  const debouncedResizeGraph = useDebouncedCallback(() => resizeGraph(), 1000, { trailing: true });
 
   useEffect(() => {
-    if (graphRef.current) {
-      setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
+    if (graphContainerRef.current) {
+      setSize({
+        width: graphContainerRef.current.clientWidth,
+        height: graphContainerRef.current.clientHeight,
+      });
       const resizeObserver = new ResizeObserver((entries) => {
         const newWidth = entries[0].contentRect.width;
         if (newWidth !== size.width) {
@@ -36,10 +40,11 @@ export const CumulativeDonations: React.FC<{
         }
       });
 
-      resizeObserver.observe(graphRef.current);
+      resizeGraph();
+      resizeObserver.observe(graphContainerRef.current);
       return () => resizeObserver.disconnect();
     }
-  }, [graphRef.current]);
+  }, [graphContainerRef.current]);
 
   const transformedDonations = useMemo(() => transformDonations(dailyDonations), [dailyDonations]);
   const cumulativebinneddonations = useMemo(
@@ -61,11 +66,13 @@ export const CumulativeDonations: React.FC<{
       yearlyMaxes: any[],
     ) => {
       if (graphRef.current) {
+        const isMobile = size.width < 760;
+
         const plot = Plot.plot({
           width: size.width,
           height: size.height,
-          marginLeft: size.width < 760 ? 50 : 0,
-          marginRight: size.width < 760 ? 70 : 0,
+          marginLeft: isMobile ? 50 : 0,
+          marginRight: isMobile ? 70 : 0,
           style: {
             background: "transparent",
             fontSize: "12px",
@@ -93,6 +100,53 @@ export const CumulativeDonations: React.FC<{
               y: "cumulativeSum",
               z: "year",
               strokeWidth: 1,
+              channels: {
+                year: {
+                  value: (d) => d.year.toString(),
+                  label: "",
+                },
+                cumulativeSum: {
+                  value: (d) =>
+                    Intl.NumberFormat("no-NB", {
+                      style: "currency",
+                      currency: "NOK",
+                      maximumFractionDigits: 0,
+                    }).format(d.cumulativeSum),
+                  label: "",
+                },
+              },
+              tip: isMobile
+                ? undefined
+                : {
+                    x: "doy",
+                    y: "cumulativeSum",
+                    dx: 60,
+                    lineHeight: 1.5,
+                    anchor: "middle",
+                    textPadding: 12,
+                    fontSize: 12,
+                    format: {
+                      y: false,
+                      x: false,
+                      z: false,
+                    },
+                    render: (index, scales, values, dimensions, context, next) => {
+                      // Filter and highlight the paths with the same *z* as the hovered point.
+                      const path = d3
+                        .select(context.ownerSVGElement)
+                        .selectAll("[aria-label=line] path");
+                      if (index.length && values.z) {
+                        const z = values.z[index[0]];
+                        path
+                          .style("stroke", "#ccc")
+                          .filter((i: any) => (values as any).z[i[0]] === z)
+                          .style("stroke", null)
+                          .raise();
+                      } else path.style("stroke", null);
+                      if (!next) return null;
+                      return next(index, scales, values, dimensions, context);
+                    },
+                  },
             }),
             Plot.gridY({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }),
             Plot.axisX({
@@ -108,29 +162,6 @@ export const CumulativeDonations: React.FC<{
               tickSize: getRemInPixels(),
               tickPadding: -getRemInPixels() * 0.7,
             }),
-            Plot.text(yearlyMaxes, {
-              y: "adjustedCumulativeSum",
-              x: "doy",
-              text: (d) => formatEndLabel(d, size.width),
-              textAnchor: "start",
-              dx: size.width < 760 ? 30 : 35,
-              fontSize: 12,
-              lineHeight: 1.2,
-            }),
-            Plot.text(
-              cumulativeBinnedDonations,
-              Plot.selectLast({
-                y: "cumulativeSum",
-                x: "doy",
-                text: (d) => formatEndLabel(d, size.width),
-                textAnchor: "start",
-                fill: "black",
-                stroke: "#fafafa",
-                strokeWidth: 5,
-                dx: 14,
-                fontSize: 12,
-              }),
-            ),
             Plot.dot(yearlyMaxes, {
               y: "cumulativeSum",
               x: "doy",
@@ -166,47 +197,53 @@ export const CumulativeDonations: React.FC<{
                 strokeWidth: 0.5,
               }),
             ),
-            Plot.tip(
+            Plot.text(yearlyMaxes, {
+              y: "adjustedCumulativeSum",
+              x: "doy",
+              text: (d) => formatEndLabel(d, size.width),
+              textAnchor: "start",
+              dx: size.width < 760 ? 30 : 35,
+              fontSize: 12,
+              lineHeight: 1.2,
+            }),
+            Plot.text(
               cumulativeBinnedDonations,
-              Plot.pointerX({
-                x: "doy",
+              Plot.selectLast({
                 y: "cumulativeSum",
-                z: "year",
-                dx: 60,
-                lineHeight: 1.5,
-                anchor: "middle",
-                textPadding: 12,
-                fontSize: 12,
-                title: (d) =>
-                  `${d.date.toLocaleDateString("no-NB")}\n${d.cumulativeSum.toLocaleString(
-                    "no-NB",
-                    {
-                      style: "currency",
-                      currency: "NOK",
-                      maximumFractionDigits: 0,
-                    },
-                  )}`,
-              }),
-            ),
-            Plot.dot(
-              cumulativeBinnedDonations,
-              Plot.pointerX({
                 x: "doy",
-                y: "cumulativeSum",
-                z: "year",
+                text: (d) => formatEndLabel(d, size.width),
+                textAnchor: "start",
                 fill: "black",
-                r: 3,
+                stroke: "#fafafa",
+                strokeWidth: 5,
+                dx: 14,
+                fontSize: 12,
               }),
             ),
-            Plot.ruleX(
-              cumulativeBinnedDonations,
-              Plot.pointerX({
-                x: "doy",
-                z: "year",
-                stroke: "black",
-                strokeWidth: 0.5,
-              }),
-            ),
+
+            ...[
+              Plot.ruleX(
+                cumulativeBinnedDonations,
+                Plot.pointerX({
+                  x: "doy",
+                  z: "year",
+                  stroke: "black",
+                  strokeWidth: 0.5,
+                }),
+              ),
+              Plot.dot(
+                cumulativeBinnedDonations,
+                Plot.pointerX({
+                  x: "doy",
+                  y: "cumulativeSum",
+                  z: "doy",
+                  fill: "black",
+                  r: 3,
+                  px: "doy",
+                  maxRadius: 10,
+                }),
+              ),
+            ].filter((d) => (isMobile ? false : d)),
           ],
         });
         graphRef.current.innerHTML = "";
@@ -222,7 +259,9 @@ export const CumulativeDonations: React.FC<{
 
   return (
     <div className={resultsStyle.wrapper}>
-      <div ref={graphRef} className={styles.graph} />
+      <div ref={graphContainerRef} className={styles.graphContainer}>
+        <div ref={graphRef} className={styles.graph} />
+      </div>
       <GraphContext context={graphContext} tableContents={tableContents} />
     </div>
   );
@@ -279,6 +318,29 @@ const binDonations = (don: any[]) =>
     if (i > 0 && acc[acc.length - 1].year === el.year) {
       sum += acc[acc.length - 1].cumulativeSum;
     }
+    // Add missing datapoint if there is a gap in the data
+    const currentDoy = getDOY(el.date);
+
+    const prevIndex = acc.length - 1;
+
+    if (prevIndex >= 0) {
+      const gap = currentDoy - acc[prevIndex].doy;
+
+      if (gap > 1) {
+        for (let i = 1; i < gap; i++) {
+          const date = DateTime.fromJSDate(el.date)
+            .minus({ days: gap - i })
+            .toJSDate();
+          acc.push({
+            date: date,
+            doy: currentDoy - gap + i,
+            year: el.year,
+            cumulativeSum: acc[prevIndex].cumulativeSum,
+          });
+        }
+      }
+    }
+
     acc.push({
       date: el.date,
       doy: getDOY(el.date),

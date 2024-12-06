@@ -82,6 +82,7 @@ import opendistributionbutton from "./types/opendistributionbutton";
 import resultsheadline from "./types/results/resultsheadline";
 import fundraiserchart from "./types/fundraiserchart";
 import generalbanner from "./types/generalbanner";
+import teamintroduction from "./types/teamintroduction";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -110,6 +111,7 @@ export const types = [
   generalbanner,
   splitview,
   splitviewhtml,
+  teamintroduction,
   fullimage,
   blocktables,
   normalimage,

@@ -2521,6 +2521,111 @@ export type Fullimage = {
   };
 };
 
+export type Teamintroduction = {
+  _type: "teamintroduction";
+  contributor?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "contributor";
+  };
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  links?: Links;
+};
+
 export type Splitviewhtml = {
   _type: "splitviewhtml";
   swapped?: boolean;
@@ -3388,6 +3493,9 @@ export type Contentsection = {
         _type: "giftcardteaser";
         _key: string;
       }
+    | ({
+        _key: string;
+      } & Teamintroduction)
     | {
         discount_rate_min?: number;
         discount_rate_max?: number;
@@ -4037,6 +4145,7 @@ export type Contributor = {
   };
   name?: string;
   email?: string;
+  phone?: string;
   role?: {
     _ref: string;
     _type: "reference";
@@ -5033,6 +5142,9 @@ export type Vippsagreement = {
           _type: "giftcardteaser";
           _key: string;
         }
+      | ({
+          _key: string;
+        } & Teamintroduction)
       | {
           discount_rate_min?: number;
           discount_rate_max?: number;
@@ -5864,6 +5976,9 @@ export type Article_page = {
           _type: "giftcardteaser";
           _key: string;
         }
+      | ({
+          _key: string;
+        } & Teamintroduction)
       | {
           discount_rate_min?: number;
           discount_rate_max?: number;
@@ -6479,6 +6594,9 @@ export type Criteria = {
           _type: "giftcardteaser";
           _key: string;
         }
+      | ({
+          _key: string;
+        } & Teamintroduction)
       | {
           discount_rate_min?: number;
           discount_rate_max?: number;
@@ -7236,6 +7354,9 @@ export type Generic_page = {
           _type: "giftcardteaser";
           _key: string;
         }
+      | ({
+          _key: string;
+        } & Teamintroduction)
       | {
           discount_rate_min?: number;
           discount_rate_max?: number;
@@ -7549,6 +7670,7 @@ export type AllSanitySchemaTypes =
   | Normalimage
   | Blocktables
   | Fullimage
+  | Teamintroduction
   | Splitviewhtml
   | Splitview
   | Generalbanner

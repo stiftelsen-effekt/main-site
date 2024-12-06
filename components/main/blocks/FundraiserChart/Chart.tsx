@@ -16,12 +16,13 @@ export const FundraiserChartElement: React.FC<{
 
     const plot = Plot.plot({
       width: graphSize.width,
-      height: graphSize.height,
-      marginTop: getRemInPixels(),
+      height: sums.length * getRemInPixels() * 8,
       marginBottom: getRemInPixels() * 2,
       insetTop: 0,
       marginLeft: 0,
       marginRight: 0,
+      marginTop: 0,
+      insetBottom: 0,
       y: {
         ticks: [],
         label: null,
@@ -38,22 +39,44 @@ export const FundraiserChartElement: React.FC<{
           sort: { y: "-x" },
           href: (s) => fundraisers.get(s.fundraiserId)?.page_slug,
           target: "_blank",
-          insetTop: getRemInPixels() * 0.5,
-          insetBottom: getRemInPixels() * 0.5,
+          insetTop: getRemInPixels() * 3,
+          insetBottom: getRemInPixels() * 1,
           margin: 0,
         }),
         Plot.textX(sums, {
-          x: (s) => (window.innerWidth > 1180 ? s.sum : 0),
+          x: (s) => 0,
           y: "fundraiserId",
           text: (s) => fundraisers.get(s.fundraiserId)?.name + " ↗",
           href: (s) => fundraisers.get(s.fundraiserId)?.page_slug,
           target: "_blank",
           textAnchor: "start",
-          fill: (s) => (window.innerWidth > 1180 ? "black" : "white"),
+          lineAnchor: "top",
+          fill: "black",
           fontSize: getRemInPixels(),
           dx: getRemInPixels(),
-          dy: getRemInPixels() * -0.8,
-          mixBlendMode: window.innerWidth > 1180 ? "normal" : "difference",
+          render: (index, scales, values, dimensions, context, next) => {
+            if (!scales?.y || !values?.y || !next) return null;
+
+            const bandwidth = scales.scales.y?.bandwidth || 0;
+            const element = next(index, scales, values, dimensions, context);
+
+            if (!element) return null;
+            // The element should be the group directly
+            if (element && element.tagName === "g") {
+              const currentTransform = element.getAttribute("transform");
+              if (!currentTransform) return element;
+              const match = currentTransform.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
+              if (match) {
+                const [, x, y] = match;
+                // Modify the y-translation by subtracting half the bandwidth
+                element.setAttribute(
+                  "transform",
+                  `translate(${x},${parseFloat(y) - bandwidth / 2 + getRemInPixels() * 1})`,
+                );
+              }
+            }
+            return element;
+          },
         }),
         Plot.textX(sums, {
           x: (s) => (window.innerWidth > 1180 ? s.sum : 0),
@@ -68,7 +91,7 @@ export const FundraiserChartElement: React.FC<{
           fill: (s) => (window.innerWidth > 1180 ? "black" : "white"),
           fontSize: getRemInPixels(),
           dx: getRemInPixels(),
-          dy: getRemInPixels() * 0.8,
+          dy: getRemInPixels(),
           mixBlendMode: window.innerWidth > 1180 ? "normal" : "difference",
           href: (s) => fundraisers.get(s.fundraiserId)?.page_slug,
           target: "_blank",

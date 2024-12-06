@@ -72,9 +72,11 @@ export const FundraiserChart: React.FC<Fundraiserchart> = (props) => {
 
   return (
     <div className={styles.wrapper}>
-      <h5 className={styles.header}>{props.heading}</h5>
-      <div ref={graphWrapperRef} className={styles.graphWrapper}>
-        {/*<FundraiserChartSkeleton numberOfFundraisers={props.fundraisers?.length || 0} />*/}
+      <div
+        ref={graphWrapperRef}
+        className={styles.graphWrapper}
+        style={{ height: `${(props.fundraisers?.length || 0) * 8}rem` }}
+      >
         {graph}
       </div>
       <div className={styles.caption}>

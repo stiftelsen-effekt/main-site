@@ -14,45 +14,17 @@ import { ResultsGraphData } from "../../../pages/ResultsPage";
 import dynamic from "next/dynamic";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHeadline } from "../../shared/components/ResultsHeadline/ResultsHeadline";
-
-const CumulativeDonationsSkeleton = () => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "670px",
-        backgroundColor: "#f3f4f6",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "-100%",
-          width: "100%",
-          height: "100%",
-          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)",
-          animation: "shimmer 1s infinite",
-        }}
-      />
-      <style>{`
-        @keyframes shimmer {
-          100% {
-            transform: translateX(200%);
-          }
-        }
-      `}</style>
-    </div>
-  );
-};
+import { CumulativeDonationsSkeleton } from "../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonationsSkeleton";
 
 /** Dynamic imports */
-const CumulativeDonations = dynamic(() =>
-  import("../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations").then(
-    (mod) => mod.CumulativeDonations,
-  ),
+const CumulativeDonations = dynamic(
+  () =>
+    import("../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations").then(
+      (mod) => mod.CumulativeDonations,
+    ),
+  {
+    loading: () => <CumulativeDonationsSkeleton />,
+  },
 );
 const ResultsOutput = dynamic(() =>
   import("../../shared/components/ResultsOutput/ResultsOutput").then((mod) => mod.ResultsOutput),
@@ -166,13 +138,11 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                       }
                       case "cumulativedonationsgraph":
                         return (
-                          <Suspense fallback={<CumulativeDonationsSkeleton />}>
-                            <CumulativeDonations
-                              key={block._key || block._id}
-                              dailyDonations={graphData.dailyDonations}
-                              graphContext={block.graphcontext}
-                            />
-                          </Suspense>
+                          <CumulativeDonations
+                            key={block._key || block._id}
+                            dailyDonations={graphData.dailyDonations}
+                            graphContext={block.graphcontext}
+                          />
                         );
                       case "resultsoutput":
                         const data = graphData.monthlyDonationsPerOutput.find(
