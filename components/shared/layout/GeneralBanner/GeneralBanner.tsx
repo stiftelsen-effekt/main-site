@@ -4,10 +4,12 @@ import { Generalbanner } from "../../../../studio/sanity.types";
 import { NavLink } from "../../components/Navbar/Navbar";
 import { CustomLink } from "../../components/CustomLink/CustomLink";
 import { BannerContext } from "../../../main/layout/layout";
+import { usePlausible } from "next-plausible";
 
 export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: NavLink } }> = ({
   configuration,
 }) => {
+  const plausible = usePlausible();
   const [bannerContext, setBannerContext] = useContext(BannerContext);
 
   if (bannerContext.generalBannerDismissed) return null;
@@ -22,6 +24,11 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
             generalBannerDismissed: true,
             layoutPaddingTop: 0,
           }));
+          plausible("GeneralBannerClick", {
+            props: {
+              link: configuration.link.slug,
+            },
+          });
         }}
       >
         <div data-cy="generalbanner-container" className={styles.container}>

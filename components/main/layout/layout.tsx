@@ -29,7 +29,6 @@ export type BanerContextType = {
   consentExpired: boolean;
   privacyPolicyLastMajorChange: Date | undefined;
   generalBannerDismissed: boolean;
-  layoutPaddingTop: number;
 };
 
 export const BannerContext = createContext<
@@ -40,7 +39,6 @@ export const BannerContext = createContext<
     consentExpired: false,
     privacyPolicyLastMajorChange: undefined,
     generalBannerDismissed: false,
-    layoutPaddingTop: 0,
   },
   () => {},
 ]);
@@ -64,26 +62,6 @@ const query = groq`
     }
   }
 `;
-
-const BannerMarginTopInitialValues = {
-  desktop: 74,
-  laptop: 62,
-  mobile: 114,
-};
-
-export const getInitialBannerMarginTop = () => {
-  if (typeof window === "undefined") {
-    return 114;
-  }
-
-  if (window.innerWidth >= 1920) {
-    return BannerMarginTopInitialValues.desktop;
-  } else if (window.innerWidth >= 1180) {
-    return BannerMarginTopInitialValues.laptop;
-  } else {
-    return BannerMarginTopInitialValues.mobile;
-  }
-};
 
 export const Layout = withStaticProps(
   async ({
@@ -124,8 +102,6 @@ export const Layout = withStaticProps(
     consentExpired: false,
     privacyPolicyLastMajorChange: undefined,
     generalBannerDismissed: false,
-    layoutPaddingTop:
-      consentState === "undecided" || general_banner ? getInitialBannerMarginTop() : 0,
   });
 
   if (widgetContext.open && window.innerWidth < 1180) {
@@ -135,7 +111,7 @@ export const Layout = withStaticProps(
   }
 
   return (
-    <div className={styles.container} style={{ marginTop: banners.layoutPaddingTop }}>
+    <div className={styles.container}>
       {draftMode && <PreviewBlock />}
       <GiveButton
         inverted={false}

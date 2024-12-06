@@ -6,7 +6,6 @@ import { HeaderBanners } from "../HeaderBanners/HeaderBanners";
 import { CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
 import { Generalbanner } from "../../../../studio/sanity.types";
 import { NavLink } from "../../components/Navbar/Navbar";
-import { ConsentState } from "../../../../middleware.page";
 
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];

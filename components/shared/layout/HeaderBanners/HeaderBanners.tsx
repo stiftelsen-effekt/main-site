@@ -1,5 +1,4 @@
 import React, { useContext, useRef } from "react";
-import { useElementHeight } from "../../../../hooks/useElementHeight";
 import { BannerContext } from "../../../main/layout/layout";
 import { CookieBanner, CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
 import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
@@ -12,11 +11,6 @@ export const HeaderBanners: React.FC<{
 }> = ({ cookieBannerConfig, generalBannerConfig }) => {
   const bannerContainerRef = useRef<HTMLDivElement | null>(null);
   const [bannerContext, setBannerContext] = useContext(BannerContext);
-  useElementHeight(bannerContainerRef, (height) => {
-    if (Math.round(bannerContext.layoutPaddingTop) !== Math.round(height)) {
-      setBannerContext((prev) => ({ ...prev, layoutPaddingTop: height }));
-    }
-  });
 
   let showGeneralBanner = false;
   if (bannerContext.consentState !== "undecided") {
