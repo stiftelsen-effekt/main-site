@@ -58,6 +58,7 @@ const drawChart = (
     incomeMarkers = [
       Plot.ruleX([incomeXPositon], {
         y: adjustedBelowMax,
+        ariaHidden: "true",
       }),
 
       Plot.text([incomePercentileLabel], {
@@ -122,10 +123,12 @@ const drawChart = (
         curve: "natural",
         x: "x",
         y: "y",
+        ariaHidden: "true",
       }),
       Plot.ruleX([incomeAfterDonationXPosition], {
         strokeDasharray: "4,4",
         y: adjustedMax,
+        ariaHidden: "true",
       }),
       ...incomeMarkers,
     ],

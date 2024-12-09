@@ -7,8 +7,7 @@ import {
 } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { wealthMountainGraphData } from "../WealthCalculator/data";
 import { PortableText } from "@portabletext/react";
-import { useEffect, useRef, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import { useEffect, useState } from "react";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import Link from "next/link";
 import { useRouterContext } from "../../../../context/RouterContext";
