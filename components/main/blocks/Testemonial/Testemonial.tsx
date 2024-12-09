@@ -46,6 +46,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             e.currentTarget.blur();
             setCurrentTestimony(Math.max(0, currentTestimony - 1));
           }}
+          aria-label="Previous testimonial"
         >
           <div>←</div>
         </button>
@@ -86,6 +87,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             e.currentTarget.blur();
             setCurrentTestimony(Math.min(testimonies.length - 1, currentTestimony + 1));
           }}
+          aria-label="Next testimonial"
         >
           <div>→</div>
         </button>
@@ -102,6 +104,7 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
                 e.currentTarget.blur();
                 setCurrentTestimony(i);
               }}
+              aria-label="Go to testimonial"
             ></button>
           ))}
         </div>
