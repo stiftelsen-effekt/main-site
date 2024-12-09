@@ -24,7 +24,6 @@ import { groq } from "next-sanity";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { DateTime } from "luxon";
-import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
 import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";

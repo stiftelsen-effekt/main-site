@@ -611,7 +611,10 @@ describe("Agreements page", () => {
 
     cy.wait(["@getVipps", "@getDistribution"]);
 
-    cy.get("[data-cy=generic-list-table]").first().find("tbody").should("contain.text", "1 300 kr");
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .should("contain.text", "1\u00A0300 kr");
   });
 
   it("Should move agreement to inaktive list when cancelling agreement", () => {
