@@ -41,7 +41,7 @@ export const GenericPage = withStaticProps(
     let result = await client.fetch(fetchGenericPage, { slug });
 
     // Do not show the general banner if it is the same as the current page
-    if (result.settings[0].general_banner.link.slug == slug) {
+    if (result.settings[0].general_banner && result.settings[0].general_banner.link.slug == slug) {
       result.settings[0].general_banner = null;
     }
 
