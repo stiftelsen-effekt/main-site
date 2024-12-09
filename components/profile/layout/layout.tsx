@@ -25,7 +25,8 @@ import { token } from "../../../token";
 import { ConsentState } from "../../../middleware.page";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
-  Router.replace(appState?.returnTo || dashboardPath.join("/"));
+  const path = appState?.returnTo || dashboardPath.join("/");
+  window.history.pushState({}, "", path);
 };
 
 const routesToBypass = ["/min-side/vipps-anonym"];
