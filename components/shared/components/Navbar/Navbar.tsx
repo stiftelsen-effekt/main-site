@@ -231,13 +231,9 @@ export const Navbar = withStaticProps(
               setExpanded(!expandMenu);
               e.currentTarget.blur();
             }}
+            aria-label={expandMenu ? "Open menu" : "Close menu"}
           >
             <AnimatedMenuIcon isOpen={expandMenu} />
-            {/*expandMenu ? (
-              <X size={32} color={dashboard || useDashboardLogo ? "black" : "white"} />
-            ) : (
-              <Menu size={32} color={dashboard || useDashboardLogo ? "white" : "black"} />
-            )*/}
           </button>
         </div>
         <ul>
