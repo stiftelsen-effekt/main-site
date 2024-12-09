@@ -7,7 +7,7 @@ interface CustomLinkProps extends React.ComponentProps<typeof Link> {
 
 export const CustomLink = ({ href, ...props }: CustomLinkProps) => {
   if (href === "/") {
-    return <Link href="/[state]/index" as="/" {...props} />;
+    return <Link href="/[state]/index" as="/" {...props} prefetch={false} />;
   }
 
   let cleanHref;
