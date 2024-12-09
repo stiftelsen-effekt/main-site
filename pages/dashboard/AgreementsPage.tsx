@@ -4,6 +4,7 @@ import { AgreementList } from "../../components/profile/shared/lists/agreementLi
 import { AutoGiroAgreement, AvtaleGiroAgreement, Distribution, VippsAgreement } from "../../models";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
+  pageBannersContentQuery,
   useAgreementsDistributions,
   useAutogiroAgreements,
   useAvtalegiroAgreements,
@@ -23,12 +24,13 @@ import { groq } from "next-sanity";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { DateTime } from "luxon";
-import { GetStaticPropsContext } from "next";
 import { withStaticProps } from "../../util/withStaticProps";
-import { LayoutType, getAppStaticProps } from "../_app.page";
+import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
+import { ConsentState } from "../../middleware.page";
+import { CookieBannerConfiguration } from "../../components/shared/layout/CookieBanner/CookieBanner";
 
 export async function getAgreementsPagePath() {
   const result = await getClient().fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
@@ -42,8 +44,19 @@ export async function getAgreementsPagePath() {
 }
 
 export const AgreementsPage = withStaticProps(
-  async ({ draftMode = false }: GetStaticPropsContext<{ slug: string[] }>) => {
-    const appStaticProps = await getAppStaticProps({ draftMode, layout: LayoutType.Profile });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    slug: string[];
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({
+      draftMode,
+      consentState,
+      layout: LayoutType.Profile,
+    });
     const result = await getClient(draftMode ? token : undefined).fetch<FetchAgreementsPageResult>(
       fetchAgreementsPage,
     );
@@ -51,16 +64,19 @@ export const AgreementsPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
         result: result,
         query: fetchAgreementsPage,
         queryParams: {},
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies GeneralPageProps;
   },
 )(({ navbarData, data, draftMode }) => {
   const page = data.result.page;
+  const cookieBannerConfig = data.result.settings[0].cookie_banner_configuration;
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<AgreementsMenuOptions>(
     AgreementsMenuOptions.ACTIVE_AGREEMENTS,
@@ -116,6 +132,8 @@ export const AgreementsPage = withStaticProps(
 
   const loading =
     vippsLoading || avtaleGiroLoading || distributionsLoading || taxUnitsLoading || autoGiroLoading;
+
+  if (!cookieBannerConfig) return null;
 
   if (!page) {
     return (
@@ -298,6 +316,7 @@ type AgreementsPageData = {
 type FetchAgreementsPageResult = {
   settings: Array<{
     title?: string;
+    cookie_banner_configuration?: CookieBannerConfiguration;
   }>;
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   page?: AgreementsPageData;
@@ -307,6 +326,7 @@ const fetchAgreementsPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
+    ${pageBannersContentQuery}
   },
   "dashboard": *[_id == "dashboard"] {
     dashboard_slug {

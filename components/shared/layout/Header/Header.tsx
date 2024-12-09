@@ -2,11 +2,17 @@ import { useRouter } from "next/router";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
+import { HeaderBanners } from "../HeaderBanners/HeaderBanners";
+import { CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
+import { Generalbanner } from "../../../../studio/sanity.types";
+import { NavLink } from "../../components/Navbar/Navbar";
 
-export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScroll: boolean }> = ({
-  children,
-  hideOnScroll,
-}) => {
+export const MainHeader: React.FC<{
+  children: ReactNode | ReactNode[];
+  hideOnScroll: boolean;
+  cookieBannerConfig?: CookieBannerConfiguration;
+  generalBannerConfig?: Generalbanner & { link: NavLink };
+}> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig }) => {
   const router = useRouter();
 
   const [navbarShrinked, setNavbarShrinked] = useState(false);
@@ -53,6 +59,10 @@ export const MainHeader: React.FC<{ children: ReactNode | ReactNode[]; hideOnScr
 
   return (
     <div data-cy="header" className={classes.join(" ")}>
+      <HeaderBanners
+        cookieBannerConfig={cookieBannerConfig}
+        generalBannerConfig={generalBannerConfig}
+      />
       {children}
     </div>
   );

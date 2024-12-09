@@ -1,12 +1,12 @@
 import { groq } from "next-sanity";
-import { pageContentQuery } from "../_queries";
+import { pageBannersContentQuery, pageContentQuery } from "../_queries";
 import { BlockContentRenderer } from "../components/main/blocks/BlockContentRenderer";
 import { ArticleHeader } from "../components/main/layout/ArticleHeader/ArticleHeader";
 import {
   RelatedArticle,
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
-import { Navbar } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, NavLink, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import {
   CookieBanner,
   CookieBannerConfiguration,
@@ -21,6 +21,9 @@ import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
+import { Generalbanner } from "../studio/sanity.types";
+import { GeneralBanner } from "../components/shared/layout/GeneralBanner/GeneralBanner";
+import { ConsentState } from "../middleware.page";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -34,8 +37,16 @@ export const getArticlePaths = async (articlesPagePath: string[]) => {
 };
 
 export const ArticlePage = withStaticProps(
-  async ({ slug, draftMode = false }: { slug: string; draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    slug,
+    draftMode = false,
+    consentState,
+  }: {
+    slug: string;
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     let result = await getClient(draftMode ? token : undefined).fetch<{
       page: any;
@@ -43,6 +54,7 @@ export const ArticlePage = withStaticProps(
       settings: {
         title: string;
         cookie_banner_configuration: CookieBannerConfiguration;
+        general_banner: Generalbanner & { link: NavLink };
         donate_label: string;
         accent_color?: string;
       }[];
@@ -50,7 +62,7 @@ export const ArticlePage = withStaticProps(
 
     return {
       appStaticProps,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       draftMode,
       preview: draftMode,
       token: draftMode ? token ?? null : null,
@@ -61,7 +73,7 @@ export const ArticlePage = withStaticProps(
       },
     } satisfies GeneralPageProps;
   },
-)(({ data, navbarData, draftMode }) => {
+)(({ data, navbar, draftMode }) => {
   const { articlesPagePath } = useRouterContext();
   const page = data.result.page;
 
@@ -90,9 +102,12 @@ export const ArticlePage = withStaticProps(
         siteName={data.result.settings[0].title}
       />
 
-      <MainHeader hideOnScroll={true}>
-        <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-        <Navbar {...navbarData} />
+      <MainHeader
+        hideOnScroll={true}
+        cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+        generalBannerConfig={data.result.settings[0].general_banner}
+      >
+        {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
@@ -129,13 +144,7 @@ const fetchArticle = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration {
-      ...,
-      privacy_policy_link {
-        ...,
-        "slug": page->slug.current
-      }
-    },
+    ${pageBannersContentQuery},
     donate_label,
     accent_color
   },

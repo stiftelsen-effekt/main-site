@@ -1,9 +1,9 @@
 import { groq } from "next-sanity";
-import { linksContentQuery } from "../_queries";
+import { linksContentQuery, pageBannersContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { ArticlePreview } from "../components/main/layout/RelatedArticles/ArticlePreview";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Navbar } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
@@ -12,6 +12,7 @@ import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
+import { ConsentState } from "../middleware.page";
 
 const fetchArticlesPageSlug = groq`
 {
@@ -27,14 +28,20 @@ export const getArticlesPagePath = async () => {
 };
 
 export const ArticlesPage = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     let result = await getClient(draftMode ? token : undefined).fetch(fetchArticles);
 
     return {
       appStaticProps,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       preview: draftMode,
       token: draftMode ? token ?? null : null,
       data: {
@@ -45,7 +52,7 @@ export const ArticlesPage = withStaticProps(
       draftMode,
     } satisfies GeneralPageProps;
   },
-)(({ data, navbarData, draftMode }) => {
+)(({ data, navbar, draftMode }) => {
   const page = data.result.page;
 
   const header = page.header;
@@ -64,9 +71,16 @@ export const ArticlesPage = withStaticProps(
       />
 
       <div className={styles.inverted}>
-        <MainHeader hideOnScroll={true}>
-          <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-          <Navbar {...navbarData} useDashboardLogo />
+        <MainHeader
+          hideOnScroll={true}
+          cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+          generalBannerConfig={data.result.settings[0].general_banner}
+        >
+          {draftMode ? (
+            <PreviewNavbar {...navbar} useDashboardLogo />
+          ) : (
+            <Navbar {...navbar} useDashboardLogo />
+          )}
         </MainHeader>
 
         <PageHeader
@@ -113,13 +127,7 @@ const fetchArticles = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration {
-      ...,
-      privacy_policy_link {
-        ...,
-        "slug": page->slug.current
-      }
-    },
+    ${pageBannersContentQuery}
   },
   "page": *[_type == "articles"][0] {
     "slug": slug.current,

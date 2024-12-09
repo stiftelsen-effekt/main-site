@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import style from "./YearMenu.module.scss";
 import { useRouterContext } from "../../../../context/RouterContext";
+import { CustomLink } from "../../../shared/components/CustomLink/CustomLink";
 
 const DonationYearMenu: React.FC<{
   totalTitle: string;
@@ -24,14 +25,14 @@ const DonationYearMenu: React.FC<{
           onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
           onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
         >
-          <Link
+          <CustomLink
             href={dashboardPath.join("/")}
             scroll={false}
             passHref
             onClick={(e) => e.currentTarget.blur()}
           >
             <span>{totalTitle}</span>
-          </Link>
+          </CustomLink>
         </li>
 
         {years.map((year) => (
@@ -41,7 +42,7 @@ const DonationYearMenu: React.FC<{
             onMouseDown={(e) => (e.currentTarget.style.outline = "none")}
             onMouseUp={(e) => e.currentTarget.removeAttribute("style")}
           >
-            <Link
+            <CustomLink
               href={{
                 pathname: [...donationsPagePath!, year].join("/"),
               }}
@@ -50,7 +51,7 @@ const DonationYearMenu: React.FC<{
               onClick={(e) => e.currentTarget.blur()}
             >
               <span>{year}</span>
-            </Link>
+            </CustomLink>
           </li>
         ))}
       </ul>

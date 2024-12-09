@@ -1,14 +1,13 @@
 import { groq } from "next-sanity";
-import { linksContentQuery, linksSelectorQuery } from "../_queries";
+import { linksContentQuery, linksSelectorQuery, pageBannersContentQuery } from "../_queries";
 import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
-import { Navbar } from "../components/shared/components/Navbar/Navbar";
-import { CookieBanner } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.client";
 import styles from "../styles/Results.module.css";
 import { withStaticProps } from "../util/withStaticProps";
-import { getAppStaticProps } from "./_app.page";
+import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { DailyDonations } from "../components/shared/components/Graphs/Results/CumulativeDonations/CumulativeDonations";
 import { ReferralSumsResult } from "../components/shared/components/Graphs/Results/ReferralSums/ReferralSums";
 import { ResultContentRenderer } from "../components/main/blocks/ResultContentRenderer";
@@ -16,6 +15,7 @@ import { MonthlyDonationsPerOutputResult } from "../components/shared/components
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHadlineNumbers } from "../components/shared/components/ResultsHeadline/ResultsHeadline";
+import { ConsentState } from "../middleware.page";
 
 const fetchResultsPageSlug = groq`
 {
@@ -37,9 +37,21 @@ export type ResultsGraphData = {
   resultsHeadlineNumbers: ResultsHadlineNumbers;
 };
 
+type ResultsPageProps = GeneralPageProps & {
+  data: {
+    graphData: ResultsGraphData;
+  };
+};
+
 export const ResultsPage = withStaticProps(
-  async ({ draftMode = false }: { draftMode: boolean }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode });
+  async ({
+    draftMode = false,
+    consentState,
+  }: {
+    draftMode: boolean;
+    consentState: ConsentState;
+  }) => {
+    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     let result = await getClient(draftMode ? token : undefined).fetch(fetchResults);
 
@@ -66,7 +78,9 @@ export const ResultsPage = withStaticProps(
     return {
       appStaticProps,
       draftMode,
-      navbarData: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+      preview: draftMode,
+      token: draftMode ? token ?? null : null,
+      navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
         query: fetchResults,
@@ -79,9 +93,9 @@ export const ResultsPage = withStaticProps(
           resultsHeadlineNumbers: resultsHeadlineNumbers.content as ResultsHadlineNumbers,
         },
       },
-    }; // satisfies GeneralPageProps (requires next@13);;
+    } satisfies ResultsPageProps;
   },
-)(({ data, navbarData, draftMode }) => {
+)(({ data, navbar, draftMode }) => {
   const page = data.result.page;
 
   if (!page) {
@@ -104,9 +118,12 @@ export const ResultsPage = withStaticProps(
       />
 
       <div className={styles.inverted}>
-        <MainHeader hideOnScroll={true}>
-          <CookieBanner configuration={data.result.settings[0].cookie_banner_configuration} />
-          <Navbar {...navbarData} />
+        <MainHeader
+          hideOnScroll={true}
+          cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+          generalBannerConfig={data.result.settings[0].general_banner}
+        >
+          {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
         </MainHeader>
 
         <PageHeader
@@ -126,7 +143,7 @@ const fetchResults = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    cookie_banner_configuration,
+    ${pageBannersContentQuery}
   },
   "page": *[_type == "results"][0] {
     "slug": slug.current,

@@ -86,7 +86,7 @@ export const ActionBar = styled.div`
   padding-bottom: 30px;
 `;
 
-export const InfoParagraph = styled.p`
+export const InfoParagraph = styled.div`
   margin-top: 30px;
   white-space: normal;
   font-size: 18px;

@@ -108,7 +108,7 @@ describe("Tax reports page missing ssn", () => {
       .first()
       .find(">tbody")
       .last()
-      .should("contain.text", "5 000 kr");
+      .should("contain.text", "5\u00A0000 kr");
   });
 
   it("should contain info icon with tooltip", () => {
@@ -159,7 +159,7 @@ describe("Tax reports page missing ssn", () => {
       .first()
       .find("tr")
       .first()
-      .should("contain", "1 000 kr");
+      .should("contain", "1\u00A0000 kr");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -178,6 +178,6 @@ describe("Tax reports page missing ssn", () => {
       .first()
       .find("tr")
       .last()
-      .should("contain", "4 000 kr");
+      .should("contain", "4\u00A0000 kr");
   });
 });

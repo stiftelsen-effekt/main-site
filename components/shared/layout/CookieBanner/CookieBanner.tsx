@@ -1,11 +1,14 @@
-import React, { useContext, useEffect } from "react";
-import { CookiesAccepted } from "../../../main/layout/layout";
+import React, { useContext, useState } from "react";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
 import { NavLink } from "../../components/Navbar/Navbar";
 import { LinkComponent } from "../../../main/blocks/Links/Links";
 import { HotJar } from "../HotJar";
+import { ConsentState } from "../../../../middleware.page";
+import { setCookie } from "cookies-next";
+import { BannerContext } from "../../../main/layout/layout";
+import { MetaPixel } from "../MetaPixel";
 
 export type CookieBannerConfiguration = {
   title: string;
@@ -16,118 +19,77 @@ export type CookieBannerConfiguration = {
   last_major_change: string;
   expired_template: string;
 };
-export const CookieBanner: React.FC<{ configuration: CookieBannerConfiguration }> = ({
-  configuration,
-}) => {
-  const [cookiesAccepted, setCookiesAccepted] = useContext(CookiesAccepted);
+export const CookieBanner: React.FC<{
+  configuration: CookieBannerConfiguration;
+}> = ({ configuration }) => {
+  const [bannerContext, setBannerContext] = useContext(BannerContext);
+
+  if (!configuration) return null;
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID;
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const item = window.localStorage.getItem("gieffektivt-cookies-accepted");
-      const acceptedDateItem = window.localStorage.getItem("gieffektivt-cookies-accepted-date");
-      if (item !== null) {
-        const acceptedDate = acceptedDateItem ? new Date(acceptedDateItem) : new Date(1970, 0, 1);
-        const lastMajorChange = configuration.last_major_change
-          ? new Date(configuration.last_major_change)
-          : new Date(1970, 0, 1);
-        const expired = acceptedDate < lastMajorChange;
-        if (item === "true" && !expired) {
-          setCookiesAccepted({
-            ...cookiesAccepted,
-            accepted: true,
-            loaded: true,
-          });
-        } else if (item === "true" && expired) {
-          setCookiesAccepted({
-            ...cookiesAccepted,
-            expired: true,
-            lastMajorChange: lastMajorChange,
-            loaded: true,
-          });
-        } else if (item === "false") {
-          setCookiesAccepted({
-            accepted: false,
-            expired: false,
-            lastMajorChange: lastMajorChange,
-            loaded: true,
-          });
-        }
-      } else {
-        setCookiesAccepted({
-          ...cookiesAccepted,
-          loaded: true,
-        });
-      }
-    }
-  }, [setCookiesAccepted]);
+  const setConsent = (state: ConsentState) => {
+    setCookie("gieffektivt-cookies-accepted", state === "accepted" ? "true" : "false", {
+      sameSite: "strict",
+      expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
+    });
+    setBannerContext((prev) => ({ ...prev, consentState: state }));
+  };
 
   let privacyPolicyLink = configuration.privacy_policy_link;
-  if (cookiesAccepted.expired && cookiesAccepted.lastMajorChange) {
+
+  if (bannerContext.consentExpired && bannerContext.privacyPolicyLastMajorChange) {
     privacyPolicyLink = {
       ...configuration.privacy_policy_link,
       title: `${configuration.privacy_policy_link.title} ${configuration.expired_template.replace(
         "{date}",
-        cookiesAccepted.lastMajorChange.toLocaleDateString("no-NB"),
+        bannerContext.privacyPolicyLastMajorChange.toLocaleDateString("no-NB"),
       )}`,
     };
   }
 
   return (
     <>
-      {cookiesAccepted.accepted === true && cookiesAccepted.expired !== true && (
+      {bannerContext.consentState === "accepted" && !bannerContext.consentExpired && (
         <>
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
           {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
           {hotjarId ? <HotJar hotjarId={hotjarId} /> : null}
+          {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
         </>
       )}
-      {cookiesAccepted.loaded && typeof cookiesAccepted.accepted === "undefined" && (
+      {bannerContext.consentState === "undecided" && (
         <div data-cy="cookiebanner-container" className={styles.container}>
           <div className={styles.content}>
             <div className={styles.description}>
               <span className={styles.title}>{configuration.title}</span>
               <p>{configuration.description}</p>
-              <LinkComponent link={privacyPolicyLink} style={{ border: "none" }} />
             </div>
             <div className={styles.buttonsWrapper}>
-              <button
-                data-cy="decline-cookies"
-                onClick={() => {
-                  window.localStorage.setItem("gieffektivt-cookies-accepted", "false");
-                  setCookiesAccepted({
-                    ...cookiesAccepted,
-                    accepted: false,
-                    expired: false,
-                    loaded: true,
-                  });
-                }}
-                style={{
-                  marginRight: "1rem",
-                }}
-              >
-                {configuration.decline_button_text}
-              </button>
-              <button
-                data-cy="accept-cookies"
-                onClick={() => {
-                  window.localStorage.setItem("gieffektivt-cookies-accepted", "true");
-                  window.localStorage.setItem(
-                    "gieffektivt-cookies-accepted-date",
-                    new Date().toISOString(),
-                  );
-                  setCookiesAccepted({
-                    ...cookiesAccepted,
-                    accepted: true,
-                    expired: false,
-                    loaded: true,
-                  });
-                }}
-              >
-                {configuration.accept_button_text}
-              </button>
+              <LinkComponent link={privacyPolicyLink} style={{ border: "none" }} />
+              <div className={styles.buttons}>
+                <button
+                  data-cy="decline-cookies"
+                  onClick={() => {
+                    setConsent("rejected" as ConsentState);
+                  }}
+                  style={{
+                    marginRight: "2rem",
+                  }}
+                >
+                  {configuration.decline_button_text}
+                </button>
+                <button
+                  data-cy="accept-cookies"
+                  onClick={() => {
+                    setConsent("accepted" as ConsentState);
+                  }}
+                >
+                  {configuration.accept_button_text}
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -14,6 +14,8 @@ import { getClient } from "../../../../lib/sanity.client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
+import { CustomLink } from "../CustomLink/CustomLink";
+import { useLiveQuery } from "next-sanity/preview";
 
 export type NavLink = {
   _type: "navitem";
@@ -187,7 +189,7 @@ export const Navbar = withStaticProps(
         >
           {lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link
+              <CustomLink
                 href="/"
                 passHref
                 onClick={(e) => e.currentTarget.blur()}
@@ -203,12 +205,12 @@ export const Navbar = withStaticProps(
                   onClick={() => setExpanded(false)}
                   priority
                 />
-              </Link>
+              </CustomLink>
             </div>
           )}
           {!lightLogo && (
             <div className={styles.logoWrapperImage}>
-              <Link
+              <CustomLink
                 href="/"
                 passHref
                 onClick={(e) => e.currentTarget.blur()}
@@ -220,7 +222,7 @@ export const Navbar = withStaticProps(
                 }}
               >
                 <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
-              </Link>
+              </CustomLink>
             </div>
           )}
           <button
@@ -258,7 +260,7 @@ export const Navbar = withStaticProps(
                           .filter((subel) => subel !== null)
                           .map((subel) => (
                             <li key={subel.title} data-cy={`${subel.slug}-link`.replace(/ /g, "-")}>
-                              <Link
+                              <CustomLink
                                 href={[...(dashboard ? dashboardPath : []), subel.slug].join("/")}
                                 passHref
                                 onClick={(e) => {
@@ -267,7 +269,7 @@ export const Navbar = withStaticProps(
                                 }}
                               >
                                 {subel.title}
-                              </Link>
+                              </CustomLink>
                             </li>
                           ))}
                     </ul>
@@ -276,13 +278,13 @@ export const Navbar = withStaticProps(
               </li>
             ) : (
               <li key={el._key} data-cy={`${el.slug}-link`}>
-                <Link
+                <CustomLink
                   href={[...(dashboard ? dashboardPath : []), el.slug].join("/")}
                   passHref
                   onClick={() => setExpanded(false)}
                 >
                   {el.title}
-                </Link>
+                </CustomLink>
               </li>
             ),
           )}
@@ -298,14 +300,14 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              <Link href={dashboardPath.join("/")} passHref tabIndex={-1}>
+              <CustomLink href={dashboardPath.join("/")} passHref tabIndex={-1}>
                 <EffektButton
                   variant={EffektButtonVariant.SECONDARY}
                   onClick={() => setExpanded(false)}
                 >
                   {labels.dashboard}
                 </EffektButton>
-              </Link>
+              </CustomLink>
             )}
             <EffektButton
               cy="send-donation-button"
@@ -360,4 +362,16 @@ const AnimatedMenuIcon = ({ isOpen }: { isOpen: boolean }) => {
       <line x1="3" y1="18" x2="21" y2="18" style={bottomLineStyles} />
     </svg>
   );
+};
+
+export const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticProps>>> = (
+  props,
+) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query);
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <Navbar {...(props as any)} />;
 };
