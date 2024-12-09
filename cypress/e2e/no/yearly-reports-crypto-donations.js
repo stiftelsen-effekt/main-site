@@ -114,6 +114,6 @@ describe("Tax reports page with ea funds donations", () => {
       .first()
       .find("tbody tr")
       .first()
-      .should("contain.text", "20 000");
+      .should("contain.text", "20\u00A0000");
   });
 });

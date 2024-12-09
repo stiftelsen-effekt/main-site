@@ -156,7 +156,7 @@ describe("Donations page", () => {
       .should("contain.text", "Against Malaria Foundation");
     cy.get("[data-cy=aggregated-donations-distribution-graph-bar]")
       .first()
-      .should("contain.text", "623 060 kr");
+      .should("contain.text", "623\u00A0060 kr");
   });
 
   it("Should display donation lists for all years on the total page", () => {
@@ -176,7 +176,7 @@ describe("Donations page", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain.text", "40 000 kr");
+      .should("contain.text", "40\u00A0000 kr");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
@@ -210,7 +210,7 @@ describe("Donations page", () => {
 
   it("Should display a donation sum field", () => {
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "Siden 2018");
-    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "1 155 581 kr");
+    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "1\u00A0155\u00A0581 kr");
   });
 
   it("Should be possible to filter by year", () => {
@@ -222,7 +222,7 @@ describe("Donations page", () => {
       timeout: 15000,
     }).should("have.length", 5);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
-    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108 574 kr");
+    cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108\u00A0574 kr");
   });
 
   it("Should only display the selected year in donation list", () => {

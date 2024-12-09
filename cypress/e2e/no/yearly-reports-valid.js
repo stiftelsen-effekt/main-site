@@ -100,12 +100,12 @@ describe("Tax reports page valid", () => {
       .first()
       .find(">tbody")
       .first()
-      .should("contain.text", "50 000 kr");
+      .should("contain.text", "50\u00A0000 kr");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find(">tbody")
       .first()
-      .should("contain.text", "25 000 kr");
+      .should("contain.text", "25\u00A0000 kr");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -121,12 +121,12 @@ describe("Tax reports page valid", () => {
       .first()
       .find(">tbody")
       .last()
-      .should("contain.text", "20 000 kr");
+      .should("contain.text", "20\u00A0000 kr");
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find(">tbody")
       .last()
-      .should("contain.text", "20 000 kr");
+      .should("contain.text", "20\u00A0000 kr");
   });
 
   it("should be possible to expand units in unit table", () => {
@@ -161,7 +161,7 @@ describe("Tax reports page valid", () => {
       .first()
       .find("tbody")
       .first()
-      .should("contain", "50 000 kr");
+      .should("contain", "50\u00A0000 kr");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -198,7 +198,7 @@ describe("Tax reports page valid", () => {
       .first()
       .find("tr")
       .first()
-      .should("contain", "10 000 kr");
+      .should("contain", "10\u00A0000 kr");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -217,11 +217,11 @@ describe("Tax reports page valid", () => {
       .first()
       .find("tr")
       .last()
-      .should("contain", "10 000 kr");
+      .should("contain", "10\u00A0000 kr");
   });
 
   it("should display correct infomration in large summation number", () => {
-    cy.get("[data-cy=yearly-tax-report-sum]").should("contain.text", "70 000");
+    cy.get("[data-cy=yearly-tax-report-sum]").should("contain.text", "70\u00A0000");
   });
 
   it("should display correct information in summation table", () => {
@@ -239,7 +239,7 @@ describe("Tax reports page valid", () => {
       .first()
       .find("tbody tr")
       .first()
-      .should("contain.text", "60 000 kr");
+      .should("contain.text", "60\u00A0000 kr");
 
     cy.get("[data-cy=yearly-tax-report-summary-table]")
       .first()
@@ -250,7 +250,7 @@ describe("Tax reports page valid", () => {
       .first()
       .find("tbody tr")
       .eq(1)
-      .should("contain.text", "10 000 kr");
+      .should("contain.text", "10\u00A0000 kr");
 
     cy.get("[data-cy=yearly-tax-report-summary-table]")
       .first()
@@ -261,7 +261,7 @@ describe("Tax reports page valid", () => {
       .first()
       .find("tbody tr")
       .last()
-      .should("contain.text", "70 000");
+      .should("contain.text", "70\u00A0000");
   });
 
   /*
