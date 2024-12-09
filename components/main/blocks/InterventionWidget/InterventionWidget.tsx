@@ -40,18 +40,20 @@ export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
       <div className={styles.grid}>
         <div className={styles.input}>
           <div className={styles.input}>
-            <label htmlFor="sum">{donationLabel ?? "Donasjon"}:</label>
-            <div className={styles.inputWrapper}>
-              <input
-                data-cy="impact-input"
-                type="tel"
-                value={sum}
-                onChange={(e) => {
-                  if (e.target.value.length <= 9) setSum(parseInt(e.target.value) || 0);
-                }}
-                name="sum"
-              />
-            </div>
+            <label>
+              {donationLabel ?? "Donasjon"}:
+              <div className={styles.inputWrapper}>
+                <input
+                  data-cy="impact-input"
+                  type="tel"
+                  value={sum}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 9) setSum(parseInt(e.target.value) || 0);
+                  }}
+                  name="sum"
+                />
+              </div>
+            </label>
           </div>
         </div>
         <div className={styles.output}>
