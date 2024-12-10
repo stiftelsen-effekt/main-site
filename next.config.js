@@ -15,6 +15,7 @@ const STUDIO_REWRITE = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: true,
   rewrites: () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [

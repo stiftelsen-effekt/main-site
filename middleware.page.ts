@@ -10,7 +10,8 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/_next") ||
     request.nextUrl.pathname.startsWith("/api") ||
     request.nextUrl.pathname.includes(".") ||
-    request.nextUrl.pathname.startsWith("/consent-")
+    request.nextUrl.pathname.startsWith("/consent-") ||
+    request.nextUrl.pathname.startsWith("/studio")
   ) {
     return NextResponse.next();
   }
