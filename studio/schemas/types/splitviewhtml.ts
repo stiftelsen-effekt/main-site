@@ -62,5 +62,15 @@ export default {
       title: "Links",
       of: [{ type: "link" }, { type: "navitem" }],
     },
+    {
+      name: "adoveoFundraiserId",
+      type: "string",
+      title: "Adoveo fundraiser ID",
+    },
+    {
+      name: "vippsNumber",
+      type: "string",
+      title: "Vipps number",
+    },
   ],
 } as const;

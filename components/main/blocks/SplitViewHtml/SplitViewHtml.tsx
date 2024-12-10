@@ -5,6 +5,7 @@ import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links } from "../Links/Links";
 import { PortableText } from "@portabletext/react";
 import { customComponentRenderers } from "../Paragraph/Citation";
+import { FundraiserVippsNumberDisplay } from "./FundraiserVippsNumberDisplay";
 
 export const SplitViewHtml: React.FC<{
   title: string;
@@ -14,7 +15,19 @@ export const SplitViewHtml: React.FC<{
   paragraph: any[];
   links: (LinkType | NavLink)[];
   code: string;
-}> = ({ title, swapped, rowSwapped, darktext, paragraph, links, code }) => {
+  adoveoFundraiserId?: string;
+  vippsNumber?: string;
+}> = ({
+  title,
+  swapped,
+  rowSwapped,
+  darktext,
+  paragraph,
+  links,
+  code,
+  adoveoFundraiserId,
+  vippsNumber,
+}) => {
   const classes = [styles.splitview];
 
   if (swapped) classes.push(styles.swapped);
@@ -32,7 +45,15 @@ export const SplitViewHtml: React.FC<{
         </div>
         {links && <Links links={links} />}
       </div>
-      <div className={styles.splitviewcode} dangerouslySetInnerHTML={{ __html: code }}></div>
+      <div className={styles.splitviewcode}>
+        <div dangerouslySetInnerHTML={{ __html: code }}></div>
+        {adoveoFundraiserId && vippsNumber && (
+          <FundraiserVippsNumberDisplay
+            fundraiserId={adoveoFundraiserId}
+            vippsNumber={vippsNumber}
+          ></FundraiserVippsNumberDisplay>
+        )}
+      </div>
     </div>
   );
 };
