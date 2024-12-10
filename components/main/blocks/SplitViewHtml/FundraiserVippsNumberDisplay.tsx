@@ -24,10 +24,10 @@ export const FundraiserVippsNumberDisplay: React.FC<{
   return (
     <div className={styles.container}>
       <div className={styles.sum}>
-        {`+ ${thousandize(sum)} kr direkte til vippsnummer `}
+        {`+ ${thousandize(sum)} kr i gaver til vippsnummer `}
         <span className={styles.number}>#{vippsNumber}</span>
       </div>
-      <div className={styles.context}>Oppdateres typisk én gang i døgnet</div>
+      <div className={styles.context}>Gaver til vippsnummer oppdateres én gang i døgnet</div>
     </div>
   );
 };

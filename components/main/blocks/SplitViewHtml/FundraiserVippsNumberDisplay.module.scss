@@ -19,3 +19,17 @@
     font-size: 0.8rem;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding-left: 0;
+
+    .sum {
+      font-size: 0.9rem;
+    }
+
+    .context {
+      font-size: 0.7rem;
+    }
+  }
+}
