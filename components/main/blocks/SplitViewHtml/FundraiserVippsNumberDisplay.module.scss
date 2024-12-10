@@ -1,5 +1,4 @@
 .container {
-  padding-left: 20px;
   max-width: 500px;
   width: 100%;
   display: flex;
@@ -22,8 +21,6 @@
 
 @media screen and (max-width: 768px) {
   .container {
-    padding-left: 0;
-
     .sum {
       font-size: 0.9rem;
     }
