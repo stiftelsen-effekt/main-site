@@ -30,8 +30,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["d3", "@observablehq/plot"],
   },
-  /*
-  TODO: Specify sanity studio location as allowed, disallow others
   headers: async () => {
     return [
       {
@@ -39,13 +37,12 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'none'",
+            value: "frame-ancestors 'self'",
           },
         ],
       },
     ];
   },
-  */
   async redirects() {
     return [
       {
