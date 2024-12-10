@@ -34,7 +34,11 @@ export const TeasersItem: React.FC<TeasersItemProps> = ({
   return (
     <div className={classNames.join(" ")}>
       <div className={elements.teaserimage}>
-        <ResponsiveImage image={image} layout={"cover"} />
+        <ResponsiveImage
+          image={image}
+          layout={"cover"}
+          sizes="(min-width: 1521px) 700px, (min-width: 1181px) 550px, 90vw"
+        />
       </div>
       <div className={elements.teasertext}>
         <div>

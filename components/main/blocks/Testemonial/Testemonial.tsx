@@ -65,7 +65,9 @@ export const Testimonial: React.FC<{ testimonies: Testimony[] }> = ({ testimonie
             <div className={styles.testimonial} key={quotee}>
               {quote && <h4 className={styles.testemonial__quote}>“{quote}”</h4>}
               <div className={styles.testemonial__image}>
-                {image && <ResponsiveImage image={image} />}
+                {image && (
+                  <ResponsiveImage image={image} sizes="(min-width: 1181px) 170px, 120px" />
+                )}
               </div>
               <div className={styles.testimonial__bio}>
                 <p>{quotee}</p>

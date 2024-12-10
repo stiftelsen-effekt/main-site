@@ -10,7 +10,7 @@ export interface FullImage {
 export const FullImage: React.FC<FullImage> = ({ alt, image }) => {
   return (
     <div className={styles.wrapper}>
-      <ResponsiveImage image={image} alt={alt} layout={"responsive"} />
+      <ResponsiveImage image={image} alt={alt} layout={"responsive"} sizes="100vw" />
     </div>
   );
 };

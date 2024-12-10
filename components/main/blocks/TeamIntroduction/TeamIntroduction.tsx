@@ -23,6 +23,7 @@ export const TeamIntroduction: React.FC<{
           <ResponsiveImage
             image={contributor.image as SanityImageObject}
             layout={"cover"}
+            sizes="(min-width: 1521px) 575px, (min-width: 1181px) 460px, (min-width: 601px) 400px, 200px"
           ></ResponsiveImage>
         </div>
         <div className={styles.mobileTitle}>

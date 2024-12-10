@@ -39,7 +39,7 @@ export const ResponsiveImage: React.FC<{
         blurDataURL={lqip}
         placeholder={lqip ? "blur" : "empty"}
         style={{ objectFit: "contain" }}
-        sizes={sizes ?? "100vw 1920w 1000w 800w 600w 400w"}
+        sizes={sizes ?? "(min-width: 1521px) 760px, (min-width: 1181px) 640px, 90vw"}
       />
     );
   } else if (layout === "cover") {
@@ -53,7 +53,7 @@ export const ResponsiveImage: React.FC<{
         blurDataURL={lqip}
         placeholder={lqip ? "blur" : "empty"}
         style={{ objectFit: "cover" }}
-        sizes={sizes ?? "100vw 1920w 1000w 800w 600w 400w"}
+        sizes={sizes ?? "(min-width: 1521px) 760px, (min-width: 1181px) 640px, 90vw"}
       />
     );
   }
