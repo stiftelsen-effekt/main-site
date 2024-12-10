@@ -458,6 +458,17 @@ const nextConfig = {
         ],
         permanent: true,
       },
+      {
+        source: "/andreas-wahls-arlige-juleinnsamling-for-effektiv-bistand-2024",
+        destination: "/wahl",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
     ];
   },
 };
