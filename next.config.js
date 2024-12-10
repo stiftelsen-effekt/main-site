@@ -37,7 +37,23 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self'; frame-src *",
+            value: [
+              // Control who can embed your pages
+              "frame-ancestors 'self'",
+              // Control which frames you can embed
+              "frame-src *",
+              // Control which scripts can execute
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' " +
+                "https://*.googletagmanager.com " +
+                "https://*.google-analytics.com " +
+                "https://*.hotjar.com " +
+                "https://script.hotjar.com " +
+                "https://*.ads-twitter.com " +
+                "https://*.facebook.net " +
+                "https://connect.facebook.net",
+              // Prevent plugin injection
+              "object-src 'none'",
+            ].join("; "),
           },
         ],
       },
