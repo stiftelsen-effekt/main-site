@@ -19,16 +19,16 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
       <CustomLink
         href={configuration.link.slug as string}
         onClick={() => {
-          setBannerContext((prev) => ({
-            ...prev,
-            generalBannerDismissed: true,
-            layoutPaddingTop: 0,
-          }));
           plausible("GeneralBannerClick", {
             props: {
               link: configuration.link.slug,
             },
           });
+          setBannerContext((prev) => ({
+            ...prev,
+            generalBannerDismissed: true,
+            layoutPaddingTop: 0,
+          }));
         }}
       >
         <div data-cy="generalbanner-container" className={styles.container}>
@@ -43,6 +43,11 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
+                  plausible("GeneralBannerDismissed", {
+                    props: {
+                      link: configuration.link.slug,
+                    },
+                  });
                   setBannerContext((prev) => ({
                     ...prev,
                     generalBannerDismissed: true,
