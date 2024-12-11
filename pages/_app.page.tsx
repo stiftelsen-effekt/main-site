@@ -54,22 +54,38 @@ function MyApp({
   Component,
   pageProps: { appStaticProps, preview, ...pageProps },
 }: AppProps<GeneralPageProps>) {
+  const [tracking, setTracking] = React.useState(false);
+
   const routerContextValue = useRef<RouterContextValue | null>(
     appStaticProps?.routerContext || null,
   );
 
+  // check for plausible_ignore localstorage to disable plausible tracking
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ignore = localStorage.getItem("plausible_ignore");
+      if (ignore === "true") {
+        setTracking(false);
+      } else {
+        setTracking(true);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
       const handleVisibilityChange = () => {
-        if (document.visibilityState === "hidden") {
-          navigator.sendBeacon(
-            "https://plausible.io/api/event",
-            JSON.stringify({
-              name: "visibility_hidden",
-              url: window.location.href,
-              domain: window.location.hostname,
-            }),
-          );
+        if (tracking) {
+          if (document.visibilityState === "hidden") {
+            navigator.sendBeacon(
+              "https://plausible.io/api/event",
+              JSON.stringify({
+                name: "visibility_hidden",
+                url: window.location.href,
+                domain: window.location.hostname,
+              }),
+            );
+          }
         }
       };
 
@@ -99,6 +115,7 @@ function MyApp({
           taggedEvents={true}
           revenue={true}
           trackLocalhost={false}
+          enabled={tracking}
         >
           <Provider store={store}>
             <RouterContext.Provider value={routerContextValue.current}>

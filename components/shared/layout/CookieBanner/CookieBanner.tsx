@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
@@ -23,6 +23,19 @@ export const CookieBanner: React.FC<{
   configuration: CookieBannerConfiguration;
 }> = ({ configuration }) => {
   const [bannerContext, setBannerContext] = useContext(BannerContext);
+  const [tracking, setTracking] = React.useState(false);
+
+  // check for plausible_ignore localstorage to disable plausible tracking
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ignore = localStorage.getItem("plausible_ignore");
+      if (ignore === "true") {
+        setTracking(false);
+      } else {
+        setTracking(true);
+      }
+    }
+  }, []);
 
   if (!configuration) return null;
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -52,7 +65,7 @@ export const CookieBanner: React.FC<{
 
   return (
     <>
-      {bannerContext.consentState === "accepted" && !bannerContext.consentExpired && (
+      {bannerContext.consentState === "accepted" && !bannerContext.consentExpired && tracking && (
         <>
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
           {gaMeasurementId ? <GoogleAnalytics gaMeasurementId={gaMeasurementId} /> : null}
