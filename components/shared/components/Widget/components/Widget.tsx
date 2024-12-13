@@ -332,6 +332,10 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
         });
       setWidgetContext({ open: true, prefilled: prefilledDistribution, prefilledSum: null });
     }
+    if (query && query["recurring"]) {
+      dispatch(setRecurring(RecurringDonation.RECURRING));
+      setWidgetContext({ ...widgetContext, open: true });
+    }
   }, [router.query, causeAreas]);
 
   useDefaultPaymentMethodEffect(methods);
