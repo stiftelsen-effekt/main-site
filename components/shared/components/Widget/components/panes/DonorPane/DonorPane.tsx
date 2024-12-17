@@ -24,6 +24,8 @@ import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.sty
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
 import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
+import { API_URL } from "../../../config/api";
+import { getEstimatedLtv } from "../../../../../../../util/ltv";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -78,9 +80,26 @@ export const DonorPane: React.FC<{
       });
 
       if (donation.recurring) {
-        if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-        if (data.method === PaymentMethod.BANK) plausible("SelectAvtaleGiro");
-        if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
+        if (data.method) {
+          if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
+          if (data.method === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
+          if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
+
+          if (donation.sum) {
+            getEstimatedLtv({ method: data.method, sum: donation.sum }).then((ltv) => {
+              if (typeof window !== "undefined") {
+                // @ts-ignore
+                if (typeof window.fbq != null) {
+                  // @ts-ignore
+                  window.fbq("track", "Lead", {
+                    value: ltv,
+                    currency: "NOK",
+                  });
+                }
+              }
+            });
+          }
+        }
       }
       if (!donation.recurring) {
         if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
@@ -89,6 +108,17 @@ export const DonorPane: React.FC<{
         }
         if (data.method === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
+        }
+        // Facebook pixel tracking for Leads
+        if (typeof window !== "undefined") {
+          // @ts-ignore
+          if (window.fbq != null) {
+            // @ts-ignore
+            window.fbq("track", "Lead", {
+              value: donation.sum,
+              currency: "NOK",
+            });
+          }
         }
       }
     }
