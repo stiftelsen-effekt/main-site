@@ -101,3 +101,22 @@ export const InfoParagraph = styled.div`
 export const ShareSelectionSpacer = styled.div`
   margin-top: 40px;
 `;
+
+export const ExtraMessageWrapper = styled.div`
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 15px;
+  padding: 15px;
+  background: var(--primary);
+  border-radius: 10px;
+  margin-top: 0px;
+  margin-bottom: 40px;
+  color: var(--secondary);
+  font-size: 14px;
+  align-items: center;
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+`;

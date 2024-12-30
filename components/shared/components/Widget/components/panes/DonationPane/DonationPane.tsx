@@ -4,7 +4,12 @@ import { setSum, setRecurring } from "../../../store/donation/actions";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { Donation, DonationError, DonationErrorTypeNames, State } from "../../../store/state";
 import { RecurringDonation } from "../../../types/Enums";
-import { ActionBar, SumButtonsWrapper, SumWrapper } from "./DonationPane.style";
+import {
+  ActionBar,
+  ExtraMessageWrapper,
+  SumButtonsWrapper,
+  SumWrapper,
+} from "./DonationPane.style";
 import { nextPane } from "../../../store/layout/actions";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
@@ -16,12 +21,14 @@ import { MultipleCauseAreasSelector } from "./ShareSelector/Multiple/MultipleCau
 import { usePlausible } from "next-plausible";
 import { ErrorTextsContainer } from "../../shared/ErrorTextsContainer/ErrorTextsContainer";
 import { Spinner } from "../../../../Spinner/Spinner";
+import { Info } from "react-feather";
 
 export const DonationPane: React.FC<{
   text: WidgetPane1Props;
   enableRecurring: boolean;
   enableSingle: boolean;
-}> = ({ text, enableRecurring, enableSingle }) => {
+  extraMessage?: string;
+}> = ({ text, enableRecurring, enableSingle, extraMessage }) => {
   const dispatch = useDispatch();
   const donation = useSelector((state: State) => state.donation);
   const layout = useSelector((state: State) => state.layout);
@@ -57,6 +64,12 @@ export const DonationPane: React.FC<{
           <PaneTitle>
             <wbr />
           </PaneTitle>
+          {extraMessage && (
+            <ExtraMessageWrapper>
+              <Info />
+              <p>{extraMessage}</p>
+            </ExtraMessageWrapper>
+          )}
           <RadioButtonGroup
             options={[
               {
