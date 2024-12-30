@@ -8,7 +8,7 @@ import { CauseArea } from "../../types/CauseArea";
 
 export function* fetchCauseAreas(action: Action<undefined>): SagaIterator<void> {
   try {
-    const request = yield call(fetch, `${API_URL}/causeareas/active/`);
+    const request = yield call(fetch, `${API_URL}/causeareas/all/`);
     const result: IServerResponse<CauseArea[]> = yield call(request.json.bind(request));
     if (result.status !== 200) throw new Error(result.content as string);
 

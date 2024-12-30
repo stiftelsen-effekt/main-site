@@ -75,7 +75,9 @@ export const SharesSelection: React.FC<{
           prefilledShares={prefilledShares}
           nonPrefilledShares={nonPrefilledShares}
           distributionCauseArea={distributionCauseArea}
-          organizations={organizations}
+          organizations={organizations.filter(
+            (org) => org.isActive || prefilledShares.map((s) => s.id).includes(org.id),
+          )}
         />
       </div>
       <AnimateHeight height={hasError ? "auto" : 0} duration={300} animateOpacity>
