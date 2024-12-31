@@ -26,6 +26,8 @@ import { CustomCheckBox } from "./CustomCheckBox";
 import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
 import { API_URL } from "../../../config/api";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
+import { ExtraMessageWrapper } from "../DonationPane/DonationPane.style";
+import { Info } from "react-feather";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -300,6 +302,16 @@ export const DonorPane: React.FC<{
                 </CheckBoxGroupWrapper>
               </>
             ) : null}
+
+            {locale === "no" &&
+              selectedPaymentMethod === PaymentMethod.BANK &&
+              taxDeductionChecked && (
+                <ExtraMessageWrapper>
+                  <Info></Info>
+                  For å få skattefradrag for donasjoner i 2024 må du nå bruke vipps, fordi
+                  bankoverføringer bokføres for 1. januar 2024.
+                </ExtraMessageWrapper>
+              )}
 
             <Controller
               control={control}
