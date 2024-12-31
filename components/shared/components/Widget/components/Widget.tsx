@@ -386,11 +386,6 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
             }}
             enableRecurring={availableRecurringOptions.recurring}
             enableSingle={availableRecurringOptions.single}
-            extraMessage={
-              widget.locale === "no"
-                ? "For å få skattefradrag for 2024 må bankoverføringer være gjennomført senest tirsdag 31. desember kl. 13:30."
-                : undefined
-            }
           />
           <DonorPane
             locale={widget.locale}
