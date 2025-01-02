@@ -303,16 +303,6 @@ export const DonorPane: React.FC<{
               </>
             ) : null}
 
-            {locale === "no" &&
-              selectedPaymentMethod === PaymentMethod.BANK &&
-              taxDeductionChecked && (
-                <ExtraMessageWrapper>
-                  <Info></Info>
-                  For å få skattefradrag for donasjoner i 2024 må du nå bruke vipps, fordi
-                  bankoverføringer bokføres for 1. januar 2024.
-                </ExtraMessageWrapper>
-              )}
-
             <Controller
               control={control}
               name="method"
