@@ -356,7 +356,7 @@ const computeYearlyMaxes = (don: any[], height: number) => {
   const allYears = Array.from(new Array(lastYear - firstYear + 1)).map((el, i) => firstYear + i);
 
   const yearlyMaxes = allYears
-    .filter((y) => y !== 2024)
+    .filter((y) => y !== new Date().getFullYear())
     .map((y) => {
       const max = don
         .filter((d) => d.year === y)
