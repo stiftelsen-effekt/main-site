@@ -37,12 +37,21 @@
 
 @media only screen and (max-width: 1180px) {
   .container {
-    padding: 0 5vw;
+    padding: 3rem 5vw;
     width: 100vw;
 
     .grid {
       grid-template-columns: repeat(1, 1fr);
       grid-auto-flow: row;
+      gap: 2rem;
+
+      & > div {
+        .headlineNumber {
+          font-size: 3rem;
+          line-height: 3.5rem;
+          margin-bottom: 0rem;
+        }
+      }
     }
   }
 }
