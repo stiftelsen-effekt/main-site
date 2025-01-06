@@ -13,7 +13,7 @@ describe("Tax reports page with ea funds donations", () => {
     });
 
     cy.fixture("cause_areas").then((causeAreas) => {
-      cy.intercept("GET", "/causeareas/active", {
+      cy.intercept("GET", "/causeareas/all", {
         statusCode: 200,
         body: {
           status: 200,
