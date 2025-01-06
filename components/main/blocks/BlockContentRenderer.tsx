@@ -40,6 +40,7 @@ import { OpenDistributionButton } from "./OpenDistributionButton/OpenDistributio
 import { Fundraiserchart, Opendistributionbutton } from "../../../studio/sanity.types";
 import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
+import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -297,6 +298,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 />
               </>
             );
+          case "resultsteaser":
+            return <ResultsTeaser key={block._key || block._id} title={block.title} />;
           case "inngress":
             return (
               <Inngress

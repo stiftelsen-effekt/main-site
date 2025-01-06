@@ -2,7 +2,7 @@ describe("Organizations Page", () => {
   beforeEach(() => {
     cy.fixture("single_cause_area")
       .then((causeAreas) => {
-        cy.intercept("GET", "/causeareas/active", {
+        cy.intercept("GET", "/causeareas/all", {
           statusCode: 200,
           body: {
             status: 200,

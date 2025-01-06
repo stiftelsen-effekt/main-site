@@ -74,6 +74,7 @@ export default {
         { type: "inngress" },
         { type: "wealthcalculatorteaser" },
         { type: "philantropicteaser" },
+        { type: "resultsteaser" },
         { type: "htmlembed" },
         { type: "teasers" },
         { type: "interventionwidget" },
