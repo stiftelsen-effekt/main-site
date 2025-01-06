@@ -96,7 +96,14 @@ export const DonationPane: React.FC<{
                   <EffektButton
                     variant={EffektButtonVariant.SECONDARY}
                     selected={donation.sum === suggested.amount}
-                    onClick={() => dispatch(setSum(suggested.amount))}
+                    onClick={() => {
+                      plausible("SelectSuggestedSum", {
+                        props: {
+                          sum: suggested.amount,
+                        },
+                      });
+                      dispatch(setSum(suggested.amount));
+                    }}
                     noMinWidth={true}
                   >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
                   {suggested.subtext && <i>{suggested.subtext}</i>}
