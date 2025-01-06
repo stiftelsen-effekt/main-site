@@ -94,7 +94,7 @@ const drawChart = (
   const domainUpper = isMobile
     ? Math.max(5480 * periodAdjustment, lineInput)
     : Math.max(8219 * periodAdjustment, lineInput);
-  const shouldInsetRight = lineInput > 2465 * periodAdjustment && !isMobile;
+  const shouldInsetRight = lineInput > 1700 * periodAdjustment && !isMobile;
 
   const chart = Plot.plot({
     height: size.height,
