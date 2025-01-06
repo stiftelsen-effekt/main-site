@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { thousandize } from "../../../../util/formatting";
 
 import styles from "./ResultsTeaser.module.scss";
-import Link from "next/link";
 import LinkButton from "../../../shared/components/EffektButton/LinkButton";
 
 export const ResultsTeaser: React.FC<{ title: string }> = ({ title }) => {
-  // {"status":200,"content":{"totalDonationsToRecommendedOrgs":"94707346.10","numberOfDonors":9873,"lastUpdated":"2024-12-13T05:00:42.000Z"}}
   const [data, setData] = useState<{
     totalDonationsToRecommendedOrgs: string;
     numberOfDonors: number;
@@ -22,7 +20,6 @@ export const ResultsTeaser: React.FC<{ title: string }> = ({ title }) => {
 
   return (
     <div className={styles.container}>
-      {/* <span>{title}</span> */}
       <div className={styles.grid}>
         <div>
           <span className={styles.headlineNumber}>
