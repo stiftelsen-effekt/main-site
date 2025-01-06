@@ -83,6 +83,7 @@ import resultsheadline from "./types/results/resultsheadline";
 import fundraiserchart from "./types/fundraiserchart";
 import generalbanner from "./types/generalbanner";
 import teamintroduction from "./types/teamintroduction";
+import resultsteaser from "./types/resultsteaser";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -126,6 +127,7 @@ export const types = [
   htmlembed,
   donationwidget,
   quote,
+  resultsteaser,
   citation,
   wealthcalculator,
   wealthcalculatorteaser,

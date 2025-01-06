@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: var(--primary);
+  color: var(--secondary);
+  width: 100%;
+  position: relative;
+  padding: 5rem 5rem;
+  gap: 2rem;
+
+  .grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 3fr 2fr 1fr;
+    gap: 1rem;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      .headlineNumber {
+        font-size: 4rem;
+        line-height: 4.5rem;
+        font-family: "ESKlarheitKurrent";
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+}
+
+@media only screen and (max-width: 1180px) {
+  .container {
+    padding: 0 5vw;
+    width: 100vw;
+
+    .grid {
+      grid-template-columns: repeat(1, 1fr);
+      grid-auto-flow: row;
+    }
+  }
+}
