@@ -33,7 +33,7 @@ export const ResultsTeaser: React.FC<{ title: string }> = ({ title }) => {
           <span>givere</span>
         </div>
         <div>
-          <LinkButton url="/resultater" title="Se resultater"></LinkButton>
+          <LinkButton url="/resultater" title="Se våre resultater"></LinkButton>
         </div>
       </div>
     </div>
