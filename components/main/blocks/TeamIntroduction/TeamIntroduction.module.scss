@@ -1,7 +1,7 @@
 .container {
   display: grid;
   grid-template-columns: 4fr 6fr;
-  gap: 3rem;
+  gap: 5rem;
   margin: 3rem 0;
 
   .content {
@@ -41,7 +41,7 @@
 
     .innerImage {
       position: relative;
-      aspect-ratio: 3 / 4;
+      aspect-ratio: 7 / 8;
     }
   }
 }
