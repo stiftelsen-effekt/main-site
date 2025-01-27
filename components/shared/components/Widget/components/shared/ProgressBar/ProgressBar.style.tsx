@@ -93,6 +93,7 @@ export const TooltipWrapper = styled.div<{
   z-index: 100;
   border-radius: 10px;
   overflow: hidden;
+  pointer-events: none;
 `;
 
 export const TooltipContent = styled.div`
