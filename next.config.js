@@ -50,7 +50,8 @@ const nextConfig = {
                 "https://script.hotjar.com " +
                 "https://*.ads-twitter.com " +
                 "https://*.facebook.net " +
-                "https://connect.facebook.net",
+                "https://connect.facebook.net " +
+                "https://www.youtube.com",
               // Prevent plugin injection
               "object-src 'none'",
             ].join("; "),
