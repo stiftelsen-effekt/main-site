@@ -25,9 +25,11 @@ export const PhilantropicTeaser: React.FC<{
         <div className={styles.links}>
           {links && links.map((link) => <LinkComponent link={link} key={link._key} />)}
         </div>
-        <div className={styles.button}>
-          <LinkButton url={getHref(button.link, [])} title={button.text} type="primary" />
-        </div>
+        {button && button.text && button.link && (
+          <div className={styles.button}>
+            <LinkButton url={getHref(button.link, [])} title={button.text} type="primary" />
+          </div>
+        )}
       </div>
       <div className={styles.people}>
         {people.map((person) => (
