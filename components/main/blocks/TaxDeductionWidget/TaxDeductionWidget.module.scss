@@ -1,0 +1,71 @@
+.container {
+  display: grid;
+  grid-template-columns: 2fr 6fr;
+  grid-gap: 3rem;
+  max-width: 760px;
+  width: 100%;
+
+  .desktopChart {
+    height: 100%;
+    width: 100%;
+  }
+
+  .mobileChart {
+    display: none;
+  }
+
+  .description {
+    padding-bottom: 1rem;
+
+    .selectSum {
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .input {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .suggestedSums {
+        display: flex;
+        flex-direction: row;
+        margin-top: 1rem;
+        gap: 1rem;
+      }
+    }
+
+    .cta {
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .container {
+    margin-bottom: 20px;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+
+    .description {
+      order: 1;
+    }
+
+    .desktopChart {
+      display: none;
+    }
+
+    .mobileChart {
+      display: block;
+    }
+  }
+}

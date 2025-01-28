@@ -1,9 +1,22 @@
-.textInput {
-  background: none;
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  padding: 14px 22px;
-  border-radius: 45px;
-  font-size: 100%;
-  font-family: "ESKlarheitGrotesk";
+.textInputWrapper {
+  position: relative;
+
+  .textInput {
+    background: none;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 14px 22px;
+    border-radius: 45px;
+    font-size: 100%;
+    font-family: "ESKlarheitGrotesk";
+  }
+
+  .denomination {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    font-size: 100%;
+    color: var(--primary);
+  }
 }

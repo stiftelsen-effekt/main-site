@@ -84,6 +84,7 @@ import fundraiserchart from "./types/fundraiserchart";
 import generalbanner from "./types/generalbanner";
 import teamintroduction from "./types/teamintroduction";
 import resultsteaser from "./types/resultsteaser";
+import taxdeductionwidget from "./types/taxdeductionwidget";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -121,6 +122,7 @@ export const types = [
   intervention,
   interventionwidget,
   interventionwidgetoutputconfiguration,
+  taxdeductionwidget,
   testimonials,
   fullvideo,
   newslettersignup,
