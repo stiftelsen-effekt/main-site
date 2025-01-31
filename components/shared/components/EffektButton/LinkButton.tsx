@@ -15,7 +15,6 @@ const LinkButton: React.FC<{
     <Link
       href={url}
       target={target}
-      passHref
       className={`${styles.button} ${
         type == "primary"
           ? styles.buttonprimary

@@ -26,7 +26,7 @@ export const RelatedArticles: React.FC<{
       <div className={styles.header}>
         <h4>{relatedArticlesLabel}</h4>
         <div className={styles.viewall}>
-          <Link href={`/${articlesPagePath.join("/")}`} passHref>
+          <Link href={`/${articlesPagePath.join("/")}`}>
             <span>{seeAllArticlesLabel}</span>
             <div>→</div>
           </Link>

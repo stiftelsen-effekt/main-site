@@ -29,11 +29,7 @@ const TaxMenu: React.FC<{
 
             return (
               <li className={isSelected ? style["menu-selected"] : ""} key={c.slug.current}>
-                <CustomLink
-                  href={`${taxPagePath.join("/")}/${c.slug.current}`}
-                  passHref
-                  scroll={false}
-                >
+                <CustomLink href={`${taxPagePath.join("/")}/${c.slug.current}`} scroll={false}>
                   {c.title}
                 </CustomLink>
               </li>

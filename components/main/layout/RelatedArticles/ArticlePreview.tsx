@@ -12,12 +12,7 @@ export const ArticlePreview: React.FC<{
   const { articlesPagePath } = useRouterContext();
 
   return (
-    <Link
-      key={slug}
-      href={`/${[...articlesPagePath, slug].join("/")}`}
-      passHref
-      style={{ border: "none" }}
-    >
+    <Link key={slug} href={`/${[...articlesPagePath, slug].join("/")}`} style={{ border: "none" }}>
       <li className={styles.article}>
         {header.published && (
           <div className={styles.article__meta}>

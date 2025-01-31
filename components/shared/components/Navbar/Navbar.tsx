@@ -191,7 +191,6 @@ export const Navbar = withStaticProps(
             <div className={styles.logoWrapperImage}>
               <CustomLink
                 href="/"
-                passHref
                 onClick={(e) => e.currentTarget.blur()}
                 style={{
                   position: "relative",
@@ -212,7 +211,6 @@ export const Navbar = withStaticProps(
             <div className={styles.logoWrapperImage}>
               <CustomLink
                 href="/"
-                passHref
                 onClick={(e) => e.currentTarget.blur()}
                 style={{
                   position: "relative",
@@ -262,7 +260,6 @@ export const Navbar = withStaticProps(
                             <li key={subel.title} data-cy={`${subel.slug}-link`.replace(/ /g, "-")}>
                               <CustomLink
                                 href={[...(dashboard ? dashboardPath : []), subel.slug].join("/")}
-                                passHref
                                 onClick={(e) => {
                                   e.currentTarget.blur();
                                   setExpanded(false);
@@ -280,7 +277,6 @@ export const Navbar = withStaticProps(
               <li key={el._key} data-cy={`${el.slug}-link`}>
                 <CustomLink
                   href={[...(dashboard ? dashboardPath : []), el.slug].join("/")}
-                  passHref
                   onClick={() => setExpanded(false)}
                 >
                   {el.title}
@@ -300,7 +296,7 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              <CustomLink href={dashboardPath.join("/")} passHref tabIndex={-1}>
+              <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
                 <EffektButton
                   variant={EffektButtonVariant.SECONDARY}
                   onClick={() => setExpanded(false)}

@@ -86,7 +86,6 @@ export const WealthCalculatorTeaser: React.FC<{
                   ? `/${[...articlesPagePath, link.slug].join("/")}`
                   : `/${link.slug}`
               }
-              passHref
             >
               <EffektButton onClick={() => {}}>{link.title}</EffektButton>
             </Link>
@@ -126,7 +125,6 @@ export const WealthCalculatorTeaser: React.FC<{
               ? `/${[...articlesPagePath, link.slug].join("/")}`
               : `/${link.slug}`
           }
-          passHref
         >
           <EffektButton onClick={() => {}} fullWidth>
             {link.title}

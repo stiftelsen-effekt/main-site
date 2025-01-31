@@ -49,7 +49,6 @@ export const LinkComponent: React.FC<{
   return (
     <Link
       href={getHref(link, articlesPagePath)}
-      passHref
       target={link._type === "link" && link.newtab ? "_blank" : ""}
       onClick={(e) => {
         e.currentTarget.blur();
