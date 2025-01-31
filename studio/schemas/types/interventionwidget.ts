@@ -1,4 +1,5 @@
 import { Zap } from "react-feather";
+import { blocktype } from "./blockcontent";
 
 export default {
   name: "interventionwidget",
@@ -10,6 +11,12 @@ export default {
       name: "title",
       type: "string",
       title: "Title",
+    },
+    {
+      name: "description",
+      title: "Description",
+      type: "array",
+      of: [blocktype, { type: "latex" }],
     },
     {
       name: "donation_label",

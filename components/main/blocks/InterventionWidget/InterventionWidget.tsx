@@ -3,14 +3,14 @@ import styles from "./InterventionWidget.module.scss";
 import {
   InterventionWidgetOutput,
   InterventionWidgetOutputConfiguration,
-  SanityIntervention,
 } from "./InterventionWidgetOutput";
-import { LinkType } from "../Links/Links";
-import { NavLink } from "../../../shared/components/Navbar/Navbar";
+import { PortableText } from "next-sanity";
+import { customComponentRenderers } from "../Paragraph/Citation";
 
 export interface InterventionWidgetProps {
   default_sum: number;
   title: string;
+  description: any[];
   donationLabel?: string;
   outputConfiguration?: InterventionWidgetOutputConfiguration;
   /* From site settings */
@@ -21,6 +21,7 @@ export interface InterventionWidgetProps {
 export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
   default_sum,
   title,
+  description,
   donationLabel,
   outputConfiguration,
   currency,
@@ -36,6 +37,9 @@ export const InterventionWidget: React.FC<InterventionWidgetProps> = ({
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <h3>{title}</h3>
+        {description && (
+          <PortableText value={description} components={customComponentRenderers}></PortableText>
+        )}
       </div>
       <div className={styles.grid}>
         <div className={styles.input}>
