@@ -253,7 +253,7 @@ export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
 };
 
 export const useCauseAreas = (fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR<CauseArea[]>(`/causeareas/active/`, (url) =>
+  const { data, error, isValidating } = useSWR<CauseArea[]>(`/causeareas/all/`, (url) =>
     fetcher(url, fetchToken),
   );
 
