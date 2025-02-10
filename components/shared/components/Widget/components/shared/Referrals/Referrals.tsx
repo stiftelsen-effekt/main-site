@@ -51,6 +51,7 @@ export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text 
               cy={`referral-button-${ref.id}`}
               key={ref.id}
               selected={selectedReferrals.includes(ref.id)}
+              useCheckmark={true}
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 if (selectedReferrals.includes(ref.id)) {
                   const refData: ReferralData = {

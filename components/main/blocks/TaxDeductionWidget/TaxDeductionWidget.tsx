@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./TaxDeductionWidget.module.scss";
 import { TaxDeductionBarChart } from "./TaxDeductionBarChart";
 import {
@@ -8,6 +8,7 @@ import {
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
 import { WidgetContext } from "../../layout/layout";
 import { HorizontalTaxDeductionBarChart } from "./TaxDeductionBarChartHorizontal";
+import { useIsMobile } from "../../../../hooks/useIsMobile";
 
 export const TaxDeductionWidget: React.FC<{
   title: string;
@@ -27,8 +28,9 @@ export const TaxDeductionWidget: React.FC<{
   const [sum, setSum] = React.useState(suggestedSums.slice(-2)[0].toString());
   const [lastValidSum, setLastValidSum] = useState(suggestedSums.slice(-2)[0]);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const isMobile = useIsMobile();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (sum === "") {
       setLastValidSum(0);
       return;
@@ -50,21 +52,37 @@ export const TaxDeductionWidget: React.FC<{
       ? Math.min(lastValidSum, maximumTreshold) * percentageReduction
       : 0;
 
+  const taxDeduction = Math.min(lastValidSum, maximumTreshold);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.desktopChart}>
-          <TaxDeductionBarChart
-            maximumThreshold={maximumTreshold}
-            minimumThreshold={minimumTreshold}
-            value={lastValidSum}
-            taxBenefit={taxBenefit}
-          ></TaxDeductionBarChart>
+          {!isMobile && (
+            <TaxDeductionBarChart
+              maximumThreshold={maximumTreshold}
+              minimumThreshold={minimumTreshold}
+              value={lastValidSum}
+              taxBenefit={taxBenefit}
+            ></TaxDeductionBarChart>
+          )}
         </div>
 
         <div className={styles.description}>
           <h5>{title}</h5>
           <p>{description}</p>
+
+          <div className={styles.mobileChart}>
+            {isMobile && (
+              <HorizontalTaxDeductionBarChart
+                maximumThreshold={maximumTreshold}
+                minimumThreshold={minimumTreshold}
+                value={lastValidSum}
+                taxBenefit={taxBenefit}
+              ></HorizontalTaxDeductionBarChart>
+            )}
+          </div>
+
           <div className={styles.selectSum}>
             <div className={styles.suggestedSums}>
               {suggestedSums.map((suggestedSum) => {
@@ -94,24 +112,15 @@ export const TaxDeductionWidget: React.FC<{
                   setSum(val);
                 }}
                 denomination={"kr"}
+                variant="underlined"
               />
             </div>
           </div>
 
           <p>
-            Med {Intl.NumberFormat("no-NB").format(Math.min(lastValidSum, maximumTreshold))} kr i
-            donasjoner i år får du tilbake {Intl.NumberFormat("no-NB").format(taxBenefit)} kroner på
-            skatten.
+            Med {Intl.NumberFormat("no-NB").format(taxDeduction)} kr i skattefradrag i år får du
+            tilbake {Intl.NumberFormat("no-NB").format(taxBenefit)} kroner på skatten.
           </p>
-
-          <div className={styles.mobileChart}>
-            <HorizontalTaxDeductionBarChart
-              maximumThreshold={maximumTreshold}
-              minimumThreshold={minimumTreshold}
-              value={lastValidSum}
-              taxBenefit={taxBenefit}
-            ></HorizontalTaxDeductionBarChart>
-          </div>
 
           <div className={styles.cta}>
             <EffektButton
@@ -123,6 +132,9 @@ export const TaxDeductionWidget: React.FC<{
                 });
               }}
               variant={EffektButtonVariant.PRIMARY}
+              style={{
+                padding: "0.75rem 3rem",
+              }}
             >
               Få skattefradrag
             </EffektButton>

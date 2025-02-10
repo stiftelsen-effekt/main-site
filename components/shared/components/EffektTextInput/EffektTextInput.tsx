@@ -7,9 +7,10 @@ export const EffektTextInput: React.FC<{
   type?: string;
   placeholder?: string;
   denomination?: string;
-}> = ({ value, onChange, name, type, placeholder, denomination }) => {
+  variant?: "rounded" | "underlined";
+}> = ({ value, onChange, name, type, placeholder, denomination, variant }) => {
   return (
-    <div className={styles.textInputWrapper}>
+    <div className={[styles.textInputWrapper, styles[variant || "rounded"]].join(" ")}>
       <input
         className={styles.textInput}
         value={value}

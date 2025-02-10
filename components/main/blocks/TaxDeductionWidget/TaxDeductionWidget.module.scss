@@ -1,7 +1,7 @@
 .container {
   display: grid;
-  grid-template-columns: 2fr 6fr;
-  grid-gap: 3rem;
+  grid-template-columns: 2fr 8fr;
+  grid-gap: 5rem;
   max-width: 760px;
   width: 100%;
 
@@ -15,8 +15,6 @@
   }
 
   .description {
-    padding-bottom: 1rem;
-
     .selectSum {
       padding: 1rem 0;
       display: flex;
