@@ -195,7 +195,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
                       stroke="white"
                       strokeWidth="6"
                     >
-                      Donasjoner
+                      Skattefradrag
                     </text>
                     <text
                       x={-remSize * 1}

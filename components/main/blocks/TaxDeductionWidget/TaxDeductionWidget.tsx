@@ -117,10 +117,19 @@ export const TaxDeductionWidget: React.FC<{
             </div>
           </div>
 
-          <p>
-            Med {Intl.NumberFormat("no-NB").format(taxDeduction)} kr i skattefradrag i år får du
-            tilbake {Intl.NumberFormat("no-NB").format(taxBenefit)} kroner på skatten.
-          </p>
+          {taxBenefit > 0 && (
+            <p>
+              Med {Intl.NumberFormat("no-NB").format(taxDeduction)} kr i skattefradrag i år får du
+              tilbake {Intl.NumberFormat("no-NB").format(taxBenefit)} kroner på skatten.
+            </p>
+          )}
+          {taxBenefit === 0 && (
+            <p>
+              Med {Intl.NumberFormat("no-NB").format(lastValidSum)} kr i donasjoner er du under
+              minstegrensen på {Intl.NumberFormat("no-NB").format(minimumTreshold)} kr for å få
+              skattefradrag.
+            </p>
+          )}
 
           <div className={styles.cta}>
             <EffektButton
