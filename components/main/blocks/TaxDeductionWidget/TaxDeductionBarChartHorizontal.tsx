@@ -174,7 +174,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
           {/* Tick mark - not clamped */}
           <g
             style={{
-              transform: `translateX(${scale(currentValue)}px)`,
+              transform: `translateX(${scale(currentValue) - 0.5}px)`,
               transition: "all 0.5s",
             }}
           >
@@ -208,7 +208,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
                 transition: "all 0.5s",
               }}
             >
-              Donasjoner
+              Skattefradrag
             </text>
 
             <text
