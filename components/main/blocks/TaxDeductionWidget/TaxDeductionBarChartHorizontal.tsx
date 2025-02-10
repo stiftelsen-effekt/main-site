@@ -75,7 +75,6 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
 
     if (wouldOverflow) {
       // When clamped, calculate how much we need to move left to right-align
-      const overflowAmount = basePosition + maxLabelWidth + 6 - maxPosition;
       const alignmentOffset = maxLabelWidth;
       return {
         translateX: maxPosition,

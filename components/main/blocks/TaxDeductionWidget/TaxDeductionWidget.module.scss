@@ -55,7 +55,11 @@
     grid-auto-flow: row;
 
     .description {
-      order: 1;
+      .selectSum {
+        .suggestedSums {
+          margin-top: 0;
+        }
+      }
     }
 
     .desktopChart {
