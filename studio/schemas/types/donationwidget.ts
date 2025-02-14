@@ -343,24 +343,6 @@ export default {
       group: "referrals",
       validation: (Rule: any) => Rule.required(),
     },
-    // New schema for donation widget block
-    {
-      name: "donation_widget_block",
-      title: "Donation Widget Block",
-      type: "object",
-      fields: [
-        {
-          name: "title",
-          title: "Title",
-          type: "string",
-        },
-        {
-          name: "description",
-          title: "Description",
-          type: "text",
-        },
-      ],
-    },
   ],
   preview: {
     prepare() {

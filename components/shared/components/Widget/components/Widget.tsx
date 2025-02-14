@@ -181,7 +181,15 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>, inline
       setLastWidth(window.innerWidth);
       setLastHeight(window.innerHeight);
     }
-  }, [setScalingFactor, setScaledHeight, scalingFactor, scaledHeight, setLastWidth, setLastHeight, inline]);
+  }, [
+    setScalingFactor,
+    setScaledHeight,
+    scalingFactor,
+    scaledHeight,
+    setLastWidth,
+    setLastHeight,
+    inline,
+  ]);
 
   useEffect(() => scaleWidget, [widgetContext.open, scaleWidget]);
 
@@ -204,20 +212,23 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>, inline
   return useMemo(() => ({ scaledHeight, scalingFactor }), [scaledHeight, scalingFactor]);
 };
 
-export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean }) => {
-  const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
+export const Widget = withStaticProps(
+  async ({ draftMode, inline }: { draftMode: boolean; inline?: boolean }) => {
+    const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
-  if (!result.methods?.length) {
-    throw new Error("No payment methods found");
-  }
+    if (!result.methods?.length) {
+      throw new Error("No payment methods found");
+    }
 
-  return {
-    data: {
-      result,
-      query: widgetQuery,
-    },
-  };
-})(({ data, inline = false }) => {
+    return {
+      data: {
+        result,
+        query: widgetQuery,
+      },
+      inline: inline ?? false,
+    };
+  },
+)(({ data, inline = false }) => {
   const widget = data.result;
   const methods = data.result.methods;
 

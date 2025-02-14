@@ -441,8 +441,19 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 locale={block.locale}
               />
             );
-          case "donation_widget_block":
-            return <Widget key={block._key || block._id} inline={true} />;
+          case "donationwidgetblock":
+            return (
+              <Widget
+                key={block._key || block._id}
+                inline={true}
+                {...{
+                  data: {
+                    result: block.donationwidget,
+                    query: "",
+                  },
+                }}
+              />
+            );
           default:
             return block._type;
         }
