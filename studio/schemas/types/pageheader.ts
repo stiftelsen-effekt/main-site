@@ -23,9 +23,10 @@ export default {
   fields: [
     {
       name: "title",
-      type: "string",
+      type: "text",
       title: "Title",
       group: "content",
+      rows: 1,
       hidden: ({ parent }: { parent?: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
     },
