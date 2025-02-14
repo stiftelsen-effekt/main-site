@@ -12,16 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
-import { WidgetContext, WidgetContextType } from "../../../../main/layout/layout";
+import { WidgetContext } from "../../../../main/layout/layout";
 import { fetchCauseAreasAction } from "../store/layout/actions";
 import { paymentMethodConfigurations } from "../config/methods";
-import {
-  setCauseAreaPercentageShare,
-  setRecurring,
-  setShareType,
-  setShares,
-  setSum,
-} from "../store/donation/actions";
+import { setRecurring } from "../store/donation/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
 import { RecurringDonation } from "../types/Enums";
@@ -32,17 +26,15 @@ import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
-import { useRouter } from "next/router";
-import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import {
   TooltipContent,
   TooltipLink,
   TooltipWrapper,
 } from "./shared/ProgressBar/ProgressBar.style";
+import { usePrefilledDistribution, usePrefilledSum, useQueryParamsPrefill } from "./hooks";
 
-const widgetQuery = groq`
-*[_type == "donationwidget"][0] {
-  ...,
+export const widgetContentQuery = groq`
+...,
   "locale": *[ _type == "site_settings"][0].main_locale,
   methods[] { 
     _type == 'reference' => @->{
@@ -82,6 +74,11 @@ const widgetQuery = groq`
     "slug": page->slug.current,
     "pagetype": page->_type,
   }
+`;
+
+export const widgetQuery = groq`
+*[_type == "donationwidget"][0] {
+  ${widgetContentQuery}
 }
 `;
 
@@ -236,9 +233,7 @@ export const Widget = withStaticProps(
     throw new Error("No payment methods found");
   }
 
-  const router = useRouter();
   const dispatch = useDispatch();
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
@@ -257,101 +252,19 @@ export const Widget = withStaticProps(
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
-  useEffect(() => {
-    if (widgetContext.prefilled && distributionCauseAreas.length > 0) {
-      const prefilled = widgetContext.prefilled;
-      // Overwrite distribution cause areas with prefilled data
-      distributionCauseAreas.forEach((causeArea) => {
-        const prefilledCauseArea = prefilled.find(
-          (prefilledCauseArea) => prefilledCauseArea.causeAreaId === causeArea.id,
-        );
-        if (prefilledCauseArea) {
-          dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
-          dispatch(setShareType(causeArea.id, false));
-          let newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
-            const prefilledOrganization = prefilledCauseArea.organizations.find(
-              (prefilledOrganization) => prefilledOrganization.organizationId === organization.id,
-            );
-            if (prefilledOrganization) {
-              return {
-                ...organization,
-                percentageShare: prefilledOrganization.share.toString(),
-              };
-            } else {
-              return {
-                ...organization,
-                percentageShare: "0",
-              };
-            }
-          });
+  usePrefilledDistribution({
+    inline,
+    distributionCauseAreas,
+  });
 
-          dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
-        } else {
-          dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
-          dispatch(setShareType(causeArea.id, true));
-          let newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
-            return {
-              ...organization,
-              percentageShare: "0",
-            };
-          });
+  usePrefilledSum({
+    inline,
+  });
 
-          dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
-        }
-        return causeArea;
-      });
-    }
-  }, [widgetContext.prefilled]);
-
-  useEffect(() => {
-    if (widgetContext.prefilledSum !== null) {
-      dispatch(setSum(widgetContext.prefilledSum));
-    }
-  }, [widgetContext.prefilledSum]);
-
-  /** Look at the URL and look for a query param
-   *  that specifies a payment distribution to prefill
-   *  If found, set the distribution cause areas and organizations
-   *  to the prefilled values.
-   *  Find the corresponding cause area and organization in the state
-   *  Use next router to look at the query params
-   *
-   *  The format of the query param is:
-   *  distribution=causeAreaId:share:organizationId-share:organizationId-share
-   *
-   *  E.g.
-   *  1:100:4-50:1-25:12-25
-   *
-   *  This would set cause area 1 to 100% and distribute the shares
-   *  between organizations 4, 1 and 12 with 50%, 25% and 25% respectively
-   */
-  useEffect(() => {
-    const query = router.query;
-    if (query && query["distribution"] && causeAreas) {
-      const distribution = query["distribution"] as string;
-      const prefilledDistribution: PrefilledDistribution = distribution
-        .split(",")
-        .map((prefilledCauseArea) => {
-          const [causeAreaId, share, ...organizations] = prefilledCauseArea.split(":");
-          return {
-            causeAreaId: parseInt(causeAreaId),
-            share: parseFloat(share),
-            organizations: organizations.map((organization) => {
-              const [organizationId, share] = organization.split("-");
-              return {
-                organizationId: parseInt(organizationId),
-                share: parseFloat(share),
-              };
-            }),
-          };
-        });
-      setWidgetContext({ open: true, prefilled: prefilledDistribution, prefilledSum: null });
-    }
-    if (query && query["recurring"]) {
-      dispatch(setRecurring(RecurringDonation.RECURRING));
-      setWidgetContext({ ...widgetContext, open: true });
-    }
-  }, [router.query, causeAreas]);
+  useQueryParamsPrefill({
+    inline,
+    causeAreas,
+  });
 
   useDefaultPaymentMethodEffect(methods);
 
@@ -366,6 +279,8 @@ export const Widget = withStaticProps(
     default:
       tooltipReadmoreText = "Read more";
   }
+
+  console.log("RENDER");
 
   return (
     <div

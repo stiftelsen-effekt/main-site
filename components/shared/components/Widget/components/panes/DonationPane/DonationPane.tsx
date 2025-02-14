@@ -57,6 +57,8 @@ export const DonationPane: React.FC<{
     errorTexts = getErrorTexts(donation, text.donation_input_error_templates);
   }
 
+  console.log(donation.recurring);
+
   return (
     <Pane>
       <PaneContainer>
