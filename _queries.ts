@@ -4,6 +4,7 @@ import { apiResult, getAccessTokenSilently } from "./hooks/useApi";
 import { TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
 import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
+import { widgetContentQuery } from "./components/shared/components/Widget/components/Widget";
 
 export interface Query<T> {
   (
@@ -645,7 +646,13 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       "locale": *[ _type == "site_settings"][0].main_locale,
     },
-    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' => @,
+    _type == 'donationwidgetblock' => {
+      ...,
+      donationwidget->{
+        ${widgetContentQuery}
+      }
+    },
+    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' => @ && _type != 'donationwidgetblock',
   }
 },
 `;

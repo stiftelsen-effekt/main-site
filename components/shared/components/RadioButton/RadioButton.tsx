@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import styles from "./RadioButtons.module.scss";
 
 export const RadioButton: React.FC<{
@@ -9,12 +9,15 @@ export const RadioButton: React.FC<{
   data_cy: string;
   onSelect: () => void;
 }> = ({ selected, name, title, disabled, data_cy, onSelect }) => {
+  const uniqueId = useId();
+  const uniqueName = `${name}-${uniqueId}`;
+
   return (
     <label className={styles.radiobuttonwrapper}>
       <input
         data-cy={data_cy}
         type={"radio"}
-        name={name}
+        name={uniqueName}
         title={title}
         className={styles.radiobutton}
         checked={selected}

@@ -1,42 +1,24 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React, { Suspense, lazy, useEffect, useRef } from "react";
-import createSagaMiddleware from "redux-saga";
 import PlausibleProvider from "next-plausible";
-import { State } from "../components/shared/components/Widget/store/state";
-import { donationReducer } from "../components/shared/components/Widget/store/donation/reducer";
-import { layoutReducer } from "../components/shared/components/Widget/store/layout/reducer";
-import { errorReducer } from "../components/shared/components/Widget/store/error/reducer";
-import { watchAll } from "../components/shared/components/Widget/store/root.saga";
-import { referralReducer } from "../components/shared/components/Widget/store/referrals/reducer";
 
 // import { usePreviewSubscription } from "../lib/sanity";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { Layout } from "../components/main/layout/layout";
-import { Tuple, combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { VisualEditing } from "next-sanity";
 import { ConsentState } from "../middleware.page";
+import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
+const globalWidgetStore = createWidgetStore();
 
 export enum LayoutType {
   Default = "default",
   Profile = "profile",
 }
-
-const sagaMiddleware = createSagaMiddleware();
-const store = configureStore<State>({
-  reducer: combineReducers({
-    donation: donationReducer,
-    layout: layoutReducer,
-    error: errorReducer,
-    referrals: referralReducer,
-  }) as any,
-  middleware: () => new Tuple(sagaMiddleware),
-});
-sagaMiddleware.run(watchAll);
 
 export type GeneralPageProps = Record<string, unknown> & {
   preview: boolean;
@@ -117,7 +99,7 @@ function MyApp({
           trackLocalhost={false}
           enabled={tracking}
         >
-          <Provider store={store}>
+          <Provider store={globalWidgetStore}>
             <RouterContext.Provider value={routerContextValue.current}>
               {appStaticProps.layout === LayoutType.Default ? (
                 <Layout {...appStaticProps.layoutProps}>
@@ -145,7 +127,7 @@ function MyApp({
       taggedEvents={true}
       revenue={true}
     >
-      <Provider store={store}>
+      <Provider store={globalWidgetStore}>
         <RouterContext.Provider value={routerContextValue.current}>
           {appStaticProps.layout === LayoutType.Default ? (
             <Layout {...appStaticProps.layoutProps}>
