@@ -42,6 +42,7 @@ import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
+import { Widget } from "../../shared/components/Widget/components/Widget";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -440,6 +441,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 locale={block.locale}
               />
             );
+          case "donation_widget_block":
+            return <Widget key={block._key || block._id} inline={true} />;
           default:
             return block._type;
         }

@@ -167,6 +167,7 @@ export const types = [
   plausiblerevenuetracker,
   teasers,
   teasersitem,
+  donation_widget_block,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

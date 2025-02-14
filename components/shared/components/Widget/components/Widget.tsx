@@ -158,7 +158,7 @@ const useDefaultPaymentMethodEffect = (paymentMethods: NonNullable<WidgetProps["
 /**
  * Scale the widget to fit the screen
  */
-const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
+const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>, inline: boolean) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const [scalingFactor, setScalingFactor] = useState(1);
   const [scaledHeight, setScaledHeight] = useState(979);
@@ -166,32 +166,36 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
   const [lastWidth, setLastWidth] = useState(400);
 
   const scaleWidget = useCallback(() => {
-    setScalingFactor(
-      (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
-        576,
-    );
-    setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
-    if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {
-      // This is probably the android keyboard opening
-      const delta = lastHeight - window.innerHeight;
-      if (delta > 0) widgetRef.current?.scrollTo(0, Math.ceil(delta / scalingFactor));
-      else widgetRef.current?.scrollTo(0, 0);
+    if (!inline) {
+      setScalingFactor(
+        (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
+          576,
+      );
+      setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
+      if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {
+        // This is probably the android keyboard opening
+        const delta = lastHeight - window.innerHeight;
+        if (delta > 0) widgetRef.current?.scrollTo(0, Math.ceil(delta / scalingFactor));
+        else widgetRef.current?.scrollTo(0, 0);
+      }
+      setLastWidth(window.innerWidth);
+      setLastHeight(window.innerHeight);
     }
-    setLastWidth(window.innerWidth);
-    setLastHeight(window.innerHeight);
-  }, [setScalingFactor, setScaledHeight, scalingFactor, scaledHeight, setLastWidth, setLastHeight]);
+  }, [setScalingFactor, setScaledHeight, scalingFactor, scaledHeight, setLastWidth, setLastHeight, inline]);
 
   useEffect(() => scaleWidget, [widgetContext.open, scaleWidget]);
 
   const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 1000, { maxWait: 1000 });
 
   useEffect(() => {
-    window.addEventListener("resize", debouncedScaleWidget);
+    if (!inline) {
+      window.addEventListener("resize", debouncedScaleWidget);
 
-    return () => {
-      window.removeEventListener("resize", debouncedScaleWidget);
-    };
-  }, [debouncedScaleWidget]);
+      return () => {
+        window.removeEventListener("resize", debouncedScaleWidget);
+      };
+    }
+  }, [debouncedScaleWidget, inline]);
 
   useEffect(() => {
     scaleWidget();
@@ -213,7 +217,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
       query: widgetQuery,
     },
   };
-})(({ data }) => {
+})(({ data, inline = false }) => {
   const widget = data.result;
   const methods = data.result.methods;
 
@@ -234,7 +238,7 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
     (state: State) => state.donation.distributionCauseAreas,
   );
 
-  const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
+  const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef, inline);
   const { scrollPosition } = useWidgetScrollObserver(widgetRef);
 
   useEffect(() => {

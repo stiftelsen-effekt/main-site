@@ -89,6 +89,7 @@ export default {
         { type: "itncoverage" },
         { type: "fundraiserchart" },
         { type: "plausiblerevenuetracker" },
+        { type: "donation_widget_block" },
       ],
       options: {
         modal: "fullscreen",
