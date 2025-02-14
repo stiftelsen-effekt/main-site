@@ -1,9 +1,44 @@
-.textInput {
-  background: none;
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  padding: 14px 22px;
-  border-radius: 45px;
-  font-size: 100%;
-  font-family: "ESKlarheitGrotesk";
+.textInputWrapper {
+  position: relative;
+
+  .textInput {
+    background: none;
+    color: var(--primary);
+
+    font-size: 100%;
+    font-family: "ESKlarheitGrotesk";
+  }
+
+  .denomination {
+    position: absolute;
+    top: 50%;
+
+    transform: translateY(-50%);
+    font-size: 100%;
+    color: var(--primary);
+  }
+
+  &.rounded {
+    .textInput {
+      border: 1px solid var(--primary);
+      border-radius: 45px;
+      padding: 14px 22px;
+    }
+
+    .denomination {
+      right: 1rem;
+    }
+  }
+
+  &.underlined {
+    .textInput {
+      border: none;
+      border-bottom: 1px solid var(--primary);
+      padding: 0.25rem 0;
+    }
+
+    .denomination {
+      right: 0;
+    }
+  }
 }
