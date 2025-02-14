@@ -41,6 +41,7 @@ import { Fundraiserchart, Opendistributionbutton } from "../../../studio/sanity.
 import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
+import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -320,6 +321,18 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 outputConfiguration={block.output_configuration}
                 currency={block.currency}
                 locale={block.locale}
+              />
+            );
+          case "taxdeductionwidget":
+            return (
+              <TaxDeductionWidget
+                key={block._key || block._id}
+                title={block.title}
+                description={block.description}
+                suggestedSums={block.suggested_sums}
+                minimumTreshold={block.minimum_treshold}
+                maximumTreshold={block.maximum_treshold}
+                percentageReduction={block.percentage_reduction}
               />
             );
           case "introsection": {

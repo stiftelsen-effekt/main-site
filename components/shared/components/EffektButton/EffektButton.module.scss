@@ -19,7 +19,7 @@
   cursor: default;
 }
 
-.button::before {
+.button.useCheckmark::before {
   content: "✓";
   width: 0;
   opacity: 0;
@@ -100,11 +100,14 @@
   color: var(--secondary);
   background-color: var(--primary);
   border: 1px solid var(--secondary);
+}
+
+.selected.useCheckmark {
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.selected::before {
+.selected.useCheckmark::before {
   width: 20px;
   opacity: 1;
   margin-right: 4px;
@@ -142,12 +145,12 @@
     padding: 8px 18px;
   }
 
-  .selected {
+  .selected.useCheckmark {
     padding-left: 10px;
     padding-right: 8px;
   }
 
-  .selected::before {
+  .selected.useCheckmark::before {
     width: 10px;
   }
 }

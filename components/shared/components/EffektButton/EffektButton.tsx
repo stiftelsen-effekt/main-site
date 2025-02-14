@@ -11,6 +11,7 @@ interface EffektButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   variant?: string;
   cy?: string;
   selected?: boolean;
+  useCheckmark?: boolean;
   squared?: boolean;
   extraMargin?: boolean;
   noMinWidth?: boolean;
@@ -26,6 +27,7 @@ export const EffektButton: React.FC<EffektButtonProps> = ({
   className,
   disabled,
   selected,
+  useCheckmark,
   squared,
   extraMargin,
   noMinWidth = false,
@@ -35,6 +37,9 @@ export const EffektButton: React.FC<EffektButtonProps> = ({
   const styleClasses = [elements.button, variant, className];
   if (selected) {
     styleClasses.push(elements.selected);
+  }
+  if (useCheckmark) {
+    styleClasses.push(elements.useCheckmark);
   }
   if (squared) {
     styleClasses.push(elements.button__squared);
