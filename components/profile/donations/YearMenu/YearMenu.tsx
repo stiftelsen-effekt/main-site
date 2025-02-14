@@ -28,7 +28,6 @@ const DonationYearMenu: React.FC<{
           <CustomLink
             href={dashboardPath.join("/")}
             scroll={false}
-            passHref
             onClick={(e) => e.currentTarget.blur()}
           >
             <span>{totalTitle}</span>
@@ -47,7 +46,6 @@ const DonationYearMenu: React.FC<{
                 pathname: [...donationsPagePath!, year].join("/"),
               }}
               scroll={false}
-              passHref
               onClick={(e) => e.currentTarget.blur()}
             >
               <span>{year}</span>

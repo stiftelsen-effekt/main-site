@@ -89,7 +89,6 @@ const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolea
                             ? `/${footerItem.slug}`
                             : footerItem.url || "/"
                         }
-                        passHref
                         target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}
                       >
                         {footerItem.title}

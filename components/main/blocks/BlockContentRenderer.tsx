@@ -315,6 +315,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               <InterventionWidget
                 key={block._key || block._id}
                 title={block.title}
+                description={block.description}
                 donationLabel={block.donation_label}
                 default_sum={block.default_sum}
                 outputConfiguration={block.output_configuration}

@@ -288,7 +288,6 @@ export const DonorPane: React.FC<{
                       {text.privacy_policy_text}{" "}
                       <Link
                         href={`/${text.privacy_policy_link.slug}`}
-                        passHref
                         target={"_blank"}
                         onClick={(e) => {
                           e.currentTarget.blur();

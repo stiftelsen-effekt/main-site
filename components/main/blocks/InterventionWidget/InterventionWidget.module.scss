@@ -2,15 +2,19 @@
   border-radius: 5px;
   width: 100%;
   margin-bottom: 30px;
+  max-width: 740px;
 }
 
 .wrapper h3 {
   margin-top: 50px;
   margin-bottom: 55px;
   text-align: left;
-  max-width: 740px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.header {
+  margin-bottom: 4rem;
 }
 
 .grid {
