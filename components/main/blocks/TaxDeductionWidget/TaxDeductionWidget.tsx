@@ -9,6 +9,7 @@ import { EffektTextInput } from "../../../shared/components/EffektTextInput/Effe
 import { WidgetContext } from "../../layout/layout";
 import { HorizontalTaxDeductionBarChart } from "./TaxDeductionBarChartHorizontal";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
+import { usePlausible } from "next-plausible";
 
 export const TaxDeductionWidget: React.FC<{
   title: string;
@@ -25,6 +26,7 @@ export const TaxDeductionWidget: React.FC<{
   maximumTreshold,
   percentageReduction,
 }) => {
+  const plausible = usePlausible();
   const [sum, setSum] = React.useState(suggestedSums.slice(-2)[0].toString());
   const [lastValidSum, setLastValidSum] = useState(suggestedSums.slice(-2)[0]);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
@@ -90,7 +92,15 @@ export const TaxDeductionWidget: React.FC<{
                 return (
                   <EffektButton
                     key={suggestedSum}
-                    onClick={() => setSum(formattedSuggestedSum)}
+                    onClick={() => {
+                      plausible("TaxWidgetSelectSuggestedSum", {
+                        props: {
+                          page: window.location.pathname,
+                          sum: suggestedSum,
+                        },
+                      });
+                      setSum(formattedSuggestedSum);
+                    }}
                     variant={EffektButtonVariant.SECONDARY}
                     selected={lastValidSum === suggestedSum}
                     style={{ fontSize: "0.9rem" }}
@@ -134,6 +144,17 @@ export const TaxDeductionWidget: React.FC<{
           <div className={styles.cta}>
             <EffektButton
               onClick={() => {
+                plausible("OpenDonationWidget", {
+                  props: {
+                    page: window.location.pathname,
+                  },
+                });
+                plausible("OpenDonationWidgetTaxWidgetCTA", {
+                  props: {
+                    page: window.location.pathname,
+                    sum: lastValidSum,
+                  },
+                });
                 setWidgetContext({
                   ...widgetContext,
                   open: true,
