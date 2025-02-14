@@ -105,7 +105,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
           <pattern id="mobileDiagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
             <path
               d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2"
-              style={{ stroke: "white", strokeWidth: 1 }}
+              style={{ stroke: "#fafafa", strokeWidth: 1 }}
             />
           </pattern>
         </defs>

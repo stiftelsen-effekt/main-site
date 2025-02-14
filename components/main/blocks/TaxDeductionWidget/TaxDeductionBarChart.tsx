@@ -192,7 +192,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
                       alignmentBaseline="middle"
                       paintOrder={"stroke"}
                       fill="black"
-                      stroke="white"
+                      stroke="#fafafa"
                       strokeWidth="6"
                     >
                       Skattefradrag
