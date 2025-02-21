@@ -280,16 +280,14 @@ export const Widget = withStaticProps(
       tooltipReadmoreText = "Read more";
   }
 
-  console.log("RENDER");
-
   return (
     <div
-      id="widget"
+      className="widget"
       ref={widgetRef}
       style={{
         transform: `scale(${scalingFactor})`,
-        height: `${scaledHeight}px`,
-        flexBasis: `${scaledHeight}px`,
+        height: inline ? "auto" : `${scaledHeight}px`,
+        flexBasis: inline ? "auto" : `${scaledHeight}px`,
       }}
     >
       <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
@@ -303,8 +301,8 @@ export const Widget = withStaticProps(
             )}
           </TooltipWrapper>
         )}
-        <ProgressBar />
-        <Carousel minHeight={scaledHeight - 116}>
+        <ProgressBar inline={inline} />
+        <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
           <DonationPane
             text={{
               single_donation_text: widget.single_donation_text,

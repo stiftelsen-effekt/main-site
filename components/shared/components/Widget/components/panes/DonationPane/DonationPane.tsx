@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSum, setRecurring } from "../../../store/donation/actions";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
@@ -33,6 +33,7 @@ export const DonationPane: React.FC<{
   const donation = useSelector((state: State) => state.donation);
   const layout = useSelector((state: State) => state.layout);
   const plausible = usePlausible();
+  const sumInputId = useId();
   const [showErrors, setShowErrors] = useState(false);
 
   const suggestedSums = donation.recurring
@@ -56,8 +57,6 @@ export const DonationPane: React.FC<{
   if (showErrors) {
     errorTexts = getErrorTexts(donation, text.donation_input_error_templates);
   }
-
-  console.log(donation.recurring);
 
   return (
     <Pane>
@@ -118,10 +117,10 @@ export const DonationPane: React.FC<{
               errorTexts.find((error) => error.error.type === "donationSumError")?.error.type
             }
           >
-            <label htmlFor="sum">{text.amount_context.custom_amount_text}</label>
+            <label htmlFor={sumInputId}>{text.amount_context.custom_amount_text}</label>
             <span>
               <input
-                name="sum"
+                name={sumInputId}
                 type="tel"
                 placeholder="0"
                 value={donation.sum && donation.sum > 0 ? donation.sum : ""}
