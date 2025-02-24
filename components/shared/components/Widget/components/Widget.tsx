@@ -32,6 +32,7 @@ import {
   TooltipWrapper,
 } from "./shared/ProgressBar/ProgressBar.style";
 import { usePrefilledDistribution, usePrefilledSum, useQueryParamsPrefill } from "./hooks";
+import { useElementHeight } from "../../../../../hooks/useElementHeight";
 
 export const widgetContentQuery = groq`
 ...,
@@ -163,7 +164,7 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>, inline
   const [lastWidth, setLastWidth] = useState(400);
 
   const scaleWidget = useCallback(() => {
-    if (!inline) {
+    if (!inline || window.innerWidth < 1180) {
       setScalingFactor(
         (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
           576,
@@ -235,6 +236,7 @@ export const Widget = withStaticProps(
 
   const dispatch = useDispatch();
   const widgetRef = useRef<HTMLDivElement>(null);
+  const widgetWrapperRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
 
@@ -246,6 +248,7 @@ export const Widget = withStaticProps(
 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef, inline);
   const { scrollPosition } = useWidgetScrollObserver(widgetRef);
+  const widgetHeight = useElementHeight(widgetRef);
 
   useEffect(() => {
     dispatch(fetchCauseAreasAction.started(undefined));
@@ -282,68 +285,77 @@ export const Widget = withStaticProps(
 
   return (
     <div
-      className="widget"
-      ref={widgetRef}
+      className="widget-wrapper"
+      ref={widgetWrapperRef}
       style={{
-        transform: `scale(${scalingFactor})`,
-        height: inline ? "auto" : `${scaledHeight}px`,
-        flexBasis: inline ? "auto" : `${scaledHeight}px`,
+        height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
       }}
     >
-      <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
-        {tooltip !== null && (
-          <TooltipWrapper top={20 + scrollPosition}>
-            <TooltipContent>{tooltip.text}</TooltipContent>
-            {tooltip.link && (
-              <TooltipLink href={tooltip.link} target="_blank">
-                {tooltipReadmoreText} ↗
-              </TooltipLink>
-            )}
-          </TooltipWrapper>
-        )}
-        <ProgressBar inline={inline} />
-        <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
-          <DonationPane
-            text={{
-              single_donation_text: widget.single_donation_text,
-              monthly_donation_text: widget.monthly_donation_text,
-              amount_context: widget.amount_context,
-              smart_distribution_context: widget.smart_distribution_context,
-              pane1_button_text: widget.pane1_button_text,
-              donation_input_error_templates: widget.donation_input_error_templates,
-            }}
-            enableRecurring={availableRecurringOptions.recurring}
-            enableSingle={availableRecurringOptions.single}
-          />
-          <DonorPane
-            locale={widget.locale}
-            text={{
-              anon_button_text: widget.anon_button_text,
-              anon_button_text_tooltip: widget.anon_button_text_tooltip,
-              name_placeholder: widget.name_placeholder,
-              name_invalid_error_text: widget.name_invalid_error_text,
-              email_placeholder: widget.email_placeholder,
-              email_invalid_error_text: widget.email_invalid_error_text,
-              tax_deduction_selector_text: widget.tax_deduction_selector_text,
-              tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
-              tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
-              tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
-              newsletter_selector_text: widget.newsletter_selector_text,
-              privacy_policy_text: widget.privacy_policy_text,
-              privacy_policy_link: widget.privacy_policy_link,
-              pane2_button_text: widget.pane2_button_text,
-            }}
-            paymentMethods={availablePaymentMethods}
-          />
-          <PaymentPane
-            referrals={{
-              referrals_title: widget.referrals_title,
-              other_referral_input_placeholder: widget.other_referral_input_placeholder,
-            }}
-            paymentMethods={availablePaymentMethods}
-          />
-        </Carousel>
-      </WidgetTooltipContext.Provider>
+      <div
+        className="widget"
+        ref={widgetRef}
+        style={{
+          transform: `scale(${scalingFactor})`,
+          height: inline ? "auto" : `${scaledHeight}px`,
+          flexBasis: inline ? "auto" : `${scaledHeight}px`,
+          transformOrigin: inline ? "top" : undefined,
+        }}
+      >
+        <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
+          {tooltip !== null && (
+            <TooltipWrapper top={20 + scrollPosition}>
+              <TooltipContent>{tooltip.text}</TooltipContent>
+              {tooltip.link && (
+                <TooltipLink href={tooltip.link} target="_blank">
+                  {tooltipReadmoreText} ↗
+                </TooltipLink>
+              )}
+            </TooltipWrapper>
+          )}
+          <ProgressBar inline={inline} />
+          <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
+            <DonationPane
+              text={{
+                single_donation_text: widget.single_donation_text,
+                monthly_donation_text: widget.monthly_donation_text,
+                amount_context: widget.amount_context,
+                smart_distribution_context: widget.smart_distribution_context,
+                pane1_button_text: widget.pane1_button_text,
+                donation_input_error_templates: widget.donation_input_error_templates,
+              }}
+              enableRecurring={availableRecurringOptions.recurring}
+              enableSingle={availableRecurringOptions.single}
+            />
+            <DonorPane
+              locale={widget.locale}
+              text={{
+                anon_button_text: widget.anon_button_text,
+                anon_button_text_tooltip: widget.anon_button_text_tooltip,
+                name_placeholder: widget.name_placeholder,
+                name_invalid_error_text: widget.name_invalid_error_text,
+                email_placeholder: widget.email_placeholder,
+                email_invalid_error_text: widget.email_invalid_error_text,
+                tax_deduction_selector_text: widget.tax_deduction_selector_text,
+                tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
+                tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
+                tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
+                newsletter_selector_text: widget.newsletter_selector_text,
+                privacy_policy_text: widget.privacy_policy_text,
+                privacy_policy_link: widget.privacy_policy_link,
+                pane2_button_text: widget.pane2_button_text,
+              }}
+              paymentMethods={availablePaymentMethods}
+            />
+            <PaymentPane
+              referrals={{
+                referrals_title: widget.referrals_title,
+                other_referral_input_placeholder: widget.other_referral_input_placeholder,
+              }}
+              paymentMethods={availablePaymentMethods}
+            />
+          </Carousel>
+        </WidgetTooltipContext.Provider>
+      </div>
     </div>
   );
 });

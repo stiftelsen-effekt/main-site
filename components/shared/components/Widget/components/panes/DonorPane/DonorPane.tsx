@@ -148,6 +148,8 @@ export const DonorPane: React.FC<{
     }
   });
 
+  console.log(errors, isValid);
+
   return (
     <Pane>
       <DonorForm onSubmit={paneSubmitted} autoComplete="on">
@@ -185,7 +187,7 @@ export const DonorPane: React.FC<{
                   data-cy="name-input"
                   type="text"
                   placeholder={text.name_placeholder}
-                  {...register("name", { required: true, minLength: 3 })}
+                  {...register("name", { required: isAnonymous ? false : true, minLength: 3 })}
                 />
                 {errors.name && <ErrorField text={text.name_invalid_error_text} />}
               </InputFieldWrapper>
@@ -195,8 +197,9 @@ export const DonorPane: React.FC<{
                   type="email"
                   placeholder={text.email_placeholder}
                   {...register("email", {
-                    required: true,
+                    required: isAnonymous ? false : true,
                     validate: (val) => {
+                      if (isAnonymous) return true;
                       const trimmed = val.trim();
                       return /@/.test(trimmed);
                     },
@@ -246,7 +249,7 @@ export const DonorPane: React.FC<{
                           required: false,
                           validate: (val) => {
                             const trimmed = val.toString().trim();
-                            if (taxDeductionChecked) {
+                            if (taxDeductionChecked && !isAnonymous) {
                               if (locale === "no") {
                                 return validateSsnNo(trimmed);
                               } else if (locale === "sv") {
