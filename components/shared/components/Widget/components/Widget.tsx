@@ -33,6 +33,7 @@ import {
 } from "./shared/ProgressBar/ProgressBar.style";
 import { usePrefilledDistribution, usePrefilledSum, useQueryParamsPrefill } from "./hooks";
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
+import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 
 export const widgetContentQuery = groq`
 ...,
@@ -211,7 +212,15 @@ const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>, inline
 };
 
 export const Widget = withStaticProps(
-  async ({ draftMode, inline }: { draftMode: boolean; inline?: boolean }) => {
+  async ({
+    draftMode,
+    inline,
+    prefilled,
+  }: {
+    draftMode: boolean;
+    inline?: boolean;
+    prefilled?: PrefilledDistribution;
+  }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
     if (!result.methods?.length) {
@@ -224,9 +233,10 @@ export const Widget = withStaticProps(
         query: widgetQuery,
       },
       inline: inline ?? false,
+      prefilled: prefilled ?? null,
     };
   },
-)(({ data, inline = false }) => {
+)(({ data, inline = false, prefilled }) => {
   const widget = data.result;
   const methods = data.result.methods;
 
@@ -258,6 +268,7 @@ export const Widget = withStaticProps(
   usePrefilledDistribution({
     inline,
     distributionCauseAreas,
+    prefilledDistribution: prefilled,
   });
 
   usePrefilledSum({
@@ -289,6 +300,7 @@ export const Widget = withStaticProps(
       ref={widgetWrapperRef}
       style={{
         height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
+        width: scalingFactor * 576,
       }}
     >
       <div
@@ -298,7 +310,7 @@ export const Widget = withStaticProps(
           transform: `scale(${scalingFactor})`,
           height: inline ? "auto" : `${scaledHeight}px`,
           flexBasis: inline ? "auto" : `${scaledHeight}px`,
-          transformOrigin: inline ? "top" : undefined,
+          transformOrigin: inline ? "top left" : undefined,
         }}
       >
         <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>

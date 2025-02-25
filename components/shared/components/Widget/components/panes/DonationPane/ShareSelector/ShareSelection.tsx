@@ -56,16 +56,11 @@ export const SharesSelection: React.FC<{
   if (!distributionCauseArea) return <div>Ingen fordeling for saksområde</div>;
   if (!organizations) return <div>Ingen organisasjoner</div>;
 
-  const prefilledShares = distributionCauseArea.organizations.filter((org) =>
-    widgetContext.prefilled
-      ?.find((causeArea) => causeArea.causeAreaId === distributionCauseArea.id)
-      ?.organizations.find((o) => o.organizationId === org.id),
+  const prefilledShares = distributionCauseArea.organizations.filter(
+    (org) => typeof org.prefilledPercentageShare === "string",
   );
   const nonPrefilledShares = distributionCauseArea.organizations.filter(
-    (org) =>
-      !widgetContext.prefilled
-        ?.find((causeArea) => causeArea.causeAreaId === distributionCauseArea.id)
-        ?.organizations.find((o) => o.organizationId === org.id),
+    (org) => typeof org.prefilledPercentageShare === "undefined",
   );
 
   return (

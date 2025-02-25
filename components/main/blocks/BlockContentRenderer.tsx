@@ -44,6 +44,8 @@ import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import { WidgetWithStore } from "../../shared/components/Widget/components/WidgetWithStore";
+import { PrefilledDistribution } from "../layout/WidgetPane/WidgetPane";
+import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -444,15 +446,13 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "donationwidgetblock":
             return (
-              <WidgetWithStore
+              <DonationWidgetBlock
                 key={block._key || block._id}
-                inline={true}
-                {...{
-                  data: {
-                    result: block.donationwidget,
-                    query: "",
-                  },
-                }}
+                widgetConfiguration={block.donationwidget}
+                overrides={block.overrides}
+                content={block.content}
+                contentPosition={block.content_position}
+                contentMobilePosition={block.content_mobile_position}
               />
             );
           default:

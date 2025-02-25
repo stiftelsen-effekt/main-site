@@ -14,7 +14,10 @@ import { widgetQuery } from "./Widget";
 import { WidgetProps } from "../types/WidgetProps";
 import { token } from "../../../../../token";
 import dynamic from "next/dynamic";
-import { WidgetPaneProps } from "../../../../main/layout/WidgetPane/WidgetPane";
+import {
+  PrefilledDistribution,
+  WidgetPaneProps,
+} from "../../../../main/layout/WidgetPane/WidgetPane";
 
 const Widget = dynamic<WidgetPaneProps>(() => import("./Widget").then((mod) => mod.Widget), {
   ssr: false,
@@ -50,7 +53,17 @@ export const WidgetStoreProvider: React.FC<{
 
 // Modified Widget component that uses the store provider
 export const WidgetWithStore = withStaticProps(
-  async ({ draftMode, inline }: { draftMode: boolean; inline?: boolean }) => {
+  async ({
+    draftMode,
+    inline,
+    prefilled,
+    prefilledSum,
+  }: {
+    draftMode: boolean;
+    inline?: boolean;
+    prefilled?: PrefilledDistribution;
+    prefilledSum?: number;
+  }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
     if (!result.methods?.length) {
@@ -63,12 +76,14 @@ export const WidgetWithStore = withStaticProps(
         query: widgetQuery,
       },
       inline: inline ?? false,
+      prefilled: prefilled ?? null,
+      prefilledSum: prefilledSum ?? null,
     };
   },
-)(({ data, inline = false }) => {
+)(({ data, inline = false, prefilled, prefilledSum }) => {
   return (
     <WidgetStoreProvider isInline={inline}>
-      <Widget data={data} inline={inline} prefilled={null} prefilledSum={null} />
+      <Widget data={data} inline={inline} prefilled={prefilled} prefilledSum={prefilledSum} />
     </WidgetStoreProvider>
   );
 });

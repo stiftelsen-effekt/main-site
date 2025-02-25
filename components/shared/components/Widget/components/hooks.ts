@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import {
@@ -9,7 +9,7 @@ import {
   setRecurring,
 } from "../store/donation/actions";
 import { RecurringDonation } from "../types/Enums";
-import { WidgetContext, WidgetContextType } from "../../../../main/layout/layout";
+import { WidgetContext } from "../../../../main/layout/layout";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { CauseArea } from "../types/CauseArea";
 import { DistributionCauseArea } from "../types/DistributionCauseArea";
@@ -17,6 +17,7 @@ import { DistributionCauseArea } from "../types/DistributionCauseArea";
 interface UsePrefilledDistributionProps {
   inline: boolean;
   distributionCauseAreas: DistributionCauseArea[];
+  prefilledDistribution: PrefilledDistribution | null;
 }
 
 /**
@@ -25,16 +26,37 @@ interface UsePrefilledDistributionProps {
 export const usePrefilledDistribution = ({
   inline,
   distributionCauseAreas,
+  prefilledDistribution,
 }: UsePrefilledDistributionProps) => {
   const dispatch = useDispatch();
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const [widgetContext] = useContext(WidgetContext);
+  // Add a ref to track if we've already applied the prefilled distribution
+  const hasAppliedPrefill = useRef(false);
 
   useEffect(() => {
-    if (inline || !widgetContext.prefilled || distributionCauseAreas.length === 0) {
+    // Return early if no cause areas to distribute
+    if (distributionCauseAreas.length === 0) {
       return;
     }
 
-    const prefilled = widgetContext.prefilled;
+    // Skip if inline AND no direct prefilledDistribution was provided
+    if (inline && !prefilledDistribution) {
+      return;
+    }
+
+    // Use directly provided prefilledDistribution if available, otherwise fall back to context
+    const prefilled =
+      prefilledDistribution || (widgetContext.prefilled ? widgetContext.prefilled : []);
+
+    // If no prefilled data available, return early
+    if (prefilled.length === 0) {
+      return;
+    }
+
+    // Only apply prefill once to avoid overwriting user changes
+    if (hasAppliedPrefill.current) {
+      return;
+    }
 
     distributionCauseAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
@@ -47,7 +69,15 @@ export const usePrefilledDistribution = ({
         resetCauseArea(dispatch, causeArea);
       }
     });
-  }, [inline, widgetContext.prefilled, distributionCauseAreas, dispatch]);
+
+    // Mark that we've applied the prefill
+    hasAppliedPrefill.current = true;
+  }, [inline, widgetContext.prefilled, prefilledDistribution, distributionCauseAreas, dispatch]);
+
+  // Reset the ref if prefilled data changes
+  useEffect(() => {
+    hasAppliedPrefill.current = false;
+  }, [prefilledDistribution, widgetContext.prefilled]);
 };
 
 /**
@@ -118,6 +148,7 @@ const handlePrefilledCauseArea = (
     return {
       ...organization,
       percentageShare: prefilledOrg ? prefilledOrg.share.toString() : "0",
+      prefilledPercentageShare: prefilledOrg ? prefilledOrg.share.toString() : undefined,
     };
   });
 
@@ -131,6 +162,7 @@ const resetCauseArea = (dispatch: any, causeArea: DistributionCauseArea) => {
   const resetOrganizations = causeArea.organizations.map((organization) => ({
     ...organization,
     percentageShare: "0",
+    prefilledPercentageShare: undefined,
   }));
 
   dispatch(setShares(causeArea.id, resetOrganizations));

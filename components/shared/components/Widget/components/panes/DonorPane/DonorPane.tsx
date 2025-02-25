@@ -148,8 +148,6 @@ export const DonorPane: React.FC<{
     }
   });
 
-  console.log(errors, isValid);
-
   return (
     <Pane>
       <DonorForm onSubmit={paneSubmitted} autoComplete="on">
@@ -187,7 +185,12 @@ export const DonorPane: React.FC<{
                   data-cy="name-input"
                   type="text"
                   placeholder={text.name_placeholder}
-                  {...register("name", { required: isAnonymous ? false : true, minLength: 3 })}
+                  {...register("name", {
+                    validate: (val, formValues) => {
+                      if (formValues.isAnonymous) return true;
+                      return val.trim().length > 3;
+                    },
+                  })}
                 />
                 {errors.name && <ErrorField text={text.name_invalid_error_text} />}
               </InputFieldWrapper>
@@ -197,9 +200,8 @@ export const DonorPane: React.FC<{
                   type="email"
                   placeholder={text.email_placeholder}
                   {...register("email", {
-                    required: isAnonymous ? false : true,
-                    validate: (val) => {
-                      if (isAnonymous) return true;
+                    validate: (val, formValues) => {
+                      if (formValues.isAnonymous) return true;
                       const trimmed = val.trim();
                       return /@/.test(trimmed);
                     },
@@ -247,9 +249,10 @@ export const DonorPane: React.FC<{
                         placeholder={text.tax_deduction_ssn_placeholder}
                         {...register("ssn", {
                           required: false,
-                          validate: (val) => {
+                          validate: (val, formValues) => {
+                            if (formValues.isAnonymous || !taxDeductionChecked) return true;
                             const trimmed = val.toString().trim();
-                            if (taxDeductionChecked && !isAnonymous) {
+                            if (taxDeductionChecked) {
                               if (locale === "no") {
                                 return validateSsnNo(trimmed);
                               } else if (locale === "sv") {

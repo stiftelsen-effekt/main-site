@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 5rem;
+  width: 100%;
+  justify-content: center;
+
+  .widget {
+    border: 1px solid var(--primary);
+    border-radius: 1rem;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 2rem;
+
+    .widget {
+      transform: translateX(-5vw);
+      border: none;
+      border-top: 1px solid var(--primary);
+      border-bottom: 1px solid var(--primary);
+      border-radius: 0;
+    }
+  }
+}
