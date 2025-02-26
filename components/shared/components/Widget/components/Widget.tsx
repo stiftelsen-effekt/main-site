@@ -129,9 +129,6 @@ export const Widget = withStaticProps(
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
-  const distributionCauseAreas = useSelector(
-    (state: State) => state.donation.distributionCauseAreas,
-  );
 
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef, inline);
   const { scrollPosition } = useWidgetScrollObserver(widgetRef);
@@ -144,7 +141,7 @@ export const Widget = withStaticProps(
 
   usePrefilledDistribution({
     inline,
-    distributionCauseAreas,
+    causeAreas,
     prefilledDistribution: prefilled,
   });
 

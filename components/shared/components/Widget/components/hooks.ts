@@ -20,7 +20,7 @@ import { State } from "../store/state";
 
 interface UsePrefilledDistributionProps {
   inline: boolean;
-  distributionCauseAreas: DistributionCauseArea[];
+  causeAreas: CauseArea[] | undefined;
   prefilledDistribution: PrefilledDistribution | null;
 }
 
@@ -29,7 +29,7 @@ interface UsePrefilledDistributionProps {
  */
 export const usePrefilledDistribution = ({
   inline,
-  distributionCauseAreas,
+  causeAreas,
   prefilledDistribution,
 }: UsePrefilledDistributionProps) => {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ export const usePrefilledDistribution = ({
 
   useEffect(() => {
     // Return early if no cause areas to distribute
-    if (distributionCauseAreas.length === 0) {
+    if (!causeAreas || causeAreas.length === 0) {
       return;
     }
 
@@ -63,7 +63,9 @@ export const usePrefilledDistribution = ({
       return;
     }
 
-    distributionCauseAreas.forEach((causeArea) => {
+    console.log("Applying prefill");
+
+    causeAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
         (prefilledArea) => prefilledArea.causeAreaId === causeArea.id,
       );
@@ -77,7 +79,7 @@ export const usePrefilledDistribution = ({
 
     // Mark that we've applied the prefill
     hasAppliedPrefill.current = true;
-  }, [inline, widgetContext.prefilled, prefilledDistribution, dispatch]);
+  }, [inline, widgetContext.prefilled, causeAreas, prefilledDistribution, dispatch]);
 
   // Reset the ref if prefilled data changes
   useEffect(() => {
@@ -146,7 +148,7 @@ export const useQueryParamsPrefill = ({
 
 const handlePrefilledCauseArea = (
   dispatch: any,
-  causeArea: DistributionCauseArea,
+  causeArea: CauseArea,
   prefilledCauseArea: PrefilledDistribution[number],
 ) => {
   dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
@@ -166,7 +168,7 @@ const handlePrefilledCauseArea = (
   dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
 };
 
-const resetCauseArea = (dispatch: any, causeArea: DistributionCauseArea) => {
+const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
   dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
   dispatch(setShareType(causeArea.id, true));
 
