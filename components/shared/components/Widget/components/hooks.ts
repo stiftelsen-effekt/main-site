@@ -58,7 +58,8 @@ export const usePrefilledDistribution = ({
     }
 
     // Only apply prefill once to avoid overwriting user changes
-    if (hasAppliedPrefill.current) {
+    // Except if the prefill comes from the context, then we need to reapply it
+    if (hasAppliedPrefill.current && !widgetContext.prefilled) {
       return;
     }
 
@@ -76,7 +77,7 @@ export const usePrefilledDistribution = ({
 
     // Mark that we've applied the prefill
     hasAppliedPrefill.current = true;
-  }, [inline, widgetContext.prefilled, prefilledDistribution, distributionCauseAreas, dispatch]);
+  }, [inline, widgetContext.prefilled, prefilledDistribution, dispatch]);
 
   // Reset the ref if prefilled data changes
   useEffect(() => {
