@@ -18,6 +18,7 @@ import {
   PrefilledDistribution,
   WidgetPaneProps,
 } from "../../../../main/layout/WidgetPane/WidgetPane";
+import { RecurringDonation } from "../types/Enums";
 
 const Widget = dynamic<WidgetPaneProps>(() => import("./Widget").then((mod) => mod.Widget), {
   ssr: false,
@@ -58,11 +59,13 @@ export const WidgetWithStore = withStaticProps(
     inline,
     prefilled,
     prefilledSum,
+    defaultPaymentType,
   }: {
     draftMode: boolean;
     inline?: boolean;
     prefilled?: PrefilledDistribution;
     prefilledSum?: number;
+    defaultPaymentType?: RecurringDonation;
   }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
@@ -78,12 +81,19 @@ export const WidgetWithStore = withStaticProps(
       inline: inline ?? false,
       prefilled: prefilled ?? null,
       prefilledSum: prefilledSum ?? null,
+      defaultPaymentType: defaultPaymentType ?? RecurringDonation.NON_RECURRING,
     };
   },
-)(({ data, inline = false, prefilled, prefilledSum }) => {
+)(({ data, inline = false, prefilled, prefilledSum, defaultPaymentType }) => {
   return (
     <WidgetStoreProvider isInline={inline}>
-      <Widget data={data} inline={inline} prefilled={prefilled} prefilledSum={prefilledSum} />
+      <Widget
+        data={data}
+        inline={inline}
+        prefilled={prefilled}
+        prefilledSum={prefilledSum}
+        defaultPaymentType={defaultPaymentType}
+      />
     </WidgetStoreProvider>
   );
 });

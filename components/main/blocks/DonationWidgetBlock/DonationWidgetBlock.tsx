@@ -1,4 +1,5 @@
 import { WidgetWithStore } from "../../../shared/components/Widget/components/WidgetWithStore";
+import { RecurringDonation } from "../../../shared/components/Widget/types/Enums";
 import { WidgetProps } from "../../../shared/components/Widget/types/WidgetProps";
 import { PrefilledDistribution, WidgetPaneProps } from "../../layout/WidgetPane/WidgetPane";
 import { Paragraph } from "../Paragraph/Paragraph";
@@ -11,6 +12,16 @@ export const DonationWidgetBlock: React.FC<{
   contentPosition: "left" | "right";
   contentMobilePosition: "top" | "bottom";
 }> = ({ widgetConfiguration, overrides, content, contentPosition, contentMobilePosition }) => {
+  let defaultPaymentType = RecurringDonation.NON_RECURRING;
+  if (overrides?.default_donation_type) {
+    if (overrides.default_donation_type === "recurring") {
+      defaultPaymentType = RecurringDonation.RECURRING;
+    }
+    if (overrides.default_donation_type === "single") {
+      defaultPaymentType = RecurringDonation.NON_RECURRING;
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.widget}>
@@ -24,6 +35,7 @@ export const DonationWidgetBlock: React.FC<{
           }}
           prefilled={convertToPrefilledDistribution(overrides?.prefilled_distribution)}
           prefilledSum={overrides?.prefilled_sum ?? null}
+          defaultPaymentType={defaultPaymentType}
         />
       </div>
       {content && content.length > 0 && (

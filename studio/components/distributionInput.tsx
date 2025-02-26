@@ -55,6 +55,8 @@ const ensureKeys = (items: any[]): DistributionItem[] => {
   });
 };
 
+const api = process.env.SANITY_STUDIO_EFFEKT_API_URL;
+
 // DistributionInput Component (main input component for Sanity)
 export const DistributionInput = React.forwardRef<HTMLDivElement, DistributionInputProps>(
   (props, ref) => {
@@ -70,7 +72,7 @@ export const DistributionInput = React.forwardRef<HTMLDivElement, DistributionIn
     // Fetch all cause areas and organizations for displaying names
     useEffect(() => {
       setLoading(true);
-      fetch("http://localhost:5050/causeareas/all")
+      fetch(`${api}/causeareas/all`)
         .then((response) => response.json())
         .then((data) => {
           if (data && data.content) {
@@ -152,7 +154,7 @@ export const DistributionInput = React.forwardRef<HTMLDivElement, DistributionIn
     };
 
     // Add an organization to the distribution
-    const addOrganization = (causeAreaId: number, event: React.ChangeEvent<HTMLSelectElement>) => {
+    const addOrganization = (causeAreaId: number, event: React.FormEvent<HTMLSelectElement>) => {
       const orgId = parseInt(event.currentTarget.value, 10);
       if (isNaN(orgId)) return;
 
@@ -292,7 +294,7 @@ export const DistributionInput = React.forwardRef<HTMLDivElement, DistributionIn
           ) : (
             <Stack space={3}>
               {causeAreaTotal !== 100 && distributions.some((d) => d.type === "causeArea") && (
-                <Text size={1} tone="caution">
+                <Text size={1}>
                   Cause area percentages should sum to 100%. Current total: {causeAreaTotal}%
                 </Text>
               )}
@@ -385,12 +387,7 @@ export const DistributionInput = React.forwardRef<HTMLDivElement, DistributionIn
 
                       {/* Show organization total percentage */}
                       {causeAreaItem.id in orgTotals && orgTotals[causeAreaItem.id] != 100 && (
-                        <Text
-                          size={1}
-                          tone={orgTotals[causeAreaItem.id] === 100 ? "positive" : "caution"}
-                        >
-                          Organizations total: {orgTotals[causeAreaItem.id]}%
-                        </Text>
+                        <Text size={1}>Organizations total: {orgTotals[causeAreaItem.id]}%</Text>
                       )}
                     </Stack>
 

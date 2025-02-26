@@ -59,7 +59,7 @@ export default {
           title: "Default donation type",
           type: "string",
           options: {
-            list: ["single", "monthly"],
+            list: ["single", "recurring"],
           },
         },
         {
