@@ -42,6 +42,10 @@ import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
+import { Widget } from "../../shared/components/Widget/components/Widget";
+import { WidgetWithStore } from "../../shared/components/Widget/components/WidgetWithStore";
+import { PrefilledDistribution } from "../layout/WidgetPane/WidgetPane";
+import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -438,6 +442,17 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 enabled={block.enabled}
                 type={block.type}
                 locale={block.locale}
+              />
+            );
+          case "donationwidgetblock":
+            return (
+              <DonationWidgetBlock
+                key={block._key || block._id}
+                widgetConfiguration={block.donationwidget}
+                overrides={block.overrides}
+                content={block.content}
+                contentPosition={block.content_position}
+                contentMobilePosition={block.content_mobile_position}
               />
             );
           default:

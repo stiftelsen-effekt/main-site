@@ -28,6 +28,7 @@ import { API_URL } from "../../../config/api";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import { ExtraMessageWrapper } from "../DonationPane/DonationPane.style";
 import { Info } from "react-feather";
+import AnimateHeight from "react-animate-height";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -178,129 +179,137 @@ export const DonorPane: React.FC<{
               </CheckBoxWrapper>
             </div>
 
-            {!isAnonymous ? (
-              <>
-                <InputFieldWrapper>
-                  <input
-                    data-cy="name-input"
-                    type="text"
-                    placeholder={text.name_placeholder}
-                    {...register("name", { required: true, minLength: 3 })}
-                  />
-                  {errors.name && <ErrorField text={text.name_invalid_error_text} />}
-                </InputFieldWrapper>
-                <InputFieldWrapper>
-                  <input
-                    data-cy="email-input"
-                    type="email"
-                    placeholder={text.email_placeholder}
-                    {...register("email", {
-                      required: true,
-                      validate: (val) => {
-                        const trimmed = val.trim();
-                        return /@/.test(trimmed);
-                      },
-                    })}
-                  />
-                  {errors.email && <ErrorField text={text.email_invalid_error_text} />}
-                </InputFieldWrapper>
-                <CheckBoxGroupWrapper>
-                  <div>
-                    <CheckBoxWrapper>
-                      <HiddenCheckBox
-                        data-cy="tax-deduction-checkbox"
-                        type="checkbox"
-                        onKeyDown={(e) => {
-                          if (!taxDeductionChecked) clearErrors(["ssn"]);
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                          }
-                        }}
-                        {...register("taxDeduction", {
-                          onChange() {
-                            if (!taxDeductionChecked) clearErrors(["ssn"]);
-                            (document.activeElement as HTMLElement).blur();
-                          },
-                        })}
-                      />
-                      <CustomCheckBox
-                        label={text.tax_deduction_selector_text}
-                        checked={taxDeductionChecked}
-                      />
-                      {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
-                    </CheckBoxWrapper>
-
-                    {taxDeductionChecked && (
-                      <InputFieldWrapper>
-                        <input
-                          data-cy="ssn-input"
-                          type="text"
-                          inputMode="numeric"
-                          autoComplete="off"
-                          placeholder={text.tax_deduction_ssn_placeholder}
-                          {...register("ssn", {
-                            required: false,
-                            validate: (val) => {
-                              const trimmed = val.toString().trim();
-                              if (taxDeductionChecked) {
-                                if (locale === "no") {
-                                  return validateSsnNo(trimmed);
-                                } else if (locale === "sv") {
-                                  return validateSsnSe(trimmed);
-                                } else {
-                                  return true;
-                                }
-                              } else {
-                                return true;
-                              }
-                            },
-                          })}
-                        />
-                        {errors.ssn && (
-                          <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
-                        )}
-                      </InputFieldWrapper>
-                    )}
-                  </div>
+            <AnimateHeight height={isAnonymous ? 0 : "auto"} animateOpacity>
+              <InputFieldWrapper>
+                <input
+                  data-cy="name-input"
+                  type="text"
+                  placeholder={text.name_placeholder}
+                  {...register("name", {
+                    validate: (val, formValues) => {
+                      if (formValues.isAnonymous) return true;
+                      return val.trim().length > 3;
+                    },
+                  })}
+                />
+                {errors.name && <ErrorField text={text.name_invalid_error_text} />}
+              </InputFieldWrapper>
+              <InputFieldWrapper>
+                <input
+                  data-cy="email-input"
+                  type="email"
+                  placeholder={text.email_placeholder}
+                  {...register("email", {
+                    validate: (val, formValues) => {
+                      if (formValues.isAnonymous) return true;
+                      const trimmed = val.trim();
+                      return /@/.test(trimmed);
+                    },
+                  })}
+                />
+                {errors.email && <ErrorField text={text.email_invalid_error_text} />}
+              </InputFieldWrapper>
+              <CheckBoxGroupWrapper>
+                <div>
                   <CheckBoxWrapper>
                     <HiddenCheckBox
-                      data-cy="newsletter-checkbox"
+                      data-cy="tax-deduction-checkbox"
                       type="checkbox"
                       onKeyDown={(e) => {
+                        if (!taxDeductionChecked) clearErrors(["ssn"]);
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                         }
                       }}
-                      {...register("newsletter", {
+                      {...register("taxDeduction", {
                         onChange() {
+                          if (!taxDeductionChecked) clearErrors(["ssn"]);
                           (document.activeElement as HTMLElement).blur();
                         },
                       })}
                     />
                     <CustomCheckBox
-                      label={text.newsletter_selector_text}
-                      mobileLabel={text.newsletter_selector_text}
-                      checked={newsletterChecked}
+                      label={text.tax_deduction_selector_text}
+                      checked={taxDeductionChecked}
                     />
+                    {taxDeductionChecked && <ToolTip text={text.tax_deduction_tooltip_text} />}
                   </CheckBoxWrapper>
-                  {text.privacy_policy_link && (
-                    <div style={{ marginTop: "10px" }}>
-                      {text.privacy_policy_text}{" "}
-                      <Link
-                        href={`/${text.privacy_policy_link.slug}`}
-                        target={"_blank"}
-                        onClick={(e) => {
-                          e.currentTarget.blur();
-                        }}
-                        style={{ borderBottom: "1px solid var(--primary)" }}
-                      >
-                        {`${text.privacy_policy_link.title}  ↗`}
-                      </Link>
-                    </div>
-                  )}
-                </CheckBoxGroupWrapper>
-              </>
-            ) : null}
+
+                  <AnimateHeight
+                    height={taxDeductionChecked ? "auto" : 0}
+                    animateOpacity
+                    duration={200}
+                  >
+                    <InputFieldWrapper>
+                      <input
+                        data-cy="ssn-input"
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="off"
+                        placeholder={text.tax_deduction_ssn_placeholder}
+                        {...register("ssn", {
+                          required: false,
+                          validate: (val, formValues) => {
+                            if (formValues.isAnonymous || !taxDeductionChecked) return true;
+                            const trimmed = val.toString().trim();
+                            if (taxDeductionChecked) {
+                              if (locale === "no") {
+                                return validateSsnNo(trimmed);
+                              } else if (locale === "sv") {
+                                return validateSsnSe(trimmed);
+                              } else {
+                                return true;
+                              }
+                            } else {
+                              return true;
+                            }
+                          },
+                        })}
+                      />
+                      {errors.ssn && (
+                        <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
+                      )}
+                    </InputFieldWrapper>
+                  </AnimateHeight>
+                </div>
+                <CheckBoxWrapper>
+                  <HiddenCheckBox
+                    data-cy="newsletter-checkbox"
+                    type="checkbox"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                      }
+                    }}
+                    {...register("newsletter", {
+                      onChange() {
+                        (document.activeElement as HTMLElement).blur();
+                      },
+                    })}
+                  />
+                  <CustomCheckBox
+                    label={text.newsletter_selector_text}
+                    mobileLabel={text.newsletter_selector_text}
+                    checked={newsletterChecked}
+                  />
+                </CheckBoxWrapper>
+                {text.privacy_policy_link && (
+                  <div style={{ marginTop: "10px" }}>
+                    {text.privacy_policy_text}{" "}
+                    <Link
+                      href={`/${text.privacy_policy_link.slug}`}
+                      target={"_blank"}
+                      onClick={(e) => {
+                        e.currentTarget.blur();
+                      }}
+                      style={{ borderBottom: "1px solid var(--primary)" }}
+                    >
+                      {`${text.privacy_policy_link.title}  ↗`}
+                    </Link>
+                  </div>
+                )}
+              </CheckBoxGroupWrapper>
+            </AnimateHeight>
 
             <Controller
               control={control}

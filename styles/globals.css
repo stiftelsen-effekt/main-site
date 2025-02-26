@@ -142,7 +142,7 @@ button {
   flex-direction: column;
 }
 
-#widget {
+.widget {
   display: grid;
   grid-template-rows: max-content max-content;
   width: 576px;
@@ -150,12 +150,12 @@ button {
   overflow-y: auto;
 }
 
-#widget::-webkit-scrollbar {
+.widget::-webkit-scrollbar {
   width: 0px;
   background: transparent;
 }
 
-#carousel-wrapper {
+.carousel-wrapper {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -164,7 +164,7 @@ button {
   overflow-y: visible;
 }
 
-#carousel {
+.carousel {
   white-space: nowrap;
   transition: all 200ms;
   height: 100%;

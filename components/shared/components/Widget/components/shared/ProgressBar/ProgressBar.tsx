@@ -11,7 +11,7 @@ import {
   ActionButton,
 } from "./ProgressBar.style";
 
-export const ProgressBar: React.FC = () => {
+export const ProgressBar: React.FC<{ inline?: boolean }> = ({ inline }) => {
   const numberOfPanes = 3;
   const dispatch = useDispatch();
   const paneNumber = useSelector((state: State) => state.layout.paneNumber);
@@ -39,15 +39,17 @@ export const ProgressBar: React.FC = () => {
         {points.map((p) => p)}
         <ProgressLine />
       </ProgressContainer>
-      <ActionButton
-        data-cy="close-widget"
-        onClick={(e) => {
-          setWidgetContext({ ...widgetContext, open: false });
-          e.currentTarget.blur();
-        }}
-      >
-        ✕
-      </ActionButton>
+      {!inline && (
+        <ActionButton
+          data-cy="close-widget"
+          onClick={(e) => {
+            setWidgetContext({ ...widgetContext, open: false });
+            e.currentTarget.blur();
+          }}
+        >
+          ✕
+        </ActionButton>
+      )}
     </HeaderContainer>
   );
 };

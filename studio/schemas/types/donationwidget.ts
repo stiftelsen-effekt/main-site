@@ -1,5 +1,3 @@
-import { group } from "console";
-
 export default {
   name: "donationwidget",
   type: "document",
@@ -53,6 +51,16 @@ export default {
       name: "monthly_donation_text",
       title: "Monthly donation option text",
       type: "string",
+      group: "pane1",
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "default_donation_type",
+      title: "Default donation type",
+      type: "string",
+      options: {
+        list: ["single", "monthly"],
+      },
       group: "pane1",
       validation: (Rule: any) => Rule.required(),
     },

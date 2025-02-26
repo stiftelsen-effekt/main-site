@@ -56,7 +56,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   action,
 ) => {
   if (isType(action, fetchCauseAreasAction.done)) {
-    const topOrderedId = action.payload.result.sort((a, b) => a.ordering - b.ordering)[0].id;
     state = {
       ...state,
       distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({
@@ -64,12 +63,14 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         name: causeArea.name,
         percentageShare: causeArea.standardPercentageShare?.toString() ?? "0",
         standardSplit: true,
-        organizations: causeArea.organizations.map(
-          (org): DistributionCauseAreaOrganization => ({
-            id: org.id,
-            percentageShare: org.standardShare?.toString() ?? "0",
-          }),
-        ),
+        organizations: causeArea.organizations
+          .sort((a, b) => a.ordering - b.ordering)
+          .map(
+            (org): DistributionCauseAreaOrganization => ({
+              id: org.id,
+              percentageShare: org.standardShare?.toString() ?? "0",
+            }),
+          ),
       })),
     };
   }

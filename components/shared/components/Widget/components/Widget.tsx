@@ -1,30 +1,11 @@
 import { groq } from "next-sanity";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useDebouncedCallback } from "use-debounce";
 import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
-import { WidgetContext, WidgetContextType } from "../../../../main/layout/layout";
 import { fetchCauseAreasAction } from "../store/layout/actions";
-import { paymentMethodConfigurations } from "../config/methods";
-import {
-  setCauseAreaPercentageShare,
-  setRecurring,
-  setShareType,
-  setShares,
-  setSum,
-} from "../store/donation/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
-import { RecurringDonation } from "../types/Enums";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
 import { DonationPane } from "./panes/DonationPane/DonationPane";
@@ -32,17 +13,26 @@ import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
-import { useRouter } from "next/router";
-import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import {
   TooltipContent,
   TooltipLink,
   TooltipWrapper,
 } from "./shared/ProgressBar/ProgressBar.style";
+import {
+  useAvailablePaymentMethods,
+  useAvailableRecurringOptions,
+  useDefaultPaymentMethodEffect,
+  usePrefilledDistribution,
+  usePrefilledSum,
+  useQueryParamsPrefill,
+  useWidgetScaleEffect,
+} from "./hooks";
+import { useElementHeight } from "../../../../../hooks/useElementHeight";
+import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
+import { RecurringDonation } from "../types/Enums";
 
-const widgetQuery = groq`
-*[_type == "donationwidget"][0] {
-  ...,
+export const widgetContentQuery = groq`
+...,
   "locale": *[ _type == "site_settings"][0].main_locale,
   methods[] { 
     _type == 'reference' => @->{
@@ -82,6 +72,11 @@ const widgetQuery = groq`
     "slug": page->slug.current,
     "pagetype": page->_type,
   }
+`;
+
+export const widgetQuery = groq`
+*[_type == "donationwidget"][0] {
+  ${widgetContentQuery}
 }
 `;
 
@@ -90,130 +85,35 @@ export const WidgetTooltipContext = createContext<[{ text: string; link?: string
   () => {},
 ]);
 
-/**
- * Determine available recurring options based on the configured payment methods
- */
-const useAvailableRecurringOptions = (paymentMethods: NonNullable<WidgetProps["methods"]>) => {
-  const recurring = useMemo(
-    () =>
-      paymentMethods.some((method) => {
-        const configuration = paymentMethodConfigurations.find(
-          (config) => config.id === method._id,
-        );
-        return configuration?.recurringOptions.includes(RecurringDonation.RECURRING);
-      }),
-    [paymentMethods],
-  );
+export const Widget = withStaticProps(
+  async ({
+    draftMode,
+    inline,
+    prefilled,
+    defaultPaymentType,
+  }: {
+    draftMode: boolean;
+    inline?: boolean;
+    prefilled?: PrefilledDistribution;
+    defaultPaymentType?: RecurringDonation;
+  }) => {
+    const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
-  const single = useMemo(
-    () =>
-      paymentMethods.some((method) => {
-        const configuration = paymentMethodConfigurations.find(
-          (config) => config.id === method._id,
-        );
-        return configuration?.recurringOptions.includes(RecurringDonation.NON_RECURRING);
-      }),
-    [paymentMethods],
-  );
-
-  return useMemo(() => ({ recurring, single }), [recurring, single]);
-};
-
-/**
- * Determine available payment methods based on the selected recurring option
- */
-const useAvailablePaymentMethods = (paymentMethods: NonNullable<WidgetProps["methods"]>) => {
-  const recurring = useSelector((state: State) => state.donation.recurring);
-
-  const availablePaymentMethods = useMemo(
-    () =>
-      paymentMethods.filter((method) => {
-        const configuration = paymentMethodConfigurations.find(
-          (config) => config.id === method._id,
-        );
-        return configuration?.recurringOptions.includes(recurring);
-      }),
-    [paymentMethods, recurring],
-  );
-
-  return availablePaymentMethods;
-};
-
-/**
- * This effect is used to set the default payment method to single if recurring is not enabled
- */
-const useDefaultPaymentMethodEffect = (paymentMethods: NonNullable<WidgetProps["methods"]>) => {
-  const dispatch = useDispatch();
-  const recurring = useSelector((state: State) => state.donation.recurring);
-
-  const availableRecurringOptions = useAvailableRecurringOptions(paymentMethods);
-
-  useEffect(() => {
-    if (recurring === RecurringDonation.RECURRING && !availableRecurringOptions.recurring) {
-      dispatch(setRecurring(RecurringDonation.NON_RECURRING));
+    if (!result.methods?.length) {
+      throw new Error("No payment methods found");
     }
-  }, [recurring, availableRecurringOptions.recurring, dispatch]);
-};
 
-/**
- * Scale the widget to fit the screen
- */
-const useWidgetScaleEffect = (widgetRef: React.RefObject<HTMLDivElement>) => {
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
-  const [scalingFactor, setScalingFactor] = useState(1);
-  const [scaledHeight, setScaledHeight] = useState(979);
-  const [lastHeight, setLastHeight] = useState(979);
-  const [lastWidth, setLastWidth] = useState(400);
-
-  const scaleWidget = useCallback(() => {
-    setScalingFactor(
-      (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
-        576,
-    );
-    setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
-    if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {
-      // This is probably the android keyboard opening
-      const delta = lastHeight - window.innerHeight;
-      if (delta > 0) widgetRef.current?.scrollTo(0, Math.ceil(delta / scalingFactor));
-      else widgetRef.current?.scrollTo(0, 0);
-    }
-    setLastWidth(window.innerWidth);
-    setLastHeight(window.innerHeight);
-  }, [setScalingFactor, setScaledHeight, scalingFactor, scaledHeight, setLastWidth, setLastHeight]);
-
-  useEffect(() => scaleWidget, [widgetContext.open, scaleWidget]);
-
-  const debouncedScaleWidget = useDebouncedCallback(() => scaleWidget(), 1000, { maxWait: 1000 });
-
-  useEffect(() => {
-    window.addEventListener("resize", debouncedScaleWidget);
-
-    return () => {
-      window.removeEventListener("resize", debouncedScaleWidget);
+    return {
+      data: {
+        result,
+        query: widgetQuery,
+      },
+      inline: inline ?? false,
+      prefilled: prefilled ?? null,
+      defaultPaymentType: defaultPaymentType ?? RecurringDonation.NON_RECURRING,
     };
-  }, [debouncedScaleWidget]);
-
-  useEffect(() => {
-    scaleWidget();
-  }, [widgetContext, scaleWidget]);
-
-  return useMemo(() => ({ scaledHeight, scalingFactor }), [scaledHeight, scalingFactor]);
-};
-
-export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean }) => {
-  const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
-
-  if (!result.methods?.length) {
-    throw new Error("No payment methods found");
-  }
-
-  return {
-    data: {
-      result,
-      query: widgetQuery,
-    },
-  };
-})(({ data }) => {
+  },
+)(({ data, inline = false, prefilled, defaultPaymentType }) => {
   const widget = data.result;
   const methods = data.result.methods;
 
@@ -221,10 +121,9 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
     throw new Error("No payment methods found");
   }
 
-  const router = useRouter();
   const dispatch = useDispatch();
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const widgetRef = useRef<HTMLDivElement>(null);
+  const widgetWrapperRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
 
@@ -234,109 +133,30 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
     (state: State) => state.donation.distributionCauseAreas,
   );
 
-  const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef);
+  const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef, inline);
   const { scrollPosition } = useWidgetScrollObserver(widgetRef);
+  const widgetHeight = useElementHeight(widgetRef);
 
   useEffect(() => {
     dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch]);
 
-  useEffect(() => {
-    if (widgetContext.prefilled && distributionCauseAreas.length > 0) {
-      const prefilled = widgetContext.prefilled;
-      // Overwrite distribution cause areas with prefilled data
-      distributionCauseAreas.forEach((causeArea) => {
-        const prefilledCauseArea = prefilled.find(
-          (prefilledCauseArea) => prefilledCauseArea.causeAreaId === causeArea.id,
-        );
-        if (prefilledCauseArea) {
-          dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
-          dispatch(setShareType(causeArea.id, false));
-          let newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
-            const prefilledOrganization = prefilledCauseArea.organizations.find(
-              (prefilledOrganization) => prefilledOrganization.organizationId === organization.id,
-            );
-            if (prefilledOrganization) {
-              return {
-                ...organization,
-                percentageShare: prefilledOrganization.share.toString(),
-              };
-            } else {
-              return {
-                ...organization,
-                percentageShare: "0",
-              };
-            }
-          });
+  usePrefilledDistribution({
+    inline,
+    distributionCauseAreas,
+    prefilledDistribution: prefilled,
+  });
 
-          dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
-        } else {
-          dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
-          dispatch(setShareType(causeArea.id, true));
-          let newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
-            return {
-              ...organization,
-              percentageShare: "0",
-            };
-          });
+  usePrefilledSum({
+    inline,
+  });
 
-          dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
-        }
-        return causeArea;
-      });
-    }
-  }, [widgetContext.prefilled]);
-
-  useEffect(() => {
-    if (widgetContext.prefilledSum !== null) {
-      dispatch(setSum(widgetContext.prefilledSum));
-    }
-  }, [widgetContext.prefilledSum]);
-
-  /** Look at the URL and look for a query param
-   *  that specifies a payment distribution to prefill
-   *  If found, set the distribution cause areas and organizations
-   *  to the prefilled values.
-   *  Find the corresponding cause area and organization in the state
-   *  Use next router to look at the query params
-   *
-   *  The format of the query param is:
-   *  distribution=causeAreaId:share:organizationId-share:organizationId-share
-   *
-   *  E.g.
-   *  1:100:4-50:1-25:12-25
-   *
-   *  This would set cause area 1 to 100% and distribute the shares
-   *  between organizations 4, 1 and 12 with 50%, 25% and 25% respectively
-   */
-  useEffect(() => {
-    const query = router.query;
-    if (query && query["distribution"] && causeAreas) {
-      const distribution = query["distribution"] as string;
-      const prefilledDistribution: PrefilledDistribution = distribution
-        .split(",")
-        .map((prefilledCauseArea) => {
-          const [causeAreaId, share, ...organizations] = prefilledCauseArea.split(":");
-          return {
-            causeAreaId: parseInt(causeAreaId),
-            share: parseFloat(share),
-            organizations: organizations.map((organization) => {
-              const [organizationId, share] = organization.split("-");
-              return {
-                organizationId: parseInt(organizationId),
-                share: parseFloat(share),
-              };
-            }),
-          };
-        });
-      setWidgetContext({ open: true, prefilled: prefilledDistribution, prefilledSum: null });
-    }
-    if (query && query["recurring"]) {
-      dispatch(setRecurring(RecurringDonation.RECURRING));
-      setWidgetContext({ ...widgetContext, open: true });
-    }
-  }, [router.query, causeAreas]);
+  useQueryParamsPrefill({
+    inline,
+    causeAreas,
+    defaultPaymentType,
+  });
 
   useDefaultPaymentMethodEffect(methods);
 
@@ -354,68 +174,78 @@ export const Widget = withStaticProps(async ({ draftMode }: { draftMode: boolean
 
   return (
     <div
-      id="widget"
-      ref={widgetRef}
+      className="widget-wrapper"
+      ref={widgetWrapperRef}
       style={{
-        transform: `scale(${scalingFactor})`,
-        height: `${scaledHeight}px`,
-        flexBasis: `${scaledHeight}px`,
+        height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
+        width: scalingFactor * 576,
       }}
     >
-      <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
-        {tooltip !== null && (
-          <TooltipWrapper top={20 + scrollPosition}>
-            <TooltipContent>{tooltip.text}</TooltipContent>
-            {tooltip.link && (
-              <TooltipLink href={tooltip.link} target="_blank">
-                {tooltipReadmoreText} ↗
-              </TooltipLink>
-            )}
-          </TooltipWrapper>
-        )}
-        <ProgressBar />
-        <Carousel minHeight={scaledHeight - 116}>
-          <DonationPane
-            text={{
-              single_donation_text: widget.single_donation_text,
-              monthly_donation_text: widget.monthly_donation_text,
-              amount_context: widget.amount_context,
-              smart_distribution_context: widget.smart_distribution_context,
-              pane1_button_text: widget.pane1_button_text,
-              donation_input_error_templates: widget.donation_input_error_templates,
-            }}
-            enableRecurring={availableRecurringOptions.recurring}
-            enableSingle={availableRecurringOptions.single}
-          />
-          <DonorPane
-            locale={widget.locale}
-            text={{
-              anon_button_text: widget.anon_button_text,
-              anon_button_text_tooltip: widget.anon_button_text_tooltip,
-              name_placeholder: widget.name_placeholder,
-              name_invalid_error_text: widget.name_invalid_error_text,
-              email_placeholder: widget.email_placeholder,
-              email_invalid_error_text: widget.email_invalid_error_text,
-              tax_deduction_selector_text: widget.tax_deduction_selector_text,
-              tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
-              tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
-              tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
-              newsletter_selector_text: widget.newsletter_selector_text,
-              privacy_policy_text: widget.privacy_policy_text,
-              privacy_policy_link: widget.privacy_policy_link,
-              pane2_button_text: widget.pane2_button_text,
-            }}
-            paymentMethods={availablePaymentMethods}
-          />
-          <PaymentPane
-            referrals={{
-              referrals_title: widget.referrals_title,
-              other_referral_input_placeholder: widget.other_referral_input_placeholder,
-            }}
-            paymentMethods={availablePaymentMethods}
-          />
-        </Carousel>
-      </WidgetTooltipContext.Provider>
+      <div
+        className="widget"
+        ref={widgetRef}
+        style={{
+          transform: `scale(${scalingFactor})`,
+          height: inline ? "auto" : `${scaledHeight}px`,
+          flexBasis: inline ? "auto" : `${scaledHeight}px`,
+          transformOrigin: inline ? "top left" : undefined,
+        }}
+      >
+        <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
+          {tooltip !== null && (
+            <TooltipWrapper top={20 + scrollPosition}>
+              <TooltipContent>{tooltip.text}</TooltipContent>
+              {tooltip.link && (
+                <TooltipLink href={tooltip.link} target="_blank">
+                  {tooltipReadmoreText} ↗
+                </TooltipLink>
+              )}
+            </TooltipWrapper>
+          )}
+          <ProgressBar inline={inline} />
+          <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
+            <DonationPane
+              text={{
+                single_donation_text: widget.single_donation_text,
+                monthly_donation_text: widget.monthly_donation_text,
+                amount_context: widget.amount_context,
+                smart_distribution_context: widget.smart_distribution_context,
+                pane1_button_text: widget.pane1_button_text,
+                donation_input_error_templates: widget.donation_input_error_templates,
+              }}
+              enableRecurring={availableRecurringOptions.recurring}
+              enableSingle={availableRecurringOptions.single}
+            />
+            <DonorPane
+              locale={widget.locale}
+              text={{
+                anon_button_text: widget.anon_button_text,
+                anon_button_text_tooltip: widget.anon_button_text_tooltip,
+                name_placeholder: widget.name_placeholder,
+                name_invalid_error_text: widget.name_invalid_error_text,
+                email_placeholder: widget.email_placeholder,
+                email_invalid_error_text: widget.email_invalid_error_text,
+                tax_deduction_selector_text: widget.tax_deduction_selector_text,
+                tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
+                tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
+                tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
+                newsletter_selector_text: widget.newsletter_selector_text,
+                privacy_policy_text: widget.privacy_policy_text,
+                privacy_policy_link: widget.privacy_policy_link,
+                pane2_button_text: widget.pane2_button_text,
+              }}
+              paymentMethods={availablePaymentMethods}
+            />
+            <PaymentPane
+              referrals={{
+                referrals_title: widget.referrals_title,
+                other_referral_input_placeholder: widget.other_referral_input_placeholder,
+              }}
+              paymentMethods={availablePaymentMethods}
+            />
+          </Carousel>
+        </WidgetTooltipContext.Provider>
+      </div>
     </div>
   );
 });
