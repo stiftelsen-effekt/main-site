@@ -134,9 +134,16 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const donation: Donation = yield select((state: State) => state.donation);
 
     const data: RegisterDonationObject = {
-      distributionCauseAreas: donation.distributionCauseAreas.filter(
-        (c) => parseFloat(c.percentageShare) > 0,
-      ),
+      distributionCauseAreas: donation.distributionCauseAreas
+        .filter((c) => parseFloat(c.percentageShare) > 0)
+        .map((c) => ({
+          ...c,
+          // Removes any potential prefilled data from the submitted data
+          organizations: c.organizations.map((o) => ({
+            id: o.id,
+            percentageShare: o.percentageShare,
+          })),
+        })),
       donor: donation.donor,
       method: donation.method || PaymentMethod.BANK,
       amount: donation.sum || 0,
