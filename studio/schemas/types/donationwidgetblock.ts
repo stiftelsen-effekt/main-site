@@ -1,3 +1,4 @@
+import { DollarSign } from "react-feather";
 import { DistributionInput } from "../../components/distributionInput";
 import { blocktype } from "./blockcontent";
 
@@ -5,6 +6,7 @@ export default {
   name: "donationwidgetblock",
   type: "document",
   title: "Donation widget block",
+  icon: DollarSign,
   fields: [
     {
       name: "content",
@@ -62,75 +64,7 @@ export default {
             list: ["single", "recurring"],
           },
         },
-        {
-          name: "amount_context",
-          title: "Donation amount inputs context",
-          type: "object",
-          description: "Preset amounts are only used if there is only one cause area",
-          fields: [
-            {
-              name: "preset_amounts_recurring",
-              title: "Preset amounts for recurring donations",
-              type: "array",
-              of: [
-                {
-                  type: "object",
-                  fields: [
-                    {
-                      title: "Value",
-                      name: "amount",
-                      type: "number",
-                    },
-                    {
-                      title: "Subtext",
-                      name: "subtext",
-                      type: "string",
-                    },
-                  ],
-                  preview: {
-                    select: {
-                      title: "amount",
-                      subtitle: "subtext",
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              name: "preset_amounts_single",
-              title: "Preset amounts for single donations",
-              type: "array",
-              of: [
-                {
-                  type: "object",
-                  fields: [
-                    {
-                      title: "Value",
-                      name: "amount",
-                      type: "number",
-                    },
-                    {
-                      title: "Subtext",
-                      name: "subtext",
-                      type: "string",
-                    },
-                  ],
-                  preview: {
-                    select: {
-                      title: "amount",
-                      subtitle: "subtext",
-                    },
-                  },
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: "prefilled_sum",
-          title: "Prefilled amount",
-          type: "number",
-        },
+        // Can add more properties from the donation widget configuration here later
         {
           name: "prefilled_distribution",
           type: "array",
@@ -155,4 +89,12 @@ export default {
       ],
     },
   ],
+  preview: {
+    prepare: () => ({
+      title: "Inline donation widget",
+    }),
+    select: {
+      title: "title",
+    },
+  },
 };
