@@ -10,7 +10,7 @@ import { watchAll } from "../store/root.saga";
 import { useMemo } from "react";
 import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
-import { widgetQuery } from "./Widget";
+import { Widget, widgetQuery } from "./Widget";
 import { WidgetProps } from "../types/WidgetProps";
 import { token } from "../../../../../token";
 import dynamic from "next/dynamic";
@@ -19,10 +19,6 @@ import {
   WidgetPaneProps,
 } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { RecurringDonation } from "../types/Enums";
-
-const Widget = dynamic<WidgetPaneProps>(() => import("./Widget").then((mod) => mod.Widget), {
-  ssr: false,
-});
 
 // Create a store factory function
 export const createWidgetStore = () => {
@@ -91,7 +87,6 @@ export const WidgetWithStore = withStaticProps(
         data={data}
         inline={inline}
         prefilled={prefilled}
-        prefilledSum={prefilledSum}
         defaultPaymentType={defaultPaymentType}
       />
     </WidgetStoreProvider>

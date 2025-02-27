@@ -30,6 +30,9 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["d3", "@observablehq/plot"],
   },
+  compiler: {
+    styledComponents: true,
+  },
   headers: async () => {
     return [
       {
