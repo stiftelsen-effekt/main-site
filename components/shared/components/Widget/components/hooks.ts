@@ -116,9 +116,14 @@ export const useQueryParamsPrefill = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const hasAppliedQueryParams = useRef(false);
 
   useEffect(() => {
     if (inline || !router.query || !causeAreas) {
+      return;
+    }
+
+    if (hasAppliedQueryParams.current) {
       return;
     }
 
@@ -131,11 +136,15 @@ export const useQueryParamsPrefill = ({
         prefilled: prefilledDistribution,
         prefilledSum: null,
       });
+      hasAppliedQueryParams.current = true;
+      console.log("Applying query params");
     }
 
     if (recurring) {
       dispatch(setRecurring(RecurringDonation.RECURRING));
       setWidgetContext({ ...widgetContext, open: true });
+      hasAppliedQueryParams.current = true;
+      console.log("Applying query params");
     }
   }, [inline, router.query, causeAreas, dispatch, setWidgetContext, widgetContext]);
 
