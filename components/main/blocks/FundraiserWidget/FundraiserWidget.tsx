@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactAnimateHeight from "react-animate-height";
 import styles from "./FundraiserWidget.module.scss";
-import { useElementHeight } from "../../../../hooks/useElementHeight";
+import { useMultipleElementHeights } from "../../../../hooks/useElementHeight";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { FundraiserOrganizationInfo } from "../FundraiserOrganizationInfo/FundraiserOrganizationInfo";
 import AnimateHeight from "react-animate-height";
@@ -130,7 +130,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     useRef<HTMLDivElement>(null),
   ];
 
-  const paneHeights = paneRefs.map((ref) => useElementHeight(ref));
+  const paneHeights = useMultipleElementHeights(paneRefs);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
