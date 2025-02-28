@@ -1,0 +1,35 @@
+.container {
+  margin-top: 1rem;
+
+  .title {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .donation {
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--primary);
+    padding-left: 0.5rem;
+
+    margin-bottom: 0.75rem;
+
+    .amount {
+      margin-top: 0;
+    }
+
+    .message {
+      font-size: 0.8rem;
+    }
+  }
+
+  .seemore {
+    font-size: 0.8rem;
+    cursor: pointer;
+
+    &::after {
+      content: "↓";
+      margin-left: 0.25rem;
+    }
+  }
+}

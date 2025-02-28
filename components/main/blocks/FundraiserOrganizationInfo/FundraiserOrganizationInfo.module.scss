@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+
+  .logo {
+    position: relative;
+    width: 6rem;
+  }
+
+  .text {
+    line-height: 1.5rem;
+
+    a:link {
+      border-bottom: 1px solid var(--primary);
+    }
+  }
+}

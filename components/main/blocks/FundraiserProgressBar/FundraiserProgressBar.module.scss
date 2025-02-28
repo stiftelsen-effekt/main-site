@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .barcontainer {
+    height: 1.5rem;
+    border: 1px solid var(--primary);
+    position: relative;
+
+    .bar {
+      height: 100%;
+      background-color: var(--primary);
+      width: 0;
+      transition: width 0.2s;
+    }
+  }
+
+  .text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+  }
+}

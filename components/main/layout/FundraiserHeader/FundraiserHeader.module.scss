@@ -1,0 +1,20 @@
+.header {
+  max-width: 1920px;
+  position: relative;
+  height: 30rem;
+  width: 100%;
+  width: 90vw;
+  margin: 0 auto;
+
+  .fundraiserimage {
+    /* Round profile picture placed left bottom, slightly pushed down */
+    position: absolute;
+    bottom: -2rem;
+    left: 2rem;
+    border-radius: 50%;
+    z-index: 2;
+    width: 10rem;
+    height: 10rem;
+    overflow: hidden;
+  }
+}
