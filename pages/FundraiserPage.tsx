@@ -138,6 +138,8 @@ export const FundraiserPage = withStaticProps(
       }[];
     }>(fetchFundraiser, { slug });
 
+    console.log(result.page);
+
     return {
       appStaticProps,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
@@ -243,7 +245,9 @@ const fetchFundraiser = groq`
   },
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,
-    header_image { asset-> },
+    header_image { asset-> {
+      url
+    }},
     fundraiser_image { asset-> },
     fundraiser_organization -> {
       name,
