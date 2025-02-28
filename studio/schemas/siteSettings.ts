@@ -43,6 +43,11 @@ export default {
       to: [{ type: "generalbanner" }],
     },
     {
+      name: "fundraiser_page_slug",
+      title: "Fundraiser page slug",
+      type: "string",
+    },
+    {
       name: "donate_label",
       title: "Donate label",
       type: "string",

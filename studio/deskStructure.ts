@@ -99,6 +99,20 @@ export const deskStructure = (S) =>
         ),
       S.divider(),
       S.listItem()
+        .title("Fundraisers")
+        .icon(User)
+        .child(
+          S.documentList()
+            .title("Fundraisers")
+            .schemaType("fundraiser_page")
+            .apiVersion("v2024-09-19")
+            .filter('_type == "fundraiser_page"')
+            .child((id) =>
+              S.document().schemaType("fundraiser_page").documentId(id).views([S.view.form()]),
+            ),
+        ),
+      S.divider(),
+      S.listItem()
         .title("Results")
         .icon(BarChart)
         .child(S.document().schemaType("results").documentId("results").views([S.view.form()])),
