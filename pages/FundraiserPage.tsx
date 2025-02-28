@@ -20,7 +20,6 @@ import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/Fun
 import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
-import { FundraiserOrganizationInfo } from "../components/main/blocks/FundraiserOrganizationInfo/FundraiserOrganizationInfo";
 import FundraiserWidget from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
@@ -246,7 +245,7 @@ const fetchFundraiser = groq`
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,
     header_image { asset-> {
-      url
+      _id,
     }},
     fundraiser_image { asset-> },
     fundraiser_organization -> {

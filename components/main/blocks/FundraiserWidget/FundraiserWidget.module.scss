@@ -5,6 +5,7 @@
   position: relative;
   margin-top: 1rem;
   margin-bottom: 2rem;
+  will-change: height;
 
   &__back-button {
     position: absolute;
@@ -30,6 +31,7 @@
   &__pane {
     width: 100%;
     transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
 
     // Forward direction animations
     &--entering-forward {
