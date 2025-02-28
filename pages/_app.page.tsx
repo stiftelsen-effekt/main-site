@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { VisualEditing } from "next-sanity";
 import { ConsentState } from "../middleware.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
+import { useRouter } from "next/router";
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
 const globalWidgetStore = createWidgetStore();
@@ -148,18 +149,21 @@ export async function getAppStaticProps({
   draftMode = false,
   consentState,
   layout = LayoutType.Default,
+  showGiveButton = true,
 }: {
   draftMode: boolean;
   consentState: ConsentState;
   layout?: LayoutType;
+  showGiveButton?: boolean;
 }) {
   const routerContext = await fetchRouterContext();
+
   const appStaticProps = {
     routerContext,
     ...(layout === LayoutType.Default
       ? {
           layout: LayoutType.Default as const,
-          layoutProps: await Layout.getStaticProps({ draftMode, consentState }),
+          layoutProps: await Layout.getStaticProps({ draftMode, consentState, showGiveButton }),
         }
       : {
           layout: LayoutType.Profile as const,

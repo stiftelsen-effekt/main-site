@@ -59,7 +59,11 @@ export const FundraiserPage = withStaticProps(
     draftMode: boolean;
     consentState: ConsentState;
   }) => {
-    const appStaticProps = await getAppStaticProps({ draftMode, consentState });
+    const appStaticProps = await getAppStaticProps({
+      draftMode,
+      consentState,
+      showGiveButton: false,
+    });
 
     /** Will fetch data from API later */
     let fakeDonations = [
