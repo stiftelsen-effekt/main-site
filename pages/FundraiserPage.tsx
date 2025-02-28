@@ -67,55 +67,79 @@ export const FundraiserPage = withStaticProps(
     /** Will fetch data from API later */
     let fakeDonations = [
       {
-        // Random amount rounded to nearest 100 between 0 and 1000
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 500,
         name: "John Doe",
-        message: "Great cause!",
+        message: "Preventing blindness one vitamin at a time. Keep it up!",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 1200,
         name: "Jane Doe",
-        message: "I love this organization",
+        message: "My cousin's vision was saved by programs like this. Forever grateful.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 300,
         name: "John Smith",
-        message: "Keep up the good work!",
+        message: "Helen Keller would be proud! Fighting blindness worldwide.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 700,
         name: "Jane Smith",
-        message: "I'm so happy to donate",
+        message: "In memory of my uncle who lost his sight to vitamin A deficiency.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 2500,
         name: "John Johnson",
-        message: "I'm so happy to donate",
+        message: "Sight is a gift everyone deserves. Proud to support this vital program.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 100,
         name: "Jane Johnson",
-        message: "I'm so happy to donate",
+        message: "Small donation for a huge impact! Every child deserves to see.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 900,
         name: "John Jackson",
-        message: "I'm so happy to donate",
+        message: "Vitamin A saved my nephew's vision. Paying it forward!",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 1500,
         name: "Jane Jackson",
-        message: "I'm so happy to donate",
+        message: "Clear vision for all children! That's a future worth investing in.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 400,
         name: "John Brown",
-        message: "I'm so happy to donate",
+        message: "First time donor after learning how simple vitamin A can prevent blindness.",
       },
       {
-        amount: Math.round(Math.random() * 10) * 100,
+        amount: 3000,
         name: "Jane Brown",
-        message: "I'm so happy to donate",
+        message: "My company matches vitamin donations. Double the supplements, double the sight!",
+      },
+      {
+        amount: 800,
+        name: "Miguel Rodriguez",
+        message: "Saw your work in my village back home. Those kids can see because of you!",
+      },
+      {
+        amount: 1000,
+        name: "Sarah Chen",
+        message: "As an ophthalmologist, I know how crucial this program is. Keep going!",
+      },
+      {
+        amount: 200,
+        name: "Ahmed Hassan",
+        message: "A few dollars here = clear vision there. Simple math, amazing results.",
+      },
+      {
+        amount: 1700,
+        name: "Lisa Patel",
+        message: "Donating my birthday money to help kids see their birthdays clearly too!",
+      },
+      {
+        amount: 600,
+        name: "James Williams",
+        message: "Planning to volunteer for a vitamin A distribution trip next month!",
       },
     ];
     // Duplicate the array 20 times
