@@ -43,6 +43,7 @@
       position: absolute;
       top: 0;
       left: 0;
+      transition-duration: 100ms;
     }
 
     // Backward direction animations
@@ -57,6 +58,7 @@
       position: absolute;
       top: 0;
       left: 0;
+      transition-duration: 100ms;
     }
 
     &--active {
