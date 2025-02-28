@@ -5,6 +5,7 @@
   width: 90vw;
   margin: 0 auto;
   margin-top: 5rem;
+  max-width: 90vw;
 }
 
 .fundraisercontainer .fundraiserdescription {
@@ -47,6 +48,10 @@
 
   .fundraisercontainer .fundraiserdescription > h3 {
     display: none;
+  }
+
+  .fundraisercontainer .fundraiserdata {
+    max-width: 90vw;
   }
 
   .mobiletitle {

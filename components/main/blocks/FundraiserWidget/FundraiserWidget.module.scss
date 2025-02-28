@@ -158,3 +158,19 @@
     }
   }
 }
+
+@media only screen and (max-width: 1180px) {
+  .donation-widget {
+    width: 100vw;
+    transform: translateX(-5vw);
+    position: relative;
+
+    &__back-button {
+      left: 5vw;
+    }
+
+    &__pane {
+      padding: 0 5vw;
+    }
+  }
+}

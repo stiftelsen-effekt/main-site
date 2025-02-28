@@ -393,10 +393,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
               </EffektCheckbox>
             </div>
 
-            <AnimateHeight
-              duration={100}
-              height={formData.taxDeduction || formData.newsletter ? "auto" : 0}
-            >
+            <AnimateHeight duration={100} height={formData.taxDeduction ? "auto" : 0}>
               <div className={styles["donation-widget__input-group"]}>
                 <input
                   id="ssn"
