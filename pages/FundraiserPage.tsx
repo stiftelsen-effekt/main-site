@@ -137,8 +137,6 @@ export const FundraiserPage = withStaticProps(
       }[];
     }>(fetchFundraiser, { slug });
 
-    console.log(result.page);
-
     return {
       appStaticProps,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
