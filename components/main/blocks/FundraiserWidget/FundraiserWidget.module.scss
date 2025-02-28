@@ -154,14 +154,7 @@
     margin-top: 20px;
     text-align: left;
     a {
-      color: #000;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      border-bottom: 1px solid var(--primary);
     }
   }
 }

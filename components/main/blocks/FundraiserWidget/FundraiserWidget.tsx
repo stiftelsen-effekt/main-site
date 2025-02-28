@@ -5,6 +5,10 @@ import { useMultipleElementHeights } from "../../../../hooks/useElementHeight";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { FundraiserOrganizationInfo } from "../FundraiserOrganizationInfo/FundraiserOrganizationInfo";
 import AnimateHeight from "react-animate-height";
+import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
+import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
+import { PaymentMethod } from "../../../shared/components/Widget/types/Enums";
+import Link from "next/link";
 
 // Types for the component props
 interface TextsProps {
@@ -326,14 +330,14 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             </div>
 
             <div className={styles["donation-widget__checkbox-group"]}>
-              <input
-                id="showName"
-                name="showName"
-                type="checkbox"
+              <EffektCheckbox
                 checked={formData.showName}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="showName">{mergedTexts.showNameLabel}</label>
+                onChange={(checked) => {
+                  setFormData({ ...formData, showName: checked });
+                }}
+              >
+                {mergedTexts.showNameLabel}
+              </EffektCheckbox>
             </div>
 
             <button type="submit" className={styles["donation-widget__button"]}>
@@ -356,14 +360,14 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             }}
           >
             <div className={styles["donation-widget__checkbox-group"]}>
-              <input
-                id="anonymous"
-                name="anonymous"
-                type="checkbox"
+              <EffektCheckbox
                 checked={formData.anonymous}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="anonymous">{mergedTexts.anonymousDonationLabel}</label>
+                onChange={(checked) => {
+                  setFormData({ ...formData, anonymous: checked });
+                }}
+              >
+                {mergedTexts.anonymousDonationLabel}
+              </EffektCheckbox>
             </div>
 
             <div className={styles["donation-widget__input-group"]}>
@@ -379,14 +383,14 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             </div>
 
             <div className={styles["donation-widget__checkbox-group"]}>
-              <input
-                id="taxDeduction"
-                name="taxDeduction"
-                type="checkbox"
+              <EffektCheckbox
                 checked={formData.taxDeduction}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="taxDeduction">{mergedTexts.taxDeductionLabel}</label>
+                onChange={(checked) => {
+                  setFormData({ ...formData, taxDeduction: checked });
+                }}
+              >
+                {mergedTexts.taxDeductionLabel}
+              </EffektCheckbox>
             </div>
 
             <AnimateHeight
@@ -407,45 +411,35 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             </AnimateHeight>
 
             <div className={styles["donation-widget__checkbox-group"]}>
-              <input
-                id="newsletter"
-                name="newsletter"
-                type="checkbox"
+              <EffektCheckbox
                 checked={formData.newsletter}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="newsletter">{mergedTexts.newsletterLabel}</label>
+                onChange={(checked) => {
+                  setFormData({ ...formData, newsletter: checked });
+                }}
+              >
+                {mergedTexts.newsletterLabel}
+              </EffektCheckbox>
             </div>
 
             <div className={styles["donation-widget__privacy-link"]}>
-              <a href={mergedTexts.privacyPolicyUrl} target="_blank" rel="noopener noreferrer">
-                {mergedTexts.privacyPolicyText} ↗
-              </a>
+              <Link href={mergedTexts.privacyPolicyUrl}>{mergedTexts.privacyPolicyText} ↗</Link>
             </div>
             <div className={styles["donation-widget__payment-options"]}>
-              <div className={styles["donation-widget__payment-option"]}>
-                <input
-                  id="bankPayment"
-                  name="paymentMethod"
-                  type="radio"
-                  value="bank"
-                  checked={formData.paymentMethod === "bank"}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor="bankPayment">{mergedTexts.payWithBankLabel}</label>
-              </div>
-
-              <div className={styles["donation-widget__payment-option"]}>
-                <input
-                  id="vippsPayment"
-                  name="paymentMethod"
-                  type="radio"
-                  value="vipps"
-                  checked={formData.paymentMethod === "vipps"}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor="vippsPayment">{mergedTexts.payWithVippsLabel}</label>
-              </div>
+              <RadioButtonGroup
+                options={[
+                  { title: mergedTexts.payWithBankLabel, value: PaymentMethod.BANK },
+                  { title: mergedTexts.payWithVippsLabel, value: PaymentMethod.VIPPS },
+                ]}
+                selected={
+                  formData.paymentMethod === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS
+                }
+                onSelect={(value) => {
+                  setFormData({
+                    ...formData,
+                    paymentMethod: value === PaymentMethod.BANK ? "bank" : "vipps",
+                  });
+                }}
+              ></RadioButtonGroup>
             </div>
 
             <button type="submit" className={styles["donation-widget__button"]}>
