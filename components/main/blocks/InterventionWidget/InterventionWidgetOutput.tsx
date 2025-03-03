@@ -64,12 +64,9 @@ export const InterventionWidgetOutput: React.FC<{
     );
   }, [selectedIntervention]);
 
-  if (!currentIntervention) {
-    return "No current intervention";
-  }
-
   const outputString = useMemo(() => {
     if (
+      !currentIntervention ||
       !currentIntervention.organization.impact_estimate ||
       !currentIntervention.organization.impact_estimate.evaluation ||
       !currentIntervention.organization.intervention
@@ -106,6 +103,10 @@ export const InterventionWidgetOutput: React.FC<{
     }
     return "-";
   }, [currentIntervention, sum]);
+
+  if (!currentIntervention) {
+    return "No current intervention";
+  }
 
   return (
     <div className={styles.wrapper}>
