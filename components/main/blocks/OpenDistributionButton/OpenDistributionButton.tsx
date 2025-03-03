@@ -5,25 +5,36 @@ import { WidgetContext } from "../../layout/layout";
 import { PrefilledDistribution } from "../../layout/WidgetPane/WidgetPane";
 import styles from "./OpenDistributionButton.module.scss";
 import { usePlausible } from "next-plausible";
+import { ImpactEvaluation } from "../../../../models";
+import { thousandize } from "../../../../util/formatting";
+import { getFormattedInterventionOutput } from "../OrganizationsList/OrganizationsList";
 
-export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
-  text,
-  inverted,
-  organization,
-  display_output_info,
-  distribution_cause_areas,
-}) => {
+export const OpenDistributionButton: React.FC<
+  Omit<Opendistributionbutton, "organization"> & {
+    organization: {
+      _type: "organization";
+      intervention?: {
+        abbreviation: string;
+        type: string;
+        effect: string;
+        scaling_factor?: number;
+      };
+      database_ids: {
+        cause_area_id: number;
+        organization_id: number;
+      };
+      impact_estimate: {
+        evaluation: ImpactEvaluation;
+      } | null;
+    };
+  }
+> = ({ text, inverted, organization, display_output_info, distribution_cause_areas }) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const plausible = usePlausible();
 
   if (!distribution_cause_areas) {
     return null;
   }
-
-  const resolvedOrganization: Organization | null =
-    organization && organization._type !== "reference"
-      ? (organization as unknown as Organization)
-      : null;
 
   const prefilled = cleanDistribution(distribution_cause_areas);
 
@@ -34,10 +45,10 @@ export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
 
   return (
     <div className={containerStyles.join(" ")}>
-      {display_output_info && resolvedOrganization && (
+      {display_output_info && organization.intervention && organization.impact_estimate && (
         <div className={styles.outputInfo}>
-          <h2>{resolvedOrganization.invervention_cost}</h2>
-          <span>{resolvedOrganization.intervention_effect}</span>
+          <h2>{getFormattedInterventionOutput(organization)}</h2>
+          <span>{organization.intervention.effect}</span>
         </div>
       )}
       <div className={styles.buttonContainer}>

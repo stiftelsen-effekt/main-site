@@ -9,9 +9,9 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { useLiveQuery } from "next-sanity/preview";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../middleware.page";
+import { augmentStaticImpactEstimates } from "../util/staticImpactEstimateHelper";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -44,6 +44,21 @@ export const GenericPage = withStaticProps(
     if (result.settings[0].general_banner && result.settings[0].general_banner.link.slug == slug) {
       result.settings[0].general_banner = null;
     }
+
+    // Augment organizations with impact estimates
+    if (result.page && result.page.content) {
+      const augmentedContent = await augmentStaticImpactEstimates(result.page.content, "NOK", "no");
+
+      result = {
+        ...result,
+        page: {
+          ...result.page,
+          content: augmentedContent,
+        },
+      };
+    }
+
+    console.log(JSON.stringify(result.page.content, null, 2));
 
     return {
       appStaticProps,

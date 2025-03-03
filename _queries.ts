@@ -370,6 +370,28 @@ export const questionAndAnswerSelectionQuery = `
     ${linksContentQuery}
 } `;
 
+const interventionOutputConfigurationQueery = `
+  ...,
+  output_configuration->{
+    ...,
+    "interventions": interventions[] {
+      ...,
+      "organization": organization->{
+        _type,
+        intervention,
+        database_ids,
+      }
+    },
+    "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+    "locale": *[ _type == "site_settings"][0].main_locale,
+    explanation_links[] {
+      ${linksSelectorQuery}
+    },
+  },
+  "currency": *[ _type == "site_settings"][0].main_currency,
+  "locale": *[ _type == "site_settings"][0].main_locale,
+`;
+
 export const pageContentQuery = `content[hidden!=true] {
   ...,
   blocks[] {
@@ -401,7 +423,12 @@ export const pageContentQuery = `content[hidden!=true] {
     },
     _type == 'opendistributionbutton' =>  {
       ...,
-      organization->,
+      organization->{
+        _type,
+        intervention,
+        database_ids,
+        ...,
+      }
     },
     _type == 'fullvideo' =>  {
       ...,
@@ -480,17 +507,7 @@ export const pageContentQuery = `content[hidden!=true] {
         },
       },
       intervention_configuration {
-        ...,
-        output_configuration->{
-          ...,
-          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
-          "locale": *[ _type == "site_settings"][0].main_locale,
-          explanation_links[] {
-            ${linksSelectorQuery}
-          },
-        },
-        "currency": *[ _type == "site_settings"][0].main_currency,
-        "locale": *[ _type == "site_settings"][0].main_locale,
+        ${interventionOutputConfigurationQueery}
       },
       "currency": *[ _type == "site_settings"][0].main_currency,
       "locale": *[ _type == "site_settings"][0].main_locale,
@@ -524,17 +541,7 @@ export const pageContentQuery = `content[hidden!=true] {
       "locale": *[ _type == "site_settings"][0].main_locale,
     },
     _type == 'interventionwidget' => {
-      ...,
-      output_configuration->{
-        ...,
-        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
-        "locale": *[ _type == "site_settings"][0].main_locale,
-        explanation_links[] {
-          ${linksSelectorQuery}
-        },
-      },
-      "currency": *[ _type == "site_settings"][0].main_currency,
-      "locale": *[ _type == "site_settings"][0].main_locale,
+      ${interventionOutputConfigurationQueery}
     },
     _type == 'giftcardteaser' => {
       ...,
