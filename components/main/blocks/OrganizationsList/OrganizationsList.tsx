@@ -6,20 +6,18 @@ import { WidgetContext } from "../../layout/layout";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import Link from "next/link";
 import { usePlausible } from "next-plausible";
+import { ImpactEvaluation } from "../../../../models";
+import { thousandize } from "../../../../util/formatting";
 
 type OrganizationWidgetButton = {
   label: string;
-  cause_area_id: number;
-  organization_id: number;
+  display: boolean;
 };
 
 type Organization = {
   _id: string;
   name: string;
   subtitle: string;
-  invervention_cost: string;
-  intervention_effect: string;
-  intervention_type: string;
   oneliner: string;
   content: any;
   links: any;
@@ -30,6 +28,19 @@ type Organization = {
       current: string;
     };
   };
+  intervention?: {
+    abbreviation: string;
+    type: string;
+    effect: string;
+    scaling_factor?: number;
+  };
+  database_ids: {
+    cause_area_id: number;
+    organization_id: number;
+  };
+  impact_estimate: {
+    evaluation: ImpactEvaluation;
+  } | null;
 };
 
 export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
@@ -64,9 +75,8 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
                 <p className={styles.interventionSubtitle}>{organization.subtitle}</p>
               </div>
               <div className={styles.intervention}>
-                <span className="detailheader">{organization.intervention_type}</span>
-                <h1>{organization.invervention_cost}</h1>
-                <span>{organization.intervention_effect}</span>
+                <h1>{getFormattedInterventionOutput(organization)}</h1>
+                <span>{organization.intervention?.effect}</span>
               </div>
             </div>
             <div className={styles.description}>
@@ -80,10 +90,10 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
                   <Links links={organization.links} />
                 </>
               )}
-              {organization.widget_button && (
+              {organization.widget_button && organization.database_ids && (
                 <div className={styles.buttonWrapper}>
                   <EffektButton
-                    data-cy={`organizations-list-button-${organization.widget_button.organization_id}`}
+                    data-cy={`organizations-list-button-${organization.database_ids.organization_id}`}
                     onClick={() => {
                       plausible("OpenDonationWidget", {
                         props: {
@@ -100,11 +110,11 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
                         prefilledSum: null,
                         prefilled: [
                           {
-                            causeAreaId: organization.widget_button.cause_area_id,
+                            causeAreaId: organization.database_ids.cause_area_id,
                             share: 100,
                             organizations: [
                               {
-                                organizationId: organization.widget_button.organization_id,
+                                organizationId: organization.database_ids.organization_id,
                                 share: 100,
                               },
                             ],
@@ -123,4 +133,39 @@ export const OrganizationsList: React.FC<{ organizations: Organization[] }> = ({
         ))}
     </div>
   );
+};
+
+export const getFormattedInterventionOutput = (
+  organization: Pick<Organization, "impact_estimate" | "intervention">,
+) => {
+  if (
+    !organization.impact_estimate ||
+    !organization.impact_estimate.evaluation ||
+    !organization.intervention
+  ) {
+    return "-";
+  }
+  if (organization.intervention.type === "output") {
+    return (
+      thousandize(Math.round(organization.impact_estimate.evaluation.converted_cost_per_output)) +
+      " kr"
+    );
+  }
+  if (organization.intervention.type === "percentage") {
+    return `${Math.round((100 / organization.impact_estimate.evaluation.cents_per_output) * 100)}%`;
+  }
+  if (organization.intervention.type === "scaled_output") {
+    if (organization.intervention.scaling_factor) {
+      return (
+        thousandize(
+          Math.round(
+            organization.impact_estimate.evaluation.converted_cost_per_output *
+              organization.intervention.scaling_factor,
+          ),
+        ) + " kr"
+      );
+    }
+    return "-";
+  }
+  return "-";
 };

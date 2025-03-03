@@ -7,16 +7,14 @@ export default {
       name: "title",
       type: "string",
       title: "Title",
+      description:
+        "The title for the buttons that will be shown in the widget, defaults to the organizations intervention type",
     },
     {
-      name: "organization_name",
-      type: "string",
-      title: "Organization name",
-    },
-    {
-      name: "abbreviation",
-      type: "string",
-      title: "Abbreviation",
+      name: "organization",
+      type: "reference",
+      to: [{ type: "organization" }],
+      title: "Organization",
     },
     {
       name: "template_string",
@@ -25,14 +23,11 @@ export default {
       title: "Template string",
     },
     {
-      name: "organization_id",
-      type: "number",
-      title: "Organization ID",
-    },
-    {
-      name: "cause_area_id",
-      type: "number",
-      title: "Cause area ID",
+      name: "template_donate_button",
+      type: "string",
+      title: "Template donate button",
+      description:
+        "The template string for the donate button. Use {outputs} to insert the number of outputs",
     },
   ],
 } as const;
