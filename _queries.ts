@@ -427,7 +427,6 @@ export const pageContentQuery = `content[hidden!=true] {
         _type,
         intervention,
         database_ids,
-        ...,
       }
     },
     _type == 'fullvideo' =>  {
