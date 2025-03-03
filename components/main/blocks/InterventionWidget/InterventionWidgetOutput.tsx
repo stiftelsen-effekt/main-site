@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import styles from "./InterventionWidget.module.scss";
 import { LinkType, Links } from "../Links/Links";
@@ -59,12 +59,17 @@ export const InterventionWidgetOutput: React.FC<{
   );
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const plausible = usePlausible();
+  const currentDate = useMemo(() => new Date(), []);
 
   useEffect(() => {
     if (interventions && interventions.length > 0) {
       const url = `https://impact.gieffektivt.no/api/evaluations?${interventions
         .map((i: any) => `charity_abbreviation=${stegaClean(i.abbreviation)}&`)
-        .join("")}currency=${stegaClean(currency)}&language=${stegaClean(configuration.locale)}`;
+        .join("")}currency=${stegaClean(currency)}&language=${stegaClean(
+        configuration.locale,
+      )}&conversion_year=${currentDate.getFullYear()}&conversion_month=${
+        currentDate.getMonth() + 1
+      }`;
       fetch(url)
         .then((res) => {
           res.json().then((data) => {
