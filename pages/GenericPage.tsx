@@ -58,8 +58,6 @@ export const GenericPage = withStaticProps(
       };
     }
 
-    console.log(JSON.stringify(result.page.content, null, 2));
-
     return {
       appStaticProps,
       draftMode,
