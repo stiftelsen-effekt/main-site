@@ -36,15 +36,15 @@ import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 import { stegaClean } from "@sanity/client/stega";
 import dynamic from "next/dynamic";
 import { PlausibleRevenueTracker } from "./PlausibleRevenueTracker/PlausibleRevenueTracker";
-import { OpenDistributionButton } from "./OpenDistributionButton/OpenDistributionButton";
-import { Fundraiserchart, Opendistributionbutton } from "../../../studio/sanity.types";
+import {
+  OpenDistributionButton,
+  OpenDistributionButtonProps,
+} from "./OpenDistributionButton/OpenDistributionButton";
+import { Fundraiserchart } from "../../../studio/sanity.types";
 import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
-import { Widget } from "../../shared/components/Widget/components/Widget";
-import { WidgetWithStore } from "../../shared/components/Widget/components/WidgetWithStore";
-import { PrefilledDistribution } from "../layout/WidgetPane/WidgetPane";
 import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
 
 /* Dynamic imports */
@@ -382,7 +382,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             return (
               <OpenDistributionButton
                 key={block._key || block._id}
-                {...(block as Opendistributionbutton)}
+                {...(block as OpenDistributionButtonProps)}
               />
             );
           }

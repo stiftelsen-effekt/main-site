@@ -9,26 +9,32 @@ import { ImpactEvaluation } from "../../../../models";
 import { thousandize } from "../../../../util/formatting";
 import { getFormattedInterventionOutput } from "../OrganizationsList/OrganizationsList";
 
-export const OpenDistributionButton: React.FC<
-  Omit<Opendistributionbutton, "organization"> & {
-    organization: {
-      _type: "organization";
-      intervention?: {
-        abbreviation: string;
-        type: string;
-        effect: string;
-        scaling_factor?: number;
-      };
-      database_ids: {
-        cause_area_id: number;
-        organization_id: number;
-      };
-      impact_estimate: {
-        evaluation: ImpactEvaluation;
-      } | null;
+export type OpenDistributionButtonProps = Omit<Opendistributionbutton, "organization"> & {
+  organization: {
+    _type: "organization";
+    intervention?: {
+      abbreviation: string;
+      type: string;
+      effect: string;
+      scaling_factor?: number;
     };
-  }
-> = ({ text, inverted, organization, display_output_info, distribution_cause_areas }) => {
+    database_ids: {
+      cause_area_id: number;
+      organization_id: number;
+    };
+    impact_estimate: {
+      evaluation: ImpactEvaluation;
+    } | null;
+  };
+};
+
+export const OpenDistributionButton: React.FC<OpenDistributionButtonProps> = ({
+  text,
+  inverted,
+  organization,
+  display_output_info,
+  distribution_cause_areas,
+}) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const plausible = usePlausible();
 
