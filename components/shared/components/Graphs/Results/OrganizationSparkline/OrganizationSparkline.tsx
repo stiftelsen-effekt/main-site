@@ -9,6 +9,7 @@ import { thousandize } from "../../../../../../util/formatting";
 import styles from "./OrganizationSparkline.module.scss";
 import { useDebouncedCallback } from "use-debounce";
 import { TransformedMonthlyDonationsPerOutput } from "../../../ResultsOutput/ResultsOutput";
+import { useIsMobile } from "../../../../../../hooks/useIsMobile";
 
 export const OrganizationSparkline: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
@@ -18,6 +19,8 @@ export const OrganizationSparkline: React.FC<{
   const innerGraph = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [requiredWidth, setRequiredWidth] = useState<null | number>(null);
+  const [startYearIndex, setStartYearIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   const resizeGraph = useCallback(() => {
     if (innerGraph.current && graphRef.current) {
@@ -38,33 +41,81 @@ export const OrganizationSparkline: React.FC<{
     }
   }, [graphRef]);
 
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const startYear = 2016;
+
+  const allYears = useMemo(() => {
+    return Array.from(new Array(currentYear + 1 - startYear), (x, i) => ({
+      period: new Date(startYear + i, 0, 1),
+      y: 0,
+    }));
+  }, [currentYear]);
+
+  // Calculate visible years for desktop
+  const yearsPerPage = useMemo(() => {
+    if (isMobile || !size.width) return allYears.length;
+    const requiredWidthPerYear = getRemInPixels() * 3;
+    return Math.floor(size.width / requiredWidthPerYear);
+  }, [isMobile, size.width, allYears.length]);
+
+  // Set initial view to most recent years and handle resize cases
+  useEffect(() => {
+    if (startYearIndex + yearsPerPage < allYears.length) {
+      setStartYearIndex(Math.max(0, allYears.length - yearsPerPage));
+    }
+  }, [yearsPerPage, allYears.length]);
+
+  const visibleYears = useMemo(() => {
+    if (isMobile) return allYears;
+    return allYears.slice(startYearIndex, startYearIndex + yearsPerPage);
+  }, [isMobile, allYears, startYearIndex, yearsPerPage]);
+
+  const isAtStart = startYearIndex === 0;
+  const isAtEnd = startYearIndex + yearsPerPage >= allYears.length;
+
+  const handlePrevClick = useCallback(() => {
+    setStartYearIndex((prev) => Math.max(0, prev - 1));
+  }, []);
+
+  const handleNextClick = useCallback(() => {
+    setStartYearIndex((prev) => Math.min(prev + 1, allYears.length - yearsPerPage));
+  }, [allYears.length, yearsPerPage]);
+
   const drawGraph = useCallback(
     (data: TransformedMonthlyDonationsPerOutput) => {
       if (graphRef.current && innerGraph.current) {
-        const currentYear = new Date().getFullYear();
-        const years = Array.from(new Array(currentYear + 1 - 2016), (x, i) => ({
-          period: new Date(2016 + i, 0, 1),
-          y: 0,
-        }));
+        // Create thresholds based on visible years
+        const years = isMobile ? allYears : visibleYears;
+        const thresholds = [...years.map((y) => y.period)];
 
-        const thresholds = [...years.map((y) => y.period), new Date(currentYear + 1, 0, 1)];
+        // Always add the next year for the last threshold
+        if (years.length > 0) {
+          const lastYear = years[years.length - 1].period.getFullYear();
+          thresholds.push(new Date(lastYear + 1, 0, 1));
+        }
 
         const requiredWidthPerYear = getRemInPixels() * 3;
-
         const requiredWidth = years.length * requiredWidthPerYear;
-        if (requiredWidth > size.width) {
+
+        if (isMobile && requiredWidth > size.width) {
           setRequiredWidth(requiredWidth);
         } else {
           setRequiredWidth(null);
         }
 
+        // Filter data to only include data for visible years
+        const filteredData = !isMobile
+          ? data.filter((d) => {
+              const year = new Date(d.period).getFullYear();
+              return (
+                year >= years[0].period.getFullYear() &&
+                year <= years[years.length - 1].period.getFullYear()
+              );
+            })
+          : data;
+
         let plotConfig: Plot.PlotOptions = {
-          width:
-            size.width < 1180
-              ? requiredWidth > size.width
-                ? requiredWidth
-                : size.width
-              : size.width,
+          width: !isMobile ? size.width : requiredWidth > size.width ? requiredWidth : size.width,
           height: size.height,
           color: {
             domain: ["direct", "smartDistribution"],
@@ -90,10 +141,9 @@ export const OrganizationSparkline: React.FC<{
             nice: true,
           },
           x: {
-            domain: [
-              new Date(years[0].period.getFullYear(), 0, 1),
-              new Date(currentYear + 1, 0, 1),
-            ],
+            domain: !isMobile
+              ? [years[0].period, thresholds[thresholds.length - 1]]
+              : [new Date(allYears[0].period.getFullYear(), 0, 1), new Date(currentYear + 1, 0, 1)],
             ticks: [],
             label: null,
           },
@@ -106,7 +156,7 @@ export const OrganizationSparkline: React.FC<{
           marks: [
             Plot.ruleY([0]),
             Plot.rectY(
-              data,
+              filteredData,
               Plot.binX(
                 { y: "sum" },
                 {
@@ -121,7 +171,7 @@ export const OrganizationSparkline: React.FC<{
               ) as any,
             ),
             Plot.text(
-              data,
+              filteredData,
               Plot.binX({ y: "sum" }, {
                 x: "period",
                 y: "sum",
@@ -136,7 +186,7 @@ export const OrganizationSparkline: React.FC<{
             ),
             // Full unrounded when hovering using Plot.pointerX
             Plot.text(
-              data,
+              filteredData,
               Plot.pointerX(
                 Plot.binX({ y: "sum" }, {
                   x: "period",
@@ -206,7 +256,18 @@ export const OrganizationSparkline: React.FC<{
         innerGraph.current.appendChild(plot);
       }
     },
-    [graphRef, innerGraph, size, maxY],
+    [
+      graphRef,
+      innerGraph,
+      size,
+      maxY,
+      visibleYears,
+      allYears,
+      isMobile,
+      currentYear,
+      startYearIndex,
+      yearsPerPage,
+    ],
   );
 
   useEffect(() => {
@@ -214,13 +275,33 @@ export const OrganizationSparkline: React.FC<{
   }, [transformedMonthlyDonationsPerOutput, drawGraph]);
 
   useEffect(() => {
-    if (graphRef.current) {
+    if (isMobile && graphRef.current && requiredWidth) {
       graphRef.current.scrollTo({ left: Number.MAX_SAFE_INTEGER });
     }
-  }, [graphRef, requiredWidth]);
+  }, [graphRef, requiredWidth, isMobile]);
 
   return (
     <div className={styles.graphWrapper}>
+      {!isMobile && (
+        <div className={styles.yearNavigation}>
+          <button
+            onClick={handlePrevClick}
+            className={styles.navButton}
+            style={{ opacity: isAtStart ? 0.3 : 0.7 }}
+            disabled={isAtStart}
+          >
+            ←
+          </button>
+          <button
+            onClick={handleNextClick}
+            className={styles.navButton}
+            style={{ opacity: isAtEnd ? 0.3 : 0.7 }}
+            disabled={isAtEnd}
+          >
+            →
+          </button>
+        </div>
+      )}
       <div ref={graphRef} className={styles.graph}>
         <div
           ref={innerGraph}
@@ -228,7 +309,7 @@ export const OrganizationSparkline: React.FC<{
           style={{ width: requiredWidth ?? undefined }}
         ></div>
       </div>
-      {requiredWidth && (
+      {isMobile && requiredWidth && (
         <div className={styles.swipeHint}>
           <span>←</span> <i>Sveip for å se hele grafen</i>
         </div>
