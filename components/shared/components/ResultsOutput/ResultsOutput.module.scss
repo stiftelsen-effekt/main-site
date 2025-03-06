@@ -80,8 +80,10 @@
       display: grid;
       grid-template-columns: 2fr 3fr;
       width: 100%;
-      padding-top: 3rem;
-      padding-bottom: 3rem;
+      padding: 1rem 0;
+      padding-left: 1rem;
+      margin: 2rem 0;
+      border-left: 0.175rem solid var(--primary);
 
       .overview {
         display: flex;
@@ -167,6 +169,11 @@
         padding-top: 2rem;
         padding-bottom: 4rem;
         row-gap: 2rem;
+
+        padding-left: 0;
+        border-left: none;
+
+        margin: 0;
 
         .overview {
           gap: 0.3rem;
