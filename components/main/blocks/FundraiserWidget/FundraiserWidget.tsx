@@ -9,6 +9,7 @@ import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/Effekt
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
 import { PaymentMethod } from "../../../shared/components/Widget/types/Enums";
 import Link from "next/link";
+import { API_URL } from "../../../shared/components/Widget/config/api";
 
 // Types for the component props
 interface TextsProps {
@@ -53,13 +54,18 @@ interface FormData {
 
 interface DonationWidgetProps {
   texts?: Partial<TextsProps>;
-  onComplete?: (formData: FormData) => void;
+  fundraiserId: number;
   organizationInfo: {
     name: string;
     logo: SanityImageObject;
     textTemplate: string;
     organizationSlug: string;
+    databaseIds: {
+      causeAreaId: number;
+      organizationId: number;
+    };
   };
+  onComplete?: (formData: FormData) => void;
 }
 
 interface TransitionState {
@@ -71,6 +77,7 @@ interface TransitionState {
 
 const DonationWidget: React.FC<DonationWidgetProps> = ({
   texts = {},
+  fundraiserId,
   organizationInfo,
   onComplete = () => {},
 }) => {
@@ -107,6 +114,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
   const mergedTexts = { ...defaultTexts, ...texts };
 
   const [step, setStep] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [kid, setKid] = useState<string | null>(null);
+  const [paymentProviderUrl, setPaymentProviderUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     amount: "",
     name: "",
@@ -214,20 +224,55 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     );
   };
 
-  const handleSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-
-    if (formData.paymentMethod === "vipps") {
-      // For Vipps, complete immediately
-      onComplete(formData);
-    } else {
-      // For bank, show the final pane
-      goToNextStep();
-    }
-  };
-
-  const handleTransferConfirmation = (): void => {
-    onComplete(formData);
+  const registerDonation = () => {
+    fetch(`${API_URL}/donations/register`, {
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+      },
+      // body: "{\"distributionCauseAreas\":[{\"id\":1,\"name\":\"Global helse\",\"percentageShare\":\"50\",\"standardSplit\":true,\"organizations\":[{\"id\":3,\"percentageShare\":\"0\"},{\"id\":5,\"percentageShare\":\"0\"},{\"id\":6,\"percentageShare\":\"0\"},{\"id\":8,\"percentageShare\":\"0\"},{\"id\":9,\"percentageShare\":\"0\"},{\"id\":12,\"percentageShare\":\"100\"},{\"id\":1,\"percentageShare\":\"0\"},{\"id\":10,\"percentageShare\":\"0\"},{\"id\":4,\"percentageShare\":\"0\"},{\"id\":2,\"percentageShare\":\"0\"},{\"id\":7,\"percentageShare\":\"0\"},{\"id\":13,\"percentageShare\":\"0\"},{\"id\":14,\"percentageShare\":\"0\"},{\"id\":16,\"percentageShare\":\"0\"},{\"id\":11,\"percentageShare\":\"0\"},{\"id\":15,\"percentageShare\":\"0\"}]},{\"id\":2,\"name\":\"Animal welfare\",\"percentageShare\":\"50\",\"standardSplit\":false,\"organizations\":[{\"id\":19,\"percentageShare\":\"50\"},{\"id\":17,\"percentageShare\":\"0\"},{\"id\":18,\"percentageShare\":\"50\"}]}],\"donor\":{\"name\":\"Håkon Harnes\",\"email\":\"account@harnes.me\",\"taxDeduction\":true,\"ssn\":\"22069644345\",\"newsletter\":true},\"method\":2,\"amount\":10,\"recurring\":0}",
+      body: JSON.stringify({
+        distributionCauseAreas: [
+          {
+            id: organizationInfo.databaseIds.causeAreaId,
+            percentageShare: "100",
+            standardSplit: false,
+            organizations: [
+              {
+                id: organizationInfo.databaseIds.organizationId,
+                percentageShare: "100",
+              },
+            ],
+          },
+        ],
+        donor: {
+          name: formData.name,
+          email: formData.email,
+          taxDeduction: formData.taxDeduction,
+          ssn: formData.ssn,
+          newsletter: formData.newsletter,
+        },
+        fundraiser: {
+          id: fundraiserId,
+          message: formData.message,
+          showName: formData.showName,
+        },
+        method: formData.paymentMethod === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS,
+        amount: formData.amount,
+        recurring: 0,
+      }),
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setKid(data.content.KID);
+        if (data.content.paymentProviderUrl && data.content.paymentProviderUrl.length > 0) {
+          setPaymentProviderUrl(data.content.paymentProviderUrl);
+        }
+        setLoading(false);
+        goToNextStep();
+      });
   };
 
   // Determine current height based on active pane
@@ -356,7 +401,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             className={styles["donation-widget__form"]}
             onSubmit={(e) => {
               e.preventDefault();
-              goToNextStep();
+              registerDonation();
             }}
           >
             <div className={styles["donation-widget__checkbox-group"]}>
@@ -440,7 +485,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             </div>
 
             <button type="submit" className={styles["donation-widget__button"]}>
-              {formData.paymentMethod === "bank"
+              {loading
+                ? "Laster..."
+                : formData.paymentMethod === "bank"
                 ? mergedTexts.bankButtonText
                 : mergedTexts.payWithVippsLabel}
             </button>
@@ -461,7 +508,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                 <strong>{mergedTexts.accountNumberPrefix}</strong> {mergedTexts.accountNumber}
               </p>
               <p>
-                <strong>{mergedTexts.kidPrefix}</strong> {mergedTexts.kidNumber}
+                <strong>{mergedTexts.kidPrefix}</strong> {kid}
               </p>
             </div>
 
@@ -470,7 +517,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
 
             <button
               className={styles["donation-widget__button"]}
-              onClick={handleTransferConfirmation}
+              onClick={() => onComplete(formData)}
             >
               {mergedTexts.transferCompletedText}
             </button>

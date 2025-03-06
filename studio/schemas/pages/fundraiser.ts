@@ -1,3 +1,4 @@
+import { FundraiserInput } from "../../components/fundraiserInput";
 import { GenericPagePreview } from "../../components/genericPagePreview";
 
 export default {
@@ -110,7 +111,10 @@ export default {
     {
       name: "fundraiser_database_id",
       title: "Fundraiser database ID",
-      type: "string",
+      type: "number",
+      components: {
+        input: FundraiserInput,
+      },
     },
     {
       name: "slug",

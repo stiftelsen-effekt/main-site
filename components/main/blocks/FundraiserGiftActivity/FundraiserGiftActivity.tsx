@@ -11,8 +11,8 @@ export const FundraiserGiftActivity: React.FC<{
   };
   donations: {
     amount: number;
-    name: string;
-    message: string;
+    name: string | null;
+    message: string | null;
   }[];
 }> = ({ donations, config }) => {
   const [currentlyShowing, setCurrentlyShowing] = useState(5);
@@ -32,7 +32,16 @@ export const FundraiserGiftActivity: React.FC<{
     acc[index] = acc[index] || [];
     acc[index].push(donation);
     return acc;
-  }, [] as { amount: number; name: string; message: string }[][]);
+  }, [] as { amount: number; name: string | null; message: string | null }[][]);
+
+  const getHeaderText = (name: string | null, amount: number) => {
+    if (name) {
+      return config.gift_amount_text_template
+        .replace("{name}", name)
+        .replace("{sum}", thousandize(amount));
+    }
+    return `En anonym donator har skänkt ${thousandize(amount)}`;
+  };
 
   return (
     <div className={style.container}>
@@ -41,12 +50,8 @@ export const FundraiserGiftActivity: React.FC<{
         <AnimateHeight key={i} duration={300} height={i < currentlyShowing / 5 ? "auto" : 0}>
           {donationGroup.map((donation, j) => (
             <div key={j} className={style.donation}>
-              <span className={style.amount}>
-                {config.gift_amount_text_template
-                  .replace("{name}", donation.name)
-                  .replace("{sum}", thousandize(donation.amount))}
-              </span>
-              <span className={style.message}>{donation.message}</span>
+              <span className={style.amount}>{getHeaderText(donation.name, donation.amount)}</span>
+              {donation.message && <span className={style.message}>{donation.message}</span>}
             </div>
           ))}
         </AnimateHeight>

@@ -21,6 +21,7 @@ import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
 import FundraiserWidget from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
+import { API_URL } from "../components/shared/components/Widget/config/api";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -64,92 +65,6 @@ export const FundraiserPage = withStaticProps(
       showGiveButton: false,
     });
 
-    /** Will fetch data from API later */
-    let fakeDonations = [
-      {
-        amount: 500,
-        name: "John Doe",
-        message: "Preventing blindness one vitamin at a time. Keep it up!",
-      },
-      {
-        amount: 1200,
-        name: "Jane Doe",
-        message: "My cousin's vision was saved by programs like this. Forever grateful.",
-      },
-      {
-        amount: 300,
-        name: "John Smith",
-        message: "Helen Keller would be proud! Fighting blindness worldwide.",
-      },
-      {
-        amount: 700,
-        name: "Jane Smith",
-        message: "In memory of my uncle who lost his sight to vitamin A deficiency.",
-      },
-      {
-        amount: 2500,
-        name: "John Johnson",
-        message: "Sight is a gift everyone deserves. Proud to support this vital program.",
-      },
-      {
-        amount: 100,
-        name: "Jane Johnson",
-        message: "Small donation for a huge impact! Every child deserves to see.",
-      },
-      {
-        amount: 900,
-        name: "John Jackson",
-        message: "Vitamin A saved my nephew's vision. Paying it forward!",
-      },
-      {
-        amount: 1500,
-        name: "Jane Jackson",
-        message: "Clear vision for all children! That's a future worth investing in.",
-      },
-      {
-        amount: 400,
-        name: "John Brown",
-        message: "First time donor after learning how simple vitamin A can prevent blindness.",
-      },
-      {
-        amount: 3000,
-        name: "Jane Brown",
-        message: "My company matches vitamin donations. Double the supplements, double the sight!",
-      },
-      {
-        amount: 800,
-        name: "Miguel Rodriguez",
-        message: "Saw your work in my village back home. Those kids can see because of you!",
-      },
-      {
-        amount: 1000,
-        name: "Sarah Chen",
-        message: "As an ophthalmologist, I know how crucial this program is. Keep going!",
-      },
-      {
-        amount: 200,
-        name: "Ahmed Hassan",
-        message: "A few dollars here = clear vision there. Simple math, amazing results.",
-      },
-      {
-        amount: 1700,
-        name: "Lisa Patel",
-        message: "Donating my birthday money to help kids see their birthdays clearly too!",
-      },
-      {
-        amount: 600,
-        name: "James Williams",
-        message: "Planning to volunteer for a vitamin A distribution trip next month!",
-      },
-    ];
-    // Duplicate the array 20 times
-    fakeDonations = Array(30).fill(fakeDonations).flat();
-
-    const fakeFundraiserDataResponse = {
-      currentAmount: fakeDonations.reduce((acc, donation) => acc + donation.amount, 0),
-      donations: fakeDonations,
-    };
-
     let result = await getClient(draftMode ? token : undefined).fetch<{
       page: any;
       settings: {
@@ -160,6 +75,21 @@ export const FundraiserPage = withStaticProps(
         accent_color?: string;
       }[];
     }>(fetchFundraiser, { slug });
+
+    const fundraiserId = result.page.fundraiser_database_id;
+
+    const fundraiserData: {
+      totalSum: number;
+      donationCount: number;
+      transactions: {
+        name: string | null;
+        message: string | null;
+        amount: number;
+        date: string;
+      }[];
+    } = await fetch(`${API_URL}/fundraisers/${fundraiserId}`)
+      .then((res) => res.json())
+      .then((data) => data.content);
 
     return {
       appStaticProps,
@@ -172,7 +102,7 @@ export const FundraiserPage = withStaticProps(
         query: fetchFundraiser,
         queryParams: { slug },
       },
-      fundraiserData: fakeFundraiserDataResponse,
+      fundraiserData,
     } satisfies GeneralPageProps;
   },
 )(({ data, fundraiserData, navbar, draftMode }) => {
@@ -224,20 +154,25 @@ export const FundraiserPage = withStaticProps(
         <div className={styles.fundraiserdata}>
           <FundraiserProgressBar
             config={page.fundraiser_goal_config}
-            currentAmount={fundraiserData.currentAmount}
+            currentAmount={fundraiserData.totalSum}
           ></FundraiserProgressBar>
 
           <FundraiserWidget
+            fundraiserId={page.fundraiser_database_id}
             organizationInfo={{
               name: page.fundraiser_organization.name,
               logo: page.fundraiser_organization.logo,
               textTemplate: page.fundraiser_organization_text_template,
               organizationSlug: page.fundraiser_organization.organization_page.slug.current,
+              databaseIds: {
+                causeAreaId: 1,
+                organizationId: 1,
+              },
             }}
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
-            donations={fundraiserData.donations}
+            donations={fundraiserData.transactions}
             config={page.gift_activity_config}
           ></FundraiserGiftActivity>
         </div>
