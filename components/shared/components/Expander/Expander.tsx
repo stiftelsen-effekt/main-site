@@ -22,7 +22,13 @@ export const Expander: React.FC<ExpanderProps> = ({ title, linksTitle, content, 
       }`}
     >
       <label className={elements.expanderHeader}>
-        <button className="sr-only" onClick={() => setExpanded(!expanded)}></button>
+        <button
+          className="sr-only"
+          onClick={(e) => {
+            e.currentTarget.blur();
+            setExpanded(!expanded);
+          }}
+        ></button>
         <p className="inngress">{title}</p>
         {expanded ? <Minus size={28} /> : <Plus size={28} />}
       </label>
