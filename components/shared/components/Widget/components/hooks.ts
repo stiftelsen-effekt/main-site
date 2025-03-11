@@ -63,8 +63,6 @@ export const usePrefilledDistribution = ({
       return;
     }
 
-    console.log("Applying prefill");
-
     causeAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
         (prefilledArea) => prefilledArea.causeAreaId === causeArea.id,
@@ -137,14 +135,12 @@ export const useQueryParamsPrefill = ({
         prefilledSum: null,
       });
       hasAppliedQueryParams.current = true;
-      console.log("Applying query params");
     }
 
     if (recurring) {
       dispatch(setRecurring(RecurringDonation.RECURRING));
       setWidgetContext({ ...widgetContext, open: true });
       hasAppliedQueryParams.current = true;
-      console.log("Applying query params");
     }
   }, [inline, router.query, causeAreas, dispatch, setWidgetContext, widgetContext]);
 

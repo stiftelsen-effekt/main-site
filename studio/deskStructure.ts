@@ -176,6 +176,10 @@ export const deskStructure = (S) =>
             ]),
         ),
       S.listItem()
+        .title("Organizations")
+        .icon(Briefcase)
+        .child(S.documentTypeList("organization").title("Organizations")),
+      S.listItem()
         .title("Categories")
         .icon(Filter)
         .child(S.documentTypeList("category").title("Page and article categories")),
