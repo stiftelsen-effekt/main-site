@@ -230,7 +230,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
         accept: "application/json",
         "content-type": "application/json",
       },
-      // body: "{\"distributionCauseAreas\":[{\"id\":1,\"name\":\"Global helse\",\"percentageShare\":\"50\",\"standardSplit\":true,\"organizations\":[{\"id\":3,\"percentageShare\":\"0\"},{\"id\":5,\"percentageShare\":\"0\"},{\"id\":6,\"percentageShare\":\"0\"},{\"id\":8,\"percentageShare\":\"0\"},{\"id\":9,\"percentageShare\":\"0\"},{\"id\":12,\"percentageShare\":\"100\"},{\"id\":1,\"percentageShare\":\"0\"},{\"id\":10,\"percentageShare\":\"0\"},{\"id\":4,\"percentageShare\":\"0\"},{\"id\":2,\"percentageShare\":\"0\"},{\"id\":7,\"percentageShare\":\"0\"},{\"id\":13,\"percentageShare\":\"0\"},{\"id\":14,\"percentageShare\":\"0\"},{\"id\":16,\"percentageShare\":\"0\"},{\"id\":11,\"percentageShare\":\"0\"},{\"id\":15,\"percentageShare\":\"0\"}]},{\"id\":2,\"name\":\"Animal welfare\",\"percentageShare\":\"50\",\"standardSplit\":false,\"organizations\":[{\"id\":19,\"percentageShare\":\"50\"},{\"id\":17,\"percentageShare\":\"0\"},{\"id\":18,\"percentageShare\":\"50\"}]}],\"donor\":{\"name\":\"Håkon Harnes\",\"email\":\"account@harnes.me\",\"taxDeduction\":true,\"ssn\":\"22069644345\",\"newsletter\":true},\"method\":2,\"amount\":10,\"recurring\":0}",
       body: JSON.stringify({
         distributionCauseAreas: [
           {
@@ -500,28 +499,44 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
           className={getPaneClassName(3)}
           style={{ display: isPaneVisible(3) ? "block" : "none" }}
         >
-          <div className={styles["donation-widget__form"]}>
-            <p>{parseTemplate(mergedTexts.bankTransferInfo)}</p>
+          {formData.paymentMethod === "bank" && (
+            <div className={styles["donation-widget__form"]}>
+              <p>{parseTemplate(mergedTexts.bankTransferInfo)}</p>
 
-            <div className={styles["donation-widget__account-info"]}>
-              <p>
-                <strong>{mergedTexts.accountNumberPrefix}</strong> {mergedTexts.accountNumber}
-              </p>
-              <p>
-                <strong>{mergedTexts.kidPrefix}</strong> {kid}
-              </p>
+              <div className={styles["donation-widget__account-info"]}>
+                <p>
+                  <strong>{mergedTexts.accountNumberPrefix}</strong> {mergedTexts.accountNumber}
+                </p>
+                <p>
+                  <strong>{mergedTexts.kidPrefix}</strong> {kid}
+                </p>
+              </div>
+
+              <p>{parseTemplate(mergedTexts.transferDelayText)}</p>
+              <p>{parseTemplate(mergedTexts.accountOwnerText)}</p>
+
+              <button
+                className={styles["donation-widget__button"]}
+                onClick={() => onComplete(formData)}
+              >
+                {mergedTexts.transferCompletedText}
+              </button>
             </div>
-
-            <p>{parseTemplate(mergedTexts.transferDelayText)}</p>
-            <p>{parseTemplate(mergedTexts.accountOwnerText)}</p>
-
-            <button
-              className={styles["donation-widget__button"]}
-              onClick={() => onComplete(formData)}
-            >
-              {mergedTexts.transferCompletedText}
-            </button>
-          </div>
+          )}
+          {formData.paymentMethod === "vipps" && (
+            <div className={styles["donation-widget__form"]}>
+              <button
+                className={styles["donation-widget__button"]}
+                onClick={() =>
+                  paymentProviderUrl
+                    ? window.open(paymentProviderUrl, "_self")
+                    : alert("No payment provider url")
+                }
+              >
+                Betal med Vipps
+              </button>
+            </div>
+          )}
         </div>
       </ReactAnimateHeight>
     </div>
