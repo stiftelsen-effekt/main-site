@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader("Expires", "0");
 
     res.redirect(
-      301,
+      307,
       `/${fundraiserPath}/${slug}${req.query.plausible ? `?plausible=${req.query.plausible}` : ""}`,
     );
   } catch (err) {
