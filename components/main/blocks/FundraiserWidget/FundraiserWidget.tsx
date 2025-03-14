@@ -407,60 +407,62 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
               <EffektCheckbox
                 checked={formData.anonymous}
                 onChange={(checked) => {
-                  setFormData({ ...formData, anonymous: checked });
+                  setFormData({ ...formData, anonymous: checked, email: "", ssn: "" });
                 }}
               >
                 {mergedTexts.anonymousDonationLabel}
               </EffektCheckbox>
             </div>
 
-            <div className={styles["donation-widget__input-group"]}>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required={formData.taxDeduction || formData.newsletter}
-                placeholder={mergedTexts.emailLabel}
-              />
-            </div>
-
-            <div className={styles["donation-widget__checkbox-group"]}>
-              <EffektCheckbox
-                checked={formData.taxDeduction}
-                onChange={(checked) => {
-                  setFormData({ ...formData, taxDeduction: checked });
-                }}
-              >
-                {mergedTexts.taxDeductionLabel}
-              </EffektCheckbox>
-            </div>
-
-            <AnimateHeight duration={100} height={formData.taxDeduction ? "auto" : 0}>
+            <AnimateHeight duration={200} height={formData.anonymous ? 0 : "auto"}>
               <div className={styles["donation-widget__input-group"]}>
                 <input
-                  id="ssn"
-                  name="ssn"
-                  type="ssn"
-                  value={formData.ssn}
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
                   onChange={handleInputChange}
-                  required={formData.taxDeduction || formData.newsletter}
-                  placeholder={mergedTexts.ssnLabel}
+                  required={!formData.anonymous}
+                  placeholder={mergedTexts.emailLabel}
                 />
               </div>
-            </AnimateHeight>
 
-            <div className={styles["donation-widget__checkbox-group"]}>
-              <EffektCheckbox
-                checked={formData.newsletter}
-                onChange={(checked) => {
-                  setFormData({ ...formData, newsletter: checked });
-                }}
-              >
-                {mergedTexts.newsletterLabel}
-              </EffektCheckbox>
-            </div>
+              <div className={styles["donation-widget__checkbox-group"]}>
+                <EffektCheckbox
+                  checked={formData.taxDeduction}
+                  onChange={(checked) => {
+                    setFormData({ ...formData, taxDeduction: checked });
+                  }}
+                >
+                  {mergedTexts.taxDeductionLabel}
+                </EffektCheckbox>
+              </div>
+
+              <AnimateHeight duration={100} height={formData.taxDeduction ? "auto" : 0}>
+                <div className={styles["donation-widget__input-group"]}>
+                  <input
+                    id="ssn"
+                    name="ssn"
+                    type="ssn"
+                    value={formData.ssn}
+                    onChange={handleInputChange}
+                    required={formData.taxDeduction}
+                    placeholder={mergedTexts.ssnLabel}
+                  />
+                </div>
+              </AnimateHeight>
+
+              <div className={styles["donation-widget__checkbox-group"]}>
+                <EffektCheckbox
+                  checked={formData.newsletter}
+                  onChange={(checked) => {
+                    setFormData({ ...formData, newsletter: checked });
+                  }}
+                >
+                  {mergedTexts.newsletterLabel}
+                </EffektCheckbox>
+              </div>
+            </AnimateHeight>
 
             <div className={styles["donation-widget__privacy-link"]}>
               <Link href={mergedTexts.privacyPolicyUrl}>{mergedTexts.privacyPolicyText} ↗</Link>
