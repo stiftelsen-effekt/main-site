@@ -45,7 +45,7 @@ export const CookieBanner: React.FC<{
 
   const setConsent = (state: ConsentState) => {
     setCookie("gieffektivt-cookies-accepted", state === "accepted" ? "true" : "false", {
-      sameSite: "strict",
+      sameSite: "lax",
       expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
     });
     setBannerContext((prev) => ({ ...prev, consentState: state }));
