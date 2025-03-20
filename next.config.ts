@@ -1,10 +1,6 @@
 import { NextConfig } from "next";
-
-const { withPlausibleProxy } = require("next-plausible");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-const { defaultConfig } = require("next/dist/server/config-shared");
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import { withPlausibleProxy } from "next-plausible";
 
 const STUDIO_REWRITE = {
   source: "/studio/:path*",
@@ -28,6 +24,13 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
+  experimental: {
+    optimizePackageImports: ["react-feather"],
+    turbo: {},
+  },
+  compiler: {
+    styledComponents: true,
+  },
   headers: async () => {
     return [
       {
@@ -498,5 +501,7 @@ const nextConfig: NextConfig = {
 };
 
 module.exports = (phase: any, defaultConfig: NextConfig) => {
-  return withBundleAnalyzer(withPlausibleProxy()(nextConfig));
+  return withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+  })(withPlausibleProxy()(nextConfig));
 };
