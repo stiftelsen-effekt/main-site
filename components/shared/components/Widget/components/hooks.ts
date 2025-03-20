@@ -12,11 +12,12 @@ import { RecurringDonation } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { CauseArea } from "../types/CauseArea";
-import { DistributionCauseArea } from "../types/DistributionCauseArea";
 import { WidgetProps } from "../types/WidgetProps";
 import { paymentMethodConfigurations } from "../config/methods";
 import { useDebouncedCallback } from "use-debounce";
 import { State } from "../store/state";
+import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../store/donation/types";
 
 interface UsePrefilledDistributionProps {
   inline: boolean;
@@ -32,7 +33,7 @@ export const usePrefilledDistribution = ({
   causeAreas,
   prefilledDistribution,
 }: UsePrefilledDistributionProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const [widgetContext] = useContext(WidgetContext);
   // Add a ref to track if we've already applied the prefilled distribution
   const hasAppliedPrefill = useRef(false);
@@ -91,7 +92,7 @@ export const usePrefilledDistribution = ({
  * Hook to handle prefilled sum for the widget
  */
 export const usePrefilledSum = ({ inline }: { inline: boolean }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 
   useEffect(() => {
@@ -114,7 +115,7 @@ export const useQueryParamsPrefill = ({
   defaultPaymentType: RecurringDonation;
 }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const hasAppliedQueryParams = useRef(false);
 
@@ -264,7 +265,7 @@ export const useAvailablePaymentMethods = (paymentMethods: NonNullable<WidgetPro
 export const useDefaultPaymentMethodEffect = (
   paymentMethods: NonNullable<WidgetProps["methods"]>,
 ) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const recurring = useSelector((state: State) => state.donation.recurring);
 
   const availableRecurringOptions = useAvailableRecurringOptions(paymentMethods);
@@ -280,7 +281,7 @@ export const useDefaultPaymentMethodEffect = (
  * Scale the widget to fit the screen
  */
 export const useWidgetScaleEffect = (
-  widgetRef: React.RefObject<HTMLDivElement>,
+  widgetRef: React.RefObject<HTMLDivElement | null>,
   inline: boolean,
 ) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);

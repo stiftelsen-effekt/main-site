@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import style from "./Lists.module.scss";
 
-export type GenericListContextMenuOptions = { label: string; icon?: JSX.Element }[];
+export type GenericListContextMenuOptions = { label: string; icon?: ReactNode }[];
 export type GenericListContextMenuSelect<T> = (option: string, element: T) => void;
 
 type Props<T> = {

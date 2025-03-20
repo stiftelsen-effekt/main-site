@@ -19,6 +19,8 @@ import { Organization } from "../../../../types/Organization";
 import { DistributionCauseArea } from "../../../../types/DistributionCauseArea";
 import { DistributionCauseAreaOrganization } from "../../../../types/DistributionCauseAreaOrganization";
 import { WidgetContext } from "../../../../../../../main/layout/layout";
+import { DonationActionTypes } from "../../../../store/donation/types";
+import { Dispatch } from "@reduxjs/toolkit";
 
 export const SharesSelection: React.FC<{
   causeArea: CauseArea;
@@ -162,7 +164,7 @@ const ShareInput: React.FC<{
   distributionCauseArea: DistributionCauseArea;
   distributionCauseAreaOrganizations: DistributionCauseAreaOrganization;
 }> = ({ organization, distributionCauseArea, distributionCauseAreaOrganizations }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
 
   return (
     <ShareInputContainer>

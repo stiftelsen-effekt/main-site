@@ -29,6 +29,9 @@ import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import { ExtraMessageWrapper } from "../DonationPane/DonationPane.style";
 import { Info } from "react-feather";
 import AnimateHeight from "react-animate-height";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../store/donation/types";
+import { Action } from "typescript-fsa";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -40,7 +43,7 @@ export const DonorPane: React.FC<{
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);

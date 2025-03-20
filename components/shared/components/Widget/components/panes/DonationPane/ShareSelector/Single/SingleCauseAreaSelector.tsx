@@ -10,12 +10,14 @@ import { PortableText } from "@portabletext/react";
 import { SharesSelectorContainer } from "./SingleCauseAreaSelector.style";
 import { ErrorText } from "../../DonationPane";
 import { filterErrorTextsForCauseArea } from "../../_util";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../../../store/donation/types";
 
 export const SingleCauseAreaSelector: React.FC<{
   configuration: SmartDistributionContext;
   errorTexts: ErrorText[];
 }> = ({ configuration, errorTexts }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const donation = useSelector((state: State) => state.donation);
 

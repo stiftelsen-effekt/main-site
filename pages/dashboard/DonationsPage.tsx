@@ -6,7 +6,7 @@ import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/Error
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
 import { getClient } from "../../lib/sanity.client";
-import { useContext, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
   useAggregatedDonations,
@@ -297,7 +297,7 @@ export const DonationsPage = withStaticProps(
     ? page.mobile_donations_table_configuration
     : page.desktop_donations_table_configuration;
 
-  let donationList: JSX.Element | JSX.Element[];
+  let donationList: ReactNode | ReactNode[];
   if (!tableConfiguration) {
     donationList = (
       <ErrorMessage>
