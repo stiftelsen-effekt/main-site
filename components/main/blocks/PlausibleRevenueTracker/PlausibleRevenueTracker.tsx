@@ -23,6 +23,10 @@ export const PlausibleRevenueTracker: React.FC<{
   let currency = "NOK";
   if (locale === "sv") {
     currency = "SEK";
+  } else if (locale === "dk") {
+    currency = "DKK";
+  } else if (locale === "et") {
+    currency = "EUR";
   }
 
   useEffect(() => {

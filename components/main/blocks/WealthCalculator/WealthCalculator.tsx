@@ -20,6 +20,7 @@ import { WealthCalculatorSlider, WealthCalculatorSliderConfig } from "./WealthCa
 import { WealthCalculatorImpact } from "./WealthCalculatorImpact";
 import {
   AdjustedPPPFactorResult,
+  getDanishAdjustedPPPconversionFactor,
   getNorwegianAdjustedPPPconversionFactor,
   getSwedishAdjustedPPPconversionFactor,
 } from "./_queries";
@@ -89,6 +90,10 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       getSwedishAdjustedPPPconversionFactor().then((res) => {
         setPppConversion(res);
       });
+    } else if (locale === "dk") {
+      getDanishAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
     } else {
       console.error("Unsupported locale", locale);
     }
@@ -104,6 +109,8 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       taxJurisdiction = TaxJurisdiction.NO;
     } else if (locale === "sv") {
       taxJurisdiction = TaxJurisdiction.SV;
+    } else if (locale === "dk") {
+      taxJurisdiction = TaxJurisdiction.DK;
     } else {
       console.error("Unsupported locale", locale);
       return;

@@ -91,6 +91,7 @@ export default {
           { title: "Norwegian", value: "no" },
           { title: "Swedish", value: "sv" },
           { title: "Estonian", value: "et" },
+          { title: "Danish", value: "dk" },
         ],
       },
     },
