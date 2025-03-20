@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["react-feather"],
     turbo: {},
+    inlineCss: true,
   },
   compiler: {
     styledComponents: true,
