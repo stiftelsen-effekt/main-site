@@ -39,8 +39,11 @@ export default defineConfig({
 
         const [result] = await client.fetch(query, params);
 
+        // Remove any leading slashes from the slug
+        const trimmedSlug = slug.replace(/^\/+/, "");
+
         if (result) {
-          return `${siteUrl}/studio/presentation?preview=/${slug}`;
+          return `${siteUrl}/studio/presentation?preview=/${trimmedSlug}`;
         }
       } else if (document._type === "article_page") {
         const slug = (document as Article_page).slug?.current || "";
@@ -49,6 +52,8 @@ export default defineConfig({
 
         const [result] = await client.fetch(query, params);
 
+        const trimmedSlug = slug.replace(/^\/+/, "");
+
         // Get article subslug from the document with id articles
         const articlesOverviewPage = `*[_id == "articles"]`;
 
@@ -56,7 +61,7 @@ export default defineConfig({
         const articlesSlug = (articlesOverview as Articles).slug.current;
 
         if (result && articlesSlug) {
-          return `${siteUrl}/studio/presentation?preview=/${articlesSlug}/${slug}`;
+          return `${siteUrl}/studio/presentation?preview=/${articlesSlug}/${trimmedSlug}`;
         }
       }
     },
