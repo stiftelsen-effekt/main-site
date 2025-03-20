@@ -227,7 +227,7 @@ export const useAgreementFeedbackTypes = () => {
       name: string;
       isOther: boolean;
     }[]
-  >(`/agreementfeedback/types`, (url) => fetcher(url));
+  >(`/agreementfeedback/types`, (url: string) => fetcher(url));
   const loading = !data && !error;
 
   return {
@@ -254,7 +254,7 @@ export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
 };
 
 export const useCauseAreas = (fetchToken: getAccessTokenSilently) => {
-  const { data, error, isValidating } = useSWR<CauseArea[]>(`/causeareas/all/`, (url) =>
+  const { data, error, isValidating } = useSWR<CauseArea[]>(`/causeareas/all/`, (url: string) =>
     fetcher(url, fetchToken),
   );
 
@@ -301,7 +301,7 @@ export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilen
 export const useTaxUnits = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR<TaxUnit[]>(
     user ? `/donors/${getUserId(user)}/taxunits/` : null,
-    (url) => fetcher(url, fetchToken),
+    (url: string) => fetcher(url, fetchToken),
   );
 
   const loading = !data && !error;
