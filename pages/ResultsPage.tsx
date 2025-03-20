@@ -39,9 +39,54 @@ export type ResultsGraphData = {
 
 type ResultsPageProps = GeneralPageProps & {
   data: {
-    graphData: ResultsGraphData;
+    graphData: ResultsGraphData | null;
   };
 };
+
+type ApiResponse<T> = {
+  status: number;
+  content: T;
+};
+async function fetchApiData<T>(endpoint: string): Promise<T | undefined> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_EFFEKT_API}${endpoint}`);
+    const data = (await response.json()) as ApiResponse<T>;
+
+    // Check if the response is successful and contains content
+    if (data.status === 200 && data.content) {
+      return data.content;
+    }
+
+    console.warn(`Failed to fetch data from ${endpoint}: Invalid response format or status`);
+    return undefined;
+  } catch (error) {
+    console.warn(`Failed to fetch data from ${endpoint}:`, error);
+    return undefined;
+  }
+}
+
+// Function to fetch all graph data in parallel
+async function fetchResultsGraphData(): Promise<ResultsGraphData | null> {
+  const [dailyDonations, referralSums, monthlyDonationsPerOutput, resultsHeadlineNumbers] =
+    await Promise.all([
+      fetchApiData<DailyDonations>("/results/donations/daily"),
+      fetchApiData<ReferralSumsResult[]>("/results/referrals/sums"),
+      fetchApiData<MonthlyDonationsPerOutputResult[]>("/results/donations/monthly/outputs"),
+      fetchApiData<ResultsHadlineNumbers>("/results/headline"),
+    ]);
+
+  // Validate all data is present
+  if (dailyDonations && referralSums && monthlyDonationsPerOutput && resultsHeadlineNumbers) {
+    return {
+      dailyDonations,
+      referralSums,
+      monthlyDonationsPerOutput,
+      resultsHeadlineNumbers,
+    };
+  }
+
+  return null;
+}
 
 export const ResultsPage = withStaticProps(
   async ({
@@ -53,27 +98,11 @@ export const ResultsPage = withStaticProps(
   }) => {
     const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
-    let result = await getClient(draftMode ? token : undefined).fetch(fetchResults);
+    // Fetch Sanity data
+    const result = await getClient(draftMode ? token : undefined).fetch(fetchResults);
 
-    const dailyDonationsResult = await fetch(
-      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/daily`,
-    );
-    const dailyDonations = await dailyDonationsResult.json();
-
-    const referralSumsResult = await fetch(
-      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/referrals/sums`,
-    );
-    const referralSums = await referralSumsResult.json();
-
-    const monthlyDonationsPerOutputResult = await fetch(
-      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/donations/monthly/outputs`,
-    );
-    const monthlyDonationsPerOutput = await monthlyDonationsPerOutputResult.json();
-
-    const resultsHeadlineNumbersResult = await fetch(
-      `${process.env.NEXT_PUBLIC_EFFEKT_API}/results/headline`,
-    );
-    const resultsHeadlineNumbers = await resultsHeadlineNumbersResult.json();
+    // Fetch graph data
+    const graphData = await fetchResultsGraphData();
 
     return {
       appStaticProps,
@@ -85,13 +114,7 @@ export const ResultsPage = withStaticProps(
         result,
         query: fetchResults,
         queryParams: {},
-        graphData: {
-          dailyDonations: dailyDonations.content as DailyDonations,
-          referralSums: referralSums.content as ReferralSumsResult[],
-          monthlyDonationsPerOutput:
-            monthlyDonationsPerOutput.content as MonthlyDonationsPerOutputResult[],
-          resultsHeadlineNumbers: resultsHeadlineNumbers.content as ResultsHadlineNumbers,
-        },
+        graphData,
       },
     } satisfies ResultsPageProps;
   },
@@ -134,7 +157,8 @@ export const ResultsPage = withStaticProps(
         />
       </div>
 
-      <ResultContentRenderer content={page.content} graphData={graphData} />
+      {graphData && <ResultContentRenderer content={page.content} graphData={graphData} />}
+      {!graphData && <span>No results data available</span>}
     </>
   );
 });
