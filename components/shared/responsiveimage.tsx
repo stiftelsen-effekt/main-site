@@ -15,6 +15,10 @@ export const ResponsiveImage: React.FC<{
     return null;
   }
 
+  if (!image.asset) {
+    return null;
+  }
+
   // Extract the image ID from the Sanity image object
   const imageId = image.asset?._ref || (image.asset as SanityAsset)._id;
 
