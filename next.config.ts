@@ -1,3 +1,5 @@
+import { NextConfig } from "next";
+
 const { withPlausibleProxy } = require("next-plausible");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
@@ -12,11 +14,10 @@ const STUDIO_REWRITE = {
       : "/studio/index.html",
 };
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  rewrites: () => [STUDIO_REWRITE],
+  rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
       {
@@ -27,12 +28,6 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
-  experimental: {
-    optimizePackageImports: ["d3", "@observablehq/plot"],
-  },
-  compiler: {
-    styledComponents: true,
-  },
   headers: async () => {
     return [
       {
@@ -502,6 +497,6 @@ const nextConfig = {
   },
 };
 
-module.exports = (phase, defaultConfig) => {
+module.exports = (phase: any, defaultConfig: NextConfig) => {
   return withBundleAnalyzer(withPlausibleProxy()(nextConfig));
 };
