@@ -56,6 +56,8 @@ const nextConfig: NextConfig = {
                 "https://www.youtube.com",
               // Prevent plugin injection
               "object-src 'none'",
+              // Allow for workers to be loaded from self
+              "worker-src 'self' blob:",
             ].join("; "),
           },
         ],
