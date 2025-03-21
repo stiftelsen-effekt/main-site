@@ -9,12 +9,14 @@ import { DateBoxWrapper, DateText, DateTextWrapper, Wrapper } from "./VippsDateP
 import { formatDateText, getNextChargeDate, isIrregularChargeDay, showCheckBox } from "./dates";
 import { DatePicker } from "../../../../shared/DatePicker/DatePicker";
 import { DatePickerInputConfiguration } from "../../../../../../DatePicker/DatePickerInput";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../../../store/donation/types";
 
 const tooltipText =
   "Vi kan av tekniske grunner ikke melde trekk 1-3 dager i forveien, så første trekkdato utsettes med én måned. Du kan velge en senere dato eller krysse av for også å bli trukket i dag.";
 
 export const VippsDatePicker: React.FC<{ config: DatePickerInputConfiguration }> = ({ config }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const vippsAgreement = useSelector((state: State) => state.donation.vippsAgreement);
   const [selectedChargeDay, setSelectedChargeDay] = useState<number>(
     vippsAgreement.monthlyChargeDay,

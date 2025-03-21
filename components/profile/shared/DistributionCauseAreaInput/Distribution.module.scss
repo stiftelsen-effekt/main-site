@@ -7,8 +7,8 @@
 
 .grid {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-flow: row;
   column-gap: 1.5em;
   row-gap: 1em;
   width: 100%;

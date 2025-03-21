@@ -1,11 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styles from "./EffektCheckbox.module.scss";
 
 export const EffektCheckbox: React.FC<{
   checked: boolean;
   onChange: (checked: boolean) => void;
   dataCy?: string;
-  children: string | JSX.Element;
+  children: string | ReactNode;
 }> = ({ checked, onChange, dataCy, children }) => {
   return (
     <div className={styles.wrapper} onClick={() => onChange(!checked)} data-cy={dataCy}>

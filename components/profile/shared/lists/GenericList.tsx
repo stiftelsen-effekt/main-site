@@ -1,17 +1,13 @@
 import style from "./Lists.module.scss";
 import GenericListRow, { ListRow } from "./GenericListRow";
-import React, { ReactElement } from "react";
-import {
-  GenericListContextMenuOptions,
-  GenericListContextMenuSelect,
-} from "./GenericListContextMenu";
+import React, { ReactElement, ReactNode } from "react";
 
 export type Props<T> = {
   title: string;
   headers: { label: string; width?: string; align?: "right" }[];
-  supplementalInformation?: string | JSX.Element;
+  supplementalInformation?: string | ReactNode;
   rows: ListRow<T>[];
-  emptyPlaceholder: JSX.Element;
+  emptyPlaceholder: ReactNode;
   proportions: number[];
   expandable?: boolean;
   supplementalOnMobile?: boolean;

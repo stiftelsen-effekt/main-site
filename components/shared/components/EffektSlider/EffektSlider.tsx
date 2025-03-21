@@ -1,6 +1,6 @@
 import styles from "./EffektSlider.module.scss";
 import Draggable from "react-draggable";
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export const EffektSlider: React.FC<{
@@ -96,7 +96,7 @@ export const EffektSlider: React.FC<{
             onChange(Math.round((data.x / sliderWidth) * (min + (max - min))));
           }}
           position={{ x: scaledValue * sliderWidth, y: 0 }}
-          nodeRef={handleRef}
+          nodeRef={handleRef as RefObject<HTMLDivElement>}
         >
           <div
             ref={handleRef}

@@ -10,10 +10,12 @@ import {
   HeaderContainer,
   ActionButton,
 } from "./ProgressBar.style";
+import { Dispatch } from "@reduxjs/toolkit";
+import { LayoutActionTypes } from "../../../store/layout/types";
 
 export const ProgressBar: React.FC<{ inline?: boolean }> = ({ inline }) => {
   const numberOfPanes = 3;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<LayoutActionTypes>>();
   const paneNumber = useSelector((state: State) => state.layout.paneNumber);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
 

@@ -10,7 +10,7 @@ import { aggregateImpact, aggregateOrgSumByYearAndMonth } from "./_util";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-const multiFetcher = (...urls: string[]) => {
+const multiFetcher = (urls: string[]) => {
   const f = (u: string) => fetch(u).then((r) => r.json());
   return Promise.all(urls.map(f));
 };
@@ -80,7 +80,7 @@ export const DonationsAggregateImpactTable: React.FC<{
     data: evaluationdata,
     error: evaluationerror,
     isValidating: evaluationvalidating,
-  } = useSWR<{ evaluations: ImpactEvaluation[] }[]>(urls, multiFetcher, {
+  } = useSWR<{ evaluations: ImpactEvaluation[] }[]>(urls, (urls) => multiFetcher(urls), {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

@@ -30,6 +30,8 @@ import {
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { RecurringDonation } from "../types/Enums";
+import { Dispatch } from "@reduxjs/toolkit";
+import { Action } from "typescript-fsa";
 
 export const widgetContentQuery = groq`
 ...,
@@ -121,7 +123,7 @@ export const Widget = withStaticProps(
     throw new Error("No payment methods found");
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<Action<undefined>>>();
   const widgetRef = useRef<HTMLDivElement>(null);
   const widgetWrapperRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);

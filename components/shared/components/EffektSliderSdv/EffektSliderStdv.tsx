@@ -1,6 +1,6 @@
 import styles from "./EffektSliderStdv.module.scss";
 import Draggable from "react-draggable";
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import * as Plot from "@observablehq/plot";
 
@@ -142,7 +142,7 @@ export const EffektSliderStdv: React.FC<{
             });
           }}
           position={{ x: scaledValueLeft * sliderWidth, y: 0 }}
-          nodeRef={handleStdvLeftRef}
+          nodeRef={handleStdvLeftRef as RefObject<HTMLDivElement>}
         >
           <div
             className={
@@ -165,7 +165,7 @@ export const EffektSliderStdv: React.FC<{
             });
           }}
           position={{ x: scaledValue * sliderWidth, y: 0 }}
-          nodeRef={handleMedianRef}
+          nodeRef={handleMedianRef as RefObject<HTMLDivElement>}
         >
           <div
             className={styles.calculator__input__group__percentage_slider__handle}
@@ -189,7 +189,7 @@ export const EffektSliderStdv: React.FC<{
             });
           }}
           position={{ x: scaledValueRight * sliderWidth, y: 0 }}
-          nodeRef={handleStdvRightRef}
+          nodeRef={handleStdvRightRef as RefObject<HTMLDivElement>}
         >
           <div
             className={

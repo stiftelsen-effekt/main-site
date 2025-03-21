@@ -5,12 +5,14 @@ import { API_URL } from "../../../../config/api";
 import { draftAvtaleGiroAction } from "../../../../store/donation/actions";
 import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 import { usePlausible } from "next-plausible";
+import { Dispatch } from "@reduxjs/toolkit";
+import { Action } from "typescript-fsa";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;
   buttonText: string;
 }> = ({ donation, buttonText }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<Action<undefined>>>();
   const plausible = usePlausible();
 
   const onSubmit = (e: React.MouseEvent<Element, MouseEvent>) => {

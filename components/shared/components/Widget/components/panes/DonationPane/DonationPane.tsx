@@ -22,6 +22,9 @@ import { usePlausible } from "next-plausible";
 import { ErrorTextsContainer } from "../../shared/ErrorTextsContainer/ErrorTextsContainer";
 import { Spinner } from "../../../../Spinner/Spinner";
 import { Info } from "react-feather";
+import { Dispatch } from "@reduxjs/toolkit";
+import { LayoutActionTypes } from "../../../store/layout/types";
+import { DonationActionTypes } from "../../../store/donation/types";
 
 export const DonationPane: React.FC<{
   text: WidgetPane1Props;
@@ -29,7 +32,7 @@ export const DonationPane: React.FC<{
   enableSingle: boolean;
   extraMessage?: string;
 }> = ({ text, enableRecurring, enableSingle, extraMessage }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<LayoutActionTypes | DonationActionTypes>>();
   const donation = useSelector((state: State) => state.donation);
   const layout = useSelector((state: State) => state.layout);
   const plausible = usePlausible();

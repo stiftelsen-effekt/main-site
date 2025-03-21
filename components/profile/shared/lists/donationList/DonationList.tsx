@@ -5,6 +5,7 @@ import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { DonationDetails, DonationDetailsConfiguration } from "./DonationDetails";
+import { ReactNode } from "react";
 
 export type TableFieldTypes = "string" | "sum" | "date" | "paymentmethod";
 
@@ -37,7 +38,7 @@ export const DonationList: React.FC<{
   detailsConfiguration,
   firstOpen,
 }) => {
-  let taxDeductionText: JSX.Element | undefined = undefined;
+  let taxDeductionText: ReactNode | undefined = undefined;
 
   let taxDeductions = taxUnits.reduce(
     (acc, unit) => {
@@ -59,7 +60,7 @@ export const DonationList: React.FC<{
       /** TODO: Tax rules will differ for different juristictions. Update backend to support a structured format to reflect this. */
     }
     let taxDeductionTextSplit: string[];
-    let taxDeductionSumElement: JSX.Element = (
+    let taxDeductionSumElement: ReactNode = (
       <span style={{ whiteSpace: "nowrap" }}>
         {thousandize(Math.round(taxDeductions.yearlyBenefit))}
       </span>
