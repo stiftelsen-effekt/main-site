@@ -40,7 +40,7 @@ export const FundraiserGiftActivity: React.FC<{
         .replace("{name}", name)
         .replace("{sum}", thousandize(amount));
     }
-    return `En anonym donator har skänkt ${thousandize(amount)}`;
+    return `En gave på ${thousandize(amount)} kr`;
   };
 
   return (
