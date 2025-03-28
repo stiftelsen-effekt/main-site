@@ -4,4 +4,4 @@ export const ANONYMOUS_DONOR = {
   taxDeduction: false,
   ssn: "12345678910",
   newsletter: false,
-} as const; // satisfies DonorFormValues (requires next@13);
+} as const;
