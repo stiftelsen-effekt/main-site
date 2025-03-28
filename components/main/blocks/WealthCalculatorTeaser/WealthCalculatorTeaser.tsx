@@ -14,6 +14,7 @@ import { useRouterContext } from "../../../../context/RouterContext";
 import { calculateWealthPercentile } from "../WealthCalculator/_util";
 import {
   AdjustedPPPFactorResult,
+  getDanishAdjustedPPPconversionFactor,
   getNorwegianAdjustedPPPconversionFactor,
   getSwedishAdjustedPPPconversionFactor,
 } from "../WealthCalculator/_queries";
@@ -40,14 +41,6 @@ export const WealthCalculatorTeaser: React.FC<{
   locale,
 }) => {
   const { articlesPagePath } = useRouterContext();
-
-  const [chartSize, setChartSize] = useState<{
-    width: number | undefined;
-    height: number | undefined;
-  }>({
-    width: undefined,
-    height: undefined,
-  });
   const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult | undefined>();
 
   /**
@@ -60,6 +53,10 @@ export const WealthCalculatorTeaser: React.FC<{
       });
     } else if (locale === "sv") {
       getSwedishAdjustedPPPconversionFactor().then((res) => {
+        setPppConversion(res);
+      });
+    } else if (locale === "dk") {
+      getDanishAdjustedPPPconversionFactor().then((res) => {
         setPppConversion(res);
       });
     } else {

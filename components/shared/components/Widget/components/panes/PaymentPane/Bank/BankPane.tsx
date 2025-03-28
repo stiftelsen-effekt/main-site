@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setDueDay } from "../../../../store/donation/actions";
+import { useSelector } from "react-redux";
 import { State } from "../../../../store/state";
 import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { InfoText } from "../PaymentPane.style";
-import { getEarliestPossibleChargeDate } from "../AvtaleGiro/AvtaleGiroDatePicker/avtalegirodates";
 import { PaymentInformation } from "./PaymentInformation";
 import { Referrals } from "../../../shared/Referrals/Referrals";
 import { BankPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
 import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 import AnimateHeight from "react-animate-height";
-import { EffektButton } from "../../../../../EffektButton/EffektButton";
 import { CompleteButton, CompleteButtonWrapper } from "./BankPane.style";
 import { usePlausible } from "next-plausible";
 

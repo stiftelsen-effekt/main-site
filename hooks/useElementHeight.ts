@@ -5,7 +5,9 @@ import { useState, useEffect, RefObject, useRef } from "react";
  * @param elementRef React ref object pointing to the target element
  * @returns The current height of the element in pixels
  */
-export const useElementHeight = <T extends HTMLElement>(elementRef: RefObject<T>): number => {
+export const useElementHeight = <T extends HTMLElement>(
+  elementRef: RefObject<T | null>,
+): number => {
   const [height, setHeight] = useState<number>(0);
 
   useEffect(() => {

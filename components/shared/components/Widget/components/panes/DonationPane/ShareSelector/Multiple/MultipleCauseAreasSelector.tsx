@@ -21,6 +21,8 @@ import { ErrorText } from "../../DonationPane";
 import { filterErrorTextsForCauseArea } from "../../_util";
 import { ToolTip } from "../../../../shared/ToolTip/ToolTip";
 import Link from "next/link";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../../../store/donation/types";
 
 export const MultipleCauseAreasSelector: React.FC<{
   configuration: SmartDistributionContext;
@@ -29,7 +31,7 @@ export const MultipleCauseAreasSelector: React.FC<{
   const [explanationOpen, setExplanationOpen] = useState(false);
   const layout = useSelector((state: State) => state.layout);
   const donation = useSelector((state: State) => state.donation);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
 
   const causeAreaSumError = errorTexts.find((error) => error.error.type === "causeAreaSumError")
     ?.error.type;

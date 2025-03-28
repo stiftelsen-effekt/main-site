@@ -10,8 +10,10 @@ import {
   DateTextWrapper,
   DateText,
 } from "../../Vipps/VippsDatePicker/VippsDatePicker.style";
-import { formatDateText, getNextChargeDate, isIrregularChargeDay } from "./avtalegirodates";
+import { getNextChargeDate, isIrregularChargeDay } from "./avtalegirodates";
 import { DatePickerInputConfiguration } from "../../../../../../DatePicker/DatePickerInput";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../../../store/donation/types";
 
 const tooltipText =
   "Vi må av tekniske grunner melde inn trekk til bankene tidligere enn din valgte trekkdato, derfor utsettes første trekk med én måned. Du kan velge en annen trekkdato om du ønsker å trekkes tidligere.";
@@ -19,7 +21,7 @@ const tooltipText =
 export const AvtaleGiroDatePicker: React.FC<{ configuration: DatePickerInputConfiguration }> = ({
   configuration,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const dueDay = useSelector((state: State) => state.donation.dueDay);
   const [selectedDueDay, setSelectedDueDay] = useState<number>(dueDay);
   const [nextChargeDate, setNextChargeDate] = useState<Date>();

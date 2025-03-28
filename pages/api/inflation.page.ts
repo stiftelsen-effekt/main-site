@@ -31,6 +31,14 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
     } catch (error) {
       return res.status(500).json({ error: (error as any).message });
     }
+  } else if (req?.query?.locale === "DK") {
+    try {
+      const inflation = await getDanishInflation2017(date);
+      await kv.set(cacheKey, inflation);
+      return res.setHeader("Cache-Control", "public, max-age=86400").status(200).json(inflation);
+    } catch (error) {
+      return res.status(500).json({ error: (error as any).message });
+    }
   }
   return res.status(400).json({ error: "Invalid locale" });
 }
@@ -90,6 +98,7 @@ const getSwedishInflation2017 = async (date: DateTime) => {
     );
 
     if (!inflation.ok) {
+      attempts++;
       continue;
     }
 
@@ -104,4 +113,33 @@ const getSwedishInflation2017 = async (date: DateTime) => {
   }
 
   throw new Error("Could not find inflation rate for SEK");
+};
+
+const getDanishInflation2017 = async (date: DateTime) => {
+  let attempts = 0;
+
+  while (attempts < 2) {
+    const inflation = await fetch("https://api.statbank.dk/v1/data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "User-Agent": "insomnia/11.0.0" },
+      body: `{"table":"pris8","format":"JSONSTAT","valuePresentation":"Value","variables":[{"code":"Tid","values":["2017", "${date.year}"]}]}`,
+    });
+
+    if (!inflation.ok) {
+      date = date.minus({ years: 1 });
+      attempts++;
+      continue;
+    }
+
+    const json = await inflation.json();
+
+    if (json.dataset.value.length === 2) {
+      // Percentage change from 2017
+      return json.dataset.value[1] / json.dataset.value[0] - 1;
+    }
+
+    attempts++;
+  }
+
+  throw new Error("Could not find inflation rate for DKK");
 };

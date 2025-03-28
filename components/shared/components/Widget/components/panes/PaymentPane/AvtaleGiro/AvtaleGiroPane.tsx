@@ -13,6 +13,8 @@ import {
 import { RecurringBankDonationForm } from "./RecurringForm";
 import { Referrals } from "../../../shared/Referrals/Referrals";
 import { AvtaleGiroPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../../store/donation/types";
 
 export const AvtaleGiroPane: React.FC<{
   config: AvtaleGiroPaymentMethod;
@@ -22,7 +24,7 @@ export const AvtaleGiroPane: React.FC<{
   const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const donorID = useSelector((state: State) => state.donation.donor?.donorID);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
 
   useEffect(() => {
     if (chooseChargeDay === 0) {

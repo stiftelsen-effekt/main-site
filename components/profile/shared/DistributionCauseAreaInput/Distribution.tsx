@@ -30,43 +30,50 @@ export const DistributionController: React.FC<{
   return (
     <div className={style.wrapper}>
       <div className={style.grid}>
-        {currentCauseAreaOrgs.map((org) => (
-          <div key={org.id} className={style["share-wrapper"]}>
-            <span>{org.widgetDisplayName}</span>
-            <div>
-              <input
-                type="text"
-                defaultValue={
-                  Math.round(
-                    parseFloat(
-                      causeArea.organizations?.find((o) => o.id === org.id)?.percentageShare || "0",
-                    ),
-                  ).toString() || 0
-                }
-                onChange={(e) => {
-                  const percentageShare = parseFloat(e.target.value) || 0;
-                  const organizations = [...causeArea.organizations];
-                  const index = organizations.findIndex((o) => o.id === org.id);
-                  if (index === -1) {
-                    organizations.push({
-                      id: org.id,
-                      name: org.name,
-                      percentageShare: percentageShare.toFixed(0),
-                    });
-                  } else {
-                    organizations[index] = {
-                      ...organizations[index],
-                      percentageShare: percentageShare.toFixed(0),
-                    };
+        {currentCauseAreaOrgs
+          .filter(
+            (org) =>
+              org.isActive ||
+              parseFloat(causeArea.organizations.find((o) => org.id)?.percentageShare ?? "0") === 0,
+          )
+          .map((org) => (
+            <div key={org.id} className={style["share-wrapper"]}>
+              <span>{org.widgetDisplayName}</span>
+              <div>
+                <input
+                  type="text"
+                  defaultValue={
+                    Math.round(
+                      parseFloat(
+                        causeArea.organizations?.find((o) => o.id === org.id)?.percentageShare ||
+                          "0",
+                      ),
+                    ).toString() || 0
                   }
-                  onChange({ ...causeArea, organizations });
-                }}
-                data-cy="distribution-input"
-              />
-              <span>%</span>
+                  onChange={(e) => {
+                    const percentageShare = parseFloat(e.target.value) || 0;
+                    const organizations = [...causeArea.organizations];
+                    const index = organizations.findIndex((o) => o.id === org.id);
+                    if (index === -1) {
+                      organizations.push({
+                        id: org.id,
+                        name: org.name,
+                        percentageShare: percentageShare.toFixed(0),
+                      });
+                    } else {
+                      organizations[index] = {
+                        ...organizations[index],
+                        percentageShare: percentageShare.toFixed(0),
+                      };
+                    }
+                    onChange({ ...causeArea, organizations });
+                  }}
+                  data-cy="distribution-input"
+                />
+                <span>%</span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <AnimateHeight height={sum !== 100 ? "auto" : 0} animateOpacity={true}>
         <div className={style["warning-box"]} data-cy="distribution-warning">

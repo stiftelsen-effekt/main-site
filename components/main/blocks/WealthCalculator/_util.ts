@@ -1,5 +1,5 @@
 import { WealthCalculatorPeriodAdjustment } from "../../../shared/components/Graphs/Area/AreaGraph";
-import { getNorwegianTaxEstimate, getSwedishTaxEstimate } from "./_queries";
+import { getDanishTaxEstimate, getNorwegianTaxEstimate, getSwedishTaxEstimate } from "./_queries";
 
 export const calculateWealthPercentile = (
   data: { x: number; y: number }[],
@@ -58,6 +58,9 @@ export const getEstimatedPostTaxIncome = async (
     case TaxJurisdiction.NO:
       tax = await getNorwegianTaxEstimate(income, periodAdjustment);
       break;
+    case TaxJurisdiction.DK:
+      tax = await getDanishTaxEstimate(income, periodAdjustment);
+      break;
     default:
       return income;
   }
@@ -68,4 +71,5 @@ export const getEstimatedPostTaxIncome = async (
 export enum TaxJurisdiction {
   NO = "Norway",
   SV = "Sweden",
+  DK = "Denmark",
 }

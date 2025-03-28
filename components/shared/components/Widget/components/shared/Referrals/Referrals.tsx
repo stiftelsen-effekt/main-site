@@ -14,9 +14,12 @@ import {
   ReferralButtonsWrapper,
   ReferralTextInput,
 } from "../../panes/PaymentPane/Bank/ReferralPane.style";
+import { ReferralActionTypes } from "../../../store/referrals/types";
+import { Action } from "typescript-fsa";
+import { Dispatch } from "@reduxjs/toolkit";
 
 export const Referrals: React.FC<{ text: WidgetPane3ReferralsProps }> = ({ text }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<ReferralActionTypes | Action<ReferralData>>>();
   const OTHER_REFERRAL_ID = 10;
 
   const referrals = useSelector((state: State) => state.referrals.referrals);

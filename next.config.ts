@@ -1,8 +1,6 @@
-const { withPlausibleProxy } = require("next-plausible");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-const { defaultConfig } = require("next/dist/server/config-shared");
+import { NextConfig } from "next";
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import { withPlausibleProxy } from "next-plausible";
 
 const STUDIO_REWRITE = {
   source: "/studio/:path*",
@@ -12,11 +10,10 @@ const STUDIO_REWRITE = {
       : "/studio/index.html",
 };
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  rewrites: () => [STUDIO_REWRITE],
+  rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
       {
@@ -28,7 +25,9 @@ const nextConfig = {
   },
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   experimental: {
-    optimizePackageImports: ["d3", "@observablehq/plot"],
+    optimizePackageImports: ["react-feather"],
+    turbo: {},
+    inlineCss: true,
   },
   compiler: {
     styledComponents: true,
@@ -57,6 +56,8 @@ const nextConfig = {
                 "https://www.youtube.com",
               // Prevent plugin injection
               "object-src 'none'",
+              // Allow for workers to be loaded from self
+              "worker-src 'self' blob:",
             ].join("; "),
           },
         ],
@@ -502,6 +503,8 @@ const nextConfig = {
   },
 };
 
-module.exports = (phase, defaultConfig) => {
-  return withBundleAnalyzer(withPlausibleProxy()(nextConfig));
+module.exports = (phase: any, defaultConfig: NextConfig) => {
+  return withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+  })(withPlausibleProxy()(nextConfig));
 };

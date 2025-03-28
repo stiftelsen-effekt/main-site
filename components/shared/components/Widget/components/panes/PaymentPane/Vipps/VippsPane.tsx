@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButtonGroup } from "../../../../../RadioButton/RadioButtonGroup";
 import { Referrals } from "../../../shared/Referrals/Referrals";
@@ -12,18 +12,19 @@ import { VippsDatePicker } from "./VippsDatePicker/VippsDatePicker";
 import { VippsButtonWrapper } from "./VippsPane.style";
 import { VippsPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
 import { usePlausible } from "next-plausible";
+import { Dispatch } from "@reduxjs/toolkit";
+import { DonationActionTypes } from "../../../../store/donation/types";
+import { Action } from "typescript-fsa";
 
 export const VippsPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
   config: VippsPaymentMethod;
 }> = ({ referrals, config }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
   const donationState = useSelector((state: State) => state.donation);
   const { paymentProviderURL, recurring, vippsAgreement } = donationState;
   const [draftError, setDraftError] = useState(false);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
-  const donorID = useSelector((state: State) => state.donation.donor?.donorID);
-  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
   const plausible = usePlausible();
 
   return (
