@@ -63,6 +63,19 @@ export default {
       ],
     },
     {
+      name: "fundraiser_widget_config",
+      title: "Fundraiser widget",
+      type: "object",
+      fields: [
+        {
+          name: "suggested_amounts",
+          title: "Suggested amounts",
+          type: "array",
+          of: [{ type: "number" }],
+        },
+      ],
+    },
+    {
       name: "gift_activity_config",
       title: "Gift activity",
       type: "object",

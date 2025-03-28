@@ -74,48 +74,115 @@
   }
 
   &__input-group {
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+    position: relative;
 
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 0.4rem;
       font-weight: 500;
     }
 
     input,
     textarea {
       width: 100%;
-      padding: 12px;
+      padding: 0.6rem;
       border: 1px solid var(--primary);
       border-radius: 8px;
-      font-size: 16px;
       font-family: "ESKlarheitGrotesk", sans-serif;
+      font-size: 1rem;
     }
 
     textarea {
       min-height: 100px;
       resize: vertical;
     }
+
+    .donation-widget__suggested-sums {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      justify-content: space-between;
+
+      button {
+        padding: 0.6rem 1rem;
+        border: 1px solid var(--primary);
+        border-radius: 0.5rem;
+        background-color: white;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1;
+
+        &:hover {
+          background-color: var(--primary);
+          color: var(--secondary);
+        }
+      }
+    }
+
+    .donation-widget__input-group__suffix {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   &__checkbox-group {
     display: flex;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
     flex-direction: row;
+    position: relative;
 
     input[type="checkbox"] {
-      margin-right: 10px;
-      width: 20px;
-      height: 20px;
+      margin-right: 0.5rem;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    &__popup-trigger {
+      margin-left: 0.5rem;
+      cursor: pointer;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      width: 1.5rem;
+      height: 1.5rem;
+      font-size: 0.8rem;
+      display: inline-flex;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+
+      &:hover + .donation-widget__checkbox-group__popup {
+        display: block;
+      }
+    }
+
+    &__popup {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: white;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      display: none;
+      transform: translateY(0.5rem);
     }
   }
 
   &__payment-options {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    margin-bottom: 2rem;
   }
 
   &__payment-option {
@@ -145,7 +212,6 @@
     border: none;
     border-radius: 999px;
     padding: 16px;
-    font-size: 18px;
     cursor: pointer;
     margin-top: 16px;
   }
@@ -153,6 +219,7 @@
   &__privacy-link {
     margin-top: 20px;
     text-align: left;
+    font-size: 0.9rem;
     a {
       border-bottom: 1px solid var(--primary);
     }

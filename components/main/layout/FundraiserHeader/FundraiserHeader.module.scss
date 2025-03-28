@@ -6,6 +6,12 @@
   width: 90vw;
   margin: 0 auto;
 
+  .headerimage {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
   .fundraiserimage {
     /* Round profile picture placed left bottom, slightly pushed down */
     position: absolute;
