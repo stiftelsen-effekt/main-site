@@ -275,6 +275,8 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
         setKid(data.content.KID);
         if (data.content.paymentProviderUrl && data.content.paymentProviderUrl.length > 0) {
           window.open(data.content.paymentProviderUrl, "_self");
+        } else {
+          goToNextStep();
         }
       });
   };
