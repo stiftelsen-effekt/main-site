@@ -312,270 +312,282 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
         height={currentHeight}
         className={styles["donation-widget__panes"]}
       >
-        {/* Pane 1: Initial Donation Form */}
-        <div
-          ref={paneRefs[0]}
-          className={getPaneClassName(0)}
-          style={{ display: isPaneVisible(0) ? "block" : "none" }}
-        >
-          <FundraiserOrganizationInfo
-            name={organizationInfo.name}
-            logo={organizationInfo.logo}
-            textTemplate={organizationInfo.textTemplate}
-            organizationSlug={organizationInfo.organizationSlug}
-          ></FundraiserOrganizationInfo>
-          <button
-            type="submit"
-            className={styles["donation-widget__button"]}
-            onClick={goToNextStep}
+        <div className={styles["donation-widget__inner"]}>
+          {/* Pane 1: Initial Donation Form */}
+          <div
+            ref={paneRefs[0]}
+            className={getPaneClassName(0)}
+            style={{ display: isPaneVisible(0) ? "block" : "none" }}
           >
-            {mergedTexts.header}
-          </button>
-        </div>
-
-        {/* Pane 2: Additional Information */}
-        <div
-          ref={paneRefs[1]}
-          className={getPaneClassName(1)}
-          style={{ display: isPaneVisible(1) ? "block" : "none" }}
-        >
-          <form
-            className={styles["donation-widget__form"]}
-            onSubmit={(e) => {
-              e.preventDefault();
-              goToNextStep();
-            }}
-          >
-            <div className={styles["donation-widget__input-group"]}>
-              {/* Suggested sums buttons */}
-              <div className={styles["donation-widget__suggested-sums"]}>
-                {suggestedSums.map((sum) => (
-                  <button
-                    key={sum}
-                    type="button"
-                    onClick={() => {
-                      setFormData({ ...formData, amount: sum.toString() });
-                    }}
-                  >
-                    {sum} kr
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className={styles["donation-widget__input-group"]}>
-              <input
-                id="amount"
-                name="amount"
-                type="number"
-                value={formData.amount}
-                onChange={handleInputChange}
-                placeholder={mergedTexts.donationAmountLabel}
-                required
-              />
-              <span className={styles["donation-widget__input-group__suffix"]}>kr</span>
-            </div>
-
-            <div className={styles["donation-widget__input-group"]}>
-              <label htmlFor="message">Valgfri melding</label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                placeholder={mergedTexts.messageLabel}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            {formData.message.length > 0 && (
-              <>
-                <div className={styles["donation-widget__input-group"]}>
-                  <input
-                    id="messageSenderName"
-                    name="messageSenderName"
-                    type="text"
-                    value={formData.messageSenderName}
-                    onChange={handleInputChange}
-                    placeholder={mergedTexts.nameLabel}
-                    required={formData.showName}
-                  />
-                </div>
-
-                <div className={styles["donation-widget__checkbox-group"]}>
-                  <EffektCheckbox
-                    checked={formData.showName}
-                    onChange={(checked) => {
-                      setFormData({ ...formData, showName: checked });
-                    }}
-                  >
-                    {mergedTexts.showNameLabel}
-                  </EffektCheckbox>
-                </div>
-              </>
-            )}
-
-            <button type="submit" className={styles["donation-widget__button"]}>
-              {mergedTexts.nextButtonText}
+            <FundraiserOrganizationInfo
+              name={organizationInfo.name}
+              logo={organizationInfo.logo}
+              textTemplate={organizationInfo.textTemplate}
+              organizationSlug={organizationInfo.organizationSlug}
+            ></FundraiserOrganizationInfo>
+            <button
+              type="submit"
+              className={styles["donation-widget__button"]}
+              onClick={goToNextStep}
+            >
+              {mergedTexts.header}
             </button>
-          </form>
-        </div>
+          </div>
 
-        {/* Pane 3: Payment Method Selection */}
-        <div
-          ref={paneRefs[2]}
-          className={getPaneClassName(2)}
-          style={{ display: isPaneVisible(2) ? "block" : "none" }}
-        >
-          <form
-            className={styles["donation-widget__form"]}
-            onSubmit={(e) => {
-              e.preventDefault();
-              registerDonation();
-            }}
+          {/* Pane 2: Additional Information */}
+          <div
+            ref={paneRefs[1]}
+            className={getPaneClassName(1)}
+            style={{ display: isPaneVisible(1) ? "block" : "none" }}
           >
-            <div className={styles["donation-widget__checkbox-group"]} style={{ zIndex: 2 }}>
-              <EffektCheckbox
-                checked={formData.anonymous}
-                onChange={(checked) => {
-                  setFormData({ ...formData, anonymous: checked, email: "", ssn: "" });
-                }}
-              >
-                {mergedTexts.anonymousDonationLabel}{" "}
-                <span className={styles["donation-widget__checkbox-group__popup-trigger"]}>?</span>{" "}
-                <div className={styles["donation-widget__checkbox-group__popup"]}>
-                  Donerer du anonymt knyttes ikke donasjonen til din epost. Dette betyr at du ikke
-                  vil motta kvittering eller informasjon om donasjonen.
+            <form
+              className={styles["donation-widget__form"]}
+              onSubmit={(e) => {
+                e.preventDefault();
+                goToNextStep();
+              }}
+            >
+              <div className={styles["donation-widget__input-group"]}>
+                {/* Suggested sums buttons */}
+                <div className={styles["donation-widget__input-group__suggested-sums"]}>
+                  {suggestedSums.map((sum) => (
+                    <button
+                      key={sum}
+                      type="button"
+                      onClick={() => {
+                        setFormData({ ...formData, amount: sum.toString() });
+                      }}
+                      className={[
+                        styles["donation-widget__input-group__suggested-sums__button"],
+                        formData.amount === sum.toString()
+                          ? styles["donation-widget__input-group__suggested-sums__button--active"]
+                          : "",
+                      ].join(" ")}
+                    >
+                      {sum} kr
+                    </button>
+                  ))}
                 </div>
-              </EffektCheckbox>
-            </div>
+              </div>
 
-            {!formData.anonymous && (
-              <>
-                {formData.message.length === 0 && (
+              <div className={styles["donation-widget__input-group"]}>
+                <input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  placeholder={mergedTexts.donationAmountLabel}
+                  required
+                />
+                <span className={styles["donation-widget__input-group__suffix"]}>kr</span>
+              </div>
+
+              <div className={styles["donation-widget__input-group"]}>
+                <label htmlFor="message">Valgfri melding</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  placeholder={mergedTexts.messageLabel}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {formData.message.length > 0 && (
+                <>
                   <div className={styles["donation-widget__input-group"]}>
                     <input
-                      id="name"
-                      name="name"
+                      id="messageSenderName"
+                      name="messageSenderName"
                       type="text"
-                      value={formData.name}
+                      value={formData.messageSenderName}
+                      onChange={handleInputChange}
+                      placeholder={mergedTexts.nameLabel}
+                      required={formData.showName}
+                    />
+                  </div>
+
+                  <div className={styles["donation-widget__checkbox-group"]}>
+                    <EffektCheckbox
+                      checked={formData.showName}
+                      onChange={(checked) => {
+                        setFormData({ ...formData, showName: checked });
+                      }}
+                    >
+                      {mergedTexts.showNameLabel}
+                    </EffektCheckbox>
+                  </div>
+                </>
+              )}
+
+              <button type="submit" className={styles["donation-widget__button"]}>
+                {mergedTexts.nextButtonText}
+              </button>
+            </form>
+          </div>
+
+          {/* Pane 3: Payment Method Selection */}
+          <div
+            ref={paneRefs[2]}
+            className={getPaneClassName(2)}
+            style={{ display: isPaneVisible(2) ? "block" : "none" }}
+          >
+            <form
+              className={styles["donation-widget__form"]}
+              onSubmit={(e) => {
+                e.preventDefault();
+                registerDonation();
+              }}
+            >
+              <div className={styles["donation-widget__checkbox-group"]} style={{ zIndex: 2 }}>
+                <EffektCheckbox
+                  checked={formData.anonymous}
+                  onChange={(checked) => {
+                    setFormData({ ...formData, anonymous: checked, email: "", ssn: "" });
+                  }}
+                >
+                  {mergedTexts.anonymousDonationLabel}{" "}
+                  <span className={styles["donation-widget__checkbox-group__popup-trigger"]}>
+                    ?
+                  </span>{" "}
+                  <div className={styles["donation-widget__checkbox-group__popup"]}>
+                    Donerer du anonymt knyttes ikke donasjonen til din epost. Dette betyr at du ikke
+                    vil motta kvittering eller informasjon om donasjonen.
+                  </div>
+                </EffektCheckbox>
+              </div>
+
+              {!formData.anonymous && (
+                <>
+                  {formData.message.length === 0 && (
+                    <div className={styles["donation-widget__input-group"]}>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required={!formData.anonymous}
+                        placeholder={mergedTexts.nameLabel}
+                      />
+                    </div>
+                  )}
+
+                  <div className={styles["donation-widget__input-group"]}>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
                       onChange={handleInputChange}
                       required={!formData.anonymous}
-                      placeholder={mergedTexts.nameLabel}
+                      placeholder={mergedTexts.emailLabel}
                     />
                   </div>
-                )}
 
-                <div className={styles["donation-widget__input-group"]}>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required={!formData.anonymous}
-                    placeholder={mergedTexts.emailLabel}
-                  />
-                </div>
-
-                <div className={styles["donation-widget__checkbox-group"]}>
-                  <EffektCheckbox
-                    checked={formData.taxDeduction}
-                    onChange={(checked) => {
-                      setFormData({ ...formData, taxDeduction: checked });
-                    }}
-                  >
-                    {mergedTexts.taxDeductionLabel}
-                  </EffektCheckbox>
-                </div>
-
-                <AnimateHeight duration={100} height={formData.taxDeduction ? "auto" : 0}>
-                  <div className={styles["donation-widget__input-group"]}>
-                    <input
-                      id="ssn"
-                      name="ssn"
-                      type="ssn"
-                      value={formData.ssn}
-                      onChange={handleInputChange}
-                      required={formData.taxDeduction}
-                      placeholder={mergedTexts.ssnLabel}
-                    />
+                  <div className={styles["donation-widget__checkbox-group"]}>
+                    <EffektCheckbox
+                      checked={formData.taxDeduction}
+                      onChange={(checked) => {
+                        setFormData({ ...formData, taxDeduction: checked });
+                      }}
+                    >
+                      {mergedTexts.taxDeductionLabel}
+                    </EffektCheckbox>
                   </div>
-                </AnimateHeight>
 
-                <div className={styles["donation-widget__checkbox-group"]}>
-                  <EffektCheckbox
-                    checked={formData.newsletter}
-                    onChange={(checked) => {
-                      setFormData({ ...formData, newsletter: checked });
-                    }}
-                  >
-                    {mergedTexts.newsletterLabel}
-                  </EffektCheckbox>
-                </div>
-              </>
-            )}
+                  <AnimateHeight duration={100} height={formData.taxDeduction ? "auto" : 0}>
+                    <div className={styles["donation-widget__input-group"]}>
+                      <input
+                        id="ssn"
+                        name="ssn"
+                        type="ssn"
+                        value={formData.ssn}
+                        onChange={handleInputChange}
+                        required={formData.taxDeduction}
+                        placeholder={mergedTexts.ssnLabel}
+                      />
+                    </div>
+                  </AnimateHeight>
 
-            <div className={styles["donation-widget__privacy-link"]}>
-              <Link href={mergedTexts.privacyPolicyUrl}>{mergedTexts.privacyPolicyText} ↗</Link>
-            </div>
-            <div className={styles["donation-widget__payment-options"]}>
-              <RadioButtonGroup
-                options={[
-                  { title: mergedTexts.payWithBankLabel, value: PaymentMethod.BANK },
-                  { title: mergedTexts.payWithVippsLabel, value: PaymentMethod.VIPPS },
-                ]}
-                selected={
-                  formData.paymentMethod === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS
-                }
-                onSelect={(value) => {
-                  setFormData({
-                    ...formData,
-                    paymentMethod: value === PaymentMethod.BANK ? "bank" : "vipps",
-                  });
-                }}
-              ></RadioButtonGroup>
-            </div>
+                  <div className={styles["donation-widget__checkbox-group"]}>
+                    <EffektCheckbox
+                      checked={formData.newsletter}
+                      onChange={(checked) => {
+                        setFormData({ ...formData, newsletter: checked });
+                      }}
+                    >
+                      {mergedTexts.newsletterLabel}
+                    </EffektCheckbox>
+                  </div>
+                </>
+              )}
 
-            <button type="submit" className={styles["donation-widget__button"]}>
-              {loading
-                ? "Laster..."
-                : formData.paymentMethod === "bank"
-                ? mergedTexts.bankButtonText
-                : mergedTexts.payWithVippsLabel}
-            </button>
-          </form>
-        </div>
-
-        {/* Pane 4: Bank Transfer Information */}
-        <div
-          ref={paneRefs[3]}
-          className={getPaneClassName(3)}
-          style={{ display: isPaneVisible(3) ? "block" : "none" }}
-        >
-          {formData.paymentMethod === "bank" && (
-            <div className={styles["donation-widget__form"]}>
-              <p>{parseTemplate(mergedTexts.bankTransferInfo)}</p>
-
-              <div className={styles["donation-widget__account-info"]}>
-                <p>
-                  <strong>{mergedTexts.accountNumberPrefix}</strong> {mergedTexts.accountNumber}
-                </p>
-                <p>
-                  <strong>{mergedTexts.kidPrefix}</strong> {kid}
-                </p>
+              <div className={styles["donation-widget__privacy-link"]}>
+                <Link href={mergedTexts.privacyPolicyUrl}>{mergedTexts.privacyPolicyText} ↗</Link>
+              </div>
+              <div className={styles["donation-widget__payment-options"]}>
+                <RadioButtonGroup
+                  options={[
+                    { title: mergedTexts.payWithBankLabel, value: PaymentMethod.BANK },
+                    { title: mergedTexts.payWithVippsLabel, value: PaymentMethod.VIPPS },
+                  ]}
+                  selected={
+                    formData.paymentMethod === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS
+                  }
+                  onSelect={(value) => {
+                    setFormData({
+                      ...formData,
+                      paymentMethod: value === PaymentMethod.BANK ? "bank" : "vipps",
+                    });
+                  }}
+                ></RadioButtonGroup>
               </div>
 
-              <p>{parseTemplate(mergedTexts.transferDelayText)}</p>
-              <p>{parseTemplate(mergedTexts.accountOwnerText)}</p>
-
-              <button
-                className={styles["donation-widget__button"]}
-                onClick={() => onComplete(formData)}
-              >
-                {mergedTexts.transferCompletedText}
+              <button type="submit" className={styles["donation-widget__button"]}>
+                {loading
+                  ? "Laster..."
+                  : formData.paymentMethod === "bank"
+                  ? mergedTexts.bankButtonText
+                  : mergedTexts.payWithVippsLabel}
               </button>
-            </div>
-          )}
+            </form>
+          </div>
+
+          {/* Pane 4: Bank Transfer Information */}
+          <div
+            ref={paneRefs[3]}
+            className={getPaneClassName(3)}
+            style={{ display: isPaneVisible(3) ? "block" : "none" }}
+          >
+            {formData.paymentMethod === "bank" && (
+              <div className={styles["donation-widget__form"]}>
+                <p>{parseTemplate(mergedTexts.bankTransferInfo)}</p>
+
+                <div className={styles["donation-widget__account-info"]}>
+                  <p>
+                    <strong>{mergedTexts.accountNumberPrefix}</strong> {mergedTexts.accountNumber}
+                  </p>
+                  <p>
+                    <strong>{mergedTexts.kidPrefix}</strong> {kid}
+                  </p>
+                </div>
+
+                <p>{parseTemplate(mergedTexts.transferDelayText)}</p>
+                <p>{parseTemplate(mergedTexts.accountOwnerText)}</p>
+
+                <button
+                  className={styles["donation-widget__button"]}
+                  onClick={() => onComplete(formData)}
+                >
+                  {mergedTexts.transferCompletedText}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className={styles["donation-widget__bottom_shade"]}></div>
         </div>
       </ReactAnimateHeight>
     </div>
