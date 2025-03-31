@@ -68,7 +68,7 @@ export const VippsAgreementPage = withStaticProps(
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
-        imageAssetUrl={header.seoImage.url ? header.seoImage.asset.url : undefined}
+        imageAssetUrl={header.seoImage?.url ? header.seoImage.asset.url : undefined}
         canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug.current}}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}

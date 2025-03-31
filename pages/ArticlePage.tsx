@@ -86,7 +86,7 @@ export const ArticlePage = withStaticProps(
         title={header.seoTitle || header.title}
         titleTemplate={`%s | ${data.result.settings[0].title}`}
         description={header.seoDescription || header.inngress}
-        imageAssetUrl={header.seoImage.url ? header.seoImage.url : undefined}
+        imageAssetUrl={header.seoImage?.url ? header.seoImage.url : undefined}
         canonicalurl={
           header.cannonicalUrl ??
           `${process.env.NEXT_PUBLIC_SITE_URL}/${[...articlesPagePath, page.slug.current].join(
