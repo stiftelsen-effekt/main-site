@@ -12,7 +12,6 @@ import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "next-sanity/preview";
 import { ConsentState } from "../../middleware.page";
-import NotFoundPage from "../404.page";
 import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
 
 enum PageType {
