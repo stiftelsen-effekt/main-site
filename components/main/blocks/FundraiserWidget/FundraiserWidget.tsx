@@ -603,7 +603,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                 </div>
 
                 <p>{parseTemplate(mergedTexts.transferDelayText)}</p>
-                <p>{parseTemplate(mergedTexts.accountOwnerText)}</p>
+                <p style={{ paddingBottom: "2rem" }}>
+                  {parseTemplate(mergedTexts.accountOwnerText)}
+                </p>
               </div>
             )}
           </div>
