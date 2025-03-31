@@ -4,10 +4,6 @@ import { BlockContentRenderer } from "../components/main/blocks/BlockContentRend
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import LinkButton from "../components/shared/components/EffektButton/LinkButton";
-import {
-  CookieBanner,
-  CookieBannerConfiguration,
-} from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
@@ -16,6 +12,7 @@ import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { ConsentState } from "../middleware.page";
+import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../studio/sanity.types";
 
 export const getVippsAgreementPagePath = async () => {
   const result = await getClient().fetch<FetchVippsResult>(fetchVipps);
@@ -71,7 +68,7 @@ export const VippsAgreementPage = withStaticProps(
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
-        imageAsset={header.seoImage ? header.seoImage.asset : undefined}
+        imageAssetUrl={header.seoImage.url ? header.seoImage.asset.url : undefined}
         canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug.current}}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
@@ -113,8 +110,8 @@ export const VippsAgreementPage = withStaticProps(
 type FetchVippsResult = {
   settings: Array<{
     title: string;
-    cookie_banner_configuration: CookieBannerConfiguration;
-    general_banner: any;
+    cookie_banner_configuration: CookieBannerQueryResult;
+    general_banner: GeneralBannerQueryResult;
   }>;
   vipps?: Array<{
     agreement_page: Record<string, any> & {
