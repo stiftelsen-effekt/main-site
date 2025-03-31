@@ -182,6 +182,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
   };
 
   const goToPreviousStep = (): void => {
+    if (step === 0) return; // Prevent going back from the first step
     // Start transition animation
     setPaneTransition({
       activePane: step,
@@ -424,7 +425,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                       onChange={handleInputChange}
                       placeholder={mergedTexts.nameLabel}
                       required={formData.showName}
-                      maxLength={50}
+                      maxLength={45}
                     />
                   </div>
 
