@@ -37,7 +37,7 @@ export const ArticlesPage = withStaticProps(
   }) => {
     const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
-    let result = await getClient(draftMode ? token : undefined).fetch(fetchArticles);
+    let result = await getClient(draftMode ? token : undefined).fetch(fetchArticlesPage);
 
     return {
       appStaticProps,
@@ -46,7 +46,7 @@ export const ArticlesPage = withStaticProps(
       token: draftMode ? token ?? null : null,
       data: {
         result,
-        query: fetchArticles,
+        query: fetchArticlesPage,
         queryParams: {},
       },
       draftMode,
@@ -63,7 +63,7 @@ export const ArticlesPage = withStaticProps(
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}
-        imageAsset={header.seoImage ? header.seoImage.asset : undefined}
+        imageAssetUrl={header.seoImage?.url ? header.seoImage.asset.url : undefined}
         canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug}`}
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
@@ -123,7 +123,7 @@ export const ArticlesPage = withStaticProps(
   );
 });
 
-const fetchArticles = groq`
+const fetchArticlesPage = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,

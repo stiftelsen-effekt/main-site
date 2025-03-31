@@ -2,28 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
-import { NavLink } from "../../components/Navbar/Navbar";
 import { LinkComponent } from "../../../main/blocks/Links/Links";
 import { HotJar } from "../HotJar";
 import { ConsentState } from "../../../../middleware.page";
 import { setCookie } from "cookies-next";
 import { BannerContext } from "../../../main/layout/layout";
 import { MetaPixel } from "../MetaPixel";
+import { CookieBannerQueryResult } from "../../../../studio/sanity.types";
 
-export type CookieBannerConfiguration = {
-  title: string;
-  description: string;
-  privacy_policy_link: NavLink;
-  accept_button_text: string;
-  decline_button_text: string;
-  last_major_change: string;
-  expired_template: string;
-};
 export const CookieBanner: React.FC<{
-  configuration: CookieBannerConfiguration;
+  configuration: CookieBannerQueryResult;
 }> = ({ configuration }) => {
   const [bannerContext, setBannerContext] = useContext(BannerContext);
-  const [tracking, setTracking] = React.useState(false);
+  const [tracking, setTracking] = useState(false);
 
   // check for plausible_ignore localstorage to disable plausible tracking
   useEffect(() => {
@@ -43,9 +34,11 @@ export const CookieBanner: React.FC<{
   const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID;
   const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
+  const expiredTemplate = configuration.expired_template || "Last updated {date}";
+
   const setConsent = (state: ConsentState) => {
     setCookie("gieffektivt-cookies-accepted", state === "accepted" ? "true" : "false", {
-      sameSite: "strict",
+      sameSite: "lax",
       expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
     });
     setBannerContext((prev) => ({ ...prev, consentState: state }));
@@ -53,10 +46,14 @@ export const CookieBanner: React.FC<{
 
   let privacyPolicyLink = configuration.privacy_policy_link;
 
-  if (bannerContext.consentExpired && bannerContext.privacyPolicyLastMajorChange) {
+  if (
+    bannerContext.consentExpired &&
+    bannerContext.privacyPolicyLastMajorChange &&
+    configuration.privacy_policy_link
+  ) {
     privacyPolicyLink = {
       ...configuration.privacy_policy_link,
-      title: `${configuration.privacy_policy_link.title} ${configuration.expired_template.replace(
+      title: `${configuration.privacy_policy_link.title} ${expiredTemplate.replace(
         "{date}",
         bannerContext.privacyPolicyLastMajorChange.toLocaleDateString("no-NB"),
       )}`,
@@ -81,7 +78,9 @@ export const CookieBanner: React.FC<{
               <p>{configuration.description}</p>
             </div>
             <div className={styles.buttonsWrapper}>
-              <LinkComponent link={privacyPolicyLink} style={{ border: "none" }} />
+              {privacyPolicyLink && (
+                <LinkComponent link={privacyPolicyLink} style={{ border: "none" }} />
+              )}
               <div className={styles.buttons}>
                 <button
                   data-cy="decline-cookies"

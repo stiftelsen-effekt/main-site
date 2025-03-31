@@ -1,0 +1,39 @@
+.header {
+  max-width: 1714px;
+  position: relative;
+  width: 90vw;
+  margin: 0 auto;
+  aspect-ratio: 24 / 9;
+
+  .headerimage {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  .fundraiserimage {
+    /* Round profile picture placed left bottom, slightly pushed down */
+    position: absolute;
+    bottom: -2rem;
+    left: 2rem;
+    border-radius: 50%;
+    z-index: 2;
+    width: 10rem;
+    height: 10rem;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .header {
+    width: 100vw;
+    aspect-ratio: 20 / 9;
+
+    .fundraiserimage {
+      width: 6rem;
+      height: 6rem;
+      bottom: -3rem;
+      left: 5vw;
+    }
+  }
+}

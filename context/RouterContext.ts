@@ -7,6 +7,7 @@ import { getTaxPagePath } from "../pages/dashboard/TaxPage";
 import { getProfilePagePath } from "../pages/dashboard/ProfilePage";
 import { getVippsAnonymousPagePath } from "../pages/dashboard/VippsAnonymousPage";
 import { getResultsPagePath } from "../pages/ResultsPage";
+import { getFundraisersPath } from "../pages/FundraiserPage";
 
 export type RouterContextValue = Awaited<ReturnType<typeof fetchRouterContext>>;
 
@@ -35,6 +36,7 @@ export const fetchRouterContext = async () => {
     taxPagePath: getTaxPagePath(),
     profilePagePath: getProfilePagePath(),
     vippsAnonymousPagePath: getVippsAnonymousPagePath(),
+    fundraisersPath: getFundraisersPath(),
   };
 
   return (await Promise.all(Object.values(promises))).reduce((acc, value, index) => {

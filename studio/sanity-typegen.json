@@ -1,0 +1,5 @@
+{
+  "path": ["../pages/**/*.{ts,tsx,js,jsx}", "./schemas/**/*.{ts,tsx,js,jsx}", "../_queries.ts"],
+  "schema": "schema.json",
+  "generates": "../studio/sanity.types.ts"
+}

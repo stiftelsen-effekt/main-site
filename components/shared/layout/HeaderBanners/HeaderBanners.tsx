@@ -1,13 +1,12 @@
 import React, { useContext, useRef } from "react";
 import { BannerContext } from "../../../main/layout/layout";
-import { CookieBanner, CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
+import { CookieBanner } from "../CookieBanner/CookieBanner";
 import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
-import { Generalbanner } from "../../../../studio/sanity.types";
-import { NavLink } from "../../components/Navbar/Navbar";
+import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 
 export const HeaderBanners: React.FC<{
-  cookieBannerConfig?: CookieBannerConfiguration;
-  generalBannerConfig?: Generalbanner & { link: NavLink };
+  cookieBannerConfig?: CookieBannerQueryResult;
+  generalBannerConfig?: GeneralBannerQueryResult;
 }> = ({ cookieBannerConfig, generalBannerConfig }) => {
   const bannerContainerRef = useRef<HTMLDivElement | null>(null);
   const [bannerContext, setBannerContext] = useContext(BannerContext);

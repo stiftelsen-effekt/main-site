@@ -12,13 +12,14 @@ import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "next-sanity/preview";
 import { ConsentState } from "../../middleware.page";
-import NotFoundPage from "../404.page";
+import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
 
 enum PageType {
   GenericPage = "generic",
   ArticlesPage = "articles",
   ResultsPage = "results",
   ArticlePage = "article",
+  FundraiserPage = "fundraiser",
   VippsAgreementPage = "vipps-agreement",
   VippsAnonymousPage = "vipps-anonymous",
   AgreementsPage = "agreements",
@@ -38,6 +39,8 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
         return <PreviewArticlePage {...(props as any)} />;
       case PageType.ResultsPage:
         return <PreviewResultsPage {...(props as any)} />;
+      case PageType.FundraiserPage:
+        return <PreviewFundraiserPage {...(props as any)} />;
     }
   }
 
@@ -50,6 +53,8 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
       return <ArticlePage {...(props as any)} />;
     case PageType.ResultsPage:
       return <ResultsPage {...(props as any)} />;
+    case PageType.FundraiserPage:
+      return <FundraiserPage {...(props as any)} />;
     case PageType.VippsAgreementPage:
       return <VippsAgreementPage {...(props as any)} />;
     case PageType.AgreementsPage:
@@ -105,6 +110,16 @@ const PreviewResultsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps
   return <ResultsPage {...(props as any)} />;
 };
 
+const PreviewFundraiserPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
+
+  if (result) {
+    props.data.result = result;
+  }
+
+  return <FundraiserPage {...(props as any)} />;
+};
+
 function compareArrays<T>(a: T[], b: T[]) {
   return a.length === b.length && a.every((v, i) => v === b[i]);
 }
@@ -112,6 +127,7 @@ function compareArrays<T>(a: T[], b: T[]) {
 const inferPageTypeFromPath = async (path: string[]) => {
   const {
     articlesPagePath,
+    fundraisersPath,
     resultsPagePath,
     vippsAgreementPagePath,
     dashboardPath,
@@ -130,6 +146,11 @@ const inferPageTypeFromPath = async (path: string[]) => {
     compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath) &&
     path.length > articlesPagePath.length;
   if (isArticle) return PageType.ArticlePage;
+
+  const isFundraiser =
+    compareArrays(path.slice(0, fundraisersPath.length), fundraisersPath) &&
+    path.length > fundraisersPath.length;
+  if (isFundraiser) return PageType.FundraiserPage;
 
   const isArticlesPage = compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath);
   if (isArticlesPage) return PageType.ArticlesPage;
@@ -210,6 +231,23 @@ export const getStaticProps = async (
     case PageType.ArticlePage: {
       const slug = path.slice(1).join("/");
       const props = await ArticlePage.getStaticProps({ draftMode, consentState, slug });
+      return {
+        props: {
+          ...props,
+          pageType,
+          consentState,
+        },
+        revalidate: draftMode ? 1 : 3600,
+      } as const;
+    }
+    case PageType.FundraiserPage: {
+      const slug = path.slice(1).join("/");
+      const props = await FundraiserPage.getStaticProps({ draftMode, consentState, slug });
+      if (!props.data.result.page && !draftMode) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
           ...props,
@@ -305,6 +343,7 @@ export async function getStaticPaths() {
   const basePaths = await Promise.all([
     getGenericPagePaths(),
     getArticlePaths(routerContext.articlesPagePath),
+    getFundraiserPagePaths(routerContext.fundraisersPath),
     getDonationsPageSubpaths(),
     getTaxPageSubPaths(),
   ]).then(([genericPagePaths, articlePaths, donationsPageSubpaths, taxPageSubPaths]) => [

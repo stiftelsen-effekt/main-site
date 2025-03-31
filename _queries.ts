@@ -5,6 +5,7 @@ import { TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
 import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
 import { widgetContentQuery } from "./components/shared/components/Widget/components/Widget";
+import { groq } from "next-sanity";
 
 export interface Query<T> {
   (
@@ -344,22 +345,46 @@ export const linksContentQuery = `links[] {
   ${linksSelectorQuery}
 }`;
 
+export const cookieBannerQueryString = `
+  ...,
+  privacy_policy_link {
+    "_key": coalesce(_id,_key,"id_privacy_policy_link"),
+    _type,
+    title,
+    "slug": page->slug.current,
+    "pagetype": coalesce(page->_type, "generic_page"),
+  }
+`;
+
+export const cookieBannerQuery = groq`
+  *[_type == "site_settings"][0].cookie_banner_configuration {
+    ${cookieBannerQueryString}
+  }
+`;
+
+export const generalBannerQueryString = `
+  ...,
+  link {
+    "_key": coalesce(_id,_key,"id_general_banner_link"),
+    _type,
+    title,
+    "slug": page->slug.current,
+    "pagetype": coalesce(page->_type, "generic_page"),
+  }
+`;
+
+export const generalBannerQuery = groq`
+  *[_type == "site_settings"][0].general_banner-> {
+    ${generalBannerQueryString}
+  }
+`;
+
 export const pageBannersContentQuery = `
   cookie_banner_configuration {
-    ...,
-    privacy_policy_link {
-      ...,
-      "slug": page->slug.current,
-      "pagetype": page->_type,
-    }
+    ${cookieBannerQueryString}
   },
   general_banner-> {
-    ...,
-    link {
-      ...,
-      "slug": page->slug.current,
-      "pagetype": page->_type,
-    }
+    ${generalBannerQueryString}
   }
 `;
 

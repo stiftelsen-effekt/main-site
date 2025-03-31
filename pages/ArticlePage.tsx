@@ -7,10 +7,6 @@ import {
   RelatedArticles,
 } from "../components/main/layout/RelatedArticles/RelatedArticles";
 import { Navbar, NavLink, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
-import {
-  CookieBanner,
-  CookieBannerConfiguration,
-} from "../components/shared/layout/CookieBanner/CookieBanner";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
@@ -21,9 +17,8 @@ import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { Generalbanner } from "../studio/sanity.types";
-import { GeneralBanner } from "../components/shared/layout/GeneralBanner/GeneralBanner";
 import { ConsentState } from "../middleware.page";
+import { GeneralBannerQueryResult, CookieBannerQueryResult } from "../studio/sanity.types";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -53,8 +48,8 @@ export const ArticlePage = withStaticProps(
       relatedArticles: RelatedArticle[];
       settings: {
         title: string;
-        cookie_banner_configuration: CookieBannerConfiguration;
-        general_banner: Generalbanner & { link: NavLink };
+        cookie_banner_configuration: CookieBannerQueryResult;
+        general_banner: GeneralBannerQueryResult;
         donate_label: string;
         accent_color?: string;
       }[];
@@ -91,7 +86,7 @@ export const ArticlePage = withStaticProps(
         title={header.seoTitle || header.title}
         titleTemplate={`%s | ${data.result.settings[0].title}`}
         description={header.seoDescription || header.inngress}
-        imageAsset={header.seoImage ? header.seoImage.asset : undefined}
+        imageAssetUrl={header.seoImage?.url ? header.seoImage.url : undefined}
         canonicalurl={
           header.cannonicalUrl ??
           `${process.env.NEXT_PUBLIC_SITE_URL}/${[...articlesPagePath, page.slug.current].join(

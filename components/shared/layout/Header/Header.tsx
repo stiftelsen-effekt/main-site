@@ -3,28 +3,27 @@ import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
 import { HeaderBanners } from "../HeaderBanners/HeaderBanners";
-import { CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
-import { Generalbanner } from "../../../../studio/sanity.types";
-import { NavLink } from "../../components/Navbar/Navbar";
+import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
   hideOnScroll: boolean;
-  cookieBannerConfig?: CookieBannerConfiguration;
-  generalBannerConfig?: Generalbanner & { link: NavLink };
-}> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig }) => {
+  cookieBannerConfig?: CookieBannerQueryResult;
+  generalBannerConfig?: GeneralBannerQueryResult;
+  alwaysShrink?: boolean;
+}> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig, alwaysShrink }) => {
   const router = useRouter();
 
-  const [navbarShrinked, setNavbarShrinked] = useState(false);
+  const [navbarShrinked, setNavbarShrinked] = useState(alwaysShrink ?? false);
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
   const navBarCheck = useCallback(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && !alwaysShrink) {
       if (window.scrollY > 0) setNavbarShrinked(true);
       else setNavbarShrinked(false);
     }
-  }, [setNavbarShrinked]);
+  }, [setNavbarShrinked, alwaysShrink]);
 
   const navBarVisibleCheck = useCallback(() => {
     if (typeof window !== "undefined") {

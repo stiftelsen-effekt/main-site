@@ -12,7 +12,7 @@
     "installtable": "sanity install table",
     "edit": "export EDITOR=\"code -w\" && node scripts/editDocument.js",
     "list:pages": "node scripts/listPages.js",
-    "typegen": "dotenv -e ../.env.local sanity schema extract && sanity typegen generate"
+    "typegen": "dotenv -e ../.env.local sanity schema extract && sanity typegen generate --config-path sanity-typegen.json"
   },
   "keywords": [
     "sanity"
