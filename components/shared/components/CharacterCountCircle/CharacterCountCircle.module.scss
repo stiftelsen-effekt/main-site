@@ -1,0 +1,54 @@
+.characterCountContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.characterCountCircle {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backgroundCircle {
+  stroke: #e1e8ed;
+}
+
+.progressCircle {
+  stroke: var(--primary);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 0.3s ease-out, stroke 0.3s ease;
+}
+
+.warning {
+  stroke: #ffad1f;
+}
+
+.overLimit {
+  stroke: #e0245e;
+}
+
+// Add styles for appearing/disappearing if needed, e.g.:
+.characterCountCircle-enter {
+  opacity: 0;
+  transform: scale(0.8);
+}
+.characterCountCircle-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.characterCountCircle-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.characterCountCircle-exit-active {
+  opacity: 0;
+  transform: scale(0.8);
+}

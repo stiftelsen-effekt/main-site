@@ -13,6 +13,7 @@ import { API_URL } from "../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../shared/components/Widget/config/anonymous-donor";
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import CharacterCountCircle from "../../../shared/components/CharacterCountCircle/CharacterCountCircle";
 
 // Types for the component props
 interface TextsProps {
@@ -388,18 +389,27 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                   onChange={handleInputChange}
                   placeholder={mergedTexts.donationAmountLabel}
                   required
+                  min={1}
+                  step={1}
                 />
                 <span className={styles["donation-widget__input-group__suffix"]}>kr</span>
               </div>
 
               <div className={styles["donation-widget__input-group"]}>
-                <label htmlFor="message">Valgfri melding</label>
+                <div className={styles["donation-widget__message-header"]}>
+                  <label htmlFor="message">Valgfri melding</label>
+                  {/* Conditionally render the counter */}
+                  {formData.message.length > 0 && (
+                    <CharacterCountCircle count={formData.message.length} max={250} />
+                  )}
+                </div>
                 <textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   placeholder={mergedTexts.messageLabel}
                   onChange={handleInputChange}
+                  maxLength={250}
                 />
               </div>
 
@@ -414,6 +424,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                       onChange={handleInputChange}
                       placeholder={mergedTexts.nameLabel}
                       required={formData.showName}
+                      maxLength={50}
                     />
                   </div>
 

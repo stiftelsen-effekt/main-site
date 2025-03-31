@@ -149,6 +149,17 @@
     }
   }
 
+  &__message-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
   &__checkbox-group {
     display: flex;
     align-items: center;
