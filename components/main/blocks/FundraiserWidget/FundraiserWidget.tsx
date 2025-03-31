@@ -111,7 +111,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     accountNumberPrefix: "Kontonr:",
     accountNumber: "1506 29 95960",
     kidPrefix: "KID:",
-    transferDelayText: "Det kan ta opp til 3 dager før donasjoner gjennom bank dukker prosesseres.",
+    transferDelayText: "Det kan ta opp til 3 dager før donasjoner gjennom bank prosesseres.",
     accountOwnerText:
       "Merk: Kontoen eies av Effektiv Altruisme Norge som samarbeider om driften av Gi Effektivt.",
   };
