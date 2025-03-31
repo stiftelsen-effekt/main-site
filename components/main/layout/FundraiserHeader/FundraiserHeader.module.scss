@@ -1,10 +1,9 @@
 .header {
   max-width: 1714px;
   position: relative;
-  height: 30rem;
-  width: 100%;
   width: 90vw;
   margin: 0 auto;
+  aspect-ratio: 24 / 9;
 
   .headerimage {
     position: relative;
@@ -28,7 +27,7 @@
 @media only screen and (max-width: 1180px) {
   .header {
     width: 100vw;
-    height: 20rem;
+    aspect-ratio: 21 / 9;
 
     .fundraiserimage {
       width: 6rem;

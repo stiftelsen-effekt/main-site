@@ -193,10 +193,10 @@ export const FundraiserPage = withStaticProps(
         ></FundraiserHeader>
       )}
 
-      <h3 className={styles.mobiletitle}>{page.title}</h3>
+      <h1 className={styles.mobiletitle}>{page.title}</h1>
       <div className={styles.fundraisercontainer}>
         <div className={styles.fundraiserdescription}>
-          <h4>{page.title}</h4>
+          <h1>{page.title}</h1>
           <SectionBlockContentRenderer blocks={page.description} />
         </div>
 
