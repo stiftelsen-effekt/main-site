@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import ReactAnimateHeight from "react-animate-height";
 import styles from "./FundraiserWidget.module.scss";
 import { useMultipleElementHeights } from "../../../../hooks/useElementHeight";
@@ -458,14 +458,12 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                   }}
                 >
                   {mergedTexts.anonymousDonationLabel}{" "}
-                  <span className={styles["donation-widget__checkbox-group__popup-trigger"]}>
-                    ?
-                  </span>{" "}
-                  <div className={styles["donation-widget__checkbox-group__popup"]}>
-                    Donerer du anonymt knyttes ikke donasjonen til din epost. Dette betyr at du ikke
-                    vil motta kvittering eller informasjon om donasjonen.
-                  </div>
                 </EffektCheckbox>
+                <span className={styles["donation-widget__checkbox-group__popup-trigger"]}>?</span>{" "}
+                <div className={styles["donation-widget__checkbox-group__popup"]}>
+                  Donerer du anonymt knyttes ikke donasjonen til din epost. Dette betyr at du ikke
+                  vil motta kvittering eller informasjon om donasjonen.
+                </div>
               </div>
 
               {!formData.anonymous && (
