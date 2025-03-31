@@ -114,16 +114,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
       "Merk: Kontoen eies av Effektiv Altruisme Norge som samarbeider om driften av Gi Effektivt.",
   };
 
-  if (!organizationInfo.organization) {
-    return "Missing organization info";
-  }
-  if (!organizationInfo.organization.logo) {
-    return "Missing organization logo";
-  }
-  if (!organizationInfo.organization.name) {
-    return "Missing organization name";
-  }
-
   // Merge default texts with provided texts
   const mergedTexts = { ...defaultTexts, ...texts };
 
@@ -302,6 +292,16 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
       return match;
     });
   };
+
+  if (!organizationInfo.organization) {
+    return "Missing organization info";
+  }
+  if (!organizationInfo.organization.logo) {
+    return "Missing organization logo";
+  }
+  if (!organizationInfo.organization.name) {
+    return "Missing organization name";
+  }
 
   return (
     <div className={styles["donation-widget"]}>
