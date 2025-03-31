@@ -1,7 +1,7 @@
 .container {
   padding: 0 0;
   margin: 0 auto;
-  /* padding-top: 262px; */
+  padding-top: 262px;
 }
 
 .modalOpen {
@@ -24,13 +24,13 @@
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .container {
-    /* padding-top: 200px; */
+    padding-top: 90px;
   }
 }
 
 @media only screen and (max-width: 1180px) {
   .container {
-    /* padding-top: 190px; */
+    padding-top: 190px;
   }
 }
 

@@ -134,6 +134,18 @@ export const FundraiserPage = withStaticProps(
     return <div>Missing fundraiser organization page slug</div>;
   }
 
+  if (!page.fundraiser_organization?.widget_button) {
+    return <div>Missing fundraiser organization widget button</div>;
+  }
+
+  if (!page.fundraiser_organization?.widget_button?.cause_area_id) {
+    return <div>Missing fundraiser organization cause area ID</div>;
+  }
+
+  if (!page.fundraiser_organization?.widget_button?.organization_id) {
+    return <div>Missing fundraiser organization ID</div>;
+  }
+
   function getValidImage(image: any) {
     if (image !== null && image.asset !== null) {
       return {
@@ -184,7 +196,7 @@ export const FundraiserPage = withStaticProps(
       <h3 className={styles.mobiletitle}>{page.title}</h3>
       <div className={styles.fundraisercontainer}>
         <div className={styles.fundraiserdescription}>
-          <h3>{page.title}</h3>
+          <h4>{page.title}</h4>
           <SectionBlockContentRenderer blocks={page.description} />
         </div>
 
@@ -201,10 +213,11 @@ export const FundraiserPage = withStaticProps(
               textTemplate: page.fundraiser_organization_text_template || "{org}",
               organizationPageSlug: page.fundraiser_organization.organization_page.slug.current,
               databaseIds: {
-                causeAreaId: 1,
-                organizationId: 1,
+                causeAreaId: page.fundraiser_organization.widget_button.cause_area_id,
+                organizationId: page.fundraiser_organization.widget_button.organization_id,
               },
             }}
+            suggestedSums={page.fundraiser_widget_config?.suggested_amounts}
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
@@ -245,6 +258,10 @@ const fetchFundraiser = groq`
     fundraiser_organization -> {
       name,
       logo { asset-> },
+      widget_button {
+        cause_area_id,
+        organization_id,
+      },
       organization_page -> {
         slug { current }
       }
