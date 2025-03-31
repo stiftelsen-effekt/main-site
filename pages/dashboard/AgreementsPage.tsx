@@ -30,7 +30,7 @@ import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../middleware.page";
-import { CookieBannerConfiguration } from "../../components/shared/layout/CookieBanner/CookieBanner";
+import { CookieBannerQueryResult } from "../../studio/sanity.types";
 
 export async function getAgreementsPagePath() {
   const result = await getClient().fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
@@ -316,7 +316,7 @@ type AgreementsPageData = {
 type FetchAgreementsPageResult = {
   settings: Array<{
     title?: string;
-    cookie_banner_configuration?: CookieBannerConfiguration;
+    cookie_banner_configuration?: CookieBannerQueryResult;
   }>;
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   page?: AgreementsPageData;
