@@ -12,6 +12,7 @@ import Link from "next/link";
 import { API_URL } from "../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../shared/components/Widget/config/anonymous-donor";
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
+import { Spinner } from "../../../shared/components/Spinner/Spinner";
 
 // Types for the component props
 interface TextsProps {
@@ -36,7 +37,6 @@ interface TextsProps {
   accountNumberPrefix: string;
   accountNumber: string;
   kidPrefix: string;
-  kidNumber: string;
   transferDelayText: string;
   accountOwnerText: string;
 }
@@ -108,8 +108,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     accountNumberPrefix: "Kontonr:",
     accountNumber: "1506 29 95960",
     kidPrefix: "KID:",
-    kidNumber: "34944223",
-    transferDelayText: "Det kan ta opp til X dager før donasjoner gjennom bank dukker opp.",
+    transferDelayText: "Det kan ta opp til 3 dager før donasjoner gjennom bank dukker prosesseres.",
     accountOwnerText:
       "Merk: Kontoen eies av Effektiv Altruisme Norge som samarbeider om driften av Gi Effektivt.",
   };
@@ -131,7 +130,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     anonymous: false,
     taxDeduction: false,
     newsletter: false,
-    paymentMethod: "bank",
+    paymentMethod: "vipps",
   });
 
   const [paneTransition, setPaneTransition] = useState<TransitionState>({
@@ -229,6 +228,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
   };
 
   const registerDonation = () => {
+    setLoading(true);
     fetch(`${API_URL}/donations/register`, {
       headers: {
         accept: "application/json",
@@ -288,7 +288,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
   const parseTemplate = (template: string): string => {
     return template.replace(/\{(\w+)\}/g, (match, key) => {
       if (key === "accountNumber") return mergedTexts.accountNumber;
-      if (key === "KID") return mergedTexts.kidNumber;
       return match;
     });
   };
@@ -510,7 +509,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                       <input
                         id="ssn"
                         name="ssn"
-                        type="ssn"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         value={formData.ssn}
                         onChange={handleInputChange}
                         required={formData.taxDeduction}
@@ -538,8 +539,8 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
               <div className={styles["donation-widget__payment-options"]}>
                 <RadioButtonGroup
                   options={[
-                    { title: mergedTexts.payWithBankLabel, value: PaymentMethod.BANK },
                     { title: mergedTexts.payWithVippsLabel, value: PaymentMethod.VIPPS },
+                    { title: mergedTexts.payWithBankLabel, value: PaymentMethod.BANK },
                   ]}
                   selected={
                     formData.paymentMethod === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS
@@ -554,11 +555,13 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
               </div>
 
               <button type="submit" className={styles["donation-widget__button"]}>
-                {loading
-                  ? "Laster..."
-                  : formData.paymentMethod === "bank"
-                  ? mergedTexts.bankButtonText
-                  : mergedTexts.payWithVippsLabel}
+                {loading ? (
+                  <Spinner className={styles["donation-widget__spinner"]} />
+                ) : formData.paymentMethod === "bank" ? (
+                  mergedTexts.bankButtonText
+                ) : (
+                  mergedTexts.payWithVippsLabel
+                )}
               </button>
             </form>
           </div>
