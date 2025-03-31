@@ -5,7 +5,7 @@
   width: 90vw;
   margin: 0 auto;
   margin-top: 5rem;
-  max-width: 90vw;
+  max-width: 1714px;
 }
 
 .fundraisercontainer .fundraiserdescription {
@@ -39,6 +39,7 @@
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 1.5rem;
+    max-width: 90vw;
   }
 
   .fundraisercontainer .fundraiserdescription {

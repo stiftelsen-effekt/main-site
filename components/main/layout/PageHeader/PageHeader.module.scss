@@ -1,6 +1,6 @@
 .pageheader {
   padding: 0 5vw;
-  min-height: calc(80vh - 300px);
+  min-height: calc(80vh - 200px);
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 80px;
@@ -26,7 +26,8 @@
 
 .pageheader.hero,
 .pageheader.pageheadermeta.hero {
-  min-height: calc(80vh - 300px);
+  min-height: calc(80vh - 200px);
+  padding-top: 100px;
   grid-template-columns: 1fr;
   align-items: center;
   align-content: center;
