@@ -603,13 +603,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
 
                 <p>{parseTemplate(mergedTexts.transferDelayText)}</p>
                 <p>{parseTemplate(mergedTexts.accountOwnerText)}</p>
-
-                <button
-                  className={styles["donation-widget__button"]}
-                  onClick={() => onComplete(formData)}
-                >
-                  {mergedTexts.transferCompletedText}
-                </button>
               </div>
             )}
           </div>
