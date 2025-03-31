@@ -2,13 +2,10 @@ import { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import style from "./FundraiserGiftActivity.module.scss";
 import { thousandize } from "../../../../util/formatting";
+import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 
 export const FundraiserGiftActivity: React.FC<{
-  config: {
-    title: string;
-    gift_amount_text_template: string;
-    show_more_text_template: string;
-  };
+  config: NonNullable<FetchFundraiserResult["page"]>["gift_activity_config"];
   donations: {
     amount: number;
     name: string | null;
@@ -16,6 +13,10 @@ export const FundraiserGiftActivity: React.FC<{
   }[];
 }> = ({ donations, config }) => {
   const [currentlyShowing, setCurrentlyShowing] = useState(5);
+
+  if (!config) return "Missing config for fundraiser gift activity";
+  if (!config.gift_amount_text_template) return "Missing gift amount text template";
+  if (!config.show_more_text_template) return "Missing show more text template";
 
   const showMoreText = config.show_more_text_template.replace(
     "{count}",
@@ -36,7 +37,7 @@ export const FundraiserGiftActivity: React.FC<{
 
   const getHeaderText = (name: string | null, amount: number) => {
     if (name) {
-      return config.gift_amount_text_template
+      return (config.gift_amount_text_template as string)
         .replace("{name}", name)
         .replace("{sum}", thousandize(amount));
     }

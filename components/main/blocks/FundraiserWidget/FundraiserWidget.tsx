@@ -11,6 +11,7 @@ import { PaymentMethod } from "../../../shared/components/Widget/types/Enums";
 import Link from "next/link";
 import { API_URL } from "../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../shared/components/Widget/config/anonymous-donor";
+import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 
 // Types for the component props
 interface TextsProps {
@@ -58,10 +59,9 @@ interface DonationWidgetProps {
   texts?: Partial<TextsProps>;
   fundraiserId: number;
   organizationInfo: {
-    name: string;
-    logo: SanityImageObject;
+    organizationPageSlug: string;
     textTemplate: string;
-    organizationSlug: string;
+    organization: NonNullable<FetchFundraiserResult["page"]>["fundraiser_organization"];
     databaseIds: {
       causeAreaId: number;
       organizationId: number;
@@ -113,6 +113,16 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     accountOwnerText:
       "Merk: Kontoen eies av Effektiv Altruisme Norge som samarbeider om driften av Gi Effektivt.",
   };
+
+  if (!organizationInfo.organization) {
+    return "Missing organization info";
+  }
+  if (!organizationInfo.organization.logo) {
+    return "Missing organization logo";
+  }
+  if (!organizationInfo.organization.name) {
+    return "Missing organization name";
+  }
 
   // Merge default texts with provided texts
   const mergedTexts = { ...defaultTexts, ...texts };
@@ -251,7 +261,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
         donor: formData.anonymous
           ? ANONYMOUS_DONOR
           : {
-              name: formData.name || formData.messageSenderName,
+              name: formData.name,
               email: formData.email,
               taxDeduction: formData.taxDeduction,
               ssn: formData.ssn,
@@ -320,10 +330,10 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
             style={{ display: isPaneVisible(0) ? "block" : "none" }}
           >
             <FundraiserOrganizationInfo
-              name={organizationInfo.name}
-              logo={organizationInfo.logo}
+              name={organizationInfo.organization.name}
+              logo={organizationInfo.organization.logo as SanityImageObject}
               textTemplate={organizationInfo.textTemplate}
-              organizationSlug={organizationInfo.organizationSlug}
+              organizationSlug={organizationInfo.organizationPageSlug}
             ></FundraiserOrganizationInfo>
             <button
               type="submit"

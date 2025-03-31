@@ -1,15 +1,18 @@
 import { thousandize } from "../../../../util/formatting";
 import styles from "./FundraiserProgressBar.module.scss";
+import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 
 export const FundraiserProgressBar: React.FC<{
-  config: {
-    goal: number;
-    current_amount_text_template: string;
-    goal_amount_text_template: string;
-  };
+  config: NonNullable<FetchFundraiserResult["page"]>["fundraiser_goal_config"];
   currentAmount: number;
 }> = ({ config, currentAmount }) => {
+  if (!config) return "Missing config for fundraiser progress bar";
+
   const { goal, current_amount_text_template, goal_amount_text_template } = config;
+
+  if (!goal) return "Missing goal";
+  if (!current_amount_text_template) return "Missing current amount text template";
+  if (!goal_amount_text_template) return "Missing goal amount text template";
 
   const currentAmountText = current_amount_text_template
     .replace("{amount}", thousandize(currentAmount))

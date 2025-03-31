@@ -3,15 +3,13 @@ import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
 import { HeaderBanners } from "../HeaderBanners/HeaderBanners";
-import { CookieBannerConfiguration } from "../CookieBanner/CookieBanner";
-import { Generalbanner } from "../../../../studio/sanity.types";
-import { NavLink } from "../../components/Navbar/Navbar";
+import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
   hideOnScroll: boolean;
-  cookieBannerConfig?: CookieBannerConfiguration;
-  generalBannerConfig?: Generalbanner & { link: NavLink };
+  cookieBannerConfig?: CookieBannerQueryResult;
+  generalBannerConfig?: GeneralBannerQueryResult;
   alwaysShrink?: boolean;
 }> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig, alwaysShrink }) => {
   const router = useRouter();

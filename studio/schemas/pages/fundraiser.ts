@@ -10,6 +10,7 @@ export default {
       name: "title",
       title: "Title",
       type: "string",
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "header_image",
@@ -18,17 +19,20 @@ export default {
       options: {
         hotspot: true,
       },
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "fundraiser_image",
       title: "Fundraiser image",
       type: "image",
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "fundraiser_organization",
       title: "Fundraiser organization",
       type: "reference",
       to: [{ type: "organization" }],
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "fundraiser_organization_text_template",
@@ -61,6 +65,7 @@ export default {
           description: "Template for the goal amount text. Use {goal} to insert the goal amount.",
         },
       ],
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "fundraiser_widget_config",

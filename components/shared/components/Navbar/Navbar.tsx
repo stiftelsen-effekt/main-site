@@ -20,9 +20,9 @@ import { useLiveQuery } from "next-sanity/preview";
 export type NavLink = {
   _type: "navitem";
   _key: string;
-  title?: string;
+  title?: string | null;
   pagetype?: string;
-  slug?: string;
+  slug?: string | null;
 };
 
 export type MainNavbarGroup = {

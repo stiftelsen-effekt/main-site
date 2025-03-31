@@ -4,8 +4,7 @@ import {
   BlockContentRenderer,
   SectionBlockContentRenderer,
 } from "../components/main/blocks/BlockContentRenderer";
-import { Navbar, NavLink, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
-import { CookieBannerConfiguration } from "../components/shared/layout/CookieBanner/CookieBanner";
+import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
@@ -14,7 +13,7 @@ import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
-import { Generalbanner } from "../studio/sanity.types";
+import { FetchFundraiserResult } from "../studio/sanity.types";
 import { ConsentState } from "../middleware.page";
 import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/FundraiserHeader";
 import styles from "../styles/Fundraisers.module.css";
@@ -65,16 +64,26 @@ export const FundraiserPage = withStaticProps(
       showGiveButton: false,
     });
 
-    let result = await getClient(draftMode ? token : undefined).fetch<{
-      page: any;
-      settings: {
-        title: string;
-        cookie_banner_configuration: CookieBannerConfiguration;
-        general_banner: Generalbanner & { link: NavLink };
-        donate_label: string;
-        accent_color?: string;
-      }[];
-    }>(fetchFundraiser, { slug });
+    let result = await getClient(draftMode ? token : undefined).fetch<FetchFundraiserResult>(
+      fetchFundraiser,
+      { slug },
+    );
+
+    if (!result.page) {
+      return {
+        appStaticProps,
+        navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
+        draftMode,
+        preview: draftMode,
+        token: draftMode ? token ?? null : null,
+        data: {
+          result,
+          query: fetchFundraiser,
+          queryParams: { slug },
+        },
+        fundraiserData: null,
+      } satisfies GeneralPageProps;
+    }
 
     const fundraiserId = result.page.fundraiser_database_id;
 
@@ -113,21 +122,47 @@ export const FundraiserPage = withStaticProps(
     return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
   }
 
+  if (!fundraiserData) {
+    return <div>Failed to fetch fundraiser data</div>;
+  }
+
+  if (!page.fundraiser_database_id) {
+    return <div>Missing fundraiser database ID</div>;
+  }
+
+  if (!page.fundraiser_organization?.organization_page?.slug?.current) {
+    return <div>Missing fundraiser organization page slug</div>;
+  }
+
+  function getValidImage(image: any) {
+    if (image !== null && image.asset !== null) {
+      return {
+        asset: {
+          _id: image.asset._id,
+          url: image.asset.url || undefined,
+        },
+      };
+    }
+    return null;
+  }
+  const headerImage = getValidImage(page.header_image);
+  const fundraiserImage = getValidImage(page.fundraiser_image);
+
   const content = page.content;
 
   return (
     <>
       <SEO
-        title={page.title}
+        title={page.title || data.result.settings[0].title || ""}
         titleTemplate={`%s | ${data.result.settings[0].title}`}
         description={""} // TODO
-        imageAsset={page.headerImage ? page.headerImage.asset : undefined}
+        imageAssetUrl={page.header_image ? page.header_image.asset?.url : undefined}
         canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${[
           ...fundraisersPath,
-          page.slug.current,
+          page.slug ? page.slug.current : "",
         ].join("/")}`}
         keywords={""} // TODO
-        siteName={data.result.settings[0].title}
+        siteName={data.result.settings[0].title || ""}
       />
 
       <MainHeader
@@ -139,10 +174,12 @@ export const FundraiserPage = withStaticProps(
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 
-      <FundraiserHeader
-        headerImage={page.header_image}
-        fundraiserImage={page.fundraiser_image}
-      ></FundraiserHeader>
+      {headerImage && fundraiserImage && (
+        <FundraiserHeader
+          headerImage={headerImage}
+          fundraiserImage={fundraiserImage}
+        ></FundraiserHeader>
+      )}
 
       <h3 className={styles.mobiletitle}>{page.title}</h3>
       <div className={styles.fundraisercontainer}>
@@ -160,10 +197,9 @@ export const FundraiserPage = withStaticProps(
           <FundraiserWidget
             fundraiserId={page.fundraiser_database_id}
             organizationInfo={{
-              name: page.fundraiser_organization.name,
-              logo: page.fundraiser_organization.logo,
-              textTemplate: page.fundraiser_organization_text_template,
-              organizationSlug: page.fundraiser_organization.organization_page.slug.current,
+              organization: page.fundraiser_organization,
+              textTemplate: page.fundraiser_organization_text_template || "{org}",
+              organizationPageSlug: page.fundraiser_organization.organization_page.slug.current,
               databaseIds: {
                 causeAreaId: 1,
                 organizationId: 1,
@@ -203,6 +239,7 @@ const fetchFundraiser = groq`
     ...,
     header_image { asset-> {
       _id,
+      url,
     }},
     fundraiser_image { asset-> },
     fundraiser_organization -> {

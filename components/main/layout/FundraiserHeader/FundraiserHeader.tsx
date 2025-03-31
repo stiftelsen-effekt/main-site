@@ -1,5 +1,4 @@
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
-import { SanityImageAsset } from "../../../../studio/sanity.types";
 import styles from "./FundraiserHeader.module.scss";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 

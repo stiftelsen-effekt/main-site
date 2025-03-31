@@ -7,14 +7,14 @@ export const SEO: React.FC<SEOMeta> = ({
   titleTemplate = "Gi Effektivt. | %s",
   description,
   canonicalurl,
-  imageAsset,
+  imageAssetUrl,
   keywords,
   siteName,
 }) => {
   const images = [];
-  if (imageAsset)
+  if (imageAssetUrl)
     images.push({
-      url: imageAsset.url + "?w=1200&h=630&fit=crop",
+      url: imageAssetUrl + "?w=1200&h=630&fit=crop",
       width: 1200,
       height: 630,
       alt: title,

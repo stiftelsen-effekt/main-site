@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styles from "./GeneralBanner.module.scss";
-import { Generalbanner } from "../../../../studio/sanity.types";
-import { NavLink } from "../../components/Navbar/Navbar";
+import { GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 import { CustomLink } from "../../components/CustomLink/CustomLink";
 import { BannerContext } from "../../../main/layout/layout";
 import { usePlausible } from "next-plausible";
 
-export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: NavLink } }> = ({
+export const GeneralBanner: React.FC<{ configuration: GeneralBannerQueryResult }> = ({
   configuration,
 }) => {
   const plausible = usePlausible();
   const [bannerContext, setBannerContext] = useContext(BannerContext);
 
+  if (!configuration) return null;
+  if (!configuration.link) return null;
   if (bannerContext.generalBannerDismissed) return null;
 
   return (
@@ -21,7 +22,7 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
         onClick={() => {
           plausible("GeneralBannerClick", {
             props: {
-              link: configuration.link.slug,
+              link: configuration.link?.slug,
             },
           });
           setBannerContext((prev) => ({
@@ -45,7 +46,7 @@ export const GeneralBanner: React.FC<{ configuration: Generalbanner & { link: Na
                   e.preventDefault();
                   plausible("GeneralBannerDismissed", {
                     props: {
-                      link: configuration.link.slug,
+                      link: configuration.link?.slug,
                     },
                   });
                   setBannerContext((prev) => ({
