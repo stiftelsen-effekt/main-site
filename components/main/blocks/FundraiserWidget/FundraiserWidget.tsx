@@ -14,6 +14,8 @@ import { ANONYMOUS_DONOR } from "../../../shared/components/Widget/config/anonym
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import CharacterCountCircle from "../../../shared/components/CharacterCountCircle/CharacterCountCircle";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
+import { LinkComponent, LinkType } from "../Links/Links";
 
 // Types for the component props
 interface TextsProps {
@@ -28,7 +30,6 @@ interface TextsProps {
   taxDeductionLabel: string;
   newsletterLabel: string;
   privacyPolicyText: string;
-  privacyPolicyUrl: string;
   payWithBankLabel: string;
   payWithVippsLabel: string;
   nextButtonText: string;
@@ -68,6 +69,7 @@ interface DonationWidgetProps {
       organizationId: number;
     };
   };
+  privacyPolicyUrl: NavLink;
   suggestedSums?: number[];
   onComplete?: (formData: FormData) => void;
 }
@@ -83,6 +85,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
   texts = {},
   fundraiserId,
   organizationInfo,
+  privacyPolicyUrl,
   suggestedSums = [100, 250, 800],
   onComplete = () => {},
 }) => {
@@ -99,7 +102,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     taxDeductionLabel: "Jeg ønsker skattefradrag",
     newsletterLabel: "Jeg ønsker å melde meg på nyhetsbrevet",
     privacyPolicyText: "Her finner du vår personvernserklæring",
-    privacyPolicyUrl: "#",
     payWithBankLabel: "Gi med bank",
     payWithVippsLabel: "Gi med Vipps",
     nextButtonText: "Neste",
@@ -546,7 +548,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
               )}
 
               <div className={styles["donation-widget__privacy-link"]}>
-                <Link href={mergedTexts.privacyPolicyUrl}>{mergedTexts.privacyPolicyText} ↗</Link>
+                <LinkComponent link={privacyPolicyUrl} newtab>
+                  {mergedTexts.privacyPolicyText + " ↗"}
+                </LinkComponent>
               </div>
               <div className={styles["donation-widget__payment-options"]}>
                 <RadioButtonGroup

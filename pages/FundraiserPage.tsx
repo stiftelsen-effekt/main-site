@@ -4,7 +4,7 @@ import {
   BlockContentRenderer,
   SectionBlockContentRenderer,
 } from "../components/main/blocks/BlockContentRenderer";
-import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
+import { Navbar, NavLink, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
 import { useRouterContext } from "../context/RouterContext";
@@ -13,7 +13,7 @@ import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
-import { FetchFundraiserResult } from "../studio/sanity.types";
+import { FetchFundraiserResult, Navitem } from "../studio/sanity.types";
 import { ConsentState } from "../middleware.page";
 import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/FundraiserHeader";
 import styles from "../styles/Fundraisers.module.css";
@@ -218,6 +218,10 @@ export const FundraiserPage = withStaticProps(
               },
             }}
             suggestedSums={page.fundraiser_widget_config?.suggested_amounts}
+            privacyPolicyUrl={
+              data.result.settings[0].cookie_banner_configuration
+                ?.privacy_policy_link as unknown as NavLink
+            }
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
@@ -246,7 +250,7 @@ const fetchFundraiser = groq`
     title,
     ${pageBannersContentQuery},
     donate_label,
-    accent_color
+    accent_color,
   },
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,

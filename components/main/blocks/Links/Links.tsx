@@ -43,21 +43,21 @@ export const LinkComponent: React.FC<{
   link: LinkType | NavLink;
   children?: string;
   style?: CSSProperties;
-}> = ({ link, children, style }) => {
+  newtab?: boolean;
+}> = ({ link, children, style, newtab }) => {
   const { articlesPagePath } = useRouterContext();
+  const openInNewTab = (link._type === "link" && link.newtab) || newtab;
 
   return (
     <Link
       href={getHref(link, articlesPagePath)}
-      target={link._type === "link" && link.newtab ? "_blank" : ""}
+      target={openInNewTab ? "_blank" : ""}
       onClick={(e) => {
         e.currentTarget.blur();
       }}
       style={style}
     >
-      {link.title
-        ? `→ ${link.title}`
-        : `${children}${link._type === "link" && link.newtab ? " ↗" : ""}`}
+      {link.title ? `→ ${link.title}` : `${children}${openInNewTab ? " ↗" : ""}`}
     </Link>
   );
 };
