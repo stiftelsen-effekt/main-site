@@ -28781,6 +28781,39 @@
         },
         "optional": true
       },
+      "fundraiser_matching_config": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "ceiling": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "number"
+              },
+              "optional": true
+            },
+            "factor": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "number"
+              },
+              "optional": true
+            },
+            "excluded": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "array",
+                "of": {
+                  "type": "number"
+                }
+              },
+              "optional": true
+            }
+          }
+        },
+        "optional": true
+      },
       "fundraiser_widget_config": {
         "type": "objectAttribute",
         "value": {

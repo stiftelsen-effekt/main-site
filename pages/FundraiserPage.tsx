@@ -19,8 +19,12 @@ import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/Fun
 import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
-import FundraiserWidget from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
+import FundraiserWidget, {
+  FundraiserWidgetMatchingConfig,
+} from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
 import { API_URL } from "../components/shared/components/Widget/config/api";
+import { data } from "cypress/types/jquery";
+import { useState } from "react";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -87,10 +91,11 @@ export const FundraiserPage = withStaticProps(
 
     const fundraiserId = result.page.fundraiser_database_id;
 
-    const fundraiserData: {
+    let fundraiserData: {
       totalSum: number;
       donationCount: number;
       transactions: {
+        id: number;
         name: string | null;
         message: string | null;
         amount: number;
@@ -99,6 +104,36 @@ export const FundraiserPage = withStaticProps(
     } = await fetch(`${API_URL}/fundraisers/${fundraiserId}`)
       .then((res) => res.json())
       .then((data) => data.content);
+
+    let augmentedData = {
+      ...fundraiserData,
+      matchingSum: 0,
+      donationsSum: fundraiserData.totalSum,
+    };
+    if (result.page?.fundraiser_matching_config) {
+      let nonExcludedTransactions = fundraiserData.transactions;
+
+      if (result.page.fundraiser_matching_config.excluded) {
+        nonExcludedTransactions = fundraiserData.transactions.filter(
+          (transaction) =>
+            !result.page?.fundraiser_matching_config?.excluded?.includes(transaction.id),
+        );
+      }
+
+      const factor: number | undefined = result.page.fundraiser_matching_config.factor;
+      if (factor) {
+        let matchingSum = nonExcludedTransactions.reduce(
+          (sum, transaction) => sum + transaction.amount * factor,
+          0,
+        );
+
+        augmentedData = {
+          ...augmentedData,
+          matchingSum: matchingSum,
+          totalSum: fundraiserData.totalSum + matchingSum,
+        };
+      }
+    }
 
     return {
       appStaticProps,
@@ -111,7 +146,7 @@ export const FundraiserPage = withStaticProps(
         query: fetchFundraiser,
         queryParams: { slug },
       },
-      fundraiserData,
+      fundraiserData: augmentedData,
     } satisfies GeneralPageProps;
   },
 )(({ data, fundraiserData, navbar, draftMode }) => {
@@ -160,6 +195,16 @@ export const FundraiserPage = withStaticProps(
   const headerImage = getValidImage(page.header_image);
   const fundraiserImage = getValidImage(page.fundraiser_image);
 
+  let matchingConfig: FundraiserWidgetMatchingConfig | undefined = undefined;
+  if (page.fundraiser_matching_config && page.fundraiser_matching_config.factor) {
+    matchingConfig = {
+      maxMatching: page.fundraiser_matching_config.ceiling
+        ? Math.max(page.fundraiser_matching_config.ceiling - fundraiserData.matchingSum, 0)
+        : undefined,
+      factor: page.fundraiser_matching_config.factor,
+    };
+  }
+
   const content = page.content;
 
   return (
@@ -167,13 +212,13 @@ export const FundraiserPage = withStaticProps(
       <SEO
         title={page.title || data.result.settings[0].title || ""}
         titleTemplate={`%s | ${data.result.settings[0].title}`}
-        description={""} // TODO
+        description={""}
         imageAssetUrl={page.header_image ? page.header_image.asset?.url : undefined}
         canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${[
           ...fundraisersPath,
           page.slug ? page.slug.current : "",
         ].join("/")}`}
-        keywords={""} // TODO
+        keywords={""}
         siteName={data.result.settings[0].title || ""}
       />
 
@@ -204,6 +249,8 @@ export const FundraiserPage = withStaticProps(
           <FundraiserProgressBar
             config={page.fundraiser_goal_config}
             currentAmount={fundraiserData.totalSum}
+            matchingAmount={fundraiserData.matchingSum}
+            matchingCeiling={page.fundraiser_matching_config?.ceiling}
           ></FundraiserProgressBar>
 
           <FundraiserWidget
@@ -222,6 +269,7 @@ export const FundraiserPage = withStaticProps(
               data.result.settings[0].cookie_banner_configuration
                 ?.privacy_policy_link as unknown as NavLink
             }
+            matchingConfig={matchingConfig}
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
