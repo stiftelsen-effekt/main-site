@@ -8,7 +8,6 @@ import AnimateHeight from "react-animate-height";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
 import { PaymentMethod } from "../../../shared/components/Widget/types/Enums";
-import Link from "next/link";
 import { API_URL } from "../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../shared/components/Widget/config/anonymous-donor";
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
@@ -18,7 +17,6 @@ import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { LinkComponent, LinkType } from "../Links/Links";
 import { thousandize } from "../../../../util/formatting";
 import { NumericFormat } from "react-number-format";
-import { values } from "cypress/types/lodash";
 
 // Types for the component props
 interface TextsProps {

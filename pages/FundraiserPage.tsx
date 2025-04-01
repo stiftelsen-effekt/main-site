@@ -23,8 +23,6 @@ import FundraiserWidget, {
   FundraiserWidgetMatchingConfig,
 } from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
 import { API_URL } from "../components/shared/components/Widget/config/api";
-import { data } from "cypress/types/jquery";
-import { useState } from "react";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
