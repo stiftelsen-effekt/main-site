@@ -6,6 +6,20 @@
   margin-top: 1rem;
   will-change: height;
 
+  &__matching-info__container {
+    transform: translateY(-1.5rem);
+  }
+
+  &__matching-info {
+    font-size: 0.8rem;
+    background: var(--primary);
+    color: var(--secondary);
+    padding: 0.75rem 0.5rem 0.25rem 0.5rem;
+    z-index: 0;
+    position: relative;
+    border-radius: 8px;
+  }
+
   &__back-button {
     position: absolute;
     left: 0;
@@ -91,6 +105,7 @@
   &__input-group {
     margin-bottom: 1rem;
     position: relative;
+    z-index: 1;
 
     label {
       display: block;

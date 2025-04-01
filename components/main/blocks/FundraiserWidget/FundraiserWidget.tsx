@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactAnimateHeight from "react-animate-height";
 import styles from "./FundraiserWidget.module.scss";
 import { useMultipleElementHeights } from "../../../../hooks/useElementHeight";
@@ -8,7 +8,6 @@ import AnimateHeight from "react-animate-height";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
 import { PaymentMethod } from "../../../shared/components/Widget/types/Enums";
-import Link from "next/link";
 import { API_URL } from "../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../shared/components/Widget/config/anonymous-donor";
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
@@ -16,6 +15,8 @@ import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import CharacterCountCircle from "../../../shared/components/CharacterCountCircle/CharacterCountCircle";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { LinkComponent, LinkType } from "../Links/Links";
+import { thousandize } from "../../../../util/formatting";
+import { NumericFormat } from "react-number-format";
 
 // Types for the component props
 interface TextsProps {
@@ -69,9 +70,10 @@ interface DonationWidgetProps {
       organizationId: number;
     };
   };
+  matchingConfig?: FundraiserWidgetMatchingConfig;
   privacyPolicyUrl: NavLink;
   suggestedSums?: number[];
-  onComplete?: (formData: FormData) => void;
+  onSetAmount?: (amount: number) => void;
 }
 
 interface TransitionState {
@@ -81,13 +83,19 @@ interface TransitionState {
   direction: "forward" | "backward";
 }
 
+export type FundraiserWidgetMatchingConfig = {
+  maxMatching?: number;
+  factor: number;
+};
+
 const DonationWidget: React.FC<DonationWidgetProps> = ({
   texts = {},
   fundraiserId,
   organizationInfo,
   privacyPolicyUrl,
   suggestedSums = [100, 250, 800],
-  onComplete = () => {},
+  matchingConfig,
+  onSetAmount,
 }) => {
   // Default texts with fallbacks
   const defaultTexts: TextsProps = {
@@ -149,6 +157,10 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
   ];
+
+  useEffect(() => {
+    onSetAmount && onSetAmount(parseInt(formData.amount));
+  }, [formData.amount, onSetAmount]);
 
   const paneHeights = useMultipleElementHeights(paneRefs as React.RefObject<HTMLDivElement>[]);
 
@@ -378,19 +390,20 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                           : "",
                       ].join(" ")}
                     >
-                      {sum} kr
+                      {thousandize(sum)} kr
                     </button>
                   ))}
                 </div>
               </div>
 
               <div className={styles["donation-widget__input-group"]}>
-                <input
+                <NumericFormat
                   id="amount"
                   name="amount"
-                  type="number"
+                  type="tel"
+                  thousandSeparator=" "
                   value={formData.amount}
-                  onChange={handleInputChange}
+                  onValueChange={(values) => setFormData({ ...formData, amount: values.value })}
                   placeholder={mergedTexts.donationAmountLabel}
                   required
                   min={1}
@@ -398,6 +411,28 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                 />
                 <span className={styles["donation-widget__input-group__suffix"]}>kr</span>
               </div>
+              {matchingConfig && (
+                <div className={styles["donation-widget__matching-info__container"]}>
+                  <AnimateHeight
+                    height={
+                      formData.amount.length > 0 &&
+                      matchingConfig &&
+                      Math.floor((parseInt(formData.amount) || 0) * matchingConfig.factor) > 0
+                        ? "auto"
+                        : 0
+                    }
+                  >
+                    <div className={styles["donation-widget__matching-info"]}>
+                      <span>{`+ ${thousandize(
+                        Math.min(
+                          Math.floor((parseInt(formData.amount) || 0) * matchingConfig.factor),
+                          matchingConfig.maxMatching || Number.MAX_SAFE_INTEGER,
+                        ),
+                      )} kr fra Peter i matching`}</span>
+                    </div>
+                  </AnimateHeight>
+                </div>
+              )}
 
               <div className={styles["donation-widget__input-group"]}>
                 <div className={styles["donation-widget__message-header"]}>
