@@ -91,6 +91,10 @@
   min-height: 300px;
 }
 
+.spacer {
+  margin-top: 84px;
+}
+
 @media only screen and (max-width: 1180px) {
   .pageheader.hero,
   .pageheader.pageheadermeta.hero {
@@ -164,6 +168,10 @@
       margin-bottom: 0;
     }
   }
+
+  .spacer {
+    margin-top: 55px;
+  }
 }
 
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
@@ -182,6 +190,10 @@
   .pageheader h1 {
     font-size: 72px;
     line-height: 110%;
+  }
+
+  .spacer {
+    margin-top: 80px;
   }
 }
 

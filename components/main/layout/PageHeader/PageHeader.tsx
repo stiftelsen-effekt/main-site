@@ -28,7 +28,7 @@ export const PageHeader: React.FC<{
   const hasmetacontent = inngress || links;
 
   if (layout === "noheader") {
-    return null;
+    return <div className={style.spacer}></div>;
   }
 
   return (
