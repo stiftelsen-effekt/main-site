@@ -1,4 +1,5 @@
 import { FundraiserInput } from "../../components/fundraiserInput";
+import { FundraiserTransactionsInput } from "../../components/fundraiserTransactionsInput";
 import { GenericPagePreview } from "../../components/genericPagePreview";
 
 export default {
@@ -66,6 +67,38 @@ export default {
         },
       ],
       validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "fundraiser_matching_config",
+      title: "Fundraiser matching",
+      type: "object",
+      fields: [
+        {
+          name: "ceiling",
+          title: "Matching ceiling",
+          type: "number",
+        },
+        {
+          name: "factor",
+          title: "Matching factor",
+          type: "number",
+          description:
+            "The factor by which the matching amount is multiplied. For example, if the matching amount is 100 and the factor is 1, the total matching amount will be 100 (one to one), and the total amount will be 200.",
+        },
+        {
+          name: "excluded",
+          title: "Donations excluded from matching",
+          type: "array",
+          of: [
+            {
+              type: "number",
+            },
+          ],
+          components: {
+            input: FundraiserTransactionsInput,
+          },
+        },
+      ],
     },
     {
       name: "fundraiser_widget_config",

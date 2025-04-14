@@ -19,5 +19,15 @@
     display: flex;
     justify-content: space-between;
     margin-top: 0.5rem;
+
+    .amount {
+      display: flex;
+      flex-direction: column;
+
+      .matchingAmount {
+        font-size: 0.6rem;
+        line-height: 0.6rem;
+      }
+    }
   }
 }

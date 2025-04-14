@@ -4,8 +4,10 @@ import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 
 export const FundraiserProgressBar: React.FC<{
   config: NonNullable<FetchFundraiserResult["page"]>["fundraiser_goal_config"];
+  matchingAmount?: number;
+  matchingCeiling?: number;
   currentAmount: number;
-}> = ({ config, currentAmount }) => {
+}> = ({ config, currentAmount, matchingAmount, matchingCeiling }) => {
   if (!config) return "Missing config for fundraiser progress bar";
 
   const { goal, current_amount_text_template, goal_amount_text_template } = config;
@@ -28,7 +30,16 @@ export const FundraiserProgressBar: React.FC<{
       </div>
 
       <div className={styles.text}>
-        <span>{currentAmountText}</span>
+        <div className={styles.amount}>
+          <span>{currentAmountText}</span>
+          {matchingAmount && (
+            <span className={styles.matchingAmount}>
+              {thousandize(matchingAmount)} kr i matching
+              {matchingCeiling && ` av ${thousandize(matchingCeiling)} kr tilgjengelig`}
+            </span>
+          )}
+        </div>
+
         <span>{goalAmountText}</span>
       </div>
     </div>
