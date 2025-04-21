@@ -17,6 +17,9 @@ export const SET_PAYMENT_PROVIDER_URL = "SET_PAYMENT_PROVIDER_URL";
 export const SELECT_CUSTOM_SHARE = "SELECT_CUSTOM_SHARE";
 export const SET_SHARE_TYPE = "SET_SHARE_TYPE";
 export const SET_VIPPS_AGREEMENT = "SET_VIPPS_AGREEMENT";
+export const SET_CAUSE_AREA_SELECTION = "SET_CAUSE_AREA_SELECTION";
+export const SET_CAUSE_AREA_AMOUNT = "SET_CAUSE_AREA_AMOUNT";
+export const SET_ORG_AMOUNT = "SET_ORG_AMOUNT";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -123,6 +126,33 @@ interface SetVippsAgreement {
     vippsAgreement: VippsAgreement;
   };
 }
+interface SetCauseAreaSelection {
+  type: typeof SET_CAUSE_AREA_SELECTION;
+  payload: {
+    /** 'single' = one cause area, 'multiple' = all cause areas */
+    selectionType: "single" | "multiple";
+    /** when selectionType is 'single', the selected cause area ID */
+    causeAreaId?: number;
+  };
+}
+interface SetCauseAreaAmount {
+  type: typeof SET_CAUSE_AREA_AMOUNT;
+  payload: {
+    /** cause area ID for which amount is set */
+    causeAreaId: number;
+    /** amount in NOK */
+    amount: number;
+  };
+}
+interface SetOrgAmount {
+  type: typeof SET_ORG_AMOUNT;
+  payload: {
+    /** organization ID for which amount is set */
+    orgId: number;
+    /** amount in NOK */
+    amount: number;
+  };
+}
 
 export type DonationActionTypes =
   | SelectPaymentMethod
@@ -138,4 +168,7 @@ export type DonationActionTypes =
   | SetPaymentProviderURL
   | SelectCustomShare
   | SetShareType
-  | SetVippsAgreement;
+  | SetVippsAgreement
+  | SetCauseAreaSelection
+  | SetCauseAreaAmount
+  | SetOrgAmount;

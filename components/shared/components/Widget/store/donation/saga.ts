@@ -133,17 +133,77 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
   try {
     const donation: Donation = yield select((state: State) => state.donation);
 
-    const data: RegisterDonationObject = {
-      distributionCauseAreas: donation.distributionCauseAreas
+    // Build distribution payload based on UI state (amounts) rather than stored percentages
+    const selectionType: string | undefined = donation.selectionType;
+    const selectedId: number | undefined = donation.selectedCauseAreaId;
+    const causeAreaAmounts = donation.causeAreaAmounts || {};
+    const orgAmounts = donation.orgAmounts || {};
+    const totalAmount: number = donation.sum || 0;
+    let distributionPayload = [];
+    if (selectionType === "multiple") {
+      // Multiple cause areas: compute percent share per cause area, use standard org shares
+      distributionPayload = donation.distributionCauseAreas
+        .map((ca) => {
+          const amt = causeAreaAmounts[ca.id] || 0;
+          const pct = totalAmount > 0 ? (amt / totalAmount) * 100 : 0;
+          return {
+            id: ca.id,
+            percentageShare: pct.toFixed(2),
+            organizations: ca.organizations.map((o) => ({
+              id: o.id,
+              percentageShare: o.percentageShare,
+            })),
+          };
+        })
+        .filter((c) => parseFloat(c.percentageShare) > 0);
+    } else if (selectionType === "single" && selectedId != null) {
+      // Single cause area: only one cause area selected
+      const ca = donation.distributionCauseAreas.find((c) => c.id === selectedId);
+      if (ca) {
+        const caAmt = causeAreaAmounts[selectedId] || 0;
+        if (ca.standardSplit) {
+          // smart distribution: entire amount -> cause area, orgs get default percentages
+          distributionPayload = [
+            {
+              id: ca.id,
+              percentageShare: "100",
+              organizations: ca.organizations.map((o) => ({
+                id: o.id,
+                percentageShare: o.percentageShare,
+              })),
+            },
+          ];
+        } else {
+          // custom distribution: compute org shares within cause area
+          distributionPayload = [
+            {
+              id: ca.id,
+              percentageShare: "100",
+              organizations: ca.organizations
+                .map((o) => {
+                  const amt = orgAmounts[o.id] || 0;
+                  const pct = caAmt > 0 ? (amt / caAmt) * 100 : 0;
+                  return { id: o.id, percentageShare: pct.toFixed(2) };
+                })
+                .filter((o) => parseFloat(o.percentageShare) > 0),
+            },
+          ];
+        }
+      }
+    } else {
+      // Fallback to previous percentage-based distribution
+      distributionPayload = donation.distributionCauseAreas
         .filter((c) => parseFloat(c.percentageShare) > 0)
         .map((c) => ({
           ...c,
-          // Removes any potential prefilled data from the submitted data
           organizations: c.organizations.map((o) => ({
             id: o.id,
             percentageShare: o.percentageShare,
           })),
-        })),
+        }));
+    }
+    const data: RegisterDonationObject = {
+      distributionCauseAreas: distributionPayload,
       donor: donation.donor,
       method: donation.method || PaymentMethod.BANK,
       amount: donation.sum || 0,

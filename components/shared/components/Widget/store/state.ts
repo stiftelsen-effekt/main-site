@@ -37,6 +37,14 @@ export interface Donation extends DonationInput {
   // Array of objects with string keys and string values
   errors: DonationError[];
   showErrors: boolean;
+  /** UI selection: 'single' = one cause area, 'multiple' = all cause areas */
+  selectionType?: "single" | "multiple";
+  /** When selectionType is 'single', the selected cause area ID */
+  selectedCauseAreaId?: number;
+  /** UI-entered amounts per cause area (NOK) */
+  causeAreaAmounts?: Record<number, number>;
+  /** UI-entered amounts per organization (NOK), keyed by organization ID */
+  orgAmounts?: Record<number, number>;
 }
 
 export type DonationError = {

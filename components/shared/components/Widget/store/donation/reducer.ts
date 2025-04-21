@@ -20,6 +20,9 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SET_CAUSE_AREA_SELECTION,
+  SET_CAUSE_AREA_AMOUNT,
+  SET_ORG_AMOUNT,
 } from "./types";
 import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
@@ -56,9 +59,11 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   action,
 ) => {
   if (isType(action, fetchCauseAreasAction.done)) {
+    // Initialize distribution data and default UI selection
+    const areas = action.payload.result;
     state = {
       ...state,
-      distributionCauseAreas: action.payload.result.map((causeArea: CauseArea) => ({
+      distributionCauseAreas: areas.map((causeArea: CauseArea) => ({
         id: causeArea.id,
         name: causeArea.name,
         percentageShare: causeArea.standardPercentageShare?.toString() ?? "0",
@@ -72,6 +77,9 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
             }),
           ),
       })),
+      // Default to single cause area (first) on load
+      selectionType: areas.length > 0 ? "single" : undefined,
+      selectedCauseAreaId: areas.length > 0 ? areas[0].id : undefined,
     };
   }
 
@@ -89,6 +97,40 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
     };
   }
 
+  // Handle UI selection and input actions before validation
+  switch (action.type) {
+    case SET_CAUSE_AREA_SELECTION: {
+      const { selectionType, causeAreaId } = (action as any).payload;
+      state = {
+        ...state,
+        selectionType,
+        selectedCauseAreaId: causeAreaId,
+      };
+      break;
+    }
+    case SET_CAUSE_AREA_AMOUNT: {
+      const { causeAreaId, amount } = (action as any).payload;
+      const existing = state.causeAreaAmounts ?? {};
+      state = {
+        ...state,
+        causeAreaAmounts: { ...existing, [causeAreaId]: amount },
+      };
+      break;
+    }
+    case SET_ORG_AMOUNT: {
+      const { orgId, amount } = (action as any).payload;
+      const existingOrg = state.orgAmounts ?? {};
+      state = {
+        ...state,
+        orgAmounts: { ...existingOrg, [orgId]: amount },
+      };
+      break;
+    }
+    default:
+      // proceed to other action handlers
+      break;
+  }
+  // Handle original action types
   switch (action.type) {
     case SELECT_PAYMENT_METHOD:
       state = { ...state, method: action.payload.method };

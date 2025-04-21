@@ -162,6 +162,36 @@ export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActio
     },
   };
 }
+/**
+ * Select whether donating to a single cause area or multiple cause areas.
+ */
+export function setCauseAreaSelection(
+  selectionType: "single" | "multiple",
+  causeAreaId?: number,
+): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_SELECTION,
+    payload: { selectionType, causeAreaId },
+  };
+}
+/**
+ * Set the entered amount for a specific cause area (in NOK).
+ */
+export function setCauseAreaAmount(causeAreaId: number, amount: number): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_AMOUNT,
+    payload: { causeAreaId, amount },
+  };
+}
+/**
+ * Set the entered amount for a specific organization (in NOK) when custom-splitting a single cause area.
+ */
+export function setOrgAmount(orgId: number, amount: number): DonationActionTypes {
+  return {
+    type: SET_ORG_AMOUNT,
+    payload: { orgId, amount },
+  };
+}
 
 /**
  * TODO: Find a place this can live
