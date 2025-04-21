@@ -5,7 +5,6 @@ import { RadioButtonGroup } from "../../shared/RadioButton/RadioButtonGroup";
 import { RecurringDonation } from "../../../types/Enums";
 import { setRecurring, setCauseAreaSelection } from "../../store/donation/actions";
 import { nextPane } from "../../store/layout/actions";
-import { setRecurring, setCauseAreaSelection } from "../../store/donation/actions";
 import { State } from "../../../store/state";
 import { EffektButton } from "../../../../EffektButton/EffektButton";
 import { ButtonsWrapper } from "./SelectionPane.style";
