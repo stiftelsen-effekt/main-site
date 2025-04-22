@@ -15,6 +15,9 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SET_ORG_AMOUNT,
+  SET_CAUSE_AREA_AMOUNT,
+  SET_CAUSE_AREA_SELECTION,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";

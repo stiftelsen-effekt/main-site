@@ -3,8 +3,7 @@ import styled from "styled-components";
 export const SumWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 
   label {
     font-size: 22px;
@@ -18,7 +17,6 @@ export const SumWrapper = styled.div`
   span {
     position: relative;
     display: inline-flex;
-    margin-bottom: 24px;
 
     input {
       background: var(--secondary);
@@ -51,7 +49,6 @@ export const SumButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 75px;
   align-items: flex-start;
 
   div {

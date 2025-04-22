@@ -139,7 +139,13 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const causeAreaAmounts = donation.causeAreaAmounts || {};
     const orgAmounts = donation.orgAmounts || {};
     const totalAmount: number = donation.sum || 0;
-    let distributionPayload = [];
+    let distributionPayload: {
+      id: number;
+      standardSplit: boolean;
+      name: string;
+      percentageShare: string;
+      organizations: { id: number; percentageShare: string }[];
+    }[] = [];
     if (selectionType === "multiple") {
       // Multiple cause areas: compute percent share per cause area, use standard org shares
       distributionPayload = donation.distributionCauseAreas
@@ -149,6 +155,8 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
           return {
             id: ca.id,
             percentageShare: pct.toFixed(2),
+            standardSplit: ca.standardSplit,
+            name: ca.name,
             organizations: ca.organizations.map((o) => ({
               id: o.id,
               percentageShare: o.percentageShare,
@@ -167,6 +175,8 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
             {
               id: ca.id,
               percentageShare: "100",
+              standardSplit: true,
+              name: ca.name,
               organizations: ca.organizations.map((o) => ({
                 id: o.id,
                 percentageShare: o.percentageShare,
@@ -179,6 +189,8 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
             {
               id: ca.id,
               percentageShare: "100",
+              standardSplit: false,
+              name: ca.name,
               organizations: ca.organizations
                 .map((o) => {
                   const amt = orgAmounts[o.id] || 0;

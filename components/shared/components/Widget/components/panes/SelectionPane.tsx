@@ -1,24 +1,27 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
-import { RadioButtonGroup } from "../../shared/RadioButton/RadioButtonGroup";
-import { RecurringDonation } from "../../../types/Enums";
+import { Pane, PaneContainer, PaneTitle } from "./Panes.style";
+import { RadioButtonGroup } from "../../../RadioButton/RadioButtonGroup";
+import { RecurringDonation } from "../../types/Enums";
 import { setRecurring, setCauseAreaSelection } from "../../store/donation/actions";
 import { nextPane } from "../../store/layout/actions";
-import { State } from "../../../store/state";
-import { EffektButton } from "../../../../EffektButton/EffektButton";
-import { ButtonsWrapper } from "./SelectionPane.style";
+import { State } from "../../store/state";
+import { EffektButton } from "../../../EffektButton/EffektButton";
+import {
+  AnimalWelfareIcon,
+  ButtonsWrapper,
+  CauseAreaButton,
+  CauseAreaIcon,
+  FutureGenerationsIcon,
+  getCauseAreaIconById,
+  GlobalHealthIcon,
+} from "./SelectionPane.style";
 
 /**
  * First pane: select one-time vs monthly, then choose a cause area or multiple.
  */
-export const SelectionPane: React.FC<{
-  text: { single_donation_text: string; monthly_donation_text: string };
-  enableRecurring: boolean;
-  enableSingle: boolean;
-}> = ({ text, enableRecurring, enableSingle }) => {
-  const dispatch = useDispatch();
-  const donation = useSelector((state: State) => state.donation);
+export const SelectionPane: React.FC<{}> = ({}) => {
+  const dispatch = useDispatch<any>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
 
   const onSelectArea = (id?: number) => {
@@ -31,33 +34,19 @@ export const SelectionPane: React.FC<{
     <Pane>
       <PaneContainer>
         <div>
-          <PaneTitle>
-            <wbr />
-          </PaneTitle>
-          <RadioButtonGroup
-            options={[
-              {
-                title: text.single_donation_text,
-                value: RecurringDonation.NON_RECURRING,
-                disabled: !enableSingle,
-              },
-              {
-                title: text.monthly_donation_text,
-                value: RecurringDonation.RECURRING,
-                disabled: !enableRecurring,
-              },
-            ]}
-            selected={donation.recurring}
-            onSelect={(val) => dispatch(setRecurring(val as RecurringDonation))}
-          />
-          <PaneTitle>Select cause area</PaneTitle>
+          <PaneTitle>Inom vilket ändamål vill du göra skillnad?</PaneTitle>
+
           <ButtonsWrapper>
             {causeAreas.map((ca) => (
-              <EffektButton key={ca.id} onClick={() => onSelectArea(ca.id)}>
+              <CauseAreaButton key={ca.id} onClick={() => onSelectArea(ca.id)}>
+                {getCauseAreaIconById(ca.id)}
                 {ca.widgetDisplayName || ca.name}
-              </EffektButton>
+              </CauseAreaButton>
             ))}
-            <EffektButton onClick={() => onSelectArea(undefined)}>Multiple causes</EffektButton>
+            <CauseAreaButton onClick={() => onSelectArea(undefined)}>
+              <CauseAreaIcon />
+              Multiple causes
+            </CauseAreaButton>
           </ButtonsWrapper>
         </div>
       </PaneContainer>

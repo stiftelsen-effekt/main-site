@@ -205,17 +205,17 @@ export const Widget = withStaticProps(
           )}
           <ProgressBar inline={inline} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
-            <SelectionPane
+            <SelectionPane />
+            <AmountPane
+              nextButtonText={widget.pane1_button_text}
+              smartDistContext={widget.smart_distribution_context}
               text={{
                 single_donation_text: widget.single_donation_text,
                 monthly_donation_text: widget.monthly_donation_text,
               }}
               enableRecurring={availableRecurringOptions.recurring}
               enableSingle={availableRecurringOptions.single}
-            />
-            <AmountPane
-              nextButtonText={widget.pane1_button_text}
-              smartDistContext={widget.smart_distribution_context}
+              amountContext={widget.amount_context}
             />
             <DonorPane
               locale={widget.locale}
