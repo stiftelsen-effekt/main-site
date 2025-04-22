@@ -10,7 +10,6 @@ import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
 import { SelectionPane } from "./panes/SelectionPane";
 import { AmountPane } from "./panes/AmountPane";
-import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";

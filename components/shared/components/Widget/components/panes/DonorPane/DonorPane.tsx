@@ -9,11 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
-import {
-  registerDonationAction,
-  selectPaymentMethod,
-  submitDonorInfo,
-} from "../../../store/donation/actions";
+import { selectPaymentMethod, submitDonorInfo } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
@@ -32,6 +28,8 @@ import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
+import { nextPane } from "../../../store/layout/actions";
+import { LayoutActionTypes } from "../../../store/layout/types";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -43,7 +41,8 @@ export const DonorPane: React.FC<{
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
-  const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
+  const dispatch =
+    useDispatch<Dispatch<DonationActionTypes | Action<undefined> | LayoutActionTypes>>();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
@@ -144,11 +143,7 @@ export const DonorPane: React.FC<{
 
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
-    if (isAnonymous || donation.errors.length === 0) {
-      dispatch(registerDonationAction.started(undefined));
-    } else {
-      alert("Donation invalid");
-    }
+    dispatch(nextPane());
   });
 
   return (
@@ -313,33 +308,6 @@ export const DonorPane: React.FC<{
                 )}
               </CheckBoxGroupWrapper>
             </AnimateHeight>
-
-            <Controller
-              control={control}
-              name="method"
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => (
-                <RadioButtonGroup
-                  options={paymentMethods.map((method) => ({
-                    title: method.selector_text,
-                    value: {
-                      vipps: PaymentMethod.VIPPS,
-                      bank: PaymentMethod.BANK,
-                      swish: PaymentMethod.SWISH,
-                      autogiro: PaymentMethod.AUTOGIRO,
-                      avtalegiro: PaymentMethod.AVTALEGIRO,
-                    }[method._id],
-                    data_cy: `${method._id}-method`,
-                  }))}
-                  selected={field.value}
-                  onSelect={(option) => {
-                    field.onChange(option);
-                  }}
-                />
-              )}
-            />
           </div>
           <ActionBar data-cy="next-button-div">
             <NextButton

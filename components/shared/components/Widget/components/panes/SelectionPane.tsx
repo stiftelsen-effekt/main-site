@@ -6,15 +6,11 @@ import { RecurringDonation } from "../../types/Enums";
 import { setRecurring, setCauseAreaSelection } from "../../store/donation/actions";
 import { nextPane } from "../../store/layout/actions";
 import { State } from "../../store/state";
-import { EffektButton } from "../../../EffektButton/EffektButton";
 import {
-  AnimalWelfareIcon,
   ButtonsWrapper,
   CauseAreaButton,
-  CauseAreaIcon,
-  FutureGenerationsIcon,
   getCauseAreaIconById,
-  GlobalHealthIcon,
+  MultipleCauseAreaIcon,
 } from "./SelectionPane.style";
 
 /**
@@ -44,7 +40,7 @@ export const SelectionPane: React.FC<{}> = ({}) => {
               </CauseAreaButton>
             ))}
             <CauseAreaButton onClick={() => onSelectArea(undefined)}>
-              <CauseAreaIcon />
+              <MultipleCauseAreaIcon />
               Multiple causes
             </CauseAreaButton>
           </ButtonsWrapper>

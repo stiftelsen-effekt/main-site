@@ -4,7 +4,6 @@ export const InputList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 20px;
 `;
 
 export const OrganizationInputWrapper = styled.div`
@@ -26,7 +25,7 @@ export const OrganizationInputWrapper = styled.div`
       border-radius: 10px;
       border: 1px solid var(--primary);
       color: var(--primary);
-      font-size: 30px;
+      font-size: 24px;
       width: 100%;
       transition: border-color 0.2s ease-in-out;
       text-align: right;
@@ -42,7 +41,7 @@ export const OrganizationInputWrapper = styled.div`
       align-items: center;
       justify-content: center;
       height: 100%;
-      font-size: 30px;
+      font-size: 24px;
     }
   }
 `;

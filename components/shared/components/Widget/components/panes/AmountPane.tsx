@@ -31,6 +31,8 @@ import { usePlausible } from "next-plausible";
 import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
 import { getCauseAreaIconById } from "./SelectionPane.style";
+import AnimateHeight from "react-animate-height";
+import Link from "next/link";
 
 /**
  * Second pane: enter NOK amounts per cause area or per organization.
@@ -173,112 +175,121 @@ export const AmountPane: React.FC<{
               </SumWrapper>
             </TotalSumWrapper>
           ) : (
-            // Regular view with radio buttons for cause areas with multiple organizations
-            <RadioButtonGroup
-              options={[
-                {
-                  title: smartDistContext.smart_distribution_radiobutton_text,
-                  value: ShareType.STANDARD,
-                  content: (
-                    <TotalSumWrapper>
-                      {/* Only show suggested sums for single cause area selection */}
-                      {isSingleSelection && (
-                        <SumButtonsWrapper>
-                          {suggestedSums.map((suggested) => (
-                            <div key={suggested.amount}>
-                              <EffektButton
-                                variant={EffektButtonVariant.SECONDARY}
-                                selected={causeAreaAmounts[causeArea.id] === suggested.amount}
-                                onClick={() => {
-                                  plausible("SelectSuggestedSum", {
-                                    props: {
-                                      sum: suggested.amount,
-                                    },
-                                  });
-                                  const v = suggested.amount;
-                                  if (isSingleSelection) {
-                                    dispatch(setSum(v));
-                                  }
-                                  dispatch(setCauseAreaAmount(causeArea.id, v));
-                                }}
-                                noMinWidth={true}
-                              >{`${
-                                suggested.amount ? thousandize(suggested.amount) : "-"
-                              } kr`}</EffektButton>
-                              {suggested.subtext && <i>{suggested.subtext}</i>}
-                            </div>
-                          ))}
-                        </SumButtonsWrapper>
-                      )}
-                      <SumWrapper>
-                        <span>
-                          <input
-                            name={`sum-${causeArea.id}`}
-                            type="tel"
-                            placeholder="0"
-                            value={
-                              causeAreaAmounts[causeArea.id] > 0
-                                ? causeAreaAmounts[causeArea.id]
-                                : ""
-                            }
-                            autoComplete="off"
-                            data-cy="donation-sum-input"
-                            onChange={(e) => {
-                              if (
-                                Number.isInteger(parseInt(e.target.value)) === true &&
-                                parseInt(e.target.value) > 0
-                              ) {
-                                const v = parseInt(e.target.value);
-                                dispatch(setCauseAreaAmount(causeArea.id, v));
+            <>
+              <AnimateHeight
+                height={distributionCauseArea.standardSplit ? "auto" : 0}
+                animateOpacity
+                duration={300}
+              >
+                <div style={{ paddingBottom: "30px" }}>
+                  <TotalSumWrapper>
+                    {/* Only show suggested sums for single cause area selection */}
+                    {isSingleSelection && (
+                      <SumButtonsWrapper>
+                        {suggestedSums.map((suggested) => (
+                          <div key={suggested.amount}>
+                            <EffektButton
+                              variant={EffektButtonVariant.SECONDARY}
+                              selected={causeAreaAmounts[causeArea.id] === suggested.amount}
+                              onClick={() => {
+                                plausible("SelectSuggestedSum", {
+                                  props: {
+                                    sum: suggested.amount,
+                                  },
+                                });
+                                const v = suggested.amount;
                                 if (isSingleSelection) {
                                   dispatch(setSum(v));
                                 }
-                              } else {
-                                dispatch(setCauseAreaAmount(causeArea.id, 0));
-                                if (isSingleSelection) {
-                                  dispatch(setSum(-1));
-                                }
-                              }
-                            }}
-                          />
-                        </span>
-                      </SumWrapper>
-                    </TotalSumWrapper>
-                  ),
-                },
-                {
-                  title: smartDistContext.custom_distribution_radiobutton_text,
-                  value: ShareType.CUSTOM,
-                  content: (
-                    <InputList>
-                      {causeArea.organizations.map((org) => (
-                        <OrganizationInputWrapper key={org.id}>
-                          <label htmlFor={`org-${org.id}`}>
-                            {org.widgetDisplayName || org.name}
-                          </label>
-                          <span>
-                            <input
-                              id={`org-${org.id}`}
-                              type="tel"
-                              placeholder="0"
-                              value={orgAmounts[org.id] || ""}
-                              onChange={(e) => {
-                                const v = parseInt(e.target.value) || 0;
-                                dispatch(setOrgAmount(org.id, v));
+                                dispatch(setCauseAreaAmount(causeArea.id, v));
                               }}
-                            />
-                          </span>
-                        </OrganizationInputWrapper>
-                      ))}
-                    </InputList>
-                  ),
-                },
-              ]}
-              selected={distributionCauseArea.standardSplit ? ShareType.STANDARD : ShareType.CUSTOM}
-              onSelect={(val: ShareType) =>
-                dispatch(setShareType(causeArea.id, val === ShareType.STANDARD))
-              }
-            />
+                              noMinWidth={true}
+                            >{`${
+                              suggested.amount ? thousandize(suggested.amount) : "-"
+                            } kr`}</EffektButton>
+                            {suggested.subtext && <i>{suggested.subtext}</i>}
+                          </div>
+                        ))}
+                      </SumButtonsWrapper>
+                    )}
+                    <SumWrapper>
+                      <span>
+                        <input
+                          name={`sum-${causeArea.id}`}
+                          type="tel"
+                          placeholder="0"
+                          value={
+                            causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""
+                          }
+                          autoComplete="off"
+                          data-cy="donation-sum-input"
+                          onChange={(e) => {
+                            if (
+                              Number.isInteger(parseInt(e.target.value)) === true &&
+                              parseInt(e.target.value) > 0
+                            ) {
+                              const v = parseInt(e.target.value);
+                              dispatch(setCauseAreaAmount(causeArea.id, v));
+                              if (isSingleSelection) {
+                                dispatch(setSum(v));
+                              }
+                            } else {
+                              dispatch(setCauseAreaAmount(causeArea.id, 0));
+                              if (isSingleSelection) {
+                                dispatch(setSum(-1));
+                              }
+                            }
+                          }}
+                        />
+                      </span>
+                    </SumWrapper>
+                  </TotalSumWrapper>
+                </div>
+              </AnimateHeight>
+              <RadioButtonGroup
+                options={[
+                  {
+                    title: smartDistContext.smart_distribution_radiobutton_text,
+                    value: ShareType.STANDARD,
+                  },
+                  {
+                    title: smartDistContext.custom_distribution_radiobutton_text,
+                    value: ShareType.CUSTOM,
+                    content: (
+                      <InputList>
+                        {causeArea.organizations.map((org) => (
+                          <OrganizationInputWrapper key={org.id}>
+                            <Link href={org.informationUrl || "#"} target="_blank">
+                              <label htmlFor={`org-${org.id}`}>
+                                {org.widgetDisplayName || org.name}
+                              </label>
+                            </Link>
+                            <span>
+                              <input
+                                id={`org-${org.id}`}
+                                type="tel"
+                                placeholder="0"
+                                value={orgAmounts[org.id] || ""}
+                                onChange={(e) => {
+                                  const v = parseInt(e.target.value) || 0;
+                                  dispatch(setOrgAmount(org.id, v));
+                                }}
+                              />
+                            </span>
+                          </OrganizationInputWrapper>
+                        ))}
+                      </InputList>
+                    ),
+                  },
+                ]}
+                selected={
+                  distributionCauseArea.standardSplit ? ShareType.STANDARD : ShareType.CUSTOM
+                }
+                onSelect={(val: ShareType) =>
+                  dispatch(setShareType(causeArea.id, val === ShareType.STANDARD))
+                }
+              />
+            </>
           )}
         </div>
       </FormWrapper>

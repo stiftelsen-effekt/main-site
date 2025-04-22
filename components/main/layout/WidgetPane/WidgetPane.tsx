@@ -50,14 +50,16 @@ export const WidgetPane: React.FC<WidgetPaneProps> = ({ darkMode, ...widgetProps
     return () => clearTimeout(timeoutId);
   }, [widgetContext]);
 
+  const useDarkmode = darkMode || widgetProps.data.result.color_scheme === "light";
+
   return (
     <aside
       data-cy="widget-pane"
-      className={`${styles.widgetPane} ${widgetOpenClass}`}
+      className={`${styles.widgetPane} ${widgetOpenClass} ${useDarkmode ? styles.dark : ""}`}
       style={paneStyle}
     >
       <div className={styles.widgetPaneHeader}></div>
-      <div className={darkMode ? styles.widgetPaneContentDark : styles.widgetPaneContent}>
+      <div className={styles.widgetPaneContent}>
         <Widget {...widgetProps} />
       </div>
     </aside>

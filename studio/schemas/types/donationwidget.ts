@@ -351,6 +351,17 @@ export default {
       group: "referrals",
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: "color_scheme",
+      title: "Color scheme",
+      type: "string",
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+      },
+    },
   ],
   preview: {
     prepare() {
