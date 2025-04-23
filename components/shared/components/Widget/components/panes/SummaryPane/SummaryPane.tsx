@@ -15,7 +15,13 @@ import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { ShareType } from "../../../types/Enums";
-import { SummmaryOrganizationsList, TotalTable } from "./SummaryPane.style";
+import {
+  PaymentButton,
+  PaymentButtonsWrapper,
+  SummmaryOrganizationsList,
+  TotalTable,
+} from "./SummaryPane.style";
+import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 
 const TIP_PERCENTAGE = 5;
 
@@ -149,13 +155,13 @@ export const SummaryPane: React.FC<{
               <td> {totalAmount.toLocaleString("no-NB")} kr</td>
             </tr>
           </TotalTable>
-          <div style={{ marginTop: "20px" }}>
+          <PaymentButtonsWrapper>
             {paymentMethods.map((method) => (
-              <NextButton key={method._id} onClick={() => handlePayment(method._id)}>
+              <PaymentButton key={method._id} onClick={() => handlePayment(method._id)}>
                 {method.selector_text}
-              </NextButton>
+              </PaymentButton>
             ))}
-          </div>
+          </PaymentButtonsWrapper>
         </div>
       </PaneContainer>
     </Pane>

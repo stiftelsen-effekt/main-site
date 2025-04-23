@@ -47,3 +47,28 @@ export const TotalTable = styled.table`
     }
   }
 `;
+
+export const PaymentButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 40px;
+  gap: 20px;
+`;
+
+export const PaymentButton = styled.button`
+  font-size: 20px;
+  padding: 15px 20px;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  flex: 1;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--secondary);
+
+  &:hover {
+    background-color: var(--secondary);
+    color: var(--primary);
+  }
+`;
