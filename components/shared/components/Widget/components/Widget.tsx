@@ -12,6 +12,7 @@ import { SelectionPane } from "./panes/SelectionPane";
 import { AmountPane } from "./panes/AmountPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
+import { SummaryPane } from "./panes/SummaryPane/SummaryPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
 import {
@@ -236,6 +237,7 @@ export const Widget = withStaticProps(
               }}
               paymentMethods={availablePaymentMethods}
             />
+            <SummaryPane paymentMethods={availablePaymentMethods} />
             <PaymentPane
               referrals={{
                 referrals_title: widget.referrals_title,

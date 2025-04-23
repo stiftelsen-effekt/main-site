@@ -17,11 +17,12 @@ export const OrganizationInputWrapper = styled.div`
   span {
     position: relative;
     display: inline-flex;
-    width: 33%;
+    width: 40%;
 
     input {
       background: var(--secondary);
-      padding: 12px 45px;
+      padding: 12px 0;
+      padding-right: 45px;
       border-radius: 10px;
       border: 1px solid var(--primary);
       color: var(--primary);

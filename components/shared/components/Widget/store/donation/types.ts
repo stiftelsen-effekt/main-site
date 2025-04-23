@@ -19,7 +19,9 @@ export const SET_SHARE_TYPE = "SET_SHARE_TYPE";
 export const SET_VIPPS_AGREEMENT = "SET_VIPPS_AGREEMENT";
 export const SET_CAUSE_AREA_SELECTION = "SET_CAUSE_AREA_SELECTION";
 export const SET_CAUSE_AREA_AMOUNT = "SET_CAUSE_AREA_AMOUNT";
+export const SET_CAUSE_AREA_DISTRIBUTION_TYPE = "SET_CAUSE_AREA_DISTRIBUTION_TYPE";
 export const SET_ORG_AMOUNT = "SET_ORG_AMOUNT";
+export const SET_TIP_ENABLED = "SET_TIP_ENABLED";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -144,6 +146,15 @@ interface SetCauseAreaAmount {
     amount: number;
   };
 }
+interface SetCauseAreaDistributionType {
+  type: typeof SET_CAUSE_AREA_DISTRIBUTION_TYPE;
+  payload: {
+    /** cause area ID for which distribution type is set */
+    causeAreaId: number;
+    /** distribution type */
+    distributionType: ShareType;
+  };
+}
 interface SetOrgAmount {
   type: typeof SET_ORG_AMOUNT;
   payload: {
@@ -151,6 +162,12 @@ interface SetOrgAmount {
     orgId: number;
     /** amount in NOK */
     amount: number;
+  };
+}
+interface SetTipEnabled {
+  type: typeof SET_TIP_ENABLED;
+  payload: {
+    tipEnabled: boolean;
   };
 }
 
@@ -171,4 +188,6 @@ export type DonationActionTypes =
   | SetVippsAgreement
   | SetCauseAreaSelection
   | SetCauseAreaAmount
-  | SetOrgAmount;
+  | SetCauseAreaDistributionType
+  | SetOrgAmount
+  | SetTipEnabled;

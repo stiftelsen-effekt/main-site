@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import {
   setCauseAreaPercentageShare,
-  setShareType,
   setShares,
   setSum,
   setRecurring,
+  setCauseAreaDistributionType,
 } from "../store/donation/actions";
-import { RecurringDonation } from "../types/Enums";
+import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { CauseArea } from "../types/CauseArea";
@@ -158,7 +158,7 @@ const handlePrefilledCauseArea = (
   prefilledCauseArea: PrefilledDistribution[number],
 ) => {
   dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
-  dispatch(setShareType(causeArea.id, false));
+  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
 
   const newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
     const prefilledOrg = prefilledCauseArea.organizations.find(
@@ -176,7 +176,7 @@ const handlePrefilledCauseArea = (
 
 const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
   dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
-  dispatch(setShareType(causeArea.id, true));
+  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.STANDARD));
 
   const resetOrganizations = causeArea.organizations.map((organization) => ({
     ...organization,

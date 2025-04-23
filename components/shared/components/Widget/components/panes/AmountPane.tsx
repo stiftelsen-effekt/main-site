@@ -9,8 +9,8 @@ import {
   setCauseAreaAmount,
   setOrgAmount,
   setSum,
-  setShareType,
   setRecurring,
+  setCauseAreaDistributionType,
 } from "../../store/donation/actions";
 import { nextPane } from "../../store/layout/actions";
 import { RadioButtonGroup } from "../../../RadioButton/RadioButtonGroup";
@@ -29,10 +29,10 @@ import { EffektButton, EffektButtonVariant } from "../../../EffektButton/EffektB
 import { thousandize } from "../../../../../../util/formatting";
 import { usePlausible } from "next-plausible";
 import { CauseArea } from "../../types/CauseArea";
-import { DistributionCauseArea } from "../../types/DistributionCauseArea";
 import { getCauseAreaIconById } from "./SelectionPane.style";
 import AnimateHeight from "react-animate-height";
 import Link from "next/link";
+import { NumericFormat } from "react-number-format";
 
 /**
  * Second pane: enter NOK amounts per cause area or per organization.
@@ -54,24 +54,43 @@ export const AmountPane: React.FC<{
     selectedCauseAreaId,
     causeAreaAmounts = {},
     orgAmounts = {},
-    distributionCauseAreas,
+    causeAreaDistributionType = {},
     recurring,
   } = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
-  const sumInputId = useId();
   const plausible = usePlausible();
 
   // Helper to compute total amount
   const totalAmount = React.useMemo(() => {
     if (selectionType === "multiple") {
-      return Object.values(causeAreaAmounts).reduce((sum, v) => sum + (v || 0), 0);
+      return causeAreas.reduce((acc, area) => {
+        if (causeAreaDistributionType[area.id] === ShareType.STANDARD) {
+          return acc + (causeAreaAmounts[area.id] || 0);
+        } else {
+          return (
+            acc +
+            area.organizations.reduce((orgAcc, org) => {
+              return orgAcc + (orgAmounts[org.id] || 0);
+            }, 0)
+          );
+        }
+      }, 0);
     }
     if (selectionType === "single" && selectedCauseAreaId != null) {
-      const amt = causeAreaAmounts[selectedCauseAreaId] || 0;
-      return amt;
+      if (causeAreaDistributionType[selectedCauseAreaId] === ShareType.STANDARD) {
+        return causeAreaAmounts[selectedCauseAreaId] || 0;
+      } else {
+        return (
+          causeAreas
+            .find((area) => area.id === selectedCauseAreaId)
+            ?.organizations.reduce((orgAcc, org) => {
+              return orgAcc + (orgAmounts[org.id] || 0);
+            }, 0) || 0
+        );
+      }
     }
     return 0;
-  }, [selectionType, causeAreaAmounts, selectedCauseAreaId]);
+  }, [selectionType, causeAreaAmounts, orgAmounts, selectedCauseAreaId, causeAreaDistributionType]);
 
   const handleNext = () => {
     dispatch(setSum(totalAmount));
@@ -83,11 +102,7 @@ export const AmountPane: React.FC<{
     : amountContext.preset_amounts_single;
 
   // Function to render a single cause area form
-  const renderCauseAreaForm = (
-    causeArea: CauseArea,
-    distributionCauseArea: DistributionCauseArea,
-    isSingleSelection: boolean,
-  ) => {
+  const renderCauseAreaForm = (causeArea: CauseArea, isSingleSelection: boolean) => {
     // Check if cause area has only one organization
     const hasSingleOrg = causeArea.organizations.length === 1;
 
@@ -177,7 +192,7 @@ export const AmountPane: React.FC<{
           ) : (
             <>
               <AnimateHeight
-                height={distributionCauseArea.standardSplit ? "auto" : 0}
+                height={causeAreaDistributionType[causeArea.id] ? "auto" : 0}
                 animateOpacity
                 duration={300}
               >
@@ -214,30 +229,24 @@ export const AmountPane: React.FC<{
                     )}
                     <SumWrapper>
                       <span>
-                        <input
+                        <NumericFormat
                           name={`sum-${causeArea.id}`}
                           type="tel"
                           placeholder="0"
+                          thousandSeparator=" "
                           value={
                             causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""
                           }
+                          allowNegative={false}
+                          step={1}
+                          decimalScale={0}
                           autoComplete="off"
                           data-cy="donation-sum-input"
-                          onChange={(e) => {
-                            if (
-                              Number.isInteger(parseInt(e.target.value)) === true &&
-                              parseInt(e.target.value) > 0
-                            ) {
-                              const v = parseInt(e.target.value);
-                              dispatch(setCauseAreaAmount(causeArea.id, v));
-                              if (isSingleSelection) {
-                                dispatch(setSum(v));
-                              }
+                          onValueChange={(e) => {
+                            if (typeof e.floatValue === "number") {
+                              dispatch(setCauseAreaAmount(causeArea.id, e.floatValue));
                             } else {
                               dispatch(setCauseAreaAmount(causeArea.id, 0));
-                              if (isSingleSelection) {
-                                dispatch(setSum(-1));
-                              }
                             }
                           }}
                         />
@@ -265,14 +274,22 @@ export const AmountPane: React.FC<{
                               </label>
                             </Link>
                             <span>
-                              <input
+                              <NumericFormat
                                 id={`org-${org.id}`}
                                 type="tel"
                                 placeholder="0"
                                 value={orgAmounts[org.id] || ""}
-                                onChange={(e) => {
-                                  const v = parseInt(e.target.value) || 0;
-                                  dispatch(setOrgAmount(org.id, v));
+                                step={1}
+                                decimalScale={0}
+                                allowNegative={false}
+                                thousandSeparator=" "
+                                autoComplete="off"
+                                onValueChange={(e) => {
+                                  if (typeof e.floatValue === "number") {
+                                    dispatch(setOrgAmount(org.id, e.floatValue));
+                                  } else {
+                                    dispatch(setOrgAmount(org.id, 0));
+                                  }
                                 }}
                               />
                             </span>
@@ -282,11 +299,14 @@ export const AmountPane: React.FC<{
                     ),
                   },
                 ]}
-                selected={
-                  distributionCauseArea.standardSplit ? ShareType.STANDARD : ShareType.CUSTOM
-                }
+                selected={causeAreaDistributionType[causeArea.id] ?? ShareType.STANDARD}
                 onSelect={(val: ShareType) =>
-                  dispatch(setShareType(causeArea.id, val === ShareType.STANDARD))
+                  dispatch(
+                    setCauseAreaDistributionType(
+                      causeArea.id,
+                      val === ShareType.STANDARD ? ShareType.STANDARD : ShareType.CUSTOM,
+                    ),
+                  )
                 }
               />
             </>
@@ -298,7 +318,6 @@ export const AmountPane: React.FC<{
 
   // For single cause area
   const selectedCA = causeAreas.find((c) => c.id === selectedCauseAreaId);
-  const distributionCA = distributionCauseAreas.find((c) => c.id === selectedCauseAreaId);
 
   return (
     <Pane>
@@ -328,20 +347,13 @@ export const AmountPane: React.FC<{
             {selectionType === "multiple" && (
               <>
                 {causeAreas.map((ca) => {
-                  const distCA = distributionCauseAreas.find((dca) => dca.id === ca.id);
-                  if (distCA) {
-                    return renderCauseAreaForm(ca, distCA, false);
-                  }
-                  return null;
+                  return renderCauseAreaForm(ca, false);
                 })}
               </>
             )}
 
             {/* For single cause area */}
-            {selectionType === "single" &&
-              selectedCA &&
-              distributionCA &&
-              renderCauseAreaForm(selectedCA, distributionCA, true)}
+            {selectionType === "single" && selectedCA && renderCauseAreaForm(selectedCA, true)}
           </CauseAreasWrapper>
         </div>
 

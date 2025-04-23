@@ -310,10 +310,7 @@ export const DonorPane: React.FC<{
             </AnimateHeight>
           </div>
           <ActionBar data-cy="next-button-div">
-            <NextButton
-              disabled={!selectedPaymentMethod || Object.keys(errors).length > 0}
-              type="submit"
-            >
+            <NextButton disabled={Object.keys(errors).length > 0} type="submit">
               {text.pane2_button_text}
             </NextButton>
           </ActionBar>

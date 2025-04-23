@@ -24,9 +24,10 @@ export interface DonationInput {
   sum?: number;
   recurring: RecurringDonation;
   donor: Donor;
-  distributionCauseAreas: DistributionCauseArea[];
   dueDay: number;
   vippsAgreement: VippsAgreement;
+  /** Whether a tip is included for operations */
+  tipEnabled: boolean;
 }
 
 export interface Donation extends DonationInput {
@@ -43,6 +44,8 @@ export interface Donation extends DonationInput {
   selectedCauseAreaId?: number;
   /** UI-entered amounts per cause area (NOK) */
   causeAreaAmounts?: Record<number, number>;
+  /** UI-selected wether a cause area is standard split */
+  causeAreaDistributionType?: Record<number, ShareType>;
   /** UI-entered amounts per organization (NOK), keyed by organization ID */
   orgAmounts?: Record<number, number>;
 }
@@ -69,7 +72,6 @@ export interface RegisterDonationObject {
   method: PaymentMethod;
   recurring: RecurringDonation;
   amount: number;
-  distributionCauseAreas: DistributionCauseArea[];
   dueDay?: number;
 }
 
