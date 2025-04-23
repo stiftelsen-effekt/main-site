@@ -195,9 +195,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
 
   // Sum is checked for being an integer in DonorPane
   // If it is not an integer, sum is set to -1
-  if (!state.sum || state.sum <= 0) {
-    errors.push({ type: "donationSumError" });
-  }
 
   if (errors.length > 0) {
     return { ...state, errors };

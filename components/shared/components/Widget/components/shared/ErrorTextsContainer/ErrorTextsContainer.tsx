@@ -1,8 +1,8 @@
 import AnimateHeight from "react-animate-height";
 import { ErrorsWrapper } from "./ErrorTextsContainer.style";
 import { DonationErrorTypeNames } from "../../../store/state";
-import { ErrorText } from "../../panes/DonationPane/DonationPane";
 import { useEffect, useState } from "react";
+import { ErrorText } from "../../panes/AmountPane";
 
 type ErrorTextMap = { [key in DonationErrorTypeNames]: { visible: boolean; text: string } };
 const defaultErrorTextMap: ErrorTextMap = {

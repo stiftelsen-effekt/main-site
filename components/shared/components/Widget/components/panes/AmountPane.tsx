@@ -1,10 +1,8 @@
 import React, { useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pane, PaneContainer, PaneTitle } from "./Panes.style";
-import { ActionBar, SumButtonsWrapper } from "./DonationPane/DonationPane.style";
-import { SumWrapper } from "./DonationPane/DonationPane.style";
 import { NextButton } from "../shared/Buttons/NavigationButtons";
-import { State } from "../../store/state";
+import { DonationError, State } from "../../store/state";
 import {
   setCauseAreaAmount,
   setOrgAmount,
@@ -16,12 +14,15 @@ import { nextPane } from "../../store/layout/actions";
 import { RadioButtonGroup } from "../../../RadioButton/RadioButtonGroup";
 import { RecurringDonation, ShareType } from "../../types/Enums";
 import {
+  ActionBar,
   CauseAreasWrapper,
   CauseAreaTitle,
   FormWrapper,
   InputList,
   OrganizationInputWrapper,
   RecurringSelectionWrapper,
+  SumButtonsWrapper,
+  SumWrapper,
   TotalSumWrapper,
 } from "./AmountPane.style";
 import { AmountContext } from "../../types/WidgetProps";
@@ -366,3 +367,5 @@ export const AmountPane: React.FC<{
     </Pane>
   );
 };
+
+export type ErrorText = { error: DonationError; text: string };

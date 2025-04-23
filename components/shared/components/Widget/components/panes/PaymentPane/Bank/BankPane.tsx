@@ -10,6 +10,7 @@ import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 import AnimateHeight from "react-animate-height";
 import { CompleteButton, CompleteButtonWrapper } from "./BankPane.style";
 import { usePlausible } from "next-plausible";
+import { calculateDonationSum } from "../../../../store/donation/saga";
 
 export const BankPane: React.FC<{
   config: BankPaymentMethod;
@@ -17,7 +18,18 @@ export const BankPane: React.FC<{
 }> = ({ config, referrals }) => {
   const plausible = usePlausible();
   const donation = useSelector((state: State) => state.donation);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const [hasCompletedTransaction, setHasCompletedTransaction] = useState(false);
+
+  const { totalSumIncludingTip } = calculateDonationSum(
+    donation.causeAreaAmounts ?? {},
+    donation.orgAmounts ?? {},
+    causeAreas,
+    donation.causeAreaDistributionType ?? {},
+    donation.selectionType ?? "single",
+    donation.selectedCauseAreaId ?? 1,
+    donation.tipEnabled,
+  );
 
   let currency = "NOK";
   if (config.locale === "sv") {
@@ -25,11 +37,11 @@ export const BankPane: React.FC<{
   }
 
   useEffect(() => {
-    if (hasCompletedTransaction && donation.sum && donation.kid) {
+    if (hasCompletedTransaction && totalSumIncludingTip && donation.kid) {
       plausible("CompletedDonation", {
         revenue: {
           currency: currency,
-          amount: donation.sum,
+          amount: totalSumIncludingTip,
         },
         props: {
           method: "bank",

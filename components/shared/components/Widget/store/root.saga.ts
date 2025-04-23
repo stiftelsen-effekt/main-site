@@ -57,9 +57,6 @@ export const postMessageMiddleware: Middleware =
           );
         }
         break;
-      case "REGISTER_DONATION_DONE":
-        postPurchaseEvent(action.payload.result.KID, donation.sum);
-        break;
       case "INCREMENT_CURRENT_PANE":
         postCustomEvent(
           `Proceeded to step ${layout.paneNumber + 2}`,

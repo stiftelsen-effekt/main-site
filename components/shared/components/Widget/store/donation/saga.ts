@@ -322,7 +322,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
   }
 }
 
-const calculateDonationSum = (
+export const calculateDonationSum = (
   causeAreaAmounts: { [key: number]: number },
   orgAmounts: { [key: number]: number },
   allCauseAreas: CauseArea[],

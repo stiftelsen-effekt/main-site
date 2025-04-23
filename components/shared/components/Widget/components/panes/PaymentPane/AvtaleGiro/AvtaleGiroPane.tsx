@@ -21,8 +21,6 @@ export const AvtaleGiroPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
 }> = ({ config, referrals }) => {
   const donation = useSelector((state: State) => state.donation);
-  const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
-  const donorID = useSelector((state: State) => state.donation.donor?.donorID);
   const [chooseChargeDay, setChooseChargeDay] = useState(0);
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
 
