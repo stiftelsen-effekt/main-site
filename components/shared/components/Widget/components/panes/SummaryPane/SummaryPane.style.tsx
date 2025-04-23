@@ -59,16 +59,21 @@ export const PaymentButtonsWrapper = styled.div`
 
 export const PaymentButton = styled.button`
   font-size: 20px;
-  padding: 15px 20px;
+  padding: 18px 20px;
   border: 1px solid var(--primary);
   border-radius: 10px;
   flex: 1;
   cursor: pointer;
   background-color: var(--primary);
   color: var(--secondary);
+  position: relative;
 
   &:hover {
     background-color: var(--secondary);
     color: var(--primary);
+  }
+
+  & > div {
+    filter: invert(1);
   }
 `;

@@ -13,15 +13,31 @@ import { WidgetProps } from "../../../types/WidgetProps";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
-import { NextButton } from "../../shared/Buttons/NavigationButtons";
-import { ShareType } from "../../../types/Enums";
+import { PaymentMethod, ShareType } from "../../../types/Enums";
 import {
   PaymentButton,
   PaymentButtonsWrapper,
   SummmaryOrganizationsList,
   TotalTable,
 } from "./SummaryPane.style";
-import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
+import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
+
+const mapPaymentMethod = (method: string): PaymentMethod => {
+  switch (method) {
+    case "bank":
+      return PaymentMethod.BANK;
+    case "vipps":
+      return PaymentMethod.VIPPS;
+    case "avtalegiro":
+      return PaymentMethod.AVTALEGIRO;
+    case "swish":
+      return PaymentMethod.SWISH;
+    case "autogiro":
+      return PaymentMethod.AUTOGIRO;
+    default:
+      throw new Error(`Unknown payment method: ${method}`);
+  }
+};
 
 const TIP_PERCENTAGE = 5;
 
@@ -31,6 +47,7 @@ export const SummaryPane: React.FC<{
   const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
   const donation = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
+  const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
 
   const {
     selectionType,
@@ -47,7 +64,8 @@ export const SummaryPane: React.FC<{
   };
 
   const handlePayment = (methodId: string) => {
-    dispatch(selectPaymentMethod(methodId as any));
+    setLoadingMethod(methodId);
+    dispatch(selectPaymentMethod(mapPaymentMethod(methodId)));
     dispatch(registerDonationAction.started(undefined));
   };
 
@@ -158,7 +176,7 @@ export const SummaryPane: React.FC<{
           <PaymentButtonsWrapper>
             {paymentMethods.map((method) => (
               <PaymentButton key={method._id} onClick={() => handlePayment(method._id)}>
-                {method.selector_text}
+                {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
               </PaymentButton>
             ))}
           </PaymentButtonsWrapper>

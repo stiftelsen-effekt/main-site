@@ -13,13 +13,25 @@ import {
   RegisterDonationResponse,
   setPaymentProviderURL,
 } from "./actions";
+import { CauseArea } from "../../types/CauseArea";
 
 export function* draftVippsAgreement(): SagaIterator<void> {
   try {
     yield put(setLoading(true));
 
-    const KID: number = yield select((state: State) => state.donation.kid);
-    const amount: number = yield select((state: State) => state.donation.sum);
+    const donation = yield select((state: State) => state.donation);
+    const causeAreas = yield select((state: State) => state.layout.causeAreas) || [];
+
+    const { totalSumIncludingTip } = calculateDonationSum(
+      donation.causeAreaAmounts,
+      donation.orgAmounts,
+      causeAreas,
+      donation.causeAreaDistributionType,
+      donation.selectionType || "multiple",
+      donation.selectedCauseAreaId || 0,
+      donation.tipEnabled,
+    );
+
     const initialCharge: boolean = yield select(
       (state: State) => state.donation.vippsAgreement?.initialCharge,
     );
@@ -27,8 +39,8 @@ export function* draftVippsAgreement(): SagaIterator<void> {
       (state: State) => state.donation.vippsAgreement?.monthlyChargeDay,
     );
     const data = {
-      KID,
-      amount,
+      KID: donation.kid,
+      sum: totalSumIncludingTip,
       initialCharge,
       monthlyChargeDay,
     };
@@ -68,14 +80,24 @@ export function* draftVippsAgreement(): SagaIterator<void> {
 export function* draftAvtaleGiro(): SagaIterator<void> {
   try {
     yield put(setLoading(true));
-
-    const KID: number = yield select((state: State) => state.donation.kid);
-    const amount: number = yield select((state: State) => state.donation.sum);
     const dueDay: Date = yield select((state: State) => state.donation.dueDay);
 
+    const donation = yield select((state: State) => state.donation);
+    const causeAreas = yield select((state: State) => state.layout.causeAreas) || [];
+
+    const { totalSumIncludingTip } = calculateDonationSum(
+      donation.causeAreaAmounts,
+      donation.orgAmounts,
+      causeAreas,
+      donation.causeAreaDistributionType,
+      donation.selectionType || "multiple",
+      donation.selectedCauseAreaId || 0,
+      donation.tipEnabled,
+    );
+
     const data = {
-      KID,
-      amount,
+      KID: donation.kid,
+      sum: totalSumIncludingTip,
       dueDay,
     };
 
@@ -108,8 +130,18 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
 
 export function* registerBankPending(): SagaIterator<void> {
   try {
-    const KID: number = yield select((state: State) => state.donation.kid);
-    const sum: number = yield select((state: State) => state.donation.sum);
+    const donation = yield select((state: State) => state.donation);
+    const causeAreas = yield select((state: State) => state.layout.causeAreas) || [];
+
+    const { totalSumIncludingTip } = calculateDonationSum(
+      donation.causeAreaAmounts,
+      donation.orgAmounts,
+      causeAreas,
+      donation.causeAreaDistributionType,
+      donation.selectionType || "multiple",
+      donation.selectedCauseAreaId || 0,
+      donation.tipEnabled,
+    );
 
     const request: Response = yield call(fetch, `${API_URL}/donations/bank/pending`, {
       method: "POST",
@@ -117,7 +149,7 @@ export function* registerBankPending(): SagaIterator<void> {
         Accept: "application/x-www-form-urlencoded",
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: `data={"KID":"${KID}", "sum":${sum}}`,
+      body: `data={"KID":"${donation.kid}", "sum":${totalSumIncludingTip}}`,
     });
 
     const result: IServerResponse<never> = yield call(request.json.bind(request));
@@ -128,17 +160,40 @@ export function* registerBankPending(): SagaIterator<void> {
   }
 }
 
+const TIP_PERCENTAGE = 5;
+const OPERATIONS_CAUSE_AREA_ID = 4;
+
 export function* registerDonation(action: Action<undefined>): SagaIterator<void> {
   yield put(setLoading(true));
   try {
+    // --- Select necessary state parts ---
     const donation: Donation = yield select((state: State) => state.donation);
+    const allCauseAreas: CauseArea[] = yield select((state: State) => state.layout.causeAreas) ||
+      [];
 
-    // Build distribution payload based on UI state (amounts) rather than stored percentages
-    const selectionType: string | undefined = donation.selectionType;
-    const selectedId: number | undefined = donation.selectedCauseAreaId;
-    const causeAreaAmounts = donation.causeAreaAmounts || {};
-    const orgAmounts = donation.orgAmounts || {};
-    const totalAmount: number = donation.sum || 0;
+    const {
+      selectionType,
+      causeAreaAmounts = {},
+      orgAmounts = {},
+      causeAreaDistributionType = {},
+      tipEnabled = true,
+      selectedCauseAreaId,
+      recurring,
+      donor,
+      method,
+    } = donation;
+
+    // --- Calculate initial sum based on user selections (pre-tip) ---
+    const { sum, tipAmount, totalSumIncludingTip, finalOrgAmounts } = calculateDonationSum(
+      causeAreaAmounts,
+      orgAmounts,
+      allCauseAreas,
+      causeAreaDistributionType,
+      selectionType || "multiple",
+      selectedCauseAreaId || 0,
+      tipEnabled,
+    );
+
     let distributionPayload: {
       id: number;
       standardSplit: boolean;
@@ -146,82 +201,80 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       percentageShare: string;
       organizations: { id: number; percentageShare: string }[];
     }[] = [];
-    if (selectionType === "multiple") {
-      // Multiple cause areas: compute percent share per cause area, use standard org shares
-      distributionPayload = donation.distributionCauseAreas
-        .map((ca) => {
-          const amt = causeAreaAmounts[ca.id] || 0;
-          const pct = totalAmount > 0 ? (amt / totalAmount) * 100 : 0;
-          return {
-            id: ca.id,
-            percentageShare: pct.toFixed(2),
-            standardSplit: ca.standardSplit,
-            name: ca.name,
-            organizations: ca.organizations.map((o) => ({
-              id: o.id,
-              percentageShare: o.percentageShare,
-            })),
-          };
-        })
-        .filter((c) => parseFloat(c.percentageShare) > 0);
-    } else if (selectionType === "single" && selectedId != null) {
-      // Single cause area: only one cause area selected
-      const ca = donation.distributionCauseAreas.find((c) => c.id === selectedId);
-      if (ca) {
-        const caAmt = causeAreaAmounts[selectedId] || 0;
-        if (ca.standardSplit) {
-          // smart distribution: entire amount -> cause area, orgs get default percentages
-          distributionPayload = [
-            {
-              id: ca.id,
-              percentageShare: "100",
-              standardSplit: true,
-              name: ca.name,
-              organizations: ca.organizations.map((o) => ({
-                id: o.id,
-                percentageShare: o.percentageShare,
-              })),
-            },
-          ];
-        } else {
-          // custom distribution: compute org shares within cause area
-          distributionPayload = [
-            {
-              id: ca.id,
-              percentageShare: "100",
-              standardSplit: false,
-              name: ca.name,
-              organizations: ca.organizations
-                .map((o) => {
-                  const amt = orgAmounts[o.id] || 0;
-                  const pct = caAmt > 0 ? (amt / caAmt) * 100 : 0;
-                  return { id: o.id, percentageShare: pct.toFixed(2) };
-                })
-                .filter((o) => parseFloat(o.percentageShare) > 0),
-            },
-          ];
+
+    // Use a Set to track which cause areas actually have donations after tip allocation
+    const relevantCauseAreaIds = new Set<number>();
+    Object.keys(finalOrgAmounts).forEach((orgIdStr) => {
+      const orgId = parseInt(orgIdStr, 10);
+      const orgAmount = finalOrgAmounts[orgId];
+      if (orgAmount > 0) {
+        const parentArea = allCauseAreas.find((ca) => ca.organizations.some((o) => o.id === orgId));
+        if (parentArea) {
+          relevantCauseAreaIds.add(parentArea.id);
         }
       }
-    } else {
-      // Fallback to previous percentage-based distribution
-      distributionPayload = donation.distributionCauseAreas
-        .filter((c) => parseFloat(c.percentageShare) > 0)
-        .map((c) => ({
-          ...c,
-          organizations: c.organizations.map((o) => ({
-            id: o.id,
-            percentageShare: o.percentageShare,
-          })),
-        }));
-    }
-    const data: RegisterDonationObject = {
+    });
+
+    // Iterate through all potential cause areas to build the payload
+    allCauseAreas.forEach((area) => {
+      // Only include areas that have a final amount allocated (original donation or tip)
+      if (!relevantCauseAreaIds.has(area.id)) {
+        return;
+      }
+
+      let areaOrgPayloads: { id: number; percentageShare: string }[] = [];
+      let areaTotalPercentage = 0;
+
+      area.organizations.forEach((org) => {
+        const finalOrgAmount = finalOrgAmounts[org.id] || 0;
+
+        if (finalOrgAmount > 0 && totalSumIncludingTip > 0) {
+          // Calculate percentage based on the TOTAL sum including the tip
+          const orgPercentage = (finalOrgAmount / totalSumIncludingTip) * 100;
+          areaOrgPayloads.push({
+            id: org.id,
+            percentageShare: orgPercentage.toFixed(8), // Format percentage
+          });
+          areaTotalPercentage += orgPercentage;
+        }
+        // Handle case where total sum is 0 (shouldn't happen if tip > 0 or sum > 0)
+        else if (finalOrgAmount > 0 && totalSumIncludingTip === 0) {
+          areaOrgPayloads.push({ id: org.id, percentageShare: "0.00" });
+        }
+      });
+
+      // Only add if there are organizations with amounts in this area
+      if (areaOrgPayloads.length > 0) {
+        // Determine the standardSplit flag. For the operations area, it should be true if tip was added.
+        // For others, use the original user selection.
+        let isStandardSplit = causeAreaDistributionType[area.id] === ShareType.STANDARD;
+        if (area.id === OPERATIONS_CAUSE_AREA_ID && tipAmount > 0) {
+          isStandardSplit = true; // Ensure operations area is marked as standard if tip was added
+        }
+
+        distributionPayload.push({
+          id: area.id,
+          name: area.name,
+          standardSplit: isStandardSplit,
+          // Total percentage for this cause area relative to the total sum including tip
+          percentageShare: areaTotalPercentage.toFixed(8),
+          organizations: areaOrgPayloads,
+        });
+      }
+    });
+
+    // --- Prepare final data object for API ---
+    const data: RegisterDonationObject & {
+      distributionCauseAreas: any;
+    } = {
       distributionCauseAreas: distributionPayload,
-      donor: donation.donor,
-      method: donation.method || PaymentMethod.BANK,
-      amount: donation.sum || 0,
-      recurring: donation.recurring,
+      donor: donor,
+      method: method || PaymentMethod.BANK,
+      amount: totalSumIncludingTip, // Send the total amount *including* the allocated tip
+      recurring: recurring,
     };
 
+    // --- Make API call ---
     const request = yield call(fetch, `${API_URL}/donations/register`, {
       method: "POST",
       headers: {
@@ -236,6 +289,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     );
     if (result.status !== 200) throw new Error(result.content as string);
 
+    // --- Handle API response and subsequent actions ---
     yield put(
       setAnsweredReferral(
         data.donor?.email === ANONYMOUS_DONOR.email
@@ -255,16 +309,95 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       }),
     );
 
-    if (
-      donation.method === PaymentMethod.BANK &&
-      donation.recurring === RecurringDonation.NON_RECURRING
-    ) {
+    if (method === PaymentMethod.BANK && recurring === RecurringDonation.NON_RECURRING) {
       yield put(registerBankPendingAction.started(undefined));
     }
 
     yield put(setLoading(false));
     yield put(nextPane());
   } catch (ex) {
+    console.error("Error registering donation:", ex);
+    yield put(setLoading(false));
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));
   }
 }
+
+const calculateDonationSum = (
+  causeAreaAmounts: { [key: number]: number },
+  orgAmounts: { [key: number]: number },
+  allCauseAreas: CauseArea[],
+  causeAreaDistributionType: { [key: number]: ShareType },
+  selectionType: "single" | "multiple",
+  selectedCauseAreaId: number,
+  tipEnabled: boolean,
+) => {
+  let sum = 0;
+  const finalOrgAmounts: { [orgId: number]: number } = {};
+
+  allCauseAreas.forEach((area) => {
+    // Skip if single selection and not the selected area
+    if (selectionType === "single" && area.id !== selectedCauseAreaId) {
+      return;
+    }
+
+    const distributionType = causeAreaDistributionType[area.id];
+    const currentAreaAmount = causeAreaAmounts[area.id] || 0;
+
+    if (distributionType === ShareType.STANDARD && currentAreaAmount > 0) {
+      sum += currentAreaAmount;
+      // Distribute standard split amount among orgs
+      area.organizations.forEach((org) => {
+        const orgShare = org.standardShare;
+        if (orgShare && !isNaN(orgShare) && orgShare > 0) {
+          const orgAmount = currentAreaAmount * (orgShare / 100);
+          finalOrgAmounts[org.id] = (finalOrgAmounts[org.id] || 0) + orgAmount;
+        }
+      });
+    } else if (distributionType === ShareType.CUSTOM) {
+      let totalOrgAmountInArea = 0;
+      area.organizations.forEach((org) => {
+        const orgAmount = orgAmounts[org.id] || 0;
+        if (orgAmount > 0) {
+          finalOrgAmounts[org.id] = (finalOrgAmounts[org.id] || 0) + orgAmount;
+          totalOrgAmountInArea += orgAmount;
+        }
+      });
+      if (totalOrgAmountInArea > 0) {
+        sum += totalOrgAmountInArea;
+      }
+    }
+  });
+
+  // --- Calculate tip amount ---
+  const tipAmount = tipEnabled && sum > 0 ? Math.round((sum * TIP_PERCENTAGE) / 100) : 0;
+
+  // --- Add tip to Operations Cause Area (ID 4) ---
+  if (tipAmount > 0) {
+    const operationsArea = allCauseAreas.find((ca) => ca.id === OPERATIONS_CAUSE_AREA_ID);
+    if (operationsArea && operationsArea.organizations) {
+      // Distribute the tip amount according to the standard split of the operations area
+      operationsArea.organizations.forEach((org) => {
+        const orgShare = org.standardShare; // Assumes operations uses standard split defined in causeAreas data
+        if (orgShare && !isNaN(orgShare) && orgShare > 0) {
+          const orgTipAmount = tipAmount * (orgShare / 100);
+          finalOrgAmounts[org.id] = (finalOrgAmounts[org.id] || 0) + orgTipAmount;
+        }
+      });
+    } else {
+      console.warn(
+        `Operations Cause Area (ID: ${OPERATIONS_CAUSE_AREA_ID}) not found or has no organizations. Tip cannot be allocated.`,
+      );
+      // Decide if you want to proceed without the tip, add it to the general amount, or throw an error.
+      // For now, we proceed, but the tip is effectively lost if the area isn't configured correctly.
+    }
+  }
+
+  // --- Calculate final total sum and build payload ---
+  const totalSumIncludingTip = sum + tipAmount; // This is the final amount for API and percentage base
+  return {
+    sum,
+    tipAmount,
+    totalSumIncludingTip,
+    finalOrgAmounts,
+  };
+};

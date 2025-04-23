@@ -21,7 +21,6 @@ export interface Layout {
 
 export interface DonationInput {
   method?: PaymentMethod;
-  sum?: number;
   recurring: RecurringDonation;
   donor: Donor;
   dueDay: number;
