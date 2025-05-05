@@ -64,6 +64,11 @@ export default {
           type: "string",
           description: "Template for the goal amount text. Use {goal} to insert the goal amount.",
         },
+        {
+          name: "additional_external_contributions",
+          title: "Additional external contributions",
+          type: "number",
+        },
       ],
       validation: (Rule: any) => Rule.required(),
     },

@@ -28776,6 +28776,13 @@
                 "type": "string"
               },
               "optional": true
+            },
+            "additional_external_contributions": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "number"
+              },
+              "optional": true
             }
           }
         },

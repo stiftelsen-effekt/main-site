@@ -203,7 +203,10 @@ export const FundraiserPage = withStaticProps(
         <div className={styles.fundraiserdata}>
           <FundraiserProgressBar
             config={page.fundraiser_goal_config}
-            currentAmount={fundraiserData.totalSum}
+            currentAmount={
+              fundraiserData.totalSum +
+              (page.fundraiser_goal_config?.additional_external_contributions ?? 0)
+            }
           ></FundraiserProgressBar>
 
           <FundraiserWidget
