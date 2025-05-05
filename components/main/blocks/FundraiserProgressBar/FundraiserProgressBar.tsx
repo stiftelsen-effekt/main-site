@@ -23,7 +23,7 @@ export const FundraiserProgressBar: React.FC<{
     <div className={styles.container}>
       {goal && (
         <div className={styles.barcontainer}>
-          <div className={styles.bar} style={{ width: `${currentAmount / goal}%` }} />
+          <div className={styles.bar} style={{ width: `${(currentAmount / goal) * 100}%` }} />
         </div>
       )}
 
