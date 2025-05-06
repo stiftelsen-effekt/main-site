@@ -21,6 +21,7 @@ export const CauseAreaButton = styled.button`
   flex-direction: row;
   align-items: center;
   gap: 20px;
+  min-height: 72px;
 
   &:hover {
     background: var(--primary);
@@ -31,7 +32,6 @@ export const CauseAreaButton = styled.button`
     }
 
     &::after {
-      color: var(--secondary);
       transform: translateX(5px);
     }
   }
@@ -41,7 +41,6 @@ export const CauseAreaButton = styled.button`
     content: "→";
     font-size: 20px;
     margin-left: auto;
-    color: var(--primary);
     transition: transform 0.2s ease-out;
   }
 `;

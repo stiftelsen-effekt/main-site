@@ -55,8 +55,11 @@ export const SelectionPane: React.FC<{}> = ({}) => {
           <PaneTitle>Inom vilket ändamål vill du göra skillnad?</PaneTitle>
 
           <ButtonsWrapper>
-            <CauseAreaButton key="default" onClick={() => onSelectArea(-1)}>
-              <MultipleCauseAreaIcon />
+            <CauseAreaButton
+              key="default"
+              onClick={() => onSelectArea(-1)}
+              style={{ background: "#981f49", color: "white", border: "1px solid #981f49" }}
+            >
               Vår rekommendation
             </CauseAreaButton>
           </ButtonsWrapper>
