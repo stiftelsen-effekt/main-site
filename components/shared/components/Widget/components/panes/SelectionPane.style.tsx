@@ -57,6 +57,13 @@ export const CauseAreaIcon = styled.div`
   filter: invert(0);
 }`;
 
+export const CauseAreaButtonsDividerLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: var(--primary);
+  margin: 40px 0;
+`;
+
 export const getCauseAreaIconById = (id: number) => {
   switch (id) {
     case 1:

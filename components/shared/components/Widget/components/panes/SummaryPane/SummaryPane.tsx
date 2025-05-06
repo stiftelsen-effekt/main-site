@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import {
@@ -78,7 +78,17 @@ export const SummaryPane: React.FC<{
     }> = [];
     let sum = 0;
     causeAreas.forEach((area) => {
-      if (selectionType === "single" && area.id !== selectedCauseAreaId) {
+      if (selectionType === "single" && area.id !== selectedCauseAreaId && area.id !== 4) {
+        return;
+      }
+      if (
+        selectionType === "multiple" &&
+        selectedCauseAreaId === -1 &&
+        (!area.standardPercentageShare || area.standardPercentageShare == 0)
+      ) {
+        return;
+      }
+      if (selectionType === "multiple" && area.id === 5) {
         return;
       }
 
@@ -119,8 +129,7 @@ export const SummaryPane: React.FC<{
     return { summaryItems, sum };
   }, [selectionType, causeAreaAmounts, orgAmounts, causeAreas, selectedCauseAreaId]);
 
-  const tipAmount = tipEnabled ? Math.round((sum * TIP_PERCENTAGE) / 100) : 0;
-  const totalAmount = sum + tipAmount;
+  const totalAmount = sum;
 
   return (
     <Pane>
@@ -154,18 +163,6 @@ export const SummaryPane: React.FC<{
               </>
             ))}
           </SummmaryOrganizationsList>
-          <CheckBoxWrapper>
-            <HiddenCheckBox
-              type="checkbox"
-              checked={tipEnabled}
-              onChange={handleTipToggle}
-              data-cy="tip-checkbox"
-            />
-            <CustomCheckBox
-              checked={tipEnabled}
-              label={`Tip ${TIP_PERCENTAGE}% to operations of Ge Effektivt`}
-            />
-          </CheckBoxWrapper>
 
           <TotalTable>
             <tr>

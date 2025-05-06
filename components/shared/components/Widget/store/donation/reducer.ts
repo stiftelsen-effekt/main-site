@@ -88,6 +88,13 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         ...state,
         selectionType,
         selectedCauseAreaId: causeAreaId,
+        /* Reset all to 0 */
+        causeAreaAmounts: {
+          ...Object.keys(state.causeAreaAmounts ?? {}).reduce((acc, key) => {
+            acc[parseInt(key)] = 0;
+            return acc;
+          }, {} as Record<number, number>),
+        },
       };
       break;
     }

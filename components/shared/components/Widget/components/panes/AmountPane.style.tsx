@@ -13,11 +13,13 @@ export const OrganizationInputWrapper = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
+  font-size: 16px;
 
   span {
     position: relative;
     display: inline-flex;
     width: 40%;
+    flex-shrink: 0;
 
     input {
       background: var(--secondary);
@@ -69,6 +71,20 @@ export const FormWrapper = styled.div`
   }
 `;
 
+export const TotalAmountWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 20px;
+`;
+
 export const TotalSumWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -87,6 +103,14 @@ export const CauseAreaTitle = styled.div`
     width: 30px;
     height: 30px;
   }
+`;
+
+export const CauseAreaContext = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-left: 40px;
 `;
 
 export const CauseAreasWrapper = styled.div`
