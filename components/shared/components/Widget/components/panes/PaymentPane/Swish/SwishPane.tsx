@@ -12,6 +12,7 @@ import { Stack, StyledPaneContent, StyledSpinnerWrapper } from "./SwishPane.styl
 import dynamic from "next/dynamic";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
 import { usePlausible } from "next-plausible";
+import { calculateDonationSum } from "../../../../store/donation/saga";
 
 function isStringEnum<T extends string>(x: any, e: T[]): x is T {
   return e.includes(x);
@@ -55,11 +56,10 @@ export const SwishPane = dynamic<{
 }>(
   () =>
     Promise.resolve(({ referrals, config }) => {
-      const donorID = useSelector((state: State) => state.donation.donor?.donorID);
       const orderID = useSelector((state: State) => state.donation.swishOrderID);
       const token = useSelector((state: State) => state.donation.swishPaymentRequestToken);
       const donation = useSelector((state: State) => state.donation);
-      const hasAnswerredReferral = useSelector((state: State) => state.layout.answeredReferral);
+      const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
 
       const status = useSwishStatus(orderID);
       const qrCode = useQrCode(token);
@@ -80,10 +80,20 @@ export const SwishPane = dynamic<{
           isStringEnum(status, ["PAID", "DECLINED", "ERROR", "CANCELLED"]) &&
           status === "PAID"
         ) {
+          const { totalSumIncludingTip } = calculateDonationSum(
+            donation.causeAreaAmounts ?? {},
+            donation.orgAmounts ?? {},
+            causeAreas,
+            donation.causeAreaDistributionType ?? {},
+            donation.selectionType ?? "single",
+            donation.selectedCauseAreaId ?? 1,
+            donation.tipEnabled,
+          );
+
           plausible("CompletedDonation", {
             revenue: {
               currency: "SEK",
-              amount: donation.sum || 0,
+              amount: totalSumIncludingTip || 0,
             },
             props: {
               method: "swish",

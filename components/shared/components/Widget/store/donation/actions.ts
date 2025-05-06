@@ -15,6 +15,11 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SET_ORG_AMOUNT,
+  SET_TIP_ENABLED,
+  SET_CAUSE_AREA_AMOUNT,
+  SET_CAUSE_AREA_DISTRIBUTION_TYPE,
+  SET_CAUSE_AREA_SELECTION,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -144,22 +149,63 @@ export function setCauseAreaPercentageShare(
   };
 }
 
-export function setShareType(causeAreaId: number, standardSplit: boolean): DonationActionTypes {
-  return {
-    type: SET_SHARE_TYPE,
-    payload: {
-      causeAreaId,
-      standardSplit,
-    },
-  };
-}
-
 export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActionTypes {
   return {
     type: SET_VIPPS_AGREEMENT,
     payload: {
       vippsAgreement,
     },
+  };
+}
+/**
+ * Select whether donating to a single cause area or multiple cause areas.
+ */
+export function setCauseAreaSelection(
+  selectionType: "single" | "multiple",
+  causeAreaId?: number,
+): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_SELECTION,
+    payload: { selectionType, causeAreaId },
+  };
+}
+/**
+ * Set the entered amount for a specific cause area (in NOK).
+ */
+export function setCauseAreaAmount(causeAreaId: number, amount: number): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_AMOUNT,
+    payload: { causeAreaId, amount },
+  };
+}
+/**
+ * Set the entered distribution type for a specific cause area.
+ */
+export function setCauseAreaDistributionType(
+  causeAreaId: number,
+  distributionType: ShareType,
+): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_DISTRIBUTION_TYPE,
+    payload: { causeAreaId, distributionType },
+  };
+}
+/**
+ * Set the entered amount for a specific organization (in NOK) when custom-splitting a single cause area.
+ */
+export function setOrgAmount(orgId: number, amount: number): DonationActionTypes {
+  return {
+    type: SET_ORG_AMOUNT,
+    payload: { orgId, amount },
+  };
+}
+/**
+ * Set whether the user wants to include a tip for operations.
+ */
+export function setTipEnabled(tipEnabled: boolean): DonationActionTypes {
+  return {
+    type: SET_TIP_ENABLED,
+    payload: { tipEnabled },
   };
 }
 

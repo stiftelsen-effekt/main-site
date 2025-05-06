@@ -4,16 +4,11 @@ import Personnummer from "personnummer";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import React, { useContext } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
-import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
-import {
-  registerDonationAction,
-  selectPaymentMethod,
-  submitDonorInfo,
-} from "../../../store/donation/actions";
+import { selectPaymentMethod, submitDonorInfo } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
@@ -24,14 +19,14 @@ import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.sty
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
 import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
-import { API_URL } from "../../../config/api";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
-import { ExtraMessageWrapper } from "../DonationPane/DonationPane.style";
-import { Info } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
+import { nextPane } from "../../../store/layout/actions";
+import { LayoutActionTypes } from "../../../store/layout/types";
+import { calculateDonationSum } from "../../../store/donation/saga";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -43,10 +38,22 @@ export const DonorPane: React.FC<{
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
-  const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
+  const dispatch =
+    useDispatch<Dispatch<DonationActionTypes | Action<undefined> | LayoutActionTypes>>();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const { donor: initialDonor } = useContext(DonorContext);
+
+  const { totalSumIncludingTip } = calculateDonationSum(
+    donation.causeAreaAmounts ?? {},
+    donation.orgAmounts ?? {},
+    causeAreas,
+    donation.causeAreaDistributionType ?? {},
+    donation.selectionType ?? "single",
+    donation.selectedCauseAreaId ?? 1,
+    donation.tipEnabled,
+  );
 
   const {
     register,
@@ -72,7 +79,6 @@ export const DonorPane: React.FC<{
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
-  const selectedPaymentMethod = watch("method");
 
   const paneSubmitted = handleSubmit((data) => {
     if (!isAnonymous) {
@@ -91,8 +97,8 @@ export const DonorPane: React.FC<{
           if (data.method === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
           if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
 
-          if (donation.sum) {
-            getEstimatedLtv({ method: data.method, sum: donation.sum }).then((ltv) => {
+          if (totalSumIncludingTip) {
+            getEstimatedLtv({ method: data.method, sum: totalSumIncludingTip }).then((ltv) => {
               if (typeof window !== "undefined") {
                 // @ts-ignore
                 if (typeof window.fbq != null) {
@@ -121,7 +127,7 @@ export const DonorPane: React.FC<{
           if (window.fbq != null) {
             // @ts-ignore
             window.fbq("track", "Lead", {
-              value: donation.sum,
+              value: totalSumIncludingTip,
               currency: "NOK",
             });
           }
@@ -144,11 +150,7 @@ export const DonorPane: React.FC<{
 
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
-    if (isAnonymous || donation.errors.length === 0) {
-      dispatch(registerDonationAction.started(undefined));
-    } else {
-      alert("Donation invalid");
-    }
+    dispatch(nextPane());
   });
 
   return (
@@ -313,39 +315,9 @@ export const DonorPane: React.FC<{
                 )}
               </CheckBoxGroupWrapper>
             </AnimateHeight>
-
-            <Controller
-              control={control}
-              name="method"
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => (
-                <RadioButtonGroup
-                  options={paymentMethods.map((method) => ({
-                    title: method.selector_text,
-                    value: {
-                      vipps: PaymentMethod.VIPPS,
-                      bank: PaymentMethod.BANK,
-                      swish: PaymentMethod.SWISH,
-                      autogiro: PaymentMethod.AUTOGIRO,
-                      avtalegiro: PaymentMethod.AVTALEGIRO,
-                    }[method._id],
-                    data_cy: `${method._id}-method`,
-                  }))}
-                  selected={field.value}
-                  onSelect={(option) => {
-                    field.onChange(option);
-                  }}
-                />
-              )}
-            />
           </div>
           <ActionBar data-cy="next-button-div">
-            <NextButton
-              disabled={!selectedPaymentMethod || Object.keys(errors).length > 0}
-              type="submit"
-            >
+            <NextButton disabled={Object.keys(errors).length > 0} type="submit">
               {text.pane2_button_text}
             </NextButton>
           </ActionBar>
