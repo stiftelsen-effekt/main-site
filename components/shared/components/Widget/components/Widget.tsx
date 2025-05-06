@@ -9,7 +9,7 @@ import { State } from "../store/state";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
 import { SelectionPane } from "./panes/SelectionPane";
-import { AmountPane } from "./panes/AmountPane";
+import { AmountPane } from "./panes/AmountPane/index";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { SummaryPane } from "./panes/SummaryPane/SummaryPane";
