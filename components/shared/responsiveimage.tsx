@@ -50,7 +50,6 @@ export const ResponsiveImage: React.FC<{
     height?: number;
   } = {};
   if (layout !== "fill" && layout !== "responsive") {
-    // You might want to adjust these default dimensions based on your needs
     dimensionProps.width = 800;
   }
 

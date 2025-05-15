@@ -149,6 +149,8 @@ export const FundraiserPage = withStaticProps(
   function getValidImage(image: any) {
     if (image !== null && image.asset !== null) {
       return {
+        crop: image.crop || undefined,
+        hotspot: image.hotspot || undefined,
         asset: {
           _id: image.asset._id,
           url: image.asset.url || undefined,
@@ -257,11 +259,28 @@ const fetchFundraiser = groq`
   },
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,
-    header_image { asset-> {
-      _id,
-      url,
-    }},
-    fundraiser_image { asset-> },
+    header_image { 
+      crop,
+      hotspot,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip
+        }
+      }
+    },
+    fundraiser_image { 
+      crop,
+      hotspot,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip
+        }
+      }
+    },
     fundraiser_organization -> {
       name,
       logo { asset-> },

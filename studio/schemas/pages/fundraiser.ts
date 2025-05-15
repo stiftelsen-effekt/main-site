@@ -1,5 +1,4 @@
 import { FundraiserInput } from "../../components/fundraiserInput";
-import { GenericPagePreview } from "../../components/genericPagePreview";
 
 export default {
   title: "Fundraiser",
@@ -25,6 +24,9 @@ export default {
       name: "fundraiser_image",
       title: "Fundraiser image",
       type: "image",
+      options: {
+        hotspot: true,
+      },
       validation: (Rule: any) => Rule.required(),
     },
     {
