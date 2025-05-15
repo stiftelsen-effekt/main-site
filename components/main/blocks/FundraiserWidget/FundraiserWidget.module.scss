@@ -149,11 +149,14 @@
     }
   }
 
-  &__message-header {
+  &__message-sub {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 0.4rem;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: -1.5rem;
+    right: 0;
 
     label {
       margin-bottom: 0;

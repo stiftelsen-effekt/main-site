@@ -1,5 +1,4 @@
-// src/components/shared/components/CharacterCountCircle/CharacterCountCircle.tsx
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useMemo } from "react";
 import styles from "./CharacterCountCircle.module.scss";
 import { useRemSize } from "../../../../hooks/useRemSize";
 

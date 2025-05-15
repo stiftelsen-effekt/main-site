@@ -109,6 +109,12 @@ export default {
           description:
             "Template for the show more text. Use {count} to insert the number of hidden gifts.",
         },
+        {
+          name: "no_donations_text",
+          title: "No donations text",
+          type: "string",
+          description: "Text to show when there are no donations.",
+        },
       ],
     },
     {

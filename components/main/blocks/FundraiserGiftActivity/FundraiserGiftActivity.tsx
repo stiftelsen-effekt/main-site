@@ -57,6 +57,11 @@ export const FundraiserGiftActivity: React.FC<{
           ))}
         </AnimateHeight>
       ))}
+      {donations.length === 0 && (
+        <div className={style.noDonations}>
+          <span>{config.no_donations_text ?? "Ingen gaver ennå, du kan bli den første!"}</span>
+        </div>
+      )}
       {currentlyShowing < donations.length && (
         <button onClick={() => setCurrentlyShowing(currentlyShowing + 5)} className={style.seemore}>
           {showMoreText}

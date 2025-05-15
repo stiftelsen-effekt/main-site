@@ -28832,6 +28832,13 @@
                 "type": "string"
               },
               "optional": true
+            },
+            "no_donations_text": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
             }
           }
         },
