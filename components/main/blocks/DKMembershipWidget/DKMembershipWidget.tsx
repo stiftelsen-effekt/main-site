@@ -1,10 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import styles from "./DKMembershipWidget.module.scss"; // Assume this file will be created for styles
+import styles from "./DKMembershipWidget.module.scss";
 import { cprChecksumTest } from "./_util";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
-import { set } from "cypress/types/lodash";
-// Assuming you have a spinner component similar to the FundraiserWidget
 
 // --- Helper Functions ---
 // Basic CPR validation (can be expanded with checksum logic)
@@ -58,7 +56,6 @@ interface MembershipFormTexts {
 
 interface MembershipFormWidgetProps {
   texts?: Partial<MembershipFormTexts>;
-  // You can add more props like fixed membership fee if needed
   membershipFeeText?: string; // e.g., "Pay 50 DKK per year"
 }
 
