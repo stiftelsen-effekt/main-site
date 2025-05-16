@@ -90,6 +90,8 @@ export default {
         { type: "fundraiserchart" },
         { type: "plausiblerevenuetracker" },
         { type: "donationwidgetblock" },
+        { type: "dkmembershipwidget" },
+        { type: "dkmembershipdisplay" },
       ],
       options: {
         modal: "fullscreen",
