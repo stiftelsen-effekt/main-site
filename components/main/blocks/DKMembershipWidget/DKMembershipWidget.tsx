@@ -183,6 +183,7 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
       if (response.ok) {
         const responseData = await response.json();
         if (responseData && responseData.redirect) {
+          // Keep the loading spinner while redirecting
           window.open(responseData.redirect, "_self");
         } else {
           console.log(
@@ -190,16 +191,17 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             responseData,
           );
           console.error("Unexpected response format:", responseData);
+          setLoading(false);
         }
       } else {
         const errorData = await response
           .json()
           .catch(() => ({ message: "Submission failed with status: " + response.status }));
         console.error("Submission error:", errorData);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Network or other error:", error);
-    } finally {
       setLoading(false);
     }
   };
