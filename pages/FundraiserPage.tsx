@@ -13,13 +13,13 @@ import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
-import { FetchFundraiserResult, Navitem } from "../studio/sanity.types";
+import { FetchFundraiserResult } from "../studio/sanity.types";
 import { ConsentState } from "../middleware.page";
 import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/FundraiserHeader";
 import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
-import FundraiserWidget from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
+import { FundraiserWidget } from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
 import { API_URL } from "../components/shared/components/Widget/config/api";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {

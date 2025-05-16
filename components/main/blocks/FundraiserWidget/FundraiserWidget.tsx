@@ -79,7 +79,7 @@ interface TransitionState {
   direction: "forward" | "backward";
 }
 
-const DonationWidget: React.FC<DonationWidgetProps> = ({
+export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   texts = {},
   fundraiserId,
   organizationInfo,
@@ -446,18 +446,16 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
                 </div>
               </div>
 
-              {formData.messageSenderName.length > 0 && (
-                <div className={styles["donation-widget__checkbox-group"]}>
-                  <EffektCheckbox
-                    checked={formData.showName}
-                    onChange={(checked) => {
-                      setFormData({ ...formData, showName: checked });
-                    }}
-                  >
-                    {mergedTexts.showNameLabel}
-                  </EffektCheckbox>
-                </div>
-              )}
+              <div className={styles["donation-widget__checkbox-group"]}>
+                <EffektCheckbox
+                  checked={formData.showName}
+                  onChange={(checked) => {
+                    setFormData({ ...formData, showName: checked });
+                  }}
+                >
+                  {mergedTexts.showNameLabel}
+                </EffektCheckbox>
+              </div>
 
               <button type="submit" className={styles["donation-widget__button"]}>
                 {mergedTexts.nextButtonText}
@@ -605,5 +603,3 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({
     </div>
   );
 };
-
-export default DonationWidget;
