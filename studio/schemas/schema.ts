@@ -86,6 +86,8 @@ import teamintroduction from "./types/teamintroduction";
 import resultsteaser from "./types/resultsteaser";
 import taxdeductionwidget from "./types/taxdeductionwidget";
 import donationwidgetblock from "./types/donationwidgetblock";
+import dkmembershipwidget from "./types/dkmembershipwidget";
+import dkmembershipdisplay from "./types/dkmembershipdisplay";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -169,6 +171,8 @@ export const types = [
   teasers,
   teasersitem,
   donationwidgetblock,
+  dkmembershipwidget,
+  dkmembershipdisplay,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

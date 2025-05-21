@@ -673,6 +673,124 @@ export type Vipps = {
   single_button_text?: string;
 };
 
+export type Dkmembershipdisplay = {
+  _id: string;
+  _type: "dkmembershipdisplay";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  membership_count_subtitle?: string;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "fundraiser_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
+export type Dkmembershipwidget = {
+  _id: string;
+  _type: "dkmembershipwidget";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  membership_fee_text?: string;
+};
+
 export type Donationwidgetblock = {
   _id: string;
   _type: "donationwidgetblock";
@@ -4133,6 +4251,116 @@ export type Contentsection = {
         _type: "donationwidgetblock";
         _key: string;
       }
+    | {
+        membership_fee_text?: string;
+        _type: "dkmembershipwidget";
+        _key: string;
+      }
+    | {
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        _type: "dkmembershipdisplay";
+        _key: string;
+      }
   >;
   hidden?: boolean;
 };
@@ -5855,6 +6083,116 @@ export type Fundraiser_page = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          membership_fee_text?: string;
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -6682,6 +7020,116 @@ export type Vippsagreement = {
             }>;
           };
           _type: "donationwidgetblock";
+          _key: string;
+        }
+      | {
+          membership_fee_text?: string;
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
           _key: string;
         }
     >;
@@ -7678,6 +8126,116 @@ export type Article_page = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          membership_fee_text?: string;
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -8447,6 +9005,116 @@ export type Criteria = {
             }>;
           };
           _type: "donationwidgetblock";
+          _key: string;
+        }
+      | {
+          membership_fee_text?: string;
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
           _key: string;
         }
     >;
@@ -9368,6 +10036,116 @@ export type Generic_page = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          membership_fee_text?: string;
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -9624,6 +10402,8 @@ export type AllSanitySchemaTypes =
   | Swish
   | Bank
   | Vipps
+  | Dkmembershipdisplay
+  | Dkmembershipwidget
   | Donationwidgetblock
   | Teasersitem
   | Teasers
@@ -10552,6 +11332,116 @@ export type FetchArticleResult = {
             discount_rate_min?: number;
             discount_rate_max?: number;
             _type: "discountratecomparison";
+            _key: string;
+          }
+        | {
+            membership_count_subtitle?: string;
+            description?: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }>;
+            _type: "dkmembershipdisplay";
+            _key: string;
+          }
+        | {
+            membership_fee_text?: string;
+            _type: "dkmembershipwidget";
             _key: string;
           }
         | {
@@ -15088,6 +15978,116 @@ export type FetchFundraiserResult = {
             _key: string;
           }
         | {
+            membership_count_subtitle?: string;
+            description?: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }>;
+            _type: "dkmembershipdisplay";
+            _key: string;
+          }
+        | {
+            membership_fee_text?: string;
+            _type: "dkmembershipwidget";
+            _key: string;
+          }
+        | {
             content?: Array<{
               children?: Array<{
                 marks?: Array<string>;
@@ -19578,6 +20578,116 @@ export type FetchGenericPageResult = {
             discount_rate_min?: number;
             discount_rate_max?: number;
             _type: "discountratecomparison";
+            _key: string;
+          }
+        | {
+            membership_count_subtitle?: string;
+            description?: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }>;
+            _type: "dkmembershipdisplay";
+            _key: string;
+          }
+        | {
+            membership_fee_text?: string;
+            _type: "dkmembershipwidget";
             _key: string;
           }
         | {
@@ -24192,6 +25302,116 @@ export type FetchVippsResult = {
                   _key: string;
                 }
               | {
+                  membership_count_subtitle?: string;
+                  description?: Array<{
+                    children?: Array<{
+                      marks?: Array<string>;
+                      text?: string;
+                      _type: "span";
+                      _key: string;
+                    }>;
+                    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                    listItem?: "bullet" | "number";
+                    markDefs?: Array<
+                      | {
+                          title?: string;
+                          url?: string;
+                          newtab?: boolean;
+                          _type: "link";
+                          _key: string;
+                        }
+                      | {
+                          title?: string;
+                          page?:
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "agreements";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "article_page";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "articles";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "criteria";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "donations";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "generic_page";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "profile";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "results";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "support";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "tax";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "vippsagreement";
+                              };
+                          _type: "navitem";
+                          _key: string;
+                        }
+                    >;
+                    level?: number;
+                    _type: "block";
+                    _key: string;
+                  }>;
+                  _type: "dkmembershipdisplay";
+                  _key: string;
+                }
+              | {
+                  membership_fee_text?: string;
+                  _type: "dkmembershipwidget";
+                  _key: string;
+                }
+              | {
                   content?: Array<{
                     children?: Array<{
                       marks?: Array<string>;
@@ -25038,6 +26258,116 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
                 content?: Array<{
                   children?: Array<{
                     marks?: Array<string>;
@@ -26081,6 +27411,116 @@ export type FetchAgreementsPageResult = {
               _key: string;
             }
           | {
+              membership_count_subtitle?: string;
+              description?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<
+                  | {
+                      title?: string;
+                      url?: string;
+                      newtab?: boolean;
+                      _type: "link";
+                      _key: string;
+                    }
+                  | {
+                      title?: string;
+                      page?:
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "agreements";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "article_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "articles";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "criteria";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "donations";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "generic_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "profile";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "results";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "support";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "tax";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "vippsagreement";
+                          };
+                      _type: "navitem";
+                      _key: string;
+                    }
+                >;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              _type: "dkmembershipdisplay";
+              _key: string;
+            }
+          | {
+              membership_fee_text?: string;
+              _type: "dkmembershipwidget";
+              _key: string;
+            }
+          | {
               content?: Array<{
                 children?: Array<{
                   marks?: Array<string>;
@@ -26897,6 +28337,116 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
                 content?: Array<{
                   children?: Array<{
                     marks?: Array<string>;
@@ -27558,6 +29108,126 @@ export type FetchAgreementsPageResult = {
       }
     | {
         _id: string;
+        _type: "dkmembershipdisplay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_fee_text?: string;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "donations";
         _createdAt: string;
         _updatedAt: string;
@@ -28089,6 +29759,116 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -28943,6 +30723,116 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -31490,6 +33380,116 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -32266,6 +34266,116 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
                 content?: Array<{
                   children?: Array<{
                     marks?: Array<string>;
@@ -33336,6 +35446,116 @@ export type FetchDonationsPageResult = {
               _key: string;
             }
           | {
+              membership_count_subtitle?: string;
+              description?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<
+                  | {
+                      title?: string;
+                      url?: string;
+                      newtab?: boolean;
+                      _type: "link";
+                      _key: string;
+                    }
+                  | {
+                      title?: string;
+                      page?:
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "agreements";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "article_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "articles";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "criteria";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "donations";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "generic_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "profile";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "results";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "support";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "tax";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "vippsagreement";
+                          };
+                      _type: "navitem";
+                      _key: string;
+                    }
+                >;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              _type: "dkmembershipdisplay";
+              _key: string;
+            }
+          | {
+              membership_fee_text?: string;
+              _type: "dkmembershipwidget";
+              _key: string;
+            }
+          | {
               content?: Array<{
                 children?: Array<{
                   marks?: Array<string>;
@@ -34161,6 +36381,116 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
                 content?: Array<{
                   children?: Array<{
                     marks?: Array<string>;
@@ -34826,6 +37156,132 @@ export type FetchDonationsPageResult = {
         _rev: string;
         discount_rate_min?: number;
         discount_rate_max?: number;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipdisplay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_fee_text?: string;
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -35517,6 +37973,116 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -36377,6 +38943,116 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -39002,6 +41678,116 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -39774,6 +42560,116 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
                 content?: Array<{
                   children?: Array<{
                     marks?: Array<string>;
@@ -40808,6 +43704,116 @@ export type FetchProfilePageResult = {
               _key: string;
             }
           | {
+              membership_count_subtitle?: string;
+              description?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<
+                  | {
+                      title?: string;
+                      url?: string;
+                      newtab?: boolean;
+                      _type: "link";
+                      _key: string;
+                    }
+                  | {
+                      title?: string;
+                      page?:
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "agreements";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "article_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "articles";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "criteria";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "donations";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "generic_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "profile";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "results";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "support";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "tax";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "vippsagreement";
+                          };
+                      _type: "navitem";
+                      _key: string;
+                    }
+                >;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              _type: "dkmembershipdisplay";
+              _key: string;
+            }
+          | {
+              membership_fee_text?: string;
+              _type: "dkmembershipwidget";
+              _key: string;
+            }
+          | {
               content?: Array<{
                 children?: Array<{
                   marks?: Array<string>;
@@ -41621,6 +44627,116 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
                 content?: Array<{
                   children?: Array<{
                     marks?: Array<string>;
@@ -42278,6 +45394,124 @@ export type FetchProfilePageResult = {
       }
     | {
         _id: string;
+        _type: "dkmembershipdisplay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_fee_text?: string;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "donations";
         _createdAt: string;
         _updatedAt: string;
@@ -42806,6 +46040,116 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -43658,6 +47002,116 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
@@ -46179,6 +49633,116 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                membership_fee_text?: string;
+                _type: "dkmembershipwidget";
                 _key: string;
               }
             | {
