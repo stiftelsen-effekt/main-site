@@ -66,7 +66,7 @@ export const ResponsiveImage: React.FC<{
       onClick={onClick}
       queryParams={
         {
-          dpr: window ? window.devicePixelRatio : 1,
+          dpr: typeof window !== "undefined" ? window.devicePixelRatio : 1,
           q: 80,
         } as any
       }
