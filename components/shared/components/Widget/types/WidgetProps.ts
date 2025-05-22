@@ -154,6 +154,9 @@ export type WidgetPane2Props = {
   privacy_policy_text: string;
   privacy_policy_link: NavLink;
   pane2_button_text: string;
+  enable_anonymous_donation?: boolean;
+  enable_name_field?: boolean;
+  privacy_policy_display?: "none" | "display_only" | "require_acceptance";
 };
 
 export type WidgetPane3ReferralsProps = {

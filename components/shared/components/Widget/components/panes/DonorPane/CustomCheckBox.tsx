@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { ReactNode } from "react";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import {
   CheckBoxLabel,
@@ -19,7 +19,7 @@ interface HyperLink {
 
 interface CheckBoxProps {
   checked: boolean;
-  label?: string;
+  label?: ReactNode; // Changed from string to ReactNode
   mobileLabel?: string;
   showTooltip?: boolean;
   tooltipText?: string;
@@ -43,7 +43,9 @@ export const CustomCheckBox: React.FC<CheckBoxProps> = ({
 
       <CheckBoxLabelWrapper>
         <CheckBoxLabel>
-          {`${label} `}
+          {label} {/* Removed template literal to allow ReactNode */}
+          {/* Adding a space if label is simple text and hyperlink exists, might need adjustment based on usage */}
+          {typeof label === "string" && hyperlink && " "}
           {hyperlink && (
             <Link href={hyperlink.url} target="_blank">
               {`${hyperlink.text} ↗`}

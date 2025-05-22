@@ -3,8 +3,8 @@ import Organisationsnummer from "organisationsnummer";
 import Personnummer from "personnummer";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { useContext } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React, { useContext, useEffect, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
@@ -42,7 +42,16 @@ export const DonorPane: React.FC<{
   locale: "en" | "no" | "sv" | "et";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ locale, text, paymentMethods }) => {
+}> = ({
+  locale,
+  text,
+  paymentMethods,
+  text: {
+    enable_anonymous_donation = true,
+    enable_name_field = true,
+    privacy_policy_display = "none",
+  } = {},
+}) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
@@ -52,6 +61,7 @@ export const DonorPane: React.FC<{
     register,
     watch,
     control,
+    setValue,
     formState: { errors, isValid },
     handleSubmit,
     clearErrors,
@@ -64,7 +74,9 @@ export const DonorPane: React.FC<{
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
       method: donation.method,
+      privacyPolicyAccepted: false, // Step 2
     },
+    mode: "onChange", // To make isValid update more frequently
   });
 
   const plausible = usePlausible();
@@ -73,8 +85,23 @@ export const DonorPane: React.FC<{
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
   const selectedPaymentMethod = watch("method");
+  const privacyPolicyAcceptedValue = watch("privacyPolicyAccepted"); // Step 6
+
+  // Step 1: Remove useState for privacyPolicyAccepted and formSubmittedOnce
+
+  useEffect(() => {
+    if (!enable_anonymous_donation && isAnonymous) {
+      setValue("isAnonymous", false);
+      if (!enable_name_field) {
+        clearErrors("name");
+      }
+    }
+  }, [enable_anonymous_donation, isAnonymous, setValue, enable_name_field, clearErrors]);
 
   const paneSubmitted = handleSubmit((data) => {
+    // Step 1: formSubmittedOnce removed, rely on RHF validation state (errors object)
+    // The check for privacyPolicyAccepted is now handled by RHF validation rules.
+
     if (!isAnonymous) {
       plausible("SubmitDonorPane", {
         props: {
@@ -160,43 +187,54 @@ export const DonorPane: React.FC<{
               <wbr />
             </PaneTitle>
 
-            <div style={{ marginBottom: "20px" }}>
-              <CheckBoxWrapper data-cy="anon-button-div">
-                <HiddenCheckBox
-                  data-cy="anon-checkbox"
-                  type="checkbox"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                    }
-                  }}
-                  {...register("isAnonymous", {
-                    onChange: () => {
-                      clearErrors(["name", "email", "ssn"]);
-                      (document.activeElement as HTMLElement).blur();
-                    },
-                  })}
-                />
-                <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
-                <ToolTip text={text.anon_button_text_tooltip} />
-              </CheckBoxWrapper>
-            </div>
+            {enable_anonymous_donation && (
+              <div style={{ marginBottom: "20px" }}>
+                <CheckBoxWrapper data-cy="anon-button-div">
+                  <HiddenCheckBox
+                    data-cy="anon-checkbox"
+                    type="checkbox"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                      }
+                    }}
+                    {...register("isAnonymous", {
+                      onChange: () => {
+                        clearErrors(["name", "email", "ssn"]);
+                        (document.activeElement as HTMLElement).blur();
+                      },
+                    })}
+                  />
+                  <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
+                  <ToolTip text={text.anon_button_text_tooltip} />
+                </CheckBoxWrapper>
+              </div>
+            )}
 
             <AnimateHeight height={isAnonymous ? 0 : "auto"} animateOpacity>
-              <InputFieldWrapper>
-                <input
-                  data-cy="name-input"
-                  type="text"
-                  placeholder={text.name_placeholder}
-                  {...register("name", {
-                    validate: (val, formValues) => {
-                      if (formValues.isAnonymous) return true;
-                      return val.trim().length > 3;
-                    },
-                  })}
-                />
-                {errors.name && <ErrorField text={text.name_invalid_error_text} />}
-              </InputFieldWrapper>
+              {enable_name_field && !isAnonymous && (
+                <InputFieldWrapper>
+                  <input
+                    data-cy="name-input"
+                    type="text"
+                    placeholder={text.name_placeholder}
+                    {...register("name", {
+                      validate: (val, formValues) => {
+                        // This validation runs only if the field is rendered.
+                        // If enable_name_field is false AND enable_anonymous_donation is false,
+                        // isAnonymous will be false, the field won't render,
+                        // but this validation won't prevent form submission if name is required by logic elsewhere.
+                        // However, react-hook-form will require 'name' if it's a required field in the form state
+                        // which is handled by the defaultValues and the register function.
+                        if (formValues.isAnonymous) return true; // Should not happen if !enable_anonymous_donation
+                        return val.trim().length > 3;
+                      },
+                    })}
+                  />
+                  {errors.name && <ErrorField text={text.name_invalid_error_text} />}
+                </InputFieldWrapper>
+              )}
+              {/* Email field is always rendered when not anonymous, as per current structure */}
               <InputFieldWrapper>
                 <input
                   data-cy="email-input"
@@ -204,9 +242,9 @@ export const DonorPane: React.FC<{
                   placeholder={text.email_placeholder}
                   {...register("email", {
                     validate: (val, formValues) => {
-                      if (formValues.isAnonymous) return true;
+                      if (formValues.isAnonymous) return true; // Should not happen if !enable_anonymous_donation
                       const trimmed = val.trim();
-                      return /@/.test(trimmed);
+                      return /@/.test(trimmed); // Basic email validation
                     },
                   })}
                 />
@@ -296,20 +334,92 @@ export const DonorPane: React.FC<{
                     checked={newsletterChecked}
                   />
                 </CheckBoxWrapper>
-                {text.privacy_policy_link && (
-                  <div style={{ marginTop: "10px" }}>
-                    {text.privacy_policy_text}{" "}
-                    <Link
-                      href={`/${text.privacy_policy_link.slug}`}
-                      target={"_blank"}
-                      onClick={(e) => {
-                        e.currentTarget.blur();
-                      }}
-                      style={{ borderBottom: "1px solid var(--primary)" }}
-                    >
-                      {`${text.privacy_policy_link.title}  ↗`}
-                    </Link>
-                  </div>
+                {/* Step 4: Conditional Rendering for Privacy Policy */}
+                {privacy_policy_display !== "none" && text.privacy_policy_link && (
+                  // The outer div that previously held text.privacy_policy_text and Link is removed
+                  // as its contents are moved into the <label> for "require_acceptance" case.
+                  // For "display_only", the original structure is kept.
+                  <>
+                    {privacy_policy_display === "display_only" && (
+                      <div style={{ marginTop: "10px" }}>
+                        {text.privacy_policy_text}{" "}
+                        <Link
+                          href={`/${text.privacy_policy_link.slug}`}
+                          target={"_blank"}
+                          onClick={(e) => {
+                            e.currentTarget.blur();
+                          }}
+                          style={{ borderBottom: "1px solid var(--primary)" }}
+                        >
+                          {`${text.privacy_policy_link.title}  ↗`}
+                        </Link>
+                      </div>
+                    )}
+                    {privacy_policy_display === "require_acceptance" && (
+                      <div style={{ marginTop: "10px" }}> {/* This div is for spacing */}
+                        <CheckBoxWrapper data-cy="privacy-checkbox-wrapper">
+                          {/* HiddenCheckBox remains for RHF registration and state control */}
+                          <HiddenCheckBox
+                            type="checkbox"
+                            id="privacyPolicyCheckbox" // ID might still be useful for aria or testing
+                            {...register("privacyPolicyAccepted", {
+                              required: "You must accept the privacy policy",
+                            })}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                setValue(
+                                  "privacyPolicyAccepted",
+                                  !privacyPolicyAcceptedValue,
+                                  { shouldValidate: true },
+                                );
+                                // Optionally blur if CustomCheckBox doesn't handle focus indication well
+                                // (document.activeElement as HTMLElement)?.blur(); 
+                              }
+                            }}
+                          />
+                          {/* CustomCheckBox now takes the rich label directly */}
+                          <CustomCheckBox
+                            checked={privacyPolicyAcceptedValue}
+                            label={
+                              <>
+                                {text.privacy_policy_text}{" "}
+                                <Link
+                                  href={`/${text.privacy_policy_link.slug}`}
+                                  target={"_blank"}
+                                  onClick={(e) => {
+                                    // Prevent click on link from toggling checkbox if CustomCheckBox handles its own click
+                                    e.stopPropagation();
+                                    // No need to blur here as the link itself will handle focus
+                                  }}
+                                  style={{ borderBottom: "1px solid var(--primary)" }}
+                                >
+                                  {`${text.privacy_policy_link.title}  ↗`}
+                                </Link>
+                              </>
+                            }
+                            // Add onClick to toggle the RHF value
+                            // This assumes CustomCheckBox itself doesn't have an input that register could directly use.
+                            // We are essentially making CustomCheckBox a custom control for the HiddenCheckBox.
+                            onClick={() => {
+                              setValue(
+                                "privacyPolicyAccepted",
+                                !privacyPolicyAcceptedValue,
+                                { shouldValidate: true },
+                              );
+                            }}
+                            // Consider keyboard accessibility:
+                            // If CustomCheckBox can be focused, it should also handle Space/Enter keys
+                            // to toggle the value, similar to the HiddenCheckBox's onKeyDown.
+                            // For now, this example focuses on the click behavior.
+                          />
+                        </CheckBoxWrapper>
+                        {errors.privacyPolicyAccepted && (
+                          <ErrorField text={errors.privacyPolicyAccepted.message} />
+                        )}
+                      </div>
+                    )}
+                  </>
                 )}
               </CheckBoxGroupWrapper>
             </AnimateHeight>
@@ -343,8 +453,10 @@ export const DonorPane: React.FC<{
           </div>
           <ActionBar data-cy="next-button-div">
             <NextButton
-              disabled={!selectedPaymentMethod || Object.keys(errors).length > 0}
+              // Step 5: Update disabled logic
+              disabled={!selectedPaymentMethod || !isValid}
               type="submit"
+              // onClick for formSubmittedOnce removed
             >
               {text.pane2_button_text}
             </NextButton>

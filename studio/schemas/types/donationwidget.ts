@@ -312,6 +312,39 @@ export default {
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
     },
+    // New fields for anonymous donation, name field, and privacy policy display
+    {
+      name: "enable_anonymous_donation",
+      title: "Enable Anonymous Donation",
+      type: "boolean",
+      group: "pane2",
+      initialValue: true,
+      description: "If enabled, users will see an option to donate anonymously.",
+    },
+    {
+      name: "enable_name_field",
+      title: "Enable Name Field",
+      type: "boolean",
+      group: "pane2",
+      initialValue: true,
+      description:
+        "If enabled, the name field will be visible. If 'Enable Anonymous Donation' is also enabled, users can still choose to be anonymous.",
+    },
+    {
+      name: "privacy_policy_display",
+      title: "Privacy Policy Display",
+      type: "string",
+      group: "pane2",
+      options: {
+        list: [
+          { title: "Do not show", value: "none" },
+          { title: "Show, but do not require acceptance", value: "display_only" },
+          { title: "Show and require acceptance (checkbox)", value: "require_acceptance" },
+        ],
+      },
+      initialValue: "none",
+      description: "Controls how the privacy policy is displayed in the widget.",
+    },
     // Privacy policy text pane 2
     {
       name: "privacy_policy_text",
