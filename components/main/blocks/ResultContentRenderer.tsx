@@ -35,10 +35,41 @@ const ReferralSums = dynamic(() =>
   ),
 );
 
-export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsGraphData }> = ({
-  content,
-  graphData,
-}) => {
+export interface ResultsTextConfig {
+  textConfiguration?: {
+    currencySymbol?: string;
+    collectedFromDonorsText?: string;
+    lastUpdatedText?: string;
+    impactEstimateText?: string;
+    andText?: string;
+    readMoreDefaultText?: string;
+    organizationsHeading?: string;
+    organizationsDescription?: string;
+    directDonationsText?: string;
+    smartDistributionText?: string;
+    normalizeYAxisText?: string;
+    millionAbbreviation?: string;
+    locale?: string;
+  };
+  outputMappings?: Array<{
+    sanityKey: string;
+    dataKey: string;
+  }>;
+  organizationMappings?: Array<{
+    abbreviation: string;
+    fullName: string;
+  }>;
+  referralTypeMappings?: Array<{
+    apiKey: string;
+    displayLabel: string;
+  }>;
+}
+
+export const ResultContentRenderer: React.FC<{
+  content: any;
+  graphData: ResultsGraphData;
+  textConfig: ResultsTextConfig;
+}> = ({ content, graphData, textConfig }) => {
   return (
     <>
       {content &&
@@ -69,14 +100,19 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                       case "links":
                         return (
                           <div key={block._key} className={links.linksWrapper}>
-                            <p className="inngress">{block.title ?? "Les mer:"}</p>
+                            <p className="inngress">
+                              {block.title ??
+                                (textConfig.textConfiguration?.readMoreDefaultText || "Les mer:")}
+                            </p>
                             <Links links={block.links}></Links>
                           </div>
                         );
                       case "resultsheadline":
                         const totalOutputs = block.outputs.map((output: string) => {
                           const data = graphData.monthlyDonationsPerOutput.find(
-                            (o) => o.output === mapSanityOutputToDataOutput(output),
+                            (o) =>
+                              o.output ===
+                              mapSanityOutputToDataOutput(output, textConfig.outputMappings),
                           );
                           if (!data) {
                             return "Did not find data for output type " + output;
@@ -95,6 +131,7 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             key={block._key || block._id}
                             headlineNumbers={graphData.resultsHeadlineNumbers}
                             totalOutputs={totalOutputs}
+                            textConfig={textConfig.textConfiguration}
                           />
                         );
                       case "contactinfo":
@@ -142,11 +179,22 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             key={block._key || block._id}
                             dailyDonations={graphData.dailyDonations}
                             graphContext={block.graphcontext}
+                            textConfig={{
+                              millionAbbreviation:
+                                textConfig.textConfiguration?.millionAbbreviation,
+                              locale: textConfig.textConfiguration?.locale,
+                              tableText: block.tableText,
+                            }}
                           />
                         );
                       case "resultsoutput":
                         const data = graphData.monthlyDonationsPerOutput.find(
-                          (o) => o.output === mapSanityOutputToDataOutput(block.outputType),
+                          (o) =>
+                            o.output ===
+                            mapSanityOutputToDataOutput(
+                              block.outputType,
+                              textConfig.outputMappings,
+                            ),
                         );
                         if (!data) {
                           return "Did not find data for output type " + block.outputType;
@@ -161,6 +209,20 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             graphContext={block.graphcontext}
                             organizationLinks={block.organization_links}
                             links={block.links}
+                            textConfig={{
+                              organizationsHeading:
+                                textConfig.textConfiguration?.organizationsHeading,
+                              organizationsDescription:
+                                textConfig.textConfiguration?.organizationsDescription,
+                              directDonationsText:
+                                textConfig.textConfiguration?.directDonationsText,
+                              smartDistributionText:
+                                textConfig.textConfiguration?.smartDistributionText,
+                              normalizeYAxisText: textConfig.textConfiguration?.normalizeYAxisText,
+                              readMoreDefaultText:
+                                textConfig.textConfiguration?.readMoreDefaultText,
+                              organizationMappings: textConfig.organizationMappings,
+                            }}
                           ></ResultsOutput>
                         );
                       case "referralgraph":
@@ -169,6 +231,12 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             key={block._key || block._id}
                             referralSums={graphData.referralSums}
                             graphContext={block.graphcontext}
+                            textConfig={{
+                              millionAbbreviation:
+                                textConfig.textConfiguration?.millionAbbreviation,
+                              referralTypeMappings: textConfig.referralTypeMappings,
+                              tableText: block.tableText,
+                            }}
                           />
                         );
                       default:
@@ -182,7 +250,18 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
   );
 };
 
-const mapSanityOutputToDataOutput = (output: string) => {
+const mapSanityOutputToDataOutput = (
+  output: string,
+  mappings?: Array<{ sanityKey: string; dataKey: string }>,
+) => {
+  if (mappings) {
+    const mapping = mappings.find((m) => m.sanityKey === output);
+    if (mapping) {
+      return mapping.dataKey;
+    }
+  }
+
+  // Fallback to hardcoded mappings for backwards compatibility
   switch (output) {
     case "Bednets":
       return "Myggnett";

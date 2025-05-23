@@ -1,5 +1,5 @@
 export default {
-  title: "Articles page",
+  title: "Results page",
   name: "results",
   type: "document",
   fields: [
@@ -17,6 +17,33 @@ export default {
           type: "resultssection",
         },
       ],
+    },
+    {
+      name: "textConfiguration",
+      title: "Text Configuration",
+      type: "resultstext",
+      description: "Configure all the text used on the results page",
+    },
+    {
+      name: "outputMappings",
+      title: "Output Type Mappings",
+      type: "array",
+      of: [{ type: "outputmapping" }],
+      description: "Map Sanity output types to API data keys",
+    },
+    {
+      name: "organizationMappings",
+      title: "Organization Mappings",
+      type: "array",
+      of: [{ type: "organizationmapping" }],
+      description: "Map organization abbreviations to full names",
+    },
+    {
+      name: "referralTypeMappings",
+      title: "Referral Type Mappings",
+      type: "array",
+      of: [{ type: "referraltypemapping" }],
+      description: "Map referral type API keys to display labels",
     },
     {
       title: "Sitemap priority",

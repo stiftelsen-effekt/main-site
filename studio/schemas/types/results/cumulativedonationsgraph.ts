@@ -10,6 +10,12 @@ export default {
       name: "graphcontext",
       title: "Graph Context",
     },
+    {
+      type: "cumulativedonationstabletext",
+      name: "tableText",
+      title: "Table Text Configuration",
+      description: "Configure the table headers and text",
+    },
   ],
   preview: {
     select: {
