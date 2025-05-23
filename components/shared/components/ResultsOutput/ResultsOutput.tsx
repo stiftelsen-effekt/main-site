@@ -25,6 +25,19 @@ export type TransformedMonthlyDonationsPerOutput = {
   sum: number;
 }[];
 
+export interface ResultsOutputTextConfig {
+  organizationsHeading?: string;
+  organizationsDescription?: string;
+  directDonationsText?: string;
+  smartDistributionText?: string;
+  normalizeYAxisText?: string;
+  readMoreDefaultText?: string;
+  organizationMappings?: Array<{
+    abbreviation: string;
+    fullName: string;
+  }>;
+}
+
 export const ResultsOutput: React.FC<{
   graphData: MonthlyDonationsPerOutputResult;
   outputCountries: string[];
@@ -38,6 +51,7 @@ export const ResultsOutput: React.FC<{
   links?: LinksProps & {
     title?: string;
   };
+  textConfig?: ResultsOutputTextConfig;
 }> = ({
   graphData,
   outputCountries,
@@ -46,6 +60,7 @@ export const ResultsOutput: React.FC<{
   graphContext,
   organizationLinks,
   links,
+  textConfig,
 }) => {
   const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
     () =>
@@ -121,10 +136,12 @@ export const ResultsOutput: React.FC<{
       ></Outputs>
 
       <div className={styles.organizations}>
-        <h4>Organisasjoner</h4>
+        <h4>{textConfig?.organizationsHeading || "Organisasjoner"}</h4>
         <p>
-          Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med{" "}
-          {graphData.output.toLowerCase()}.
+          {(
+            textConfig?.organizationsDescription ||
+            "Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med {output}."
+          ).replace("{output}", graphData.output.toLowerCase())}
         </p>
         <div className={styles.headerControls}>
           <OrganizationSparklineLegend />
@@ -136,7 +153,7 @@ export const ResultsOutput: React.FC<{
                   onChange={(active: boolean) => setNormalizeYAxis(active)}
                 />
               </div>
-              Standardiser y-akse
+              {textConfig?.normalizeYAxisText || "Standardiser y-akse"}
             </div>
           )}
         </div>
@@ -150,10 +167,17 @@ export const ResultsOutput: React.FC<{
             return (
               <div key={organization} className={styles.organization}>
                 <div className={styles.overview}>
-                  <strong>{orgAbbrivToName(organization)}</strong>
-                  <span>{thousandize(Math.round(value.direct.sum))} kr direkte fra donorer</span>
+                  <strong>{orgAbbrivToName(organization, textConfig?.organizationMappings)}</strong>
                   <span>
-                    {thousandize(Math.round(value.smartDistribution.sum))} kr via smart fordeling
+                    {(textConfig?.directDonationsText || "{amount} kr direkte fra donorer").replace(
+                      "{amount}",
+                      thousandize(Math.round(value.direct.sum)),
+                    )}
+                  </span>
+                  <span>
+                    {(
+                      textConfig?.smartDistributionText || "{amount} kr via smart fordeling"
+                    ).replace("{amount}", thousandize(Math.round(value.smartDistribution.sum)))}
                   </span>
                   {orgLink && (
                     <div className={styles.orgLink}>
@@ -174,7 +198,9 @@ export const ResultsOutput: React.FC<{
           })}
         {links && links.links.length > 0 && (
           <div className={styles.linksWrapper}>
-            <p className="inngress">{links.title ?? "Les mer:"}</p>
+            <p className="inngress">
+              {links.title ?? (textConfig?.readMoreDefaultText || "Les mer:")}
+            </p>
             <Links links={links.links}></Links>
           </div>
         )}
@@ -183,7 +209,18 @@ export const ResultsOutput: React.FC<{
   );
 };
 
-const orgAbbrivToName = (abbriv: string) => {
+const orgAbbrivToName = (
+  abbriv: string,
+  mappings?: Array<{ abbreviation: string; fullName: string }>,
+) => {
+  if (mappings) {
+    const mapping = mappings.find((m) => m.abbreviation === abbriv);
+    if (mapping) {
+      return mapping.fullName;
+    }
+  }
+
+  // Fallback to hardcoded mappings for backwards compatibility
   switch (abbriv) {
     case "hki":
       return "Hellen Keller International";

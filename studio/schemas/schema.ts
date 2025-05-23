@@ -86,6 +86,12 @@ import teamintroduction from "./types/teamintroduction";
 import resultsteaser from "./types/resultsteaser";
 import taxdeductionwidget from "./types/taxdeductionwidget";
 import donationwidgetblock from "./types/donationwidgetblock";
+import resultstext from "./types/resultstext";
+import outputmapping from "./types/outputmapping";
+import organizationmapping from "./types/organizationmapping";
+import referraltypemapping from "./types/referraltypemapping";
+import cumulativedonationstabletext from "./types/cumulativedonationstabletext";
+import referralstabletext from "./types/referralstabletext";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -169,6 +175,12 @@ export const types = [
   teasers,
   teasersitem,
   donationwidgetblock,
+  resultstext,
+  outputmapping,
+  organizationmapping,
+  referraltypemapping,
+  cumulativedonationstabletext,
+  referralstabletext,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
