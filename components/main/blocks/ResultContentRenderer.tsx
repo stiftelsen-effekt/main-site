@@ -222,6 +222,7 @@ export const ResultContentRenderer: React.FC<{
                               readMoreDefaultText:
                                 textConfig.textConfiguration?.readMoreDefaultText,
                               organizationMappings: textConfig.organizationMappings,
+                              locale: textConfig.textConfiguration?.locale,
                             }}
                           ></ResultsOutput>
                         );

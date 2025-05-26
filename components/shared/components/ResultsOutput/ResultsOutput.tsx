@@ -36,6 +36,7 @@ export interface ResultsOutputTextConfig {
     abbreviation: string;
     fullName: string;
   }>;
+  locale?: string;
 }
 
 export const ResultsOutput: React.FC<{
@@ -191,6 +192,7 @@ export const ResultsOutput: React.FC<{
                       (t) => t.organization === organization,
                     )}
                     maxY={normalizeYAxis ? maxY : undefined}
+                    locale={textConfig?.locale || "no-NB"}
                   ></OrganizationSparkline>
                 </div>
               </div>
