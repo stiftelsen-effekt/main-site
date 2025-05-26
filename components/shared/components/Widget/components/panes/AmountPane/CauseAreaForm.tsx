@@ -25,6 +25,8 @@ import {
 import { thousandize } from "../../../../../../../util/formatting";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
+import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
+import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 
 interface CauseAreaFormProps {
   causeArea: CauseArea;
@@ -33,6 +35,7 @@ interface CauseAreaFormProps {
   causeAreaAmounts: Record<number, number>;
   orgAmounts: Record<number, number>;
   causeAreaDistributionType: Record<number, ShareType>;
+  showOperationsOption?: boolean;
 }
 
 export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
@@ -42,10 +45,122 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   causeAreaAmounts,
   orgAmounts,
   causeAreaDistributionType,
+  showOperationsOption = false,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
   const hasSingleOrg = causeArea.organizations.length === 1;
+
+  // Operations logic
+  const OPERATIONS_CAUSE_AREA_ID = 4;
+  const TIP_PERCENTAGE = 5;
+  const currentCauseAreaAmount = causeAreaAmounts[causeArea.id] || 0;
+  const operationsAmount = causeAreaAmounts[OPERATIONS_CAUSE_AREA_ID] || 0;
+
+  // Derive state from Redux store to maintain persistence across navigation
+  const totalIntendedAmount = currentCauseAreaAmount + operationsAmount;
+  const userWantsTip = operationsAmount > 0 && totalIntendedAmount > 0;
+  const tipAmount = operationsAmount;
+  const actualCauseAreaAmount = currentCauseAreaAmount;
+
+  // Internal state for input handling
+  const [inputValue, setInputValue] = React.useState(totalIntendedAmount);
+
+  // Sync input value with derived total when amounts change externally
+  React.useEffect(() => {
+    setInputValue(totalIntendedAmount);
+  }, [totalIntendedAmount]);
+
+  const handleTipToggle = (checked: boolean) => {
+    const currentTotal = inputValue || 0;
+    if (checked && currentTotal > 0) {
+      const newTipAmount = Math.round((TIP_PERCENTAGE / 100) * currentTotal);
+      const newCauseAreaAmount = currentTotal - newTipAmount;
+
+      dispatch(setCauseAreaAmount(causeArea.id, newCauseAreaAmount));
+      dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, newTipAmount));
+
+      if (hasSingleOrg) {
+        dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
+      }
+    } else {
+      // When unchecking, give the full amount to the cause area
+      dispatch(setCauseAreaAmount(causeArea.id, currentTotal));
+      dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, 0));
+
+      if (hasSingleOrg) {
+        dispatch(setOrgAmount(causeArea.organizations[0].id, currentTotal));
+      }
+    }
+  };
+
+  const handleAmountChange = (values: { floatValue: number | undefined }) => {
+    const v = values.floatValue === undefined ? 0 : values.floatValue;
+    setInputValue(v);
+
+    if (showOperationsOption) {
+      // If tip is enabled, calculate the split
+      if (userWantsTip && v > 0) {
+        const newTipAmount = Math.round((TIP_PERCENTAGE / 100) * v);
+        const newCauseAreaAmount = v - newTipAmount;
+
+        dispatch(setCauseAreaAmount(causeArea.id, newCauseAreaAmount));
+        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, newTipAmount));
+
+        if (hasSingleOrg) {
+          dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
+        }
+      } else {
+        // If tip is not enabled, all goes to cause area
+        dispatch(setCauseAreaAmount(causeArea.id, v));
+        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, 0));
+
+        if (hasSingleOrg) {
+          dispatch(setOrgAmount(causeArea.organizations[0].id, v));
+        }
+      }
+    } else {
+      // If operations option is not shown, just update normally
+      dispatch(setCauseAreaAmount(causeArea.id, v));
+      if (hasSingleOrg) {
+        dispatch(setOrgAmount(causeArea.organizations[0].id, v));
+      }
+    }
+  };
+
+  const handleSuggestedSumClick = (amount: number) => {
+    plausible("SelectSuggestedSum", { props: { sum: amount } });
+    setInputValue(amount);
+
+    if (showOperationsOption) {
+      // If tip is enabled, calculate the split
+      if (userWantsTip && amount > 0) {
+        const newTipAmount = Math.round((TIP_PERCENTAGE / 100) * amount);
+        const newCauseAreaAmount = amount - newTipAmount;
+
+        dispatch(setCauseAreaAmount(causeArea.id, newCauseAreaAmount));
+        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, newTipAmount));
+
+        if (hasSingleOrg) {
+          dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
+        }
+      } else {
+        // If tip is not enabled, all goes to cause area
+        dispatch(setCauseAreaAmount(causeArea.id, amount));
+        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, 0));
+
+        if (hasSingleOrg) {
+          dispatch(setOrgAmount(causeArea.organizations[0].id, amount));
+        }
+      }
+    } else {
+      // If operations option is not shown, just update normally
+      dispatch(setCauseAreaAmount(causeArea.id, amount));
+      if (hasSingleOrg) {
+        dispatch(setOrgAmount(causeArea.organizations[0].id, amount));
+      }
+    }
+  };
 
   return (
     <FormWrapper key={causeArea.id}>
@@ -67,13 +182,12 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   <div key={suggested.amount}>
                     <EffektButton
                       variant={EffektButtonVariant.SECONDARY}
-                      selected={causeAreaAmounts[causeArea.id] === suggested.amount}
-                      onClick={() => {
-                        plausible("SelectSuggestedSum", { props: { sum: suggested.amount } });
-                        const v = suggested.amount;
-                        dispatch(setCauseAreaAmount(causeArea.id, v));
-                        dispatch(setOrgAmount(causeArea.organizations[0].id, v));
-                      }}
+                      selected={
+                        showOperationsOption
+                          ? inputValue === suggested.amount
+                          : causeAreaAmounts[causeArea.id] === suggested.amount
+                      }
+                      onClick={() => handleSuggestedSumClick(suggested.amount)}
                       noMinWidth={true}
                     >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
                     {suggested.subtext && <i>{suggested.subtext}</i>}
@@ -90,16 +204,18 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   decimalScale={0}
                   type="tel"
                   placeholder="0"
-                  value={causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""}
+                  value={
+                    showOperationsOption
+                      ? inputValue > 0
+                        ? inputValue
+                        : ""
+                      : causeAreaAmounts[causeArea.id] > 0
+                      ? causeAreaAmounts[causeArea.id]
+                      : ""
+                  }
                   autoComplete="off"
                   data-cy="donation-sum-input"
-                  onValueChange={(values) => {
-                    const v = values.floatValue === undefined ? 0 : values.floatValue;
-                    dispatch(setCauseAreaAmount(causeArea.id, v));
-                    if (hasSingleOrg) {
-                      dispatch(setOrgAmount(causeArea.organizations[0].id, v));
-                    }
-                  }}
+                  onValueChange={handleAmountChange}
                 />
               </span>
             </SumWrapper>
@@ -124,14 +240,12 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                         <div key={suggested.amount}>
                           <EffektButton
                             variant={EffektButtonVariant.SECONDARY}
-                            selected={causeAreaAmounts[causeArea.id] === suggested.amount}
-                            onClick={() => {
-                              plausible("SelectSuggestedSum", {
-                                props: { sum: suggested.amount },
-                              });
-                              const v = suggested.amount;
-                              dispatch(setCauseAreaAmount(causeArea.id, v));
-                            }}
+                            selected={
+                              showOperationsOption
+                                ? inputValue === suggested.amount
+                                : causeAreaAmounts[causeArea.id] === suggested.amount
+                            }
+                            onClick={() => handleSuggestedSumClick(suggested.amount)}
                             noMinWidth={true}
                           >{`${
                             suggested.amount ? thousandize(suggested.amount) : "-"
@@ -149,17 +263,20 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                         placeholder="0"
                         thousandSeparator=" "
                         value={
-                          causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""
+                          showOperationsOption
+                            ? inputValue > 0
+                              ? inputValue
+                              : ""
+                            : causeAreaAmounts[causeArea.id] > 0
+                            ? causeAreaAmounts[causeArea.id]
+                            : ""
                         }
                         allowNegative={false}
                         step={1}
                         decimalScale={0}
                         autoComplete="off"
                         data-cy="donation-sum-input"
-                        onValueChange={(values) => {
-                          const v = values.floatValue === undefined ? 0 : values.floatValue;
-                          dispatch(setCauseAreaAmount(causeArea.id, v));
-                        }}
+                        onValueChange={handleAmountChange}
                       />
                     </span>
                   </SumWrapper>
@@ -231,6 +348,45 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
               }}
             />
           </>
+        )}
+
+        {/* Operations option */}
+        {showOperationsOption && (
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "15px",
+              border: "1px solid #e0e0e0",
+              borderRadius: "8px",
+              backgroundColor: "#f9f9f9",
+            }}
+          >
+            <CheckBoxWrapper>
+              <HiddenCheckBox
+                type="checkbox"
+                checked={userWantsTip}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleTipToggle(e.target.checked)
+                }
+                data-cy="tip-checkbox"
+              />
+              <CustomCheckBox
+                checked={userWantsTip}
+                label={`Tip ${TIP_PERCENTAGE}% til drift av Ge Effektivt`}
+              />
+            </CheckBoxWrapper>
+            {userWantsTip && inputValue > 0 && (
+              <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
+                {TIP_PERCENTAGE}% av {thousandize(inputValue)} kr = {thousandize(tipAmount)} kr til
+                drift
+                <br />
+                <small style={{ color: "#888" }}>
+                  {thousandize(actualCauseAreaAmount)} kr går till {causeArea.name},{" "}
+                  {thousandize(tipAmount)} kr till drift
+                </small>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </FormWrapper>

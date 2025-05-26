@@ -14,7 +14,6 @@ import {
 } from "../AmountPane.style";
 import { AmountContext } from "../../../types/WidgetProps";
 import { CauseAreaForm } from "./CauseAreaForm";
-import { OperationalSupportForm } from "./OperationalSupportForm";
 import { SmartDistributionForm } from "./SmartDistributionForm";
 import { OperationsCauseAreaForm } from "./OperationsCauseAreaForm";
 import { useAmountCalculation } from "./useAmountCalculation";
@@ -106,9 +105,9 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       causeAreaAmounts={causeAreaAmounts}
                       orgAmounts={orgAmounts}
                       causeAreaDistributionType={causeAreaDistributionType}
+                      showOperationsOption={true}
                     />
                   ))}
-                <OperationalSupportForm sumOfOtherCauseAreas={sumOfOtherCauseAreas} />
                 <TotalAmountWrapper>
                   <div>Total</div>
                   <div>{thousandize(totalAmount)} kr</div>
@@ -133,8 +132,8 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       causeAreaAmounts={causeAreaAmounts}
                       orgAmounts={orgAmounts}
                       causeAreaDistributionType={causeAreaDistributionType}
+                      showOperationsOption={true}
                     />
-                    <OperationalSupportForm sumOfOtherCauseAreas={sumOfOtherCauseAreas} />
                   </>
                 )}
                 <TotalAmountWrapper>

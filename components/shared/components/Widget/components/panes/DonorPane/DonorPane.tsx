@@ -8,7 +8,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
-import { selectPaymentMethod, submitDonorInfo } from "../../../store/donation/actions";
+import {
+  selectPaymentMethod,
+  submitDonorInfo,
+  registerDonationAction,
+} from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
@@ -27,6 +31,9 @@ import { Action } from "typescript-fsa";
 import { nextPane } from "../../../store/layout/actions";
 import { LayoutActionTypes } from "../../../store/layout/types";
 import { calculateDonationSum } from "../../../store/donation/saga";
+import { DonationSummary } from "../../shared/DonationSummary/DonationSummary";
+import { PaymentButton, PaymentButtonsWrapper } from "../SummaryPane/SummaryPane.style";
+import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -79,46 +86,71 @@ export const DonorPane: React.FC<{
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
+  const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
 
-  const paneSubmitted = handleSubmit((data) => {
-    if (!isAnonymous) {
+  const mapPaymentMethod = (method: string): PaymentMethod => {
+    switch (method) {
+      case "bank":
+        return PaymentMethod.BANK;
+      case "vipps":
+        return PaymentMethod.VIPPS;
+      case "avtalegiro":
+        return PaymentMethod.AVTALEGIRO;
+      case "swish":
+        return PaymentMethod.SWISH;
+      case "autogiro":
+        return PaymentMethod.AUTOGIRO;
+      default:
+        throw new Error(`Unknown payment method: ${method}`);
+    }
+  };
+
+  const handlePayment = (methodId: string) => {
+    if (Object.keys(errors).length > 0) return;
+
+    setLoadingMethod(methodId);
+    const paymentMethod = mapPaymentMethod(methodId);
+
+    // Get current form data
+    const formData = watch();
+
+    // Submit donor info and payment method
+    if (!formData.isAnonymous) {
       plausible("SubmitDonorPane", {
         props: {
-          donorType: isAnonymous ? 0 : 1,
-          taxDeduction: data.taxDeduction,
-          newsletter: data.newsletter,
-          method: data.method,
+          donorType: formData.isAnonymous ? 0 : 1,
+          taxDeduction: formData.taxDeduction,
+          newsletter: formData.newsletter,
+          method: paymentMethod,
         },
       });
 
       if (donation.recurring) {
-        if (data.method) {
-          if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-          if (data.method === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
-          if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
+        if (paymentMethod === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
+        if (paymentMethod === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
+        if (paymentMethod === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
 
-          if (totalSumIncludingTip) {
-            getEstimatedLtv({ method: data.method, sum: totalSumIncludingTip }).then((ltv) => {
-              if (typeof window !== "undefined") {
+        if (totalSumIncludingTip) {
+          getEstimatedLtv({ method: paymentMethod, sum: totalSumIncludingTip }).then((ltv) => {
+            if (typeof window !== "undefined") {
+              // @ts-ignore
+              if (typeof window.fbq != null) {
                 // @ts-ignore
-                if (typeof window.fbq != null) {
-                  // @ts-ignore
-                  window.fbq("track", "Lead", {
-                    value: ltv,
-                    currency: "NOK",
-                  });
-                }
+                window.fbq("track", "Lead", {
+                  value: ltv,
+                  currency: "NOK",
+                });
               }
-            });
-          }
+            }
+          });
         }
       }
       if (!donation.recurring) {
-        if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
-        if (data.method === PaymentMethod.SWISH) {
+        if (paymentMethod === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (paymentMethod === PaymentMethod.SWISH) {
           plausible("SelectSwishSingle");
         }
-        if (data.method === PaymentMethod.BANK) {
+        if (paymentMethod === PaymentMethod.BANK) {
           plausible("SelectBankSingle");
         }
         // Facebook pixel tracking for Leads
@@ -134,33 +166,35 @@ export const DonorPane: React.FC<{
         }
       }
     }
+
     dispatch(
       submitDonorInfo(
-        isAnonymous
+        formData.isAnonymous
           ? ANONYMOUS_DONOR
           : {
-              name: capitalizeNames(data.name.trim()),
-              email: data.email.trim().toLowerCase(),
-              taxDeduction: data.taxDeduction,
-              ssn: data.taxDeduction ? data.ssn.toString().trim() : "",
-              newsletter: data.newsletter,
+              name: capitalizeNames(formData.name.trim()),
+              email: formData.email.trim().toLowerCase(),
+              taxDeduction: formData.taxDeduction,
+              ssn: formData.taxDeduction ? formData.ssn.toString().trim() : "",
+              newsletter: formData.newsletter,
             },
       ),
     );
 
-    dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
-
-    dispatch(nextPane());
-  });
+    dispatch(selectPaymentMethod(paymentMethod));
+    dispatch(registerDonationAction.started(undefined));
+  };
 
   return (
     <Pane>
-      <DonorForm onSubmit={paneSubmitted} autoComplete="on">
+      <DonorForm autoComplete="on">
         <PaneContainer>
           <div>
             <PaneTitle>
               <wbr />
             </PaneTitle>
+
+            <DonationSummary compact={true} title="Din donation" />
 
             <div style={{ marginBottom: "20px" }}>
               <CheckBoxWrapper data-cy="anon-button-div">
@@ -315,12 +349,19 @@ export const DonorPane: React.FC<{
                 )}
               </CheckBoxGroupWrapper>
             </AnimateHeight>
+
+            <PaymentButtonsWrapper style={{ marginTop: "20px" }}>
+              {paymentMethods.map((method) => (
+                <PaymentButton
+                  key={method._id}
+                  onClick={() => handlePayment(method._id)}
+                  disabled={Object.keys(errors).length > 0}
+                >
+                  {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
+                </PaymentButton>
+              ))}
+            </PaymentButtonsWrapper>
           </div>
-          <ActionBar data-cy="next-button-div">
-            <NextButton disabled={Object.keys(errors).length > 0} type="submit">
-              {text.pane2_button_text}
-            </NextButton>
-          </ActionBar>
         </PaneContainer>
       </DonorForm>
     </Pane>

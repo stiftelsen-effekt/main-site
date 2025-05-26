@@ -16,6 +16,8 @@ import { ShareType } from "../../../types/Enums";
 import { setCauseAreaAmount, setCauseAreaDistributionType } from "../../../store/donation/actions";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
+import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
+import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -24,6 +26,7 @@ interface SmartDistributionFormProps {
   causeAreaAmounts: Record<number, number>;
   causeAreaDistributionType: Record<number, ShareType>;
   onTipStateChange: (wantsTip: boolean) => void;
+  showOperationsOption?: boolean;
 }
 
 export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
