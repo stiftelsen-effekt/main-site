@@ -61,7 +61,10 @@ export const Outputs: React.FC<{
 
   const maxOutputsInYear = useMemo(() => {
     const currentYear = new Date().getFullYear();
-    const years = Array.from(new Array(currentYear + 1 - 2016)).map((_, i) => 2016 + i);
+    const firstYear = Math.min(
+      ...transformedMonthlyDonationsPerOutput.map((d) => d.period.getFullYear()),
+    );
+    const years = Array.from(new Array(currentYear + 1 - firstYear)).map((_, i) => firstYear + i);
     const yearlyMaxes = years.map((year) =>
       transformedMonthlyDonationsPerOutput
         .filter((d) => d.period.getFullYear() === year)
@@ -93,8 +96,9 @@ export const Outputs: React.FC<{
     (data: TransformedMonthlyDonationsPerOutput) => {
       if (graphRef.current && legendRef.current && innerGraph.current) {
         const currentYear = new Date().getFullYear();
-        const years = Array.from(new Array(currentYear + 1 - 2016), (x, i) => ({
-          period: new Date(2016 + i, 0, 1),
+        const firstYear = Math.min(...data.map((d) => d.period.getFullYear()));
+        const years = Array.from(new Array(currentYear + 1 - firstYear), (x, i) => ({
+          period: new Date(firstYear + i, 0, 1),
           y: 0,
         }));
 

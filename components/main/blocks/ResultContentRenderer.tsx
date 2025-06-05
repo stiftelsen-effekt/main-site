@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHeadline } from "../../shared/components/ResultsHeadline/ResultsHeadline";
 import { CumulativeDonationsSkeleton } from "../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonationsSkeleton";
+import { Resultstext } from "../../../studio/sanity.types";
 
 /** Dynamic imports */
 const CumulativeDonations = dynamic(
@@ -36,21 +37,7 @@ const ReferralSums = dynamic(() =>
 );
 
 export interface ResultsTextConfig {
-  textConfiguration?: {
-    currencySymbol?: string;
-    collectedFromDonorsText?: string;
-    lastUpdatedText?: string;
-    impactEstimateText?: string;
-    andText?: string;
-    readMoreDefaultText?: string;
-    organizationsHeading?: string;
-    organizationsDescription?: string;
-    directDonationsText?: string;
-    smartDistributionText?: string;
-    normalizeYAxisText?: string;
-    millionAbbreviation?: string;
-    locale?: string;
-  };
+  textConfiguration?: Resultstext;
   outputMappings?: Array<{
     sanityKey: string;
     dataKey: string;
@@ -209,21 +196,7 @@ export const ResultContentRenderer: React.FC<{
                             graphContext={block.graphcontext}
                             organizationLinks={block.organization_links}
                             links={block.links}
-                            textConfig={{
-                              organizationsHeading:
-                                textConfig.textConfiguration?.organizationsHeading,
-                              organizationsDescription:
-                                textConfig.textConfiguration?.organizationsDescription,
-                              directDonationsText:
-                                textConfig.textConfiguration?.directDonationsText,
-                              smartDistributionText:
-                                textConfig.textConfiguration?.smartDistributionText,
-                              normalizeYAxisText: textConfig.textConfiguration?.normalizeYAxisText,
-                              readMoreDefaultText:
-                                textConfig.textConfiguration?.readMoreDefaultText,
-                              organizationMappings: textConfig.organizationMappings,
-                              locale: textConfig.textConfiguration?.locale,
-                            }}
+                            textConfig={textConfig.textConfiguration}
                           ></ResultsOutput>
                         );
                       case "referralgraph":

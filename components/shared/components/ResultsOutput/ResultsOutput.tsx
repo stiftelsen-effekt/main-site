@@ -16,6 +16,7 @@ import { LinkComponent, Links, LinksProps } from "../../../main/blocks/Links/Lin
 import { GraphContextData } from "../Graphs/Shared/GraphContext/GraphContext";
 import { NavLink } from "../Navbar/Navbar";
 import { Toggle } from "../Widget/components/shared/Toggle/Toggle";
+import { json, text } from "d3";
 
 export type TransformedMonthlyDonationsPerOutput = {
   via: string;
@@ -30,6 +31,10 @@ export interface ResultsOutputTextConfig {
   organizationsDescription?: string;
   directDonationsText?: string;
   smartDistributionText?: string;
+  sparkline?: {
+    smartDistributionText?: string;
+    directDonationsText?: string;
+  };
   normalizeYAxisText?: string;
   readMoreDefaultText?: string;
   organizationMappings?: Array<{
@@ -145,7 +150,7 @@ export const ResultsOutput: React.FC<{
           ).replace("{output}", graphData.output.toLowerCase())}
         </p>
         <div className={styles.headerControls}>
-          <OrganizationSparklineLegend />
+          <OrganizationSparklineLegend textConfig={textConfig?.sparkline} />
           {graphData.total.organizations.length > 1 && (
             <div className={styles.normalizeYAxis}>
               <div className={styles.toggleWrapper}>

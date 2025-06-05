@@ -324,7 +324,7 @@ export const OrganizationSparklineLegend: React.FC<{
     smartDistributionText?: string;
     locale?: string;
   };
-}> = () => {
+}> = ({ textConfig }) => {
   const legendRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -337,8 +337,10 @@ export const OrganizationSparklineLegend: React.FC<{
             textures.circles().lighter().stroke("#000").background("#fafafa").size(5).id("dots"),
           ],
           tickFormat(t, i) {
-            if (t === "direct") return "Donasjoner direkte fra donorer";
-            if (t === "smartDistribution") return "Donasjoner via smart fordeling";
+            if (t === "direct")
+              return textConfig?.directDonationsText ?? "Donasjoner direkte fra donorer";
+            if (t === "smartDistribution")
+              return textConfig?.smartDistributionText ?? "Donasjoner via smart fordeling";
             return t;
           },
           type: "ordinal",

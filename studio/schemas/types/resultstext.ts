@@ -85,6 +85,25 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: "sparkline",
+      title: "Sparkline",
+      type: "object",
+      fields: [
+        {
+          name: "smartDistributionText",
+          title: "Smart Distribution Sparkline Text",
+          type: "string",
+          description: "Text for smart distribution in sparkline",
+        },
+        {
+          name: "directDonationsText",
+          title: "Direct Donations Sparkline Text",
+          type: "string",
+          description: "Text for direct donations in sparkline",
+        },
+      ],
+    },
+    {
       name: "normalizeYAxisText",
       title: "Normalize Y-Axis Text",
       type: "string",

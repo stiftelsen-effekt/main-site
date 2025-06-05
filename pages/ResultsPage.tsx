@@ -165,25 +165,7 @@ export const ResultsPage = withStaticProps(
           content={page.content}
           graphData={graphData}
           textConfig={{
-            textConfiguration: page.textConfiguration
-              ? {
-                  currencySymbol: page.textConfiguration.currencySymbol ?? undefined,
-                  collectedFromDonorsText:
-                    page.textConfiguration.collectedFromDonorsText ?? undefined,
-                  lastUpdatedText: page.textConfiguration.lastUpdatedText ?? undefined,
-                  impactEstimateText: page.textConfiguration.impactEstimateText ?? undefined,
-                  andText: page.textConfiguration.andText ?? undefined,
-                  readMoreDefaultText: page.textConfiguration.readMoreDefaultText ?? undefined,
-                  organizationsHeading: page.textConfiguration.organizationsHeading ?? undefined,
-                  organizationsDescription:
-                    page.textConfiguration.organizationsDescription ?? undefined,
-                  directDonationsText: page.textConfiguration.directDonationsText ?? undefined,
-                  smartDistributionText: page.textConfiguration.smartDistributionText ?? undefined,
-                  normalizeYAxisText: page.textConfiguration.normalizeYAxisText ?? undefined,
-                  millionAbbreviation: page.textConfiguration.millionAbbreviation ?? undefined,
-                  locale: page.textConfiguration.locale ?? undefined,
-                }
-              : undefined,
+            textConfiguration: page.textConfiguration ?? undefined,
             outputMappings:
               page.outputMappings?.filter(
                 (m): m is { sanityKey: string; dataKey: string } =>
@@ -260,21 +242,7 @@ const fetchResults = groq`
       },
       ${linksContentQuery}
     },
-    textConfiguration {
-      currencySymbol,
-      collectedFromDonorsText,
-      lastUpdatedText,
-      impactEstimateText,
-      andText,
-      readMoreDefaultText,
-      organizationsHeading,
-      organizationsDescription,
-      directDonationsText,
-      smartDistributionText,
-      normalizeYAxisText,
-      millionAbbreviation,
-      locale
-    },
+    textConfiguration,
     outputMappings[] {
       sanityKey,
       dataKey

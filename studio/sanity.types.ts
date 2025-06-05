@@ -142,7 +142,6 @@ export type Dashboard = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -180,7 +179,6 @@ export type Site_settings = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -930,7 +928,6 @@ export type Teasersitem = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1060,7 +1057,6 @@ export type Itncoverage = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1735,7 +1731,6 @@ export type Giftcardteaser = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -2596,7 +2591,6 @@ export type Fullvideo = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
     };
-    media?: unknown;
     _type: "file";
   };
 };
@@ -2873,7 +2867,6 @@ export type Normalimage = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -2912,7 +2905,6 @@ export type Fullimage = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -3242,7 +3234,6 @@ export type Splitview = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4026,7 +4017,6 @@ export type Contentsection = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -4192,7 +4182,6 @@ export type Videoembed = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4322,7 +4311,6 @@ export type Articleheader = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4345,7 +4333,6 @@ export type Pageheader = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4450,7 +4437,6 @@ export type Pageheader = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4774,7 +4760,6 @@ export type Contributor = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4817,7 +4802,6 @@ export type Testimonial = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5217,7 +5201,6 @@ export type Fundraiser_page = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5229,7 +5212,6 @@ export type Fundraiser_page = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5757,7 +5739,6 @@ export type Fundraiser_page = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -5956,7 +5937,6 @@ export type Organization = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5999,7 +5979,6 @@ export type Vippsagreement = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -6104,7 +6083,6 @@ export type Vippsagreement = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -6590,7 +6568,6 @@ export type Vippsagreement = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -6767,7 +6744,6 @@ export type Results = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -6872,7 +6848,6 @@ export type Results = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -6964,6 +6939,10 @@ export type Resultstext = {
   organizationsDescription?: string;
   directDonationsText?: string;
   smartDistributionText?: string;
+  sparkline?: {
+    smartDistributionText?: string;
+    directDonationsText?: string;
+  };
   normalizeYAxisText?: string;
   millionAbbreviation?: string;
   locale?: "no-NB" | "no-NN" | "sv-SE" | "da-DK";
@@ -6985,7 +6964,6 @@ export type Articles = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -7090,7 +7068,6 @@ export type Articles = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -7137,7 +7114,6 @@ export type Article_page = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -7623,7 +7599,6 @@ export type Article_page = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -7806,7 +7781,6 @@ export type Criteria = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -7911,7 +7885,6 @@ export type Criteria = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -8397,7 +8370,6 @@ export type Criteria = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -8574,7 +8546,6 @@ export type Support = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -8679,7 +8650,6 @@ export type Support = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -8730,7 +8700,6 @@ export type Generic_page = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -8835,7 +8804,6 @@ export type Generic_page = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -9321,7 +9289,6 @@ export type Generic_page = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -10130,7 +10097,6 @@ export type FetchArticleResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
                     };
-                    media?: unknown;
                     _type: "file";
                   };
                 }
@@ -10251,7 +10217,6 @@ export type FetchArticleResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -10481,7 +10446,6 @@ export type FetchArticleResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -11346,7 +11310,6 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -11789,7 +11752,6 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -11985,7 +11947,6 @@ export type FetchArticleResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -12068,7 +12029,6 @@ export type FetchArticleResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -12506,7 +12466,6 @@ export type FetchArticleResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -12688,7 +12647,6 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -13523,7 +13481,6 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -14169,7 +14126,6 @@ export type FetchArticleResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
-        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -14261,7 +14217,6 @@ export type FetchArticlesPageResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
-        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -14417,7 +14372,6 @@ export type FetchArticlesPageResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
-        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -14676,7 +14630,6 @@ export type FetchFundraiserResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
                     };
-                    media?: unknown;
                     _type: "file";
                   };
                 }
@@ -14797,7 +14750,6 @@ export type FetchFundraiserResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -15027,7 +14979,6 @@ export type FetchFundraiserResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -15892,7 +15843,6 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -16335,7 +16285,6 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -16531,7 +16480,6 @@ export type FetchFundraiserResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -16614,7 +16562,6 @@ export type FetchFundraiserResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -17052,7 +16999,6 @@ export type FetchFundraiserResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -17234,7 +17180,6 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -18069,7 +18014,6 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -18729,7 +18673,6 @@ export type FetchGenericPageResult = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
-      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -18995,7 +18938,6 @@ export type FetchGenericPageResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
-        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -19181,7 +19123,6 @@ export type FetchGenericPageResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
                     };
-                    media?: unknown;
                     _type: "file";
                   };
                 }
@@ -19302,7 +19243,6 @@ export type FetchGenericPageResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -19532,7 +19472,6 @@ export type FetchGenericPageResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -20397,7 +20336,6 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -20840,7 +20778,6 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -21036,7 +20973,6 @@ export type FetchGenericPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -21119,7 +21055,6 @@ export type FetchGenericPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -21557,7 +21492,6 @@ export type FetchGenericPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -21739,7 +21673,6 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -22574,7 +22507,6 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -23220,7 +23152,7 @@ export type FetchResultsPageSlugResult = {
   } | null;
 };
 // Variable: fetchResults
-// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  }  },  "page": *[_type == "results"][0] {    "slug": slug.current,    content[] {      ...,      blocks[] {        _type == 'reference' => @->,        _type == 'resultsoutput' => {          ...,          organization_links[] {            ...,            link {              ...,              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          links {            ...,            links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}          },        },        _type == 'cumulativedonationsgraph' => {          ...,          tableText {            dateColumnHeader,            dayOfYearColumnHeader,            cumulativeSumColumnHeader          }        },        _type == 'referralgraph' => {          ...,          tableText {            yearColumnHeader,            typeColumnHeader,            donationSumColumnHeader,            donationCountColumnHeader          }        },        _type != 'resultsoutput' && _type != 'reference' => @,      },    },    header {      ...,      seoImage{        asset->      },      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    textConfiguration {      currencySymbol,      collectedFromDonorsText,      lastUpdatedText,      impactEstimateText,      andText,      readMoreDefaultText,      organizationsHeading,      organizationsDescription,      directDonationsText,      smartDistributionText,      normalizeYAxisText,      millionAbbreviation,      locale    },    outputMappings[] {      sanityKey,      dataKey    },    organizationMappings[] {      abbreviation,      fullName    },    referralTypeMappings[] {      apiKey,      displayLabel    },  },}
+// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  }  },  "page": *[_type == "results"][0] {    "slug": slug.current,    content[] {      ...,      blocks[] {        _type == 'reference' => @->,        _type == 'resultsoutput' => {          ...,          organization_links[] {            ...,            link {              ...,              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          links {            ...,            links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}          },        },        _type == 'cumulativedonationsgraph' => {          ...,          tableText {            dateColumnHeader,            dayOfYearColumnHeader,            cumulativeSumColumnHeader          }        },        _type == 'referralgraph' => {          ...,          tableText {            yearColumnHeader,            typeColumnHeader,            donationSumColumnHeader,            donationCountColumnHeader          }        },        _type != 'resultsoutput' && _type != 'reference' => @,      },    },    header {      ...,      seoImage{        asset->      },      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    textConfiguration,    outputMappings[] {      sanityKey,      dataKey    },    organizationMappings[] {      abbreviation,      fullName    },    referralTypeMappings[] {      apiKey,      displayLabel    },  },}
 export type FetchResultsResult = {
   settings: Array<{
     title: string | null;
@@ -23316,7 +23248,6 @@ export type FetchResultsResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -23431,7 +23362,6 @@ export type FetchResultsResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -23858,7 +23788,6 @@ export type FetchResultsResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
-        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -23998,21 +23927,7 @@ export type FetchResultsResult = {
       cannonicalUrl?: string;
       _type: "pageheader";
     } | null;
-    textConfiguration: {
-      currencySymbol: string | null;
-      collectedFromDonorsText: string | null;
-      lastUpdatedText: string | null;
-      impactEstimateText: string | null;
-      andText: string | null;
-      readMoreDefaultText: string | null;
-      organizationsHeading: string | null;
-      organizationsDescription: string | null;
-      directDonationsText: string | null;
-      smartDistributionText: string | null;
-      normalizeYAxisText: string | null;
-      millionAbbreviation: string | null;
-      locale: "da-DK" | "no-NB" | "no-NN" | "sv-SE" | null;
-    } | null;
+    textConfiguration: Resultstext | null;
     outputMappings: Array<{
       sanityKey: string | null;
       dataKey: string | null;
@@ -24108,7 +24023,6 @@ export type FetchVippsResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
-              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -24607,7 +24521,6 @@ export type FetchVippsResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
-                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -25088,7 +25001,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -25455,7 +25367,6 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -25762,7 +25673,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -25787,7 +25697,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -25892,7 +25801,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -26502,7 +26410,6 @@ export type FetchAgreementsPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -26791,7 +26698,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -26850,7 +26756,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -26955,7 +26860,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -27322,7 +27226,6 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -27700,7 +27603,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -28100,7 +28002,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -28112,7 +28013,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -28521,7 +28421,6 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -28906,7 +28805,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -29011,7 +28909,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -29378,7 +29275,6 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -29785,7 +29681,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30095,7 +29990,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30138,7 +30032,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30243,7 +30136,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30561,7 +30453,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -30666,7 +30557,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -30873,7 +30763,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -31178,7 +31067,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -31283,7 +31171,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -31393,7 +31280,6 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -31482,7 +31368,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -31587,7 +31472,6 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -31954,7 +31838,6 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -32362,7 +32245,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -32729,7 +32611,6 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -33039,7 +32920,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -33067,7 +32947,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -33172,7 +33051,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -33803,7 +33681,6 @@ export type FetchDonationsPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -34095,7 +33972,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -34160,7 +34036,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -34265,7 +34140,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -34632,7 +34506,6 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -35013,7 +34886,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -35574,7 +35446,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -35586,7 +35457,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -35995,7 +35865,6 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -36386,7 +36255,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -36491,7 +36359,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -36858,7 +36725,6 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -37268,7 +37134,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -37596,7 +37461,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -37642,7 +37506,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -37747,7 +37610,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -38080,7 +37942,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38185,7 +38046,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38407,7 +38267,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -38715,7 +38574,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38820,7 +38678,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38942,7 +38799,6 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -39040,7 +38896,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -39145,7 +39000,6 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -39512,7 +39366,6 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -39916,7 +39769,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -40283,7 +40135,6 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -40589,7 +40440,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -40613,7 +40463,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -40718,7 +40567,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -41321,7 +41169,6 @@ export type FetchProfilePageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
-                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -41609,7 +41456,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -41666,7 +41512,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -41771,7 +41616,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -42138,7 +41982,6 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -42515,7 +42358,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -42909,7 +42751,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -42921,7 +42762,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -43330,7 +43170,6 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -43713,7 +43552,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -43818,7 +43656,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -44185,7 +44022,6 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -44591,7 +44427,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -44895,7 +44730,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -44937,7 +44771,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -45042,7 +44875,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -45355,7 +45187,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -45460,7 +45291,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -45662,7 +45492,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -45966,7 +45795,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -46071,7 +45899,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -46177,7 +46004,6 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
-          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -46263,7 +46089,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -46368,7 +46193,6 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
-            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -46735,7 +46559,6 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
-                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -47359,7 +47182,7 @@ declare module "@sanity/client" {
     '\n{\n  "pages": *[_type == "generic_page"] {\n    slug { current }\n  }\n}\n': FetchGenericPagesResult;
     "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    ...,\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n\n  },\n  \"page\": *[_type == \"generic_page\" && slug.current == $slug][0] {\n    ...,\n    header {\n      ...,\n      seoImage{\n        asset->{\n          url\n        },\n      },\n      pageHeader {\n        asset->,\n      },\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n},\n      \"accent_color\": *[_type == \"site_settings\"][0].accent_color,\n    },\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      intervention_configuration {\n        ...,\n        output_configuration->{\n          ...,\n          \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n          explanation_links[] {\n            \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          },\n        },\n        \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },  \n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    slug { current },\n  }\n}\n": FetchGenericPageResult;
     '\n{\n  "page": *[_type == "results"] {\n    "slug": slug.current,\n  }[0]\n}\n': FetchResultsPageSlugResult;
-    '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "page": *[_type == "results"][0] {\n    "slug": slug.current,\n    content[] {\n      ...,\n      blocks[] {\n        _type == \'reference\' => @->,\n        _type == \'resultsoutput\' => {\n          ...,\n          organization_links[] {\n            ...,\n            link {\n              ...,\n              \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n            },\n          },\n          links {\n            ...,\n            links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n          },\n        },\n        _type == \'cumulativedonationsgraph\' => {\n          ...,\n          tableText {\n            dateColumnHeader,\n            dayOfYearColumnHeader,\n            cumulativeSumColumnHeader\n          }\n        },\n        _type == \'referralgraph\' => {\n          ...,\n          tableText {\n            yearColumnHeader,\n            typeColumnHeader,\n            donationSumColumnHeader,\n            donationCountColumnHeader\n          }\n        },\n        _type != \'resultsoutput\' && _type != \'reference\' => @,\n      },\n    },\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n      links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n    },\n    textConfiguration {\n      currencySymbol,\n      collectedFromDonorsText,\n      lastUpdatedText,\n      impactEstimateText,\n      andText,\n      readMoreDefaultText,\n      organizationsHeading,\n      organizationsDescription,\n      directDonationsText,\n      smartDistributionText,\n      normalizeYAxisText,\n      millionAbbreviation,\n      locale\n    },\n    outputMappings[] {\n      sanityKey,\n      dataKey\n    },\n    organizationMappings[] {\n      abbreviation,\n      fullName\n    },\n    referralTypeMappings[] {\n      apiKey,\n      displayLabel\n    },\n  },\n}\n': FetchResultsResult;
+    '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "page": *[_type == "results"][0] {\n    "slug": slug.current,\n    content[] {\n      ...,\n      blocks[] {\n        _type == \'reference\' => @->,\n        _type == \'resultsoutput\' => {\n          ...,\n          organization_links[] {\n            ...,\n            link {\n              ...,\n              \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n            },\n          },\n          links {\n            ...,\n            links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n          },\n        },\n        _type == \'cumulativedonationsgraph\' => {\n          ...,\n          tableText {\n            dateColumnHeader,\n            dayOfYearColumnHeader,\n            cumulativeSumColumnHeader\n          }\n        },\n        _type == \'referralgraph\' => {\n          ...,\n          tableText {\n            yearColumnHeader,\n            typeColumnHeader,\n            donationSumColumnHeader,\n            donationCountColumnHeader\n          }\n        },\n        _type != \'resultsoutput\' && _type != \'reference\' => @,\n      },\n    },\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n      links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n    },\n    textConfiguration,\n    outputMappings[] {\n      sanityKey,\n      dataKey\n    },\n    organizationMappings[] {\n      abbreviation,\n      fullName\n    },\n    referralTypeMappings[] {\n      apiKey,\n      displayLabel\n    },\n  },\n}\n': FetchResultsResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "vipps": *[_id == "vipps"] {\n    agreement_page->{\n      slug {\n        current\n      },\n      header {\n        ...,\n        seoImage{\n          asset->\n        },\n        links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n      },\n      content,\n    }\n  }\n}\n': FetchVippsResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    },\n  },\n  "page": *[_id == "agreements"][0] {\n    ...,\n    active_list_configuration {\n      ...,\n      details_configuration {\n        ...,\n        date_selector_configuration->{\n          ...,\n        }\n      }\n    },\n    slug {\n      current\n    }\n  }\n}\n': FetchAgreementsPageResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    main_currency,\n    main_locale,\n    title,\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    }\n  },\n  "page": *[_id == "donations"][0] {\n    ...,\n    aggregate_estimated_impact->{\n      ...,\n      "currency": *[ _type == "site_settings"][0].main_currency,\n      "locale": *[ _type == "site_settings"][0].main_locale,\n    },\n    desktop_donations_table_configuration,\n    mobile_donations_table_configuration,\n    donations_details_configuration {\n      ...,\n      impact_items_configuration {\n        ...,\n        "currency": *[ _type == "site_settings"][0].main_currency,\n        "locale": *[ _type == "site_settings"][0].main_locale,\n        impact_item_configuration {\n          ...,\n          "currency": *[ _type == "site_settings"][0].main_currency,\n          "locale": *[ _type == "site_settings"][0].main_locale,\n        }\n      }\n    },\n    slug {\n      current\n    }\n  },\n}\n': FetchDonationsPageResult;
