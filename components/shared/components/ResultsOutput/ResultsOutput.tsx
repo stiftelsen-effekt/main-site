@@ -57,6 +57,7 @@ export const ResultsOutput: React.FC<{
   links?: LinksProps & {
     title?: string;
   };
+  startYear: number;
   textConfig?: ResultsOutputTextConfig;
 }> = ({
   graphData,
@@ -66,6 +67,7 @@ export const ResultsOutput: React.FC<{
   graphContext,
   organizationLinks,
   links,
+  startYear,
   textConfig,
 }) => {
   const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
@@ -139,6 +141,7 @@ export const ResultsOutput: React.FC<{
         output={graphData.output}
         graphAnnotations={graphAnnotations}
         graphContext={graphContext}
+        startYear={startYear}
       ></Outputs>
 
       <div className={styles.organizations}>
@@ -197,6 +200,7 @@ export const ResultsOutput: React.FC<{
                       (t) => t.organization === organization,
                     )}
                     maxY={normalizeYAxis ? maxY : undefined}
+                    startYear={startYear}
                     locale={textConfig?.locale || "no-NB"}
                   ></OrganizationSparkline>
                 </div>

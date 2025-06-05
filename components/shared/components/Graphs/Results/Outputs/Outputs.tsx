@@ -45,9 +45,16 @@ export type OutputGraphAnnotation = {
 export const Outputs: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
   output: string;
+  startYear: number;
   graphAnnotations?: OutputGraphAnnotation[];
   graphContext: GraphContextData;
-}> = ({ transformedMonthlyDonationsPerOutput, output, graphAnnotations, graphContext }) => {
+}> = ({
+  transformedMonthlyDonationsPerOutput,
+  output,
+  startYear,
+  graphAnnotations,
+  graphContext,
+}) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const legendRef = useRef<HTMLDivElement>(null);
@@ -61,10 +68,7 @@ export const Outputs: React.FC<{
 
   const maxOutputsInYear = useMemo(() => {
     const currentYear = new Date().getFullYear();
-    const firstYear = Math.min(
-      ...transformedMonthlyDonationsPerOutput.map((d) => d.period.getFullYear()),
-    );
-    const years = Array.from(new Array(currentYear + 1 - firstYear)).map((_, i) => firstYear + i);
+    const years = Array.from(new Array(currentYear + 1 - startYear)).map((_, i) => startYear + i);
     const yearlyMaxes = years.map((year) =>
       transformedMonthlyDonationsPerOutput
         .filter((d) => d.period.getFullYear() === year)
@@ -96,9 +100,8 @@ export const Outputs: React.FC<{
     (data: TransformedMonthlyDonationsPerOutput) => {
       if (graphRef.current && legendRef.current && innerGraph.current) {
         const currentYear = new Date().getFullYear();
-        const firstYear = Math.min(...data.map((d) => d.period.getFullYear()));
-        const years = Array.from(new Array(currentYear + 1 - firstYear), (x, i) => ({
-          period: new Date(firstYear + i, 0, 1),
+        const years = Array.from(new Array(currentYear + 1 - startYear), (x, i) => ({
+          period: new Date(startYear + i, 0, 1),
           y: 0,
         }));
 

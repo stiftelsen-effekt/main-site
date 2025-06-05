@@ -14,8 +14,9 @@ import { useIsMobile } from "../../../../../../hooks/useIsMobile";
 export const OrganizationSparkline: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
   maxY?: number;
+  startYear: number;
   locale: string;
-}> = ({ transformedMonthlyDonationsPerOutput, maxY, locale }) => {
+}> = ({ transformedMonthlyDonationsPerOutput, maxY, startYear, locale }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -43,7 +44,6 @@ export const OrganizationSparkline: React.FC<{
   }, [graphRef]);
 
   const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const startYear = 2016;
 
   const allYears = useMemo(() => {
     return Array.from(new Array(currentYear + 1 - startYear), (x, i) => ({

@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import links from "./Links/Links.module.scss";
 import {
   SectionContainerProps,
@@ -57,6 +57,14 @@ export const ResultContentRenderer: React.FC<{
   graphData: ResultsGraphData;
   textConfig: ResultsTextConfig;
 }> = ({ content, graphData, textConfig }) => {
+  const resultOutputStartYear = useMemo(() => {
+    // Find the earliest year in the graph data for any output
+    const years = graphData.monthlyDonationsPerOutput.flatMap((output) => {
+      return output.monthly.map((data) => new Date(data.period).getFullYear());
+    });
+    return Math.min(...years);
+  }, [graphData.monthlyDonationsPerOutput]);
+
   return (
     <>
       {content &&
@@ -197,6 +205,7 @@ export const ResultContentRenderer: React.FC<{
                             organizationLinks={block.organization_links}
                             links={block.links}
                             textConfig={textConfig.textConfiguration}
+                            startYear={resultOutputStartYear}
                           ></ResultsOutput>
                         );
                       case "referralgraph":
