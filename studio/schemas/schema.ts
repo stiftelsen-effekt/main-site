@@ -88,6 +88,12 @@ import taxdeductionwidget from "./types/taxdeductionwidget";
 import donationwidgetblock from "./types/donationwidgetblock";
 import dkmembershipwidget from "./types/dkmembershipwidget";
 import dkmembershipdisplay from "./types/dkmembershipdisplay";
+import resultstext from "./types/resultstext";
+import outputmapping from "./types/outputmapping";
+import organizationmapping from "./types/organizationmapping";
+import referraltypemapping from "./types/referraltypemapping";
+import cumulativedonationstabletext from "./types/cumulativedonationstabletext";
+import referralstabletext from "./types/referralstabletext";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
 
@@ -173,6 +179,12 @@ export const types = [
   donationwidgetblock,
   dkmembershipwidget,
   dkmembershipdisplay,
+  resultstext,
+  outputmapping,
+  organizationmapping,
+  referraltypemapping,
+  cumulativedonationstabletext,
+  referralstabletext,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

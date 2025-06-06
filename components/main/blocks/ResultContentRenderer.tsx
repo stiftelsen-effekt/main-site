@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import links from "./Links/Links.module.scss";
 import {
   SectionContainerProps,
@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHeadline } from "../../shared/components/ResultsHeadline/ResultsHeadline";
 import { CumulativeDonationsSkeleton } from "../../shared/components/Graphs/Results/CumulativeDonations/CumulativeDonationsSkeleton";
+import { Resultstext } from "../../../studio/sanity.types";
 
 /** Dynamic imports */
 const CumulativeDonations = dynamic(
@@ -35,10 +36,35 @@ const ReferralSums = dynamic(() =>
   ),
 );
 
-export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsGraphData }> = ({
-  content,
-  graphData,
-}) => {
+export interface ResultsTextConfig {
+  textConfiguration?: Resultstext;
+  outputMappings?: Array<{
+    sanityKey: string;
+    dataKey: string;
+  }>;
+  organizationMappings?: Array<{
+    abbreviation: string;
+    fullName: string;
+  }>;
+  referralTypeMappings?: Array<{
+    apiKey: string;
+    displayLabel: string;
+  }>;
+}
+
+export const ResultContentRenderer: React.FC<{
+  content: any;
+  graphData: ResultsGraphData;
+  textConfig: ResultsTextConfig;
+}> = ({ content, graphData, textConfig }) => {
+  const resultOutputStartYear = useMemo(() => {
+    // Find the earliest year in the graph data for any output
+    const years = graphData.monthlyDonationsPerOutput.flatMap((output) => {
+      return output.monthly.map((data) => new Date(data.period).getFullYear());
+    });
+    return Math.min(...years);
+  }, [graphData.monthlyDonationsPerOutput]);
+
   return (
     <>
       {content &&
@@ -69,14 +95,19 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                       case "links":
                         return (
                           <div key={block._key} className={links.linksWrapper}>
-                            <p className="inngress">{block.title ?? "Les mer:"}</p>
+                            <p className="inngress">
+                              {block.title ??
+                                (textConfig.textConfiguration?.readMoreDefaultText || "Les mer:")}
+                            </p>
                             <Links links={block.links}></Links>
                           </div>
                         );
                       case "resultsheadline":
                         const totalOutputs = block.outputs.map((output: string) => {
                           const data = graphData.monthlyDonationsPerOutput.find(
-                            (o) => o.output === mapSanityOutputToDataOutput(output),
+                            (o) =>
+                              o.output ===
+                              mapSanityOutputToDataOutput(output, textConfig.outputMappings),
                           );
                           if (!data) {
                             return "Did not find data for output type " + output;
@@ -95,6 +126,7 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             key={block._key || block._id}
                             headlineNumbers={graphData.resultsHeadlineNumbers}
                             totalOutputs={totalOutputs}
+                            textConfig={textConfig.textConfiguration}
                           />
                         );
                       case "contactinfo":
@@ -142,11 +174,22 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             key={block._key || block._id}
                             dailyDonations={graphData.dailyDonations}
                             graphContext={block.graphcontext}
+                            textConfig={{
+                              millionAbbreviation:
+                                textConfig.textConfiguration?.millionAbbreviation,
+                              locale: textConfig.textConfiguration?.locale,
+                              tableText: block.tableText,
+                            }}
                           />
                         );
                       case "resultsoutput":
                         const data = graphData.monthlyDonationsPerOutput.find(
-                          (o) => o.output === mapSanityOutputToDataOutput(block.outputType),
+                          (o) =>
+                            o.output ===
+                            mapSanityOutputToDataOutput(
+                              block.outputType,
+                              textConfig.outputMappings,
+                            ),
                         );
                         if (!data) {
                           return "Did not find data for output type " + block.outputType;
@@ -161,6 +204,8 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             graphContext={block.graphcontext}
                             organizationLinks={block.organization_links}
                             links={block.links}
+                            textConfig={textConfig.textConfiguration}
+                            startYear={resultOutputStartYear}
                           ></ResultsOutput>
                         );
                       case "referralgraph":
@@ -169,6 +214,12 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
                             key={block._key || block._id}
                             referralSums={graphData.referralSums}
                             graphContext={block.graphcontext}
+                            textConfig={{
+                              millionAbbreviation:
+                                textConfig.textConfiguration?.millionAbbreviation,
+                              referralTypeMappings: textConfig.referralTypeMappings,
+                              tableText: block.tableText,
+                            }}
                           />
                         );
                       default:
@@ -182,7 +233,18 @@ export const ResultContentRenderer: React.FC<{ content: any; graphData: ResultsG
   );
 };
 
-const mapSanityOutputToDataOutput = (output: string) => {
+const mapSanityOutputToDataOutput = (
+  output: string,
+  mappings?: Array<{ sanityKey: string; dataKey: string }>,
+) => {
+  if (mappings) {
+    const mapping = mappings.find((m) => m.sanityKey === output);
+    if (mapping) {
+      return mapping.dataKey;
+    }
+  }
+
+  // Fallback to hardcoded mappings for backwards compatibility
   switch (output) {
     case "Bednets":
       return "Myggnett";

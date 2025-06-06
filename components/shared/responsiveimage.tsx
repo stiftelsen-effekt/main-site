@@ -64,6 +64,12 @@ export const ResponsiveImage: React.FC<{
       crop={image.crop}
       alt={alt || "Image"}
       onClick={onClick}
+      queryParams={
+        {
+          dpr: typeof window !== "undefined" ? window.devicePixelRatio : 2,
+          q: 80,
+        } as any
+      }
       loading={priority ? "eager" : "lazy"}
       sizes={sizes ?? "(min-width: 1521px) 760px, (min-width: 1181px) 640px, 90vw"}
       style={imageStyle}

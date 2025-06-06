@@ -45,9 +45,18 @@ export type OutputGraphAnnotation = {
 export const Outputs: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
   output: string;
+  startYear: number;
+  locale?: string;
   graphAnnotations?: OutputGraphAnnotation[];
   graphContext: GraphContextData;
-}> = ({ transformedMonthlyDonationsPerOutput, output, graphAnnotations, graphContext }) => {
+}> = ({
+  transformedMonthlyDonationsPerOutput,
+  output,
+  startYear,
+  locale,
+  graphAnnotations,
+  graphContext,
+}) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const legendRef = useRef<HTMLDivElement>(null);
@@ -61,7 +70,7 @@ export const Outputs: React.FC<{
 
   const maxOutputsInYear = useMemo(() => {
     const currentYear = new Date().getFullYear();
-    const years = Array.from(new Array(currentYear + 1 - 2016)).map((_, i) => 2016 + i);
+    const years = Array.from(new Array(currentYear + 1 - startYear)).map((_, i) => startYear + i);
     const yearlyMaxes = years.map((year) =>
       transformedMonthlyDonationsPerOutput
         .filter((d) => d.period.getFullYear() === year)
@@ -93,8 +102,8 @@ export const Outputs: React.FC<{
     (data: TransformedMonthlyDonationsPerOutput) => {
       if (graphRef.current && legendRef.current && innerGraph.current) {
         const currentYear = new Date().getFullYear();
-        const years = Array.from(new Array(currentYear + 1 - 2016), (x, i) => ({
-          period: new Date(2016 + i, 0, 1),
+        const years = Array.from(new Array(currentYear + 1 - startYear), (x, i) => ({
+          period: new Date(startYear + i, 0, 1),
           y: 0,
         }));
 
@@ -246,7 +255,7 @@ export const Outputs: React.FC<{
             label: null,
             labelAnchor: "top",
             tickSize: 0,
-            tickFormat: (t) => thousandize(Math.round(t)),
+            tickFormat: (t) => thousandize(Math.round(t), locale),
             ticks: size.width < 760 ? 0 : 5,
           },
           x: {
@@ -290,6 +299,7 @@ export const Outputs: React.FC<{
                 text: (d: any) =>
                   thousandize(
                     Math.round(d.reduce((acc: number, el: any) => acc + el.numberOfOutputs, 0)),
+                    locale,
                   ),
                 dy: -15,
               } as any),

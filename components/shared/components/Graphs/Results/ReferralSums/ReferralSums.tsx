@@ -46,10 +46,25 @@ type ReferralGraphData = {
   year: number;
 };
 
+export interface ReferralSumsTextConfig {
+  millionAbbreviation?: string;
+  referralTypeMappings?: Array<{
+    apiKey: string;
+    displayLabel: string;
+  }>;
+  tableText?: {
+    yearColumnHeader?: string;
+    typeColumnHeader?: string;
+    donationSumColumnHeader?: string;
+    donationCountColumnHeader?: string;
+  };
+}
+
 export const ReferralSums: React.FC<{
   referralSums: ReferralSumsResult[];
   graphContext: GraphContextData;
-}> = ({ referralSums, graphContext }) => {
+  textConfig?: ReferralSumsTextConfig;
+}> = ({ referralSums, graphContext, textConfig }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -90,7 +105,10 @@ export const ReferralSums: React.FC<{
     return filteredReferralSums;
   }, [referralSums]);
 
-  const tableContents = useMemo(() => getTableContents(graphData), [graphData]);
+  const tableContents = useMemo(
+    () => getTableContents(graphData, textConfig),
+    [graphData, textConfig],
+  );
 
   const resizeGraph = useCallback(() => {
     if (graphRef.current) {
@@ -130,7 +148,7 @@ export const ReferralSums: React.FC<{
           },
           y: {
             label: null,
-            tickFormat: (t) => mapTypeToLabel(t),
+            tickFormat: (t) => mapTypeToLabel(t, textConfig?.referralTypeMappings),
             domain: Array.from(new Set(graphData.map((el) => el.type))),
             ticks: size.width >= 760 ? undefined : [],
           },
@@ -173,7 +191,7 @@ export const ReferralSums: React.FC<{
               x: (d) => 0,
               y: "type",
               fy: "year",
-              text: (d) => mapTypeToLabel(d.type),
+              text: (d) => mapTypeToLabel(d.type, textConfig?.referralTypeMappings),
               textAnchor: "start",
               dx: 5,
               mixBlendMode: "difference",
@@ -183,7 +201,8 @@ export const ReferralSums: React.FC<{
           config.marks.push(
             Plot.axisX({
               textAnchor: "start",
-              tickFormat: (t) => Math.round(t / 1000000) + " mill",
+              tickFormat: (t) =>
+                Math.round(t / 1000000) + " " + (textConfig?.millionAbbreviation || "mill"),
               label: null,
               tickSpacing: 50,
             }),
@@ -192,7 +211,8 @@ export const ReferralSums: React.FC<{
               Plot.axisX({
                 anchor: "top",
                 textAnchor: "start",
-                tickFormat: (t) => Math.round(t / 1000000) + " mill",
+                tickFormat: (t) =>
+                  Math.round(t / 1000000) + " " + (textConfig?.millionAbbreviation || "mill"),
                 label: null,
                 tickSpacing: 50,
               }),
@@ -201,7 +221,8 @@ export const ReferralSums: React.FC<{
           config.marks.push(Plot.gridX({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }));
           config.marks.push(
             Plot.axisX({
-              tickFormat: (t) => Math.round(t / 1000000) + " mill",
+              tickFormat: (t) =>
+                Math.round(t / 1000000) + " " + (textConfig?.millionAbbreviation || "mill"),
               label: null,
               tickSpacing: 100,
             }),
@@ -229,7 +250,18 @@ export const ReferralSums: React.FC<{
   );
 };
 
-const mapTypeToLabel = (type: string) => {
+const mapTypeToLabel = (
+  type: string,
+  mappings?: Array<{ apiKey: string; displayLabel: string }>,
+) => {
+  if (mappings) {
+    const mapping = mappings.find((m) => m.apiKey === type);
+    if (mapping) {
+      return mapping.displayLabel;
+    }
+  }
+
+  // Fallback to hardcoded mappings for backwards compatibility
   switch (type) {
     case "EA":
       return "Effektiv Altruisme";
@@ -252,18 +284,28 @@ const mapTypeToLabel = (type: string) => {
   }
 };
 
-const getTableContents = (graphData: ReferralGraphData[]) => {
+const getTableContents = (graphData: ReferralGraphData[], textConfig?: ReferralSumsTextConfig) => {
   return {
     rows: [
       {
         _key: "header",
         _type: "row",
-        cells: ["År", "Type", "Sum donasjoner", "Antall donasjoner"],
+        cells: [
+          textConfig?.tableText?.yearColumnHeader || "År",
+          textConfig?.tableText?.typeColumnHeader || "Type",
+          textConfig?.tableText?.donationSumColumnHeader || "Sum donasjoner",
+          textConfig?.tableText?.donationCountColumnHeader || "Antall donasjoner",
+        ],
       },
       ...graphData.map((r) => ({
         _key: r.year + r.type,
         _type: "row",
-        cells: [r.year.toString(), mapTypeToLabel(r.type), r.sum.toFixed(2), r.num.toFixed(0)],
+        cells: [
+          r.year.toString(),
+          mapTypeToLabel(r.type, textConfig?.referralTypeMappings),
+          r.sum.toFixed(2),
+          r.num.toFixed(0),
+        ],
       })),
     ],
   };
