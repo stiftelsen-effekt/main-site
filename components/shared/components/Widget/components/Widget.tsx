@@ -8,9 +8,11 @@ import { fetchReferralsAction } from "../store/referrals/actions";
 import { State } from "../store/state";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
-import { DonationPane } from "./panes/DonationPane/DonationPane";
+import { SelectionPane } from "./panes/SelectionPane";
+import { AmountPane } from "./panes/AmountPane/index";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
+import { SummaryPane } from "./panes/SummaryPane/SummaryPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { token } from "../../../../../token";
 import {
@@ -203,17 +205,17 @@ export const Widget = withStaticProps(
           )}
           <ProgressBar inline={inline} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
-            <DonationPane
+            <SelectionPane />
+            <AmountPane
+              nextButtonText={widget.pane1_button_text}
+              smartDistContext={widget.smart_distribution_context}
               text={{
                 single_donation_text: widget.single_donation_text,
                 monthly_donation_text: widget.monthly_donation_text,
-                amount_context: widget.amount_context,
-                smart_distribution_context: widget.smart_distribution_context,
-                pane1_button_text: widget.pane1_button_text,
-                donation_input_error_templates: widget.donation_input_error_templates,
               }}
               enableRecurring={availableRecurringOptions.recurring}
               enableSingle={availableRecurringOptions.single}
+              amountContext={widget.amount_context}
             />
             <DonorPane
               locale={widget.locale}
@@ -235,6 +237,7 @@ export const Widget = withStaticProps(
               }}
               paymentMethods={availablePaymentMethods}
             />
+            <SummaryPane paymentMethods={availablePaymentMethods} />
             <PaymentPane
               referrals={{
                 referrals_title: widget.referrals_title,
