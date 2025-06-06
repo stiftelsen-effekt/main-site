@@ -43,7 +43,7 @@ const API_ENDPOINT = `${process.env.NEXT_PUBLIC_EFFEKT_API}/api/membership`;
 
 type ConfigurationType = Required<Dkmembershipwidget>["configuration"];
 
-export const DKMembershipWidget: React.FC<{ config: ConfigurationType }> = ({ config }) => {
+export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ config }) => {
   const defaultConfig: ConfigurationType = {
     country_label: "Country",
     name_label: "Full name",
@@ -296,7 +296,7 @@ export const DKMembershipWidget: React.FC<{ config: ConfigurationType }> = ({ co
         )}
 
         <EffektButton disabled={loading} type="submit" className={styles.submitButton}>
-          {loading ? <Spinner className={styles.submitSpinner} /> : config.membership_fee_text}
+          {loading ? <Spinner className={styles.submitSpinner} /> : mergedTexts.membership_fee_text}
         </EffektButton>
       </form>
     </div>
