@@ -201,7 +201,10 @@ export const OrganizationSparkline: React.FC<{
                   fontWeight: "bold",
                   fill: "black",
                   text: (d: any) =>
-                    thousandize(Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0))),
+                    thousandize(
+                      Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0)),
+                      locale,
+                    ),
                   dy: -15,
                 } as any),
               ),

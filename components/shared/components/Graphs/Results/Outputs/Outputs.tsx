@@ -46,12 +46,14 @@ export const Outputs: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
   output: string;
   startYear: number;
+  locale?: string;
   graphAnnotations?: OutputGraphAnnotation[];
   graphContext: GraphContextData;
 }> = ({
   transformedMonthlyDonationsPerOutput,
   output,
   startYear,
+  locale,
   graphAnnotations,
   graphContext,
 }) => {
@@ -253,7 +255,7 @@ export const Outputs: React.FC<{
             label: null,
             labelAnchor: "top",
             tickSize: 0,
-            tickFormat: (t) => thousandize(Math.round(t)),
+            tickFormat: (t) => thousandize(Math.round(t), locale),
             ticks: size.width < 760 ? 0 : 5,
           },
           x: {
@@ -297,6 +299,7 @@ export const Outputs: React.FC<{
                 text: (d: any) =>
                   thousandize(
                     Math.round(d.reduce((acc: number, el: any) => acc + el.numberOfOutputs, 0)),
+                    locale,
                   ),
                 dy: -15,
               } as any),

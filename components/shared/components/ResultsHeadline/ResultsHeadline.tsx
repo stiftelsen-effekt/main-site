@@ -14,6 +14,7 @@ export interface ResultsHeadlineTextConfig {
   lastUpdatedText?: string;
   impactEstimateText?: string;
   andText?: string;
+  locale?: string;
 }
 
 export const ResultsHeadline = ({
@@ -43,11 +44,18 @@ export const ResultsHeadline = ({
   return (
     <div className={styles.wrapper}>
       <h1>
-        {thousandize(Math.floor(headlineNumbers.totalDonationsToRecommendedOrgs))} {currencySymbol}
+        {thousandize(
+          Math.floor(headlineNumbers.totalDonationsToRecommendedOrgs),
+          textConfig?.locale,
+        )}{" "}
+        {currencySymbol}
       </h1>
       <div className={styles.subheader}>
         <p className={styles.donorcount}>
-          {collectedFromDonorsText.replace("{count}", thousandize(headlineNumbers.numberOfDonors))}
+          {collectedFromDonorsText.replace(
+            "{count}",
+            thousandize(headlineNumbers.numberOfDonors, textConfig?.locale),
+          )}
         </p>
         <p className={styles.lastupdated}>
           {lastUpdatedText.replace("{date}", formattedLastUpdated)}
@@ -58,9 +66,13 @@ export const ResultsHeadline = ({
         {impactEstimateText}{" "}
         {totalOutputs
           .slice(0, totalOutputs.length - 1)
-          .map((output) => `${thousandize(Math.floor(output.outputs))} ${output.name}`)
+          .map(
+            (output) =>
+              `${thousandize(Math.floor(output.outputs), textConfig?.locale)} ${output.name}`,
+          )
           .join(", ")}{" "}
-        {andText} {thousandize(Math.floor(totalOutputs[totalOutputs.length - 1].outputs))}{" "}
+        {andText}{" "}
+        {thousandize(Math.floor(totalOutputs[totalOutputs.length - 1].outputs), textConfig?.locale)}{" "}
         {totalOutputs[totalOutputs.length - 1].name}.
       </div>
     </div>

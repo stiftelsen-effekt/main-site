@@ -16,7 +16,6 @@ import { LinkComponent, Links, LinksProps } from "../../../main/blocks/Links/Lin
 import { GraphContextData } from "../Graphs/Shared/GraphContext/GraphContext";
 import { NavLink } from "../Navbar/Navbar";
 import { Toggle } from "../Widget/components/shared/Toggle/Toggle";
-import { json, text } from "d3";
 
 export type TransformedMonthlyDonationsPerOutput = {
   via: string;
@@ -127,7 +126,7 @@ export const ResultsOutput: React.FC<{
           <div className={styles.outputsWrapper}>
             <div>
               <h2 className={styles.outputNumber}>
-                {thousandize(Math.round(graphData.total.numberOfOutputs))}
+                {thousandize(Math.round(graphData.total.numberOfOutputs), textConfig?.locale)}
               </h2>
               <span className={styles.outputName}>{graphData.output}</span>
             </div>
@@ -142,6 +141,7 @@ export const ResultsOutput: React.FC<{
         graphAnnotations={graphAnnotations}
         graphContext={graphContext}
         startYear={startYear}
+        locale={textConfig?.locale}
       ></Outputs>
 
       <div className={styles.organizations}>
@@ -180,13 +180,16 @@ export const ResultsOutput: React.FC<{
                   <span>
                     {(textConfig?.directDonationsText || "{amount} kr direkte fra donorer").replace(
                       "{amount}",
-                      thousandize(Math.round(value.direct.sum)),
+                      thousandize(Math.round(value.direct.sum), textConfig?.locale),
                     )}
                   </span>
                   <span>
                     {(
                       textConfig?.smartDistributionText || "{amount} kr via smart fordeling"
-                    ).replace("{amount}", thousandize(Math.round(value.smartDistribution.sum)))}
+                    ).replace(
+                      "{amount}",
+                      thousandize(Math.round(value.smartDistribution.sum), textConfig?.locale),
+                    )}
                   </span>
                   {orgLink && (
                     <div className={styles.orgLink}>
