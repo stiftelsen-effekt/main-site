@@ -25,6 +25,24 @@ export type TransformedMonthlyDonationsPerOutput = {
   sum: number;
 }[];
 
+export interface ResultsOutputTextConfig {
+  organizationsHeading?: string;
+  organizationsDescription?: string;
+  directDonationsText?: string;
+  smartDistributionText?: string;
+  sparkline?: {
+    smartDistributionText?: string;
+    directDonationsText?: string;
+  };
+  normalizeYAxisText?: string;
+  readMoreDefaultText?: string;
+  organizationMappings?: Array<{
+    abbreviation: string;
+    fullName: string;
+  }>;
+  locale?: string;
+}
+
 export const ResultsOutput: React.FC<{
   graphData: MonthlyDonationsPerOutputResult;
   outputCountries: string[];
@@ -38,6 +56,8 @@ export const ResultsOutput: React.FC<{
   links?: LinksProps & {
     title?: string;
   };
+  startYear: number;
+  textConfig?: ResultsOutputTextConfig;
 }> = ({
   graphData,
   outputCountries,
@@ -46,6 +66,8 @@ export const ResultsOutput: React.FC<{
   graphContext,
   organizationLinks,
   links,
+  startYear,
+  textConfig,
 }) => {
   const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
     () =>
@@ -104,7 +126,7 @@ export const ResultsOutput: React.FC<{
           <div className={styles.outputsWrapper}>
             <div>
               <h2 className={styles.outputNumber}>
-                {thousandize(Math.round(graphData.total.numberOfOutputs))}
+                {thousandize(Math.round(graphData.total.numberOfOutputs), textConfig?.locale)}
               </h2>
               <span className={styles.outputName}>{graphData.output}</span>
             </div>
@@ -118,16 +140,20 @@ export const ResultsOutput: React.FC<{
         output={graphData.output}
         graphAnnotations={graphAnnotations}
         graphContext={graphContext}
+        startYear={startYear}
+        locale={textConfig?.locale}
       ></Outputs>
 
       <div className={styles.organizations}>
-        <h4>Organisasjoner</h4>
+        <h4>{textConfig?.organizationsHeading || "Organisasjoner"}</h4>
         <p>
-          Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med{" "}
-          {graphData.output.toLowerCase()}.
+          {(
+            textConfig?.organizationsDescription ||
+            "Donasjoner til anbefalte eller tidligere anbefalte organisasjoner som arbeider med {output}."
+          ).replace("{output}", graphData.output.toLowerCase())}
         </p>
         <div className={styles.headerControls}>
-          <OrganizationSparklineLegend />
+          <OrganizationSparklineLegend textConfig={textConfig?.sparkline} />
           {graphData.total.organizations.length > 1 && (
             <div className={styles.normalizeYAxis}>
               <div className={styles.toggleWrapper}>
@@ -136,7 +162,7 @@ export const ResultsOutput: React.FC<{
                   onChange={(active: boolean) => setNormalizeYAxis(active)}
                 />
               </div>
-              Standardiser y-akse
+              {textConfig?.normalizeYAxisText || "Standardiser y-akse"}
             </div>
           )}
         </div>
@@ -150,10 +176,20 @@ export const ResultsOutput: React.FC<{
             return (
               <div key={organization} className={styles.organization}>
                 <div className={styles.overview}>
-                  <strong>{orgAbbrivToName(organization)}</strong>
-                  <span>{thousandize(Math.round(value.direct.sum))} kr direkte fra donorer</span>
+                  <strong>{orgAbbrivToName(organization, textConfig?.organizationMappings)}</strong>
                   <span>
-                    {thousandize(Math.round(value.smartDistribution.sum))} kr via smart fordeling
+                    {(textConfig?.directDonationsText || "{amount} kr direkte fra donorer").replace(
+                      "{amount}",
+                      thousandize(Math.round(value.direct.sum), textConfig?.locale),
+                    )}
+                  </span>
+                  <span>
+                    {(
+                      textConfig?.smartDistributionText || "{amount} kr via smart fordeling"
+                    ).replace(
+                      "{amount}",
+                      thousandize(Math.round(value.smartDistribution.sum), textConfig?.locale),
+                    )}
                   </span>
                   {orgLink && (
                     <div className={styles.orgLink}>
@@ -167,6 +203,8 @@ export const ResultsOutput: React.FC<{
                       (t) => t.organization === organization,
                     )}
                     maxY={normalizeYAxis ? maxY : undefined}
+                    startYear={startYear}
+                    locale={textConfig?.locale || "no-NB"}
                   ></OrganizationSparkline>
                 </div>
               </div>
@@ -174,7 +212,9 @@ export const ResultsOutput: React.FC<{
           })}
         {links && links.links.length > 0 && (
           <div className={styles.linksWrapper}>
-            <p className="inngress">{links.title ?? "Les mer:"}</p>
+            <p className="inngress">
+              {links.title ?? (textConfig?.readMoreDefaultText || "Les mer:")}
+            </p>
             <Links links={links.links}></Links>
           </div>
         )}
@@ -183,7 +223,18 @@ export const ResultsOutput: React.FC<{
   );
 };
 
-const orgAbbrivToName = (abbriv: string) => {
+const orgAbbrivToName = (
+  abbriv: string,
+  mappings?: Array<{ abbreviation: string; fullName: string }>,
+) => {
+  if (mappings) {
+    const mapping = mappings.find((m) => m.abbreviation === abbriv);
+    if (mapping) {
+      return mapping.fullName;
+    }
+  }
+
+  // Fallback to hardcoded mappings for backwards compatibility
   switch (abbriv) {
     case "hki":
       return "Hellen Keller International";

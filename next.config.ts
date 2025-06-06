@@ -26,9 +26,9 @@ const nextConfig: NextConfig = {
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   experimental: {
     optimizePackageImports: ["react-feather"],
-    turbo: {},
     inlineCss: true,
   },
+  turbopack: {},
   compiler: {
     styledComponents: true,
   },

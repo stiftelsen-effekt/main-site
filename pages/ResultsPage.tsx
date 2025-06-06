@@ -16,6 +16,7 @@ import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHadlineNumbers } from "../components/shared/components/ResultsHeadline/ResultsHeadline";
 import { ConsentState } from "../middleware.page";
+import { FetchResultsResult } from "../studio/sanity.types";
 
 const fetchResultsPageSlug = groq`
 {
@@ -99,7 +100,9 @@ export const ResultsPage = withStaticProps(
     const appStaticProps = await getAppStaticProps({ draftMode, consentState });
 
     // Fetch Sanity data
-    const result = await getClient(draftMode ? token : undefined).fetch(fetchResults);
+    const result = await getClient(draftMode ? token : undefined).fetch<FetchResultsResult>(
+      fetchResults,
+    );
 
     // Fetch graph data
     const graphData = await fetchResultsGraphData();
@@ -131,33 +134,56 @@ export const ResultsPage = withStaticProps(
   return (
     <>
       <SEO
-        title={header.seoTitle || header.title}
-        description={header.seoDescription || header.inngress}
-        imageAssetUrl={header.seoImage?.url ? header.seoImage.asset.url : undefined}
-        canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug}`}
-        titleTemplate={`${data.result.settings[0].title} | %s`}
-        keywords={header.seoKeywords}
-        siteName={data.result.settings[0].title}
+        title={(header?.seoTitle || header?.title) ?? ""}
+        description={(header?.seoDescription || header?.inngress) ?? ""}
+        imageAssetUrl={header?.seoImage?.asset?.url ?? undefined}
+        canonicalurl={`${process.env.NEXT_PUBLIC_SITE_URL}/${page.slug ?? ""}`}
+        titleTemplate={`${data.result.settings[0]?.title ?? ""} | %s`}
+        keywords={header?.seoKeywords ?? undefined}
+        siteName={data.result.settings[0]?.title ?? ""}
       />
 
       <div className={styles.inverted}>
         <MainHeader
           hideOnScroll={true}
-          cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
-          generalBannerConfig={data.result.settings[0].general_banner}
+          cookieBannerConfig={data.result.settings[0]?.cookie_banner_configuration ?? null}
+          generalBannerConfig={data.result.settings[0]?.general_banner ?? null}
         >
           {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
         </MainHeader>
 
         <PageHeader
-          title={header.title}
-          inngress={header.inngress}
-          links={header.links}
-          layout={header.layout}
+          title={header?.title ?? ""}
+          inngress={header?.inngress ?? ""}
+          links={(header?.links as any) ?? []}
+          layout={header?.layout ?? "default"}
         />
       </div>
 
-      {graphData && <ResultContentRenderer content={page.content} graphData={graphData} />}
+      {graphData && (
+        <ResultContentRenderer
+          content={page.content}
+          graphData={graphData}
+          textConfig={{
+            textConfiguration: page.textConfiguration ?? undefined,
+            outputMappings:
+              page.outputMappings?.filter(
+                (m): m is { sanityKey: string; dataKey: string } =>
+                  m.sanityKey !== null && m.dataKey !== null,
+              ) ?? undefined,
+            organizationMappings:
+              page.organizationMappings?.filter(
+                (m): m is { abbreviation: string; fullName: string } =>
+                  m.abbreviation !== null && m.fullName !== null,
+              ) ?? undefined,
+            referralTypeMappings:
+              page.referralTypeMappings?.filter(
+                (m): m is { apiKey: string; displayLabel: string } =>
+                  m.apiKey !== null && m.displayLabel !== null,
+              ) ?? undefined,
+          }}
+        />
+      )}
       {!graphData && <span>No results data available</span>}
     </>
   );
@@ -189,6 +215,23 @@ const fetchResults = groq`
             ${linksContentQuery}
           },
         },
+        _type == 'cumulativedonationsgraph' => {
+          ...,
+          tableText {
+            dateColumnHeader,
+            dayOfYearColumnHeader,
+            cumulativeSumColumnHeader
+          }
+        },
+        _type == 'referralgraph' => {
+          ...,
+          tableText {
+            yearColumnHeader,
+            typeColumnHeader,
+            donationSumColumnHeader,
+            donationCountColumnHeader
+          }
+        },
         _type != 'resultsoutput' && _type != 'reference' => @,
       },
     },
@@ -198,6 +241,19 @@ const fetchResults = groq`
         asset->
       },
       ${linksContentQuery}
+    },
+    textConfiguration,
+    outputMappings[] {
+      sanityKey,
+      dataKey
+    },
+    organizationMappings[] {
+      abbreviation,
+      fullName
+    },
+    referralTypeMappings[] {
+      apiKey,
+      displayLabel
     },
   },
 }

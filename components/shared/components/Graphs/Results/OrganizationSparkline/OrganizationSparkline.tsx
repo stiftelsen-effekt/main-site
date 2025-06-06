@@ -14,7 +14,9 @@ import { useIsMobile } from "../../../../../../hooks/useIsMobile";
 export const OrganizationSparkline: React.FC<{
   transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput;
   maxY?: number;
-}> = ({ transformedMonthlyDonationsPerOutput, maxY }) => {
+  startYear: number;
+  locale: string;
+}> = ({ transformedMonthlyDonationsPerOutput, maxY, startYear, locale }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -42,7 +44,6 @@ export const OrganizationSparkline: React.FC<{
   }, [graphRef]);
 
   const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const startYear = 2016;
 
   const allYears = useMemo(() => {
     return Array.from(new Array(currentYear + 1 - startYear), (x, i) => ({
@@ -180,7 +181,10 @@ export const OrganizationSparkline: React.FC<{
                 strokeWidth: 5,
                 fill: "black",
                 text: (d: any) =>
-                  formatShortSum(d.reduce((acc: number, el: any) => acc + el.sum, 0)),
+                  formatShortSum(
+                    d.reduce((acc: number, el: any) => acc + el.sum, 0),
+                    locale,
+                  ),
                 dy: -15,
               } as any),
             ),
@@ -197,7 +201,10 @@ export const OrganizationSparkline: React.FC<{
                   fontWeight: "bold",
                   fill: "black",
                   text: (d: any) =>
-                    thousandize(Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0))),
+                    thousandize(
+                      Math.round(d.reduce((acc: number, el: any) => acc + el.sum, 0)),
+                      locale,
+                    ),
                   dy: -15,
                 } as any),
               ),
@@ -222,13 +229,9 @@ export const OrganizationSparkline: React.FC<{
             ),
             Plot.axisY({
               anchor: "right",
-              tickFormat: (t) => {
-                if (t === 0) return "0";
-                if (t < 1000) return t;
-                if (t < 1000000) return t / 1000 + " k";
-                if (t < 1000000000) return t / 1000000 + " mill";
-                if (t < 1000000000000) return t / 1000000000 + " mrd";
-                return t / 1000000000000 + " t";
+              tickFormat: (d) => {
+                if (d === 0) return "0";
+                return formatTick(d, locale);
               },
             }),
           ],
@@ -318,7 +321,13 @@ export const OrganizationSparkline: React.FC<{
   );
 };
 
-export const OrganizationSparklineLegend: React.FC = () => {
+export const OrganizationSparklineLegend: React.FC<{
+  textConfig?: {
+    directDonationsText?: string;
+    smartDistributionText?: string;
+    locale?: string;
+  };
+}> = ({ textConfig }) => {
   const legendRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -331,8 +340,10 @@ export const OrganizationSparklineLegend: React.FC = () => {
             textures.circles().lighter().stroke("#000").background("#fafafa").size(5).id("dots"),
           ],
           tickFormat(t, i) {
-            if (t === "direct") return "Donasjoner direkte fra donorer";
-            if (t === "smartDistribution") return "Donasjoner via smart fordeling";
+            if (t === "direct")
+              return textConfig?.directDonationsText ?? "Donasjoner direkte fra donorer";
+            if (t === "smartDistribution")
+              return textConfig?.smartDistributionText ?? "Donasjoner via smart fordeling";
             return t;
           },
           type: "ordinal",
@@ -379,9 +390,47 @@ export const OrganizationSparklineLegend: React.FC = () => {
 };
 
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
-const formatShortSum = (sum: number) => {
-  if (sum < 1000) return sum;
-  if (sum < 1000000) return thousandize(Math.round(sum / 1000)) + " k";
-  if (sum < 1000000000) return (sum / 1000000).toFixed(2) + " mill";
-  return (sum / 1000000000).toFixed(2) + " mrd";
+
+// Locale-specific abbreviations
+const ABBREVIATIONS = {
+  "en-US": ["k", "M", "B", "T"], // thousand, million, billion, trillion
+  "en-GB": ["k", "M", "B", "T"],
+  "nb-NO": ["k", "mill", "mrd", "t"], // thousand, million, milliard, trillion
+  "nn-NO": ["k", "mill", "mrd", "t"],
+  no: ["k", "mill", "mrd", "t"], // fallback for Norwegian
+  "de-DE": ["T", "Mio", "Mrd", "Bio"], // Tausend, Million, Milliarde, Billion
+  "fr-FR": ["k", "M", "Md", "T"], // thousand, million, milliard, trillion
+  "es-ES": ["k", "M", "MM", "B"], // thousand, million, million million, billion
+  "it-IT": ["k", "M", "Mrd", "T"],
+  "sv-SE": ["k", "M", "Md", "T"], // Swedish miljarder
+  "da-DK": ["k", "M", "Mia", "T"], // Danish milliarder
+};
+const getAbbreviation = (locale: string) => {
+  if (Object.keys(ABBREVIATIONS).includes(locale)) {
+    return ABBREVIATIONS[locale as keyof typeof ABBREVIATIONS];
+  }
+  return ABBREVIATIONS["en-US"];
+};
+const formatShortSum = (sum: number, locale: string) => {
+  const abbreviations = getAbbreviation(locale);
+  const formatter = Intl.NumberFormat(locale, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  });
+  if (sum < 1000) return formatter.format(sum);
+  if (sum < 1000000) return formatter.format(sum / 1000) + " " + abbreviations[0];
+  if (sum < 1000000000) return formatter.format(sum / 1000000) + " " + abbreviations[1];
+  return formatter.format(sum / 1000000000) + " " + abbreviations[2];
+};
+const formatTick = (value: number, locale: string) => {
+  const abbreviations = getAbbreviation(locale);
+  const formatter = Intl.NumberFormat(locale, {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  });
+  if (value < 1000) return formatter.format(value);
+  if (value < 1000000) return formatter.format(value / 1000) + " " + abbreviations[0];
+  if (value < 1000000000) return formatter.format(value / 1000000) + " " + abbreviations[1];
+  if (value < 1000000000000) return formatter.format(value / 1000000000) + " " + abbreviations[2];
+  return formatter.format(value / 1000000000000) + " " + abbreviations[3];
 };
