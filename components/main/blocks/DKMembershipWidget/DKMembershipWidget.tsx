@@ -3,6 +3,8 @@ import styles from "./DKMembershipWidget.module.scss";
 import { cprChecksumTest } from "./_util";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { Dkmembershipwidget } from "../../../../studio/sanity.types";
+import { MembershipCountrySelector } from "./CountrySelector";
 
 // --- Helper Functions ---
 // Basic CPR validation (can be expanded with checksum logic)
@@ -37,64 +39,40 @@ interface MembershipFormData {
   birthday: string; // YYYY-MM-DD, only if country is not Denmark
 }
 
-interface MembershipFormTexts {
-  countryLabel: string;
-  nameLabel: string;
-  emailLabel: string;
-  addressLabel: string;
-  postcodeLabel: string;
-  cityLabel: string;
-  tinLabel: string;
-  tinDenmarkLabel: string;
-  birthdayLabel: string;
-  submitButtonText: string;
-  cprSuspiciousMessage: string;
-  cprInvalidMessage: string;
-  fieldRequiredMessage: string;
-  submittingMessage: string;
-}
+const API_ENDPOINT = `${process.env.NEXT_PUBLIC_EFFEKT_API}/api/membership`;
 
-interface MembershipFormWidgetProps {
-  texts?: Partial<MembershipFormTexts>;
-  membershipFeeText?: string; // e.g., "Pay 50 DKK per year"
-}
+type ConfigurationType = Required<Dkmembershipwidget>["configuration"];
 
-const API_ENDPOINT = `/api/proxy?targetUrl=${encodeURIComponent(
-  "https://donation-platform-info-giveffektivt-giv-effektivts-projects.vercel.app/api/membership",
-)}`;
-
-export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
-  texts = {},
-  membershipFeeText = "Become a Member",
-}) => {
-  const defaultTexts: MembershipFormTexts = {
-    countryLabel: "Country",
-    nameLabel: "Full name",
-    emailLabel: "Email (for receipt)",
-    addressLabel: "Address",
-    postcodeLabel: "Postcode",
-    cityLabel: "City",
-    tinLabel: "Tax ID",
-    tinDenmarkLabel: "CPR (Tax ID for Denmark)",
-    birthdayLabel: "Birthday (yyyy-mm-dd)",
-    submitButtonText: "Submit Membership",
-    cprSuspiciousMessage: "Kontroller venligst at det er korrekt.",
-    cprInvalidMessage: "Invalid CPR number. Please check.",
-    fieldRequiredMessage: "This field is required.",
-    submittingMessage: "Submitting...",
+export const DKMembershipWidget: React.FC<{ config: ConfigurationType }> = ({ config }) => {
+  const defaultConfig: ConfigurationType = {
+    country_label: "Country",
+    name_label: "Full name",
+    email_label: "Email (for receipt)",
+    address_label: "Address",
+    postcode_label: "Postcode",
+    city_label: "City",
+    tin_label: "Tax ID",
+    tin_denmark_label: "CPR (Tax ID for Denmark)",
+    birthday_label: "Birthday (yyyy-mm-dd)",
+    submit_button_text: "Submit Membership",
+    cpr_suspicious_message: "Kontroller venligst at det er korrekt.",
+    cpr_invalid_message: "Invalid CPR number. Please check.",
+    field_required_message: "This field is required.",
+    submitting_message: "Submitting...",
+    membership_fee_text: "Become a member for 50 DKK",
   };
 
-  const mergedTexts = { ...defaultTexts, ...texts };
+  const mergedTexts = { ...defaultConfig, ...config };
 
   const [formData, setFormData] = useState<MembershipFormData>({
-    country: "Norway", // Default country
-    name: "Håkon Harnes",
-    email: "account@harnes.me",
-    address: "Nygata 10A",
-    postcode: "7014",
-    city: "Trondheim",
-    tin: "220696-0000",
-    birthday: "1996-06-22",
+    country: "Denmark",
+    name: "",
+    email: "",
+    address: "",
+    postcode: "",
+    city: "",
+    tin: "",
+    birthday: "",
   });
 
   const [cprValidation, setCprValidation] = useState<CprValidationResult | null>(null);
@@ -210,216 +188,11 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
     <div className={styles.widgetContainer}>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <div className={styles.flag}>{getCountryFlagMap()[formData.country] || "🏳️"}</div>
-          <input
-            type="text"
-            id="country"
-            name="country"
-            value={formData.country}
-            onChange={handleInputChange}
-            placeholder={mergedTexts.countryLabel}
-            required
-            list="country-list"
-            style={{ paddingLeft: "1.75rem" }}
+          <MembershipCountrySelector
+            country={formData.country}
+            onChange={(e) => setFormData((prev) => ({ ...prev, country: e.currentTarget.value }))}
+            countryLabel={mergedTexts.country_label}
           />
-          <datalist id="country-list">
-            <option value="Afghanistan" />
-            <option value="Albania" />
-            <option value="Algeria" />
-            <option value="Andorra" />
-            <option value="Angola" />
-            <option value="Antigua & Deps" />
-            <option value="Argentina" />
-            <option value="Armenia" />
-            <option value="Australia" />
-            <option value="Austria" />
-            <option value="Azerbaijan" />
-            <option value="Bahamas" />
-            <option value="Bahrain" />
-            <option value="Bangladesh" />
-            <option value="Barbados" />
-            <option value="Belarus" />
-            <option value="Belgium" />
-            <option value="Belize" />
-            <option value="Benin" />
-            <option value="Bhutan" />
-            <option value="Bolivia" />
-            <option value="Bosnia Herzegovina" />
-            <option value="Botswana" />
-            <option value="Brazil" />
-            <option value="Brunei" />
-            <option value="Bulgaria" />
-            <option value="Burkina" />
-            <option value="Burundi" />
-            <option value="Cambodia" />
-            <option value="Cameroon" />
-            <option value="Canada" />
-            <option value="Cape Verde" />
-            <option value="Central African Rep" />
-            <option value="Chad" />
-            <option value="Chile" />
-            <option value="China" />
-            <option value="Colombia" />
-            <option value="Comoros" />
-            <option value="Congo" />
-            <option value="Congo {Democratic Rep}" />
-            <option value="Costa Rica" />
-            <option value="Croatia" />
-            <option value="Cuba" />
-            <option value="Cyprus" />
-            <option value="Czech Republic" />
-            <option value="Denmark" />
-            <option value="Djibouti" />
-            <option value="Dominica" />
-            <option value="Dominican Republic" />
-            <option value="East Timor" />
-            <option value="Ecuador" />
-            <option value="Egypt" />
-            <option value="El Salvador" />
-            <option value="Equatorial Guinea" />
-            <option value="Eritrea" />
-            <option value="Estonia" />
-            <option value="Ethiopia" />
-            <option value="Fiji" />
-            <option value="Finland" />
-            <option value="France" />
-            <option value="Gabon" />
-            <option value="Gambia" />
-            <option value="Georgia" />
-            <option value="Germany" />
-            <option value="Ghana" />
-            <option value="Greece" />
-            <option value="Grenada" />
-            <option value="Guatemala" />
-            <option value="Guinea" />
-            <option value="Guinea-Bissau" />
-            <option value="Guyana" />
-            <option value="Haiti" />
-            <option value="Honduras" />
-            <option value="Hungary" />
-            <option value="Iceland" />
-            <option value="India" />
-            <option value="Indonesia" />
-            <option value="Iran" />
-            <option value="Iraq" />
-            <option value="Ireland {Republic}" />
-            <option value="Israel" />
-            <option value="Italy" />
-            <option value="Ivory Coast" />
-            <option value="Jamaica" />
-            <option value="Japan" />
-            <option value="Jordan" />
-            <option value="Kazakhstan" />
-            <option value="Kenya" />
-            <option value="Kiribati" />
-            <option value="Korea North" />
-            <option value="Korea South" />
-            <option value="Kosovo" />
-            <option value="Kuwait" />
-            <option value="Kyrgyzstan" />
-            <option value="Laos" />
-            <option value="Latvia" />
-            <option value="Lebanon" />
-            <option value="Lesotho" />
-            <option value="Liberia" />
-            <option value="Libya" />
-            <option value="Liechtenstein" />
-            <option value="Lithuania" />
-            <option value="Luxembourg" />
-            <option value="Macedonia" />
-            <option value="Madagascar" />
-            <option value="Malawi" />
-            <option value="Malaysia" />
-            <option value="Maldives" />
-            <option value="Mali" />
-            <option value="Malta" />
-            <option value="Marshall Islands" />
-            <option value="Mauritania" />
-            <option value="Mauritius" />
-            <option value="Mexico" />
-            <option value="Micronesia" />
-            <option value="Moldova" />
-            <option value="Monaco" />
-            <option value="Mongolia" />
-            <option value="Montenegro" />
-            <option value="Morocco" />
-            <option value="Mozambique" />
-            <option value="Myanmar, {Burma}" />
-            <option value="Namibia" />
-            <option value="Nauru" />
-            <option value="Nepal" />
-            <option value="Netherlands" />
-            <option value="New Zealand" />
-            <option value="Nicaragua" />
-            <option value="Niger" />
-            <option value="Nigeria" />
-            <option value="Norway" />
-            <option value="Oman" />
-            <option value="Pakistan" />
-            <option value="Palau" />
-            <option value="Panama" />
-            <option value="Papua New Guinea" />
-            <option value="Paraguay" />
-            <option value="Peru" />
-            <option value="Philippines" />
-            <option value="Poland" />
-            <option value="Portugal" />
-            <option value="Qatar" />
-            <option value="Romania" />
-            <option value="Russian Federation" />
-            <option value="Rwanda" />
-            <option value="St Kitts & Nevis" />
-            <option value="St Lucia" />
-            <option value="Saint Vincent & the Grenadines" />
-            <option value="Samoa" />
-            <option value="San Marino" />
-            <option value="Sao Tome & Principe" />
-            <option value="Saudi Arabia" />
-            <option value="Senegal" />
-            <option value="Serbia" />
-            <option value="Seychelles" />
-            <option value="Sierra Leone" />
-            <option value="Singapore" />
-            <option value="Slovakia" />
-            <option value="Slovenia" />
-            <option value="Solomon Islands" />
-            <option value="Somalia" />
-            <option value="South Africa" />
-            <option value="South Sudan" />
-            <option value="Spain" />
-            <option value="Sri Lanka" />
-            <option value="Sudan" />
-            <option value="Suriname" />
-            <option value="Swaziland" />
-            <option value="Sweden" />
-            <option value="Switzerland" />
-            <option value="Syria" />
-            <option value="Taiwan" />
-            <option value="Tajikistan" />
-            <option value="Tanzania" />
-            <option value="Thailand" />
-            <option value="Togo" />
-            <option value="Tonga" />
-            <option value="Trinidad & Tobago" />
-            <option value="Tunisia" />
-            <option value="Turkey" />
-            <option value="Turkmenistan" />
-            <option value="Tuvalu" />
-            <option value="Uganda" />
-            <option value="Ukraine" />
-            <option value="United Arab Emirates" />
-            <option value="United Kingdom" />
-            <option value="United States" />
-            <option value="Uruguay" />
-            <option value="Uzbekistan" />
-            <option value="Vanuatu" />
-            <option value="Vatican City" />
-            <option value="Venezuela" />
-            <option value="Vietnam" />
-            <option value="Yemen" />
-            <option value="Zambia" />
-            <option value="Zimbabwe" />
-          </datalist>
         </div>
 
         <div className={styles.formGroup}>
@@ -429,7 +202,7 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            placeholder={mergedTexts.nameLabel}
+            placeholder={mergedTexts.name_label}
             required
           />
         </div>
@@ -441,7 +214,7 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            placeholder={mergedTexts.emailLabel}
+            placeholder={mergedTexts.email_label}
             required
           />
         </div>
@@ -453,7 +226,7 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            placeholder={mergedTexts.addressLabel}
+            placeholder={mergedTexts.address_label}
             required
           />
         </div>
@@ -465,7 +238,7 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             name="postcode"
             value={formData.postcode}
             onChange={handleInputChange}
-            placeholder={mergedTexts.postcodeLabel}
+            placeholder={mergedTexts.postcode_label}
             required
           />
         </div>
@@ -477,7 +250,7 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             name="city"
             value={formData.city}
             onChange={handleInputChange}
-            placeholder={mergedTexts.cityLabel}
+            placeholder={mergedTexts.city_label}
             required
           />
         </div>
@@ -495,14 +268,14 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
             name="tin"
             value={formData.tin}
             onChange={handleCprChange}
-            placeholder={isDenmarkSelected ? mergedTexts.tinDenmarkLabel : mergedTexts.tinLabel}
+            placeholder={isDenmarkSelected ? mergedTexts.tin_denmark_label : mergedTexts.tin_label}
             maxLength={isDenmarkSelected ? 12 : undefined}
             pattern={isDenmarkSelected ? "\\d{6}-\\d{4}" : undefined}
             title={isDenmarkSelected ? "Format: DDMMYY-SSSS" : undefined}
             required={true}
           />
           {cprValidation && cprValidation.isSuspicious && (
-            <div className={styles.warningMessage}>{mergedTexts.cprSuspiciousMessage}</div>
+            <div className={styles.warningMessage}>{mergedTexts.cpr_suspicious_message}</div>
           )}
         </div>
 
@@ -523,217 +296,9 @@ export const DKMembershipWidget: React.FC<MembershipFormWidgetProps> = ({
         )}
 
         <EffektButton disabled={loading} type="submit" className={styles.submitButton}>
-          {loading ? <Spinner className={styles.submitSpinner} /> : membershipFeeText}
+          {loading ? <Spinner className={styles.submitSpinner} /> : config.membership_fee_text}
         </EffektButton>
       </form>
     </div>
   );
 };
-
-/**
- * Returns a map of specified country names to their corresponding flag emojis.
- * The country list is based on a predefined set of 195 countries.
- *
- * @returns A Record<string, string> where keys are country names (e.g., "Canada")
- * and values are their flag emojis (e.g., "🇨🇦").
- */
-function getCountryFlagMap(): Record<string, string> {
-  return {
-    Afghanistan: "🇦🇫", // AF
-    Albania: "🇦🇱", // AL
-    Algeria: "🇩🇿", // DZ
-    Andorra: "🇦🇩", // AD
-    Angola: "🇦🇴", // AO
-    "Antigua & Deps": "🇦🇬", // AG
-    Argentina: "🇦🇷", // AR
-    Armenia: "🇦🇲", // AM
-    Australia: "🇦🇺", // AU
-    Austria: "🇦🇹", // AT
-    Azerbaijan: "🇦🇿", // AZ
-    Bahamas: "🇧🇸", // BS
-    Bahrain: "🇧🇭", // BH
-    Bangladesh: "🇧🇩", // BD
-    Barbados: "🇧🇧", // BB
-    Belarus: "🇧🇾", // BY
-    Belgium: "🇧🇪", // BE
-    Belize: "🇧🇿", // BZ
-    Benin: "🇧🇯", // BJ
-    Bhutan: "🇧🇹", // BT
-    Bolivia: "🇧🇴", // BO
-    "Bosnia Herzegovina": "🇧🇦", // BA
-    Botswana: "🇧🇼", // BW
-    Brazil: "🇧🇷", // BR
-    Brunei: "🇧🇳", // BN
-    Bulgaria: "🇧🇬", // BG
-    Burkina: "🇧🇫", // BF
-    Burundi: "🇧🇮", // BI
-    Cambodia: "🇰🇭", // KH
-    Cameroon: "🇨🇲", // CM
-    Canada: "🇨🇦", // CA
-    "Cape Verde": "🇨🇻", // CV
-    "Central African Rep": "🇨🇫", // CF
-    Chad: "🇹🇩", // TD
-    Chile: "🇨🇱", // CL
-    China: "🇨🇳", // CN
-    Colombia: "🇨🇴", // CO
-    Comoros: "🇰🇲", // KM
-    Congo: "🇨🇬", // CG
-    "Congo {Democratic Rep}": "🇨🇩", // CD
-    "Costa Rica": "🇨🇷", // CR
-    Croatia: "🇭🇷", // HR
-    Cuba: "🇨🇺", // CU
-    Cyprus: "🇨🇾", // CY
-    "Czech Republic": "🇨🇿", // CZ
-    Denmark: "🇩🇰", // DK
-    Djibouti: "🇩🇯", // DJ
-    Dominica: "🇩🇲", // DM
-    "Dominican Republic": "🇩🇴", // DO
-    "East Timor": "🇹🇱", // TL
-    Ecuador: "🇪🇨", // EC
-    Egypt: "🇪🇬", // EG
-    "El Salvador": "🇸🇻", // SV
-    "Equatorial Guinea": "🇬🇶", // GQ
-    Eritrea: "🇪🇷", // ER
-    Estonia: "🇪🇪", // EE
-    Ethiopia: "🇪🇹", // ET
-    Fiji: "🇫🇯", // FJ
-    Finland: "🇫🇮", // FI
-    France: "🇫🇷", // FR
-    Gabon: "🇬🇦", // GA
-    Gambia: "🇬🇲", // GM
-    Georgia: "🇬🇪", // GE
-    Germany: "🇩🇪", // DE
-    Ghana: "🇬🇭", // GH
-    Greece: "🇬🇷", // GR
-    Grenada: "🇬🇩", // GD
-    Guatemala: "🇬🇹", // GT
-    Guinea: "🇬🇳", // GN
-    "Guinea-Bissau": "🇬🇼", // GW
-    Guyana: "🇬🇾", // GY
-    Haiti: "🇭🇹", // HT
-    Honduras: "🇭🇳", // HN
-    Hungary: "🇭🇺", // HU
-    Iceland: "🇮🇸", // IS
-    India: "🇮🇳", // IN
-    Indonesia: "🇮🇩", // ID
-    Iran: "🇮🇷", // IR
-    Iraq: "🇮🇶", // IQ
-    "Ireland {Republic}": "🇮🇪", // IE
-    Israel: "🇮🇱", // IL
-    Italy: "🇮🇹", // IT
-    "Ivory Coast": "🇨🇮", // CI
-    Jamaica: "🇯🇲", // JM
-    Japan: "🇯🇵", // JP
-    Jordan: "🇯🇴", // JO
-    Kazakhstan: "🇰🇿", // KZ
-    Kenya: "🇰🇪", // KE
-    Kiribati: "🇰🇮", // KI
-    "Korea North": "🇰🇵", // KP
-    "Korea South": "🇰🇷", // KR
-    Kosovo: "🇽🇰", // XK (Note: Kosovo's flag emoji might not render on all platforms)
-    Kuwait: "🇰🇼", // KW
-    Kyrgyzstan: "🇰🇬", // KG
-    Laos: "🇱🇦", // LA
-    Latvia: "🇱🇻", // LV
-    Lebanon: "🇱🇧", // LB
-    Lesotho: "🇱🇸", // LS
-    Liberia: "🇱🇷", // LR
-    Libya: "🇱🇾", // LY
-    Liechtenstein: "🇱🇮", // LI
-    Lithuania: "🇱🇹", // LT
-    Luxembourg: "🇱🇺", // LU
-    Macedonia: "🇲🇰", // MK (North Macedonia)
-    Madagascar: "🇲🇬", // MG
-    Malawi: "🇲🇼", // MW
-    Malaysia: "🇲🇾", // MY
-    Maldives: "🇲🇻", // MV
-    Mali: "🇲🇱", // ML
-    Malta: "🇲🇹", // MT
-    "Marshall Islands": "🇲🇭", // MH
-    Mauritania: "🇲🇷", // MR
-    Mauritius: "🇲🇺", // MU
-    Mexico: "🇲🇽", // MX
-    Micronesia: "🇫🇲", // FM
-    Moldova: "🇲🇩", // MD
-    Monaco: "🇲🇨", // MC
-    Mongolia: "🇲🇳", // MN
-    Montenegro: "🇲🇪", // ME
-    Morocco: "🇲🇦", // MA
-    Mozambique: "🇲🇿", // MZ
-    "Myanmar, {Burma}": "🇲🇲", // MM
-    Namibia: "🇳🇦", // NA
-    Nauru: "🇳🇷", // NR
-    Nepal: "🇳🇵", // NP
-    Netherlands: "🇳🇱", // NL
-    "New Zealand": "🇳🇿", // NZ
-    Nicaragua: "🇳🇮", // NI
-    Niger: "🇳🇪", // NE
-    Nigeria: "🇳🇬", // NG
-    Norway: "🇳🇴", // NO
-    Oman: "🇴🇲", // OM
-    Pakistan: "🇵🇰", // PK
-    Palau: "🇵🇼", // PW
-    Panama: "🇵🇦", // PA
-    "Papua New Guinea": "🇵🇬", // PG
-    Paraguay: "🇵🇾", // PY
-    Peru: "🇵🇪", // PE
-    Philippines: "🇵🇭", // PH
-    Poland: "🇵🇱", // PL
-    Portugal: "🇵🇹", // PT
-    Qatar: "🇶🇦", // QA
-    Romania: "🇷🇴", // RO
-    "Russian Federation": "🇷🇺", // RU
-    Rwanda: "🇷🇼", // RW
-    "St Kitts & Nevis": "🇰🇳", // KN
-    "St Lucia": "🇱🇨", // LC
-    "Saint Vincent & the Grenadines": "🇻🇨", // VC
-    Samoa: "🇼🇸", // WS
-    "San Marino": "🇸🇲", // SM
-    "Sao Tome & Principe": "🇸🇹", // ST
-    "Saudi Arabia": "🇸🇦", // SA
-    Senegal: "🇸🇳", // SN
-    Serbia: "🇷🇸", // RS
-    Seychelles: "🇸🇨", // SC
-    "Sierra Leone": "🇸🇱", // SL
-    Singapore: "🇸🇬", // SG
-    Slovakia: "🇸🇰", // SK
-    Slovenia: "🇸🇮", // SI
-    "Solomon Islands": "🇸🇧", // SB
-    Somalia: "🇸🇴", // SO
-    "South Africa": "🇿🇦", // ZA
-    "South Sudan": "🇸🇸", // SS
-    Spain: "🇪🇸", // ES
-    "Sri Lanka": "🇱🇰", // LK
-    Sudan: "🇸🇩", // SD
-    Suriname: "🇸🇷", // SR
-    Swaziland: "🇸🇿", // SZ (Eswatini)
-    Sweden: "🇸🇪", // SE
-    Switzerland: "🇨🇭", // CH
-    Syria: "🇸🇾", // SY
-    Taiwan: "🇹🇼", // TW
-    Tajikistan: "🇹🇯", // TJ
-    Tanzania: "🇹🇿", // TZ
-    Thailand: "🇹🇭", // TH
-    Togo: "🇹🇬", // TG
-    Tonga: "🇹🇴", // TO
-    "Trinidad & Tobago": "🇹🇹", // TT
-    Tunisia: "🇹🇳", // TN
-    Turkey: "🇹🇷", // TR
-    Turkmenistan: "🇹🇲", // TM
-    Tuvalu: "🇹🇻", // TV
-    Uganda: "🇺🇬", // UG
-    Ukraine: "🇺🇦", // UA
-    "United Arab Emirates": "🇦🇪", // AE
-    "United Kingdom": "🇬🇧", // GB
-    "United States": "🇺🇸", // US
-    Uruguay: "🇺🇾", // UY
-    Uzbekistan: "🇺🇿", // UZ
-    Vanuatu: "🇻🇺", // VU
-    "Vatican City": "🇻🇦", // VA
-    Venezuela: "🇻🇪", // VE
-    Vietnam: "🇻🇳", // VN
-    Yemen: "🇾🇪", // YE
-    Zambia: "🇿🇲", // ZM
-    Zimbabwe: "🇿🇼", // ZW
-  };
-}

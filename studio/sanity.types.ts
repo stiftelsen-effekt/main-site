@@ -806,7 +806,23 @@ export type Dkmembershipwidget = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  membership_fee_text?: string;
+  configuration?: {
+    membership_fee_text?: string;
+    country_label?: string;
+    name_label?: string;
+    email_label?: string;
+    address_label?: string;
+    postcode_label?: string;
+    city_label?: string;
+    tin_label?: string;
+    tin_denmark_label?: string;
+    birthday_label?: string;
+    submit_button_text?: string;
+    cpr_suspicious_message?: string;
+    cpr_invalid_message?: string;
+    field_required_message?: string;
+    submitting_message?: string;
+  };
 };
 
 export type Donationwidgetblock = {
@@ -4287,7 +4303,23 @@ export type Contentsection = {
         _key: string;
       }
     | {
-        membership_fee_text?: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+        };
         _type: "dkmembershipwidget";
         _key: string;
       }
@@ -6119,7 +6151,23 @@ export type Fundraiser_page = {
           _key: string;
         }
       | {
-          membership_fee_text?: string;
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+          };
           _type: "dkmembershipwidget";
           _key: string;
         }
@@ -7058,7 +7106,23 @@ export type Vippsagreement = {
           _key: string;
         }
       | {
-          membership_fee_text?: string;
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+          };
           _type: "dkmembershipwidget";
           _key: string;
         }
@@ -8199,7 +8263,23 @@ export type Article_page = {
           _key: string;
         }
       | {
-          membership_fee_text?: string;
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+          };
           _type: "dkmembershipwidget";
           _key: string;
         }
@@ -9080,7 +9160,23 @@ export type Criteria = {
           _key: string;
         }
       | {
-          membership_fee_text?: string;
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+          };
           _type: "dkmembershipwidget";
           _key: string;
         }
@@ -10109,7 +10205,23 @@ export type Generic_page = {
           _key: string;
         }
       | {
-          membership_fee_text?: string;
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+          };
           _type: "dkmembershipwidget";
           _key: string;
         }
@@ -11518,7 +11630,23 @@ export type FetchArticleResult = {
             _key: string;
           }
         | {
-            membership_fee_text?: string;
+            configuration?: {
+              membership_fee_text?: string;
+              country_label?: string;
+              name_label?: string;
+              email_label?: string;
+              address_label?: string;
+              postcode_label?: string;
+              city_label?: string;
+              tin_label?: string;
+              tin_denmark_label?: string;
+              birthday_label?: string;
+              submit_button_text?: string;
+              cpr_suspicious_message?: string;
+              cpr_invalid_message?: string;
+              field_required_message?: string;
+              submitting_message?: string;
+            };
             _type: "dkmembershipwidget";
             _key: string;
           }
@@ -16161,7 +16289,23 @@ export type FetchFundraiserResult = {
             _key: string;
           }
         | {
-            membership_fee_text?: string;
+            configuration?: {
+              membership_fee_text?: string;
+              country_label?: string;
+              name_label?: string;
+              email_label?: string;
+              address_label?: string;
+              postcode_label?: string;
+              city_label?: string;
+              tin_label?: string;
+              tin_denmark_label?: string;
+              birthday_label?: string;
+              submit_button_text?: string;
+              cpr_suspicious_message?: string;
+              cpr_invalid_message?: string;
+              field_required_message?: string;
+              submitting_message?: string;
+            };
             _type: "dkmembershipwidget";
             _key: string;
           }
@@ -20764,7 +20908,23 @@ export type FetchGenericPageResult = {
             _key: string;
           }
         | {
-            membership_fee_text?: string;
+            configuration?: {
+              membership_fee_text?: string;
+              country_label?: string;
+              name_label?: string;
+              email_label?: string;
+              address_label?: string;
+              postcode_label?: string;
+              city_label?: string;
+              tin_label?: string;
+              tin_denmark_label?: string;
+              birthday_label?: string;
+              submit_button_text?: string;
+              cpr_suspicious_message?: string;
+              cpr_invalid_message?: string;
+              field_required_message?: string;
+              submitting_message?: string;
+            };
             _type: "dkmembershipwidget";
             _key: string;
           }
@@ -25500,7 +25660,23 @@ export type FetchVippsResult = {
                   _key: string;
                 }
               | {
-                  membership_fee_text?: string;
+                  configuration?: {
+                    membership_fee_text?: string;
+                    country_label?: string;
+                    name_label?: string;
+                    email_label?: string;
+                    address_label?: string;
+                    postcode_label?: string;
+                    city_label?: string;
+                    tin_label?: string;
+                    tin_denmark_label?: string;
+                    birthday_label?: string;
+                    submit_button_text?: string;
+                    cpr_suspicious_message?: string;
+                    cpr_invalid_message?: string;
+                    field_required_message?: string;
+                    submitting_message?: string;
+                  };
                   _type: "dkmembershipwidget";
                   _key: string;
                 }
@@ -26456,7 +26632,23 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -27609,7 +27801,23 @@ export type FetchAgreementsPageResult = {
               _key: string;
             }
           | {
-              membership_fee_text?: string;
+              configuration?: {
+                membership_fee_text?: string;
+                country_label?: string;
+                name_label?: string;
+                email_label?: string;
+                address_label?: string;
+                postcode_label?: string;
+                city_label?: string;
+                tin_label?: string;
+                tin_denmark_label?: string;
+                birthday_label?: string;
+                submit_button_text?: string;
+                cpr_suspicious_message?: string;
+                cpr_invalid_message?: string;
+                field_required_message?: string;
+                submitting_message?: string;
+              };
               _type: "dkmembershipwidget";
               _key: string;
             }
@@ -28535,7 +28743,23 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -29315,7 +29539,23 @@ export type FetchAgreementsPageResult = {
         _createdAt: string;
         _updatedAt: string;
         _rev: string;
-        membership_fee_text?: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+        };
         active_list_configuration: null;
         slug: null;
       }
@@ -29960,7 +30200,23 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -30924,7 +31180,23 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -33597,7 +33869,23 @@ export type FetchAgreementsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -34480,7 +34768,23 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -35660,7 +35964,23 @@ export type FetchDonationsPageResult = {
               _key: string;
             }
           | {
-              membership_fee_text?: string;
+              configuration?: {
+                membership_fee_text?: string;
+                country_label?: string;
+                name_label?: string;
+                email_label?: string;
+                address_label?: string;
+                postcode_label?: string;
+                city_label?: string;
+                tin_label?: string;
+                tin_denmark_label?: string;
+                birthday_label?: string;
+                submit_button_text?: string;
+                cpr_suspicious_message?: string;
+                cpr_invalid_message?: string;
+                field_required_message?: string;
+                submitting_message?: string;
+              };
               _type: "dkmembershipwidget";
               _key: string;
             }
@@ -36595,7 +36915,23 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -37390,7 +37726,23 @@ export type FetchDonationsPageResult = {
         _createdAt: string;
         _updatedAt: string;
         _rev: string;
-        membership_fee_text?: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+        };
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -38190,7 +38542,23 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -39160,7 +39528,23 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -41911,7 +42295,23 @@ export type FetchDonationsPageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -42790,7 +43190,23 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -43934,7 +44350,23 @@ export type FetchProfilePageResult = {
               _key: string;
             }
           | {
-              membership_fee_text?: string;
+              configuration?: {
+                membership_fee_text?: string;
+                country_label?: string;
+                name_label?: string;
+                email_label?: string;
+                address_label?: string;
+                postcode_label?: string;
+                city_label?: string;
+                tin_label?: string;
+                tin_denmark_label?: string;
+                birthday_label?: string;
+                submit_button_text?: string;
+                cpr_suspicious_message?: string;
+                cpr_invalid_message?: string;
+                field_required_message?: string;
+                submitting_message?: string;
+              };
               _type: "dkmembershipwidget";
               _key: string;
             }
@@ -44857,7 +45289,23 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -45632,7 +46080,23 @@ export type FetchProfilePageResult = {
         _createdAt: string;
         _updatedAt: string;
         _rev: string;
-        membership_fee_text?: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+        };
         slug: null;
       }
     | {
@@ -46273,7 +46737,23 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -47235,7 +47715,23 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }
@@ -49882,7 +50378,23 @@ export type FetchProfilePageResult = {
                 _key: string;
               }
             | {
-                membership_fee_text?: string;
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                };
                 _type: "dkmembershipwidget";
                 _key: string;
               }

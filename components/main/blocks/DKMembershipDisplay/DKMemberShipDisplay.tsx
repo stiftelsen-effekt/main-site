@@ -63,76 +63,7 @@ interface Kpi {
   pending_skat_update: string; // Represented as string in JSON
 }
 
-interface PendingOrTransferredItem {
-  recipient: string;
-  dkk_total: number;
-  payments_total: number;
-}
-
-interface TransferOverviewItem {
-  id: string;
-  earmark: string;
-  recipient: string;
-  unit: string;
-  total_dkk: number;
-  total_usd: number;
-  unit_cost_external: number;
-  unit_cost_conversion: number;
-  unit_cost_dkk: number;
-  unit_impact: number;
-  life_cost_external: number | null;
-  life_cost_dkk: number | null;
-  life_impact: number | null;
-  computed_at: string; // ISO date string
-  transferred_at: string; // Date string (YYYY-MM-DD) or "Næste overførsel"
-}
-
-interface CollectedItem {
-  date: string; // YYYY-MM-DD
-  amount_once_small: number;
-  amount_once_medium: number;
-  amount_once_large: number;
-  amount_once_major: number;
-  amount_monthly_small: number;
-  amount_monthly_medium: number;
-  amount_monthly_large: number;
-  amount_monthly_major: number;
-  payments_once_small: number;
-  payments_once_medium: number;
-  payments_once_large: number;
-  payments_once_major: number;
-  payments_monthly_small: number;
-  payments_monthly_medium: number;
-  payments_monthly_large: number;
-  payments_monthly_major: number;
-  value_added_once_small: number;
-  value_added_once_medium: number;
-  value_added_once_large: number;
-  value_added_once_major: number;
-  value_added_monthly_small: number;
-  value_added_monthly_medium: number;
-  value_added_monthly_large: number;
-  value_added_monthly_major: number;
-  value_lost_small: number;
-  value_lost_medium: number;
-  value_lost_large: number;
-  value_lost_major: number;
-  value_total: number;
-  monthly_donors: number;
-  payments_total: number;
-  dkk_total: number;
-  value_added: number;
-  value_added_once: number;
-  value_added_monthly: number;
-  value_lost: number;
-  amount_new: number;
-  payments_new: number;
-}
-
 interface ApiResponse {
+  // There are more fields in the response, but we only need the kpi field for now
   kpi: Kpi;
-  pending: PendingOrTransferredItem[];
-  transferred: PendingOrTransferredItem[];
-  transfer_overview: TransferOverviewItem[];
-  collected: CollectedItem[];
 }
