@@ -1,0 +1,51 @@
+.widgetContainer {
+  font-family: sans-serif;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  input[type="text"],
+  input[type="email"],
+  input[type="date"] {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-family: "ESKlarheitGrotesk", sans-serif;
+    font-size: 1rem;
+    width: 16rem;
+  }
+}
+
+.warningMessage {
+  font-size: 0.8em;
+  margin-top: 0.3rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem 3rem;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .submitSpinner {
+    filter: invert(1);
+
+    $spinner-base-size: 1rem;
+    width: $spinner-base-size;
+    height: $spinner-base-size;
+
+    &:after {
+      width: $spinner-base-size * 0.8;
+      height: $spinner-base-size * 0.8;
+
+      margin: $spinner-base-size * 0.1;
+      border-width: $spinner-base-size * 0.125;
+    }
+  }
+}

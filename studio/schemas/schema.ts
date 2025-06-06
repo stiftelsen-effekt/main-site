@@ -86,6 +86,8 @@ import teamintroduction from "./types/teamintroduction";
 import resultsteaser from "./types/resultsteaser";
 import taxdeductionwidget from "./types/taxdeductionwidget";
 import donationwidgetblock from "./types/donationwidgetblock";
+import dkmembershipwidget from "./types/dkmembershipwidget";
+import dkmembershipdisplay from "./types/dkmembershipdisplay";
 import resultstext from "./types/resultstext";
 import outputmapping from "./types/outputmapping";
 import organizationmapping from "./types/organizationmapping";
@@ -175,6 +177,8 @@ export const types = [
   teasers,
   teasersitem,
   donationwidgetblock,
+  dkmembershipwidget,
+  dkmembershipdisplay,
   resultstext,
   outputmapping,
   organizationmapping,

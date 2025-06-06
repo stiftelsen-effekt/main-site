@@ -42,10 +42,9 @@ import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
-import { Widget } from "../../shared/components/Widget/components/Widget";
-import { WidgetWithStore } from "../../shared/components/Widget/components/WidgetWithStore";
-import { PrefilledDistribution } from "../layout/WidgetPane/WidgetPane";
 import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
+import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
+import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -453,6 +452,18 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 content={block.content}
                 contentPosition={block.content_position}
                 contentMobilePosition={block.content_mobile_position}
+              />
+            );
+          case "dkmembershipwidget":
+            return (
+              <DKMembershipWidget key={block._key || block._id} config={block.confituration} />
+            );
+          case "dkmembershipdisplay":
+            return (
+              <DKMembershipDisplay
+                key={block._key || block._id}
+                membership_count_subtitle={block.membership_count_subtitle}
+                description={block.description}
               />
             );
           default:

@@ -528,6 +528,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
                     onChange={handleInputChange}
                     required={formData.taxDeduction}
                     placeholder={mergedTexts.ssnLabel}
+                    autoComplete="off"
                   />
                 </div>
               )}

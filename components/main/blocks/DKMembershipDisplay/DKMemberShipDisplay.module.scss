@@ -1,0 +1,49 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  padding: 2rem 0;
+  gap: 4rem;
+
+  .count {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.25rem;
+
+    .number {
+      font-size: 4rem;
+      line-height: 4rem;
+      margin-bottom: 0.5rem;
+
+      &.loading {
+        overflow: hidden;
+        width: 7rem;
+        height: 4rem;
+        position: relative;
+        border-radius: 0.5rem;
+        background: rgba(0, 0, 0, 0.05);
+
+        .shimmer {
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+          animation: shimmer 0.5s infinite linear;
+        }
+      }
+    }
+  }
+
+  .description {
+    div:first-child {
+      margin-block-start: 0 !important;
+    }
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(200%);
+  }
+}
