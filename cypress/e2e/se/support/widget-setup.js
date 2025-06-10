@@ -85,9 +85,9 @@ export const setCauseAreaAmount = (causeAreaId, amount, enableTip = false) => {
     causeAreaId === 4 ? "[data-cy=tip-checkbox]" : `[data-cy=tip-checkbox-${causeAreaId}]`;
 
   if (enableTip) {
-    cy.get(tipSelector).check();
+    cy.get(tipSelector).check({ force: true });
   } else {
     // Explicitly uncheck tip if it's currently checked
-    cy.get(tipSelector).uncheck();
+    cy.get(tipSelector).uncheck({ force: true });
   }
 };
