@@ -32,8 +32,11 @@ import { nextPane } from "../../../store/layout/actions";
 import { LayoutActionTypes } from "../../../store/layout/types";
 import { calculateDonationSum } from "../../../store/donation/saga";
 import { DonationSummary } from "../../shared/DonationSummary/DonationSummary";
-import { PaymentButton, PaymentButtonsWrapper } from "../SummaryPane/SummaryPane.style";
 import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
+import {
+  PaymentButton,
+  PaymentButtonsWrapper,
+} from "../../shared/DonationSummary/DonationSummary.style";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {

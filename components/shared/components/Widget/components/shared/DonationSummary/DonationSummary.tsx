@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import { ShareType } from "../../../types/Enums";
-import { SummmaryOrganizationsList, TotalTable } from "../../panes/SummaryPane/SummaryPane.style";
+import { SummmaryOrganizationsList, TotalTable } from "./DonationSummary.style";
 
 interface DonationSummaryProps {
   /** Whether to show as compact summary (smaller font, less spacing) */
@@ -23,6 +23,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     selectedCauseAreaId,
     recurring,
     operationsAmountsByCauseArea = {},
+    smartDistributionTotal = 0,
   } = donation;
 
   // Calculate total operations amount from all per-cause-area operations
@@ -40,64 +41,77 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     }> = [];
     let sum = 0;
 
-    causeAreas.forEach((area) => {
-      if (selectionType === "single" && area.id !== selectedCauseAreaId && area.id !== 4) {
-        return;
-      }
-      if (
-        selectionType === "multiple" &&
-        selectedCauseAreaId === -1 &&
-        (!area.standardPercentageShare || area.standardPercentageShare == 0)
-      ) {
-        return;
-      }
-      if (selectionType === "multiple" && area.id === 5) {
-        return;
-      }
-
-      const areaAmount = causeAreaAmounts[area.id];
-
-      if (areaAmount && causeAreaDistributionType[area.id] === ShareType.STANDARD) {
-        if (areaAmount > 0) {
-          summaryItems.push({
-            id: area.id,
-            name: area.name,
-            amount: areaAmount,
-            orgs: [],
-          });
-          sum += areaAmount;
-        }
-      } else if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
-        const orgs = area.organizations
-          .filter((org) => orgAmounts[org.id] > 0)
-          .map((org) => ({
-            id: org.id,
-            name: org.name,
-            amount: orgAmounts[org.id] || 0,
-          }));
-        if (orgs.length > 0) {
-          const totalOrgAmount = orgs.reduce((acc, org) => acc + org.amount, 0);
-
-          summaryItems.push({
-            id: area.id,
-            name: area.name,
-            amount: totalOrgAmount,
-            orgs,
-          });
-          sum += totalOrgAmount;
-        }
-      }
-    });
-
-    // Add operations as a separate item if there's any operations amount
-    if (totalOperationsAmount > 0) {
+    // Special handling for smart distribution mode
+    if (selectedCauseAreaId === -1 && smartDistributionTotal > 0) {
       summaryItems.push({
-        id: 4, // Operations cause area ID
-        name: "Drift",
-        amount: totalOperationsAmount,
+        id: -1,
+        name: "Smart distribution",
+        amount: smartDistributionTotal,
         orgs: [],
       });
-      sum += totalOperationsAmount;
+      sum = smartDistributionTotal;
+    } else {
+      // Regular handling for single/multiple cause areas
+      causeAreas.forEach((area) => {
+        if (selectionType === "single" && area.id !== selectedCauseAreaId && area.id !== 4) {
+          return;
+        }
+        if (
+          selectionType === "multiple" &&
+          selectedCauseAreaId === -1 &&
+          (!area.standardPercentageShare || area.standardPercentageShare == 0)
+        ) {
+          return;
+        }
+        if (selectionType === "multiple" && area.id === 5) {
+          return;
+        }
+
+        const areaAmount = causeAreaAmounts[area.id];
+
+        if (areaAmount && causeAreaDistributionType[area.id] === ShareType.STANDARD) {
+          if (areaAmount > 0) {
+            summaryItems.push({
+              id: area.id,
+              name: area.name,
+              amount: areaAmount,
+              orgs: [],
+            });
+            sum += areaAmount;
+          }
+        } else if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
+          const orgs = area.organizations
+            .filter((org) => orgAmounts[org.id] > 0)
+            .map((org) => ({
+              id: org.id,
+              name: org.name,
+              amount: orgAmounts[org.id] || 0,
+            }));
+          if (orgs.length > 0) {
+            const totalOrgAmount = orgs.reduce((acc, org) => acc + org.amount, 0);
+
+            summaryItems.push({
+              id: area.id,
+              name: area.name,
+              amount: totalOrgAmount,
+              orgs,
+            });
+            sum += totalOrgAmount;
+          }
+        }
+      });
+
+      // Add operations as a separate item if there's any operations amount
+      // BUT NOT when in smart distribution mode (selectedCauseAreaId === -1)
+      if (totalOperationsAmount > 0 && selectedCauseAreaId !== -1) {
+        summaryItems.push({
+          id: 4, // Operations cause area ID
+          name: "Drift",
+          amount: totalOperationsAmount,
+          orgs: [],
+        });
+        sum += totalOperationsAmount;
+      }
     }
 
     return { summaryItems, sum };
@@ -109,6 +123,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     selectedCauseAreaId,
     causeAreaDistributionType,
     totalOperationsAmount,
+    smartDistributionTotal,
   ]);
 
   if (sum === 0) {
@@ -142,11 +157,27 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
         </tr>
         {summaryItems.map((item) => (
           <React.Fragment key={item.id}>
-            <tr>
-              <td data-cy={`summary-cause-area-${item.id}-name`}>
+            <tr
+              data-cy={
+                item.id === -1 ? "summary-smart-distribution" : `summary-cause-area-${item.id}`
+              }
+            >
+              <td
+                data-cy={
+                  item.id === -1
+                    ? "summary-smart-distribution-name"
+                    : `summary-cause-area-${item.id}-name`
+                }
+              >
                 <strong>{item.name}</strong>
               </td>
-              <td data-cy={`summary-cause-area-${item.id}-amount`}>
+              <td
+                data-cy={
+                  item.id === -1
+                    ? "summary-smart-distribution-amount"
+                    : `summary-cause-area-${item.id}-amount`
+                }
+              >
                 {item.orgs && item.orgs.length == 0 && item.amount.toLocaleString("no-NB") + " kr"}
               </td>
             </tr>

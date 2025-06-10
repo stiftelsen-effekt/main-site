@@ -184,6 +184,10 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     } = donation;
 
     // --- Calculate initial sum based on user selections (pre-tip) ---
+    // For smart distribution, ignore any existing operations amounts from previous selections
+    const operationsAmounts =
+      selectedCauseAreaId === -1 ? {} : donation.operationsAmountsByCauseArea;
+
     const { sum, tipAmount, totalSumIncludingTip, finalOrgAmounts } = calculateDonationSum(
       causeAreaAmounts,
       orgAmounts,
@@ -191,7 +195,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       causeAreaDistributionType,
       selectionType || "multiple",
       selectedCauseAreaId || 0,
-      donation.operationsAmountsByCauseArea,
+      operationsAmounts,
       smartDistributionTotal,
     );
 

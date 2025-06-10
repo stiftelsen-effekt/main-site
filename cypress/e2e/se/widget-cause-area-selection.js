@@ -71,11 +71,15 @@ describe("Swedish Widget - Cause Area Selection", () => {
     // Check donation type (should be single by default)
     cy.get("[data-cy=donation-type]").should("contain.text", "Enkelt givande");
 
-    // Based on fixture data: Global hälsa (ID 1) has 100% standardPercentageShare, others have 0%
-    // So for 1000 kr, Global hälsa should get the full amount
+    // Based on fixture data: Global hälsa (ID 1) has 90% standardPercentageShare, Operations (ID 4) has 10%
+    // So for 1000 kr, Global hälsa should get 900 kr, Operations should get 100 kr
     cy.get("[data-cy=summary-cause-area-1-name]").should("contain.text", "Global hälsa");
     // Use Unicode non-breaking space (U+00A0) which is used by Norwegian locale formatting
-    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "1\u00A0000 kr");
+    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "900 kr");
+
+    // Operations should also appear with 10% share
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Stöd");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "100 kr");
 
     // Other cause areas should not appear (they have 0% share)
     cy.get("[data-cy=summary-cause-area-2-amount]").should("not.exist");
@@ -135,8 +139,9 @@ describe("Swedish Widget - Cause Area Selection", () => {
     cy.get("[data-cy=next-button]").click();
     cy.get("[data-cy=name-input]").should("be.visible");
 
-    // Check that summary shows the preset amount distributed
+    // Check that summary shows the preset amount distributed (90% to Global hälsa, 10% to Operations)
     cy.get("[data-cy=donation-summary]").should("exist");
-    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "500 kr");
+    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "450 kr");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "50 kr");
   });
 });

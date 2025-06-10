@@ -7,7 +7,7 @@
     "informationUrl": "https://geeffektivt.se/global-halsa",
     "isActive": true,
     "ordering": 1,
-    "standardPercentageShare": 100,
+    "standardPercentageShare": 90,
     "organizations": [
       {
         "id": 12,
@@ -235,7 +235,7 @@
     "informationUrl": "https://geeffektivt.se",
     "isActive": true,
     "ordering": 4,
-    "standardPercentageShare": 0,
+    "standardPercentageShare": 10,
     "organizations": [
       {
         "id": 27,
