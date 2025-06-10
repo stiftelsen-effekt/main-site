@@ -130,10 +130,12 @@ export const DonorPane: React.FC<{
         if (paymentMethod === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
 
         if (totalSumIncludingTip) {
-          // @ts-ignore
           if (
+            // @ts-ignore
             typeof window !== "undefined" &&
+            // @ts-ignore
             typeof window.fbq !== "undefined" &&
+            // @ts-ignore
             window.fbq != null
           ) {
             getEstimatedLtv({ method: paymentMethod, sum: totalSumIncludingTip }).then((ltv) => {
