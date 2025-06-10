@@ -59,6 +59,7 @@ export const SelectionPane: React.FC<{}> = ({}) => {
               key="default"
               onClick={() => onSelectArea(-1)}
               style={{ background: "#981f49", color: "white", border: "1px solid #981f49" }}
+              data-cy="cause-area-recommendation"
             >
               Vår rekommendation
             </CauseAreaButton>
@@ -70,12 +71,20 @@ export const SelectionPane: React.FC<{}> = ({}) => {
             {causeAreas
               .filter((ca) => [1, 2, 3].indexOf(ca.id) !== -1)
               .map((ca) => (
-                <CauseAreaButton key={ca.id} onClick={() => onSelectArea(ca.id)}>
+                <CauseAreaButton
+                  key={ca.id}
+                  onClick={() => onSelectArea(ca.id)}
+                  data-cy={`cause-area-${ca.id}`}
+                >
                   {getCauseAreaIconById(ca.id)}
                   {ca.widgetDisplayName || ca.name}
                 </CauseAreaButton>
               ))}
-            <CauseAreaButton onClick={() => onSelectArea(undefined)} style={{ marginTop: "20px" }}>
+            <CauseAreaButton
+              onClick={() => onSelectArea(undefined)}
+              style={{ marginTop: "20px" }}
+              data-cy="cause-area-multiple"
+            >
               <MultipleCauseAreaIcon />
               Välj flera ändamål
             </CauseAreaButton>
@@ -87,7 +96,11 @@ export const SelectionPane: React.FC<{}> = ({}) => {
             {causeAreas
               .filter((ca) => [4, 5, 6].indexOf(ca.id) !== -1)
               .map((ca) => (
-                <CauseAreaButton key={ca.id} onClick={() => onSelectArea(ca.id)}>
+                <CauseAreaButton
+                  key={ca.id}
+                  onClick={() => onSelectArea(ca.id)}
+                  data-cy={`cause-area-${ca.id}`}
+                >
                   {getCauseAreaIconById(ca.id)}
                   {ca.widgetDisplayName || ca.name}
                 </CauseAreaButton>

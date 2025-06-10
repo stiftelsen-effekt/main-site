@@ -21,7 +21,8 @@ export const SET_CAUSE_AREA_SELECTION = "SET_CAUSE_AREA_SELECTION";
 export const SET_CAUSE_AREA_AMOUNT = "SET_CAUSE_AREA_AMOUNT";
 export const SET_CAUSE_AREA_DISTRIBUTION_TYPE = "SET_CAUSE_AREA_DISTRIBUTION_TYPE";
 export const SET_ORG_AMOUNT = "SET_ORG_AMOUNT";
-export const SET_TIP_ENABLED = "SET_TIP_ENABLED";
+export const SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA = "SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA";
+export const SET_SMART_DISTRIBUTION_TOTAL = "SET_SMART_DISTRIBUTION_TOTAL";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -164,10 +165,22 @@ interface SetOrgAmount {
     amount: number;
   };
 }
-interface SetTipEnabled {
-  type: typeof SET_TIP_ENABLED;
+
+interface SetOperationsAmountByCauseArea {
+  type: typeof SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA;
   payload: {
-    tipEnabled: boolean;
+    /** cause area ID for which operations amount is set */
+    causeAreaId: number;
+    /** operations amount in NOK for this cause area */
+    operationsAmount: number;
+  };
+}
+
+interface SetSmartDistributionTotal {
+  type: typeof SET_SMART_DISTRIBUTION_TOTAL;
+  payload: {
+    /** total amount in NOK for smart distribution */
+    smartDistributionTotal: number;
   };
 }
 
@@ -190,4 +203,5 @@ export type DonationActionTypes =
   | SetCauseAreaAmount
   | SetCauseAreaDistributionType
   | SetOrgAmount
-  | SetTipEnabled;
+  | SetOperationsAmountByCauseArea
+  | SetSmartDistributionTotal;

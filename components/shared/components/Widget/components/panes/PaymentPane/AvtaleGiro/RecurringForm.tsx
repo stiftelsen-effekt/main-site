@@ -25,7 +25,6 @@ export const RecurringBankDonationForm: React.FC<{
     donation.causeAreaDistributionType ?? {},
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
-    donation.tipEnabled,
   );
 
   const onSubmit = (e: React.MouseEvent<Element, MouseEvent>) => {

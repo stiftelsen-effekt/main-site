@@ -29,7 +29,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
       donation.causeAreaDistributionType,
       donation.selectionType || "multiple",
       donation.selectedCauseAreaId || 0,
-      donation.tipEnabled,
+      donation.operationsAmountsByCauseArea,
     );
 
     const initialCharge: boolean = yield select(
@@ -92,7 +92,7 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
       donation.causeAreaDistributionType,
       donation.selectionType || "multiple",
       donation.selectedCauseAreaId || 0,
-      donation.tipEnabled,
+      donation.operationsAmountsByCauseArea,
     );
 
     const data = {
@@ -140,7 +140,7 @@ export function* registerBankPending(): SagaIterator<void> {
       donation.causeAreaDistributionType,
       donation.selectionType || "multiple",
       donation.selectedCauseAreaId || 0,
-      donation.tipEnabled,
+      donation.operationsAmountsByCauseArea,
     );
 
     const request: Response = yield call(fetch, `${API_URL}/donations/bank/pending`, {
@@ -176,11 +176,11 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       causeAreaAmounts = {},
       orgAmounts = {},
       causeAreaDistributionType = {},
-      tipEnabled = true,
       selectedCauseAreaId,
       recurring,
       donor,
       method,
+      smartDistributionTotal,
     } = donation;
 
     // --- Calculate initial sum based on user selections (pre-tip) ---
@@ -191,7 +191,8 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       causeAreaDistributionType,
       selectionType || "multiple",
       selectedCauseAreaId || 0,
-      tipEnabled,
+      donation.operationsAmountsByCauseArea,
+      smartDistributionTotal,
     );
 
     let distributionPayload: {
@@ -245,10 +246,15 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
 
       // Only add if there are organizations with amounts in this area
       if (areaOrgPayloads.length > 0) {
-        // Determine the standardSplit flag. For the operations area, it should be true if tip was added.
-        // For others, use the original user selection.
+        // Determine the standardSplit flag
         let isStandardSplit = causeAreaDistributionType[area.id] === ShareType.STANDARD;
-        if (area.id === OPERATIONS_CAUSE_AREA_ID && tipAmount > 0) {
+
+        // For smart distribution, all areas use standard split
+        if (selectedCauseAreaId === -1) {
+          isStandardSplit = true;
+        }
+        // For operations area, it should be true if tip was added
+        else if (area.id === OPERATIONS_CAUSE_AREA_ID && tipAmount > 0) {
           isStandardSplit = true; // Ensure operations area is marked as standard if tip was added
         }
 
@@ -329,19 +335,69 @@ export const calculateDonationSum = (
   causeAreaDistributionType: { [key: number]: ShareType },
   selectionType: "single" | "multiple",
   selectedCauseAreaId: number,
-  tipEnabled: boolean,
+  operationsAmountsByCauseArea?: { [key: number]: number },
+  smartDistributionTotal?: number,
 ) => {
+  // Handle smart distribution mode (selectedCauseAreaId === -1)
+  if (selectedCauseAreaId === -1 && smartDistributionTotal) {
+    // For smart distribution, calculate amounts based on standardPercentageShare
+    const adjustedCauseAreaAmounts: { [key: number]: number } = {};
+    const finalOrgAmounts: { [orgId: number]: number } = {};
+
+    allCauseAreas.forEach((area) => {
+      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
+        const areaAmount = Math.round(
+          (area.standardPercentageShare / 100) * smartDistributionTotal,
+        );
+        adjustedCauseAreaAmounts[area.id] = areaAmount;
+
+        // Distribute area amount among organizations based on their standard shares
+        area.organizations.forEach((org) => {
+          if (org.standardShare && org.standardShare > 0) {
+            finalOrgAmounts[org.id] = Math.round((org.standardShare / 100) * areaAmount);
+          }
+        });
+      }
+    });
+
+    // No tip for smart distribution
+    return {
+      sum: smartDistributionTotal,
+      tipAmount: 0,
+      totalSumIncludingTip: smartDistributionTotal,
+      finalOrgAmounts,
+    };
+  }
+
+  // Sum all per-cause-area operations amounts into the global operations cause area (ID 4)
+  const totalOperationsAmount = operationsAmountsByCauseArea
+    ? Object.values(operationsAmountsByCauseArea).reduce((sum, amount) => sum + (amount || 0), 0)
+    : 0;
+
+  // Merge operations amounts into causeAreaAmounts for calculation
+  const adjustedCauseAreaAmounts: { [key: number]: number } = {
+    ...causeAreaAmounts,
+  };
+
+  if (totalOperationsAmount > 0) {
+    adjustedCauseAreaAmounts[4] = totalOperationsAmount;
+  }
+
   let sum = 0;
   const finalOrgAmounts: { [orgId: number]: number } = {};
 
   allCauseAreas.forEach((area) => {
-    // Skip if single selection and not the selected area
-    if (selectionType === "single" && area.id !== selectedCauseAreaId) {
+    // Skip if single selection and not the selected area, unless it's operations area with amounts
+    if (
+      selectionType === "single" &&
+      area.id !== selectedCauseAreaId &&
+      !(area.id === 4 && totalOperationsAmount > 0)
+    ) {
       return;
     }
 
     const distributionType = causeAreaDistributionType[area.id];
-    const currentAreaAmount = causeAreaAmounts[area.id] || 0;
+    const currentAreaAmount = adjustedCauseAreaAmounts[area.id] || 0;
 
     if (distributionType === ShareType.STANDARD && currentAreaAmount > 0) {
       sum += currentAreaAmount;
@@ -368,35 +424,11 @@ export const calculateDonationSum = (
     }
   });
 
-  // --- Calculate tip amount ---
-  const tipAmount = tipEnabled && sum > 0 ? Math.round((sum * TIP_PERCENTAGE) / 100) : 0;
-
-  // --- Add tip to Operations Cause Area (ID 4) ---
-  if (tipAmount > 0) {
-    const operationsArea = allCauseAreas.find((ca) => ca.id === OPERATIONS_CAUSE_AREA_ID);
-    if (operationsArea && operationsArea.organizations) {
-      // Distribute the tip amount according to the standard split of the operations area
-      operationsArea.organizations.forEach((org) => {
-        const orgShare = org.standardShare; // Assumes operations uses standard split defined in causeAreas data
-        if (orgShare && !isNaN(orgShare) && orgShare > 0) {
-          const orgTipAmount = tipAmount * (orgShare / 100);
-          finalOrgAmounts[org.id] = (finalOrgAmounts[org.id] || 0) + orgTipAmount;
-        }
-      });
-    } else {
-      console.warn(
-        `Operations Cause Area (ID: ${OPERATIONS_CAUSE_AREA_ID}) not found or has no organizations. Tip cannot be allocated.`,
-      );
-      // Decide if you want to proceed without the tip, add it to the general amount, or throw an error.
-      // For now, we proceed, but the tip is effectively lost if the area isn't configured correctly.
-    }
-  }
-
   // --- Calculate final total sum and build payload ---
-  const totalSumIncludingTip = sum + tipAmount; // This is the final amount for API and percentage base
+  const totalSumIncludingTip = sum; // No legacy tip calculation - tips are handled via operationsAmountsByCauseArea
   return {
     sum,
-    tipAmount,
+    tipAmount: 0, // No legacy tip calculation - tips are handled via operationsAmountsByCauseArea
     totalSumIncludingTip,
     finalOrgAmounts,
   };

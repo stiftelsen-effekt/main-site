@@ -28,7 +28,6 @@ export const BankPane: React.FC<{
     donation.causeAreaDistributionType ?? {},
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
-    donation.tipEnabled,
   );
 
   let currency = "NOK";

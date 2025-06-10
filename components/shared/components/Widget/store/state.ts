@@ -25,8 +25,6 @@ export interface DonationInput {
   donor: Donor;
   dueDay: number;
   vippsAgreement: VippsAgreement;
-  /** Whether a tip is included for operations */
-  tipEnabled: boolean;
 }
 
 export interface Donation extends DonationInput {
@@ -47,6 +45,10 @@ export interface Donation extends DonationInput {
   causeAreaDistributionType?: Record<number, ShareType>;
   /** UI-entered amounts per organization (NOK), keyed by organization ID */
   orgAmounts?: Record<number, number>;
+  /** Operations tip amounts per cause area (NOK), keyed by cause area ID */
+  operationsAmountsByCauseArea?: Record<number, number>;
+  /** Smart distribution total amount (NOK) - when selectedCauseAreaId === -1 */
+  smartDistributionTotal?: number;
 }
 
 export type DonationError = {

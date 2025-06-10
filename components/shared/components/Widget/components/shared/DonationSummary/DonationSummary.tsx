@@ -22,7 +22,14 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     causeAreaDistributionType = {},
     selectedCauseAreaId,
     recurring,
+    operationsAmountsByCauseArea = {},
   } = donation;
+
+  // Calculate total operations amount from all per-cause-area operations
+  const totalOperationsAmount = Object.values(operationsAmountsByCauseArea).reduce(
+    (sum, amount) => sum + (amount || 0),
+    0,
+  );
 
   const { summaryItems, sum } = React.useMemo(() => {
     const summaryItems: Array<{
@@ -82,6 +89,17 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       }
     });
 
+    // Add operations as a separate item if there's any operations amount
+    if (totalOperationsAmount > 0) {
+      summaryItems.push({
+        id: 4, // Operations cause area ID
+        name: "Drift",
+        amount: totalOperationsAmount,
+        orgs: [],
+      });
+      sum += totalOperationsAmount;
+    }
+
     return { summaryItems, sum };
   }, [
     selectionType,
@@ -90,6 +108,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     causeAreas,
     selectedCauseAreaId,
     causeAreaDistributionType,
+    totalOperationsAmount,
   ]);
 
   if (sum === 0) {
@@ -97,7 +116,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
   }
 
   return (
-    <div style={{ marginBottom: compact ? "15px" : "20px" }}>
+    <div style={{ marginBottom: compact ? "15px" : "20px" }} data-cy="donation-summary">
       <SummmaryOrganizationsList
         cellSpacing={0}
         style={{
@@ -107,31 +126,39 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       >
         {title && (
           <tr>
-            <td colSpan={2} style={{ textAlign: "left", fontWeight: "bold", paddingBottom: "8px" }}>
+            <td
+              colSpan={2}
+              style={{ textAlign: "left", fontWeight: "bold", paddingBottom: "8px" }}
+              data-cy="summary-title"
+            >
               {title}
             </td>
           </tr>
         )}
         <tr>
-          <td colSpan={2} style={{ textAlign: "left" }}>
+          <td colSpan={2} style={{ textAlign: "left" }} data-cy="donation-type">
             {recurring ? "Månadsgivande" : "Enkelt givande"} donation
           </td>
         </tr>
         {summaryItems.map((item) => (
           <React.Fragment key={item.id}>
             <tr>
-              <td>
+              <td data-cy={`summary-cause-area-${item.id}-name`}>
                 <strong>{item.name}</strong>
               </td>
-              <td>
+              <td data-cy={`summary-cause-area-${item.id}-amount`}>
                 {item.orgs && item.orgs.length == 0 && item.amount.toLocaleString("no-NB") + " kr"}
               </td>
             </tr>
             {item.orgs &&
               item.orgs.map((org) => (
                 <tr key={org.id}>
-                  <td style={{ paddingLeft: 20 }}>{org.name}</td>
-                  <td>{org.amount.toLocaleString("no-NB")} kr</td>
+                  <td style={{ paddingLeft: 20 }} data-cy={`summary-org-${org.id}-name`}>
+                    {org.name}
+                  </td>
+                  <td data-cy={`summary-org-${org.id}-amount`}>
+                    {org.amount.toLocaleString("no-NB")} kr
+                  </td>
                 </tr>
               ))}
           </React.Fragment>
@@ -140,8 +167,8 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
 
       <TotalTable style={{ fontSize: compact ? "14px" : "16px" }}>
         <tr>
-          <td>Sum</td>
-          <td>{sum.toLocaleString("no-NB")} kr</td>
+          <td data-cy="summary-total-label">Sum</td>
+          <td data-cy="summary-total-amount">{sum.toLocaleString("no-NB")} kr</td>
         </tr>
       </TotalTable>
     </div>

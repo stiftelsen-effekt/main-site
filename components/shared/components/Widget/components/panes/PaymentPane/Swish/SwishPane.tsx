@@ -87,7 +87,6 @@ export const SwishPane = dynamic<{
             donation.causeAreaDistributionType ?? {},
             donation.selectionType ?? "single",
             donation.selectedCauseAreaId ?? 1,
-            donation.tipEnabled,
           );
 
           plausible("CompletedDonation", {

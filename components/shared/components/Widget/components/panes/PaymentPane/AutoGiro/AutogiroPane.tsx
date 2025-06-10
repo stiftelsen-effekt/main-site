@@ -60,7 +60,6 @@ export const AutogiroPane: React.FC<{
     donation.causeAreaDistributionType ?? {},
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
-    donation.tipEnabled,
   );
 
   const manualTransactionContent = (

@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../store/state";
-import {
-  selectPaymentMethod,
-  setTipEnabled,
-  registerDonationAction,
-} from "../../../store/donation/actions";
+import { selectPaymentMethod, registerDonationAction } from "../../../store/donation/actions";
 import { Dispatch } from "@reduxjs/toolkit";
 import { Action } from "typescript-fsa";
 import { DonationActionTypes } from "../../../store/donation/types";
@@ -54,14 +50,9 @@ export const SummaryPane: React.FC<{
     causeAreaAmounts = {},
     orgAmounts = {},
     causeAreaDistributionType = {},
-    tipEnabled = true,
     selectedCauseAreaId,
     recurring,
   } = donation;
-
-  const handleTipToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setTipEnabled(e.target.checked));
-  };
 
   const handlePayment = (methodId: string) => {
     setLoadingMethod(methodId);

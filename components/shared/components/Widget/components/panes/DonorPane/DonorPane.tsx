@@ -59,7 +59,6 @@ export const DonorPane: React.FC<{
     donation.causeAreaDistributionType ?? {},
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
-    donation.tipEnabled,
   );
 
   const {
@@ -131,18 +130,20 @@ export const DonorPane: React.FC<{
         if (paymentMethod === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
 
         if (totalSumIncludingTip) {
-          getEstimatedLtv({ method: paymentMethod, sum: totalSumIncludingTip }).then((ltv) => {
-            if (typeof window !== "undefined") {
+          // @ts-ignore
+          if (
+            typeof window !== "undefined" &&
+            typeof window.fbq !== "undefined" &&
+            window.fbq != null
+          ) {
+            getEstimatedLtv({ method: paymentMethod, sum: totalSumIncludingTip }).then((ltv) => {
               // @ts-ignore
-              if (typeof window.fbq != null) {
-                // @ts-ignore
-                window.fbq("track", "Lead", {
-                  value: ltv,
-                  currency: "NOK",
-                });
-              }
-            }
-          });
+              window.fbq("track", "Lead", {
+                value: ltv,
+                currency: "NOK",
+              });
+            });
+          }
         }
       }
       if (!donation.recurring) {
@@ -354,8 +355,12 @@ export const DonorPane: React.FC<{
               {paymentMethods.map((method) => (
                 <PaymentButton
                   key={method._id}
-                  onClick={() => handlePayment(method._id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePayment(method._id);
+                  }}
                   disabled={Object.keys(errors).length > 0}
+                  data-cy={`payment-method-${(method as any)._type || "unknown"}`}
                 >
                   {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
                 </PaymentButton>

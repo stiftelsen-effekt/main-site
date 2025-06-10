@@ -18,8 +18,9 @@ import {
   SET_CAUSE_AREA_SELECTION,
   SET_CAUSE_AREA_AMOUNT,
   SET_ORG_AMOUNT,
-  SET_TIP_ENABLED,
   SET_CAUSE_AREA_DISTRIBUTION_TYPE,
+  SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
+  SET_SMART_DISTRIBUTION_TOTAL,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -36,7 +37,6 @@ const initialState: Donation = {
     initialCharge: true,
     monthlyChargeDay: new Date().getDate() <= 28 ? new Date().getDate() : 0,
   },
-  tipEnabled: true,
 };
 
 /**
@@ -84,17 +84,21 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   switch (action.type) {
     case SET_CAUSE_AREA_SELECTION: {
       const { selectionType, causeAreaId } = (action as any).payload;
+
+      // Preserve all existing cause area amounts - never reset them
+      let newCauseAreaAmounts = state.causeAreaAmounts ?? {};
+      let newOperationsAmountsByCauseArea = state.operationsAmountsByCauseArea ?? {};
+
+      // Preserve all amounts when switching between selections
+      // Smart distribution will handle its own amount calculations when needed
+      // This allows users to switch between selections without losing their previous inputs
+
       state = {
         ...state,
         selectionType,
         selectedCauseAreaId: causeAreaId,
-        /* Reset all to 0 */
-        causeAreaAmounts: {
-          ...Object.keys(state.causeAreaAmounts ?? {}).reduce((acc, key) => {
-            acc[parseInt(key)] = 0;
-            return acc;
-          }, {} as Record<number, number>),
-        },
+        causeAreaAmounts: newCauseAreaAmounts,
+        operationsAmountsByCauseArea: newOperationsAmountsByCauseArea,
       };
       break;
     }
@@ -131,9 +135,26 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       };
       break;
     }
-    case SET_TIP_ENABLED: {
-      const { tipEnabled } = (action as any).payload;
-      state = { ...state, tipEnabled };
+    case SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA: {
+      const { causeAreaId, operationsAmount } = (action as any).payload;
+      const newOperationsAmounts = {
+        ...(state.operationsAmountsByCauseArea ?? {}),
+        [causeAreaId]: operationsAmount,
+      };
+
+      state = {
+        ...state,
+        operationsAmountsByCauseArea: newOperationsAmounts,
+      };
+      break;
+    }
+    case SET_SMART_DISTRIBUTION_TOTAL: {
+      const { smartDistributionTotal } = (action as any).payload;
+
+      state = {
+        ...state,
+        smartDistributionTotal,
+      };
       break;
     }
     default:

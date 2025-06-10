@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import Link from "next/link";
 import { usePlausible } from "next-plausible";
@@ -21,6 +21,7 @@ import {
   setCauseAreaAmount,
   setOrgAmount,
   setCauseAreaDistributionType,
+  setOperationsAmountByCauseArea,
 } from "../../../store/donation/actions";
 import { thousandize } from "../../../../../../../util/formatting";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
@@ -51,16 +52,17 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   const plausible = usePlausible();
   const hasSingleOrg = causeArea.organizations.length === 1;
 
-  // Operations logic
-  const OPERATIONS_CAUSE_AREA_ID = 4;
+  // Operations logic - now per cause area
   const TIP_PERCENTAGE = 5;
   const currentCauseAreaAmount = causeAreaAmounts[causeArea.id] || 0;
-  const operationsAmount = causeAreaAmounts[OPERATIONS_CAUSE_AREA_ID] || 0;
+  const operationsAmountsByCauseArea =
+    useSelector((state: any) => state.donation.operationsAmountsByCauseArea) || {};
+  const currentOperationsAmount = operationsAmountsByCauseArea[causeArea.id] || 0;
 
   // Derive state from Redux store to maintain persistence across navigation
-  const totalIntendedAmount = currentCauseAreaAmount + operationsAmount;
-  const userWantsTip = operationsAmount > 0 && totalIntendedAmount > 0;
-  const tipAmount = operationsAmount;
+  const totalIntendedAmount = currentCauseAreaAmount + currentOperationsAmount;
+  const userWantsTip = currentOperationsAmount > 0 && totalIntendedAmount > 0;
+  const tipAmount = currentOperationsAmount;
   const actualCauseAreaAmount = currentCauseAreaAmount;
 
   // Internal state for input handling
@@ -78,7 +80,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
       const newCauseAreaAmount = currentTotal - newTipAmount;
 
       dispatch(setCauseAreaAmount(causeArea.id, newCauseAreaAmount));
-      dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, newTipAmount));
+      dispatch(setOperationsAmountByCauseArea(causeArea.id, newTipAmount));
 
       if (hasSingleOrg) {
         dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
@@ -86,7 +88,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     } else {
       // When unchecking, give the full amount to the cause area
       dispatch(setCauseAreaAmount(causeArea.id, currentTotal));
-      dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, 0));
+      dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
 
       if (hasSingleOrg) {
         dispatch(setOrgAmount(causeArea.organizations[0].id, currentTotal));
@@ -105,7 +107,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
         const newCauseAreaAmount = v - newTipAmount;
 
         dispatch(setCauseAreaAmount(causeArea.id, newCauseAreaAmount));
-        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, newTipAmount));
+        dispatch(setOperationsAmountByCauseArea(causeArea.id, newTipAmount));
 
         if (hasSingleOrg) {
           dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
@@ -113,7 +115,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
       } else {
         // If tip is not enabled, all goes to cause area
         dispatch(setCauseAreaAmount(causeArea.id, v));
-        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, 0));
+        dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
 
         if (hasSingleOrg) {
           dispatch(setOrgAmount(causeArea.organizations[0].id, v));
@@ -139,7 +141,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
         const newCauseAreaAmount = amount - newTipAmount;
 
         dispatch(setCauseAreaAmount(causeArea.id, newCauseAreaAmount));
-        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, newTipAmount));
+        dispatch(setOperationsAmountByCauseArea(causeArea.id, newTipAmount));
 
         if (hasSingleOrg) {
           dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
@@ -147,7 +149,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
       } else {
         // If tip is not enabled, all goes to cause area
         dispatch(setCauseAreaAmount(causeArea.id, amount));
-        dispatch(setCauseAreaAmount(OPERATIONS_CAUSE_AREA_ID, 0));
+        dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
 
         if (hasSingleOrg) {
           dispatch(setOrgAmount(causeArea.organizations[0].id, amount));
@@ -189,6 +191,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                       }
                       onClick={() => handleSuggestedSumClick(suggested.amount)}
                       noMinWidth={true}
+                      data-cy={`suggested-sum-${causeArea.id}-${suggested.amount}`}
                     >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
                     {suggested.subtext && <i>{suggested.subtext}</i>}
                   </div>
@@ -214,7 +217,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                       : ""
                   }
                   autoComplete="off"
-                  data-cy="donation-sum-input"
+                  data-cy={`donation-sum-input-${causeArea.id}`}
                   onValueChange={handleAmountChange}
                 />
               </span>
@@ -247,6 +250,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                             }
                             onClick={() => handleSuggestedSumClick(suggested.amount)}
                             noMinWidth={true}
+                            data-cy={`suggested-sum-${causeArea.id}-${suggested.amount}`}
                           >{`${
                             suggested.amount ? thousandize(suggested.amount) : "-"
                           } kr`}</EffektButton>
@@ -275,7 +279,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                         step={1}
                         decimalScale={0}
                         autoComplete="off"
-                        data-cy="donation-sum-input"
+                        data-cy={`donation-sum-input-${causeArea.id}`}
                         onValueChange={handleAmountChange}
                       />
                     </span>
@@ -315,6 +319,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                                 allowNegative={false}
                                 thousandSeparator=" "
                                 autoComplete="off"
+                                data-cy={`org-${org.id}`}
                                 onValueChange={(values) => {
                                   const v = values.floatValue === undefined ? 0 : values.floatValue;
                                   dispatch(setOrgAmount(org.id, v));
@@ -368,7 +373,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleTipToggle(e.target.checked)
                 }
-                data-cy="tip-checkbox"
+                data-cy={`tip-checkbox-${causeArea.id}`}
               />
               <CustomCheckBox
                 checked={userWantsTip}

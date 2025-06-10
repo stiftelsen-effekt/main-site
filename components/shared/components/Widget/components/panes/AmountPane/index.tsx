@@ -42,7 +42,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
   amountContext,
 }) => {
   const dispatch = useDispatch<any>();
-  const { selectionType, selectedCauseAreaId, recurring } = useSelector(
+  const { selectionType, selectedCauseAreaId, recurring, smartDistributionTotal } = useSelector(
     (state: State) => state.donation,
   );
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
@@ -56,9 +56,13 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
   } = useAmountCalculation(selectionType || "single", selectedCauseAreaId || null, causeAreas);
 
   const handleNext = () => {
-    dispatch(setSum(totalAmount));
+    const finalAmount = selectedCauseAreaId === -1 ? smartDistributionTotal || 0 : totalAmount;
+    dispatch(setSum(finalAmount));
     dispatch(nextPane());
   };
+
+  // Determine the effective total for next button enable/disable logic
+  const effectiveTotal = selectedCauseAreaId === -1 ? smartDistributionTotal || 0 : totalAmount;
 
   const suggestedSums = recurring
     ? amountContext.preset_amounts_recurring
@@ -78,11 +82,13 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                   title: text.single_donation_text,
                   value: RecurringDonation.NON_RECURRING,
                   disabled: !enableSingle,
+                  data_cy: "single-donation-radio",
                 },
                 {
                   title: text.monthly_donation_text,
                   value: RecurringDonation.RECURRING,
                   disabled: !enableRecurring,
+                  data_cy: "recurring-donation-radio",
                 },
               ]}
               selected={recurring}
@@ -108,7 +114,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       showOperationsOption={true}
                     />
                   ))}
-                <TotalAmountWrapper>
+                <TotalAmountWrapper data-cy="total-amount-wrapper">
                   <div>Total</div>
                   <div>{thousandize(totalAmount)} kr</div>
                 </TotalAmountWrapper>
@@ -136,10 +142,6 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                     />
                   </>
                 )}
-                <TotalAmountWrapper>
-                  <div>Total</div>
-                  <div>{thousandize(totalAmount)} kr</div>
-                </TotalAmountWrapper>
               </>
             )}
 
@@ -159,7 +161,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
         </div>
 
         <ActionBar>
-          <NextButton disabled={totalAmount <= 0} onClick={handleNext}>
+          <NextButton disabled={effectiveTotal <= 0} onClick={handleNext} data-cy="next-button">
             {nextButtonText}
           </NextButton>
         </ActionBar>

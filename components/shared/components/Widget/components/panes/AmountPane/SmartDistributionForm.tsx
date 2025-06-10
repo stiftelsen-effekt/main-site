@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
 import {
@@ -13,11 +13,16 @@ import {
 import { MultipleCauseAreaIcon } from "../SelectionPane.style";
 import { CauseArea } from "../../../types/CauseArea";
 import { ShareType } from "../../../types/Enums";
-import { setCauseAreaAmount, setCauseAreaDistributionType } from "../../../store/donation/actions";
+import {
+  setCauseAreaAmount,
+  setCauseAreaDistributionType,
+  setSmartDistributionTotal,
+} from "../../../store/donation/actions";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
+import { State } from "../../../store/state";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -40,8 +45,14 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
 
+  // Get smart distribution total from Redux state
+  const smartDistributionTotal =
+    useSelector((state: State) => state.donation.smartDistributionTotal) || 0;
+
   const handleSuggestedSumClick = (suggestedAmount: number) => {
     plausible("SelectSuggestedSum", { props: { sum: suggestedAmount } });
+    dispatch(setSmartDistributionTotal(suggestedAmount));
+
     let isTipExplicitlySetByStandardShare = false;
     let calculatedTipIfStandard = 0;
     let sumForTipCalculation = 0;
@@ -104,6 +115,8 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
     value: string;
   }) => {
     const v = values.floatValue === undefined ? 0 : values.floatValue;
+    dispatch(setSmartDistributionTotal(v));
+
     if (v > 0) {
       let sumForTipCalculation = 0;
       causeAreas.forEach((ca) => {
@@ -153,9 +166,10 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
               <div key={suggested.amount}>
                 <EffektButton
                   variant={EffektButtonVariant.SECONDARY}
-                  selected={totalAmount === suggested.amount}
+                  selected={smartDistributionTotal === suggested.amount}
                   onClick={() => handleSuggestedSumClick(suggested.amount)}
                   noMinWidth={true}
+                  cy={`suggested-sum-smart-${suggested.amount}`}
                 >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
                 {suggested.subtext && <i>{suggested.subtext}</i>}
               </div>
@@ -170,7 +184,7 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
                 decimalScale={0}
                 type="tel"
                 placeholder="0"
-                value={totalAmount > 0 ? totalAmount : ""}
+                value={smartDistributionTotal > 0 ? smartDistributionTotal : ""}
                 autoComplete="off"
                 data-cy="donation-sum-input-overall"
                 onValueChange={handleTotalAmountChange}

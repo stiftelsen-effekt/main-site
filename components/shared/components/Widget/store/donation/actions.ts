@@ -16,10 +16,11 @@ import {
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
   SET_ORG_AMOUNT,
-  SET_TIP_ENABLED,
   SET_CAUSE_AREA_AMOUNT,
   SET_CAUSE_AREA_DISTRIBUTION_TYPE,
   SET_CAUSE_AREA_SELECTION,
+  SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
+  SET_SMART_DISTRIBUTION_TOTAL,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -178,6 +179,20 @@ export function setCauseAreaAmount(causeAreaId: number, amount: number): Donatio
     payload: { causeAreaId, amount },
   };
 }
+
+/**
+ * Set the operations amount for a specific cause area.
+ */
+export function setOperationsAmountByCauseArea(
+  causeAreaId: number,
+  operationsAmount: number,
+): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
+    payload: { causeAreaId, operationsAmount },
+  };
+}
+
 /**
  * Set the entered distribution type for a specific cause area.
  */
@@ -199,13 +214,14 @@ export function setOrgAmount(orgId: number, amount: number): DonationActionTypes
     payload: { orgId, amount },
   };
 }
+
 /**
- * Set whether the user wants to include a tip for operations.
+ * Set the total amount for smart distribution (in NOK).
  */
-export function setTipEnabled(tipEnabled: boolean): DonationActionTypes {
+export function setSmartDistributionTotal(smartDistributionTotal: number): DonationActionTypes {
   return {
-    type: SET_TIP_ENABLED,
-    payload: { tipEnabled },
+    type: SET_SMART_DISTRIBUTION_TOTAL,
+    payload: { smartDistributionTotal },
   };
 }
 
