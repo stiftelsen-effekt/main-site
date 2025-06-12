@@ -64,6 +64,7 @@ export const DonorPane: React.FC<{
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
       method: donation.method,
+      privacyPolicy: false,
     },
   });
 
@@ -133,7 +134,7 @@ export const DonorPane: React.FC<{
         isAnonymous
           ? ANONYMOUS_DONOR
           : {
-              name: capitalizeNames(data.name.trim()),
+              name: text.show_name_field ? capitalizeNames(data.name.trim()) : "",
               email: data.email.trim().toLowerCase(),
               taxDeduction: data.taxDeduction,
               ssn: data.taxDeduction ? data.ssn.toString().trim() : "",
@@ -160,43 +161,47 @@ export const DonorPane: React.FC<{
               <wbr />
             </PaneTitle>
 
-            <div style={{ marginBottom: "20px" }}>
-              <CheckBoxWrapper data-cy="anon-button-div">
-                <HiddenCheckBox
-                  data-cy="anon-checkbox"
-                  type="checkbox"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                    }
-                  }}
-                  {...register("isAnonymous", {
-                    onChange: () => {
-                      clearErrors(["name", "email", "ssn"]);
-                      (document.activeElement as HTMLElement).blur();
-                    },
-                  })}
-                />
-                <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
-                <ToolTip text={text.anon_button_text_tooltip} />
-              </CheckBoxWrapper>
-            </div>
+            {text.allow_anonymous_donations && (
+              <div style={{ marginBottom: "20px" }}>
+                <CheckBoxWrapper data-cy="anon-button-div">
+                  <HiddenCheckBox
+                    data-cy="anon-checkbox"
+                    type="checkbox"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                      }
+                    }}
+                    {...register("isAnonymous", {
+                      onChange: () => {
+                        clearErrors(["name", "email", "ssn"]);
+                        (document.activeElement as HTMLElement).blur();
+                      },
+                    })}
+                  />
+                  <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
+                  <ToolTip text={text.anon_button_text_tooltip} />
+                </CheckBoxWrapper>
+              </div>
+            )}
 
             <AnimateHeight height={isAnonymous ? 0 : "auto"} animateOpacity>
-              <InputFieldWrapper>
-                <input
-                  data-cy="name-input"
-                  type="text"
-                  placeholder={text.name_placeholder}
-                  {...register("name", {
-                    validate: (val, formValues) => {
-                      if (formValues.isAnonymous) return true;
-                      return val.trim().length > 3;
-                    },
-                  })}
-                />
-                {errors.name && <ErrorField text={text.name_invalid_error_text} />}
-              </InputFieldWrapper>
+              {text.show_name_field && (
+                <InputFieldWrapper>
+                  <input
+                    data-cy="name-input"
+                    type="text"
+                    placeholder={text.name_placeholder}
+                    {...register("name", {
+                      validate: (val, formValues) => {
+                        if (formValues.isAnonymous) return true;
+                        return val.trim().length > 3;
+                      },
+                    })}
+                  />
+                  {errors.name && <ErrorField text={text.name_invalid_error_text} />}
+                </InputFieldWrapper>
+              )}
               <InputFieldWrapper>
                 <input
                   data-cy="email-input"
@@ -298,17 +303,48 @@ export const DonorPane: React.FC<{
                 </CheckBoxWrapper>
                 {text.privacy_policy_link && (
                   <div style={{ marginTop: "10px" }}>
-                    {text.privacy_policy_text}{" "}
-                    <Link
-                      href={`/${text.privacy_policy_link.slug}`}
-                      target={"_blank"}
-                      onClick={(e) => {
-                        e.currentTarget.blur();
-                      }}
-                      style={{ borderBottom: "1px solid var(--primary)" }}
-                    >
-                      {`${text.privacy_policy_link.title}  ↗`}
-                    </Link>
+                    {text.require_privacy_policy_checkbox && (
+                      <CheckBoxWrapper>
+                        <HiddenCheckBox
+                          data-cy="privacy-policy-checkbox"
+                          type="checkbox"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                            }
+                          }}
+                          {...register("privacyPolicy", {
+                            required: true,
+                            onChange() {
+                              (document.activeElement as HTMLElement).blur();
+                            },
+                          })}
+                        />
+                        <CustomCheckBox
+                          label={text.privacy_policy_text}
+                          hyperlink={{
+                            text: text.privacy_policy_link.title ?? "Privacy Policy",
+                            url: `/${text.privacy_policy_link.slug}`,
+                          }}
+                          checked={watch("privacyPolicy")}
+                        />
+                      </CheckBoxWrapper>
+                    )}
+                    {!text.require_privacy_policy_checkbox && (
+                      <>
+                        {text.privacy_policy_text}{" "}
+                        <Link
+                          href={`/${text.privacy_policy_link.slug}`}
+                          target={"_blank"}
+                          onClick={(e) => {
+                            e.currentTarget.blur();
+                          }}
+                          style={{ borderBottom: "1px solid var(--primary)" }}
+                        >
+                          {`${text.privacy_policy_link.title}  ↗`}
+                        </Link>
+                      </>
+                    )}
                   </div>
                 )}
               </CheckBoxGroupWrapper>

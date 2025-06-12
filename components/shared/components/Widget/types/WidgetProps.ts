@@ -140,8 +140,10 @@ export type DonationInputErrorTemplates = {
 };
 
 export type WidgetPane2Props = {
+  allow_anonymous_donations?: boolean;
   anon_button_text: string;
   anon_button_text_tooltip: string;
+  show_name_field?: boolean;
   name_placeholder: string;
   name_invalid_error_text: string;
   email_placeholder: string;
@@ -151,6 +153,7 @@ export type WidgetPane2Props = {
   tax_deduction_ssn_invalid_error_text: string;
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
+  require_privacy_policy_checkbox?: boolean;
   privacy_policy_text: string;
   privacy_policy_link: NavLink;
   pane2_button_text: string;
