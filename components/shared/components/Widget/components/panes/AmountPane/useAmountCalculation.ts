@@ -15,9 +15,11 @@ export const useAmountCalculation = (
     causeAreaAmounts = {},
     orgAmounts = {},
     causeAreaDistributionType = {},
+    operationsAmountsByCauseArea = {},
+    globalOperationsEnabled = false,
   } = useSelector((state: State) => state.donation);
 
-  // Calculate the sum of all donations EXCLUDING the operations tip
+  // Calculate the sum of all donations EXCLUDING the operations cut
   const sumOfOtherCauseAreas = useMemo(() => {
     return Object.keys(causeAreaAmounts).reduce((acc, key) => {
       const causeAreaId = parseInt(key);
@@ -53,7 +55,7 @@ export const useAmountCalculation = (
     selectedCauseAreaId,
   ]);
 
-  // Calculate total amount including tip
+  // Calculate total amount
   const totalAmount = useMemo(() => {
     let currentTotal = 0;
     if (selectedCauseAreaId === -1) {
@@ -69,20 +71,22 @@ export const useAmountCalculation = (
         return acc + (causeAreaAmounts[area.id] || 0);
       }, 0);
     } else if (selectionType === "multiple") {
+      // For multiple cause areas, sum up all amounts
       currentTotal = causeAreas
-        .filter((ca) => ca.id !== 5)
+        .filter((ca) => ca.id !== 5 && ca.id !== OPERATIONS_CAUSE_AREA_ID)
         .reduce((acc, area) => {
-          if (
-            causeAreaDistributionType[area.id] === ShareType.CUSTOM &&
-            area.id !== OPERATIONS_CAUSE_AREA_ID
-          ) {
+          if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
             return (
               acc +
               area.organizations.reduce((orgAcc, org) => orgAcc + (orgAmounts[org.id] || 0), 0)
             );
           }
+          // Add the cause area amount (which is what the user sees in the input)
           return acc + (causeAreaAmounts[area.id] || 0);
         }, 0);
+
+      // For multiple cause areas, the total is just the sum of amounts entered
+      // Operations cut is calculated FROM this total, not added to it
     } else if (selectionType === "single" && selectedCauseAreaId != null) {
       const selectedArea = causeAreas.find((area) => area.id === selectedCauseAreaId);
       if (selectedArea) {
@@ -95,18 +99,19 @@ export const useAmountCalculation = (
           );
         }
       }
-      if (selectedCauseAreaId !== OPERATIONS_CAUSE_AREA_ID) {
-        currentTotal += causeAreaAmounts[OPERATIONS_CAUSE_AREA_ID] || 0;
-      }
+      // For single cause area, the total is what the user entered
+      // Operations cut is calculated FROM this total, not added to it
     }
     return currentTotal;
   }, [
     causeAreaAmounts,
     orgAmounts,
+    operationsAmountsByCauseArea,
     selectionType,
     selectedCauseAreaId,
     causeAreas,
     causeAreaDistributionType,
+    globalOperationsEnabled,
   ]);
 
   return {

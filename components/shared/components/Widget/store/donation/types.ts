@@ -23,6 +23,8 @@ export const SET_CAUSE_AREA_DISTRIBUTION_TYPE = "SET_CAUSE_AREA_DISTRIBUTION_TYP
 export const SET_ORG_AMOUNT = "SET_ORG_AMOUNT";
 export const SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA = "SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA";
 export const SET_SMART_DISTRIBUTION_TOTAL = "SET_SMART_DISTRIBUTION_TOTAL";
+export const SET_GLOBAL_OPERATIONS_USER_OVERRIDE = "SET_GLOBAL_OPERATIONS_USER_OVERRIDE";
+export const SET_GLOBAL_OPERATIONS_ENABLED = "SET_GLOBAL_OPERATIONS_ENABLED";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -184,6 +186,24 @@ interface SetSmartDistributionTotal {
   };
 }
 
+interface SetGlobalOperationsUserOverride {
+  type: typeof SET_GLOBAL_OPERATIONS_USER_OVERRIDE;
+  payload: {
+    /** whether user has explicitly toggled the global operations checkbox */
+    hasUserOverride: boolean;
+    /** the value user set (true = operations cut enabled, false = disabled) */
+    overrideValue: boolean;
+  };
+}
+
+interface SetGlobalOperationsEnabled {
+  type: typeof SET_GLOBAL_OPERATIONS_ENABLED;
+  payload: {
+    /** whether global operations cut is enabled (for multiple cause areas) */
+    enabled: boolean;
+  };
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -204,4 +224,6 @@ export type DonationActionTypes =
   | SetCauseAreaDistributionType
   | SetOrgAmount
   | SetOperationsAmountByCauseArea
-  | SetSmartDistributionTotal;
+  | SetSmartDistributionTotal
+  | SetGlobalOperationsUserOverride
+  | SetGlobalOperationsEnabled;

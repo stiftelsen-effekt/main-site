@@ -10,7 +10,7 @@ import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 import AnimateHeight from "react-animate-height";
 import { CompleteButton, CompleteButtonWrapper } from "./BankPane.style";
 import { usePlausible } from "next-plausible";
-import { calculateDonationSum } from "../../../../store/donation/saga";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 export const BankPane: React.FC<{
   config: BankPaymentMethod;
@@ -21,14 +21,18 @@ export const BankPane: React.FC<{
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const [hasCompletedTransaction, setHasCompletedTransaction] = useState(false);
 
-  const { totalSumIncludingTip } = calculateDonationSum(
+  const breakdown = calculateDonationBreakdown(
     donation.causeAreaAmounts ?? {},
     donation.orgAmounts ?? {},
-    causeAreas,
     donation.causeAreaDistributionType ?? {},
+    donation.operationsAmountsByCauseArea ?? {},
+    causeAreas,
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.smartDistributionTotal,
   );
+  const totalSumIncludingTip = breakdown.totalAmount;
 
   let currency = "NOK";
   if (config.locale === "sv") {

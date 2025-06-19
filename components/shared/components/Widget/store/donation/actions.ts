@@ -21,6 +21,8 @@ import {
   SET_CAUSE_AREA_SELECTION,
   SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
   SET_SMART_DISTRIBUTION_TOTAL,
+  SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
+  SET_GLOBAL_OPERATIONS_ENABLED,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -222,6 +224,27 @@ export function setSmartDistributionTotal(smartDistributionTotal: number): Donat
   return {
     type: SET_SMART_DISTRIBUTION_TOTAL,
     payload: { smartDistributionTotal },
+  };
+}
+
+export function setGlobalOperationsUserOverride(
+  hasUserOverride: boolean,
+  overrideValue: boolean,
+): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
+    payload: { hasUserOverride, overrideValue },
+  };
+}
+
+/**
+ * Set whether global operations cut is enabled for multiple cause areas.
+ * This is separate from individual cause area operations amounts.
+ */
+export function setGlobalOperationsEnabled(enabled: boolean): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_ENABLED,
+    payload: { enabled },
   };
 }
 

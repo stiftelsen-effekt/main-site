@@ -112,7 +112,10 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
 
     // Should show smart distribution as a single entry, not breakdown
     cy.get("[data-cy=summary-smart-distribution]").should("exist");
-    cy.get("[data-cy=summary-smart-distribution-amount]").should("contain.text", "500 kr");
+    cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
+      const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
+      expect(text).to.match(/500kr/i); // Should contain 500kr (case insensitive)
+    });
 
     // Should NOT show individual cause area breakdowns in summary for smart distribution
     cy.get("[data-cy=summary-cause-area-1-amount]").should("not.exist");

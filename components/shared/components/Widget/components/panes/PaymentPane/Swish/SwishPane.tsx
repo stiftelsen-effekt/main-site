@@ -12,7 +12,7 @@ import { Stack, StyledPaneContent, StyledSpinnerWrapper } from "./SwishPane.styl
 import dynamic from "next/dynamic";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
 import { usePlausible } from "next-plausible";
-import { calculateDonationSum } from "../../../../store/donation/saga";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 function isStringEnum<T extends string>(x: any, e: T[]): x is T {
   return e.includes(x);
@@ -80,14 +80,18 @@ export const SwishPane = dynamic<{
           isStringEnum(status, ["PAID", "DECLINED", "ERROR", "CANCELLED"]) &&
           status === "PAID"
         ) {
-          const { totalSumIncludingTip } = calculateDonationSum(
+          const breakdown = calculateDonationBreakdown(
             donation.causeAreaAmounts ?? {},
             donation.orgAmounts ?? {},
-            causeAreas,
             donation.causeAreaDistributionType ?? {},
+            donation.operationsAmountsByCauseArea ?? {},
+            causeAreas,
             donation.selectionType ?? "single",
             donation.selectedCauseAreaId ?? 1,
+            donation.globalOperationsEnabled ?? false,
+            donation.smartDistributionTotal,
           );
+          const totalSumIncludingTip = breakdown.totalAmount;
 
           plausible("CompletedDonation", {
             revenue: {

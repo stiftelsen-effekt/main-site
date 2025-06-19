@@ -70,8 +70,8 @@ export const fillDonorInfo = (name = "Test Person", email = "test@example.com") 
   cy.get("[data-cy=email-input]").type(email);
 };
 
-// Helper to set cause area amount with optional tip
-export const setCauseAreaAmount = (causeAreaId, amount, enableTip = false) => {
+// Helper to set cause area amount with optional cut
+export const setCauseAreaAmount = (causeAreaId, amount, enableCut = false) => {
   // Use operations input for cause area 4, otherwise use regular pattern
   const selector =
     causeAreaId === 4
@@ -80,14 +80,27 @@ export const setCauseAreaAmount = (causeAreaId, amount, enableTip = false) => {
 
   cy.get(selector).type(amount.toString());
 
-  // Use general tip checkbox or cause area specific one
-  const tipSelector =
-    causeAreaId === 4 ? "[data-cy=tip-checkbox]" : `[data-cy=tip-checkbox-${causeAreaId}]`;
+  if (enableCut) {
+    // Check if we're in multiple cause areas mode (global cut) or single cause area mode
+    cy.get("body").then(($body) => {
+      if ($body.find("[data-cy=global-cut-checkbox]").length > 0) {
+        // Multiple cause areas mode - use global cut toggle
+        cy.get("[data-cy=global-cut-checkbox]").check({ force: true });
+      } else {
+        // Single cause area mode - use specific cut checkbox
+        const cutSelector =
+          causeAreaId === 4 ? "[data-cy=cut-checkbox]" : `[data-cy=cut-checkbox-${causeAreaId}]`;
+        cy.get(cutSelector).check({ force: true });
+      }
+    });
+  }
+};
 
-  if (enableTip) {
-    cy.get(tipSelector).check({ force: true });
+// Helper specifically for multiple cause areas global cut toggle
+export const setGlobalCut = (enable = true) => {
+  if (enable) {
+    cy.get("[data-cy=global-cut-checkbox]").check({ force: true });
   } else {
-    // Explicitly uncheck tip if it's currently checked
-    cy.get(tipSelector).uncheck({ force: true });
+    cy.get("[data-cy=global-cut-checkbox]").uncheck({ force: true });
   }
 };

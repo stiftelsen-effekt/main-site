@@ -21,6 +21,8 @@ import {
   SET_CAUSE_AREA_DISTRIBUTION_TYPE,
   SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
   SET_SMART_DISTRIBUTION_TOTAL,
+  SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
+  SET_GLOBAL_OPERATIONS_ENABLED,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -93,12 +95,27 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       // Smart distribution will handle its own amount calculations when needed
       // This allows users to switch between selections without losing their previous inputs
 
+      // When switching to multiple, check if any cause area has operations enabled
+      let globalOperationsEnabled = state.globalOperationsEnabled || false;
+      if (selectionType === "multiple" && !state.globalOperationsUserOverride?.hasUserOverride) {
+        // If user hasn't explicitly toggled global operations, derive from individual states
+        globalOperationsEnabled = Object.keys(newOperationsAmountsByCauseArea).some(
+          (key) => (newOperationsAmountsByCauseArea[parseInt(key)] || 0) > 0,
+        );
+      }
+
       state = {
         ...state,
         selectionType,
         selectedCauseAreaId: causeAreaId,
         causeAreaAmounts: newCauseAreaAmounts,
         operationsAmountsByCauseArea: newOperationsAmountsByCauseArea,
+        globalOperationsEnabled,
+        // Reset global override when switching selections
+        globalOperationsUserOverride: {
+          hasUserOverride: false,
+          overrideValue: false,
+        },
       };
       break;
     }
@@ -154,6 +171,27 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         smartDistributionTotal,
+      };
+      break;
+    }
+    case SET_GLOBAL_OPERATIONS_USER_OVERRIDE: {
+      const { hasUserOverride, overrideValue } = (action as any).payload;
+
+      state = {
+        ...state,
+        globalOperationsUserOverride: {
+          hasUserOverride,
+          overrideValue,
+        },
+      };
+      break;
+    }
+    case SET_GLOBAL_OPERATIONS_ENABLED: {
+      const { enabled } = (action as any).payload;
+
+      state = {
+        ...state,
+        globalOperationsEnabled: enabled,
       };
       break;
     }

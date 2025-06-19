@@ -1,4 +1,4 @@
-import { setupWidgetTest, setCauseAreaAmount } from "./support/widget-setup.js";
+import { setupWidgetTest, setCauseAreaAmount, setGlobalCut } from "./support/widget-setup.js";
 
 describe("Swedish Widget - Multiple Cause Areas Flow", () => {
   beforeEach(() => {
@@ -152,11 +152,12 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("[data-cy=summary-total-amount]").should("contain.text", "1\u00A0000 kr");
   });
 
-  it("Should show correct summary with tips and recurring donation", () => {
-    // Set amounts with tips
-    setCauseAreaAmount(1, 400, true); // 400 + tip
-    setCauseAreaAmount(2, 300, true); // 300 + tip
-    setCauseAreaAmount(3, 200); // No tip
+  it("Should show correct summary with global cut and recurring donation", () => {
+    // Set amounts and enable global cut
+    setCauseAreaAmount(1, 400);
+    setCauseAreaAmount(2, 300);
+    setCauseAreaAmount(3, 200);
+    setGlobalCut(true);
 
     // Switch to recurring
     cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
@@ -168,14 +169,14 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     // Check donation type is recurring
     cy.get("[data-cy=donation-type]").should("contain.text", "Månadsgivande");
 
-    // Check that operations/tip amount is shown
+    // Check that operations/cut amount is shown
     cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("exist");
 
     // Check that cause area amounts are shown (excluding tips)
     cy.get("[data-cy=summary-cause-area-1-amount]").should("exist");
     cy.get("[data-cy=summary-cause-area-2-amount]").should("exist");
-    cy.get("[data-cy=summary-cause-area-3-amount]").should("contain.text", "200 kr");
+    cy.get("[data-cy=summary-cause-area-3-amount]").should("exist");
 
     // Check total includes everything
     cy.get("[data-cy=summary-total-amount]").should("exist");

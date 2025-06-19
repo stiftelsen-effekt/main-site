@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { State } from "../../../store/state";
-import { setSum, setRecurring } from "../../../store/donation/actions";
+import {
+  setSum,
+  setRecurring,
+  setCauseAreaAmount,
+  setOperationsAmountByCauseArea,
+  setOrgAmount,
+} from "../../../store/donation/actions";
 import { nextPane } from "../../../store/layout/actions";
 import { RecurringDonation } from "../../../types/Enums";
 import {
@@ -16,8 +22,8 @@ import { AmountContext } from "../../../types/WidgetProps";
 import { CauseAreaForm } from "./CauseAreaForm";
 import { SmartDistributionForm } from "./SmartDistributionForm";
 import { OperationsCauseAreaForm } from "./OperationsCauseAreaForm";
+import { GlobalCutToggle } from "./GlobalCutToggle";
 import { useAmountCalculation } from "./useAmountCalculation";
-import { useTippingLogic } from "./useTippingLogic";
 import { thousandize } from "../../../../../../../util/formatting";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 
@@ -42,9 +48,14 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
   amountContext,
 }) => {
   const dispatch = useDispatch<any>();
-  const { selectionType, selectedCauseAreaId, recurring, smartDistributionTotal } = useSelector(
-    (state: State) => state.donation,
-  );
+  const {
+    selectionType,
+    selectedCauseAreaId,
+    recurring,
+    smartDistributionTotal,
+    operationsAmountsByCauseArea = {},
+    causeAreaAmounts: storedCauseAreaAmounts = {},
+  } = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
 
   const {
@@ -111,9 +122,12 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       causeAreaAmounts={causeAreaAmounts}
                       orgAmounts={orgAmounts}
                       causeAreaDistributionType={causeAreaDistributionType}
-                      showOperationsOption={true}
+                      showOperationsOption={false}
                     />
                   ))}
+                <GlobalCutToggle
+                  causeAreas={causeAreas.filter((ca) => ca.id !== 5 && ca.id !== 4)}
+                />
                 <TotalAmountWrapper data-cy="total-amount-wrapper">
                   <div>Total</div>
                   <div>{thousandize(totalAmount)} kr</div>
@@ -152,8 +166,8 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                 causeAreas={causeAreas}
                 causeAreaAmounts={causeAreaAmounts}
                 causeAreaDistributionType={causeAreaDistributionType}
-                onTipStateChange={(wantsTip) => {
-                  // This will be handled by the useTippingLogic hook
+                onTipStateChange={(wantsCut) => {
+                  // This will be handled by the cut logic
                 }}
               />
             )}

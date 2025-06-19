@@ -71,17 +71,21 @@ describe("Swedish Widget - Cause Area Selection", () => {
     // Check donation type (should be single by default)
     cy.get("[data-cy=donation-type]").should("contain.text", "Enkelt givande");
 
-    // Based on fixture data: Global hälsa (ID 1) has 90% standardPercentageShare, Operations (ID 4) has 10%
-    // So for 1000 kr, Global hälsa should get 900 kr, Operations should get 100 kr
-    cy.get("[data-cy=summary-cause-area-1-name]").should("contain.text", "Global hälsa");
-    // Use Unicode non-breaking space (U+00A0) which is used by Norwegian locale formatting
-    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "900 kr");
+    // Smart distribution should appear as a single entry, not individual cause area breakdowns
+    // This is important because the distribution percentages could change over time
+    cy.get("[data-cy=summary-smart-distribution]").should("exist");
+    cy.get("[data-cy=summary-smart-distribution-name]").should(
+      "contain.text",
+      "Smart distribution",
+    );
+    cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
+      const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
+      expect(text).to.match(/1000kr/i); // Should contain 1000kr (case insensitive)
+    });
 
-    // Operations should also appear with 10% share
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Stöd");
-    cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "100 kr");
-
-    // Other cause areas should not appear (they have 0% share)
+    // Individual cause areas should NOT appear in summary for smart distribution
+    cy.get("[data-cy=summary-cause-area-1-name]").should("not.exist");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("not.exist");
     cy.get("[data-cy=summary-cause-area-2-amount]").should("not.exist");
     cy.get("[data-cy=summary-cause-area-3-amount]").should("not.exist");
 
@@ -139,9 +143,16 @@ describe("Swedish Widget - Cause Area Selection", () => {
     cy.get("[data-cy=next-button]").click();
     cy.get("[data-cy=name-input]").should("be.visible");
 
-    // Check that summary shows the preset amount distributed (90% to Global hälsa, 10% to Operations)
+    // Check that summary shows smart distribution instead of individual breakdowns
     cy.get("[data-cy=donation-summary]").should("exist");
-    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "450 kr");
-    cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "50 kr");
+    cy.get("[data-cy=summary-smart-distribution]").should("exist");
+    cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
+      const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
+      expect(text).to.match(/500kr/i); // Should contain 500kr (case insensitive)
+    });
+
+    // Individual cause areas should NOT appear in summary for smart distribution
+    cy.get("[data-cy=summary-cause-area-1-amount]").should("not.exist");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should("not.exist");
   });
 });

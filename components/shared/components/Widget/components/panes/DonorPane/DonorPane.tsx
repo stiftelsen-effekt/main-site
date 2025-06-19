@@ -30,7 +30,7 @@ import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
 import { nextPane } from "../../../store/layout/actions";
 import { LayoutActionTypes } from "../../../store/layout/types";
-import { calculateDonationSum } from "../../../store/donation/saga";
+import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
 import { DonationSummary } from "../../shared/DonationSummary/DonationSummary";
 import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
 import {
@@ -55,14 +55,18 @@ export const DonorPane: React.FC<{
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const { donor: initialDonor } = useContext(DonorContext);
 
-  const { totalSumIncludingTip } = calculateDonationSum(
+  const breakdown = calculateDonationBreakdown(
     donation.causeAreaAmounts ?? {},
     donation.orgAmounts ?? {},
-    causeAreas,
     donation.causeAreaDistributionType ?? {},
+    donation.operationsAmountsByCauseArea ?? {},
+    causeAreas,
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.smartDistributionTotal,
   );
+  const totalSumIncludingTip = breakdown.totalAmount;
 
   const {
     register,

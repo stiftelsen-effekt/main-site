@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import { ShareType } from "../../../types/Enums";
 import { SummmaryOrganizationsList, TotalTable } from "./DonationSummary.style";
+import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
 
 interface DonationSummaryProps {
   /** Whether to show as compact summary (smaller font, less spacing) */
@@ -24,13 +25,8 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     recurring,
     operationsAmountsByCauseArea = {},
     smartDistributionTotal = 0,
+    globalOperationsEnabled = false,
   } = donation;
-
-  // Calculate total operations amount from all per-cause-area operations
-  const totalOperationsAmount = Object.values(operationsAmountsByCauseArea).reduce(
-    (sum, amount) => sum + (amount || 0),
-    0,
-  );
 
   const { summaryItems, sum } = React.useMemo(() => {
     const summaryItems: Array<{
@@ -39,7 +35,6 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       amount: number;
       orgs?: Array<{ id: number; name: string; amount: number }>;
     }> = [];
-    let sum = 0;
 
     // Special handling for smart distribution mode
     if (selectedCauseAreaId === -1 && smartDistributionTotal > 0) {
@@ -49,72 +44,62 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
         amount: smartDistributionTotal,
         orgs: [],
       });
-      sum = smartDistributionTotal;
-    } else {
-      // Regular handling for single/multiple cause areas
-      causeAreas.forEach((area) => {
-        if (selectionType === "single" && area.id !== selectedCauseAreaId && area.id !== 4) {
-          return;
-        }
-        if (
-          selectionType === "multiple" &&
-          selectedCauseAreaId === -1 &&
-          (!area.standardPercentageShare || area.standardPercentageShare == 0)
-        ) {
-          return;
-        }
-        if (selectionType === "multiple" && area.id === 5) {
-          return;
-        }
-
-        const areaAmount = causeAreaAmounts[area.id];
-
-        if (areaAmount && causeAreaDistributionType[area.id] === ShareType.STANDARD) {
-          if (areaAmount > 0) {
-            summaryItems.push({
-              id: area.id,
-              name: area.name,
-              amount: areaAmount,
-              orgs: [],
-            });
-            sum += areaAmount;
-          }
-        } else if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
-          const orgs = area.organizations
-            .filter((org) => orgAmounts[org.id] > 0)
-            .map((org) => ({
-              id: org.id,
-              name: org.name,
-              amount: orgAmounts[org.id] || 0,
-            }));
-          if (orgs.length > 0) {
-            const totalOrgAmount = orgs.reduce((acc, org) => acc + org.amount, 0);
-
-            summaryItems.push({
-              id: area.id,
-              name: area.name,
-              amount: totalOrgAmount,
-              orgs,
-            });
-            sum += totalOrgAmount;
-          }
-        }
-      });
-
-      // Add operations as a separate item if there's any operations amount
-      // BUT NOT when in smart distribution mode (selectedCauseAreaId === -1)
-      if (totalOperationsAmount > 0 && selectedCauseAreaId !== -1) {
-        summaryItems.push({
-          id: 4, // Operations cause area ID
-          name: "Drift",
-          amount: totalOperationsAmount,
-          orgs: [],
-        });
-        sum += totalOperationsAmount;
-      }
+      return { summaryItems, sum: smartDistributionTotal };
     }
 
-    return { summaryItems, sum };
+    // Use the centralized calculation function
+    const breakdown = calculateDonationBreakdown(
+      causeAreaAmounts,
+      orgAmounts,
+      causeAreaDistributionType,
+      operationsAmountsByCauseArea,
+      causeAreas,
+      selectionType || "single",
+      selectedCauseAreaId,
+      globalOperationsEnabled,
+      smartDistributionTotal,
+    );
+
+    // Build summary items from breakdown
+    causeAreas.forEach((area) => {
+      const areaAmount = breakdown.causeAreaAmounts[area.id];
+      if (!areaAmount || areaAmount <= 0) return;
+
+      const orgs: Array<{ id: number; name: string; amount: number }> = [];
+
+      // Add organization breakdown if custom distribution
+      if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
+        area.organizations.forEach((org) => {
+          const orgAmount = breakdown.organizationAmounts[org.id];
+          if (orgAmount && orgAmount > 0) {
+            orgs.push({
+              id: org.id,
+              name: org.name,
+              amount: orgAmount,
+            });
+          }
+        });
+      }
+
+      summaryItems.push({
+        id: area.id,
+        name: area.name,
+        amount: areaAmount,
+        orgs: orgs.length > 0 ? orgs : undefined,
+      });
+    });
+
+    // Add operations if present
+    if (breakdown.operationsAmount > 0) {
+      summaryItems.push({
+        id: 4,
+        name: "Drift",
+        amount: breakdown.operationsAmount,
+        orgs: [],
+      });
+    }
+
+    return { summaryItems, sum: breakdown.totalAmount };
   }, [
     selectionType,
     causeAreaAmounts,
@@ -122,7 +107,8 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     causeAreas,
     selectedCauseAreaId,
     causeAreaDistributionType,
-    totalOperationsAmount,
+    operationsAmountsByCauseArea,
+    globalOperationsEnabled,
     smartDistributionTotal,
   ]);
 
@@ -178,7 +164,8 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
                     : `summary-cause-area-${item.id}-amount`
                 }
               >
-                {item.orgs && item.orgs.length == 0 && item.amount.toLocaleString("no-NB") + " kr"}
+                {(!item.orgs || item.orgs.length === 0) &&
+                  item.amount.toLocaleString("no-NB") + " kr"}
               </td>
             </tr>
             {item.orgs &&

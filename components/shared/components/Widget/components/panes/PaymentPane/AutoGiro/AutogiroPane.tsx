@@ -17,7 +17,7 @@ import { API_URL } from "../../../../config/api";
 import { DateTime } from "luxon";
 import { usePlausible } from "next-plausible";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
-import { calculateDonationSum } from "../../../../store/donation/saga";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 enum AutoGiroOptions {
   MANUAL_TRANSACTION,
@@ -53,14 +53,18 @@ export const AutogiroPane: React.FC<{
     });
   }, [manualAutogiroSetupDate]);
 
-  const { totalSumIncludingTip } = calculateDonationSum(
+  const breakdown = calculateDonationBreakdown(
     donation.causeAreaAmounts ?? {},
     donation.orgAmounts ?? {},
-    causeAreas,
     donation.causeAreaDistributionType ?? {},
+    donation.operationsAmountsByCauseArea ?? {},
+    causeAreas,
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.smartDistributionTotal,
   );
+  const totalSumIncludingTip = breakdown.totalAmount;
 
   const manualTransactionContent = (
     <>

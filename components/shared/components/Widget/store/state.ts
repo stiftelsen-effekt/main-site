@@ -45,10 +45,17 @@ export interface Donation extends DonationInput {
   causeAreaDistributionType?: Record<number, ShareType>;
   /** UI-entered amounts per organization (NOK), keyed by organization ID */
   orgAmounts?: Record<number, number>;
-  /** Operations tip amounts per cause area (NOK), keyed by cause area ID */
+  /** Operations cut amounts per cause area (NOK), keyed by cause area ID */
   operationsAmountsByCauseArea?: Record<number, number>;
   /** Smart distribution total amount (NOK) - when selectedCauseAreaId === -1 */
   smartDistributionTotal?: number;
+  /** Tracks if user has explicitly toggled the global operations checkbox */
+  globalOperationsUserOverride?: {
+    hasUserOverride: boolean;
+    overrideValue: boolean;
+  };
+  /** Whether global operations cut is enabled (for multiple cause areas) */
+  globalOperationsEnabled?: boolean;
 }
 
 export type DonationError = {

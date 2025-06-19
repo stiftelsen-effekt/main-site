@@ -7,7 +7,7 @@ import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 import { usePlausible } from "next-plausible";
 import { Dispatch } from "@reduxjs/toolkit";
 import { Action } from "typescript-fsa";
-import { calculateDonationSum } from "../../../../store/donation/saga";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;
@@ -18,14 +18,18 @@ export const RecurringBankDonationForm: React.FC<{
 
   const causeAreas = useSelector((state: any) => state.layout.causeAreas) || [];
 
-  const { totalSumIncludingTip } = calculateDonationSum(
+  const breakdown = calculateDonationBreakdown(
     donation.causeAreaAmounts ?? {},
     donation.orgAmounts ?? {},
-    causeAreas,
     donation.causeAreaDistributionType ?? {},
+    donation.operationsAmountsByCauseArea ?? {},
+    causeAreas,
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.smartDistributionTotal,
   );
+  const totalSumIncludingTip = breakdown.totalAmount;
 
   const onSubmit = (e: React.MouseEvent<Element, MouseEvent>) => {
     plausible("DraftAvtalegiro");
