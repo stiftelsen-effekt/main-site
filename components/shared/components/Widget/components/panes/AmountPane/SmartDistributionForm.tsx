@@ -24,6 +24,9 @@ import { thousandize } from "../../../../../../../util/formatting";
 import { State } from "../../../store/state";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
+import { Links, LinkType } from "../../../../../../main/blocks/Links/Links";
+import { PortableText } from "next-sanity";
+import { CauseAreaDisplayConfig, SmartDistributionContext } from "../../../types/WidgetProps";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -32,6 +35,8 @@ interface SmartDistributionFormProps {
   causeAreaAmounts: Record<number, number>;
   causeAreaDistributionType: Record<number, ShareType>;
   showOperationsOption?: boolean;
+  smartDistributionContext: SmartDistributionContext;
+  causeAreaDisplayConfig: CauseAreaDisplayConfig;
 }
 
 export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
@@ -40,6 +45,8 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
   causeAreas,
   causeAreaAmounts,
   causeAreaDistributionType,
+  causeAreaDisplayConfig,
+  smartDistributionContext,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
@@ -104,10 +111,7 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
           <MultipleCauseAreaIcon />
           Smart fördeling
         </CauseAreaTitle>
-        <CauseAreaContext>
-          Smart fördeling innebär att Ge Effektivt väljer ut de til enhver tid mest effektiva
-          organisationerna för dig.
-        </CauseAreaContext>
+        <CauseAreaContext>{getCauseAreaContext(-1, causeAreaDisplayConfig)}</CauseAreaContext>
       </div>
       <div>
         <TotalSumWrapper>
@@ -147,7 +151,7 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         {/** Smart distribution current distribution accordion */}
         <ExplenationAccordion>
           <div onClick={() => setExplanationOpen(!explenationOpen)}>
-            <span>Nuvärande fördelning</span>
+            <span>{smartDistributionContext.smart_distribution_label_text}</span>
             <ChevronDown
               size={28}
               style={{
@@ -158,13 +162,17 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
           </div>
           <AnimateHeight height={explenationOpen ? "auto" : 0}>
             <div>
-              Nuvärenda fördelning är baserad på den senaste smarta fördelningen. Om du ändrar
-              summan kommer den att uppdateras baserat på de senaste standardandelarna för varje
-              sakområde.
+              <PortableText value={smartDistributionContext.smart_distribution_description} />
+              <Links links={smartDistributionContext.smart_distribution_description_links} />
             </div>
           </AnimateHeight>
         </ExplenationAccordion>
       </div>
     </FormWrapper>
   );
+};
+
+const getCauseAreaContext = (id: number, config?: CauseAreaDisplayConfig) => {
+  const context = config?.cause_area_contexts?.find((c) => c.cause_area_id === id);
+  return context?.context_text || null;
 };

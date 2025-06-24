@@ -9,13 +9,22 @@ import {
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 import { OperationsPercentageInputWrapper } from "../AmountPane.style";
+import { OperationsConfig } from "../../../types/WidgetProps";
 
-const DEFAULT_CUT_PERCENTAGE = 5;
+interface GlobalCutToggleProps {
+  operationsConfig?: OperationsConfig;
+}
 
-export const GlobalCutToggle: React.FC = () => {
+export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ operationsConfig }) => {
   const dispatch = useDispatch<any>();
-  const { globalOperationsEnabled = true, globalOperationsPercentage = DEFAULT_CUT_PERCENTAGE } =
-    useSelector((state: State) => state.donation);
+  const {
+    globalOperationsEnabled = false,
+    globalOperationsPercentage = 5,
+    operationsConfig: stateConfig,
+  } = useSelector((state: State) => state.donation);
+
+  // Use config from props if available, otherwise from state
+  const config = operationsConfig || stateConfig;
 
   // Use percentage from Redux state
   const handleGlobalCutToggle = (checked: boolean) => {
@@ -66,7 +75,10 @@ export const GlobalCutToggle: React.FC = () => {
               onValueChange={handlePercentageChange}
             />
           </span>
-          <span>% till drift av Ge Effektivt</span>
+          <span>
+            {operationsConfig?.operations_label_template?.replace("{percentage}", "") ||
+              "% to operations"}
+          </span>
         </OperationsPercentageInputWrapper>
       </div>
     </div>

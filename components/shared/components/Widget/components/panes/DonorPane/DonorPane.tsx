@@ -16,19 +16,17 @@ import {
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
-import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
+import { CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
-import { nextPane } from "../../../store/layout/actions";
 import { LayoutActionTypes } from "../../../store/layout/types";
 import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
 import { DonationSummary } from "../../shared/DonationSummary/DonationSummary";
@@ -65,7 +63,8 @@ export const DonorPane: React.FC<{
     donation.selectionType ?? "single",
     donation.selectedCauseAreaId ?? 1,
     donation.globalOperationsEnabled ?? false,
-    donation.globalOperationsPercentage ?? 5,
+    donation.globalOperationsPercentage ?? donation.operationsConfig?.defaultPercentage ?? 10,
+    donation.operationsConfig?.excludedCauseAreaIds ?? [],
     donation.smartDistributionTotal,
   );
   const totalSumIncludingTip = breakdown.totalAmount;
@@ -202,11 +201,7 @@ export const DonorPane: React.FC<{
       <DonorForm autoComplete="on">
         <PaneContainer>
           <div>
-            <PaneTitle>
-              <wbr />
-            </PaneTitle>
-
-            <DonationSummary compact={true} title="Din donation" />
+            <DonationSummary />
 
             <div style={{ marginBottom: "20px" }}>
               <CheckBoxWrapper data-cy="anon-button-div">

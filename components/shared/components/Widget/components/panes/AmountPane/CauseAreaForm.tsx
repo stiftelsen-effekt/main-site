@@ -30,6 +30,11 @@ import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/Effe
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
+import {
+  OperationsConfig,
+  CauseAreaDisplayConfig,
+  SmartDistributionContext,
+} from "../../../types/WidgetProps";
 
 interface CauseAreaFormProps {
   causeArea: CauseArea;
@@ -39,6 +44,9 @@ interface CauseAreaFormProps {
   orgAmounts: Record<number, number>;
   causeAreaDistributionType: Record<number, ShareType>;
   showOperationsOption?: boolean;
+  operationsConfig?: OperationsConfig;
+  causeAreaDisplayConfig?: CauseAreaDisplayConfig;
+  smartDistributionContext: SmartDistributionContext;
 }
 
 export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
@@ -49,23 +57,31 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   orgAmounts,
   causeAreaDistributionType,
   showOperationsOption = false,
+  operationsConfig,
+  causeAreaDisplayConfig,
+  smartDistributionContext,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
-  const hasSingleOrg = causeArea.organizations.length === 1;
+  const hasSingleOrg = causeArea.organizations.length <= 1;
 
   // Operations logic - now per cause area
-  const DEFAULT_CUT_PERCENTAGE = 5;
   const currentCauseAreaAmount = causeAreaAmounts[causeArea.id] || 0;
-  const operationsPercentageModeByCauseArea =
-    useSelector((state: any) => state.donation.operationsPercentageModeByCauseArea) || {};
-  const operationsPercentageByCauseArea =
-    useSelector((state: any) => state.donation.operationsPercentageByCauseArea) || {};
+  const {
+    operationsPercentageModeByCauseArea = {},
+    operationsPercentageByCauseArea = {},
+    operationsConfig: stateConfig,
+  } = useSelector((state: any) => state.donation);
 
-  // Get percentage from Redux state (defaults to 5% if not set)
-  const currentPercentage = operationsPercentageByCauseArea[causeArea.id] ?? DEFAULT_CUT_PERCENTAGE;
+  // Use config from props if available, otherwise from state
+  const config = operationsConfig || stateConfig;
+  const defaultPercentage = config?.defaultPercentage ?? 5;
+
+  // Get percentage from Redux state
+  const currentPercentage = operationsPercentageByCauseArea[causeArea.id] ?? defaultPercentage;
+
   // Check if operations are enabled for this cause area
-  const isOperationsEnabled = operationsPercentageModeByCauseArea[causeArea.id] === true;
+  const isOperationsEnabled = operationsPercentageModeByCauseArea[causeArea.id] ?? false;
 
   // Internal state for input handling - always shows the full amount the user entered
   const [inputValue, setInputValue] = React.useState(currentCauseAreaAmount);
@@ -117,8 +133,10 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
           {getCauseAreaIconById(causeArea.id)}
           {causeArea.widgetDisplayName || causeArea.name}
         </CauseAreaTitle>
-        {getCauseAreaContextById(causeArea.id) && (
-          <CauseAreaContext>{getCauseAreaContextById(causeArea.id)}</CauseAreaContext>
+        {getCauseAreaContext(causeArea.id, causeAreaDisplayConfig) && (
+          <CauseAreaContext>
+            {getCauseAreaContext(causeArea.id, causeAreaDisplayConfig)}
+          </CauseAreaContext>
         )}
       </div>
       <div>
@@ -212,11 +230,11 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
             <RadioButtonGroup
               options={[
                 {
-                  title: "Låt Ge Effektivt valja organisasjoner",
+                  title: smartDistributionContext.smart_distribution_radiobutton_text,
                   value: ShareType.STANDARD,
                 },
                 {
-                  title: "Velj organisasjoner selv",
+                  title: smartDistributionContext.custom_distribution_radiobutton_text,
                   value: ShareType.CUSTOM,
                   content: (
                     <InputList>
@@ -309,7 +327,10 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   disabled={!isOperationsEnabled}
                 />
               </span>
-              <span>% till drift av Ge Effektivt</span>
+              <span>
+                {operationsConfig?.operations_label_template?.replace("{percentage}", "") ||
+                  "% to operations"}
+              </span>
             </OperationsPercentageInputWrapper>
           </div>
         </div>
@@ -318,13 +339,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   );
 };
 
-const getCauseAreaContextById = (id: number) => {
-  switch (id) {
-    case 4:
-      return "För värje krone til drift forventar vi att samla inn minst 10 krone till ändamål.";
-    case 5:
-      return "Överföringar till andra organisationer efter överenskommelse med Ge Effektivt.";
-    default:
-      return null;
-  }
+const getCauseAreaContext = (id: number, config?: CauseAreaDisplayConfig) => {
+  const context = config?.cause_area_contexts?.find((c) => c.cause_area_id === id);
+  return context?.context_text || null;
 };

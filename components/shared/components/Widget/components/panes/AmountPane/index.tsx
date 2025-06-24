@@ -18,7 +18,13 @@ import {
   RecurringSelectionWrapper,
   TotalAmountWrapper,
 } from "../AmountPane.style";
-import { AmountContext } from "../../../types/WidgetProps";
+import {
+  AmountContext,
+  OperationsConfig,
+  CauseAreaDisplayConfig,
+  UILabels,
+  SmartDistributionContext,
+} from "../../../types/WidgetProps";
 import { CauseAreaForm } from "./CauseAreaForm";
 import { SmartDistributionForm } from "./SmartDistributionForm";
 import { OperationsCauseAreaForm } from "./OperationsCauseAreaForm";
@@ -26,17 +32,18 @@ import { GlobalCutToggle } from "./GlobalCutToggle";
 import { useAmountCalculation } from "./useAmountCalculation";
 import { thousandize } from "../../../../../../../util/formatting";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
+import { LinkType } from "../../../../../../main/blocks/Links/Links";
 
 interface AmountPaneProps {
   nextButtonText: string;
-  smartDistContext: {
-    smart_distribution_radiobutton_text: string;
-    custom_distribution_radiobutton_text: string;
-  };
+  smartDistContext: SmartDistributionContext;
   text: { single_donation_text: string; monthly_donation_text: string };
   enableRecurring: boolean;
   enableSingle: boolean;
   amountContext: AmountContext;
+  operationsConfig?: OperationsConfig;
+  causeAreaDisplayConfig?: CauseAreaDisplayConfig;
+  uiLabels?: UILabels;
 }
 
 export const AmountPane: React.FC<AmountPaneProps> = ({
@@ -46,6 +53,9 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
   enableRecurring,
   enableSingle,
   amountContext,
+  operationsConfig,
+  causeAreaDisplayConfig,
+  uiLabels,
 }) => {
   const dispatch = useDispatch<any>();
   const {
@@ -82,6 +92,8 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
   // For single cause area
   const selectedCA = causeAreas.find((c) => c.id === selectedCauseAreaId);
 
+  if (!causeAreaDisplayConfig) return <span>Missing cause area display config</span>;
+
   return (
     <Pane>
       <PaneContainer>
@@ -112,7 +124,9 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             {selectionType === "multiple" && selectedCauseAreaId !== -1 && (
               <>
                 {causeAreas
-                  .filter((ca) => ca.id !== 5 && ca.id !== 4)
+                  .filter(
+                    (ca) => !causeAreaDisplayConfig?.below_line_cause_area_ids?.includes(ca.id),
+                  )
                   .map((ca) => (
                     <CauseAreaForm
                       key={ca.id}
@@ -123,11 +137,14 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       orgAmounts={orgAmounts}
                       causeAreaDistributionType={causeAreaDistributionType}
                       showOperationsOption={false}
+                      operationsConfig={operationsConfig}
+                      causeAreaDisplayConfig={causeAreaDisplayConfig}
+                      smartDistributionContext={smartDistContext}
                     />
                   ))}
-                <GlobalCutToggle />
+                <GlobalCutToggle operationsConfig={operationsConfig} />
                 <TotalAmountWrapper data-cy="total-amount-wrapper">
-                  <div>Total</div>
+                  <div>{uiLabels?.total_label || "Total"}</div>
                   <div>{thousandize(totalAmount)} kr</div>
                 </TotalAmountWrapper>
               </>
@@ -140,6 +157,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                   <OperationsCauseAreaForm
                     suggestedSums={suggestedSums}
                     causeAreaAmounts={causeAreaAmounts}
+                    causeAreaDisplayConfig={causeAreaDisplayConfig}
                   />
                 ) : (
                   <>
@@ -150,7 +168,12 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       causeAreaAmounts={causeAreaAmounts}
                       orgAmounts={orgAmounts}
                       causeAreaDistributionType={causeAreaDistributionType}
-                      showOperationsOption={selectedCA.id !== 5}
+                      showOperationsOption={
+                        !operationsConfig?.excluded_cause_area_ids?.includes(selectedCA.id)
+                      }
+                      operationsConfig={operationsConfig}
+                      causeAreaDisplayConfig={causeAreaDisplayConfig}
+                      smartDistributionContext={smartDistContext}
                     />
                   </>
                 )}
@@ -164,6 +187,8 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                 causeAreas={causeAreas}
                 causeAreaAmounts={causeAreaAmounts}
                 causeAreaDistributionType={causeAreaDistributionType}
+                smartDistributionContext={smartDistContext}
+                causeAreaDisplayConfig={causeAreaDisplayConfig}
               />
             )}
           </CauseAreasWrapper>

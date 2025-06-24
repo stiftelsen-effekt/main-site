@@ -15,15 +15,18 @@ import { setCauseAreaAmount } from "../../../store/donation/actions";
 import { usePlausible } from "next-plausible";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
+import { CauseAreaDisplayConfig } from "../../../types/WidgetProps";
 
 interface OperationsCauseAreaFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
   causeAreaAmounts: Record<number, number>;
+  causeAreaDisplayConfig: CauseAreaDisplayConfig;
 }
 
 export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = ({
   suggestedSums,
   causeAreaAmounts,
+  causeAreaDisplayConfig,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
@@ -35,9 +38,7 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
           {getCauseAreaIconById(4)}
           Drift
         </CauseAreaTitle>
-        <CauseAreaContext>
-          För värje krone till drift förväntar vi att samla in minst 10 krone till ändamål.
-        </CauseAreaContext>
+        <CauseAreaContext>{getCauseAreaContext(4, causeAreaDisplayConfig)}</CauseAreaContext>
       </div>
       <div>
         <TotalSumWrapper>
@@ -80,4 +81,9 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
       </div>
     </FormWrapper>
   );
+};
+
+const getCauseAreaContext = (id: number, config?: CauseAreaDisplayConfig) => {
+  const context = config?.cause_area_contexts?.find((c) => c.cause_area_id === id);
+  return context?.context_text || null;
 };

@@ -15,6 +15,10 @@ export default {
       name: "referrals",
       title: "Referrals",
     },
+    {
+      name: "operations",
+      title: "Operations Configuration",
+    },
   ],
   fields: [
     {
@@ -217,6 +221,108 @@ export default {
           name: "donation_distribution_cause_areas_organization_negative_error_template",
           title: "Donation distribution cause areas organization negative error template",
           type: "string",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
+    {
+      name: "operations_config",
+      title: "Operations configuration",
+      type: "object",
+      group: "operations",
+      fields: [
+        {
+          name: "default_percentage",
+          title: "Default operations percentage",
+          type: "number",
+          description: "Default percentage for operations cut (0-100)",
+          validation: (Rule: any) => Rule.required().min(0).max(100),
+        },
+        {
+          name: "operations_label_template",
+          title: "Operations label template",
+          type: "string",
+          description: "Use {percentage} where the percentage value should appear",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "enabled_by_default_global",
+          title: "Operations enabled by default (global)",
+          type: "boolean",
+          description: "Whether operations cut is enabled by default for multiple cause areas",
+        },
+        {
+          name: "enabled_by_default_single",
+          title: "Operations enabled by default (single cause area)",
+          type: "boolean",
+          description: "Whether operations cut is enabled by default for single cause areas",
+        },
+        {
+          name: "excluded_cause_area_ids",
+          title: "Excluded cause area IDs",
+          type: "array",
+          description: "Cause area IDs that should not have operations cut option",
+          of: [{ type: "number" }],
+        },
+      ],
+    },
+    {
+      name: "cause_area_display_config",
+      title: "Cause area display configuration",
+      type: "object",
+      group: "pane1",
+      fields: [
+        {
+          name: "below_line_cause_area_ids",
+          title: "Below-the-line cause area IDs",
+          type: "array",
+          description: "Cause area IDs that should be displayed below the divider line",
+          of: [{ type: "number" }],
+        },
+        {
+          name: "cause_area_contexts",
+          title: "Cause area context texts",
+          type: "array",
+          description: "Context text displayed under specific cause areas",
+          of: [
+            {
+              type: "object",
+              fields: [
+                {
+                  name: "cause_area_id",
+                  title: "Cause area ID",
+                  type: "number",
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: "context_text",
+                  title: "Context text",
+                  type: "string",
+                  validation: (Rule: any) => Rule.required(),
+                },
+              ],
+              preview: {
+                select: {
+                  title: "cause_area_id",
+                  subtitle: "context_text",
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "ui_labels",
+      title: "UI Labels",
+      type: "object",
+      group: "pane1",
+      fields: [
+        {
+          name: "total_label",
+          title: "Total label",
+          type: "string",
+          description: "Label shown for total amount",
           validation: (Rule: any) => Rule.required(),
         },
       ],

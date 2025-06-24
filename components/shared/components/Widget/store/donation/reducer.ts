@@ -25,6 +25,7 @@ import {
   SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
   SET_GLOBAL_OPERATIONS_PERCENTAGE,
   SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
+  SET_OPERATIONS_CONFIG,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -39,7 +40,6 @@ const initialState: Donation = {
   dueDay: getEarliestPossibleChargeDate(),
   globalOperationsEnabled: false,
   globalOperationsPercentageMode: true,
-  globalOperationsPercentage: 5,
   vippsAgreement: {
     initialCharge: true,
     monthlyChargeDay: new Date().getDate() <= 28 ? new Date().getDate() : 0,
@@ -61,27 +61,34 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   if (isType(action, fetchCauseAreasAction.done)) {
     // Initialize distribution data and default UI selection
     const areas = action.payload.result;
+    const config = state.operationsConfig;
+
     state = {
       ...state,
-      // Default to single cause area (first) on load
-      selectionType: areas.length > 0 ? "single" : undefined,
-      selectedCauseAreaId: areas.length > 0 ? areas[0].id : undefined,
-      operationsPercentageModeByCauseArea: areas.reduce((acc, area) => {
-        if (![4, 5].includes(area.id)) {
-          acc[area.id] = true; // Default to true for all areas
-        } else {
-          acc[area.id] = false; // Disable for operations and admin areas
-        }
-        return acc;
-      }, {} as Record<number, boolean>),
-      operationsPercentageByCauseArea: areas.reduce((acc, area) => {
-        acc[area.id] = 10; // Default to 10% for all areas
-        return acc;
-      }, {} as Record<number, number>),
+      // Default to single cause area (first) on load only if not already set
+      selectionType: state.selectionType ?? (areas.length > 0 ? "single" : undefined),
+      selectedCauseAreaId:
+        state.selectedCauseAreaId ?? (areas.length > 0 ? areas[0].id : undefined),
       causeAreaDistributionType: areas.reduce((acc, area) => {
         acc[area.id] = ShareType.STANDARD;
         return acc;
       }, {} as Record<number, ShareType>),
+      // Initialize operations config if available
+      operationsPercentageModeByCauseArea: config
+        ? areas.reduce((acc, area) => {
+            const isExcluded = config.excludedCauseAreaIds.includes(area.id);
+            acc[area.id] = !isExcluded && config.enabledByDefaultSingle;
+            return acc;
+          }, {} as Record<number, boolean>)
+        : {},
+      operationsPercentageByCauseArea: config
+        ? areas.reduce((acc, area) => {
+            acc[area.id] = config.defaultPercentage;
+            return acc;
+          }, {} as Record<number, number>)
+        : {},
+      globalOperationsEnabled: config?.enabledByDefaultGlobal ?? false,
+      globalOperationsPercentage: config?.defaultPercentage,
     };
   }
 
@@ -219,6 +226,14 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         operationsPercentageByCauseArea: newPercentages,
+      };
+      break;
+    }
+    case SET_OPERATIONS_CONFIG: {
+      const config = (action as any).payload;
+      state = {
+        ...state,
+        operationsConfig: config,
       };
       break;
     }

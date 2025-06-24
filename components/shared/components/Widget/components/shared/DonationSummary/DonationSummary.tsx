@@ -2,17 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../store/state";
 import { ShareType } from "../../../types/Enums";
-import { SummmaryOrganizationsList, TotalTable } from "./DonationSummary.style";
+import {
+  DonationSummaryHeader,
+  DonationSummaryWrapper,
+  SummmaryOrganizationsList,
+  TotalTable,
+} from "./DonationSummary.style";
 import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
 
-interface DonationSummaryProps {
-  /** Whether to show as compact summary (smaller font, less spacing) */
-  compact?: boolean;
-  /** Custom title for the summary */
-  title?: string;
-}
-
-export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = false, title }) => {
+export const DonationSummary: React.FC = () => {
   const donation = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
 
@@ -28,6 +26,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     smartDistributionTotal = 0,
     globalOperationsEnabled = false,
     globalOperationsPercentage = 5,
+    operationsConfig,
   } = donation;
 
   const { summaryItems, sum } = React.useMemo(() => {
@@ -61,6 +60,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       selectedCauseAreaId,
       globalOperationsEnabled,
       globalOperationsPercentage,
+      operationsConfig?.excludedCauseAreaIds || [],
       smartDistributionTotal,
     );
 
@@ -125,81 +125,66 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
   }
 
   return (
-    <div style={{ marginBottom: compact ? "15px" : "20px" }} data-cy="donation-summary">
-      <SummmaryOrganizationsList
-        cellSpacing={0}
-        style={{
-          fontSize: compact ? "14px" : "16px",
-          marginBottom: compact ? "10px" : "15px",
-        }}
-      >
-        {title && (
-          <tr>
-            <td
-              colSpan={2}
-              style={{ textAlign: "left", fontWeight: "bold", paddingBottom: "8px" }}
-              data-cy="summary-title"
-            >
-              {title}
-            </td>
-          </tr>
-        )}
-        <tr>
-          <td colSpan={2} style={{ textAlign: "left" }} data-cy="donation-type">
-            {recurring ? "Månadsgivande" : "Enkelt givande"} donation
-          </td>
-        </tr>
-        {summaryItems.map((item) => (
-          <React.Fragment key={item.id}>
-            <tr
-              data-cy={
-                item.id === -1 ? "summary-smart-distribution" : `summary-cause-area-${item.id}`
-              }
-            >
-              <td
+    <DonationSummaryWrapper data-cy="donation-summary">
+      <DonationSummaryHeader data-cy="donation-type">
+        {recurring ? "Månadsgivande" : "Enkelt givande"} donation
+      </DonationSummaryHeader>
+      <SummmaryOrganizationsList cellSpacing={0}>
+        <tbody>
+          {summaryItems.map((item) => (
+            <React.Fragment key={item.id}>
+              <tr
                 data-cy={
-                  item.id === -1
-                    ? "summary-smart-distribution-name"
-                    : `summary-cause-area-${item.id}-name`
+                  item.id === -1 ? "summary-smart-distribution" : `summary-cause-area-${item.id}`
                 }
               >
-                <strong>{item.name}</strong>
-              </td>
-              <td
-                data-cy={
-                  item.id === -1
-                    ? "summary-smart-distribution-amount"
-                    : `summary-cause-area-${item.id}-amount`
-                }
-              >
-                {(!item.orgs || item.orgs.length === 0) &&
-                  `${item.amount !== Math.round(item.amount) ? "~" : ""} ${Math.round(
-                    item.amount,
-                  ).toLocaleString("no-NB")} kr`}
-              </td>
-            </tr>
-            {item.orgs &&
-              item.orgs.map((org) => (
-                <tr key={org.id}>
-                  <td style={{ paddingLeft: 20 }} data-cy={`summary-org-${org.id}-name`}>
-                    {org.name}
-                  </td>
-                  <td data-cy={`summary-org-${org.id}-amount`}>
-                    {org.amount !== Math.round(org.amount) ? "~" : null}{" "}
-                    {Math.round(org.amount).toLocaleString("no-NB")} kr
-                  </td>
-                </tr>
-              ))}
-          </React.Fragment>
-        ))}
+                <td
+                  data-cy={
+                    item.id === -1
+                      ? "summary-smart-distribution-name"
+                      : `summary-cause-area-${item.id}-name`
+                  }
+                >
+                  <strong>{item.name}</strong>
+                </td>
+                <td
+                  data-cy={
+                    item.id === -1
+                      ? "summary-smart-distribution-amount"
+                      : `summary-cause-area-${item.id}-amount`
+                  }
+                >
+                  {(!item.orgs || item.orgs.length === 0) &&
+                    `${item.amount !== Math.round(item.amount) ? "~" : ""} ${Math.round(
+                      item.amount,
+                    ).toLocaleString("no-NB")} kr`}
+                </td>
+              </tr>
+              {item.orgs &&
+                item.orgs.map((org) => (
+                  <tr key={org.id}>
+                    <td style={{ paddingLeft: 40 }} data-cy={`summary-org-${org.id}-name`}>
+                      {org.name}
+                    </td>
+                    <td data-cy={`summary-org-${org.id}-amount`}>
+                      {org.amount !== Math.round(org.amount) ? "~" : null}{" "}
+                      {Math.round(org.amount).toLocaleString("no-NB")} kr
+                    </td>
+                  </tr>
+                ))}
+            </React.Fragment>
+          ))}
+        </tbody>
       </SummmaryOrganizationsList>
 
-      <TotalTable style={{ fontSize: compact ? "14px" : "16px" }}>
-        <tr>
-          <td data-cy="summary-total-label">Sum</td>
-          <td data-cy="summary-total-amount">{sum.toLocaleString("no-NB")} kr</td>
-        </tr>
+      <TotalTable>
+        <tbody>
+          <tr>
+            <td data-cy="summary-total-label">Sum</td>
+            <td data-cy="summary-total-amount">{sum.toLocaleString("no-NB")} kr</td>
+          </tr>
+        </tbody>
       </TotalTable>
-    </div>
+    </DonationSummaryWrapper>
   );
 };

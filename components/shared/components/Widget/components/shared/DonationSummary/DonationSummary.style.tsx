@@ -1,20 +1,39 @@
 import styled from "styled-components";
 
+export const DonationSummaryWrapper = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+`;
+
+export const DonationSummaryHeader = styled.div`
+  padding: 20px;
+  background-color: var(--primary);
+  color: var(--secondary);
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+`;
+
 export const SummmaryOrganizationsList = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   margin-bottom: 10px;
 
   tr {
+    td:first-child {
+      padding-left: 20px;
+    }
+
     td:last-child {
       text-align: right;
+      padding-right: 20px;
     }
 
     &:first-child {
       td {
         border-top: 1px solid var(--primary);
-        padding-bottom: 10px;
         padding-top: 20px;
       }
     }
@@ -31,8 +50,6 @@ export const TotalTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--primary);
   border-top: 1px solid var(--primary);
 
   tr td {
@@ -41,9 +58,11 @@ export const TotalTable = styled.table`
 
     &:first-child {
       font-weight: bold;
+      padding-left: 20px;
     }
     &:last-child {
       text-align: right;
+      padding-right: 20px;
     }
   }
 `;

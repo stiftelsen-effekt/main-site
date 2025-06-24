@@ -5,6 +5,9 @@ import { NavLink } from "../../Navbar/Navbar";
 export type WidgetProps = {
   locale: "no" | "sv" | "en";
   color_scheme: "light" | "dark";
+  operations_config?: OperationsConfig;
+  cause_area_display_config?: CauseAreaDisplayConfig;
+  ui_labels?: UILabels;
 } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
@@ -162,4 +165,24 @@ export type WidgetPane2Props = {
 export type WidgetPane3ReferralsProps = {
   referrals_title: string;
   other_referral_input_placeholder: string;
+};
+
+export type OperationsConfig = {
+  default_percentage: number;
+  operations_label_template: string;
+  enabled_by_default_global?: boolean;
+  enabled_by_default_single?: boolean;
+  excluded_cause_area_ids?: number[];
+};
+
+export type CauseAreaDisplayConfig = {
+  below_line_cause_area_ids?: number[];
+  cause_area_contexts?: Array<{
+    cause_area_id: number;
+    context_text: string;
+  }>;
+};
+
+export type UILabels = {
+  total_label: string;
 };

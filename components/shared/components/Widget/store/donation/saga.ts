@@ -34,6 +34,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
       donation.selectedCauseAreaId,
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
+      donation.operationsConfig.excludedCauseAreaIds,
       donation.smartDistributionTotal,
     );
 
@@ -101,6 +102,7 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
       donation.selectedCauseAreaId,
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
+      donation.operationsConfig.excludedCauseAreaIds,
       donation.smartDistributionTotal,
     );
 
@@ -153,6 +155,7 @@ export function* registerBankPending(): SagaIterator<void> {
       donation.selectedCauseAreaId,
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
+      donation.operationsConfig.excludedCauseAreaIds,
       donation.smartDistributionTotal,
     );
 
@@ -198,6 +201,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       operationsPercentageByCauseArea = {},
       globalOperationsEnabled = false,
       globalOperationsPercentage = 0,
+      operationsConfig,
     } = donation;
 
     // Use the centralized calculation function to get the breakdown
@@ -212,6 +216,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       selectedCauseAreaId,
       globalOperationsEnabled,
       globalOperationsPercentage,
+      operationsConfig?.excludedCauseAreaIds ?? [],
       smartDistributionTotal,
     );
 

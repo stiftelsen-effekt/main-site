@@ -25,6 +25,7 @@ import {
   SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
   SET_GLOBAL_OPERATIONS_PERCENTAGE,
   SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
+  SET_OPERATIONS_CONFIG,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -270,6 +271,21 @@ export function setOperationsPercentageByCauseArea(
   return {
     type: SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
     payload: { causeAreaId, percentage },
+  };
+}
+
+/**
+ * Set the operations configuration from widget props.
+ */
+export function setOperationsConfig(config: {
+  defaultPercentage: number;
+  enabledByDefaultGlobal: boolean;
+  enabledByDefaultSingle: boolean;
+  excludedCauseAreaIds: number[];
+}): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_CONFIG,
+    payload: config,
   };
 }
 

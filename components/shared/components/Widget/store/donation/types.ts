@@ -28,6 +28,7 @@ export const SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA =
   "SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA";
 export const SET_GLOBAL_OPERATIONS_PERCENTAGE = "SET_GLOBAL_OPERATIONS_PERCENTAGE";
 export const SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA = "SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA";
+export const SET_OPERATIONS_CONFIG = "SET_OPERATIONS_CONFIG";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -223,6 +224,16 @@ interface SetOperationsPercentageByCauseArea {
   };
 }
 
+interface SetOperationsConfig {
+  type: typeof SET_OPERATIONS_CONFIG;
+  payload: {
+    defaultPercentage: number;
+    enabledByDefaultGlobal: boolean;
+    enabledByDefaultSingle: boolean;
+    excludedCauseAreaIds: number[];
+  };
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -247,4 +258,5 @@ export type DonationActionTypes =
   | SetGlobalOperationsPercentageMode
   | SetOperationsPercentageModeByCauseArea
   | SetGlobalOperationsPercentage
-  | SetOperationsPercentageByCauseArea;
+  | SetOperationsPercentageByCauseArea
+  | SetOperationsConfig;
