@@ -104,3 +104,14 @@ export const setGlobalCut = (enable = true) => {
     cy.get("[data-cy=global-cut-checkbox]").uncheck({ force: true });
   }
 };
+
+// Helper to set custom cut amount
+export const setCustomCutAmount = (amount, causeAreaId = null) => {
+  if (causeAreaId) {
+    // Single cause area mode
+    cy.get(`[data-cy=custom-cut-input-${causeAreaId}]`).clear().type(amount.toString());
+  } else {
+    // Multiple cause areas mode
+    cy.get("[data-cy=global-custom-cut-input]").clear().type(amount.toString());
+  }
+};

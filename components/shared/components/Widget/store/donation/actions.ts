@@ -23,6 +23,8 @@ import {
   SET_SMART_DISTRIBUTION_TOTAL,
   SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
   SET_GLOBAL_OPERATIONS_ENABLED,
+  SET_GLOBAL_OPERATIONS_AMOUNT,
+  SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -245,6 +247,30 @@ export function setGlobalOperationsEnabled(enabled: boolean): DonationActionType
   return {
     type: SET_GLOBAL_OPERATIONS_ENABLED,
     payload: { enabled },
+  };
+}
+
+/**
+ * Set the global operations cut amount for multiple cause areas.
+ * This amount is not distributed - it's the total operations cut.
+ */
+export function setGlobalOperationsAmount(amount: number): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_AMOUNT,
+    payload: { amount },
+  };
+}
+
+/**
+ * Set whether to use percentage mode or custom amount mode for operations cut for a cause area.
+ */
+export function setOperationsPercentageModeByCauseArea(
+  causeAreaId: number,
+  isPercentageMode: boolean,
+): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
+    payload: { causeAreaId, isPercentageMode },
   };
 }
 

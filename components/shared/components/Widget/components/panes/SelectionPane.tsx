@@ -1,13 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pane, PaneContainer, PaneTitle } from "./Panes.style";
-import { RadioButtonGroup } from "../../../RadioButton/RadioButtonGroup";
-import { RecurringDonation } from "../../types/Enums";
 import {
-  setRecurring,
   setCauseAreaSelection,
   setOperationsAmountByCauseArea,
-  setCauseAreaAmount,
   setOrgAmount,
   setGlobalOperationsEnabled,
 } from "../../store/donation/actions";
@@ -20,7 +16,6 @@ import {
   getCauseAreaIconById,
   MultipleCauseAreaIcon,
 } from "./SelectionPane.style";
-import { StyledSpinner } from "../shared/Buttons/NavigationButtons.style";
 import { Spinner } from "../../../Spinner/Spinner";
 
 /**
@@ -48,55 +43,6 @@ export const SelectionPane: React.FC<{}> = ({}) => {
 
       // Initialize global operations enabled state based on whether any cause area has operations
       dispatch(setGlobalOperationsEnabled(hasAnyOperationsAmount));
-    } else {
-      // When switching to single cause area
-      // Check if user has explicitly changed the global operations toggle
-      if (globalOperationsUserOverride?.hasUserOverride && causeAreas) {
-        const causeAreaId = id;
-        if (causeAreaId && causeAreaId !== -1) {
-          const currentCauseAreaAmount = causeAreaAmounts[causeAreaId] || 0;
-          const currentOperationsAmount = operationsAmountsByCauseArea[causeAreaId] || 0;
-          const currentTotal = currentCauseAreaAmount + currentOperationsAmount;
-
-          if (currentTotal > 0) {
-            if (globalOperationsUserOverride.overrideValue) {
-              // User explicitly enabled global operations cut
-              // Ensure this cause area has operations cut
-              if (currentOperationsAmount === 0) {
-                const newOperationsAmount = Math.round(0.05 * currentTotal);
-                const newCauseAreaAmount = currentTotal - newOperationsAmount;
-
-                setTimeout(() => {
-                  dispatch(setCauseAreaAmount(causeAreaId, newCauseAreaAmount));
-                  dispatch(setOperationsAmountByCauseArea(causeAreaId, newOperationsAmount));
-
-                  // Handle single organization cause areas
-                  const causeArea = causeAreas.find((ca) => ca.id === causeAreaId);
-                  if (causeArea && causeArea.organizations.length === 1) {
-                    dispatch(setOrgAmount(causeArea.organizations[0].id, newCauseAreaAmount));
-                  }
-                }, 0);
-              }
-            } else {
-              // User explicitly disabled global operations cut
-              // Ensure this cause area has NO operations cut
-              if (currentOperationsAmount > 0) {
-                setTimeout(() => {
-                  dispatch(setCauseAreaAmount(causeAreaId, currentTotal));
-                  dispatch(setOperationsAmountByCauseArea(causeAreaId, 0));
-
-                  // Handle single organization cause areas
-                  const causeArea = causeAreas.find((ca) => ca.id === causeAreaId);
-                  if (causeArea && causeArea.organizations.length === 1) {
-                    dispatch(setOrgAmount(causeArea.organizations[0].id, currentTotal));
-                  }
-                }, 0);
-              }
-            }
-          }
-        }
-      }
-      // If user hasn't touched global toggle, preserve local state (do nothing)
     }
 
     dispatch(setCauseAreaSelection(selectionType, id));

@@ -23,6 +23,8 @@ import {
   SET_SMART_DISTRIBUTION_TOTAL,
   SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
   SET_GLOBAL_OPERATIONS_ENABLED,
+  SET_GLOBAL_OPERATIONS_AMOUNT,
+  SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -35,6 +37,7 @@ const initialState: Donation = {
   errors: [],
   showErrors: false,
   dueDay: getEarliestPossibleChargeDate(),
+  globalOperationsEnabled: true,
   vippsAgreement: {
     initialCharge: true,
     monthlyChargeDay: new Date().getDate() <= 28 ? new Date().getDate() : 0,
@@ -61,6 +64,10 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       // Default to single cause area (first) on load
       selectionType: areas.length > 0 ? "single" : undefined,
       selectedCauseAreaId: areas.length > 0 ? areas[0].id : undefined,
+      operationsPercentageModeByCauseArea: areas.reduce((acc, area) => {
+        acc[area.id] = true; // Default to true for all areas
+        return acc;
+      }, {} as Record<number, boolean>),
       causeAreaDistributionType: areas.reduce((acc, area) => {
         acc[area.id] = ShareType.STANDARD;
         return acc;
@@ -95,14 +102,12 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       // Smart distribution will handle its own amount calculations when needed
       // This allows users to switch between selections without losing their previous inputs
 
-      // When switching to multiple, check if any cause area has operations enabled
+      // Preserve operations state when switching modes
       let globalOperationsEnabled = state.globalOperationsEnabled || false;
-      if (selectionType === "multiple" && !state.globalOperationsUserOverride?.hasUserOverride) {
-        // If user hasn't explicitly toggled global operations, derive from individual states
-        globalOperationsEnabled = Object.keys(newOperationsAmountsByCauseArea).some(
-          (key) => (newOperationsAmountsByCauseArea[parseInt(key)] || 0) > 0,
-        );
-      }
+      let globalOperationsAmount = state.globalOperationsAmount || 0;
+
+      // Preserve the user's choice when switching between modes
+      // Only reset if they haven't made any explicit choices yet
 
       state = {
         ...state,
@@ -111,11 +116,9 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         causeAreaAmounts: newCauseAreaAmounts,
         operationsAmountsByCauseArea: newOperationsAmountsByCauseArea,
         globalOperationsEnabled,
-        // Reset global override when switching selections
-        globalOperationsUserOverride: {
-          hasUserOverride: false,
-          overrideValue: false,
-        },
+        globalOperationsAmount,
+        // Preserve the user's override choice
+        globalOperationsUserOverride: state.globalOperationsUserOverride,
       };
       break;
     }
@@ -192,6 +195,28 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         globalOperationsEnabled: enabled,
+      };
+      break;
+    }
+    case SET_GLOBAL_OPERATIONS_AMOUNT: {
+      const { amount } = (action as any).payload;
+
+      state = {
+        ...state,
+        globalOperationsAmount: amount,
+      };
+      break;
+    }
+    case SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA: {
+      const { causeAreaId, isPercentageMode } = (action as any).payload;
+      const newModes = {
+        ...(state.operationsPercentageModeByCauseArea ?? {}),
+        [causeAreaId]: isPercentageMode,
+      };
+
+      state = {
+        ...state,
+        operationsPercentageModeByCauseArea: newModes,
       };
       break;
     }

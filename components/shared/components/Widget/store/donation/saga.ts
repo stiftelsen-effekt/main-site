@@ -190,6 +190,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       smartDistributionTotal,
       operationsAmountsByCauseArea = {},
       globalOperationsEnabled = false,
+      globalOperationsAmount = 0,
     } = donation;
 
     // Use the centralized calculation function to get the breakdown
@@ -203,6 +204,7 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
       selectedCauseAreaId,
       globalOperationsEnabled,
       smartDistributionTotal,
+      globalOperationsAmount,
     );
 
     let distributionPayload: {

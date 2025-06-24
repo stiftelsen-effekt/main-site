@@ -25,6 +25,9 @@ export const SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA = "SET_OPERATIONS_AMOUNT_BY_CAU
 export const SET_SMART_DISTRIBUTION_TOTAL = "SET_SMART_DISTRIBUTION_TOTAL";
 export const SET_GLOBAL_OPERATIONS_USER_OVERRIDE = "SET_GLOBAL_OPERATIONS_USER_OVERRIDE";
 export const SET_GLOBAL_OPERATIONS_ENABLED = "SET_GLOBAL_OPERATIONS_ENABLED";
+export const SET_GLOBAL_OPERATIONS_AMOUNT = "SET_GLOBAL_OPERATIONS_AMOUNT";
+export const SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA =
+  "SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -204,6 +207,24 @@ interface SetGlobalOperationsEnabled {
   };
 }
 
+interface SetGlobalOperationsAmount {
+  type: typeof SET_GLOBAL_OPERATIONS_AMOUNT;
+  payload: {
+    /** global operations cut amount in NOK (for multiple cause areas) */
+    amount: number;
+  };
+}
+
+interface SetOperationsPercentageModeByCauseArea {
+  type: typeof SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA;
+  payload: {
+    /** cause area ID */
+    causeAreaId: number;
+    /** whether to use percentage mode (true) or custom amount mode (false) */
+    isPercentageMode: boolean;
+  };
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -226,4 +247,6 @@ export type DonationActionTypes =
   | SetOperationsAmountByCauseArea
   | SetSmartDistributionTotal
   | SetGlobalOperationsUserOverride
-  | SetGlobalOperationsEnabled;
+  | SetGlobalOperationsEnabled
+  | SetGlobalOperationsAmount
+  | SetOperationsPercentageModeByCauseArea;

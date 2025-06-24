@@ -22,6 +22,7 @@ export function calculateDonationBreakdown(
   selectedCauseAreaId: number | null | undefined,
   globalOperationsEnabled: boolean,
   smartDistributionTotal?: number,
+  globalOperationsAmount?: number,
 ): DonationBreakdown {
   const result: DonationBreakdown = {
     causeAreaAmounts: {},
@@ -55,25 +56,9 @@ export function calculateDonationBreakdown(
   // Calculate total operations amount based on selection type
   let totalOperationsAmount = 0;
 
-  if (selectionType === "multiple" && globalOperationsEnabled) {
-    // For multiple cause areas, calculate 5% of total
-    let totalBeforeOperations = 0;
-
-    causeAreas.forEach((area) => {
-      if (area.id === 4 || area.id === 5) return;
-
-      if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
-        const orgTotal = area.organizations.reduce(
-          (sum, org) => sum + (orgAmounts[org.id] || 0),
-          0,
-        );
-        totalBeforeOperations += orgTotal;
-      } else {
-        totalBeforeOperations += causeAreaAmounts[area.id] || 0;
-      }
-    });
-
-    totalOperationsAmount = Math.round(totalBeforeOperations * 0.05);
+  if (selectionType === "multiple") {
+    // For multiple cause areas, use the global operations amount
+    totalOperationsAmount = globalOperationsAmount || 0;
   } else if (
     selectionType === "single" &&
     selectedCauseAreaId !== null &&
@@ -107,21 +92,10 @@ export function calculateDonationBreakdown(
       if (selectionType === "single" && area.id === selectedCauseAreaId) {
         const operationsCut = operationsAmountsByCauseArea[area.id] || 0;
         netAreaAmount = areaAmount - operationsCut;
-      } else if (
-        selectionType === "multiple" &&
-        globalOperationsEnabled &&
-        totalOperationsAmount > 0
-      ) {
-        // Calculate proportional cut for this area
-        const totalCauseAreaAmount = causeAreas
-          .filter((ca) => ca.id !== 4 && ca.id !== 5 && (causeAreaAmounts[ca.id] || 0) > 0)
-          .reduce((sum, ca) => sum + (causeAreaAmounts[ca.id] || 0), 0);
-
-        if (totalCauseAreaAmount > 0) {
-          const proportion = areaAmount / totalCauseAreaAmount;
-          const areaCut = Math.round(totalOperationsAmount * proportion);
-          netAreaAmount = areaAmount - areaCut;
-        }
+      } else if (selectionType === "multiple" && totalOperationsAmount > 0) {
+        // For multiple cause areas, operations cut is handled at the total level
+        // Don't reduce individual cause area amounts
+        // The operations amount will be added to the total at the end
       }
 
       result.causeAreaAmounts[area.id] = netAreaAmount;
@@ -152,32 +126,10 @@ export function calculateDonationBreakdown(
           if (operationsCut > 0 && totalOrgAmount > 0) {
             reduction = 1 - operationsCut / totalOrgAmount;
           }
-        } else if (
-          selectionType === "multiple" &&
-          globalOperationsEnabled &&
-          totalOperationsAmount > 0
-        ) {
-          // Calculate proportional cut
-          const totalCauseAreaAmount = causeAreas
-            .filter((ca) => ca.id !== 4 && ca.id !== 5)
-            .reduce((sum, ca) => {
-              if (causeAreaDistributionType[ca.id] === ShareType.CUSTOM) {
-                return (
-                  sum +
-                  ca.organizations.reduce((orgSum, org) => orgSum + (orgAmounts[org.id] || 0), 0)
-                );
-              }
-              return sum + (causeAreaAmounts[ca.id] || 0);
-            }, 0);
-
-          if (totalCauseAreaAmount > 0) {
-            const proportion = totalOrgAmount / totalCauseAreaAmount;
-            const areaCut = Math.round(totalOperationsAmount * proportion);
-            netTotalOrgAmount = totalOrgAmount - areaCut;
-            if (areaCut > 0 && totalOrgAmount > 0) {
-              reduction = 1 - areaCut / totalOrgAmount;
-            }
-          }
+        } else if (selectionType === "multiple" && totalOperationsAmount > 0) {
+          // For multiple cause areas, operations cut is handled at the total level
+          // Don't reduce individual amounts
+          reduction = 1;
         }
 
         result.causeAreaAmounts[area.id] = netTotalOrgAmount;

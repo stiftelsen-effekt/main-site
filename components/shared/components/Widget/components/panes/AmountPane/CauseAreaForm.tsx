@@ -22,6 +22,7 @@ import {
   setOrgAmount,
   setCauseAreaDistributionType,
   setOperationsAmountByCauseArea,
+  setOperationsPercentageModeByCauseArea,
 } from "../../../store/donation/actions";
 import { thousandize } from "../../../../../../../util/formatting";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
@@ -58,26 +59,60 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   const operationsAmountsByCauseArea =
     useSelector((state: any) => state.donation.operationsAmountsByCauseArea) || {};
   const currentOperationsAmount = operationsAmountsByCauseArea[causeArea.id] || 0;
+  const operationsPercentageModeByCauseArea =
+    useSelector((state: any) => state.donation.operationsPercentageModeByCauseArea) || {};
 
-  // Check if user wants cut based on operations amount
-  const userWantsCut = currentOperationsAmount > 0;
+  // Get percentage mode from Redux state (defaults to false if not set)
+  const isPercentageMode = operationsPercentageModeByCauseArea[causeArea.id] ?? false;
 
   // Internal state for input handling - always shows the full amount the user entered
   const [inputValue, setInputValue] = React.useState(currentCauseAreaAmount);
+  const [customCutAmount, setCustomCutAmount] = React.useState(
+    currentOperationsAmount > 0 && !isPercentageMode ? currentOperationsAmount : 0,
+  );
 
   // Sync input value with stored amount when it changes externally
   React.useEffect(() => {
     setInputValue(currentCauseAreaAmount);
   }, [currentCauseAreaAmount]);
 
+  // Update custom cut amount when operations amount changes
+  React.useEffect(() => {
+    if (showOperationsOption && currentOperationsAmount > 0 && !isPercentageMode) {
+      setCustomCutAmount(currentOperationsAmount);
+    }
+  }, [currentOperationsAmount, showOperationsOption, isPercentageMode]);
+
   const handleCutToggle = (checked: boolean) => {
     const currentTotal = currentCauseAreaAmount || 0;
+
+    // Update the mode in Redux
+    dispatch(setOperationsPercentageModeByCauseArea(causeArea.id, checked));
+
     if (checked && currentTotal > 0) {
+      // Switch to percentage mode
       const newCutAmount = Math.round((CUT_PERCENTAGE / 100) * currentTotal);
       dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
+      setCustomCutAmount(0);
     } else {
-      // When unchecking, remove operations amount
-      dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
+      // Switch to custom cut mode - keep existing custom cut or set to 0
+      if (customCutAmount > 0) {
+        dispatch(setOperationsAmountByCauseArea(causeArea.id, customCutAmount));
+      } else {
+        dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
+      }
+    }
+  };
+
+  const handleCustomCutChange = (values: { floatValue: number | undefined }) => {
+    const v = values.floatValue === undefined ? 0 : values.floatValue;
+    // Limit custom cut to donation amount
+    const limitedCut = Math.min(v, currentCauseAreaAmount);
+    setCustomCutAmount(limitedCut);
+
+    // Always update when in custom mode
+    if (!isPercentageMode) {
+      dispatch(setOperationsAmountByCauseArea(causeArea.id, limitedCut));
     }
   };
 
@@ -92,13 +127,10 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
       dispatch(setOrgAmount(causeArea.organizations[0].id, v));
     }
 
-    // Update operations amount if cut is enabled
-    if (showOperationsOption && userWantsCut && v > 0) {
+    // Update operations amount only if already in percentage mode
+    if (showOperationsOption && v > 0 && isPercentageMode) {
       const newCutAmount = Math.round((CUT_PERCENTAGE / 100) * v);
       dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
-    } else if (v === 0) {
-      // Reset operations amount when amount is 0
-      dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
     }
   };
 
@@ -113,8 +145,8 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
       dispatch(setOrgAmount(causeArea.organizations[0].id, amount));
     }
 
-    // Update operations amount if cut is enabled
-    if (showOperationsOption && userWantsCut && amount > 0) {
+    // Update operations amount only if already in percentage mode
+    if (showOperationsOption && amount > 0 && isPercentageMode) {
       const newCutAmount = Math.round((CUT_PERCENTAGE / 100) * amount);
       dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
     }
@@ -159,18 +191,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   decimalScale={0}
                   type="tel"
                   placeholder="0"
-                  value={
-                    showOperationsOption
-                      ? inputValue > 0
-                        ? inputValue
-                        : ""
-                      : (causeAreaAmounts[causeArea.id] || 0) +
-                          (operationsAmountsByCauseArea[causeArea.id] || 0) >
-                        0
-                      ? (causeAreaAmounts[causeArea.id] || 0) +
-                        (operationsAmountsByCauseArea[causeArea.id] || 0)
-                      : ""
-                  }
+                  value={inputValue > 0 ? inputValue : ""}
                   autoComplete="off"
                   data-cy={`donation-sum-input-${causeArea.id}`}
                   onValueChange={handleAmountChange}
@@ -312,18 +333,20 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
             <CheckBoxWrapper>
               <HiddenCheckBox
                 type="checkbox"
-                checked={userWantsCut}
+                checked={isPercentageMode}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleCutToggle(e.target.checked)
                 }
                 data-cy={`cut-checkbox-${causeArea.id}`}
               />
               <CustomCheckBox
-                checked={userWantsCut}
+                checked={isPercentageMode}
                 label={`${CUT_PERCENTAGE}% till drift av Ge Effektivt`}
               />
             </CheckBoxWrapper>
-            {userWantsCut && inputValue > 0 && (
+
+            {/* Show percentage breakdown when in percentage mode */}
+            {isPercentageMode && inputValue > 0 && (
               <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
                 {CUT_PERCENTAGE}% av {thousandize(inputValue)} kr ={" "}
                 {thousandize(Math.round((inputValue * CUT_PERCENTAGE) / 100))} kr til drift
@@ -333,6 +356,41 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   {causeArea.name}, {thousandize(Math.round((inputValue * CUT_PERCENTAGE) / 100))}{" "}
                   kr till drift
                 </small>
+              </div>
+            )}
+
+            {/* Show custom cut input when not in percentage mode */}
+            {!isPercentageMode && (
+              <div style={{ marginTop: "15px" }}>
+                <div style={{ marginBottom: "5px", fontSize: "14px", color: "#666" }}>
+                  Ange valfritt belopp till drift:
+                </div>
+                <SumWrapper style={{ maxWidth: "150px" }}>
+                  <span>
+                    <NumericFormat
+                      name={`custom-cut-${causeArea.id}`}
+                      thousandSeparator=" "
+                      allowNegative={false}
+                      decimalScale={0}
+                      type="tel"
+                      placeholder="0"
+                      value={customCutAmount > 0 ? customCutAmount : ""}
+                      autoComplete="off"
+                      data-cy={`custom-cut-input-${causeArea.id}`}
+                      onValueChange={handleCustomCutChange}
+                    />
+                  </span>
+                </SumWrapper>
+                {inputValue > 0 && (
+                  <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
+                    {thousandize(customCutAmount)} kr til drift
+                    <br />
+                    <small style={{ color: "#888" }}>
+                      {thousandize(inputValue - customCutAmount)} kr går till {causeArea.name},{" "}
+                      {thousandize(customCutAmount)} kr till drift
+                    </small>
+                  </div>
+                )}
               </div>
             )}
           </div>

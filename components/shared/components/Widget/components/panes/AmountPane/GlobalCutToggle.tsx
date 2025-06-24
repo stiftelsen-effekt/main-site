@@ -1,17 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NumericFormat } from "react-number-format";
 import { State } from "../../../store/state";
 import { CauseArea } from "../../../types/CauseArea";
 import {
-  setCauseAreaAmount,
-  setOperationsAmountByCauseArea,
-  setOrgAmount,
   setGlobalOperationsUserOverride,
   setGlobalOperationsEnabled,
+  setGlobalOperationsAmount,
 } from "../../../store/donation/actions";
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 import { thousandize } from "../../../../../../../util/formatting";
+import { SumWrapper } from "../AmountPane.style";
 
 interface GlobalCutToggleProps {
   causeAreas: CauseArea[];
@@ -24,6 +24,8 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ causeAreas }) 
     operationsAmountsByCauseArea = {},
     orgAmounts = {},
     globalOperationsEnabled = false,
+    globalOperationsUserOverride,
+    globalOperationsAmount = 0,
   } = useSelector((state: State) => state.donation);
 
   const CUT_PERCENTAGE = 5;
@@ -37,34 +39,58 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ causeAreas }) 
     0,
   );
 
+  // Check if we're in percentage mode
+  const expectedPercentageAmount = Math.round((totalAmount * CUT_PERCENTAGE) / 100);
+  const isPercentageMode =
+    globalOperationsEnabled && Math.abs(globalOperationsAmount - expectedPercentageAmount) < 2;
+
+  // State for custom cut
+  const [customCutAmount, setCustomCutAmount] = React.useState(
+    !isPercentageMode && globalOperationsAmount > 0 ? globalOperationsAmount : 0,
+  );
+
+  // Update percentage amount when total changes (only if already enabled)
+  React.useEffect(() => {
+    if (totalAmount > 0 && globalOperationsEnabled && isPercentageMode) {
+      const newPercentageCut = Math.round((totalAmount * CUT_PERCENTAGE) / 100);
+      if (Math.abs(globalOperationsAmount - newPercentageCut) > 1) {
+        dispatch(setGlobalOperationsAmount(newPercentageCut));
+      }
+    }
+  }, [totalAmount, globalOperationsEnabled, isPercentageMode, globalOperationsAmount, dispatch]);
+
   const handleGlobalCutToggle = (checked: boolean) => {
-    // Simply toggle the global operations enabled state
+    // Toggle the global operations enabled state
     dispatch(setGlobalOperationsEnabled(checked));
     // Mark that user has explicitly toggled the global checkbox
     dispatch(setGlobalOperationsUserOverride(true, checked));
 
-    // When global toggle is explicitly changed, update all cause area operations amounts
     if (checked) {
-      // Enable operations cut for all cause areas with amounts
-      relevantCauseAreaIds.forEach((id) => {
-        const amount = causeAreaAmounts[id] || 0;
-        if (amount > 0) {
-          const operationsAmount = Math.round((amount * CUT_PERCENTAGE) / 100);
-          dispatch(setOperationsAmountByCauseArea(id, operationsAmount));
-        }
-      });
+      // Switch to percentage mode - calculate 5% of total
+      const percentageCut = Math.round((totalAmount * CUT_PERCENTAGE) / 100);
+      dispatch(setGlobalOperationsAmount(percentageCut));
+      setCustomCutAmount(0);
     } else {
-      // Disable operations cut for all cause areas
-      relevantCauseAreaIds.forEach((id) => {
-        dispatch(setOperationsAmountByCauseArea(id, 0));
-      });
+      // Switch to custom cut mode - use existing custom cut or 0
+      if (customCutAmount > 0) {
+        dispatch(setGlobalOperationsAmount(customCutAmount));
+      } else {
+        dispatch(setGlobalOperationsAmount(0));
+      }
     }
   };
 
-  // Only show if there are amounts set
-  if (totalAmount === 0) {
-    return null;
-  }
+  const handleCustomCutChange = (values: { floatValue: number | undefined }) => {
+    const v = values.floatValue === undefined ? 0 : values.floatValue;
+    // Limit custom cut to total donation amount
+    const limitedCut = Math.min(v, totalAmount);
+    setCustomCutAmount(limitedCut);
+
+    // Set global operations amount if not in percentage mode
+    if (!globalOperationsEnabled) {
+      dispatch(setGlobalOperationsAmount(limitedCut));
+    }
+  };
 
   return (
     <div
@@ -91,16 +117,51 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ causeAreas }) 
           label={`${CUT_PERCENTAGE}% till drift av Ge Effektivt`}
         />
       </CheckBoxWrapper>
+      {/* Show percentage breakdown when in percentage mode */}
       {globalOperationsEnabled && totalAmount > 0 && (
         <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
-          {CUT_PERCENTAGE}% av {thousandize(totalAmount)} kr ={" "}
-          {thousandize(Math.round((totalAmount * CUT_PERCENTAGE) / 100))} kr til drift
+          {CUT_PERCENTAGE}% av {thousandize(totalAmount)} kr = {thousandize(globalOperationsAmount)}{" "}
+          kr til drift
           <br />
           <small style={{ color: "#888" }}>
-            {thousandize(Math.round((totalAmount * (100 - CUT_PERCENTAGE)) / 100))} kr går till
-            välda ändamål, {thousandize(Math.round((totalAmount * CUT_PERCENTAGE) / 100))} kr till
-            drift
+            {thousandize(totalAmount - globalOperationsAmount)} kr går till välda ändamål,{" "}
+            {thousandize(globalOperationsAmount)} kr till drift
           </small>
+        </div>
+      )}
+
+      {/* Show custom cut input when not in percentage mode */}
+      {!globalOperationsEnabled && (
+        <div style={{ marginTop: "15px" }}>
+          <div style={{ marginBottom: "5px", fontSize: "14px", color: "#666" }}>
+            Ange valfritt belopp till drift:
+          </div>
+          <SumWrapper style={{ maxWidth: "150px" }}>
+            <span>
+              <NumericFormat
+                name="global-custom-cut"
+                thousandSeparator=" "
+                allowNegative={false}
+                decimalScale={0}
+                type="tel"
+                placeholder="0"
+                value={customCutAmount > 0 ? customCutAmount : ""}
+                autoComplete="off"
+                data-cy="global-custom-cut-input"
+                onValueChange={handleCustomCutChange}
+              />
+            </span>
+          </SumWrapper>
+          {totalAmount > 0 && (
+            <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
+              {thousandize(customCutAmount)} kr til drift
+              <br />
+              <small style={{ color: "#888" }}>
+                {thousandize(totalAmount - customCutAmount)} kr går till välda ändamål,{" "}
+                {thousandize(customCutAmount)} kr till drift
+              </small>
+            </div>
+          )}
         </div>
       )}
     </div>

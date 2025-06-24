@@ -56,6 +56,10 @@ export interface Donation extends DonationInput {
   };
   /** Whether global operations cut is enabled (for multiple cause areas) */
   globalOperationsEnabled?: boolean;
+  /** Global operations cut amount (NOK) - for multiple cause areas */
+  globalOperationsAmount?: number;
+  /** Whether operations cut is in percentage mode (true) or custom amount mode (false) for each cause area */
+  operationsPercentageModeByCauseArea?: Record<number, boolean>;
 }
 
 export type DonationError = {

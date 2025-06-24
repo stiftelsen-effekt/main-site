@@ -26,6 +26,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     operationsAmountsByCauseArea = {},
     smartDistributionTotal = 0,
     globalOperationsEnabled = false,
+    globalOperationsAmount = 0,
   } = donation;
 
   const { summaryItems, sum } = React.useMemo(() => {
@@ -58,6 +59,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       selectedCauseAreaId,
       globalOperationsEnabled,
       smartDistributionTotal,
+      globalOperationsAmount,
     );
 
     // Build summary items from breakdown
@@ -110,6 +112,7 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     operationsAmountsByCauseArea,
     globalOperationsEnabled,
     smartDistributionTotal,
+    globalOperationsAmount,
   ]);
 
   if (sum === 0) {
