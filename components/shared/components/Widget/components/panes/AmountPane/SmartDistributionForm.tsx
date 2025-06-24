@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
@@ -9,6 +9,7 @@ import {
   TotalSumWrapper,
   SumWrapper,
   SumButtonsWrapper,
+  ExplenationAccordion,
 } from "../AmountPane.style";
 import { MultipleCauseAreaIcon } from "../SelectionPane.style";
 import { CauseArea } from "../../../types/CauseArea";
@@ -23,6 +24,8 @@ import { thousandize } from "../../../../../../../util/formatting";
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 import { State } from "../../../store/state";
+import AnimateHeight from "react-animate-height";
+import { ChevronDown } from "react-feather";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -44,6 +47,8 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
+
+  const [explenationOpen, setExplanationOpen] = useState(false);
 
   // Get smart distribution total from Redux state
   const smartDistributionTotal =
@@ -192,6 +197,28 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
             </span>
           </SumWrapper>
         </TotalSumWrapper>
+      </div>
+      <div>
+        {/** Smart distribution current distribution accordion */}
+        <ExplenationAccordion>
+          <div onClick={() => setExplanationOpen(!explenationOpen)}>
+            <span>Nuvärande fördelning</span>
+            <ChevronDown
+              size={28}
+              style={{
+                transform: explenationOpen ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease",
+              }}
+            />
+          </div>
+          <AnimateHeight height={explenationOpen ? "auto" : 0}>
+            <div>
+              Nuvärenda fördelning är baserad på den senaste smarta fördelningen. Om du ändrar
+              summan kommer den att uppdateras baserat på de senaste standardandelarna för varje
+              sakområde.
+            </div>
+          </AnimateHeight>
+        </ExplenationAccordion>
       </div>
     </FormWrapper>
   );

@@ -49,15 +49,12 @@ export interface Donation extends DonationInput {
   operationsAmountsByCauseArea?: Record<number, number>;
   /** Smart distribution total amount (NOK) - when selectedCauseAreaId === -1 */
   smartDistributionTotal?: number;
-  /** Tracks if user has explicitly toggled the global operations checkbox */
-  globalOperationsUserOverride?: {
-    hasUserOverride: boolean;
-    overrideValue: boolean;
-  };
   /** Whether global operations cut is enabled (for multiple cause areas) */
   globalOperationsEnabled?: boolean;
   /** Global operations cut amount (NOK) - for multiple cause areas */
   globalOperationsAmount?: number;
+  /** Whether global operations cut is in percentage mode (true) or custom amount mode (false) */
+  globalOperationsPercentageMode?: boolean;
   /** Whether operations cut is in percentage mode (true) or custom amount mode (false) for each cause area */
   operationsPercentageModeByCauseArea?: Record<number, boolean>;
 }

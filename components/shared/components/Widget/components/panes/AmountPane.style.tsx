@@ -214,3 +214,18 @@ export const ErrorContainer = styled.div`
   margin-bottom: 10px;
   font-size: 18px;
 `;
+
+export const ExplenationAccordion = styled.div`
+  & > div:first-child {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  & > div:last-child {
+    font-size: 16px;
+  }
+`;

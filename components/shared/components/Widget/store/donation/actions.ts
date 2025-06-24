@@ -21,8 +21,8 @@ import {
   SET_CAUSE_AREA_SELECTION,
   SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
   SET_SMART_DISTRIBUTION_TOTAL,
-  SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
   SET_GLOBAL_OPERATIONS_ENABLED,
+  SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
   SET_GLOBAL_OPERATIONS_AMOUNT,
   SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
 } from "./types";
@@ -229,16 +229,6 @@ export function setSmartDistributionTotal(smartDistributionTotal: number): Donat
   };
 }
 
-export function setGlobalOperationsUserOverride(
-  hasUserOverride: boolean,
-  overrideValue: boolean,
-): DonationActionTypes {
-  return {
-    type: SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
-    payload: { hasUserOverride, overrideValue },
-  };
-}
-
 /**
  * Set whether global operations cut is enabled for multiple cause areas.
  * This is separate from individual cause area operations amounts.
@@ -247,6 +237,16 @@ export function setGlobalOperationsEnabled(enabled: boolean): DonationActionType
   return {
     type: SET_GLOBAL_OPERATIONS_ENABLED,
     payload: { enabled },
+  };
+}
+
+/**
+ * Set whether global operations cut is in percentage mode or custom amount mode.
+ */
+export function setGlobalOperationsPercentageMode(isPercentageMode: boolean): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
+    payload: { isPercentageMode },
   };
 }
 

@@ -91,7 +91,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
     if (checked && currentTotal > 0) {
       // Switch to percentage mode
-      const newCutAmount = Math.round((CUT_PERCENTAGE / 100) * currentTotal);
+      const newCutAmount = (CUT_PERCENTAGE / 100) * currentTotal;
       dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
       setCustomCutAmount(0);
     } else {
@@ -129,7 +129,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
     // Update operations amount only if already in percentage mode
     if (showOperationsOption && v > 0 && isPercentageMode) {
-      const newCutAmount = Math.round((CUT_PERCENTAGE / 100) * v);
+      const newCutAmount = (CUT_PERCENTAGE / 100) * v;
       dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
     }
   };
@@ -147,7 +147,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
     // Update operations amount only if already in percentage mode
     if (showOperationsOption && amount > 0 && isPercentageMode) {
-      const newCutAmount = Math.round((CUT_PERCENTAGE / 100) * amount);
+      const newCutAmount = (CUT_PERCENTAGE / 100) * amount;
       dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
     }
   };
@@ -318,84 +318,52 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
             />
           </>
         )}
-
-        {/* Operations option */}
-        {showOperationsOption && (
-          <div
-            style={{
-              marginTop: "20px",
-              padding: "15px",
-              border: "1px solid #e0e0e0",
-              borderRadius: "8px",
-              backgroundColor: "#f9f9f9",
-            }}
-          >
-            <CheckBoxWrapper>
-              <HiddenCheckBox
-                type="checkbox"
-                checked={isPercentageMode}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleCutToggle(e.target.checked)
-                }
-                data-cy={`cut-checkbox-${causeArea.id}`}
-              />
-              <CustomCheckBox
-                checked={isPercentageMode}
-                label={`${CUT_PERCENTAGE}% till drift av Ge Effektivt`}
-              />
-            </CheckBoxWrapper>
-
-            {/* Show percentage breakdown when in percentage mode */}
-            {isPercentageMode && inputValue > 0 && (
-              <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
-                {CUT_PERCENTAGE}% av {thousandize(inputValue)} kr ={" "}
-                {thousandize(Math.round((inputValue * CUT_PERCENTAGE) / 100))} kr til drift
-                <br />
-                <small style={{ color: "#888" }}>
-                  {thousandize(Math.round((inputValue * (100 - CUT_PERCENTAGE)) / 100))} kr går till{" "}
-                  {causeArea.name}, {thousandize(Math.round((inputValue * CUT_PERCENTAGE) / 100))}{" "}
-                  kr till drift
-                </small>
-              </div>
-            )}
-
-            {/* Show custom cut input when not in percentage mode */}
-            {!isPercentageMode && (
-              <div style={{ marginTop: "15px" }}>
-                <div style={{ marginBottom: "5px", fontSize: "14px", color: "#666" }}>
-                  Ange valfritt belopp till drift:
-                </div>
-                <SumWrapper style={{ maxWidth: "150px" }}>
-                  <span>
-                    <NumericFormat
-                      name={`custom-cut-${causeArea.id}`}
-                      thousandSeparator=" "
-                      allowNegative={false}
-                      decimalScale={0}
-                      type="tel"
-                      placeholder="0"
-                      value={customCutAmount > 0 ? customCutAmount : ""}
-                      autoComplete="off"
-                      data-cy={`custom-cut-input-${causeArea.id}`}
-                      onValueChange={handleCustomCutChange}
-                    />
-                  </span>
-                </SumWrapper>
-                {inputValue > 0 && (
-                  <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
-                    {thousandize(customCutAmount)} kr til drift
-                    <br />
-                    <small style={{ color: "#888" }}>
-                      {thousandize(inputValue - customCutAmount)} kr går till {causeArea.name},{" "}
-                      {thousandize(customCutAmount)} kr till drift
-                    </small>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Operations option */}
+      {showOperationsOption && (
+        <div>
+          <CheckBoxWrapper>
+            <HiddenCheckBox
+              type="checkbox"
+              checked={isPercentageMode}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleCutToggle(e.target.checked)
+              }
+              data-cy={`cut-checkbox-${causeArea.id}`}
+            />
+            <CustomCheckBox
+              checked={isPercentageMode}
+              label={`${CUT_PERCENTAGE}% till drift av Ge Effektivt`}
+            />
+          </CheckBoxWrapper>
+
+          {/* Show custom cut input when not in percentage mode */}
+          {!isPercentageMode && (
+            <div style={{ marginTop: "15px" }}>
+              <div style={{ marginBottom: "5px", fontSize: "14px", color: "#666" }}>
+                Ange valfritt belopp till drift:
+              </div>
+              <SumWrapper style={{ maxWidth: "150px" }}>
+                <span>
+                  <NumericFormat
+                    name={`custom-cut-${causeArea.id}`}
+                    thousandSeparator=" "
+                    allowNegative={false}
+                    decimalScale={0}
+                    type="tel"
+                    placeholder="0"
+                    value={customCutAmount > 0 ? customCutAmount : ""}
+                    autoComplete="off"
+                    data-cy={`custom-cut-input-${causeArea.id}`}
+                    onValueChange={handleCustomCutChange}
+                  />
+                </span>
+              </SumWrapper>
+            </div>
+          )}
+        </div>
+      )}
     </FormWrapper>
   );
 };

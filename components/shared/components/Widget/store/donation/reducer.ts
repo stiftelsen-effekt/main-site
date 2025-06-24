@@ -21,8 +21,8 @@ import {
   SET_CAUSE_AREA_DISTRIBUTION_TYPE,
   SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
   SET_SMART_DISTRIBUTION_TOTAL,
-  SET_GLOBAL_OPERATIONS_USER_OVERRIDE,
   SET_GLOBAL_OPERATIONS_ENABLED,
+  SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
   SET_GLOBAL_OPERATIONS_AMOUNT,
   SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
 } from "./types";
@@ -38,6 +38,7 @@ const initialState: Donation = {
   showErrors: false,
   dueDay: getEarliestPossibleChargeDate(),
   globalOperationsEnabled: true,
+  globalOperationsPercentageMode: true,
   vippsAgreement: {
     initialCharge: true,
     monthlyChargeDay: new Date().getDate() <= 28 ? new Date().getDate() : 0,
@@ -117,8 +118,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         operationsAmountsByCauseArea: newOperationsAmountsByCauseArea,
         globalOperationsEnabled,
         globalOperationsAmount,
-        // Preserve the user's override choice
-        globalOperationsUserOverride: state.globalOperationsUserOverride,
+        globalOperationsPercentageMode: state.globalOperationsPercentageMode,
       };
       break;
     }
@@ -177,18 +177,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       };
       break;
     }
-    case SET_GLOBAL_OPERATIONS_USER_OVERRIDE: {
-      const { hasUserOverride, overrideValue } = (action as any).payload;
-
-      state = {
-        ...state,
-        globalOperationsUserOverride: {
-          hasUserOverride,
-          overrideValue,
-        },
-      };
-      break;
-    }
     case SET_GLOBAL_OPERATIONS_ENABLED: {
       const { enabled } = (action as any).payload;
 
@@ -204,6 +192,15 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         globalOperationsAmount: amount,
+      };
+      break;
+    }
+    case SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE: {
+      const { isPercentageMode } = (action as any).payload;
+
+      state = {
+        ...state,
+        globalOperationsPercentageMode: isPercentageMode,
       };
       break;
     }

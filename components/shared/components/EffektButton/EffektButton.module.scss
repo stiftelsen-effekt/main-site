@@ -30,6 +30,7 @@
   background: var(--primary);
   color: var(--secondary);
   border: 1px solid var(--secondary);
+  background-clip: padding-box;
 }
 
 .buttonprimary:focus {

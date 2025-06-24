@@ -62,6 +62,8 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       globalOperationsAmount,
     );
 
+    console.log(breakdown);
+
     // Build summary items from breakdown
     causeAreas.forEach((area) => {
       const areaAmount = breakdown.causeAreaAmounts[area.id];
@@ -168,7 +170,9 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
                 }
               >
                 {(!item.orgs || item.orgs.length === 0) &&
-                  item.amount.toLocaleString("no-NB") + " kr"}
+                  `${item.amount !== Math.round(item.amount) ? "~" : ""} ${Math.round(
+                    item.amount,
+                  ).toLocaleString("no-NB")} kr`}
               </td>
             </tr>
             {item.orgs &&
@@ -178,7 +182,8 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
                     {org.name}
                   </td>
                   <td data-cy={`summary-org-${org.id}-amount`}>
-                    {org.amount.toLocaleString("no-NB")} kr
+                    {org.amount !== Math.round(org.amount) ? "~" : null}{" "}
+                    {Math.round(org.amount).toLocaleString("no-NB")} kr
                   </td>
                 </tr>
               ))}

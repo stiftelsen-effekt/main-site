@@ -35,15 +35,13 @@ export function calculateDonationBreakdown(
   if (selectedCauseAreaId === -1 && smartDistributionTotal) {
     causeAreas.forEach((area) => {
       if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = Math.round(
-          (area.standardPercentageShare / 100) * smartDistributionTotal,
-        );
+        const areaAmount = (area.standardPercentageShare / 100) * smartDistributionTotal;
         result.causeAreaAmounts[area.id] = areaAmount;
 
         // Distribute among organizations
         area.organizations.forEach((org) => {
           if (org.standardShare && org.standardShare > 0) {
-            const orgAmount = Math.round((org.standardShare / 100) * areaAmount);
+            const orgAmount = (org.standardShare / 100) * areaAmount;
             result.organizationAmounts[org.id] = orgAmount;
           }
         });
@@ -70,6 +68,11 @@ export function calculateDonationBreakdown(
 
   result.operationsAmount = totalOperationsAmount;
 
+  const initialTotalCauseAreaAmounts = Object.values(causeAreaAmounts).reduce(
+    (sum, amount) => sum + amount,
+    0,
+  );
+
   // Process each cause area
   causeAreas.forEach((area) => {
     // Skip areas not relevant to current selection
@@ -93,9 +96,10 @@ export function calculateDonationBreakdown(
         const operationsCut = operationsAmountsByCauseArea[area.id] || 0;
         netAreaAmount = areaAmount - operationsCut;
       } else if (selectionType === "multiple" && totalOperationsAmount > 0) {
-        // For multiple cause areas, operations cut is handled at the total level
-        // Don't reduce individual cause area amounts
-        // The operations amount will be added to the total at the end
+        // For multiple cause areas we need to spread the operations cut proportionally
+        const share = areaAmount / initialTotalCauseAreaAmounts;
+        const operationsCut = totalOperationsAmount * share;
+        netAreaAmount = areaAmount - operationsCut;
       }
 
       result.causeAreaAmounts[area.id] = netAreaAmount;
@@ -103,7 +107,7 @@ export function calculateDonationBreakdown(
       // Distribute to organizations based on standard shares
       area.organizations.forEach((org) => {
         if (org.standardShare && org.standardShare > 0) {
-          const orgAmount = Math.round((org.standardShare / 100) * netAreaAmount);
+          const orgAmount = (org.standardShare / 100) * netAreaAmount;
           result.organizationAmounts[org.id] =
             (result.organizationAmounts[org.id] || 0) + orgAmount;
         }
@@ -127,9 +131,13 @@ export function calculateDonationBreakdown(
             reduction = 1 - operationsCut / totalOrgAmount;
           }
         } else if (selectionType === "multiple" && totalOperationsAmount > 0) {
-          // For multiple cause areas, operations cut is handled at the total level
-          // Don't reduce individual amounts
-          reduction = 1;
+          // For multiple cause areas we need to spread the operations cut proportionally
+          const share = totalOrgAmount / initialTotalCauseAreaAmounts;
+          const operationsCut = totalOperationsAmount * share;
+          netTotalOrgAmount = totalOrgAmount - operationsCut;
+          if (operationsCut > 0 && totalOrgAmount > 0) {
+            reduction = 1 - operationsCut / totalOrgAmount;
+          }
         }
 
         result.causeAreaAmounts[area.id] = netTotalOrgAmount;
@@ -138,7 +146,7 @@ export function calculateDonationBreakdown(
         area.organizations.forEach((org) => {
           const orgAmount = orgAmounts[org.id] || 0;
           if (orgAmount > 0) {
-            const netOrgAmount = Math.round(orgAmount * reduction);
+            const netOrgAmount = orgAmount * reduction;
             result.organizationAmounts[org.id] =
               (result.organizationAmounts[org.id] || 0) + netOrgAmount;
           }

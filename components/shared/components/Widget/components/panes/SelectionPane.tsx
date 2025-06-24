@@ -24,11 +24,9 @@ import { Spinner } from "../../../Spinner/Spinner";
 export const SelectionPane: React.FC<{}> = ({}) => {
   const dispatch = useDispatch<any>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
-  const {
-    operationsAmountsByCauseArea = {},
-    causeAreaAmounts = {},
-    globalOperationsUserOverride,
-  } = useSelector((state: State) => state.donation);
+  const { operationsAmountsByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
+    (state: State) => state.donation,
+  );
 
   const onSelectArea = (id?: number) => {
     const selectionType = id && id != -1 ? "single" : "multiple";
