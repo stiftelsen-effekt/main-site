@@ -58,9 +58,6 @@ export function calculateDonationBreakdown(
 
   let multipleTotalDonation = 0;
   if (selectionType === "multiple" && globalOperationsEnabled) {
-    const standardDistributionAreasIds = causeAreas
-      .filter((area) => causeAreaDistributionType[area.id] === ShareType.STANDARD)
-      .map((area) => area.id);
     const customDistributionAreasIds = causeAreas
       .filter((area) => causeAreaDistributionType[area.id] === ShareType.CUSTOM)
       .map((area) => area.id);
@@ -91,7 +88,13 @@ export function calculateDonationBreakdown(
     operationsPercentageModeByCauseArea[selectedCauseAreaId]
   ) {
     // For single cause area, calculate based on specific percentage
-    const causeAreaAmount = causeAreaAmounts[selectedCauseAreaId] || 0;
+    let causeAreaAmount = 0;
+    if (causeAreaDistributionType[selectedCauseAreaId] === ShareType.STANDARD) {
+      causeAreaAmount = causeAreaAmounts[selectedCauseAreaId] || 0;
+    } else if (causeAreaDistributionType[selectedCauseAreaId] === ShareType.CUSTOM) {
+      const orgs = causeAreas.find((area) => area.id === selectedCauseAreaId)?.organizations || [];
+      causeAreaAmount = orgs.reduce((sum, org) => sum + (orgAmounts[org.id] || 0), 0);
+    }
     const percentage = operationsPercentageByCauseArea[selectedCauseAreaId] || 0;
     totalOperationsAmount = Math.round((causeAreaAmount * percentage) / 100);
   }
