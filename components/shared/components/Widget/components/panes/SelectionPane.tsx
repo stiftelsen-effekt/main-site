@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pane, PaneContainer, PaneTitle } from "./Panes.style";
 import {
   setCauseAreaSelection,
-  setOperationsAmountByCauseArea,
+  setOperationsPercentageByCauseArea,
   setOrgAmount,
   setGlobalOperationsEnabled,
 } from "../../store/donation/actions";
@@ -24,7 +24,7 @@ import { Spinner } from "../../../Spinner/Spinner";
 export const SelectionPane: React.FC<{}> = ({}) => {
   const dispatch = useDispatch<any>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
-  const { operationsAmountsByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
+  const { operationsPercentageByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
     (state: State) => state.donation,
   );
 
@@ -34,9 +34,9 @@ export const SelectionPane: React.FC<{}> = ({}) => {
     // Handle operations amount synchronization
     if (selectionType === "multiple") {
       // When switching to multiple cause areas
-      // Check if any single cause area has operations amount set
-      const hasAnyOperationsAmount = Object.values(operationsAmountsByCauseArea).some(
-        (amount) => amount > 0,
+      // Check if any single cause area has operations percentage set
+      const hasAnyOperationsAmount = Object.values(operationsPercentageByCauseArea).some(
+        (amount: any) => amount > 0,
       );
 
       // Initialize global operations enabled state based on whether any cause area has operations

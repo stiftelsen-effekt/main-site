@@ -23,10 +23,11 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     causeAreaDistributionType = {},
     selectedCauseAreaId,
     recurring,
-    operationsAmountsByCauseArea = {},
+    operationsPercentageModeByCauseArea = {},
+    operationsPercentageByCauseArea = {},
     smartDistributionTotal = 0,
     globalOperationsEnabled = false,
-    globalOperationsAmount = 0,
+    globalOperationsPercentage = 5,
   } = donation;
 
   const { summaryItems, sum } = React.useMemo(() => {
@@ -53,13 +54,14 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
       causeAreaAmounts,
       orgAmounts,
       causeAreaDistributionType,
-      operationsAmountsByCauseArea,
+      operationsPercentageModeByCauseArea,
+      operationsPercentageByCauseArea,
       causeAreas,
       selectionType || "single",
       selectedCauseAreaId,
       globalOperationsEnabled,
+      globalOperationsPercentage,
       smartDistributionTotal,
-      globalOperationsAmount,
     );
 
     console.log(breakdown);
@@ -111,10 +113,11 @@ export const DonationSummary: React.FC<DonationSummaryProps> = ({ compact = fals
     causeAreas,
     selectedCauseAreaId,
     causeAreaDistributionType,
-    operationsAmountsByCauseArea,
+    operationsPercentageModeByCauseArea,
+    operationsPercentageByCauseArea,
     globalOperationsEnabled,
     smartDistributionTotal,
-    globalOperationsAmount,
+    globalOperationsPercentage,
   ]);
 
   if (sum === 0) {

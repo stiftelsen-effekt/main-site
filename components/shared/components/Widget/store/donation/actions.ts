@@ -19,12 +19,12 @@ import {
   SET_CAUSE_AREA_AMOUNT,
   SET_CAUSE_AREA_DISTRIBUTION_TYPE,
   SET_CAUSE_AREA_SELECTION,
-  SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
   SET_SMART_DISTRIBUTION_TOTAL,
   SET_GLOBAL_OPERATIONS_ENABLED,
   SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
-  SET_GLOBAL_OPERATIONS_AMOUNT,
   SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
+  SET_GLOBAL_OPERATIONS_PERCENTAGE,
+  SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -185,19 +185,6 @@ export function setCauseAreaAmount(causeAreaId: number, amount: number): Donatio
 }
 
 /**
- * Set the operations amount for a specific cause area.
- */
-export function setOperationsAmountByCauseArea(
-  causeAreaId: number,
-  operationsAmount: number,
-): DonationActionTypes {
-  return {
-    type: SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
-    payload: { causeAreaId, operationsAmount },
-  };
-}
-
-/**
  * Set the entered distribution type for a specific cause area.
  */
 export function setCauseAreaDistributionType(
@@ -251,17 +238,6 @@ export function setGlobalOperationsPercentageMode(isPercentageMode: boolean): Do
 }
 
 /**
- * Set the global operations cut amount for multiple cause areas.
- * This amount is not distributed - it's the total operations cut.
- */
-export function setGlobalOperationsAmount(amount: number): DonationActionTypes {
-  return {
-    type: SET_GLOBAL_OPERATIONS_AMOUNT,
-    payload: { amount },
-  };
-}
-
-/**
  * Set whether to use percentage mode or custom amount mode for operations cut for a cause area.
  */
 export function setOperationsPercentageModeByCauseArea(
@@ -271,6 +247,29 @@ export function setOperationsPercentageModeByCauseArea(
   return {
     type: SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
     payload: { causeAreaId, isPercentageMode },
+  };
+}
+
+/**
+ * Set the global operations percentage value.
+ */
+export function setGlobalOperationsPercentage(percentage: number): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_PERCENTAGE,
+    payload: { percentage },
+  };
+}
+
+/**
+ * Set the operations percentage value for a specific cause area.
+ */
+export function setOperationsPercentageByCauseArea(
+  causeAreaId: number,
+  percentage: number,
+): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
+    payload: { causeAreaId, percentage },
   };
 }
 

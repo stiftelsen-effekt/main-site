@@ -19,12 +19,12 @@ import {
   SET_CAUSE_AREA_AMOUNT,
   SET_ORG_AMOUNT,
   SET_CAUSE_AREA_DISTRIBUTION_TYPE,
-  SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA,
   SET_SMART_DISTRIBUTION_TOTAL,
   SET_GLOBAL_OPERATIONS_ENABLED,
   SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
-  SET_GLOBAL_OPERATIONS_AMOUNT,
   SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
+  SET_GLOBAL_OPERATIONS_PERCENTAGE,
+  SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -37,8 +37,9 @@ const initialState: Donation = {
   errors: [],
   showErrors: false,
   dueDay: getEarliestPossibleChargeDate(),
-  globalOperationsEnabled: true,
+  globalOperationsEnabled: false,
   globalOperationsPercentageMode: true,
+  globalOperationsPercentage: 5,
   vippsAgreement: {
     initialCharge: true,
     monthlyChargeDay: new Date().getDate() <= 28 ? new Date().getDate() : 0,
@@ -69,6 +70,10 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         acc[area.id] = true; // Default to true for all areas
         return acc;
       }, {} as Record<number, boolean>),
+      operationsPercentageByCauseArea: areas.reduce((acc, area) => {
+        acc[area.id] = 10; // Default to 10% for all areas
+        return acc;
+      }, {} as Record<number, number>),
       causeAreaDistributionType: areas.reduce((acc, area) => {
         acc[area.id] = ShareType.STANDARD;
         return acc;
@@ -97,7 +102,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
 
       // Preserve all existing cause area amounts - never reset them
       let newCauseAreaAmounts = state.causeAreaAmounts ?? {};
-      let newOperationsAmountsByCauseArea = state.operationsAmountsByCauseArea ?? {};
 
       // Preserve all amounts when switching between selections
       // Smart distribution will handle its own amount calculations when needed
@@ -105,7 +109,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
 
       // Preserve operations state when switching modes
       let globalOperationsEnabled = state.globalOperationsEnabled || false;
-      let globalOperationsAmount = state.globalOperationsAmount || 0;
 
       // Preserve the user's choice when switching between modes
       // Only reset if they haven't made any explicit choices yet
@@ -115,9 +118,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
         selectionType,
         selectedCauseAreaId: causeAreaId,
         causeAreaAmounts: newCauseAreaAmounts,
-        operationsAmountsByCauseArea: newOperationsAmountsByCauseArea,
         globalOperationsEnabled,
-        globalOperationsAmount,
         globalOperationsPercentageMode: state.globalOperationsPercentageMode,
       };
       break;
@@ -155,19 +156,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       };
       break;
     }
-    case SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA: {
-      const { causeAreaId, operationsAmount } = (action as any).payload;
-      const newOperationsAmounts = {
-        ...(state.operationsAmountsByCauseArea ?? {}),
-        [causeAreaId]: operationsAmount,
-      };
-
-      state = {
-        ...state,
-        operationsAmountsByCauseArea: newOperationsAmounts,
-      };
-      break;
-    }
     case SET_SMART_DISTRIBUTION_TOTAL: {
       const { smartDistributionTotal } = (action as any).payload;
 
@@ -183,15 +171,6 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         globalOperationsEnabled: enabled,
-      };
-      break;
-    }
-    case SET_GLOBAL_OPERATIONS_AMOUNT: {
-      const { amount } = (action as any).payload;
-
-      state = {
-        ...state,
-        globalOperationsAmount: amount,
       };
       break;
     }
@@ -214,6 +193,28 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         operationsPercentageModeByCauseArea: newModes,
+      };
+      break;
+    }
+    case SET_GLOBAL_OPERATIONS_PERCENTAGE: {
+      const { percentage } = (action as any).payload;
+
+      state = {
+        ...state,
+        globalOperationsPercentage: percentage,
+      };
+      break;
+    }
+    case SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA: {
+      const { causeAreaId, percentage } = (action as any).payload;
+      const newPercentages = {
+        ...(state.operationsPercentageByCauseArea ?? {}),
+        [causeAreaId]: percentage,
+      };
+
+      state = {
+        ...state,
+        operationsPercentageByCauseArea: newPercentages,
       };
       break;
     }

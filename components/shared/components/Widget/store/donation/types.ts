@@ -21,13 +21,13 @@ export const SET_CAUSE_AREA_SELECTION = "SET_CAUSE_AREA_SELECTION";
 export const SET_CAUSE_AREA_AMOUNT = "SET_CAUSE_AREA_AMOUNT";
 export const SET_CAUSE_AREA_DISTRIBUTION_TYPE = "SET_CAUSE_AREA_DISTRIBUTION_TYPE";
 export const SET_ORG_AMOUNT = "SET_ORG_AMOUNT";
-export const SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA = "SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA";
 export const SET_SMART_DISTRIBUTION_TOTAL = "SET_SMART_DISTRIBUTION_TOTAL";
 export const SET_GLOBAL_OPERATIONS_ENABLED = "SET_GLOBAL_OPERATIONS_ENABLED";
 export const SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE = "SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE";
-export const SET_GLOBAL_OPERATIONS_AMOUNT = "SET_GLOBAL_OPERATIONS_AMOUNT";
 export const SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA =
   "SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA";
+export const SET_GLOBAL_OPERATIONS_PERCENTAGE = "SET_GLOBAL_OPERATIONS_PERCENTAGE";
+export const SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA = "SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -171,16 +171,6 @@ interface SetOrgAmount {
   };
 }
 
-interface SetOperationsAmountByCauseArea {
-  type: typeof SET_OPERATIONS_AMOUNT_BY_CAUSE_AREA;
-  payload: {
-    /** cause area ID for which operations amount is set */
-    causeAreaId: number;
-    /** operations amount in NOK for this cause area */
-    operationsAmount: number;
-  };
-}
-
 interface SetSmartDistributionTotal {
   type: typeof SET_SMART_DISTRIBUTION_TOTAL;
   payload: {
@@ -205,14 +195,6 @@ interface SetGlobalOperationsPercentageMode {
   };
 }
 
-interface SetGlobalOperationsAmount {
-  type: typeof SET_GLOBAL_OPERATIONS_AMOUNT;
-  payload: {
-    /** global operations cut amount in NOK (for multiple cause areas) */
-    amount: number;
-  };
-}
-
 interface SetOperationsPercentageModeByCauseArea {
   type: typeof SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA;
   payload: {
@@ -220,6 +202,24 @@ interface SetOperationsPercentageModeByCauseArea {
     causeAreaId: number;
     /** whether to use percentage mode (true) or custom amount mode (false) */
     isPercentageMode: boolean;
+  };
+}
+
+interface SetGlobalOperationsPercentage {
+  type: typeof SET_GLOBAL_OPERATIONS_PERCENTAGE;
+  payload: {
+    /** percentage value (0-100) */
+    percentage: number;
+  };
+}
+
+interface SetOperationsPercentageByCauseArea {
+  type: typeof SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA;
+  payload: {
+    /** cause area ID */
+    causeAreaId: number;
+    /** percentage value (0-100) */
+    percentage: number;
   };
 }
 
@@ -242,9 +242,9 @@ export type DonationActionTypes =
   | SetCauseAreaAmount
   | SetCauseAreaDistributionType
   | SetOrgAmount
-  | SetOperationsAmountByCauseArea
   | SetSmartDistributionTotal
   | SetGlobalOperationsEnabled
   | SetGlobalOperationsPercentageMode
-  | SetGlobalOperationsAmount
-  | SetOperationsPercentageModeByCauseArea;
+  | SetOperationsPercentageModeByCauseArea
+  | SetGlobalOperationsPercentage
+  | SetOperationsPercentageByCauseArea;

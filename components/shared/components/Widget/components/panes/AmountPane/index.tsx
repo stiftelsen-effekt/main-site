@@ -7,7 +7,7 @@ import {
   setSum,
   setRecurring,
   setCauseAreaAmount,
-  setOperationsAmountByCauseArea,
+  setOperationsPercentageByCauseArea,
   setOrgAmount,
 } from "../../../store/donation/actions";
 import { nextPane } from "../../../store/layout/actions";
@@ -53,7 +53,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
     selectedCauseAreaId,
     recurring,
     smartDistributionTotal,
-    operationsAmountsByCauseArea = {},
+    operationsPercentageByCauseArea = {},
     causeAreaAmounts: storedCauseAreaAmounts = {},
   } = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
@@ -125,9 +125,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       showOperationsOption={false}
                     />
                   ))}
-                <GlobalCutToggle
-                  causeAreas={causeAreas.filter((ca) => ca.id !== 5 && ca.id !== 4)}
-                />
+                <GlobalCutToggle />
                 <TotalAmountWrapper data-cy="total-amount-wrapper">
                   <div>Total</div>
                   <div>{thousandize(totalAmount)} kr</div>

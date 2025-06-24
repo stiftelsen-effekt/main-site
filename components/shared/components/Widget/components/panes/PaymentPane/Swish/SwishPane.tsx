@@ -84,11 +84,13 @@ export const SwishPane = dynamic<{
             donation.causeAreaAmounts ?? {},
             donation.orgAmounts ?? {},
             donation.causeAreaDistributionType ?? {},
-            donation.operationsAmountsByCauseArea ?? {},
+            donation.operationsPercentageModeByCauseArea ?? {},
+            donation.operationsPercentageByCauseArea ?? {},
             causeAreas,
             donation.selectionType ?? "single",
             donation.selectedCauseAreaId ?? 1,
             donation.globalOperationsEnabled ?? false,
+            donation.globalOperationsPercentage ?? 0,
             donation.smartDistributionTotal,
           );
           const totalSumIncludingTip = breakdown.totalAmount;

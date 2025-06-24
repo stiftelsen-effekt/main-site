@@ -16,13 +16,14 @@ export function calculateDonationBreakdown(
   causeAreaAmounts: Record<number, number>,
   orgAmounts: Record<number, number>,
   causeAreaDistributionType: Record<number, ShareType>,
-  operationsAmountsByCauseArea: Record<number, number>,
+  operationsPercentageModeByCauseArea: Record<number, boolean>,
+  operationsPercentageByCauseArea: Record<number, number>,
   causeAreas: CauseArea[],
   selectionType: "single" | "multiple",
   selectedCauseAreaId: number | null | undefined,
   globalOperationsEnabled: boolean,
+  globalOperationsPercentage: number,
   smartDistributionTotal?: number,
-  globalOperationsAmount?: number,
 ): DonationBreakdown {
   const result: DonationBreakdown = {
     causeAreaAmounts: {},
@@ -54,16 +55,20 @@ export function calculateDonationBreakdown(
   // Calculate total operations amount based on selection type
   let totalOperationsAmount = 0;
 
-  if (selectionType === "multiple") {
-    // For multiple cause areas, use the global operations amount
-    totalOperationsAmount = globalOperationsAmount || 0;
+  if (selectionType === "multiple" && globalOperationsEnabled) {
+    // For multiple cause areas, calculate based on global percentage
+    const totalDonation = Object.values(causeAreaAmounts).reduce((sum, amount) => sum + amount, 0);
+    totalOperationsAmount = Math.round((totalDonation * globalOperationsPercentage) / 100);
   } else if (
     selectionType === "single" &&
     selectedCauseAreaId !== null &&
-    selectedCauseAreaId !== undefined
+    selectedCauseAreaId !== undefined &&
+    operationsPercentageModeByCauseArea[selectedCauseAreaId]
   ) {
-    // For single cause area, use the specific operations amount
-    totalOperationsAmount = operationsAmountsByCauseArea[selectedCauseAreaId] || 0;
+    // For single cause area, calculate based on specific percentage
+    const causeAreaAmount = causeAreaAmounts[selectedCauseAreaId] || 0;
+    const percentage = operationsPercentageByCauseArea[selectedCauseAreaId] || 0;
+    totalOperationsAmount = Math.round((causeAreaAmount * percentage) / 100);
   }
 
   result.operationsAmount = totalOperationsAmount;
@@ -92,8 +97,13 @@ export function calculateDonationBreakdown(
       let netAreaAmount = areaAmount;
 
       // Apply cuts
-      if (selectionType === "single" && area.id === selectedCauseAreaId) {
-        const operationsCut = operationsAmountsByCauseArea[area.id] || 0;
+      if (
+        selectionType === "single" &&
+        area.id === selectedCauseAreaId &&
+        operationsPercentageModeByCauseArea[area.id]
+      ) {
+        const percentage = operationsPercentageByCauseArea[area.id] || 0;
+        const operationsCut = Math.round((areaAmount * percentage) / 100);
         netAreaAmount = areaAmount - operationsCut;
       } else if (selectionType === "multiple" && totalOperationsAmount > 0) {
         // For multiple cause areas we need to spread the operations cut proportionally
@@ -124,8 +134,13 @@ export function calculateDonationBreakdown(
         let reduction = 1;
 
         // Apply cuts
-        if (selectionType === "single" && area.id === selectedCauseAreaId) {
-          const operationsCut = operationsAmountsByCauseArea[area.id] || 0;
+        if (
+          selectionType === "single" &&
+          area.id === selectedCauseAreaId &&
+          operationsPercentageModeByCauseArea[area.id]
+        ) {
+          const percentage = operationsPercentageByCauseArea[area.id] || 0;
+          const operationsCut = Math.round((totalOrgAmount * percentage) / 100);
           netTotalOrgAmount = totalOrgAmount - operationsCut;
           if (operationsCut > 0 && totalOrgAmount > 0) {
             reduction = 1 - operationsCut / totalOrgAmount;

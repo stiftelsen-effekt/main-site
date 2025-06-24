@@ -215,6 +215,23 @@ export const ErrorContainer = styled.div`
   font-size: 18px;
 `;
 
+export const OperationsPercentageInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-bottom: 6px;
+
+  input {
+    width: 34px;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    font-family: "EsKlarheitGrotesk", sans-serif;
+    text-align: center;
+  }
+`;
+
 export const ExplenationAccordion = styled.div`
   & > div:first-child {
     padding: 10px 0;

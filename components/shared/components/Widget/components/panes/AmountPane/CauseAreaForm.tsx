@@ -13,6 +13,7 @@ import {
   SumButtonsWrapper,
   InputList,
   OrganizationInputWrapper,
+  OperationsPercentageInputWrapper,
 } from "../AmountPane.style";
 import { getCauseAreaIconById } from "../SelectionPane.style";
 import { CauseArea } from "../../../types/CauseArea";
@@ -21,8 +22,8 @@ import {
   setCauseAreaAmount,
   setOrgAmount,
   setCauseAreaDistributionType,
-  setOperationsAmountByCauseArea,
   setOperationsPercentageModeByCauseArea,
+  setOperationsPercentageByCauseArea,
 } from "../../../store/donation/actions";
 import { thousandize } from "../../../../../../../util/formatting";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
@@ -54,66 +55,35 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   const hasSingleOrg = causeArea.organizations.length === 1;
 
   // Operations logic - now per cause area
-  const CUT_PERCENTAGE = 5;
+  const DEFAULT_CUT_PERCENTAGE = 5;
   const currentCauseAreaAmount = causeAreaAmounts[causeArea.id] || 0;
-  const operationsAmountsByCauseArea =
-    useSelector((state: any) => state.donation.operationsAmountsByCauseArea) || {};
-  const currentOperationsAmount = operationsAmountsByCauseArea[causeArea.id] || 0;
   const operationsPercentageModeByCauseArea =
     useSelector((state: any) => state.donation.operationsPercentageModeByCauseArea) || {};
+  const operationsPercentageByCauseArea =
+    useSelector((state: any) => state.donation.operationsPercentageByCauseArea) || {};
 
-  // Get percentage mode from Redux state (defaults to false if not set)
-  const isPercentageMode = operationsPercentageModeByCauseArea[causeArea.id] ?? false;
+  // Get percentage from Redux state (defaults to 5% if not set)
+  const currentPercentage = operationsPercentageByCauseArea[causeArea.id] ?? DEFAULT_CUT_PERCENTAGE;
+  // Check if operations are enabled for this cause area
+  const isOperationsEnabled = operationsPercentageModeByCauseArea[causeArea.id] === true;
 
   // Internal state for input handling - always shows the full amount the user entered
   const [inputValue, setInputValue] = React.useState(currentCauseAreaAmount);
-  const [customCutAmount, setCustomCutAmount] = React.useState(
-    currentOperationsAmount > 0 && !isPercentageMode ? currentOperationsAmount : 0,
-  );
 
   // Sync input value with stored amount when it changes externally
   React.useEffect(() => {
     setInputValue(currentCauseAreaAmount);
   }, [currentCauseAreaAmount]);
 
-  // Update custom cut amount when operations amount changes
-  React.useEffect(() => {
-    if (showOperationsOption && currentOperationsAmount > 0 && !isPercentageMode) {
-      setCustomCutAmount(currentOperationsAmount);
-    }
-  }, [currentOperationsAmount, showOperationsOption, isPercentageMode]);
-
   const handleCutToggle = (checked: boolean) => {
-    const currentTotal = currentCauseAreaAmount || 0;
-
-    // Update the mode in Redux
     dispatch(setOperationsPercentageModeByCauseArea(causeArea.id, checked));
-
-    if (checked && currentTotal > 0) {
-      // Switch to percentage mode
-      const newCutAmount = (CUT_PERCENTAGE / 100) * currentTotal;
-      dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
-      setCustomCutAmount(0);
-    } else {
-      // Switch to custom cut mode - keep existing custom cut or set to 0
-      if (customCutAmount > 0) {
-        dispatch(setOperationsAmountByCauseArea(causeArea.id, customCutAmount));
-      } else {
-        dispatch(setOperationsAmountByCauseArea(causeArea.id, 0));
-      }
-    }
   };
 
-  const handleCustomCutChange = (values: { floatValue: number | undefined }) => {
+  const handlePercentageChange = (values: { floatValue: number | undefined }) => {
     const v = values.floatValue === undefined ? 0 : values.floatValue;
-    // Limit custom cut to donation amount
-    const limitedCut = Math.min(v, currentCauseAreaAmount);
-    setCustomCutAmount(limitedCut);
-
-    // Always update when in custom mode
-    if (!isPercentageMode) {
-      dispatch(setOperationsAmountByCauseArea(causeArea.id, limitedCut));
-    }
+    // Limit percentage to 0-100
+    const limitedPercentage = Math.min(Math.max(v, 0), 100);
+    dispatch(setOperationsPercentageByCauseArea(causeArea.id, limitedPercentage));
   };
 
   const handleAmountChange = (values: { floatValue: number | undefined }) => {
@@ -126,12 +96,6 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     if (hasSingleOrg) {
       dispatch(setOrgAmount(causeArea.organizations[0].id, v));
     }
-
-    // Update operations amount only if already in percentage mode
-    if (showOperationsOption && v > 0 && isPercentageMode) {
-      const newCutAmount = (CUT_PERCENTAGE / 100) * v;
-      dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
-    }
   };
 
   const handleSuggestedSumClick = (amount: number) => {
@@ -143,12 +107,6 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
     if (hasSingleOrg) {
       dispatch(setOrgAmount(causeArea.organizations[0].id, amount));
-    }
-
-    // Update operations amount only if already in percentage mode
-    if (showOperationsOption && amount > 0 && isPercentageMode) {
-      const newCutAmount = (CUT_PERCENTAGE / 100) * amount;
-      dispatch(setOperationsAmountByCauseArea(causeArea.id, newCutAmount));
     }
   };
 
@@ -323,45 +281,37 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
       {/* Operations option */}
       {showOperationsOption && (
         <div>
-          <CheckBoxWrapper>
-            <HiddenCheckBox
-              type="checkbox"
-              checked={isPercentageMode}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleCutToggle(e.target.checked)
-              }
-              data-cy={`cut-checkbox-${causeArea.id}`}
-            />
-            <CustomCheckBox
-              checked={isPercentageMode}
-              label={`${CUT_PERCENTAGE}% till drift av Ge Effektivt`}
-            />
-          </CheckBoxWrapper>
-
-          {/* Show custom cut input when not in percentage mode */}
-          {!isPercentageMode && (
-            <div style={{ marginTop: "15px" }}>
-              <div style={{ marginBottom: "5px", fontSize: "14px", color: "#666" }}>
-                Ange valfritt belopp till drift:
-              </div>
-              <SumWrapper style={{ maxWidth: "150px" }}>
-                <span>
-                  <NumericFormat
-                    name={`custom-cut-${causeArea.id}`}
-                    thousandSeparator=" "
-                    allowNegative={false}
-                    decimalScale={0}
-                    type="tel"
-                    placeholder="0"
-                    value={customCutAmount > 0 ? customCutAmount : ""}
-                    autoComplete="off"
-                    data-cy={`custom-cut-input-${causeArea.id}`}
-                    onValueChange={handleCustomCutChange}
-                  />
-                </span>
-              </SumWrapper>
-            </div>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <CheckBoxWrapper>
+              <HiddenCheckBox
+                type="checkbox"
+                checked={isOperationsEnabled}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleCutToggle(e.target.checked)
+                }
+                data-cy={`cut-checkbox-${causeArea.id}`}
+              />
+              <CustomCheckBox checked={isOperationsEnabled} label="" />
+            </CheckBoxWrapper>
+            <OperationsPercentageInputWrapper>
+              <span>
+                <NumericFormat
+                  name={`percentage-cut-${causeArea.id}`}
+                  allowNegative={false}
+                  decimalScale={1}
+                  max={100}
+                  type="tel"
+                  placeholder="5"
+                  value={currentPercentage}
+                  autoComplete="off"
+                  data-cy={`percentage-cut-input-${causeArea.id}`}
+                  onValueChange={handlePercentageChange}
+                  disabled={!isOperationsEnabled}
+                />
+              </span>
+              <span>% till drift av Ge Effektivt</span>
+            </OperationsPercentageInputWrapper>
+          </div>
         </div>
       )}
     </FormWrapper>
