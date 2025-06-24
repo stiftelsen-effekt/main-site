@@ -67,7 +67,11 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       selectionType: areas.length > 0 ? "single" : undefined,
       selectedCauseAreaId: areas.length > 0 ? areas[0].id : undefined,
       operationsPercentageModeByCauseArea: areas.reduce((acc, area) => {
-        acc[area.id] = true; // Default to true for all areas
+        if (![4, 5].includes(area.id)) {
+          acc[area.id] = true; // Default to true for all areas
+        } else {
+          acc[area.id] = false; // Disable for operations and admin areas
+        }
         return acc;
       }, {} as Record<number, boolean>),
       operationsPercentageByCauseArea: areas.reduce((acc, area) => {

@@ -21,8 +21,6 @@ import {
 } from "../../../store/donation/actions";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
-import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
-import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 import { State } from "../../../store/state";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
@@ -33,7 +31,6 @@ interface SmartDistributionFormProps {
   causeAreas: CauseArea[];
   causeAreaAmounts: Record<number, number>;
   causeAreaDistributionType: Record<number, ShareType>;
-  onTipStateChange: (wantsTip: boolean) => void;
   showOperationsOption?: boolean;
 }
 
@@ -43,7 +40,6 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
   causeAreas,
   causeAreaAmounts,
   causeAreaDistributionType,
-  onTipStateChange,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
@@ -58,31 +54,6 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
     plausible("SelectSuggestedSum", { props: { sum: suggestedAmount } });
     dispatch(setSmartDistributionTotal(suggestedAmount));
 
-    let isTipExplicitlySetByStandardShare = false;
-    let calculatedTipIfStandard = 0;
-    let sumForTipCalculation = 0;
-
-    // First pass: calculate sum for tip and see if tip is standard
-    causeAreas.forEach((ca) => {
-      if (ca.standardPercentageShare && ca.standardPercentageShare > 0) {
-        if (ca.id !== 4) {
-          // Operations cause area ID
-          sumForTipCalculation += (ca.standardPercentageShare / 100) * suggestedAmount;
-        }
-      }
-    });
-
-    const operationsArea = causeAreas.find((ca) => ca.id === 4);
-    if (
-      operationsArea &&
-      operationsArea.standardPercentageShare &&
-      operationsArea.standardPercentageShare > 0
-    ) {
-      isTipExplicitlySetByStandardShare = true;
-      calculatedTipIfStandard = (operationsArea.standardPercentageShare / 100) * suggestedAmount;
-    }
-
-    // Second pass: dispatch amounts
     causeAreas.forEach((ca) => {
       if (ca.standardPercentageShare && ca.standardPercentageShare > 0) {
         dispatch(
@@ -94,24 +65,6 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         dispatch(setCauseAreaDistributionType(ca.id, ShareType.STANDARD));
       }
     });
-
-    // Update tip state based on whether the overall distribution matches 10%
-    const finalOperationsAmount = causeAreaAmounts[4] || 0;
-    const expectedTipAfterDistribution = Math.round((10 / 100) * sumForTipCalculation);
-
-    if (isTipExplicitlySetByStandardShare) {
-      if (calculatedTipIfStandard === expectedTipAfterDistribution) {
-        onTipStateChange(true);
-      } else {
-        onTipStateChange(false);
-      }
-    } else {
-      if (0 === expectedTipAfterDistribution) {
-        onTipStateChange(true);
-      } else {
-        onTipStateChange(false);
-      }
-    }
   };
 
   const handleTotalAmountChange = (values: {
@@ -134,13 +87,6 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
           }
         }
       });
-      const finalOperationsAmount = causeAreaAmounts[4] || 0;
-      const expectedTip = Math.round((10 / 100) * sumForTipCalculation);
-      if (finalOperationsAmount === expectedTip) {
-        onTipStateChange(true);
-      } else {
-        onTipStateChange(false);
-      }
     } else {
       causeAreas.forEach((ca) => {
         if (ca.standardPercentageShare && ca.standardPercentageShare > 0) {
@@ -148,7 +94,6 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
           dispatch(setCauseAreaDistributionType(ca.id, ShareType.STANDARD));
         }
       });
-      onTipStateChange(true);
     }
   };
 

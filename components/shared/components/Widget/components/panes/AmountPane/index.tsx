@@ -150,7 +150,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                       causeAreaAmounts={causeAreaAmounts}
                       orgAmounts={orgAmounts}
                       causeAreaDistributionType={causeAreaDistributionType}
-                      showOperationsOption={true}
+                      showOperationsOption={selectedCA.id !== 5}
                     />
                   </>
                 )}
@@ -164,9 +164,6 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                 causeAreas={causeAreas}
                 causeAreaAmounts={causeAreaAmounts}
                 causeAreaDistributionType={causeAreaDistributionType}
-                onTipStateChange={(wantsCut) => {
-                  // This will be handled by the cut logic
-                }}
               />
             )}
           </CauseAreasWrapper>
