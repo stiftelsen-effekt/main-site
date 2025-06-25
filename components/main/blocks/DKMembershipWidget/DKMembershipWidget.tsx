@@ -27,7 +27,6 @@ const validateCpr = (cpr: string): CprValidationResult => {
   return { isValid: false, isSuspicious: true, message: "Suspicious CPR number." };
 };
 
-// --- Types ---
 interface MembershipFormData {
   country: string;
   name: string;
@@ -190,7 +189,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
         <div className={styles.formGroup}>
           <MembershipCountrySelector
             country={formData.country}
-            onChange={(e) => setFormData((prev) => ({ ...prev, country: e.currentTarget.value }))}
+            onChange={(country) => setFormData((prev) => ({ ...prev, country: country }))}
             countryLabel={mergedTexts.country_label}
           />
         </div>

@@ -3,7 +3,7 @@ import styles from "./CountrySelector.module.scss";
 
 export const MembershipCountrySelector: React.FC<{
   country: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange: (country: string) => void;
   countryLabel?: string;
 }> = ({ country, onChange, countryLabel = "Country" }) => {
   return (
@@ -14,7 +14,7 @@ export const MembershipCountrySelector: React.FC<{
         id="country"
         name="country"
         value={country}
-        onChange={onChange}
+        onChange={(e) => onChange(e.currentTarget.value)}
         placeholder={countryLabel}
         required
         list="country-list"
