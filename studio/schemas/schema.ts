@@ -94,8 +94,9 @@ import organizationmapping from "./types/organizationmapping";
 import referraltypemapping from "./types/referraltypemapping";
 import cumulativedonationstabletext from "./types/cumulativedonationstabletext";
 import referralstabletext from "./types/referralstabletext";
+import quickpay from "./types/paymentmethods/quickpay";
 
-const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
+const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro, quickpay] as const;
 
 export const types = [
   category,

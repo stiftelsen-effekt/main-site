@@ -67,6 +67,9 @@ export const widgetContentQuery = groq`
         ...,
         date_selector_configuration->
       },
+      _type == 'quickpay' => {
+        ...,
+      },
     },
   },
   privacy_policy_link {
@@ -100,6 +103,8 @@ export const Widget = withStaticProps(
     defaultPaymentType?: RecurringDonation;
   }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
+
+    console.log("Widget data fetched:", result);
 
     if (!result.methods?.length) {
       throw new Error("No payment methods found");

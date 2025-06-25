@@ -17,4 +17,5 @@ export enum PaymentMethod {
   AVTALEGIRO = 7,
   SWISH = 11,
   AUTOGIRO = 12,
+  QUICKPAY = 99,
 }

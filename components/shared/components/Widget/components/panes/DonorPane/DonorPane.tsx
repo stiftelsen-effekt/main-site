@@ -24,10 +24,7 @@ import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.sty
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
 import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
-import { API_URL } from "../../../config/api";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
-import { ExtraMessageWrapper } from "../DonationPane/DonationPane.style";
-import { Info } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
@@ -96,7 +93,7 @@ export const DonorPane: React.FC<{
             getEstimatedLtv({ method: data.method, sum: donation.sum }).then((ltv) => {
               if (typeof window !== "undefined") {
                 // @ts-ignore
-                if (typeof window.fbq != null) {
+                if (typeof window.fbq != "undefined" && window.fbq !== null) {
                   // @ts-ignore
                   window.fbq("track", "Lead", {
                     value: ltv,
@@ -119,7 +116,7 @@ export const DonorPane: React.FC<{
         // Facebook pixel tracking for Leads
         if (typeof window !== "undefined") {
           // @ts-ignore
-          if (window.fbq != null) {
+          if (typeof window.fbq !== "undefined" && window.fbq !== null) {
             // @ts-ignore
             window.fbq("track", "Lead", {
               value: donation.sum,
@@ -366,6 +363,7 @@ export const DonorPane: React.FC<{
                       swish: PaymentMethod.SWISH,
                       autogiro: PaymentMethod.AUTOGIRO,
                       avtalegiro: PaymentMethod.AVTALEGIRO,
+                      quickpay: PaymentMethod.QUICKPAY,
                     }[method._id],
                     data_cy: `${method._id}-method`,
                   }))}

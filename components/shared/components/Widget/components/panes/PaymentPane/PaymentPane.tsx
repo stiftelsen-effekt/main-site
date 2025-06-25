@@ -16,6 +16,7 @@ import { VippsPane } from "./Vipps/VippsPane";
 import { AutogiroPane } from "./AutoGiro/AutogiroPane";
 import { AvtaleGiroPane } from "./AvtaleGiro/AvtaleGiroPane";
 import { BankPane } from "./Bank/BankPane";
+import { QuickPayPane } from "./QuickPay/QuickPay";
 
 export const PaymentPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
@@ -72,6 +73,15 @@ export const PaymentPane: React.FC<{
         );
       }
       return <AutogiroPane config={autoGiroConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.QUICKPAY: {
+      const quickpayConfiguration = paymentMethods.find((method) => method._id === "quickpay");
+      if (!quickpayConfiguration) {
+        throw new Error(
+          "Missing configuration for QuickPay, but selected payment method is quickpay",
+        );
+      }
+      return <QuickPayPane config={quickpayConfiguration} referrals={referrals} />;
     }
     default: {
       throw new Error(`Unknown payment method: ${method}`);

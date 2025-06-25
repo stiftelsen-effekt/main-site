@@ -11,6 +11,7 @@ export type WidgetProps = { locale: "no" | "sv" | "en" } & WidgetPane1Props &
       | SwishPaymentMethod
       | AutoGiroPaymentMethod
       | AvtaleGiroPaymentMethod
+      | QuickPayPaymentMethod
     >;
   };
 
@@ -87,6 +88,13 @@ export type AutoGiroPaymentMethod = {
   manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
   recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
   completed_text: any[];
+};
+
+export type QuickPayPaymentMethod = {
+  _id: "quickpay";
+  selector_text: string;
+  recurring_button_text: string;
+  single_button_text: string;
 };
 
 type AutogiroManualRecurringOptionConfig = {

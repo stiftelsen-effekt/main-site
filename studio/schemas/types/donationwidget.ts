@@ -31,6 +31,7 @@ export default {
             { type: "swish" },
             { type: "autogiro" },
             { type: "avtalegiro" },
+            { type: "quickpay" },
           ],
           validation: (Rule: any) => Rule.required(),
           options: {
