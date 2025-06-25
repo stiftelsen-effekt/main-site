@@ -92,6 +92,7 @@ export default {
         { type: "donationwidgetblock" },
         { type: "dkmembershipwidget" },
         { type: "dkmembershipdisplay" },
+        { type: "dkrenewpayment" },
       ],
       options: {
         modal: "fullscreen",

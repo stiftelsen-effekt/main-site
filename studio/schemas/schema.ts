@@ -95,6 +95,7 @@ import referraltypemapping from "./types/referraltypemapping";
 import cumulativedonationstabletext from "./types/cumulativedonationstabletext";
 import referralstabletext from "./types/referralstabletext";
 import quickpay from "./types/paymentmethods/quickpay";
+import dkrenewpayment from "./types/dkrenewpayment";
 
 const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro, quickpay] as const;
 
@@ -186,6 +187,7 @@ export const types = [
   referraltypemapping,
   cumulativedonationstabletext,
   referralstabletext,
+  dkrenewpayment,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
