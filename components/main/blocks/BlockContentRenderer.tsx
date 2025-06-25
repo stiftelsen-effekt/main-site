@@ -45,6 +45,7 @@ import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
 import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
 import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
 import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
+import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -466,6 +467,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 description={block.description}
               />
             );
+          case "dkrenewpayment":
+            return <DKRenewPayment />;
           default:
             return block._type;
         }
