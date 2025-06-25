@@ -14736,6 +14736,13 @@
         },
         "optional": true
       },
+      "allow_anonymous_donations": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
+      },
       "anon_button_text": {
         "type": "objectAttribute",
         "value": {
@@ -14747,6 +14754,13 @@
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": true
+      },
+      "show_name_field": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       },
@@ -15161,6 +15175,13 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "require_privacy_policy_checkbox": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       },

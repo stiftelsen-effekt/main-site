@@ -187,6 +187,10 @@ export const deskStructure = (S) =>
                 .title("AvtaleGiro")
                 .icon(Briefcase)
                 .child(S.document().schemaType("avtalegiro").documentId("avtalegiro")),
+              S.listItem()
+                .title("QuickPay")
+                .icon(Briefcase)
+                .child(S.document().schemaType("quickpay").documentId("quickpay")),
             ]),
         ),
       S.listItem()

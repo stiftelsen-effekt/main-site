@@ -31,6 +31,7 @@ export default {
             { type: "swish" },
             { type: "autogiro" },
             { type: "avtalegiro" },
+            { type: "quickpay" },
           ],
           validation: (Rule: any) => Rule.required(),
           options: {
@@ -231,6 +232,14 @@ export default {
     },
     // Anon button text pane 2
     {
+      name: "allow_anonymous_donations",
+      title: "Allow anonymous donations",
+      type: "boolean",
+      group: "pane2",
+      initialValue: true,
+      description: "If true, the user can choose to donate anonymously",
+    },
+    {
       name: "anon_button_text",
       title: "Anon button text",
       type: "string",
@@ -244,6 +253,13 @@ export default {
       group: "pane2",
       rows: 3,
       validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "show_name_field",
+      title: "Show name field",
+      type: "boolean",
+      group: "pane2",
+      initialValue: true,
     },
     // Placeholders on name and email pane 2
     {
@@ -326,6 +342,14 @@ export default {
       type: "navitem",
       group: "pane2",
       validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: "require_privacy_policy_checkbox",
+      title: "Require privacy policy checkbox",
+      type: "boolean",
+      group: "pane2",
+      initialValue: false,
+      description: "If true, the user must check the privacy policy checkbox to proceed",
     },
     // Button text pane 2
     {

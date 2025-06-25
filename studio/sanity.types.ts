@@ -2607,8 +2607,10 @@ export type Donationwidget = {
     donation_distribution_cause_areas_organization_negative_error_template?: string;
   };
   pane1_button_text?: string;
+  allow_anonymous_donations?: boolean;
   anon_button_text?: string;
   anon_button_text_tooltip?: string;
+  show_name_field?: boolean;
   name_placeholder?: string;
   name_invalid_error_text?: string;
   email_placeholder?: string;
@@ -2696,6 +2698,7 @@ export type Donationwidget = {
         };
     _type: "navitem";
   };
+  require_privacy_policy_checkbox?: boolean;
   pane2_button_text?: string;
   referrals_title?: string;
   other_referral_input_placeholder?: string;
@@ -12017,8 +12020,10 @@ export type FetchArticleResult = {
                 donation_distribution_cause_areas_organization_negative_error_template?: string;
               };
               pane1_button_text?: string;
+              allow_anonymous_donations?: boolean;
               anon_button_text?: string;
               anon_button_text_tooltip?: string;
+              show_name_field?: boolean;
               name_placeholder?: string;
               name_invalid_error_text?: string;
               email_placeholder?: string;
@@ -12121,6 +12126,7 @@ export type FetchArticleResult = {
                   | "vippsagreement"
                   | null;
               } | null;
+              require_privacy_policy_checkbox?: boolean;
               pane2_button_text?: string;
               referrals_title?: string;
               other_referral_input_placeholder?: string;
@@ -16676,8 +16682,10 @@ export type FetchFundraiserResult = {
                 donation_distribution_cause_areas_organization_negative_error_template?: string;
               };
               pane1_button_text?: string;
+              allow_anonymous_donations?: boolean;
               anon_button_text?: string;
               anon_button_text_tooltip?: string;
+              show_name_field?: boolean;
               name_placeholder?: string;
               name_invalid_error_text?: string;
               email_placeholder?: string;
@@ -16780,6 +16788,7 @@ export type FetchFundraiserResult = {
                   | "vippsagreement"
                   | null;
               } | null;
+              require_privacy_policy_checkbox?: boolean;
               pane2_button_text?: string;
               referrals_title?: string;
               other_referral_input_placeholder?: string;
@@ -21295,8 +21304,10 @@ export type FetchGenericPageResult = {
                 donation_distribution_cause_areas_organization_negative_error_template?: string;
               };
               pane1_button_text?: string;
+              allow_anonymous_donations?: boolean;
               anon_button_text?: string;
               anon_button_text_tooltip?: string;
+              show_name_field?: boolean;
               name_placeholder?: string;
               name_invalid_error_text?: string;
               email_placeholder?: string;
@@ -21399,6 +21410,7 @@ export type FetchGenericPageResult = {
                   | "vippsagreement"
                   | null;
               } | null;
+              require_privacy_policy_checkbox?: boolean;
               pane2_button_text?: string;
               referrals_title?: string;
               other_referral_input_placeholder?: string;
@@ -29675,8 +29687,10 @@ export type FetchAgreementsPageResult = {
           donation_distribution_cause_areas_organization_negative_error_template?: string;
         };
         pane1_button_text?: string;
+        allow_anonymous_donations?: boolean;
         anon_button_text?: string;
         anon_button_text_tooltip?: string;
+        show_name_field?: boolean;
         name_placeholder?: string;
         name_invalid_error_text?: string;
         email_placeholder?: string;
@@ -29764,6 +29778,7 @@ export type FetchAgreementsPageResult = {
               };
           _type: "navitem";
         };
+        require_privacy_policy_checkbox?: boolean;
         pane2_button_text?: string;
         referrals_title?: string;
         other_referral_input_placeholder?: string;
@@ -38011,8 +38026,10 @@ export type FetchDonationsPageResult = {
           donation_distribution_cause_areas_organization_negative_error_template?: string;
         };
         pane1_button_text?: string;
+        allow_anonymous_donations?: boolean;
         anon_button_text?: string;
         anon_button_text_tooltip?: string;
+        show_name_field?: boolean;
         name_placeholder?: string;
         name_invalid_error_text?: string;
         email_placeholder?: string;
@@ -38100,6 +38117,7 @@ export type FetchDonationsPageResult = {
               };
           _type: "navitem";
         };
+        require_privacy_policy_checkbox?: boolean;
         pane2_button_text?: string;
         referrals_title?: string;
         other_referral_input_placeholder?: string;
@@ -46214,8 +46232,10 @@ export type FetchProfilePageResult = {
           donation_distribution_cause_areas_organization_negative_error_template?: string;
         };
         pane1_button_text?: string;
+        allow_anonymous_donations?: boolean;
         anon_button_text?: string;
         anon_button_text_tooltip?: string;
+        show_name_field?: boolean;
         name_placeholder?: string;
         name_invalid_error_text?: string;
         email_placeholder?: string;
@@ -46303,6 +46323,7 @@ export type FetchProfilePageResult = {
               };
           _type: "navitem";
         };
+        require_privacy_policy_checkbox?: boolean;
         pane2_button_text?: string;
         referrals_title?: string;
         other_referral_input_placeholder?: string;
