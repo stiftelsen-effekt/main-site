@@ -74,8 +74,19 @@ export const PaymentPane: React.FC<{
       }
       return <AutogiroPane config={autoGiroConfiguration} referrals={referrals} />;
     }
-    case PaymentMethod.QUICKPAY: {
-      const quickpayConfiguration = paymentMethods.find((method) => method._id === "quickpay");
+    case PaymentMethod.QUICKPACK_MOBILEPAY: {
+      const quickpayConfiguration = paymentMethods.find(
+        (method) => method._id === "quickpay_mobilepay",
+      );
+      if (!quickpayConfiguration) {
+        throw new Error(
+          "Missing configuration for QuickPay, but selected payment method is quickpay",
+        );
+      }
+      return <QuickPayPane config={quickpayConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.QUICKPAY_CARD: {
+      const quickpayConfiguration = paymentMethods.find((method) => method._id === "quickpay_card");
       if (!quickpayConfiguration) {
         throw new Error(
           "Missing configuration for QuickPay, but selected payment method is quickpay",
