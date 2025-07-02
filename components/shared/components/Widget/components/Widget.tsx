@@ -104,8 +104,6 @@ export const Widget = withStaticProps(
   }) => {
     const result = await getClient(draftMode ? token : undefined).fetch<WidgetProps>(widgetQuery);
 
-    console.log("Widget data fetched:", result);
-
     if (!result.methods?.length) {
       throw new Error("No payment methods found");
     }
