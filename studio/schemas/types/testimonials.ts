@@ -1,17 +1,18 @@
+import { defineType, defineField } from "sanity";
 import { MessageCircle } from "react-feather";
 import { TestimonialsPreview } from "../../components/testimonialsPreview";
 
-export default {
+export default defineType({
   name: "testimonials",
   type: "object",
   title: "Testimonials",
   icon: MessageCircle,
   fields: [
-    {
+    defineField({
       name: "testimonials",
       type: "array",
       of: [{ type: "reference", to: { type: "testimonial" } }],
-    },
+    }),
   ],
   preview: {
     select: {
@@ -64,14 +65,12 @@ export default {
         testimonial5quote,
       ].filter(Boolean);
       return {
-        testimonials: quotees.map((quotee, index) => ({
-          quotee,
-          quote: quotes[index],
-        })),
+        title: `Testimonials (${quotees.length})`,
+        subtitle: quotees.join(", "),
       };
     },
   },
   components: {
     preview: TestimonialsPreview,
   },
-} as const;
+});

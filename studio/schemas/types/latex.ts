@@ -2,8 +2,9 @@ import { Divide } from "react-feather";
 import KatexInput from "../../components/katexInput";
 import { KatexPreview } from "../../components/katexPreview";
 import { TexIcon } from "../../components/texIcon";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "latex",
   type: "object",
   icon: TexIcon,
@@ -13,18 +14,18 @@ export default {
     preview: KatexPreview,
   },
   fields: [
-    {
+    defineField({
       name: "latex",
       type: "text",
       title: "Latex",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "renderedHtml",
       type: "text",
       title: "Rendered",
       readOnly: true,
-    },
+    }),
   ],
   preview: {
     select: {
@@ -32,4 +33,4 @@ export default {
       renderedHtml: "renderedHtml",
     },
   },
-} as const;
+});

@@ -1,6 +1,7 @@
 import { Sunset } from "react-feather";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "articleheader",
   type: "document",
   title: "Article header",
@@ -12,33 +13,39 @@ export default {
     },
   ],
   fields: [
-    {
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
-    },
-    {
+    }),
+    defineField({
       name: "inngress",
       title: "Inngress",
       type: "text",
       rows: 3,
-    },
-    {
+    }),
+    defineField({
       name: "published",
       title: "Published",
       type: "date",
-    },
-    { name: "seoTitle", title: "SEO title", type: "string", group: "seo" },
-    { name: "seoDescription", title: "SEO description", type: "text", rows: 3, group: "seo" },
-    {
+    }),
+    defineField({ name: "seoTitle", title: "SEO title", type: "string", group: "seo" }),
+    defineField({
+      name: "seoDescription",
+      title: "SEO description",
+      type: "text",
+      rows: 3,
+      group: "seo",
+    }),
+    defineField({
       name: "seoKeywords",
       title: "SEO keywords",
       type: "text",
       rows: 3,
       group: "seo",
       description: "Comma separated",
-    },
-    { name: "seoImage", title: "SEO Image", type: "image", group: "seo" },
-    { name: "cannonicalUrl", title: "Cannonical URL", type: "url", group: "seo" },
+    }),
+    defineField({ name: "seoImage", title: "SEO Image", type: "image", group: "seo" }),
+    defineField({ name: "cannonicalUrl", title: "Cannonical URL", type: "url", group: "seo" }),
   ],
-} as const;
+});

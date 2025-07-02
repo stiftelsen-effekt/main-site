@@ -1,22 +1,24 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "organizationmapping",
   type: "object",
   title: "Organization Mapping",
   fields: [
-    {
+    defineField({
       name: "abbreviation",
       title: "Abbreviation",
       type: "string",
       description: "The organization abbreviation used in the API",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "fullName",
       title: "Full Name",
       type: "string",
       description: "The full organization name to display",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
   ],
   preview: {
     select: {
@@ -29,4 +31,4 @@ export default {
       };
     },
   },
-} as const;
+});

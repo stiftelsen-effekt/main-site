@@ -1,19 +1,20 @@
 import { BarChart } from "react-feather";
 import { outputType } from "./_outputtype";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   type: "object",
   name: "resultsoutput",
   icon: BarChart,
   fields: [
     outputType,
-    {
+    defineField({
       type: "array",
       name: "description",
       title: "Description",
       of: [{ type: "block" }],
-    },
-    {
+    }),
+    defineField({
       type: "array",
       name: "output_countries",
       title: "Output Countries",
@@ -220,8 +221,8 @@ export default {
         ],
         layout: "grid",
       },
-    },
-    {
+    }),
+    defineField({
       type: "array",
       name: "graph_annotations",
       title: "Graph Annotations",
@@ -229,36 +230,36 @@ export default {
         {
           type: "object",
           fields: [
-            {
+            defineField({
               type: "string",
               name: "title",
               title: "Title",
-            },
-            {
+            }),
+            defineField({
               type: "string",
               name: "description",
               title: "Description",
-            },
-            {
+            }),
+            defineField({
               type: "date",
               name: "date_from",
               title: "Date From",
-            },
-            {
+            }),
+            defineField({
               type: "date",
               name: "date_to",
               title: "Date To",
-            },
+            }),
           ],
         },
       ],
-    },
-    {
+    }),
+    defineField({
       type: "graphcontext",
       name: "graphcontext",
       title: "Graph Context",
-    },
-    {
+    }),
+    defineField({
       type: "array",
       title: "Organization links",
       description: "Matches the organization on abreviation and inserts the provided link",
@@ -267,7 +268,7 @@ export default {
         {
           type: "object",
           fields: [
-            {
+            defineField({
               type: "string",
               name: "abbreviation",
               title: "Org Abbreviation",
@@ -293,21 +294,21 @@ export default {
                   "ubi",
                 ],
               },
-            },
-            {
+            }),
+            defineField({
               type: "navitem",
               name: "link",
               title: "Link",
-            },
+            }),
           ],
         },
       ],
-    },
-    {
+    }),
+    defineField({
       type: "links",
       name: "links",
       title: "Links",
-    },
+    }),
   ],
   preview: {
     select: {
@@ -315,4 +316,4 @@ export default {
       subtitle: "description",
     },
   },
-};
+});

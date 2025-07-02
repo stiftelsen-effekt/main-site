@@ -1,22 +1,24 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "outputmapping",
   type: "object",
   title: "Output Type Mapping",
   fields: [
-    {
+    defineField({
       name: "sanityKey",
       title: "Sanity Key",
       type: "string",
       description: "The key used in Sanity",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "dataKey",
       title: "Data Key",
       type: "string",
       description: "The corresponding key in the API data",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
   ],
   preview: {
     select: {
@@ -29,4 +31,4 @@ export default {
       };
     },
   },
-} as const;
+});
