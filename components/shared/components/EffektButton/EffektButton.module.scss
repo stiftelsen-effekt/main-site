@@ -55,6 +55,7 @@
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
   border: 1px solid var(--primary);
+  background-clip: padding-box;
 }
 
 .buttonsecondary:focus {

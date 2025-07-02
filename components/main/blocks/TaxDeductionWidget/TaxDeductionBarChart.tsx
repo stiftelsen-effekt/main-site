@@ -1,11 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRemSize } from "../../../../hooks/useRemSize";
+import { thousandize } from "../../../../util/formatting";
 
 interface BarChartProps {
   value: number;
   minimumThreshold: number;
   maximumThreshold: number;
   taxBenefit: number;
+  labels?: {
+    maximumThresholdLabel?: string;
+    minimumThresholdLabel?: string;
+    currentValueLabel?: string;
+    taxBenefitLabel?: string;
+  };
+  locale?: string;
 }
 
 interface Dimensions {
@@ -25,6 +33,8 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
   minimumThreshold,
   maximumThreshold,
   taxBenefit,
+  labels,
+  locale,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
@@ -106,7 +116,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
             textAnchor="end"
             alignmentBaseline="middle"
           >
-            Maks skattefradrag
+            {labels?.maximumThresholdLabel || "Maks skattefradrag"}
           </text>
           <text
             x={-remSize * 1}
@@ -115,7 +125,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
             alignmentBaseline="middle"
             fontSize={"0.75rem"}
           >
-            {Intl.NumberFormat("no-NB").format(maximumThreshold)} kr
+            {thousandize(maximumThreshold, locale)} kr
           </text>
 
           {/* Minimum threshold tick */}
@@ -139,7 +149,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
               textAnchor="end"
               alignmentBaseline="middle"
             >
-              Minstegrense
+              {labels?.minimumThresholdLabel || "Minste grense"}
             </text>
             <text
               x={-remSize * 1}
@@ -148,7 +158,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
               alignmentBaseline="middle"
               fontSize={"0.75rem"}
             >
-              {Intl.NumberFormat("no-NB").format(minimumThreshold)} kr
+              {thousandize(minimumThreshold, locale)} kr
             </text>
           </g>
 
@@ -195,7 +205,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
                       stroke="#fafafa"
                       strokeWidth="6"
                     >
-                      Skattefradrag
+                      {labels?.currentValueLabel || "Skattefradrag"}
                     </text>
                     <text
                       x={-remSize * 1}
@@ -208,7 +218,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
                       stroke="#fafafa"
                       strokeWidth="6"
                     >
-                      {Intl.NumberFormat("no-NB").format(Math.min(value, maximumThreshold))} kr
+                      {thousandize(Math.min(value, maximumThreshold), locale)} kr
                     </text>
                   </g>
                 </g>
@@ -234,7 +244,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
                       textAnchor="end"
                       alignmentBaseline="middle"
                     >
-                      Du får tilbake
+                      {labels?.taxBenefitLabel || "Du får tilbake"}
                     </text>
                     <text
                       x={-remSize * 1}
@@ -243,7 +253,7 @@ export const TaxDeductionBarChart: React.FC<BarChartProps> = ({
                       alignmentBaseline="middle"
                       fontSize={"0.75rem"}
                     >
-                      {Intl.NumberFormat("no-NB").format(taxBenefit)} kr
+                      {thousandize(taxBenefit, locale)} kr
                     </text>
                   </g>
                 </g>

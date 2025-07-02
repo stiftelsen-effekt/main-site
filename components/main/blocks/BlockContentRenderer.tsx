@@ -338,6 +338,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "taxdeductionwidget":
+            console.log(block);
             return (
               <TaxDeductionWidget
                 key={block._key || block._id}
@@ -347,6 +348,21 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 minimumTreshold={block.minimum_treshold}
                 maximumTreshold={block.maximum_treshold}
                 percentageReduction={block.percentage_reduction}
+                donationsLabel={block.donations_label}
+                taxDeductionReturnDescriptionTemplate={
+                  block.tax_deduction_return_description_template
+                }
+                belowMinimumTresholdDescriptionTemplate={
+                  block.below_minimum_treshold_description_template
+                }
+                buttonText={block.button_text}
+                chartLabels={{
+                  maximumThresholdLabel: block.chart_labels?.maximum_threshold,
+                  minimumThresholdLabel: block.chart_labels?.minimum_threshold,
+                  currentValueLabel: block.chart_labels?.deduction,
+                  taxBenefitLabel: block.chart_labels?.tax_benefit,
+                }}
+                locale={stegaClean(block.locale)}
               />
             );
           case "introsection": {
