@@ -46,6 +46,7 @@ import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
 import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
 import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
 import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
+import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -304,7 +305,16 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               </>
             );
           case "resultsteaser":
-            return <ResultsTeaser key={block._key || block._id} title={block.title} />;
+            return (
+              <ResultsTeaser
+                key={block._key || block._id}
+                title={block.title}
+                sumSubtitle={block.sum_subtitle}
+                donorsSubtitle={block.donors_subtitle}
+                seeMoreButton={block.see_more_button}
+                locale={stegaClean(block.locale)}
+              />
+            );
           case "inngress":
             return (
               <Inngress
@@ -328,6 +338,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "taxdeductionwidget":
+            console.log(block);
             return (
               <TaxDeductionWidget
                 key={block._key || block._id}
@@ -337,6 +348,21 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 minimumTreshold={block.minimum_treshold}
                 maximumTreshold={block.maximum_treshold}
                 percentageReduction={block.percentage_reduction}
+                donationsLabel={block.donations_label}
+                taxDeductionReturnDescriptionTemplate={
+                  block.tax_deduction_return_description_template
+                }
+                belowMinimumTresholdDescriptionTemplate={
+                  block.below_minimum_treshold_description_template
+                }
+                buttonText={block.button_text}
+                chartLabels={{
+                  maximumThresholdLabel: block.chart_labels?.maximum_threshold,
+                  minimumThresholdLabel: block.chart_labels?.minimum_threshold,
+                  currentValueLabel: block.chart_labels?.deduction,
+                  taxBenefitLabel: block.chart_labels?.tax_benefit,
+                }}
+                locale={stegaClean(block.locale)}
               />
             );
           case "introsection": {
@@ -469,6 +495,15 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "dkrenewpayment":
             return <DKRenewPayment />;
+          case "mediacoverageteaser":
+            return (
+              <MediaCoverageTeaser
+                key={block._key || block._id}
+                title={block.title}
+                coverage={block.coverage}
+                readMoreButton={block.read_more_button}
+              />
+            );
           default:
             return block._type;
         }

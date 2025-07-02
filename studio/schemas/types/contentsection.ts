@@ -94,6 +94,7 @@ export default defineType({
         { type: "dkmembershipwidget" },
         { type: "dkmembershipdisplay" },
         { type: "dkrenewpayment" },
+        { type: "mediacoverageteaser" },
       ],
       options: {
         modal: { type: "dialog", width: "auto" },

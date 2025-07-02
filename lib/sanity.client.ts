@@ -4,7 +4,7 @@ import { projectConfig } from "./config";
 export function getClient(previewToken?: string): SanityClient {
   return createClient({
     ...projectConfig,
-    useCdn: !previewToken,
+    useCdn: false, // !previewToken,
     perspective: previewToken ? "previewDrafts" : "published",
     stega: {
       enabled: previewToken ? true : false,

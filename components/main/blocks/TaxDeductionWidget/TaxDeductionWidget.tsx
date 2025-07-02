@@ -10,6 +10,7 @@ import { WidgetContext } from "../../layout/layout";
 import { HorizontalTaxDeductionBarChart } from "./TaxDeductionBarChartHorizontal";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
 import { usePlausible } from "next-plausible";
+import { thousandize } from "../../../../util/formatting";
 
 export const TaxDeductionWidget: React.FC<{
   title: string;
@@ -18,6 +19,17 @@ export const TaxDeductionWidget: React.FC<{
   minimumTreshold: number;
   maximumTreshold: number;
   percentageReduction: number;
+  donationsLabel?: string;
+  taxDeductionReturnDescriptionTemplate?: string;
+  belowMinimumTresholdDescriptionTemplate?: string;
+  buttonText?: string;
+  chartLabels?: {
+    maximumThresholdLabel?: string;
+    minimumThresholdLabel?: string;
+    currentValueLabel?: string;
+    taxBenefitLabel?: string;
+  };
+  locale: string;
 }> = ({
   title,
   description,
@@ -25,12 +37,20 @@ export const TaxDeductionWidget: React.FC<{
   minimumTreshold,
   maximumTreshold,
   percentageReduction,
+  donationsLabel,
+  taxDeductionReturnDescriptionTemplate,
+  belowMinimumTresholdDescriptionTemplate,
+  buttonText,
+  chartLabels,
+  locale,
 }) => {
   const plausible = usePlausible();
   const [sum, setSum] = React.useState(suggestedSums.slice(-2)[0].toString());
   const [lastValidSum, setLastValidSum] = useState(suggestedSums.slice(-2)[0]);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const isMobile = useIsMobile();
+
+  console.log(locale);
 
   useEffect(() => {
     if (sum === "") {
@@ -42,7 +62,7 @@ export const TaxDeductionWidget: React.FC<{
     if (!isNaN(sumNumber)) {
       setLastValidSum(sumNumber);
 
-      const formattedSum = Intl.NumberFormat("no-NB").format(sumNumber);
+      const formattedSum = thousandize(sumNumber, locale);
       if (formattedSum !== sum) {
         setSum(formattedSum);
       }
@@ -66,6 +86,8 @@ export const TaxDeductionWidget: React.FC<{
               minimumThreshold={minimumTreshold}
               value={lastValidSum}
               taxBenefit={taxBenefit}
+              labels={chartLabels}
+              locale={locale}
             ></TaxDeductionBarChart>
           )}
         </div>
@@ -88,7 +110,7 @@ export const TaxDeductionWidget: React.FC<{
           <div className={styles.selectSum}>
             <div className={styles.suggestedSums}>
               {suggestedSums.map((suggestedSum) => {
-                const formattedSuggestedSum = Intl.NumberFormat("no-NB").format(suggestedSum);
+                const formattedSuggestedSum = thousandize(suggestedSum, locale);
                 return (
                   <EffektButton
                     key={suggestedSum}
@@ -112,7 +134,7 @@ export const TaxDeductionWidget: React.FC<{
               })}
             </div>
             <div className={styles.input}>
-              <label htmlFor="">Donasjoner:</label>
+              <label htmlFor="">{donationsLabel ?? "Donasjoner"}:</label>
               <EffektTextInput
                 value={sum.toString()}
                 name={"taxDeductionSumInput"}
@@ -129,15 +151,28 @@ export const TaxDeductionWidget: React.FC<{
 
           {taxBenefit > 0 && (
             <p>
-              Med {Intl.NumberFormat("no-NB").format(taxDeduction)} kr i skattefradrag i år får du
-              tilbake {Intl.NumberFormat("no-NB").format(taxBenefit)} kroner på skatten.
+              {taxDeductionReturnDescriptionTemplate
+                ? taxDeductionReturnDescriptionTemplate
+                    .replace("{taxDeduction}", thousandize(taxDeduction, locale))
+                    .replace("{taxBenefit}", thousandize(taxBenefit, locale))
+                : `Med ${Intl.NumberFormat("no-NB").format(
+                    taxDeduction,
+                  )} kr i skattefradrag i år får du tilbake ${Intl.NumberFormat("no-NB").format(
+                    taxBenefit,
+                  )} kroner på skatten.`}
             </p>
           )}
           {taxBenefit === 0 && (
             <p>
-              Med {Intl.NumberFormat("no-NB").format(lastValidSum)} kr i donasjoner er du under
-              minstegrensen på {Intl.NumberFormat("no-NB").format(minimumTreshold)} kr for å få
-              skattefradrag.
+              {belowMinimumTresholdDescriptionTemplate
+                ? belowMinimumTresholdDescriptionTemplate
+                    .replace("{lastValidSum}", thousandize(lastValidSum, locale))
+                    .replace("{minimumTreshold}", thousandize(minimumTreshold, locale))
+                : `Med ${Intl.NumberFormat("no-NB").format(
+                    lastValidSum,
+                  )} kr i donasjoner er du under minstegrensen på ${Intl.NumberFormat(
+                    "no-NB",
+                  ).format(minimumTreshold)} kr for å få skattefradrag.`}
             </p>
           )}
 
@@ -166,7 +201,7 @@ export const TaxDeductionWidget: React.FC<{
                 padding: "0.75rem 3rem",
               }}
             >
-              Få skattefradrag
+              {buttonText ?? "Få skattefradrag"}
             </EffektButton>
           </div>
         </div>
