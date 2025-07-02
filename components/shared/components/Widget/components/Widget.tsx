@@ -67,7 +67,10 @@ export const widgetContentQuery = groq`
         ...,
         date_selector_configuration->
       },
-      _type == 'quickpay' => {
+      _type == 'quickpay_card' => {
+        ...,
+      },
+      _type == 'quickpay_mobilepay' => {
         ...,
       },
     },

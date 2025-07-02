@@ -11,7 +11,8 @@ export type WidgetProps = { locale: "no" | "sv" | "en" } & WidgetPane1Props &
       | SwishPaymentMethod
       | AutoGiroPaymentMethod
       | AvtaleGiroPaymentMethod
-      | QuickPayPaymentMethod
+      | QuickPayCardPaymentMethod
+      | QuickPayMobilePayPaymentMethod
     >;
   };
 
@@ -90,8 +91,15 @@ export type AutoGiroPaymentMethod = {
   completed_text: any[];
 };
 
-export type QuickPayPaymentMethod = {
-  _id: "quickpay";
+export type QuickPayCardPaymentMethod = {
+  _id: "quickpay_card";
+  selector_text: string;
+  recurring_button_text: string;
+  single_button_text: string;
+};
+
+export type QuickPayMobilePayPaymentMethod = {
+  _id: "quickpay_mobilepay";
   selector_text: string;
   recurring_button_text: string;
   single_button_text: string;
