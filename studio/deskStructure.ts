@@ -188,9 +188,15 @@ export const deskStructure = (S) =>
                 .icon(Briefcase)
                 .child(S.document().schemaType("avtalegiro").documentId("avtalegiro")),
               S.listItem()
-                .title("QuickPay")
+                .title("QuickPay Card")
                 .icon(Briefcase)
-                .child(S.document().schemaType("quickpay").documentId("quickpay")),
+                .child(S.document().schemaType("quickpay_card").documentId("quickpay_card")),
+              S.listItem()
+                .title("QuickPay MobilePay")
+                .icon(Briefcase)
+                .child(
+                  S.document().schemaType("quickpay_mobilepay").documentId("quickpay_mobilepay"),
+                ),
             ]),
         ),
       S.listItem()

@@ -1,7 +1,14 @@
 import { RecurringDonation } from "../types/Enums";
 
 interface PaymentMethodConfiguration {
-  id: "bank" | "vipps" | "swish" | "autogiro" | "avtalegiro" | "quickpay";
+  id:
+    | "bank"
+    | "vipps"
+    | "swish"
+    | "autogiro"
+    | "avtalegiro"
+    | "quickpay_card"
+    | "quickpay_mobilepay";
   recurringOptions: RecurringDonation[];
 }
 
@@ -30,8 +37,13 @@ export const avtalegiroConfiguration: PaymentMethodConfiguration = {
   recurringOptions: [RecurringDonation.RECURRING],
 };
 
-export const quickpayConfiguration: PaymentMethodConfiguration = {
-  id: "quickpay",
+export const quickpayCardConfiguration: PaymentMethodConfiguration = {
+  id: "quickpay_card",
+  recurringOptions: [RecurringDonation.RECURRING, RecurringDonation.NON_RECURRING],
+};
+
+export const quickpayMobilePayConfiguration: PaymentMethodConfiguration = {
+  id: "quickpay_mobilepay",
   recurringOptions: [RecurringDonation.RECURRING, RecurringDonation.NON_RECURRING],
 };
 
@@ -41,5 +53,6 @@ export const paymentMethodConfigurations = [
   swishConfiguration,
   autogiroConfiguration,
   avtalegiroConfiguration,
-  quickpayConfiguration,
+  quickpayCardConfiguration,
+  quickpayMobilePayConfiguration,
 ];

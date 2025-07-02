@@ -1,9 +1,9 @@
 import { defineType, defineField } from "sanity";
 
 export default defineType({
-  name: "quickpay",
+  name: "quickpay_mobilepay",
   type: "document",
-  title: "Quickpay payment method",
+  title: "Quickpay mobilepay payment method",
   fields: [
     defineField({
       name: "selector_text",

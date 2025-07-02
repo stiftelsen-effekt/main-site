@@ -33,7 +33,8 @@ export default defineType({
             { type: "swish" },
             { type: "autogiro" },
             { type: "avtalegiro" },
-            { type: "quickpay" },
+            { type: "quickpay_card" },
+            { type: "quickpay_mobilepay" },
           ],
           validation: (Rule) => Rule.required(),
           options: {

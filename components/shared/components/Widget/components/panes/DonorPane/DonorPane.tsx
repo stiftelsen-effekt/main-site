@@ -363,7 +363,8 @@ export const DonorPane: React.FC<{
                       swish: PaymentMethod.SWISH,
                       autogiro: PaymentMethod.AUTOGIRO,
                       avtalegiro: PaymentMethod.AVTALEGIRO,
-                      quickpay: PaymentMethod.QUICKPAY,
+                      quickpay_card: PaymentMethod.QUICKPAY_CARD,
+                      quickpay_mobilepay: PaymentMethod.QUICKPACK_MOBILEPAY,
                     }[method._id],
                     data_cy: `${method._id}-method`,
                   }))}
