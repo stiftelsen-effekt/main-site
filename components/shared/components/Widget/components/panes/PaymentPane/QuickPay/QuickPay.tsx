@@ -3,12 +3,16 @@ import { useSelector } from "react-redux";
 import { State } from "../../../../store/state";
 import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { Referrals } from "../../../shared/Referrals/Referrals";
-import { QuickPayPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
+import {
+  QuickPayCardPaymentMethod,
+  QuickPayMobilePayPaymentMethod,
+  WidgetPane3ReferralsProps,
+} from "../../../../types/WidgetProps";
 import { usePlausible } from "next-plausible";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
 
 export const QuickPayPane: React.FC<{
-  config: QuickPayPaymentMethod;
+  config: QuickPayCardPaymentMethod | QuickPayMobilePayPaymentMethod;
   referrals: WidgetPane3ReferralsProps;
 }> = ({ config, referrals }) => {
   const plausible = usePlausible();
