@@ -10,9 +10,7 @@ export const DKMembershipDisplay: React.FC<
   const [memberships, setMemeberships] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch(
-      `/api/proxy?targetUrl=${encodeURIComponent("https://donation-platform.vercel.app/api/kpi")}`,
-    )
+    fetch(`${process.env.NEXT_PUBLIC_EFFEKT_API}/api/kpi`)
       .then((response) => {
         if (response.ok) {
           response.json().then((data: ApiResponse) => {
