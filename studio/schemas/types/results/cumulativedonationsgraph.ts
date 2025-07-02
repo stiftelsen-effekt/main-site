@@ -1,21 +1,22 @@
 import { BarChart, BarChart2 } from "react-feather";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   type: "object",
   name: "cumulativedonationsgraph",
   icon: BarChart,
   fields: [
-    {
+    defineField({
       type: "graphcontext",
       name: "graphcontext",
       title: "Graph Context",
-    },
-    {
+    }),
+    defineField({
       type: "cumulativedonationstabletext",
       name: "tableText",
       title: "Table Text Configuration",
       description: "Configure the table headers and text",
-    },
+    }),
   ],
   preview: {
     select: {
@@ -23,4 +24,4 @@ export default {
       subtitle: "graphcontext.detailed_description",
     },
   },
-};
+});

@@ -1,4 +1,6 @@
-export const outputType = {
+import { defineField } from "sanity";
+
+export const outputType = defineField({
   type: "string",
   name: "outputType",
   title: "Output Type",
@@ -15,4 +17,4 @@ export const outputType = {
       "Years of food fortification",
     ],
   },
-};
+});

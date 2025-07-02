@@ -1,34 +1,35 @@
+import { defineType, defineField } from "sanity";
 import { DollarSign } from "react-feather";
 
-export default {
+export default defineType({
   name: "wealthcalculator",
   type: "object",
   title: "Wealth Calculator",
   icon: DollarSign,
   fields: [
-    {
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
-    },
-    {
+    }),
+    defineField({
       name: "configuration",
       type: "reference",
       to: [{ type: "wealthcalculatorconfiguration" }],
-      validaton: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "intervention_configuration",
       type: "object",
       title: "Intervention Configuration",
       fields: [
-        {
+        defineField({
           name: "output_configuration",
           type: "reference",
           to: [{ type: "interventionwidgetoutputconfiguration" }],
-          validaton: (Rule: any) => Rule.required(),
-        },
+          validation: (Rule) => Rule.required(),
+        }),
       ],
-    },
+    }),
   ],
-} as const;
+});

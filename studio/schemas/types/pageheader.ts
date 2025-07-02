@@ -1,10 +1,10 @@
+import { defineType, defineField, Rule } from "sanity";
 import { Sunset } from "react-feather";
 import { Pageheader } from "../../sanity.types";
-import { Rule } from "sanity";
 
 const noTitleTextLayouts = ["coverPhoto", "noheader"];
 
-export default {
+export default defineType({
   name: "pageheader",
   type: "document",
   title: "Page header",
@@ -21,7 +21,7 @@ export default {
     },
   ],
   fields: [
-    {
+    defineField({
       name: "title",
       type: "text",
       title: "Title",
@@ -29,8 +29,8 @@ export default {
       rows: 1,
       hidden: ({ parent }: { parent?: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
-    },
-    {
+    }),
+    defineField({
       name: "inngress",
       title: "Inngress",
       type: "text",
@@ -38,25 +38,25 @@ export default {
       group: "content",
       hidden: ({ parent }: { parent: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
-    },
-    {
+    }),
+    defineField({
       name: "coverPhoto",
       title: "Cover photo",
       type: "image",
       group: "content",
       hidden: ({ parent }: { parent: Pageheader }) =>
         parent ? parent.layout !== "coverPhoto" : true,
-    },
-    {
+    }),
+    defineField({
       name: "cta_label",
       title: "CTA label",
       type: "string",
       group: "content",
       hidden: ({ parent }: { parent: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
-    },
+    }),
     /** In future we might want to add link and navitem to CTA */
-    {
+    defineField({
       name: "cta_type",
       title: "CTA type",
       type: "string",
@@ -66,8 +66,8 @@ export default {
       },
       hidden: ({ parent }: { parent: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
-    },
-    {
+    }),
+    defineField({
       name: "layout",
       title: "Layout",
       type: "string",
@@ -76,8 +76,8 @@ export default {
         list: ["default", "centered", "hero", "coverPhoto", "noheader"],
       },
       initialValue: "default",
-    },
-    {
+    }),
+    defineField({
       name: "links",
       title: "Links",
       type: "array",
@@ -85,14 +85,14 @@ export default {
       group: "content",
       hidden: ({ parent }: { parent: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
-    },
-    {
+    }),
+    defineField({
       name: "seoTitle",
       title: "SEO title",
       type: "string",
       group: "seo",
       /* Validate give a warning if no title, as it defaults to the page title */
-      validation: (rule: Rule) =>
+      validation: (rule) =>
         rule.custom((field: string | null, context) => {
           const parent = context.parent as Pageheader;
           if ((!parent.title || parent.title.length === 0) && (!field || field.length === 0)) {
@@ -100,17 +100,23 @@ export default {
           }
           return true;
         }),
-    },
-    { name: "seoDescription", title: "SEO description", type: "text", rows: 3, group: "seo" },
-    {
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "SEO description",
+      type: "text",
+      rows: 3,
+      group: "seo",
+    }),
+    defineField({
       name: "seoKeywords",
       title: "SEO keywords",
       type: "text",
       rows: 3,
       group: "seo",
       description: "Comma separated",
-    },
-    { name: "seoImage", title: "SEO Image", type: "image", group: "seo" },
-    { name: "cannonicalUrl", title: "Cannonical URL", type: "url", group: "seo" },
+    }),
+    defineField({ name: "seoImage", title: "SEO Image", type: "image", group: "seo" }),
+    defineField({ name: "cannonicalUrl", title: "Cannonical URL", type: "url", group: "seo" }),
   ],
-} as const;
+});

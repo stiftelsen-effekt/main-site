@@ -1,17 +1,18 @@
 import { Columns } from "react-feather";
 import { ColumnsPreview } from "../../components/columnsPreview";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "columns",
   type: "object",
   title: "Columns",
   icon: Columns,
   fields: [
-    {
+    defineField({
       name: "columns",
       type: "array",
       of: [{ type: "column" }],
-    },
+    }),
   ],
   preview: {
     select: {
@@ -21,4 +22,4 @@ export default {
   components: {
     preview: ColumnsPreview,
   },
-} as const;
+});

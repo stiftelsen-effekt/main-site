@@ -1,8 +1,9 @@
 import { FileText } from "react-feather";
 import { ContentSectionPreview } from "../../components/contentSectionPreview";
 import { useMemo } from "react";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "contentsection",
   type: "document",
   title: "Section",
@@ -15,38 +16,38 @@ export default {
     },
   ],
   fields: [
-    {
+    defineField({
       name: "heading",
       type: "string",
       title: "Header",
       fieldset: "layout",
-    },
-    {
+    }),
+    defineField({
       name: "nodivider",
       type: "boolean",
       title: "No divider line",
       fieldset: "layout",
-    },
-    {
+    }),
+    defineField({
       name: "inverted",
       type: "boolean",
       title: "Inverted",
       fieldset: "layout",
-    },
-    {
+    }),
+    defineField({
       name: "padded",
       type: "boolean",
       title: "Left right padded",
       fieldset: "layout",
-    },
-    {
+    }),
+    defineField({
       name: "ypadded",
       type: "boolean",
       title: "Top bottom padded",
       initialValue: true,
       fieldset: "layout",
-    },
-    {
+    }),
+    defineField({
       name: "blocks",
       type: "array",
       title: "Content",
@@ -95,16 +96,16 @@ export default {
         { type: "dkrenewpayment" },
       ],
       options: {
-        modal: "fullscreen",
+        modal: { type: "dialog", width: "auto" },
       },
-    },
-    {
+    }),
+    defineField({
       name: "hidden",
       type: "boolean",
       title: "Hidden",
       description: "Hide this section from the website",
       initialValue: false,
-    },
+    }),
   ],
   preview: {
     select: {
@@ -119,4 +120,4 @@ export default {
   components: {
     preview: ContentSectionPreview,
   },
-} as const;
+});

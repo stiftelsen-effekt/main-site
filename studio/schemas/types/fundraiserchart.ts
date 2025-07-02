@@ -1,50 +1,51 @@
 import { BarChart2 } from "react-feather";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "fundraiserchart",
   type: "object",
   title: "Fundraiser Chart",
   icon: BarChart2,
   fields: [
-    {
+    defineField({
       name: "heading",
       type: "string",
       title: "Heading",
-    },
-    {
+    }),
+    defineField({
       name: "fundraisers",
       type: "array",
       of: [
         {
           type: "object",
           fields: [
-            {
+            defineField({
               name: "name",
               type: "string",
               title: "Name",
               description: "Name shown in bar chart",
-            },
-            {
+            }),
+            defineField({
               name: "fundraiser_page",
               type: "reference",
               to: [{ type: "generic_page" }],
-            },
-            {
+            }),
+            defineField({
               name: "fundraiser_id",
               type: "number",
               title: "Fundraiser ID",
               description: "ID of the fundraiser in the database",
-            },
+            }),
           ],
         },
       ],
-    },
-    {
+    }),
+    defineField({
       name: "caption_template",
       type: "string",
       title: "Chart caption template",
       description: "Chart caption with last updated time specified with {lastUpdated}",
-    },
+    }),
   ],
   preview: {
     select: {
@@ -73,4 +74,4 @@ export default {
       };
     },
   },
-} as const;
+});

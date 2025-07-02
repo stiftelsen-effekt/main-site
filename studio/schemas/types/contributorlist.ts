@@ -1,11 +1,12 @@
 import { User } from "react-feather";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "contributorlist",
   type: "document",
   title: "Contributors",
   icon: User,
-  validation: (Rule: any) =>
+  validation: (Rule) =>
     Rule.custom(async (fields: any) => {
       /* TODO: migrate */
       /*
@@ -22,13 +23,13 @@ export default {
       return true;
     }),
   fields: [
-    {
+    defineField({
       name: "role",
       type: "reference",
       to: [{ type: "role" }],
       title: "Role",
-    },
-    {
+    }),
+    defineField({
       name: "contributors",
       type: "array",
       title: "Contributors",
@@ -38,12 +39,12 @@ export default {
           to: [{ type: "contributor" }],
         },
       ],
-    },
-    {
+    }),
+    defineField({
       name: "displayimages",
       type: "boolean",
       title: "Display Images",
-    },
+    }),
   ],
   preview: {
     select: {
@@ -79,4 +80,4 @@ export default {
       };
     },
   },
-} as const;
+});

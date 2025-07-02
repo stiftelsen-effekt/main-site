@@ -1,21 +1,23 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "donationstableconfiguration",
   title: "Donations table configuration",
   type: "object",
   fields: [
-    {
+    defineField({
       name: "columns",
       type: "array",
       of: [
         {
           type: "object",
           fields: [
-            {
+            defineField({
               name: "title",
               type: "string",
-              validation: (Rule: any) => Rule.required(),
-            },
-            {
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
               name: "value",
               type: "string",
               options: {
@@ -66,9 +68,9 @@ export default {
                   },
                 ],
               },
-              validation: (Rule: any) => Rule.required(),
-            },
-            {
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
               name: "type",
               type: "string",
               options: {
@@ -91,12 +93,12 @@ export default {
                   },
                 ],
               },
-            },
-            {
+            }),
+            defineField({
               name: "width",
               title: "Column width in % (optional)",
               type: "number",
-            },
+            }),
           ],
           preview: {
             select: {
@@ -104,7 +106,7 @@ export default {
               type: "type",
               width: "width",
             },
-            prepare(selection: any) {
+            prepare(selection) {
               const { title, value, type, width } = selection;
               return {
                 title: `${title}`,
@@ -115,7 +117,7 @@ export default {
         },
       ],
       // Validate that width is less than 100 over all the columns
-      validation: (Rule: any) =>
+      validation: (Rule) =>
         Rule.custom((columns: any) => {
           const totalWidth = columns.reduce((acc: number, column: any) => {
             return acc + (column.width || 0);
@@ -125,31 +127,31 @@ export default {
           }
           return true;
         }),
-    },
-    {
+    }),
+    defineField({
       name: "tax_deduction_current_year_template",
       title: "Tax deduction current year template",
       type: "string",
       description:
         "Template for the tax deduction text for the current year. Use the following variables: {{year}} for the year, and {{deduction}} for the saved tax deduction amount. Displayed below the table header for the current year if the tax deduction amount is greater than 0.",
-    },
-    {
+    }),
+    defineField({
       name: "tax_deduction_previous_year_template",
       title: "Tax deduction previous year template",
       type: "string",
       description:
         "Template for the tax deduction text for a previous year. Use the following variables: {{year}} for the year, and {{deduction}} for the saved tax deduction amount. Displayed below the table header for the previous year if the tax deduction amount is greater than 0.",
-    },
-    {
+    }),
+    defineField({
       name: "no_donations_placeholder_text",
       title: "No donations placeholder text",
       type: "array",
       of: [{ type: "block" }],
       description: "Text displayed when there are no donations in a year.",
-    },
+    }),
   ],
   options: {
     collapsible: true,
     collapsed: true,
   },
-};
+});

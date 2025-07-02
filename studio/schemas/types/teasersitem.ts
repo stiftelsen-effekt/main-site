@@ -1,6 +1,7 @@
-import { blocktype } from "./blockcontent";
+import { defineType, defineField } from "sanity";
+import { BlockTypePresets } from "../utils/blockContentHelpers";
 
-export default {
+export default defineType({
   name: "teasersitem",
   type: "object",
   title: "Teaser",
@@ -11,37 +12,27 @@ export default {
     },
   },
   fields: [
-    {
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
-    },
-    {
+    }),
+    defineField({
       name: "paragraph",
       title: "Paragraph",
       type: "array",
-      of: [
-        {
-          ...blocktype,
-          marks: {
-            ...blocktype.marks,
-            annotations: blocktype.marks.annotations.filter(
-              (annotation) => annotation.name !== "citation",
-            ),
-          },
-        },
-      ],
-    },
-    {
+      of: [BlockTypePresets.withoutCitations],
+    }),
+    defineField({
       name: "image",
       type: "image",
       title: "Image",
-    },
-    {
+    }),
+    defineField({
       name: "links",
       type: "array",
       title: "Links",
       of: [{ type: "link" }, { type: "navitem" }],
-    },
+    }),
   ],
-} as const;
+});

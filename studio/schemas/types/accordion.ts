@@ -1,18 +1,19 @@
 import { ChevronDown } from "react-feather";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "accordion",
   type: "object",
   title: "Accordion",
   icon: ChevronDown,
   fields: [
-    {
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "blocks",
       type: "array",
       title: "Content",
@@ -30,9 +31,9 @@ export default {
         { type: "htmlembed" },
       ],
       options: {
-        modal: "fullscreen",
+        modal: { type: "dialog", width: "auto" },
       },
-    },
+    }),
   ],
   preview: {
     select: {
@@ -44,4 +45,4 @@ export default {
       };
     },
   },
-};
+});

@@ -1,23 +1,24 @@
 import { outputType } from "./_outputtype";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   type: "object",
   name: "resultsheadline",
   fields: [
-    {
+    defineField({
       type: "string",
       name: "donors_label_template",
       title: "Donors label template",
       description:
         "The template for the text under the total donation number, e.g. 'from {donors} donors'",
-    },
-    {
+    }),
+    defineField({
       type: "array",
       name: "outputs",
       title: "Headline outputs",
       of: [outputType],
       validation: (Rule) => Rule.required().min(1),
-    },
+    }),
   ],
   preview: {
     select: {
@@ -31,4 +32,4 @@ export default {
       };
     },
   },
-};
+});

@@ -1,38 +1,40 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "agreementlistconfiguration",
   title: "Agreement list",
   type: "object",
 
   fields: [
-    {
+    defineField({
       name: "title",
       type: "string",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "subtitle_text",
       title: "Subtitle text",
       type: "text",
-      lines: 3,
-    },
-    {
+      rows: 3,
+    }),
+    defineField({
       name: "list_empty_content",
       title: "Empty list content",
       type: "array",
       of: [{ type: "block" }],
-    },
-    {
+    }),
+    defineField({
       name: "columns",
       type: "array",
       of: [
         {
           type: "object",
           fields: [
-            {
+            defineField({
               name: "title",
               type: "string",
-            },
-            {
+            }),
+            defineField({
               name: "value",
               type: "string",
               options: {
@@ -75,8 +77,8 @@ export default {
                   },
                 ],
               },
-            },
-            {
+            }),
+            defineField({
               name: "type",
               type: "string",
               options: {
@@ -99,31 +101,31 @@ export default {
                   },
                 ],
               },
-            },
-            {
+            }),
+            defineField({
               name: "payment_date_format_template",
               title: "Payment date format template",
               type: "string",
               description: "Use {{date}} to insert the date, e.g. 'The {{date}}th of the month'",
-              hidden: ({ parent }: any) => parent?.type !== "date",
-            },
-            {
+              hidden: ({ parent }) => parent?.type !== "date",
+            }),
+            defineField({
               name: "payment_date_last_day_of_month_template",
               title: "Payment date last day of month template",
               type: "string",
               description: "E.g. 'Last day of the month'",
-              hidden: ({ parent }: any) => parent?.type !== "date",
-            },
-            {
+              hidden: ({ parent }) => parent?.type !== "date",
+            }),
+            defineField({
               name: "width",
               title: "Column width in % (optional)",
               type: "number",
-            },
-            {
+            }),
+            defineField({
               name: "hide_on_mobile",
               title: "Hide on mobile",
               type: "boolean",
-            },
+            }),
           ],
           preview: {
             select: {
@@ -131,7 +133,7 @@ export default {
               type: "type",
               width: "width",
             },
-            prepare(selection: any) {
+            prepare(selection) {
               const { title, value, type, width } = selection;
               return {
                 title: `${title}`,
@@ -141,16 +143,16 @@ export default {
           },
         },
       ],
-    },
-    {
+    }),
+    defineField({
       name: "details_configuration",
       title: "Details configuration",
       type: "agreementlistdetailsconfiguration",
       description: "If omitted, row will not be exandable",
-    },
+    }),
   ],
   options: {
     collapsible: true,
     collapsed: true,
   },
-};
+});

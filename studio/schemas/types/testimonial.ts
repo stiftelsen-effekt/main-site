@@ -1,4 +1,6 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "testimonial",
   type: "document",
   title: "Testimonial",
@@ -10,27 +12,27 @@ export default {
     },
   },
   fields: [
-    {
+    defineField({
       name: "quote",
       type: "text",
       rows: 3,
       title: "Quote",
-    },
-    {
+    }),
+    defineField({
       name: "image",
       type: "image",
       title: "Image",
-    },
-    {
+    }),
+    defineField({
       name: "quotee",
       type: "string",
       title: "Quotee",
-    },
-    {
+    }),
+    defineField({
       name: "quotee_background",
       title: "Quotee backgrond",
       type: "array",
       of: [{ type: "block" }],
-    },
+    }),
   ],
-} as const;
+});

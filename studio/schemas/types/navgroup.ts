@@ -1,23 +1,24 @@
+import { defineType, defineField } from "sanity";
 import { List } from "react-feather";
 import { NavigationGroupPreview } from "../../components/navigationGroupPreview";
 
-export default {
+export default defineType({
   title: "Navigation group",
   name: "navgroup",
   type: "object",
   icon: List,
   fields: [
-    {
+    defineField({
       name: "title",
       title: "Title",
       type: "string",
-    },
-    {
+    }),
+    defineField({
       name: "items",
       title: "Items",
       type: "array",
       of: [{ type: "navitem" }],
-    },
+    }),
   ],
   preview: {
     select: {
@@ -36,4 +37,4 @@ export default {
   components: {
     preview: NavigationGroupPreview,
   },
-} as const;
+});
