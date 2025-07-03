@@ -32,6 +32,7 @@ export const BankPane: React.FC<{
     donation.selectedCauseAreaId ?? 1,
     donation.globalOperationsEnabled ?? false,
     donation.globalOperationsPercentage ?? 0,
+    donation.operationsConfig?.excludedCauseAreaIds ?? [],
     donation.smartDistributionTotal,
   );
   const totalSumIncludingTip = breakdown.totalAmount;
