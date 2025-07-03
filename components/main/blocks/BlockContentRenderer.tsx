@@ -47,6 +47,7 @@ import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
 import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
 import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
 import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
+import { ColeComponent } from "./ColeComponent/ColeComponent";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -338,7 +339,6 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "taxdeductionwidget":
-            console.log(block);
             return (
               <TaxDeductionWidget
                 key={block._key || block._id}
@@ -502,6 +502,14 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 title={block.title}
                 coverage={block.coverage}
                 readMoreButton={block.read_more_button}
+              />
+            );
+          case "colecomponent":
+            return (
+              <ColeComponent
+                key={block._key || block._id}
+                title={block.title}
+                image={block.image}
               />
             );
           default:
