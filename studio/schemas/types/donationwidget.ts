@@ -364,6 +364,13 @@ export default defineType({
     }),
     // Referrals header pane 3
     defineField({
+      name: "show_referrals",
+      title: "Show referrals",
+      type: "boolean",
+      group: "referrals",
+      initialValue: true,
+    }),
+    defineField({
       name: "referrals_title",
       title: "Referrals header",
       type: "string",
