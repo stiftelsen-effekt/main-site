@@ -98,6 +98,7 @@ import quickpaycard from "./types/paymentmethods/quickpaycard";
 import quickpaymobilepay from "./types/paymentmethods/quickpaymobilepay";
 import dkrenewpayment from "./types/dkrenewpayment";
 import mediacoverageteaser from "./types/mediacoverageteaser";
+import colecomponent from "./types/colecomponent";
 
 const paymentMethods = [
   vipps,
@@ -199,6 +200,7 @@ export const types = [
   referralstabletext,
   dkrenewpayment,
   mediacoverageteaser,
+  colecomponent,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity
