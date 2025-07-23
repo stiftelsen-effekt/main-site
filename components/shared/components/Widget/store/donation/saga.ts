@@ -10,6 +10,7 @@ import { Donation, RegisterDonationObject, State } from "../state";
 import {
   registerBankPendingAction,
   registerDonationAction,
+  RegisterDonationActionPayload,
   RegisterDonationResponse,
   setPaymentProviderURL,
 } from "./actions";
@@ -128,7 +129,9 @@ export function* registerBankPending(): SagaIterator<void> {
   }
 }
 
-export function* registerDonation(action: Action<undefined>): SagaIterator<void> {
+export function* registerDonation(
+  action: Action<RegisterDonationActionPayload>,
+): SagaIterator<void> {
   yield put(setLoading(true));
   try {
     const donation: Donation = yield select((state: State) => state.donation);
@@ -191,7 +194,15 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     }
 
     yield put(setLoading(false));
-    yield put(nextPane());
+
+    if (
+      action.payload?.openExternalPaymentOnRegisterSuccess &&
+      (result.content as RegisterDonationResponse).paymentProviderUrl
+    ) {
+      window.open((result.content as RegisterDonationResponse).paymentProviderUrl, "_self");
+    } else {
+      yield put(nextPane());
+    }
   } catch (ex) {
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));
   }

@@ -11,6 +11,7 @@ import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
 import {
   registerDonationAction,
+  RegisterDonationActionPayload,
   selectPaymentMethod,
   submitDonorInfo,
 } from "../../../store/donation/actions";
@@ -29,6 +30,7 @@ import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
+import { paymentMethodConfigurations } from "../../../config/methods";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -40,7 +42,8 @@ export const DonorPane: React.FC<{
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
-  const dispatch = useDispatch<Dispatch<DonationActionTypes | Action<undefined>>>();
+  const dispatch =
+    useDispatch<Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload>>>();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
@@ -143,7 +146,16 @@ export const DonorPane: React.FC<{
     dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
 
     if (isAnonymous || donation.errors.length === 0) {
-      dispatch(registerDonationAction.started(undefined));
+      const configuration = paymentMethodConfigurations.find(
+        (config) =>
+          config.id ===
+          paymentMethods.find((method) => paymentMethodMap[method._id] === data.method)?._id,
+      );
+      dispatch(
+        registerDonationAction.started({
+          openExternalPaymentOnRegisterSuccess: configuration?.openExternalPaymentOnRegisterSuccess,
+        }),
+      );
     } else {
       alert("Donation invalid");
     }
@@ -357,15 +369,7 @@ export const DonorPane: React.FC<{
                 <RadioButtonGroup
                   options={paymentMethods.map((method) => ({
                     title: method.selector_text,
-                    value: {
-                      vipps: PaymentMethod.VIPPS,
-                      bank: PaymentMethod.BANK,
-                      swish: PaymentMethod.SWISH,
-                      autogiro: PaymentMethod.AUTOGIRO,
-                      avtalegiro: PaymentMethod.AVTALEGIRO,
-                      quickpay_card: PaymentMethod.QUICKPAY_CARD,
-                      quickpay_mobilepay: PaymentMethod.QUICKPACK_MOBILEPAY,
-                    }[method._id],
+                    value: paymentMethodMap[method._id],
                     data_cy: `${method._id}-method`,
                   }))}
                   selected={field.value}
@@ -396,4 +400,14 @@ const validateSsnNo = (ssn: string): boolean => {
 
 const validateSsnSe = (ssn: string): boolean => {
   return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
+};
+
+export const paymentMethodMap: Record<string, PaymentMethod> = {
+  vipps: PaymentMethod.VIPPS,
+  bank: PaymentMethod.BANK,
+  swish: PaymentMethod.SWISH,
+  autogiro: PaymentMethod.AUTOGIRO,
+  avtalegiro: PaymentMethod.AVTALEGIRO,
+  quickpay_card: PaymentMethod.QUICKPAY_CARD,
+  quickpay_mobilepay: PaymentMethod.QUICKPACK_MOBILEPAY,
 };
