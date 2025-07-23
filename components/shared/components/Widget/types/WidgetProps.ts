@@ -170,6 +170,7 @@ export type WidgetPane2Props = {
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
   require_privacy_policy_checkbox?: boolean;
+  privacy_policy_required_error_text: string;
   privacy_policy_text: string;
   privacy_policy_link: NavLink;
   pane2_button_text: string;

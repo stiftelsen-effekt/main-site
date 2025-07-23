@@ -313,31 +313,36 @@ export const DonorPane: React.FC<{
                 {text.privacy_policy_link && (
                   <div style={{ marginTop: "10px" }}>
                     {text.require_privacy_policy_checkbox && (
-                      <CheckBoxWrapper>
-                        <HiddenCheckBox
-                          data-cy="privacy-policy-checkbox"
-                          type="checkbox"
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                            }
-                          }}
-                          {...register("privacyPolicy", {
-                            required: true,
-                            onChange() {
-                              (document.activeElement as HTMLElement).blur();
-                            },
-                          })}
-                        />
-                        <CustomCheckBox
-                          label={text.privacy_policy_text}
-                          hyperlink={{
-                            text: text.privacy_policy_link.title ?? "Privacy Policy",
-                            url: `/${text.privacy_policy_link.slug}`,
-                          }}
-                          checked={watch("privacyPolicy")}
-                        />
-                      </CheckBoxWrapper>
+                      <>
+                        <CheckBoxWrapper>
+                          <HiddenCheckBox
+                            data-cy="privacy-policy-checkbox"
+                            type="checkbox"
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                              }
+                            }}
+                            {...register("privacyPolicy", {
+                              required: true,
+                              onChange() {
+                                (document.activeElement as HTMLElement).blur();
+                              },
+                            })}
+                          />
+                          <CustomCheckBox
+                            label={text.privacy_policy_text}
+                            hyperlink={{
+                              text: text.privacy_policy_link.title ?? "Privacy Policy",
+                              url: `/${text.privacy_policy_link.slug}`,
+                            }}
+                            checked={watch("privacyPolicy")}
+                          />
+                        </CheckBoxWrapper>
+                        {errors.privacyPolicy && (
+                          <ErrorField text={text.privacy_policy_required_error_text} />
+                        )}
+                      </>
                     )}
                     {!text.require_privacy_policy_checkbox && (
                       <>
