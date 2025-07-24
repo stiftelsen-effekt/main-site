@@ -10,15 +10,15 @@ import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphC
 import { getRemInPixels } from "../../../../../main/blocks/Paragraph/Citation";
 import * as d3 from "d3";
 import { DateTime } from "luxon";
+import { Cumulativedonationstableheaders } from "../../../../../../studio/sanity.types";
 export type DailyDonations = { date: string; sum: string }[];
 
 export interface CumulativeDonationsTextConfig {
   millionAbbreviation?: string;
   locale?: string;
-  tableText?: {
-    dateColumnHeader?: string;
-    dayOfYearColumnHeader?: string;
-    cumulativeSumColumnHeader?: string;
+  textConfig?: {
+    normalizeYAxisText?: string;
+    directDonationsText?: string;
   };
 }
 
@@ -26,7 +26,8 @@ export const CumulativeDonations: React.FC<{
   dailyDonations: DailyDonations;
   graphContext: GraphContextData;
   textConfig?: CumulativeDonationsTextConfig;
-}> = ({ dailyDonations, graphContext, textConfig }) => {
+  tableHeaders?: Cumulativedonationstableheaders;
+}> = ({ dailyDonations, graphContext, textConfig, tableHeaders }) => {
   const graphContainerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -67,8 +68,8 @@ export const CumulativeDonations: React.FC<{
     [cumulativebinneddonations, size],
   );
   const tableContents = useMemo(
-    () => computeTableContents(cumulativebinneddonations, textConfig?.tableText),
-    [cumulativebinneddonations, textConfig?.tableText],
+    () => computeTableContents(cumulativebinneddonations, tableHeaders),
+    [cumulativebinneddonations, tableHeaders],
   );
 
   const drawGraph = useCallback(
@@ -412,11 +413,7 @@ const computeYearlyMaxes = (don: any[], height: number) => {
 
 const computeTableContents = (
   cumulativebinneddonations: CumulativeBinnedDonations,
-  tableText?: {
-    dateColumnHeader?: string;
-    dayOfYearColumnHeader?: string;
-    cumulativeSumColumnHeader?: string;
-  },
+  headers?: Cumulativedonationstableheaders,
 ) => {
   return {
     rows: [
@@ -424,9 +421,9 @@ const computeTableContents = (
         _key: "header",
         _type: "row",
         cells: [
-          tableText?.dateColumnHeader || "Dato (ISO 8601)",
-          tableText?.dayOfYearColumnHeader || "Dag i året",
-          tableText?.cumulativeSumColumnHeader || "Kumulativ sum",
+          headers?.date || "Dato (ISO 8601)",
+          headers?.day_of_year || "Dag i året",
+          headers?.cumulative_sum || "Kumulativ sum",
         ],
       },
       ...cumulativebinneddonations.map((r) => ({

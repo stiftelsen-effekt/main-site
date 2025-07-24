@@ -178,8 +178,14 @@ export const ResultContentRenderer: React.FC<{
                               millionAbbreviation:
                                 textConfig.textConfiguration?.millionAbbreviation,
                               locale: textConfig.textConfiguration?.locale,
-                              tableText: block.tableText,
+                              textConfig: {
+                                normalizeYAxisText:
+                                  textConfig.textConfiguration?.normalizeYAxisText,
+                                directDonationsText:
+                                  textConfig.textConfiguration?.directDonationsText,
+                              },
                             }}
+                            tableHeaders={block.table_headers}
                           />
                         );
                       case "resultsoutput":
@@ -194,6 +200,7 @@ export const ResultContentRenderer: React.FC<{
                         if (!data) {
                           return "Did not find data for output type " + block.outputType;
                         }
+                        console.log(block);
                         return (
                           <ResultsOutput
                             key={block._key || block._id}
@@ -206,6 +213,7 @@ export const ResultContentRenderer: React.FC<{
                             links={block.links}
                             textConfig={textConfig.textConfiguration}
                             startYear={resultOutputStartYear}
+                            tableHeaders={block.table_headers}
                           ></ResultsOutput>
                         );
                       case "referralgraph":

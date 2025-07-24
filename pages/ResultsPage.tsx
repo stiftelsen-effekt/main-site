@@ -217,11 +217,7 @@ const fetchResults = groq`
         },
         _type == 'cumulativedonationsgraph' => {
           ...,
-          tableText {
-            dateColumnHeader,
-            dayOfYearColumnHeader,
-            cumulativeSumColumnHeader
-          }
+          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.cumulative_donations_table_headers,
         },
         _type == 'referralgraph' => {
           ...,
@@ -232,7 +228,11 @@ const fetchResults = groq`
             donationCountColumnHeader
           }
         },
-        _type != 'resultsoutput' && _type != 'reference' => @,
+        _type == 'resultsoutput' => {
+          ...,
+          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.output_donations_table_headers,
+        },
+        _type != 'reference' => @,
       },
     },
     header {
