@@ -171,6 +171,12 @@ export default defineType({
       group: "footer",
     }),
     defineField({
+      name: "footer_email_label",
+      title: "Footer newsletter email label",
+      type: "string",
+      group: "footer",
+    }),
+    defineField({
       name: "cookie_banner_configuration",
       title: "Cookie banner configuration",
       type: "object",

@@ -11,12 +11,6 @@ export default defineType({
       name: "graphcontext",
       title: "Graph Context",
     }),
-    defineField({
-      type: "cumulativedonationstabletext",
-      name: "tableText",
-      title: "Table Text Configuration",
-      description: "Configure the table headers and text",
-    }),
   ],
   preview: {
     select: {

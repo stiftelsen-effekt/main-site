@@ -10,6 +10,7 @@ interface PaymentMethodConfiguration {
     | "quickpay_card"
     | "quickpay_mobilepay";
   recurringOptions: RecurringDonation[];
+  openExternalPaymentOnRegisterSuccess?: boolean;
 }
 
 export const bankConfiguration: PaymentMethodConfiguration = {
@@ -40,11 +41,13 @@ export const avtalegiroConfiguration: PaymentMethodConfiguration = {
 export const quickpayCardConfiguration: PaymentMethodConfiguration = {
   id: "quickpay_card",
   recurringOptions: [RecurringDonation.RECURRING, RecurringDonation.NON_RECURRING],
+  openExternalPaymentOnRegisterSuccess: true,
 };
 
 export const quickpayMobilePayConfiguration: PaymentMethodConfiguration = {
   id: "quickpay_mobilepay",
   recurringOptions: [RecurringDonation.RECURRING, RecurringDonation.NON_RECURRING],
+  openExternalPaymentOnRegisterSuccess: true,
 };
 
 export const paymentMethodConfigurations = [

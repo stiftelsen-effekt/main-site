@@ -27,18 +27,6 @@ export default defineType({
       name: "allow_table",
       title: "Allow table view of data",
     }),
-    defineField({
-      type: "string",
-      name: "table_label",
-      title: "Table label",
-      description: "The label for the table expander",
-    }),
-    defineField({
-      type: "string",
-      name: "table_close_label",
-      title: "Table close label",
-      description: "The label for the table close label",
-    }),
   ],
   preview: {
     select: {
@@ -49,7 +37,5 @@ export default defineType({
   initialValue: {
     allow_table: true,
     detailed_description_label: "Se detaljert beskrivelse av grafen",
-    table_label: "Se data som tabell",
-    table_close_label: "Skjul tabell",
   },
 });

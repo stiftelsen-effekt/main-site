@@ -47,6 +47,7 @@ import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
 import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
 import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
 import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
+import { FormsparkForm } from "./FormSparkForm/FormSparkForm";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -189,6 +190,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 header={block.header}
                 formurl={block.formurl}
                 sendlabel={block.sendlabel}
+                emailLabel={block.emailLabel}
+                locale={stegaClean(block.locale)}
               ></NewsletterSignup>
             );
           case "htmlembed":
@@ -504,6 +507,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 readMoreButton={block.read_more_button}
               />
             );
+          case "formsparkform":
+            return <FormsparkForm key={block._key || block._id} formData={block} />;
           default:
             return block._type;
         }

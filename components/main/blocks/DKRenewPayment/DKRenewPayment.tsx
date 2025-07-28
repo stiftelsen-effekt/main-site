@@ -19,7 +19,7 @@ export const DKRenewPayment: React.FC<{
           setIsLoading(false);
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_EFFEKT_API}/prod/renew-payment`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_EFFEKT_API}/api/renew-payment `, {
           method: "POST",
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -64,7 +64,7 @@ export const DKRenewPayment: React.FC<{
 
   return (
     <EffektButton onClick={handleRenewClick} className="renew-payment-button">
-      Renew Payment
+      Forny betaling
     </EffektButton>
   );
 };

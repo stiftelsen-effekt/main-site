@@ -92,12 +92,14 @@ import resultstext from "./types/resultstext";
 import outputmapping from "./types/outputmapping";
 import organizationmapping from "./types/organizationmapping";
 import referraltypemapping from "./types/referraltypemapping";
-import cumulativedonationstabletext from "./types/cumulativedonationstabletext";
+import cumulativedonationstableheaders from "./types/cumulativedonationstableheaders";
 import referralstabletext from "./types/referralstabletext";
 import quickpaycard from "./types/paymentmethods/quickpaycard";
 import quickpaymobilepay from "./types/paymentmethods/quickpaymobilepay";
 import dkrenewpayment from "./types/dkrenewpayment";
 import mediacoverageteaser from "./types/mediacoverageteaser";
+import outputdonationstableheaders from "./types/outputdonationstableheaders";
+import formsparkform from "./types/formspark";
 
 const paymentMethods = [
   vipps,
@@ -195,10 +197,12 @@ export const types = [
   outputmapping,
   organizationmapping,
   referraltypemapping,
-  cumulativedonationstabletext,
+  cumulativedonationstableheaders,
+  outputdonationstableheaders,
   referralstabletext,
   dkrenewpayment,
   mediacoverageteaser,
+  formsparkform,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

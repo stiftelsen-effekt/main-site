@@ -3,7 +3,7 @@ import { Mail } from "react-feather";
 
 export default defineType({
   name: "newslettersignup",
-  type: "object",
+  type: "document",
   title: "Newsletter signup",
   icon: Mail,
   fields: [
@@ -21,6 +21,12 @@ export default defineType({
       name: "sendlabel",
       type: "string",
       title: "Button text",
+    }),
+    defineField({
+      name: "emailLabel",
+      type: "string",
+      title: "Email input placeholder",
+      initialValue: "E-POST",
     }),
   ],
 });

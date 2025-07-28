@@ -354,6 +354,19 @@ export default defineType({
       initialValue: false,
       description: "If true, the user must check the privacy policy checkbox to proceed",
     }),
+    defineField({
+      name: "privacy_policy_required_error_text",
+      title: "Privacy policy required error text",
+      type: "string",
+      group: "pane2",
+      validation: (Rule) =>
+        Rule.custom((value, ctx) => {
+          if ((ctx.parent as any).require_privacy_policy_checkbox && !value) {
+            return "Privacy policy required error text is required when require privacy policy checkbox is enabled.";
+          }
+          return true;
+        }),
+    }),
     // Button text pane 2
     defineField({
       name: "pane2_button_text",
@@ -363,6 +376,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     // Referrals header pane 3
+    defineField({
+      name: "show_referrals",
+      title: "Show referrals",
+      type: "boolean",
+      group: "referrals",
+      initialValue: true,
+    }),
     defineField({
       name: "referrals_title",
       title: "Referrals header",

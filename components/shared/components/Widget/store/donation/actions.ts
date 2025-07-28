@@ -184,8 +184,11 @@ export const draftAvtaleGiroAction = actionCreator.async<undefined, undefined, E
   "DRAFT_AVTALEGIRO",
 );
 
+export type RegisterDonationActionPayload = {
+  openExternalPaymentOnRegisterSuccess?: boolean;
+};
 export const registerDonationAction = actionCreator.async<
-  undefined,
+  RegisterDonationActionPayload,
   RegisterDonationResponse,
   Error
 >("REGISTER_DONATION");

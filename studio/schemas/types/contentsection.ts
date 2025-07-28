@@ -95,6 +95,7 @@ export default defineType({
         { type: "dkmembershipdisplay" },
         { type: "dkrenewpayment" },
         { type: "mediacoverageteaser" },
+        { type: "formsparkform" },
       ],
       options: {
         modal: { type: "dialog", width: "auto" },

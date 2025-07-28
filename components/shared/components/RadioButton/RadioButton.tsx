@@ -6,9 +6,10 @@ export const RadioButton: React.FC<{
   name: string;
   title: string;
   disabled?: boolean;
+  required?: boolean;
   data_cy: string;
   onSelect: () => void;
-}> = ({ selected, name, title, disabled, data_cy, onSelect }) => {
+}> = ({ selected, name, title, disabled, required, data_cy, onSelect }) => {
   const uniqueId = useId();
   const uniqueName = `${name}-${uniqueId}`;
 
@@ -26,6 +27,7 @@ export const RadioButton: React.FC<{
           if (disabled) return;
           onSelect();
         }}
+        required={required}
       />
       <div className={styles.radiobuttonlabel}>{title}</div>
     </label>

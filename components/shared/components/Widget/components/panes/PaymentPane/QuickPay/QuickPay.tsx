@@ -35,12 +35,14 @@ export const QuickPayPane: React.FC<{
           {recurring ? config.recurring_button_text : config.single_button_text}
         </EffektButton>
 
-        <Referrals
-          text={{
-            referrals_title: referrals.referrals_title,
-            other_referral_input_placeholder: referrals.other_referral_input_placeholder,
-          }}
-        />
+        {!(referrals.show_referrals === false) && (
+          <Referrals
+            text={{
+              referrals_title: referrals.referrals_title,
+              other_referral_input_placeholder: referrals.other_referral_input_placeholder,
+            }}
+          />
+        )}
       </PaneContainer>
     </Pane>
   );

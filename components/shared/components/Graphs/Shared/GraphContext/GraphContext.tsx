@@ -8,6 +8,7 @@ import { PortableText } from "@portabletext/react";
 import styles from "./GraphContext.module.scss";
 import { EffektButton } from "../../../EffektButton/EffektButton";
 import { Download } from "react-feather";
+import { Cumulativedonationstableheaders } from "../../../../../../studio/sanity.types";
 
 export type GraphContextData = {
   description: string;
@@ -16,6 +17,7 @@ export type GraphContextData = {
   allow_table: boolean;
   table_label: string;
   table_close_label: string;
+  locale?: string;
 };
 
 export const GraphContext: React.FC<{

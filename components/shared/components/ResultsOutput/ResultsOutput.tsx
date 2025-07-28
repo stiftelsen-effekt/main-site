@@ -16,6 +16,7 @@ import { LinkComponent, Links, LinksProps } from "../../../main/blocks/Links/Lin
 import { GraphContextData } from "../Graphs/Shared/GraphContext/GraphContext";
 import { NavLink } from "../Navbar/Navbar";
 import { Toggle } from "../Widget/components/shared/Toggle/Toggle";
+import { Outputdonationstableheaders } from "../../../../studio/sanity.types";
 
 export type TransformedMonthlyDonationsPerOutput = {
   via: string;
@@ -58,6 +59,7 @@ export const ResultsOutput: React.FC<{
   };
   startYear: number;
   textConfig?: ResultsOutputTextConfig;
+  tableHeaders?: Outputdonationstableheaders;
 }> = ({
   graphData,
   outputCountries,
@@ -68,6 +70,7 @@ export const ResultsOutput: React.FC<{
   links,
   startYear,
   textConfig,
+  tableHeaders,
 }) => {
   const transformedMonthlyDonationsPerOutput: TransformedMonthlyDonationsPerOutput = useMemo(
     () =>
@@ -142,6 +145,7 @@ export const ResultsOutput: React.FC<{
         graphContext={graphContext}
         startYear={startYear}
         locale={textConfig?.locale}
+        tableHeaders={tableHeaders}
       ></Outputs>
 
       <div className={styles.organizations}>

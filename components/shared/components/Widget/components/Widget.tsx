@@ -241,6 +241,7 @@ export const Widget = withStaticProps(
                 show_name_field: widget.show_name_field,
                 allow_anonymous_donations: widget.allow_anonymous_donations,
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
+                privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
               }}
               paymentMethods={availablePaymentMethods}
             />

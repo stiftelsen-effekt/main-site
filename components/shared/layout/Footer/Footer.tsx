@@ -22,6 +22,8 @@ type QueryResult = {
   footer_newsletter_heading?: string;
   footer_newsletter_form_url?: string;
   footer_newsletter_send_label?: string;
+  footer_email_label?: string;
+  main_locale: string;
 };
 
 export const footerQuery = groq`
@@ -42,7 +44,9 @@ export const footerQuery = groq`
     footer_to_top_label,
     footer_newsletter_heading,
     footer_newsletter_form_url,
-    footer_newsletter_send_label
+    footer_newsletter_send_label,
+    footer_email_label,
+    main_locale,
   }
 `;
 
@@ -62,6 +66,8 @@ const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolea
     footer_newsletter_heading,
     footer_newsletter_form_url,
     footer_newsletter_send_label,
+    footer_email_label,
+    main_locale,
   } = data.result;
 
   const columnCount = footer_columns ? footer_columns.filter((c) => c.links).length : 0;
@@ -114,6 +120,8 @@ const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolea
           header={footer_newsletter_heading}
           formurl={footer_newsletter_form_url}
           sendlabel={footer_newsletter_send_label}
+          emailLabel={footer_email_label}
+          locale={main_locale}
         ></NewsletterSignup>
       </div>
       <div className={`${styles.category} ${styles.sanity}`}>

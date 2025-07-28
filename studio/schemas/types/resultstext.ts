@@ -121,6 +121,38 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      type: "string",
+      name: "table_label",
+      title: "Table label",
+      description: "The label for the table expander (if applicable)",
+    }),
+    defineField({
+      type: "string",
+      name: "table_close_label",
+      title: "Table close label",
+      description: "The label for the table close label (if applicable)",
+    }),
+    defineField({
+      type: "object",
+      name: "table_headers",
+      title: "Table Headers",
+      description: "Headers for the table for various graphs",
+      fields: [
+        {
+          type: "cumulativedonationstableheaders",
+          name: "cumulative_donations_table_headers",
+          title: "Cumulative Donations Table Headers",
+          description: "Headers for the cumulative donations table",
+        },
+        {
+          type: "outputdonationstableheaders",
+          name: "output_donations_table_headers",
+          title: "Output Donations Table Headers",
+          description: "Headers for the output donations table",
+        },
+      ],
+    }),
+    defineField({
       name: "locale",
       title: "Locale",
       type: "string",

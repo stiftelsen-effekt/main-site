@@ -11,6 +11,7 @@ import resultsStyle from "../Shared.module.scss";
 import { useDebouncedCallback } from "use-debounce";
 import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphContext";
 import { TransformedMonthlyDonationsPerOutput } from "../../../ResultsOutput/ResultsOutput";
+import { Outputdonationstableheaders } from "../../../../../../studio/sanity.types";
 
 export type MonthlyDonationsPerOutputResult = {
   output: string;
@@ -49,6 +50,7 @@ export const Outputs: React.FC<{
   locale?: string;
   graphAnnotations?: OutputGraphAnnotation[];
   graphContext: GraphContextData;
+  tableHeaders?: Outputdonationstableheaders;
 }> = ({
   transformedMonthlyDonationsPerOutput,
   output,
@@ -56,6 +58,7 @@ export const Outputs: React.FC<{
   locale,
   graphAnnotations,
   graphContext,
+  tableHeaders,
 }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
@@ -64,7 +67,7 @@ export const Outputs: React.FC<{
   const [requiredWidth, setRequiredWidth] = useState<null | number>(null);
 
   const tableContents = useMemo(
-    () => computeTableContents(transformedMonthlyDonationsPerOutput, output),
+    () => computeTableContents(transformedMonthlyDonationsPerOutput, output, tableHeaders),
     [transformedMonthlyDonationsPerOutput, output],
   );
 
@@ -384,13 +387,23 @@ export const Outputs: React.FC<{
   );
 };
 
-const computeTableContents = (data: TransformedMonthlyDonationsPerOutput, outputName: string) => {
+const computeTableContents = (
+  data: TransformedMonthlyDonationsPerOutput,
+  outputName: string,
+  headers?: Outputdonationstableheaders,
+) => {
   return {
     rows: [
       {
         _key: "header",
         _type: "row",
-        cells: ["Periode", "Organisasjon", outputName, "Fordeling", "Sum donasjoner"],
+        cells: [
+          headers?.period ?? "Periode",
+          headers?.organization ?? "Organisasjon",
+          outputName,
+          headers?.distribution ?? "Fordeling",
+          headers?.sum_donations ?? "Sum donasjoner",
+        ],
       },
       ...data.map((r) => ({
         _key: r.period + r.organization,
