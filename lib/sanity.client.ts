@@ -21,7 +21,9 @@ export function getClient(previewToken?: string): SanityClient {
 
   client.fetch = async function instrumentedFetch(query: string, params?: any, options?: any) {
     if (ACTIVATE_CACHE) {
+      // Create a unique cache key based on the query, params, and options, using a hash
       let k = query + JSON.stringify(params || {}) + JSON.stringify(options || {});
+      // Sha256 hash the key to ensure uniqueness
       const cacheKey = await hash(k, "SHA-256");
       if (cachedFetch.has(cacheKey)) {
         return cachedFetch.get(cacheKey);
@@ -47,14 +49,22 @@ export function getClient(previewToken?: string): SanityClient {
 }
 
 async function hash(message: string, algorithm = "SHA-256") {
-  // Node.js environment
-  if (typeof globalThis.crypto?.subtle === "undefined" && typeof require !== "undefined") {
-    const crypto = require("crypto");
-    const nodeAlgo = algorithm.toLowerCase().replace("-", "");
-    return crypto.createHash(nodeAlgo).update(message).digest("hex");
+  // Check if we're in a Node.js environment with crypto module available
+  if (typeof globalThis.crypto?.subtle === "undefined") {
+    // Use dynamic import for Node.js crypto (works in Vercel builds)
+    try {
+      const { createHash } = await import("crypto");
+      const nodeAlgo = algorithm.toLowerCase().replace("-", "");
+      return createHash(nodeAlgo).update(message).digest("hex");
+    } catch (error) {
+      throw new Error("Crypto API not available in this environment");
+    }
   }
-  // Caching should only be used in CI, so a non-Node.js environment is unexpected
-  throw new Error(
-    "Hashing is not supported in this environment. Please use a Node.js environment or a compatible browser when caching sanity queries.",
-  );
+
+  // Browser environment or modern Node.js with Web Crypto API
+  const encoder = new TextEncoder();
+  const data = encoder.encode(message);
+  const hashBuffer = await crypto.subtle.digest(algorithm, data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
