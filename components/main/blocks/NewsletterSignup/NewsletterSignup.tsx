@@ -40,7 +40,7 @@ export const NewsletterSignup: React.FC<{
     }
   };
 
-  if (locale === "nb" || locale === "sv") {
+  if (locale === "no" || locale === "sv") {
     /* This is a modified version of mailchimps embedded subscribe-element
      see docs/mailchimp.html for the original version */
     if (!formurl) return <span>Newsletter missing formurl</span>;
