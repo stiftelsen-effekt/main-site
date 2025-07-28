@@ -34,7 +34,7 @@ export type MainNavbarGroup = {
 
 export type MainNavbarItem = NavLink | MainNavbarGroup;
 
-type QueryResult = {
+export type NavBarQueryResult = {
   settings: {
     logo: SanityImageObject;
     main_navigation: MainNavbarItem[];
@@ -98,6 +98,8 @@ const query = groq`
 }
 `;
 
+let cachedNavbarResult: NavBarQueryResult | null = null;
+
 export const Navbar = withStaticProps(
   async ({
     dashboard,
@@ -108,7 +110,14 @@ export const Navbar = withStaticProps(
     draftMode: boolean;
     useDashboardLogo?: boolean;
   }) => {
-    const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
+    let result;
+
+    if (cachedNavbarResult) {
+      result = cachedNavbarResult;
+    } else {
+      result = await getClient(draftMode ? token : undefined).fetch<NavBarQueryResult>(query);
+      cachedNavbarResult = result;
+    }
 
     return {
       dashboard,
