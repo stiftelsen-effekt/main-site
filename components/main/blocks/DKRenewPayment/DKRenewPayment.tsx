@@ -64,7 +64,7 @@ export const DKRenewPayment: React.FC<{
 
   return (
     <EffektButton onClick={handleRenewClick} className="renew-payment-button">
-      Renew Payment
+      Forny betaling
     </EffektButton>
   );
 };
