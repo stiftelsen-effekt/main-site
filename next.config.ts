@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["react-feather"],
     inlineCss: true,
+    staticGenerationMinPagesPerWorker: Number.MAX_SAFE_INTEGER, // Do all static generation in a single worker
   },
   turbopack: {},
   compiler: {
