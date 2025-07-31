@@ -200,7 +200,6 @@ export const ResultContentRenderer: React.FC<{
                         if (!data) {
                           return "Did not find data for output type " + block.outputType;
                         }
-                        console.log(block);
                         return (
                           <ResultsOutput
                             key={block._key || block._id}

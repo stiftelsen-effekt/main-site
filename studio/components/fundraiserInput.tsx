@@ -106,7 +106,7 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
       }
     };
 
-    if (error) return <Text tone="critical">{error}</Text>;
+    if (error) return <Text>{error}</Text>;
 
     return (
       <div ref={ref}>
