@@ -440,6 +440,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 links={block.links}
                 button={block.button}
                 people={block.people}
+                locale={stegaClean(block.locale)}
               />
             );
           }

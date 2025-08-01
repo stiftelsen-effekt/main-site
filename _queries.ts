@@ -669,6 +669,7 @@ export const pageContentQuery = `content[hidden!=true] {
         },
       },
       people[]->,
+      "locale": *[ _type == "site_settings"][0].main_locale,
     },
     _type == 'plausiblerevenuetracker' => {
       ...,
