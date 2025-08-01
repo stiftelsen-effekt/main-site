@@ -17,6 +17,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "first_name",
+      type: "string",
+      title: "First Name",
+      validation: (Rule) => Rule.required(),
+      description: "Optional first, name, used for when only the first name is displayed.",
+    }),
+    defineField({
       name: "email",
       type: "string",
       title: "Email",

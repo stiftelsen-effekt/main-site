@@ -35,8 +35,6 @@ export default defineType({
       intervention1: "interventions[0].title",
       intervention2: "interventions[1].title",
       intervention3: "interventions[2].title",
-      intervention4: "interventions[3].title",
-      intervention5: "interventions[4].title",
     },
     prepare: ({
       intervention1,

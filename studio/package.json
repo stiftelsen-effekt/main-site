@@ -18,16 +18,16 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/table": "^1.1.2",
-    "@sanity/ui": "^2.1.4",
-    "@sanity/vision": "^3.38.0",
+    "@sanity/table": "^1.1.4",
+    "@sanity/ui": "^3.0.5",
+    "@sanity/vision": "^4.2.0",
     "eslint": "^8.6.0",
     "katex": "^0.16.9",
     "prop-types": "^15.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.9",
-    "sanity": "^3.95.0",
+    "sanity": "^4.2.0",
     "styled-components": "^6.1.15"
   },
   "repository": {

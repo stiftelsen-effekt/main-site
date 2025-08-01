@@ -166,11 +166,12 @@ export const ResultsPage = withStaticProps(
           graphData={graphData}
           textConfig={{
             textConfiguration: page.textConfiguration ?? undefined,
-            outputMappings:
-              page.outputMappings?.filter(
-                (m): m is { sanityKey: string; dataKey: string } =>
-                  m.sanityKey !== null && m.dataKey !== null,
-              ) ?? undefined,
+            outputMappings: page.outputMappings
+              ? (page.outputMappings.filter((m) => m.sanityKey !== null && m.dataKey !== null) as {
+                  sanityKey: string;
+                  dataKey: string;
+                }[])
+              : undefined,
             organizationMappings:
               page.organizationMappings?.filter(
                 (m): m is { abbreviation: string; fullName: string } =>

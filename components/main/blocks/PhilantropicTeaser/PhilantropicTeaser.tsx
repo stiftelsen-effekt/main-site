@@ -14,7 +14,8 @@ export const PhilantropicTeaser: React.FC<{
     link: NavLink;
   };
   people: ContributorType[];
-}> = ({ title, description, links, button, people }) => {
+  locale?: string;
+}> = ({ title, description, links, button, people, locale }) => {
   return (
     <div className={styles.container}>
       <div className={styles.description}>
@@ -33,7 +34,7 @@ export const PhilantropicTeaser: React.FC<{
       </div>
       <div className={styles.people}>
         {people.map((person) => (
-          <Contributor {...person} key={person._id} contactLink />
+          <Contributor {...person} key={person._id} locale={locale} contactLink />
         ))}
       </div>
     </div>
