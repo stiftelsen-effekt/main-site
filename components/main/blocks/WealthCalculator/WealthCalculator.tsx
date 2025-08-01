@@ -6,7 +6,6 @@ import {
   WealthCalculatorPeriodAdjustment,
 } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { BlockContentRenderer } from "../BlockContentRenderer";
-import { InterventionWidgetOutputConfiguration } from "../InterventionWidget/InterventionWidgetOutput";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 import { WealthCalculatorInput, WealthCalculatorInputConfiguration } from "./WealthCalculatorInput";
@@ -17,7 +16,7 @@ import {
   getEstimatedPostTaxIncome,
 } from "./_util";
 import { WealthCalculatorSlider, WealthCalculatorSliderConfig } from "./WealthCalculatorSlider";
-import { WealthCalculatorImpact } from "./WealthCalculatorImpact";
+import { WealthCalculatorImpact, WealthCalculatorImpactConfig } from "./WealthCalculatorImpact";
 import {
   AdjustedPPPFactorResult,
   getDanishAdjustedPPPconversionFactor,
@@ -40,11 +39,7 @@ export type WealthCalculatorConfiguration = {
 type WealthCalculatorProps = {
   title: string;
   configuration: WealthCalculatorConfiguration;
-  intervention_configuration: {
-    output_configuration: InterventionWidgetOutputConfiguration;
-    currency: string;
-    locale: string;
-  };
+  impactConfiguration?: WealthCalculatorImpactConfig;
   periodAdjustment: WealthCalculatorPeriodAdjustment;
   locale: string;
 };
@@ -52,7 +47,7 @@ type WealthCalculatorProps = {
 export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   title,
   configuration,
-  intervention_configuration,
+  impactConfiguration,
   periodAdjustment,
   locale,
 }) => {
@@ -76,7 +71,11 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   const [loadingPostTaxIncome, setLoadingPostTaxIncome] = useState(false);
   const [postTaxIncome, setPostTaxIncome] = useState<number>(0);
   const [explanationOpen, setExplanationOpen] = useState(false);
-  const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult | undefined>();
+  const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult>({
+    adjustedPPPfactor: 7,
+    cumulativeInflation: 0,
+    pppFactor: 7,
+  });
 
   /**
    * Get the adjusted PPP conversion factor for the locale.
@@ -133,10 +132,6 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
    * in the household. We use the OECD modified scale to calculate the equvivalized income.
    */
   const equvivalizedIncome = equvivalizeIncome(postTaxIncome, numberOfChildren, numberOfAdults);
-
-  if (!pppConversion) {
-    return <></>;
-  }
 
   return (
     <div className={styles.wrapper}>
@@ -245,16 +240,19 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           <BlockContentRenderer content={[data_explanation]} />
         </div>
       </AnimateHeight>
-      {intervention_configuration && (
+      {impactConfiguration && (
         <WealthCalculatorImpact
           donationPercentage={donationPercentage}
           setDonationPercentage={setDonationPercentage}
           postTaxIncome={postTaxIncome}
-          intervention_configuration={{
-            ...intervention_configuration,
-            output_configuration: {
-              ...intervention_configuration.output_configuration,
-              donate_button: false, // Override the donate button to not show on wealth calculator, since there is already a donate button in the calculator
+          config={{
+            ...impactConfiguration,
+            intervention_configuration: {
+              ...impactConfiguration.intervention_configuration,
+              output_configuration: {
+                ...impactConfiguration.intervention_configuration.output_configuration,
+                donate_button: false, // Override the donate button to not show on wealth calculator, since there is already a donate button in the calculator
+              },
             },
           }}
         />

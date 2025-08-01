@@ -19,17 +19,21 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "intervention_configuration",
-      type: "object",
-      title: "Intervention Configuration",
-      fields: [
-        defineField({
-          name: "output_configuration",
-          type: "reference",
-          to: [{ type: "interventionwidgetoutputconfiguration" }],
-          validation: (Rule) => Rule.required(),
-        }),
-      ],
+      name: "impact_configuration",
+      type: "reference",
+      to: [{ type: "wealthcalculatorimpact" }],
+      description:
+        "Optional impact configuration for the wealth calculator. Will show a section below the calculator with a description and a button to open the donation widget.",
     }),
   ],
+  preview: {
+    select: {
+      title: "title",
+    },
+    prepare({ title }) {
+      return {
+        title: title || "Wealth Calculator",
+      };
+    },
+  },
 });

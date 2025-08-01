@@ -105,7 +105,7 @@ export const getDanishTaxEstimate = async (
   const kommuneSkat = taxable * KOMMUNE_SKAT_PCT;
   const topSkat = Math.max(0, taxable - TOP_SKAT_THRESHOLD) * TOP_SKAT_PCT;
   const skatteLoft = Math.max(0, (income - amBidrag) * SKATTELOFT_PCT);
-  const totalTax = income - amBidrag - Math.min(kommuneSkat + bundSkat + topSkat, skatteLoft);
+  const totalTax = amBidrag + Math.min(kommuneSkat + bundSkat + topSkat, skatteLoft);
 
   if (periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY) {
     return totalTax / 12;
