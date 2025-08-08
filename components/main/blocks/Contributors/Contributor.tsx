@@ -8,20 +8,36 @@ export type ContributorType = {
   image: SanityImageObject;
   displayImage?: boolean;
   name: string;
+  first_name?: string; // Optional first name for display purposes
   email?: string;
   subrole?: string;
   additional?: string;
 };
 
-export const Contributor: React.FC<ContributorType & { contactLink?: boolean }> = ({
+export const Contributor: React.FC<
+  ContributorType & { contactLink?: boolean; locale?: string }
+> = ({
   image,
   displayImage = true,
   name,
+  first_name,
   email,
   subrole,
   additional,
   contactLink = false,
+  locale = "no", // Default locale
 }) => {
+  let contactString = "";
+  if (locale === "no") {
+    contactString = "Ta kontakt med";
+  } else if (locale === "dk") {
+    contactString = "Tag kontakt med";
+  } else if (locale === "sv") {
+    contactString = "Ta kontakt med";
+  } else {
+    contactString = "Contact ";
+  }
+
   return (
     <div className={styles.contributor}>
       {image != null && displayImage && (
@@ -35,8 +51,11 @@ export const Contributor: React.FC<ContributorType & { contactLink?: boolean }> 
       {contactLink ? (
         <a href={`mailto:${email}`}>
           <span className={styles.contributor__email + " caption"}>
-            → Ta kontakt
-            <span className={styles.contributor__email_name}> med {name.split(" ")[0]}</span>
+            → {contactString}
+            <span className={styles.contributor__email_name}>
+              {" "}
+              {first_name ? first_name : name.split(" ")[0]}
+            </span>
           </span>
         </a>
       ) : (

@@ -504,18 +504,21 @@ export const pageContentQuery = `content[hidden!=true] {
           },
         },
       },
-      intervention_configuration {
+      impact_configuration->{
         ...,
-        output_configuration->{
+        intervention_configuration {
           ...,
-          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
-          "locale": *[ _type == "site_settings"][0].main_locale,
-          explanation_links[] {
-            ${linksSelectorQuery}
+          output_configuration->{
+            ...,
+            "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+            "locale": *[ _type == "site_settings"][0].main_locale,
+            explanation_links[] {
+              ${linksSelectorQuery}
+            },
           },
+          "currency": *[ _type == "site_settings"][0].main_currency,
+          "locale": *[ _type == "site_settings"][0].main_locale,
         },
-        "currency": *[ _type == "site_settings"][0].main_currency,
-        "locale": *[ _type == "site_settings"][0].main_locale,
       },
       "currency": *[ _type == "site_settings"][0].main_currency,
       "locale": *[ _type == "site_settings"][0].main_locale,
@@ -666,6 +669,7 @@ export const pageContentQuery = `content[hidden!=true] {
         },
       },
       people[]->,
+      "locale": *[ _type == "site_settings"][0].main_locale,
     },
     _type == 'plausiblerevenuetracker' => {
       ...,

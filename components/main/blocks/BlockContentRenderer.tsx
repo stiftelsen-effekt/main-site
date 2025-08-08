@@ -253,7 +253,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 key={block._key || block._id}
                 title={block.title}
                 configuration={block.configuration}
-                intervention_configuration={block.intervention_configuration}
+                impactConfiguration={block.impact_configuration}
                 periodAdjustment={calcPeriod}
                 locale={stegaClean(block.locale)}
               />
@@ -440,6 +440,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 links={block.links}
                 button={block.button}
                 people={block.people}
+                locale={stegaClean(block.locale)}
               />
             );
           }

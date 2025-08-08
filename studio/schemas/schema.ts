@@ -100,6 +100,7 @@ import dkrenewpayment from "./types/dkrenewpayment";
 import mediacoverageteaser from "./types/mediacoverageteaser";
 import outputdonationstableheaders from "./types/outputdonationstableheaders";
 import formsparkform from "./types/formspark";
+import wealthcalculatorimpact from "./types/wealthcalculatorimpact";
 
 const paymentMethods = [
   vipps,
@@ -157,6 +158,7 @@ export const types = [
   wealthcalculator,
   wealthcalculatorteaser,
   wealthcalculatorconfiguration,
+  wealthcalculatorimpact,
   contributorlist,
   inngress,
   fundraiserchart,
