@@ -51,7 +51,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
         }}
         style={accentStyles}
       >
-        {donateLabel || "Gi."}
+        {donateLabel || "Giv."}
       </button>
     </div>
   );
