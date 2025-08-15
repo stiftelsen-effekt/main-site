@@ -1,7 +1,7 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
-  projectId: "2k8sn9h2",
+  projectId: "wfkg9n",
   chromeWebSecurity: false,
   e2e: {
     // We've imported your old cypress plugins here.
