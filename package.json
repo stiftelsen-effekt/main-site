@@ -12,6 +12,7 @@
     "lint": "next lint",
     "cypress:no": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-no.config.ts",
     "cypress:se": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-se.config.ts",
+    "cypress:dk": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-dk.config.ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "format": "prettier --write \"./**/*{js,ts,jsx,tsx,json,md,css,scss,yml}\"",
