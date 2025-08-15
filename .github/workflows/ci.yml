@@ -1,5 +1,7 @@
 name: ci
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+permissions:
+  contents: read
 on: [deployment_status]
 jobs:
   e2e-no:
