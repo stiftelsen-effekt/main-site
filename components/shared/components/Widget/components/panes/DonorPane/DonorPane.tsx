@@ -1,6 +1,7 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import Organisationsnummer from "organisationsnummer";
 import Personnummer from "personnummer";
+import { validateCpr, formatCprInput } from "../../../../../../../util/cpr-validation";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -38,7 +39,7 @@ const capitalizeNames = (string: string) => {
 };
 
 export const DonorPane: React.FC<{
-  locale: "en" | "no" | "sv" | "et";
+  locale: "en" | "no" | "sv" | "et" | "dk";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
@@ -74,6 +75,16 @@ export const DonorPane: React.FC<{
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
   const selectedPaymentMethod = watch("method");
+
+  const handleSsnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    // Format CPR input for Danish locale
+    if (locale === "dk" && taxDeductionChecked) {
+      const formattedValue = formatCprInput(value);
+      e.target.value = formattedValue;
+    }
+  };
 
   const paneSubmitted = handleSubmit((data) => {
     if (!isAnonymous) {
@@ -266,6 +277,7 @@ export const DonorPane: React.FC<{
                         placeholder={text.tax_deduction_ssn_placeholder}
                         {...register("ssn", {
                           required: false,
+                          onChange: handleSsnChange,
                           validate: (val, formValues) => {
                             if (formValues.isAnonymous || !taxDeductionChecked) return true;
                             const trimmed = val.toString().trim();
@@ -274,6 +286,8 @@ export const DonorPane: React.FC<{
                                 return validateSsnNo(trimmed);
                               } else if (locale === "sv") {
                                 return validateSsnSe(trimmed);
+                              } else if (locale === "dk") {
+                                return validateCpr(trimmed).isValid;
                               } else {
                                 return true;
                               }
