@@ -2,7 +2,7 @@ import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
 import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
-export type WidgetProps = { locale: "no" | "sv" | "en" } & WidgetPane1Props &
+export type WidgetProps = { locale: "no" | "sv" | "en" | "dk" } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
     methods?: Array<

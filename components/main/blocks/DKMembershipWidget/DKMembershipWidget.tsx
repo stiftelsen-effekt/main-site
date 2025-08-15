@@ -1,31 +1,12 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import styles from "./DKMembershipWidget.module.scss";
-import { cprChecksumTest } from "./_util";
+import { validateCpr, formatCprInput, CprValidationResult } from "../../../../util/cpr-validation";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { Dkmembershipwidget } from "../../../../studio/sanity.types";
 import { MembershipCountrySelector } from "./CountrySelector";
 
 // --- Helper Functions ---
-// Basic CPR validation (can be expanded with checksum logic)
-interface CprValidationResult {
-  isValid: boolean;
-  isSuspicious: boolean;
-  message?: string;
-}
-
-const validateCpr = (cpr: string): CprValidationResult => {
-  if (cprChecksumTest(cpr)) {
-    return { isValid: true, isSuspicious: false };
-  }
-
-  const cleanedCpr = cpr.replace(/-/g, "");
-  if (!/^\d{10}$/.test(cleanedCpr)) {
-    return { isValid: false, isSuspicious: false, message: "CPR must be 10 digits." };
-  }
-
-  return { isValid: false, isSuspicious: true, message: "Suspicious CPR number." };
-};
 
 interface MembershipFormData {
   country: string;
@@ -103,16 +84,10 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
 
   const handleCprChange = (e: ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
-    const digits = value.replace(/\D/g, "");
 
     let formattedCpr = "";
     if (isDenmarkSelected) {
-      if (digits.length > 0) {
-        formattedCpr = digits.substring(0, Math.min(6, digits.length));
-      }
-      if (digits.length > 6) {
-        formattedCpr += "-" + digits.substring(6, Math.min(10, digits.length));
-      }
+      formattedCpr = formatCprInput(value);
     } else {
       formattedCpr = value;
     }

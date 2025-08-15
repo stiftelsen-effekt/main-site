@@ -107,6 +107,14 @@ export default defineType({
         "Entry point for dashboard. Please note that this must be an allowed redirect URI in Auth0.",
       validation: (Rule) => Rule.required().custom(isShallowSlug),
     }),
+    defineField({
+      name: "profile_page_enabled",
+      title: "Profile page enabled",
+      type: "boolean",
+      description:
+        "Enable or disable the profile page and related navigation links. When disabled, users won't see profile page links in navigation.",
+      initialValue: true,
+    }),
   ],
   preview: {
     select: {
