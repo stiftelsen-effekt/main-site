@@ -40,13 +40,13 @@ export type NavBarQueryResult = {
     main_navigation: MainNavbarItem[];
     donate_label: string;
     accent_color: string;
-    profile_page_enabled: boolean;
   };
   dashboard: {
     main_navigation: MainNavbarItem[];
     dashboard_logo: SanityImageObject;
     dashboard_label: string;
     logout_label: string;
+    profile_page_enabled: boolean;
   };
 };
 
@@ -56,6 +56,7 @@ const query = groq`
     dashboard_label,
     logout_label,
     dashboard_logo,
+    profile_page_enabled,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -78,7 +79,6 @@ const query = groq`
     logo,
     donate_label,
     accent_color,
-    profile_page_enabled,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -114,12 +114,19 @@ export const Navbar = withStaticProps(
   }) => {
     let result;
 
-    if (cachedNavbarResult) {
+    // Only use cache in production (not in development or draft mode)
+    const isProduction = process.env.NODE_ENV === "production";
+
+    if (cachedNavbarResult && !draftMode && isProduction) {
       result = cachedNavbarResult;
     } else {
       result = await getClient(draftMode ? token : undefined).fetch<NavBarQueryResult>(query);
-      cachedNavbarResult = result;
+      if (!draftMode && isProduction) {
+        cachedNavbarResult = result;
+      }
     }
+
+    console.log(result);
 
     return {
       dashboard,
@@ -139,8 +146,8 @@ export const Navbar = withStaticProps(
     : data.result.settings.main_navigation;
   filteredElements = filteredElements.filter((e) => e !== null);
 
-  // Filter out profile page links if profile page is disabled
-  if (!settingsData.profile_page_enabled) {
+  // Filter out profile page links if profile page is disabled (only applies to dashboard navigation)
+  if (dashboard && !dashboardData.profile_page_enabled) {
     filteredElements = filteredElements.filter((element) => {
       if (element._type === "navgroup") {
         // For navigation groups, filter out profile page items from subitems
@@ -311,26 +318,27 @@ export const Navbar = withStaticProps(
             ),
           )}
           <li className={styles.buttonsWrapper}>
-            {user ? (
-              <EffektButton
-                variant={EffektButtonVariant.SECONDARY}
-                onClick={() =>
-                  logout({ logoutParams: { returnTo: process.env.NEXT_PUBLIC_SITE_URL } })
-                }
-                extraMargin={true}
-              >
-                {labels.logout}
-              </EffektButton>
-            ) : (
-              <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
+            {dashboardData.profile_page_enabled &&
+              (user ? (
                 <EffektButton
                   variant={EffektButtonVariant.SECONDARY}
-                  onClick={() => setExpanded(false)}
+                  onClick={() =>
+                    logout({ logoutParams: { returnTo: process.env.NEXT_PUBLIC_SITE_URL } })
+                  }
+                  extraMargin={true}
                 >
-                  {labels.dashboard}
+                  {labels.logout}
                 </EffektButton>
-              </CustomLink>
-            )}
+              ) : (
+                <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
+                  <EffektButton
+                    variant={EffektButtonVariant.SECONDARY}
+                    onClick={() => setExpanded(false)}
+                  >
+                    {labels.dashboard}
+                  </EffektButton>
+                </CustomLink>
+              ))}
             <EffektButton
               cy="send-donation-button"
               extraMargin={true}

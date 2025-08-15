@@ -19,9 +19,9 @@ import { ConsentState } from "../../middleware.page";
 export async function getProfilePagePath() {
   const result = await getClient().fetch<FetchProfilePageResult>(fetchProfilePage);
 
-  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
+  const dashboardSlug = result?.dashboard?.dashboard_slug?.current;
   const slug = result?.page?.slug?.current;
-  const profilePageEnabled = result?.settings?.[0]?.profile_page_enabled;
+  const profilePageEnabled = result?.dashboard?.profile_page_enabled;
 
   if (!dashboardSlug || !slug || !profilePageEnabled) return null;
 
@@ -45,7 +45,7 @@ export const ProfilePage = withStaticProps(
       fetchProfilePage,
     );
 
-    const profilePageEnabled = result?.settings?.[0]?.profile_page_enabled;
+    const profilePageEnabled = result?.dashboard?.profile_page_enabled;
 
     // If profile page is disabled and not in draft mode, return null to trigger 404
     if (!profilePageEnabled && !draftMode) {
@@ -67,6 +67,7 @@ export const ProfilePage = withStaticProps(
 )(({ data, navbarData, draftMode, profilePageEnabled }) => {
   const page = data.result.page;
   const settings = data.result.settings[0];
+  const dashboard = data.result.dashboard;
 
   if (!data) return <div>Missing data.</div>;
   if (!page) return <div>Missing page data.</div>;
@@ -74,7 +75,7 @@ export const ProfilePage = withStaticProps(
   if (!page.title_template) return <div>Missing title template.</div>;
 
   // Show warning in draft mode when profile page is disabled
-  if (draftMode && !settings?.profile_page_enabled) {
+  if (draftMode && !dashboard?.profile_page_enabled) {
     return (
       <>
         <Head>
@@ -145,21 +146,21 @@ export type ProfilePage = {
 };
 
 type FetchProfilePageResult = {
-  settings: Array<{ title?: string; profile_page_enabled?: boolean }>;
+  settings: Array<{ title?: string }>;
   page: ProfilePage;
-  dashboard: Array<{ dashboard_slug?: { current?: string } }>;
+  dashboard: { dashboard_slug?: { current?: string }; profile_page_enabled?: boolean };
 };
 
 const fetchProfilePage = groq`
 {
   "settings": *[_type == "site_settings"] {
     title,
-    profile_page_enabled,
   },
-  "dashboard": *[_id == "dashboard"] {
+  "dashboard": *[_id == "dashboard"][0] {
     dashboard_slug {
       current
     },
+    profile_page_enabled,
   },
   "page": *[_id == "profile"][0] {
     ...,
