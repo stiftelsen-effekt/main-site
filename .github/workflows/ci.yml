@@ -20,3 +20,12 @@ jobs:
       base-url: ${{ github.event.deployment_status.target_url }}
       config-file: "cypress-se.config.ts"
     secrets: inherit
+  e2e-dk:
+    # only runs this job on successful deploy to giv-effektivt
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'giv-effektivt')
+    uses: ./.github/workflows/e2e.yml
+    with:
+      group: "GivEffektivt e2e tests"
+      base-url: ${{ github.event.deployment_status.target_url }}
+      config-file: "cypress-dk.config.ts"
+    secrets: inherit
