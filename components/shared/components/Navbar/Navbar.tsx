@@ -40,6 +40,7 @@ export type NavBarQueryResult = {
     main_navigation: MainNavbarItem[];
     donate_label: string;
     accent_color: string;
+    profile_page_enabled: boolean;
   };
   dashboard: {
     main_navigation: MainNavbarItem[];
@@ -77,6 +78,7 @@ const query = groq`
     logo,
     donate_label,
     accent_color,
+    profile_page_enabled,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -136,6 +138,21 @@ export const Navbar = withStaticProps(
     ? data.result.dashboard.main_navigation
     : data.result.settings.main_navigation;
   filteredElements = filteredElements.filter((e) => e !== null);
+
+  // Filter out profile page links if profile page is disabled
+  if (!settingsData.profile_page_enabled) {
+    filteredElements = filteredElements.filter((element) => {
+      if (element._type === "navgroup") {
+        // For navigation groups, filter out profile page items from subitems
+        element.items = element.items?.filter((item) => item.slug !== "profile") || [];
+        // Keep the group if it still has items after filtering
+        return element.items.length > 0;
+      } else {
+        // For regular navigation items, exclude if it points to profile page
+        return element.slug !== "profile";
+      }
+    });
+  }
   const logo = data.result.settings.logo;
 
   const dashboardLogo = data.result.dashboard.dashboard_logo;

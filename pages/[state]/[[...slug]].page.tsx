@@ -314,6 +314,11 @@ export const getStaticProps = async (
     }
     case PageType.ProfilePage: {
       const props = await ProfilePage.getStaticProps({ draftMode, consentState });
+      if (!props && !draftMode) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
           ...props,
