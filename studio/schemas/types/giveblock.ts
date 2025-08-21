@@ -18,11 +18,6 @@ export default defineType({
       rows: 3,
       title: "Paragraph",
     }),
-    defineField({
-      name: "donateLabel",
-      type: "string",
-      title: "donateLabel",
-    }),
   ],
   preview: {
     select: {
