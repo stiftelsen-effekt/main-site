@@ -111,7 +111,7 @@ export const ResultsPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
@@ -232,6 +232,11 @@ const fetchResults = groq`
         _type == 'resultsoutput' => {
           ...,
           "table_headers": *[_type == "results"][0].textConfiguration.table_headers.output_donations_table_headers,
+        },
+        _type == 'giveblock' => {
+          ...,
+          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+          "accent_color": *[ _type == "site_settings"][0].accent_color,
         },
         _type != 'reference' => @,
       },

@@ -620,7 +620,7 @@ export const pageContentQuery = `content[hidden!=true] {
       links {
         links[] {
           ${linksSelectorQuery}
-        },  
+        },
       },
     },
     _type == 'teasers' => {
