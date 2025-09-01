@@ -12,6 +12,7 @@ import { DonationPane } from "./panes/DonationPane/DonationPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
+import { ApiErrorNotification } from "./shared/ApiErrorNotification/ApiErrorNotification";
 import { token } from "../../../../../token";
 import {
   TooltipContent,
@@ -207,6 +208,7 @@ export const Widget = withStaticProps(
               )}
             </TooltipWrapper>
           )}
+          <ApiErrorNotification genericErrorMessage={widget.api_generic_error_message} />
           <ProgressBar inline={inline} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
             <DonationPane
@@ -238,6 +240,7 @@ export const Widget = withStaticProps(
                 privacy_policy_text: widget.privacy_policy_text,
                 privacy_policy_link: widget.privacy_policy_link,
                 pane2_button_text: widget.pane2_button_text,
+                api_generic_error_message: widget.api_generic_error_message,
                 show_name_field: widget.show_name_field,
                 allow_anonymous_donations: widget.allow_anonymous_donations,
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,

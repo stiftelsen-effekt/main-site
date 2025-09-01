@@ -37,6 +37,8 @@ export interface Donation extends DonationInput {
   // Array of objects with string keys and string values
   errors: DonationError[];
   showErrors: boolean;
+  // Separate API error state
+  apiError?: string | null;
 }
 
 export type DonationError = {

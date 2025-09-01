@@ -13,7 +13,10 @@ import {
   RegisterDonationActionPayload,
   RegisterDonationResponse,
   setPaymentProviderURL,
+  setApiError,
+  clearApiError,
 } from "./actions";
+import { error } from "console";
 
 export function* draftVippsAgreement(): SagaIterator<void> {
   try {
@@ -133,6 +136,7 @@ export function* registerDonation(
   action: Action<RegisterDonationActionPayload>,
 ): SagaIterator<void> {
   yield put(setLoading(true));
+  yield put(clearApiError()); // Clear any existing API errors
   try {
     const donation: Donation = yield select((state: State) => state.donation);
 
@@ -165,7 +169,28 @@ export function* registerDonation(
     const result: IServerResponse<RegisterDonationResponse> = yield call(
       request.json.bind(request),
     );
-    if (result.status !== 200) throw new Error(result.content as string);
+
+    if (result.status !== 200) {
+      // Handle API error response
+      let errorMessage = null;
+
+      // Check if result.content is an object with message property
+      if (typeof (result as any).message === "string") {
+        errorMessage = (result as any).message;
+      } else if (typeof result.content === "string") {
+        errorMessage = result.content;
+      }
+
+      yield put(setApiError(errorMessage));
+      yield put(setLoading(false));
+      yield put(
+        registerDonationAction.failed({
+          params: action.payload,
+          error: new Error(errorMessage),
+        }),
+      );
+      return;
+    }
 
     yield put(
       setAnsweredReferral(
@@ -204,6 +229,10 @@ export function* registerDonation(
       yield put(nextPane());
     }
   } catch (ex) {
+    // Handle network errors and other exceptions
+    const errorMessage = ex instanceof Error ? ex.message : "Something went wrong";
+    yield put(setApiError(errorMessage));
+    yield put(setLoading(false));
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));
   }
 }
