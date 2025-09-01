@@ -1,31 +1,12 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import styles from "./DKMembershipWidget.module.scss";
-import { cprChecksumTest } from "./_util";
+import { validateCpr, formatCprInput, CprValidationResult } from "../../../../util/tin-validation";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { Dkmembershipwidget } from "../../../../studio/sanity.types";
 import { MembershipCountrySelector } from "./CountrySelector";
 
 // --- Helper Functions ---
-// Basic CPR validation (can be expanded with checksum logic)
-interface CprValidationResult {
-  isValid: boolean;
-  isSuspicious: boolean;
-  message?: string;
-}
-
-const validateCpr = (cpr: string): CprValidationResult => {
-  if (cprChecksumTest(cpr)) {
-    return { isValid: true, isSuspicious: false };
-  }
-
-  const cleanedCpr = cpr.replace(/-/g, "");
-  if (!/^\d{10}$/.test(cleanedCpr)) {
-    return { isValid: false, isSuspicious: false, message: "CPR must be 10 digits." };
-  }
-
-  return { isValid: false, isSuspicious: true, message: "Suspicious CPR number." };
-};
 
 interface MembershipFormData {
   country: string;
@@ -103,16 +84,10 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
 
   const handleCprChange = (e: ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
-    const digits = value.replace(/\D/g, "");
 
     let formattedCpr = "";
     if (isDenmarkSelected) {
-      if (digits.length > 0) {
-        formattedCpr = digits.substring(0, Math.min(6, digits.length));
-      }
-      if (digits.length > 6) {
-        formattedCpr += "-" + digits.substring(6, Math.min(10, digits.length));
-      }
+      formattedCpr = formatCprInput(value);
     } else {
       formattedCpr = value;
     }
@@ -191,6 +166,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             country={formData.country}
             onChange={(country) => setFormData((prev) => ({ ...prev, country: country }))}
             countryLabel={mergedTexts.country_label}
+            data-cy="country-selector"
           />
         </div>
 
@@ -202,6 +178,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.name}
             onChange={handleInputChange}
             placeholder={mergedTexts.name_label}
+            data-cy="name-input"
             required
           />
         </div>
@@ -214,6 +191,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.email}
             onChange={handleInputChange}
             placeholder={mergedTexts.email_label}
+            data-cy="email-input"
             required
           />
         </div>
@@ -226,6 +204,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.address}
             onChange={handleInputChange}
             placeholder={mergedTexts.address_label}
+            data-cy="address-input"
             required
           />
         </div>
@@ -238,6 +217,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.postcode}
             onChange={handleInputChange}
             placeholder={mergedTexts.postcode_label}
+            data-cy="postcode-input"
             required
           />
         </div>
@@ -250,6 +230,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.city}
             onChange={handleInputChange}
             placeholder={mergedTexts.city_label}
+            data-cy="city-input"
             required
           />
         </div>
@@ -269,12 +250,32 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             onChange={handleCprChange}
             placeholder={isDenmarkSelected ? mergedTexts.tin_denmark_label : mergedTexts.tin_label}
             maxLength={isDenmarkSelected ? 12 : undefined}
-            pattern={isDenmarkSelected ? "\\d{6}-\\d{4}" : undefined}
-            title={isDenmarkSelected ? "Format: DDMMYY-SSSS" : undefined}
+            pattern={
+              isDenmarkSelected
+                ? cprValidation && cprValidation.isValid === false
+                  ? "a^" // impossible pattern to fail validation for invalid CPR
+                  : "\\d{6}-\\d{4}"
+                : undefined
+            }
+            title={
+              isDenmarkSelected
+                ? cprValidation && cprValidation.isValid === false
+                  ? mergedTexts.cpr_invalid_message
+                  : "Format: DDMMYY-SSSS"
+                : undefined
+            }
+            data-cy="tin-input"
             required={true}
           />
+          {cprValidation && cprValidation.isValid === false && (
+            <div data-cy="cpr-invalid-message" className={styles.warningMessage}>
+              {mergedTexts.cpr_invalid_message}
+            </div>
+          )}
           {cprValidation && cprValidation.isSuspicious && (
-            <div className={styles.warningMessage}>{mergedTexts.cpr_suspicious_message}</div>
+            <div data-cy="cpr-suspicious-message" className={styles.warningMessage}>
+              {mergedTexts.cpr_suspicious_message}
+            </div>
           )}
         </div>
 
@@ -289,13 +290,23 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
               placeholder="YYYY-MM-DD"
               maxLength={10}
               required={showBirthdayField}
+              data-cy="birthday-input"
               lang="no-NB"
             />
           </div>
         )}
 
-        <EffektButton disabled={loading} type="submit" className={styles.submitButton}>
-          {loading ? <Spinner className={styles.submitSpinner} /> : mergedTexts.membership_fee_text}
+        <EffektButton
+          disabled={loading}
+          type="submit"
+          className={styles.submitButton}
+          data-cy="submit-button"
+        >
+          {loading ? (
+            <Spinner className={styles.submitSpinner} data-cy="submit-spinner" />
+          ) : (
+            mergedTexts.membership_fee_text
+          )}
         </EffektButton>
       </form>
     </div>

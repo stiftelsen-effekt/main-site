@@ -1,9 +1,15 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import Organisationsnummer from "organisationsnummer";
 import Personnummer from "personnummer";
+import {
+  validateCpr,
+  formatCprInput,
+  validateTin,
+  formatTinInput,
+} from "../../../../../../../util/tin-validation";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
@@ -24,7 +30,7 @@ import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
+import { ActionBar, CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -38,7 +44,7 @@ const capitalizeNames = (string: string) => {
 };
 
 export const DonorPane: React.FC<{
-  locale: "en" | "no" | "sv" | "et";
+  locale: "en" | "no" | "sv" | "et" | "dk";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
@@ -74,6 +80,18 @@ export const DonorPane: React.FC<{
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
   const selectedPaymentMethod = watch("method");
+
+  const [cprSuspicious, setCprSuspicious] = useState(false);
+
+  const handleSsnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    // Format CPR input for Danish locale
+    if (locale === "dk" && taxDeductionChecked) {
+      const formattedValue = formatTinInput(value, { allowCvr: true });
+      e.target.value = formattedValue;
+    }
+  };
 
   const paneSubmitted = handleSubmit((data) => {
     if (!isAnonymous) {
@@ -266,25 +284,46 @@ export const DonorPane: React.FC<{
                         placeholder={text.tax_deduction_ssn_placeholder}
                         {...register("ssn", {
                           required: false,
+                          onChange: handleSsnChange,
                           validate: (val, formValues) => {
                             if (formValues.isAnonymous || !taxDeductionChecked) return true;
                             const trimmed = val.toString().trim();
-                            if (taxDeductionChecked) {
-                              if (locale === "no") {
-                                return validateSsnNo(trimmed);
-                              } else if (locale === "sv") {
-                                return validateSsnSe(trimmed);
+
+                            if (locale === "no") {
+                              return validateSsnNo(trimmed);
+                            } else if (locale === "sv") {
+                              return validateSsnSe(trimmed);
+                            } else if (locale === "dk") {
+                              const validationResult = validateTin(trimmed, { allowCvr: true });
+                              console.log(validationResult);
+                              if (validationResult.type === "CPR") {
+                                if (validationResult.isSuspicious) {
+                                  setCprSuspicious(true);
+                                  return true;
+                                } else if (
+                                  validationResult.isValid &&
+                                  !validationResult.isSuspicious
+                                ) {
+                                  setCprSuspicious(false);
+                                }
                               } else {
-                                return true;
+                                setCprSuspicious(false);
                               }
-                            } else {
-                              return true;
+                              return validationResult.isValid;
                             }
+
+                            // Unknown locale
+                            return true;
                           },
                         })}
                       />
                       {errors.ssn && (
                         <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
+                      )}
+                      {cprSuspicious && (
+                        <InfoMessageWrapper data-cy="cpr-suspicious-message">
+                          Kontroller venligst at det er korrekt.
+                        </InfoMessageWrapper>
                       )}
                     </InputFieldWrapper>
                   </AnimateHeight>

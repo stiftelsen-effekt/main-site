@@ -69,3 +69,11 @@ export const CheckBoxGroupWrapper = styled.div`
 export const StyledSwishInputFieldWrapper = styled(InputFieldWrapper)`
   margin-top: 20px;
 `;
+
+export const InfoMessageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 16px;
+`;

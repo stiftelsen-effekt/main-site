@@ -71,6 +71,55 @@ describe("Widget", () => {
     });
   });
 
+  it("End-2-End shared donation", () => {
+    const randomSum = Math.floor(Math.random() * 1000) + 100;
+    cy.pickSingleDonation();
+    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=cause-area]")
+      .first()
+      .find("[data-cy=smart-distribution-toggle]")
+      .click({ force: true });
+    cy.get("[data-cy=org-12]").clear();
+    cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
+    cy.nextWidgetPane();
+    cy.checkNextIsDisabled();
+    cy.get("[data-cy=org-12]").type("{moveToStart}");
+    cy.get("[data-cy=org-12]").type("-"); // should ignore negative numbers
+    cy.get("[data-cy=org-11]").type(50);
+    cy.nextWidgetPane();
+
+    cy.pickAnonymous();
+    cy.get("[data-cy=bank-method]").click({ force: true });
+
+    cy.intercept("POST", "/donations/register", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: {
+          KID: "87397824",
+          donorID: 1464,
+          hasAnsweredReferral: false,
+          paymentProviderUrl: "",
+        },
+      },
+    }).as("registerDonation");
+
+    cy.intercept("POST", "donations/bank/pending", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: "OK",
+      },
+    }).as("bankPending");
+
+    cy.nextWidgetPane();
+
+    cy.get("[data-cy=kidNumber]").should(($kid) => {
+      const kid = $kid.text();
+      expect(kid).to.be.length(8);
+    });
+  });
+
   it("End-2-End recurring autogiro donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
