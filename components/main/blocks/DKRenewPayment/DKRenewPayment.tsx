@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 
-export const DKRenewPayment: React.FC<{
-  loading_text?: string;
-}> = ({ loading_text = "Loading..." }) => {
+export const DKRenewPayment: React.FC = () => {
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,8 +14,9 @@ export const DKRenewPayment: React.FC<{
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
         if (!id) {
-          setError("Unable to find ID in the URL");
+          setError("Kunne ikke finde ID i URL'en.");
           setIsLoading(false);
+          return;
         }
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_EFFEKT_API}/api/renew-payment `, {
@@ -33,11 +32,11 @@ export const DKRenewPayment: React.FC<{
           setUrl(body.url);
           setError(null);
         } else {
-          setError("Something went wrong, please try again later.");
+          setError("Der opstod en fejl. Prøv igen senere.");
         }
       } catch (err) {
         setUrl(null);
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
+        setError(err instanceof Error ? err.message : "Der opstod en fejl.");
         console.error("renew-payment error:", err);
       } finally {
         setIsLoading(false);
@@ -54,7 +53,11 @@ export const DKRenewPayment: React.FC<{
   };
 
   if (error && error.length > 0) {
-    return <div className="error">An error occurred while loading payment renewal</div>;
+    return (
+      <div className="error">
+        {error} Kontakt os, hvis fejlen fortsætter, på donation@giveeffektivt.dk.
+      </div>
+    );
   }
 
   if (isLoading || !url) {
