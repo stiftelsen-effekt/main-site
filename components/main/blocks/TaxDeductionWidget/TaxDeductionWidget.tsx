@@ -101,6 +101,8 @@ export const TaxDeductionWidget: React.FC<{
                 minimumThreshold={minimumTreshold}
                 value={lastValidSum}
                 taxBenefit={taxBenefit}
+                labels={chartLabels}
+                locale={locale}
               ></HorizontalTaxDeductionBarChart>
             )}
           </div>
