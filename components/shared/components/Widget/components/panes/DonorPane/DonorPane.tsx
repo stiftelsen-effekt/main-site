@@ -1,10 +1,15 @@
 import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import Organisationsnummer from "organisationsnummer";
 import Personnummer from "personnummer";
-import { validateCpr, formatCprInput } from "../../../../../../../util/cpr-validation";
+import {
+  validateCpr,
+  formatCprInput,
+  validateTin,
+  formatTinInput,
+} from "../../../../../../../util/tin-validation";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
@@ -25,7 +30,7 @@ import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import { ActionBar, CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
+import { ActionBar, CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -76,12 +81,14 @@ export const DonorPane: React.FC<{
   const isAnonymous = watch("isAnonymous");
   const selectedPaymentMethod = watch("method");
 
+  const [cprSuspicious, setCprSuspicious] = useState(false);
+
   const handleSsnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
     // Format CPR input for Danish locale
     if (locale === "dk" && taxDeductionChecked) {
-      const formattedValue = formatCprInput(value);
+      const formattedValue = formatTinInput(value, { allowCvr: true });
       e.target.value = formattedValue;
     }
   };
@@ -281,24 +288,42 @@ export const DonorPane: React.FC<{
                           validate: (val, formValues) => {
                             if (formValues.isAnonymous || !taxDeductionChecked) return true;
                             const trimmed = val.toString().trim();
-                            if (taxDeductionChecked) {
-                              if (locale === "no") {
-                                return validateSsnNo(trimmed);
-                              } else if (locale === "sv") {
-                                return validateSsnSe(trimmed);
-                              } else if (locale === "dk") {
-                                return validateCpr(trimmed).isValid;
+
+                            if (locale === "no") {
+                              return validateSsnNo(trimmed);
+                            } else if (locale === "sv") {
+                              return validateSsnSe(trimmed);
+                            } else if (locale === "dk") {
+                              const validationResult = validateTin(trimmed, { allowCvr: true });
+                              console.log(validationResult);
+                              if (validationResult.type === "CPR") {
+                                if (validationResult.isSuspicious) {
+                                  setCprSuspicious(true);
+                                  return true;
+                                } else if (
+                                  validationResult.isValid &&
+                                  !validationResult.isSuspicious
+                                ) {
+                                  setCprSuspicious(false);
+                                }
                               } else {
-                                return true;
+                                setCprSuspicious(false);
                               }
-                            } else {
-                              return true;
+                              return validationResult.isValid;
                             }
+
+                            // Unknown locale
+                            return true;
                           },
                         })}
                       />
                       {errors.ssn && (
                         <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
+                      )}
+                      {cprSuspicious && (
+                        <InfoMessageWrapper data-cy="cpr-suspicious-message">
+                          Suspicious CPR number.
+                        </InfoMessageWrapper>
                       )}
                     </InputFieldWrapper>
                   </AnimateHeight>

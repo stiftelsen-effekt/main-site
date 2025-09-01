@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import styles from "./DKMembershipWidget.module.scss";
-import { validateCpr, formatCprInput, CprValidationResult } from "../../../../util/cpr-validation";
+import { validateCpr, formatCprInput, CprValidationResult } from "../../../../util/tin-validation";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { Dkmembershipwidget } from "../../../../studio/sanity.types";
@@ -244,12 +244,31 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             onChange={handleCprChange}
             placeholder={isDenmarkSelected ? mergedTexts.tin_denmark_label : mergedTexts.tin_label}
             maxLength={isDenmarkSelected ? 12 : undefined}
-            pattern={isDenmarkSelected ? "\\d{6}-\\d{4}" : undefined}
-            title={isDenmarkSelected ? "Format: DDMMYY-SSSS" : undefined}
+            pattern={
+              isDenmarkSelected
+                ? cprValidation && cprValidation.isValid === false
+                  ? "a^" // impossible pattern to fail validation for invalid CPR
+                  : "\\d{6}-\\d{4}"
+                : undefined
+            }
+            title={
+              isDenmarkSelected
+                ? cprValidation && cprValidation.isValid === false
+                  ? mergedTexts.cpr_invalid_message
+                  : "Format: DDMMYY-SSSS"
+                : undefined
+            }
             required={true}
           />
+          {cprValidation && cprValidation.isValid === false && (
+            <div data-cy="cpr-invalid-message" className={styles.warningMessage}>
+              {mergedTexts.cpr_invalid_message}
+            </div>
+          )}
           {cprValidation && cprValidation.isSuspicious && (
-            <div className={styles.warningMessage}>{mergedTexts.cpr_suspicious_message}</div>
+            <div data-cy="cpr-suspicious-message" className={styles.warningMessage}>
+              {mergedTexts.cpr_suspicious_message}
+            </div>
           )}
         </div>
 

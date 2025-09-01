@@ -53,11 +53,18 @@ describe("Widget", () => {
     cy.nextWidgetPane();
     cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
 
+    // Test suspicious but valid CPR
+    cy.get("[data-cy=ssn-input]").clear();
+    cy.get("[data-cy=ssn-input]").type("2206961234"); // 10 digits but invalid CPR
+    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=cpr-suspicious-message]").should("exist");
+    cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
+
     // Clear and type valid CPR - using a known valid Danish CPR format
     cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("1202900107"); // Valid CPR format
+    cy.get("[data-cy=ssn-input]").type("1202900107"); // Valid CPR (10 digits)
 
-    // Verify CPR formatting (should auto-format to DDMMYY-SSSS)
+    // Verify CPR formatting (dash appears only once 10 digits are present)
     cy.get("[data-cy=ssn-input]").should("have.value", "120290-0107");
 
     cy.get("[data-cy=newsletter-checkbox]").click();
@@ -93,7 +100,7 @@ describe("Widget", () => {
     });
   });
 
-  it("DK CPR formatting test", () => {
+  it("DK CPR formatting test (TIN formatter: dash only at 10 digits)", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
@@ -102,19 +109,75 @@ describe("Widget", () => {
     cy.get("[data-cy=email-input]").type("donor@email.dk");
     cy.get("[data-cy=tax-deduction-checkbox]").click();
 
-    // Test CPR auto-formatting - type digits only
-    cy.get("[data-cy=ssn-input]").type("1012901234");
+    // Type digits only — no dash should appear before we hit 10 digits
+    cy.get("[data-cy=ssn-input]").type("10129012"); // 8 digits
+    cy.get("[data-cy=ssn-input]").should("have.value", "10129012"); // no dash yet
 
-    // Should auto-format to include dash
+    // Add two more digits to reach 10 → dash should now be inserted
+    cy.get("[data-cy=ssn-input]").type("34"); // now 10 digits total
     cy.get("[data-cy=ssn-input]").should("have.value", "101290-1234");
 
-    // Test partial input formatting
-    cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("101290");
+    // Partial input — still no dash below 10 digits
+    cy.get("[data-cy=ssn-input]").clear().type("101290"); // 6 digits
     cy.get("[data-cy=ssn-input]").should("have.value", "101290");
+    cy.get("[data-cy=ssn-input]").type("12"); // 8 digits total
+    cy.get("[data-cy=ssn-input]").should("have.value", "10129012"); // still no dash
+    cy.get("[data-cy=ssn-input]").type("34"); // 10 digits
+    cy.get("[data-cy=ssn-input]").should("have.value", "101290-1234"); // dash appears at end
+  });
 
-    cy.get("[data-cy=ssn-input]").type("12");
-    cy.get("[data-cy=ssn-input]").should("have.value", "101290-12");
+  it("DK CVR validation & formatting (accept 8-digit CVR; no dash at any point)", () => {
+    const randomSum = Math.floor(Math.random() * 1000) + 100;
+    cy.pickSingleDonation();
+    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.nextWidgetPane();
+
+    cy.get("[data-cy=email-input]").type("donor@email.dk");
+
+    // Trigger the TIN field (same as CPR field, now accepts CVR as well)
+    cy.get("[data-cy=tax-deduction-checkbox]").click();
+
+    // 1) Invalid CVR should block progress
+    cy.get("[data-cy=ssn-input]").type("12345678"); // 8 digits but invalid CVR
+    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.nextWidgetPane();
+    cy.checkNextIsDisabled(); // stays disabled due to invalid CVR
+
+    // 2) Valid CVR should be accepted; formatting stays as plain 8 digits (no dash)
+    cy.get("[data-cy=ssn-input]").clear().type("42490903"); // valid CVR
+    cy.get("[data-cy=ssn-input]").should("have.value", "42490903"); // no dash for CVR
+
+    // Proceed with the flow using the same stubs as CPR E2E
+    cy.intercept("POST", "/donations/register", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: {
+          KID: "87397824",
+          donorID: 1464,
+          hasAnsweredReferral: false,
+          paymentProviderUrl: "",
+        },
+      },
+    }).as("registerDonation");
+
+    cy.intercept("POST", "donations/bank/pending", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: "OK",
+      },
+    }).as("bankPending");
+
+    cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
+
+    // Now that CVR is valid, Next should succeed
+    cy.nextWidgetPane();
+
+    cy.get("[data-cy=kidNumber]").should(($kid) => {
+      const kid = $kid.text();
+      expect(kid).to.be.length(8);
+    });
   });
 
   it("DK CPR validation edge cases", () => {
