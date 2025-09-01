@@ -8,6 +8,7 @@
     "sanity": "dotenv -e .env.local npm run start -- --prefix studio",
     "sanity:edit": "dotenv -e .env.local npm run edit -- --prefix studio",
     "sanity:list:pages": "dotenv -e .env.local npm run list:pages -- --prefix studio",
+    "deploy-dk-dataset": "node scripts/deploy-dk-dataset.js",
     "start": "next start",
     "lint": "next lint",
     "cypress:no": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-no.config.ts",

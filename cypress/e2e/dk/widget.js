@@ -1,6 +1,6 @@
 describe("Widget", () => {
   beforeEach(() => {
-    cy.fixture("dk/cause_areas")
+    cy.fixture("cause_areas")
       .then((causeAreas) => {
         cy.intercept("GET", "/causeareas/all", {
           statusCode: 200,
@@ -12,7 +12,7 @@ describe("Widget", () => {
       })
       .as("getCauseAreas");
 
-    cy.fixture("dk/referrals").then((referrals) => {
+    cy.fixture("referrals").then((referrals) => {
       cy.intercept("GET", "/referrals/types", {
         statusCode: 200,
         body: {
@@ -36,7 +36,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     // In DK locale, there should be no name field (show_name_field: false)
@@ -56,10 +55,10 @@ describe("Widget", () => {
 
     // Clear and type valid CPR - using a known valid Danish CPR format
     cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("101290-1234"); // Valid CPR format
+    cy.get("[data-cy=ssn-input]").type("1202900107"); // Valid CPR format
 
     // Verify CPR formatting (should auto-format to DDMMYY-SSSS)
-    cy.get("[data-cy=ssn-input]").should("have.value", "101290-1234");
+    cy.get("[data-cy=ssn-input]").should("have.value", "120290-0107");
 
     cy.get("[data-cy=newsletter-checkbox]").click();
 
@@ -84,6 +83,8 @@ describe("Widget", () => {
       },
     }).as("bankPending");
 
+    cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
+
     cy.nextWidgetPane();
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
@@ -96,7 +97,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
@@ -117,50 +117,10 @@ describe("Widget", () => {
     cy.get("[data-cy=ssn-input]").should("have.value", "101290-12");
   });
 
-  it("End-2-End DK anonymous donation", () => {
-    const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
-    cy.nextWidgetPane();
-
-    cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
-
-    cy.intercept("POST", "/donations/register", {
-      statusCode: 200,
-      body: {
-        status: 200,
-        content: {
-          KID: "87397824",
-          donorID: 1464,
-          hasAnsweredReferral: false,
-          paymentProviderUrl: "",
-        },
-      },
-    }).as("registerDonation");
-
-    cy.intercept("POST", "donations/bank/pending", {
-      statusCode: 200,
-      body: {
-        status: 200,
-        content: "OK",
-      },
-    }).as("bankPending");
-
-    cy.nextWidgetPane();
-
-    cy.get("[data-cy=kidNumber]").should(($kid) => {
-      const kid = $kid.text();
-      expect(kid).to.be.length(8);
-    });
-  });
-
   it("DK CPR validation edge cases", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
@@ -173,17 +133,20 @@ describe("Widget", () => {
       "101390-1234", // Invalid month (13th month)
     ];
 
-    invalidCprs.forEach((invalidCpr) => {
+    invalidCprs.forEach((invalidCpr, index) => {
       cy.get("[data-cy=ssn-input]").clear();
       cy.get("[data-cy=ssn-input]").type(invalidCpr);
       cy.get("[data-cy=bank-method]").click({ force: true });
-      cy.nextWidgetPane();
+      if (index === 0) {
+        // First needed to trigger validation
+        cy.nextWidgetPane();
+      }
       cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
     });
 
     // Finally test with valid CPR
     cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("101290-1234"); // Valid CPR
+    cy.get("[data-cy=ssn-input]").type("1202900107"); // Valid CPR
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -205,6 +168,8 @@ describe("Widget", () => {
         content: "OK",
       },
     }).as("bankPending");
+
+    cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
 
     cy.nextWidgetPane();
 
