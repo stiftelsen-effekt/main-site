@@ -322,7 +322,7 @@ export const DonorPane: React.FC<{
                       )}
                       {cprSuspicious && (
                         <InfoMessageWrapper data-cy="cpr-suspicious-message">
-                          Suspicious CPR number.
+                          Kontroller venligst at det er korrekt.
                         </InfoMessageWrapper>
                       )}
                     </InputFieldWrapper>
