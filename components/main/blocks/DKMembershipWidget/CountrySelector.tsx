@@ -5,7 +5,8 @@ export const MembershipCountrySelector: React.FC<{
   country: string;
   onChange: (country: string) => void;
   countryLabel?: string;
-}> = ({ country, onChange, countryLabel = "Country" }) => {
+  "data-cy"?: string;
+}> = ({ country, onChange, countryLabel = "Country", "data-cy": dataCy }) => {
   return (
     <>
       <div className={styles.flag}>{getCountryFlagMap()[country] || "🏳️"}</div>
@@ -19,6 +20,7 @@ export const MembershipCountrySelector: React.FC<{
         required
         list="country-list"
         style={{ paddingLeft: "1.75rem" }}
+        data-cy={dataCy}
       />
       <datalist id="country-list">
         <option value="Afghanistan" />

@@ -166,6 +166,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             country={formData.country}
             onChange={(country) => setFormData((prev) => ({ ...prev, country: country }))}
             countryLabel={mergedTexts.country_label}
+            data-cy="country-selector"
           />
         </div>
 
@@ -177,6 +178,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.name}
             onChange={handleInputChange}
             placeholder={mergedTexts.name_label}
+            data-cy="name-input"
             required
           />
         </div>
@@ -189,6 +191,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.email}
             onChange={handleInputChange}
             placeholder={mergedTexts.email_label}
+            data-cy="email-input"
             required
           />
         </div>
@@ -201,6 +204,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.address}
             onChange={handleInputChange}
             placeholder={mergedTexts.address_label}
+            data-cy="address-input"
             required
           />
         </div>
@@ -213,6 +217,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.postcode}
             onChange={handleInputChange}
             placeholder={mergedTexts.postcode_label}
+            data-cy="postcode-input"
             required
           />
         </div>
@@ -225,6 +230,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             value={formData.city}
             onChange={handleInputChange}
             placeholder={mergedTexts.city_label}
+            data-cy="city-input"
             required
           />
         </div>
@@ -258,6 +264,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
                   : "Format: DDMMYY-SSSS"
                 : undefined
             }
+            data-cy="tin-input"
             required={true}
           />
           {cprValidation && cprValidation.isValid === false && (
@@ -283,13 +290,23 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
               placeholder="YYYY-MM-DD"
               maxLength={10}
               required={showBirthdayField}
+              data-cy="birthday-input"
               lang="no-NB"
             />
           </div>
         )}
 
-        <EffektButton disabled={loading} type="submit" className={styles.submitButton}>
-          {loading ? <Spinner className={styles.submitSpinner} /> : mergedTexts.membership_fee_text}
+        <EffektButton
+          disabled={loading}
+          type="submit"
+          className={styles.submitButton}
+          data-cy="submit-button"
+        >
+          {loading ? (
+            <Spinner className={styles.submitSpinner} data-cy="submit-spinner" />
+          ) : (
+            mergedTexts.membership_fee_text
+          )}
         </EffektButton>
       </form>
     </div>
