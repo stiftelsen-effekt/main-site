@@ -40,6 +40,7 @@ export type NavBarQueryResult = {
     main_navigation: MainNavbarItem[];
     donate_label: string;
     accent_color: string;
+    main_currency: string;
   };
   dashboard: {
     main_navigation: MainNavbarItem[];
@@ -77,6 +78,7 @@ const query = groq`
     logo,
     donate_label,
     accent_color,
+    main_currency,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -305,14 +307,16 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
-                <EffektButton
-                  variant={EffektButtonVariant.SECONDARY}
-                  onClick={() => setExpanded(false)}
-                >
-                  {labels.dashboard}
-                </EffektButton>
-              </CustomLink>
+              settingsData.main_currency !== "DKK" && (
+                <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
+                  <EffektButton
+                    variant={EffektButtonVariant.SECONDARY}
+                    onClick={() => setExpanded(false)}
+                  >
+                    {labels.dashboard}
+                  </EffektButton>
+                </CustomLink>
+              )
             )}
             <EffektButton
               cy="send-donation-button"
