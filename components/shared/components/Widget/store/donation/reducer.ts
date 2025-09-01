@@ -20,6 +20,8 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SET_API_ERROR,
+  CLEAR_API_ERROR,
 } from "./types";
 import { CauseArea } from "../../types/CauseArea";
 import { DistributionCauseArea } from "../../types/DistributionCauseArea";
@@ -197,6 +199,18 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
           ...state.vippsAgreement,
           ...action.payload.vippsAgreement,
         },
+      };
+      break;
+    case SET_API_ERROR:
+      state = {
+        ...state,
+        apiError: action.payload.message,
+      };
+      break;
+    case CLEAR_API_ERROR:
+      state = {
+        ...state,
+        apiError: undefined,
       };
       break;
     default:

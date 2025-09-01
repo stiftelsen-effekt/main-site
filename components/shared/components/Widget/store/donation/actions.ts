@@ -15,6 +15,8 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SET_API_ERROR,
+  CLEAR_API_ERROR,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -196,3 +198,18 @@ export const registerDonationAction = actionCreator.async<
 export const registerBankPendingAction = actionCreator.async<undefined, undefined, Error>(
   "REGISTER_BANK_PENDING",
 );
+
+export function setApiError(message: string): DonationActionTypes {
+  return {
+    type: SET_API_ERROR,
+    payload: {
+      message,
+    },
+  };
+}
+
+export function clearApiError(): DonationActionTypes {
+  return {
+    type: CLEAR_API_ERROR,
+  };
+}

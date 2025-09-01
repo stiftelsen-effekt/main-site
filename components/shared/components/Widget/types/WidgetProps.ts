@@ -174,6 +174,7 @@ export type WidgetPane2Props = {
   privacy_policy_text: string;
   privacy_policy_link: NavLink;
   pane2_button_text: string;
+  api_generic_error_message: string;
 };
 
 export type WidgetPane3ReferralsProps = {

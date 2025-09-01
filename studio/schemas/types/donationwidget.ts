@@ -375,6 +375,13 @@ export default defineType({
       group: "pane2",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "api_generic_error_message",
+      title: "API generic error message",
+      type: "string",
+      group: "pane2",
+      validation: (Rule) => Rule.required(),
+    }),
     // Referrals header pane 3
     defineField({
       name: "show_referrals",

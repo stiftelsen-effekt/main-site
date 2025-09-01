@@ -17,6 +17,8 @@ export const SET_PAYMENT_PROVIDER_URL = "SET_PAYMENT_PROVIDER_URL";
 export const SELECT_CUSTOM_SHARE = "SELECT_CUSTOM_SHARE";
 export const SET_SHARE_TYPE = "SET_SHARE_TYPE";
 export const SET_VIPPS_AGREEMENT = "SET_VIPPS_AGREEMENT";
+export const SET_API_ERROR = "SET_API_ERROR";
+export const CLEAR_API_ERROR = "CLEAR_API_ERROR";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -124,6 +126,17 @@ interface SetVippsAgreement {
   };
 }
 
+interface SetApiError {
+  type: typeof SET_API_ERROR;
+  payload: {
+    message: string;
+  };
+}
+
+interface ClearApiError {
+  type: typeof CLEAR_API_ERROR;
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -138,4 +151,6 @@ export type DonationActionTypes =
   | SetPaymentProviderURL
   | SelectCustomShare
   | SetShareType
-  | SetVippsAgreement;
+  | SetVippsAgreement
+  | SetApiError
+  | ClearApiError;
