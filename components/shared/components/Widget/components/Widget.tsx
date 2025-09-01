@@ -41,6 +41,9 @@ export const widgetContentQuery = groq`
     _type == 'reference' => @->{
       _type == 'bank' => {
         ...,
+        completed_redirect -> {
+          "slug": slug.current,
+        },
         "locale": *[ _type == "site_settings"][0].main_locale,
       },
       _type == 'vipps' => {
@@ -252,6 +255,7 @@ export const Widget = withStaticProps(
               referrals={{
                 referrals_title: widget.referrals_title,
                 other_referral_input_placeholder: widget.other_referral_input_placeholder,
+                show_referrals: widget.show_referrals,
               }}
               paymentMethods={availablePaymentMethods}
             />

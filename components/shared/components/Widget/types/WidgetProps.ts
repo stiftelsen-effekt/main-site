@@ -29,6 +29,9 @@ export type BankPaymentMethod = {
   completed_title: string;
   completed_text: string;
   locale: string;
+  completed_redirect?: {
+    slug: string;
+  };
 };
 
 export type VippsPaymentMethod = {

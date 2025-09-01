@@ -70,6 +70,13 @@ export default defineType({
       rows: 3,
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "completed_redirect",
+      title: "Completed redirect",
+      description: "Optional page to redirect to when the user clicks the completed button.",
+      type: "reference",
+      to: [{ type: "generic_page" }],
+    }),
   ],
   preview: {
     prepare() {
