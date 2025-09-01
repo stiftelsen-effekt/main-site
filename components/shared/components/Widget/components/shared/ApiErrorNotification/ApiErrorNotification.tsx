@@ -44,7 +44,7 @@ export const ApiErrorNotification: React.FC<{ genericErrorMessage?: string }> = 
     if (isVisible) {
       const timer = setTimeout(() => {
         handleClose();
-      }, 100000000);
+      }, 8000);
 
       return () => clearTimeout(timer);
     }
