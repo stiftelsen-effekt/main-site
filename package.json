@@ -81,7 +81,7 @@
     "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",
     "csv-parse": "^5.5.6",
-    "cypress": "^13.7.2",
+    "cypress": "^15.0.0",
     "cypress-dotenv": "^2.0.0",
     "cypress-localstorage-commands": "^1.7.0",
     "dotenv": "^16.0.0",
