@@ -341,7 +341,6 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "taxdeductionwidget":
-            console.log(block);
             return (
               <TaxDeductionWidget
                 key={block._key || block._id}

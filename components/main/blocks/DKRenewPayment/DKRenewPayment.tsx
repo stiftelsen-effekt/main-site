@@ -55,7 +55,7 @@ export const DKRenewPayment: React.FC = () => {
   if (error && error.length > 0) {
     return (
       <div className="error">
-        {error} Kontakt os, hvis fejlen fortsætter, på donation@giveeffektivt.dk.
+        {error} Kontakt os, hvis fejlen fortsætter, på donation@giveffektivt.dk.
       </div>
     );
   }

@@ -295,7 +295,6 @@ export const DonorPane: React.FC<{
                               return validateSsnSe(trimmed);
                             } else if (locale === "dk") {
                               const validationResult = validateTin(trimmed, { allowCvr: true });
-                              console.log(validationResult);
                               if (validationResult.type === "CPR") {
                                 if (validationResult.isSuspicious) {
                                   setCprSuspicious(true);

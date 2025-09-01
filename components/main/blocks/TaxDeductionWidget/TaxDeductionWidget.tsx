@@ -50,8 +50,6 @@ export const TaxDeductionWidget: React.FC<{
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const isMobile = useIsMobile();
 
-  console.log(locale);
-
   useEffect(() => {
     if (sum === "") {
       setLastValidSum(0);
