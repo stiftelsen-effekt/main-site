@@ -8,7 +8,8 @@ interface PaymentMethodConfiguration {
     | "autogiro"
     | "avtalegiro"
     | "quickpay_card"
-    | "quickpay_mobilepay";
+    | "quickpay_mobilepay"
+    | "dkbank";
   recurringOptions: RecurringDonation[];
   openExternalPaymentOnRegisterSuccess?: boolean;
 }
@@ -50,6 +51,12 @@ export const quickpayMobilePayConfiguration: PaymentMethodConfiguration = {
   openExternalPaymentOnRegisterSuccess: true,
 };
 
+export const dkbankConfiguration: PaymentMethodConfiguration = {
+  id: "dkbank",
+  recurringOptions: [RecurringDonation.RECURRING],
+  openExternalPaymentOnRegisterSuccess: true,
+};
+
 export const paymentMethodConfigurations = [
   bankConfiguration,
   vippsConfiguration,
@@ -58,4 +65,5 @@ export const paymentMethodConfigurations = [
   avtalegiroConfiguration,
   quickpayCardConfiguration,
   quickpayMobilePayConfiguration,
+  dkbankConfiguration,
 ];

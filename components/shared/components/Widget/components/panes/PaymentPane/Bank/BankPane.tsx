@@ -63,7 +63,11 @@ export const BankPane: React.FC<{
             <CompleteButtonWrapper>
               <CompleteButton
                 onClick={() => {
-                  setHasCompletedTransaction(true);
+                  if (config.completed_redirect && config.completed_redirect.slug) {
+                    window.open(config.completed_redirect.slug, "_parent");
+                  } else {
+                    setHasCompletedTransaction(true);
+                  }
                 }}
               >
                 {config.button_text}

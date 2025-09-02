@@ -3,16 +3,12 @@ import { useSelector } from "react-redux";
 import { State } from "../../../../store/state";
 import { Pane, PaneContainer, PaneTitle } from "../../Panes.style";
 import { Referrals } from "../../../shared/Referrals/Referrals";
-import {
-  QuickPayCardPaymentMethod,
-  QuickPayMobilePayPaymentMethod,
-  WidgetPane3ReferralsProps,
-} from "../../../../types/WidgetProps";
+import { DkBankPaymentMethod, WidgetPane3ReferralsProps } from "../../../../types/WidgetProps";
 import { usePlausible } from "next-plausible";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
 
-export const QuickPayPane: React.FC<{
-  config: QuickPayCardPaymentMethod | QuickPayMobilePayPaymentMethod;
+export const DKBankPane: React.FC<{
+  config: DkBankPaymentMethod;
   referrals: WidgetPane3ReferralsProps;
 }> = ({ config, referrals }) => {
   const donation = useSelector((state: State) => state.donation);
@@ -21,7 +17,7 @@ export const QuickPayPane: React.FC<{
   return (
     <Pane>
       <PaneContainer>
-        <PaneTitle>QuickPay</PaneTitle>
+        <PaneTitle>Bank</PaneTitle>
 
         <EffektButton
           onClick={() => {
@@ -30,7 +26,7 @@ export const QuickPayPane: React.FC<{
             }
           }}
         >
-          {recurring ? config.recurring_button_text : config.single_button_text}
+          {recurring ? config.recurring_button_text : null}
         </EffektButton>
 
         {!(referrals.show_referrals === false) && (
