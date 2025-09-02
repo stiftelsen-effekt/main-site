@@ -77,6 +77,9 @@ export const widgetContentQuery = groq`
       _type == 'quickpay_mobilepay' => {
         ...,
       },
+      _type == 'dkbank' => {
+        ...,
+      },
     },
   },
   privacy_policy_link {
@@ -128,6 +131,8 @@ export const Widget = withStaticProps(
 )(({ data, inline = false, prefilled, defaultPaymentType }) => {
   const widget = data.result;
   const methods = data.result.methods;
+
+  console.log("result methods", methods);
 
   if (!methods) {
     throw new Error("No payment methods found");

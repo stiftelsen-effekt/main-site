@@ -165,6 +165,10 @@ export const deskStructure = (S) =>
                 .child(
                   S.document().schemaType("quickpay_mobilepay").documentId("quickpay_mobilepay"),
                 ),
+              S.listItem()
+                .title("DK Bank")
+                .icon(Briefcase)
+                .child(S.document().schemaType("dkbank").documentId("dkbank")),
             ]),
         ),
       S.listItem()

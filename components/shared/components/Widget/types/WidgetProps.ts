@@ -13,6 +13,7 @@ export type WidgetProps = { locale: "no" | "sv" | "en" | "dk" } & WidgetPane1Pro
       | AvtaleGiroPaymentMethod
       | QuickPayCardPaymentMethod
       | QuickPayMobilePayPaymentMethod
+      | DkBankPaymentMethod
     >;
   };
 
@@ -106,6 +107,12 @@ export type QuickPayMobilePayPaymentMethod = {
   selector_text: string;
   recurring_button_text: string;
   single_button_text: string;
+};
+
+export type DkBankPaymentMethod = {
+  _id: "dkbank";
+  selector_text: string;
+  recurring_button_text: string;
 };
 
 type AutogiroManualRecurringOptionConfig = {

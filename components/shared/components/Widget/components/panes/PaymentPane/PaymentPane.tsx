@@ -17,6 +17,7 @@ import { AutogiroPane } from "./AutoGiro/AutogiroPane";
 import { AvtaleGiroPane } from "./AvtaleGiro/AvtaleGiroPane";
 import { BankPane } from "./Bank/BankPane";
 import { QuickPayPane } from "./QuickPay/QuickPay";
+import { DKBankPane } from "./DKBank/DKBank";
 
 export const PaymentPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
@@ -93,6 +94,13 @@ export const PaymentPane: React.FC<{
         );
       }
       return <QuickPayPane config={quickpayConfiguration} referrals={referrals} />;
+    }
+    case PaymentMethod.DKBANK: {
+      const dkbankConfiguration = paymentMethods.find((method) => method._id === "dkbank");
+      if (!dkbankConfiguration) {
+        throw new Error("Missing configuration for DK Bank, but selected payment method is dkbank");
+      }
+      return <DKBankPane config={dkbankConfiguration} referrals={referrals} />;
     }
     default: {
       throw new Error(`Unknown payment method: ${method}`);

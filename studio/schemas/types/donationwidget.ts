@@ -35,6 +35,7 @@ export default defineType({
             { type: "avtalegiro" },
             { type: "quickpay_card" },
             { type: "quickpay_mobilepay" },
+            { type: "dkbank" },
           ],
           validation: (Rule) => Rule.required(),
           options: {

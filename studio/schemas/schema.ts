@@ -101,6 +101,7 @@ import mediacoverageteaser from "./types/mediacoverageteaser";
 import outputdonationstableheaders from "./types/outputdonationstableheaders";
 import formsparkform from "./types/formspark";
 import wealthcalculatorimpact from "./types/wealthcalculatorimpact";
+import dkbank from "./types/paymentmethods/dkbank";
 
 const paymentMethods = [
   vipps,
@@ -110,6 +111,7 @@ const paymentMethods = [
   avtalegiro,
   quickpaycard,
   quickpaymobilepay,
+  dkbank,
 ] as const;
 
 export const types = [
