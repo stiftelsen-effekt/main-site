@@ -1,5 +1,5 @@
 .header {
-  margin-top: 10rem;
+  margin-top: 8rem;
   font-size: 3rem;
 }
 
@@ -39,7 +39,7 @@
   .header {
     font-size: 2rem;
     width: 100%;
-    margin-top: 0;
+    margin-top: 8rem;
   }
 
   .table {
