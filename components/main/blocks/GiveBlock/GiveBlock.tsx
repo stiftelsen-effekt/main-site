@@ -3,6 +3,7 @@ import styles from "./GiveBlock.module.scss";
 import { WidgetContext } from "../../layout/layout";
 import { CSSProperties } from "styled-components";
 import { usePlausible } from "next-plausible";
+import { isBright } from "../../../../util/color";
 
 type GiveBlockProps = {
   heading: string;
@@ -25,7 +26,7 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
     accentStyles = {
       backgroundColor: accentColor,
       color: "white",
-      border: "none",
+      ...(isBright(accentColor) ? { border: "none" } : {}),
     };
   }
 
