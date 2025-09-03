@@ -500,6 +500,316 @@ const nextConfig: NextConfig = {
         ],
         permanent: true,
       },
+      {
+        source: "/anbefalinger",
+        destination: "/topliste",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/kontantoverfoersler",
+        destination: "/kontantoverforsler",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/boernevacciner",
+        destination: "/bornevacciner",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/x-factor",
+        destination: "/x-faktor",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/bedste-velgoerenhed",
+        destination: "/topliste",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler",
+        destination: "/blog",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/metode",
+        destination: "/vores-metode",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/filantropisk-raadgivning",
+        destination: "/filantropi",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/kontakt-os",
+        destination: "/om-os",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/fradrag",
+        destination: "/skattefradrag",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/fradrag-virksomheder",
+        destination: "/skattefradrag",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/gavebevis",
+        destination: "/gavekort",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/indsamling",
+        destination: "/indsamlingsguide",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/indsamling-admin",
+        destination: "/indsamlingsguide",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/medlemskab",
+        destination: "/bliv-medlem",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/jobs",
+        destination: "/ledige-stillinger",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/privatliv",
+        destination: "/privatlivspolitik",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/the-pledge",
+        destination: "/procentloftet",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-gøre-en-reel-forskel",
+        destination:
+          "/blog/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-gore-en-reel-forskel",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/verdens-lykkeligste-lande-og-de-mest-trivselsfremmende-organisationer",
+        destination: "/blog/verdens-lykkeligste-lande-og-de-mest-trivselsfremmende-organisationer",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source:
+          "/artikler/trumps-nedskaeringer-i-usaid-har-efterladt-en-fatal-finansieringskrise-for-den-globale-udviklingsbistand-sådan-kan-vi-hjælpe-bedst-muligt",
+        destination: "/blog/sadan-kan-vi-bidrage-bedst-muligt-i-lyset-af-nedskaeringerne-usaid",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/mål-velgørenhed-på-effekt-ikke-på-adminstration",
+        destination: "/blog/mal-velgorenhed-pa-effekt-ikke-pa-administration",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/derfor-fungerer-markedet-for-velgørenhed-ikke-optimalt",
+        destination: "/blog/derfor-fungerer-markedet-for-velgorenhed-ikke-optimalt",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/at-give-effektivt",
+        destination: "/blog/at-give-effektivt",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/global-ulighed",
+        destination: "/blog/global-ulighed",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/kan-man-koebe-sig-til-lykke",
+        destination: "/blog/kan-penge-kobe-lykke",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/hvordan-bør-man-give-til-gaza",
+        destination: "/blog/hvordan-bor-man-give-til-gaza",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/hvorfor-er-det-så-dyrt-at-redde-et-liv",
+        destination: "/blog/hvorfor-er-det-sa-dyrt-at-redde-et-liv",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
     ];
   },
 };
