@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import styles from "./GiveButton.module.scss";
 import { usePlausible } from "next-plausible";
+import { isBright } from "../../../../util/color";
 
 export const GiveButton: React.FC<
   PropsWithChildren<{ color: string; inverted: boolean; onClick: () => void; title: string }>
@@ -21,7 +22,7 @@ export const GiveButton: React.FC<
     customStyles = {
       backgroundColor: color,
       color: "white",
-      border: "none",
+      ...(isBright(color) ? { border: "none" } : {}),
     };
   }
 

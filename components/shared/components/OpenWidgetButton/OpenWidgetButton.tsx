@@ -3,6 +3,7 @@ import { WidgetContext } from "../../../main/layout/layout";
 import { EffektButton } from "../EffektButton/EffektButton";
 import { ctaButtonStyleOverrides } from "../../../main/layout/PageHeader/PageHeader";
 import { usePlausible } from "next-plausible";
+import { isBright } from "../../../../util/color";
 
 export const OpenWidgetButton: React.FC<{ label?: string; accent_color?: string; cy?: string }> = ({
   label,
@@ -17,8 +18,12 @@ export const OpenWidgetButton: React.FC<{ label?: string; accent_color?: string;
     giveButtonStyle = {
       backgroundColor: accent_color,
       color: "white",
-      border: `1px solid ${accent_color} !important`,
-      borderColor: accent_color,
+      ...(isBright(accent_color)
+        ? {
+            border: `1px solid ${accent_color} !important`,
+            borderColor: accent_color,
+          }
+        : {}),
     };
   }
 
