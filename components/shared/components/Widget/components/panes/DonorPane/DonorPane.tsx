@@ -467,4 +467,5 @@ export const paymentMethodMap: Record<string, PaymentMethod> = {
   avtalegiro: PaymentMethod.AVTALEGIRO,
   quickpay_card: PaymentMethod.QUICKPAY_CARD,
   quickpay_mobilepay: PaymentMethod.QUICKPACK_MOBILEPAY,
+  dkbank: PaymentMethod.DKBANK,
 };
