@@ -27,16 +27,22 @@ export const DKRenewPayment: React.FC = () => {
           body: JSON.stringify({ id }),
         });
 
-        const body = await response.json();
-        if (body.url) {
-          setUrl(body.url);
-          setError(null);
+        if (response.status === 404) {
+          setError(
+            "Dette link er ikke længere aktivt. Vi sender dig gerne et nyt link, hvis du besvarer den email, hvori du fik dette link. Alternativt kan du altid oprette en ny månedlig donation på forsiden.",
+          );
         } else {
-          setError("Der opstod en fejl. Prøv igen senere.");
+          const body = await response.json();
+          if (body.url) {
+            setUrl(body.url);
+            setError(null);
+          } else {
+            setError("Der opstod en fejl. Prøv igen senere.");
+          }
         }
       } catch (err) {
         setUrl(null);
-        setError(err instanceof Error ? err.message : "Der opstod en fejl.");
+        setError(err instanceof Error ? err.message : "Der opstod en fejl. Prøv igen senere.");
         console.error("renew-payment error:", err);
       } finally {
         setIsLoading(false);
@@ -54,9 +60,7 @@ export const DKRenewPayment: React.FC = () => {
 
   if (error && error.length > 0) {
     return (
-      <div className="error">
-        {error} Kontakt os, hvis fejlen fortsætter, på donation@giveffektivt.dk.
-      </div>
+      <div className="error">{error} Du kan altid kontakte os på donation@giveffektivt.dk.</div>
     );
   }
 
