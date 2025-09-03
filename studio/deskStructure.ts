@@ -19,7 +19,7 @@ import {
 
 export const deskStructure = (S) =>
   S.list()
-    .title("GiEffektivt.no")
+    .title("Site")
     .items([
       S.documentTypeListItem("generic_page").title("All Pages").icon(Book),
       S.listItem()
