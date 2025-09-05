@@ -178,7 +178,6 @@ const { getAccessTokenSilently, user } = useAuth0();
 
 if (!user)
   // User is not logged in, handle in an apropriate way
-
   const { loading, error, data } = useApi<Donor>(
     `/donors/${user["https://gieffektivt.no/user-id"]}/`,
     "GET",
