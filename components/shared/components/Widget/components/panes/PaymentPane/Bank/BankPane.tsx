@@ -22,6 +22,8 @@ export const BankPane: React.FC<{
   let currency = "NOK";
   if (config.locale === "sv") {
     currency = "SEK";
+  } else if (config.locale === "dk") {
+    currency = "DKK";
   }
 
   useEffect(() => {

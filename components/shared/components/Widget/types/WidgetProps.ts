@@ -112,6 +112,19 @@ export type QuickPayMobilePayPaymentMethod = {
 export type DkBankPaymentMethod = {
   _id: "dkbank";
   selector_text: string;
+  title: string;
+  kontonr_title: string;
+  kontonr: string;
+  kid_title: string;
+  explanatory_text: string;
+  explanatory_text_email_template: string;
+  button_text: string;
+  completed_title: string;
+  completed_text: string;
+  locale: string;
+  completed_redirect?: {
+    slug: string;
+  };
   recurring_button_text: string;
 };
 
