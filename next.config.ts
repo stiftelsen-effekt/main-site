@@ -699,7 +699,8 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/artikler/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-gøre-en-reel-forskel",
+        source:
+          "/artikler/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-g%C3%B8re-en-reel-forskel",
         destination:
           "/blog/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-gore-en-reel-forskel",
         has: [
@@ -723,7 +724,7 @@ const nextConfig: NextConfig = {
       },
       {
         source:
-          "/artikler/trumps-nedskaeringer-i-usaid-har-efterladt-en-fatal-finansieringskrise-for-den-globale-udviklingsbistand-sådan-kan-vi-hjælpe-bedst-muligt",
+          "/artikler/trumps-nedskaeringer-i-usaid-har-efterladt-en-fatal-finansieringskrise-for-den-globale-udviklingsbistand-s%C3%A5dan-kan-vi-hj%C3%A6lpe-bedst-muligt",
         destination: "/blog/sadan-kan-vi-bidrage-bedst-muligt-i-lyset-af-nedskaeringerne-usaid",
         has: [
           {
@@ -734,7 +735,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/artikler/mål-velgørenhed-på-effekt-ikke-på-adminstration",
+        source: "/artikler/m%C3%A5l-velg%C3%B8renhed-p%C3%A5-effekt-ikke-p%C3%A5-adminstration",
         destination: "/blog/mal-velgorenhed-pa-effekt-ikke-pa-administration",
         has: [
           {
@@ -745,7 +746,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/artikler/derfor-fungerer-markedet-for-velgørenhed-ikke-optimalt",
+        source: "/artikler/derfor-fungerer-markedet-for-velg%C3%B8renhed-ikke-optimalt",
         destination: "/blog/derfor-fungerer-markedet-for-velgorenhed-ikke-optimalt",
         has: [
           {
@@ -789,7 +790,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/artikler/hvordan-bør-man-give-til-gaza",
+        source: "/artikler/hvordan-b%C3%B8r-man-give-til-gaza",
         destination: "/blog/hvordan-bor-man-give-til-gaza",
         has: [
           {
@@ -800,7 +801,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/artikler/hvorfor-er-det-så-dyrt-at-redde-et-liv",
+        source: "/artikler/hvorfor-er-det-s%C3%A5-dyrt-at-redde-et-liv",
         destination: "/blog/hvorfor-er-det-sa-dyrt-at-redde-et-liv",
         has: [
           {
