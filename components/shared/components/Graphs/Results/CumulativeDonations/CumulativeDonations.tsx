@@ -16,6 +16,7 @@ export type DailyDonations = { date: string; sum: string }[];
 export interface CumulativeDonationsTextConfig {
   millionAbbreviation?: string;
   locale?: string;
+  currency?: string;
   textConfig?: {
     normalizeYAxisText?: string;
     directDonationsText?: string;
@@ -122,7 +123,7 @@ export const CumulativeDonations: React.FC<{
                   value: (d) =>
                     Intl.NumberFormat(textConfig?.locale || "no-NB", {
                       style: "currency",
-                      currency: "NOK",
+                      currency: textConfig?.currency || "NOK",
                       maximumFractionDigits: 0,
                     }).format(d.cumulativeSum),
                   label: "",
@@ -295,7 +296,7 @@ const formatEndLabel = (
   } else {
     label += d.cumulativeSum.toLocaleString(textConfig?.locale || "no-NB", {
       style: "currency",
-      currency: "NOK",
+      currency: textConfig?.currency || "NOK",
       maximumFractionDigits: 0,
     });
   }

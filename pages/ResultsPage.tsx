@@ -111,7 +111,7 @@ export const ResultsPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? (token ?? null) : null,
+      token: draftMode ? token ?? null : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,
@@ -219,6 +219,7 @@ const fetchResults = groq`
         _type == 'cumulativedonationsgraph' => {
           ...,
           "table_headers": *[_type == "results"][0].textConfiguration.table_headers.cumulative_donations_table_headers,
+          "currency": *[ _type == "site_settings"][0].main_currency,
         },
         _type == 'referralgraph' => {
           ...,

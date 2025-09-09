@@ -178,6 +178,7 @@ export const ResultContentRenderer: React.FC<{
                               millionAbbreviation:
                                 textConfig.textConfiguration?.millionAbbreviation,
                               locale: textConfig.textConfiguration?.locale,
+                              currency: block.currency,
                               textConfig: {
                                 normalizeYAxisText:
                                   textConfig.textConfiguration?.normalizeYAxisText,
