@@ -175,6 +175,7 @@ You provide the API route, method, required scopes and the auth0 SDK's getAccess
 
 ```typescript
 const { getAccessTokenSilently, user } = useAuth0();
+
 if (!user)
   // User is not logged in, handle in an apropriate way
   const { loading, error, data } = useApi<Donor>(
