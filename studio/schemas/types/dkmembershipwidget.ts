@@ -115,7 +115,7 @@ export default defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
-          name: "failed submission message",
+          name: "failed_submission_message",
           title: "Failed submission response message",
           type: "string",
           description: "Message to display if the submission failed.",
