@@ -190,7 +190,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=distribution-input]")
-      .eq(1)
+      .eq(2)
       .should("contain.value", "15");
 
     cy.get("[data-cy=generic-list-table]")
@@ -198,7 +198,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=distribution-input]")
-      .eq(2)
+      .eq(4)
       .should("contain.value", "25");
 
     cy.get("[data-cy=generic-list-table]")
@@ -214,7 +214,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=distribution-input]")
-      .eq(4)
+      .eq(0)
       .should("contain.value", "30");
   });
 
