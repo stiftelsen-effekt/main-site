@@ -5,7 +5,15 @@ import { EffektButton } from "../../../shared/components/EffektButton/EffektButt
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { Dkmembershipwidget } from "../../../../studio/sanity.types";
 import { MembershipCountrySelector } from "./CountrySelector";
-import { ApiErrorNotification } from "../../../shared/components/Widget/components/shared/ApiErrorNotification/ApiErrorNotification";
+import {
+  NotificationWrapper,
+  NotificationContent,
+  NotificationIcon,
+  NotificationMessage,
+  NotificationCloseButton,
+} from "../../../shared/components/Widget/components/shared/ApiErrorNotification/ApiErrorNotification.style";
+import { X, AlertCircle } from "react-feather";
+import AnimateHeight from "react-animate-height";
 
 // --- Helper Functions ---
 
@@ -168,22 +176,22 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
 
   return (
     <div className={styles.widgetContainer}>
-      {apiError && (
-        <div data-cy="api-error-notification" className={styles.errorNotification}>
-          <div className={styles.errorContent}>
-            <span className={styles.errorIcon}>⚠</span>
-            <span className={styles.errorMessage}>{apiError}</span>
-            <button
-              type="button"
+      <AnimateHeight height={apiError ? "auto" : 0} duration={300} animateOpacity>
+        <NotificationWrapper data-cy="api-error-notification">
+          <NotificationContent>
+            <NotificationIcon>
+              <AlertCircle size={24} />
+            </NotificationIcon>
+            <NotificationMessage>{apiError}</NotificationMessage>
+            <NotificationCloseButton
               onClick={() => setApiError(null)}
-              className={styles.errorClose}
               aria-label="Close notification"
             >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
+              <X size={24} />
+            </NotificationCloseButton>
+          </NotificationContent>
+        </NotificationWrapper>
+      </AnimateHeight>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <MembershipCountrySelector
