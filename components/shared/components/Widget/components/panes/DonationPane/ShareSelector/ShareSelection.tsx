@@ -170,7 +170,9 @@ const ShareInput: React.FC<{
     <ShareInputContainer>
       <div>
         <ShareLink href={organization.informationUrl} target="_blank">
-          <label htmlFor={organization.id.toString()}>{organization.widgetDisplayName}</label>
+          <label htmlFor={organization.id.toString()}>
+            {organization.widgetDisplayName || organization.name}
+          </label>
         </ShareLink>
         {organization.widgetContext && <ToolTip text={organization.widgetContext} />}
       </div>

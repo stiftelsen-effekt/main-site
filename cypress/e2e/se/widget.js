@@ -80,12 +80,13 @@ describe("Widget", () => {
       .find("[data-cy=smart-distribution-toggle]")
       .click({ force: true });
     cy.get("[data-cy=org-12]").clear();
-    cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
+    cy.get("[data-cy=org-12]").type(700); // should truncate numbers ove 100
     cy.nextWidgetPane();
     cy.checkNextIsDisabled();
     cy.get("[data-cy=org-12]").type("{moveToStart}");
     cy.get("[data-cy=org-12]").type("-"); // should ignore negative numbers
-    cy.get("[data-cy=org-11]").type(50);
+    cy.get("[data-cy=org-15]").clear();
+    cy.get("[data-cy=org-15]").type(30);
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
