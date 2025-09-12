@@ -471,7 +471,7 @@ describe("DK Membership Widget CPR Validation", () => {
       cy.intercept("POST", "**/api/membership", (req) => {
         if (req.body.email === "a@a") {
           req.reply({
-            statusCode: 400,
+            statusCode: 500,
             body: {
               error: "Invalid email domain",
             },
@@ -507,7 +507,7 @@ describe("DK Membership Widget CPR Validation", () => {
           tin: "120290-0107",
         });
         // Verify the response was non-200
-        expect(interception.response.statusCode).to.equal(999);
+        expect(interception.response.statusCode).to.equal(500);
       });
     });
   });
