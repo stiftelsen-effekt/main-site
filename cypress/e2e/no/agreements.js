@@ -12,7 +12,7 @@ describe("Agreements page", () => {
       }).as("getDonor");
     });
 
-    cy.fixture("cause_areas").then((causeAreas) => {
+    cy.fixture("cause_areas_multiple").then((causeAreas) => {
       cy.intercept("GET", "/causeareas/all/", {
         statusCode: 200,
         body: {
