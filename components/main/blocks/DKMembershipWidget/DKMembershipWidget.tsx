@@ -5,6 +5,15 @@ import { EffektButton } from "../../../shared/components/EffektButton/EffektButt
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { Dkmembershipwidget } from "../../../../studio/sanity.types";
 import { MembershipCountrySelector } from "./CountrySelector";
+import {
+  NotificationWrapper,
+  NotificationContent,
+  NotificationIcon,
+  NotificationMessage,
+  NotificationCloseButton,
+} from "../../../shared/components/Widget/components/shared/ApiErrorNotification/ApiErrorNotification.style";
+import { X, AlertCircle } from "react-feather";
+import AnimateHeight from "react-animate-height";
 
 // --- Helper Functions ---
 
@@ -24,7 +33,7 @@ const API_ENDPOINT = `${process.env.NEXT_PUBLIC_EFFEKT_API}/api/membership`;
 type ConfigurationType = Required<Dkmembershipwidget>["configuration"];
 
 export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ config }) => {
-  const defaultConfig: ConfigurationType = {
+  const defaultConfig: ConfigurationType & { failed_submission_message: string } = {
     country_label: "Country",
     name_label: "Full name",
     email_label: "Email (for receipt)",
@@ -40,6 +49,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     field_required_message: "This field is required.",
     submitting_message: "Submitting...",
     membership_fee_text: "Become a member for 50 DKK",
+    failed_submission_message: "Failed to submit",
   };
 
   const mergedTexts = { ...defaultConfig, ...config };
@@ -60,6 +70,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     Partial<Record<keyof MembershipFormData, string> & { _general: string }>
   >({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const isDenmarkSelected = /^(denmark|danmark)$/i.test(formData.country.trim());
   const showBirthdayField = !isDenmarkSelected;
@@ -79,6 +90,9 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (formErrors[name as keyof MembershipFormData]) {
       setFormErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+    if (apiError) {
+      setApiError(null);
     }
   };
 
@@ -150,16 +164,34 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
           .json()
           .catch(() => ({ message: "Submission failed with status: " + response.status }));
         console.error("Submission error:", errorData);
+        setApiError(mergedTexts.failed_submission_message);
         setLoading(false);
       }
     } catch (error) {
       console.error("Network or other error:", error);
+      setApiError(mergedTexts.failed_submission_message);
       setLoading(false);
     }
   };
 
   return (
     <div className={styles.widgetContainer}>
+      <AnimateHeight height={apiError ? "auto" : 0} duration={300} animateOpacity>
+        <NotificationWrapper data-cy="api-error-notification">
+          <NotificationContent>
+            <NotificationIcon>
+              <AlertCircle size={24} />
+            </NotificationIcon>
+            <NotificationMessage>{apiError}</NotificationMessage>
+            <NotificationCloseButton
+              onClick={() => setApiError(null)}
+              aria-label="Close notification"
+            >
+              <X size={24} />
+            </NotificationCloseButton>
+          </NotificationContent>
+        </NotificationWrapper>
+      </AnimateHeight>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <MembershipCountrySelector
