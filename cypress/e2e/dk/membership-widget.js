@@ -466,10 +466,10 @@ describe("DK Membership Widget CPR Validation", () => {
       );
     });
 
-    it("should handle error response for email 'a@a.com'", () => {
-      // Mock the API endpoint to return non-200 for a@a.com
+    it("should handle error response for email 'a@a'", () => {
+      // Mock the API endpoint to return non-200 for a@a
       cy.intercept("POST", "**/api/membership", (req) => {
-        if (req.body.email === "a@a.com") {
+        if (req.body.email === "a@a") {
           req.reply({
             statusCode: 400,
             body: {
@@ -486,10 +486,10 @@ describe("DK Membership Widget CPR Validation", () => {
         }
       }).as("membershipSubmission");
 
-      // Fill form with a@a.com email
+      // Fill form with a@a email
       cy.get('[data-cy="country-selector"]').clear().type("Denmark");
       cy.get('[data-cy="name-input"]').type("Test Testesen");
-      cy.get('[data-cy="email-input"]').type("a@a.com");
+      cy.get('[data-cy="email-input"]').type("a@a");
       cy.get('[data-cy="address-input"]').type("Testgade 123");
       cy.get('[data-cy="postcode-input"]').type("1234");
       cy.get('[data-cy="city-input"]').type("København");
@@ -502,12 +502,12 @@ describe("DK Membership Widget CPR Validation", () => {
       cy.wait("@membershipSubmission").then((interception) => {
         expect(interception.request.body).to.deep.include({
           name: "Test Testesen",
-          email: "a@a.com",
+          email: "a@a",
           country: "Denmark",
           tin: "120290-0107",
         });
         // Verify the response was non-200
-        expect(interception.response.statusCode).to.equal(400);
+        expect(interception.response.statusCode).to.equal(999);
       });
     });
   });

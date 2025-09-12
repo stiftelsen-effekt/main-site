@@ -114,6 +114,13 @@ export default defineType({
           description: "Message to display while the form is being submitted.",
           validation: (Rule) => Rule.required(),
         }),
+        defineField({
+          name: "failed submission message",
+          title: "Failed submission response message",
+          type: "string",
+          description: "Message to display if the submission failed.",
+          validation: (Rule) => Rule.required(),
+        }),
       ],
     }),
   ],
