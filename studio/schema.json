@@ -5585,6 +5585,13 @@
                 "type": "string"
               },
               "optional": true
+            },
+            "failed_submission_message": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
             }
           }
         },
@@ -26228,6 +26235,13 @@
                             "type": "string"
                           },
                           "optional": true
+                        },
+                        "failed_submission_message": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string"
+                          },
+                          "optional": true
                         }
                       }
                     },
@@ -36824,6 +36838,13 @@
                                     "type": "string"
                                   },
                                   "optional": true
+                                },
+                                "failed_submission_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
                                 }
                               }
                             },
@@ -42328,6 +42349,13 @@
                                   "optional": true
                                 },
                                 "submitting_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
+                                },
+                                "failed_submission_message": {
                                   "type": "objectAttribute",
                                   "value": {
                                     "type": "string"
@@ -48997,6 +49025,13 @@
                                     "type": "string"
                                   },
                                   "optional": true
+                                },
+                                "failed_submission_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
                                 }
                               }
                             },
@@ -54072,6 +54107,13 @@
                                   "optional": true
                                 },
                                 "submitting_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
+                                },
+                                "failed_submission_message": {
                                   "type": "objectAttribute",
                                   "value": {
                                     "type": "string"
@@ -59950,6 +59992,13 @@
                                   "optional": true
                                 },
                                 "submitting_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
+                                },
+                                "failed_submission_message": {
                                   "type": "objectAttribute",
                                   "value": {
                                     "type": "string"
