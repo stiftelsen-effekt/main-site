@@ -150,7 +150,11 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = { ...state, dueDay: action.payload.day };
       break;
     case SET_RECURRING:
-      state = { ...state, recurring: action.payload.recurring };
+      state = {
+        ...state,
+        recurring: action.payload.recurring,
+        method: undefined,
+      };
       break;
     case SET_KID:
       state = { ...state, kid: action.payload.kid };
