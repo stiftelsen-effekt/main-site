@@ -61,7 +61,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     Partial<Record<keyof MembershipFormData, string> & { _general: string }>
   >({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | undefined>(undefined);
 
   const renderErrorMessage = (): ReactNode => {
     return (
@@ -91,7 +91,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
       setFormErrors((prev) => ({ ...prev, [name]: undefined }));
     }
     if (apiError) {
-      setApiError(null);
+      setApiError(undefined);
     }
   };
 
@@ -163,12 +163,12 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
           .json()
           .catch(() => ({ message: "Submission failed with status: " + response.status }));
         console.error("Submission error:", errorData);
-        setApiError(mergedTexts.failed_submission_message || "Error in submission");
+        setApiError(mergedTexts.failed_submission_message);
         setLoading(false);
       }
     } catch (error) {
       console.error("Network or other error:", error);
-      setApiError(mergedTexts.failed_submission_message || "Error in submission");
+      setApiError(mergedTexts.failed_submission_message);
       setLoading(false);
     }
   };
@@ -185,7 +185,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             <button
               type="button"
               className={styles.membershipNotificationCloseButton}
-              onClick={() => setApiError(null)}
+              onClick={() => setApiError(undefined)}
               aria-label="Luk fejlbesked"
             >
               <X size={24} />
