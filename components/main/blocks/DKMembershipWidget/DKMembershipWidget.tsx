@@ -124,25 +124,12 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
   const [loading, setLoading] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const renderErrorMessageWithLinks = (message: string): ReactNode => {
-    const parts = message.split(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/);
-    const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-    return parts.map((part, index) => {
-      if (!part) {
-        return null;
-      }
-
-      if (emailPattern.test(part)) {
-        return (
-          <a key={`api-error-email-${part}-${index}`} href={`mailto:${part}`}>
-            {part}
-          </a>
-        );
-      }
-
-      return <React.Fragment key={`api-error-text-${index}`}>{part}</React.Fragment>;
-    });
+  const renderErrorMessage = (): ReactNode => {
+    return (
+      <React.Fragment key={`api-error-text`}>
+        {defaultConfig.failed_submission_message}
+      </React.Fragment>
+    );
   };
 
   const isDenmarkSelected = /^(denmark|danmark)$/i.test(formData.country.trim());
@@ -256,7 +243,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
               <AlertCircle size={24} />
             </MembershipNotificationIcon>
             <MembershipNotificationMessage>
-              {apiError ? renderErrorMessageWithLinks(apiError) : null}
+              {apiError ? renderErrorMessage() : null}
             </MembershipNotificationMessage>
             <MembershipNotificationCloseButton
               type="button"
