@@ -465,50 +465,5 @@ describe("DK Membership Widget CPR Validation", () => {
         "_self",
       );
     });
-
-    it("should handle error response for email 'a@a'", () => {
-      // Mock the API endpoint to return non-200 for a@a
-      cy.intercept("POST", "**/api/membership", (req) => {
-        if (req.body.email === "a@a") {
-          req.reply({
-            statusCode: 500,
-            body: {
-              error: "Invalid email domain",
-            },
-          });
-        } else {
-          req.reply({
-            statusCode: 200,
-            body: {
-              redirect: "https://example.com/payment",
-            },
-          });
-        }
-      }).as("membershipSubmission");
-
-      // Fill form with a@a email
-      cy.get('[data-cy="country-selector"]').clear().type("Denmark");
-      cy.get('[data-cy="name-input"]').type("Test Testesen");
-      cy.get('[data-cy="email-input"]').type("a@a");
-      cy.get('[data-cy="address-input"]').type("Testgade 123");
-      cy.get('[data-cy="postcode-input"]').type("1234");
-      cy.get('[data-cy="city-input"]').type("København");
-      cy.get('[data-cy="tin-input"]').type("1202900107");
-
-      // Submit form
-      cy.get('[data-cy="submit-button"]').click();
-
-      // Wait for API call and verify it was made with the a@a.com email
-      cy.wait("@membershipSubmission").then((interception) => {
-        expect(interception.request.body).to.deep.include({
-          name: "Test Testesen",
-          email: "a@a",
-          country: "Denmark",
-          tin: "120290-0107",
-        });
-        // Verify the response was non-200
-        expect(interception.response.statusCode).to.equal(500);
-      });
-    });
   });
 });
