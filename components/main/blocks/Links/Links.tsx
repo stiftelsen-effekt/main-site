@@ -19,7 +19,7 @@ export type LinksProps = {
 };
 
 export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
-  const { articlesPagePath } = useRouterContext();
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
 
   return (
     <ul className={elements.links}>
@@ -29,7 +29,10 @@ export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
           .map((link) => (
             <li key={link._key}>
               {buttons ? (
-                <LinkButton title={link.title ?? ""} url={getHref(link, articlesPagePath)} />
+                <LinkButton
+                  title={link.title ?? ""}
+                  url={getHref(link, articlesPagePath, fundraisersPath)}
+                />
               ) : (
                 <LinkComponent link={link} />
               )}
@@ -45,12 +48,12 @@ export const LinkComponent: React.FC<{
   style?: CSSProperties;
   newtab?: boolean;
 }> = ({ link, children, style, newtab }) => {
-  const { articlesPagePath } = useRouterContext();
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
   const openInNewTab = (link._type === "link" && link.newtab) || newtab;
 
   return (
     <Link
-      href={getHref(link, articlesPagePath)}
+      href={getHref(link, articlesPagePath, fundraisersPath)}
       target={openInNewTab ? "_blank" : ""}
       onClick={(e) => {
         e.currentTarget.blur();
@@ -62,12 +65,23 @@ export const LinkComponent: React.FC<{
   );
 };
 
-export const getHref = (link: NavLink | LinkType, articlesPagePath: string[]) => {
-  return link._type === "navitem"
-    ? link.pagetype === "article_page"
-      ? `/${[...articlesPagePath, link.slug].join("/")}`
-      : `/${link.slug}`
-    : link.url ?? (link as any).href ?? "";
+export const getHref = (
+  link: NavLink | LinkType,
+  articlesPagePath: string[],
+  fundraisersPath: string[],
+) => {
+  if (link._type === "navitem") {
+    switch (link.pagetype) {
+      case "article_page":
+        return `/${[...articlesPagePath, link.slug].join("/")}`;
+      case "fundraiser_page":
+        return `/${[...fundraisersPath, link.slug].join("/")}`;
+      default:
+        return `/${link.slug}`;
+    }
+  } else {
+    return link.url ?? (link as any).href ?? "";
+  }
 };
 
 const validateLink: (link: LinkType | NavLink) => boolean = (link) => {
