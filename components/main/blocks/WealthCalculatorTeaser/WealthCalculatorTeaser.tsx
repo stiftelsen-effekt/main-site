@@ -18,6 +18,7 @@ import {
   getNorwegianAdjustedPPPconversionFactor,
   getSwedishAdjustedPPPconversionFactor,
 } from "../WealthCalculator/_queries";
+import { getHref } from "../Links/Links";
 
 export const WealthCalculatorTeaser: React.FC<{
   title: string;
@@ -40,7 +41,7 @@ export const WealthCalculatorTeaser: React.FC<{
   xAxisLabel,
   locale,
 }) => {
-  const { articlesPagePath } = useRouterContext();
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
   const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult | undefined>();
 
   /**
@@ -77,13 +78,7 @@ export const WealthCalculatorTeaser: React.FC<{
             <PortableText value={description} />
           </div>
           <div className={styles.desktopButton}>
-            <Link
-              href={
-                link.pagetype === "article_page"
-                  ? `/${[...articlesPagePath, link.slug].join("/")}`
-                  : `/${link.slug}`
-              }
-            >
+            <Link href={getHref(link, articlesPagePath, fundraisersPath)}>
               <EffektButton onClick={() => {}}>{link.title}</EffektButton>
             </Link>
           </div>
@@ -116,13 +111,7 @@ export const WealthCalculatorTeaser: React.FC<{
         <span>{xAxisLabel} →</span>
       </div>
       <div className={styles.mobileButton}>
-        <Link
-          href={
-            link.pagetype === "article_page"
-              ? `/${[...articlesPagePath, link.slug].join("/")}`
-              : `/${link.slug}`
-          }
-        >
+        <Link href={getHref(link, articlesPagePath, fundraisersPath)}>
           <EffektButton onClick={() => {}} fullWidth>
             {link.title}
           </EffektButton>
