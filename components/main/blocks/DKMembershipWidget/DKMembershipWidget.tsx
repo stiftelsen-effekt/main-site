@@ -66,7 +66,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
   const renderErrorMessage = (): ReactNode => {
     return (
       <React.Fragment key={`api-error-text`}>
-        {defaultConfig.failed_submission_message}
+        {mergedTexts.failed_submission_message}
       </React.Fragment>
     );
   };
