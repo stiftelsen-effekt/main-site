@@ -20,6 +20,8 @@ import AnimateHeight from "react-animate-height";
 
 const MembershipNotificationWrapper = styled(NotificationWrapper)`
   width: 100%;
+  max-width: 36rem;
+  margin: 0 auto 1.5rem;
 `;
 
 const MembershipNotificationContent = styled(NotificationContent)`
@@ -242,9 +244,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
             <MembershipNotificationIcon aria-hidden="true">
               <AlertCircle size={24} />
             </MembershipNotificationIcon>
-            <MembershipNotificationMessage>
-              {apiError ? renderErrorMessage() : null}
-            </MembershipNotificationMessage>
+            <MembershipNotificationMessage>{apiError}</MembershipNotificationMessage>
             <MembershipNotificationCloseButton
               type="button"
               onClick={() => setApiError(null)}
