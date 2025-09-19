@@ -2098,6 +2098,150 @@
     }
   },
   {
+    "name": "dkbank",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "dkbank"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "explanatory_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "explanatory_text_email_template": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "kontonr_title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "kontonr": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "kid_title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "button_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "completed_title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "completed_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "completed_redirect": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "generic_page"
+        },
+        "optional": true
+      },
+      "selector_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "recurring_button_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      }
+    }
+  },
+  {
     "name": "quickpay_mobilepay",
     "type": "document",
     "attributes": {
@@ -3498,6 +3642,36 @@
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": true
+      },
+      "completed_redirect": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "generic_page"
         },
         "optional": true
       }
@@ -5406,6 +5580,13 @@
               "optional": true
             },
             "submitting_message": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "failed_submission_message": {
               "type": "objectAttribute",
               "value": {
                 "type": "string"
@@ -14233,7 +14414,7 @@
           },
           "optional": true
         },
-        "impact": {
+        "impact_configuration": {
           "type": "objectAttribute",
           "value": {
             "type": "object",
@@ -14268,77 +14449,98 @@
   },
   {
     "name": "wealthcalculatorimpact",
-    "type": "type",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "wealthcalculatorimpact"
-          }
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "wealthcalculatorimpact"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "header": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
-        "header": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
+        "optional": true
+      },
+      "description_template_string": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
-        "description_template_string": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
+        "optional": true
+      },
+      "button_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
-        "button_text": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
-        },
-        "intervention_configuration": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "object",
-            "attributes": {
-              "output_configuration": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "object",
-                  "attributes": {
-                    "_ref": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string"
-                      }
-                    },
-                    "_type": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string",
-                        "value": "reference"
-                      }
-                    },
-                    "_weak": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "boolean"
-                      },
-                      "optional": true
+        "optional": true
+      },
+      "intervention_configuration": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "output_configuration": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "object",
+                "attributes": {
+                  "_ref": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
                     }
                   },
-                  "dereferencesTo": "interventionwidgetoutputconfiguration"
+                  "_type": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string",
+                      "value": "reference"
+                    }
+                  },
+                  "_weak": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "boolean"
+                    },
+                    "optional": true
+                  }
                 },
-                "optional": true
-              }
+                "dereferencesTo": "interventionwidgetoutputconfiguration"
+              },
+              "optional": true
             }
-          },
-          "optional": true
-        }
+          }
+        },
+        "optional": true
       }
     }
   },
@@ -15625,6 +15827,32 @@
                   }
                 },
                 "dereferencesTo": "quickpay_mobilepay"
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_ref": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "_type": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string",
+                      "value": "reference"
+                    }
+                  },
+                  "_weak": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "boolean"
+                    },
+                    "optional": true
+                  }
+                },
+                "dereferencesTo": "dkbank"
               }
             ]
           }
@@ -16520,6 +16748,13 @@
         "optional": true
       },
       "pane2_button_text": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "api_generic_error_message": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
@@ -26000,6 +26235,13 @@
                             "type": "string"
                           },
                           "optional": true
+                        },
+                        "failed_submission_message": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string"
+                          },
+                          "optional": true
                         }
                       }
                     },
@@ -29608,6 +29850,13 @@
         "optional": true
       },
       "name": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "first_name": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
@@ -36575,6 +36824,13 @@
                                     "type": "string"
                                   },
                                   "optional": true
+                                },
+                                "failed_submission_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
                                 }
                               }
                             },
@@ -42072,6 +42328,13 @@
                                   "optional": true
                                 },
                                 "submitting_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
+                                },
+                                "failed_submission_message": {
                                   "type": "objectAttribute",
                                   "value": {
                                     "type": "string"
@@ -48720,6 +48983,13 @@
                                     "type": "string"
                                   },
                                   "optional": true
+                                },
+                                "failed_submission_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
                                 }
                               }
                             },
@@ -53788,6 +54058,13 @@
                                   "optional": true
                                 },
                                 "submitting_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
+                                },
+                                "failed_submission_message": {
                                   "type": "objectAttribute",
                                   "value": {
                                     "type": "string"
@@ -59652,6 +59929,13 @@
                                   "optional": true
                                 },
                                 "submitting_message": {
+                                  "type": "objectAttribute",
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "optional": true
+                                },
+                                "failed_submission_message": {
                                   "type": "objectAttribute",
                                   "value": {
                                     "type": "string"
