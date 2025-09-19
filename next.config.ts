@@ -376,17 +376,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/bliv-frivillig",
-        destination: "/ledige-stillinger",
-        has: [
-          {
-            type: "host",
-            value: "giveffektivt.dk",
-          },
-        ],
-        permanent: true,
-      },
-      {
         source: "/privatliv",
         destination: "/privatlivspolitik",
         has: [

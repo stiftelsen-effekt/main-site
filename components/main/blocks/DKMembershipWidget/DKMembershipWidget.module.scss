@@ -14,6 +14,62 @@
   }
 }
 
+.membershipNotificationWrapper {
+  width: 100%;
+  max-width: 36rem;
+  margin: 0 auto 1.5rem;
+}
+
+.membershipNotificationContent {
+  background: var(--primary);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+  border-radius: 12px;
+  padding: 18px 24px;
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+}
+
+.membershipNotificationIcon {
+  color: var(--secondary);
+  padding: 0;
+  margin-top: 2px;
+
+  svg {
+    stroke-width: 1.5;
+  }
+}
+
+.membershipNotificationMessage {
+  margin-top: 0;
+  font-family: "ESKlarheitGrotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: pre-line;
+
+  a {
+    color: var(--secondary);
+    text-decoration: underline;
+  }
+}
+
+.membershipNotificationCloseButton {
+  color: var(--secondary);
+  padding: 4px;
+  border-radius: 999px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(250, 250, 250, 0.12);
+  }
+}
+
 .formGroup {
   margin-bottom: 1.5rem;
   position: relative;
