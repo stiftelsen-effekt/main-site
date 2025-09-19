@@ -40,7 +40,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     field_required_message: "This field is required.",
     submitting_message: "Submitting...",
     membership_fee_text: "Become a member for 50 DKK",
-    failed_submission_message: "There was an erroriiii",
+    failed_submission_message: "Error submitting membership request",
   };
 
   const mergedTexts = { ...defaultConfig, ...config };
