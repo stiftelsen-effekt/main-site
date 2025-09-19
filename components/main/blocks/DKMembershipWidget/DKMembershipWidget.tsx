@@ -25,9 +25,9 @@ const MembershipNotificationWrapper = styled(NotificationWrapper)`
 `;
 
 const MembershipNotificationContent = styled(NotificationContent)`
-  background: var(--secondary);
-  color: var(--primary);
-  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
   border-radius: 12px;
   padding: 18px 24px;
   gap: 16px;
@@ -36,7 +36,7 @@ const MembershipNotificationContent = styled(NotificationContent)`
 `;
 
 const MembershipNotificationIcon = styled(NotificationIcon)`
-  color: var(--primary);
+  color: var(--secondary);
   padding: 0;
   margin-top: 2px;
 
@@ -54,19 +54,19 @@ const MembershipNotificationMessage = styled(NotificationMessage)`
   white-space: pre-line;
 
   a {
-    color: var(--primary);
+    color: var(--secondary);
     text-decoration: underline;
   }
 `;
 
 const MembershipNotificationCloseButton = styled(NotificationCloseButton)`
-  color: var(--primary);
+  color: var(--secondary);
   padding: 4px;
   border-radius: 999px;
 
   &:hover,
   &:focus-visible {
-    background: rgba(0, 0, 0, 0.06);
+    background: rgba(250, 250, 250, 0.12);
   }
 `;
 
