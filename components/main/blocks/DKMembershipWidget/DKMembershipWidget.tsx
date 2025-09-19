@@ -1,10 +1,11 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent, ReactNode } from "react";
 import styles from "./DKMembershipWidget.module.scss";
 import { validateCpr, formatCprInput, CprValidationResult } from "../../../../util/tin-validation";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { Dkmembershipwidget } from "../../../../studio/sanity.types";
 import { MembershipCountrySelector } from "./CountrySelector";
+import styled from "styled-components";
 import {
   NotificationWrapper,
   NotificationContent,
@@ -16,6 +17,56 @@ import { X, AlertCircle } from "react-feather";
 import AnimateHeight from "react-animate-height";
 
 // --- Helper Functions ---
+
+const MembershipNotificationWrapper = styled(NotificationWrapper)`
+  width: 100%;
+`;
+
+const MembershipNotificationContent = styled(NotificationContent)`
+  background: var(--secondary);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 18px 24px;
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+`;
+
+const MembershipNotificationIcon = styled(NotificationIcon)`
+  color: var(--primary);
+  padding: 0;
+  margin-top: 2px;
+
+  svg {
+    stroke-width: 1.5;
+  }
+`;
+
+const MembershipNotificationMessage = styled(NotificationMessage)`
+  margin-top: 0;
+  font-family: "ESKlarheitGrotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: pre-line;
+
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+`;
+
+const MembershipNotificationCloseButton = styled(NotificationCloseButton)`
+  color: var(--primary);
+  padding: 4px;
+  border-radius: 999px;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.06);
+  }
+`;
 
 interface MembershipFormData {
   country: string;
@@ -49,7 +100,8 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     field_required_message: "This field is required.",
     submitting_message: "Submitting...",
     membership_fee_text: "Become a member for 50 DKK",
-    failed_submission_message: "Failed to submit",
+    failed_submission_message:
+      "Der skete en uventet fejl. Prøv igen, og kontakt os på info@giveffektivt.dk, hvis problemet fortsætter.",
   };
 
   const mergedTexts = { ...defaultConfig, ...config };
@@ -71,6 +123,27 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
   >({});
   const [loading, setLoading] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
+
+  const renderErrorMessageWithLinks = (message: string): ReactNode => {
+    const parts = message.split(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/);
+    const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    return parts.map((part, index) => {
+      if (!part) {
+        return null;
+      }
+
+      if (emailPattern.test(part)) {
+        return (
+          <a key={`api-error-email-${part}-${index}`} href={`mailto:${part}`}>
+            {part}
+          </a>
+        );
+      }
+
+      return <React.Fragment key={`api-error-text-${index}`}>{part}</React.Fragment>;
+    });
+  };
 
   const isDenmarkSelected = /^(denmark|danmark)$/i.test(formData.country.trim());
   const showBirthdayField = !isDenmarkSelected;
@@ -177,20 +250,23 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
   return (
     <div className={styles.widgetContainer}>
       <AnimateHeight height={apiError ? "auto" : 0} duration={300} animateOpacity>
-        <NotificationWrapper data-cy="api-error-notification">
-          <NotificationContent>
-            <NotificationIcon>
+        <MembershipNotificationWrapper data-cy="api-error-notification">
+          <MembershipNotificationContent role="alert" aria-live="assertive">
+            <MembershipNotificationIcon aria-hidden="true">
               <AlertCircle size={24} />
-            </NotificationIcon>
-            <NotificationMessage>{apiError}</NotificationMessage>
-            <NotificationCloseButton
+            </MembershipNotificationIcon>
+            <MembershipNotificationMessage>
+              {apiError ? renderErrorMessageWithLinks(apiError) : null}
+            </MembershipNotificationMessage>
+            <MembershipNotificationCloseButton
+              type="button"
               onClick={() => setApiError(null)}
-              aria-label="Close notification"
+              aria-label="Luk fejlbesked"
             >
               <X size={24} />
-            </NotificationCloseButton>
-          </NotificationContent>
-        </NotificationWrapper>
+            </MembershipNotificationCloseButton>
+          </MembershipNotificationContent>
+        </MembershipNotificationWrapper>
       </AnimateHeight>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
