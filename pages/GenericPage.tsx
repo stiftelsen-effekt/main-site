@@ -85,6 +85,7 @@ export const GenericPage = withStaticProps(
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
         siteName={data.result.settings[0].title}
+        noIndex={header.noIndex}
       />
 
       <MainHeader
