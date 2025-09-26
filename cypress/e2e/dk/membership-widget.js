@@ -127,7 +127,7 @@ describe("DK Membership Widget CPR Validation", () => {
 
       // Should show invalid message
       cy.get('[data-cy="cpr-invalid-message"]').should("exist");
-      cy.get('[data-cy="cpr-invalid-message"]').should("contain", "Invalid CPR number");
+      cy.get('[data-cy="cpr-invalid-message"]').should("contain", "Invalid CPR");
 
       // Form should not be submittable
       cy.get('[data-cy="submit-button"]').click();
@@ -198,10 +198,7 @@ describe("DK Membership Widget CPR Validation", () => {
 
       // Should show suspicious message, not invalid message
       cy.get('[data-cy="cpr-suspicious-message"]').should("exist");
-      cy.get('[data-cy="cpr-suspicious-message"]').should(
-        "contain",
-        "Kontroller venligst at det er korrekt",
-      );
+      cy.get('[data-cy="cpr-suspicious-message"]').should("contain", "Double check your CPR");
       cy.get('[data-cy="cpr-invalid-message"]').should("not.exist");
 
       // Form should be submittable (suspicious CPR is accepted)

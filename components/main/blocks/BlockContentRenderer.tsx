@@ -486,7 +486,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "dkmembershipwidget":
             return (
-              <DKMembershipWidget key={block._key || block._id} config={block.confituration} />
+              <DKMembershipWidget key={block._key || block._id} config={block.configuration} />
             );
           case "dkmembershipdisplay":
             return (

@@ -48,3 +48,6 @@ cypress.env.json
 # Sanity
 /studio/.sanity
 .env*.local
+
+# Claude Code
+.claude/
