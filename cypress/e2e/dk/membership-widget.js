@@ -200,7 +200,7 @@ describe("DK Membership Widget CPR Validation", () => {
       cy.get('[data-cy="cpr-suspicious-message"]').should("exist");
       cy.get('[data-cy="cpr-suspicious-message"]').should(
         "contain",
-        "Kontroller venligst at det er korrekt",
+        "Kontroller venligst at det er korrekt.",
       );
       cy.get('[data-cy="cpr-invalid-message"]').should("not.exist");
 
