@@ -27653,6 +27653,13 @@
           "type": "string"
         },
         "optional": true
+      },
+      "noIndex": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
       }
     }
   },
@@ -28324,6 +28331,13 @@
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": true
+      },
+      "noIndex": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       }
@@ -38682,6 +38696,13 @@
               },
               "optional": true
             },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {
@@ -43732,6 +43753,13 @@
               },
               "optional": true
             },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {
@@ -45064,6 +45092,13 @@
               },
               "optional": true
             },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {
@@ -45329,6 +45364,13 @@
               "type": "objectAttribute",
               "value": {
                 "type": "string"
+              },
+              "optional": true
+            },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
               },
               "optional": true
             },
@@ -50412,6 +50454,13 @@
               },
               "optional": true
             },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {
@@ -55462,6 +55511,13 @@
               },
               "optional": true
             },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {
@@ -56280,6 +56336,13 @@
               "type": "objectAttribute",
               "value": {
                 "type": "string"
+              },
+              "optional": true
+            },
+            "noIndex": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
               },
               "optional": true
             },

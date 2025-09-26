@@ -141,6 +141,7 @@ export const ResultsPage = withStaticProps(
         titleTemplate={`${data.result.settings[0]?.title ?? ""} | %s`}
         keywords={header?.seoKeywords ?? undefined}
         siteName={data.result.settings[0]?.title ?? ""}
+        noIndex={header?.noIndex}
       />
 
       <div className={styles.inverted}>

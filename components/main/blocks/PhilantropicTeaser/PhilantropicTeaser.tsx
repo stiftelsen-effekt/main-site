@@ -4,6 +4,7 @@ import { Contributor, ContributorType } from "../Contributors/Contributor";
 import { LinkComponent, LinkType, getHref } from "../Links/Links";
 import styles from "./PhilantropicTeaser.module.scss";
 import LinkButton from "../../../shared/components/EffektButton/LinkButton";
+import { useRouterContext } from "../../../../context/RouterContext";
 
 export const PhilantropicTeaser: React.FC<{
   title: string;
@@ -16,6 +17,8 @@ export const PhilantropicTeaser: React.FC<{
   people: ContributorType[];
   locale?: string;
 }> = ({ title, description, links, button, people, locale }) => {
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
+
   return (
     <div className={styles.container}>
       <div className={styles.description}>
@@ -28,7 +31,11 @@ export const PhilantropicTeaser: React.FC<{
         </div>
         {button && button.text && button.link && (
           <div className={styles.button}>
-            <LinkButton url={getHref(button.link, [])} title={button.text} type="primary" />
+            <LinkButton
+              url={getHref(button.link, articlesPagePath, fundraisersPath)}
+              title={button.text}
+              type="primary"
+            />
           </div>
         )}
       </div>

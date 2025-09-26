@@ -115,6 +115,7 @@ export type SEOMeta = {
   canonicalurl?: string;
   keywords?: string;
   siteName: string;
+  noIndex?: boolean;
 };
 
 export type FacebookDonationRegistration = {

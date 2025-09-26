@@ -95,6 +95,7 @@ export const ArticlePage = withStaticProps(
         }
         keywords={header.seoKeywords}
         siteName={data.result.settings[0].title}
+        noIndex={header.noIndex}
       />
 
       <MainHeader

@@ -118,5 +118,13 @@ export default defineType({
     }),
     defineField({ name: "seoImage", title: "SEO Image", type: "image", group: "seo" }),
     defineField({ name: "cannonicalUrl", title: "Cannonical URL", type: "url", group: "seo" }),
+    defineField({
+      name: "noIndex",
+      title: "No Index",
+      type: "boolean",
+      group: "seo",
+      description: "Prevent search engines from indexing this page and exclude it from the sitemap",
+      initialValue: false,
+    }),
   ],
 });

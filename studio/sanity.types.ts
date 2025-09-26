@@ -5052,6 +5052,7 @@ export type Articleheader = {
     _type: "image";
   };
   cannonicalUrl?: string;
+  noIndex?: boolean;
 };
 
 export type Pageheader = {
@@ -5180,6 +5181,7 @@ export type Pageheader = {
     _type: "image";
   };
   cannonicalUrl?: string;
+  noIndex?: boolean;
 };
 
 export type Navgroup = {
@@ -6983,6 +6985,7 @@ export type Vippsagreement = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -7894,6 +7897,7 @@ export type Results = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -8137,6 +8141,7 @@ export type Articles = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   sitemap_priority?: number;
@@ -8184,6 +8189,7 @@ export type Article_page = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "articleheader";
   };
   content?: Array<{
@@ -9101,6 +9107,7 @@ export type Criteria = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -10012,6 +10019,7 @@ export type Support = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   questionandanswergroups?: Array<
@@ -10168,6 +10176,7 @@ export type Generic_page = {
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -11458,6 +11467,7 @@ export type FetchArticleResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "articleheader";
     } | null;
     content: Array<{
@@ -16043,6 +16053,7 @@ export type FetchArticleResult = {
         _type: "image";
       };
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "articleheader";
     } | null;
     slug: string | null;
@@ -16267,6 +16278,7 @@ export type FetchArticlesPageResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "pageheader";
     } | null;
   } | null;
@@ -16291,6 +16303,7 @@ export type FetchArticlesPageResult = {
         _type: "image";
       };
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "articleheader";
     } | null;
     slug: string | null;
@@ -21463,6 +21476,7 @@ export type FetchGenericPageResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "pageheader";
       pageHeader: null;
       accent_color: string | null;
@@ -26704,6 +26718,7 @@ export type FetchResultsResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "pageheader";
     } | null;
     textConfiguration: Resultstext | null;
@@ -26950,6 +26965,7 @@ export type FetchVippsResult = {
               } | null;
             } | null;
             cannonicalUrl?: string;
+            noIndex?: boolean;
             _type: "pageheader";
           } | null;
           content: Array<{
@@ -27941,6 +27957,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "articleheader";
         };
         content?: Array<{
@@ -28758,6 +28775,7 @@ export type FetchAgreementsPageResult = {
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         active_list_configuration: null;
         slug: null;
       }
@@ -28888,6 +28906,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         sitemap_priority?: number;
@@ -30101,6 +30120,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -32645,6 +32665,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -34033,6 +34054,7 @@ export type FetchAgreementsPageResult = {
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         active_list_configuration: null;
         slug: null;
       }
@@ -34480,6 +34502,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -35098,6 +35121,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         questionandanswergroups?: Array<
@@ -35402,6 +35426,7 @@ export type FetchAgreementsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -36340,6 +36365,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "articleheader";
         };
         content?: Array<{
@@ -37160,6 +37186,7 @@ export type FetchDonationsPageResult = {
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -37293,6 +37320,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         sitemap_priority?: number;
@@ -38536,6 +38564,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -41262,6 +41291,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -42677,6 +42707,7 @@ export type FetchDonationsPageResult = {
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -43145,6 +43176,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -43781,6 +43813,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         questionandanswergroups?: Array<
@@ -44106,6 +44139,7 @@ export type FetchDonationsPageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -45043,6 +45077,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "articleheader";
         };
         content?: Array<{
@@ -45859,6 +45894,7 @@ export type FetchProfilePageResult = {
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         slug: null;
       }
     | {
@@ -45988,6 +46024,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         sitemap_priority?: number;
@@ -47191,6 +47228,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -49722,6 +49760,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -51101,6 +51140,7 @@ export type FetchProfilePageResult = {
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         slug: null;
       }
     | {
@@ -51541,6 +51581,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -52153,6 +52194,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         questionandanswergroups?: Array<
@@ -52450,6 +52492,7 @@ export type FetchProfilePageResult = {
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -53553,7 +53596,7 @@ export type RobotsQueryResult = string | null;
 
 // Source: ../pages/sitemap.xml.page.tsx
 // Variable: siteMapQuery
-// Query: {  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path('drafts.**'))]{        _updatedAt,        "slug": slug.current,        sitemap_priority,        "type": _type,        _id,    }}
+// Query: {  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page", "vippsagreement", "results"] && !(_id in path('drafts.**')) && header.noIndex != true]{        _updatedAt,        "slug": slug.current,        sitemap_priority,        "type": _type,        _id,    }}
 export type SiteMapQueryResult = {
   pages: Array<
     | {
@@ -53575,6 +53618,20 @@ export type SiteMapQueryResult = {
         slug: string | null;
         sitemap_priority: number | null;
         type: "generic_page";
+        _id: string;
+      }
+    | {
+        _updatedAt: string;
+        slug: string | null;
+        sitemap_priority: number | null;
+        type: "results";
+        _id: string;
+      }
+    | {
+        _updatedAt: string;
+        slug: string | null;
+        sitemap_priority: number | null;
+        type: "vippsagreement";
         _id: string;
       }
   >;
@@ -53605,6 +53662,6 @@ declare module "@sanity/client" {
     '\n{\n  "settings": *[_type == "site_settings"] {\n    main_currency,\n    title,\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    },\n  },\n  "page": *[_type == "tax"][0] {\n    ...,\n    title,\n    features[] {\n      ...,\n      _type == "abouttaxdeductions" => {\n        ...,\n        links {\n          ...,\n          links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n        }\n      },\n      _type == "taxstatements" => {\n        ...,\n        aggregate_estimated_impact -> {\n          ...,\n          "currency": *[ _type == "site_settings"][0].main_currency,\n          "locale": *[ _type == "site_settings"][0].main_locale,\n        }\n      },\n    },\n    slug {\n      current\n    },\n  },\n}\n': FetchTaxPageResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    },\n  },\n  "vipps": *[_id == "vipps"] {\n    anonymous_page->{\n      slug {\n        current\n      },\n      header {\n        ...,\n        seoImage{\n          asset->\n        },\n        links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n      },\n      content,\n    }\n  }\n}\n': FetchVippsAnonymousPageResult;
     '*[_id == "dashboard"][0].dashboard_slug.current': RobotsQueryResult;
-    '{\n  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path(\'drafts.**\'))]{\n        _updatedAt,\n        "slug": slug.current,\n        sitemap_priority,\n        "type": _type,\n        _id,\n    }\n}\n': SiteMapQueryResult;
+    '{\n  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page", "vippsagreement", "results"] && !(_id in path(\'drafts.**\')) && header.noIndex != true]{\n        _updatedAt,\n        "slug": slug.current,\n        sitemap_priority,\n        "type": _type,\n        _id,\n    }\n}\n': SiteMapQueryResult;
   }
 }
