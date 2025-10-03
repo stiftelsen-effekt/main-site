@@ -42,6 +42,13 @@ body {
   overflow-x: hidden;
 }
 
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
 h1,
 h2,
 h3,
