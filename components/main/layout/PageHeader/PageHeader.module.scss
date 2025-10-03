@@ -99,11 +99,17 @@
   .pageheader.hero,
   .pageheader.pageheadermeta.hero {
     min-height: calc(120px + 30vh);
+
     align-content: flex-end;
-    padding-top: 3rem;
+    padding-top: 0;
     padding-bottom: 3rem;
   }
-
+  .pageheader.centered,
+  .pageheader.pageheadermeta.centered {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 0;
+  }
   .pageheader.hero div h1 {
     margin-bottom: 16px;
     font-size: 48px;
@@ -128,7 +134,7 @@
 
   .pageheader,
   .pageheader.pageheadermeta {
-    min-height: calc(120px + 30vh);
+    min-height: auto;
     padding-left: 5vw;
     padding-right: 5vw;
     display: grid;
