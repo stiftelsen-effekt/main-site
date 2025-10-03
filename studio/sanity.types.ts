@@ -1021,6 +1021,7 @@ export type Dkmembershipwidget = {
     cpr_invalid_message?: string;
     field_required_message?: string;
     submitting_message?: string;
+    failed_submission_message?: string;
   };
 };
 
@@ -4780,6 +4781,7 @@ export type Contentsection = {
           cpr_invalid_message?: string;
           field_required_message?: string;
           submitting_message?: string;
+          failed_submission_message?: string;
         };
         _type: "dkmembershipwidget";
         _key: string;
@@ -6661,6 +6663,7 @@ export type Fundraiser_page = {
             cpr_invalid_message?: string;
             field_required_message?: string;
             submitting_message?: string;
+            failed_submission_message?: string;
           };
           _type: "dkmembershipwidget";
           _key: string;
@@ -7637,6 +7640,7 @@ export type Vippsagreement = {
             cpr_invalid_message?: string;
             field_required_message?: string;
             submitting_message?: string;
+            failed_submission_message?: string;
           };
           _type: "dkmembershipwidget";
           _key: string;
@@ -8840,6 +8844,7 @@ export type Article_page = {
             cpr_invalid_message?: string;
             field_required_message?: string;
             submitting_message?: string;
+            failed_submission_message?: string;
           };
           _type: "dkmembershipwidget";
           _key: string;
@@ -9757,6 +9762,7 @@ export type Criteria = {
             cpr_invalid_message?: string;
             field_required_message?: string;
             submitting_message?: string;
+            failed_submission_message?: string;
           };
           _type: "dkmembershipwidget";
           _key: string;
@@ -10825,6 +10831,7 @@ export type Generic_page = {
             cpr_invalid_message?: string;
             field_required_message?: string;
             submitting_message?: string;
+            failed_submission_message?: string;
           };
           _type: "dkmembershipwidget";
           _key: string;
@@ -12186,6 +12193,7 @@ export type FetchArticleResult = {
               cpr_invalid_message?: string;
               field_required_message?: string;
               submitting_message?: string;
+              failed_submission_message?: string;
             };
             _type: "dkmembershipwidget";
             _key: string;
@@ -17214,6 +17222,7 @@ export type FetchFundraiserResult = {
               cpr_invalid_message?: string;
               field_required_message?: string;
               submitting_message?: string;
+              failed_submission_message?: string;
             };
             _type: "dkmembershipwidget";
             _key: string;
@@ -22195,6 +22204,7 @@ export type FetchGenericPageResult = {
               cpr_invalid_message?: string;
               field_required_message?: string;
               submitting_message?: string;
+              failed_submission_message?: string;
             };
             _type: "dkmembershipwidget";
             _key: string;
@@ -27205,6 +27215,7 @@ export type FetchVippsResult = {
                     cpr_invalid_message?: string;
                     field_required_message?: string;
                     submitting_message?: string;
+                    failed_submission_message?: string;
                   };
                   _type: "dkmembershipwidget";
                   _key: string;
@@ -28196,6 +28207,7 @@ export type FetchAgreementsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -29393,6 +29405,7 @@ export type FetchAgreementsPageResult = {
                 cpr_invalid_message?: string;
                 field_required_message?: string;
                 submitting_message?: string;
+                failed_submission_message?: string;
               };
               _type: "dkmembershipwidget";
               _key: string;
@@ -30357,6 +30370,7 @@ export type FetchAgreementsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -31194,6 +31208,7 @@ export type FetchAgreementsPageResult = {
           cpr_invalid_message?: string;
           field_required_message?: string;
           submitting_message?: string;
+          failed_submission_message?: string;
         };
         active_list_configuration: null;
         slug: null;
@@ -31899,6 +31914,7 @@ export type FetchAgreementsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -32899,6 +32915,7 @@ export type FetchAgreementsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -35659,6 +35676,7 @@ export type FetchAgreementsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -36597,6 +36615,7 @@ export type FetchDonationsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -37821,6 +37840,7 @@ export type FetchDonationsPageResult = {
                 cpr_invalid_message?: string;
                 field_required_message?: string;
                 submitting_message?: string;
+                failed_submission_message?: string;
               };
               _type: "dkmembershipwidget";
               _key: string;
@@ -38794,6 +38814,7 @@ export type FetchDonationsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -39649,6 +39670,7 @@ export type FetchDonationsPageResult = {
           cpr_invalid_message?: string;
           field_required_message?: string;
           submitting_message?: string;
+          failed_submission_message?: string;
         };
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
@@ -40512,6 +40534,7 @@ export type FetchDonationsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -41518,6 +41541,7 @@ export type FetchDonationsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -44365,6 +44389,7 @@ export type FetchDonationsPageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -45302,6 +45327,7 @@ export type FetchProfilePageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -46490,6 +46516,7 @@ export type FetchProfilePageResult = {
                 cpr_invalid_message?: string;
                 field_required_message?: string;
                 submitting_message?: string;
+                failed_submission_message?: string;
               };
               _type: "dkmembershipwidget";
               _key: string;
@@ -47451,6 +47478,7 @@ export type FetchProfilePageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -48282,6 +48310,7 @@ export type FetchProfilePageResult = {
           cpr_invalid_message?: string;
           field_required_message?: string;
           submitting_message?: string;
+          failed_submission_message?: string;
         };
         slug: null;
       }
@@ -48982,6 +49011,7 @@ export type FetchProfilePageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -49980,6 +50010,7 @@ export type FetchProfilePageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
@@ -52711,6 +52742,7 @@ export type FetchProfilePageResult = {
                   cpr_invalid_message?: string;
                   field_required_message?: string;
                   submitting_message?: string;
+                  failed_submission_message?: string;
                 };
                 _type: "dkmembershipwidget";
                 _key: string;
