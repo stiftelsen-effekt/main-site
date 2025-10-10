@@ -19,9 +19,11 @@ export type DonationImpactItemsConfiguration = {
   impact_item_configuration: ImpactItemConfiguration;
 };
 
+type DistributionEntry = { org: string; orgName: string; sum: number };
+
 const DonationImpactGlobalHealth: React.FC<{
   donation: Donation;
-  distribution: { org: string; orgName: string; sum: number }[];
+  distribution: DistributionEntry[];
   timestamp: Date;
   configuration: DonationImpactItemsConfiguration;
 }> = ({ donation, distribution, timestamp, configuration }) => {
@@ -69,7 +71,7 @@ const DonationImpactGlobalHealth: React.FC<{
       return 0;
     });
 
-  let spreadDistribution: { org: string; sum: number }[] = [...filteredDistribution];
+  let spreadDistribution: DistributionEntry[] = [...filteredDistribution];
   if (giveWellDist) {
     const relevantGrant = data?.max_impact_fund_grants[0];
 
@@ -83,12 +85,13 @@ const DonationImpactGlobalHealth: React.FC<{
 
     relevantGrant.allotment_set.forEach((allotment) => {
       const org = allotment.charity.abbreviation;
+      const orgName = allotment.charity.charity_name ?? allotment.charity.abbreviation;
       const sum = Math.round((allotment.sum_in_cents / grantTotal) * giveWellDist.sum);
       const orgIndex = spreadDistribution.findIndex((d) => d.org === org);
       if (orgIndex !== -1) {
         spreadDistribution[orgIndex].sum += sum;
       } else {
-        spreadDistribution.push({ org, sum });
+        spreadDistribution.push({ org, orgName, sum });
       }
     });
   }
@@ -103,12 +106,12 @@ const DonationImpactGlobalHealth: React.FC<{
       )}
       <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
         <tbody>
-          {spreadDistribution.map((dist, i) => (
+          {spreadDistribution.map((dist) => (
             <React.Fragment key={`${donation.id}-impact-${dist.org}`}>
               {dist.org !== "Drift" && (
                 <DonationImpactGlobalHealthItem
                   orgAbriv={dist.org}
-                  orgName={dist.org}
+                  orgName={dist.orgName ?? dist.org}
                   sumToOrg={dist.sum}
                   donationTimestamp={timestamp}
                   precision={requiredPrecision}

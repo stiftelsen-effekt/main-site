@@ -77,6 +77,26 @@ export default defineType({
               type: "string",
               description: "Use {{org}} to insert the organization name",
             }),
+            defineField({
+              name: "givewell_all_grants_fund_header",
+              title: "GiveWell All Grants Fund header",
+              type: "string",
+              description: "Overrides the missing evaluation header for the All Grants Fund row",
+            }),
+            defineField({
+              name: "givewell_all_grants_fund_text",
+              title: "GiveWell All Grants Fund text",
+              type: "array",
+              of: [{ type: "block" }],
+              description:
+                "Portable text shown when there is no impact estimate for the All Grants Fund",
+            }),
+            defineField({
+              name: "givewell_all_grants_fund_links",
+              title: "GiveWell All Grants Fund links",
+              type: "array",
+              of: [{ type: "link" }, { type: "navitem" }],
+            }),
           ],
         }),
       ],
