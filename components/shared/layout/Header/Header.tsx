@@ -3,15 +3,14 @@ import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
 import { HeaderBanners } from "../HeaderBanners/HeaderBanners";
-import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../../../../studio/sanity.types";
+import { GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
   hideOnScroll: boolean;
-  cookieBannerConfig?: CookieBannerQueryResult;
   generalBannerConfig?: GeneralBannerQueryResult;
   alwaysShrink?: boolean;
-}> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig, alwaysShrink }) => {
+}> = ({ children, hideOnScroll, generalBannerConfig, alwaysShrink }) => {
   const router = useRouter();
 
   const [navbarShrinked, setNavbarShrinked] = useState(alwaysShrink ?? false);
@@ -58,10 +57,7 @@ export const MainHeader: React.FC<{
 
   return (
     <div data-cy="header" className={classes.join(" ")}>
-      <HeaderBanners
-        cookieBannerConfig={cookieBannerConfig}
-        generalBannerConfig={generalBannerConfig}
-      />
+      <HeaderBanners generalBannerConfig={generalBannerConfig} />
       {children}
     </div>
   );
