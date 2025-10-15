@@ -73,7 +73,7 @@ export const ArticlesPage = withStaticProps(
       <div className={styles.inverted}>
         <MainHeader
           hideOnScroll={true}
-          cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
+          // cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
           generalBannerConfig={data.result.settings[0].general_banner}
         >
           {draftMode ? (

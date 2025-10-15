@@ -23,6 +23,7 @@
     "@sanity/vision": "^4.2.0",
     "eslint": "^8.6.0",
     "katex": "^0.16.9",
+    "main-site": "file:..",
     "prop-types": "^15.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
