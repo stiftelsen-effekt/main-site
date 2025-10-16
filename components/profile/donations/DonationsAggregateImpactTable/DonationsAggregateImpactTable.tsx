@@ -6,7 +6,11 @@ import useSWR from "swr";
 import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../../../models";
 import { DistributionsRow } from "./DistributionsRow";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
-import { aggregateImpact, aggregateOrgSumByYearAndMonth } from "./_util";
+import {
+  aggregateImpact,
+  aggregateOrgSumByYearAndMonth,
+  GIVEWELL_ALL_GRANTS_FUND_KEY,
+} from "./_util";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -186,7 +190,11 @@ export const DonationsAggregateImpactTable: React.FC<{
           >
             <tbody>
               {Object.keys(impact)
-                .filter((key) => key.toLowerCase().indexOf("drift") === -1)
+                .filter(
+                  (key) =>
+                    key.toLowerCase().indexOf("drift") === -1 &&
+                    key !== GIVEWELL_ALL_GRANTS_FUND_KEY,
+                )
                 .sort((a: string, b: string) => (b < a ? 1 : -1))
                 .map((key: string) => (
                   <DistributionsRow
@@ -196,7 +204,18 @@ export const DonationsAggregateImpactTable: React.FC<{
                   ></DistributionsRow>
                 ))}
               {Object.keys(impact)
-                .filter((key) => key.toLowerCase().indexOf("drift") !== -1)
+                .filter(
+                  (key) =>
+                    key.toLowerCase().indexOf("drift") !== -1 ||
+                    key === GIVEWELL_ALL_GRANTS_FUND_KEY,
+                )
+                .sort((a: string, b: string) => {
+                  if (a === GIVEWELL_ALL_GRANTS_FUND_KEY && b !== GIVEWELL_ALL_GRANTS_FUND_KEY)
+                    return 1;
+                  if (b === GIVEWELL_ALL_GRANTS_FUND_KEY && a !== GIVEWELL_ALL_GRANTS_FUND_KEY)
+                    return -1;
+                  return 0;
+                })
                 .map((key: string) => (
                   <DistributionsRow
                     aggregatedimpact={impact}

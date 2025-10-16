@@ -34,6 +34,8 @@ export type AggregatedImpact = {
   };
 };
 
+export const GIVEWELL_ALL_GRANTS_FUND_KEY = "GiveWell All Grants Fund";
+
 /**
  * Takes a list of donations and distributions and GiveWell grants
  * Aggregates donations by year and month per organization
@@ -229,6 +231,17 @@ export const aggregateImpact = (
     }
 
     const abbreviation = mapNameToOrgAbbriv(orgkey);
+    if (abbreviation === "AGF") {
+      if (!(GIVEWELL_ALL_GRANTS_FUND_KEY in impact)) {
+        impact[GIVEWELL_ALL_GRANTS_FUND_KEY] = {
+          outputs: 0,
+          constituents: {},
+        };
+      }
+      impact[GIVEWELL_ALL_GRANTS_FUND_KEY].outputs += aggregatedorganizations[orgkey].sum;
+      return;
+    }
+
     const filteredEvaluations = filterAndOrderEvaluations(evaluations, abbreviation);
 
     if (filteredEvaluations.length === 0) {
