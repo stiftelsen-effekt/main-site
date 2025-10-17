@@ -60,6 +60,8 @@ const nextConfig: NextConfig = {
               "object-src 'none'",
               // Allow for workers to be loaded from self
               "worker-src 'self' blob:",
+              // Allow connections (including WebSockets) to Sanity API
+              "connect-src 'self' wss://*.api.sanity.io https://*.api.sanity.io",
             ].join("; "),
           },
         ],
