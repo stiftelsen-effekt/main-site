@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               // Control who can embed your pages
-              "frame-ancestors 'self' https://*.sanity.studio",
+              "frame-ancestors 'self'",
               // Control which frames you can embed
               "frame-src * swish:",
               // Control which scripts can execute
@@ -54,14 +54,11 @@ const nextConfig: NextConfig = {
                 "https://*.ads-twitter.com " +
                 "https://*.facebook.net " +
                 "https://connect.facebook.net " +
-                "https://www.youtube.com " +
-                "https://core.sanity-cdn.com",
+                "https://www.youtube.com",
               // Prevent plugin injection
               "object-src 'none'",
               // Allow for workers to be loaded from self
               "worker-src 'self' blob:",
-              // Allow connections (including WebSockets) to Sanity API
-              "connect-src 'self' wss://*.api.sanity.io https://*.api.sanity.io",
             ].join("; "),
           },
         ],
