@@ -7,12 +7,16 @@
 
   .coverageList {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-auto-rows: min-content;
     row-gap: 1rem;
     column-gap: 2rem;
     max-width: 100%;
     margin-bottom: 0;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 
     .coverageItem {
       display: flex;
