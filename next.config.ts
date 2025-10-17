@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               // Control who can embed your pages
-              "frame-ancestors 'self'",
+              "frame-ancestors 'self' https://*.sanity.studio",
               // Control which frames you can embed
               "frame-src * swish:",
               // Control which scripts can execute
@@ -54,7 +54,8 @@ const nextConfig: NextConfig = {
                 "https://*.ads-twitter.com " +
                 "https://*.facebook.net " +
                 "https://connect.facebook.net " +
-                "https://www.youtube.com",
+                "https://www.youtube.com " +
+                "https://*.sanity-cdn.com",
               // Prevent plugin injection
               "object-src 'none'",
               // Allow for workers to be loaded from self
