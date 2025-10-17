@@ -22,14 +22,6 @@
       display: flex;
       flex-direction: column;
 
-      &:nth-child(n + 3) {
-        display: none;
-
-        @media (min-width: 1024px) {
-          display: flex;
-        }
-      }
-
       .logo {
         width: 100%;
         position: relative;
