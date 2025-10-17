@@ -76,17 +76,32 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "fundraiser_widget_config",
+      name: "fundraiser_widget_configuration",
       title: "Fundraiser widget",
-      type: "object",
-      fields: [
-        defineField({
-          name: "suggested_amounts",
-          title: "Suggested amounts",
-          type: "array",
-          of: [{ type: "number" }],
+      type: "reference",
+      to: [{ type: "fundraiserwidget" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "suggested_amounts",
+      title: "Suggested donation amounts",
+      type: "array",
+      of: [{ type: "number" }],
+      description:
+        "Suggested donation amounts specific to this fundraiser. Leave empty to fall back to the widget configuration (for legacy fundraisers).",
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          if (!value || value.length === 0) {
+            return true;
+          }
+
+          const hasInvalidValue = value.some((amount) => typeof amount !== "number" || amount <= 0);
+          if (hasInvalidValue) {
+            return "Suggested amounts must all be positive numbers";
+          }
+
+          return true;
         }),
-      ],
     }),
     defineField({
       name: "gift_activity_config",

@@ -213,6 +213,8 @@ export const FundraiserPage = withStaticProps(
 
           <FundraiserWidget
             fundraiserId={page.fundraiser_database_id}
+            widgetConfig={page.fundraiser_widget_config || null}
+            suggestedAmounts={page.suggested_amounts || null}
             organizationInfo={{
               organization: page.fundraiser_organization,
               textTemplate: page.fundraiser_organization_text_template || "{org}",
@@ -222,7 +224,6 @@ export const FundraiserPage = withStaticProps(
                 organizationId: page.fundraiser_organization.widget_button.organization_id,
               },
             }}
-            suggestedSums={page.fundraiser_widget_config?.suggested_amounts}
             privacyPolicyUrl={
               data.result.settings[0].cookie_banner_configuration
                 ?.privacy_policy_link as unknown as NavLink
@@ -292,6 +293,29 @@ const fetchFundraiser = groq`
         slug { current }
       }
     },
+    "fundraiser_widget_config": coalesce(
+      fundraiser_widget_configuration-> {
+        ...,
+        payment_methods[] -> {
+          _type,
+          selector_text,
+          single_button_text,
+          recurring_button_text,
+          button_text
+        }
+      },
+      fundraiser_widget_config{
+        ...,
+        payment_methods[] -> {
+          _type,
+          selector_text,
+          single_button_text,
+          recurring_button_text,
+          button_text
+        }
+      }
+    ),
+    suggested_amounts,
     ${pageContentQuery}
     slug { current },
   },
