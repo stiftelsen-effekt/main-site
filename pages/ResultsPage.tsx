@@ -147,7 +147,6 @@ export const ResultsPage = withStaticProps(
       <div className={styles.inverted}>
         <MainHeader
           hideOnScroll={true}
-          cookieBannerConfig={data.result.settings[0]?.cookie_banner_configuration ?? null}
           generalBannerConfig={data.result.settings[0]?.general_banner ?? null}
         >
           {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
