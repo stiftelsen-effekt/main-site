@@ -85,6 +85,7 @@ import generalbanner from "./types/generalbanner";
 import teamintroduction from "./types/teamintroduction";
 import resultsteaser from "./types/resultsteaser";
 import taxdeductionwidget from "./types/taxdeductionwidget";
+import dkgavebrevtaxwidget from "./types/dkgavebrevtaxwidget";
 import donationwidgetblock from "./types/donationwidgetblock";
 import dkmembershipwidget from "./types/dkmembershipwidget";
 import dkmembershipdisplay from "./types/dkmembershipdisplay";
@@ -149,6 +150,7 @@ export const types = [
   interventionwidget,
   interventionwidgetoutputconfiguration,
   taxdeductionwidget,
+  dkgavebrevtaxwidget,
   testimonials,
   fullvideo,
   newslettersignup,
