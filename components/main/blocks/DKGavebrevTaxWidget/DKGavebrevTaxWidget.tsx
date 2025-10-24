@@ -47,7 +47,7 @@ export const DKGavebrevTaxWidget: React.FC<{
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const isMobile = useIsMobile();
 
-  const suggestedPercentages = [0.05, 0.1, 0.15];
+  const suggestedPercentages = [0.01, 0.05, 0.1];
 
   // Handle income input changes with formatting
   useEffect(() => {
