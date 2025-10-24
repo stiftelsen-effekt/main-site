@@ -80,6 +80,7 @@ export default defineType({
         { type: "teasers" },
         { type: "interventionwidget" },
         { type: "taxdeductionwidget" },
+        { type: "dkgavebrevtaxwidget" },
         { type: "giveblock" },
         { type: "givewellstamp" },
         { type: "organizationslist" },
