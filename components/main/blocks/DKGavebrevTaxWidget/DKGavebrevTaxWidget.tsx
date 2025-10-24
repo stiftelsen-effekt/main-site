@@ -47,6 +47,8 @@ export const DKGavebrevTaxWidget: React.FC<{
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const isMobile = useIsMobile();
 
+  const suggestedPercentages = [0.05, 0.1, 0.15];
+
   // Handle income input changes with formatting
   useEffect(() => {
     if (income === "") {
@@ -136,6 +138,35 @@ export const DKGavebrevTaxWidget: React.FC<{
                 denomination={"kr"}
                 variant="underlined"
               />
+            </div>
+
+            <div className={styles.suggestedPercentages}>
+              {suggestedPercentages.map((percentage) => {
+                const suggestedAmount = Math.round(lastValidIncome * percentage);
+                const isSelected = lastValidDonation === suggestedAmount && suggestedAmount > 0;
+
+                return (
+                  <EffektButton
+                    key={percentage}
+                    onClick={() => {
+                      plausible("GavebrevTaxWidgetSelectPercentage", {
+                        props: {
+                          page: window.location.pathname,
+                          percentage: percentage * 100,
+                          amount: suggestedAmount,
+                        },
+                      });
+                      setDonation(thousandize(suggestedAmount, locale));
+                    }}
+                    variant={EffektButtonVariant.SECONDARY}
+                    selected={isSelected}
+                    style={{ fontSize: "0.9rem" }}
+                    squared
+                  >
+                    {(percentage * 100).toFixed(0)}%
+                  </EffektButton>
+                );
+              })}
             </div>
 
             <div className={styles.input}>

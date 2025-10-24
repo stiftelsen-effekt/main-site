@@ -37,6 +37,12 @@
           min-width: fit-content;
         }
       }
+
+      .suggestedPercentages {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+      }
     }
 
     .cta {
