@@ -125,7 +125,7 @@ export const Layout = withStaticProps(
     if (widgetContext.open && window.innerWidth < 1180) {
       document.body.style.overflow = "hidden";
     } else if (typeof document !== "undefined") {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "hidden";
     }
 
     return (
