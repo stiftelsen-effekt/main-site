@@ -42,6 +42,7 @@ import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
+import { DKGavebrevTaxWidget } from "./DKGavebrevTaxWidget/DKGavebrevTaxWidget";
 import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
 import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
 import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
@@ -363,6 +364,26 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                   minimumThresholdLabel: block.chart_labels?.minimum_threshold,
                   currentValueLabel: block.chart_labels?.deduction,
                   taxBenefitLabel: block.chart_labels?.tax_benefit,
+                }}
+                locale={stegaClean(block.locale)}
+              />
+            );
+          case "dkgavebrevtaxwidget":
+            return (
+              <DKGavebrevTaxWidget
+                key={block._key || block._id}
+                title={block.title}
+                description={block.description}
+                incomeLabel={block.income_label}
+                donationLabel={block.donation_label}
+                defaultIncome={block.default_income}
+                defaultDonation={block.default_donation}
+                resultDescriptionTemplate={block.result_description_template}
+                buttonText={block.button_text}
+                chartLabels={{
+                  maximumDeduction: block.chart_labels?.maximum_deduction,
+                  yourDonation: block.chart_labels?.your_donation,
+                  yourTaxBenefit: block.chart_labels?.your_tax_benefit,
                 }}
                 locale={stegaClean(block.locale)}
               />

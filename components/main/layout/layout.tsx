@@ -13,6 +13,7 @@ import { useLiveQuery } from "next-sanity/preview";
 import React from "react";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../../middleware.page";
+import CookieBannerWrapper from "../../shared/layout/CookieBanner/CookieBannerWrapper";
 
 export type WidgetContextType = {
   open: boolean;
@@ -49,6 +50,7 @@ type QueryResult = {
     donate_label_title: string;
     accent_color: string;
     general_banner?: any;
+    cookie_banner_configuration?: any;
   };
 };
 
@@ -58,7 +60,8 @@ const query = groq`
       donate_label_short,
       donate_label_title,
       accent_color,
-      general_banner
+      general_banner,
+      cookie_banner_configuration
     }
   }
 `;
@@ -85,6 +88,7 @@ export const Layout = withStaticProps(
         accent_color: stegaClean(settings.accent_color),
       },
       general_banner: settings.general_banner,
+      cookie_banner_configuration: settings.cookie_banner_configuration,
       showGiveButton: showGiveButton,
       draftMode,
       consentState,
@@ -97,6 +101,7 @@ export const Layout = withStaticProps(
     widget,
     giveButton,
     general_banner,
+    cookie_banner_configuration,
     consentState,
     showGiveButton,
     draftMode,
@@ -120,7 +125,7 @@ export const Layout = withStaticProps(
     if (widgetContext.open && window.innerWidth < 1180) {
       document.body.style.overflow = "hidden";
     } else if (typeof document !== "undefined") {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "hidden";
     }
 
     return (
@@ -138,6 +143,7 @@ export const Layout = withStaticProps(
         )}
         <WidgetContext.Provider value={widgetContextValue}>
           <BannerContext.Provider value={[banners, setBanners]}>
+            <CookieBannerWrapper cookieBannerConfig={cookie_banner_configuration} />
             {draftMode ? (
               <PreviewWidgetPane
                 {...widget}
