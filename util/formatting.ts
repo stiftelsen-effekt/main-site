@@ -29,3 +29,51 @@ export const thousandize = (number: number | null, locale: string = "no-NB") => 
 
 export const thousandizeString = (number: string | null) =>
   number !== null ? number.replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "-";
+
+/**
+ * Converts main_locale (no, sv, dk) to full locale string for number formatting (no-NB, sv-SE, da-DK)
+ */
+export const getFormattingLocale = (mainLocale: string | null | undefined): string => {
+  if (!mainLocale) return "no-NB";
+
+  const localeMap: Record<string, string> = {
+    no: "no-NB",
+    sv: "sv-SE",
+    dk: "da-DK",
+    en: "en-US",
+    et: "et-EE",
+  };
+
+  return localeMap[mainLocale] || "no-NB";
+};
+
+/**
+ * Gets the thousand separator character for a given locale
+ */
+export const getThousandSeparator = (locale: string): string => {
+  const formatter = new Intl.NumberFormat(locale, {
+    useGrouping: true,
+  });
+
+  // Format a number with grouping to extract the separator
+  const parts = formatter.formatToParts(1234567);
+  const groupPart = parts.find((part) => part.type === "group");
+
+  return groupPart?.value || " ";
+};
+
+/**
+ * Gets the decimal separator character for a given locale
+ */
+export const getDecimalSeparator = (locale: string): string => {
+  const formatter = new Intl.NumberFormat(locale, {
+    useGrouping: true,
+    minimumFractionDigits: 1,
+  });
+
+  // Format a number with decimals to extract the separator
+  const parts = formatter.formatToParts(1.23);
+  const decimalPart = parts.find((part) => part.type === "decimal");
+
+  return decimalPart?.value || ".";
+};

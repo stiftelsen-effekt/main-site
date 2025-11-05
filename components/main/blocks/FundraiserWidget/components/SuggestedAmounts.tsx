@@ -6,6 +6,7 @@ interface SuggestedAmountsProps {
   amounts: number[];
   selectedAmount: number | null;
   currencySymbol: string;
+  locale: string;
   onSelect: (amount: number) => void;
 }
 
@@ -13,6 +14,7 @@ export const SuggestedAmounts: React.FC<SuggestedAmountsProps> = ({
   amounts,
   selectedAmount,
   currencySymbol,
+  locale,
   onSelect,
 }) => {
   return (
@@ -33,7 +35,7 @@ export const SuggestedAmounts: React.FC<SuggestedAmountsProps> = ({
           ].join(" ")}
           data-cy={`fundraiser-suggested-${sum}`}
         >
-          {thousandize(sum)} {currencySymbol}
+          {thousandize(sum, locale)} {currencySymbol}
         </button>
       ))}
     </div>

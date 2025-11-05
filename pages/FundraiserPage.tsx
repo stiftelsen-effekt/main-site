@@ -21,6 +21,7 @@ import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgr
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
 import { FundraiserWidget } from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
 import { API_URL } from "../components/shared/components/Widget/config/api";
+import { getFormattingLocale } from "../util/formatting";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -163,6 +164,7 @@ export const FundraiserPage = withStaticProps(
   const fundraiserImage = getValidImage(page.fundraiser_image);
 
   const content = page.content;
+  const locale = getFormattingLocale((data.result.settings[0] as any).main_locale);
 
   return (
     <>
@@ -209,6 +211,7 @@ export const FundraiserPage = withStaticProps(
               fundraiserData.totalSum +
               (page.fundraiser_goal_config?.additional_external_contributions ?? 0)
             }
+            locale={locale}
           ></FundraiserProgressBar>
 
           <FundraiserWidget
@@ -228,11 +231,13 @@ export const FundraiserPage = withStaticProps(
               data.result.settings[0].cookie_banner_configuration
                 ?.privacy_policy_link as unknown as NavLink
             }
+            locale={locale}
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
             donations={fundraiserData.transactions}
             config={page.gift_activity_config}
+            locale={locale}
           ></FundraiserGiftActivity>
         </div>
       </div>
@@ -257,6 +262,7 @@ const fetchFundraiser = groq`
     ${pageBannersContentQuery},
     donate_label,
     accent_color,
+    main_locale,
   },
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,

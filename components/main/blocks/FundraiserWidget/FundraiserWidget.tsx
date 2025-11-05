@@ -32,6 +32,7 @@ interface DonationWidgetProps {
     };
   };
   privacyPolicyUrl: NavLink;
+  locale: string;
   onComplete?: (formData: FormData) => void;
 }
 
@@ -41,6 +42,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   fundraiserId,
   organizationInfo,
   privacyPolicyUrl,
+  locale,
   onComplete = () => {},
 }) => {
   // Validate required config and organization info using programmatic validation
@@ -140,6 +142,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
               show_name_label: config.show_name_label!,
               next_button_text: config.next_button_text!,
             }}
+            locale={locale}
           />
 
           {/* Pane 3: Payment Method */}

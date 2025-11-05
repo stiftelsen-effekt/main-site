@@ -4,6 +4,7 @@ import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/Eff
 import CharacterCountCircle from "../../../../shared/components/CharacterCountCircle/CharacterCountCircle";
 import { SuggestedAmounts } from "../components/SuggestedAmounts";
 import { FormData } from "../hooks/useFundraiserForm";
+import { getThousandSeparator, getDecimalSeparator } from "../../../../../util/formatting";
 import styles from "../FundraiserWidget.module.scss";
 
 interface DonationDetailsPaneProps {
@@ -19,12 +20,16 @@ interface DonationDetailsPaneProps {
     show_name_label: string;
     next_button_text: string;
   };
+  locale: string;
   className?: string;
   visible?: boolean;
 }
 
 export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDetailsPaneProps>(
-  ({ formData, onChange, onSubmit, config, className, visible }, ref) => {
+  ({ formData, onChange, onSubmit, config, locale, className, visible }, ref) => {
+    const thousandSeparator = getThousandSeparator(locale);
+    const decimalSeparator = getDecimalSeparator(locale);
+
     return (
       <div
         ref={ref}
@@ -46,6 +51,7 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
                 amounts={config.suggested_amounts}
                 selectedAmount={formData.amount}
                 currencySymbol={config.currency_symbol}
+                locale={locale}
                 onSelect={(amount) => onChange("amount", amount)}
               />
             </div>
@@ -60,7 +66,10 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
               onValueChange={(v) => {
                 onChange("amount", v.floatValue ?? null);
               }}
-              thousandSeparator=" "
+              thousandSeparator={thousandSeparator}
+              decimalSeparator={decimalSeparator}
+              decimalScale={0}
+              allowNegative={false}
               placeholder={config.donation_amount_label}
               required
               min={1}

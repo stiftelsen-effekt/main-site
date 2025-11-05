@@ -5,7 +5,8 @@ import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 export const FundraiserProgressBar: React.FC<{
   config: NonNullable<FetchFundraiserResult["page"]>["fundraiser_goal_config"];
   currentAmount: number;
-}> = ({ config, currentAmount }) => {
+  locale: string;
+}> = ({ config, currentAmount, locale }) => {
   if (!config) return "Missing config for fundraiser progress bar";
 
   const { goal, current_amount_text_template, goal_amount_text_template } = config;
@@ -13,10 +14,10 @@ export const FundraiserProgressBar: React.FC<{
   if (!current_amount_text_template) return "Missing current amount text template";
 
   const currentAmountText = current_amount_text_template
-    .replace("{amount}", thousandize(currentAmount))
-    .replace("{goal}", thousandize(goal || 0));
+    .replace("{amount}", thousandize(currentAmount, locale))
+    .replace("{goal}", thousandize(goal || 0, locale));
   const goalAmountText = goal_amount_text_template
-    ? goal_amount_text_template.replace("{goal}", thousandize(goal || 0))
+    ? goal_amount_text_template.replace("{goal}", thousandize(goal || 0, locale))
     : "";
 
   return (

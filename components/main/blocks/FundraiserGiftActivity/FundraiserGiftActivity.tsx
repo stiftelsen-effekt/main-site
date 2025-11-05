@@ -11,7 +11,8 @@ export const FundraiserGiftActivity: React.FC<{
     name: string | null;
     message: string | null;
   }[];
-}> = ({ donations, config }) => {
+  locale: string;
+}> = ({ donations, config, locale }) => {
   const [currentlyShowing, setCurrentlyShowing] = useState(5);
 
   if (!config) return "Missing config for fundraiser gift activity";
@@ -39,12 +40,14 @@ export const FundraiserGiftActivity: React.FC<{
     if (name && config.gift_amount_text_template) {
       return (config.gift_amount_text_template as string)
         .replace("{name}", name)
-        .replace("{sum}", thousandize(amount));
+        .replace("{sum}", thousandize(amount, locale));
     }
     // If no template or no name, show amount only
     return config.gift_amount_text_template
-      ? config.gift_amount_text_template.replace("{name}", "").replace("{sum}", thousandize(amount))
-      : `${thousandize(amount)} kr`;
+      ? config.gift_amount_text_template
+          .replace("{name}", "")
+          .replace("{sum}", thousandize(amount, locale))
+      : `${thousandize(amount, locale)} kr`;
   };
 
   return (

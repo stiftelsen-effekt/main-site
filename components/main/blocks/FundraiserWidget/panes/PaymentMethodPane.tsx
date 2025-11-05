@@ -6,6 +6,7 @@ import { Spinner } from "../../../../shared/components/Spinner/Spinner";
 import { PaymentMethodSelector } from "../components/PaymentMethodSelector";
 import { FormData } from "../hooks/useFundraiserForm";
 import styles from "../FundraiserWidget.module.scss";
+import Link from "next/link";
 
 interface PaymentMethodPaneProps {
   formData: Pick<
@@ -60,14 +61,27 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
     ref,
   ) => {
     const getButtonText = () => {
-      const method = config.payment_methods.find((m) =>
-        formData.paymentMethod === "bank" ? m._type === "bank" : m._type === "vipps",
-      );
-      return (
-        method?.single_button_text ||
-        method?.button_text ||
-        (formData.paymentMethod === "bank" ? "Gi med bank" : "Gi med Vipps")
-      );
+      const method = config.payment_methods.find((m) => {
+        const paymentMethodType = formData.paymentMethod;
+        if (paymentMethodType === "bank") return m._type === "bank";
+        if (paymentMethodType === "vipps") return m._type === "vipps";
+        if (paymentMethodType === "quickpay_card") return m._type === "quickpay_card";
+        if (paymentMethodType === "quickpay_mobilepay") return m._type === "quickpay_mobilepay";
+        if (paymentMethodType === "dkbank") return m._type === "dkbank";
+        return false;
+      });
+
+      return formData.paymentMethod === "bank"
+        ? "Gi med bank"
+        : formData.paymentMethod === "vipps"
+        ? "Gi med Vipps"
+        : formData.paymentMethod === "quickpay_card"
+        ? "Giv med kort"
+        : formData.paymentMethod === "quickpay_mobilepay"
+        ? "Giv med MobilePay"
+        : formData.paymentMethod === "dkbank"
+        ? "Giv med bank"
+        : "Gi";
     };
 
     return (
@@ -161,19 +175,19 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                       }}
                       dataCy="fundraiser-privacy-checkbox"
                     >
-                      {config.privacy_policy.text}
+                      {`${config.privacy_policy.text}`}
                     </EffektCheckbox>
                   </div>
-                  <LinkComponent
-                    link={privacyPolicyUrl}
-                    newtab
+                  <Link
+                    href={`/${privacyPolicyUrl.slug}`}
+                    target="_blank"
                     style={{
                       marginLeft: "7px",
                       marginTop: "5px",
                     }}
                   >
-                    ↗
-                  </LinkComponent>
+                    {` ${privacyPolicyUrl.title} ↗`}
+                  </Link>
                 </div>
                 {privacyPolicyError && (
                   <div
@@ -189,9 +203,10 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
               </>
             ) : (
               <div className={styles["donation-widget__privacy-link"]}>
-                <LinkComponent link={privacyPolicyUrl} newtab>
-                  {config.privacy_policy.text + " ↗"}
-                </LinkComponent>
+                <span>{config.privacy_policy.text}</span>
+                <Link href={`/${privacyPolicyUrl.slug}`} target="_blank">
+                  {` ${privacyPolicyUrl.title} ↗`}
+                </Link>
               </div>
             )}
           </div>

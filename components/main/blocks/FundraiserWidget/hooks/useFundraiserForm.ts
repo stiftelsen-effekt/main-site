@@ -9,7 +9,7 @@ export interface FormData {
   ssn: string;
   taxDeduction: boolean;
   newsletter: boolean;
-  paymentMethod: "bank" | "vipps";
+  paymentMethod: "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank";
   privacyPolicyAccepted: boolean;
 }
 

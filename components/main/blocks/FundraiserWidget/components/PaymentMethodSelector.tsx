@@ -10,8 +10,8 @@ interface PaymentMethodSelectorProps {
     recurring_button_text: string | null;
     button_text: string | null;
   }>;
-  selected: "bank" | "vipps";
-  onSelect: (method: "bank" | "vipps") => void;
+  selected: "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank";
+  onSelect: (method: "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank") => void;
 }
 
 export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
@@ -29,6 +29,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     else if (methodType === "quickpay_card") paymentMethodValue = PaymentMethod.QUICKPAY_CARD;
     else if (methodType === "quickpay_mobilepay")
       paymentMethodValue = PaymentMethod.QUICKPACK_MOBILEPAY;
+    else if (methodType === "dkbank") paymentMethodValue = PaymentMethod.DKBANK;
 
     return {
       title: method.selector_text || methodType,
@@ -37,16 +38,34 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     };
   });
 
-  const selectedValue = selected === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS;
+  const getSelectedValue = (selected: string): PaymentMethod => {
+    if (selected === "bank") return PaymentMethod.BANK;
+    if (selected === "vipps") return PaymentMethod.VIPPS;
+    if (selected === "quickpay_card") return PaymentMethod.QUICKPAY_CARD;
+    if (selected === "quickpay_mobilepay") return PaymentMethod.QUICKPACK_MOBILEPAY;
+    if (selected === "dkbank") return PaymentMethod.DKBANK;
+    return PaymentMethod.VIPPS; // default
+  };
+
+  const getMethodKey = (
+    value: PaymentMethod,
+  ): "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank" => {
+    if (value === PaymentMethod.BANK) return "bank";
+    if (value === PaymentMethod.VIPPS) return "vipps";
+    if (value === PaymentMethod.QUICKPAY_CARD) return "quickpay_card";
+    if (value === PaymentMethod.QUICKPACK_MOBILEPAY) return "quickpay_mobilepay";
+    if (value === PaymentMethod.DKBANK) return "dkbank";
+    return "vipps"; // default
+  };
+
+  const selectedValue = getSelectedValue(selected);
 
   return (
     <RadioButtonGroup
       options={options}
       selected={selectedValue}
       onSelect={(value) => {
-        let methodKey: "bank" | "vipps" = "vipps";
-        if (value === PaymentMethod.BANK) methodKey = "bank";
-        onSelect(methodKey);
+        onSelect(getMethodKey(value));
       }}
     />
   );
