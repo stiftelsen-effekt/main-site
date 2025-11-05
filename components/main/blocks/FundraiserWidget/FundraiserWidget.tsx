@@ -13,7 +13,6 @@ import { DonationDetailsPane } from "./panes/DonationDetailsPane";
 import { PaymentMethodPane } from "./panes/PaymentMethodPane";
 import { BankTransferPane } from "./panes/BankTransferPane";
 
-// Use the generated type from the FetchFundraiserResult
 type WidgetConfig = NonNullable<
   NonNullable<FetchFundraiserResult["page"]>["fundraiser_widget_config"]
 >;
@@ -45,22 +44,8 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   locale,
   onComplete = () => {},
 }) => {
-  // Validate required config and organization info using programmatic validation
-  const validation = validateWidgetConfig(widgetConfig, organizationInfo.organization);
-  if (!validation.valid) {
-    return validation.error;
-  }
-
-  // Use validated config directly throughout the component
-  const config = validation.config;
-
-  const normalizedSuggestedAmounts = Array.isArray(suggestedAmounts)
-    ? suggestedAmounts.filter((amount) => typeof amount === "number" && amount > 0)
-    : [];
-
-  // Use extracted hooks
   const { formData, updateField } = useFundraiserForm(
-    config.tax_deduction_enabled ? config.tax_deduction?.minimum_amount : undefined,
+    widgetConfig?.tax_deduction_enabled ? widgetConfig?.tax_deduction?.minimum_amount : undefined,
   );
   const {
     step,
@@ -76,11 +61,20 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
     organizationInfo,
     onSuccess: () => goToNextStep(),
   });
-
   const [privacyPolicyError, setPrivacyPolicyError] = useState(false);
 
+  const validation = validateWidgetConfig(widgetConfig, organizationInfo.organization);
+  if (!validation.valid) {
+    return validation.error;
+  }
+
+  const config = validation.config;
+
+  const normalizedSuggestedAmounts = Array.isArray(suggestedAmounts)
+    ? suggestedAmounts.filter((amount) => typeof amount === "number" && amount > 0)
+    : [];
+
   const handlePaymentMethodSubmit = () => {
-    // Check if privacy policy checkbox is required and not accepted
     if (config.privacy_policy?.require_checkbox && !formData.privacyPolicyAccepted) {
       setPrivacyPolicyError(true);
       return;
@@ -110,7 +104,6 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
         className={styles["donation-widget__panes"]}
       >
         <div className={styles["donation-widget__inner"]}>
-          {/* Pane 1: Organization Info */}
           <OrganizationInfoPane
             ref={paneRefs[0]}
             className={getPaneClassName(0)}
@@ -125,7 +118,6 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
             onNext={goToNextStep}
           />
 
-          {/* Pane 2: Donation Details */}
           <DonationDetailsPane
             ref={paneRefs[1]}
             className={getPaneClassName(1)}
@@ -145,7 +137,6 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
             locale={locale}
           />
 
-          {/* Pane 3: Payment Method */}
           <PaymentMethodPane
             ref={paneRefs[2]}
             className={getPaneClassName(2)}
@@ -181,7 +172,6 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
             privacyPolicyError={privacyPolicyError}
           />
 
-          {/* Pane 4: Bank Transfer */}
           <BankTransferPane
             ref={paneRefs[3]}
             className={getPaneClassName(3)}
