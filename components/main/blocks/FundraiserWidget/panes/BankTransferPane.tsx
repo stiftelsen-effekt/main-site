@@ -32,20 +32,33 @@ export const BankTransferPane = React.forwardRef<HTMLDivElement, BankTransferPan
 
     if (!showBankInfo || !bankDetails) {
       return (
-        <div ref={ref} className={className} style={{ display: visible ? "block" : "none" }}></div>
+        <div
+          ref={ref}
+          className={className}
+          style={{ display: visible ? "block" : "none" }}
+          data-cy="fundraiser-pane-bank"
+        ></div>
       );
     }
 
     return (
-      <div ref={ref} className={className} style={{ display: visible ? "block" : "none" }}>
-        <div className={styles["donation-widget__form"]}>
+      <div
+        ref={ref}
+        className={className}
+        style={{ display: visible ? "block" : "none" }}
+        data-cy="fundraiser-pane-bank"
+      >
+        <div className={styles["donation-widget__form"]} data-cy="fundraiser-bank-details">
           <p>{parseTemplate(bankDetails.bank_transfer_info)}</p>
 
-          <div className={styles["donation-widget__account-info"]}>
+          <div
+            className={styles["donation-widget__account-info"]}
+            data-cy="fundraiser-account-info"
+          >
             <p>
               <strong>{bankDetails.account_number_prefix}</strong> {bankDetails.account_number}
             </p>
-            <p>
+            <p data-cy="fundraiser-kid">
               <strong>{bankDetails.kid_prefix}</strong> {kid}
             </p>
           </div>

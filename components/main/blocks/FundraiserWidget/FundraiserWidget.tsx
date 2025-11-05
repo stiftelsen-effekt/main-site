@@ -88,11 +88,12 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   };
 
   return (
-    <div className={styles["donation-widget"]}>
+    <div className={styles["donation-widget"]} data-cy="fundraiser-widget">
       <button
         className={styles["donation-widget__back-button"]}
         onClick={goToPreviousStep}
         aria-label="Go back"
+        data-cy="fundraiser-back-button"
         style={{
           transform: `translateX(${step === 0 ? "-0.5rem" : "0"})`,
           opacity: step === 0 ? 0 : 1,

@@ -16,7 +16,10 @@ export const SuggestedAmounts: React.FC<SuggestedAmountsProps> = ({
   onSelect,
 }) => {
   return (
-    <div className={styles["donation-widget__input-group__suggested-sums"]}>
+    <div
+      className={styles["donation-widget__input-group__suggested-sums"]}
+      data-cy="fundraiser-suggested-amounts"
+    >
       {amounts.map((sum) => (
         <button
           key={sum}
@@ -28,6 +31,7 @@ export const SuggestedAmounts: React.FC<SuggestedAmountsProps> = ({
               ? styles["donation-widget__input-group__suggested-sums__button--active"]
               : "",
           ].join(" ")}
+          data-cy={`fundraiser-suggested-${sum}`}
         >
           {thousandize(sum)} {currencySymbol}
         </button>

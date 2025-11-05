@@ -26,9 +26,15 @@ interface DonationDetailsPaneProps {
 export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDetailsPaneProps>(
   ({ formData, onChange, onSubmit, config, className, visible }, ref) => {
     return (
-      <div ref={ref} className={className} style={{ display: visible ? "block" : "none" }}>
+      <div
+        ref={ref}
+        className={className}
+        style={{ display: visible ? "block" : "none" }}
+        data-cy="fundraiser-pane-donation"
+      >
         <form
           className={styles["donation-widget__form"]}
+          data-cy="fundraiser-donation-form"
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit();
@@ -50,6 +56,7 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
               id="amount"
               name="amount"
               value={formData.amount}
+              data-cy="fundraiser-amount-input"
               onValueChange={(v) => {
                 onChange("amount", v.floatValue ?? null);
               }}
@@ -74,6 +81,7 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
               placeholder={config.name_label}
               required={formData.showName}
               maxLength={45}
+              data-cy="fundraiser-name-input"
             />
           </div>
 
@@ -85,6 +93,7 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
               placeholder={config.message_label}
               onChange={(e) => onChange("message", e.target.value)}
               maxLength={250}
+              data-cy="fundraiser-message-input"
             />
             <div className={styles["donation-widget__message-sub"]}>
               {formData.message.length > 0 && (
@@ -99,12 +108,17 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
               onChange={(checked) => {
                 onChange("showName", checked);
               }}
+              dataCy="fundraiser-show-name"
             >
               {config.show_name_label}
             </EffektCheckbox>
           </div>
 
-          <button type="submit" className={styles["donation-widget__button"]}>
+          <button
+            type="submit"
+            className={styles["donation-widget__button"]}
+            data-cy="fundraiser-donation-next"
+          >
             {config.next_button_text}
           </button>
         </form>

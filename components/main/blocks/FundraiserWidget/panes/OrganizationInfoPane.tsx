@@ -19,14 +19,24 @@ interface OrganizationInfoPaneProps {
 export const OrganizationInfoPane = React.forwardRef<HTMLDivElement, OrganizationInfoPaneProps>(
   ({ organizationInfo, buttonText, onNext, className, visible }, ref) => {
     return (
-      <div ref={ref} className={className} style={{ display: visible ? "block" : "none" }}>
+      <div
+        ref={ref}
+        className={className}
+        style={{ display: visible ? "block" : "none" }}
+        data-cy="fundraiser-pane-organization"
+      >
         <FundraiserOrganizationInfo
           name={organizationInfo.name}
           logo={organizationInfo.logo}
           textTemplate={organizationInfo.textTemplate}
           organizationSlug={organizationInfo.organizationSlug}
         ></FundraiserOrganizationInfo>
-        <button type="submit" className={styles["donation-widget__button"]} onClick={onNext}>
+        <button
+          type="submit"
+          className={styles["donation-widget__button"]}
+          onClick={onNext}
+          data-cy="fundraiser-start-button"
+        >
           {buttonText}
         </button>
       </div>

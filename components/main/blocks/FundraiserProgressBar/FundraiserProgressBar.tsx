@@ -20,7 +20,7 @@ export const FundraiserProgressBar: React.FC<{
     : "";
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-cy="fundraiser-progress-bar">
       {goal && (
         <div className={styles.barcontainer}>
           <div className={styles.bar} style={{ width: `${(currentAmount / goal) * 100}%` }} />
@@ -28,8 +28,10 @@ export const FundraiserProgressBar: React.FC<{
       )}
 
       <div className={styles.text}>
-        <span>{currentAmountText}</span>
-        {goal_amount_text_template && <span>{goalAmountText}</span>}
+        <span data-cy="fundraiser-progress-current">{currentAmountText}</span>
+        {goal_amount_text_template && (
+          <span data-cy="fundraiser-progress-goal">{goalAmountText}</span>
+        )}
       </div>
     </div>
   );

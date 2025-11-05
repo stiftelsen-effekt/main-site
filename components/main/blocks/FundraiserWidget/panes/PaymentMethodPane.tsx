@@ -71,9 +71,15 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
     };
 
     return (
-      <div ref={ref} className={className} style={{ display: visible ? "block" : "none" }}>
+      <div
+        ref={ref}
+        className={className}
+        style={{ display: visible ? "block" : "none" }}
+        data-cy="fundraiser-pane-payment"
+      >
         <form
           className={styles["donation-widget__form"]}
+          data-cy="fundraiser-payment-form"
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit();
@@ -86,6 +92,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                 onChange={(checked) => {
                   onChange("taxDeduction", checked);
                 }}
+                dataCy="fundraiser-tax-deduction"
               >
                 {config.tax_deduction.label}
               </EffektCheckbox>
@@ -103,6 +110,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                 onChange={(checked) => {
                   onChange("newsletter", checked);
                 }}
+                dataCy="fundraiser-newsletter"
               >
                 {config.newsletter.label}
               </EffektCheckbox>
@@ -119,6 +127,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                 onChange={(e) => onChange("email", e.target.value)}
                 required={formData.taxDeduction || formData.newsletter}
                 placeholder={config.email_label}
+                data-cy="fundraiser-email-input"
               />
             </div>
           )}
@@ -135,6 +144,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                 required={formData.taxDeduction}
                 placeholder={config.tax_deduction.ssn_label}
                 autoComplete="off"
+                data-cy="fundraiser-ssn-input"
               />
             </div>
           )}
@@ -149,6 +159,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                       onChange={(checked) => {
                         onChange("privacyPolicyAccepted", checked);
                       }}
+                      dataCy="fundraiser-privacy-checkbox"
                     >
                       {config.privacy_policy.text}
                     </EffektCheckbox>
@@ -192,7 +203,11 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             />
           </div>
 
-          <button type="submit" className={styles["donation-widget__button"]}>
+          <button
+            type="submit"
+            className={styles["donation-widget__button"]}
+            data-cy="fundraiser-submit-button"
+          >
             {loading ? <Spinner className={styles["donation-widget__spinner"]} /> : getButtonText()}
           </button>
         </form>

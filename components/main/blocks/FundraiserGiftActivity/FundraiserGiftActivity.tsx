@@ -48,14 +48,22 @@ export const FundraiserGiftActivity: React.FC<{
   };
 
   return (
-    <div className={style.container}>
-      <span className={style.title}>{config.title}</span>
+    <div className={style.container} data-cy="fundraiser-gift-activity">
+      <span className={style.title} data-cy="fundraiser-gift-title">
+        {config.title}
+      </span>
       {divviedDonations.map((donationGroup, i) => (
         <AnimateHeight key={i} duration={300} height={i < currentlyShowing / 5 ? "auto" : 0}>
           {donationGroup.map((donation, j) => (
-            <div key={j} className={style.donation}>
-              <span className={style.amount}>{getHeaderText(donation.name, donation.amount)}</span>
-              {donation.message && <span className={style.message}>{donation.message}</span>}
+            <div key={j} className={style.donation} data-cy="fundraiser-gift-item">
+              <span className={style.amount} data-cy="fundraiser-gift-amount">
+                {getHeaderText(donation.name, donation.amount)}
+              </span>
+              {donation.message && (
+                <span className={style.message} data-cy="fundraiser-gift-message">
+                  {donation.message}
+                </span>
+              )}
             </div>
           ))}
         </AnimateHeight>
@@ -66,7 +74,11 @@ export const FundraiserGiftActivity: React.FC<{
         </div>
       )}
       {currentlyShowing < donations.length && (
-        <button onClick={() => setCurrentlyShowing(currentlyShowing + 5)} className={style.seemore}>
+        <button
+          onClick={() => setCurrentlyShowing(currentlyShowing + 5)}
+          className={style.seemore}
+          data-cy="fundraiser-gift-show-more"
+        >
           {showMoreText}
         </button>
       )}

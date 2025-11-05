@@ -10,7 +10,11 @@ export const FundraiserOrganizationInfo: React.FC<{
   textTemplate: string;
   organizationSlug: string;
 }> = ({ name, logo, textTemplate, organizationSlug }) => {
-  const orgLink = <Link href={`/${organizationSlug}`}>{name}</Link>;
+  const orgLink = (
+    <Link href={`/${organizationSlug}`} data-cy="fundraiser-organization-link">
+      {name}
+    </Link>
+  );
 
   // Split text template into parts, and add the organization name as a link
   // to the organization page. Note that there might be multiple instances of
@@ -24,7 +28,7 @@ export const FundraiserOrganizationInfo: React.FC<{
   ));
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-cy="fundraiser-organization-info">
       <div className={styles.logo}>
         <ResponsiveImage
           image={logo}

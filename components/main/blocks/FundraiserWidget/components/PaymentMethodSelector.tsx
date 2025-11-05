@@ -22,6 +22,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   const options = methods.map((method) => {
     const methodType = method._type;
     let paymentMethodValue = PaymentMethod.BANK;
+    let dataCy = `fundraiser-method-${methodType}`;
 
     if (methodType === "vipps") paymentMethodValue = PaymentMethod.VIPPS;
     else if (methodType === "bank") paymentMethodValue = PaymentMethod.BANK;
@@ -32,6 +33,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     return {
       title: method.selector_text || methodType,
       value: paymentMethodValue,
+      data_cy: dataCy,
     };
   });
 
