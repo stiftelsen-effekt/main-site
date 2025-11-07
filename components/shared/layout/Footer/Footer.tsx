@@ -53,7 +53,6 @@ export const footerQuery = groq`
 const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
   const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(footerQuery);
 
-  // TODO: Investigating Ahrefs broken link issue - dummy change for feature deployment
   return {
     data: {
       result,
@@ -88,14 +87,28 @@ const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolea
             <ul>
               {column.links &&
                 column.links.map((footerItem) => {
+                  // Determine the href, ensuring we never use undefined slugs
+                  const href =
+                    footerItem._type === "navitem"
+                      ? footerItem.slug
+                        ? `/${footerItem.slug}`
+                        : null // Skip rendering if slug is undefined
+                      : footerItem.url || "/";
+
+                  // Don't render link if href is null (broken page reference)
+                  if (href === null) {
+                    if (process.env.NODE_ENV === "development") {
+                      console.warn(
+                        `Footer link "${footerItem.title}" has undefined slug. Check Sanity page reference.`,
+                      );
+                    }
+                    return null;
+                  }
+
                   return (
                     <li key={footerItem._key}>
                       <Link
-                        href={
-                          footerItem._type === "navitem"
-                            ? `/${footerItem.slug}`
-                            : footerItem.url || "/"
-                        }
+                        href={href}
                         target={footerItem._type === "link" && footerItem.newtab ? "_blank" : ""}
                       >
                         {footerItem.title}
