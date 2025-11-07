@@ -103,6 +103,7 @@ import outputdonationstableheaders from "./types/outputdonationstableheaders";
 import formsparkform from "./types/formspark";
 import wealthcalculatorimpact from "./types/wealthcalculatorimpact";
 import dkbank from "./types/paymentmethods/dkbank";
+import fundraiserwidget from "./types/fundraiserwidget";
 
 const paymentMethods = [
   vipps,
@@ -209,6 +210,7 @@ export const types = [
   dkrenewpayment,
   mediacoverageteaser,
   formsparkform,
+  fundraiserwidget,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

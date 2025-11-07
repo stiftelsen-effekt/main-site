@@ -163,6 +163,17 @@
     }
   }
 
+  &__privacy-checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.9rem;
+
+    a:link {
+      border-bottom: 1px solid var(--primary);
+      margin-left: 0.5rem;
+    }
+  }
+
   &__checkbox-group {
     display: flex;
     align-items: center;

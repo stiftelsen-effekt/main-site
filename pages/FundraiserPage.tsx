@@ -21,6 +21,7 @@ import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgr
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
 import { FundraiserWidget } from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
 import { API_URL } from "../components/shared/components/Widget/config/api";
+import { getFormattingLocale } from "../util/formatting";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -163,6 +164,7 @@ export const FundraiserPage = withStaticProps(
   const fundraiserImage = getValidImage(page.fundraiser_image);
 
   const content = page.content;
+  const locale = getFormattingLocale((data.result.settings[0] as any).main_locale);
 
   return (
     <>
@@ -208,10 +210,13 @@ export const FundraiserPage = withStaticProps(
               fundraiserData.totalSum +
               (page.fundraiser_goal_config?.additional_external_contributions ?? 0)
             }
+            locale={locale}
           ></FundraiserProgressBar>
 
           <FundraiserWidget
             fundraiserId={page.fundraiser_database_id}
+            widgetConfig={page.fundraiser_widget_configuration}
+            suggestedAmounts={page.suggested_amounts || null}
             organizationInfo={{
               organization: page.fundraiser_organization,
               textTemplate: page.fundraiser_organization_text_template || "{org}",
@@ -221,16 +226,13 @@ export const FundraiserPage = withStaticProps(
                 organizationId: page.fundraiser_organization.widget_button.organization_id,
               },
             }}
-            suggestedSums={page.fundraiser_widget_config?.suggested_amounts}
-            privacyPolicyUrl={
-              data.result.settings[0].cookie_banner_configuration
-                ?.privacy_policy_link as unknown as NavLink
-            }
+            locale={locale}
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
             donations={fundraiserData.transactions}
             config={page.gift_activity_config}
+            locale={locale}
           ></FundraiserGiftActivity>
         </div>
       </div>
@@ -255,6 +257,7 @@ const fetchFundraiser = groq`
     ${pageBannersContentQuery},
     donate_label,
     accent_color,
+    main_locale,
   },
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,
@@ -291,6 +294,25 @@ const fetchFundraiser = groq`
         slug { current }
       }
     },
+    fundraiser_widget_configuration -> {
+      ...,
+      payment_methods[] -> {
+        _type,
+        selector_text,
+        single_button_text,
+        recurring_button_text,
+        button_text
+      },
+      privacy_policy {
+        ...,
+        privacy_policy_url {
+          ...,
+          "slug": page->slug.current,
+          "pagetype": page->_type,
+        }
+      }
+    },
+    suggested_amounts,
     ${pageContentQuery}
     slug { current },
   },

@@ -11,7 +11,8 @@ export const FundraiserGiftActivity: React.FC<{
     name: string | null;
     message: string | null;
   }[];
-}> = ({ donations, config }) => {
+  locale: string;
+}> = ({ donations, config, locale }) => {
   const [currentlyShowing, setCurrentlyShowing] = useState(5);
 
   if (!config) return "Missing config for fundraiser gift activity";
@@ -36,23 +37,36 @@ export const FundraiserGiftActivity: React.FC<{
   }, [] as { amount: number; name: string | null; message: string | null }[][]);
 
   const getHeaderText = (name: string | null, amount: number) => {
-    if (name) {
+    if (name && config.gift_amount_text_template) {
       return (config.gift_amount_text_template as string)
         .replace("{name}", name)
-        .replace("{sum}", thousandize(amount));
+        .replace("{sum}", thousandize(amount, locale));
     }
-    return `En gave på ${thousandize(amount)} kr`;
+    // If no template or no name, show amount only
+    return config.gift_amount_text_template
+      ? config.gift_amount_text_template
+          .replace("{name}", "")
+          .replace("{sum}", thousandize(amount, locale))
+      : `${thousandize(amount, locale)} kr`;
   };
 
   return (
-    <div className={style.container}>
-      <span className={style.title}>{config.title}</span>
+    <div className={style.container} data-cy="fundraiser-gift-activity">
+      <span className={style.title} data-cy="fundraiser-gift-title">
+        {config.title}
+      </span>
       {divviedDonations.map((donationGroup, i) => (
         <AnimateHeight key={i} duration={300} height={i < currentlyShowing / 5 ? "auto" : 0}>
           {donationGroup.map((donation, j) => (
-            <div key={j} className={style.donation}>
-              <span className={style.amount}>{getHeaderText(donation.name, donation.amount)}</span>
-              {donation.message && <span className={style.message}>{donation.message}</span>}
+            <div key={j} className={style.donation} data-cy="fundraiser-gift-item">
+              <span className={style.amount} data-cy="fundraiser-gift-amount">
+                {getHeaderText(donation.name, donation.amount)}
+              </span>
+              {donation.message && (
+                <span className={style.message} data-cy="fundraiser-gift-message">
+                  {donation.message}
+                </span>
+              )}
             </div>
           ))}
         </AnimateHeight>
@@ -63,7 +77,11 @@ export const FundraiserGiftActivity: React.FC<{
         </div>
       )}
       {currentlyShowing < donations.length && (
-        <button onClick={() => setCurrentlyShowing(currentlyShowing + 5)} className={style.seemore}>
+        <button
+          onClick={() => setCurrentlyShowing(currentlyShowing + 5)}
+          className={style.seemore}
+          data-cy="fundraiser-gift-show-more"
+        >
           {showMoreText}
         </button>
       )}
