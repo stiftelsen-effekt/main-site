@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 
 export type ConsentState = "accepted" | "rejected" | "undecided";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Skip middleware for special paths
   if (
     request.nextUrl.pathname.startsWith("/_next") ||
