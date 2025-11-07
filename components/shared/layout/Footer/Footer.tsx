@@ -53,6 +53,7 @@ export const footerQuery = groq`
 const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
   const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(footerQuery);
 
+  // TODO: Investigating Ahrefs broken link issue - dummy change for feature deployment
   return {
     data: {
       result,
