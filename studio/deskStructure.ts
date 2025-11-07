@@ -70,14 +70,37 @@ export const deskStructure = (S) =>
         .title("Fundraisers")
         .icon(User)
         .child(
-          S.documentList()
+          S.list()
             .title("Fundraisers")
-            .schemaType("fundraiser_page")
-            .apiVersion("v2024-09-19")
-            .filter('_type == "fundraiser_page"')
-            .child((id) =>
-              S.document().schemaType("fundraiser_page").documentId(id).views([S.view.form()]),
-            ),
+            .items([
+              S.listItem()
+                .title("All Fundraisers")
+                .icon(User)
+                .child(
+                  S.documentList()
+                    .title("Fundraisers")
+                    .schemaType("fundraiser_page")
+                    .apiVersion("v2024-09-19")
+                    .filter('_type == "fundraiser_page"')
+                    .child((id) =>
+                      S.document()
+                        .schemaType("fundraiser_page")
+                        .documentId(id)
+                        .views([S.view.form()]),
+                    ),
+                ),
+              S.divider(),
+              S.listItem()
+                .title("Fundraiser Widget Configurations")
+                .icon(DollarSign)
+                .child(
+                  S.documentList()
+                    .title("Fundraiser Widget Configurations")
+                    .schemaType("fundraiserwidget")
+                    .apiVersion("v2024-09-19")
+                    .filter('_type == "fundraiserwidget"'),
+                ),
+            ]),
         ),
       S.divider(),
       S.listItem()
