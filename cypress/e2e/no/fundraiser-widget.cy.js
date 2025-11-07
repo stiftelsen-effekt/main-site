@@ -1,4 +1,4 @@
-const BASE_PATH = "/innsamlinger";
+const BASE_PATH = "/innsamling";
 
 const SLUGS = {
   default: "e2e-test-do-not-delete-fundraiser-default",
@@ -62,7 +62,11 @@ describe("Fundraiser widget - default configuration", () => {
   });
 
   it("renders fundraiser content and stats", () => {
-    cy.contains("h1", "[E2E test] [Do not delete] Fundraiser Default").should("be.visible");
+    // Need to grab the second h1 because the first one is for mobile
+    cy.get("h1")
+      .eq(1)
+      .contains("[E2E test] [Do not delete] Fundraiser Default")
+      .should("be.visible");
     cy.get("[data-cy='fundraiser-progress-current']").should("contain", "10 kr samlet inn");
     cy.get("[data-cy='fundraiser-progress-bar']").should("exist");
 
@@ -128,7 +132,7 @@ describe("Fundraiser widget - default configuration", () => {
 
   it("completes a bank donation flow and reveals transfer details", () => {
     goToPaymentPane({
-      amount: 600,
+      amount: 200,
       showName: true,
       name: "Wall-E",
       message: "Directive: protect life.",
@@ -149,10 +153,7 @@ describe("Fundraiser widget - default configuration", () => {
 
     cy.window().then((win) => cy.stub(win, "open").as("windowOpen"));
 
-    cy.get("[data-cy='fundraiser-submit-button']").should(
-      "contain",
-      "Jeg har satt opp en overføring",
-    );
+    cy.get("[data-cy='fundraiser-submit-button']").should("contain", "Gi med bank");
     cy.get("[data-cy='fundraiser-submit-button']").click({ force: true });
 
     cy.wait("@registerDonation");
@@ -212,7 +213,7 @@ describe("Fundraiser widget variations", () => {
 
     cy.window().then((win) => cy.stub(win, "open").as("windowOpen"));
 
-    cy.get("[data-cy='fundraiser-submit-button']").should("contain", "Betal med Vipps");
+    cy.get("[data-cy='fundraiser-submit-button']").should("contain", "Gi med Vipps");
     cy.get("[data-cy='fundraiser-submit-button']").click({ force: true });
 
     cy.wait("@registerVippsDonation");
