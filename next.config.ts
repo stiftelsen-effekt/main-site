@@ -12,7 +12,7 @@ const STUDIO_REWRITE = {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
@@ -23,15 +23,10 @@ const nextConfig: NextConfig = {
     ],
     dangerouslyAllowSVG: true,
   },
+  reactCompiler: true,
   pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   experimental: {
-    optimizePackageImports: ["react-feather"],
-    inlineCss: true,
-    staticGenerationMinPagesPerWorker: Number.MAX_SAFE_INTEGER, // Do all static generation in a single worker
-  },
-  turbopack: {},
-  compiler: {
-    styledComponents: true,
+    staticGenerationMinPagesPerWorker: Number.MAX_SAFE_INTEGER,
   },
   headers: async () => {
     return [

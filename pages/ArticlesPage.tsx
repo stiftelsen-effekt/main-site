@@ -12,20 +12,10 @@ import styles from "../styles/Articles.module.css";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 
-const fetchArticlesPageSlug = groq`
-{
-  "page": *[_type == "articles"] {
-    "slug": slug.current,
-  }[0]
-}
-`;
-
-export const getArticlesPagePath = async () => {
-  const { page } = await getClient().fetch<{ page: { slug: string } }>(fetchArticlesPageSlug);
-  return page.slug.split("/");
-};
+// Re-export path function from centralized location
+export { getArticlesPagePath } from "../lib/page-paths";
 
 export const ArticlesPage = withStaticProps(
   async ({

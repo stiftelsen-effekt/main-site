@@ -23,7 +23,7 @@
     "studio/node_modules/@sanity/base/types/**/*.ts",
     "studio/components/pointlistPeview.jsx",
     "studio/resolveProductionUrl.ts",
-    "middleware.page.ts"
+    "proxy.page.ts"
   ],
   "exclude": ["node_modules", "studio"]
 }

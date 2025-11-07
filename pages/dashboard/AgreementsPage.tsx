@@ -29,19 +29,11 @@ import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../types/routing";
 import { CookieBannerQueryResult } from "../../studio/sanity.types";
 
-export async function getAgreementsPagePath() {
-  const result = await getClient().fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
-
-  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
-  const agreementsSlug = stegaClean(result?.page?.slug?.current);
-
-  if (!dashboardSlug || !agreementsSlug) return null;
-
-  return [dashboardSlug, agreementsSlug];
-}
+// Re-export path function from centralized location
+export { getAgreementsPagePath } from "../../lib/page-paths";
 
 export const AgreementsPage = withStaticProps(
   async ({

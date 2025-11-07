@@ -15,21 +15,11 @@ import { MonthlyDonationsPerOutputResult } from "../components/shared/components
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHadlineNumbers } from "../components/shared/components/ResultsHeadline/ResultsHeadline";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 import { FetchResultsResult } from "../studio/sanity.types";
 
-const fetchResultsPageSlug = groq`
-{
-  "page": *[_type == "results"] {
-    "slug": slug.current,
-  }[0]
-}
-`;
-
-export const getResultsPagePath = async () => {
-  const { page } = await getClient().fetch<{ page: { slug: string } }>(fetchResultsPageSlug);
-  return stegaClean(page.slug).split("/");
-};
+// Re-export path function from centralized location
+export { getResultsPagePath } from "../lib/page-paths";
 
 export type ResultsGraphData = {
   dailyDonations: DailyDonations;

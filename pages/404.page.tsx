@@ -6,7 +6,7 @@ import { SectionContainer } from "../components/main/layout/SectionContainer/sec
 import { SEO } from "../components/shared/seo/Seo";
 import { getClient } from "../lib/sanity.client";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 import { GetStaticProps } from "next";
 import { CustomLink } from "../components/shared/components/CustomLink/CustomLink";
 import styles from "../styles/404.module.css";

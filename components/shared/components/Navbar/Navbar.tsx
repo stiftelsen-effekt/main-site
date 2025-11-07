@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import styles from "./Navbar.module.scss";
-import Link from "next/link";
-import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { WidgetContext } from "../../../main/layout/layout";
@@ -15,7 +13,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
-import { useLiveQuery } from "next-sanity/preview";
+import { useLiveQuery } from "@sanity/preview-kit";
 import { isBright } from "../../../../util/color";
 
 export type NavLink = {

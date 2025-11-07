@@ -6,16 +6,13 @@ interface CustomLinkProps extends React.ComponentProps<typeof Link> {
 }
 
 export const CustomLink = ({ href, ...props }: CustomLinkProps) => {
-  if (href === "/") {
-    return <a href="/" {...props} />;
-  }
-
   let cleanHref;
   // Remove any leading slash for consistency
   if (typeof href === "object" && href.pathname) {
     cleanHref = href.pathname.startsWith("/") ? href.pathname.slice(1) : href.pathname;
     return (
       <Link
+        prefetch={true}
         href={{
           pathname: `/${cleanHref}`,
           query: href.query,
@@ -25,8 +22,10 @@ export const CustomLink = ({ href, ...props }: CustomLinkProps) => {
     );
   } else if (typeof href === "string") {
     cleanHref = href.startsWith("/") ? href.slice(1) : href;
-    return <Link href={`/[state]/${cleanHref}`} as={`/${cleanHref}`} {...props} />;
+    // Let the proxy handle rewriting to /[state]/... path
+    // Just use a simple href, no 'as' prop needed
+    return <Link prefetch={true} href={`/${cleanHref}`} {...props} />;
   }
 
-  return <Link href="/" {...props} prefetch={false} />;
+  return <Link href="/" {...props} prefetch={true} />;
 };

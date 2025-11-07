@@ -9,9 +9,8 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { useLiveQuery } from "next-sanity/preview";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
