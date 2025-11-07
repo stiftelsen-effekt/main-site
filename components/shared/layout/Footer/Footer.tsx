@@ -53,25 +53,6 @@ export const footerQuery = groq`
 const Footer = withStaticProps(async ({ draftMode = false }: { draftMode: boolean }) => {
   const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(footerQuery);
 
-  // Debug: Log footer links to identify undefined slugs
-  if (result.footer_columns) {
-    result.footer_columns.forEach((column, colIndex) => {
-      if (column.links) {
-        column.links.forEach((link, linkIndex) => {
-          if (link._type === "navitem" && !link.slug) {
-            console.error(
-              `[Footer Debug] Undefined slug found:`,
-              `Column ${colIndex}, Link ${linkIndex}:`,
-              `Title: "${link.title}"`,
-              `Full link data:`,
-              JSON.stringify(link, null, 2),
-            );
-          }
-        });
-      }
-    });
-  }
-
   return {
     data: {
       result,
