@@ -12,7 +12,58 @@ on:
         required: true
         type: string
 jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      container-count: ${{ steps.calculate-containers.outputs.count }}
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v5
+
+      - name: Calculate optimal container count 🧮
+        id: calculate-containers
+        run: |
+          # Extract specPattern from config file
+          SPEC_PATTERN=$(grep -oP "specPattern:\s*['\"]?\K[^'\"]*" ${{ inputs.config-file }} || echo "cypress/e2e/**/*.{js,jsx,ts,tsx}")
+          echo "Spec pattern: $SPEC_PATTERN"
+
+          # Count matching test files
+          TEST_COUNT=$(find . -path "./$SPEC_PATTERN" 2>/dev/null | wc -l)
+          echo "Test files found: $TEST_COUNT"
+
+          # Calculate optimal containers using scaling formula:
+          # - For 1-3 tests: use equal number of containers
+          # - For 4+ tests: scale logarithmically, capped at 12
+          if [ $TEST_COUNT -le 3 ]; then
+            CONTAINERS=$TEST_COUNT
+          else
+            # Formula: ceil(test_count / 2.5) + 1, capped at 12
+            CONTAINERS=$(awk -v tc=$TEST_COUNT 'BEGIN {
+              result = int((tc / 2.5) + 0.999) + 1;
+              if (result > 12) result = 12;
+              if (result < 1) result = 1;
+              print result
+            }')
+          fi
+
+          echo "Calculated containers: $CONTAINERS"
+          echo "count=$CONTAINERS" >> $GITHUB_OUTPUT
+
+      - name: Generate matrix array 📊
+        id: set-matrix
+        run: |
+          CONTAINERS=${{ steps.calculate-containers.outputs.count }}
+          containers='['
+          for i in $(seq 1 $CONTAINERS); do
+            containers="${containers}${i},"
+          done
+          containers="${containers%,}]"
+          echo "matrix=${containers}" >> $GITHUB_OUTPUT
+          echo "Generated matrix: ${containers}"
+
   e2e:
+    needs: generate-matrix
     runs-on: blacksmith-4vcpu-ubuntu-2404
     strategy:
       # when one test fails, DO NOT cancel the other
@@ -21,7 +72,7 @@ jobs:
       # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        containers: [1, 2, 3, 4, 5, 6]
+        containers: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v5
