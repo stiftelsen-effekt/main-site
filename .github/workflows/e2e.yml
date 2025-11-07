@@ -13,6 +13,7 @@ on:
         type: string
 jobs:
   generate-matrix:
+    name: 🎯 Plan Test Distribution
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -81,6 +82,7 @@ jobs:
           echo "Generated matrix: ${containers}"
 
   e2e:
+    name: 🌲 Test · Container ${{ matrix.containers }}/${{ needs.generate-matrix.outputs.container-count }}
     needs: generate-matrix
     runs-on: blacksmith-4vcpu-ubuntu-2404
     strategy:
@@ -92,9 +94,9 @@ jobs:
       matrix:
         containers: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
-      - name: Checkout 🛎
+      - name: 🛎 Checkout Code
         uses: actions/checkout@v5
-      - name: Run Cypress 🌲
+      - name: 🧪 Run Tests
         uses: cypress-io/github-action@v6
         with:
           config-file: ${{ inputs.config-file }}
