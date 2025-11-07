@@ -198,6 +198,10 @@ export const getStaticProps = async (
   const draftMode = ctx.draftMode ?? false;
   const consentState = ctx.params?.state ?? "undecided";
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const isDanishSite = siteUrl.includes("giveffektivt.dk");
+  const revalidate = isDanishSite || draftMode ? 1 : 3600;
+
   const pageType = await inferPageTypeFromPath(path);
 
   switch (pageType) {
@@ -214,7 +218,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.ArticlesPage: {
@@ -225,7 +229,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.ArticlePage: {
@@ -237,7 +241,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.FundraiserPage: {
@@ -254,7 +258,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.ResultsPage: {
@@ -265,7 +269,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.VippsAgreementPage: {
@@ -276,7 +280,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.VippsAnonymousPage: {
@@ -287,7 +291,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.DonationsPage: {
@@ -298,7 +302,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.AgreementsPage: {
@@ -309,7 +313,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.ProfilePage: {
@@ -320,7 +324,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
     case PageType.TaxPage: {
@@ -331,7 +335,7 @@ export const getStaticProps = async (
           pageType,
           consentState,
         },
-        revalidate: draftMode ? 1 : 3600,
+        revalidate,
       } as const;
     }
   }
