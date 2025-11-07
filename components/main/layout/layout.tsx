@@ -61,7 +61,16 @@ const query = groq`
       donate_label_title,
       accent_color,
       general_banner,
-      cookie_banner_configuration
+      cookie_banner_configuration {
+        ...,
+        privacy_policy_link {
+          "_key": coalesce(_id,_key,"id_privacy_policy_link"),
+          _type,
+          title,
+          "slug": page->slug.current,
+          "pagetype": coalesce(page->_type, "generic_page"),
+        }
+      }
     }
   }
 `;
