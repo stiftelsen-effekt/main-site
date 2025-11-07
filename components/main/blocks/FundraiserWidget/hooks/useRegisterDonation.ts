@@ -33,8 +33,6 @@ export function useRegisterDonation({
   const registerDonation = (formData: FormData) => {
     setLoading(true);
 
-    const isAnonymous = !formData.newsletter && !formData.taxDeduction;
-
     // Find the selected payment method from the configured payment methods
     const selectedPaymentMethod = paymentMethods.find(
       (method) => method._id === formData.paymentMethod || method._type === formData.paymentMethod,
@@ -66,7 +64,7 @@ export function useRegisterDonation({
             ],
           },
         ],
-        donor: isAnonymous
+        donor: !formData.email
           ? ANONYMOUS_DONOR
           : {
               name: formData.messageSenderName,
