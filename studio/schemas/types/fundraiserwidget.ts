@@ -78,10 +78,11 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "anonymous_donation_label",
-      title: "Anonymous donation label",
-      type: "string",
-      validation: (Rule) => Rule.required(),
+      name: "allow_anonymous_donations",
+      title: "Allow anonymous donations",
+      type: "boolean",
+      initialValue: true,
+      description: "If true, the user does not need to provide an email address to donate",
     }),
     defineField({
       name: "tax_deduction_enabled",
@@ -98,7 +99,7 @@ export default defineType({
       hidden: ({ parent }) => !parent?.tax_deduction_enabled,
       validation: (Rule) =>
         Rule.custom((value, context) => {
-          if (!context.parent?.tax_deduction_enabled) {
+          if (!(context.parent as any)?.tax_deduction_enabled) {
             return true;
           }
           if (!value) {
@@ -139,6 +140,18 @@ export default defineType({
           type: "string",
           validation: (Rule) => Rule.required(),
         }),
+        defineField({
+          name: "ssn_invalid_error_text",
+          title: "SSN invalid error text",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "ssn_suspicious_error_text",
+          title: "SSN suspicious error text",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
       ],
     }),
     defineField({
@@ -155,7 +168,7 @@ export default defineType({
       hidden: ({ parent }) => !parent?.newsletter_enabled,
       validation: (Rule) =>
         Rule.custom((value, context) => {
-          if (!context.parent?.newsletter_enabled) {
+          if (!(context.parent as any)?.newsletter_enabled) {
             return true;
           }
           if (!value) {
@@ -192,6 +205,12 @@ export default defineType({
           description:
             "If true, user must check the privacy policy checkbox to proceed (Denmark). If false, privacy policy is just a link (Norway).",
           initialValue: false,
+        }),
+        defineField({
+          name: "privacy_policy_url",
+          title: "Privacy policy URL",
+          type: "navitem",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "required_error_text",

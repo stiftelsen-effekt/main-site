@@ -33,10 +33,10 @@ export const thousandizeString = (number: string | null) =>
 /**
  * Converts main_locale (no, sv, dk) to full locale string for number formatting (no-NB, sv-SE, da-DK)
  */
-export const getFormattingLocale = (mainLocale: string | null | undefined): string => {
+export const getFormattingLocale = (mainLocale: string | null | undefined): FormattingLocale => {
   if (!mainLocale) return "no-NB";
 
-  const localeMap: Record<string, string> = {
+  const localeMap: Record<string, FormattingLocale> = {
     no: "no-NB",
     sv: "sv-SE",
     dk: "da-DK",
@@ -46,6 +46,8 @@ export const getFormattingLocale = (mainLocale: string | null | undefined): stri
 
   return localeMap[mainLocale] || "no-NB";
 };
+
+export type FormattingLocale = "no-NB" | "sv-SE" | "da-DK" | "en-US" | "et-EE";
 
 /**
  * Gets the thousand separator character for a given locale

@@ -9,11 +9,21 @@ export interface FormData {
   ssn: string;
   taxDeduction: boolean;
   newsletter: boolean;
-  paymentMethod: "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank";
+  paymentMethod: PaymentMethodString;
   privacyPolicyAccepted: boolean;
 }
 
-export function useFundraiserForm(taxDeductionMinAmount?: number) {
+export type PaymentMethodString =
+  | "bank"
+  | "vipps"
+  | "quickpay_card"
+  | "quickpay_mobilepay"
+  | "dkbank";
+
+export function useFundraiserForm(
+  paymentMethods: PaymentMethodString[],
+  taxDeductionMinAmount?: number,
+) {
   const [formData, setFormData] = useState<FormData>({
     amount: null,
     message: "",
@@ -23,13 +33,13 @@ export function useFundraiserForm(taxDeductionMinAmount?: number) {
     ssn: "",
     taxDeduction: false,
     newsletter: false,
-    paymentMethod: "vipps",
+    paymentMethod: paymentMethods[0],
     privacyPolicyAccepted: false,
   });
 
   // Auto-enable tax deduction for amounts >= configured minimum (only if tax deduction is enabled)
   useEffect(() => {
-    if (taxDeductionMinAmount !== undefined) {
+    if (typeof taxDeductionMinAmount === "number") {
       if (formData.amount && formData.amount >= taxDeductionMinAmount) {
         setFormData((prev) => ({ ...prev, taxDeduction: true }));
       } else {

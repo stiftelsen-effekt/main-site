@@ -4,6 +4,7 @@ import { API_URL } from "../../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../../shared/components/Widget/config/anonymous-donor";
 import { FormData } from "./useFundraiserForm";
 import { FetchFundraiserResult } from "../../../../../studio/sanity.types";
+import { paymentMethodMap } from "../../../../shared/components/Widget/components/panes/DonorPane/DonorPane";
 
 interface UseRegisterDonationProps {
   fundraiserId: number;
@@ -13,12 +14,17 @@ interface UseRegisterDonationProps {
       organizationId: number;
     };
   };
+  paymentMethods: Array<{
+    _id?: string;
+    _type: string;
+  }>;
   onSuccess: (kid: string) => void;
 }
 
 export function useRegisterDonation({
   fundraiserId,
   organizationInfo,
+  paymentMethods,
   onSuccess,
 }: UseRegisterDonationProps) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,6 +34,18 @@ export function useRegisterDonation({
     setLoading(true);
 
     const isAnonymous = !formData.newsletter && !formData.taxDeduction;
+
+    // Find the selected payment method from the configured payment methods
+    const selectedPaymentMethod = paymentMethods.find(
+      (method) => method._id === formData.paymentMethod || method._type === formData.paymentMethod,
+    );
+
+    // Use the payment method ID from Sanity configuration (_id preferred, fallback to _type, then formData.paymentMethod)
+    const paymentMethodId =
+      selectedPaymentMethod?._id || selectedPaymentMethod?._type || formData.paymentMethod;
+
+    // Map the payment method ID to PaymentMethod enum using paymentMethodMap
+    const method = paymentMethodMap[paymentMethodId] || PaymentMethod.BANK;
 
     fetch(`${API_URL}/donations/register`, {
       headers: {
@@ -63,7 +81,7 @@ export function useRegisterDonation({
           messageSenderName: formData.message.length !== 0 ? formData.messageSenderName : null,
           showName: formData.message.length !== 0 ? formData.showName : false,
         },
-        method: formData.paymentMethod === "bank" ? PaymentMethod.BANK : PaymentMethod.VIPPS,
+        method: method,
         amount: formData.amount,
         recurring: 0,
       }),

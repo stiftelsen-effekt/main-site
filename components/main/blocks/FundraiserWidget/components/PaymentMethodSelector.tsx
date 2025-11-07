@@ -1,6 +1,7 @@
 import React from "react";
 import { RadioButtonGroup } from "../../../../shared/components/RadioButton/RadioButtonGroup";
 import { PaymentMethod } from "../../../../shared/components/Widget/types/Enums";
+import { PaymentMethodString } from "../hooks/useFundraiserForm";
 
 interface PaymentMethodSelectorProps {
   methods: Array<{
@@ -10,8 +11,8 @@ interface PaymentMethodSelectorProps {
     recurring_button_text: string | null;
     button_text: string | null;
   }>;
-  selected: "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank";
-  onSelect: (method: "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank") => void;
+  selected: PaymentMethodString;
+  onSelect: (method: PaymentMethodString) => void;
 }
 
 export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
@@ -38,7 +39,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     };
   });
 
-  const getSelectedValue = (selected: string): PaymentMethod => {
+  const getSelectedValue = (selected: PaymentMethodString): PaymentMethod => {
     if (selected === "bank") return PaymentMethod.BANK;
     if (selected === "vipps") return PaymentMethod.VIPPS;
     if (selected === "quickpay_card") return PaymentMethod.QUICKPAY_CARD;
@@ -47,9 +48,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     return PaymentMethod.VIPPS; // default
   };
 
-  const getMethodKey = (
-    value: PaymentMethod,
-  ): "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank" => {
+  const getMethodKey = (value: PaymentMethod): PaymentMethodString => {
     if (value === PaymentMethod.BANK) return "bank";
     if (value === PaymentMethod.VIPPS) return "vipps";
     if (value === PaymentMethod.QUICKPAY_CARD) return "quickpay_card";

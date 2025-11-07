@@ -12,9 +12,10 @@ import { OrganizationInfoPane } from "./panes/OrganizationInfoPane";
 import { DonationDetailsPane } from "./panes/DonationDetailsPane";
 import { PaymentMethodPane } from "./panes/PaymentMethodPane";
 import { BankTransferPane } from "./panes/BankTransferPane";
+import { FormattingLocale } from "../../../../util/formatting";
 
 type WidgetConfig = NonNullable<
-  NonNullable<FetchFundraiserResult["page"]>["fundraiser_widget_config"]
+  NonNullable<FetchFundraiserResult["page"]>["fundraiser_widget_configuration"]
 >;
 
 interface DonationWidgetProps {
@@ -30,8 +31,7 @@ interface DonationWidgetProps {
       organizationId: number;
     };
   };
-  privacyPolicyUrl: NavLink;
-  locale: string;
+  locale: FormattingLocale;
   onComplete?: (formData: FormData) => void;
 }
 
@@ -40,11 +40,11 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   suggestedAmounts,
   fundraiserId,
   organizationInfo,
-  privacyPolicyUrl,
   locale,
   onComplete = () => {},
 }) => {
   const { formData, updateField } = useFundraiserForm(
+    widgetConfig?.payment_methods?.map((method) => method._type) || [],
     widgetConfig?.tax_deduction_enabled ? widgetConfig?.tax_deduction?.minimum_amount : undefined,
   );
   const {
@@ -59,6 +59,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   const { loading, kid, registerDonation } = useRegisterDonation({
     fundraiserId,
     organizationInfo,
+    paymentMethods: widgetConfig?.payment_methods || [],
     onSuccess: () => goToNextStep(),
   });
   const [privacyPolicyError, setPrivacyPolicyError] = useState(false);
@@ -152,6 +153,8 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
                       label: config.tax_deduction.label!,
                       tooltip_text: config.tax_deduction.tooltip_text!,
                       ssn_label: config.tax_deduction.ssn_label!,
+                      ssn_invalid_error_text: config.tax_deduction.ssn_invalid_error_text!,
+                      ssn_suspicious_error_text: config.tax_deduction.ssn_suspicious_error_text!,
                     }
                   : undefined,
               newsletter:
@@ -165,11 +168,13 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
                 text: config.privacy_policy!.text!,
                 require_checkbox: config.privacy_policy!.require_checkbox,
                 required_error_text: config.privacy_policy!.required_error_text,
+                privacy_policy_url: config.privacy_policy!.privacy_policy_url as NavLink,
               },
               payment_methods: config.payment_methods!,
+              allow_anonymous_donations: config.allow_anonymous_donations!,
             }}
-            privacyPolicyUrl={privacyPolicyUrl}
             privacyPolicyError={privacyPolicyError}
+            locale={locale}
           />
 
           <BankTransferPane

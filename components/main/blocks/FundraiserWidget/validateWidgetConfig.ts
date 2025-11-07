@@ -1,7 +1,8 @@
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
+import { PaymentMethodString } from "./hooks/useFundraiserForm";
 
 type WidgetConfig = NonNullable<
-  NonNullable<FetchFundraiserResult["page"]>["fundraiser_widget_config"]
+  NonNullable<FetchFundraiserResult["page"]>["fundraiser_widget_configuration"]
 >;
 
 type OrganizationInfo = NonNullable<FetchFundraiserResult["page"]>["fundraiser_organization"];
@@ -30,7 +31,8 @@ export function validateWidgetConfig(
 
   // Check if bank payment method is included
   const hasBankMethod = config.payment_methods?.some(
-    (method) => method._type === "bank" || method._type === "dkbank",
+    (method: { _type: PaymentMethodString }) =>
+      method._type === "bank" || method._type === "dkbank",
   );
 
   // Define required fields
@@ -76,7 +78,7 @@ export function validateWidgetConfig(
     ];
 
     for (const field of requiredTaxFields) {
-      if (!taxDeduction[field.key]) {
+      if (taxDeduction[field.key] === undefined || taxDeduction[field.key] === null) {
         return { valid: false, error: `Missing config for fundraiser widget: ${field.path}` };
       }
     }

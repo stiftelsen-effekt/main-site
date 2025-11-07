@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { EffektCheckbox } from "../../../../shared/components/EffektCheckbox/EffektCheckbox";
 import { LinkComponent } from "../../Links/Links";
 import { NavLink } from "../../../../shared/components/Navbar/Navbar";
@@ -7,6 +7,11 @@ import { PaymentMethodSelector } from "../components/PaymentMethodSelector";
 import { FormData } from "../hooks/useFundraiserForm";
 import styles from "../FundraiserWidget.module.scss";
 import Link from "next/link";
+import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
+import Organisationsnummer from "organisationsnummer";
+import Personnummer from "personnummer";
+import { validateTin, formatTinInput } from "../../../../../util/tin-validation";
+import { FormattingLocale } from "../../../../../util/formatting";
 
 interface PaymentMethodPaneProps {
   formData: Pick<
@@ -17,10 +22,13 @@ interface PaymentMethodPaneProps {
   onSubmit: () => void;
   loading: boolean;
   config: {
+    allow_anonymous_donations: boolean;
     tax_deduction?: {
       label: string;
       tooltip_text: string;
       ssn_label: string;
+      ssn_invalid_error_text: string;
+      ssn_suspicious_error_text: string;
     } | null;
     newsletter?: {
       label: string;
@@ -30,6 +38,7 @@ interface PaymentMethodPaneProps {
       text: string;
       require_checkbox?: boolean;
       required_error_text?: string;
+      privacy_policy_url?: NavLink;
     };
     payment_methods: Array<{
       _type: string;
@@ -39,11 +48,19 @@ interface PaymentMethodPaneProps {
       button_text: string | null;
     }>;
   };
-  privacyPolicyUrl: NavLink;
   className?: string;
   visible?: boolean;
   privacyPolicyError?: boolean;
+  locale: FormattingLocale;
 }
+
+const validateSsnNo = (ssn: string): boolean => {
+  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
+};
+
+const validateSsnSe = (ssn: string): boolean => {
+  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
+};
 
 export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodPaneProps>(
   (
@@ -53,24 +70,101 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
       onSubmit,
       loading,
       config,
-      privacyPolicyUrl,
       className,
       visible,
       privacyPolicyError,
+      locale,
     },
     ref,
   ) => {
-    const getButtonText = () => {
-      const method = config.payment_methods.find((m) => {
-        const paymentMethodType = formData.paymentMethod;
-        if (paymentMethodType === "bank") return m._type === "bank";
-        if (paymentMethodType === "vipps") return m._type === "vipps";
-        if (paymentMethodType === "quickpay_card") return m._type === "quickpay_card";
-        if (paymentMethodType === "quickpay_mobilepay") return m._type === "quickpay_mobilepay";
-        if (paymentMethodType === "dkbank") return m._type === "dkbank";
-        return false;
-      });
+    const [ssnError, setSsnError] = useState<string | null>(null);
+    const [cprSuspicious, setCprSuspicious] = useState(false);
 
+    // Clear errors when tax deduction is unchecked
+    useEffect(() => {
+      if (!formData.taxDeduction) {
+        setSsnError(null);
+        setCprSuspicious(false);
+      }
+    }, [formData.taxDeduction]);
+
+    const handleSsnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+
+      // Format CPR input for Danish locale
+      let valueToUse = value;
+      console.log("locale", locale);
+      if (locale === "da-DK" && formData.taxDeduction) {
+        const formattedValue = formatTinInput(value, { allowCvr: true });
+        e.target.value = formattedValue;
+        valueToUse = formattedValue;
+        onChange("ssn", formattedValue);
+      } else {
+        onChange("ssn", value);
+      }
+
+      // Validate SSN based on locale
+      const trimmed = valueToUse.trim();
+      if (!formData.taxDeduction || trimmed === "") {
+        setSsnError(null);
+        setCprSuspicious(false);
+        return;
+      }
+
+      let isValid = true;
+      if (locale === "no-NB") {
+        isValid = validateSsnNo(trimmed);
+      } else if (locale === "sv-SE") {
+        isValid = validateSsnSe(trimmed);
+      } else if (locale === "da-DK") {
+        const validationResult = validateTin(trimmed, { allowCvr: true });
+        if (validationResult.type === "CPR") {
+          if (validationResult.isSuspicious) {
+            setCprSuspicious(true);
+            isValid = true; // Allow suspicious CPR but show warning
+          } else if (validationResult.isValid && !validationResult.isSuspicious) {
+            setCprSuspicious(false);
+          }
+        } else {
+          setCprSuspicious(false);
+        }
+        isValid = validationResult.isValid;
+      }
+
+      setSsnError(isValid ? null : config.tax_deduction?.ssn_invalid_error_text || null);
+    };
+
+    const validateSsnOnBlur = () => {
+      const trimmed = formData.ssn.trim();
+      if (!formData.taxDeduction || trimmed === "") {
+        setSsnError(null);
+        setCprSuspicious(false);
+        return;
+      }
+
+      let isValid = true;
+      if (locale === "no-NB") {
+        isValid = validateSsnNo(trimmed);
+      } else if (locale === "sv-SE") {
+        isValid = validateSsnSe(trimmed);
+      } else if (locale === "da-DK") {
+        const validationResult = validateTin(trimmed, { allowCvr: true });
+        if (validationResult.type === "CPR") {
+          if (validationResult.isSuspicious) {
+            setCprSuspicious(true);
+            isValid = true;
+          } else if (validationResult.isValid && !validationResult.isSuspicious) {
+            setCprSuspicious(false);
+          }
+        } else {
+          setCprSuspicious(false);
+        }
+        isValid = validationResult.isValid;
+      }
+
+      setSsnError(isValid ? null : config.tax_deduction?.ssn_invalid_error_text || null);
+    };
+    const getButtonText = () => {
       return formData.paymentMethod === "bank"
         ? "Gi med bank"
         : formData.paymentMethod === "vipps"
@@ -84,6 +178,21 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
         : "Gi";
     };
 
+    const emailInput = (
+      <div className={styles["donation-widget__input-group"]}>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={(e) => onChange("email", e.target.value)}
+          required={formData.taxDeduction || formData.newsletter}
+          placeholder={config.email_label}
+          data-cy="fundraiser-email-input"
+        />
+      </div>
+    );
+
     return (
       <div
         ref={ref}
@@ -96,9 +205,28 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
           data-cy="fundraiser-payment-form"
           onSubmit={(e) => {
             e.preventDefault();
+            // Validate SSN before submission if tax deduction is enabled
+            if (formData.taxDeduction && formData.ssn.trim()) {
+              const trimmed = formData.ssn.trim();
+              let isValid = true;
+              if (locale === "no-NB") {
+                isValid = validateSsnNo(trimmed);
+              } else if (locale === "sv-SE") {
+                isValid = validateSsnSe(trimmed);
+              } else if (locale === "da-DK") {
+                const validationResult = validateTin(trimmed, { allowCvr: true });
+                isValid = validationResult.isValid;
+              }
+              if (!isValid) {
+                setSsnError(config.tax_deduction?.ssn_invalid_error_text || null);
+                return;
+              }
+            }
             onSubmit();
           }}
         >
+          {!config.allow_anonymous_donations && emailInput}
+
           {config.tax_deduction && (
             <div className={styles["donation-widget__checkbox-group"]}>
               <EffektCheckbox
@@ -131,20 +259,9 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             </div>
           )}
 
-          {(formData.taxDeduction || formData.newsletter) && (
-            <div className={styles["donation-widget__input-group"]}>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => onChange("email", e.target.value)}
-                required={formData.taxDeduction || formData.newsletter}
-                placeholder={config.email_label}
-                data-cy="fundraiser-email-input"
-              />
-            </div>
-          )}
+          {(formData.taxDeduction || formData.newsletter) &&
+            config.allow_anonymous_donations &&
+            emailInput}
           {formData.taxDeduction && config.tax_deduction && (
             <div className={styles["donation-widget__input-group"]}>
               <input
@@ -152,21 +269,44 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                 name="ssn"
                 type="text"
                 inputMode="numeric"
-                pattern="[0-9]*"
+                pattern={locale === "da-DK" ? undefined : "[0-9]*"}
                 value={formData.ssn}
-                onChange={(e) => onChange("ssn", e.target.value)}
+                onChange={handleSsnChange}
+                onBlur={validateSsnOnBlur}
                 required={formData.taxDeduction}
                 placeholder={config.tax_deduction.ssn_label}
                 autoComplete="off"
                 data-cy="fundraiser-ssn-input"
               />
+              {ssnError && (
+                <div
+                  style={{
+                    color: "var(--primary)",
+                    fontSize: "14px",
+                    marginTop: "5px",
+                  }}
+                >
+                  {ssnError}
+                </div>
+              )}
+              {cprSuspicious && locale === "da-DK" && (
+                <div
+                  style={{
+                    color: "var(--primary)",
+                    fontSize: "14px",
+                    marginTop: "5px",
+                  }}
+                >
+                  {config.tax_deduction?.ssn_suspicious_error_text}
+                </div>
+              )}
             </div>
           )}
 
           <div style={{ marginTop: "2rem" }}>
             {config.privacy_policy.require_checkbox ? (
               <>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start" }}>
+                <div className={styles["donation-widget__privacy-checkbox-group"]}>
                   <div className={styles["donation-widget__checkbox-group"]}>
                     <EffektCheckbox
                       checked={formData.privacyPolicyAccepted}
@@ -178,16 +318,14 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
                       {`${config.privacy_policy.text}`}
                     </EffektCheckbox>
                   </div>
-                  <Link
-                    href={`/${privacyPolicyUrl.slug}`}
-                    target="_blank"
-                    style={{
-                      marginLeft: "7px",
-                      marginTop: "5px",
-                    }}
-                  >
-                    {` ${privacyPolicyUrl.title} ↗`}
-                  </Link>
+                  {config.privacy_policy.privacy_policy_url && (
+                    <Link
+                      href={`/${config.privacy_policy.privacy_policy_url.slug}`}
+                      target="_blank"
+                    >
+                      {` ${config.privacy_policy.privacy_policy_url.title} ↗`}
+                    </Link>
+                  )}
                 </div>
                 {privacyPolicyError && (
                   <div
@@ -204,9 +342,11 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             ) : (
               <div className={styles["donation-widget__privacy-link"]}>
                 <span>{config.privacy_policy.text}</span>
-                <Link href={`/${privacyPolicyUrl.slug}`} target="_blank">
-                  {` ${privacyPolicyUrl.title} ↗`}
-                </Link>
+                {config.privacy_policy.privacy_policy_url && (
+                  <Link href={`/${config.privacy_policy.privacy_policy_url.slug}`} target="_blank">
+                    {` ${config.privacy_policy.privacy_policy_url.title} ↗`}
+                  </Link>
+                )}
               </div>
             )}
           </div>
