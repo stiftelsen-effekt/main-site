@@ -522,6 +522,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/vms25",
+        destination: "/indsamling/vms25",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
         source: "/organisasjoner",
         destination: "/topplista",
         permanent: true,
