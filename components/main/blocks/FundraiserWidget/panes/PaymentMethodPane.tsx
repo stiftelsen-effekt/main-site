@@ -186,7 +186,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
           type="email"
           value={formData.email}
           onChange={(e) => onChange("email", e.target.value)}
-          required={formData.taxDeduction || formData.newsletter}
+          required={locale === "da-DK" || formData.taxDeduction || formData.newsletter}
           placeholder={config.email_label}
           data-cy="fundraiser-email-input"
         />
