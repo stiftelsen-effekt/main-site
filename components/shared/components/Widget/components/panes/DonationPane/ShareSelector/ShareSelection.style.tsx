@@ -60,7 +60,7 @@ export const ShareInputContainer = styled.div`
   }
 
   input {
-    width: 60px;
+    width: 80px;
     height: 36px;
     font-size: 22px;
     background: none;
@@ -69,7 +69,7 @@ export const ShareInputContainer = styled.div`
     color: var(--primary);
     margin-left: 8px;
     text-align: right;
-    padding-right: 22px;
+    padding-right: 28px;
     transition: border-color 0.2s ease-in-out;
   }
 
