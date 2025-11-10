@@ -6111,6 +6111,7 @@ export type Fundraiser_page = {
   gift_activity_config?: {
     title?: string;
     gift_amount_text_template?: string;
+    anonymous_gift_amount_text_template?: string;
     show_more_text_template?: string;
     no_donations_text?: string;
   };
@@ -16958,6 +16959,7 @@ export type FetchFundraiserResult = {
     gift_activity_config?: {
       title?: string;
       gift_amount_text_template?: string;
+      anonymous_gift_amount_text_template?: string;
       show_more_text_template?: string;
       no_donations_text?: string;
     };
@@ -32178,6 +32180,7 @@ export type FetchAgreementsPageResult = {
         gift_activity_config?: {
           title?: string;
           gift_amount_text_template?: string;
+          anonymous_gift_amount_text_template?: string;
           show_more_text_template?: string;
           no_donations_text?: string;
         };
@@ -41080,6 +41083,7 @@ export type FetchDonationsPageResult = {
         gift_activity_config?: {
           title?: string;
           gift_amount_text_template?: string;
+          anonymous_gift_amount_text_template?: string;
           show_more_text_template?: string;
           no_donations_text?: string;
         };
@@ -49736,6 +49740,7 @@ export type FetchProfilePageResult = {
         gift_activity_config?: {
           title?: string;
           gift_amount_text_template?: string;
+          anonymous_gift_amount_text_template?: string;
           show_more_text_template?: string;
           no_donations_text?: string;
         };

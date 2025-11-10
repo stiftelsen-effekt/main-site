@@ -117,6 +117,15 @@ export default defineType({
           name: "gift_amount_text_template",
           title: "Gift amount text template",
           type: "string",
+          description:
+            "Template for the gift amount text. Use {name} to insert the name and {sum} to insert the amount.",
+        }),
+        defineField({
+          name: "anonymous_gift_amount_text_template",
+          title: "Anonymous gift amount text template",
+          type: "string",
+          description:
+            "Template for the anonymous gift amount text. Use {sum} to insert the amount.",
         }),
         defineField({
           name: "show_more_text_template",

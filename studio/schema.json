@@ -33765,6 +33765,13 @@
               },
               "optional": true
             },
+            "anonymous_gift_amount_text_template": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
             "show_more_text_template": {
               "type": "objectAttribute",
               "value": {

@@ -37,11 +37,13 @@ export const FundraiserGiftActivity: React.FC<{
   }, [] as { amount: number; name: string | null; message: string | null }[][]);
 
   const getHeaderText = (name: string | null, amount: number) => {
-    return config.gift_amount_text_template
+    const template = name
       ? config.gift_amount_text_template
-          .replace("{name}", name ?? "Donor")
-          .replace("{sum}", thousandize(amount, locale))
-      : `${thousandize(amount, locale)} kr`;
+      : config.anonymous_gift_amount_text_template;
+    if (!template) return `En gave på ${thousandize(amount, locale)} kr`;
+    return template
+      .replace("{name}", name ?? "Donor")
+      .replace("{sum}", thousandize(amount, locale));
   };
 
   return (
