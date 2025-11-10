@@ -112,6 +112,7 @@ export default defineType({
           name: "title",
           title: "Gift activity title",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "gift_amount_text_template",
@@ -119,6 +120,7 @@ export default defineType({
           type: "string",
           description:
             "Template for the gift amount text. Use {name} to insert the name and {sum} to insert the amount.",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "anonymous_gift_amount_text_template",
@@ -126,6 +128,7 @@ export default defineType({
           type: "string",
           description:
             "Template for the anonymous gift amount text. Use {sum} to insert the amount.",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "show_more_text_template",
@@ -133,12 +136,14 @@ export default defineType({
           type: "string",
           description:
             "Template for the show more text. Use {count} to insert the number of hidden gifts.",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "no_donations_text",
           title: "No donations text",
           type: "string",
           description: "Text to show when there are no donations.",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
