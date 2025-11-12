@@ -522,6 +522,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/blog/derfor-kan-omkostningseffektiviteten-blandt-vores-anbefalinger-variere",
+        destination: "/blog/derfor-aendrer-givewells-estimater-sig-over-tid",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
         source: "/vms25",
         destination: "/indsamling/vms25",
         has: [
