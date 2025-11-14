@@ -1,0 +1,16 @@
+name: 🇩🇰 E2E Tests · Denmark
+permissions:
+  contents: read
+on:
+  deployment_status:
+    # only runs on successful deploy to giv-effektivt (Denmark)
+jobs:
+  test:
+    name: 🧪 GivEffektivt (DK)
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'giv-effektivt')
+    uses: ./.github/workflows/e2e.yml
+    with:
+      group: "🇩🇰 GivEffektivt"
+      base-url: ${{ github.event.deployment_status.target_url }}
+      config-file: "cypress-dk.config.ts"
+    secrets: inherit
