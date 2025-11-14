@@ -11,15 +11,11 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../studio/sanity.types";
 
-export const getVippsAgreementPagePath = async () => {
-  const result = await getClient().fetch<FetchVippsResult>(fetchVipps);
-  const vipps = result.vipps?.[0];
-  const slug = vipps?.agreement_page?.slug?.current;
-  return slug?.split("/") || null;
-};
+// Re-export path function from centralized location
+export { getVippsAgreementPagePath } from "../lib/page-paths";
 
 export const VippsAgreementPage = withStaticProps(
   async ({

@@ -17,7 +17,7 @@ import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 import { GeneralBannerQueryResult } from "../studio/sanity.types";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {

@@ -22,7 +22,7 @@ import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import { getClient } from "../../../lib/sanity.client";
 import { token } from "../../../token";
-import { ConsentState } from "../../../middleware.page";
+import { ConsentState } from "../../../types/routing";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   const path = appState?.returnTo || dashboardPath.join("/");

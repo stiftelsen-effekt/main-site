@@ -38,32 +38,11 @@ import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Info } from "react-feather";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../types/routing";
+import { getDashboardPagePath, getDonationsPagePath } from "../../lib/page-paths";
 
-export async function getDashboardPagePath() {
-  const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
-
-  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
-
-  if (!dashboardSlug) throw new Error("Dashboard slug not found");
-
-  return dashboardSlug.split("/");
-}
-
-export async function getDonationsPagePath() {
-  let result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
-
-  const dashboardPath = await getDashboardPagePath();
-
-  const donationsSlug = result.page?.slug?.current;
-
-  if (!donationsSlug) return null;
-
-  return [
-    ...dashboardPath.map((component) => stegaClean(component)),
-    ...donationsSlug.split("/").map((component) => stegaClean(component)),
-  ];
-}
+// Re-export path functions from centralized location
+export { getDashboardPagePath, getDonationsPagePath };
 
 export async function getDonationsPageSubpaths() {
   const donationsPagePath = await getDonationsPagePath();

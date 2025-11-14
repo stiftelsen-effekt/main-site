@@ -18,46 +18,14 @@ import { getClient } from "../../lib/sanity.client";
 import style from "../../styles/Tax.module.css";
 import { withStaticProps } from "../../util/withStaticProps";
 import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
-import { getDashboardPagePath } from "./DonationsPage";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../types/routing";
+import { getTaxPagePath, getTaxPageSubPaths } from "../../lib/page-paths";
 
-export async function getTaxPagePath(): Promise<string[]> {
-  const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
-  const dashboardPath = await getDashboardPagePath();
-
-  const { dashboard: [dashboard] = [] } = result;
-
-  const page = result.page;
-
-  const taxSlug = stegaClean(page?.slug?.current);
-
-  if (!taxSlug) return [];
-
-  return [...dashboardPath, ...taxSlug.split("/")];
-}
-
-export async function getTaxPageSubPaths(): Promise<string[][]> {
-  const result = await getClient().fetch<FetchTaxPageResult>(fetchTaxPage);
-  const dashboardPath = await getDashboardPagePath();
-
-  const { dashboard: [dashboard] = [] } = result;
-
-  const page = result.page;
-
-  const taxSlug = stegaClean(page?.slug?.current);
-
-  if (!taxSlug) return [];
-  if (!page.features) return [];
-
-  return page.features.map((f) => [
-    ...dashboardPath.map((component) => stegaClean(component)),
-    ...taxSlug.split("/").map((component) => stegaClean(component)),
-    f.slug.current,
-  ]);
-}
+// Re-export path functions from centralized location
+export { getTaxPagePath, getTaxPageSubPaths };
 
 export const TaxPage = withStaticProps(
   async ({

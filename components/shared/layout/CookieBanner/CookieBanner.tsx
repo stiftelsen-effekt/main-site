@@ -4,7 +4,7 @@ import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
 import { LinkComponent } from "../../../main/blocks/Links/Links";
 import { HotJar } from "../HotJar";
-import { ConsentState } from "../../../../middleware.page";
+import { ConsentState } from "../../../../types/routing";
 import { setCookie } from "cookies-next";
 import { BannerContext } from "../../../main/layout/layout";
 import { MetaPixel } from "../MetaPixel";
