@@ -9,7 +9,7 @@ export enum META_OWNER {
 export type Donation = {
   KID: string;
   donor: string;
-  donorId: number;
+  donorId: string;
   email: string;
   id: number;
   paymentMethod: string;
@@ -48,7 +48,7 @@ export type AutoGiroAgreement = {
 export type VippsAgreement = {
   ID: number;
   status: "EXPIRED" | "PENDING" | "ACTIVE" | "STOPPED";
-  donorID: number;
+  donorID: string;
   full_name: string;
   KID: string;
   timestamp_created: string;
@@ -61,18 +61,18 @@ export type VippsAgreement = {
 
 export type Distribution = {
   kid: string;
-  donorId: number;
+  donorId: string;
   taxUnitId: number | null;
   causeAreas: DistributionCauseArea[];
 };
 
 export type DistributionCauseArea = {
-  id: number;
+  id: string;
   name?: string;
   standardSplit: boolean;
   percentageShare: string;
   organizations: {
-    id: number;
+    id: string;
     name?: string;
     percentageShare: string;
   }[];
@@ -89,7 +89,7 @@ export type Donor = {
 export type AggregatedDonations = {
   abbriv: string;
   organization: string;
-  organizationId: number;
+  organizationId: string;
   value: string;
   year: number;
 };
@@ -99,7 +99,7 @@ export type DonationGraphData = {
 };
 
 export type Organization = {
-  id: number;
+  id: string;
   name: string;
   abbriv: string;
   shortDesc: string;
@@ -127,7 +127,7 @@ export type FacebookDonationRegistration = {
 
 export type TaxUnit = {
   id: number;
-  donorId: number;
+  donorId: string;
   ssn: string;
   name: string;
   numDonations: number;

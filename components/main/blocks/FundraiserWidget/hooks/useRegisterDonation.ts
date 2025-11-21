@@ -10,8 +10,8 @@ interface UseRegisterDonationProps {
   fundraiserId: string;
   organizationInfo: {
     databaseIds: {
-      causeAreaId: number;
-      organizationId: number;
+      causeAreaId: string;
+      organizationId: string;
     };
   };
   paymentMethods: Array<{

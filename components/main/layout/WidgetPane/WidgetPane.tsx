@@ -12,9 +12,9 @@ const Widget = dynamic<WidgetPaneProps>(
 );
 
 export type PrefilledDistribution = {
-  causeAreaId: number;
+  causeAreaId: string;
   share: number;
-  organizations: { organizationId: number; share: number }[];
+  organizations: { organizationId: string; share: number }[];
 }[];
 
 export interface WidgetPaneProps extends ComponentProps<typeof WidgetType> {

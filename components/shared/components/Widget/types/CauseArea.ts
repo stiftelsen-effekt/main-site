@@ -2,7 +2,7 @@ import { Organization } from "./Organization";
 
 export type CauseArea = {
   /** @description The cause area id */
-  id: number;
+  id: string;
   /** @description The cause area name */
   name: string;
   /** @description The cause area widget display name */

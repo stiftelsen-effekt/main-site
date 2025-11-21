@@ -26,8 +26,8 @@ export type SanityIntervention = {
   organization_name: string;
   abbreviation: string;
   template_string: string;
-  organization_id: number;
-  cause_area_id: number;
+  organization_id: string;
+  cause_area_id: string;
 };
 
 type Intervention = {
@@ -36,8 +36,8 @@ type Intervention = {
   abbreviation: string;
   pricePerOutput?: number;
   outputStringTemplate: string;
-  organizationId: number;
-  causeAreaId: number;
+  organizationId: string;
+  causeAreaId: string;
   shortDescription: string;
 };
 

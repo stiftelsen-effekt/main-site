@@ -69,10 +69,10 @@ export const OpenDistributionButton: React.FC<Opendistributionbutton> = ({
 
 // Type guards to help TypeScript understand our filtered types
 type ValidCauseArea = {
-  cause_area_id: number;
+  cause_area_id: string;
   cause_area_percentage: number;
   cause_area_organizations?: Array<{
-    organization_id?: number;
+    organization_id?: string;
     organization_percentage?: number;
     _key: string;
   }>;
@@ -80,7 +80,7 @@ type ValidCauseArea = {
 };
 
 type ValidOrganization = {
-  organization_id: number;
+  organization_id: string;
   organization_percentage: number;
   _key: string;
 };
@@ -96,22 +96,22 @@ export const cleanDistribution = (
     .filter(
       (area): area is ValidCauseArea =>
         area != null &&
-        typeof area.cause_area_id === "number" &&
+        typeof area.cause_area_id === "string" &&
         typeof area.cause_area_percentage === "number",
     )
     .map((area) => ({
-      causeAreaId: area.cause_area_id,
-      share: area.cause_area_percentage,
+      causeAreaId: area.cause_area_id as string,
+      share: area.cause_area_percentage as number,
       organizations: (area.cause_area_organizations ?? [])
         .filter(
           (org): org is ValidOrganization =>
             org != null &&
-            typeof org.organization_id === "number" &&
+            typeof org.organization_id === "string" &&
             typeof org.organization_percentage === "number",
         )
         .map((org) => ({
-          organizationId: org.organization_id,
-          share: org.organization_percentage,
+          organizationId: org.organization_id as string,
+          share: org.organization_percentage as number,
         })),
     }));
 };

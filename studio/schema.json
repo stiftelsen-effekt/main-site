@@ -6286,14 +6286,14 @@
                     "id": {
                       "type": "objectAttribute",
                       "value": {
-                        "type": "number"
+                        "type": "string"
                       },
                       "optional": true
                     },
                     "causeAreaId": {
                       "type": "objectAttribute",
                       "value": {
-                        "type": "number"
+                        "type": "string"
                       },
                       "optional": true
                     },
@@ -12270,7 +12270,7 @@
               "cause_area_id": {
                 "type": "objectAttribute",
                 "value": {
-                  "type": "number"
+                  "type": "string"
                 },
                 "optional": true
               },
@@ -12298,7 +12298,7 @@
                       "organization_id": {
                         "type": "objectAttribute",
                         "value": {
-                          "type": "number"
+                          "type": "string"
                         },
                         "optional": true
                       },
@@ -18663,14 +18663,14 @@
         "organization_id": {
           "type": "objectAttribute",
           "value": {
-            "type": "number"
+            "type": "string"
           },
           "optional": true
         },
         "cause_area_id": {
           "type": "objectAttribute",
           "value": {
-            "type": "number"
+            "type": "string"
           },
           "optional": true
         }
@@ -24622,7 +24622,7 @@
                           "cause_area_id": {
                             "type": "objectAttribute",
                             "value": {
-                              "type": "number"
+                              "type": "string"
                             },
                             "optional": true
                           },
@@ -24650,7 +24650,7 @@
                                   "organization_id": {
                                     "type": "objectAttribute",
                                     "value": {
-                                      "type": "number"
+                                      "type": "string"
                                     },
                                     "optional": true
                                   },
@@ -26182,14 +26182,14 @@
                                 "id": {
                                   "type": "objectAttribute",
                                   "value": {
-                                    "type": "number"
+                                    "type": "string"
                                   },
                                   "optional": true
                                 },
                                 "causeAreaId": {
                                   "type": "objectAttribute",
                                   "value": {
-                                    "type": "number"
+                                    "type": "string"
                                   },
                                   "optional": true
                                 },
@@ -35861,7 +35861,7 @@
                                   "cause_area_id": {
                                     "type": "objectAttribute",
                                     "value": {
-                                      "type": "number"
+                                      "type": "string"
                                     },
                                     "optional": true
                                   },
@@ -35889,7 +35889,7 @@
                                           "organization_id": {
                                             "type": "objectAttribute",
                                             "value": {
-                                              "type": "number"
+                                              "type": "string"
                                             },
                                             "optional": true
                                           },
@@ -37421,14 +37421,14 @@
                                         "id": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
                                         "causeAreaId": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
@@ -39481,14 +39481,14 @@
             "cause_area_id": {
               "type": "objectAttribute",
               "value": {
-                "type": "number"
+                "type": "string"
               },
               "optional": true
             },
             "organization_id": {
               "type": "objectAttribute",
               "value": {
-                "type": "number"
+                "type": "string"
               },
               "optional": true
             }
@@ -42147,7 +42147,7 @@
                                   "cause_area_id": {
                                     "type": "objectAttribute",
                                     "value": {
-                                      "type": "number"
+                                      "type": "string"
                                     },
                                     "optional": true
                                   },
@@ -42175,7 +42175,7 @@
                                           "organization_id": {
                                             "type": "objectAttribute",
                                             "value": {
-                                              "type": "number"
+                                              "type": "string"
                                             },
                                             "optional": true
                                           },
@@ -43707,14 +43707,14 @@
                                         "id": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
                                         "causeAreaId": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
@@ -48833,7 +48833,7 @@
                                   "cause_area_id": {
                                     "type": "objectAttribute",
                                     "value": {
-                                      "type": "number"
+                                      "type": "string"
                                     },
                                     "optional": true
                                   },
@@ -48861,7 +48861,7 @@
                                           "organization_id": {
                                             "type": "objectAttribute",
                                             "value": {
-                                              "type": "number"
+                                              "type": "string"
                                             },
                                             "optional": true
                                           },
@@ -50393,14 +50393,14 @@
                                         "id": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
                                         "causeAreaId": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
@@ -53935,7 +53935,7 @@
                                   "cause_area_id": {
                                     "type": "objectAttribute",
                                     "value": {
-                                      "type": "number"
+                                      "type": "string"
                                     },
                                     "optional": true
                                   },
@@ -53963,7 +53963,7 @@
                                           "organization_id": {
                                             "type": "objectAttribute",
                                             "value": {
-                                              "type": "number"
+                                              "type": "string"
                                             },
                                             "optional": true
                                           },
@@ -55495,14 +55495,14 @@
                                         "id": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
                                         "causeAreaId": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
@@ -59835,7 +59835,7 @@
                                   "cause_area_id": {
                                     "type": "objectAttribute",
                                     "value": {
-                                      "type": "number"
+                                      "type": "string"
                                     },
                                     "optional": true
                                   },
@@ -59863,7 +59863,7 @@
                                           "organization_id": {
                                             "type": "objectAttribute",
                                             "value": {
-                                              "type": "number"
+                                              "type": "string"
                                             },
                                             "optional": true
                                           },
@@ -61395,14 +61395,14 @@
                                         "id": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },
                                         "causeAreaId": {
                                           "type": "objectAttribute",
                                           "value": {
-                                            "type": "number"
+                                            "type": "string"
                                           },
                                           "optional": true
                                         },

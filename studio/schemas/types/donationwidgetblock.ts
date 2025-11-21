@@ -66,8 +66,8 @@ export default defineType({
               type: "object",
               fields: [
                 defineField({ name: "type", type: "string" }),
-                defineField({ name: "id", type: "number" }),
-                defineField({ name: "causeAreaId", type: "number" }),
+                defineField({ name: "id", type: "string" }),
+                defineField({ name: "causeAreaId", type: "string" }),
                 defineField({ name: "percentage", type: "number" }),
                 defineField({ name: "name", type: "string" }),
               ],

@@ -191,12 +191,12 @@ const parseDistributionQueryParam = (distribution: string): PrefilledDistributio
   return distribution.split(",").map((prefilledCauseArea) => {
     const [causeAreaId, share, ...organizations] = prefilledCauseArea.split(":");
     return {
-      causeAreaId: parseInt(causeAreaId),
+      causeAreaId: causeAreaId,
       share: parseFloat(share),
       organizations: organizations.map((organization) => {
         const [organizationId, share] = organization.split("-");
         return {
-          organizationId: parseInt(organizationId),
+          organizationId: organizationId,
           share: parseFloat(share),
         };
       }),
