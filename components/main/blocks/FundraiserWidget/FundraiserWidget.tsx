@@ -21,7 +21,7 @@ type WidgetConfig = NonNullable<
 interface DonationWidgetProps {
   widgetConfig: WidgetConfig | null;
   suggestedAmounts?: number[] | null;
-  fundraiserId: number;
+  fundraiserId: string;
   organizationInfo: {
     organizationPageSlug: string;
     textTemplate: string;

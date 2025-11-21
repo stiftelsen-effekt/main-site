@@ -7,7 +7,7 @@ import { FetchFundraiserResult } from "../../../../../studio/sanity.types";
 import { paymentMethodMap } from "../../../../shared/components/Widget/components/panes/DonorPane/DonorPane";
 
 interface UseRegisterDonationProps {
-  fundraiserId: number;
+  fundraiserId: string;
   organizationInfo: {
     databaseIds: {
       causeAreaId: number;

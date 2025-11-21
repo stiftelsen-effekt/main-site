@@ -2259,7 +2259,7 @@ export type Fundraiserchart = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "generic_page";
     };
-    fundraiser_id?: number;
+    fundraiser_id?: string;
     _key: string;
   }>;
   caption_template?: string;
@@ -6924,7 +6924,7 @@ export type Fundraiser_page = {
     _type: "contentsection";
     _key: string;
   }>;
-  fundraiser_database_id?: number;
+  fundraiser_database_id?: string;
   slug?: Slug;
 };
 
@@ -13176,7 +13176,7 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "generic_page";
               };
-              fundraiser_id?: number;
+              fundraiser_id?: string;
               _key: string;
               page_slug: string | null;
             }> | null;
@@ -18395,7 +18395,7 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "generic_page";
               };
-              fundraiser_id?: number;
+              fundraiser_id?: string;
               _key: string;
               page_slug: string | null;
             }> | null;
@@ -21564,7 +21564,7 @@ export type FetchFundraiserResult = {
       _type: "contentsection";
       _key: string;
     }> | null;
-    fundraiser_database_id?: number;
+    fundraiser_database_id?: string;
     slug: {
       current: string | null;
     } | null;
@@ -23395,7 +23395,7 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "generic_page";
               };
-              fundraiser_id?: number;
+              fundraiser_id?: string;
               _key: string;
               page_slug: string | null;
             }> | null;
@@ -32993,7 +32993,7 @@ export type FetchAgreementsPageResult = {
           _type: "contentsection";
           _key: string;
         }>;
-        fundraiser_database_id?: number;
+        fundraiser_database_id?: string;
         slug: {
           current: string | null;
         } | null;
@@ -41896,7 +41896,7 @@ export type FetchDonationsPageResult = {
           _type: "contentsection";
           _key: string;
         }>;
-        fundraiser_database_id?: number;
+        fundraiser_database_id?: string;
         slug: {
           current: string | null;
         } | null;
@@ -50553,7 +50553,7 @@ export type FetchProfilePageResult = {
           _type: "contentsection";
           _key: string;
         }>;
-        fundraiser_database_id?: number;
+        fundraiser_database_id?: string;
         slug: {
           current: string | null;
         } | null;
