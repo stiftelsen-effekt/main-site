@@ -12579,7 +12579,7 @@
                 "fundraiser_id": {
                   "type": "objectAttribute",
                   "value": {
-                    "type": "number"
+                    "type": "string"
                   },
                   "optional": true
                 }
@@ -38307,7 +38307,7 @@
       "fundraiser_database_id": {
         "type": "objectAttribute",
         "value": {
-          "type": "number"
+          "type": "string"
         },
         "optional": true
       },

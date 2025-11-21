@@ -172,7 +172,7 @@ export default defineType({
     defineField({
       name: "fundraiser_database_id",
       title: "Fundraiser database ID",
-      type: "number",
+      type: "string",
       components: {
         input: FundraiserInput,
       },

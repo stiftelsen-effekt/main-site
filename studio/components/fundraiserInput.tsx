@@ -6,19 +6,19 @@ import { format } from "date-fns";
 
 // Types for our data structures
 type Donor = {
-  id: number;
+  id: string;
   name: string;
 };
 
 type Fundraiser = {
-  id: number;
+  id: string;
   registered: string;
   lastUpdated: string;
   donor: Donor;
 };
 
 interface FundraiserInputProps {
-  value?: number; // This will store the selected fundraiser ID
+  value?: string; // This will store the selected fundraiser ID
   onChange: (event: PatchEvent) => void;
 }
 
@@ -31,7 +31,7 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
     const [filteredFundraisers, setFilteredFundraisers] = useState<Fundraiser[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [selectedId, setSelectedId] = useState<number | undefined>(props.value);
+    const [selectedId, setSelectedId] = useState<string | undefined>(props.value);
     const [searchTerm, setSearchTerm] = useState<string>("");
 
     // Fetch all fundraisers
@@ -88,7 +88,7 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
     }, [searchTerm, fundraisers]);
 
     // Handle selection
-    const handleSelectFundraiser = (id: number) => {
+    const handleSelectFundraiser = (id: string) => {
       setSelectedId(id);
     };
 

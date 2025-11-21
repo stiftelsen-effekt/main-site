@@ -12,10 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ message: "Missing fundraiser id" });
   }
 
-  const fundraiserId = parseInt(req.query.fundraiserId, 10);
-  if (isNaN(fundraiserId)) {
-    return res.status(400).json({ message: "Invalid fundraiser id" });
-  }
+  const fundraiserId = req.query.fundraiserId;
 
   // Get page slug by fundraiser id
   const client = getClient();

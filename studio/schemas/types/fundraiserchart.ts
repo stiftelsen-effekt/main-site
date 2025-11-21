@@ -32,7 +32,7 @@ export default defineType({
             }),
             defineField({
               name: "fundraiser_id",
-              type: "number",
+              type: "string",
               title: "Fundraiser ID",
               description: "ID of the fundraiser in the database",
             }),
