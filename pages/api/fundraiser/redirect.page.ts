@@ -16,10 +16,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Get page slug by fundraiser id
   const client = getClient();
-  const fundraiser = await client.fetch(
+  let fundraiser = await client.fetch(
     `*[_type == "fundraiser_page" && fundraiser_database_id == $id][0] { slug { current } }`,
     { id: fundraiserId },
   );
+
+  if (!fundraiser?.slug?.current) {
+    let numericFundraiserId = parseInt(req.query.fundraiserId, 10);
+    if (!isNaN(numericFundraiserId)) {
+      fundraiser = await client.fetch(
+        `*[_type == "fundraiser_page" && fundraiser_database_id == $id][0] { slug { current } }`,
+        { id: numericFundraiserId },
+      );
+    }
+  }
 
   const slug = fundraiser?.slug?.current;
   if (!slug) {
