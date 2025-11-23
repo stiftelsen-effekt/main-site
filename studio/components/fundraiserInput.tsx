@@ -4,27 +4,25 @@ import { SearchIcon } from "@sanity/icons";
 import { PatchEvent, set, unset } from "sanity";
 import { format } from "date-fns";
 
-// Types for our data structures
 type Donor = {
   id: string;
   name: string;
 };
 
 type Fundraiser = {
-  id: string;
+  id: string | number;
   registered: string;
   lastUpdated: string;
   donor: Donor;
 };
 
 interface FundraiserInputProps {
-  value?: string; // This will store the selected fundraiser ID
+  value?: string;
   onChange: (event: PatchEvent) => void;
 }
 
 const api = process.env.SANITY_STUDIO_EFFEKT_API_URL;
 
-// FundraiserInput Component (main input component for Sanity)
 export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputProps>(
   (props, ref) => {
     const [fundraisers, setFundraisers] = useState<Fundraiser[]>([]);
@@ -34,7 +32,6 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
     const [selectedId, setSelectedId] = useState<string | undefined>(props.value);
     const [searchTerm, setSearchTerm] = useState<string>("");
 
-    // Fetch all fundraisers
     const fetchFundraisers = async () => {
       try {
         setLoading(true);
@@ -63,7 +60,6 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
       }
     };
 
-    // Initial load
     useEffect(() => {
       fetchFundraisers();
     }, []);
@@ -87,17 +83,14 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
       }
     }, [searchTerm, fundraisers]);
 
-    // Handle selection
     const handleSelectFundraiser = (id: string) => {
       setSelectedId(id);
     };
 
-    // Handle search input changes
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(event.target.value);
     };
 
-    // Format date for display
     const formatDate = (dateString: string) => {
       try {
         return format(new Date(dateString), "PPP");
@@ -150,8 +143,8 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
                       key={fundraiser.id}
                       padding={3}
                       radius={1}
-                      tone={selectedId === fundraiser.id ? "primary" : "default"}
-                      onClick={() => handleSelectFundraiser(fundraiser.id)}
+                      tone={selectedId === String(fundraiser.id) ? "primary" : "default"}
+                      onClick={() => handleSelectFundraiser(String(fundraiser.id))}
                       style={{ cursor: "pointer" }}
                     >
                       <Flex align="center">
@@ -160,7 +153,13 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
                             padding={2}
                             radius={2}
                             border
-                            style={{ width: "40px", textAlign: "center" }}
+                            style={{
+                              width: "40px",
+                              textAlign: "center",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              overflow: "hidden",
+                            }}
                           >
                             <Text size={1}>{fundraiser.id}</Text>
                           </Card>
@@ -173,7 +172,7 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
                           </Text>
                         </Stack>
 
-                        {selectedId === fundraiser.id && (
+                        {selectedId === String(fundraiser.id) && (
                           <Box>
                             <Text size={3} weight="semibold">
                               ✓
