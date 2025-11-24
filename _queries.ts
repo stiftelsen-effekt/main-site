@@ -576,7 +576,11 @@ export const pageContentQuery = `content[hidden!=true] {
         asset -> {
           _id,
           metadata {
-            lqip
+            lqip,
+            dimensions {
+              width,
+              height
+            }
           }
         }
       },
@@ -587,7 +591,11 @@ export const pageContentQuery = `content[hidden!=true] {
         asset -> {
           _id,
           metadata {
-            lqip
+            lqip,
+            dimensions {
+              width,
+              height
+            }
           }
         }
       },
