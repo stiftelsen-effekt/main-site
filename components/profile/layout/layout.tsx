@@ -146,7 +146,6 @@ export const ProfileLayout = withStaticProps(
                   closeButton={false}
                   toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
                 />
-                {draftMode && <PreviewBlock />}
                 <WidgetContext.Provider value={widgetContextValue}>
                   <BannerContext.Provider value={[banners, setBanners]}>
                     <WidgetPane

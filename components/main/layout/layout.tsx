@@ -139,7 +139,6 @@ export const Layout = withStaticProps(
 
     return (
       <div className={styles.container}>
-        {draftMode && <PreviewBlock />}
         {showGiveButton && (
           <GiveButton
             inverted={false}
