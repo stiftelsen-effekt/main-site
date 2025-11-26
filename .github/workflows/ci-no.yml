@@ -1,0 +1,16 @@
+name: 🇳🇴 E2E Tests · Norway
+permissions:
+  contents: read
+on:
+  deployment_status:
+    # only runs on successful deploy to main-site (Norway)
+jobs:
+  test:
+    name: 🧪 GiEffektivt (NO)
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'main-site')
+    uses: ./.github/workflows/e2e.yml
+    with:
+      group: "🇳🇴 GiEffektivt"
+      base-url: ${{ github.event.deployment_status.target_url }}
+      config-file: "cypress-no.config.ts"
+    secrets: inherit
