@@ -14,7 +14,7 @@ import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { FetchFundraiserResult } from "../studio/sanity.types";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../types/routing";
 import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/FundraiserHeader";
 import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
@@ -23,31 +23,8 @@ import { FundraiserWidget } from "../components/main/blocks/FundraiserWidget/Fun
 import { API_URL } from "../components/shared/components/Widget/config/api";
 import { getFormattingLocale } from "../util/formatting";
 
-export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
-  const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
-    fetchFundraisers,
-  );
-
-  return data.pages.map((page) => [
-    ...fundraisersPagePath.map((component) => stegaClean(component)),
-    stegaClean(page.slug.current),
-  ]);
-};
-
-const fetchFundraisersSlug = groq`
-{
-  "settings": *[_type == "site_settings"][0] {
-    fundraiser_page_slug
-  }
-}
-`;
-
-export const getFundraisersPath = async () => {
-  const { settings } = await getClient().fetch<{ settings: { fundraiser_page_slug: string } }>(
-    fetchFundraisersSlug,
-  );
-  return stegaClean(settings.fundraiser_page_slug).split("/");
-};
+// Re-export path functions from centralized location
+export { getFundraiserPagePaths, getFundraisersPath } from "../lib/page-paths";
 
 export const FundraiserPage = withStaticProps(
   async ({

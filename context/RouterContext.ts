@@ -1,13 +1,16 @@
 import { createContext, useContext } from "react";
-import { getArticlesPagePath } from "../pages/ArticlesPage";
-import { getVippsAgreementPagePath } from "../pages/VippsAgreementPage";
-import { getDashboardPagePath, getDonationsPagePath } from "../pages/dashboard/DonationsPage";
-import { getAgreementsPagePath } from "../pages/dashboard/AgreementsPage";
-import { getTaxPagePath } from "../pages/dashboard/TaxPage";
-import { getProfilePagePath } from "../pages/dashboard/ProfilePage";
-import { getVippsAnonymousPagePath } from "../pages/dashboard/VippsAnonymousPage";
-import { getResultsPagePath } from "../pages/ResultsPage";
-import { getFundraisersPath } from "../pages/FundraiserPage";
+import {
+  getArticlesPagePath,
+  getVippsAgreementPagePath,
+  getDashboardPagePath,
+  getDonationsPagePath,
+  getAgreementsPagePath,
+  getTaxPagePath,
+  getProfilePagePath,
+  getVippsAnonymousPagePath,
+  getResultsPagePath,
+  getFundraisersPath,
+} from "../lib/page-paths";
 
 export type RouterContextValue = {
   articlesPagePath: Awaited<ReturnType<typeof getArticlesPagePath>>;
