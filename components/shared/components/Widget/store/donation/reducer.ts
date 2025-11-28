@@ -218,7 +218,7 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       };
       break;
     default:
-      return state;
+      return state as Donation;
   }
 
   /**
@@ -269,10 +269,10 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
   }
 
   if (errors.length > 0) {
-    return { ...state, errors };
+    return { ...state, errors } as Donation;
   }
 
-  return { ...state, errors: [] };
+  return { ...state, errors: [] } as Donation;
 };
 
 const getCauseAreasDistributionSum = (distributionCauseAreas: DistributionCauseArea[]): number => {

@@ -2,7 +2,7 @@ import { ErrorText } from "./DonationPane";
 
 export const filterErrorTextsForCauseArea = (
   errorTexts: ErrorText[],
-  causeAreaId: number,
+  causeAreaId: string,
 ): ErrorText[] => {
   return errorTexts.filter((errorText) => errorText.error.causeAreaId === causeAreaId);
 };

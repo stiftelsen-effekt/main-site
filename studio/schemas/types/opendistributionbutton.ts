@@ -38,7 +38,7 @@ export default defineType({
           fields: [
             defineField({
               name: "cause_area_id",
-              type: "number",
+              type: "string",
               title: "Cause area ID",
               validation: (Rule) => Rule.required(),
             }),
@@ -70,7 +70,7 @@ export default defineType({
                   fields: [
                     defineField({
                       name: "organization_id",
-                      type: "number",
+                      type: "string",
                       title: "Organization ID",
                       validation: (Rule) => Rule.required(),
                     }),

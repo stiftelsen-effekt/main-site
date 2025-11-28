@@ -35,7 +35,7 @@ const DonationImpact: React.FC<{
           {distribution.causeAreas.length > 1 && (
             <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>
           )}
-          {causeArea.id === 1 && (
+          {causeArea.id === "1" && (
             <DonationImpactGlobalHealth
               key={`${donation.id}-causarea${causeArea.id}-impact`}
               donation={donation}
@@ -51,7 +51,7 @@ const DonationImpact: React.FC<{
               configuration={configuration}
             />
           )}
-          {causeArea.id !== 1 && (
+          {causeArea.id !== "1" && (
             <DonationImpactAnimalWelfare
               key={`${donation.id}-causarea${causeArea.id}-impact`}
               donation={donation}

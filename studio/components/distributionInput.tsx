@@ -5,7 +5,7 @@ import { TrashIcon, AddIcon } from "@sanity/icons";
 
 // Types for our data structures
 type CauseArea = {
-  id: number;
+  id: string;
   name: string;
   isActive: boolean;
   standardPercentageShare: number;
@@ -13,21 +13,21 @@ type CauseArea = {
 };
 
 type Organization = {
-  id: number;
+  id: string;
   name: string;
   widgetDisplayName: string | null;
   standardShare: number;
   isActive: boolean;
   ordering: number;
-  causeAreaId: number;
+  causeAreaId: string;
 };
 
 // Updated to include _key property
 type DistributionItem = {
   _key: string; // Required by Sanity for array items
   type: "causeArea" | "organization";
-  id: number;
-  causeAreaId?: number;
+  id: string;
+  causeAreaId?: string;
   percentage: number;
   name?: string; // Store name for display purposes
 };

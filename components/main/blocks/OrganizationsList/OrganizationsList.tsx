@@ -9,8 +9,8 @@ import { usePlausible } from "next-plausible";
 
 type OrganizationWidgetButton = {
   label: string;
-  cause_area_id: number;
-  organization_id: number;
+  cause_area_id: string;
+  organization_id: string;
 };
 
 type Organization = {

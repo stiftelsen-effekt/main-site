@@ -84,12 +84,12 @@ export default defineType({
         defineField({
           name: "cause_area_id",
           title: "Cause area id",
-          type: "number",
+          type: "string",
         }),
         defineField({
           name: "organization_id",
           title: "Organization id",
-          type: "number",
+          type: "string",
         }),
       ],
     }),

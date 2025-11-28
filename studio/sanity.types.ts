@@ -1143,8 +1143,8 @@ export type Donationwidgetblock = {
     default_donation_type?: "single" | "recurring";
     prefilled_distribution?: Array<{
       type?: string;
-      id?: number;
-      causeAreaId?: number;
+      id?: string;
+      causeAreaId?: string;
       percentage?: number;
       name?: string;
       _key: string;
@@ -2207,11 +2207,11 @@ export type Opendistributionbutton = {
   display_output_info?: boolean;
   inverted?: boolean;
   distribution_cause_areas?: Array<{
-    cause_area_id?: number;
+    cause_area_id?: string;
     cause_area_percentage?: number;
     cause_area_default_distribution?: boolean;
     cause_area_organizations?: Array<{
-      organization_id?: number;
+      organization_id?: string;
       organization_percentage?: number;
       _key: string;
     }>;
@@ -3357,8 +3357,8 @@ export type Intervention = {
   organization_name?: string;
   abbreviation?: string;
   template_string?: string;
-  organization_id?: number;
-  cause_area_id?: number;
+  organization_id?: string;
+  cause_area_id?: string;
 };
 
 export type Columns = {
@@ -4506,11 +4506,11 @@ export type Contentsection = {
         display_output_info?: boolean;
         inverted?: boolean;
         distribution_cause_areas?: Array<{
-          cause_area_id?: number;
+          cause_area_id?: string;
           cause_area_percentage?: number;
           cause_area_default_distribution?: boolean;
           cause_area_organizations?: Array<{
-            organization_id?: number;
+            organization_id?: string;
             organization_percentage?: number;
             _key: string;
           }>;
@@ -4775,8 +4775,8 @@ export type Contentsection = {
           default_donation_type?: "single" | "recurring";
           prefilled_distribution?: Array<{
             type?: string;
-            id?: number;
-            causeAreaId?: number;
+            id?: string;
+            causeAreaId?: string;
             percentage?: number;
             name?: string;
             _key: string;
@@ -6502,11 +6502,11 @@ export type Fundraiser_page = {
           display_output_info?: boolean;
           inverted?: boolean;
           distribution_cause_areas?: Array<{
-            cause_area_id?: number;
+            cause_area_id?: string;
             cause_area_percentage?: number;
             cause_area_default_distribution?: boolean;
             cause_area_organizations?: Array<{
-              organization_id?: number;
+              organization_id?: string;
               organization_percentage?: number;
               _key: string;
             }>;
@@ -6771,8 +6771,8 @@ export type Fundraiser_page = {
             default_donation_type?: "single" | "recurring";
             prefilled_distribution?: Array<{
               type?: string;
-              id?: number;
-              causeAreaId?: number;
+              id?: string;
+              causeAreaId?: string;
               percentage?: number;
               name?: string;
               _key: string;
@@ -7134,8 +7134,8 @@ export type Organization = {
   }>;
   widget_button?: {
     label?: string;
-    cause_area_id?: number;
-    organization_id?: number;
+    cause_area_id?: string;
+    organization_id?: string;
   };
   organization_page?: {
     _ref: string;
@@ -7635,11 +7635,11 @@ export type Vippsagreement = {
           display_output_info?: boolean;
           inverted?: boolean;
           distribution_cause_areas?: Array<{
-            cause_area_id?: number;
+            cause_area_id?: string;
             cause_area_percentage?: number;
             cause_area_default_distribution?: boolean;
             cause_area_organizations?: Array<{
-              organization_id?: number;
+              organization_id?: string;
               organization_percentage?: number;
               _key: string;
             }>;
@@ -7904,8 +7904,8 @@ export type Vippsagreement = {
             default_donation_type?: "single" | "recurring";
             prefilled_distribution?: Array<{
               type?: string;
-              id?: number;
-              causeAreaId?: number;
+              id?: string;
+              causeAreaId?: string;
               percentage?: number;
               name?: string;
               _key: string;
@@ -8842,11 +8842,11 @@ export type Article_page = {
           display_output_info?: boolean;
           inverted?: boolean;
           distribution_cause_areas?: Array<{
-            cause_area_id?: number;
+            cause_area_id?: string;
             cause_area_percentage?: number;
             cause_area_default_distribution?: boolean;
             cause_area_organizations?: Array<{
-              organization_id?: number;
+              organization_id?: string;
               organization_percentage?: number;
               _key: string;
             }>;
@@ -9111,8 +9111,8 @@ export type Article_page = {
             default_donation_type?: "single" | "recurring";
             prefilled_distribution?: Array<{
               type?: string;
-              id?: number;
-              causeAreaId?: number;
+              id?: string;
+              causeAreaId?: string;
               percentage?: number;
               name?: string;
               _key: string;
@@ -9763,11 +9763,11 @@ export type Criteria = {
           display_output_info?: boolean;
           inverted?: boolean;
           distribution_cause_areas?: Array<{
-            cause_area_id?: number;
+            cause_area_id?: string;
             cause_area_percentage?: number;
             cause_area_default_distribution?: boolean;
             cause_area_organizations?: Array<{
-              organization_id?: number;
+              organization_id?: string;
               organization_percentage?: number;
               _key: string;
             }>;
@@ -10032,8 +10032,8 @@ export type Criteria = {
             default_donation_type?: "single" | "recurring";
             prefilled_distribution?: Array<{
               type?: string;
-              id?: number;
-              causeAreaId?: number;
+              id?: string;
+              causeAreaId?: string;
               percentage?: number;
               name?: string;
               _key: string;
@@ -10835,11 +10835,11 @@ export type Generic_page = {
           display_output_info?: boolean;
           inverted?: boolean;
           distribution_cause_areas?: Array<{
-            cause_area_id?: number;
+            cause_area_id?: string;
             cause_area_percentage?: number;
             cause_area_default_distribution?: boolean;
             cause_area_organizations?: Array<{
-              organization_id?: number;
+              organization_id?: string;
               organization_percentage?: number;
               _key: string;
             }>;
@@ -11104,8 +11104,8 @@ export type Generic_page = {
             default_donation_type?: "single" | "recurring";
             prefilled_distribution?: Array<{
               type?: string;
-              id?: number;
-              causeAreaId?: number;
+              id?: string;
+              causeAreaId?: string;
               percentage?: number;
               name?: string;
               _key: string;
@@ -13056,8 +13056,8 @@ export type FetchArticleResult = {
               default_donation_type?: "recurring" | "single";
               prefilled_distribution?: Array<{
                 type?: string;
-                id?: number;
-                causeAreaId?: number;
+                id?: string;
+                causeAreaId?: string;
                 percentage?: number;
                 name?: string;
                 _key: string;
@@ -14079,8 +14079,8 @@ export type FetchArticleResult = {
               }>;
               widget_button?: {
                 label?: string;
-                cause_area_id?: number;
-                organization_id?: number;
+                cause_area_id?: string;
+                organization_id?: string;
               };
               organization_page?: {
                 _ref: string;
@@ -14093,11 +14093,11 @@ export type FetchArticleResult = {
             display_output_info?: boolean;
             inverted?: boolean;
             distribution_cause_areas?: Array<{
-              cause_area_id?: number;
+              cause_area_id?: string;
               cause_area_percentage?: number;
               cause_area_default_distribution?: boolean;
               cause_area_organizations?: Array<{
-                organization_id?: number;
+                organization_id?: string;
                 organization_percentage?: number;
                 _key: string;
               }>;
@@ -14162,8 +14162,8 @@ export type FetchArticleResult = {
               }>;
               widget_button?: {
                 label?: string;
-                cause_area_id?: number;
-                organization_id?: number;
+                cause_area_id?: string;
+                organization_id?: string;
               };
               organization_page?: {
                 _ref: string;
@@ -16767,8 +16767,8 @@ export type FetchFundraiserResult = {
         } | null;
       } | null;
       widget_button: {
-        cause_area_id: number | null;
-        organization_id: number | null;
+        cause_area_id: string | null;
+        organization_id: string | null;
       } | null;
       organization_page: {
         slug: {
@@ -18275,8 +18275,8 @@ export type FetchFundraiserResult = {
               default_donation_type?: "recurring" | "single";
               prefilled_distribution?: Array<{
                 type?: string;
-                id?: number;
-                causeAreaId?: number;
+                id?: string;
+                causeAreaId?: string;
                 percentage?: number;
                 name?: string;
                 _key: string;
@@ -19298,8 +19298,8 @@ export type FetchFundraiserResult = {
               }>;
               widget_button?: {
                 label?: string;
-                cause_area_id?: number;
-                organization_id?: number;
+                cause_area_id?: string;
+                organization_id?: string;
               };
               organization_page?: {
                 _ref: string;
@@ -19312,11 +19312,11 @@ export type FetchFundraiserResult = {
             display_output_info?: boolean;
             inverted?: boolean;
             distribution_cause_areas?: Array<{
-              cause_area_id?: number;
+              cause_area_id?: string;
               cause_area_percentage?: number;
               cause_area_default_distribution?: boolean;
               cause_area_organizations?: Array<{
-                organization_id?: number;
+                organization_id?: string;
                 organization_percentage?: number;
                 _key: string;
               }>;
@@ -19381,8 +19381,8 @@ export type FetchFundraiserResult = {
               }>;
               widget_button?: {
                 label?: string;
-                cause_area_id?: number;
-                organization_id?: number;
+                cause_area_id?: string;
+                organization_id?: string;
               };
               organization_page?: {
                 _ref: string;
@@ -23275,8 +23275,8 @@ export type FetchGenericPageResult = {
               default_donation_type?: "recurring" | "single";
               prefilled_distribution?: Array<{
                 type?: string;
-                id?: number;
-                causeAreaId?: number;
+                id?: string;
+                causeAreaId?: string;
                 percentage?: number;
                 name?: string;
                 _key: string;
@@ -24298,8 +24298,8 @@ export type FetchGenericPageResult = {
               }>;
               widget_button?: {
                 label?: string;
-                cause_area_id?: number;
-                organization_id?: number;
+                cause_area_id?: string;
+                organization_id?: string;
               };
               organization_page?: {
                 _ref: string;
@@ -24312,11 +24312,11 @@ export type FetchGenericPageResult = {
             display_output_info?: boolean;
             inverted?: boolean;
             distribution_cause_areas?: Array<{
-              cause_area_id?: number;
+              cause_area_id?: string;
               cause_area_percentage?: number;
               cause_area_default_distribution?: boolean;
               cause_area_organizations?: Array<{
-                organization_id?: number;
+                organization_id?: string;
                 organization_percentage?: number;
                 _key: string;
               }>;
@@ -24381,8 +24381,8 @@ export type FetchGenericPageResult = {
               }>;
               widget_button?: {
                 label?: string;
-                cause_area_id?: number;
-                organization_id?: number;
+                cause_area_id?: string;
+                organization_id?: string;
               };
               organization_page?: {
                 _ref: string;
@@ -27869,8 +27869,8 @@ export type FetchVippsResult = {
                     default_donation_type?: "recurring" | "single";
                     prefilled_distribution?: Array<{
                       type?: string;
-                      id?: number;
-                      causeAreaId?: number;
+                      id?: string;
+                      causeAreaId?: string;
                       percentage?: number;
                       name?: string;
                       _key: string;
@@ -28034,11 +28034,11 @@ export type FetchVippsResult = {
                   display_output_info?: boolean;
                   inverted?: boolean;
                   distribution_cause_areas?: Array<{
-                    cause_area_id?: number;
+                    cause_area_id?: string;
                     cause_area_percentage?: number;
                     cause_area_default_distribution?: boolean;
                     cause_area_organizations?: Array<{
-                      organization_id?: number;
+                      organization_id?: string;
                       organization_percentage?: number;
                       _key: string;
                     }>;
@@ -28864,8 +28864,8 @@ export type FetchAgreementsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -29029,11 +29029,11 @@ export type FetchAgreementsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -30065,8 +30065,8 @@ export type FetchAgreementsPageResult = {
                 default_donation_type?: "recurring" | "single";
                 prefilled_distribution?: Array<{
                   type?: string;
-                  id?: number;
-                  causeAreaId?: number;
+                  id?: string;
+                  causeAreaId?: string;
                   percentage?: number;
                   name?: string;
                   _key: string;
@@ -30230,11 +30230,11 @@ export type FetchAgreementsPageResult = {
               display_output_info?: boolean;
               inverted?: boolean;
               distribution_cause_areas?: Array<{
-                cause_area_id?: number;
+                cause_area_id?: string;
                 cause_area_percentage?: number;
                 cause_area_default_distribution?: boolean;
                 cause_area_organizations?: Array<{
-                  organization_id?: number;
+                  organization_id?: string;
                   organization_percentage?: number;
                   _key: string;
                 }>;
@@ -31033,8 +31033,8 @@ export type FetchAgreementsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -31198,11 +31198,11 @@ export type FetchAgreementsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -32116,8 +32116,8 @@ export type FetchAgreementsPageResult = {
           default_donation_type?: "recurring" | "single";
           prefilled_distribution?: Array<{
             type?: string;
-            id?: number;
-            causeAreaId?: number;
+            id?: string;
+            causeAreaId?: string;
             percentage?: number;
             name?: string;
             _key: string;
@@ -32585,8 +32585,8 @@ export type FetchAgreementsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -32750,11 +32750,11 @@ export type FetchAgreementsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -33743,8 +33743,8 @@ export type FetchAgreementsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -33908,11 +33908,11 @@ export type FetchAgreementsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -34554,11 +34554,11 @@ export type FetchAgreementsPageResult = {
         display_output_info?: boolean;
         inverted?: boolean;
         distribution_cause_areas?: Array<{
-          cause_area_id?: number;
+          cause_area_id?: string;
           cause_area_percentage?: number;
           cause_area_default_distribution?: boolean;
           cause_area_organizations?: Array<{
-            organization_id?: number;
+            organization_id?: string;
             organization_percentage?: number;
             _key: string;
           }>;
@@ -34620,8 +34620,8 @@ export type FetchAgreementsPageResult = {
         }>;
         widget_button?: {
           label?: string;
-          cause_area_id?: number;
-          organization_id?: number;
+          cause_area_id?: string;
+          organization_id?: string;
         };
         organization_page?: {
           _ref: string;
@@ -36507,8 +36507,8 @@ export type FetchAgreementsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -36672,11 +36672,11 @@ export type FetchAgreementsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -37449,8 +37449,8 @@ export type FetchDonationsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -37614,11 +37614,11 @@ export type FetchDonationsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -38677,8 +38677,8 @@ export type FetchDonationsPageResult = {
                 default_donation_type?: "recurring" | "single";
                 prefilled_distribution?: Array<{
                   type?: string;
-                  id?: number;
-                  causeAreaId?: number;
+                  id?: string;
+                  causeAreaId?: string;
                   percentage?: number;
                   name?: string;
                   _key: string;
@@ -38842,11 +38842,11 @@ export type FetchDonationsPageResult = {
               display_output_info?: boolean;
               inverted?: boolean;
               distribution_cause_areas?: Array<{
-                cause_area_id?: number;
+                cause_area_id?: string;
                 cause_area_percentage?: number;
                 cause_area_default_distribution?: boolean;
                 cause_area_organizations?: Array<{
-                  organization_id?: number;
+                  organization_id?: string;
                   organization_percentage?: number;
                   _key: string;
                 }>;
@@ -39654,8 +39654,8 @@ export type FetchDonationsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -39819,11 +39819,11 @@ export type FetchDonationsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -41016,8 +41016,8 @@ export type FetchDonationsPageResult = {
           default_donation_type?: "recurring" | "single";
           prefilled_distribution?: Array<{
             type?: string;
-            id?: number;
-            causeAreaId?: number;
+            id?: string;
+            causeAreaId?: string;
             percentage?: number;
             name?: string;
             _key: string;
@@ -41488,8 +41488,8 @@ export type FetchDonationsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -41653,11 +41653,11 @@ export type FetchDonationsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -42655,8 +42655,8 @@ export type FetchDonationsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -42820,11 +42820,11 @@ export type FetchDonationsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -43487,11 +43487,11 @@ export type FetchDonationsPageResult = {
         display_output_info?: boolean;
         inverted?: boolean;
         distribution_cause_areas?: Array<{
-          cause_area_id?: number;
+          cause_area_id?: string;
           cause_area_percentage?: number;
           cause_area_default_distribution?: boolean;
           cause_area_organizations?: Array<{
-            organization_id?: number;
+            organization_id?: string;
             organization_percentage?: number;
             _key: string;
           }>;
@@ -43556,8 +43556,8 @@ export type FetchDonationsPageResult = {
         }>;
         widget_button?: {
           label?: string;
-          cause_area_id?: number;
-          organization_id?: number;
+          cause_area_id?: string;
+          organization_id?: string;
         };
         organization_page?: {
           _ref: string;
@@ -45506,8 +45506,8 @@ export type FetchDonationsPageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -45671,11 +45671,11 @@ export type FetchDonationsPageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -46447,8 +46447,8 @@ export type FetchProfilePageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -46612,11 +46612,11 @@ export type FetchProfilePageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -47639,8 +47639,8 @@ export type FetchProfilePageResult = {
                 default_donation_type?: "recurring" | "single";
                 prefilled_distribution?: Array<{
                   type?: string;
-                  id?: number;
-                  causeAreaId?: number;
+                  id?: string;
+                  causeAreaId?: string;
                   percentage?: number;
                   name?: string;
                   _key: string;
@@ -47804,11 +47804,11 @@ export type FetchProfilePageResult = {
               display_output_info?: boolean;
               inverted?: boolean;
               distribution_cause_areas?: Array<{
-                cause_area_id?: number;
+                cause_area_id?: string;
                 cause_area_percentage?: number;
                 cause_area_default_distribution?: boolean;
                 cause_area_organizations?: Array<{
-                  organization_id?: number;
+                  organization_id?: string;
                   organization_percentage?: number;
                   _key: string;
                 }>;
@@ -48604,8 +48604,8 @@ export type FetchProfilePageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -48769,11 +48769,11 @@ export type FetchProfilePageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -49677,8 +49677,8 @@ export type FetchProfilePageResult = {
           default_donation_type?: "recurring" | "single";
           prefilled_distribution?: Array<{
             type?: string;
-            id?: number;
-            causeAreaId?: number;
+            id?: string;
+            causeAreaId?: string;
             percentage?: number;
             name?: string;
             _key: string;
@@ -50145,8 +50145,8 @@ export type FetchProfilePageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -50310,11 +50310,11 @@ export type FetchProfilePageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -51300,8 +51300,8 @@ export type FetchProfilePageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -51465,11 +51465,11 @@ export type FetchProfilePageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;
@@ -52104,11 +52104,11 @@ export type FetchProfilePageResult = {
         display_output_info?: boolean;
         inverted?: boolean;
         distribution_cause_areas?: Array<{
-          cause_area_id?: number;
+          cause_area_id?: string;
           cause_area_percentage?: number;
           cause_area_default_distribution?: boolean;
           cause_area_organizations?: Array<{
-            organization_id?: number;
+            organization_id?: string;
             organization_percentage?: number;
             _key: string;
           }>;
@@ -52169,8 +52169,8 @@ export type FetchProfilePageResult = {
         }>;
         widget_button?: {
           label?: string;
-          cause_area_id?: number;
-          organization_id?: number;
+          cause_area_id?: string;
+          organization_id?: string;
         };
         organization_page?: {
           _ref: string;
@@ -54035,8 +54035,8 @@ export type FetchProfilePageResult = {
                   default_donation_type?: "recurring" | "single";
                   prefilled_distribution?: Array<{
                     type?: string;
-                    id?: number;
-                    causeAreaId?: number;
+                    id?: string;
+                    causeAreaId?: string;
                     percentage?: number;
                     name?: string;
                     _key: string;
@@ -54200,11 +54200,11 @@ export type FetchProfilePageResult = {
                 display_output_info?: boolean;
                 inverted?: boolean;
                 distribution_cause_areas?: Array<{
-                  cause_area_id?: number;
+                  cause_area_id?: string;
                   cause_area_percentage?: number;
                   cause_area_default_distribution?: boolean;
                   cause_area_organizations?: Array<{
-                    organization_id?: number;
+                    organization_id?: string;
                     organization_percentage?: number;
                     _key: string;
                   }>;

@@ -48,7 +48,7 @@ interface SubmitDonorInfo {
 interface SetCauseAreaPercentageShare {
   type: typeof SET_CAUSE_AREA_PERCENTAGE_SHARE;
   payload: {
-    causeAreaId: number;
+    causeAreaId: string;
     percentageShare: string;
   };
 }
@@ -56,7 +56,7 @@ interface SetCauseAreaPercentageShare {
 interface SetShares {
   type: typeof SET_SHARES;
   payload: {
-    causeAreaId: number;
+    causeAreaId: string;
     shares: DistributionCauseAreaOrganization[];
   };
 }
@@ -92,7 +92,7 @@ interface SetKID {
 interface SetDonorID {
   type: typeof SET_DONOR_ID;
   payload: {
-    donorID: number;
+    donorID: string;
   };
 }
 
@@ -106,7 +106,7 @@ interface SetPaymentProviderURL {
 interface SelectCustomShare {
   type: typeof SELECT_CUSTOM_SHARE;
   payload: {
-    causeAreaId: number;
+    causeAreaId: string;
     customShare: boolean;
   };
 }
@@ -114,7 +114,7 @@ interface SelectCustomShare {
 interface SetShareType {
   type: typeof SET_SHARE_TYPE;
   payload: {
-    causeAreaId: number;
+    causeAreaId: string;
     standardSplit: boolean;
   };
 }

@@ -62,7 +62,7 @@ export const aggregateOrgSumByYearAndMonth = (
     const month = new Date(donation.timestamp).getMonth();
     const globalHealthCauseArea = distributions
       .get(donation.KID)
-      ?.causeAreas.filter((c) => c.id === 1)?.[0];
+      ?.causeAreas.filter((c) => c.id === "1")?.[0];
 
     const orgs = globalHealthCauseArea?.organizations ?? [];
     const globalHealthDistributionShare =
@@ -71,7 +71,7 @@ export const aggregateOrgSumByYearAndMonth = (
     if (orgs) {
       orgs.forEach((org) => {
         // If organization is GiveWell top charities fund, distribute the share of the donation to the organizations in the grant
-        if (org.id === 12) {
+        if (org.id === "12") {
           // Get first grant before donation date
           const relevantGrant = sortedGrants.find(
             (grant) =>
