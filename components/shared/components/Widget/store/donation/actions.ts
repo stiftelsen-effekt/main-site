@@ -96,7 +96,7 @@ export function setRecurring(recurring: RecurringDonation): DonationActionTypes 
   };
 }
 
-export function setDonorID(donorID: number): DonationActionTypes {
+export function setDonorID(donorID: string): DonationActionTypes {
   return {
     type: SET_DONOR_ID,
     payload: {
@@ -171,7 +171,7 @@ export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActio
 
 export type RegisterDonationResponse = {
   KID: string;
-  donorID: number;
+  donorID: string;
   hasAnsweredReferral: boolean;
   paymentProviderUrl: string;
   swishOrderID: string;

@@ -92,7 +92,7 @@ interface SetKID {
 interface SetDonorID {
   type: typeof SET_DONOR_ID;
   payload: {
-    donorID: number;
+    donorID: string;
   };
 }
 
