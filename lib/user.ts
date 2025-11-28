@@ -4,9 +4,11 @@ const authUserIdClaim = process.env.NEXT_PUBLIC_AUTH_USER_ID_CLAIM;
 
 if (!authUserIdClaim) throw new Error("NEXT_PUBLIC_AUTH_USER_ID_CLAIM not set");
 
-export const getUserId = (user: User) => {
+export const getUserId = (user: User): string => {
   const val = user[authUserIdClaim];
-  if (typeof val !== "number") throw new Error(`User claim ${authUserIdClaim} is not a number`);
+  if (typeof val !== "string" && typeof val !== "number") {
+    throw new Error(`User claim ${authUserIdClaim} is not a string or number`);
+  }
 
-  return val;
+  return String(val);
 };
