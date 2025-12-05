@@ -114,17 +114,21 @@ export const AgreementsPage = withStaticProps(
     return Array.from(kidsSet);
   }, [vipps, avtaleGiro, autoGiro]);
 
+  const shouldFetchDistributions =
+    !vippsLoading &&
+    !avtaleGiroLoading &&
+    !autoGiroLoading &&
+    vipps !== undefined &&
+    avtaleGiro !== undefined &&
+    autoGiro !== undefined &&
+    kids.length > 0;
+
   const {
     loading: distributionsLoading,
     data: distributions,
     isValidating: distributionsRefreshing,
     error: distributionsError,
-  } = useAgreementsDistributions(
-    user,
-    getAccessTokenSilently,
-    !!vipps && !!avtaleGiro && !!autoGiro && kids.length > 0,
-    kids,
-  );
+  } = useAgreementsDistributions(user, getAccessTokenSilently, shouldFetchDistributions, kids);
 
   const {
     loading: taxUnitsLoading,

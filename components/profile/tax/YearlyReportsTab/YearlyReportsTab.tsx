@@ -44,12 +44,14 @@ export const YearlyReportsTab: React.FC<{
     return Array.from(kidsSet);
   }, [donations]);
 
+  const shouldFetchDistributions = !donationsLoading && donations !== undefined && kids.length > 0;
+
   const {
     loading: distributionsLoading,
     data: distributions,
     isValidating: distributionsValidating,
     error: distributionsError,
-  } = useDistributions(user as User, getAccessTokenSilently, !!donations && kids.length > 0, kids);
+  } = useDistributions(user as User, getAccessTokenSilently, shouldFetchDistributions, kids);
 
   const dataAvailable = donations && distributions && reportsData;
   const loading = donationsLoading || distributionsLoading || reportsLoading;

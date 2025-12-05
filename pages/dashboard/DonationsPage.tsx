@@ -199,12 +199,14 @@ export const DonationsPage = withStaticProps(
     return Array.from(kidsSet);
   }, [donations]);
 
+  const shouldFetchDistributions = !donationsLoading && donations !== undefined && kids.length > 0;
+
   const {
     loading: distributionsLoading,
     data: distributions,
     isValidating: distributionsValidating,
     error: distributionsError,
-  } = useDistributions(user, getAccessTokenSilently, !!donations && kids.length > 0, kids);
+  } = useDistributions(user, getAccessTokenSilently, shouldFetchDistributions, kids);
 
   const {
     data: organizations,
