@@ -1,5 +1,4 @@
 import "cypress-localstorage-commands";
-import jwt_decode from "jwt-decode";
 
 Cypress.Commands.add("login", (overrides = {}) => {
   cy.clearLocalStorage();
@@ -33,36 +32,43 @@ Cypress.Commands.add("login", (overrides = {}) => {
   };
 
   cy.request(options).then(({ body }) => {
-    const auth0State = {
-      nonce: "",
-      state: "some-random-state",
-    };
-    const claims = jwt_decode(body.access_token);
-    const { nickname, name, picture, updated_at, email, email_verified, sub, exp } = claims;
-
-    const item = {
-      body: {
-        client_id,
-        access_token: body.access_token,
-        id_token: body.id_token,
-        scope,
-        expires_in: body.expires_in,
-        token_type: body.token_type,
-        decodedToken: {
-          user: JSON.parse(Buffer.from(body.id_token.split(".")[1], "base64").toString("ascii")),
-        },
-        audience,
-      },
-      expiresAt: exp,
-    };
+    const [header, payload, signature] = body.id_token.split(".");
+    const idTokenPayload = JSON.parse(Buffer.from(payload, "base64").toString("ascii"));
+    const oauthTokenScope = "openid profile email";
 
     cy.window().then((win) => {
       win.localStorage.setItem(
-        `@@auth0spajs@@::${client_id}::${audience}::${scope}`,
-        JSON.stringify(item),
+        `@@auth0spajs@@::${client_id}::${audience}::${oauthTokenScope}`,
+        JSON.stringify({
+          body: {
+            access_token: body.access_token,
+            scope: oauthTokenScope,
+            expires_in: body.expires_in,
+            token_type: body.token_type,
+            audience,
+            oauthTokenScope,
+            client_id,
+          },
+          expiresAt: Math.floor(Date.now() / 1000) + body.expires_in,
+        }),
       );
-      // cy.reload();
+
+      win.localStorage.setItem(
+        `@@auth0spajs@@::${client_id}::@@user@@`,
+        JSON.stringify({
+          id_token: body.id_token,
+          decodedToken: {
+            encoded: { header, payload, signature },
+            header: JSON.parse(Buffer.from(header, "base64").toString("ascii")),
+            claims: { __raw: body.id_token, ...idTokenPayload },
+            user: idTokenPayload,
+          },
+        }),
+      );
     });
+
+    cy.setCookie(`auth0.${client_id}.is.authenticated`, "true");
+    cy.setCookie(`_legacy_auth0.${client_id}.is.authenticated`, "true");
   });
 });
 
