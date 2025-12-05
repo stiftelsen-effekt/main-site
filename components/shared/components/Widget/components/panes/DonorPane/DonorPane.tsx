@@ -1,15 +1,6 @@
-import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
-import Organisationsnummer from "organisationsnummer";
-import Personnummer from "personnummer";
-import {
-  validateCpr,
-  formatCprInput,
-  validateTin,
-  formatTinInput,
-} from "../../../../../../../util/tin-validation";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
@@ -23,37 +14,24 @@ import {
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod, RecurringDonation } from "../../../types/Enums";
-import {
-  PaymentMethodId,
-  PaymentMethodNudge,
-  WidgetPane2Props,
-  WidgetProps,
-} from "../../../types/WidgetProps";
+import { PaymentMethodNudge, WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import {
-  ActionBar,
-  CheckBoxGroupWrapper,
-  DonorForm,
-  InfoMessageWrapper,
-  PaymentNudge,
-  PaymentNudgeContainer,
-  PaymentNudgeWrapper,
-} from "./DonorPane.style";
-import { getEstimatedLtv } from "../../../../../../../util/ltv";
+import { ActionBar, CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
 import { paymentMethodConfigurations } from "../../../config/methods";
-import { thousandize, getFormattingLocale } from "../../../../../../../util/formatting";
-import { Info } from "react-feather";
+import { usePaymentNudge } from "./usePaymentNudge";
+import { useSsnValidation } from "./useSsnValidation";
+import { trackDonationSubmission } from "./trackDonationSubmission";
+import { PaymentNudgeDisplay } from "./PaymentNudgeDisplay";
 
-// Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
@@ -69,14 +47,14 @@ export const DonorPane: React.FC<{
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
-
-  console.log(nudges);
+  const paymentOptionsRef = useRef<HTMLDivElement>(null);
+  const plausible = usePlausible();
 
   const {
     register,
     watch,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
     clearErrors,
   } = useForm({
@@ -92,190 +70,37 @@ export const DonorPane: React.FC<{
     },
   });
 
-  const plausible = usePlausible();
-  const formattingLocale = useMemo(() => getFormattingLocale(locale), [locale]);
-  const paymentOptionsRef = React.useRef<HTMLDivElement>(null);
-
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
   const selectedPaymentMethod = watch("method");
 
-  const [cprSuspicious, setCprSuspicious] = useState(false);
-  const [nudgeArrowLeft, setNudgeArrowLeft] = useState<number | null>(null);
+  const { validateSsn, handleSsnChange, cprSuspicious } = useSsnValidation({
+    locale,
+    taxDeductionChecked,
+  });
 
-  const selectedPaymentMethodId = useMemo(
-    () => (selectedPaymentMethod ? paymentMethodIdMap[selectedPaymentMethod] : undefined),
-    [selectedPaymentMethod],
-  );
-
-  const activeNudge = useMemo(() => {
-    if (!nudges || nudges.length === 0) return null;
-    if (!selectedPaymentMethodId) return null;
-    if (!donation.sum || donation.sum <= 0) return null;
-
-    const recurringType =
-      donation.recurring === RecurringDonation.RECURRING ? "recurring" : "single";
-
-    return (
-      nudges.find((nudge) => {
-        const fromId = nudge.from_method?._id;
-        const toId = nudge.to_method?._id;
-        if (!fromId || !toId) return false;
-        if (fromId !== selectedPaymentMethodId) return false;
-        if (nudge.minimum_amount && donation.sum && donation.sum < nudge.minimum_amount)
-          return false;
-        if (
-          nudge.recurring_type &&
-          nudge.recurring_type !== "both" &&
-          nudge.recurring_type !== recurringType
-        ) {
-          return false;
-        }
-        const targetAvailable = paymentMethods.some((method) => method._id === toId);
-        return targetAvailable;
-      }) || null
-    );
-  }, [nudges, selectedPaymentMethodId, donation.sum, donation.recurring, paymentMethods]);
-
-  const nudgeMessageText = useMemo(() => {
-    if (!activeNudge || !activeNudge.message) return null;
-
-    const amount = donation.sum;
-    const fromId = activeNudge.from_method?._id;
-    const toId = activeNudge.to_method?._id;
-    if (!amount || amount <= 0 || !fromId || !toId) {
-      return activeNudge.message.replace(/\{savings\}/g, "–");
-    }
-
-    const calculateCost = (methodId: PaymentMethodId) => {
-      const method = paymentMethods.find((m) => m._id === methodId);
-      const transactionCost = method?.transaction_cost;
-      if (!transactionCost) {
-        return { cost: 0, hasData: false };
-      }
-
-      const percentageFee = transactionCost.percentage_fee ?? 0;
-      const fixedFee = transactionCost.fixed_fee ?? 0;
-      const hasData =
-        transactionCost.percentage_fee !== undefined || transactionCost.fixed_fee !== undefined;
-
-      return {
-        cost: (percentageFee / 100) * amount + fixedFee,
-        hasData,
-      };
-    };
-
-    const fromCost = calculateCost(fromId);
-    const toCost = calculateCost(toId);
-    const hasCostData = fromCost.hasData || toCost.hasData;
-    const savings = hasCostData ? Math.max(fromCost.cost - toCost.cost, 0) : null;
-    const formattedSavings =
-      savings !== null ? thousandize(Math.round(savings), formattingLocale) : null;
-
-    return activeNudge.message.replace(/\{savings\}/g, formattedSavings ?? "–");
-  }, [activeNudge, donation.sum, paymentMethods, formattingLocale]);
-
-  useEffect(() => {
-    if (!activeNudge?.to_method?._id || !paymentOptionsRef.current) {
-      setNudgeArrowLeft(null);
-      return;
-    }
-
-    const frame = requestAnimationFrame(() => {
-      const target = paymentOptionsRef.current!.querySelector<HTMLElement>(
-        `[data-method-id="${activeNudge.to_method?._id}"]`,
-      );
-      if (target) {
-        const containerRect = paymentOptionsRef.current!.getBoundingClientRect();
-        const childOfContainer = paymentOptionsRef.current!.querySelector("div");
-        const radioButtonChoices = childOfContainer!.querySelectorAll("label");
-        console.log(radioButtonChoices);
-        let offset = 0;
-        for (const radioButtonChoice of Array.from(radioButtonChoices)) {
-          console.log(`Checking radio button`, radioButtonChoice);
-          if (radioButtonChoice.dataset.methodId === activeNudge.to_method?._id) {
-            console.log(`Found the target radio button choice at offset ${offset}`);
-            break;
-          }
-          console.log(`Adding ${radioButtonChoice.clientWidth} to offset`);
-          offset += radioButtonChoice.clientWidth;
-          console.log(`New offset: ${offset}`);
-        }
-        // Circle is 1.5em wide, so to get to the center of the circle, we need to add 0.75em
-        setNudgeArrowLeft(offset + 0.75 * 20 + 20);
-      } else {
-        setNudgeArrowLeft(null);
-      }
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [activeNudge?.to_method?._id, paymentMethods, selectedPaymentMethodId]);
-
-  const handleSsnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    // Format CPR input for Danish locale
-    if (locale === "dk" && taxDeductionChecked) {
-      const formattedValue = formatTinInput(value, { allowCvr: true });
-      e.target.value = formattedValue;
-    }
-  };
+  const { activeNudge, nudgeMessageText, nudgeArrowLeft } = usePaymentNudge({
+    nudges,
+    selectedPaymentMethod,
+    paymentMethods,
+    donationSum: donation.sum,
+    isRecurring: donation.recurring === RecurringDonation.RECURRING,
+    paymentOptionsRef,
+    locale,
+  });
 
   const paneSubmitted = handleSubmit((data) => {
-    if (!isAnonymous) {
-      plausible("SubmitDonorPane", {
-        props: {
-          donorType: isAnonymous ? 0 : 1,
-          taxDeduction: data.taxDeduction,
-          newsletter: data.newsletter,
-          method: data.method,
-        },
-      });
+    trackDonationSubmission({
+      isAnonymous,
+      isRecurring: !!donation.recurring,
+      method: data.method,
+      sum: donation.sum,
+      taxDeduction: data.taxDeduction,
+      newsletter: data.newsletter,
+      plausible,
+    });
 
-      if (donation.recurring) {
-        if (data.method) {
-          if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-          if (data.method === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
-          if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
-
-          if (donation.sum) {
-            getEstimatedLtv({ method: data.method, sum: donation.sum }).then((ltv) => {
-              if (typeof window !== "undefined") {
-                // @ts-ignore
-                if (typeof window.fbq != "undefined" && window.fbq !== null) {
-                  // @ts-ignore
-                  window.fbq("track", "Lead", {
-                    value: ltv,
-                    currency: "NOK",
-                  });
-                }
-              }
-            });
-          }
-        }
-      }
-      if (!donation.recurring) {
-        if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
-        if (data.method === PaymentMethod.SWISH) {
-          plausible("SelectSwishSingle");
-        }
-        if (data.method === PaymentMethod.BANK) {
-          plausible("SelectBankSingle");
-        }
-        // Facebook pixel tracking for Leads
-        if (typeof window !== "undefined") {
-          // @ts-ignore
-          if (typeof window.fbq !== "undefined" && window.fbq !== null) {
-            // @ts-ignore
-            window.fbq("track", "Lead", {
-              value: donation.sum,
-              currency: "NOK",
-            });
-          }
-        }
-      }
-    }
     dispatch(
       submitDonorInfo(
         isAnonymous
@@ -414,35 +239,8 @@ export const DonorPane: React.FC<{
                         {...register("ssn", {
                           required: false,
                           onChange: handleSsnChange,
-                          validate: (val, formValues) => {
-                            if (formValues.isAnonymous || !taxDeductionChecked) return true;
-                            const trimmed = val.toString().trim();
-
-                            if (locale === "no") {
-                              return validateSsnNo(trimmed);
-                            } else if (locale === "sv") {
-                              return validateSsnSe(trimmed);
-                            } else if (locale === "dk") {
-                              const validationResult = validateTin(trimmed, { allowCvr: true });
-                              if (validationResult.type === "CPR") {
-                                if (validationResult.isSuspicious) {
-                                  setCprSuspicious(true);
-                                  return true;
-                                } else if (
-                                  validationResult.isValid &&
-                                  !validationResult.isSuspicious
-                                ) {
-                                  setCprSuspicious(false);
-                                }
-                              } else {
-                                setCprSuspicious(false);
-                              }
-                              return validationResult.isValid;
-                            }
-
-                            // Unknown locale
-                            return true;
-                          },
+                          validate: (val, formValues) =>
+                            validateSsn(val.toString(), formValues.isAnonymous),
                         })}
                       />
                       {errors.ssn && (
@@ -568,32 +366,11 @@ export const DonorPane: React.FC<{
                 </div>
               )}
             />
-            <PaymentNudgeContainer>
-              <AnimateHeight
-                height={activeNudge && nudgeMessageText ? "auto" : 0}
-                animateOpacity
-                duration={250}
-              >
-                {activeNudge && nudgeMessageText && (
-                  <PaymentNudgeWrapper
-                    style={
-                      nudgeArrowLeft !== null
-                        ? ({
-                            ["--nudge-arrow-left" as string]: `${nudgeArrowLeft}px`,
-                          } as React.CSSProperties)
-                        : undefined
-                    }
-                  >
-                    <PaymentNudge>
-                      <Info size={22} />
-                      <div>
-                        <p>{nudgeMessageText}</p>
-                      </div>
-                    </PaymentNudge>
-                  </PaymentNudgeWrapper>
-                )}
-              </AnimateHeight>
-            </PaymentNudgeContainer>
+            <PaymentNudgeDisplay
+              isVisible={!!activeNudge}
+              message={nudgeMessageText}
+              arrowLeft={nudgeArrowLeft}
+            />
           </div>
           <ActionBar data-cy="next-button-div">
             <NextButton
@@ -607,25 +384,6 @@ export const DonorPane: React.FC<{
       </DonorForm>
     </Pane>
   );
-};
-
-const validateSsnNo = (ssn: string): boolean => {
-  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
-};
-
-const validateSsnSe = (ssn: string): boolean => {
-  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
-};
-
-export const paymentMethodIdMap: Partial<Record<PaymentMethod, PaymentMethodId>> = {
-  [PaymentMethod.VIPPS]: "vipps",
-  [PaymentMethod.BANK]: "bank",
-  [PaymentMethod.SWISH]: "swish",
-  [PaymentMethod.AUTOGIRO]: "autogiro",
-  [PaymentMethod.AVTALEGIRO]: "avtalegiro",
-  [PaymentMethod.QUICKPACK_MOBILEPAY]: "quickpay_mobilepay",
-  [PaymentMethod.QUICKPAY_CARD]: "quickpay_card",
-  [PaymentMethod.DKBANK]: "dkbank",
 };
 
 export const paymentMethodMap: Record<string, PaymentMethod> = {
