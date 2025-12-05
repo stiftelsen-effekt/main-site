@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { transactionCostField } from "./transactionCost";
 
 export default defineType({
   name: "bank",
@@ -77,6 +78,7 @@ export default defineType({
       type: "reference",
       to: [{ type: "generic_page" }],
     }),
+    transactionCostField,
   ],
   preview: {
     prepare() {

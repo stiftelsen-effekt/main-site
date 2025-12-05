@@ -1,15 +1,6 @@
-import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
-import Organisationsnummer from "organisationsnummer";
-import Personnummer from "personnummer";
-import {
-  validateCpr,
-  formatCprInput,
-  validateTin,
-  formatTinInput,
-} from "../../../../../../../util/tin-validation";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
@@ -22,8 +13,8 @@ import {
   submitDonorInfo,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
-import { PaymentMethod } from "../../../types/Enums";
-import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
+import { PaymentMethod, RecurringDonation } from "../../../types/Enums";
+import { PaymentMethodNudge, WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
@@ -31,14 +22,16 @@ import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.sty
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
 import { ActionBar, CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
-import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
 import { paymentMethodConfigurations } from "../../../config/methods";
+import { usePaymentNudge } from "./usePaymentNudge";
+import { useSsnValidation } from "./useSsnValidation";
+import { trackDonationSubmission } from "./trackDonationSubmission";
+import { PaymentNudgeDisplay } from "./PaymentNudgeDisplay";
 
-// Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
@@ -47,18 +40,21 @@ export const DonorPane: React.FC<{
   locale: "en" | "no" | "sv" | "et" | "dk";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ locale, text, paymentMethods }) => {
+  nudges?: PaymentMethodNudge[];
+}> = ({ locale, text, paymentMethods, nudges }) => {
   const dispatch =
     useDispatch<Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload>>>();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
   const { donor: initialDonor } = useContext(DonorContext);
+  const paymentOptionsRef = useRef<HTMLDivElement>(null);
+  const plausible = usePlausible();
 
   const {
     register,
     watch,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
     clearErrors,
   } = useForm({
@@ -74,79 +70,37 @@ export const DonorPane: React.FC<{
     },
   });
 
-  const plausible = usePlausible();
-
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
   const selectedPaymentMethod = watch("method");
 
-  const [cprSuspicious, setCprSuspicious] = useState(false);
+  const { validateSsn, handleSsnChange, cprSuspicious } = useSsnValidation({
+    locale,
+    taxDeductionChecked,
+  });
 
-  const handleSsnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    // Format CPR input for Danish locale
-    if (locale === "dk" && taxDeductionChecked) {
-      const formattedValue = formatTinInput(value, { allowCvr: true });
-      e.target.value = formattedValue;
-    }
-  };
+  const { activeNudge, nudgeMessageText, nudgeArrowLeft } = usePaymentNudge({
+    nudges,
+    selectedPaymentMethod,
+    paymentMethods,
+    donationSum: donation.sum,
+    isRecurring: donation.recurring === RecurringDonation.RECURRING,
+    paymentOptionsRef,
+    locale,
+  });
 
   const paneSubmitted = handleSubmit((data) => {
-    if (!isAnonymous) {
-      plausible("SubmitDonorPane", {
-        props: {
-          donorType: isAnonymous ? 0 : 1,
-          taxDeduction: data.taxDeduction,
-          newsletter: data.newsletter,
-          method: data.method,
-        },
-      });
+    trackDonationSubmission({
+      isAnonymous,
+      isRecurring: !!donation.recurring,
+      method: data.method,
+      sum: donation.sum,
+      taxDeduction: data.taxDeduction,
+      newsletter: data.newsletter,
+      plausible,
+    });
 
-      if (donation.recurring) {
-        if (data.method) {
-          if (data.method === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
-          if (data.method === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
-          if (data.method === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
-
-          if (donation.sum) {
-            getEstimatedLtv({ method: data.method, sum: donation.sum }).then((ltv) => {
-              if (typeof window !== "undefined") {
-                // @ts-ignore
-                if (typeof window.fbq != "undefined" && window.fbq !== null) {
-                  // @ts-ignore
-                  window.fbq("track", "Lead", {
-                    value: ltv,
-                    currency: "NOK",
-                  });
-                }
-              }
-            });
-          }
-        }
-      }
-      if (!donation.recurring) {
-        if (data.method === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
-        if (data.method === PaymentMethod.SWISH) {
-          plausible("SelectSwishSingle");
-        }
-        if (data.method === PaymentMethod.BANK) {
-          plausible("SelectBankSingle");
-        }
-        // Facebook pixel tracking for Leads
-        if (typeof window !== "undefined") {
-          // @ts-ignore
-          if (typeof window.fbq !== "undefined" && window.fbq !== null) {
-            // @ts-ignore
-            window.fbq("track", "Lead", {
-              value: donation.sum,
-              currency: "NOK",
-            });
-          }
-        }
-      }
-    }
     dispatch(
       submitDonorInfo(
         isAnonymous
@@ -285,35 +239,8 @@ export const DonorPane: React.FC<{
                         {...register("ssn", {
                           required: false,
                           onChange: handleSsnChange,
-                          validate: (val, formValues) => {
-                            if (formValues.isAnonymous || !taxDeductionChecked) return true;
-                            const trimmed = val.toString().trim();
-
-                            if (locale === "no") {
-                              return validateSsnNo(trimmed);
-                            } else if (locale === "sv") {
-                              return validateSsnSe(trimmed);
-                            } else if (locale === "dk") {
-                              const validationResult = validateTin(trimmed, { allowCvr: true });
-                              if (validationResult.type === "CPR") {
-                                if (validationResult.isSuspicious) {
-                                  setCprSuspicious(true);
-                                  return true;
-                                } else if (
-                                  validationResult.isValid &&
-                                  !validationResult.isSuspicious
-                                ) {
-                                  setCprSuspicious(false);
-                                }
-                              } else {
-                                setCprSuspicious(false);
-                              }
-                              return validationResult.isValid;
-                            }
-
-                            // Unknown locale
-                            return true;
-                          },
+                          validate: (val, formValues) =>
+                            validateSsn(val.toString(), formValues.isAnonymous),
                         })}
                       />
                       {errors.ssn && (
@@ -423,18 +350,26 @@ export const DonorPane: React.FC<{
                 required: true,
               }}
               render={({ field }) => (
-                <RadioButtonGroup
-                  options={paymentMethods.map((method) => ({
-                    title: method.selector_text,
-                    value: paymentMethodMap[method._id],
-                    data_cy: `${method._id}-method`,
-                  }))}
-                  selected={field.value}
-                  onSelect={(option) => {
-                    field.onChange(option);
-                  }}
-                />
+                <div ref={paymentOptionsRef}>
+                  <RadioButtonGroup
+                    options={paymentMethods.map((method) => ({
+                      title: method.selector_text,
+                      value: paymentMethodMap[method._id],
+                      data_cy: `${method._id}-method`,
+                      data_id: method._id,
+                    }))}
+                    selected={field.value}
+                    onSelect={(option) => {
+                      field.onChange(option);
+                    }}
+                  />
+                </div>
               )}
+            />
+            <PaymentNudgeDisplay
+              isVisible={!!activeNudge}
+              message={nudgeMessageText}
+              arrowLeft={nudgeArrowLeft}
             />
           </div>
           <ActionBar data-cy="next-button-div">
@@ -449,14 +384,6 @@ export const DonorPane: React.FC<{
       </DonorForm>
     </Pane>
   );
-};
-
-const validateSsnNo = (ssn: string): boolean => {
-  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
-};
-
-const validateSsnSe = (ssn: string): boolean => {
-  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
 };
 
 export const paymentMethodMap: Record<string, PaymentMethod> = {
