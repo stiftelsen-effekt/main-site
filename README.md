@@ -1,5 +1,6 @@
+<!-- Testing E2E baseline -->
 <p align="center">
-  <img 
+  <img
     src="docs/logo.svg"
     alt="Gi Effektivt logo"
     width="340" />
