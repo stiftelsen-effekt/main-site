@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React, { CSSProperties, useContext } from "react";
 import styles from "./GiveBlock.module.scss";
 import { WidgetContext } from "../../layout/layout";
-import { CSSProperties } from "styled-components";
 import { usePlausible } from "next-plausible";
 import { isBright } from "../../../../util/color";
 
