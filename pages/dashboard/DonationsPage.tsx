@@ -6,7 +6,7 @@ import { ErrorMessage } from "../../components/profile/shared/ErrorMessage/Error
 import { useDebouncedCallback } from "use-debounce";
 import { DonationDetailsConfiguration } from "../../components/profile/shared/lists/donationList/DonationDetails";
 import { getClient } from "../../lib/sanity.client";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
   useAggregatedDonations,
@@ -193,15 +193,20 @@ export const DonationsPage = withStaticProps(
     error: donationsError,
   } = useDonations(user, getAccessTokenSilently);
 
-  const kids = new Set<string>();
-  donations?.map((donation: Donation) => kids.add(donation.KID));
+  const kids = useMemo(() => {
+    const kidsSet = new Set<string>();
+    donations?.forEach((donation: Donation) => kidsSet.add(donation.KID));
+    return Array.from(kidsSet);
+  }, [donations]);
+
+  const shouldFetchDistributions = !donationsLoading && donations !== undefined && kids.length > 0;
 
   const {
     loading: distributionsLoading,
     data: distributions,
     isValidating: distributionsValidating,
     error: distributionsError,
-  } = useDistributions(user, getAccessTokenSilently, !donationsLoading, Array.from(kids));
+  } = useDistributions(user, getAccessTokenSilently, shouldFetchDistributions, kids);
 
   const {
     data: organizations,

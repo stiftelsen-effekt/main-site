@@ -1,5 +1,5 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Info } from "react-feather";
 import { Distribution, Donation, TaxYearlyReport, TaxYearlyReportUnits } from "../../../../models";
 import {
@@ -38,15 +38,20 @@ export const YearlyReportsTab: React.FC<{
     error: donationsError,
   } = useDonations(user as User, getAccessTokenSilently);
 
-  const kids = new Set<string>();
-  donations?.map((donation: Donation) => kids.add(donation.KID));
+  const kids = useMemo(() => {
+    const kidsSet = new Set<string>();
+    donations?.forEach((donation: Donation) => kidsSet.add(donation.KID));
+    return Array.from(kidsSet);
+  }, [donations]);
+
+  const shouldFetchDistributions = !donationsLoading && donations !== undefined && kids.length > 0;
 
   const {
     loading: distributionsLoading,
     data: distributions,
     isValidating: distributionsValidating,
     error: distributionsError,
-  } = useDistributions(user as User, getAccessTokenSilently, !donationsLoading, Array.from(kids));
+  } = useDistributions(user as User, getAccessTokenSilently, shouldFetchDistributions, kids);
 
   const dataAvailable = donations && distributions && reportsData;
   const loading = donationsLoading || distributionsLoading || reportsLoading;
