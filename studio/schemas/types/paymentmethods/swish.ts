@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { transactionCostField } from "./transactionCost";
 
 export default defineType({
   name: "swish",
@@ -113,6 +114,7 @@ export default defineType({
         }),
       ],
     }),
+    transactionCostField,
   ],
   preview: {
     prepare() {

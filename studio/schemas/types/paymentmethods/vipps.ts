@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { transactionCostField } from "./transactionCost";
 
 export default defineType({
   name: "vipps",
@@ -83,6 +84,7 @@ export default defineType({
       group: "single",
       validation: (Rule) => Rule.required(),
     }),
+    transactionCostField,
   ],
   preview: {
     prepare() {

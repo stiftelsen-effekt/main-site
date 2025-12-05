@@ -2,6 +2,35 @@ import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
 import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
+export type PaymentMethodId =
+  | "bank"
+  | "vipps"
+  | "swish"
+  | "autogiro"
+  | "avtalegiro"
+  | "quickpay_card"
+  | "quickpay_mobilepay"
+  | "dkbank";
+
+export type TransactionCost = {
+  percentage_fee?: number | null;
+  fixed_fee?: number | null;
+};
+
+export type PaymentMethodNudge = {
+  _key: string;
+  message: string;
+  minimum_amount?: number;
+  recurring_type?: "single" | "recurring" | "both";
+  from_method?: PaymentMethodReference;
+  to_method?: PaymentMethodReference;
+};
+
+export type PaymentMethodReference = {
+  _id: PaymentMethodId;
+  selector_text?: string;
+};
+
 export type WidgetProps = { locale: "no" | "sv" | "en" | "dk" } & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
@@ -15,6 +44,7 @@ export type WidgetProps = { locale: "no" | "sv" | "en" | "dk" } & WidgetPane1Pro
       | QuickPayMobilePayPaymentMethod
       | DkBankPaymentMethod
     >;
+    nudges?: PaymentMethodNudge[];
   };
 
 export type BankPaymentMethod = {
@@ -30,6 +60,7 @@ export type BankPaymentMethod = {
   completed_title: string;
   completed_text: string;
   locale: string;
+  transaction_cost?: TransactionCost | null;
   completed_redirect?: {
     slug: string;
   };
@@ -45,6 +76,7 @@ export type VippsPaymentMethod = {
   recurring_button_text: string;
   single_title: string;
   single_button_text: string;
+  transaction_cost?: TransactionCost | null;
 };
 
 export type SwishPaymentMethod = {
@@ -71,6 +103,7 @@ export type SwishPaymentMethod = {
     title: string;
     text?: string;
   };
+  transaction_cost?: TransactionCost | null;
 };
 
 export type AvtaleGiroPaymentMethod = {
@@ -81,6 +114,7 @@ export type AvtaleGiroPaymentMethod = {
   selector_choose_date_text: string;
   date_selector_configuration: DatePickerInputConfiguration;
   button_text: string;
+  transaction_cost?: TransactionCost | null;
 };
 
 export type AutoGiroPaymentMethod = {
@@ -93,6 +127,7 @@ export type AutoGiroPaymentMethod = {
   manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
   recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
   completed_text: any[];
+  transaction_cost?: TransactionCost | null;
 };
 
 export type QuickPayCardPaymentMethod = {
@@ -100,6 +135,7 @@ export type QuickPayCardPaymentMethod = {
   selector_text: string;
   recurring_button_text: string;
   single_button_text: string;
+  transaction_cost?: TransactionCost | null;
 };
 
 export type QuickPayMobilePayPaymentMethod = {
@@ -107,6 +143,7 @@ export type QuickPayMobilePayPaymentMethod = {
   selector_text: string;
   recurring_button_text: string;
   single_button_text: string;
+  transaction_cost?: TransactionCost | null;
 };
 
 export type DkBankPaymentMethod = {
@@ -122,6 +159,7 @@ export type DkBankPaymentMethod = {
   completed_title: string;
   completed_text: string;
   locale: string;
+  transaction_cost?: TransactionCost | null;
   completed_redirect?: {
     slug: string;
   };

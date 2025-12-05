@@ -4,7 +4,14 @@ import { RadioButton } from "./RadioButton";
 import AnimateHeight from "react-animate-height";
 
 export const RadioButtonGroup: React.FC<{
-  options: { title: string; value: number; data_cy?: string; disabled?: boolean; content?: any }[];
+  options: {
+    title: string;
+    value: number;
+    data_cy?: string;
+    data_id?: string;
+    disabled?: boolean;
+    content?: any;
+  }[];
   selected: number | undefined;
   onSelect: (value: number) => void;
 }> = ({ options, selected, onSelect }) => {
@@ -28,6 +35,7 @@ export const RadioButtonGroup: React.FC<{
         <div key={option.value}>
           <RadioButton
             data_cy={option.data_cy ? option.data_cy : ""}
+            dataId={option.data_id}
             name={name}
             title={option.title}
             selected={selected === option.value}

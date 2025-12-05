@@ -35,12 +35,13 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { Action } from "typescript-fsa";
 
 export const widgetContentQuery = groq`
-...,
+  ...,
   "locale": *[ _type == "site_settings"][0].main_locale,
   methods[] { 
     _type == 'reference' => @->{
       _type == 'bank' => {
         ...,
+        transaction_cost,
         completed_redirect -> {
           "slug": slug.current,
         },
@@ -56,12 +57,15 @@ export const widgetContentQuery = groq`
         recurring_button_text,
         single_title,
         single_button_text,
+        transaction_cost,
       },
       _type == 'swish' => {
         ...
+        transaction_cost,
       },
       _type == 'autogiro' => {
         ...,
+        transaction_cost,
         recurring_manual_option_config {
           ...,
           date_selector_config->
@@ -69,17 +73,35 @@ export const widgetContentQuery = groq`
       },
       _type == 'avtalegiro' => {
         ...,
+        transaction_cost,
         date_selector_configuration->
       },
       _type == 'quickpay_card' => {
         ...,
+        transaction_cost,
       },
       _type == 'quickpay_mobilepay' => {
         ...,
+        transaction_cost,
       },
       _type == 'dkbank' => {
         ...,
+        transaction_cost,
       },
+    },
+  },
+  nudges[]{
+    _key,
+    message,
+    minimum_amount,
+    recurring_type,
+    from_method->{
+      _id,
+      selector_text
+    },
+    to_method->{
+      _id,
+      selector_text
     },
   },
   privacy_policy_link {
@@ -131,6 +153,8 @@ export const Widget = withStaticProps(
 )(({ data, inline = false, prefilled, defaultPaymentType }) => {
   const widget = data.result;
   const methods = data.result.methods;
+
+  console.log(widget.nudges);
 
   if (!methods) {
     throw new Error("No payment methods found");
@@ -253,6 +277,7 @@ export const Widget = withStaticProps(
                 privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
               }}
               paymentMethods={availablePaymentMethods}
+              nudges={widget.nudges}
             />
             <PaymentPane
               referrals={{

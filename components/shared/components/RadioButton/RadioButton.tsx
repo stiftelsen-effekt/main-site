@@ -8,13 +8,14 @@ export const RadioButton: React.FC<{
   disabled?: boolean;
   required?: boolean;
   data_cy: string;
+  dataId?: string;
   onSelect: () => void;
-}> = ({ selected, name, title, disabled, required, data_cy, onSelect }) => {
+}> = ({ selected, name, title, disabled, required, data_cy, dataId, onSelect }) => {
   const uniqueId = useId();
   const uniqueName = `${name}-${uniqueId}`;
 
   return (
-    <label className={styles.radiobuttonwrapper}>
+    <label className={styles.radiobuttonwrapper} data-method-id={dataId || undefined}>
       <input
         data-cy={data_cy}
         type={"radio"}

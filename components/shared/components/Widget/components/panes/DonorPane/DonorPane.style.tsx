@@ -77,3 +77,55 @@ export const InfoMessageWrapper = styled.div`
   gap: 10px;
   margin-top: 16px;
 `;
+
+export const PaymentNudgeWrapper = styled.div`
+  margin-top: 16px;
+  width: 100%;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: var(--nudge-arrow-left, 24px);
+    transform: translateX(-50%);
+    width: 22px;
+    height: 14px;
+    background: white;
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.16));
+    z-index: 1;
+  }
+`;
+
+export const PaymentNudgeContainer = styled.div`
+  width: calc(100% + 80px);
+  transform: translateX(-40px);
+  padding: 0 20px;
+`;
+
+export const PaymentNudge = styled.div`
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--primary);
+  background: white;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+  color: var(--secondary);
+
+  svg {
+    margin-top: 2px;
+    color: var(--secondary);
+    opacity: 0.85;
+  }
+
+  p {
+    margin: 4px 0 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: inherit;
+  }
+`;

@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { transactionCostField } from "./transactionCost";
 
 export default defineType({
   name: "avtalegiro",
@@ -42,6 +43,7 @@ export default defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
+    transactionCostField,
   ],
   preview: {
     prepare() {

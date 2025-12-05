@@ -17,6 +17,10 @@ export default defineType({
       name: "referrals",
       title: "Referrals",
     },
+    {
+      name: "nudges",
+      title: "Payment nudges",
+    },
   ],
   fields: [
     defineField({
@@ -42,6 +46,87 @@ export default defineType({
             disableNew: true,
           },
         },
+      ],
+    }),
+    defineField({
+      name: "nudges",
+      title: "Payment method nudges",
+      type: "array",
+      group: "nudges",
+      description:
+        "Configure contextual nudges that appear below the payment method selector. Use {savings} in the message to inject the estimated transaction cost savings.",
+      of: [
+        defineField({
+          name: "nudge",
+          type: "object",
+          fields: [
+            defineField({
+              name: "from_method",
+              title: "Show when donor picks",
+              type: "reference",
+              to: [
+                { type: "bank" },
+                { type: "vipps" },
+                { type: "swish" },
+                { type: "autogiro" },
+                { type: "avtalegiro" },
+                { type: "quickpay_card" },
+                { type: "quickpay_mobilepay" },
+                { type: "dkbank" },
+              ],
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "to_method",
+              title: "Recommend switching to",
+              type: "reference",
+              to: [
+                { type: "bank" },
+                { type: "vipps" },
+                { type: "swish" },
+                { type: "autogiro" },
+                { type: "avtalegiro" },
+                { type: "quickpay_card" },
+                { type: "quickpay_mobilepay" },
+                { type: "dkbank" },
+              ],
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "minimum_amount",
+              title: "Minimum amount",
+              type: "number",
+              description: "Only show the nudge when the donation amount is at least this value.",
+            }),
+            defineField({
+              name: "recurring_type",
+              title: "Recurring type",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Single", value: "single" },
+                  { title: "Recurring", value: "recurring" },
+                  { title: "Both", value: "both" },
+                ],
+                layout: "radio",
+              },
+              initialValue: "both",
+            }),
+            defineField({
+              name: "message",
+              title: "Message",
+              type: "text",
+              rows: 3,
+              description: "Use {savings} to insert the estimated savings in transaction costs.",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: "message",
+            },
+          },
+        }),
       ],
     }),
     //Single / monthly donation text
