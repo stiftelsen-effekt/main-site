@@ -11,7 +11,7 @@ import {
   useTaxUnits,
   useVippsAgreements,
 } from "../../_queries";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Clock } from "react-feather";
 import AgreementsMenu, {
@@ -103,13 +103,16 @@ export const AgreementsPage = withStaticProps(
     error: autoGiroError,
   } = useAutogiroAgreements(user, getAccessTokenSilently);
 
-  const kids = new Set<string>();
-  if (vipps && avtaleGiro && autoGiro)
+  const kids = useMemo(() => {
+    if (!vipps || !avtaleGiro || !autoGiro) return [];
+    const kidsSet = new Set<string>();
     [
-      ...vipps?.map((a: VippsAgreement) => a.KID),
-      ...avtaleGiro?.map((a: AvtaleGiroAgreement) => a.KID),
-      ...autoGiro?.map((a: AutoGiroAgreement) => a.KID),
-    ].map((kid) => kids.add(kid));
+      ...vipps.map((a: VippsAgreement) => a.KID),
+      ...avtaleGiro.map((a: AvtaleGiroAgreement) => a.KID),
+      ...autoGiro.map((a: AutoGiroAgreement) => a.KID),
+    ].forEach((kid) => kidsSet.add(kid));
+    return Array.from(kidsSet);
+  }, [vipps, avtaleGiro, autoGiro]);
 
   const {
     loading: distributionsLoading,
@@ -119,8 +122,8 @@ export const AgreementsPage = withStaticProps(
   } = useAgreementsDistributions(
     user,
     getAccessTokenSilently,
-    !vippsLoading && !avtaleGiroLoading,
-    Array.from(kids),
+    !!vipps && !!avtaleGiro && !!autoGiro && kids.length > 0,
+    kids,
   );
 
   const {
