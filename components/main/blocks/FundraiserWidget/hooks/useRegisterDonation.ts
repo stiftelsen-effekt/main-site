@@ -76,8 +76,8 @@ export function useRegisterDonation({
         fundraiser: {
           id: fundraiserId,
           message: formData.message,
-          messageSenderName: formData.message.length !== 0 ? formData.messageSenderName : null,
-          showName: formData.message.length !== 0 ? formData.showName : false,
+          messageSenderName: formData.messageSenderName ? formData.messageSenderName : null,
+          showName: formData.messageSenderName ? formData.showName : false,
         },
         method: method,
         amount: formData.amount,
