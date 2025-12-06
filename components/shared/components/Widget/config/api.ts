@@ -7,3 +7,4 @@ if (process.env.NEXT_PUBLIC_EFFEKT_API) {
 }
 
 export const API_URL = apiUrl;
+export const WEBSOCKET_URL = apiUrl.replace(/^http/, "ws");

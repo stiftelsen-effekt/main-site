@@ -20,8 +20,9 @@ import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
 import { FundraiserWidget } from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
-import { API_URL } from "../components/shared/components/Widget/config/api";
+import { API_URL, WEBSOCKET_URL } from "../components/shared/components/Widget/config/api";
 import { getFormattingLocale } from "../util/formatting";
+import { useFundraiserWebSocket } from "../hooks/useFundraiserWebSocket";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -163,6 +164,12 @@ export const FundraiserPage = withStaticProps(
   const headerImage = getValidImage(page.header_image);
   const fundraiserImage = getValidImage(page.fundraiser_image);
 
+  const donations = useFundraiserWebSocket(
+    page.fundraiser_database_id,
+    fundraiserData,
+    WEBSOCKET_URL,
+  );
+
   const content = page.content;
   const locale = getFormattingLocale((data.result.settings[0] as any).main_locale);
 
@@ -207,7 +214,7 @@ export const FundraiserPage = withStaticProps(
           <FundraiserProgressBar
             config={page.fundraiser_goal_config}
             currentAmount={
-              fundraiserData.totalSum +
+              donations.totalSum +
               (page.fundraiser_goal_config?.additional_external_contributions ?? 0)
             }
             locale={locale}
@@ -230,7 +237,7 @@ export const FundraiserPage = withStaticProps(
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
-            donations={fundraiserData.transactions}
+            donations={donations.transactions}
             config={page.gift_activity_config}
             locale={locale}
           ></FundraiserGiftActivity>
