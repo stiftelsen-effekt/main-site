@@ -22,6 +22,10 @@ const startWidget = () => {
 const fillDonationDetails = ({ amount, showName = false, name, message }) => {
   cy.get("[data-cy='fundraiser-amount-input']").clear({ force: true }).type(String(amount));
 
+  if (name) {
+    cy.get("[data-cy='fundraiser-name-input']").clear().type(name);
+  }
+
   if (message) {
     cy.get("[data-cy='fundraiser-message-input']").clear().type(message);
   }
@@ -36,10 +40,6 @@ const fillDonationDetails = ({ amount, showName = false, name, message }) => {
       cy.wrap($wrapper).click();
     }
   });
-
-  if (showName && name) {
-    cy.get("[data-cy='fundraiser-name-input']").clear().type(name);
-  }
 
   cy.get("[data-cy='fundraiser-donation-next']").click();
 };
@@ -219,5 +219,123 @@ describe("Fundraiser widget variations", () => {
     cy.wait("@registerVippsDonation");
     cy.get("@windowOpen").should("have.been.calledWith", "https://vipps.test/redirect", "_self");
     cy.get("[data-cy='fundraiser-pane-bank']").should("not.be.visible");
+  });
+});
+
+describe("Fundraiser widget - name/message payload variations", () => {
+  const setupIntercept = () => {
+    cy.intercept("POST", "**/donations/register", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: {
+          KID: "12345678",
+          paymentProviderUrl: "",
+        },
+      },
+    }).as("registerDonation");
+  };
+
+  const submitBankDonation = () => {
+    cy.get("[data-cy='fundraiser-method-bank']").click({ force: true });
+    cy.get("[data-cy='fundraiser-submit-button']").click({ force: true });
+  };
+
+  beforeEach(() => {
+    visitFundraiser(SLUGS.noTax);
+  });
+
+  it("sends no name info when neither name nor message is provided", () => {
+    setupIntercept();
+    goToPaymentPane({ amount: 200 });
+    submitBankDonation();
+
+    cy.wait("@registerDonation")
+      .its("request.body.fundraiser")
+      .should((fundraiser) => {
+        expect(fundraiser.message).to.equal("");
+        expect(fundraiser.messageSenderName).to.equal(null);
+        expect(fundraiser.showName).to.equal(false);
+      });
+  });
+
+  it("sends name with showName false when name is provided but showName is unchecked", () => {
+    setupIntercept();
+    goToPaymentPane({ amount: 200, name: "Wall-E", showName: false });
+    submitBankDonation();
+
+    cy.wait("@registerDonation")
+      .its("request.body.fundraiser")
+      .should((fundraiser) => {
+        expect(fundraiser.message).to.equal("");
+        expect(fundraiser.messageSenderName).to.equal("Wall-E");
+        expect(fundraiser.showName).to.equal(false);
+      });
+  });
+
+  it("sends name with showName true when name is provided and showName is checked", () => {
+    setupIntercept();
+    goToPaymentPane({ amount: 200, name: "Wall-E", showName: true });
+    submitBankDonation();
+
+    cy.wait("@registerDonation")
+      .its("request.body.fundraiser")
+      .should((fundraiser) => {
+        expect(fundraiser.message).to.equal("");
+        expect(fundraiser.messageSenderName).to.equal("Wall-E");
+        expect(fundraiser.showName).to.equal(true);
+      });
+  });
+
+  it("sends name and message with showName false when both provided but showName unchecked", () => {
+    setupIntercept();
+    goToPaymentPane({
+      amount: 200,
+      name: "Wall-E",
+      message: "Directive: protect life.",
+      showName: false,
+    });
+    submitBankDonation();
+
+    cy.wait("@registerDonation")
+      .its("request.body.fundraiser")
+      .should((fundraiser) => {
+        expect(fundraiser.message).to.equal("Directive: protect life.");
+        expect(fundraiser.messageSenderName).to.equal("Wall-E");
+        expect(fundraiser.showName).to.equal(false);
+      });
+  });
+
+  it("sends only message when message is provided but no name", () => {
+    setupIntercept();
+    goToPaymentPane({ amount: 200, message: "Directive: protect life." });
+    submitBankDonation();
+
+    cy.wait("@registerDonation")
+      .its("request.body.fundraiser")
+      .should((fundraiser) => {
+        expect(fundraiser.message).to.equal("Directive: protect life.");
+        expect(fundraiser.messageSenderName).to.equal(null);
+        expect(fundraiser.showName).to.equal(false);
+      });
+  });
+
+  it("sends name and message with showName true when all provided and showName checked", () => {
+    setupIntercept();
+    goToPaymentPane({
+      amount: 200,
+      name: "Wall-E",
+      message: "Directive: protect life.",
+      showName: true,
+    });
+    submitBankDonation();
+
+    cy.wait("@registerDonation")
+      .its("request.body.fundraiser")
+      .should((fundraiser) => {
+        expect(fundraiser.message).to.equal("Directive: protect life.");
+        expect(fundraiser.messageSenderName).to.equal("Wall-E");
+        expect(fundraiser.showName).to.equal(true);
+      });
   });
 });
