@@ -24,20 +24,22 @@ export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
   return (
     <ul className={elements.links}>
       {links &&
-        links
-          .filter(validateLink)
-          .map((link) => (
+        links.filter(validateLink).map((link) => {
+          const { href, isFundraiser } = getHref(link, articlesPagePath, fundraisersPath);
+          return (
             <li key={link._key}>
               {buttons ? (
                 <LinkButton
                   title={link.title ?? ""}
-                  url={getHref(link, articlesPagePath, fundraisersPath)}
+                  url={href}
+                  prefetch={isFundraiser ? false : undefined}
                 />
               ) : (
                 <LinkComponent link={link} />
               )}
             </li>
-          ))}
+          );
+        })}
     </ul>
   );
 };
@@ -49,11 +51,13 @@ export const LinkComponent: React.FC<{
   newtab?: boolean;
 }> = ({ link, children, style, newtab }) => {
   const { articlesPagePath, fundraisersPath } = useRouterContext();
+  const { href, isFundraiser } = getHref(link, articlesPagePath, fundraisersPath);
   const openInNewTab = (link._type === "link" && link.newtab) || newtab;
 
   return (
     <Link
-      href={getHref(link, articlesPagePath, fundraisersPath)}
+      href={href}
+      prefetch={isFundraiser ? false : undefined}
       target={openInNewTab ? "_blank" : ""}
       onClick={(e) => {
         e.currentTarget.blur();
@@ -69,18 +73,18 @@ export const getHref = (
   link: NavLink | LinkType,
   articlesPagePath: string[],
   fundraisersPath: string[],
-) => {
+): { href: string; isFundraiser: boolean } => {
   if (link._type === "navitem") {
     switch (link.pagetype) {
       case "article_page":
-        return `/${[...articlesPagePath, link.slug].join("/")}`;
+        return { href: `/${[...articlesPagePath, link.slug].join("/")}`, isFundraiser: false };
       case "fundraiser_page":
-        return `/${[...fundraisersPath, link.slug].join("/")}`;
+        return { href: `/${[...fundraisersPath, link.slug].join("/")}`, isFundraiser: true };
       default:
-        return `/${link.slug}`;
+        return { href: `/${link.slug}`, isFundraiser: false };
     }
   } else {
-    return link.url ?? (link as any).href ?? "";
+    return { href: link.url ?? (link as any).href ?? "", isFundraiser: false };
   }
 };
 
