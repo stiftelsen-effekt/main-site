@@ -35,6 +35,9 @@ export const DonationPane: React.FC<{
   const dispatch = useDispatch<Dispatch<LayoutActionTypes | DonationActionTypes>>();
   const donation = useSelector((state: State) => state.donation);
   const layout = useSelector((state: State) => state.layout);
+  const activeCauseAreas = useSelector((state: State) =>
+    state.layout.causeAreas?.filter((causeArea) => causeArea.isActive),
+  );
   const plausible = usePlausible();
   const sumInputId = useId();
   const [showErrors, setShowErrors] = useState(false);
@@ -93,7 +96,7 @@ export const DonationPane: React.FC<{
             onSelect={(option) => dispatch(setRecurring(option as RecurringDonation))}
           />
 
-          {layout.causeAreas?.length === 1 && (
+          {activeCauseAreas?.length === 1 && (
             <SumButtonsWrapper>
               {suggestedSums.map((suggested) => (
                 <div key={suggested.amount}>
@@ -155,13 +158,13 @@ export const DonationPane: React.FC<{
               <Spinner></Spinner>
             </div>
           )}
-          {layout.causeAreas?.length === 1 && (
+          {activeCauseAreas?.length === 1 && (
             <SingleCauseAreaSelector
               configuration={text.smart_distribution_context}
               errorTexts={errorTexts}
             />
           )}
-          {layout.causeAreas && layout.causeAreas?.length > 1 && (
+          {activeCauseAreas && activeCauseAreas?.length > 1 && (
             <MultipleCauseAreasSelector
               configuration={text.smart_distribution_context}
               errorTexts={errorTexts}

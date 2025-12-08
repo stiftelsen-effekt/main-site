@@ -71,7 +71,7 @@ export const MultipleCauseAreasSelector: React.FC<{
             >
               <CauseAreaShareSelectionTitleWrapper>
                 <CauseAreaShareSelectionTitle>
-                  <Link href={causeArea.informationUrl} target="_blank">
+                  <Link href={causeArea.informationUrl ?? "#"} target="_blank">
                     {causeArea.widgetDisplayName || causeArea.name}
                   </Link>{" "}
                   {causeArea.widgetContext && (

@@ -18,7 +18,9 @@ export const SingleCauseAreaSelector: React.FC<{
   errorTexts: ErrorText[];
 }> = ({ configuration, errorTexts }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
-  const causeAreas = useSelector((state: State) => state.layout.causeAreas);
+  const causeAreas = useSelector((state: State) =>
+    state.layout.causeAreas?.filter((causeArea) => causeArea.isActive),
+  );
   const donation = useSelector((state: State) => state.donation);
 
   if (!causeAreas) return null;
