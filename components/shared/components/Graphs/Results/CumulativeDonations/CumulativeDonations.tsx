@@ -97,8 +97,11 @@ export const CumulativeDonations: React.FC<{
           },
           y: {
             legend: true,
-            tickFormat: (t) =>
-              Math.round(t / 1000000) + " " + (textConfig?.millionAbbreviation || "mill"),
+            tickFormat: (t) => {
+              const millions = t / 1000000;
+              const formatted = millions % 1 === 0 ? millions.toString() : millions.toFixed(1);
+              return formatted + " " + (textConfig?.millionAbbreviation || "mill");
+            },
             label: null,
             tickSpacing: 100,
             tickSize: 0,
