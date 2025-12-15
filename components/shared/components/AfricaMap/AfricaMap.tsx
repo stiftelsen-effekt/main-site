@@ -2,11 +2,13 @@ import * as d3 from "d3";
 import React, { MouseEventHandler, useEffect, useMemo } from "react";
 import textures from "textures";
 import styles from "./AfricaMap.module.scss";
+import { getCountryName } from "./countryNames";
 
 export const AfricaMap: React.FC<{
   highlightedCountries: string[];
   setHoveredCountry: (country: { name: string; x: number; y: number } | null) => void;
-}> = ({ highlightedCountries, setHoveredCountry }) => {
+  locale?: string;
+}> = ({ highlightedCountries, setHoveredCountry, locale }) => {
   const mapRef = React.useRef<null | SVGSVGElement>(null);
 
   const t = useMemo(
@@ -40,7 +42,7 @@ export const AfricaMap: React.FC<{
         if (highlightedCountries.includes(country.id)) {
           country.setAttribute("fill", t.url());
           country.addEventListener("mousemove", (e) =>
-            computeHoveredCountry(e, (countryCodeToName as any)[country.id]),
+            computeHoveredCountry(e, getCountryName(country.id, locale)),
           );
           country.addEventListener("mouseleave", () => setHoveredCountry(null));
         } else {
@@ -48,7 +50,7 @@ export const AfricaMap: React.FC<{
         }
       });
     }
-  }, [highlightedCountries, mapRef]);
+  }, [highlightedCountries, mapRef, locale]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -300,63 +302,6 @@ export const AfricaMap: React.FC<{
       </g>
     </svg>
   );
-};
-
-const countryCodeToName = {
-  ao: "Angola",
-  bf: "Burkina Faso",
-  bi: "Burundi",
-  bj: "Benin",
-  bw: "Botswana",
-  cd: "Den demokratiske republikken Kongo", // Oftest brukt på norsk
-  cf: "Den sentralafrikanske republikk",
-  cg: "Republikken Kongo", // For å skille fra "Den demokratiske republikk Kongo"
-  ci: "Elfenbenskysten",
-  cm: "Kamerun",
-  cv: "Kapp Verde",
-  dj: "Djibouti",
-  dz: "Algerie",
-  eg: "Egypt",
-  er: "Eritrea",
-  et: "Etiopia",
-  ga: "Gabon",
-  gh: "Ghana",
-  gm: "Gambia",
-  gn: "Guinea",
-  gq: "Ekvatorial-Guinea",
-  gw: "Guinea-Bissau",
-  ke: "Kenya",
-  km: "Komorene",
-  lr: "Liberia",
-  ls: "Lesotho",
-  ly: "Libya",
-  mg: "Madagaskar",
-  ml: "Mali",
-  mr: "Mauritania",
-  mu: "Mauritius",
-  mw: "Malawi",
-  mz: "Mosambik",
-  na: "Namibia",
-  ne: "Niger",
-  ng: "Nigeria",
-  rw: "Rwanda",
-  sc: "Seychellene",
-  sd: "Sudan",
-  sl: "Sierra Leone",
-  sn: "Senegal",
-  so: "Somalia",
-  ss: "Sør-Sudan",
-  st: "São Tomé og Príncipe",
-  sz: "Eswatini", // Tidligere Swaziland, nå Eswatini
-  td: "Tsjad",
-  tg: "Togo",
-  tn: "Tunisia",
-  tz: "Tanzania",
-  ug: "Uganda",
-  za: "Sør-Afrika",
-  zm: "Zambia",
-  zw: "Zimbabwe",
-  _somaliland: "Somaliland",
 };
 
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
