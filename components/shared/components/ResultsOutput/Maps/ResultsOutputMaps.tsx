@@ -5,7 +5,10 @@ import { AsiaMap } from "../../AsiaMap/AsiaMap";
 import styles from "./ResultsOutputMaps.module.scss";
 import { stegaClean } from "@sanity/client/stega";
 
-export const ResultsOutputMaps: React.FC<{ outputCountries: string[] }> = ({ outputCountries }) => {
+export const ResultsOutputMaps: React.FC<{ outputCountries: string[]; locale?: string }> = ({
+  outputCountries,
+  locale,
+}) => {
   const [activeMap, setActiveMap] = useState(0);
   const [mapHeight, setMapHeight] = useState(0);
   const [hoveredCountry, setHoveredCountry] = useState<{
@@ -27,6 +30,7 @@ export const ResultsOutputMaps: React.FC<{ outputCountries: string[] }> = ({ out
               <AsiaMap
                 highlightedCountries={outputCountries.filter((c) => AsiaSet.has(stegaClean(c)))}
                 setHoveredCountry={setHoveredCountry}
+                locale={locale}
               ></AsiaMap>
             ),
           });
@@ -38,6 +42,7 @@ export const ResultsOutputMaps: React.FC<{ outputCountries: string[] }> = ({ out
               <AfricaMap
                 highlightedCountries={outputCountries.filter((c) => AfricaSet.has(stegaClean(c)))}
                 setHoveredCountry={setHoveredCountry}
+                locale={locale}
               ></AfricaMap>
             ),
           });
@@ -45,7 +50,7 @@ export const ResultsOutputMaps: React.FC<{ outputCountries: string[] }> = ({ out
       }
     }
     return maps;
-  }, [outputCountries]);
+  }, [outputCountries, locale]);
 
   useEffect(() => {
     if (mapWrapperRef.current) {
