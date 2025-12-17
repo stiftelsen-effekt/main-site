@@ -2,11 +2,13 @@ import * as d3 from "d3";
 import React, { useEffect, useMemo } from "react";
 import textures from "textures";
 import styles from "./AsiaMap.module.scss";
+import { getCountryName } from "./countryNames";
 
 export const AsiaMap: React.FC<{
   highlightedCountries: string[];
   setHoveredCountry: (country: { name: string; x: number; y: number } | null) => void;
-}> = ({ highlightedCountries, setHoveredCountry }) => {
+  locale?: string;
+}> = ({ highlightedCountries, setHoveredCountry, locale }) => {
   const mapRef = React.useRef<null | SVGSVGElement>(null);
 
   const t = useMemo(
@@ -56,7 +58,7 @@ export const AsiaMap: React.FC<{
         if (highlightedCountries.includes(country.id)) {
           country.setAttribute("fill", t.url());
           country.addEventListener("mousemove", (e) =>
-            computeHoveredCountry(e, (countryCodeToName as any)[country.id]),
+            computeHoveredCountry(e, getCountryName(country.id, locale)),
           );
           country.addEventListener("mouseleave", () => setHoveredCountry(null));
         } else {
@@ -64,7 +66,7 @@ export const AsiaMap: React.FC<{
         }
       });
     }
-  }, [highlightedCountries, mapRef]);
+  }, [highlightedCountries, mapRef, locale]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -304,57 +306,6 @@ export const AsiaMap: React.FC<{
       </g>
     </svg>
   );
-};
-
-const countryCodeToName = {
-  af: "Afghanistan",
-  am: "Armenia",
-  az: "Aserbajdsjan",
-  bh: "Bahrain",
-  bd: "Bangladesh",
-  bn: "Brunei",
-  bt: "Bhutan",
-  cn: "Kina",
-  cy: "Kypros",
-  ge: "Georgia",
-  id: "Indonesia",
-  il: "Israel",
-  in: "India",
-  iq: "Irak",
-  ir: "Iran",
-  jp: "Japan",
-  jo: "Jordan",
-  kz: "Kasakhstan",
-  kp: "Nord-Korea",
-  kr: "Sør-Korea",
-  kw: "Kuwait",
-  kg: "Kirgisistan",
-  la: "Laos",
-  lb: "Libanon",
-  my: "Malaysia",
-  mv: "Maldivene",
-  mn: "Mongolia",
-  mm: "Myanmar",
-  np: "Nepal",
-  om: "Oman",
-  pk: "Pakistan",
-  ph: "Filippinene",
-  qa: "Qatar",
-  ru: "Russland",
-  sa: "Saudi-Arabia",
-  sg: "Singapore",
-  lk: "Sri Lanka",
-  sy: "Syria",
-  tj: "Tadsjikistan",
-  th: "Thailand",
-  tl: "Øst-Timor",
-  tm: "Turkmenistan",
-  tr: "Tyrkia",
-  tw: "Taiwan",
-  ae: "De forente arabiske emirater",
-  uz: "Usbekistan",
-  vn: "Vietnam",
-  ye: "Jemen",
 };
 
 const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);

@@ -135,7 +135,7 @@ export const ResultsOutput: React.FC<{
             </div>
             <PortableText value={description} />
           </div>
-          <ResultsOutputMaps outputCountries={outputCountries} />
+          <ResultsOutputMaps outputCountries={outputCountries} locale={textConfig?.locale} />
         </div>
       </div>
       <Outputs
