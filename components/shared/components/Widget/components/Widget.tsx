@@ -13,6 +13,7 @@ import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
 import { ApiErrorNotification } from "./shared/ApiErrorNotification/ApiErrorNotification";
+import { TaxInfoBox } from "./shared/Layout/Layout.style";
 import { token } from "../../../../../token";
 import {
   TooltipContent,
@@ -237,6 +238,14 @@ export const Widget = withStaticProps(
             </TooltipWrapper>
           )}
           <ApiErrorNotification genericErrorMessage={widget.api_generic_error_message} />
+          {(() => {
+            const taxInfoText: Record<string, string> = {
+              no: "For skattefradrag i 2025 må pengene stå på vår konto innen årsslutt. Bankdonasjoner må overføres før kl. 14:30 den 31. desember.",
+              sv: "För skatteavdrag 2025 måste pengarna finnas på vårt konto innan årsskiftet. Banköverföringar måste skickas före kl. 14:30 den 31 december.",
+            };
+            const text = taxInfoText[widget.locale];
+            return text ? <TaxInfoBox>{text}</TaxInfoBox> : null;
+          })()}
           <ProgressBar inline={inline} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
             <DonationPane
