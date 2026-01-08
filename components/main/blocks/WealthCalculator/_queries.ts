@@ -90,22 +90,30 @@ export const getDanishTaxEstimate = async (
   income: number,
   periodAdjustment: WealthCalculatorPeriodAdjustment,
 ) => {
-  // 2025 https://skat.dk/hjaelp/satser
-  const PERSONFRADRAG = 51600;
+  // 2026 https://skat.dk/hjaelp/satser
+  const PERSONFRADRAG = 54100;
   const AM_BIDRAG_PCT = 0.08;
-  const TOP_SKAT_PCT = 0.15;
-  const TOP_SKAT_THRESHOLD = 611800;
+  const MELLEMSKAT_PCT = 0.075;
+  const MELLEMSKAT_THRESHOLD = 641200;
+  const TOPSKAT_PCT = 0.075;
+  const TOPSKAT_THRESHOLD = 777900;
+  const TOPTOPSKAT_PCT = 0.05;
+  const TOPTOPSKAT_THRESHOLD = 2592700;
   const KOMMUNE_SKAT_PCT = 0.251;
   const BUNDSKAT_PCT = 0.1201;
-  const SKATTELOFT_PCT = 0.5207;
+  const SKATTELOFT_PCT = 0.4457;
 
   const amBidrag = income * AM_BIDRAG_PCT;
   const taxable = Math.max(0, income - amBidrag - PERSONFRADRAG);
   const bundSkat = taxable * BUNDSKAT_PCT;
   const kommuneSkat = taxable * KOMMUNE_SKAT_PCT;
-  const topSkat = Math.max(0, taxable - TOP_SKAT_THRESHOLD) * TOP_SKAT_PCT;
+  const mellemSkat = Math.max(0, taxable - MELLEMSKAT_THRESHOLD) * MELLEMSKAT_PCT;
   const skatteLoft = Math.max(0, (income - amBidrag) * SKATTELOFT_PCT);
-  const totalTax = amBidrag + Math.min(kommuneSkat + bundSkat + topSkat, skatteLoft);
+  const topSkat = Math.max(0, taxable - TOPSKAT_THRESHOLD) * TOPSKAT_PCT;
+  const topTopSkat = Math.max(0, taxable - TOPTOPSKAT_THRESHOLD) * TOPTOPSKAT_PCT;
+
+  const totalTax =
+    amBidrag + Math.min(kommuneSkat + bundSkat + mellemSkat, skatteLoft) + topSkat + topTopSkat;
 
   if (periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY) {
     return totalTax / 12;
