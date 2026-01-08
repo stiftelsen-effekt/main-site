@@ -118,7 +118,7 @@ const getSwedishInflation2017 = async (date: DateTime) => {
 const getDanishInflation2017 = async (date: DateTime) => {
   let attempts = 0;
 
-  while (attempts < 2) {
+  while (attempts < 3) {
     const inflation = await fetch("https://api.statbank.dk/v1/data", {
       method: "POST",
       headers: { "Content-Type": "application/json", "User-Agent": "insomnia/11.0.0" },

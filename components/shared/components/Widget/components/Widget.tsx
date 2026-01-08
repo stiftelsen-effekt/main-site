@@ -61,7 +61,7 @@ export const widgetContentQuery = groq`
         transaction_cost,
       },
       _type == 'swish' => {
-        ...
+        ...,
         transaction_cost,
       },
       _type == 'autogiro' => {
@@ -155,6 +155,8 @@ export const Widget = withStaticProps(
   const widget = data.result;
   const methods = data.result.methods;
 
+  console.log(methods);
+
   if (!methods) {
     throw new Error("No payment methods found");
   }
@@ -238,14 +240,14 @@ export const Widget = withStaticProps(
             </TooltipWrapper>
           )}
           <ApiErrorNotification genericErrorMessage={widget.api_generic_error_message} />
-          {(() => {
+          {/*(() => {
             const taxInfoText: Record<string, string> = {
               no: "For skattefradrag i 2025 må pengene stå på vår konto innen årsslutt. Bankdonasjoner må overføres før kl. 14:30 den 31. desember.",
               sv: "För skatteavdrag 2025 måste pengarna finnas på vårt konto innan årsskiftet. Banköverföringar måste skickas före kl. 14:30 den 31 december.",
             };
             const text = taxInfoText[widget.locale];
             return text ? <TaxInfoBox>{text}</TaxInfoBox> : null;
-          })()}
+          })()}*/}
           <ProgressBar inline={inline} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
             <DonationPane
