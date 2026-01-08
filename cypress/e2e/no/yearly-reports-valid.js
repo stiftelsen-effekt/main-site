@@ -82,7 +82,7 @@ describe("Tax reports page valid", () => {
   });
 
   it("should display correct information in unit table", () => {
-    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2024");
+    cy.get("[data-cy=generic-list-header-title]").should("contain.text", "2025");
 
     cy.get("[data-cy=generic-list-table]").first().find(">tbody").should("have.length", 2);
 
