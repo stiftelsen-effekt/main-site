@@ -61,7 +61,7 @@ export const widgetContentQuery = groq`
         transaction_cost,
       },
       _type == 'swish' => {
-        ...
+        ...,
         transaction_cost,
       },
       _type == 'autogiro' => {
@@ -154,6 +154,8 @@ export const Widget = withStaticProps(
 )(({ data, inline = false, prefilled, defaultPaymentType }) => {
   const widget = data.result;
   const methods = data.result.methods;
+
+  console.log(methods);
 
   if (!methods) {
     throw new Error("No payment methods found");
