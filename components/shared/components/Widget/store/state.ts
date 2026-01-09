@@ -43,7 +43,7 @@ export interface Donation extends DonationInput {
 
 export type DonationError = {
   type: DonationErrorTypeNames;
-  causeAreaId?: number;
+  causeAreaId?: string;
   variables?: { [key: string]: string };
 };
 export type DonationErrorTypeNames =
@@ -77,7 +77,7 @@ export interface DonorInput {
 }
 
 export interface Donor extends DonorInput {
-  donorID?: number;
+  donorID?: string;
 }
 
 export interface Referrals {
@@ -92,7 +92,7 @@ export interface DonorFormValues extends DonorInput {
 }
 
 export interface Share {
-  organizationID: number;
+  organizationID: string;
   share: number;
 }
 

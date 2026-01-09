@@ -1,8 +1,8 @@
 export interface Organization {
   /** @description The organization id */
-  id: number;
+  id: string;
   /** @description The cause area id the organization belongs to */
-  causeAreaId: number;
+  causeAreaId: string;
   /** @description The standard share within the cause area */
   standardShare?: number;
   /** @description The organization name */

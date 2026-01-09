@@ -48,8 +48,8 @@ export const DonationWidgetBlock: React.FC<{
 // Input type
 type InputDistribution = {
   _key: string;
-  id: number;
-  causeAreaId?: number;
+  id: string;
+  causeAreaId?: string;
   name: string;
   percentage: number;
   type: "causeArea" | "organization";

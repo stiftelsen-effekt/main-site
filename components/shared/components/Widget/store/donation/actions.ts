@@ -57,7 +57,7 @@ export function submitDonorInfo(data: {
 }
 
 export function setShares(
-  causeAreaId: number,
+  causeAreaId: string,
   shares: DistributionCauseAreaOrganization[],
 ): DonationActionTypes {
   return {
@@ -96,7 +96,7 @@ export function setRecurring(recurring: RecurringDonation): DonationActionTypes 
   };
 }
 
-export function setDonorID(donorID: number): DonationActionTypes {
+export function setDonorID(donorID: string): DonationActionTypes {
   return {
     type: SET_DONOR_ID,
     payload: {
@@ -123,7 +123,7 @@ export function setPaymentProviderURL(url: string): DonationActionTypes {
   };
 }
 
-export function selectCustomShare(causeAreaId: number, customShare: boolean): DonationActionTypes {
+export function selectCustomShare(causeAreaId: string, customShare: boolean): DonationActionTypes {
   return {
     type: SELECT_CUSTOM_SHARE,
     payload: {
@@ -134,7 +134,7 @@ export function selectCustomShare(causeAreaId: number, customShare: boolean): Do
 }
 
 export function setCauseAreaPercentageShare(
-  causeAreaId: number,
+  causeAreaId: string,
   percentageShare: string,
 ): DonationActionTypes {
   return {
@@ -146,7 +146,7 @@ export function setCauseAreaPercentageShare(
   };
 }
 
-export function setShareType(causeAreaId: number, standardSplit: boolean): DonationActionTypes {
+export function setShareType(causeAreaId: string, standardSplit: boolean): DonationActionTypes {
   return {
     type: SET_SHARE_TYPE,
     payload: {
@@ -171,7 +171,7 @@ export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActio
 
 export type RegisterDonationResponse = {
   KID: string;
-  donorID: number;
+  donorID: string;
   hasAnsweredReferral: boolean;
   paymentProviderUrl: string;
   swishOrderID: string;

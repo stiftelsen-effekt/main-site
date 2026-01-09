@@ -111,15 +111,15 @@ export const YearlyReportsTab: React.FC<{
         const eanDistribution: Distribution = {
           kid: "EAN Giverportal",
           taxUnitId: null,
-          donorId: parseInt(donor.id),
+          donorId: donor.id,
           causeAreas: [
             {
-              id: -1,
+              id: "-1",
               percentageShare: "100",
               standardSplit: true,
               organizations: [
                 {
-                  id: 1,
+                  id: "1",
                   name: "GiveWell",
                   percentageShare: "100",
                 },

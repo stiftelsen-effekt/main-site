@@ -2,7 +2,7 @@ import { DistributionCauseAreaOrganization } from "./DistributionCauseAreaOrgani
 
 export type DistributionCauseArea = {
   /** @description The cause area id */
-  id: number;
+  id: string;
   name: string;
   /** @description Whether the distribution is a standard distribution */
   standardSplit: boolean;

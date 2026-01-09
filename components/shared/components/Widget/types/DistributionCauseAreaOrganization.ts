@@ -1,6 +1,6 @@
 export type DistributionCauseAreaOrganization = {
   /** @description The organization id */
-  id: number;
+  id: string;
   /** @description The organization name */
   name?: string;
   informationUrl?: string;

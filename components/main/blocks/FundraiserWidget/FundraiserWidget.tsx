@@ -27,8 +27,8 @@ interface DonationWidgetProps {
     textTemplate: string;
     organization: NonNullable<FetchFundraiserResult["page"]>["fundraiser_organization"];
     databaseIds: {
-      causeAreaId: number;
-      organizationId: number;
+      causeAreaId: string;
+      organizationId: string;
     };
   };
   locale: FormattingLocale;
