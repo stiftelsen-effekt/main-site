@@ -64,6 +64,14 @@ export function useSsnValidation({
       if (locale === "dk" && taxDeductionChecked) {
         const formattedValue = formatTinInput(value, { allowCvr: true });
         e.target.value = formattedValue;
+
+        const digits = formattedValue.replace(/\D/g, "");
+        if (digits.length === 10 || digits.length === 8) {
+          const validationResult = validateTin(formattedValue, { allowCvr: true });
+          setCprSuspicious(validationResult.type === "CPR" && validationResult.isSuspicious);
+        } else {
+          setCprSuspicious(false);
+        }
       }
     },
     [locale, taxDeductionChecked],
