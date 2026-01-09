@@ -77,7 +77,7 @@ export interface DonorInput {
 }
 
 export interface Donor extends DonorInput {
-  donorID?: number;
+  donorID?: string;
 }
 
 export interface Referrals {

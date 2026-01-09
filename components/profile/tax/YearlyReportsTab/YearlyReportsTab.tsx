@@ -111,7 +111,7 @@ export const YearlyReportsTab: React.FC<{
         const eanDistribution: Distribution = {
           kid: "EAN Giverportal",
           taxUnitId: null,
-          donorId: parseInt(donor.id),
+          donorId: donor.id,
           causeAreas: [
             {
               id: -1,
@@ -135,7 +135,7 @@ export const YearlyReportsTab: React.FC<{
           sum: sumEanDonations.toString(),
           timestamp: new Date(2022, 6, 1).toISOString(),
           donor: donor.name,
-          donorId: parseInt(donor.id),
+          donorId: donor.id,
           email: donor.email,
           paymentMethod: "Bank",
           transactionCost: "0",
