@@ -41,7 +41,7 @@
 
 .button {
   background: var(--accent-color, var(--secondary));
-  color: white;
+  color: var(--secondary);
   font-size: 1.5rem;
   font-family: "ESKlarheitKurrent";
   font-weight: 400;

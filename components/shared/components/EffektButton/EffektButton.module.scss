@@ -101,7 +101,7 @@
 
 .buttonaccent {
   background: var(--accent-color);
-  color: white;
+  color: var(--secondary);
   border: 1px solid var(--accent-color);
   background-clip: padding-box;
   transition: all 0.2s ease;
