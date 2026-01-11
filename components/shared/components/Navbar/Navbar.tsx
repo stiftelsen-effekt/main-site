@@ -179,11 +179,8 @@ export const Navbar = withStaticProps(
   let giveButtonStyle = {};
   if (giveButton.accent_color) {
     giveButtonStyle = {
-      backgroundColor: giveButton.accent_color,
-      color: "white",
-      border: `1px solid ${giveButton.accent_color} !important`,
-      borderColor: giveButton.accent_color,
-    };
+      "--accent-color": giveButton.accent_color,
+    } as React.CSSProperties;
   }
 
   const lightLogo =
@@ -322,6 +319,7 @@ export const Navbar = withStaticProps(
               cy="send-donation-button"
               extraMargin={true}
               onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
+              variant={EffektButtonVariant.ACCENT}
               style={giveButtonStyle}
             >
               {giveButton.donate_label}

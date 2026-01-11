@@ -22,10 +22,8 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
   let accentStyles: CSSProperties = {};
   if (accentColor) {
     accentStyles = {
-      backgroundColor: accentColor,
-      color: "white",
-      border: "none",
-    };
+      "--accent-color": accentColor,
+    } as CSSProperties;
   }
 
   return (

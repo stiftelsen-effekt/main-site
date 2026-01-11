@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { WidgetContext } from "../../../main/layout/layout";
-import { EffektButton } from "../EffektButton/EffektButton";
+import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
 import { ctaButtonStyleOverrides } from "../../../main/layout/PageHeader/PageHeader";
 import { usePlausible } from "next-plausible";
 
@@ -15,16 +15,14 @@ export const OpenWidgetButton: React.FC<{ label?: string; accent_color?: string;
   let giveButtonStyle = {};
   if (accent_color) {
     giveButtonStyle = {
-      backgroundColor: accent_color,
-      color: "white",
-      border: `1px solid ${accent_color} !important`,
-      borderColor: accent_color,
-    };
+      "--accent-color": accent_color,
+    } as React.CSSProperties;
   }
 
   return (
     <EffektButton
       cy={cy}
+      variant={EffektButtonVariant.ACCENT}
       onClick={() => {
         setWidgetContext({ ...widgetContext, open: true });
         plausible("OpenDonationWidget", {

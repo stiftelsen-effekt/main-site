@@ -99,6 +99,29 @@
   border: 1px dashed var(--primary);
 }
 
+.buttonaccent {
+  background: var(--accent-color);
+  color: white;
+  border: 1px solid var(--accent-color);
+  background-clip: padding-box;
+  transition: all 0.2s ease;
+}
+
+.buttonaccent:focus {
+  border: 1px solid var(--accent-color) !important;
+  outline: 2px solid var(--primary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .buttonaccent:hover,
+  .buttonaccent:active {
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: 1px solid var(--primary) !important;
+    outline: none;
+  }
+}
+
 .selected {
   color: var(--secondary);
   background-color: var(--primary);
