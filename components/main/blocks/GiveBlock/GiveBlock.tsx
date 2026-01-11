@@ -26,12 +26,14 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
     } as CSSProperties;
   }
 
+  const buttonClasses = accentColor ? `${styles.button} ${styles.buttonAccent}` : styles.button;
+
   return (
     <div className={styles.container}>
       <h3>{heading}</h3>
       <p className="inngress">{paragraph}</p>
       <button
-        className={styles.button}
+        className={buttonClasses}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.currentTarget.blur();
           plausible("OpenDonationWidget", {

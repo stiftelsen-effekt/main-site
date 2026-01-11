@@ -40,8 +40,8 @@
 }
 
 .button {
-  background: var(--accent-color, var(--secondary));
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--primary);
   font-size: 1.5rem;
   font-family: "ESKlarheitKurrent";
   font-weight: 400;
@@ -53,13 +53,28 @@
   padding: 0.75rem 2.5rem;
   border-radius: 5rem;
   margin-bottom: 30px;
-  border: 1px solid var(--accent-color, var(--secondary));
+  border: 1px solid var(--secondary);
   transition: all 0.2s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button:hover,
   .button:active {
+    color: var(--secondary);
+    background: var(--primary);
+    border: 1px solid var(--secondary);
+  }
+}
+
+.buttonAccent {
+  background: var(--accent-color);
+  color: var(--secondary);
+  border: 1px solid var(--accent-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .buttonAccent:hover,
+  .buttonAccent:active {
     background-color: var(--primary);
     color: var(--secondary);
     border: 1px solid var(--secondary);

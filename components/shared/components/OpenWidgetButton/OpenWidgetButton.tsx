@@ -22,7 +22,7 @@ export const OpenWidgetButton: React.FC<{ label?: string; accent_color?: string;
   return (
     <EffektButton
       cy={cy}
-      variant={EffektButtonVariant.ACCENT}
+      variant={accent_color ? EffektButtonVariant.ACCENT : EffektButtonVariant.PRIMARY}
       onClick={() => {
         setWidgetContext({ ...widgetContext, open: true });
         plausible("OpenDonationWidget", {
