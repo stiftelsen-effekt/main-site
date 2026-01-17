@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   min-width: 7em;
-  transition: padding 100ms;
+  transition: all 0.2s ease;
   background-clip: padding-box;
 }
 
@@ -104,7 +104,6 @@
   color: var(--secondary);
   border: 1px solid var(--accent-color);
   background-clip: padding-box;
-  transition: all 0.2s ease;
 }
 
 .buttonaccent:focus {

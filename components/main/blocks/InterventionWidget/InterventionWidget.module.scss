@@ -89,6 +89,7 @@
 }
 
 .select button:hover {
+  transition: all 0.2s ease;
   color: var(--secondary);
   background-color: var(--primary);
   border: 1px solid var(--primary);
