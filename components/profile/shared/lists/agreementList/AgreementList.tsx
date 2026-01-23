@@ -14,14 +14,11 @@ import { StoppedAgreementFeedback } from "../../../agreements/StoppedAgreementFe
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
 import { thousandize } from "../../../../../util/formatting";
 
-// NO/SE payment methods
 type NordicAgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
-// DK payment methods (as returned by backend)
 type DKAgreementTypes = "MobilePay" | "Credit card" | "Bank transfer";
 
 export type AgreementTypes = NordicAgreementTypes | DKAgreementTypes;
 
-// Map DK backend values to display labels
 const DK_PAYMENT_METHOD_LABELS: Record<DKAgreementTypes, string> = {
   MobilePay: "MobilePay",
   "Credit card": "Kort",
@@ -214,7 +211,6 @@ const formatColumnValue = (
         ? column.payment_date_last_day_of_month_template
         : column.payment_date_format_template?.replaceAll("{{date}}", value);
     case "paymentmethod":
-      // Map DK payment methods to display labels
       if (value in DK_PAYMENT_METHOD_LABELS) {
         return DK_PAYMENT_METHOD_LABELS[value as DKAgreementTypes];
       }
