@@ -206,10 +206,6 @@ export const useVippsAgreements = (user: User | undefined, fetchToken: getAccess
   };
 };
 
-/**
- * Gets DK recurring donation agreements
- * Uses the same /vipps/ endpoint but returns DK-specific data including payment method
- */
 export const useDKAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
     user ? `/donors/${getUserId(user)}/recurring/vipps/` : null,

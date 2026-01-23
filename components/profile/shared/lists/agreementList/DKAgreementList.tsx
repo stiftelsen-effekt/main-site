@@ -4,7 +4,6 @@ import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { thousandize } from "../../../../../util/formatting";
 
-// Map backend payment method values to display labels
 const PAYMENT_METHOD_LABELS: Record<DKPaymentMethod, string> = {
   MobilePay: "MobilePay",
   "Credit card": "Kort",
@@ -97,7 +96,6 @@ const formatColumnValue = (
     case "sum":
       return thousandize(Math.round(parseFloat(value))) + " kr";
     case "date":
-      // Bank transfer agreements don't have a fixed charge day
       if (method === "Bank transfer") {
         return "Du bestemmer selv";
       }

@@ -59,7 +59,6 @@ export type VippsAgreement = {
   agreement_url_code: string;
 };
 
-// DK recurring donation agreement (returned by DK backend via /vipps/ endpoint)
 export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
 
 export type DKAgreement = {
