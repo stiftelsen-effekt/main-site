@@ -5,6 +5,7 @@ export const EffektButtonVariant = {
   PRIMARY: elements.buttonprimary,
   SECONDARY: elements.buttonsecondary,
   TERTIARY: elements.buttontertiary,
+  ACCENT: elements.buttonaccent,
 };
 
 interface EffektButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

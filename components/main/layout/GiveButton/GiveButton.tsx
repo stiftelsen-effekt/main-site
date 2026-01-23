@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import styles from "./GiveButton.module.scss";
 import { usePlausible } from "next-plausible";
-import { isBright } from "../../../../util/color";
 
 export const GiveButton: React.FC<
   PropsWithChildren<{ color: string; inverted: boolean; onClick: () => void; title: string }>
@@ -20,16 +19,14 @@ export const GiveButton: React.FC<
   let customStyles = {};
   if (color) {
     customStyles = {
-      backgroundColor: color,
-      color: "white",
-      ...(isBright(color) ? { border: "none" } : {}),
-    };
+      "--accent-color": color,
+    } as React.CSSProperties;
   }
 
   return (
     <button
       style={customStyles}
-      className={`${styles.givebutton} ${inverted ? styles.givebuttoninverted : null}`}
+      className={`${styles.givebutton} ${inverted ? styles.givebuttoninverted : ""}`}
       title={title}
       onClick={handleClick}
       data-cy="gi-button"

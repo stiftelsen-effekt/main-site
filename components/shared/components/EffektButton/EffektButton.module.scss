@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   min-width: 7em;
-  transition: padding 100ms;
+  transition: all 0.2s ease;
   background-clip: padding-box;
 }
 
@@ -97,6 +97,28 @@
   /* !! dashed 1px is too small value 
   to match the aperance in the design criteria */
   border: 1px dashed var(--primary);
+}
+
+.buttonaccent {
+  background: var(--accent-color);
+  color: var(--secondary);
+  border: 1px solid var(--accent-color);
+  background-clip: padding-box;
+}
+
+.buttonaccent:focus {
+  border: 1px solid var(--accent-color) !important;
+  outline: 2px solid var(--primary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .buttonaccent:hover,
+  .buttonaccent:active {
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: 1px solid var(--primary) !important;
+    outline: none;
+  }
 }
 
 .selected {

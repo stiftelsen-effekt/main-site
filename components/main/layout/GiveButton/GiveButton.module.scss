@@ -4,8 +4,8 @@
   right: 5vw;
   bottom: 60px;
   z-index: 100;
-  background: var(--primary);
-  border: 1px solid var(--secondary);
+  background: var(--accent-color, var(--primary));
+  border: 1px solid var(--accent-color, var(--secondary));
   font-size: 43px;
   font-family: "ESKlarheitKurrent";
   font-weight: 400;
@@ -17,21 +17,35 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.2s ease;
 }
 
-.givebutton:hover {
-  color: var(--primary);
-  background: var(--secondary);
-  border: 1px solid var(--primary);
+@media (hover: hover) and (pointer: fine) {
+  .givebutton:hover,
+  .givebutton:active {
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+  }
 }
 
 .givebutton:focus {
   outline: 2px solid var(--secondary);
 }
 
-.givebutton:active {
-  color: var(--primary);
-  background: var(--secondary);
+.givebuttoninverted {
+  background: var(--accent-color, var(--primary));
+  color: var(--secondary);
+  border: 1px solid var(--accent-color, var(--secondary));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .givebuttoninverted:hover,
+  .givebuttoninverted:active {
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: 1px solid var(--secondary);
+  }
 }
 
 @media only screen and (max-width: 1180px) {
