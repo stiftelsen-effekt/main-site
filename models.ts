@@ -45,9 +45,6 @@ export type AutoGiroAgreement = {
   cancelled: string;
 };
 
-// DK payment methods as returned by backend
-export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
-
 export type VippsAgreement = {
   ID: number;
   status: "EXPIRED" | "PENDING" | "ACTIVE" | "STOPPED";
@@ -60,7 +57,19 @@ export type VippsAgreement = {
   paused_until_date: string;
   amount: number;
   agreement_url_code: string;
-  method?: DKPaymentMethod;
+};
+
+// DK recurring donation agreement (returned by DK backend via /vipps/ endpoint)
+export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
+
+export type DKAgreement = {
+  id: string;
+  status: "ACTIVE" | "STOPPED";
+  amount: number;
+  monthly_charge_day: number;
+  created_at: string;
+  cancelled: boolean;
+  method: DKPaymentMethod;
 };
 
 export type Distribution = {

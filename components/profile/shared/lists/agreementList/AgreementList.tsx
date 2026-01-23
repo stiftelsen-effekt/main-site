@@ -14,16 +14,7 @@ import { StoppedAgreementFeedback } from "../../../agreements/StoppedAgreementFe
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
 import { thousandize } from "../../../../../util/formatting";
 
-type NordicAgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
-type DKAgreementTypes = "MobilePay" | "Credit card" | "Bank transfer";
-
-export type AgreementTypes = NordicAgreementTypes | DKAgreementTypes;
-
-const DK_PAYMENT_METHOD_LABELS: Record<DKAgreementTypes, string> = {
-  MobilePay: "MobilePay",
-  "Credit card": "Kort",
-  "Bank transfer": "Bank",
-};
+export type AgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
 
 type AgreementRow = {
   ID: number;
@@ -84,7 +75,7 @@ export const AgreementList: React.FC<{
       KID: entry.KID,
       date: entry.monthly_charge_day,
       amount: entry.amount,
-      type: entry.method || "Vipps",
+      type: "Vipps",
       endpoint: entry.agreement_url_code,
     }),
   );
@@ -122,7 +113,7 @@ export const AgreementList: React.FC<{
     id: agreement.ID.toString(),
     defaultExpanded: false,
     cells: columns.map((column) => ({
-      value: formatColumnValue(column, agreement[column.value], agreement.type),
+      value: formatColumnValue(column, agreement[column.value]),
     })),
     details: (
       <AgreementDetails
@@ -192,28 +183,17 @@ export const AgreementList: React.FC<{
   );
 };
 
-const formatColumnValue = (
-  column: AgreementListConfigurationColumn,
-  value: any,
-  agreementType?: AgreementTypes,
-) => {
+const formatColumnValue = (column: AgreementListConfigurationColumn, value: any) => {
   switch (column.type) {
     case "string":
       return value;
     case "sum":
       return thousandize(Math.round(parseFloat(value))) + " kr";
     case "date":
-      // Bank transfer agreements don't have a fixed charge day
-      if (agreementType === "Bank transfer") {
-        return "Du bestemmer selv";
-      }
       return value === 0
         ? column.payment_date_last_day_of_month_template
         : column.payment_date_format_template?.replaceAll("{{date}}", value);
     case "paymentmethod":
-      if (value in DK_PAYMENT_METHOD_LABELS) {
-        return DK_PAYMENT_METHOD_LABELS[value as DKAgreementTypes];
-      }
       return value;
   }
 };
