@@ -14,7 +14,19 @@ import { StoppedAgreementFeedback } from "../../../agreements/StoppedAgreementFe
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
 import { thousandize } from "../../../../../util/formatting";
 
-export type AgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
+// NO/SE payment methods
+type NordicAgreementTypes = "Vipps" | "AvtaleGiro" | "AutoGiro";
+// DK payment methods (as returned by backend)
+type DKAgreementTypes = "MobilePay" | "Credit card" | "Bank transfer";
+
+export type AgreementTypes = NordicAgreementTypes | DKAgreementTypes;
+
+// Map DK backend values to display labels
+const DK_PAYMENT_METHOD_LABELS: Record<DKAgreementTypes, string> = {
+  MobilePay: "MobilePay",
+  "Credit card": "Kort",
+  "Bank transfer": "Bank",
+};
 
 type AgreementRow = {
   ID: number;
@@ -75,7 +87,7 @@ export const AgreementList: React.FC<{
       KID: entry.KID,
       date: entry.monthly_charge_day,
       amount: entry.amount,
-      type: "Vipps",
+      type: entry.method || "Vipps",
       endpoint: entry.agreement_url_code,
     }),
   );
@@ -113,7 +125,7 @@ export const AgreementList: React.FC<{
     id: agreement.ID.toString(),
     defaultExpanded: false,
     cells: columns.map((column) => ({
-      value: formatColumnValue(column, agreement[column.value]),
+      value: formatColumnValue(column, agreement[column.value], agreement.type),
     })),
     details: (
       <AgreementDetails
@@ -183,17 +195,29 @@ export const AgreementList: React.FC<{
   );
 };
 
-const formatColumnValue = (column: AgreementListConfigurationColumn, value: any) => {
+const formatColumnValue = (
+  column: AgreementListConfigurationColumn,
+  value: any,
+  agreementType?: AgreementTypes,
+) => {
   switch (column.type) {
     case "string":
       return value;
     case "sum":
       return thousandize(Math.round(parseFloat(value))) + " kr";
     case "date":
+      // Bank transfer agreements don't have a fixed charge day
+      if (agreementType === "Bank transfer") {
+        return "Du bestemmer selv";
+      }
       return value === 0
         ? column.payment_date_last_day_of_month_template
         : column.payment_date_format_template?.replaceAll("{{date}}", value);
     case "paymentmethod":
+      // Map DK payment methods to display labels
+      if (value in DK_PAYMENT_METHOD_LABELS) {
+        return DK_PAYMENT_METHOD_LABELS[value as DKAgreementTypes];
+      }
       return value;
   }
 };

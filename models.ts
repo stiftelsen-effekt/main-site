@@ -45,6 +45,9 @@ export type AutoGiroAgreement = {
   cancelled: string;
 };
 
+// DK payment methods as returned by backend
+export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
+
 export type VippsAgreement = {
   ID: number;
   status: "EXPIRED" | "PENDING" | "ACTIVE" | "STOPPED";
@@ -57,6 +60,7 @@ export type VippsAgreement = {
   paused_until_date: string;
   amount: number;
   agreement_url_code: string;
+  method?: DKPaymentMethod;
 };
 
 export type Distribution = {
