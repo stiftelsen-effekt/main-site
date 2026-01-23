@@ -59,6 +59,17 @@ export type VippsAgreement = {
   agreement_url_code: string;
 };
 
+export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
+
+export type DKAgreement = {
+  ID: string;
+  status: "ACTIVE" | "STOPPED";
+  amount: number;
+  monthly_charge_day: number;
+  timestamp_created: string;
+  method: DKPaymentMethod;
+};
+
 export type Distribution = {
   kid: string;
   donorId: number;
