@@ -50,7 +50,7 @@ export const DKAgreementList: React.FC<{
   }));
 
   const rowData: DKAgreementRow[] = agreements.map((agreement) => ({
-    id: agreement.id,
+    id: agreement.ID,
     status: agreement.status,
     date: agreement.monthly_charge_day,
     amount: agreement.amount,
