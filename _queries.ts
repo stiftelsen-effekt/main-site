@@ -208,7 +208,7 @@ export const useVippsAgreements = (user: User | undefined, fetchToken: getAccess
 
 export const useDKAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
   const { data, error, isValidating } = useSWR(
-    user ? `/donors/${getUserId(user)}/recurring/vipps/` : null,
+    user ? `/donors/${getUserId(user)}/recurring/` : null,
     (url) => fetcher(url, fetchToken),
   );
 
