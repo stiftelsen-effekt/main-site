@@ -886,7 +886,8 @@ export type Outputmapping = {
     | "Vitamin A"
     | "Malaria treatment"
     | "Vaccinations"
-    | "Years of food fortification";
+    | "Years of food fortification"
+    | "Operating funds";
   dataKey?: string;
 };
 
@@ -1759,6 +1760,7 @@ export type Resultsheadline = {
     | "Malaria treatment"
     | "Vaccinations"
     | "Years of food fortification"
+    | "Operating funds"
   >;
 };
 
@@ -1773,7 +1775,8 @@ export type Resultsoutput = {
     | "Vitamin A"
     | "Malaria treatment"
     | "Vaccinations"
-    | "Years of food fortification";
+    | "Years of food fortification"
+    | "Operating funds";
   description?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -26949,6 +26952,7 @@ export type FetchResultsResult = {
               | "Vaccinations"
               | "Vitamin A"
               | "Years of food fortification"
+              | "Operating funds"
             >;
           }
         | {
@@ -26963,7 +26967,8 @@ export type FetchResultsResult = {
               | "Malaria treatment"
               | "Vaccinations"
               | "Vitamin A"
-              | "Years of food fortification";
+              | "Years of food fortification"
+              | "Operating funds";
             description?: Array<{
               children?: Array<{
                 marks?: Array<string>;
@@ -27261,6 +27266,7 @@ export type FetchResultsResult = {
         | "Vaccinations"
         | "Vitamin A"
         | "Years of food fortification"
+        | "Operating funds"
         | null;
       dataKey: string | null;
     }> | null;

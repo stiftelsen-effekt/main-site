@@ -10,6 +10,7 @@ export const outputTypeList = [
   "Malaria treatment",
   "Vaccinations",
   "Years of food fortification",
+  "Operating funds",
 ];
 
 export const outputType = defineField({

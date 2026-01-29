@@ -4833,6 +4833,10 @@
               {
                 "type": "string",
                 "value": "Years of food fortification"
+              },
+              {
+                "type": "string",
+                "value": "Operating funds"
               }
             ]
           },
@@ -9585,6 +9589,10 @@
                 {
                   "type": "string",
                   "value": "Years of food fortification"
+                },
+                {
+                  "type": "string",
+                  "value": "Operating funds"
                 }
               ]
             }
@@ -9647,6 +9655,10 @@
               {
                 "type": "string",
                 "value": "Years of food fortification"
+              },
+              {
+                "type": "string",
+                "value": "Operating funds"
               }
             ]
           },
