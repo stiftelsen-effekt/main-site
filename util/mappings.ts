@@ -20,7 +20,7 @@ export const mapNameToOrgAbbriv = (name: string): string => {
     "GiveDirectly Climate Survival Fund": "GDCSF",
 
     "Giv Effektivts anbefaling": "GE-SMART",
-    "Stor og velkendt effekt": "GE-SMART",
+    "Stor og velkendt effekt": "GE-OLDSMART",
     "Myggenet mod malaria": "GE-MYGMAL",
     "Medicin mod malaria": "GE-MEDMAL",
     "Vitamin mod mangelsygdomme": "GE-VIT",
