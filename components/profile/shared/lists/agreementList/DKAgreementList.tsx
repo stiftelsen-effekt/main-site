@@ -13,9 +13,10 @@ const PAYMENT_METHOD_LABELS: Record<DKPaymentMethod, string> = {
 type DKAgreementRow = {
   id: string;
   status: string;
+  KID: string;
   date: number;
   amount: number;
-  method: DKPaymentMethod;
+  type: DKPaymentMethod;
 };
 
 type DKAgreementListConfigurationColumn = {
@@ -52,16 +53,17 @@ export const DKAgreementList: React.FC<{
   const rowData: DKAgreementRow[] = agreements.map((agreement) => ({
     id: agreement.id,
     status: agreement.cancelled ? "STOPPED" : "ACTIVE",
+    KID: agreement.kid,
     date: agreement.chargeDay ?? 0,
     amount: agreement.amount,
-    method: agreement.method,
+    type: agreement.method,
   }));
 
   const rows: ListRow<DKAgreementRow>[] = rowData.map((agreement) => ({
     id: agreement.id,
     defaultExpanded: false,
     cells: columns.map((column) => ({
-      value: formatColumnValue(column, agreement[column.value], agreement.method),
+      value: formatColumnValue(column, agreement[column.value], agreement.type),
     })),
     element: agreement,
   }));
