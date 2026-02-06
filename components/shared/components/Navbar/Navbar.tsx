@@ -16,7 +16,6 @@ import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
 import { useLiveQuery } from "next-sanity/preview";
-import { isBright } from "../../../../util/color";
 
 export type NavLink = {
   _type: "navitem";
@@ -180,15 +179,8 @@ export const Navbar = withStaticProps(
   let giveButtonStyle = {};
   if (giveButton.accent_color) {
     giveButtonStyle = {
-      backgroundColor: giveButton.accent_color,
-      color: "white",
-      ...(isBright(giveButton.accent_color)
-        ? {
-            border: `1px solid ${giveButton.accent_color} !important`,
-            borderColor: giveButton.accent_color,
-          }
-        : {}),
-    };
+      "--accent-color": giveButton.accent_color,
+    } as React.CSSProperties;
   }
 
   const lightLogo =
@@ -327,6 +319,9 @@ export const Navbar = withStaticProps(
               cy="send-donation-button"
               extraMargin={true}
               onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
+              variant={
+                giveButton.accent_color ? EffektButtonVariant.ACCENT : EffektButtonVariant.PRIMARY
+              }
               style={giveButtonStyle}
             >
               {giveButton.donate_label}

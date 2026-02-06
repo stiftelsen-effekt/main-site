@@ -2,7 +2,6 @@ import React, { CSSProperties, useContext } from "react";
 import styles from "./GiveBlock.module.scss";
 import { WidgetContext } from "../../layout/layout";
 import { usePlausible } from "next-plausible";
-import { isBright } from "../../../../util/color";
 
 type GiveBlockProps = {
   heading: string;
@@ -23,18 +22,18 @@ export const GiveBlock: React.FC<GiveBlockProps> = ({
   let accentStyles: CSSProperties = {};
   if (accentColor) {
     accentStyles = {
-      backgroundColor: accentColor,
-      color: "white",
-      ...(isBright(accentColor) ? { border: "none" } : {}),
-    };
+      "--accent-color": accentColor,
+    } as CSSProperties;
   }
+
+  const buttonClasses = accentColor ? `${styles.button} ${styles.buttonAccent}` : styles.button;
 
   return (
     <div className={styles.container}>
       <h3>{heading}</h3>
       <p className="inngress">{paragraph}</p>
       <button
-        className={styles.button}
+        className={buttonClasses}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.currentTarget.blur();
           plausible("OpenDonationWidget", {
