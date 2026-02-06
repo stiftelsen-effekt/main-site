@@ -50,9 +50,9 @@ export const DKAgreementList: React.FC<{
   }));
 
   const rowData: DKAgreementRow[] = agreements.map((agreement) => ({
-    id: agreement.ID,
-    status: agreement.status,
-    date: agreement.monthly_charge_day,
+    id: agreement.id,
+    status: agreement.cancelled ? "STOPPED" : "ACTIVE",
+    date: agreement.chargeDay ?? 0,
     amount: agreement.amount,
     method: agreement.method,
   }));

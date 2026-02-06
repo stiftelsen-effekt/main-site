@@ -62,11 +62,12 @@ export type VippsAgreement = {
 export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
 
 export type DKAgreement = {
-  ID: string;
-  status: "ACTIVE" | "STOPPED";
+  id: string;
+  kid: string;
+  cancelled: boolean;
   amount: number;
-  monthly_charge_day: number;
-  timestamp_created: string;
+  chargeDay: number | null;
+  createdAt: string;
   method: DKPaymentMethod;
 };
 

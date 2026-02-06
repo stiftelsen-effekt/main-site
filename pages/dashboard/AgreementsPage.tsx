@@ -182,12 +182,8 @@ const DKAgreementsPageContent: React.FC<{
     );
   }
 
-  const activeAgreements = dkAgreements.filter(
-    (agreement: DKAgreement) => agreement.status === "ACTIVE",
-  );
-  const inactiveAgreements = dkAgreements.filter(
-    (agreement: DKAgreement) => agreement.status !== "ACTIVE",
-  );
+  const activeAgreements = dkAgreements.filter((agreement: DKAgreement) => !agreement.cancelled);
+  const inactiveAgreements = dkAgreements.filter((agreement: DKAgreement) => agreement.cancelled);
 
   return (
     <>
