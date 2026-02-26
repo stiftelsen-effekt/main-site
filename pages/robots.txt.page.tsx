@@ -1,4 +1,4 @@
-import groq from "groq";
+import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.client";
 
 export default function Robots() {

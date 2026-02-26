@@ -1,4 +1,4 @@
-import groq from "groq";
+import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.client";
 import { RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 
