@@ -12,6 +12,8 @@ import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { useTaxUnits } from "../../../../_queries";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
+import { useMainLocale } from "../../../../context/MainLocaleContext";
+import { validateTin, formatTinInput } from "../../../../util/tin-validation";
 
 export enum TaxUnitTypes {
   PERSON = 1,
@@ -25,6 +27,7 @@ export const TaxUnitCreateModal: React.FC<{
   onClose: () => void;
 }> = ({ open, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const mainLocale = useMainLocale();
 
   const {
     data: existingUnits,
@@ -46,7 +49,8 @@ export const TaxUnitCreateModal: React.FC<{
     if (!user) {
       return;
     }
-    const result = await createTaxUnit({ name, ssn }, user, token);
+    const ssnDigits = ssn.replace(/\D/g, "");
+    const result = await createTaxUnit({ name, ssn: ssnDigits }, user, token);
 
     if (result && typeof result !== "string") {
       successToast();
@@ -69,13 +73,29 @@ export const TaxUnitCreateModal: React.FC<{
     return <Spinner />;
   }
 
-  const ssnIsExistingUnit = existingUnits?.some((unit) => unit.ssn === ssn);
+  const ssnDigits = ssn.replace(/\D/g, "");
+  const ssnIsExistingUnit = existingUnits?.some(
+    (unit) => unit.ssn.replace(/\D/g, "") === ssnDigits,
+  );
+
+  const isDanish = mainLocale === "dk";
+  const personDigitCount = isDanish ? 10 : 11;
+  const companyDigitCount = isDanish ? 8 : 9;
+
+  const validatePersonId = (val: string): boolean =>
+    isDanish ? validateTin(val, { allowCvr: false }).isValid : validateSsn(val);
+  const validateCompanyId = (val: string): boolean =>
+    isDanish
+      ? validateTin(val, { allowCvr: true }).type === "CVR" &&
+        validateTin(val, { allowCvr: true }).isValid
+      : validateOrg(val);
+
   const isValid =
     name !== "" &&
     ssn !== "" &&
     (type === TaxUnitTypes.PERSON
-      ? ssn.length === 11 && validateSsn(ssn)
-      : ssn.length === 9 && validateOrg(ssn)) &&
+      ? ssnDigits.length === personDigitCount && validatePersonId(ssn)
+      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn)) &&
     !ssnIsExistingUnit;
 
   return (
@@ -108,22 +128,40 @@ export const TaxUnitCreateModal: React.FC<{
         </div>
         <div className={styles.inputContainer}>
           <label className={styles.label}>
-            {type === TaxUnitTypes.PERSON ? "Fødselsnummer" : "Organisasjonsnummer"}
+            {type === TaxUnitTypes.PERSON
+              ? isDanish
+                ? "CPR-nummer"
+                : "Fødselsnummer"
+              : isDanish
+              ? "CVR-nummer"
+              : "Organisasjonsnummer"}
           </label>
-          <EffektTextInput value={ssn} onChange={(val: string) => setSsn(val)} />
+          <EffektTextInput
+            value={ssn}
+            onChange={(val: string) =>
+              setSsn(
+                isDanish ? formatTinInput(val, { allowCvr: type === TaxUnitTypes.COMPANY }) : val,
+              )
+            }
+          />
 
           <span className={styles.ssnValidation}>
-            {ssn.length === 11 &&
+            {ssnDigits.length === personDigitCount &&
               type === TaxUnitTypes.PERSON &&
-              !validateSsn(ssn) &&
-              "Ugyldig fødselsnummer"}
-            {ssn.length === 9 &&
+              !validatePersonId(ssn) &&
+              (isDanish ? "Ugyldigt CPR-nummer" : "Ugyldig fødselsnummer")}
+            {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
-              !validateOrg(ssn) &&
-              "Ugyldig organisasjonsnummer"}
-            {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
-            {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
-            {ssnIsExistingUnit && "Skatteenhet eksisterer allerede"}
+              !validateCompanyId(ssn) &&
+              (isDanish ? "Ugyldigt CVR-nummer" : "Ugyldig organisasjonsnummer")}
+            {ssnDigits.length !== personDigitCount &&
+              type === TaxUnitTypes.PERSON &&
+              (isDanish ? "10 cifre" : "11 siffer")}
+            {ssnDigits.length !== companyDigitCount &&
+              type === TaxUnitTypes.COMPANY &&
+              (isDanish ? "8 cifre" : "9 siffer")}
+            {ssnIsExistingUnit &&
+              (isDanish ? "Skatteenhed findes allerede" : "Skatteenhet eksisterer allerede")}
             &nbsp;
           </span>
         </div>
