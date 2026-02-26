@@ -55,7 +55,7 @@ export const TaxUnitList: React.FC<{
   const filteredDeductions = unit.taxDeductions?.filter((d) => d.sumDonations > 0) || [];
 
   const contextOptions = isDanish
-    ? [{ label: "Endre", icon: <Edit2 size={16} /> }]
+    ? [{ label: "Rediger", icon: <Edit2 size={16} /> }]
     : [
         { label: "Endre", icon: <Edit2 size={16} /> },
         { label: "Slett", icon: <Trash2 size={16} /> },
@@ -66,6 +66,7 @@ export const TaxUnitList: React.FC<{
     onContextSelect: (option: string, element: TaxUnit) => {
       switch (option) {
         case "Endre":
+        case "Rediger":
           setSelectedTaxUnit(element);
           setEditModalOpen(true);
           break;

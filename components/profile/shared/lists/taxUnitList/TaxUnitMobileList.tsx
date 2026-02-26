@@ -35,7 +35,7 @@ export const TaxUnitMobileList: React.FC<{
 
     const showContext = !isDanish || hasCurrentYearDeductions;
     const contextOptions = isDanish
-      ? [{ label: "Endre", icon: <Edit2 size={16} /> }]
+      ? [{ label: "Rediger", icon: <Edit2 size={16} /> }]
       : [
           { label: "Endre", icon: <Edit2 size={16} /> },
           { label: "Slett", icon: <Trash2 size={16} /> },
@@ -50,6 +50,7 @@ export const TaxUnitMobileList: React.FC<{
         onContextSelect: (option: string, element: TaxUnit) => {
           switch (option) {
             case "Endre":
+            case "Rediger":
               setEditModalOpen(true);
               setSelectedTaxUnit(element);
               break;
