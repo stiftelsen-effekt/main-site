@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Edit2, Trash2 } from "react-feather";
 import { TaxUnit } from "../../../../../models";
+import { useMainLocale } from "../../../../../context/MainLocaleContext";
 import { thousandize } from "../../../../../util/formatting";
 import { TaxUnitDeleteModal } from "../../TaxUnitModal/TaxUnitDeleteModal";
 import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
@@ -10,6 +11,10 @@ import { ListRow } from "../GenericListRow";
 export const TaxUnitList: React.FC<{
   taxUnits: TaxUnit[];
 }> = ({ taxUnits }) => {
+  const mainLocale = useMainLocale();
+  const isDanish = mainLocale === "dk";
+  const currentYear = new Date().getFullYear();
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
@@ -49,17 +54,15 @@ export const TaxUnitList: React.FC<{
 
   const filteredDeductions = unit.taxDeductions?.filter((d) => d.sumDonations > 0) || [];
 
+  const contextOptions = isDanish
+    ? [{ label: "Endre", icon: <Edit2 size={16} /> }]
+    : [
+        { label: "Endre", icon: <Edit2 size={16} /> },
+        { label: "Slett", icon: <Trash2 size={16} /> },
+      ];
+
   const context = {
-    contextOptions: [
-      {
-        label: "Endre",
-        icon: <Edit2 size={16} />,
-      },
-      {
-        label: "Slett",
-        icon: <Trash2 size={16} />,
-      },
-    ],
+    contextOptions,
     onContextSelect: (option: string, element: TaxUnit) => {
       switch (option) {
         case "Endre":
@@ -88,11 +91,12 @@ export const TaxUnitList: React.FC<{
       element: unit,
     };
 
-    if (i === 0) {
-      row = {
-        ...row,
-        ...context,
-      };
+    if (isDanish) {
+      if (deductions.year === currentYear) {
+        row = { ...row, ...context };
+      }
+    } else if (i === 0) {
+      row = { ...row, ...context };
     }
 
     return row;
@@ -123,7 +127,7 @@ export const TaxUnitList: React.FC<{
     element: unit,
   };
 
-  if (filteredDeductions.length == 0) {
+  if (!isDanish && filteredDeductions.length == 0) {
     totalsRow = {
       ...totalsRow,
       ...context,
