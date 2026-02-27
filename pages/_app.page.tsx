@@ -8,7 +8,7 @@ import { RouterContext, RouterContextValue, fetchRouterContext } from "../contex
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { Layout } from "../components/main/layout/layout";
 import { Provider } from "react-redux";
-import { VisualEditing } from "next-sanity";
+import { VisualEditing } from "next-sanity/visual-editing";
 import { ConsentState } from "../middleware.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 import { useRouter } from "next/router";
