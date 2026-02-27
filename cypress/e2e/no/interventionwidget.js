@@ -31,6 +31,8 @@ describe("InterventionWidget", () => {
   });
 
   it("0 NOK should give 0 interventions output", () => {
+    cy.wait("@getImpactEvaluations").its("response.statusCode").should("be.oneOf", [200, 304]);
+
     cy.get("[data-cy=impact-input]").scrollIntoView();
     cy.get("[data-cy=impact-input]").clear();
     cy.get("[data-cy=impact-output]").invoke("text").then(parseFloat).should("be.equal", 0);
