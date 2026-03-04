@@ -60,7 +60,9 @@ export const MainHeader: React.FC<{
   return (
     <div data-cy="header" className={containerClasses.join(" ")}>
       <HeaderBanners generalBannerConfig={generalBannerConfig} />
-      <div className={navbarWrapperClasses.join(" ")}>{children}</div>
+      <div data-cy="header-navbar" className={navbarWrapperClasses.join(" ")}>
+        {children}
+      </div>
     </div>
   );
 };
