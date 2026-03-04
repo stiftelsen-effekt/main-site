@@ -3,20 +3,24 @@
   top: 0;
   z-index: 1000;
   width: 100%;
+  /* No transform on container - prevents position:fixed descendants (GeneralBanner) from jumping */
+}
+
+.navbarWrapper {
   background-color: var(--secondary);
   transition: transform 0.3s ease-in-out;
+}
+
+.container:focus-within .navbarWrapper {
+  transform: translateY(0);
 }
 
 .container.navbarShrinked nav {
   padding: 0 0;
 }
 
-.container.navbarHidden {
+.navbarWrapper.navbarHidden {
   transform: translateY(-100%);
-}
-
-.container:focus-within {
-  transform: translateY(0);
 }
 
 @media only screen and (max-width: 1180px) {
