@@ -15,11 +15,6 @@ import { TaxUnitCreateModal } from "./TaxUnitCreateModal";
 
 import styles from "./TaxUnitModal.module.scss";
 
-export enum TaxUnitTypes {
-  PERSON = 1,
-  COMPANY = 2,
-}
-
 export const TaxUnitDeleteModal: React.FC<{
   open: boolean;
   taxUnit: TaxUnit;

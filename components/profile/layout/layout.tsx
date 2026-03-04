@@ -16,6 +16,7 @@ import {
 } from "../../main/layout/layout";
 import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
+import { MainLocaleContext } from "../../../context/MainLocaleContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
 import { MissingNameModal, MissingNameModalConfig } from "./MissingNameModal/MissingNameModal";
 import { withStaticProps } from "../../../util/withStaticProps";
@@ -40,6 +41,7 @@ const useShouldAuthenticate = (): boolean => {
 type QueryResult = {
   data: {
     site_title: string;
+    main_locale: string | null;
     login_error_configuration: {
       login_abort_label: string;
       login_button_label: string;
@@ -53,6 +55,7 @@ export const profileQuery = `
   {
     "data": {
       "site_title": *[_type == "site_settings"][0].title,
+      "main_locale": *[_type == "site_settings"][0].main_locale,
       "general_banner": *[_type == "site_settings"][0].general_banner->,
       "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
       "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_configuration
@@ -132,36 +135,40 @@ export const ProfileLayout = withStaticProps(
             loginErrorConfig={profileData.login_error_configuration}
           >
             <DonorProvider>
-              <ActivityProvider>
-                <ToastContainer
-                  position="top-right"
-                  autoClose={3000}
-                  hideProgressBar={true}
-                  newestOnTop={true}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  closeButton={false}
-                  toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
-                />
-                <WidgetContext.Provider value={widgetContextValue}>
-                  <BannerContext.Provider value={[banners, setBanners]}>
-                    <WidgetPane
-                      darkMode={true}
-                      {...widgetData}
-                      prefilled={widgetContext.prefilled}
-                      prefilledSum={widgetContext.prefilledSum}
-                    />
-                    <main className={styles.main}>{children}</main>
-                    {profileData.missing_name_modal_config && (
-                      <MissingNameModal config={profileData.missing_name_modal_config} />
-                    )}
-                  </BannerContext.Provider>
-                </WidgetContext.Provider>
-                <Footer {...footerData} />
-              </ActivityProvider>
+              <MainLocaleContext.Provider
+                value={(profileData.main_locale as "no" | "sv" | "dk" | "en" | "et") ?? "no"}
+              >
+                <ActivityProvider>
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={true}
+                    newestOnTop={true}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    closeButton={false}
+                    toastStyle={{ borderRadius: 0, background: "white", color: "black" }}
+                  />
+                  <WidgetContext.Provider value={widgetContextValue}>
+                    <BannerContext.Provider value={[banners, setBanners]}>
+                      <WidgetPane
+                        darkMode={true}
+                        {...widgetData}
+                        prefilled={widgetContext.prefilled}
+                        prefilledSum={widgetContext.prefilledSum}
+                      />
+                      <main className={styles.main}>{children}</main>
+                      {profileData.missing_name_modal_config && (
+                        <MissingNameModal config={profileData.missing_name_modal_config} />
+                      )}
+                    </BannerContext.Provider>
+                  </WidgetContext.Provider>
+                  <Footer {...footerData} />
+                </ActivityProvider>
+              </MainLocaleContext.Provider>
             </DonorProvider>
           </UserWrapper>
         </SWRConfig>
