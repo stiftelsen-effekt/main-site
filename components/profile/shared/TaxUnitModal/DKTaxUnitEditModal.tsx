@@ -35,7 +35,7 @@ export const DKTaxUnitEditModal: React.FC<{
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [type, setType] = useState(
-    initialSsnDigits.length === 10 ? TaxUnitTypes.PERSON : TaxUnitTypes.COMPANY,
+    initialSsnDigits.length === 8 ? TaxUnitTypes.COMPANY : TaxUnitTypes.PERSON,
   );
 
   const create = useCallback(async () => {
