@@ -27,15 +27,15 @@ export const DKTaxUnitList: React.FC<{
       width: "10%",
     },
     {
-      label: "Sum donasjoner",
+      label: "Sum af donationer",
       width: "30%",
     },
     {
-      label: "Sum skattefradrag",
+      label: "Sum af skattefradrag",
       width: "30%",
     },
     {
-      label: "Sum skattefordel",
+      label: "Sum af skattefordel",
       width: "30%",
     },
   ];
@@ -104,7 +104,7 @@ export const DKTaxUnitList: React.FC<{
     <div>
       <div>Der mangler information for skatteenheden.</div>
       <div>
-        Kontakt os på <a href={"mailto: donasjon@giveffektivt.dk"}>donasjon@giveffektivt.dk</a>.
+        Kontakt os på <a href={"mailto: donation@giveffektivt.dk"}>donation@giveffektivt.dk</a>.
       </div>
     </div>
   );
