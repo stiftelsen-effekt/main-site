@@ -77,6 +77,11 @@ export const DKTaxUnitEditModal: React.FC<{
   const personDigitCount = 10;
   const companyDigitCount = 8;
 
+  const cprValidation =
+    type === TaxUnitTypes.PERSON && ssnDigits.length === personDigitCount
+      ? validateTin(ssn, { allowCvr: false })
+      : null;
+
   const validatePersonId = (val: string): boolean => validateTin(val, { allowCvr: false }).isValid;
   const validateCompanyId = (val: string): boolean =>
     validateTin(val, { allowCvr: true }).type === "CVR" &&
@@ -135,10 +140,10 @@ export const DKTaxUnitEditModal: React.FC<{
           />
 
           <span className={styles.ssnValidation}>
-            {ssnDigits.length === personDigitCount &&
-              type === TaxUnitTypes.PERSON &&
-              !validatePersonId(ssn) &&
-              "Ugyldigt CPR-nummer"}
+            {cprValidation && !cprValidation.isValid && "Ugyldigt CPR-nummer"}
+            {cprValidation?.isValid && cprValidation?.isSuspicious && (
+              <span data-cy="cpr-suspicious-message">Kontroller venligst at det er korrekt.</span>
+            )}
             {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
               !validateCompanyId(ssn) &&
