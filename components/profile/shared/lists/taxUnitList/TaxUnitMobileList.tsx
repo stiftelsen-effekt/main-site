@@ -7,14 +7,9 @@ import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { TaxUnitMobileDetails } from "./TaxUnitMobileDetails";
+import { DKTaxUnitMobileList } from "./DKTaxUnitMobileList";
 
-export const TaxUnitMobileList: React.FC<{
-  taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
-  const mainLocale = useMainLocale();
-  const isDanish = mainLocale === "dk";
-  const currentYear = new Date().getFullYear();
-
+const TaxUnitMobileListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
@@ -29,38 +24,28 @@ export const TaxUnitMobileList: React.FC<{
   ];
 
   const rows: ListRow<TaxUnit>[] = taxUnits.map((unit) => {
-    const hasCurrentYearDeductions = unit.taxDeductions?.some(
-      (d) => d.year === currentYear && d.sumDonations > 0,
-    );
-
-    const showContext = !isDanish || hasCurrentYearDeductions;
-    const contextOptions = isDanish
-      ? [{ label: "Rediger", icon: <Edit2 size={16} /> }]
-      : [
-          { label: "Endre", icon: <Edit2 size={16} /> },
-          { label: "Slett", icon: <Trash2 size={16} /> },
-        ];
+    const contextOptions = [
+      { label: "Endre", icon: <Edit2 size={16} /> },
+      { label: "Slett", icon: <Trash2 size={16} /> },
+    ];
 
     return {
       id: unit.id.toString(),
       defaultExpanded: false,
       cells: [{ value: unit.name }, { value: unit.ssn }],
-      ...(showContext && {
-        contextOptions,
-        onContextSelect: (option: string, element: TaxUnit) => {
-          switch (option) {
-            case "Endre":
-            case "Rediger":
-              setEditModalOpen(true);
-              setSelectedTaxUnit(element);
-              break;
-            case "Slett":
-              setSelectedTaxUnit(element);
-              setDeleteModalOpen(true);
-              break;
-          }
-        },
-      }),
+      contextOptions,
+      onContextSelect: (option: string, element: TaxUnit) => {
+        switch (option) {
+          case "Endre":
+            setEditModalOpen(true);
+            setSelectedTaxUnit(element);
+            break;
+          case "Slett":
+            setSelectedTaxUnit(element);
+            setDeleteModalOpen(true);
+            break;
+        }
+      },
       details: <TaxUnitMobileDetails taxUnit={unit} />,
       element: unit,
     };
@@ -107,4 +92,14 @@ export const TaxUnitMobileList: React.FC<{
       )}
     </>
   );
+};
+
+export const TaxUnitMobileList: React.FC<{
+  taxUnits: TaxUnit[];
+}> = ({ taxUnits }) => {
+  const mainLocale = useMainLocale();
+  if (mainLocale === "dk") {
+    return <DKTaxUnitMobileList taxUnits={taxUnits} />;
+  }
+  return <TaxUnitMobileListStandard taxUnits={taxUnits} />;
 };

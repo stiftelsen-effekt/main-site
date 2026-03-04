@@ -1,29 +1,25 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { RadioButtonGroup } from "../../../shared/components/RadioButton/RadioButtonGroup";
-import { updateTaxUnit } from "../../_queries";
+import { createTaxUnit } from "../../_queries";
 import { toast } from "react-toastify";
-import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 
 import styles from "./TaxUnitModal.module.scss";
 import { AlertCircle, Check } from "react-feather";
-import { useTaxUnits } from "../../../../_queries";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
-import { useMainLocale } from "../../../../context/MainLocaleContext";
+import { useTaxUnits } from "../../../../_queries";
+import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
+import { validateTin, formatTinInput } from "../../../../util/tin-validation";
 import { TaxUnitTypes } from "./taxUnitTypes";
-import { DKTaxUnitEditModal } from "./DKTaxUnitEditModal";
 
-export { TaxUnitTypes };
-
-const TaxUnitEditModalStandard: React.FC<{
+export const DKTaxUnitCreateModal: React.FC<{
   open: boolean;
-  initial: TaxUnit;
   onSuccess: (unit: TaxUnit) => void;
   onFailure: () => void;
   onClose: () => void;
-}> = ({ open, initial, onSuccess, onFailure, onClose }) => {
+}> = ({ open, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   const {
@@ -33,16 +29,13 @@ const TaxUnitEditModalStandard: React.FC<{
     error: errorLoadingUnits,
   } = useTaxUnits(user as User, getAccessTokenSilently);
 
-  const initialSsnDigits = initial.ssn.replace(/\D/g, "");
-  const [name, setName] = useState(initial.name);
-  const [ssn, setSsn] = useState(initial.ssn);
+  const [name, setName] = useState("");
+  const [ssn, setSsn] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [type, setType] = useState(
-    initialSsnDigits.length === 11 ? TaxUnitTypes.PERSON : TaxUnitTypes.COMPANY,
-  );
+  const [type, setType] = useState(TaxUnitTypes.PERSON);
 
-  const create = useCallback(async () => {
+  const create = async () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
 
@@ -50,39 +43,41 @@ const TaxUnitEditModalStandard: React.FC<{
       return;
     }
     const ssnDigits = ssn.replace(/\D/g, "");
-    const result = await updateTaxUnit({ ...initial, name: name, ssn: ssnDigits }, user, token);
+    const result = await createTaxUnit({ name, ssn: ssnDigits }, user, token);
 
     if (result && typeof result !== "string") {
       successToast();
       onSuccess(result);
       setError("");
     } else if (typeof result === "string") {
+      setLoading(false);
       onFailure();
       failureToast();
-      setLoading(false);
       setError(result);
     } else {
+      setLoading(false);
       onFailure();
       failureToast();
-      setLoading(false);
       setError("");
     }
-  }, [name, ssn, user]);
+  };
 
   if (loadingUnits) {
     return <Spinner />;
   }
 
   const ssnDigits = ssn.replace(/\D/g, "");
-  const ssnIsExistingUnit = existingUnits
-    ?.filter((unit) => unit !== initial)
-    .some((unit) => unit.ssn.replace(/\D/g, "") === ssnDigits);
+  const ssnIsExistingUnit = existingUnits?.some(
+    (unit) => unit.ssn.replace(/\D/g, "") === ssnDigits,
+  );
 
-  const personDigitCount = 11;
-  const companyDigitCount = 9;
+  const personDigitCount = 10;
+  const companyDigitCount = 8;
 
-  const validatePersonId = (val: string): boolean => validateSsn(val);
-  const validateCompanyId = (val: string): boolean => validateOrg(val);
+  const validatePersonId = (val: string): boolean => validateTin(val, { allowCvr: false }).isValid;
+  const validateCompanyId = (val: string): boolean =>
+    validateTin(val, { allowCvr: true }).type === "CVR" &&
+    validateTin(val, { allowCvr: true }).isValid;
 
   const isValid =
     name !== "" &&
@@ -95,7 +90,7 @@ const TaxUnitEditModalStandard: React.FC<{
   return (
     <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
       <div className={styles.container}>
-        <h5>Endre skatteenhet</h5>
+        <h5>Ny skatteenhed</h5>
         <div className={styles.typeSelector}>
           <RadioButtonGroup
             options={[
@@ -105,7 +100,7 @@ const TaxUnitEditModalStandard: React.FC<{
                 data_cy: "tax-unit-create-modal-type-person",
               },
               {
-                title: "Bedrift",
+                title: "Virksomhed",
                 value: TaxUnitTypes.COMPANY,
                 data_cy: "tax-unit-create-modal-type-company",
               },
@@ -118,30 +113,31 @@ const TaxUnitEditModalStandard: React.FC<{
         </div>
         <div className={styles.inputContainer}>
           <label className={styles.label}>Navn</label>
-          <input
-            className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          ></input>
+          <EffektTextInput value={name} onChange={(val) => setName(val)} />
         </div>
         <div className={styles.inputContainer}>
           <label className={styles.label}>
-            {type === TaxUnitTypes.PERSON ? "Fødselsnummer" : "Organisasjonsnummer"}
+            {type === TaxUnitTypes.PERSON ? "CPR-nummer" : "CVR-nummer"}
           </label>
-          <input className={styles.input} value={ssn} onChange={(e) => setSsn(e.target.value)} />
+          <EffektTextInput
+            value={ssn}
+            onChange={(val: string) =>
+              setSsn(formatTinInput(val, { allowCvr: type === TaxUnitTypes.COMPANY }))
+            }
+          />
 
           <span className={styles.ssnValidation}>
             {ssnDigits.length === personDigitCount &&
               type === TaxUnitTypes.PERSON &&
               !validatePersonId(ssn) &&
-              "Ugyldig fødselsnummer"}
+              "Ugyldigt CPR-nummer"}
             {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
               !validateCompanyId(ssn) &&
-              "Ugyldig organisasjonsnummer"}
-            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && "11 siffer"}
-            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && "9 siffer"}
-            {ssnIsExistingUnit && "Skatteenhet eksisterer allerede"}
+              "Ugyldigt CVR-nummer"}
+            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && "10 cifre"}
+            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && "8 cifre"}
+            {ssnIsExistingUnit && "Skatteenhed findes allerede"}
             &nbsp;
           </span>
         </div>
@@ -151,20 +147,6 @@ const TaxUnitEditModalStandard: React.FC<{
   );
 };
 
-const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
+const successToast = () => toast.success("Gemt", { icon: <Check size={24} color={"black"} /> });
 const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
-
-export const TaxUnitEditModal: React.FC<{
-  open: boolean;
-  initial: TaxUnit;
-  onSuccess: (unit: TaxUnit) => void;
-  onFailure: () => void;
-  onClose: () => void;
-}> = (props) => {
-  const mainLocale = useMainLocale();
-  if (mainLocale === "dk") {
-    return <DKTaxUnitEditModal {...props} />;
-  }
-  return <TaxUnitEditModalStandard {...props} />;
-};
+  toast.error("Noget gik galt", { icon: <AlertCircle size={24} color={"black"} /> });
