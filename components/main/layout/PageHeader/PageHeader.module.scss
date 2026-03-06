@@ -101,14 +101,14 @@
     min-height: calc(120px + 30vh);
 
     align-content: flex-end;
-    padding-top: 0;
+    padding-top: 2rem;
     padding-bottom: 3rem;
   }
   .pageheader.centered,
   .pageheader.pageheadermeta.centered {
     grid-template-columns: 1fr;
     text-align: center;
-    padding-top: 0;
+    padding-top: 2rem;
   }
   .pageheader.hero div h1 {
     margin-bottom: 16px;
@@ -137,6 +137,7 @@
     min-height: auto;
     padding-left: 5vw;
     padding-right: 5vw;
+    padding-top: 2rem;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;

@@ -4,12 +4,9 @@
   text-align: center;
   padding: 6px 0;
   font-size: 0.75rem;
-
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
+  min-height: var(--header-general-banner-height, auto);
+  display: flex;
+  align-items: center;
 }
 
 .content {
@@ -61,6 +58,10 @@
 }
 
 @media only screen and (max-width: 1180px) {
+  .content p {
+    margin: 0;
+  }
+
   .content {
     padding-top: 8px;
     padding-bottom: 8px;
