@@ -74,10 +74,7 @@ export const MainHeader: React.FC<{
 
   const headerStackClasses = [styles.headerStack];
   if (!navBarVisible) headerStackClasses.push(styles.headerHidden);
-  const effectiveGeneralBannerConfig =
-    process.env.NODE_ENV === "development"
-      ? generalBannerConfig ?? LOCAL_DEV_GENERAL_BANNER
-      : generalBannerConfig;
+  const effectiveGeneralBannerConfig = generalBannerConfig ?? LOCAL_DEV_GENERAL_BANNER;
   const showGeneralBanner =
     Boolean(effectiveGeneralBannerConfig) && !bannerContext.generalBannerDismissed;
   const wrapperClasses = [styles.wrapper];
