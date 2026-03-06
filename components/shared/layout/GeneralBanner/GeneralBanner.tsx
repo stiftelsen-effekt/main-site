@@ -28,7 +28,6 @@ export const GeneralBanner: React.FC<{ configuration: GeneralBannerQueryResult }
           setBannerContext((prev) => ({
             ...prev,
             generalBannerDismissed: true,
-            layoutPaddingTop: 0,
           }));
         }}
       >
@@ -52,7 +51,6 @@ export const GeneralBanner: React.FC<{ configuration: GeneralBannerQueryResult }
                   setBannerContext((prev) => ({
                     ...prev,
                     generalBannerDismissed: true,
-                    layoutPaddingTop: 0,
                   }));
                 }}
               >
