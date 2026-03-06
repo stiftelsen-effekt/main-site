@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { Edit2, Trash2 } from "react-feather";
+import { Edit2 } from "react-feather";
 import { TaxUnit } from "../../../../../models";
-import { useMainLocale } from "../../../../../context/MainLocaleContext";
 import { thousandize } from "../../../../../util/formatting";
-import { TaxUnitDeleteModal } from "../../TaxUnitModal/TaxUnitDeleteModal";
 import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
-import { DKTaxUnitList } from "./DKTaxUnitList";
 
-const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) => {
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+export const DKTaxUnitList: React.FC<{
+  taxUnits: TaxUnit[];
+}> = ({ taxUnits }) => {
+  const currentYear = new Date().getFullYear();
+
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
   const unit = taxUnits[0];
 
   const suplementalInformation =
-    unit.ssn.length === 11
-      ? unit.ssn.replace(/(\d{6})(\d{5})/, "$1 $2")
-      : unit.ssn.replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
+    unit.ssn.length === 10
+      ? unit.ssn.replace(/(\d{6})(\d{4})/, "$1-$2")
+      : unit.ssn.replace(/(\d{4})(\d{4})/, "$1 $2");
 
   const headers = [
     {
@@ -27,43 +27,34 @@ const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) =>
       width: "10%",
     },
     {
-      label: "Sum donasjoner",
+      label: "Sum af donationer",
       width: "30%",
     },
     {
-      label: "Sum skattefradrag",
+      label: "Sum af skattefradrag",
       width: "30%",
     },
     {
-      label: "Sum skattefordel",
+      label: "Sum af skattefordel",
       width: "30%",
     },
   ];
 
   const filteredDeductions = unit.taxDeductions?.filter((d) => d.sumDonations > 0) || [];
 
-  const contextOptions = [
-    { label: "Endre", icon: <Edit2 size={16} /> },
-    { label: "Slett", icon: <Trash2 size={16} /> },
-  ];
+  const contextOptions = [{ label: "Rediger", icon: <Edit2 size={16} /> }];
 
   const context = {
     contextOptions,
     onContextSelect: (option: string, element: TaxUnit) => {
-      switch (option) {
-        case "Endre":
-          setSelectedTaxUnit(element);
-          setEditModalOpen(true);
-          break;
-        case "Slett":
-          setSelectedTaxUnit(element);
-          setDeleteModalOpen(true);
-          break;
+      if (option === "Rediger") {
+        setSelectedTaxUnit(element);
+        setEditModalOpen(true);
       }
     },
   };
 
-  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions, i) => {
+  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions) => {
     const row = {
       id: `${unit.id.toString()}${deductions.year}`,
       defaultExpanded: false,
@@ -76,13 +67,13 @@ const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) =>
       element: unit,
     };
 
-    if (i === 0) {
+    if (deductions.year === currentYear) {
       return { ...row, ...context };
     }
     return row;
   });
 
-  let totalsRow = {
+  const totalsRow = {
     id: `${unit.id.toString()}total`,
     defaultExpanded: false,
     cells: [
@@ -107,17 +98,13 @@ const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) =>
     element: unit,
   };
 
-  if (filteredDeductions.length === 0) {
-    totalsRow = { ...totalsRow, ...context };
-  }
-
   rows.push(totalsRow);
 
   const emptyPlaceholder = (
     <div>
-      <div>Det mangler informasjon for skatteenheten.</div>
+      <div>Der mangler information for skatteenheden.</div>
       <div>
-        Ta kontakt på <a href={"mailto: donasjon@gieffektivt.no"}>donasjon@gieffektivt.no</a>.
+        Kontakt os på <a href={"mailto: donation@giveffektivt.dk"}>donation@giveffektivt.dk</a>.
       </div>
     </div>
   );
@@ -142,27 +129,6 @@ const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) =>
           onFailure={() => {}}
         />
       )}
-      {deleteModalOpen && selectedTaxUnit && (
-        <TaxUnitDeleteModal
-          open={deleteModalOpen}
-          taxUnit={selectedTaxUnit}
-          onSuccess={(success: boolean) => {
-            setDeleteModalOpen(success);
-          }}
-          onFailure={() => {}}
-          onClose={() => setDeleteModalOpen(false)}
-        />
-      )}
     </>
   );
-};
-
-export const TaxUnitList: React.FC<{
-  taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
-  const mainLocale = useMainLocale();
-  if (mainLocale === "dk") {
-    return <DKTaxUnitList taxUnits={taxUnits} />;
-  }
-  return <TaxUnitListStandard taxUnits={taxUnits} />;
 };

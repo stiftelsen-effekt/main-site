@@ -18,6 +18,8 @@ export interface Query<T> {
   };
 }
 
+const isPending = (data: unknown, error: unknown) => typeof data === "undefined" && !error;
+
 const fetcher = async (
   url: string,
   fetchToken: getAccessTokenSilently | null = null,
@@ -62,7 +64,7 @@ export const useAggregatedDonations = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -84,7 +86,7 @@ export const useDonations = (user: User | undefined, fetchToken: getAccessTokenS
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -117,7 +119,7 @@ export const useDistributions = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -142,7 +144,7 @@ export const useAgreementsDistributions = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -161,7 +163,7 @@ export const useAvtalegiroAgreements = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -180,7 +182,7 @@ export const useAutogiroAgreements = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -196,7 +198,7 @@ export const useVippsAgreements = (user: User | undefined, fetchToken: getAccess
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -212,7 +214,7 @@ export const useDKAgreements = (user: User | undefined, fetchToken: getAccessTok
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -227,7 +229,7 @@ export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
     `/vipps/agreement/anonymous/${agreementUrlCode}`,
     (url) => fetcher(url),
   );
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -245,7 +247,7 @@ export const useAgreementFeedbackTypes = () => {
       isOther: boolean;
     }[]
   >(`/agreementfeedback/types`, (url: string) => fetcher(url));
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -260,7 +262,7 @@ export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -275,7 +277,7 @@ export const useCauseAreas = (fetchToken: getAccessTokenSilently) => {
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -290,7 +292,7 @@ export const useAllOrganizations = (fetchToken: getAccessTokenSilently) => {
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -305,7 +307,7 @@ export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilen
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -321,7 +323,7 @@ export const useTaxUnits = (user: User | undefined, fetchToken: getAccessTokenSi
     (url: string) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -336,7 +338,7 @@ export const useYearlyTaxReports = (user: User, fetchToken: getAccessTokenSilent
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
