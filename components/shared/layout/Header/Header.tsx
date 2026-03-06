@@ -51,14 +51,18 @@ export const MainHeader: React.FC<{
     }
   });
 
-  const classes = [styles.container];
-  if (navbarShrinked) classes.push(styles.navbarShrinked);
-  if (!navBarVisible) classes.push(styles.navbarHidden);
+  const containerClasses = [styles.container];
+  if (navbarShrinked) containerClasses.push(styles.navbarShrinked);
+
+  const navbarWrapperClasses = [styles.navbarWrapper];
+  if (!navBarVisible) navbarWrapperClasses.push(styles.navbarHidden);
 
   return (
-    <div data-cy="header" className={classes.join(" ")}>
+    <div data-cy="header" className={containerClasses.join(" ")}>
       <HeaderBanners generalBannerConfig={generalBannerConfig} />
-      {children}
+      <div data-cy="header-navbar" className={navbarWrapperClasses.join(" ")}>
+        {children}
+      </div>
     </div>
   );
 };
