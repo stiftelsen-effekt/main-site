@@ -1,5 +1,4 @@
 import { NextConfig } from "next";
-import withBundleAnalyzer from "@next/bundle-analyzer";
 import { withPlausibleProxy } from "next-plausible";
 
 const STUDIO_REWRITE = {
@@ -850,7 +849,5 @@ const nextConfig: NextConfig = {
 };
 
 module.exports = (phase: any, defaultConfig: NextConfig) => {
-  return withBundleAnalyzer({
-    enabled: process.env.ANALYZE === "true",
-  })(withPlausibleProxy()(nextConfig));
+  return withPlausibleProxy()(nextConfig);
 };

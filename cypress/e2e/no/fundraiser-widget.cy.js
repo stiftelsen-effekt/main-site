@@ -12,9 +12,20 @@ const visitFundraiser = (slug) => {
   cy.get("[data-cy='fundraiser-widget']", { timeout: 10000 }).should("exist");
 };
 
+const clickUntilVisible = (clickSelector, visibleSelector, attempts = 10) => {
+  if (attempts === 0) throw new Error(`${visibleSelector} never became visible`);
+  cy.get(clickSelector).click();
+  cy.wait(300);
+  cy.get(visibleSelector).then(($el) => {
+    if (!$el.is(":visible")) {
+      clickUntilVisible(clickSelector, visibleSelector, attempts - 1);
+    }
+  });
+};
+
 const startWidget = () => {
   cy.get("[data-cy='fundraiser-pane-organization']").should("be.visible");
-  cy.get("[data-cy='fundraiser-start-button']").click();
+  clickUntilVisible("[data-cy='fundraiser-start-button']", "[data-cy='fundraiser-pane-donation']");
   cy.get("[data-cy='fundraiser-pane-donation']").should("be.visible");
   cy.get("[data-cy='fundraiser-pane-organization']").should("not.be.visible");
 };

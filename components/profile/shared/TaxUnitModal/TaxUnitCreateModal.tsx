@@ -12,13 +12,13 @@ import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { useTaxUnits } from "../../../../_queries";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
+import { useMainLocale } from "../../../../context/MainLocaleContext";
+import { TaxUnitTypes } from "./taxUnitTypes";
+import { DKTaxUnitCreateModal } from "./DKTaxUnitCreateModal";
 
-export enum TaxUnitTypes {
-  PERSON = 1,
-  COMPANY = 2,
-}
+export { TaxUnitTypes };
 
-export const TaxUnitCreateModal: React.FC<{
+const TaxUnitCreateModalStandard: React.FC<{
   open: boolean;
   onSuccess: (unit: TaxUnit) => void;
   onFailure: () => void;
@@ -46,7 +46,8 @@ export const TaxUnitCreateModal: React.FC<{
     if (!user) {
       return;
     }
-    const result = await createTaxUnit({ name, ssn }, user, token);
+    const ssnDigits = ssn.replace(/\D/g, "");
+    const result = await createTaxUnit({ name, ssn: ssnDigits }, user, token);
 
     if (result && typeof result !== "string") {
       successToast();
@@ -69,13 +70,23 @@ export const TaxUnitCreateModal: React.FC<{
     return <Spinner />;
   }
 
-  const ssnIsExistingUnit = existingUnits?.some((unit) => unit.ssn === ssn);
+  const ssnDigits = ssn.replace(/\D/g, "");
+  const ssnIsExistingUnit = existingUnits?.some(
+    (unit) => unit.ssn.replace(/\D/g, "") === ssnDigits,
+  );
+
+  const personDigitCount = 11;
+  const companyDigitCount = 9;
+
+  const validatePersonId = (val: string): boolean => validateSsn(val);
+  const validateCompanyId = (val: string): boolean => validateOrg(val);
+
   const isValid =
     name !== "" &&
     ssn !== "" &&
     (type === TaxUnitTypes.PERSON
-      ? ssn.length === 11 && validateSsn(ssn)
-      : ssn.length === 9 && validateOrg(ssn)) &&
+      ? ssnDigits.length === personDigitCount && validatePersonId(ssn)
+      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn)) &&
     !ssnIsExistingUnit;
 
   return (
@@ -110,19 +121,19 @@ export const TaxUnitCreateModal: React.FC<{
           <label className={styles.label}>
             {type === TaxUnitTypes.PERSON ? "Fødselsnummer" : "Organisasjonsnummer"}
           </label>
-          <EffektTextInput value={ssn} onChange={(val: string) => setSsn(val)} />
+          <EffektTextInput value={ssn} onChange={(val) => setSsn(val)} />
 
           <span className={styles.ssnValidation}>
-            {ssn.length === 11 &&
+            {ssnDigits.length === personDigitCount &&
               type === TaxUnitTypes.PERSON &&
-              !validateSsn(ssn) &&
+              !validatePersonId(ssn) &&
               "Ugyldig fødselsnummer"}
-            {ssn.length === 9 &&
+            {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
-              !validateOrg(ssn) &&
+              !validateCompanyId(ssn) &&
               "Ugyldig organisasjonsnummer"}
-            {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
-            {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
+            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && "11 siffer"}
+            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && "9 siffer"}
             {ssnIsExistingUnit && "Skatteenhet eksisterer allerede"}
             &nbsp;
           </span>
@@ -136,3 +147,16 @@ export const TaxUnitCreateModal: React.FC<{
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
 const failureToast = () =>
   toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
+
+export const TaxUnitCreateModal: React.FC<{
+  open: boolean;
+  onSuccess: (unit: TaxUnit) => void;
+  onFailure: () => void;
+  onClose: () => void;
+}> = (props) => {
+  const mainLocale = useMainLocale();
+  if (mainLocale === "dk") {
+    return <DKTaxUnitCreateModal {...props} />;
+  }
+  return <TaxUnitCreateModalStandard {...props} />;
+};
