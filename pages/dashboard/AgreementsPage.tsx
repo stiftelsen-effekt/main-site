@@ -126,6 +126,8 @@ const DKAgreementsPageContent: React.FC<{
     data: dkAgreements,
     error: dkAgreementsError,
   } = useDKAgreements(user, getAccessTokenSilently);
+  const dkAgreementsLoaded = Array.isArray(dkAgreements);
+  const resolvedAgreements = dkAgreementsLoaded ? dkAgreements : [];
 
   if (!cookieBannerConfig) return null;
 
@@ -151,7 +153,7 @@ const DKAgreementsPageContent: React.FC<{
     );
   }
 
-  if (dkAgreementsLoading || !dkAgreements) {
+  if (dkAgreementsLoading || !dkAgreementsLoaded) {
     return (
       <>
         <Head>
@@ -182,8 +184,12 @@ const DKAgreementsPageContent: React.FC<{
     );
   }
 
-  const activeAgreements = dkAgreements.filter((agreement: DKAgreement) => !agreement.cancelled);
-  const inactiveAgreements = dkAgreements.filter((agreement: DKAgreement) => agreement.cancelled);
+  const activeAgreements = resolvedAgreements.filter(
+    (agreement: DKAgreement) => !agreement.cancelled,
+  );
+  const inactiveAgreements = resolvedAgreements.filter(
+    (agreement: DKAgreement) => agreement.cancelled,
+  );
 
   return (
     <>
@@ -293,9 +299,18 @@ const NordicAgreementsPageContent: React.FC<{
     isValidating: taxUnitsRefreshing,
     error: taxUnitsError,
   } = useTaxUnits(user, getAccessTokenSilently);
+  const vippsLoaded = Array.isArray(vipps);
+  const avtaleGiroLoaded = Array.isArray(avtaleGiro);
+  const autoGiroLoaded = Array.isArray(autoGiro);
+  const taxUnitsLoaded = Array.isArray(taxUnits);
+  const resolvedDistributions = shouldFetchDistributions ? distributions : [];
 
   const loading =
-    vippsLoading || avtaleGiroLoading || distributionsLoading || taxUnitsLoading || autoGiroLoading;
+    vippsLoading ||
+    avtaleGiroLoading ||
+    (shouldFetchDistributions && distributionsLoading) ||
+    taxUnitsLoading ||
+    autoGiroLoading;
 
   if (!cookieBannerConfig) return null;
 
@@ -321,7 +336,7 @@ const NordicAgreementsPageContent: React.FC<{
     );
   }
 
-  if (loading || !distributions || !vipps || !avtaleGiro || !taxUnits || !autoGiro)
+  if (loading || !vippsLoaded || !avtaleGiroLoaded || !taxUnitsLoaded || !autoGiroLoaded)
     return (
       <>
         <Head>
@@ -365,7 +380,7 @@ const NordicAgreementsPageContent: React.FC<{
 
   // A map with kid as key and distribution as value
   const distributionsMap = new Map<string, Distribution>();
-  distributions.forEach((distribution: Distribution) => {
+  resolvedDistributions.forEach((distribution: Distribution) => {
     distributionsMap.set(distribution.kid, distribution);
   });
 
