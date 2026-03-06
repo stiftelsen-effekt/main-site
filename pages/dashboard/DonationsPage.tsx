@@ -221,13 +221,13 @@ export const DonationsPage = withStaticProps(
     isValidating: taxUnitsValidation,
     error: taxUnitsError,
   } = useTaxUnits(user, getAccessTokenSilently);
-  const hasDonations = Array.isArray(donations);
-  const hasAggregatedDonations = Array.isArray(aggregatedDonations);
-  const hasOrganizations = Array.isArray(organizations);
-  const hasTaxUnits = Array.isArray(taxUnits);
+  const donationsLoaded = Array.isArray(donations);
+  const aggregatedDonationsLoaded = Array.isArray(aggregatedDonations);
+  const organizationsLoaded = Array.isArray(organizations);
+  const taxUnitsLoaded = Array.isArray(taxUnits);
   const resolvedDistributions = shouldFetchDistributions ? distributions : [];
-  const hasDistributions = Array.isArray(resolvedDistributions);
-  const noDonationData = hasDonations && hasAggregatedDonations && donations.length === 0;
+  const distributionsLoaded = Array.isArray(resolvedDistributions);
+  const noDonationData = donationsLoaded && aggregatedDonationsLoaded && donations.length === 0;
 
   /**
    * While data is loading, we show a spinner
@@ -235,12 +235,12 @@ export const DonationsPage = withStaticProps(
    */
 
   const dataAvailable =
-    hasDonations &&
-    hasAggregatedDonations &&
+    donationsLoaded &&
+    aggregatedDonationsLoaded &&
     donor &&
-    hasOrganizations &&
-    hasTaxUnits &&
-    hasDistributions;
+    organizationsLoaded &&
+    taxUnitsLoaded &&
+    distributionsLoaded;
   const loading =
     aggregatedLoading ||
     donationsLoading ||

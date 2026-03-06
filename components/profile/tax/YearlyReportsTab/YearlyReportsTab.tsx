@@ -52,12 +52,12 @@ export const YearlyReportsTab: React.FC<{
     isValidating: distributionsValidating,
     error: distributionsError,
   } = useDistributions(user as User, getAccessTokenSilently, shouldFetchDistributions, kids);
-  const hasDonations = Array.isArray(donations);
-  const hasReports = Array.isArray(reportsData);
+  const donationsLoaded = Array.isArray(donations);
+  const reportsLoaded = Array.isArray(reportsData);
   const resolvedDistributions = shouldFetchDistributions ? distributions : [];
-  const hasDistributions = Array.isArray(resolvedDistributions);
+  const distributionsLoaded = Array.isArray(resolvedDistributions);
 
-  const dataAvailable = hasDonations && hasReports && hasDistributions;
+  const dataAvailable = donationsLoaded && reportsLoaded && distributionsLoaded;
   const loading =
     donationsLoading || (shouldFetchDistributions && distributionsLoading) || reportsLoading;
 

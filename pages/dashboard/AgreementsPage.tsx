@@ -126,7 +126,8 @@ const DKAgreementsPageContent: React.FC<{
     data: dkAgreements,
     error: dkAgreementsError,
   } = useDKAgreements(user, getAccessTokenSilently);
-  const resolvedAgreements = Array.isArray(dkAgreements) ? dkAgreements : [];
+  const dkAgreementsLoaded = Array.isArray(dkAgreements);
+  const resolvedAgreements = dkAgreementsLoaded ? dkAgreements : [];
 
   if (!cookieBannerConfig) return null;
 
@@ -152,7 +153,7 @@ const DKAgreementsPageContent: React.FC<{
     );
   }
 
-  if (dkAgreementsLoading || dkAgreements === undefined) {
+  if (dkAgreementsLoading || !dkAgreementsLoaded) {
     return (
       <>
         <Head>
@@ -298,10 +299,10 @@ const NordicAgreementsPageContent: React.FC<{
     isValidating: taxUnitsRefreshing,
     error: taxUnitsError,
   } = useTaxUnits(user, getAccessTokenSilently);
-  const hasVipps = Array.isArray(vipps);
-  const hasAvtaleGiro = Array.isArray(avtaleGiro);
-  const hasAutoGiro = Array.isArray(autoGiro);
-  const hasTaxUnits = Array.isArray(taxUnits);
+  const vippsLoaded = Array.isArray(vipps);
+  const avtaleGiroLoaded = Array.isArray(avtaleGiro);
+  const autoGiroLoaded = Array.isArray(autoGiro);
+  const taxUnitsLoaded = Array.isArray(taxUnits);
   const resolvedDistributions = shouldFetchDistributions ? distributions : [];
 
   const loading =
@@ -335,7 +336,7 @@ const NordicAgreementsPageContent: React.FC<{
     );
   }
 
-  if (loading || !hasVipps || !hasAvtaleGiro || !hasTaxUnits || !hasAutoGiro)
+  if (loading || !vippsLoaded || !avtaleGiroLoaded || !taxUnitsLoaded || !autoGiroLoaded)
     return (
       <>
         <Head>
