@@ -52,9 +52,14 @@ export const YearlyReportsTab: React.FC<{
     isValidating: distributionsValidating,
     error: distributionsError,
   } = useDistributions(user as User, getAccessTokenSilently, shouldFetchDistributions, kids);
+  const hasDonations = Array.isArray(donations);
+  const hasReports = Array.isArray(reportsData);
+  const resolvedDistributions = shouldFetchDistributions ? distributions : [];
+  const hasDistributions = Array.isArray(resolvedDistributions);
 
-  const dataAvailable = donations && distributions && reportsData;
-  const loading = donationsLoading || distributionsLoading || reportsLoading;
+  const dataAvailable = hasDonations && hasReports && hasDistributions;
+  const loading =
+    donationsLoading || (shouldFetchDistributions && distributionsLoading) || reportsLoading;
 
   if (reportsError) {
     return (
@@ -80,8 +85,17 @@ export const YearlyReportsTab: React.FC<{
     );
   }
 
+  if (reportsData.length === 0) {
+    return (
+      <div className={styles.container}>
+        <h4 className={styles.header}>Dine årsoppgaver</h4>
+        <p>No data available.</p>
+      </div>
+    );
+  }
+
   const distributionsMap = new Map<string, Distribution>();
-  distributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
+  resolvedDistributions.map((dist: Distribution) => distributionsMap.set(dist.kid, dist));
 
   return (
     <div className={styles.container}>
