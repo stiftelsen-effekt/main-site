@@ -1,8 +1,10 @@
 import { PortableText } from "@portabletext/react";
-import { DKAgreement, DKPaymentMethod } from "../../../../../models";
+import { DKAgreement, DKPaymentMethod, Distribution, TaxUnit } from "../../../../../models";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { thousandize } from "../../../../../util/formatting";
+import { AgreementDetailsConfiguration } from "./AgreementDetails";
+import { DKAgreementDetails } from "./DKAgreementDetails";
 
 const PAYMENT_METHOD_LABELS: Record<DKPaymentMethod, string> = {
   MobilePay: "MobilePay",
@@ -34,13 +36,16 @@ type DKAgreementListConfiguration = {
   subtitle_text: string;
   list_empty_content: any[];
   columns: DKAgreementListConfigurationColumn[];
+  details_configuration?: AgreementDetailsConfiguration;
 };
 
 export const DKAgreementList: React.FC<{
   agreements: DKAgreement[];
+  distributions?: Map<string, Distribution>;
+  taxUnits?: TaxUnit[];
   expandable?: boolean;
   configuration: DKAgreementListConfiguration;
-}> = ({ agreements, expandable, configuration }) => {
+}> = ({ agreements, distributions, taxUnits, expandable, configuration }) => {
   const columns = configuration.columns.filter(
     (column) => window && !(window.innerWidth < 1180 && column.hide_on_mobile),
   );
@@ -65,6 +70,18 @@ export const DKAgreementList: React.FC<{
     cells: columns.map((column) => ({
       value: formatColumnValue(column, agreement[column.value], agreement.type),
     })),
+    details:
+      expandable && configuration.details_configuration && taxUnits ? (
+        <DKAgreementDetails
+          agreementId={agreement.id}
+          method={agreement.type}
+          inputDistribution={distributions?.get(agreement.KID)}
+          taxUnits={taxUnits}
+          inputSum={agreement.amount}
+          inputDate={agreement.date}
+          configuration={configuration.details_configuration}
+        />
+      ) : undefined,
     element: agreement,
   }));
 

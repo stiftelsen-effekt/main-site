@@ -1,0 +1,161 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+  padding: 1.875rem 0;
+}
+
+.values {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 1.5rem;
+  font-size: 1rem;
+
+  & > div {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.valuesDatePickerContainer {
+  min-width: 18rem;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.valuesAmountContainer {
+  min-width: 7.5rem;
+
+  span {
+    position: absolute;
+    right: 1.2rem;
+  }
+}
+
+.valuesTaxUnitSelectorContainer {
+  min-width: 10rem;
+  flex: 1 1 12rem;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.valuesSmartDistributionToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  white-space: nowrap;
+}
+
+.singleCauseAreaDistribution {
+  padding-top: 0.5rem;
+}
+
+.multiLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+  column-gap: 3rem;
+}
+
+.causeAreas {
+  & > div {
+    margin-top: 1.5rem;
+  }
+
+  & > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.distributionCauseAreaInputHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.distributionCauseAreaInputPercentageShare {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  span {
+    position: absolute;
+    right: 1.2rem;
+  }
+}
+
+.distributionCauseAreaInputContainer {
+  padding: 2rem 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.errorWrapper,
+.textWrapper {
+  h5 {
+    margin-top: 0;
+  }
+}
+
+.amountInput,
+.percentageInput {
+  background: var(--secondary);
+  color: var(--primary);
+  font-family: "ESKlarheitGrotesk";
+  box-sizing: border-box;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--primary);
+  padding: 0.5rem 1.2rem;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1180px) {
+  .values {
+    flex-direction: column;
+    align-items: stretch;
+    row-gap: 1.5rem;
+  }
+
+  .valuesDatePickerContainer,
+  .valuesAmountContainer,
+  .valuesTaxUnitSelectorContainer {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .valuesSmartDistributionToggle {
+    justify-content: space-between;
+  }
+
+  .multiLayout {
+    grid-template-columns: 1fr;
+    row-gap: 2rem;
+  }
+
+  .actions {
+    justify-content: space-between;
+  }
+}
