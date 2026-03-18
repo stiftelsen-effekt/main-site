@@ -6,22 +6,6 @@ import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
 import { GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 import { BannerContext } from "../../../main/layout/layout";
 
-const LOCAL_DEV_GENERAL_BANNER: Exclude<GeneralBannerQueryResult, null> = {
-  _id: "local-dev-general-banner",
-  _type: "generalbanner",
-  _createdAt: "2026-03-06T00:00:00.000Z",
-  _updatedAt: "2026-03-06T00:00:00.000Z",
-  _rev: "local-dev-general-banner",
-  title: "Test the general banner locally",
-  link: {
-    _key: "id_general_banner_link",
-    _type: "navitem",
-    title: "Var metode",
-    slug: "/var-metode",
-    pagetype: "generic_page",
-  },
-};
-
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
   hideOnScroll: boolean;
@@ -74,9 +58,7 @@ export const MainHeader: React.FC<{
 
   const headerStackClasses = [styles.headerStack];
   if (!navBarVisible) headerStackClasses.push(styles.headerHidden);
-  const effectiveGeneralBannerConfig = generalBannerConfig ?? LOCAL_DEV_GENERAL_BANNER;
-  const showGeneralBanner =
-    Boolean(effectiveGeneralBannerConfig) && !bannerContext.generalBannerDismissed;
+  const showGeneralBanner = Boolean(generalBannerConfig) && !bannerContext.generalBannerDismissed;
   const wrapperClasses = [styles.wrapper];
   if (showGeneralBanner) wrapperClasses.push(styles.hasGeneralBanner);
   const spacerClasses = [styles.spacer];
@@ -87,8 +69,8 @@ export const MainHeader: React.FC<{
       <div aria-hidden="true" className={spacerClasses.join(" ")} />
       <div data-cy="header" className={containerClasses.join(" ")}>
         <div className={headerStackClasses.join(" ")}>
-          {showGeneralBanner && effectiveGeneralBannerConfig && (
-            <GeneralBanner configuration={effectiveGeneralBannerConfig} />
+          {showGeneralBanner && generalBannerConfig && (
+            <GeneralBanner configuration={generalBannerConfig} />
           )}
           <div data-cy="header-navbar" className={styles.navbarWrapper}>
             {children}
