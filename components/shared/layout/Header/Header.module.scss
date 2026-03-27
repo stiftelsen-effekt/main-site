@@ -1,27 +1,68 @@
+.wrapper {
+  width: 100%;
+  --header-navbar-height: 80px;
+  --header-general-banner-height: 56px;
+  --header-active-general-banner-height: 0px;
+}
+
+.wrapper.hasGeneralBanner {
+  --header-active-general-banner-height: var(--header-general-banner-height);
+}
+
 .container {
   position: fixed;
   top: 0;
   z-index: 1000;
   width: 100%;
-  background-color: var(--secondary);
+}
+
+.spacer {
+  height: var(--header-navbar-height);
+}
+
+.spacer.hasGeneralBanner {
+  height: calc(var(--header-navbar-height) + var(--header-general-banner-height));
+}
+
+.headerStack {
   transition: transform 0.3s ease-in-out;
+}
+
+.navbarWrapper {
+  background-color: var(--secondary);
+}
+
+.container:focus-within .headerStack {
+  transform: translateY(0);
 }
 
 .container.navbarShrinked nav {
   padding: 0 0;
 }
 
-.container.navbarHidden {
+.headerStack.headerHidden {
   transform: translateY(-100%);
 }
 
-.container:focus-within {
-  transform: translateY(0);
-}
-
 @media only screen and (max-width: 1180px) {
+  .wrapper:has([data-mobile-menu-expanded="true"]) [data-cy="generalbanner-container"] {
+    background-color: var(--secondary);
+    color: var(--primary);
+  }
+
+  .wrapper {
+    --header-navbar-height: 72px;
+    --header-general-banner-height: 54px;
+  }
+
   .container.navbarShrinked nav {
     padding: 20px 0;
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    --header-navbar-height: 90px;
   }
 }
 

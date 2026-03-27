@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Navbar.module.scss";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
@@ -131,6 +132,7 @@ export const Navbar = withStaticProps(
     };
   },
 )(({ data, dashboard, useDashboardLogo }) => {
+  const router = useRouter();
   const settingsData = data.result.settings;
   const dashboardData = data.result.dashboard;
 
@@ -161,6 +163,13 @@ export const Navbar = withStaticProps(
     filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
+  useEffect(() => {
+    setExpandMenu(false);
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "auto";
+    }
+  }, [router.asPath]);
+
   const setExpanded = (expanded: boolean) => {
     if (expanded && window.innerWidth < 1180) document.body.style.overflow = "hidden";
     else if (typeof document !== "undefined") document.body.style.overflow = "auto";
@@ -188,7 +197,10 @@ export const Navbar = withStaticProps(
     (!useDashboardLogo && !dashboard && expandMenu);
 
   return (
-    <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
+    <div
+      className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}
+      data-mobile-menu-expanded={expandMenu ? "true" : "false"}
+    >
       <nav className={`${styles.navbar}`} data-cy="navbar">
         <div
           className={styles.logoWrapper}

@@ -1,7 +1,6 @@
 .container {
   padding: 0 0;
   margin: 0 auto;
-  padding-top: 80px;
 }
 
 .modalOpen {
@@ -20,12 +19,6 @@
   --primary-filter: invert(1);
   --primary-hover: #ccc;
   background: var(--secondary);
-}
-
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .container {
-    padding-top: 90px;
-  }
 }
 
 @media only screen and (max-width: 1180px) {
