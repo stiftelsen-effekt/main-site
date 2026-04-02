@@ -265,6 +265,12 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1),
     },
     {
+      name: "turnstile_site_key",
+      title: "Turnstile Site Key",
+      type: "string",
+      description: "Optional Cloudflare Turnstile site key for spam protection.",
+    },
+    {
       name: "honeypot_field",
       title: "Enable Honeypot",
       type: "boolean",

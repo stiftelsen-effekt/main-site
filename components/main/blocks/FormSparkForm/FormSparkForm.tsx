@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Head from "next/head";
+import Script from "next/script";
+
 import { Formsparkform } from "../../../../studio/sanity.types";
 import styles from "./FormSparkForm.module.scss";
 import {
@@ -164,43 +167,60 @@ export const FormsparkForm: React.FC<{ formData: Formsparkform }> = ({ formData 
   }
 
   return (
-    <div className={styles.wrapper}>
-      <form
-        action={`https://submit-form.com/${formData.form_id}`}
-        method="POST"
-        target={formData.submit_target || "_self"}
-        className={styles.form}
-      >
-        {formData.fields.map((field, index) => {
-          const fieldName = field.field_name || "";
-          return (
-            <div key={index} className={styles.fieldWrapper}>
-              {field.field_type !== "checkbox" && (
-                <label htmlFor={fieldName} id={`${fieldName}-label`}>
-                  {field.field_label}
-                </label>
-              )}
-
-              {renderField(field)}
-            </div>
-          );
-        })}
-
-        {/* Honeypot field for spam protection */}
-        {formData.honeypot_field && (
-          <input
-            type="text"
-            name="_gotcha"
-            style={{ display: "none" }}
-            tabIndex={-1}
-            autoComplete="off"
+    <>
+      {formData.turnstile_site_key && (
+        <>
+          <Head>
+            <link rel="preconnect" href="https://challenges.cloudflare.com" />
+          </Head>
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            strategy="afterInteractive"
           />
-        )}
+        </>
+      )}
+      <div className={styles.wrapper}>
+        <form
+          action={`https://submit-form.com/${formData.form_id}`}
+          method="POST"
+          target={formData.submit_target || "_self"}
+          className={styles.form}
+        >
+          {formData.fields.map((field, index) => {
+            const fieldName = field.field_name || "";
+            return (
+              <div key={index} className={styles.fieldWrapper}>
+                {field.field_type !== "checkbox" && (
+                  <label htmlFor={fieldName} id={`${fieldName}-label`}>
+                    {field.field_label}
+                  </label>
+                )}
 
-        <EffektButton variant={EffektButtonVariant.PRIMARY} type="submit">
-          {formData.submit_button_text || "Submit"}
-        </EffektButton>
-      </form>
-    </div>
+                {renderField(field)}
+              </div>
+            );
+          })}
+
+          {formData.turnstile_site_key && (
+            <div className="cf-turnstile" data-sitekey={formData.turnstile_site_key} />
+          )}
+
+          {/* Honeypot field for spam protection */}
+          {formData.honeypot_field && (
+            <input
+              type="text"
+              name="_gotcha"
+              style={{ display: "none" }}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          )}
+
+          <EffektButton variant={EffektButtonVariant.PRIMARY} type="submit">
+            {formData.submit_button_text || "Submit"}
+          </EffektButton>
+        </form>
+      </div>
+    </>
   );
 };

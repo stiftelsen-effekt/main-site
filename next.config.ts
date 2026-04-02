@@ -54,7 +54,8 @@ const nextConfig: NextConfig = {
                 "https://*.facebook.net " +
                 "https://connect.facebook.net " +
                 "https://www.youtube.com " +
-                "https://*.sanity-cdn.com",
+                "https://*.sanity-cdn.com " +
+                "https://challenges.cloudflare.com",
               // Prevent plugin injection
               "object-src 'none'",
               // Allow for workers to be loaded from self

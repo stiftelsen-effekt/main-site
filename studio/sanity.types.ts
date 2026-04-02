@@ -749,6 +749,7 @@ export type Formsparkform = {
     _type: "formField";
     _key: string;
   }>;
+  turnstile_site_key?: string;
   honeypot_field?: boolean;
   custom_css_class?: string;
 };
