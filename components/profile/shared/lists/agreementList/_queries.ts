@@ -109,6 +109,28 @@ export const cancelVippsAgreement = async (urlCode: string, token: string) => {
   }
 };
 
+export const cancelMobilePayAgreement = async (agreementId: string, token: string) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/mobilepay/agreement/${agreementId}/cancel`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+    });
+
+    if (response.status !== 200) {
+      return null;
+    }
+    return true;
+  } catch (e) {
+    return null;
+  }
+};
+
 export const updateAnonymousVippsAgreementDistribution = async (
   urlCode: string,
   distribution: Distribution,

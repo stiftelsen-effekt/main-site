@@ -36,6 +36,7 @@ import { AgreementTypes } from "./AgreementList";
 export type AgreementDetailsConfiguration = {
   save_button_text: string;
   cancel_button_text: string;
+  membership_label_prefix?: string;
   date_selector_configuration: DatePickerInputConfiguration;
   loading_text: string;
   error_text: string;

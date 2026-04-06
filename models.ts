@@ -64,6 +64,8 @@ export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
 export type DKAgreement = {
   id: string;
   kid: string;
+  bank_msg: string;
+  membershipDisplayName?: string | null;
   cancelled: boolean;
   amount: number;
   chargeDay: number | null;

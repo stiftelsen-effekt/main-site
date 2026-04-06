@@ -20,7 +20,6 @@ type DKAgreementRow = {
   amount: number;
   type: DKPaymentMethod;
 };
-
 type DKAgreementListConfigurationColumn = {
   title: string;
   value: keyof DKAgreementRow;
@@ -55,35 +54,38 @@ export const DKAgreementList: React.FC<{
     width: column.width,
   }));
 
-  const rowData: DKAgreementRow[] = agreements.map((agreement) => ({
-    id: agreement.id,
-    status: agreement.cancelled ? "STOPPED" : "ACTIVE",
-    KID: agreement.kid,
-    date: agreement.chargeDay ?? 0,
-    amount: agreement.amount,
-    type: agreement.method,
-  }));
+  const rows: ListRow<DKAgreementRow>[] = agreements.map((dkAgreement) => {
+    const row: DKAgreementRow = {
+      id: dkAgreement.id,
+      status: dkAgreement.cancelled ? "STOPPED" : "ACTIVE",
+      KID: dkAgreement.bank_msg ?? dkAgreement.kid,
+      date: dkAgreement.chargeDay ?? 0,
+      amount: dkAgreement.amount,
+      type: dkAgreement.method,
+    };
 
-  const rows: ListRow<DKAgreementRow>[] = rowData.map((agreement) => ({
-    id: agreement.id,
-    defaultExpanded: false,
-    cells: columns.map((column) => ({
-      value: formatColumnValue(column, agreement[column.value], agreement.type),
-    })),
-    details:
-      expandable && configuration.details_configuration && taxUnits ? (
-        <DKAgreementDetails
-          agreementId={agreement.id}
-          method={agreement.type}
-          inputDistribution={distributions?.get(agreement.KID)}
-          taxUnits={taxUnits}
-          inputSum={agreement.amount}
-          inputDate={agreement.date}
-          configuration={configuration.details_configuration}
-        />
-      ) : undefined,
-    element: agreement,
-  }));
+    return {
+      id: row.id,
+      defaultExpanded: false,
+      cells: columns.map((column) => ({
+        value: formatColumnValue(column, row[column.value], row.type),
+      })),
+      details:
+        expandable && configuration.details_configuration && taxUnits ? (
+          <DKAgreementDetails
+            agreement={dkAgreement}
+            agreementId={dkAgreement.id}
+            method={dkAgreement.method}
+            inputDistribution={distributions?.get(row.KID)}
+            taxUnits={taxUnits}
+            inputSum={row.amount}
+            inputDate={row.date}
+            configuration={configuration.details_configuration}
+          />
+        ) : undefined,
+      element: row,
+    };
+  });
 
   const emptyPlaceholder = (
     <div data-cy="dk-agreement-list-empty-placeholder">

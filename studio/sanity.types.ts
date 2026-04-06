@@ -2157,6 +2157,7 @@ export type Agreementlistdetailsconfiguration = {
   _type: "agreementlistdetailsconfiguration";
   save_button_text?: string;
   cancel_button_text?: string;
+  membership_label_prefix?: string;
   date_selector_configuration?: {
     _ref: string;
     _type: "reference";

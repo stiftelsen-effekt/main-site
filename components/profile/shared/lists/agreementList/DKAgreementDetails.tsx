@@ -6,6 +6,7 @@ import { AlertCircle, Check, Info } from "react-feather";
 import { toast } from "react-toastify";
 
 import {
+  DKAgreement,
   Distribution,
   DistributionCauseArea,
   DKPaymentMethod,
@@ -25,6 +26,8 @@ import { DistributionController } from "../../DistributionCauseAreaInput/Distrib
 import { DKTaxUnitCreateModal } from "../../TaxUnitModal/DKTaxUnitCreateModal";
 import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
 import { AgreementDetailsConfiguration } from "./AgreementDetails";
+import { DKAgreementMembershipLine } from "./DKAgreementMembershipLine";
+import { getDKMembershipDisplay } from "./dkMembershipDisplay";
 import {
   cancelMobilePayAgreement,
   cancelVippsAgreement,
@@ -35,7 +38,10 @@ import {
 
 import style from "./DKAgreementDetails.module.scss";
 
+const DEFAULT_MEMBERSHIP_PREFIX = "Medlemskab:";
+
 export const DKAgreementDetails: React.FC<{
+  agreement: DKAgreement;
   agreementId: string;
   method: DKPaymentMethod;
   inputSum: number;
@@ -43,7 +49,16 @@ export const DKAgreementDetails: React.FC<{
   inputDistribution?: Distribution;
   taxUnits: TaxUnit[];
   configuration: AgreementDetailsConfiguration;
-}> = ({ agreementId, method, inputSum, inputDate, inputDistribution, taxUnits, configuration }) => {
+}> = ({
+  agreement,
+  agreementId,
+  method,
+  inputSum,
+  inputDate,
+  inputDistribution,
+  taxUnits,
+  configuration,
+}) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
 
@@ -93,6 +108,14 @@ export const DKAgreementDetails: React.FC<{
     () => taxUnits.find((unit) => unit.id === distribution?.taxUnitId) ?? null,
     [distribution?.taxUnitId, taxUnits],
   );
+
+  const membershipLabel = useMemo(
+    () => getDKMembershipDisplay({ agreement, distribution, taxUnits }),
+    [agreement, distribution, taxUnits],
+  );
+
+  const membershipPrefix =
+    configuration.membership_label_prefix?.trim() || DEFAULT_MEMBERSHIP_PREFIX;
 
   const isCreditCard = method === "Credit card";
   const isMobilePay = method === "MobilePay";
@@ -153,7 +176,9 @@ export const DKAgreementDetails: React.FC<{
 
     setLightboxOpen(false);
     const token = await getAccessTokenSilently();
-    const cancelled = await cancelVippsAgreement(agreementId, token);
+    const cancelled = isMobilePay
+      ? await cancelMobilePayAgreement(agreementId, token)
+      : await cancelVippsAgreement(agreementId, token);
 
     if (cancelled) {
       successToast(configuration.toasts_configuration.success_text);
@@ -167,6 +192,9 @@ export const DKAgreementDetails: React.FC<{
   if (isMobilePay) {
     return (
       <div className={style.wrapper} data-cy="agreement-list-details">
+        {membershipLabel ? (
+          <DKAgreementMembershipLine prefix={membershipPrefix} label={membershipLabel} />
+        ) : null}
         <div className={style.actions}>
           <EffektButton
             variant={EffektButtonVariant.SECONDARY}
@@ -216,6 +244,9 @@ export const DKAgreementDetails: React.FC<{
 
   return (
     <div className={style.wrapper} data-cy="agreement-list-details">
+      {membershipLabel ? (
+        <DKAgreementMembershipLine prefix={membershipPrefix} label={membershipLabel} />
+      ) : null}
       {isSingleCauseArea ? (
         <>
           <div className={style.values}>
