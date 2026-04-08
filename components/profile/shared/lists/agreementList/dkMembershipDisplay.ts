@@ -1,9 +1,5 @@
 import { DKAgreement, Distribution, TaxUnit } from "../../../../../models";
 
-/**
- * Human-readable membership line for DK agreement details.
- * Payment-method agnostic: prefers API field, else tax unit from distribution.
- */
 export function getDKMembershipDisplay(params: {
   agreement: DKAgreement;
   distribution: Distribution | null | undefined;

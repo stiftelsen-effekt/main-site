@@ -29,7 +29,6 @@ import { AgreementDetailsConfiguration } from "./AgreementDetails";
 import { DKAgreementMembershipLine } from "./DKAgreementMembershipLine";
 import { getDKMembershipDisplay } from "./dkMembershipDisplay";
 import {
-  cancelMobilePayAgreement,
   cancelVippsAgreement,
   updateVippsAgreementDay,
   updateVippsAgreementDistribution,
@@ -176,9 +175,7 @@ export const DKAgreementDetails: React.FC<{
 
     setLightboxOpen(false);
     const token = await getAccessTokenSilently();
-    const cancelled = isMobilePay
-      ? await cancelMobilePayAgreement(agreementId, token)
-      : await cancelVippsAgreement(agreementId, token);
+    const cancelled = await cancelVippsAgreement(agreementId, token);
 
     if (cancelled) {
       successToast(configuration.toasts_configuration.success_text);
