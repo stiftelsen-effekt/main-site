@@ -26,6 +26,14 @@
   & > div {
     width: 100%;
   }
+
+  :global(input[data-cy="date-picker-input"]) {
+    border: 1px solid var(--primary) !important;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
 }
 
 .valuesAmountContainer {

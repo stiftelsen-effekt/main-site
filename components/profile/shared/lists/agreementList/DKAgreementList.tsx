@@ -76,7 +76,7 @@ export const DKAgreementList: React.FC<{
             agreement={dkAgreement}
             agreementId={dkAgreement.id}
             method={dkAgreement.method}
-            inputDistribution={distributions?.get(row.KID)}
+            inputDistribution={distributions?.get(dkAgreement.kid)}
             taxUnits={taxUnits}
             inputSum={row.amount}
             inputDate={row.date}
