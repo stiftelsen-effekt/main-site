@@ -27,7 +27,7 @@ import { DKTaxUnitCreateModal } from "../../TaxUnitModal/DKTaxUnitCreateModal";
 import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
 import { AgreementDetailsConfiguration } from "./AgreementDetails";
 import { DKAgreementMembershipLine } from "./DKAgreementMembershipLine";
-import { getDKMembershipDisplay } from "./dkMembershipDisplay";
+import { distributionTargetsMembershipFee, getDKMembershipDisplay } from "./dkMembershipDisplay";
 import {
   cancelVippsAgreement,
   updateVippsAgreementDay,
@@ -113,14 +113,17 @@ export const DKAgreementDetails: React.FC<{
     [agreement, distribution, taxUnits],
   );
 
+  const isMembershipFee = useMemo(
+    () => distributionTargetsMembershipFee(distribution),
+    [distribution],
+  );
+
   const membershipPrefix =
     configuration.membership_label_prefix?.trim() || DEFAULT_MEMBERSHIP_PREFIX;
 
   const isCreditCard = method === "Credit card";
-  const isMobilePay = method === "MobilePay";
   const canEditDate = isCreditCard;
-  const canSave = !isMobilePay;
-  const canRenderDistribution = !isMobilePay;
+  const canSave = !isMembershipFee;
 
   const save = async () => {
     if (!canSave) {
@@ -186,7 +189,7 @@ export const DKAgreementDetails: React.FC<{
     failureToast(configuration.toasts_configuration.failure_text);
   };
 
-  if (isMobilePay) {
+  if (isMembershipFee) {
     return (
       <div className={style.wrapper} data-cy="agreement-list-details">
         {membershipLabel ? (
@@ -298,7 +301,7 @@ export const DKAgreementDetails: React.FC<{
           </div>
 
           <AnimateHeight
-            height={canRenderDistribution && !distribution.causeAreas[0].standardSplit ? "auto" : 0}
+            height={!distribution.causeAreas[0].standardSplit ? "auto" : 0}
             animateOpacity={true}
           >
             <div className={style.singleCauseAreaDistribution}>

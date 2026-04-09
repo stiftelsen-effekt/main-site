@@ -5,6 +5,7 @@ import { ListRow } from "../GenericListRow";
 import { thousandize } from "../../../../../util/formatting";
 import { AgreementDetailsConfiguration } from "./AgreementDetails";
 import { DKAgreementDetails } from "./DKAgreementDetails";
+import { distributionTargetsMembershipFee } from "./dkMembershipDisplay";
 
 const PAYMENT_METHOD_LABELS: Record<DKPaymentMethod, string> = {
   MobilePay: "MobilePay",
@@ -27,6 +28,7 @@ type DKAgreementListConfigurationColumn = {
   width?: string;
   payment_date_format_template?: string;
   payment_date_last_day_of_month_template?: string;
+  payment_date_membership_format_template?: string;
   hide_on_mobile?: boolean;
 };
 
@@ -64,11 +66,13 @@ export const DKAgreementList: React.FC<{
       type: dkAgreement.method,
     };
 
+    const rowDistribution = distributions?.get(dkAgreement.kid);
+
     return {
       id: row.id,
       defaultExpanded: false,
       cells: columns.map((column) => ({
-        value: formatColumnValue(column, row[column.value], row.type),
+        value: formatColumnValue(column, row[column.value], row.type, rowDistribution),
       })),
       details:
         expandable && configuration.details_configuration && taxUnits ? (
@@ -110,6 +114,7 @@ const formatColumnValue = (
   column: DKAgreementListConfigurationColumn,
   value: any,
   method: DKPaymentMethod,
+  distribution?: Distribution,
 ) => {
   switch (column.type) {
     case "string":
@@ -120,9 +125,16 @@ const formatColumnValue = (
       if (method === "Bank transfer") {
         return "Du bestemmer selv";
       }
-      return value === 0
-        ? column.payment_date_last_day_of_month_template
-        : column.payment_date_format_template?.replaceAll("{{date}}", value);
+      if (value === 0) {
+        return column.payment_date_last_day_of_month_template;
+      }
+      const membershipTemplate = column.payment_date_membership_format_template?.trim();
+      const useMembershipTemplate =
+        distribution && distributionTargetsMembershipFee(distribution) && membershipTemplate;
+      const template = useMembershipTemplate
+        ? membershipTemplate
+        : column.payment_date_format_template;
+      return template?.replaceAll("{{date}}", String(value));
     case "paymentmethod":
       return PAYMENT_METHOD_LABELS[value as DKPaymentMethod] || value;
   }

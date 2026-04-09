@@ -28424,6 +28424,7 @@ export type FetchAgreementsPageResult = {
             type?: "date" | "paymentmethod" | "string" | "sum";
             payment_date_format_template?: string;
             payment_date_last_day_of_month_template?: string;
+            payment_date_membership_format_template?: string;
             width?: number;
             hide_on_mobile?: boolean;
             _key: string;

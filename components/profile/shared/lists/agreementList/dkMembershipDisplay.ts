@@ -1,10 +1,33 @@
 import { DKAgreement, Distribution, TaxUnit } from "../../../../../models";
 
+export const MEMBERSHIP_ORGANIZATION_ID = 99;
+
+const MEMBERSHIP_ORGANIZATION_NAME = "Giv Effektivts medlemskab";
+
+export function distributionTargetsMembershipFee(
+  distribution: Distribution | null | undefined,
+): boolean {
+  if (!distribution?.causeAreas?.length) {
+    return false;
+  }
+
+  return distribution.causeAreas.some((causeArea) =>
+    causeArea.organizations?.some(
+      (org) =>
+        org.id === MEMBERSHIP_ORGANIZATION_ID || org.name?.trim() === MEMBERSHIP_ORGANIZATION_NAME,
+    ),
+  );
+}
+
 export function getDKMembershipDisplay(params: {
   agreement: DKAgreement;
   distribution: Distribution | null | undefined;
   taxUnits: TaxUnit[];
 }): string | null {
+  if (!distributionTargetsMembershipFee(params.distribution)) {
+    return null;
+  }
+
   const fromApi = params.agreement.membershipDisplayName?.trim();
   if (fromApi) {
     return fromApi;

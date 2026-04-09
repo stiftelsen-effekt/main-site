@@ -117,6 +117,14 @@ export default defineType({
               hidden: ({ parent }) => parent?.type !== "date",
             }),
             defineField({
+              name: "payment_date_membership_format_template",
+              title: "Payment date format (membership fee)",
+              type: "string",
+              description:
+                "When this agreement’s distribution is the membership fee (Giv Effektivts medlemskab), use this template instead of the default monthly one. Use {{date}} for the day number, e.g. 'Den {{date}}. hvert år'.",
+              hidden: ({ parent }) => parent?.type !== "date",
+            }),
+            defineField({
               name: "width",
               title: "Column width in % (optional)",
               type: "number",
