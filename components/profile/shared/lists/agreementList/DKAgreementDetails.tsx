@@ -121,8 +121,7 @@ export const DKAgreementDetails: React.FC<{
   const membershipPrefix =
     configuration.membership_label_prefix?.trim() || DEFAULT_MEMBERSHIP_PREFIX;
 
-  const isCreditCard = method === "Credit card";
-  const canEditDate = isCreditCard;
+  const canEditDate = method !== "Bank transfer";
   const canSave = !isMembershipFee;
 
   const save = async () => {
