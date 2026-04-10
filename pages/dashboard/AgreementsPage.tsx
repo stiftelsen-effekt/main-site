@@ -128,6 +128,37 @@ const DKAgreementsPageContent: React.FC<{
   } = useDKAgreements(user, getAccessTokenSilently);
   const dkAgreementsLoaded = Array.isArray(dkAgreements);
   const resolvedAgreements = dkAgreementsLoaded ? dkAgreements : [];
+  const activeAgreementKids = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          resolvedAgreements
+            .filter((agreement: DKAgreement) => !agreement.cancelled)
+            .map((agreement: DKAgreement) => agreement.kid),
+        ),
+      ),
+    [resolvedAgreements],
+  );
+  const shouldFetchDistributions = dkAgreementsLoaded && activeAgreementKids.length > 0;
+
+  const {
+    loading: distributionsLoading,
+    data: distributions,
+    error: distributionsError,
+  } = useAgreementsDistributions(
+    user,
+    getAccessTokenSilently,
+    shouldFetchDistributions,
+    activeAgreementKids,
+  );
+
+  const {
+    loading: taxUnitsLoading,
+    data: taxUnits,
+    error: taxUnitsError,
+  } = useTaxUnits(user, getAccessTokenSilently);
+  const taxUnitsLoaded = Array.isArray(taxUnits);
+  const resolvedDistributions = shouldFetchDistributions ? distributions ?? [] : [];
 
   if (!cookieBannerConfig) return null;
 
@@ -153,7 +184,13 @@ const DKAgreementsPageContent: React.FC<{
     );
   }
 
-  if (dkAgreementsLoading || !dkAgreementsLoaded) {
+  if (
+    dkAgreementsLoading ||
+    !dkAgreementsLoaded ||
+    taxUnitsLoading ||
+    !taxUnitsLoaded ||
+    (shouldFetchDistributions && distributionsLoading)
+  ) {
     return (
       <>
         <Head>
@@ -190,6 +227,10 @@ const DKAgreementsPageContent: React.FC<{
   const inactiveAgreements = resolvedAgreements.filter(
     (agreement: DKAgreement) => agreement.cancelled,
   );
+  const distributionsMap = new Map<string, Distribution>();
+  resolvedDistributions.forEach((distribution: Distribution) => {
+    distributionsMap.set(distribution.kid, distribution);
+  });
 
   return (
     <>
@@ -215,6 +256,8 @@ const DKAgreementsPageContent: React.FC<{
           {window.innerWidth > 1180 || selected === AgreementsMenuOptions.ACTIVE_AGREEMENTS ? (
             <DKAgreementList
               agreements={activeAgreements}
+              distributions={distributionsMap}
+              taxUnits={taxUnits}
               expandable={true}
               configuration={page?.active_list_configuration}
             />

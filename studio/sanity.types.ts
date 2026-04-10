@@ -2157,6 +2157,7 @@ export type Agreementlistdetailsconfiguration = {
   _type: "agreementlistdetailsconfiguration";
   save_button_text?: string;
   cancel_button_text?: string;
+  membership_label_prefix?: string;
   date_selector_configuration?: {
     _ref: string;
     _type: "reference";
@@ -28423,6 +28424,7 @@ export type FetchAgreementsPageResult = {
             type?: "date" | "paymentmethod" | "string" | "sum";
             payment_date_format_template?: string;
             payment_date_last_day_of_month_template?: string;
+            payment_date_membership_format_template?: string;
             width?: number;
             hide_on_mobile?: boolean;
             _key: string;

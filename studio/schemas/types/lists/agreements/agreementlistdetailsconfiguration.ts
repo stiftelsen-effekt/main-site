@@ -18,6 +18,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "membership_label_prefix",
+      title: "DK: Medlemskab label prefix",
+      description:
+        "Prefix before the membership name in Danish agreement details, e.g. “Medlemskab:”. Leave empty to use the default.",
+      type: "string",
+    }),
+    defineField({
       name: "date_selector_configuration",
       title: "Date selector configuration",
       type: "reference",
