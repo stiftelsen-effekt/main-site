@@ -85,12 +85,11 @@ export const DKTaxUnitCreateModal: React.FC<{
     validateTin(val, { allowCvr: true }).isValid;
 
   const isValid =
-    name !== "" &&
+    !ssnIsExistingUnit &&
     ssn !== "" &&
     (type === TaxUnitTypes.PERSON
       ? ssnDigits.length === personDigitCount && validatePersonId(ssn)
-      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn)) &&
-    !ssnIsExistingUnit;
+      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn));
 
   return (
     <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
@@ -131,20 +130,22 @@ export const DKTaxUnitCreateModal: React.FC<{
             }
           />
 
-          <span className={styles.ssnValidation}>
-            {cprValidation && !cprValidation.isValid && "Ugyldigt CPR-nummer"}
+          <div className={styles.ssnValidation}>
+            {cprValidation && !cprValidation.isValid && <div>Ugyldigt CPR-nummer</div>}
             {cprValidation?.isValid && cprValidation?.isSuspicious && (
-              <span data-cy="cpr-suspicious-message">Kontroller venligst at det er korrekt.</span>
+              <div data-cy="cpr-suspicious-message">Kontroller venligst at det er korrekt.</div>
             )}
             {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
-              !validateCompanyId(ssn) &&
-              "Ugyldigt CVR-nummer"}
-            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && "10 cifre"}
-            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && "8 cifre"}
-            {ssnIsExistingUnit && "Skatteenhed findes allerede"}
-            &nbsp;
-          </span>
+              !validateCompanyId(ssn) && <div>Ugyldigt CVR-nummer</div>}
+            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && (
+              <div>10 cifre</div>
+            )}
+            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && (
+              <div>8 cifre</div>
+            )}
+            {ssnIsExistingUnit && <div>Skatteenhed findes allerede</div>}
+          </div>
         </div>
         {error && <div className={styles.error}>{error}</div>}
       </div>

@@ -30,7 +30,7 @@ export const DKTaxUnitEditModal: React.FC<{
   } = useTaxUnits(user as User, getAccessTokenSilently);
 
   const initialSsnDigits = initial.ssn.replace(/\D/g, "");
-  const [name, setName] = useState(initial.name);
+  const [name, setName] = useState(initial.name === "Anonym" ? "" : initial.name);
   const [ssn, setSsn] = useState(initial.ssn);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -70,10 +70,6 @@ export const DKTaxUnitEditModal: React.FC<{
   }
 
   const ssnDigits = ssn.replace(/\D/g, "");
-  const ssnIsExistingUnit = existingUnits
-    ?.filter((unit) => unit !== initial)
-    .some((unit) => unit.ssn.replace(/\D/g, "") === ssnDigits);
-
   const personDigitCount = 10;
   const companyDigitCount = 8;
 
@@ -88,12 +84,10 @@ export const DKTaxUnitEditModal: React.FC<{
     validateTin(val, { allowCvr: true }).isValid;
 
   const isValid =
-    name !== "" &&
-    ssn !== "" &&
+    ssn === "" ||
     (type === TaxUnitTypes.PERSON
       ? ssnDigits.length === personDigitCount && validatePersonId(ssn)
-      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn)) &&
-    !ssnIsExistingUnit;
+      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn));
 
   return (
     <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
@@ -139,20 +133,22 @@ export const DKTaxUnitEditModal: React.FC<{
             }
           />
 
-          <span className={styles.ssnValidation}>
-            {cprValidation && !cprValidation.isValid && "Ugyldigt CPR-nummer"}
+          <div className={styles.ssnValidation}>
+            {cprValidation && !cprValidation.isValid && <div>Ugyldigt CPR-nummer</div>}
             {cprValidation?.isValid && cprValidation?.isSuspicious && (
-              <span data-cy="cpr-suspicious-message">Kontroller venligst at det er korrekt.</span>
+              <div data-cy="cpr-suspicious-message">Kontroller venligst at det er korrekt.</div>
             )}
             {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
-              !validateCompanyId(ssn) &&
-              "Ugyldigt CVR-nummer"}
-            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && "10 cifre"}
-            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && "8 cifre"}
-            {ssnIsExistingUnit && "Skatteenhed findes allerede"}
+              !validateCompanyId(ssn) && <div>Ugyldigt CVR-nummer</div>}
+            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && (
+              <div>10 cifre</div>
+            )}
+            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && (
+              <div>8 cifre</div>
+            )}
             &nbsp;
-          </span>
+          </div>
         </div>
         {error && <div className={styles.error}>{error}</div>}
       </div>
