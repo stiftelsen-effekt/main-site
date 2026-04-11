@@ -13,7 +13,6 @@ import {
   TaxUnit,
 } from "../../../../../models";
 import { useCauseAreas } from "../../../../../_queries";
-import { getUserId } from "../../../../../lib/user";
 import { DatePickerInput } from "../../../../shared/components/DatePicker/DatePickerInput";
 import {
   EffektButton,
@@ -28,12 +27,8 @@ import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
 import { AgreementDetailsConfiguration } from "./AgreementDetails";
 import { DKAgreementMembershipLine } from "./DKAgreementMembershipLine";
 import { distributionTargetsMembershipFee, getDKMembershipDisplay } from "./dkMembershipDisplay";
-import {
-  cancelVippsAgreement,
-  updateVippsAgreementDay,
-  updateVippsAgreementDistribution,
-  updateVippsAgreementPrice,
-} from "./_queries";
+import { getUserId } from "../../../../../lib/user";
+import { cancelDKAgreement, updateDKAgreement } from "./_queries";
 
 import style from "./DKAgreementDetails.module.scss";
 
@@ -145,19 +140,14 @@ export const DKAgreementDetails: React.FC<{
 
     setLoadingChanges(true);
 
-    let result: boolean | null = true;
-
-    if (distributionChanged && distribution) {
-      result = await updateVippsAgreementDistribution(agreementId, distribution, token);
-    }
-
-    if (result !== null && dayChanged) {
-      result = await updateVippsAgreementDay(agreementId, day, token);
-    }
-
-    if (result !== null && sumChanged) {
-      result = await updateVippsAgreementPrice(agreementId, sum, token);
-    }
+    const result = await updateDKAgreement(
+      getUserId(user),
+      agreementId,
+      distributionChanged ? distribution : null,
+      dayChanged ? day : null,
+      sumChanged ? sum : null,
+      token,
+    );
 
     if (result !== null) {
       successToast(configuration.toasts_configuration.success_text);
@@ -177,7 +167,7 @@ export const DKAgreementDetails: React.FC<{
 
     setLightboxOpen(false);
     const token = await getAccessTokenSilently();
-    const cancelled = await cancelVippsAgreement(agreementId, token);
+    const cancelled = await cancelDKAgreement(getUserId(user), agreementId, token);
 
     if (cancelled) {
       successToast(configuration.toasts_configuration.success_text);
