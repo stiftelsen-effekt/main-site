@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { Edit2 } from "react-feather";
-import { TaxUnit } from "../../../../../models";
+import type { TaxUnit } from "../../../../../models";
 import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
 import { GenericList } from "../GenericList";
-import { ListRow } from "../GenericListRow";
+import type { ListRow } from "../GenericListRow";
 import { TaxUnitMobileDetails } from "./TaxUnitMobileDetails";
 
 export const DKTaxUnitMobileList: React.FC<{
   taxUnits: TaxUnit[];
 }> = ({ taxUnits }) => {
-  const currentYear = new Date().getFullYear();
-
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
@@ -24,26 +22,19 @@ export const DKTaxUnitMobileList: React.FC<{
   ];
 
   const rows: ListRow<TaxUnit>[] = taxUnits.map((unit) => {
-    const hasCurrentYearDeductions = unit.taxDeductions?.some(
-      (d) => d.year === currentYear && d.sumDonations > 0,
-    );
-
-    const showContext = hasCurrentYearDeductions;
     const contextOptions = [{ label: "Rediger", icon: <Edit2 size={16} /> }];
 
     return {
       id: unit.id.toString(),
       defaultExpanded: false,
       cells: [{ value: unit.name }, { value: unit.ssn }],
-      ...(showContext && {
-        contextOptions,
-        onContextSelect: (option: string, element: TaxUnit) => {
-          if (option === "Rediger") {
-            setEditModalOpen(true);
-            setSelectedTaxUnit(element);
-          }
-        },
-      }),
+      contextOptions,
+      onContextSelect: (option: string, element: TaxUnit) => {
+        if (option === "Rediger") {
+          setEditModalOpen(true);
+          setSelectedTaxUnit(element);
+        }
+      },
       details: <TaxUnitMobileDetails taxUnit={unit} />,
       element: unit,
     };

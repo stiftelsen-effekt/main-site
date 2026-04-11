@@ -129,14 +129,7 @@ const DKAgreementsPageContent: React.FC<{
   const dkAgreementsLoaded = Array.isArray(dkAgreements);
   const resolvedAgreements = dkAgreementsLoaded ? dkAgreements : [];
   const activeAgreementKids = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          resolvedAgreements
-            .filter((agreement: DKAgreement) => !agreement.cancelled)
-            .map((agreement: DKAgreement) => agreement.kid),
-        ),
-      ),
+    () => Array.from(new Set(resolvedAgreements.map((agreement: DKAgreement) => agreement.kid))),
     [resolvedAgreements],
   );
   const shouldFetchDistributions = dkAgreementsLoaded && activeAgreementKids.length > 0;
@@ -266,6 +259,8 @@ const DKAgreementsPageContent: React.FC<{
           {window.innerWidth > 1180 || selected === AgreementsMenuOptions.INACTIVE_AGREEMENTS ? (
             <DKAgreementList
               agreements={inactiveAgreements}
+              distributions={distributionsMap}
+              taxUnits={taxUnits}
               expandable={false}
               configuration={page?.inactive_list_configuration}
             />

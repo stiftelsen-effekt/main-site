@@ -9,8 +9,6 @@ import { ListRow } from "../GenericListRow";
 export const DKTaxUnitList: React.FC<{
   taxUnits: TaxUnit[];
 }> = ({ taxUnits }) => {
-  const currentYear = new Date().getFullYear();
-
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
@@ -31,7 +29,7 @@ export const DKTaxUnitList: React.FC<{
       width: "30%",
     },
     {
-      label: "Sum af skattefradrag",
+      label: "Indberettet fradrag",
       width: "30%",
     },
     {
@@ -54,7 +52,7 @@ export const DKTaxUnitList: React.FC<{
     },
   };
 
-  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions) => {
+  const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions, i) => {
     const row = {
       id: `${unit.id.toString()}${deductions.year}`,
       defaultExpanded: false,
@@ -67,23 +65,21 @@ export const DKTaxUnitList: React.FC<{
       element: unit,
     };
 
-    if (deductions.year === currentYear) {
+    if (i === 0) {
       return { ...row, ...context };
     }
     return row;
   });
 
+  const countDonations = Math.round(
+    filteredDeductions.reduce((acc, cur) => acc + cur.sumDonations, 0),
+  );
   const totalsRow = {
     id: `${unit.id.toString()}total`,
     defaultExpanded: false,
     cells: [
       { value: "Totalt" },
-      {
-        value:
-          thousandize(
-            Math.round(filteredDeductions.reduce((acc, cur) => acc + cur.sumDonations, 0)),
-          ) + " kr",
-      },
+      { value: thousandize(countDonations) + " kr" },
       {
         value:
           thousandize(Math.round(filteredDeductions.reduce((acc, cur) => acc + cur.deduction, 0))) +
@@ -98,7 +94,7 @@ export const DKTaxUnitList: React.FC<{
     element: unit,
   };
 
-  rows.push(totalsRow);
+  rows.push(countDonations > 0 ? totalsRow : { ...totalsRow, ...context });
 
   const emptyPlaceholder = (
     <div>
