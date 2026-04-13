@@ -4,16 +4,18 @@ import styles from "./FacebookTaxWidget.module.scss";
 import { useForm } from "react-hook-form";
 import { EffektButtonVariant } from "../../../shared/components/EffektButton/EffektButton";
 import { toast } from "react-toastify";
-import { AlertCircle, Check } from "react-feather";
+import { Check } from "react-feather";
 import { TaxUnit } from "../../../../models";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { registerFacebookDonation } from "../../_queries";
 import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 import { useTaxUnits } from "../../../../_queries";
+import { useFailureToast } from "../../../shared/failureToast";
 
 export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const failureToast = useFailureToast();
   const [nextDisabled, setNextDisabled] = useState(true);
   const [paymentIDError, setPaymentIDError] = useState(false);
   const [taxUnit, setTaxUnit] = useState<TaxUnit | null>(null);
@@ -80,12 +82,12 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
               setLoadingAnimation(false);
               reset();
             } else {
-              failureToast("Noe gikk galt");
+              failureToast();
               setLoadingAnimation(false);
             }
           })
           .catch(() => {
-            failureToast("Noe gikk galt");
+            failureToast();
             setLoadingAnimation(false);
           });
       })
@@ -154,5 +156,3 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
 
 const successToast = (msg: string) =>
   toast.success(msg, { icon: <Check size={24} color={"black"} /> });
-const failureToast = (msg: string) =>
-  toast.error(msg, { icon: <AlertCircle size={24} color={"black"} /> });

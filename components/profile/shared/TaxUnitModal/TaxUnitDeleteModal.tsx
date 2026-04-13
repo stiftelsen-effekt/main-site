@@ -14,6 +14,7 @@ import { TaxUnitSelector } from "../TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "./TaxUnitCreateModal";
 
 import styles from "./TaxUnitModal.module.scss";
+import { useFailureToast } from "../../../shared/failureToast";
 
 export const TaxUnitDeleteModal: React.FC<{
   open: boolean;
@@ -23,6 +24,7 @@ export const TaxUnitDeleteModal: React.FC<{
   onClose: () => void;
 }> = ({ open, taxUnit, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const failureToast = useFailureToast();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -117,5 +119,3 @@ export const TaxUnitDeleteModal: React.FC<{
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
