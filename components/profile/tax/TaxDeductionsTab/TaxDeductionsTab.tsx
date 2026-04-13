@@ -9,7 +9,6 @@ export const TaxDeductionsTab: React.FC<{ description: any[]; links: any[] }> = 
 }) => {
   return (
     <div className={styles.container}>
-      <h5>Få skattefradrag på dine donasjoner til oss</h5>
       <PortableText value={description} />
       <Links links={links} />
     </div>
