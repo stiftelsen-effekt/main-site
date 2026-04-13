@@ -109,7 +109,14 @@ export const TaxPage = withStaticProps(
 
   let pageContent = null;
   if (!menuChoice || menuChoice?._type == "taxunits") {
-    pageContent = <TaxUnitsTab />;
+    pageContent = (
+      <TaxUnitsTab
+        title={menuChoice?.tax_units_title}
+        createButtonLabel={menuChoice?.create_tax_unit_button_label}
+        emptyStateDescription={menuChoice?.empty_tax_units_description}
+        emptyStateLinkLabel={menuChoice?.empty_tax_units_link_label}
+      />
+    );
   } else if (menuChoice?._type == "taxstatements") {
     pageContent = (
       <YearlyReportsTab aggregatedImpactConfiguration={menuChoice.aggregate_estimated_impact} />
@@ -187,6 +194,10 @@ export interface TaxFeatureProps {
 
 export type TaxUnitsData = TaxFeatureProps & {
   _type: "taxunits";
+  tax_units_title?: string;
+  create_tax_unit_button_label?: string;
+  empty_tax_units_description?: string;
+  empty_tax_units_link_label?: string;
 };
 
 export type TaxDeductionData = TaxFeatureProps & {

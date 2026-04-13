@@ -9,7 +9,19 @@ import { TaxUnitMobileList } from "../../shared/lists/taxUnitList/TaxUnitMobileL
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
 import styles from "./TaxUnitsTab.module.scss";
 
-export const TaxUnitsTab: React.FC = () => {
+interface TaxUnitsTabProps {
+  title?: string;
+  createButtonLabel?: string;
+  emptyStateDescription?: string;
+  emptyStateLinkLabel?: string;
+}
+
+export const TaxUnitsTab: React.FC<TaxUnitsTabProps> = ({
+  title = "Dine skatteenheter",
+  createButtonLabel = "Opprett ny skatteenhet",
+  emptyStateDescription = "Vi har ikke registrert noen skatteenheter på deg. For å få skattefradrag på donasjoner må du registrere ditt personnummer, eller organisasjonsnummer hvis du donerer fra en skattepliktig bedrift. Du kan registrere flere skatteenheter på samme bruker.",
+  emptyStateLinkLabel = "Opprett din første skatteenhet her.",
+}) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   const { loading, isValidating, data, error } = useTaxUnits(user as User, getAccessTokenSilently);
@@ -18,7 +30,7 @@ export const TaxUnitsTab: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h4 className={styles.header}>Dine skatteenheter</h4>
+      <h4 className={styles.header}>{title}</h4>
       {!loading && !error && data ? (
         data.filter((taxUnit) => taxUnit.archived === null).length > 0 ? (
           <>
@@ -35,19 +47,15 @@ export const TaxUnitsTab: React.FC = () => {
 
             <div className={styles.buttonContainer}>
               <EffektButton onClick={() => setCreateModalOpen(true)}>
-                Opprett ny skatteenhet
+                {createButtonLabel}
               </EffektButton>
             </div>
           </>
         ) : (
           <div className={styles.noTaxUnits}>
-            <p className={styles.noTaxUnitsText}>
-              Vi har ikke registrert noen skatteenheter på deg. For å få skattefradrag på donasjoner
-              må du registrere ditt personnummer, eller organisasjonsnummer hvis du donerer fra en
-              skattepliktig bedrift. Du kan registrere flere skatteenheter på samme bruker.
-            </p>
+            <p className={styles.noTaxUnitsText}>{emptyStateDescription}</p>
             <a onClick={() => setCreateModalOpen(true)} className={styles.noTaxUnitsLink}>
-              Opprett din første skatteenhet her.
+              {emptyStateLinkLabel}
             </a>
           </div>
         )
