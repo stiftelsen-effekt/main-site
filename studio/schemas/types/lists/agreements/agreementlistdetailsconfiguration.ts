@@ -86,6 +86,13 @@ export default defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: "text_manual",
+          title: "Text for manual payment methods",
+          description:
+            "Shown instead of Text when donors are making manual payments and must stop agreement on their end, e.g. manual bank transfers.",
+          type: "string",
+        }),
+        defineField({
           name: "withdrawal_warning_text",
           title: "Withdrawal warning text",
           type: "string",

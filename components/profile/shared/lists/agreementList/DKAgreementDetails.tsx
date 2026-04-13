@@ -118,6 +118,11 @@ export const DKAgreementDetails: React.FC<{
 
   const canEditDate = method !== "Bank transfer";
   const canSave = !isMembershipFee;
+  const cancelLightboxText =
+    method === "Bank transfer"
+      ? configuration.agreement_cancel_lightbox.text_manual ||
+        configuration.agreement_cancel_lightbox.text
+      : configuration.agreement_cancel_lightbox.text;
 
   const save = async () => {
     if (!canSave) {
@@ -201,7 +206,7 @@ export const DKAgreementDetails: React.FC<{
         >
           <div className={style.textWrapper}>
             <h5>{configuration.agreement_cancel_lightbox.title}</h5>
-            <p>{configuration.agreement_cancel_lightbox.text}</p>
+            <p>{cancelLightboxText}</p>
           </div>
         </Lightbox>
       </div>
@@ -442,7 +447,7 @@ export const DKAgreementDetails: React.FC<{
       >
         <div className={style.textWrapper}>
           <h5>{configuration.agreement_cancel_lightbox.title}</h5>
-          <p>{configuration.agreement_cancel_lightbox.text}</p>
+          <p>{cancelLightboxText}</p>
         </div>
       </Lightbox>
 
