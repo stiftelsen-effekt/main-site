@@ -8,6 +8,7 @@ import { DonorContext } from "../../layout/donorProvider";
 import { saveDonor } from "../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
+import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
 
 export type ProfilePageInfoConfiguration = {
   name_label: string;
@@ -33,7 +34,7 @@ export const ProfileInfo: React.FC<{
     }
   }, [donor, initialDonor]);
 
-  if (!donor || !user) return <div>Noe gikk galt.</div>;
+  if (!donor || !user) return <ErrorMessage />;
 
   const save = async () => {
     const token = await getAccessTokenSilently();

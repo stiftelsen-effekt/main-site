@@ -13,6 +13,7 @@ import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { useTaxUnits } from "../../../../_queries";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
 import { useMainLocale } from "../../../../context/MainLocaleContext";
+import { useFailureToast } from "../../../shared/failureToast";
 import { TaxUnitTypes } from "./taxUnitTypes";
 import { DKTaxUnitCreateModal } from "./DKTaxUnitCreateModal";
 
@@ -25,6 +26,7 @@ const TaxUnitCreateModalStandard: React.FC<{
   onClose: () => void;
 }> = ({ open, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const failureToast = useFailureToast();
 
   const {
     data: existingUnits,
@@ -145,8 +147,6 @@ const TaxUnitCreateModalStandard: React.FC<{
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
 
 export const TaxUnitCreateModal: React.FC<{
   open: boolean;

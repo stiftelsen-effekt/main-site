@@ -8,7 +8,10 @@ import { ListRow } from "../GenericListRow";
 
 export const DKTaxUnitList: React.FC<{
   taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
+  sumDonationsLabel: string;
+  sumTaxDeductionsLabel: string;
+  sumTaxBenefitLabel: string;
+}> = ({ taxUnits, sumDonationsLabel, sumTaxDeductionsLabel, sumTaxBenefitLabel }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
@@ -25,15 +28,15 @@ export const DKTaxUnitList: React.FC<{
       width: "10%",
     },
     {
-      label: "Sum af donationer",
+      label: sumDonationsLabel,
       width: "30%",
     },
     {
-      label: "Indberettet fradrag",
+      label: sumTaxDeductionsLabel,
       width: "30%",
     },
     {
-      label: "Sum af skattefordel",
+      label: sumTaxBenefitLabel,
       width: "30%",
     },
   ];

@@ -9,7 +9,18 @@ import { ListRow } from "../GenericListRow";
 import { TaxUnitMobileDetails } from "./TaxUnitMobileDetails";
 import { DKTaxUnitMobileList } from "./DKTaxUnitMobileList";
 
-const TaxUnitMobileListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) => {
+interface TaxUnitMobileListLabels {
+  numberOfDonationsLabel: string;
+  sumDonationsLabel: string;
+  sumTaxDeductionsLabel: string;
+}
+
+const TaxUnitMobileListStandard: React.FC<{ taxUnits: TaxUnit[] } & TaxUnitMobileListLabels> = ({
+  taxUnits,
+  numberOfDonationsLabel,
+  sumDonationsLabel,
+  sumTaxDeductionsLabel,
+}) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
@@ -46,7 +57,14 @@ const TaxUnitMobileListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits
             break;
         }
       },
-      details: <TaxUnitMobileDetails taxUnit={unit} />,
+      details: (
+        <TaxUnitMobileDetails
+          taxUnit={unit}
+          numberOfDonationsLabel={numberOfDonationsLabel}
+          sumDonationsLabel={sumDonationsLabel}
+          sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+        />
+      ),
       element: unit,
     };
   });
@@ -94,12 +112,28 @@ const TaxUnitMobileListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits
   );
 };
 
-export const TaxUnitMobileList: React.FC<{
-  taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
+export const TaxUnitMobileList: React.FC<
+  {
+    taxUnits: TaxUnit[];
+  } & TaxUnitMobileListLabels
+> = ({ taxUnits, numberOfDonationsLabel, sumDonationsLabel, sumTaxDeductionsLabel }) => {
   const mainLocale = useMainLocale();
   if (mainLocale === "dk") {
-    return <DKTaxUnitMobileList taxUnits={taxUnits} />;
+    return (
+      <DKTaxUnitMobileList
+        taxUnits={taxUnits}
+        numberOfDonationsLabel={numberOfDonationsLabel}
+        sumDonationsLabel={sumDonationsLabel}
+        sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+      />
+    );
   }
-  return <TaxUnitMobileListStandard taxUnits={taxUnits} />;
+  return (
+    <TaxUnitMobileListStandard
+      taxUnits={taxUnits}
+      numberOfDonationsLabel={numberOfDonationsLabel}
+      sumDonationsLabel={sumDonationsLabel}
+      sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+    />
+  );
 };

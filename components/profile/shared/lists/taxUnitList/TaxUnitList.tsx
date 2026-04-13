@@ -9,7 +9,18 @@ import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
 import { DKTaxUnitList } from "./DKTaxUnitList";
 
-const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) => {
+interface TaxUnitListLabels {
+  sumDonationsLabel: string;
+  sumTaxDeductionsLabel: string;
+  sumTaxBenefitLabel: string;
+}
+
+const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] } & TaxUnitListLabels> = ({
+  taxUnits,
+  sumDonationsLabel,
+  sumTaxDeductionsLabel,
+  sumTaxBenefitLabel,
+}) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
@@ -27,15 +38,15 @@ const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) =>
       width: "10%",
     },
     {
-      label: "Sum donasjoner",
+      label: sumDonationsLabel,
       width: "30%",
     },
     {
-      label: "Sum skattefradrag",
+      label: sumTaxDeductionsLabel,
       width: "30%",
     },
     {
-      label: "Sum skattefordel",
+      label: sumTaxBenefitLabel,
       width: "30%",
     },
   ];
@@ -157,12 +168,28 @@ const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] }> = ({ taxUnits }) =>
   );
 };
 
-export const TaxUnitList: React.FC<{
-  taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
+export const TaxUnitList: React.FC<
+  {
+    taxUnits: TaxUnit[];
+  } & TaxUnitListLabels
+> = ({ taxUnits, sumDonationsLabel, sumTaxDeductionsLabel, sumTaxBenefitLabel }) => {
   const mainLocale = useMainLocale();
   if (mainLocale === "dk") {
-    return <DKTaxUnitList taxUnits={taxUnits} />;
+    return (
+      <DKTaxUnitList
+        taxUnits={taxUnits}
+        sumDonationsLabel={sumDonationsLabel}
+        sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+        sumTaxBenefitLabel={sumTaxBenefitLabel}
+      />
+    );
   }
-  return <TaxUnitListStandard taxUnits={taxUnits} />;
+  return (
+    <TaxUnitListStandard
+      taxUnits={taxUnits}
+      sumDonationsLabel={sumDonationsLabel}
+      sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+      sumTaxBenefitLabel={sumTaxBenefitLabel}
+    />
+  );
 };

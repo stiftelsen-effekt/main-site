@@ -8,7 +8,10 @@ import { TaxUnitMobileDetails } from "./TaxUnitMobileDetails";
 
 export const DKTaxUnitMobileList: React.FC<{
   taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
+  numberOfDonationsLabel: string;
+  sumDonationsLabel: string;
+  sumTaxDeductionsLabel: string;
+}> = ({ taxUnits, numberOfDonationsLabel, sumDonationsLabel, sumTaxDeductionsLabel }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
@@ -35,7 +38,14 @@ export const DKTaxUnitMobileList: React.FC<{
           setSelectedTaxUnit(element);
         }
       },
-      details: <TaxUnitMobileDetails taxUnit={unit} />,
+      details: (
+        <TaxUnitMobileDetails
+          taxUnit={unit}
+          numberOfDonationsLabel={numberOfDonationsLabel}
+          sumDonationsLabel={sumDonationsLabel}
+          sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+        />
+      ),
       element: unit,
     };
   });

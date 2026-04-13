@@ -48,6 +48,7 @@ export type AgreementDetailsConfiguration = {
   agreement_cancel_lightbox: {
     title: string;
     text: string;
+    text_manual?: string;
     withdrawal_warning_text: string;
   };
   agreement_cancelled_lightbox: {

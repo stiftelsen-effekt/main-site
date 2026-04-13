@@ -2,8 +2,8 @@ import React from "react";
 import style from "./Lightbox.module.scss";
 import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
 import { X } from "react-feather";
-import { Spinner } from "../Spinner/Spinner";
 import { LoadingButtonSpinner } from "../Spinner/LoadingButtonSpinner";
+import { useMainLocale } from "../../../../context/MainLocaleContext";
 
 export const Lightbox: React.FC<{
   children: React.ReactNode;
@@ -26,6 +26,13 @@ export const Lightbox: React.FC<{
   cancelLabel,
   onCancel,
 }) => {
+  const mainLocale = useMainLocale();
+
+  const defaultConfirmLabel =
+    mainLocale === "dk" ? "Bekræft" : mainLocale === "sv" ? "Bekräfta" : "Bekreft";
+  const defaultCancelLabel =
+    mainLocale === "dk" ? "Annuller" : mainLocale === "sv" ? "Avbryt" : "Avbryt";
+
   if (!open) return null;
 
   return (
@@ -46,7 +53,7 @@ export const Lightbox: React.FC<{
             {loading ? (
               <LoadingButtonSpinner />
             ) : onCancel ? (
-              confirmLabel ?? "Bekreft"
+              confirmLabel ?? defaultConfirmLabel
             ) : (
               okLabel ?? "OK"
             )}
@@ -57,7 +64,7 @@ export const Lightbox: React.FC<{
               variant={EffektButtonVariant.SECONDARY}
               cy="lightbox-cancel"
             >
-              {cancelLabel ?? "Avbryt"}
+              {cancelLabel ?? defaultCancelLabel}
             </EffektButton>
           )}
         </div>

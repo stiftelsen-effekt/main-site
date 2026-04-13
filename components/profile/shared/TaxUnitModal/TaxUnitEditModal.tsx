@@ -12,6 +12,7 @@ import { AlertCircle, Check } from "react-feather";
 import { useTaxUnits } from "../../../../_queries";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
 import { useMainLocale } from "../../../../context/MainLocaleContext";
+import { useFailureToast } from "../../../shared/failureToast";
 import { TaxUnitTypes } from "./taxUnitTypes";
 import { DKTaxUnitEditModal } from "./DKTaxUnitEditModal";
 
@@ -25,6 +26,7 @@ const TaxUnitEditModalStandard: React.FC<{
   onClose: () => void;
 }> = ({ open, initial, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const failureToast = useFailureToast();
 
   const {
     data: existingUnits,
@@ -152,8 +154,6 @@ const TaxUnitEditModalStandard: React.FC<{
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
 
 export const TaxUnitEditModal: React.FC<{
   open: boolean;
