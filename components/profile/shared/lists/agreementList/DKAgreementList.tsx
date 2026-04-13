@@ -126,7 +126,7 @@ const formatColumnValue = (
         return "Du bestemmer selv";
       }
       if (value === 0) {
-        return column.payment_date_last_day_of_month_template;
+        return "Ukendt";
       }
       const membershipTemplate = column.payment_date_membership_format_template?.trim();
       const useMembershipTemplate =
