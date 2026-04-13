@@ -129,15 +129,15 @@ export const ProfileLayout = withStaticProps(
     >
       <div className={styles.container + " " + styles.dark}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
-          <UserWrapper
-            skipAuthentication={bypassAuth}
-            siteTitle={profileData.site_title}
-            loginErrorConfig={profileData.login_error_configuration}
+          <MainLocaleContext.Provider
+            value={(profileData.main_locale as "no" | "sv" | "dk" | "en" | "et") ?? "no"}
           >
-            <DonorProvider>
-              <MainLocaleContext.Provider
-                value={(profileData.main_locale as "no" | "sv" | "dk" | "en" | "et") ?? "no"}
-              >
+            <UserWrapper
+              skipAuthentication={bypassAuth}
+              siteTitle={profileData.site_title}
+              loginErrorConfig={profileData.login_error_configuration}
+            >
+              <DonorProvider>
                 <ActivityProvider>
                   <ToastContainer
                     position="top-right"
@@ -168,9 +168,9 @@ export const ProfileLayout = withStaticProps(
                   </WidgetContext.Provider>
                   <Footer {...footerData} />
                 </ActivityProvider>
-              </MainLocaleContext.Provider>
-            </DonorProvider>
-          </UserWrapper>
+              </DonorProvider>
+            </UserWrapper>
+          </MainLocaleContext.Provider>
         </SWRConfig>
       </div>
     </Auth0Provider>
