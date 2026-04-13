@@ -107,6 +107,21 @@ export const TaxPage = withStaticProps(
 
   if (!page.features) return <ErrorMessage>No features defined for tax page</ErrorMessage>;
 
+  const taxUnitLabels =
+    menuChoice?._type === "taxunits"
+      ? {
+          numberOfDonationsLabel: menuChoice.number_of_donations_label || "Antall donasjoner",
+          sumDonationsLabel: menuChoice.sum_donations_label || "Sum donasjoner",
+          sumTaxDeductionsLabel: menuChoice.sum_tax_deductions_label || "Sum skattefradrag",
+          sumTaxBenefitLabel: menuChoice.sum_tax_benefit_label || "Sum skattefordel",
+        }
+      : {
+          numberOfDonationsLabel: "Antall donasjoner",
+          sumDonationsLabel: "Sum donasjoner",
+          sumTaxDeductionsLabel: "Sum skattefradrag",
+          sumTaxBenefitLabel: "Sum skattefordel",
+        };
+
   let pageContent = null;
   if (!menuChoice || menuChoice?._type == "taxunits") {
     pageContent = (
@@ -115,6 +130,10 @@ export const TaxPage = withStaticProps(
         createButtonLabel={menuChoice?.create_tax_unit_button_label}
         emptyStateDescription={menuChoice?.empty_tax_units_description}
         emptyStateLinkLabel={menuChoice?.empty_tax_units_link_label}
+        numberOfDonationsLabel={taxUnitLabels.numberOfDonationsLabel}
+        sumDonationsLabel={taxUnitLabels.sumDonationsLabel}
+        sumTaxDeductionsLabel={taxUnitLabels.sumTaxDeductionsLabel}
+        sumTaxBenefitLabel={taxUnitLabels.sumTaxBenefitLabel}
       />
     );
   } else if (menuChoice?._type == "taxstatements") {
@@ -198,6 +217,10 @@ export type TaxUnitsData = TaxFeatureProps & {
   create_tax_unit_button_label?: string;
   empty_tax_units_description?: string;
   empty_tax_units_link_label?: string;
+  number_of_donations_label?: string;
+  sum_donations_label?: string;
+  sum_tax_deductions_label?: string;
+  sum_tax_benefit_label?: string;
 };
 
 export type TaxDeductionData = TaxFeatureProps & {

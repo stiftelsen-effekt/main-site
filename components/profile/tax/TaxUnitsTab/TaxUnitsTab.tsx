@@ -14,6 +14,10 @@ interface TaxUnitsTabProps {
   createButtonLabel?: string;
   emptyStateDescription?: string;
   emptyStateLinkLabel?: string;
+  numberOfDonationsLabel: string;
+  sumDonationsLabel: string;
+  sumTaxDeductionsLabel: string;
+  sumTaxBenefitLabel: string;
 }
 
 export const TaxUnitsTab: React.FC<TaxUnitsTabProps> = ({
@@ -21,6 +25,10 @@ export const TaxUnitsTab: React.FC<TaxUnitsTabProps> = ({
   createButtonLabel = "Opprett ny skatteenhet",
   emptyStateDescription = "Vi har ikke registrert noen skatteenheter på deg. For å få skattefradrag på donasjoner må du registrere ditt personnummer, eller organisasjonsnummer hvis du donerer fra en skattepliktig bedrift. Du kan registrere flere skatteenheter på samme bruker.",
   emptyStateLinkLabel = "Opprett din første skatteenhet her.",
+  numberOfDonationsLabel,
+  sumDonationsLabel,
+  sumTaxDeductionsLabel,
+  sumTaxBenefitLabel,
 }) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
@@ -38,11 +46,22 @@ export const TaxUnitsTab: React.FC<TaxUnitsTabProps> = ({
               {data
                 .filter((taxUnit) => taxUnit.archived === null)
                 .map((taxUnit) => (
-                  <TaxUnitList key={taxUnit.id} taxUnits={[taxUnit]} />
+                  <TaxUnitList
+                    key={taxUnit.id}
+                    taxUnits={[taxUnit]}
+                    sumDonationsLabel={sumDonationsLabel}
+                    sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+                    sumTaxBenefitLabel={sumTaxBenefitLabel}
+                  />
                 ))}
             </div>
             <div className={styles.mobileList}>
-              <TaxUnitMobileList taxUnits={data.filter((taxUnit) => taxUnit.archived === null)} />
+              <TaxUnitMobileList
+                taxUnits={data.filter((taxUnit) => taxUnit.archived === null)}
+                numberOfDonationsLabel={numberOfDonationsLabel}
+                sumDonationsLabel={sumDonationsLabel}
+                sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+              />
             </div>
 
             <div className={styles.buttonContainer}>

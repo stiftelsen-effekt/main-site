@@ -41,5 +41,25 @@ export default defineType({
       title: "Empty tax units link label",
       type: "string",
     }),
+    defineField({
+      name: "number_of_donations_label",
+      title: "Number of donations label",
+      type: "string",
+    }),
+    defineField({
+      name: "sum_donations_label",
+      title: "Sum donations label",
+      type: "string",
+    }),
+    defineField({
+      name: "sum_tax_deductions_label",
+      title: "Sum tax deductions label",
+      type: "string",
+    }),
+    defineField({
+      name: "sum_tax_benefit_label",
+      title: "Sum tax benefit label",
+      type: "string",
+    }),
   ],
 });
