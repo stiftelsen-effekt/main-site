@@ -316,16 +316,14 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              settingsData.main_currency !== "DKK" && (
-                <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
-                  <EffektButton
-                    variant={EffektButtonVariant.SECONDARY}
-                    onClick={() => setExpanded(false)}
-                  >
-                    {labels.dashboard}
-                  </EffektButton>
-                </CustomLink>
-              )
+              <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
+                <EffektButton
+                  variant={EffektButtonVariant.SECONDARY}
+                  onClick={() => setExpanded(false)}
+                >
+                  {labels.dashboard}
+                </EffektButton>
+              </CustomLink>
             )}
             <EffektButton
               cy="send-donation-button"
