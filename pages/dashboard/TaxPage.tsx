@@ -101,7 +101,10 @@ export const TaxPage = withStaticProps(
 
   if (!page) return <ErrorMessage>Missing tax page</ErrorMessage>;
 
-  const menuChoice = page.features?.find((f) => f.slug.current == subpath) || null;
+  const menuChoice =
+    page.features?.find((f) => f.slug.current == subpath) ||
+    page.features?.find((f) => f._type === "taxunits") ||
+    null;
 
   const { donor } = useContext(DonorContext);
 
