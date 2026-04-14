@@ -332,7 +332,9 @@ export const Navbar = withStaticProps(
               extraMargin={true}
               onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
               variant={
-                giveButton.accent_color ? EffektButtonVariant.ACCENT : EffektButtonVariant.PRIMARY
+                giveButton.accent_color && !user
+                  ? EffektButtonVariant.ACCENT
+                  : EffektButtonVariant.PRIMARY
               }
               style={giveButtonStyle}
             >
