@@ -71,7 +71,7 @@ export type DKAgreement = {
   chargeDay: number | null;
   createdAt: string;
   method: DKPaymentMethod;
-  is_payment_expired?: boolean;
+  is_payment_expired: boolean;
 };
 
 export type Distribution = {

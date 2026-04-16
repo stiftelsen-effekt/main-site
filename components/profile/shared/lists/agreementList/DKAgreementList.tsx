@@ -77,7 +77,7 @@ export const DKAgreementList: React.FC<{
           row[column.value],
           row.type,
           rowDistribution,
-          dkAgreement.is_payment_expired === true,
+          dkAgreement.is_payment_expired,
         ),
       })),
       details:
