@@ -72,7 +72,13 @@ export const DKAgreementList: React.FC<{
       id: row.id,
       defaultExpanded: false,
       cells: columns.map((column) => ({
-        value: formatColumnValue(column, row[column.value], row.type, rowDistribution),
+        value: formatColumnValue(
+          column,
+          row[column.value],
+          row.type,
+          rowDistribution,
+          dkAgreement.is_payment_expired,
+        ),
       })),
       details:
         expandable && configuration.details_configuration && taxUnits ? (
@@ -114,7 +120,8 @@ const formatColumnValue = (
   column: DKAgreementListConfigurationColumn,
   value: any,
   method: DKPaymentMethod,
-  distribution?: Distribution,
+  distribution: Distribution | undefined,
+  isPaymentExpired: boolean,
 ) => {
   switch (column.type) {
     case "string":
@@ -122,6 +129,9 @@ const formatColumnValue = (
     case "sum":
       return thousandize(Math.round(parseFloat(value))) + " kr";
     case "date":
+      if (isPaymentExpired) {
+        return "Betalingsmiddel er udløbet";
+      }
       if (method === "Bank transfer") {
         return "Du bestemmer selv";
       }
