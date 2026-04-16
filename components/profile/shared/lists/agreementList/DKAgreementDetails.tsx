@@ -197,6 +197,19 @@ export const DKAgreementDetails: React.FC<{
           >
             {configuration.cancel_button_text}
           </EffektButton>
+          {agreement.is_payment_expired ? (
+            <EffektButton
+              variant={EffektButtonVariant.SECONDARY}
+              onClick={() => {
+                window.location.href = `https://giveffektivt.dk/forny-betaling?id=${encodeURIComponent(
+                  agreement.id,
+                )}`;
+              }}
+              cy="btn-renew-payment"
+            >
+              Opdatér betaling
+            </EffektButton>
+          ) : null}
         </div>
 
         <Lightbox
@@ -435,6 +448,19 @@ export const DKAgreementDetails: React.FC<{
         >
           {configuration.cancel_button_text}
         </EffektButton>
+        {agreement.is_payment_expired ? (
+          <EffektButton
+            variant={EffektButtonVariant.SECONDARY}
+            onClick={() => {
+              window.location.href = `https://giveffektivt.dk/forny-betaling?id=${encodeURIComponent(
+                agreement.id,
+              )}`;
+            }}
+            cy="btn-renew-payment"
+          >
+            Opdatér betaling
+          </EffektButton>
+        ) : null}
         <EffektButton onClick={() => save()} disabled={loadingChanges} cy="btn-save-agreement">
           {!loadingChanges ? configuration.save_button_text : configuration.loading_text}
         </EffektButton>
