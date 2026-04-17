@@ -132,9 +132,6 @@ const formatColumnValue = (
       if (isPaymentExpired) {
         return "Betalingsmiddel er udløbet";
       }
-      if (method === "Bank transfer") {
-        return "Du bestemmer selv";
-      }
       if (value === 0) {
         return "Ukendt";
       }
