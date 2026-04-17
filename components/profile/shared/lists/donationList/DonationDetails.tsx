@@ -27,7 +27,7 @@ export const DonationDetails: React.FC<{
 }> = ({ sum, donation, distribution, timestamp, configuration }) => {
   const [showImpactEstimateExplanation, setShowImpactEstimateExplanation] = useState(false);
 
-  if (!distribution)
+  if (!distribution && !donation.impact?.length)
     return <span>Ingen distribusjon funnet for donasjon med KID {donation.KID}</span>;
 
   return (

@@ -54,6 +54,13 @@ const renderGiveWellAllGrantsFundContent = (configuration: ImpactItemConfigurati
   );
 };
 
+export type PreComputedImpact = {
+  output: number;
+  shortDescription: string;
+  longDescription: string;
+  linkSubject: string;
+};
+
 export const DonationImpactGlobalHealthItem: React.FC<{
   orgAbriv: string;
   orgName: string;
@@ -62,6 +69,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   precision: number;
   signalRequiredPrecision: (precision: number) => void;
   configuration: ImpactItemConfiguration;
+  preComputedImpact?: PreComputedImpact;
 }> = ({
   orgAbriv,
   orgName,
@@ -70,15 +78,18 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   precision,
   signalRequiredPrecision,
   configuration,
+  preComputedImpact,
 }) => {
   const { data, error, isValidating } = useSWR<{ evaluations: ImpactEvaluation[] }>(
-    `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${orgAbriv}&currency=${
-      configuration.currency
-    }&language=${
-      configuration.locale
-    }&donation_year=${donationTimestamp.getFullYear()}&donation_month=${
-      donationTimestamp.getMonth() + 1
-    }`,
+    preComputedImpact
+      ? null
+      : `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${orgAbriv}&currency=${
+          configuration.currency
+        }&language=${
+          configuration.locale
+        }&donation_year=${donationTimestamp.getFullYear()}&donation_month=${
+          donationTimestamp.getMonth() + 1
+        }`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -95,32 +106,53 @@ export const DonationImpactGlobalHealthItem: React.FC<{
     }
   }, [precision, requiredPrecision]);
 
-  if (!data || isValidating) {
-    return (
-      <tr key={`loading`}>
-        <td>Loading...</td>
-      </tr>
-    );
+  if (!preComputedImpact) {
+    if (!data || isValidating) {
+      return (
+        <tr key={`loading`}>
+          <td>Loading...</td>
+        </tr>
+      );
+    }
+    if (error) {
+      return (
+        <tr key={`error`}>
+          <td>{error}</td>
+        </tr>
+      );
+    }
   }
-  if (error) {
-    return (
-      <tr key={`error`}>
-        <td>{error}</td>
-      </tr>
-    );
-  }
+
   /**
    * Sort evaluations by start time
    * Then return the first evaluation that has a start year and month less than or equal to the donation
    * This will be the most recent relevant evaluation to calculate the impact
    */
   const relevantEvaluation = data?.evaluations[0];
+  const resolvedImpact: {
+    output: number;
+    shortDescription: string;
+    longDescription: string;
+    charityName: string;
+    linkSubject: string;
+  } | null = preComputedImpact
+    ? { ...preComputedImpact, charityName: orgName }
+    : relevantEvaluation
+    ? {
+        output: sumToOrg / relevantEvaluation.converted_cost_per_output,
+        shortDescription: relevantEvaluation.intervention.short_description,
+        longDescription: relevantEvaluation.intervention.long_description,
+        charityName: relevantEvaluation.charity.charity_name,
+        linkSubject: relevantEvaluation.charity.charity_name,
+      }
+    : null;
+
   const isGiveWellAllGrantsFund = orgAbriv === "AGF";
   const missingEvaluationHeader = isGiveWellAllGrantsFund
     ? configuration.givewell_all_grants_fund_header ?? configuration.missing_evaluation_header
     : configuration.missing_evaluation_header;
 
-  if (!relevantEvaluation) {
+  if (!resolvedImpact) {
     return (
       <>
         <tr className={style.overview} data-cy="donation-impact-list-item-overview">
@@ -169,7 +201,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
     );
   }
 
-  const output = sumToOrg / relevantEvaluation.converted_cost_per_output;
+  const output = resolvedImpact.output;
 
   let tmpRequiredPrecision = 0;
   while (parseFloat(output.toFixed(tmpRequiredPrecision)) === 0 && tmpRequiredPrecision < 3) {
@@ -196,7 +228,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
         <td>
           <div className={style.impactContext}>
             <span className={style.impactDetailsDescription}>
-              {relevantEvaluation.intervention.short_description}
+              {resolvedImpact.shortDescription}
             </span>
             <span
               className={[style.impactDetailsExpandText, showDetails ? style.expanded : ""].join(
@@ -206,7 +238,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
             >
               {configuration.output_subheading_format_string
                 .replace("{{sum}}", thousandize(Math.round(sumToOrg)))
-                .replace("{{org}}", relevantEvaluation.charity.charity_name)}
+                .replace("{{org}}", resolvedImpact.charityName)}
             </span>
           </div>
         </td>
@@ -216,7 +248,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
           {/* Strange hack required to not have table reflow when showing the animated area */}
           <AnimateHeight duration={300} animateOpacity height={showDetails ? "auto" : 0}>
             <div>
-              <p>{relevantEvaluation.intervention.long_description}</p>
+              <p>{resolvedImpact.longDescription}</p>
               <div>
                 <Links
                   links={[
@@ -225,10 +257,10 @@ export const DonationImpactGlobalHealthItem: React.FC<{
                       _key: "charity_description",
                       title: configuration.about_org_link_title_format_string.replace(
                         "{{org}}",
-                        relevantEvaluation.charity.charity_name,
+                        resolvedImpact.linkSubject,
                       ),
                       url: configuration.about_org_link_url_format_string
-                        .replace("{{org}}", relevantEvaluation.charity.charity_name)
+                        .replace("{{org}}", resolvedImpact.linkSubject)
                         .replaceAll(" ", "_"),
                       newtab: true,
                     },

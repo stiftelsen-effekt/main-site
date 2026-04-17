@@ -35,6 +35,7 @@ export type AggregatedImpact = {
 };
 
 export const GIVEWELL_ALL_GRANTS_FUND_KEY = "GiveWell All Grants Fund";
+export const DK_OPERATIONS_KEY = "Giv Effektivts arbejde og vækst";
 
 /**
  * Takes a list of donations and distributions and GiveWell grants

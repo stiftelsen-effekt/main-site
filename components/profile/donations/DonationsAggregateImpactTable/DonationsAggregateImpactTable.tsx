@@ -7,8 +7,10 @@ import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../.
 import { DistributionsRow } from "./DistributionsRow";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 import {
+  AggregatedImpact,
   aggregateImpact,
   aggregateOrgSumByYearAndMonth,
+  DK_OPERATIONS_KEY,
   GIVEWELL_ALL_GRANTS_FUND_KEY,
 } from "./_util";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
@@ -34,6 +36,7 @@ export const DonationsAggregateImpactTable: React.FC<{
   configuration: AggregatedImpactTableConfiguration;
   defaultExpanded?: boolean;
 }> = ({ donations, distributionMap, configuration, defaultExpanded = true }) => {
+  const isDK = configuration.locale === "dk";
   const [expanded, setExpanded] = useState(
     defaultExpanded || (typeof window !== "undefined" && window.innerWidth > 1180),
   );
@@ -48,7 +51,9 @@ export const DonationsAggregateImpactTable: React.FC<{
     error: impacterror,
     isValidating: impactvalidating,
   } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${configuration.currency}&language=${configuration.locale}`,
+    isDK
+      ? null
+      : `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${configuration.currency}&language=${configuration.locale}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -84,11 +89,15 @@ export const DonationsAggregateImpactTable: React.FC<{
     data: evaluationdata,
     error: evaluationerror,
     isValidating: evaluationvalidating,
-  } = useSWR<{ evaluations: ImpactEvaluation[] }[]>(urls, (urls) => multiFetcher(urls), {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  } = useSWR<{ evaluations: ImpactEvaluation[] }[]>(
+    isDK ? null : urls,
+    (urls) => multiFetcher(urls),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  );
 
   useLayoutEffect(() => {
     if (
@@ -105,14 +114,29 @@ export const DonationsAggregateImpactTable: React.FC<{
     }
   }, [impactdata, evaluationdata]);
 
-  let impact = {};
+  let impact: AggregatedImpact = {};
   let loading = true;
   let mappedEvaluations = [];
   let templateStrings = {
     org_direct_template_string: configuration.org_direct_template_string,
     org_grant_template_string: configuration.org_grant_template_string,
   };
-  if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
+  if (isDK) {
+    donations.forEach((donation) => {
+      donation.impact?.forEach((entry) => {
+        if (entry.recipient === "Giv Effektivt") {
+          impact[DK_OPERATIONS_KEY] ??= { outputs: 0, constituents: {} };
+          impact[DK_OPERATIONS_KEY].outputs += entry.amount;
+        } else {
+          impact[entry.unit] ??= { outputs: 0, constituents: {} };
+          impact[entry.unit].outputs += entry.count;
+          impact[entry.unit].constituents[entry.recipient] ??= 0;
+          impact[entry.unit].constituents[entry.recipient] += entry.amount;
+        }
+      });
+    });
+    loading = false;
+  } else if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
     mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
     impact = aggregateImpact(aggregated, mappedEvaluations, templateStrings);
     loading = false;
@@ -193,7 +217,8 @@ export const DonationsAggregateImpactTable: React.FC<{
                 .filter(
                   (key) =>
                     key.toLowerCase().indexOf("drift") === -1 &&
-                    key !== GIVEWELL_ALL_GRANTS_FUND_KEY,
+                    key !== GIVEWELL_ALL_GRANTS_FUND_KEY &&
+                    key !== DK_OPERATIONS_KEY,
                 )
                 .sort((a: string, b: string) => (b < a ? 1 : -1))
                 .map((key: string) => (
@@ -207,7 +232,8 @@ export const DonationsAggregateImpactTable: React.FC<{
                 .filter(
                   (key) =>
                     key.toLowerCase().indexOf("drift") !== -1 ||
-                    key === GIVEWELL_ALL_GRANTS_FUND_KEY,
+                    key === GIVEWELL_ALL_GRANTS_FUND_KEY ||
+                    key === DK_OPERATIONS_KEY,
                 )
                 .sort((a: string, b: string) => {
                   if (a === GIVEWELL_ALL_GRANTS_FUND_KEY && b !== GIVEWELL_ALL_GRANTS_FUND_KEY)
