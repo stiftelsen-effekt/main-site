@@ -1,18 +1,14 @@
 import React, { useCallback, useState } from "react";
-import useSWR from "swr";
-import { Distribution, DistributionCauseArea, Donation, GiveWellGrant } from "../../../../models";
-import { thousandize } from "../../../../util/formatting";
+import { Distribution, DistributionCauseArea, Donation } from "../../../../models";
 import style from "./DonationImpact.module.scss";
+import ghStyle from "./GlobalHealth/DonationImpactGlobalHealth.module.scss";
 import {
   DonationImpactGlobalHealthItem,
   ImpactItemConfiguration,
 } from "./GlobalHealth/DonationImpactItemGlobalHealth";
-import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
 import DonationImpactGlobalHealth from "./GlobalHealth/DonationImpactGlobalHealth";
 import DonationImpactAnimalWelfare from "./AnimalWelfare/DonationImpactAnimalWelfare";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export type DonationImpactItemsConfiguration = {
   currency: string;
@@ -28,6 +24,43 @@ const DonationImpact: React.FC<{
   timestamp: Date;
   configuration: DonationImpactItemsConfiguration;
 }> = ({ donation, distribution, timestamp, configuration }) => {
+  const [requiredPrecision, setRequiredPrecision] = useState(0);
+  const updatePrecision = useCallback(
+    (precision: number) => {
+      if (precision > requiredPrecision) setRequiredPrecision(precision);
+    },
+    [requiredPrecision],
+  );
+
+  if (donation.impact?.length) {
+    return (
+      <div className={ghStyle.container}>
+        <table className={ghStyle.wrapper} cellSpacing={0} data-cy="donation-impact-list">
+          <tbody>
+            {donation.impact.map((entry, i) => (
+              <DonationImpactGlobalHealthItem
+                key={`${donation.id}-impact-${i}`}
+                orgAbriv=""
+                orgName={entry.recipient}
+                sumToOrg={entry.amount}
+                donationTimestamp={timestamp}
+                precision={requiredPrecision}
+                signalRequiredPrecision={updatePrecision}
+                configuration={configuration.impact_item_configuration}
+                preComputedImpact={{
+                  output: entry.count,
+                  shortDescription: entry.unit,
+                  longDescription: entry.description,
+                  linkSubject: entry.unit,
+                }}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   return (
     <>
       {distribution.causeAreas.map((causeArea: DistributionCauseArea) => (

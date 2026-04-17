@@ -7,6 +7,7 @@ import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../.
 import { DistributionsRow } from "./DistributionsRow";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 import {
+  AggregatedImpact,
   aggregateImpact,
   aggregateOrgSumByYearAndMonth,
   GIVEWELL_ALL_GRANTS_FUND_KEY,
@@ -34,6 +35,7 @@ export const DonationsAggregateImpactTable: React.FC<{
   configuration: AggregatedImpactTableConfiguration;
   defaultExpanded?: boolean;
 }> = ({ donations, distributionMap, configuration, defaultExpanded = true }) => {
+  const isDK = configuration.locale === "dk";
   const [expanded, setExpanded] = useState(
     defaultExpanded || (typeof window !== "undefined" && window.innerWidth > 1180),
   );
@@ -48,7 +50,9 @@ export const DonationsAggregateImpactTable: React.FC<{
     error: impacterror,
     isValidating: impactvalidating,
   } = useSWR<{ max_impact_fund_grants: GiveWellGrant[] }>(
-    `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${configuration.currency}&language=${configuration.locale}`,
+    isDK
+      ? null
+      : `https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=${configuration.currency}&language=${configuration.locale}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -84,11 +88,15 @@ export const DonationsAggregateImpactTable: React.FC<{
     data: evaluationdata,
     error: evaluationerror,
     isValidating: evaluationvalidating,
-  } = useSWR<{ evaluations: ImpactEvaluation[] }[]>(urls, (urls) => multiFetcher(urls), {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  } = useSWR<{ evaluations: ImpactEvaluation[] }[]>(
+    isDK ? null : urls,
+    (urls) => multiFetcher(urls),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  );
 
   useLayoutEffect(() => {
     if (
@@ -105,14 +113,24 @@ export const DonationsAggregateImpactTable: React.FC<{
     }
   }, [impactdata, evaluationdata]);
 
-  let impact = {};
+  let impact: AggregatedImpact = {};
   let loading = true;
   let mappedEvaluations = [];
   let templateStrings = {
     org_direct_template_string: configuration.org_direct_template_string,
     org_grant_template_string: configuration.org_grant_template_string,
   };
-  if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
+  if (isDK) {
+    donations.forEach((donation) => {
+      donation.impact?.forEach((entry) => {
+        impact[entry.unit] ??= { outputs: 0, constituents: {} };
+        impact[entry.unit].outputs += entry.count;
+        impact[entry.unit].constituents[entry.recipient] ??= 0;
+        impact[entry.unit].constituents[entry.recipient] += entry.amount;
+      });
+    });
+    loading = false;
+  } else if (impactdata && !impactvalidating && evaluationdata && !evaluationvalidating) {
     mappedEvaluations = evaluationdata.map((d) => d.evaluations).flat();
     impact = aggregateImpact(aggregated, mappedEvaluations, templateStrings);
     loading = false;
