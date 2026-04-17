@@ -10,6 +10,7 @@ import {
   AggregatedImpact,
   aggregateImpact,
   aggregateOrgSumByYearAndMonth,
+  DK_OPERATIONS_KEY,
   GIVEWELL_ALL_GRANTS_FUND_KEY,
 } from "./_util";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
@@ -123,10 +124,15 @@ export const DonationsAggregateImpactTable: React.FC<{
   if (isDK) {
     donations.forEach((donation) => {
       donation.impact?.forEach((entry) => {
-        impact[entry.unit] ??= { outputs: 0, constituents: {} };
-        impact[entry.unit].outputs += entry.count;
-        impact[entry.unit].constituents[entry.recipient] ??= 0;
-        impact[entry.unit].constituents[entry.recipient] += entry.amount;
+        if (entry.recipient === "Giv Effektivt") {
+          impact[DK_OPERATIONS_KEY] ??= { outputs: 0, constituents: {} };
+          impact[DK_OPERATIONS_KEY].outputs += entry.amount;
+        } else {
+          impact[entry.unit] ??= { outputs: 0, constituents: {} };
+          impact[entry.unit].outputs += entry.count;
+          impact[entry.unit].constituents[entry.recipient] ??= 0;
+          impact[entry.unit].constituents[entry.recipient] += entry.amount;
+        }
       });
     });
     loading = false;
@@ -211,7 +217,8 @@ export const DonationsAggregateImpactTable: React.FC<{
                 .filter(
                   (key) =>
                     key.toLowerCase().indexOf("drift") === -1 &&
-                    key !== GIVEWELL_ALL_GRANTS_FUND_KEY,
+                    key !== GIVEWELL_ALL_GRANTS_FUND_KEY &&
+                    key !== DK_OPERATIONS_KEY,
                 )
                 .sort((a: string, b: string) => (b < a ? 1 : -1))
                 .map((key: string) => (
@@ -225,7 +232,8 @@ export const DonationsAggregateImpactTable: React.FC<{
                 .filter(
                   (key) =>
                     key.toLowerCase().indexOf("drift") !== -1 ||
-                    key === GIVEWELL_ALL_GRANTS_FUND_KEY,
+                    key === GIVEWELL_ALL_GRANTS_FUND_KEY ||
+                    key === DK_OPERATIONS_KEY,
                 )
                 .sort((a: string, b: string) => {
                   if (a === GIVEWELL_ALL_GRANTS_FUND_KEY && b !== GIVEWELL_ALL_GRANTS_FUND_KEY)

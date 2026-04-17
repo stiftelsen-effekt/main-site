@@ -3,7 +3,7 @@ import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
 import { thousandize, thousandizeString } from "../../../../util/formatting";
 import style from "./DonationsAggregateImpactTable.module.scss";
-import { AggregatedImpact, GIVEWELL_ALL_GRANTS_FUND_KEY } from "./_util";
+import { AggregatedImpact, DK_OPERATIONS_KEY, GIVEWELL_ALL_GRANTS_FUND_KEY } from "./_util";
 
 const multiFetcher = (...urls: string[]) => {
   const f = (u: string) => fetch(u).then((r) => r.json());
@@ -29,7 +29,8 @@ export const DistributionsRow: React.FC<{
       .replace(/\./, ","),
   );
 
-  const isDriftRow = outputkey.toLowerCase().indexOf("drift") !== -1;
+  const isDriftRow =
+    outputkey.toLowerCase().indexOf("drift") !== -1 || outputkey === DK_OPERATIONS_KEY;
   const isAllGrantsFundRow = outputkey === GIVEWELL_ALL_GRANTS_FUND_KEY;
 
   if (isDriftRow || isAllGrantsFundRow) {
