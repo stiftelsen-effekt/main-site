@@ -13,7 +13,6 @@ import { mapNameToOrgAbbriv } from "../../../../util/mappings";
 export type DonationImpactItemsConfiguration = {
   currency: string;
   locale: string;
-  smart_distribution_label: string;
   operations_label: string;
   impact_item_configuration: ImpactItemConfiguration;
 };

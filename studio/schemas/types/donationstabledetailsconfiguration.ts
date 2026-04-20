@@ -33,11 +33,6 @@ export default defineType({
       type: "object",
       fields: [
         defineField({
-          name: "smart_distribution_label",
-          title: "Smart distribution label",
-          type: "string",
-        }),
-        defineField({
           name: "operations_label",
           title: "Operations label",
           type: "string",

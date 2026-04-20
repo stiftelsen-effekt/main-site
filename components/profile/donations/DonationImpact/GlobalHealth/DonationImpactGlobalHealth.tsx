@@ -7,14 +7,12 @@ import {
   DonationImpactGlobalHealthItem,
   ImpactItemConfiguration,
 } from "./DonationImpactItemGlobalHealth";
-import { ErrorMessage } from "../../../shared/ErrorMessage/ErrorMessage";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export type DonationImpactItemsConfiguration = {
   currency: string;
   locale: string;
-  smart_distribution_label: string;
   operations_label: string;
   impact_item_configuration: ImpactItemConfiguration;
 };
@@ -98,12 +96,6 @@ const DonationImpactGlobalHealth: React.FC<{
 
   return (
     <div className={style.container} key={`${donation.id}-impact`}>
-      {giveWellDist && (
-        <div className={style.smartdistributionlabel}>
-          <span>{configuration.smart_distribution_label}</span>
-          <strong>{`${thousandize(Math.round(giveWellDist.sum) || null)} kr`}</strong>
-        </div>
-      )}
       <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
         <tbody>
           {spreadDistribution.map((dist) => (
