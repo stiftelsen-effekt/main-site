@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import style from "./DonationDetails.module.scss";
 import { Distribution, Donation } from "../../../../../models";
+import { Organization } from "../../../../shared/components/Widget/types/Organization";
 import DonationImpact, {
   DonationImpactItemsConfiguration,
 } from "../../../donations/DonationImpact/DonationImpact";
@@ -24,7 +25,8 @@ export const DonationDetails: React.FC<{
   distribution: Distribution;
   timestamp: Date;
   configuration: DonationDetailsConfiguration;
-}> = ({ sum, donation, distribution, timestamp, configuration }) => {
+  organizations: Organization[];
+}> = ({ sum, donation, distribution, timestamp, configuration, organizations }) => {
   const [showImpactEstimateExplanation, setShowImpactEstimateExplanation] = useState(false);
 
   if (!distribution && !donation.impact?.length)
@@ -56,6 +58,7 @@ export const DonationDetails: React.FC<{
           distribution={distribution}
           timestamp={timestamp}
           configuration={configuration.impact_items_configuration}
+          organizations={organizations}
         />
       </div>
 

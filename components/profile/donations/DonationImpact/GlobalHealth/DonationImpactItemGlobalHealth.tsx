@@ -58,7 +58,8 @@ export type PreComputedImpact = {
   output: number;
   shortDescription: string;
   longDescription: string;
-  linkSubject: string;
+  charityName: string;
+  orgUrl: string;
 };
 
 export const DonationImpactGlobalHealthItem: React.FC<{
@@ -134,16 +135,18 @@ export const DonationImpactGlobalHealthItem: React.FC<{
     shortDescription: string;
     longDescription: string;
     charityName: string;
-    linkSubject: string;
+    orgUrl: string;
   } | null = preComputedImpact
-    ? { ...preComputedImpact, charityName: orgName }
+    ? preComputedImpact
     : relevantEvaluation
     ? {
         output: sumToOrg / relevantEvaluation.converted_cost_per_output,
         shortDescription: relevantEvaluation.intervention.short_description,
         longDescription: relevantEvaluation.intervention.long_description,
         charityName: relevantEvaluation.charity.charity_name,
-        linkSubject: relevantEvaluation.charity.charity_name,
+        orgUrl: configuration.about_org_link_url_format_string
+          .replace("{{org}}", relevantEvaluation.charity.charity_name)
+          .replaceAll(" ", "_"),
       }
     : null;
 
@@ -257,11 +260,9 @@ export const DonationImpactGlobalHealthItem: React.FC<{
                       _key: "charity_description",
                       title: configuration.about_org_link_title_format_string.replace(
                         "{{org}}",
-                        resolvedImpact.linkSubject,
+                        resolvedImpact.charityName,
                       ),
-                      url: configuration.about_org_link_url_format_string
-                        .replace("{{org}}", resolvedImpact.linkSubject)
-                        .replaceAll(" ", "_"),
+                      url: resolvedImpact.orgUrl,
                       newtab: true,
                     },
                   ]}

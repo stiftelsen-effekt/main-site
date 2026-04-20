@@ -11,7 +11,7 @@ export type DonationImpactEntry = {
   unit: string;
   amount: number;
   count: number;
-  description: string;
+  organization: string;
 };
 
 export type Donation = {
