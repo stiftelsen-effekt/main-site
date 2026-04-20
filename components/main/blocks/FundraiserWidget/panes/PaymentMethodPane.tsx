@@ -93,7 +93,6 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
 
       // Format CPR input for Danish locale
       let valueToUse = value;
-      console.log("locale", locale);
       if (locale === "da-DK" && formData.taxDeduction) {
         const formattedValue = formatTinInput(value, { allowCvr: true });
         e.target.value = formattedValue;

@@ -294,6 +294,7 @@ export const DonationsPage = withStaticProps(
         configuration={tableConfiguration}
         detailsConfiguration={page.donations_details_configuration}
         firstOpen={false}
+        organizations={organizations}
       />
     ) : (
       <ErrorMessage>
@@ -391,6 +392,7 @@ export const DonationsPage = withStaticProps(
             configuration={tableConfiguration}
             detailsConfiguration={page.donations_details_configuration}
             firstOpen={false}
+            organizations={organizations}
           />
         ) : (
           <ErrorMessage key={year}>
@@ -419,6 +421,7 @@ export const DonationsPage = withStaticProps(
         configuration={tableConfiguration}
         detailsConfiguration={page.donations_details_configuration}
         firstOpen={false}
+        organizations={organizations}
       />
     );
   }

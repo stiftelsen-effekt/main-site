@@ -155,8 +155,6 @@ export const Widget = withStaticProps(
   const widget = data.result;
   const methods = data.result.methods;
 
-  console.log(methods);
-
   if (!methods) {
     throw new Error("No payment methods found");
   }
