@@ -123,6 +123,8 @@
     top: 0;
     left: 0;
     width: 100%;
+    height: calc(100vh - var(--header-active-general-banner-height, 0px));
+    height: calc(100svh - var(--header-active-general-banner-height, 0px));
     height: calc(100dvh - var(--header-active-general-banner-height, 0px));
     touch-action: none;
   }
@@ -165,7 +167,7 @@
     font-weight: normal;
     display: flex;
     flex-direction: column;
-    padding-bottom: 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     padding-top: 0.5rem;
   }
 
@@ -247,6 +249,7 @@
 
   .navbar ul li.buttonsWrapper {
     padding-top: 1.5rem;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     margin-left: 0;
     align-self: flex-start;
     display: flex;
