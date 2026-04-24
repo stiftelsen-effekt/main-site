@@ -10,7 +10,7 @@ import { ProfilePage } from "../dashboard/ProfilePage";
 import { TaxPage, getTaxPageSubPaths } from "../dashboard/TaxPage";
 import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
-import { useLiveQuery } from "next-sanity/preview";
+import { useLiveQuery } from "@sanity/preview-kit";
 import { ConsentState } from "../../middleware.page";
 import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
 

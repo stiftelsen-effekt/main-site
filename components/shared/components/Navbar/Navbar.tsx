@@ -15,7 +15,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
-import { useLiveQuery } from "next-sanity/preview";
+import { useLiveQuery } from "@sanity/preview-kit";
 
 export type NavLink = {
   _type: "navitem";

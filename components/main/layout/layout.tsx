@@ -9,7 +9,7 @@ import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { PrefilledDistribution, WidgetPane, WidgetPaneProps } from "./WidgetPane/WidgetPane";
 import { token } from "../../../token";
-import { useLiveQuery } from "next-sanity/preview";
+import { useLiveQuery } from "@sanity/preview-kit";
 import React from "react";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../../middleware.page";
