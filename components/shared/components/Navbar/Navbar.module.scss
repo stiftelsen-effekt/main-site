@@ -135,7 +135,7 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-bottom: calc(var(--cookie-banner-height, 0px) + 1rem);
+    padding-bottom: calc(var(--cookie-banner-height, 0px) + 2rem);
   }
 
   .expandBtn {
@@ -256,6 +256,7 @@
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
+    margin-top: auto;
   }
 
   .navbar ul li.buttonsWrapper a {
