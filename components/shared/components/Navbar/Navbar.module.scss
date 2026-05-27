@@ -135,6 +135,9 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+  }
+
+  .navbarExpanded .navbar {
     padding-bottom: calc(var(--cookie-banner-height, 0px) + 2rem);
   }
 
