@@ -39,7 +39,7 @@ To get started, install the packages using npm.
 
 `npm install`
 
-Copy the `.env.example` file to `.env.local` and replace missing values.
+Copy the `.env.example` file to `.env.local`.
 
 To start the development server run
 
@@ -48,6 +48,11 @@ To start the development server run
 Navigating to `localhost:3000/` in your browser should yield something like this
 
 <img src="docs/frontpage.png" width="420" alt="Gi Effektivt front page" />
+
+Notes:
+
+1. `*SANITY_PROJECT_ID` in `.env.example` points to a test dataset, so the contents of the website locally differs from what you see on the production websites. If you need to see production contents locally, ask someone from the team for the corresponding project IDs.
+2. `*EFFEKT_API` in `.env.example` points to localhost, meaning it expects you to run the backend locally as well. Alternatively you can point those to the development version of the Danish backend (see comments in that file), but there are no corresponding links for other countries so far.
 
 ## Project structure
 
