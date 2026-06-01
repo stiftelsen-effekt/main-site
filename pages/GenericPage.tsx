@@ -5,6 +5,7 @@ import { PageHeader } from "../components/main/layout/PageHeader/PageHeader";
 import { Navbar, PreviewNavbar } from "../components/shared/components/Navbar/Navbar";
 import { MainHeader } from "../components/shared/layout/Header/Header";
 import { SEO } from "../components/shared/seo/Seo";
+import { JsonLd } from "../components/shared/seo/JsonLd";
 import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
@@ -75,8 +76,21 @@ export const GenericPage = withStaticProps(
     cannonicalUrlDefault = `${process.env.NEXT_PUBLIC_SITE_URL}`;
   }
 
+  // Somewhat fragile
+  const sameAs: string[] = data.result.settings[0].footer_columns[1].links.map(
+    (link: any) => link.url,
+  );
+  console.log(data.result.settings[0].footer_columns[1].links.map((link: any) => link.url));
   return (
     <>
+      <JsonLd
+        name={data.result.settings[0].title}
+        description={header.seoDescription || header.inngress}
+        url={header.cannonicalUrl ?? cannonicalUrlDefault}
+        country={data.result.settings[0].main_locale.toUpperCase() ?? "NO"}
+        logo={header.seoImage?.asset?.url}
+        sameAs={sameAs}
+      />
       <SEO
         title={header.seoTitle || header.title}
         description={header.seoDescription || header.inngress}

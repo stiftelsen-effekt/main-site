@@ -142,6 +142,16 @@ export type SEOMeta = {
   noIndex?: boolean;
 };
 
+export type JsonLdMeta = {
+  name: string;
+  description: string;
+  url: string;
+  logo?: string;
+  email?: string;
+  sameAs?: string[];
+  country?: string;
+};
+
 export type FacebookDonationRegistration = {
   email: string;
   paymentID: string;
