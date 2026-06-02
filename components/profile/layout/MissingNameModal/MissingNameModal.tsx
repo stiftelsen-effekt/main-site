@@ -41,7 +41,7 @@ export const MissingNameModal: React.FC<{ config: MissingNameModalConfig }> = ({
         failureToast(config.failure_message);
       } else {
         successToast(config.success_message);
-        setDonor(updatedDonor);
+        setDonor(result);
         setOpen(false);
       }
     } else {

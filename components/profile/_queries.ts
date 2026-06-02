@@ -21,6 +21,7 @@ export const saveDonor = async (data: Donor, user: User, token: string) => {
     if (response.status !== 200) {
       return null;
     } else {
+      mutate(`/donors/${getUserId(user)}/`, donor, false);
       return donor;
     }
   } catch (e) {
