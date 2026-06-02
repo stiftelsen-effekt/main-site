@@ -20,7 +20,7 @@ export const JsonLd: React.FC<JsonLdMeta> = ({
     sameAs,
     areaServed: {
       "@type": "Country",
-      adressCountry: country || "NO",
+      identifier: country || "NO",
     },
   };
   return (
