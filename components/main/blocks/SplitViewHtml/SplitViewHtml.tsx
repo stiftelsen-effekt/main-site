@@ -6,6 +6,7 @@ import { Links } from "../Links/Links";
 import { PortableText } from "@portabletext/react";
 import { customComponentRenderers } from "../Paragraph/Citation";
 import { FundraiserVippsNumberDisplay } from "./FundraiserVippsNumberDisplay";
+import parse from "html-react-parser";
 
 export const SplitViewHtml: React.FC<{
   title: string;
@@ -46,7 +47,7 @@ export const SplitViewHtml: React.FC<{
         {links && <Links links={links} />}
       </div>
       <div className={styles.splitviewcode}>
-        <div dangerouslySetInnerHTML={{ __html: code }}></div>
+        <div>{parse(code)}</div>
         {adoveoFundraiserId && vippsNumber && (
           <FundraiserVippsNumberDisplay
             fundraiserId={adoveoFundraiserId}
