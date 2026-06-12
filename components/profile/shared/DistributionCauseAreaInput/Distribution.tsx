@@ -31,7 +31,7 @@ export const DistributionController: React.FC<{
     <div className={style.wrapper}>
       <div className={style.grid}>
         {currentCauseAreaOrgs
-          .filter((org) => org.isActive || causeArea.organizations.find((o) => o.id === org.id))
+          .filter((org) => org.isActive)
           .map((org) => (
             <div key={org.id} className={style["share-wrapper"]}>
               <span>{org.widgetDisplayName || org.name}</span>
