@@ -133,7 +133,12 @@
     justify-content: flex-start;
     height: auto;
     height: 100%;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .navbarExpanded .navbar {
+    padding-bottom: calc(var(--cookie-banner-height, 0px) + 2rem);
   }
 
   .expandBtn {
@@ -214,6 +219,7 @@
     font-size: 1rem;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
+    white-space: normal;
   }
 
   .navbarExpanded ul li .submenu ul li a {
@@ -248,19 +254,23 @@
   .navbar ul li.buttonsWrapper {
     padding-top: 1.5rem;
     margin-left: 0;
-    align-self: flex-start;
+    align-self: stretch;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 0.75rem;
     width: 100%;
     margin-top: auto;
   }
 
   .navbar ul li.buttonsWrapper a {
-    width: auto;
+    width: 100%;
   }
 
-  .navbar ul li.buttonsWrapper button:first-child {
+  .navbar ul li.buttonsWrapper button {
+    font-size: 1.125rem;
+    min-height: 52px;
+    padding: 14px 28px;
+    width: 100%;
     margin-left: 0;
   }
 
