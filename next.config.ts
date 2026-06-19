@@ -11,11 +11,15 @@ const STUDIO_REWRITE = {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // next-sanity's visual-editing client component does a bare `import "next/dynamic"`,
-  // which Node's ESM loader can't resolve when the package is treated as an external
-  // server module. Transpiling it lets Turbopack bundle and resolve those imports.
-  transpilePackages: ["next-sanity"],
   productionBrowserSourceMaps: true,
+  // Force Next to bundle these instead of leaving them as external runtime
+  // requires/imports, which breaks on the server/Vercel:
+  // - html-react-parser pulls in the ESM-only domhandler, which html-dom-parser
+  //   loads via require() -> ERR_REQUIRE_ESM.
+  // - next-sanity's visual-editing client component does a bare
+  //   `import "next/dynamic"` that Node's ESM loader can't resolve when the
+  //   package is externalized.
+  transpilePackages: ["html-react-parser", "html-dom-parser", "domhandler", "next-sanity"],
   rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
