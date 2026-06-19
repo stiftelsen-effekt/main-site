@@ -8,10 +8,21 @@ import { RouterContext, RouterContextValue, fetchRouterContext } from "../contex
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { Layout } from "../components/main/layout/layout";
 import { Provider } from "react-redux";
-import { VisualEditing } from "next-sanity/visual-editing";
+import dynamic from "next/dynamic";
 import { ConsentState } from "../middleware.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 import { useRouter } from "next/router";
+
+// Import the pages-router-native visual editing component directly from
+// @sanity/visual-editing rather than next-sanity/visual-editing. next-sanity's
+// wrapper does a bare `import "next/dynamic"` that Node can't resolve when the
+// package is externalized at build, and transpiling next-sanity to work around
+// it bundles the whole Sanity toolkit into the serverless functions (blowing the
+// Vercel function size limit). This keeps next-sanity externalized and small.
+const VisualEditing = dynamic(
+  () => import("@sanity/visual-editing/next-pages-router").then((mod) => mod.VisualEditing),
+  { ssr: false },
+);
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
 const globalWidgetStore = createWidgetStore();
