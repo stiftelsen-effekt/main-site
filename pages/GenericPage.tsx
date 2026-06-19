@@ -9,7 +9,6 @@ import { getClient } from "../lib/sanity.client";
 import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
-import { useLiveQuery } from "@sanity/preview-kit";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../middleware.page";
 
