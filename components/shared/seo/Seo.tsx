@@ -1,5 +1,6 @@
 import React from "react";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { SEOMeta } from "../../../models";
 
 export const SEO: React.FC<SEOMeta> = ({
@@ -34,23 +35,25 @@ export const SEO: React.FC<SEOMeta> = ({
     });
 
   return (
-    <NextSeo
-      title={title}
-      titleTemplate={titleTemplate}
-      description={description}
-      canonical={canonicalurl}
-      openGraph={{
-        url: canonicalurl,
+    <Head>
+      {generateNextSeo({
         title: title,
+        titleTemplate: titleTemplate,
         description: description,
-        images: images,
-        site_name: siteName,
-      }}
-      twitter={{
-        site: "@gieffektivt",
-        cardType: "summary_large_image",
-      }}
-      additionalMetaTags={additionalMetaTags}
-    ></NextSeo>
+        canonical: canonicalurl,
+        openGraph: {
+          url: canonicalurl,
+          title: title,
+          description: description,
+          images: images,
+          site_name: siteName,
+        },
+        twitter: {
+          site: "@gieffektivt",
+          cardType: "summary_large_image",
+        },
+        additionalMetaTags: additionalMetaTags,
+      })}
+    </Head>
   );
 };

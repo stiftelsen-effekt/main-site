@@ -18,20 +18,24 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/table": "^1.1.4",
-    "@sanity/ui": "^3.0.5",
-    "@sanity/vision": "^4.2.0",
-    "eslint": "^8.6.0",
-    "katex": "^0.16.9",
+    "@sanity/table": "^3.1.2",
+    "@sanity/ui": "^3.2.0",
+    "@sanity/vision": "^6.1.0",
+    "katex": "^0.17.0",
     "prop-types": "^15.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-feather": "^2.0.9",
-    "sanity": "^4.6.0",
-    "styled-components": "^6.1.15"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-feather": "^2.0.10",
+    "sanity": "^6.1.0",
+    "styled-components": "^6.4.2"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/stiftelsen-effekt/main-site.git"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^6.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8"
   }
 }

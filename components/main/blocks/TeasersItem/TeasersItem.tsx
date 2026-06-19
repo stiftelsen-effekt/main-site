@@ -1,6 +1,6 @@
 import React from "react";
 import elements from "./TeasersItem.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType, Links } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";

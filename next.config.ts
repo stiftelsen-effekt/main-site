@@ -11,6 +11,10 @@ const STUDIO_REWRITE = {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // next-sanity's visual-editing client component does a bare `import "next/dynamic"`,
+  // which Node's ESM loader can't resolve when the package is treated as an external
+  // server module. Transpiling it lets Turbopack bundle and resolve those imports.
+  transpilePackages: ["next-sanity"],
   productionBrowserSourceMaps: true,
   rewrites: async () => [STUDIO_REWRITE],
   images: {

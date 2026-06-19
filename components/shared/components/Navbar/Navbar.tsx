@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { WidgetContext } from "../../../main/layout/layout";
 import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
 import { ResponsiveImage } from "../../responsiveimage";
