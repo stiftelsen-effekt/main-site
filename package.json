@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "format": "prettier --write \"./**/*{js,ts,jsx,tsx,json,md,css,scss,yml}\"",
-    "prepare": "husky install",
+    "prepare": "husky",
     "analyze": "next experimental-analyze",
     "generate:wealthmountain": "npx tsx components/main/blocks/WealthCalculator/data/processInput.ts"
   },
