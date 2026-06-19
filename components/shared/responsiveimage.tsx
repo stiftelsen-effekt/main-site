@@ -1,6 +1,6 @@
 import React from "react";
 import { SanityImage } from "sanity-image";
-import { SanityAsset, SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityAsset, SanityImageObject } from "@sanity/image-url";
 import { getClient } from "../../lib/sanity.client";
 
 export const ResponsiveImage: React.FC<{

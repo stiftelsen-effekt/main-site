@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./GiftCard.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType, Links, LinksProps } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";

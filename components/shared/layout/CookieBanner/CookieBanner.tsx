@@ -5,7 +5,7 @@ import styles from "./CookieBanner.module.scss";
 import { LinkComponent } from "../../../main/blocks/Links/Links";
 import { HotJar } from "../HotJar";
 import { ConsentState } from "../../../../middleware.page";
-import { setCookie } from "cookies-next";
+import { setCookie } from "cookies-next/client";
 import { BannerContext } from "../../../main/layout/layout";
 import { MetaPixel } from "../MetaPixel";
 import { CookieBannerQueryResult } from "../../../../studio/sanity.types";

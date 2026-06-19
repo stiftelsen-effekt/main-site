@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./NormalImage.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 export interface NormalImage {

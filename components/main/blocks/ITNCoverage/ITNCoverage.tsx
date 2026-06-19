@@ -1,4 +1,4 @@
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 import styles from "./ITNCoverage.module.scss";

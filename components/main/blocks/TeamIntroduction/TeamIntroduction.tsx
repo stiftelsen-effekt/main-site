@@ -1,4 +1,4 @@
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { Contributor, Links as SanityLinks } from "../../../../studio/sanity.types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import styles from "./TeamIntroduction.module.scss";

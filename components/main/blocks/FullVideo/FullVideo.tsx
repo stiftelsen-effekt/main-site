@@ -1,5 +1,5 @@
 import styles from "./FullVideo.module.scss";
-import { SanityAsset } from "@sanity/image-url/lib/types/types";
+import { SanityAsset } from "@sanity/image-url";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Play } from "react-feather";
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactAnimateHeight from "react-animate-height";
 import styles from "./FundraiserWidget.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { validateWidgetConfig } from "./validateWidgetConfig";

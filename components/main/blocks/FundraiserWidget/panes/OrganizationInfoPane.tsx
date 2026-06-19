@@ -1,6 +1,6 @@
 import React from "react";
 import { FundraiserOrganizationInfo } from "../../FundraiserOrganizationInfo/FundraiserOrganizationInfo";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import styles from "../FundraiserWidget.module.scss";
 
 interface OrganizationInfoPaneProps {
