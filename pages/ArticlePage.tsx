@@ -18,7 +18,7 @@ import { stegaClean } from "@sanity/client/stega";
 import { GiveBlock } from "../components/main/blocks/GiveBlock/GiveBlock";
 import { SectionContainer } from "../components/main/layout/SectionContainer/sectionContainer";
 import { ConsentState } from "../middleware.page";
-import { GeneralBannerQueryResult, CookieBannerQueryResult } from "../studio/sanity.types";
+import { GeneralBannerQueryResult } from "../studio/sanity.types";
 
 export const getArticlePaths = async (articlesPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -48,7 +48,6 @@ export const ArticlePage = withStaticProps(
       relatedArticles: RelatedArticle[];
       settings: {
         title: string;
-        cookie_banner_configuration: CookieBannerQueryResult;
         general_banner: GeneralBannerQueryResult;
         donate_label: string;
         accent_color?: string;
@@ -86,7 +85,7 @@ export const ArticlePage = withStaticProps(
         title={header.seoTitle || header.title}
         titleTemplate={`%s | ${data.result.settings[0].title}`}
         description={header.seoDescription || header.inngress}
-        imageAssetUrl={header.seoImage?.url ? header.seoImage.url : undefined}
+        imageAssetUrl={header.seoImage?.asset?.url ?? undefined}
         canonicalurl={
           header.cannonicalUrl ??
           `${process.env.NEXT_PUBLIC_SITE_URL}/${[...articlesPagePath, page.slug.current].join(
@@ -95,20 +94,14 @@ export const ArticlePage = withStaticProps(
         }
         keywords={header.seoKeywords}
         siteName={data.result.settings[0].title}
+        noIndex={header.noIndex}
       />
 
-      <MainHeader
-        hideOnScroll={true}
-        cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
-        generalBannerConfig={data.result.settings[0].general_banner}
-      >
+      <MainHeader hideOnScroll={true} generalBannerConfig={data.result.settings[0].general_banner}>
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
-
       <ArticleHeader title={header.title} inngress={header.inngress} published={header.published} />
-
       <BlockContentRenderer content={content} />
-
       <SectionContainer>
         <GiveBlock
           heading={page.default_give_block.heading}

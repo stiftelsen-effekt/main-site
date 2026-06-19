@@ -19,22 +19,27 @@ export type LinksProps = {
 };
 
 export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
-  const { articlesPagePath } = useRouterContext();
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
 
   return (
     <ul className={elements.links}>
       {links &&
-        links
-          .filter(validateLink)
-          .map((link) => (
+        links.filter(validateLink).map((link) => {
+          const { href, isFundraiser } = getHref(link, articlesPagePath, fundraisersPath);
+          return (
             <li key={link._key}>
               {buttons ? (
-                <LinkButton title={link.title ?? ""} url={getHref(link, articlesPagePath)} />
+                <LinkButton
+                  title={link.title ?? ""}
+                  url={href}
+                  prefetch={isFundraiser ? false : undefined}
+                />
               ) : (
                 <LinkComponent link={link} />
               )}
             </li>
-          ))}
+          );
+        })}
     </ul>
   );
 };
@@ -45,12 +50,14 @@ export const LinkComponent: React.FC<{
   style?: CSSProperties;
   newtab?: boolean;
 }> = ({ link, children, style, newtab }) => {
-  const { articlesPagePath } = useRouterContext();
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
+  const { href, isFundraiser } = getHref(link, articlesPagePath, fundraisersPath);
   const openInNewTab = (link._type === "link" && link.newtab) || newtab;
 
   return (
     <Link
-      href={getHref(link, articlesPagePath)}
+      href={href}
+      prefetch={isFundraiser ? false : undefined}
       target={openInNewTab ? "_blank" : ""}
       onClick={(e) => {
         e.currentTarget.blur();
@@ -62,12 +69,23 @@ export const LinkComponent: React.FC<{
   );
 };
 
-export const getHref = (link: NavLink | LinkType, articlesPagePath: string[]) => {
-  return link._type === "navitem"
-    ? link.pagetype === "article_page"
-      ? `/${[...articlesPagePath, link.slug].join("/")}`
-      : `/${link.slug}`
-    : link.url ?? (link as any).href ?? "";
+export const getHref = (
+  link: NavLink | LinkType,
+  articlesPagePath: string[],
+  fundraisersPath: string[],
+): { href: string; isFundraiser: boolean } => {
+  if (link._type === "navitem") {
+    switch (link.pagetype) {
+      case "article_page":
+        return { href: `/${[...articlesPagePath, link.slug].join("/")}`, isFundraiser: false };
+      case "fundraiser_page":
+        return { href: `/${[...fundraisersPath, link.slug].join("/")}`, isFundraiser: true };
+      default:
+        return { href: `/${link.slug}`, isFundraiser: false };
+    }
+  } else {
+    return { href: link.url ?? (link as any).href ?? "", isFundraiser: false };
+  }
 };
 
 const validateLink: (link: LinkType | NavLink) => boolean = (link) => {

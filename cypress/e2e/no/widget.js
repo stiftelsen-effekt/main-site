@@ -38,7 +38,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -90,7 +89,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -127,7 +125,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -158,7 +155,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -198,10 +194,7 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]")
-      .first()
-      .find("[data-cy=smart-distribution-toggle]")
-      .click({ force: true });
+    cy.get("[data-cy=radio-custom-share]").first().click({ force: true });
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
     cy.nextWidgetPane();
@@ -247,7 +240,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.prevWidgetPane();
@@ -441,7 +433,6 @@ describe("Widget", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
     cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
-    cy.get("[data-cy=cause-area]").first().type("100");
     cy.nextWidgetPane();
 
     cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);

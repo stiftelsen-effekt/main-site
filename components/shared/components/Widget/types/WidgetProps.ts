@@ -2,8 +2,37 @@ import { LinkType, LinksProps } from "../../../../main/blocks/Links/Links";
 import { DatePickerInputConfiguration } from "../../DatePicker/DatePickerInput";
 import { NavLink } from "../../Navbar/Navbar";
 
+export type PaymentMethodId =
+  | "bank"
+  | "vipps"
+  | "swish"
+  | "autogiro"
+  | "avtalegiro"
+  | "quickpay_card"
+  | "quickpay_mobilepay"
+  | "dkbank";
+
+export type TransactionCost = {
+  percentage_fee?: number | null;
+  fixed_fee?: number | null;
+};
+
+export type PaymentMethodNudge = {
+  _key: string;
+  message: string;
+  minimum_amount?: number;
+  recurring_type?: "single" | "recurring" | "both";
+  from_method?: PaymentMethodReference;
+  to_method?: PaymentMethodReference;
+};
+
+export type PaymentMethodReference = {
+  _id: PaymentMethodId;
+  selector_text?: string;
+};
+
 export type WidgetProps = {
-  locale: "no" | "sv" | "en";
+  locale: "no" | "sv" | "en" | "dk";
   color_scheme: "light" | "dark";
   operations_config?: OperationsConfig;
   cause_area_display_config?: CauseAreaDisplayConfig;
@@ -17,7 +46,11 @@ export type WidgetProps = {
       | SwishPaymentMethod
       | AutoGiroPaymentMethod
       | AvtaleGiroPaymentMethod
+      | QuickPayCardPaymentMethod
+      | QuickPayMobilePayPaymentMethod
+      | DkBankPaymentMethod
     >;
+    nudges?: PaymentMethodNudge[];
   };
 
 export type BankPaymentMethod = {
@@ -33,6 +66,10 @@ export type BankPaymentMethod = {
   completed_title: string;
   completed_text: string;
   locale: string;
+  transaction_cost?: TransactionCost | null;
+  completed_redirect?: {
+    slug: string;
+  };
 };
 
 export type VippsPaymentMethod = {
@@ -45,6 +82,7 @@ export type VippsPaymentMethod = {
   recurring_button_text: string;
   single_title: string;
   single_button_text: string;
+  transaction_cost?: TransactionCost | null;
 };
 
 export type SwishPaymentMethod = {
@@ -71,6 +109,7 @@ export type SwishPaymentMethod = {
     title: string;
     text?: string;
   };
+  transaction_cost?: TransactionCost | null;
 };
 
 export type AvtaleGiroPaymentMethod = {
@@ -81,6 +120,7 @@ export type AvtaleGiroPaymentMethod = {
   selector_choose_date_text: string;
   date_selector_configuration: DatePickerInputConfiguration;
   button_text: string;
+  transaction_cost?: TransactionCost | null;
 };
 
 export type AutoGiroPaymentMethod = {
@@ -93,6 +133,43 @@ export type AutoGiroPaymentMethod = {
   manual_recurring_option_config: AutogiroManualRecurringOptionConfig;
   recurring_manual_option_config: AutogiroRecurringManualOptionConfig;
   completed_text: any[];
+  transaction_cost?: TransactionCost | null;
+};
+
+export type QuickPayCardPaymentMethod = {
+  _id: "quickpay_card";
+  selector_text: string;
+  recurring_button_text: string;
+  single_button_text: string;
+  transaction_cost?: TransactionCost | null;
+};
+
+export type QuickPayMobilePayPaymentMethod = {
+  _id: "quickpay_mobilepay";
+  selector_text: string;
+  recurring_button_text: string;
+  single_button_text: string;
+  transaction_cost?: TransactionCost | null;
+};
+
+export type DkBankPaymentMethod = {
+  _id: "dkbank";
+  selector_text: string;
+  title: string;
+  kontonr_title: string;
+  kontonr: string;
+  kid_title: string;
+  explanatory_text: string;
+  explanatory_text_email_template: string;
+  button_text: string;
+  completed_title: string;
+  completed_text: string;
+  locale: string;
+  transaction_cost?: TransactionCost | null;
+  completed_redirect?: {
+    slug: string;
+  };
+  recurring_button_text: string;
 };
 
 type AutogiroManualRecurringOptionConfig = {
@@ -146,8 +223,10 @@ export type DonationInputErrorTemplates = {
 };
 
 export type WidgetPane2Props = {
+  allow_anonymous_donations?: boolean;
   anon_button_text: string;
   anon_button_text_tooltip: string;
+  show_name_field?: boolean;
   name_placeholder: string;
   name_invalid_error_text: string;
   email_placeholder: string;
@@ -157,12 +236,16 @@ export type WidgetPane2Props = {
   tax_deduction_ssn_invalid_error_text: string;
   tax_deduction_tooltip_text: string;
   newsletter_selector_text: string;
+  require_privacy_policy_checkbox?: boolean;
+  privacy_policy_required_error_text: string;
   privacy_policy_text: string;
   privacy_policy_link: NavLink;
   pane2_button_text: string;
+  api_generic_error_message: string;
 };
 
 export type WidgetPane3ReferralsProps = {
+  show_referrals?: boolean;
   referrals_title: string;
   other_referral_input_placeholder: string;
 };

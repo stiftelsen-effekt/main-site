@@ -328,6 +328,64 @@ export const updateAutoGiroAgreement = async (
   }
 };
 
+export const updateDKAgreement = async (
+  donorId: number,
+  agreementId: string,
+  distribution: Distribution | null,
+  chargeDay: number | null,
+  amount: number | null,
+  token: string,
+) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/donors/${donorId}/recurring?id=${agreementId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        distribution,
+        chargeDay,
+        amount,
+      }),
+    });
+
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch {
+    return null;
+  }
+};
+
+export const cancelDKAgreement = async (donorId: number, agreementId: string, token: string) => {
+  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
+
+  try {
+    const response = await fetch(`${api}/donors/${donorId}/recurring/cancel?id=${agreementId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "same-origin",
+    });
+
+    if (response.status !== 200) {
+      return null;
+    } else {
+      return true;
+    }
+  } catch {
+    return null;
+  }
+};
+
 export const cancelAvtaleGiroAgreement = async (kid: string, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 

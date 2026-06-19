@@ -10,6 +10,7 @@ export const SEO: React.FC<SEOMeta> = ({
   imageAssetUrl,
   keywords,
   siteName,
+  noIndex = false,
 }) => {
   const images = [];
   if (imageAssetUrl)
@@ -25,6 +26,11 @@ export const SEO: React.FC<SEOMeta> = ({
     additionalMetaTags.push({
       name: "keywords",
       content: keywords,
+    });
+  if (noIndex)
+    additionalMetaTags.push({
+      name: "robots",
+      content: "noindex, nofollow",
     });
 
   return (

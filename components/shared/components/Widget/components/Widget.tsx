@@ -14,6 +14,8 @@ import { AmountPane } from "./panes/AmountPane/index";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
+import { ApiErrorNotification } from "./shared/ApiErrorNotification/ApiErrorNotification";
+import { TaxInfoBox } from "./shared/Layout/Layout.style";
 import { token } from "../../../../../token";
 import {
   TooltipContent,
@@ -35,12 +37,16 @@ import { RecurringDonation } from "../types/Enums";
 import { applyWidgetDefaults, DEFAULT_OPERATIONS_CONFIG } from "../utils/widgetDefaults";
 
 export const widgetContentQuery = groq`
-...,
+  ...,
   "locale": *[ _type == "site_settings"][0].main_locale,
   methods[] { 
     _type == 'reference' => @->{
       _type == 'bank' => {
         ...,
+        transaction_cost,
+        completed_redirect -> {
+          "slug": slug.current,
+        },
         "locale": *[ _type == "site_settings"][0].main_locale,
       },
       _type == 'vipps' => {
@@ -53,12 +59,15 @@ export const widgetContentQuery = groq`
         recurring_button_text,
         single_title,
         single_button_text,
+        transaction_cost,
       },
       _type == 'swish' => {
-        ...
+        ...,
+        transaction_cost,
       },
       _type == 'autogiro' => {
         ...,
+        transaction_cost,
         recurring_manual_option_config {
           ...,
           date_selector_config->
@@ -66,8 +75,35 @@ export const widgetContentQuery = groq`
       },
       _type == 'avtalegiro' => {
         ...,
+        transaction_cost,
         date_selector_configuration->
       },
+      _type == 'quickpay_card' => {
+        ...,
+        transaction_cost,
+      },
+      _type == 'quickpay_mobilepay' => {
+        ...,
+        transaction_cost,
+      },
+      _type == 'dkbank' => {
+        ...,
+        transaction_cost,
+      },
+    },
+  },
+  nudges[]{
+    _key,
+    message,
+    minimum_amount,
+    recurring_type,
+    from_method->{
+      _id,
+      selector_text
+    },
+    to_method->{
+      _id,
+      selector_text
     },
   },
   privacy_policy_link {
@@ -219,6 +255,15 @@ export const Widget = withStaticProps(
               )}
             </TooltipWrapper>
           )}
+          <ApiErrorNotification genericErrorMessage={widget.api_generic_error_message} />
+          {/*(() => {
+            const taxInfoText: Record<string, string> = {
+              no: "For skattefradrag i 2025 må pengene stå på vår konto innen årsslutt. Bankdonasjoner må overføres før kl. 14:30 den 31. desember.",
+              sv: "För skatteavdrag 2025 måste pengarna finnas på vårt konto innan årsskiftet. Banköverföringar måste skickas före kl. 14:30 den 31 december.",
+            };
+            const text = taxInfoText[widget.locale];
+            return text ? <TaxInfoBox>{text}</TaxInfoBox> : null;
+          })()}*/}
           <ProgressBar inline={inline} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
             <SelectionPane causeAreaDisplayConfig={widget.cause_area_display_config} />
@@ -253,6 +298,11 @@ export const Widget = withStaticProps(
                 privacy_policy_text: widget.privacy_policy_text,
                 privacy_policy_link: widget.privacy_policy_link,
                 pane2_button_text: widget.pane2_button_text,
+                api_generic_error_message: widget.api_generic_error_message,
+                show_name_field: widget.show_name_field,
+                allow_anonymous_donations: widget.allow_anonymous_donations,
+                require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
+                privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
               }}
               paymentMethods={availablePaymentMethods}
             />
@@ -260,6 +310,7 @@ export const Widget = withStaticProps(
               referrals={{
                 referrals_title: widget.referrals_title,
                 other_referral_input_placeholder: widget.other_referral_input_placeholder,
+                show_referrals: widget.show_referrals,
               }}
               paymentMethods={availablePaymentMethods}
             />

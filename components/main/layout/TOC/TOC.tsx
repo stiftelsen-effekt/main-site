@@ -1,6 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
+import { CSSProperties, useEffect, useState, useMemo } from "react";
 import styles from "./TOC.module.scss";
-import { CSSProperties } from "styled-components";
 
 // Function to get 1rem value from the browser and memoize it
 const useRemValue = () => {

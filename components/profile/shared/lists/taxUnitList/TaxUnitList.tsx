@@ -1,65 +1,65 @@
 import { useState } from "react";
 import { Edit2, Trash2 } from "react-feather";
 import { TaxUnit } from "../../../../../models";
+import { useMainLocale } from "../../../../../context/MainLocaleContext";
 import { thousandize } from "../../../../../util/formatting";
 import { TaxUnitDeleteModal } from "../../TaxUnitModal/TaxUnitDeleteModal";
 import { TaxUnitEditModal } from "../../TaxUnitModal/TaxUnitEditModal";
 import { GenericList } from "../GenericList";
 import { ListRow } from "../GenericListRow";
+import { DKTaxUnitList } from "./DKTaxUnitList";
 
-export const TaxUnitList: React.FC<{
-  taxUnits: TaxUnit[];
-}> = ({ taxUnits }) => {
+interface TaxUnitListLabels {
+  sumDonationsLabel: string;
+  sumTaxDeductionsLabel: string;
+  sumTaxBenefitLabel: string;
+}
+
+const TaxUnitListStandard: React.FC<{ taxUnits: TaxUnit[] } & TaxUnitListLabels> = ({
+  taxUnits,
+  sumDonationsLabel,
+  sumTaxDeductionsLabel,
+  sumTaxBenefitLabel,
+}) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaxUnit, setSelectedTaxUnit] = useState<TaxUnit | null>(null);
 
   const unit = taxUnits[0];
 
-  const ssnType = unit.ssn.length === 11 ? "birthnr" : "orgnr";
+  const suplementalInformation =
+    unit.ssn.length === 11
+      ? unit.ssn.replace(/(\d{6})(\d{5})/, "$1 $2")
+      : unit.ssn.replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
+
   const headers = [
     {
       label: "",
       width: "10%",
     },
     {
-      label: "Sum donasjoner",
+      label: sumDonationsLabel,
       width: "30%",
     },
     {
-      label: "Sum skattefradrag",
+      label: sumTaxDeductionsLabel,
       width: "30%",
     },
     {
-      label: "Sum skattefordel",
+      label: sumTaxBenefitLabel,
       width: "30%",
     },
   ];
 
-  // If the tax unit has over 0 in tax deduction for current year
-  // we should show the tax deduction for the current year
-  const currentYearDeductions = unit.taxDeductions?.find(
-    (td) => td.year === new Date().getFullYear(),
-  );
-  // Unit is personal ssn or orgnr
-  const suplementalInformation =
-    unit.ssn.length === 11
-      ? unit.ssn.replace(/(\d{6})(\d{5})/, "$1 $2")
-      : unit.ssn.replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
-
   const filteredDeductions = unit.taxDeductions?.filter((d) => d.sumDonations > 0) || [];
 
+  const contextOptions = [
+    { label: "Endre", icon: <Edit2 size={16} /> },
+    { label: "Slett", icon: <Trash2 size={16} /> },
+  ];
+
   const context = {
-    contextOptions: [
-      {
-        label: "Endre",
-        icon: <Edit2 size={16} />,
-      },
-      {
-        label: "Slett",
-        icon: <Trash2 size={16} />,
-      },
-    ],
+    contextOptions,
     onContextSelect: (option: string, element: TaxUnit) => {
       switch (option) {
         case "Endre":
@@ -75,7 +75,7 @@ export const TaxUnitList: React.FC<{
   };
 
   const rows: ListRow<TaxUnit>[] = filteredDeductions.map((deductions, i) => {
-    let row = {
+    const row = {
       id: `${unit.id.toString()}${deductions.year}`,
       defaultExpanded: false,
       cells: [
@@ -84,17 +84,12 @@ export const TaxUnitList: React.FC<{
         { value: thousandize(Math.round(deductions.deduction)) + " kr" },
         { value: thousandize(Math.round(deductions.benefit)) + " kr" },
       ],
-
       element: unit,
     };
 
     if (i === 0) {
-      row = {
-        ...row,
-        ...context,
-      };
+      return { ...row, ...context };
     }
-
     return row;
   });
 
@@ -123,11 +118,8 @@ export const TaxUnitList: React.FC<{
     element: unit,
   };
 
-  if (filteredDeductions.length == 0) {
-    totalsRow = {
-      ...totalsRow,
-      ...context,
-    };
+  if (filteredDeductions.length === 0) {
+    totalsRow = { ...totalsRow, ...context };
   }
 
   rows.push(totalsRow);
@@ -173,5 +165,31 @@ export const TaxUnitList: React.FC<{
         />
       )}
     </>
+  );
+};
+
+export const TaxUnitList: React.FC<
+  {
+    taxUnits: TaxUnit[];
+  } & TaxUnitListLabels
+> = ({ taxUnits, sumDonationsLabel, sumTaxDeductionsLabel, sumTaxBenefitLabel }) => {
+  const mainLocale = useMainLocale();
+  if (mainLocale === "dk") {
+    return (
+      <DKTaxUnitList
+        taxUnits={taxUnits}
+        sumDonationsLabel={sumDonationsLabel}
+        sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+        sumTaxBenefitLabel={sumTaxBenefitLabel}
+      />
+    );
+  }
+  return (
+    <TaxUnitListStandard
+      taxUnits={taxUnits}
+      sumDonationsLabel={sumDonationsLabel}
+      sumTaxDeductionsLabel={sumTaxDeductionsLabel}
+      sumTaxBenefitLabel={sumTaxBenefitLabel}
+    />
   );
 };

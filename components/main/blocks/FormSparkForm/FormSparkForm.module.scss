@@ -1,0 +1,44 @@
+.wrapper {
+  max-width: 760px;
+  width: 100%;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .fieldWrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      input,
+      textarea,
+      select {
+        font-size: 1rem;
+        font-family: "ESKlarheitGrotesk";
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--primary);
+        background: var(--secondary);
+      }
+
+      .radioGroup {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .wrapper {
+    margin-bottom: 20px;
+  }
+}

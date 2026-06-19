@@ -10,11 +10,13 @@ const LinkButton: React.FC<{
   type?: ButtonType;
   squared?: boolean;
   target?: string;
-}> = ({ url, title, type = "primary", squared, target }) => {
+  prefetch?: boolean;
+}> = ({ url, title, type = "primary", squared, target, prefetch }) => {
   return (
     <Link
       href={url}
       target={target}
+      prefetch={prefetch}
       className={`${styles.button} ${
         type == "primary"
           ? styles.buttonprimary

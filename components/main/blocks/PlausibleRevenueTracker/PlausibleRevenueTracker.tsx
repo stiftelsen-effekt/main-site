@@ -59,7 +59,7 @@ export const PlausibleRevenueTracker: React.FC<{
             if (type === "donation") {
               // Facebook Pixel tracking
               // @ts-ignore
-              if (window.fbq) {
+              if (typeof window.fbq !== "undefined" && window.fbq !== null) {
                 // @ts-ignore
                 window.fbq("track", "Purchase", {
                   value: revenue,
@@ -78,7 +78,7 @@ export const PlausibleRevenueTracker: React.FC<{
                 getEstimatedLtv({ method: paymentMethod, sum: parseFloat(revenue) }).then((ltv) => {
                   // Facebook Pixel tracking
                   // @ts-ignore
-                  if (window.fbq) {
+                  if (typeof window.fbq !== "undefined" && window.fbq !== null) {
                     // @ts-ignore
                     window.fbq("track", "Subscribe", {
                       value: revenue,

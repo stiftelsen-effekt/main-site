@@ -18,3 +18,13 @@ export const InfoBox = styled(RoundedBorder)`
   margin-bottom: 12px;
   line-height: 150%;
 `;
+
+export const TaxInfoBox = styled.div`
+  background: white;
+  color: black;
+  border-bottom: 1px solid var(--primary);
+  padding: 12px 20px;
+  white-space: normal;
+  font-size: 13px;
+  line-height: 150%;
+`;

@@ -26,6 +26,8 @@ import {
   SET_GLOBAL_OPERATIONS_PERCENTAGE,
   SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
   SET_OPERATIONS_CONFIG,
+  SET_API_ERROR,
+  CLEAR_API_ERROR,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -310,8 +312,11 @@ export const draftAvtaleGiroAction = actionCreator.async<undefined, undefined, E
   "DRAFT_AVTALEGIRO",
 );
 
+export type RegisterDonationActionPayload = {
+  openExternalPaymentOnRegisterSuccess?: boolean;
+};
 export const registerDonationAction = actionCreator.async<
-  undefined,
+  RegisterDonationActionPayload,
   RegisterDonationResponse,
   Error
 >("REGISTER_DONATION");
@@ -319,3 +324,18 @@ export const registerDonationAction = actionCreator.async<
 export const registerBankPendingAction = actionCreator.async<undefined, undefined, Error>(
   "REGISTER_BANK_PENDING",
 );
+
+export function setApiError(message: string): DonationActionTypes {
+  return {
+    type: SET_API_ERROR,
+    payload: {
+      message,
+    },
+  };
+}
+
+export function clearApiError(): DonationActionTypes {
+  return {
+    type: CLEAR_API_ERROR,
+  };
+}

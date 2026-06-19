@@ -10,8 +10,11 @@ import { Donation, RegisterDonationObject, State } from "../state";
 import {
   registerBankPendingAction,
   registerDonationAction,
+  RegisterDonationActionPayload,
   RegisterDonationResponse,
   setPaymentProviderURL,
+  setApiError,
+  clearApiError,
 } from "./actions";
 import { CauseArea } from "../../types/CauseArea";
 import { calculateDonationBreakdown } from "../../utils/donationCalculations";
@@ -176,11 +179,13 @@ export function* registerBankPending(): SagaIterator<void> {
   }
 }
 
-const TIP_PERCENTAGE = 5;
 const OPERATIONS_CAUSE_AREA_ID = 4;
 
-export function* registerDonation(action: Action<undefined>): SagaIterator<void> {
+export function* registerDonation(
+  action: Action<RegisterDonationActionPayload>,
+): SagaIterator<void> {
   yield put(setLoading(true));
+  yield put(clearApiError()); // Clear any existing API errors
   try {
     // --- Select necessary state parts ---
     const donation: Donation = yield select((state: State) => state.donation);
@@ -329,7 +334,28 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     const result: IServerResponse<RegisterDonationResponse> = yield call(
       request.json.bind(request),
     );
-    if (result.status !== 200) throw new Error(result.content as string);
+
+    if (result.status !== 200) {
+      // Handle API error response
+      let errorMessage = null;
+
+      // Check if result.content is an object with message property
+      if (typeof (result as any).message === "string") {
+        errorMessage = (result as any).message;
+      } else if (typeof result.content === "string") {
+        errorMessage = result.content;
+      }
+
+      yield put(setApiError(errorMessage));
+      yield put(setLoading(false));
+      yield put(
+        registerDonationAction.failed({
+          params: action.payload,
+          error: new Error(errorMessage),
+        }),
+      );
+      return;
+    }
 
     // --- Handle API response and subsequent actions ---
     yield put(
@@ -356,9 +382,20 @@ export function* registerDonation(action: Action<undefined>): SagaIterator<void>
     }
 
     yield put(setLoading(false));
-    yield put(nextPane());
+
+    if (
+      action.payload?.openExternalPaymentOnRegisterSuccess &&
+      (result.content as RegisterDonationResponse).paymentProviderUrl
+    ) {
+      window.open((result.content as RegisterDonationResponse).paymentProviderUrl, "_self");
+    } else {
+      yield put(nextPane());
+    }
   } catch (ex) {
     console.error("Error registering donation:", ex);
+    // Handle network errors and other exceptions
+    const errorMessage = ex instanceof Error ? ex.message : "Something went wrong";
+    yield put(setApiError(errorMessage));
     yield put(setLoading(false));
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));
   }

@@ -1,6 +1,7 @@
 import { Bookmark, ExternalLink, Link } from "react-feather";
 import { MathRenderer } from "../../components/mathRenderer";
 import { TexIcon } from "../../components/texIcon";
+import { defineField } from "sanity";
 
 export const blocktype = {
   type: "block",
@@ -19,7 +20,7 @@ export const blocktype = {
         type: "object",
         icon: Bookmark,
         fields: [
-          {
+          defineField({
             type: "array",
             name: "citations",
             title: "Citations",
@@ -29,7 +30,7 @@ export const blocktype = {
                 to: [{ type: "citation" }],
               },
             ],
-          },
+          }),
         ],
       },
       {
@@ -46,4 +47,4 @@ export const blocktype = {
       },
     ],
   },
-} as const;
+};

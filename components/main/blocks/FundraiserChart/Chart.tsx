@@ -4,8 +4,8 @@ import * as Plot from "@observablehq/plot";
 import { FundraiserChartSkeleton } from "./ChartSkeleton";
 
 export const FundraiserChartElement: React.FC<{
-  sums: { fundraiserId: number; sum: number }[];
-  fundraisers: Map<number, { name: string; page_slug: string }>;
+  sums: { fundraiserId: string; sum: number }[];
+  fundraisers: Map<string, { name: string; page_slug: string }>;
   wrapperRef: React.MutableRefObject<HTMLDivElement | null>;
 }> = ({ sums, fundraisers, wrapperRef }) => {
   const graphRef = useRef<HTMLDivElement | null>(null);

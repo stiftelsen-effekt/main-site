@@ -13,16 +13,16 @@ const FundraiserChartElement = dynamic(
 );
 
 export const FundraiserChart: React.FC<Fundraiserchart> = (props) => {
-  const [sums, setSums] = useState<null | { fundraiserId: number; sum: number }[]>(null);
+  const [sums, setSums] = useState<null | { fundraiserId: string; sum: number }[]>(null);
   const [lastUpdated, setLastUpdated] = useState<DateTime | null>(null);
   const [fundraisersMap, setFundraisersMap] = useState<
-    Map<number, { name: string; page_slug: string }>
+    Map<string, { name: string; page_slug: string }>
   >(new Map());
   const graphWrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (props.fundraisers) {
-      const map = new Map<number, { name: string; page_slug: string }>();
+      const map = new Map<string, { name: string; page_slug: string }>();
       for (const f of props.fundraisers) {
         if (f.fundraiser_id && f.name && (f as any).page_slug)
           map.set(f.fundraiser_id, { name: f.name, page_slug: (f as any).page_slug });
@@ -41,7 +41,7 @@ export const FundraiserChart: React.FC<Fundraiserchart> = (props) => {
       const data = await response.json();
       setSums(
         data.content.map((d: any) => ({
-          fundraiserId: parseInt(d.fundraiserId),
+          fundraiserId: d.fundraiserId,
           sum: parseFloat(d.sum),
         })),
       );

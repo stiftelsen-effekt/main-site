@@ -1,4 +1,4 @@
-import groq from "groq";
+import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity.client";
 import { RouterContextValue, fetchRouterContext } from "../context/RouterContext";
 
@@ -7,7 +7,7 @@ export default function SiteMap() {
 }
 
 const siteMapQuery = groq`{
-  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path('drafts.**'))]{
+  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page", "vippsagreement", "results"] && !(_id in path('drafts.**')) && header.noIndex != true]{
         _updatedAt,
         "slug": slug.current,
         sitemap_priority,

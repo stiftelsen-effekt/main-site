@@ -1,18 +1,19 @@
+import { defineType, defineField } from "sanity";
 import { List } from "react-feather";
 import { OrganizationsListPreview } from "../../components/organizationsListPreview";
 
-export default {
+export default defineType({
   name: "organizationslist",
   type: "object",
   title: "Organizations list",
   icon: List,
   fields: [
-    {
+    defineField({
       name: "organizations",
       title: "Organizations",
       type: "array",
       of: [{ type: "reference", to: [{ type: "organization" }] }],
-    },
+    }),
   ],
   preview: {
     select: {
@@ -75,4 +76,4 @@ export default {
   components: {
     preview: OrganizationsListPreview,
   },
-} as const;
+});

@@ -16,6 +16,7 @@ import {
 } from "../shared/lists/agreementList/_queries";
 import style from "./AnonymousVippsAgreement.module.scss";
 import { SumInput } from "../shared/SumInput/SumInput";
+import { useFailureToast } from "../../shared/failureToast";
 
 export const AnonymousVippsAgreement: React.FC<{
   inputSum: number;
@@ -23,6 +24,7 @@ export const AnonymousVippsAgreement: React.FC<{
   inputDistribution: Distribution;
   endpoint: string;
 }> = ({ inputSum, inputDate, inputDistribution, endpoint }) => {
+  const failureToast = useFailureToast();
   const [distribution, setDistribution] = useState<Distribution>(inputDistribution);
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum.toFixed(0));
@@ -171,10 +173,6 @@ export const AnonymousVippsAgreement: React.FC<{
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", {
-    icon: <AlertCircle size={24} color={"black"} />,
-  });
 const partialFailureToast = () =>
   toast.error("Noen endringer feilet", {
     icon: <AlertCircle size={24} color={"black"} />,

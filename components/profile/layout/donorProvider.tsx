@@ -1,5 +1,5 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Donor } from "../../../models";
 import { useDonor } from "../../../_queries";
 import { FullPageError } from "../../shared/layout/FullPageError/FullPageError";
@@ -15,13 +15,21 @@ export const DonorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [donor, setDonor] = useState<Donor | null>(null);
 
   const { loading, error, data } = useDonor(user, getAccessTokenSilently);
+  const noData =
+    typeof data !== "undefined" && (data === null || (Array.isArray(data) && data.length === 0));
+
+  useEffect(() => {
+    if (!noData && data !== undefined && data !== donor) {
+      setDonor(data);
+    }
+  }, [data, donor, noData]);
 
   if (loading && user) {
     return <FullPageSpinner />;
   } else if (error) {
     return <FullPageError error={error.message} />;
-  } else if (!donor && data !== donor) {
-    setDonor(data);
+  } else if (user && noData) {
+    return <FullPageError title="No data available" />;
   }
 
   return <DonorContext.Provider value={{ donor, setDonor }}>{children}</DonorContext.Provider>;

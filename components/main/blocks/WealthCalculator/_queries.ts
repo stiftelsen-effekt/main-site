@@ -90,39 +90,30 @@ export const getDanishTaxEstimate = async (
   income: number,
   periodAdjustment: WealthCalculatorPeriodAdjustment,
 ) => {
-  // Constants for 2024
-  const BASE_TAX_RATE = 0.1201; // 12.01% bundskat
-  const TOP_TAX_RATE = 0.15; // 15% topskat
-  const PERSONAL_DEDUCTION = 51600; // Personfradrag 51,600 kr.
-  const TOP_TAX_THRESHOLD = 611800; // Topskatgrænse 611,800 kr.
-  const EMPLOYMENT_DEDUCTION_RATE = 0.123; // 12.30% beskæftigelsesfradrag
-  const MAX_EMPLOYMENT_DEDUCTION = 55600; // Max 55,600 kr. beskæftigelsesfradrag
-  const municipalTaxRate = 27; // høj kommuneskat
+  // 2026 https://skat.dk/hjaelp/satser
+  const PERSONFRADRAG = 54100;
+  const AM_BIDRAG_PCT = 0.08;
+  const MELLEMSKAT_PCT = 0.075;
+  const MELLEMSKAT_THRESHOLD = 641200;
+  const TOPSKAT_PCT = 0.075;
+  const TOPSKAT_THRESHOLD = 777900;
+  const TOPTOPSKAT_PCT = 0.05;
+  const TOPTOPSKAT_THRESHOLD = 2592700;
+  const KOMMUNE_SKAT_PCT = 0.251;
+  const BUNDSKAT_PCT = 0.1201;
+  const SKATTELOFT_PCT = 0.4457;
 
-  // Convert municipal tax rate from percentage to decimal
-  const municipalTaxRateDecimal = municipalTaxRate / 100;
+  const amBidrag = income * AM_BIDRAG_PCT;
+  const taxable = Math.max(0, income - amBidrag - PERSONFRADRAG);
+  const bundSkat = taxable * BUNDSKAT_PCT;
+  const kommuneSkat = taxable * KOMMUNE_SKAT_PCT;
+  const mellemSkat = Math.max(0, taxable - MELLEMSKAT_THRESHOLD) * MELLEMSKAT_PCT;
+  const skatteLoft = Math.max(0, (income - amBidrag) * SKATTELOFT_PCT);
+  const topSkat = Math.max(0, taxable - TOPSKAT_THRESHOLD) * TOPSKAT_PCT;
+  const topTopSkat = Math.max(0, taxable - TOPTOPSKAT_THRESHOLD) * TOPTOPSKAT_PCT;
 
-  // Calculate employment deduction (beskæftigelsesfradrag)
-  const employmentDeduction = Math.min(
-    income * EMPLOYMENT_DEDUCTION_RATE,
-    MAX_EMPLOYMENT_DEDUCTION,
-  );
-
-  // Calculate taxable income after personal deduction
-  const taxableBaseIncome = Math.max(0, income - PERSONAL_DEDUCTION - employmentDeduction);
-
-  // Calculate base tax components
-  const baseTax = taxableBaseIncome * BASE_TAX_RATE;
-  const municipalityTax = taxableBaseIncome * municipalTaxRateDecimal;
-
-  // Calculate top tax if applicable
-  let topTaxAmount = 0;
-  if (income > TOP_TAX_THRESHOLD) {
-    const topTaxableIncome = income - TOP_TAX_THRESHOLD;
-    topTaxAmount = topTaxableIncome * TOP_TAX_RATE;
-  }
-
-  const totalTax = baseTax + municipalityTax + topTaxAmount;
+  const totalTax =
+    amBidrag + Math.min(kommuneSkat + bundSkat + mellemSkat, skatteLoft) + topSkat + topTopSkat;
 
   if (periodAdjustment === WealthCalculatorPeriodAdjustment.MONTHLY) {
     return totalTax / 12;

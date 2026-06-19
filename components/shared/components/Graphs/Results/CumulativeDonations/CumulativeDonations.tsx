@@ -10,12 +10,25 @@ import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphC
 import { getRemInPixels } from "../../../../../main/blocks/Paragraph/Citation";
 import * as d3 from "d3";
 import { DateTime } from "luxon";
+import { Cumulativedonationstableheaders } from "../../../../../../studio/sanity.types";
 export type DailyDonations = { date: string; sum: string }[];
+
+export interface CumulativeDonationsTextConfig {
+  millionAbbreviation?: string;
+  locale?: string;
+  currency?: string;
+  textConfig?: {
+    normalizeYAxisText?: string;
+    directDonationsText?: string;
+  };
+}
 
 export const CumulativeDonations: React.FC<{
   dailyDonations: DailyDonations;
   graphContext: GraphContextData;
-}> = ({ dailyDonations, graphContext }) => {
+  textConfig?: CumulativeDonationsTextConfig;
+  tableHeaders?: Cumulativedonationstableheaders;
+}> = ({ dailyDonations, graphContext, textConfig, tableHeaders }) => {
   const graphContainerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -56,8 +69,8 @@ export const CumulativeDonations: React.FC<{
     [cumulativebinneddonations, size],
   );
   const tableContents = useMemo(
-    () => computeTableContents(cumulativebinneddonations),
-    [cumulativebinneddonations],
+    () => computeTableContents(cumulativebinneddonations, tableHeaders),
+    [cumulativebinneddonations, tableHeaders],
   );
 
   const drawGraph = useCallback(
@@ -84,7 +97,11 @@ export const CumulativeDonations: React.FC<{
           },
           y: {
             legend: true,
-            tickFormat: (t) => Math.round(t / 1000000) + " mill",
+            tickFormat: (t) => {
+              const millions = t / 1000000;
+              const formatted = millions % 1 === 0 ? millions.toString() : millions.toFixed(1);
+              return formatted + " " + (textConfig?.millionAbbreviation || "mill");
+            },
             label: null,
             tickSpacing: 100,
             tickSize: 0,
@@ -107,9 +124,9 @@ export const CumulativeDonations: React.FC<{
                 },
                 cumulativeSum: {
                   value: (d) =>
-                    Intl.NumberFormat("no-NB", {
+                    Intl.NumberFormat(textConfig?.locale || "no-NB", {
                       style: "currency",
-                      currency: "NOK",
+                      currency: textConfig?.currency || "NOK",
                       maximumFractionDigits: 0,
                     }).format(d.cumulativeSum),
                   label: "",
@@ -157,7 +174,9 @@ export const CumulativeDonations: React.FC<{
                   .filter((d, i) => (size.width >= 760 ? i : i % 2 === 0 && i > 1)),
               ],
               tickFormat: (t, i) =>
-                Plot.formatMonth("no-NB")(size.width >= 760 ? i : i * 2).padStart(5, " "),
+                Plot.formatMonth(textConfig?.locale || "no-NB")(
+                  size.width >= 760 ? i : i * 2,
+                ).padStart(5, " "),
               textAnchor: "start",
               tickSize: getRemInPixels(),
               tickPadding: -getRemInPixels() * 0.7,
@@ -200,7 +219,7 @@ export const CumulativeDonations: React.FC<{
             Plot.text(yearlyMaxes, {
               y: "adjustedCumulativeSum",
               x: "doy",
-              text: (d) => formatEndLabel(d, size.width),
+              text: (d) => formatEndLabel(d, size.width, textConfig),
               textAnchor: "start",
               dx: size.width < 760 ? 30 : 35,
               fontSize: 12,
@@ -211,7 +230,7 @@ export const CumulativeDonations: React.FC<{
               Plot.selectLast({
                 y: "cumulativeSum",
                 x: "doy",
-                text: (d) => formatEndLabel(d, size.width),
+                text: (d) => formatEndLabel(d, size.width, textConfig),
                 textAnchor: "start",
                 fill: "black",
                 stroke: "#fafafa",
@@ -267,15 +286,20 @@ export const CumulativeDonations: React.FC<{
   );
 };
 
-const formatEndLabel = (d: { cumulativeSum: number; year: number }, width: number) => {
+const formatEndLabel = (
+  d: { cumulativeSum: number; year: number },
+  width: number,
+  textConfig?: CumulativeDonationsTextConfig,
+) => {
   let label = d.year.toString();
   label += "\n";
   if (width < 760) {
-    label += (d.cumulativeSum / 1000000).toFixed(2) + " mill";
+    label +=
+      (d.cumulativeSum / 1000000).toFixed(2) + " " + (textConfig?.millionAbbreviation || "mill");
   } else {
-    label += d.cumulativeSum.toLocaleString("no-NB", {
+    label += d.cumulativeSum.toLocaleString(textConfig?.locale || "no-NB", {
       style: "currency",
-      currency: "NOK",
+      currency: textConfig?.currency || "NOK",
       maximumFractionDigits: 0,
     });
   }
@@ -391,13 +415,20 @@ const computeYearlyMaxes = (don: any[], height: number) => {
   return yearlyMaxes;
 };
 
-const computeTableContents = (cumulativebinneddonations: CumulativeBinnedDonations) => {
+const computeTableContents = (
+  cumulativebinneddonations: CumulativeBinnedDonations,
+  headers?: Cumulativedonationstableheaders,
+) => {
   return {
     rows: [
       {
         _key: "header",
         _type: "row",
-        cells: ["Dato (ISO 8601)", "Dag i året", "Kumulativ sum"],
+        cells: [
+          headers?.date || "Dato (ISO 8601)",
+          headers?.day_of_year || "Dag i året",
+          headers?.cumulative_sum || "Kumulativ sum",
+        ],
       },
       ...cumulativebinneddonations.map((r) => ({
         _key: r.date.toISOString(),

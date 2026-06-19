@@ -3,8 +3,15 @@ import { thousandize } from "../../../../util/formatting";
 
 import styles from "./ResultsTeaser.module.scss";
 import LinkButton from "../../../shared/components/EffektButton/LinkButton";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
-export const ResultsTeaser: React.FC<{ title: string }> = ({ title }) => {
+export const ResultsTeaser: React.FC<{
+  title: string;
+  sumSubtitle?: string;
+  donorsSubtitle?: string;
+  seeMoreButton?: NavLink;
+  locale: string;
+}> = ({ title, sumSubtitle, donorsSubtitle, seeMoreButton, locale }) => {
   const [data, setData] = useState<{
     totalDonationsToRecommendedOrgs: string;
     numberOfDonors: number;
@@ -12,7 +19,7 @@ export const ResultsTeaser: React.FC<{ title: string }> = ({ title }) => {
   } | null>(null);
 
   useEffect(() => {
-    fetch("https://data.gieffektivt.no/results/headline")
+    fetch(`${process.env.NEXT_PUBLIC_EFFEKT_API}/results/headline`)
       .then((response) => response.json())
       .then((data) => setData(data.content))
       .catch(console.error);
@@ -23,18 +30,29 @@ export const ResultsTeaser: React.FC<{ title: string }> = ({ title }) => {
       <div className={styles.grid}>
         <div>
           <span className={styles.headlineNumber}>
-            {thousandize(Math.round(parseFloat(data?.totalDonationsToRecommendedOrgs ?? "0")))} kr
+            {thousandize(
+              Math.round(parseFloat(data?.totalDonationsToRecommendedOrgs ?? "0")),
+              locale,
+            )}{" "}
+            kr
           </span>
-          <span>til effektiv bistand</span>
+          <span>{sumSubtitle}</span>
         </div>
 
         <div>
-          <span className={styles.headlineNumber}>{thousandize(data?.numberOfDonors ?? 0)}</span>
-          <span>givere</span>
+          <span className={styles.headlineNumber}>
+            {thousandize(data?.numberOfDonors ?? 0, locale)}
+          </span>
+          <span>{donorsSubtitle}</span>
         </div>
-        <div>
-          <LinkButton url="/resultater" title="Se våre resultater"></LinkButton>
-        </div>
+        {seeMoreButton && seeMoreButton.slug && (
+          <div>
+            <LinkButton
+              url={"/" + seeMoreButton.slug}
+              title={seeMoreButton.title || "See more"}
+            ></LinkButton>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { AlignLeft } from "react-feather";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "introsection",
   type: "object",
   title: "Intro section",
@@ -12,17 +13,17 @@ export default {
     },
   },
   fields: [
-    {
+    defineField({
       name: "heading",
       type: "text",
       rows: 3,
       title: "Heading",
-    },
-    {
+    }),
+    defineField({
       name: "paragraph",
       type: "text",
       rows: 3,
       title: "Paragraph",
-    },
+    }),
   ],
-} as const;
+});

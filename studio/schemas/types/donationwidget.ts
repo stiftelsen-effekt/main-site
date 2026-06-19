@@ -1,4 +1,6 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "donationwidget",
   type: "document",
   title: "Donation widget",
@@ -19,13 +21,17 @@ export default {
       name: "operations",
       title: "Operations Configuration",
     },
+    {
+      name: "nudges",
+      title: "Payment nudges",
+    },
   ],
   fields: [
-    {
+    defineField({
       name: "methods",
       type: "array",
       title: "Payment methods",
-      validation: (Rule: any) => Rule.required().min(1),
+      validation: (Rule) => Rule.required().min(1),
       of: [
         {
           type: "reference",
@@ -35,30 +41,114 @@ export default {
             { type: "swish" },
             { type: "autogiro" },
             { type: "avtalegiro" },
+            { type: "quickpay_card" },
+            { type: "quickpay_mobilepay" },
+            { type: "dkbank" },
           ],
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           options: {
             disableNew: true,
           },
         },
       ],
-    },
+    }),
+    defineField({
+      name: "nudges",
+      title: "Payment method nudges",
+      type: "array",
+      group: "nudges",
+      description:
+        "Configure contextual nudges that appear below the payment method selector. Use {savings} in the message to inject the estimated transaction cost savings.",
+      of: [
+        defineField({
+          name: "nudge",
+          type: "object",
+          fields: [
+            defineField({
+              name: "from_method",
+              title: "Show when donor picks",
+              type: "reference",
+              to: [
+                { type: "bank" },
+                { type: "vipps" },
+                { type: "swish" },
+                { type: "autogiro" },
+                { type: "avtalegiro" },
+                { type: "quickpay_card" },
+                { type: "quickpay_mobilepay" },
+                { type: "dkbank" },
+              ],
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "to_method",
+              title: "Recommend switching to",
+              type: "reference",
+              to: [
+                { type: "bank" },
+                { type: "vipps" },
+                { type: "swish" },
+                { type: "autogiro" },
+                { type: "avtalegiro" },
+                { type: "quickpay_card" },
+                { type: "quickpay_mobilepay" },
+                { type: "dkbank" },
+              ],
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "minimum_amount",
+              title: "Minimum amount",
+              type: "number",
+              description: "Only show the nudge when the donation amount is at least this value.",
+            }),
+            defineField({
+              name: "recurring_type",
+              title: "Recurring type",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Single", value: "single" },
+                  { title: "Recurring", value: "recurring" },
+                  { title: "Both", value: "both" },
+                ],
+                layout: "radio",
+              },
+              initialValue: "both",
+            }),
+            defineField({
+              name: "message",
+              title: "Message",
+              type: "text",
+              rows: 3,
+              description: "Use {savings} to insert the estimated savings in transaction costs.",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: "message",
+            },
+          },
+        }),
+      ],
+    }),
     //Single / monthly donation text
-    {
+    defineField({
       name: "single_donation_text",
       title: "Single donation option text",
       type: "string",
       group: "pane1",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "monthly_donation_text",
       title: "Monthly donation option text",
       type: "string",
       group: "pane1",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "default_donation_type",
       title: "Default donation type",
       type: "string",
@@ -66,16 +156,16 @@ export default {
         list: ["single", "monthly"],
       },
       group: "pane1",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "amount_context",
       title: "Donation amount inputs context",
       type: "object",
       group: "pane1",
       description: "Preset amounts are only used if there is only one cause area",
       fields: [
-        {
+        defineField({
           name: "preset_amounts_recurring",
           title: "Preset amounts for recurring donations",
           type: "array",
@@ -83,16 +173,16 @@ export default {
             {
               type: "object",
               fields: [
-                {
+                defineField({
                   title: "Value",
                   name: "amount",
                   type: "number",
-                },
-                {
+                }),
+                defineField({
                   title: "Subtext",
                   name: "subtext",
                   type: "string",
-                },
+                }),
               ],
               preview: {
                 select: {
@@ -102,8 +192,8 @@ export default {
               },
             },
           ],
-        },
-        {
+        }),
+        defineField({
           name: "preset_amounts_single",
           title: "Preset amounts for single donations",
           type: "array",
@@ -111,16 +201,16 @@ export default {
             {
               type: "object",
               fields: [
-                {
+                defineField({
                   title: "Value",
                   name: "amount",
                   type: "number",
-                },
-                {
+                }),
+                defineField({
                   title: "Subtext",
                   name: "subtext",
                   type: "string",
-                },
+                }),
               ],
               preview: {
                 select: {
@@ -130,101 +220,101 @@ export default {
               },
             },
           ],
-        },
-        {
+        }),
+        defineField({
           name: "custom_amount_text",
           title: "Custom amount text",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
-        },
+          validation: (Rule) => Rule.required(),
+        }),
       ],
-    },
-    {
+    }),
+    defineField({
       name: "smart_distribution_context",
       title: "Smart distribution context",
       type: "object",
       group: "pane1",
       fields: [
-        {
+        defineField({
           name: "smart_distribution_radiobutton_text",
           title: "Smart distribution radiobutton text",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           description: "Only used if there is only one cause area",
-        },
-        {
+        }),
+        defineField({
           name: "custom_distribution_radiobutton_text",
           title: "Custom distribution radiobutton text",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           description: "Only used if there is only one cause area",
-        },
-        {
+        }),
+        defineField({
           name: "smart_distribution_label_text",
           title: "Smart distribution label text",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           description: "Only used if there is more than one cause area",
-        },
-        {
+        }),
+        defineField({
           name: "smart_distribution_description",
           title: "Smart distribution description",
           type: "array",
           of: [{ type: "block" }],
-          validation: (Rule: any) => Rule.required(),
-        },
-        {
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
           name: "smart_distribution_description_links",
           title: "Smart distribution description links",
           type: "array",
           of: [{ type: "link" }],
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           description: "Only used if there is more than one cause area",
-        },
+        }),
       ],
-    },
-    {
+    }),
+    defineField({
       name: "donation_input_error_templates",
       title: "Donation input error templates",
       type: "object",
       group: "pane1",
       fields: [
-        {
+        defineField({
           name: "donation_sum_error_template",
           title: "Donation sum error template",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
-        },
-        {
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
           name: "donation_distribution_cause_areas_sum_error_template",
           title: "Donation distribution cause areas sum error template",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           description:
             "{sum} will be replaced with the sum of the distribution cause areas, e.g. 'You have distributed {sum}% out of 100% between cause areas'",
-        },
-        {
+        }),
+        defineField({
           name: "donation_distribution_cause_areas_negative_error_template",
           title: "Donation distribution cause areas negative error template",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
-        },
-        {
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
           name: "donation_distribution_cause_areas_organization_sum_error_template",
           title: "Donation distribution cause areas organization sum error template",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
+          validation: (Rule) => Rule.required(),
           description:
             "{sum} will be replaced with the sum of the distribution cause areas for the organization and {causeAreaName} will be replaced with the name of the cause area, e.g. 'You have distributed {sum}% out of 100% between organizations in {causeAreaName}'",
-        },
-        {
+        }),
+        defineField({
           name: "donation_distribution_cause_areas_organization_negative_error_template",
           title: "Donation distribution cause areas organization negative error template",
           type: "string",
-          validation: (Rule: any) => Rule.required(),
-        },
+          validation: (Rule) => Rule.required(),
+        }),
       ],
-    },
+    }),
     {
       name: "operations_config",
       title: "Operations configuration",
@@ -328,136 +418,186 @@ export default {
       ],
     },
     //Button text
-    {
+    defineField({
       name: "pane1_button_text",
       title: "Button text",
       type: "string",
       group: "pane1",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
     // Anon button text pane 2
-    {
+    defineField({
+      name: "allow_anonymous_donations",
+      title: "Allow anonymous donations",
+      type: "boolean",
+      group: "pane2",
+      initialValue: true,
+      description: "If true, the user can choose to donate anonymously",
+    }),
+    defineField({
       name: "anon_button_text",
       title: "Anon button text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "anon_button_text_tooltip",
       title: "Anon button text tooltip",
       type: "text",
       group: "pane2",
       rows: 3,
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "show_name_field",
+      title: "Show name field",
+      type: "boolean",
+      group: "pane2",
+      initialValue: true,
+    }),
     // Placeholders on name and email pane 2
-    {
+    defineField({
       name: "name_placeholder",
       title: "Name placeholder",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "name_invalid_error_text",
       title: "Name invalid error text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "email_placeholder",
       title: "Email placeholder",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "email_invalid_error_text",
       title: "Email invalid error text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
     // Tax deduction selector text pane 2
-    {
+    defineField({
       name: "tax_deduction_selector_text",
       title: "Tax deduction selector text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "tax_deduction_ssn_placeholder",
       title: "Tax deduction ssn placeholder",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "tax_deduction_ssn_invalid_error_text",
       title: "Tax deduction ssn invalid error text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "tax_deduction_tooltip_text",
       title: "Tax deduction tooltip text",
       type: "text",
       rows: 3,
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
     // Newsletter selector text pane 2
-    {
+    defineField({
       name: "newsletter_selector_text",
       title: "Newsletter selector text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
     // Privacy policy text pane 2
-    {
+    defineField({
       name: "privacy_policy_text",
       title: "Privacy policy text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "privacy_policy_link",
       title: "Privacy policy link",
       type: "navitem",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "require_privacy_policy_checkbox",
+      title: "Require privacy policy checkbox",
+      type: "boolean",
+      group: "pane2",
+      initialValue: false,
+      description: "If true, the user must check the privacy policy checkbox to proceed",
+    }),
+    defineField({
+      name: "privacy_policy_required_error_text",
+      title: "Privacy policy required error text",
+      type: "string",
+      group: "pane2",
+      validation: (Rule) =>
+        Rule.custom((value, ctx) => {
+          if ((ctx.parent as any).require_privacy_policy_checkbox && !value) {
+            return "Privacy policy required error text is required when require privacy policy checkbox is enabled.";
+          }
+          return true;
+        }),
+    }),
     // Button text pane 2
-    {
+    defineField({
       name: "pane2_button_text",
       title: "Button text",
       type: "string",
       group: "pane2",
-      validation: (Rule: any) => Rule.required(),
-    },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "api_generic_error_message",
+      title: "API generic error message",
+      type: "string",
+      group: "pane2",
+      validation: (Rule) => Rule.required(),
+    }),
     // Referrals header pane 3
-    {
+    defineField({
+      name: "show_referrals",
+      title: "Show referrals",
+      type: "boolean",
+      group: "referrals",
+      initialValue: true,
+    }),
+    defineField({
       name: "referrals_title",
       title: "Referrals header",
       type: "string",
       group: "referrals",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "other_referral_input_placeholder",
       title: "Placeholder other input field",
       type: "string",
       description: "Placeholder in the free text input field for other referrals",
       group: "referrals",
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "color_scheme",
       title: "Color scheme",
       type: "string",
@@ -467,7 +607,7 @@ export default {
           { title: "Dark", value: "dark" },
         ],
       },
-    },
+    }),
   ],
   preview: {
     prepare() {
@@ -476,4 +616,4 @@ export default {
       };
     },
   },
-} as const;
+});

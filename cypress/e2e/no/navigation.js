@@ -66,32 +66,32 @@ describe("Navigation", () => {
 
   it("Tests if NavBar and scrolling works correctly", () => {
     // NavBar should be visible
-    cy.get("[data-cy=header]").should("be.visible");
+    cy.get("[data-cy=header-navbar]").should("be.visible");
 
     cy.scrollTo(0, 500);
     cy.wait(100);
 
     // Navbar should be hidden
-    cy.get("[data-cy=header]").should("not.be.visible");
+    cy.get("[data-cy=header-navbar]").should("not.be.visible");
 
     cy.scrollTo(0, 0);
     cy.wait(100);
 
     // NavBar should be visible
-    cy.get("[data-cy=header]").should("be.visible");
+    cy.get("[data-cy=header-navbar]").should("be.visible");
 
     cy.scrollTo(0, 500);
     cy.wait(100);
 
     // Navbar should be hidden
-    cy.get("[data-cy=header]").should("not.be.visible");
+    cy.get("[data-cy=header-navbar]").should("not.be.visible");
 
     cy.get("[data-cy=navigate-to-top]").click();
     cy.wait(100);
     cy.window().its("scrollY").should("equal", 0);
 
     // NavBar should be visible
-    cy.get("[data-cy=header]").should("be.visible");
+    cy.get("[data-cy=header-navbar]").should("be.visible");
   });
 
   it("Tests buttons for opening and closing Widget from menu", () => {

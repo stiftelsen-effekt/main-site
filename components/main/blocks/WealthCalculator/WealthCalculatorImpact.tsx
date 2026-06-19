@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { thousandize } from "../../../../util/formatting";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import {
@@ -6,31 +6,38 @@ import {
   InterventionWidgetOutputConfiguration,
 } from "../InterventionWidget/InterventionWidgetOutput";
 import { WidgetContext } from "../../layout/layout";
-
 import styles from "./WealthCalculator.module.scss";
 import { usePlausible } from "next-plausible";
+import { Wealthcalculatorimpact } from "../../../../studio/sanity.types";
 
-export const WealthCalculatorImpact: React.FC<{
-  donationPercentage: number;
-  setDonationPercentage: (value: number) => void;
-  postTaxIncome: number;
+export type WealthCalculatorImpactConfig = Wealthcalculatorimpact & {
   intervention_configuration: {
     output_configuration: InterventionWidgetOutputConfiguration;
     currency: string;
     locale: string;
   };
-}> = ({ donationPercentage, setDonationPercentage, postTaxIncome, intervention_configuration }) => {
+};
+
+export const WealthCalculatorImpact: React.FC<{
+  donationPercentage: number;
+  setDonationPercentage: (value: number) => void;
+  postTaxIncome: number;
+  config: WealthCalculatorImpactConfig;
+}> = ({ donationPercentage, setDonationPercentage, postTaxIncome, config }) => {
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const plausible = usePlausible();
+
+  const donationAmount = useMemo(() => {
+    return Math.round(postTaxIncome * (donationPercentage / 100));
+  }, [postTaxIncome, donationPercentage]);
 
   return (
     <div className={styles.calculator__impact}>
       <div className={styles.calculator__impact__description}>
-        <h3>Din impact.</h3>
+        <h3>{config.header || "Din impact."}</h3>
         <p>
-          Med {thousandize(Math.round(postTaxIncome * (donationPercentage / 100)))} kroner i året
-          donert til effektiv bistand kan du påvirke mange liv der det trengs mest du kan for
-          eksempel bidra med myggnett, A-vitamin tilskudd eller vaksinering.
+          {config.description_template_string?.replace("{donation}", thousandize(donationAmount)) ||
+            "Missing description template."}
         </p>
         <div
           className={styles.calculator__impact__description__button_desktop}
@@ -48,26 +55,36 @@ export const WealthCalculatorImpact: React.FC<{
                   page: window.location.pathname,
                 },
               });
-              setWidgetContext({ open: true, prefilled: null, prefilledSum: null });
+              setWidgetContext({
+                open: true,
+                prefilled: null,
+                prefilledSum: Math.round(donationAmount / 12 / 100) * 100, // Round to nearest 100
+              });
             }}
           >
-            Sett opp fast donasjon
+            {config.button_text || "Sett opp fast donasjon"}
           </EffektButton>
         </div>
       </div>
       <div className={styles.calculator__impact__output}>
         <InterventionWidgetOutput
-          sum={postTaxIncome * (donationPercentage / 100)}
-          configuration={intervention_configuration.output_configuration}
-          currency={intervention_configuration.currency}
-          locale={intervention_configuration.locale}
+          sum={donationAmount}
+          configuration={config.intervention_configuration.output_configuration}
+          currency={config.intervention_configuration.currency}
+          locale={config.intervention_configuration.locale}
         />
       </div>
       <div className={styles.calculator__impact__description__button_mobile}>
         <EffektButton
-          onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
+          onClick={() =>
+            setWidgetContext({
+              open: true,
+              prefilled: null,
+              prefilledSum: Math.round(donationAmount / 12 / 100) * 100, // Round to nearest 100
+            })
+          }
         >
-          Sett opp fast donasjon
+          {config.button_text || "Sett opp fast donasjon"}
         </EffektButton>
       </div>
     </div>

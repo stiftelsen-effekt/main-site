@@ -18,6 +18,16 @@ export const mapNameToOrgAbbriv = (name: string): string => {
     "GiveWell All Grants Fund": "AGF",
     "Family Empowerment Media": "FEM",
     "GiveDirectly Climate Survival Fund": "GDCSF",
+
+    "Giv Effektivts anbefaling": "GE-SMART",
+    "Stor og velkendt effekt": "GE-OLDSMART",
+    "Myggenet mod malaria": "GE-MYGMAL",
+    "Medicin mod malaria": "GE-MEDMAL",
+    "Vitamin mod mangelsygdomme": "GE-VIT",
+    "Vacciner til spædbørn": "GE-VAC",
+    "Kontantoverførsler til verdens fattigste": "GE-CASH",
+    Ormekur: "GE-ORM",
+    "Giv Effektivts arbejde og vækst": "GE-DRIFT",
   };
   return (map as { [key: string]: string })[name] ?? name;
 };

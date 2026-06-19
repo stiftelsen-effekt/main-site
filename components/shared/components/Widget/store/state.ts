@@ -64,6 +64,8 @@ export interface Donation extends DonationInput {
     enabledByDefaultSingle: boolean;
     excludedCauseAreaIds: number[];
   };
+  // Separate API error state
+  apiError?: string | null;
 }
 
 export type DonationError = {

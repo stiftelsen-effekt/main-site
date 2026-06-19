@@ -95,11 +95,7 @@ export default function Custom404({ data, navbar, draftMode }: Custom404Props) {
         siteName={settings.title}
       />
 
-      <MainHeader
-        hideOnScroll={true}
-        cookieBannerConfig={settings.cookie_banner_configuration}
-        generalBannerConfig={settings.general_banner}
-      >
+      <MainHeader hideOnScroll={true} generalBannerConfig={settings.general_banner}>
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 

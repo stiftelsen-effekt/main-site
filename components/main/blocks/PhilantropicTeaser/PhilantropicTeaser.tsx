@@ -4,6 +4,7 @@ import { Contributor, ContributorType } from "../Contributors/Contributor";
 import { LinkComponent, LinkType, getHref } from "../Links/Links";
 import styles from "./PhilantropicTeaser.module.scss";
 import LinkButton from "../../../shared/components/EffektButton/LinkButton";
+import { useRouterContext } from "../../../../context/RouterContext";
 
 export const PhilantropicTeaser: React.FC<{
   title: string;
@@ -14,7 +15,10 @@ export const PhilantropicTeaser: React.FC<{
     link: NavLink;
   };
   people: ContributorType[];
-}> = ({ title, description, links, button, people }) => {
+  locale?: string;
+}> = ({ title, description, links, button, people, locale }) => {
+  const { articlesPagePath, fundraisersPath } = useRouterContext();
+
   return (
     <div className={styles.container}>
       <div className={styles.description}>
@@ -25,15 +29,26 @@ export const PhilantropicTeaser: React.FC<{
         <div className={styles.links}>
           {links && links.map((link) => <LinkComponent link={link} key={link._key} />)}
         </div>
-        {button && button.text && button.link && (
-          <div className={styles.button}>
-            <LinkButton url={getHref(button.link, [])} title={button.text} type="primary" />
-          </div>
-        )}
+        {button &&
+          button.text &&
+          button.link &&
+          (() => {
+            const { href, isFundraiser } = getHref(button.link, articlesPagePath, fundraisersPath);
+            return (
+              <div className={styles.button}>
+                <LinkButton
+                  url={href}
+                  title={button.text}
+                  type="primary"
+                  prefetch={isFundraiser ? false : undefined}
+                />
+              </div>
+            );
+          })()}
       </div>
       <div className={styles.people}>
         {people.map((person) => (
-          <Contributor {...person} key={person._id} contactLink />
+          <Contributor {...person} key={person._id} locale={locale} contactLink />
         ))}
       </div>
     </div>

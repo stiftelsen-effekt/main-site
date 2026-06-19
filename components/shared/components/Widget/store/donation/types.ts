@@ -29,6 +29,8 @@ export const SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA =
 export const SET_GLOBAL_OPERATIONS_PERCENTAGE = "SET_GLOBAL_OPERATIONS_PERCENTAGE";
 export const SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA = "SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA";
 export const SET_OPERATIONS_CONFIG = "SET_OPERATIONS_CONFIG";
+export const SET_API_ERROR = "SET_API_ERROR";
+export const CLEAR_API_ERROR = "CLEAR_API_ERROR";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -234,6 +236,17 @@ interface SetOperationsConfig {
   };
 }
 
+interface SetApiError {
+  type: typeof SET_API_ERROR;
+  payload: {
+    message: string;
+  };
+}
+
+interface ClearApiError {
+  type: typeof CLEAR_API_ERROR;
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -259,4 +272,6 @@ export type DonationActionTypes =
   | SetOperationsPercentageModeByCauseArea
   | SetGlobalOperationsPercentage
   | SetOperationsPercentageByCauseArea
-  | SetOperationsConfig;
+  | SetOperationsConfig
+  | SetApiError
+  | ClearApiError;

@@ -6,6 +6,14 @@ export enum META_OWNER {
   EFFEKTANDEAN = 3,
 }
 
+export type DonationImpactEntry = {
+  recipient: string;
+  unit: string;
+  amount: number;
+  count: number;
+  organization: string;
+};
+
 export type Donation = {
   KID: string;
   donor: string;
@@ -17,6 +25,7 @@ export type Donation = {
   timestamp: string;
   transactionCost: string;
   metaOwnerId: META_OWNER;
+  impact?: DonationImpactEntry[];
 };
 
 export type AvtaleGiroAgreement = {
@@ -57,6 +66,21 @@ export type VippsAgreement = {
   paused_until_date: string;
   amount: number;
   agreement_url_code: string;
+};
+
+export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
+
+export type DKAgreement = {
+  id: string;
+  kid: string;
+  bank_msg: string;
+  membershipDisplayName?: string | null;
+  cancelled: boolean;
+  amount: number;
+  chargeDay: number | null;
+  createdAt: string;
+  method: DKPaymentMethod;
+  is_payment_expired: boolean;
 };
 
 export type Distribution = {
@@ -115,6 +139,7 @@ export type SEOMeta = {
   canonicalurl?: string;
   keywords?: string;
   siteName: string;
+  noIndex?: boolean;
 };
 
 export type FacebookDonationRegistration = {

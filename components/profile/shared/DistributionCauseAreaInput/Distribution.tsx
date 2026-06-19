@@ -38,7 +38,7 @@ export const DistributionController: React.FC<{
           )
           .map((org) => (
             <div key={org.id} className={style["share-wrapper"]}>
-              <span>{org.widgetDisplayName}</span>
+              <span>{org.widgetDisplayName || org.name}</span>
               <div>
                 <input
                   type="text"

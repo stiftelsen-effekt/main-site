@@ -12,7 +12,20 @@ export const TaxUnitSelector: React.FC<{
   exclude?: TaxUnit[];
   onChange: (selectedTaxUnit: TaxUnit) => void;
   onAddNew: () => void;
-}> = ({ selected, exclude = [], onChange, onAddNew }) => {
+  placeholder?: string;
+  addNewLabel?: string;
+  loadingLabel?: string;
+  errorLabel?: string;
+}> = ({
+  selected,
+  exclude = [],
+  onChange,
+  onAddNew,
+  placeholder = "Velg skatteenhet",
+  addNewLabel = "Legg til ny enhet",
+  loadingLabel = "Laster...",
+  errorLabel = "En feil oppstod",
+}) => {
   const { getAccessTokenSilently, user } = useAuth0();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,7 +39,7 @@ export const TaxUnitSelector: React.FC<{
     <div className={styles.container} ref={actionRef}>
       <button onClick={() => setMenuOpen(!menuOpen)} className={styles.button}>
         <div className={styles.left}>
-          <div className={styles.name}>{selected ? selected.name : "Velg skatteenhet"}</div>
+          <div className={styles.name}>{selected ? selected.name : placeholder}</div>
         </div>
         <div className={styles.right}>
           <div className={styles.ssn}>{selected ? selected.ssn : ""}</div>
@@ -37,8 +50,8 @@ export const TaxUnitSelector: React.FC<{
       </button>
       {menuOpen && (
         <div className={styles.menu}>
-          {loading && <div>Laster...</div>}
-          {error && <div>En feil oppstod</div>}
+          {loading && <div>{loadingLabel}</div>}
+          {error && <div>{errorLabel}</div>}
           {data &&
             data
               .filter((taxUnit) => taxUnit.archived === null)
@@ -66,7 +79,7 @@ export const TaxUnitSelector: React.FC<{
             className={styles.menuItem}
           >
             <div className={styles.inner}>
-              <div className={styles.name}>Legg til ny enhet</div>
+              <div className={styles.name}>{addNewLabel}</div>
             </div>
           </button>
         </div>

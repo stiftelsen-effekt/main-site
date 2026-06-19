@@ -26,13 +26,16 @@ export type AggregatedImpact = {
     outputs: number;
     constituents: {
       // The label of the constituent, e.g.
-      // "smart fordeling til Schistosomiasis Control Initiative"
-      // "egen fordeling til Deworm the World Initiative"
+      // "Schistosomiasis Control Initiative via fond"
+      // "Deworm the World Initiative direkte fordelt"
       // Value is the number of kr. donated through this constituent
       [key: string]: number;
     };
   };
 };
+
+export const GIVEWELL_ALL_GRANTS_FUND_KEY = "GiveWell All Grants Fund";
+export const DK_OPERATIONS_KEY = "Giv Effektivts arbejde og vækst";
 
 /**
  * Takes a list of donations and distributions and GiveWell grants
@@ -229,6 +232,17 @@ export const aggregateImpact = (
     }
 
     const abbreviation = mapNameToOrgAbbriv(orgkey);
+    if (abbreviation === "AGF") {
+      if (!(GIVEWELL_ALL_GRANTS_FUND_KEY in impact)) {
+        impact[GIVEWELL_ALL_GRANTS_FUND_KEY] = {
+          outputs: 0,
+          constituents: {},
+        };
+      }
+      impact[GIVEWELL_ALL_GRANTS_FUND_KEY].outputs += aggregatedorganizations[orgkey].sum;
+      return;
+    }
+
     const filteredEvaluations = filterAndOrderEvaluations(evaluations, abbreviation);
 
     if (filteredEvaluations.length === 0) {
@@ -268,28 +282,28 @@ export const aggregateImpact = (
         // E.g. if the output is deworming treatments, and we've added 1000 treatments
         // to the total output from a donation to "Deworming Charity",
         // we add the kr amount to the constituent "Deworming Charity"
-        // Depending on wether the donation amount for the period came from a GiveWell grant or not,
-        // we add the amount to the smart distribution sum or the custom distribution sum
-        // (or both)
+        // Depending on wether the donation amount for the period came from a fund (e.g. GiveWell
+        // Top Charities Fund) or directly to the organization, we add the amount to the fund
+        // constituent or the direct constituent (or both)
 
-        const smartdistributionconstituentlabel = textTemplates.org_grant_template_string.replace(
+        const fundconstituentlabel = textTemplates.org_grant_template_string.replace(
           "{{org}}",
           orgkey,
         );
-        //`${orgkey} via smart fordeling`;
+        //`${orgkey} via fond`;
         const customconstituentlabel = textTemplates.org_direct_template_string.replace(
           "{{org}}",
           orgkey,
         );
         //`${orgkey} direkte fordelt`;
 
-        // The amount for the period and organization that was smart distributed is above 0
+        // The amount for the period and organization that was routed via a fund is above 0
         // e.g. aggregatedorganizations["Deworming Charity"].periods["2021-1"].smart_distribution_sum is above 0
         if (aggregatedorganizations[orgkey].periods[period].smart_distribution_sum > 0) {
-          if (!(smartdistributionconstituentlabel in impact[outputtype].constituents)) {
-            impact[outputtype].constituents[smartdistributionconstituentlabel] = 0;
+          if (!(fundconstituentlabel in impact[outputtype].constituents)) {
+            impact[outputtype].constituents[fundconstituentlabel] = 0;
           }
-          impact[outputtype].constituents[smartdistributionconstituentlabel] +=
+          impact[outputtype].constituents[fundconstituentlabel] +=
             aggregatedorganizations[orgkey].periods[period].smart_distribution_sum;
         }
 

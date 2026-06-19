@@ -18,6 +18,8 @@ export interface Query<T> {
   };
 }
 
+const isPending = (data: unknown, error: unknown) => typeof data === "undefined" && !error;
+
 const fetcher = async (
   url: string,
   fetchToken: getAccessTokenSilently | null = null,
@@ -62,7 +64,7 @@ export const useAggregatedDonations = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -84,7 +86,7 @@ export const useDonations = (user: User | undefined, fetchToken: getAccessTokenS
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -117,7 +119,7 @@ export const useDistributions = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -142,7 +144,7 @@ export const useAgreementsDistributions = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -161,7 +163,7 @@ export const useAvtalegiroAgreements = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -180,7 +182,7 @@ export const useAutogiroAgreements = (
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -196,7 +198,23 @@ export const useVippsAgreements = (user: User | undefined, fetchToken: getAccess
     (url) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
+
+  return {
+    loading,
+    isValidating,
+    data,
+    error,
+  };
+};
+
+export const useDKAgreements = (user: User | undefined, fetchToken: getAccessTokenSilently) => {
+  const { data, error, isValidating } = useSWR(
+    user ? `/donors/${getUserId(user)}/recurring/` : null,
+    (url) => fetcher(url, fetchToken),
+  );
+
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -211,7 +229,7 @@ export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
     `/vipps/agreement/anonymous/${agreementUrlCode}`,
     (url) => fetcher(url),
   );
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -229,7 +247,7 @@ export const useAgreementFeedbackTypes = () => {
       isOther: boolean;
     }[]
   >(`/agreementfeedback/types`, (url: string) => fetcher(url));
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -244,7 +262,7 @@ export const useOrganizations = (fetchToken: getAccessTokenSilently) => {
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -259,7 +277,7 @@ export const useCauseAreas = (fetchToken: getAccessTokenSilently) => {
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -274,7 +292,7 @@ export const useAllOrganizations = (fetchToken: getAccessTokenSilently) => {
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -289,7 +307,7 @@ export const useDonor = (user: User | undefined, fetchToken: getAccessTokenSilen
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -305,7 +323,7 @@ export const useTaxUnits = (user: User | undefined, fetchToken: getAccessTokenSi
     (url: string) => fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -320,7 +338,7 @@ export const useYearlyTaxReports = (user: User, fetchToken: getAccessTokenSilent
     fetcher(url, fetchToken),
   );
 
-  const loading = !data && !error;
+  const loading = isPending(data, error);
 
   return {
     loading,
@@ -504,18 +522,21 @@ export const pageContentQuery = `content[hidden!=true] {
           },
         },
       },
-      intervention_configuration {
+      impact_configuration->{
         ...,
-        output_configuration->{
+        intervention_configuration {
           ...,
-          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
-          "locale": *[ _type == "site_settings"][0].main_locale,
-          explanation_links[] {
-            ${linksSelectorQuery}
+          output_configuration->{
+            ...,
+            "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
+            "locale": *[ _type == "site_settings"][0].main_locale,
+            explanation_links[] {
+              ${linksSelectorQuery}
+            },
           },
+          "currency": *[ _type == "site_settings"][0].main_currency,
+          "locale": *[ _type == "site_settings"][0].main_locale,
         },
-        "currency": *[ _type == "site_settings"][0].main_currency,
-        "locale": *[ _type == "site_settings"][0].main_locale,
       },
       "currency": *[ _type == "site_settings"][0].main_currency,
       "locale": *[ _type == "site_settings"][0].main_locale,
@@ -573,7 +594,11 @@ export const pageContentQuery = `content[hidden!=true] {
         asset -> {
           _id,
           metadata {
-            lqip
+            lqip,
+            dimensions {
+              width,
+              height
+            }
           }
         }
       },
@@ -584,7 +609,11 @@ export const pageContentQuery = `content[hidden!=true] {
         asset -> {
           _id,
           metadata {
-            lqip
+            lqip,
+            dimensions {
+              width,
+              height
+            }
           }
         }
       },
@@ -617,7 +646,7 @@ export const pageContentQuery = `content[hidden!=true] {
       links {
         links[] {
           ${linksSelectorQuery}
-        },  
+        },
       },
     },
     _type == 'teasers' => {
@@ -666,6 +695,7 @@ export const pageContentQuery = `content[hidden!=true] {
         },
       },
       people[]->,
+      "locale": *[ _type == "site_settings"][0].main_locale,
     },
     _type == 'plausiblerevenuetracker' => {
       ...,
@@ -677,7 +707,43 @@ export const pageContentQuery = `content[hidden!=true] {
         ${widgetContentQuery}
       }
     },
-    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,
+    _type == 'mediacoverageteaser' => {
+      ...,
+      coverage[] {
+        ...,
+        publication_logo {
+          asset->{
+            _id,
+            metadata {
+              lqip
+            }
+          }
+        },
+      },
+      read_more_button {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      },
+    },
+    _type == 'resultsteaser' => {
+      ...,
+      see_more_button {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      },
+      "locale": *[ _type == "site_settings"][0].main_locale,
+    },
+    _type == 'taxdeductionwidget' => {
+      ...,
+      "locale": *[ _type == "site_settings"][0].main_locale,
+    },
+    _type == 'newslettersignup' => {
+      ...,
+      "locale": *[ _type == "site_settings"][0].main_locale,
+    },
+    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,
   }
 },
 `;

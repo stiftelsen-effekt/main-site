@@ -1,14 +1,15 @@
 import { Bookmark } from "react-feather";
 import { CitationRenderer } from "../../components/citationRenderer";
+import { defineType, defineField } from "sanity";
 
-export default {
+export default defineType({
   name: "citation",
   type: "document",
   title: "citation",
   icon: Bookmark,
   component: CitationRenderer,
   fields: [
-    {
+    defineField({
       type: "string",
       name: "type",
       title: "Type",
@@ -16,126 +17,125 @@ export default {
       options: {
         list: ["book", "article", "workingpaper", "website", "video", "podcast", "misc", "note"],
       },
-    },
-    {
+    }),
+    defineField({
       name: "author",
       type: "string",
       title: "Author",
       description:
         "Surname, Initial(s). If a reference has more than 3 authors, only write the first author’s surname followed by “et al.”",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type === "note",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type === "note",
+    }),
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type === "note",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type === "note",
+    }),
+    defineField({
       name: "journal",
       type: "string",
       title: "Journal",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "article",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "article",
+    }),
+    defineField({
       name: "year",
       type: "string",
       title: "Year",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type === "note",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type === "note",
+    }),
+    defineField({
       name: "volume",
       type: "string",
       title: "Volume",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "article",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "article",
+    }),
+    defineField({
       name: "number",
       type: "string",
       title: "Number",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "article",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "article",
+    }),
+    defineField({
       name: "pages",
       type: "string",
       title: "Pages",
       description: "E.g. 509-516",
-      hidden: ({ parent }: any) =>
+      hidden: ({ parent }) =>
         typeof parent.type === "undefined" || (parent.type !== "article" && parent.type !== "book"),
-    },
-    {
+    }),
+    defineField({
       name: "edition",
       type: "number",
       title: "Edition",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "book",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "book",
+    }),
+    defineField({
       name: "publisher",
       type: "string",
       title: "Publisher",
       description: "E.g. Oxford University Press",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "book",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "book",
+    }),
+    defineField({
       name: "address",
       type: "string",
       title: "Address",
       description: "Or place, e.g. Colombia",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "book",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "book",
+    }),
+    defineField({
       name: "accessed",
       type: "datetime",
       title: "Accessed",
-      hidden: ({ parent }: any) =>
+      hidden: ({ parent }) =>
         typeof parent.type === "undefined" ||
         (parent.type !== "website" && parent.type !== "workingpaper"),
-    },
-    {
+    }),
+    defineField({
       name: "timestamp",
       type: "string",
       title: "Timestamp",
       description: "Optional timestamp for the cited information e.g. 32:45",
-      hidden: ({ parent }: any) =>
+      hidden: ({ parent }) =>
         typeof parent.type === "undefined" ||
         (parent.type !== "video" && parent.type !== "podcast"),
-    },
-    {
+    }),
+    defineField({
       name: "serie",
       type: "string",
       title: "Serie",
-      hidden: ({ parent }: any) =>
-        typeof parent.type === "undefined" || parent.type !== "workingpaper",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "workingpaper",
+    }),
+    defineField({
       name: "number_in_serie",
       type: "string",
       title: "Number in Serie",
-      hidden: ({ parent }: any) =>
+      hidden: ({ parent }) =>
         typeof parent.type === "undefined" ||
         parent.type !== "workingpaper" ||
         typeof parent.serie === "undefined",
-    },
-    {
+    }),
+    defineField({
       name: "url",
       type: "url",
       title: "URL",
-      hidden: ({ parent }: any) =>
+      hidden: ({ parent }) =>
         typeof parent.type === "undefined" || parent.type === "book" || parent.type === "note",
-    },
-    {
+    }),
+    defineField({
       name: "notetitle",
       type: "string",
       title: "Note Title",
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "note",
-    },
-    {
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "note",
+    }),
+    defineField({
       name: "note",
       type: "array",
       title: "Note",
       of: [{ type: "block" }],
-      hidden: ({ parent }: any) => typeof parent.type === "undefined" || parent.type !== "note",
-    },
+      hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "note",
+    }),
   ],
   options: {
     modal: "dialog",
@@ -166,4 +166,4 @@ export default {
       };
     },
   },
-} as const;
+});

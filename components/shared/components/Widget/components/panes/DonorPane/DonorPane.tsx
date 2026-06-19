@@ -1,6 +1,3 @@
-import { validateOrg, validateSsn } from "@ssfbank/norwegian-id-validators";
-import Organisationsnummer from "organisationsnummer";
-import Personnummer from "personnummer";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -12,6 +9,7 @@ import {
   selectPaymentMethod,
   submitDonorInfo,
   registerDonationAction,
+  RegisterDonationActionPayload,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
@@ -19,9 +17,9 @@ import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
-import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
+import { Pane, PaneContainer } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import { CheckBoxGroupWrapper, DonorForm } from "./DonorPane.style";
+import { CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -35,6 +33,8 @@ import {
   PaymentButton,
   PaymentButtonsWrapper,
 } from "../../shared/DonationSummary/DonationSummary.style";
+import { paymentMethodConfigurations } from "../../../config/methods";
+import { useSsnValidation } from "./useSsnValidation";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -42,12 +42,14 @@ const capitalizeNames = (string: string) => {
 };
 
 export const DonorPane: React.FC<{
-  locale: "en" | "no" | "sv" | "et";
+  locale: "en" | "no" | "sv" | "et" | "dk";
   text: WidgetPane2Props;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
 }> = ({ locale, text, paymentMethods }) => {
   const dispatch =
-    useDispatch<Dispatch<DonationActionTypes | Action<undefined> | LayoutActionTypes>>();
+    useDispatch<
+      Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload> | LayoutActionTypes>
+    >();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
@@ -72,9 +74,7 @@ export const DonorPane: React.FC<{
   const {
     register,
     watch,
-    control,
-    formState: { errors, isValid },
-    handleSubmit,
+    formState: { errors },
     clearErrors,
   } = useForm({
     defaultValues: {
@@ -85,6 +85,7 @@ export const DonorPane: React.FC<{
       taxDeduction: donor.taxDeduction,
       newsletter: donor.newsletter,
       method: donation.method,
+      privacyPolicy: false,
     },
   });
 
@@ -95,21 +96,16 @@ export const DonorPane: React.FC<{
   const isAnonymous = watch("isAnonymous");
   const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
 
+  // Locale-aware SSN/CPR validation (handles NO, SE and DK CPR/CVR incl. suspicious CPR warning)
+  const { validateSsn, handleSsnChange, cprSuspicious } = useSsnValidation({
+    locale,
+    taxDeductionChecked,
+  });
+
   const mapPaymentMethod = (method: string): PaymentMethod => {
-    switch (method) {
-      case "bank":
-        return PaymentMethod.BANK;
-      case "vipps":
-        return PaymentMethod.VIPPS;
-      case "avtalegiro":
-        return PaymentMethod.AVTALEGIRO;
-      case "swish":
-        return PaymentMethod.SWISH;
-      case "autogiro":
-        return PaymentMethod.AUTOGIRO;
-      default:
-        throw new Error(`Unknown payment method: ${method}`);
-    }
+    const mapped = paymentMethodMap[method];
+    if (!mapped) throw new Error(`Unknown payment method: ${method}`);
+    return mapped;
   };
 
   const handlePayment = (methodId: string) => {
@@ -183,7 +179,7 @@ export const DonorPane: React.FC<{
         formData.isAnonymous
           ? ANONYMOUS_DONOR
           : {
-              name: capitalizeNames(formData.name.trim()),
+              name: text.show_name_field ? capitalizeNames(formData.name.trim()) : "",
               email: formData.email.trim().toLowerCase(),
               taxDeduction: formData.taxDeduction,
               ssn: formData.taxDeduction ? formData.ssn.toString().trim() : "",
@@ -193,7 +189,15 @@ export const DonorPane: React.FC<{
     );
 
     dispatch(selectPaymentMethod(paymentMethod));
-    dispatch(registerDonationAction.started(undefined));
+
+    // For external payment providers (e.g. Quickpay/MobilePay/DK bank), the saga will open the
+    // provider URL directly on a successful registration.
+    const configuration = paymentMethodConfigurations.find((config) => config.id === methodId);
+    dispatch(
+      registerDonationAction.started({
+        openExternalPaymentOnRegisterSuccess: configuration?.openExternalPaymentOnRegisterSuccess,
+      }),
+    );
   };
 
   return (
@@ -203,43 +207,47 @@ export const DonorPane: React.FC<{
           <div>
             <DonationSummary />
 
-            <div style={{ marginBottom: "20px" }}>
-              <CheckBoxWrapper data-cy="anon-button-div">
-                <HiddenCheckBox
-                  data-cy="anon-checkbox"
-                  type="checkbox"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                    }
-                  }}
-                  {...register("isAnonymous", {
-                    onChange: () => {
-                      clearErrors(["name", "email", "ssn"]);
-                      (document.activeElement as HTMLElement).blur();
-                    },
-                  })}
-                />
-                <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
-                <ToolTip text={text.anon_button_text_tooltip} />
-              </CheckBoxWrapper>
-            </div>
+            {text.allow_anonymous_donations && (
+              <div style={{ marginBottom: "20px" }}>
+                <CheckBoxWrapper data-cy="anon-button-div">
+                  <HiddenCheckBox
+                    data-cy="anon-checkbox"
+                    type="checkbox"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                      }
+                    }}
+                    {...register("isAnonymous", {
+                      onChange: () => {
+                        clearErrors(["name", "email", "ssn"]);
+                        (document.activeElement as HTMLElement).blur();
+                      },
+                    })}
+                  />
+                  <CustomCheckBox label={text.anon_button_text} checked={isAnonymous} />
+                  <ToolTip text={text.anon_button_text_tooltip} />
+                </CheckBoxWrapper>
+              </div>
+            )}
 
             <AnimateHeight height={isAnonymous ? 0 : "auto"} animateOpacity>
-              <InputFieldWrapper>
-                <input
-                  data-cy="name-input"
-                  type="text"
-                  placeholder={text.name_placeholder}
-                  {...register("name", {
-                    validate: (val, formValues) => {
-                      if (formValues.isAnonymous) return true;
-                      return val.trim().length > 3;
-                    },
-                  })}
-                />
-                {errors.name && <ErrorField text={text.name_invalid_error_text} />}
-              </InputFieldWrapper>
+              {text.show_name_field && (
+                <InputFieldWrapper>
+                  <input
+                    data-cy="name-input"
+                    type="text"
+                    placeholder={text.name_placeholder}
+                    {...register("name", {
+                      validate: (val, formValues) => {
+                        if (formValues.isAnonymous) return true;
+                        return val.trim().length > 3;
+                      },
+                    })}
+                  />
+                  {errors.name && <ErrorField text={text.name_invalid_error_text} />}
+                </InputFieldWrapper>
+              )}
               <InputFieldWrapper>
                 <input
                   data-cy="email-input"
@@ -295,25 +303,18 @@ export const DonorPane: React.FC<{
                         placeholder={text.tax_deduction_ssn_placeholder}
                         {...register("ssn", {
                           required: false,
-                          validate: (val, formValues) => {
-                            if (formValues.isAnonymous || !taxDeductionChecked) return true;
-                            const trimmed = val.toString().trim();
-                            if (taxDeductionChecked) {
-                              if (locale === "no") {
-                                return validateSsnNo(trimmed);
-                              } else if (locale === "sv") {
-                                return validateSsnSe(trimmed);
-                              } else {
-                                return true;
-                              }
-                            } else {
-                              return true;
-                            }
-                          },
+                          onChange: handleSsnChange,
+                          validate: (val, formValues) =>
+                            validateSsn(val.toString(), formValues.isAnonymous),
                         })}
                       />
                       {errors.ssn && (
                         <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
+                      )}
+                      {cprSuspicious && (
+                        <InfoMessageWrapper data-cy="cpr-suspicious-message">
+                          Kontroller venligst at det er korrekt.
+                        </InfoMessageWrapper>
                       )}
                     </InputFieldWrapper>
                   </AnimateHeight>
@@ -341,17 +342,67 @@ export const DonorPane: React.FC<{
                 </CheckBoxWrapper>
                 {text.privacy_policy_link && (
                   <div style={{ marginTop: "10px" }}>
-                    {text.privacy_policy_text}{" "}
-                    <Link
-                      href={`/${text.privacy_policy_link.slug}`}
-                      target={"_blank"}
-                      onClick={(e) => {
-                        e.currentTarget.blur();
-                      }}
-                      style={{ borderBottom: "1px solid var(--primary)" }}
-                    >
-                      {`${text.privacy_policy_link.title}  ↗`}
-                    </Link>
+                    {text.require_privacy_policy_checkbox && (
+                      <>
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          <CheckBoxWrapper>
+                            <HiddenCheckBox
+                              data-cy="privacy-policy-checkbox"
+                              type="checkbox"
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                }
+                              }}
+                              {...register("privacyPolicy", {
+                                required: true,
+                                onChange() {
+                                  (document.activeElement as HTMLElement).blur();
+                                },
+                              })}
+                            />
+                            <CustomCheckBox
+                              label={text.privacy_policy_text}
+                              checked={watch("privacyPolicy")}
+                            />
+                          </CheckBoxWrapper>
+                          <Link
+                            href={`/${text.privacy_policy_link.slug}`}
+                            target={"_blank"}
+                            onClick={(e) => {
+                              e.currentTarget.blur();
+                            }}
+                            style={{
+                              borderBottom: "1px solid var(--primary)",
+                              display: "inline-flex",
+                              height: "30px",
+                              marginTop: "5px",
+                              marginLeft: "7px",
+                            }}
+                          >
+                            {`${text.privacy_policy_link.title}  ↗`}
+                          </Link>
+                        </div>
+                        {errors.privacyPolicy && (
+                          <ErrorField text={text.privacy_policy_required_error_text} />
+                        )}
+                      </>
+                    )}
+                    {!text.require_privacy_policy_checkbox && (
+                      <>
+                        {text.privacy_policy_text}{" "}
+                        <Link
+                          href={`/${text.privacy_policy_link.slug}`}
+                          target={"_blank"}
+                          onClick={(e) => {
+                            e.currentTarget.blur();
+                          }}
+                          style={{ borderBottom: "1px solid var(--primary)" }}
+                        >
+                          {`${text.privacy_policy_link.title}  ↗`}
+                        </Link>
+                      </>
+                    )}
                   </div>
                 )}
               </CheckBoxGroupWrapper>
@@ -379,10 +430,13 @@ export const DonorPane: React.FC<{
   );
 };
 
-const validateSsnNo = (ssn: string): boolean => {
-  return (ssn.length === 9 && validateOrg(ssn)) || (ssn.length === 11 && validateSsn(ssn));
-};
-
-const validateSsnSe = (ssn: string): boolean => {
-  return Personnummer.valid(ssn) || Organisationsnummer.valid(ssn);
+export const paymentMethodMap: Record<string, PaymentMethod> = {
+  vipps: PaymentMethod.VIPPS,
+  bank: PaymentMethod.BANK,
+  swish: PaymentMethod.SWISH,
+  autogiro: PaymentMethod.AUTOGIRO,
+  avtalegiro: PaymentMethod.AVTALEGIRO,
+  quickpay_card: PaymentMethod.QUICKPAY_CARD,
+  quickpay_mobilepay: PaymentMethod.QUICKPACK_MOBILEPAY,
+  dkbank: PaymentMethod.DKBANK,
 };

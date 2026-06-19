@@ -23,8 +23,5 @@ import "cypress-fail-fast";
 // require('./commands')
 
 beforeEach(() => {
-  cy.intercept("*", { middleware: true }, (req) => {
-    req.headers["x-vercel-skip-toolbar"] = "1";
-  });
   cy.ignorePlausibleTracking();
 });

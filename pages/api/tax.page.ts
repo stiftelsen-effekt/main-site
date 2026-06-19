@@ -45,6 +45,9 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
         `https://skattekalkulator.formueinntekt.skatt.skatteetaten.no/api/skattemelding-core/skatteberegner`,
         {
           body: getNOTaxBody(income),
+          headers: {
+            "Content-Type": "application/json",
+          },
           method: "POST",
         },
       );
@@ -61,8 +64,8 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
 
 const getNOTaxBody = (income: number): string => {
   return JSON.stringify({
-    inntektsaar: "2024",
-    tekniskInntektsaar: 2023,
+    inntektsaar: "2025",
+    tekniskInntektsaar: 2024,
     visningsdata: {
       arbeidsgiver: [
         {

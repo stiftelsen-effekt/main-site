@@ -5,6 +5,13 @@ interface BarChartProps {
   minimumThreshold: number;
   maximumThreshold: number;
   taxBenefit: number;
+  labels?: {
+    maximumThresholdLabel?: string;
+    minimumThresholdLabel?: string;
+    currentValueLabel?: string;
+    taxBenefitLabel?: string;
+  };
+  locale?: string;
 }
 
 interface Dimensions {
@@ -29,6 +36,8 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
   minimumThreshold,
   maximumThreshold,
   taxBenefit,
+  labels,
+  locale,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<SVGTextElement>(null);
@@ -150,7 +159,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
             alignmentBaseline="middle"
             transform={`translate(-3, 0)`}
           >
-            Minstegrense
+            {labels?.minimumThresholdLabel || "Minstegrense"}
           </text>
           <text
             x={scale(minimumThreshold)}
@@ -160,7 +169,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
             fontSize="0.75rem"
             transform={`translate(-3, 0)`}
           >
-            {Intl.NumberFormat("no-NB").format(minimumThreshold)} kr
+            {Intl.NumberFormat(locale || "no-NB").format(minimumThreshold)} kr
           </text>
         </g>
 
@@ -208,7 +217,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
                 transition: "all 0.5s",
               }}
             >
-              Skattefradrag
+              {labels?.currentValueLabel || "Skattefradrag"}
             </text>
 
             <text
@@ -223,7 +232,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
                 transition: "all 0.5s",
               }}
             >
-              {Intl.NumberFormat("no-NB").format(currentValue)} kr
+              {Intl.NumberFormat(locale || "no-NB").format(currentValue)} kr
             </text>
           </g>
         </g>
@@ -250,7 +259,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
             textAnchor="start"
             alignmentBaseline="middle"
           >
-            Du får tilbake
+            {labels?.taxBenefitLabel || "Du får tilbake"}
           </text>
           <text
             x={0}
@@ -259,7 +268,7 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
             alignmentBaseline="middle"
             fontSize="0.75rem"
           >
-            {Intl.NumberFormat("no-NB").format(taxBenefit)} kr
+            {Intl.NumberFormat(locale || "no-NB").format(taxBenefit)} kr
           </text>
         </g>
 

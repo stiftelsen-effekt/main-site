@@ -1,34 +1,39 @@
+import { defineType, defineField } from "sanity";
 import { DollarSign } from "react-feather";
 
-export default {
+export default defineType({
   name: "wealthcalculator",
   type: "object",
   title: "Wealth Calculator",
   icon: DollarSign,
   fields: [
-    {
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
-    },
-    {
+    }),
+    defineField({
       name: "configuration",
       type: "reference",
       to: [{ type: "wealthcalculatorconfiguration" }],
-      validaton: (Rule: any) => Rule.required(),
-    },
-    {
-      name: "intervention_configuration",
-      type: "object",
-      title: "Intervention Configuration",
-      fields: [
-        {
-          name: "output_configuration",
-          type: "reference",
-          to: [{ type: "interventionwidgetoutputconfiguration" }],
-          validaton: (Rule: any) => Rule.required(),
-        },
-      ],
-    },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "impact_configuration",
+      type: "reference",
+      to: [{ type: "wealthcalculatorimpact" }],
+      description:
+        "Optional impact configuration for the wealth calculator. Will show a section below the calculator with a description and a button to open the donation widget.",
+    }),
   ],
-} as const;
+  preview: {
+    select: {
+      title: "title",
+    },
+    prepare({ title }) {
+      return {
+        title: title || "Wealth Calculator",
+      };
+    },
+  },
+});

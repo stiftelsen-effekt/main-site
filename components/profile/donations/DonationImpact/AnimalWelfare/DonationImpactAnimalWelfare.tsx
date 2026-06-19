@@ -1,20 +1,14 @@
 import React, { useCallback, useState } from "react";
-import useSWR from "swr";
-import { Donation, GiveWellGrant } from "../../../../../models";
-import { thousandize } from "../../../../../util/formatting";
+import { Donation } from "../../../../../models";
 import style from "./DonationImpactAnimalWelfare.module.scss";
-import { ErrorMessage } from "../../../shared/ErrorMessage/ErrorMessage";
 import {
   DonationImpactItemAnimalWelfare,
   ImpactItemConfiguration,
 } from "./DonationImpactItemAnimalWelfare";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export type DonationImpactItemsConfiguration = {
   currency: string;
   locale: string;
-  smart_distribution_label: string;
   operations_label: string;
   impact_item_configuration: ImpactItemConfiguration;
 };
@@ -33,11 +27,6 @@ const DonationImpactAnimalWelfare: React.FC<{
     [setRequiredPrecision],
   );
 
-  /**
-   * If the donation has a component to the maximum impact fund, we must find the relevant grant
-   * and distribute the part of the donation to GiveWell to the distribution
-   */
-  const giveWellDist = distribution.find((d) => d.org === "GiveWell");
   const filteredDistribution = distribution
     .filter((d) => d.org !== "GiveWell")
     .map((o) => ({ ...o }))
@@ -52,12 +41,6 @@ const DonationImpactAnimalWelfare: React.FC<{
 
   return (
     <div className={style.container} key={`${donation.id}-impact`}>
-      {giveWellDist && (
-        <div className={style.smartdistributionlabel}>
-          <span>{configuration.smart_distribution_label}</span>
-          <strong>{`${thousandize(Math.round(giveWellDist.sum) || null)} kr`}</strong>
-        </div>
-      )}
       <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
         <tbody>
           {spreadDistribution.map((dist, i) => (

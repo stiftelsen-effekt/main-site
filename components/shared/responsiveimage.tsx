@@ -34,6 +34,10 @@ export const ResponsiveImage: React.FC<{
   // Extract LQIP for preview
   const preview = (image as any).asset?.metadata?.lqip;
 
+  // Extract dimensions for aspect ratio calculation
+  const dimensions = (image as any).asset?.metadata?.dimensions;
+  const aspectRatio = dimensions ? dimensions.width / dimensions.height : undefined;
+
   // Convert layout to mode (cover or contain)
   const mode = layout === "cover" ? "cover" : "contain";
 
@@ -50,8 +54,47 @@ export const ResponsiveImage: React.FC<{
     height?: number;
   } = {};
   if (layout !== "fill" && layout !== "responsive") {
-    // You might want to adjust these default dimensions based on your needs
     dimensionProps.width = 800;
+  }
+  // For responsive layout, pass dimensions if available to help SanityImage
+  if (layout === "responsive" && aspectRatio) {
+    const containerStyle: React.CSSProperties = {
+      width: "100%",
+      aspectRatio: `${aspectRatio}`,
+      display: "block",
+    };
+
+    const responsiveImageStyle: React.CSSProperties = {
+      ...imageStyle,
+      height: "100%",
+      display: "block",
+    };
+
+    return (
+      <div style={containerStyle}>
+        <SanityImage
+          id={imageId}
+          projectId={projectId}
+          dataset={dataset}
+          mode={mode}
+          preview={preview}
+          hotspot={image.hotspot}
+          crop={image.crop}
+          alt={alt || "Image"}
+          onClick={onClick}
+          queryParams={
+            {
+              dpr: typeof window !== "undefined" ? window.devicePixelRatio : 2,
+              q: 80,
+            } as any
+          }
+          loading={priority ? "eager" : "lazy"}
+          sizes={sizes ?? "(min-width: 1521px) 760px, (min-width: 1181px) 640px, 90vw"}
+          style={responsiveImageStyle}
+          {...dimensionProps}
+        />
+      </div>
+    );
   }
 
   return (
@@ -65,6 +108,12 @@ export const ResponsiveImage: React.FC<{
       crop={image.crop}
       alt={alt || "Image"}
       onClick={onClick}
+      queryParams={
+        {
+          dpr: typeof window !== "undefined" ? window.devicePixelRatio : 2,
+          q: 80,
+        } as any
+      }
       loading={priority ? "eager" : "lazy"}
       sizes={sizes ?? "(min-width: 1521px) 760px, (min-width: 1181px) 640px, 90vw"}
       style={imageStyle}

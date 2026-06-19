@@ -5,7 +5,7 @@ import { schemas } from "./schemas/schema";
 import { deskStructure } from "./deskStructure";
 import { table } from "@sanity/table";
 import { defineDocuments, presentationTool } from "sanity/presentation";
-import { Article_page, Articles, Generic_page } from "./sanity.types";
+import { Article_page, Articles, Generic_page, Results } from "./sanity.types";
 import { documentActions } from "./document.actions";
 
 const siteUrl =
@@ -62,6 +62,15 @@ export default defineConfig({
 
         if (result && articlesSlug) {
           return `${siteUrl}/studio/presentation?preview=/${articlesSlug}/${trimmedSlug}`;
+        }
+      } else if (document._type === "results") {
+        // Get results page slug from the document
+        const query = `*[_type == "results" && _id == "results"]`;
+        const [result] = await client.fetch(query);
+
+        if (result && (result as Results).slug?.current) {
+          const trimmedSlug = (result as Results).slug.current.replace(/^\/+/, "");
+          return `${siteUrl}/studio/presentation?preview=/${trimmedSlug}`;
         }
       }
     },

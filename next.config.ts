@@ -53,7 +53,9 @@ const nextConfig: NextConfig = {
                 "https://*.ads-twitter.com " +
                 "https://*.facebook.net " +
                 "https://connect.facebook.net " +
-                "https://www.youtube.com",
+                "https://www.youtube.com " +
+                "https://*.sanity-cdn.com " +
+                "https://challenges.cloudflare.com",
               // Prevent plugin injection
               "object-src 'none'",
               // Allow for workers to be loaded from self
@@ -66,6 +68,482 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
+        destination: "/ofte-stilte-sporsmal",
+        permanent: true,
+      },
+      {
+        source: "/faq",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/vanliga-fragor",
+        permanent: true,
+      },
+      {
+        source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
+        destination: "/artikler",
+        permanent: true,
+      },
+      {
+        source: "/blogg",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        destination: "/artiklar",
+        permanent: true,
+      },
+      {
+        source: "/filantropi",
+        destination: "/filantropisk-radgivning",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/arsrapport-2021",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/arsrapport-2022",
+        destination: "/arsrapporter",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/globalhalsa",
+        destination: "/global-halsa",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.se",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/globalhälsa",
+        destination: "/global-halsa",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/global-hälsa",
+        destination: "/global-halsa",
+        has: [
+          {
+            type: "host",
+            value: "geeffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/andreas-wahls-arlige-juleinnsamling-for-effektiv-bistand-2024",
+        destination: "/wahl",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/andreas-wahls-arlige-juleinnsamling-for-effektiv-bistand",
+        destination: "/wahl",
+        has: [
+          {
+            type: "host",
+            value: "gieffektivt.no",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/anbefalinger",
+        destination: "/topliste",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/kontantoverfoersler",
+        destination: "/kontantoverforsler",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/boernevacciner",
+        destination: "/bornevacciner",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/x-factor",
+        destination: "/x-faktor",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/bedste-velgoerenhed",
+        destination: "/topliste",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler",
+        destination: "/blog",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/metode",
+        destination: "/vores-metode",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/filantropisk-raadgivning",
+        destination: "/filantropi",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/kontakt-os",
+        destination: "/om-os",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/fradrag",
+        destination: "/skattefradrag",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/fradrag-virksomheder",
+        destination: "/skattefradrag",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/gavebevis",
+        destination: "/gavekort",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/indsamling",
+        destination: "/indsamlingsguide",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/indsamling-admin",
+        destination: "/indsamlingsguide",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/medlemskab",
+        destination: "/bliv-medlem",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/jobs",
+        destination: "/ledige-stillinger",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/bliv-frivillig",
+        destination: "/ledige-stillinger",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/privatliv",
+        destination: "/privatlivspolitik",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/the-pledge",
+        destination: "/procentloftet",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source:
+          "/artikler/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-g%C3%B8re-en-reel-forskel",
+        destination:
+          "/blog/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-gore-en-reel-forskel",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/verdens-lykkeligste-lande-og-de-mest-trivselsfremmende-organisationer",
+        destination: "/blog/verdens-lykkeligste-lande-og-de-mest-trivselsfremmende-organisationer",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source:
+          "/artikler/trumps-nedskaeringer-i-usaid-har-efterladt-en-fatal-finansieringskrise-for-den-globale-udviklingsbistand-s%C3%A5dan-kan-vi-hj%C3%A6lpe-bedst-muligt",
+        destination: "/blog/sadan-kan-vi-bidrage-bedst-muligt-i-lyset-af-nedskaeringerne-usaid",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/m%C3%A5l-velg%C3%B8renhed-p%C3%A5-effekt-ikke-p%C3%A5-adminstration",
+        destination: "/blog/mal-velgorenhed-pa-effekt-ikke-pa-administration",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/derfor-fungerer-markedet-for-velg%C3%B8renhed-ikke-optimalt",
+        destination: "/blog/derfor-fungerer-markedet-for-velgorenhed-ikke-optimalt",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/at-give-effektivt",
+        destination: "/blog/at-give-effektivt",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/global-ulighed",
+        destination: "/blog/global-ulighed",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/kan-man-koebe-sig-til-lykke",
+        destination: "/blog/kan-penge-kobe-lykke",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/hvordan-b%C3%B8r-man-give-til-gaza",
+        destination: "/blog/hvordan-bor-man-give-til-gaza",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/artikler/hvorfor-er-det-s%C3%A5-dyrt-at-redde-et-liv",
+        destination: "/blog/hvorfor-er-det-sa-dyrt-at-redde-et-liv",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/blog/derfor-kan-omkostningseffektiviteten-blandt-vores-anbefalinger-variere",
+        destination: "/blog/derfor-aendrer-givewells-estimater-sig-over-tid",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/vms25",
+        destination: "/indsamling/vms25",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
       {
         source: "/organisasjoner",
         destination: "/topplista",
@@ -97,28 +575,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/faq",
-        has: [
-          {
-            type: "host",
-            value: "gieffektivt.no",
-          },
-        ],
-        destination: "/ofte-stilte-sporsmal",
-        permanent: true,
-      },
-      {
-        source: "/faq",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.se",
-          },
-        ],
-        destination: "/vanliga-fragor",
-        permanent: true,
-      },
-      {
         source: "/historikk",
         destination: "/full-oversikt",
         permanent: true,
@@ -136,28 +592,6 @@ const nextConfig: NextConfig = {
       {
         source: "/media",
         destination: "/medieomtale",
-        permanent: true,
-      },
-      {
-        source: "/blogg",
-        has: [
-          {
-            type: "host",
-            value: "gieffektivt.no",
-          },
-        ],
-        destination: "/artikler",
-        permanent: true,
-      },
-      {
-        source: "/blogg",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.se",
-          },
-        ],
-        destination: "/artiklar",
         permanent: true,
       },
       {
@@ -404,99 +838,11 @@ const nextConfig: NextConfig = {
       { source: "/organisationer#djurvalfard", destination: "/djurvalfard", permanent: true },
       { source: "/organisationer#klimat", destination: "/klimat", permanent: true },
       { source: "/ge", destination: "/", permanent: true },
-      {
-        source: "/filantropi",
-        destination: "/filantropisk-radgivning",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.se",
-          },
-        ],
-        permanent: true,
-      },
       { source: "/jobba-hos-oss", destination: "/lediga-jobb", permanent: true },
       { source: "/om", destination: "/om-oss", permanent: true },
       {
         source: "/vi-behoever-prata-om-administrationskostnaderna",
         destination: "/artiklar/vi-maste-prata-om-administrationskostnaderna",
-        permanent: true,
-      },
-      {
-        source: "/arsrapport-2021",
-        destination: "/arsrapporter",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.se",
-          },
-        ],
-        permanent: false,
-      },
-      {
-        source: "/arsrapport-2022",
-        destination: "/arsrapporter",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.se",
-          },
-        ],
-        permanent: false,
-      },
-      {
-        source: "/globalhalsa",
-        destination: "/global-halsa",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.se",
-          },
-        ],
-        permanent: true,
-      },
-      {
-        source: "/globalhälsa",
-        destination: "/global-halsa",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.no",
-          },
-        ],
-        permanent: true,
-      },
-      {
-        source: "/global-hälsa",
-        destination: "/global-halsa",
-        has: [
-          {
-            type: "host",
-            value: "geeffektivt.no",
-          },
-        ],
-        permanent: true,
-      },
-      {
-        source: "/andreas-wahls-arlige-juleinnsamling-for-effektiv-bistand-2024",
-        destination: "/wahl",
-        has: [
-          {
-            type: "host",
-            value: "gieffektivt.no",
-          },
-        ],
-        permanent: true,
-      },
-      {
-        source: "/andreas-wahls-arlige-juleinnsamling-for-effektiv-bistand",
-        destination: "/wahl",
-        has: [
-          {
-            type: "host",
-            value: "gieffektivt.no",
-          },
-        ],
         permanent: true,
       },
     ];

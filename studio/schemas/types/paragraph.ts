@@ -1,23 +1,24 @@
+import { defineType, defineField } from "sanity";
 import { Type } from "react-feather";
 import { blocktype } from "./blockcontent";
 
-export default {
+export default defineType({
   title: "Paragraph",
   name: "paragraph",
   type: "object",
   icon: Type,
   fields: [
-    {
+    defineField({
       name: "title",
       title: "Title",
       type: "string",
-    },
-    {
+    }),
+    defineField({
       name: "content",
       title: "Content",
       type: "array",
       of: [blocktype, { type: "latex" }],
-    },
+    }),
   ],
   preview: {
     select: {
@@ -31,4 +32,4 @@ export default {
       };
     },
   },
-} as const;
+});

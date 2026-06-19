@@ -73,13 +73,10 @@ export const VippsAgreementPage = withStaticProps(
         titleTemplate={`${data.result.settings[0].title} | %s`}
         keywords={header.seoKeywords}
         siteName={data.result.settings[0].title}
+        noIndex={header.noIndex}
       />
 
-      <MainHeader
-        hideOnScroll={true}
-        cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
-        generalBannerConfig={data.result.settings[0].general_banner}
-      >
+      <MainHeader hideOnScroll={true} generalBannerConfig={data.result.settings[0].general_banner}>
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
       </MainHeader>
 

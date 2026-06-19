@@ -40,6 +40,8 @@ export const BankPane: React.FC<{
   let currency = "NOK";
   if (config.locale === "sv") {
     currency = "SEK";
+  } else if (config.locale === "dk") {
+    currency = "DKK";
   }
 
   useEffect(() => {
@@ -81,7 +83,11 @@ export const BankPane: React.FC<{
             <CompleteButtonWrapper>
               <CompleteButton
                 onClick={() => {
-                  setHasCompletedTransaction(true);
+                  if (config.completed_redirect && config.completed_redirect.slug) {
+                    window.open(config.completed_redirect.slug, "_parent");
+                  } else {
+                    setHasCompletedTransaction(true);
+                  }
                 }}
               >
                 {config.button_text}
@@ -94,12 +100,14 @@ export const BankPane: React.FC<{
           </AnimateHeight>
         </div>
 
-        <Referrals
-          text={{
-            referrals_title: referrals.referrals_title,
-            other_referral_input_placeholder: referrals.other_referral_input_placeholder,
-          }}
-        />
+        {!(referrals.show_referrals === false) && (
+          <Referrals
+            text={{
+              referrals_title: referrals.referrals_title,
+              other_referral_input_placeholder: referrals.other_referral_input_placeholder,
+            }}
+          />
+        )}
       </PaneContainer>
     </Pane>
   );

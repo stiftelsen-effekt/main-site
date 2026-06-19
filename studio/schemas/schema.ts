@@ -85,9 +85,36 @@ import generalbanner from "./types/generalbanner";
 import teamintroduction from "./types/teamintroduction";
 import resultsteaser from "./types/resultsteaser";
 import taxdeductionwidget from "./types/taxdeductionwidget";
+import dkgavebrevtaxwidget from "./types/dkgavebrevtaxwidget";
 import donationwidgetblock from "./types/donationwidgetblock";
+import dkmembershipwidget from "./types/dkmembershipwidget";
+import dkmembershipdisplay from "./types/dkmembershipdisplay";
+import resultstext from "./types/resultstext";
+import outputmapping from "./types/outputmapping";
+import organizationmapping from "./types/organizationmapping";
+import referraltypemapping from "./types/referraltypemapping";
+import cumulativedonationstableheaders from "./types/cumulativedonationstableheaders";
+import referralstabletext from "./types/referralstabletext";
+import quickpaycard from "./types/paymentmethods/quickpaycard";
+import quickpaymobilepay from "./types/paymentmethods/quickpaymobilepay";
+import dkrenewpayment from "./types/dkrenewpayment";
+import mediacoverageteaser from "./types/mediacoverageteaser";
+import outputdonationstableheaders from "./types/outputdonationstableheaders";
+import formsparkform from "./types/formspark";
+import wealthcalculatorimpact from "./types/wealthcalculatorimpact";
+import dkbank from "./types/paymentmethods/dkbank";
+import fundraiserwidget from "./types/fundraiserwidget";
 
-const paymentMethods = [vipps, bank, swish, autogiro, avtalegiro] as const;
+const paymentMethods = [
+  vipps,
+  bank,
+  swish,
+  autogiro,
+  avtalegiro,
+  quickpaycard,
+  quickpaymobilepay,
+  dkbank,
+] as const;
 
 export const types = [
   category,
@@ -124,6 +151,7 @@ export const types = [
   interventionwidget,
   interventionwidgetoutputconfiguration,
   taxdeductionwidget,
+  dkgavebrevtaxwidget,
   testimonials,
   fullvideo,
   newslettersignup,
@@ -135,6 +163,7 @@ export const types = [
   wealthcalculator,
   wealthcalculatorteaser,
   wealthcalculatorconfiguration,
+  wealthcalculatorimpact,
   contributorlist,
   inngress,
   fundraiserchart,
@@ -169,6 +198,19 @@ export const types = [
   teasers,
   teasersitem,
   donationwidgetblock,
+  dkmembershipwidget,
+  dkmembershipdisplay,
+  resultstext,
+  outputmapping,
+  organizationmapping,
+  referraltypemapping,
+  cumulativedonationstableheaders,
+  outputdonationstableheaders,
+  referralstabletext,
+  dkrenewpayment,
+  mediacoverageteaser,
+  formsparkform,
+  fundraiserwidget,
 ] as const;
 
 // Then we give our schema to the builder and provide the result to Sanity

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
@@ -15,6 +15,7 @@ export const CookieBanner: React.FC<{
 }> = ({ configuration }) => {
   const [bannerContext, setBannerContext] = useContext(BannerContext);
   const [tracking, setTracking] = useState(false);
+  const bannerRef = useRef<HTMLDivElement | null>(null);
 
   // check for plausible_ignore localstorage to disable plausible tracking
   useEffect(() => {
@@ -27,6 +28,27 @@ export const CookieBanner: React.FC<{
       }
     }
   }, []);
+
+  // Expose the banner height as a CSS variable so layout elements (e.g. the mobile menu)
+  // can reserve space and avoid being covered by the fixed banner.
+  useEffect(() => {
+    const root = document.documentElement;
+    const element = bannerRef.current;
+    if (!element) {
+      root.style.setProperty("--cookie-banner-height", "0px");
+      return;
+    }
+    const updateHeight = () => {
+      root.style.setProperty("--cookie-banner-height", `${element.offsetHeight}px`);
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+    return () => {
+      observer.disconnect();
+      root.style.setProperty("--cookie-banner-height", "0px");
+    };
+  }, [bannerContext.consentState]);
 
   if (!configuration) return null;
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -71,7 +93,7 @@ export const CookieBanner: React.FC<{
         </>
       )}
       {bannerContext.consentState === "undecided" && (
-        <div data-cy="cookiebanner-container" className={styles.container}>
+        <div data-cy="cookiebanner-container" className={styles.container} ref={bannerRef}>
           <div className={styles.content}>
             <div className={styles.description}>
               <span className={styles.title}>{configuration.title}</span>

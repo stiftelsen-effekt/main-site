@@ -1,5 +1,6 @@
 .container {
   margin-top: 1rem;
+  margin-bottom: 2rem;
 
   .title {
     display: block;
@@ -32,5 +33,10 @@
       content: "↓";
       margin-left: 0.25rem;
     }
+  }
+
+  .noDonations {
+    font-style: italic;
+    font-size: 0.8rem;
   }
 }

@@ -42,10 +42,13 @@ import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
-import { Widget } from "../../shared/components/Widget/components/Widget";
-import { WidgetWithStore } from "../../shared/components/Widget/components/WidgetWithStore";
-import { PrefilledDistribution } from "../layout/WidgetPane/WidgetPane";
+import { DKGavebrevTaxWidget } from "./DKGavebrevTaxWidget/DKGavebrevTaxWidget";
 import { DonationWidgetBlock } from "./DonationWidgetBlock/DonationWidgetBlock";
+import { DKMembershipWidget } from "./DKMembershipWidget/DKMembershipWidget";
+import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
+import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
+import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
+import { FormsparkForm } from "./FormSparkForm/FormSparkForm";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -188,6 +191,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 header={block.header}
                 formurl={block.formurl}
                 sendlabel={block.sendlabel}
+                emailLabel={block.emailLabel}
+                locale={stegaClean(block.locale)}
               ></NewsletterSignup>
             );
           case "htmlembed":
@@ -249,7 +254,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 key={block._key || block._id}
                 title={block.title}
                 configuration={block.configuration}
-                intervention_configuration={block.intervention_configuration}
+                impactConfiguration={block.impact_configuration}
                 periodAdjustment={calcPeriod}
                 locale={stegaClean(block.locale)}
               />
@@ -304,7 +309,16 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               </>
             );
           case "resultsteaser":
-            return <ResultsTeaser key={block._key || block._id} title={block.title} />;
+            return (
+              <ResultsTeaser
+                key={block._key || block._id}
+                title={block.title}
+                sumSubtitle={block.sum_subtitle}
+                donorsSubtitle={block.donors_subtitle}
+                seeMoreButton={block.see_more_button}
+                locale={stegaClean(block.locale)}
+              />
+            );
           case "inngress":
             return (
               <Inngress
@@ -337,6 +351,41 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 minimumTreshold={block.minimum_treshold}
                 maximumTreshold={block.maximum_treshold}
                 percentageReduction={block.percentage_reduction}
+                donationsLabel={block.donations_label}
+                taxDeductionReturnDescriptionTemplate={
+                  block.tax_deduction_return_description_template
+                }
+                belowMinimumTresholdDescriptionTemplate={
+                  block.below_minimum_treshold_description_template
+                }
+                buttonText={block.button_text}
+                chartLabels={{
+                  maximumThresholdLabel: block.chart_labels?.maximum_threshold,
+                  minimumThresholdLabel: block.chart_labels?.minimum_threshold,
+                  currentValueLabel: block.chart_labels?.deduction,
+                  taxBenefitLabel: block.chart_labels?.tax_benefit,
+                }}
+                locale={stegaClean(block.locale)}
+              />
+            );
+          case "dkgavebrevtaxwidget":
+            return (
+              <DKGavebrevTaxWidget
+                key={block._key || block._id}
+                title={block.title}
+                description={block.description}
+                incomeLabel={block.income_label}
+                donationLabel={block.donation_label}
+                defaultIncome={block.default_income}
+                defaultDonation={block.default_donation}
+                resultDescriptionTemplate={block.result_description_template}
+                buttonText={block.button_text}
+                chartLabels={{
+                  maximumDeduction: block.chart_labels?.maximum_deduction,
+                  yourDonation: block.chart_labels?.your_donation,
+                  yourTaxBenefit: block.chart_labels?.your_tax_benefit,
+                }}
+                locale={stegaClean(block.locale)}
               />
             );
           case "introsection": {
@@ -411,6 +460,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 links={block.links}
                 button={block.button}
                 people={block.people}
+                locale={stegaClean(block.locale)}
               />
             );
           }
@@ -455,6 +505,31 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 contentMobilePosition={block.content_mobile_position}
               />
             );
+          case "dkmembershipwidget":
+            return (
+              <DKMembershipWidget key={block._key || block._id} config={block.configuration} />
+            );
+          case "dkmembershipdisplay":
+            return (
+              <DKMembershipDisplay
+                key={block._key || block._id}
+                membership_count_subtitle={block.membership_count_subtitle}
+                description={block.description}
+              />
+            );
+          case "dkrenewpayment":
+            return <DKRenewPayment />;
+          case "mediacoverageteaser":
+            return (
+              <MediaCoverageTeaser
+                key={block._key || block._id}
+                title={block.title}
+                coverage={block.coverage}
+                readMoreButton={block.read_more_button}
+              />
+            );
+          case "formsparkform":
+            return <FormsparkForm key={block._key || block._id} formData={block} />;
           default:
             return block._type;
         }

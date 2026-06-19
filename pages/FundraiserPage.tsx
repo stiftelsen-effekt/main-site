@@ -13,14 +13,16 @@ import { withStaticProps } from "../util/withStaticProps";
 import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
-import { FetchFundraiserResult, Navitem } from "../studio/sanity.types";
+import { FetchFundraiserResult } from "../studio/sanity.types";
 import { ConsentState } from "../middleware.page";
 import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/FundraiserHeader";
 import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";
 import { FundraiserGiftActivity } from "../components/main/blocks/FundraiserGiftActivity/FundraiserGiftActivity";
-import FundraiserWidget from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
-import { API_URL } from "../components/shared/components/Widget/config/api";
+import { FundraiserWidget } from "../components/main/blocks/FundraiserWidget/FundraiserWidget";
+import { API_URL, WEBSOCKET_URL } from "../components/shared/components/Widget/config/api";
+import { getFormattingLocale } from "../util/formatting";
+import { useFundraiserWebSocket } from "../hooks/useFundraiserWebSocket";
 
 export const getFundraiserPagePaths = async (fundraisersPagePath: string[]) => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(
@@ -149,6 +151,8 @@ export const FundraiserPage = withStaticProps(
   function getValidImage(image: any) {
     if (image !== null && image.asset !== null) {
       return {
+        crop: image.crop || undefined,
+        hotspot: image.hotspot || undefined,
         asset: {
           _id: image.asset._id,
           url: image.asset.url || undefined,
@@ -160,7 +164,14 @@ export const FundraiserPage = withStaticProps(
   const headerImage = getValidImage(page.header_image);
   const fundraiserImage = getValidImage(page.fundraiser_image);
 
+  const donations = useFundraiserWebSocket(
+    page.fundraiser_database_id,
+    fundraiserData,
+    WEBSOCKET_URL,
+  );
+
   const content = page.content;
+  const locale = getFormattingLocale((data.result.settings[0] as any).main_locale);
 
   return (
     <>
@@ -180,7 +191,6 @@ export const FundraiserPage = withStaticProps(
       <MainHeader
         hideOnScroll={true}
         alwaysShrink={true}
-        cookieBannerConfig={data.result.settings[0].cookie_banner_configuration}
         generalBannerConfig={data.result.settings[0].general_banner}
       >
         {draftMode ? <PreviewNavbar {...navbar} /> : <Navbar {...navbar} />}
@@ -203,11 +213,17 @@ export const FundraiserPage = withStaticProps(
         <div className={styles.fundraiserdata}>
           <FundraiserProgressBar
             config={page.fundraiser_goal_config}
-            currentAmount={fundraiserData.totalSum}
+            currentAmount={
+              donations.totalSum +
+              (page.fundraiser_goal_config?.additional_external_contributions ?? 0)
+            }
+            locale={locale}
           ></FundraiserProgressBar>
 
           <FundraiserWidget
             fundraiserId={page.fundraiser_database_id}
+            widgetConfig={page.fundraiser_widget_configuration}
+            suggestedAmounts={page.suggested_amounts || null}
             organizationInfo={{
               organization: page.fundraiser_organization,
               textTemplate: page.fundraiser_organization_text_template || "{org}",
@@ -217,16 +233,13 @@ export const FundraiserPage = withStaticProps(
                 organizationId: page.fundraiser_organization.widget_button.organization_id,
               },
             }}
-            suggestedSums={page.fundraiser_widget_config?.suggested_amounts}
-            privacyPolicyUrl={
-              data.result.settings[0].cookie_banner_configuration
-                ?.privacy_policy_link as unknown as NavLink
-            }
+            locale={locale}
           ></FundraiserWidget>
 
           <FundraiserGiftActivity
-            donations={fundraiserData.transactions}
+            donations={donations.transactions}
             config={page.gift_activity_config}
+            locale={locale}
           ></FundraiserGiftActivity>
         </div>
       </div>
@@ -251,14 +264,32 @@ const fetchFundraiser = groq`
     ${pageBannersContentQuery},
     donate_label,
     accent_color,
+    main_locale,
   },
   "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {
     ...,
-    header_image { asset-> {
-      _id,
-      url,
-    }},
-    fundraiser_image { asset-> },
+    header_image { 
+      crop,
+      hotspot,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip
+        }
+      }
+    },
+    fundraiser_image { 
+      crop,
+      hotspot,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip
+        }
+      }
+    },
     fundraiser_organization -> {
       name,
       logo { asset-> },
@@ -270,6 +301,25 @@ const fetchFundraiser = groq`
         slug { current }
       }
     },
+    fundraiser_widget_configuration -> {
+      ...,
+      payment_methods[] -> {
+        _type,
+        selector_text,
+        single_button_text,
+        recurring_button_text,
+        button_text
+      },
+      privacy_policy {
+        ...,
+        privacy_policy_url {
+          ...,
+          "slug": page->slug.current,
+          "pagetype": page->_type,
+        }
+      }
+    },
+    suggested_amounts,
     ${pageContentQuery}
     slug { current },
   },

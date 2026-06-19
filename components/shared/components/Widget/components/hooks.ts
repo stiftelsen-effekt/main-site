@@ -138,10 +138,18 @@ export const useQueryParamsPrefill = ({
       hasAppliedQueryParams.current = true;
     }
 
-    if (recurring) {
-      dispatch(setRecurring(RecurringDonation.RECURRING));
-      setWidgetContext({ ...widgetContext, open: true });
-      hasAppliedQueryParams.current = true;
+    if (recurring !== undefined) {
+      const recurringValue = Array.isArray(recurring) ? recurring[0] : recurring;
+      const isTruthy = ["1", "true"].includes(recurringValue.toLowerCase());
+      const isFalsy = ["0", "false"].includes(recurringValue.toLowerCase());
+
+      if (isTruthy || isFalsy) {
+        dispatch(
+          setRecurring(isTruthy ? RecurringDonation.RECURRING : RecurringDonation.NON_RECURRING),
+        );
+        setWidgetContext({ ...widgetContext, open: true });
+        hasAppliedQueryParams.current = true;
+      }
     }
   }, [inline, router.query, causeAreas, dispatch, setWidgetContext, widgetContext]);
 

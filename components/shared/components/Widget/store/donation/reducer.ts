@@ -26,6 +26,8 @@ import {
   SET_GLOBAL_OPERATIONS_PERCENTAGE,
   SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
   SET_OPERATIONS_CONFIG,
+  SET_API_ERROR,
+  CLEAR_API_ERROR,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -268,7 +270,11 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = { ...state, dueDay: action.payload.day };
       break;
     case SET_RECURRING:
-      state = { ...state, recurring: action.payload.recurring };
+      state = {
+        ...state,
+        recurring: action.payload.recurring,
+        method: undefined,
+      };
       break;
     case SET_KID:
       state = { ...state, kid: action.payload.kid };
@@ -289,6 +295,18 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
           ...state.vippsAgreement,
           ...action.payload.vippsAgreement,
         },
+      };
+      break;
+    case SET_API_ERROR:
+      state = {
+        ...state,
+        apiError: action.payload.message,
+      };
+      break;
+    case CLEAR_API_ERROR:
+      state = {
+        ...state,
+        apiError: undefined,
       };
       break;
     default:

@@ -19,16 +19,14 @@ export const GiveButton: React.FC<
   let customStyles = {};
   if (color) {
     customStyles = {
-      backgroundColor: color,
-      color: "white",
-      border: "none",
-    };
+      "--accent-color": color,
+    } as React.CSSProperties;
   }
 
   return (
     <button
       style={customStyles}
-      className={`${styles.givebutton} ${inverted ? styles.givebuttoninverted : null}`}
+      className={`${styles.givebutton} ${inverted ? styles.givebuttoninverted : ""}`}
       title={title}
       onClick={handleClick}
       data-cy="gi-button"

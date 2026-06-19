@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Bekendt",
+    "ordering": 1
+  },
+  {
+    "id": 2,
+    "name": "Avis",
+    "ordering": 2
+  },
+  {
+    "id": 3,
+    "name": "Internetsøgning",
+    "ordering": 3
+  },
+  {
+    "id": 4,
+    "name": "Podcast",
+    "ordering": 4
+  },
+  {
+    "id": 5,
+    "name": "Sociale medier",
+    "ordering": 5
+  },
+  {
+    "id": 6,
+    "name": "TV / Radio",
+    "ordering": 6
+  },
+  {
+    "id": 7,
+    "name": "Effektiv Altruisme",
+    "ordering": 7
+  },
+  {
+    "id": 8,
+    "name": "Andet",
+    "ordering": 8
+  }
+]

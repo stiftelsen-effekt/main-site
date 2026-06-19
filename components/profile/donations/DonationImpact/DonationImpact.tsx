@@ -1,23 +1,19 @@
 import React, { useCallback, useState } from "react";
-import useSWR from "swr";
-import { Distribution, DistributionCauseArea, Donation, GiveWellGrant } from "../../../../models";
-import { thousandize } from "../../../../util/formatting";
+import { Distribution, DistributionCauseArea, Donation } from "../../../../models";
+import { Organization } from "../../../shared/components/Widget/types/Organization";
 import style from "./DonationImpact.module.scss";
+import ghStyle from "./GlobalHealth/DonationImpactGlobalHealth.module.scss";
 import {
   DonationImpactGlobalHealthItem,
   ImpactItemConfiguration,
 } from "./GlobalHealth/DonationImpactItemGlobalHealth";
-import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
 import DonationImpactGlobalHealth from "./GlobalHealth/DonationImpactGlobalHealth";
 import DonationImpactAnimalWelfare from "./AnimalWelfare/DonationImpactAnimalWelfare";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export type DonationImpactItemsConfiguration = {
   currency: string;
   locale: string;
-  smart_distribution_label: string;
   operations_label: string;
   impact_item_configuration: ImpactItemConfiguration;
 };
@@ -27,7 +23,54 @@ const DonationImpact: React.FC<{
   distribution: Distribution;
   timestamp: Date;
   configuration: DonationImpactItemsConfiguration;
-}> = ({ donation, distribution, timestamp, configuration }) => {
+  organizations: Organization[];
+}> = ({ donation, distribution, timestamp, configuration, organizations }) => {
+  const [requiredPrecision, setRequiredPrecision] = useState(0);
+  const updatePrecision = useCallback(
+    (precision: number) => {
+      if (precision > requiredPrecision) setRequiredPrecision(precision);
+    },
+    [requiredPrecision],
+  );
+
+  if (donation.impact?.length) {
+    return (
+      <div className={ghStyle.container}>
+        <table className={ghStyle.wrapper} cellSpacing={0} data-cy="donation-impact-list">
+          <tbody>
+            {donation.impact.map((entry, i) => {
+              const matchedOrg = organizations.find((org) => org.name === entry.organization);
+              if (!matchedOrg) {
+                console.error(
+                  `No organization found matching DK impact organization "${entry.organization}"`,
+                );
+              }
+              return (
+                <DonationImpactGlobalHealthItem
+                  key={`${donation.id}-impact-${i}`}
+                  orgAbriv=""
+                  orgName={entry.recipient}
+                  sumToOrg={entry.amount}
+                  donationTimestamp={timestamp}
+                  precision={requiredPrecision}
+                  signalRequiredPrecision={updatePrecision}
+                  configuration={configuration.impact_item_configuration}
+                  preComputedImpact={{
+                    output: entry.count,
+                    shortDescription: entry.unit,
+                    longDescription: matchedOrg?.shortDescription ?? "",
+                    charityName: entry.recipient,
+                    orgUrl: matchedOrg?.informationUrl ?? "",
+                  }}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   return (
     <>
       {distribution.causeAreas.map((causeArea: DistributionCauseArea) => (

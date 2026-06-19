@@ -1,18 +1,19 @@
 import { useRouter } from "next/router";
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
-import { HeaderBanners } from "../HeaderBanners/HeaderBanners";
-import { CookieBannerQueryResult, GeneralBannerQueryResult } from "../../../../studio/sanity.types";
+import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
+import { GeneralBannerQueryResult } from "../../../../studio/sanity.types";
+import { BannerContext } from "../../../main/layout/layout";
 
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
   hideOnScroll: boolean;
-  cookieBannerConfig?: CookieBannerQueryResult;
   generalBannerConfig?: GeneralBannerQueryResult;
   alwaysShrink?: boolean;
-}> = ({ children, hideOnScroll, cookieBannerConfig, generalBannerConfig, alwaysShrink }) => {
+}> = ({ children, hideOnScroll, generalBannerConfig, alwaysShrink }) => {
   const router = useRouter();
+  const [bannerContext] = useContext(BannerContext);
 
   const [navbarShrinked, setNavbarShrinked] = useState(alwaysShrink ?? false);
   const [navBarVisible, setNavBarVisible] = useState(true);
@@ -52,17 +53,30 @@ export const MainHeader: React.FC<{
     }
   });
 
-  const classes = [styles.container];
-  if (navbarShrinked) classes.push(styles.navbarShrinked);
-  if (!navBarVisible) classes.push(styles.navbarHidden);
+  const containerClasses = [styles.container];
+  if (navbarShrinked) containerClasses.push(styles.navbarShrinked);
+
+  const headerStackClasses = [styles.headerStack];
+  if (!navBarVisible) headerStackClasses.push(styles.headerHidden);
+  const showGeneralBanner = Boolean(generalBannerConfig) && !bannerContext.generalBannerDismissed;
+  const wrapperClasses = [styles.wrapper];
+  if (showGeneralBanner) wrapperClasses.push(styles.hasGeneralBanner);
+  const spacerClasses = [styles.spacer];
+  if (showGeneralBanner) spacerClasses.push(styles.hasGeneralBanner);
 
   return (
-    <div data-cy="header" className={classes.join(" ")}>
-      <HeaderBanners
-        cookieBannerConfig={cookieBannerConfig}
-        generalBannerConfig={generalBannerConfig}
-      />
-      {children}
+    <div className={wrapperClasses.join(" ")}>
+      <div aria-hidden="true" className={spacerClasses.join(" ")} />
+      <div data-cy="header" className={containerClasses.join(" ")}>
+        <div className={headerStackClasses.join(" ")}>
+          {showGeneralBanner && generalBannerConfig && (
+            <GeneralBanner configuration={generalBannerConfig} />
+          )}
+          <div data-cy="header-navbar" className={styles.navbarWrapper}>
+            {children}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

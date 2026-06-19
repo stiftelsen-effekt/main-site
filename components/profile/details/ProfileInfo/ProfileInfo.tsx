@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AlertCircle, Check } from "react-feather";
 import { toast } from "react-toastify";
 import { Donor } from "../../../../models";
@@ -8,6 +8,7 @@ import { DonorContext } from "../../layout/donorProvider";
 import { saveDonor } from "../../_queries";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
+import { ErrorMessage } from "../../shared/ErrorMessage/ErrorMessage";
 
 export type ProfilePageInfoConfiguration = {
   name_label: string;
@@ -27,7 +28,13 @@ export const ProfileInfo: React.FC<{
   const { donor: initialDonor, setDonor: setGlobalDonor } = useContext(DonorContext);
   const [donor, setDonor] = useState<Donor | null>(initialDonor);
 
-  if (!donor || !user) return <div>Noe gikk galt.</div>;
+  useEffect(() => {
+    if (!donor && initialDonor) {
+      setDonor(initialDonor);
+    }
+  }, [donor, initialDonor]);
+
+  if (!donor || !user) return <ErrorMessage />;
 
   const save = async () => {
     const token = await getAccessTokenSilently();

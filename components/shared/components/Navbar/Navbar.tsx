@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Navbar.module.scss";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
@@ -34,12 +35,13 @@ export type MainNavbarGroup = {
 
 export type MainNavbarItem = NavLink | MainNavbarGroup;
 
-type QueryResult = {
+export type NavBarQueryResult = {
   settings: {
     logo: SanityImageObject;
     main_navigation: MainNavbarItem[];
     donate_label: string;
     accent_color: string;
+    main_currency: string;
   };
   dashboard: {
     main_navigation: MainNavbarItem[];
@@ -77,6 +79,7 @@ const query = groq`
     logo,
     donate_label,
     accent_color,
+    main_currency,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -98,6 +101,8 @@ const query = groq`
 }
 `;
 
+let cachedNavbarResult: NavBarQueryResult | null = null;
+
 export const Navbar = withStaticProps(
   async ({
     dashboard,
@@ -108,7 +113,14 @@ export const Navbar = withStaticProps(
     draftMode: boolean;
     useDashboardLogo?: boolean;
   }) => {
-    const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(query);
+    let result;
+
+    if (cachedNavbarResult) {
+      result = cachedNavbarResult;
+    } else {
+      result = await getClient(draftMode ? token : undefined).fetch<NavBarQueryResult>(query);
+      cachedNavbarResult = result;
+    }
 
     return {
       dashboard,
@@ -120,6 +132,7 @@ export const Navbar = withStaticProps(
     };
   },
 )(({ data, dashboard, useDashboardLogo }) => {
+  const router = useRouter();
   const settingsData = data.result.settings;
   const dashboardData = data.result.dashboard;
 
@@ -150,6 +163,13 @@ export const Navbar = withStaticProps(
     filteredElements.reduce((a, v) => ({ ...a, [v._key]: false }), {}),
   );
 
+  useEffect(() => {
+    setExpandMenu(false);
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "auto";
+    }
+  }, [router.asPath]);
+
   const setExpanded = (expanded: boolean) => {
     if (expanded && window.innerWidth < 1180) document.body.style.overflow = "hidden";
     else if (typeof document !== "undefined") document.body.style.overflow = "auto";
@@ -168,11 +188,8 @@ export const Navbar = withStaticProps(
   let giveButtonStyle = {};
   if (giveButton.accent_color) {
     giveButtonStyle = {
-      backgroundColor: giveButton.accent_color,
-      color: "white",
-      border: `1px solid ${giveButton.accent_color} !important`,
-      borderColor: giveButton.accent_color,
-    };
+      "--accent-color": giveButton.accent_color,
+    } as React.CSSProperties;
   }
 
   const lightLogo =
@@ -180,7 +197,10 @@ export const Navbar = withStaticProps(
     (!useDashboardLogo && !dashboard && expandMenu);
 
   return (
-    <div className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}>
+    <div
+      className={`${styles.container} ${expandMenu ? styles.navbarExpanded : ""}`}
+      data-mobile-menu-expanded={expandMenu ? "true" : "false"}
+    >
       <nav className={`${styles.navbar}`} data-cy="navbar">
         <div
           className={styles.logoWrapper}
@@ -309,6 +329,11 @@ export const Navbar = withStaticProps(
               cy="send-donation-button"
               extraMargin={true}
               onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
+              variant={
+                giveButton.accent_color && !user
+                  ? EffektButtonVariant.ACCENT
+                  : EffektButtonVariant.PRIMARY
+              }
               style={giveButtonStyle}
             >
               {giveButton.donate_label}

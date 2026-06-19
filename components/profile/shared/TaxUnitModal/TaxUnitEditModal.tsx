@@ -11,13 +11,14 @@ import styles from "./TaxUnitModal.module.scss";
 import { AlertCircle, Check } from "react-feather";
 import { useTaxUnits } from "../../../../_queries";
 import { Spinner } from "../../../shared/components/Spinner/Spinner";
+import { useMainLocale } from "../../../../context/MainLocaleContext";
+import { useFailureToast } from "../../../shared/failureToast";
+import { TaxUnitTypes } from "./taxUnitTypes";
+import { DKTaxUnitEditModal } from "./DKTaxUnitEditModal";
 
-export enum TaxUnitTypes {
-  PERSON = 1,
-  COMPANY = 2,
-}
+export { TaxUnitTypes };
 
-export const TaxUnitEditModal: React.FC<{
+const TaxUnitEditModalStandard: React.FC<{
   open: boolean;
   initial: TaxUnit;
   onSuccess: (unit: TaxUnit) => void;
@@ -25,6 +26,7 @@ export const TaxUnitEditModal: React.FC<{
   onClose: () => void;
 }> = ({ open, initial, onSuccess, onFailure, onClose }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const failureToast = useFailureToast();
 
   const {
     data: existingUnits,
@@ -33,12 +35,13 @@ export const TaxUnitEditModal: React.FC<{
     error: errorLoadingUnits,
   } = useTaxUnits(user as User, getAccessTokenSilently);
 
+  const initialSsnDigits = initial.ssn.replace(/\D/g, "");
   const [name, setName] = useState(initial.name);
   const [ssn, setSsn] = useState(initial.ssn);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [type, setType] = useState(
-    initial.ssn.length === 11 ? TaxUnitTypes.PERSON : TaxUnitTypes.COMPANY,
+    initialSsnDigits.length === 11 ? TaxUnitTypes.PERSON : TaxUnitTypes.COMPANY,
   );
 
   const create = useCallback(async () => {
@@ -48,7 +51,8 @@ export const TaxUnitEditModal: React.FC<{
     if (!user) {
       return;
     }
-    const result = await updateTaxUnit({ ...initial, name: name, ssn: ssn }, user, token);
+    const ssnDigits = ssn.replace(/\D/g, "");
+    const result = await updateTaxUnit({ ...initial, name: name, ssn: ssnDigits }, user, token);
 
     if (result && typeof result !== "string") {
       successToast();
@@ -71,17 +75,24 @@ export const TaxUnitEditModal: React.FC<{
     return <Spinner />;
   }
 
+  const ssnDigits = ssn.replace(/\D/g, "");
   const ssnIsExistingUnit = existingUnits
-    ?.filter((unit) => unit != initial)
-    .some((unit) => unit.ssn === ssn);
+    ?.filter((unit) => unit !== initial)
+    .some((unit) => unit.ssn.replace(/\D/g, "") === ssnDigits);
+
+  const personDigitCount = 11;
+  const companyDigitCount = 9;
+
+  const validatePersonId = (val: string): boolean => validateSsn(val);
+  const validateCompanyId = (val: string): boolean => validateOrg(val);
+
   const isValid =
     name !== "" &&
     ssn !== "" &&
     (type === TaxUnitTypes.PERSON
-      ? ssn.length === 11 && validateSsn(ssn)
-      : ssn.length === 9 && validateOrg(ssn)) &&
+      ? ssnDigits.length === personDigitCount && validatePersonId(ssn)
+      : ssnDigits.length === companyDigitCount && validateCompanyId(ssn)) &&
     !ssnIsExistingUnit;
-  !validatingUnits;
 
   return (
     <Lightbox open={open} onConfirm={create} onCancel={onClose} valid={isValid} loading={loading}>
@@ -119,23 +130,19 @@ export const TaxUnitEditModal: React.FC<{
           <label className={styles.label}>
             {type === TaxUnitTypes.PERSON ? "Fødselsnummer" : "Organisasjonsnummer"}
           </label>
-          <input
-            className={styles.input}
-            value={ssn}
-            onChange={(e) => setSsn(e.target.value)}
-          ></input>
+          <input className={styles.input} value={ssn} onChange={(e) => setSsn(e.target.value)} />
 
           <span className={styles.ssnValidation}>
-            {ssn.length === 11 &&
+            {ssnDigits.length === personDigitCount &&
               type === TaxUnitTypes.PERSON &&
-              !validateSsn(ssn) &&
+              !validatePersonId(ssn) &&
               "Ugyldig fødselsnummer"}
-            {ssn.length === 9 &&
+            {ssnDigits.length === companyDigitCount &&
               type === TaxUnitTypes.COMPANY &&
-              !validateOrg(ssn) &&
+              !validateCompanyId(ssn) &&
               "Ugyldig organisasjonsnummer"}
-            {ssn.length !== 11 && type === TaxUnitTypes.PERSON && "11 siffer"}
-            {ssn.length !== 9 && type === TaxUnitTypes.COMPANY && "9 siffer"}
+            {ssnDigits.length !== personDigitCount && type === TaxUnitTypes.PERSON && "11 siffer"}
+            {ssnDigits.length !== companyDigitCount && type === TaxUnitTypes.COMPANY && "9 siffer"}
             {ssnIsExistingUnit && "Skatteenhet eksisterer allerede"}
             &nbsp;
           </span>
@@ -147,5 +154,17 @@ export const TaxUnitEditModal: React.FC<{
 };
 
 const successToast = () => toast.success("Lagret", { icon: <Check size={24} color={"black"} /> });
-const failureToast = () =>
-  toast.error("Noe gikk galt", { icon: <AlertCircle size={24} color={"black"} /> });
+
+export const TaxUnitEditModal: React.FC<{
+  open: boolean;
+  initial: TaxUnit;
+  onSuccess: (unit: TaxUnit) => void;
+  onFailure: () => void;
+  onClose: () => void;
+}> = (props) => {
+  const mainLocale = useMainLocale();
+  if (mainLocale === "dk") {
+    return <DKTaxUnitEditModal {...props} />;
+  }
+  return <TaxUnitEditModalStandard {...props} />;
+};

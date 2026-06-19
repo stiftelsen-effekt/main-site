@@ -13,39 +13,6 @@
  */
 
 // Source: schema.json
-export type SanityImagePaletteSwatch = {
-  _type: "sanity.imagePaletteSwatch";
-  background?: string;
-  foreground?: string;
-  population?: number;
-  title?: string;
-};
-
-export type SanityImagePalette = {
-  _type: "sanity.imagePalette";
-  darkMuted?: SanityImagePaletteSwatch;
-  lightVibrant?: SanityImagePaletteSwatch;
-  darkVibrant?: SanityImagePaletteSwatch;
-  vibrant?: SanityImagePaletteSwatch;
-  dominant?: SanityImagePaletteSwatch;
-  lightMuted?: SanityImagePaletteSwatch;
-  muted?: SanityImagePaletteSwatch;
-};
-
-export type SanityImageDimensions = {
-  _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
-};
-
-export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
-};
-
 export type Dashboard = {
   _id: string;
   _type: "dashboard";
@@ -142,6 +109,7 @@ export type Dashboard = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -179,6 +147,7 @@ export type Site_settings = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -378,6 +347,7 @@ export type Site_settings = {
   footer_newsletter_heading?: string;
   footer_newsletter_form_url?: string;
   footer_newsletter_send_label?: string;
+  footer_email_label?: string;
   cookie_banner_configuration?: {
     title?: string;
     description?: string;
@@ -464,6 +434,53 @@ export type Site_settings = {
     expired_template?: string;
   };
   not_found_title?: string;
+};
+
+export type Dkbank = {
+  _id: string;
+  _type: "dkbank";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  explanatory_text?: string;
+  explanatory_text_email_template?: string;
+  kontonr_title?: string;
+  kontonr?: string;
+  kid_title?: string;
+  button_text?: string;
+  completed_title?: string;
+  completed_text?: string;
+  completed_redirect?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "generic_page";
+  };
+  selector_text?: string;
+  recurring_button_text?: string;
+};
+
+export type Quickpay_mobilepay = {
+  _id: string;
+  _type: "quickpay_mobilepay";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  selector_text?: string;
+  recurring_button_text?: string;
+  single_button_text?: string;
+};
+
+export type Quickpay_card = {
+  _id: string;
+  _type: "quickpay_card";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  selector_text?: string;
+  recurring_button_text?: string;
+  single_button_text?: string;
 };
 
 export type Avtalegiro = {
@@ -638,6 +655,12 @@ export type Bank = {
   button_text?: string;
   completed_title?: string;
   completed_text?: string;
+  completed_redirect?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "generic_page";
+  };
 };
 
 export type Vipps = {
@@ -671,6 +694,337 @@ export type Vipps = {
   recurring_button_text?: string;
   single_title?: string;
   single_button_text?: string;
+};
+
+export type Formsparkform = {
+  _type: "formsparkform";
+  form_id?: string;
+  form_name?: string;
+  submit_target?: "_self" | "_blank";
+  submit_button_text?: string;
+  success_message?: string;
+  fields?: Array<{
+    field_name?: string;
+    field_label?: string;
+    field_type?:
+      | "text"
+      | "email"
+      | "number"
+      | "tel"
+      | "url"
+      | "date"
+      | "time"
+      | "textarea"
+      | "select"
+      | "checkbox"
+      | "radio";
+    placeholder?: string;
+    options?: Array<{
+      value?: string;
+      label?: string;
+      _key: string;
+    }>;
+    validation?: {
+      required?: boolean;
+      min_length?: number;
+      max_length?: number;
+      min_value?: number;
+      max_value?: number;
+      pattern?: string;
+      pattern_message?: string;
+    };
+    rows?: number;
+    autocomplete?:
+      | "off"
+      | "on"
+      | "name"
+      | "email"
+      | "username"
+      | "current-password"
+      | "new-password"
+      | "tel"
+      | "street-address"
+      | "postal-code"
+      | "country";
+    _type: "formField";
+    _key: string;
+  }>;
+  turnstile_site_key?: string;
+  honeypot_field?: boolean;
+  custom_css_class?: string;
+};
+
+export type Mediacoverageteaser = {
+  _type: "mediacoverageteaser";
+  coverage?: Array<{
+    publication_logo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    links?: Array<{
+      link?: string;
+      link_text?: string;
+      _key: string;
+    }>;
+    _key: string;
+  }>;
+  read_more_button?: {
+    title?: string;
+    page?:
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "support";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "criteria";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "article_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "articles";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "results";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "vippsagreement";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "donations";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "agreements";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "profile";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "tax";
+        };
+    _type: "navitem";
+  };
+};
+
+export type Dkrenewpayment = {
+  _id: string;
+  _type: "dkrenewpayment";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  loading_text?: string;
+};
+
+export type Referraltypemapping = {
+  _type: "referraltypemapping";
+  apiKey?: string;
+  displayLabel?: string;
+};
+
+export type Organizationmapping = {
+  _type: "organizationmapping";
+  abbreviation?: string;
+  fullName?: string;
+};
+
+export type Outputmapping = {
+  _type: "outputmapping";
+  sanityKey?:
+    | "Bednets"
+    | "Deworming"
+    | "Cash"
+    | "Cash zakat"
+    | "Cash climate fund"
+    | "Vitamin A"
+    | "Malaria treatment"
+    | "Vaccinations"
+    | "Years of food fortification"
+    | "Operating funds";
+  dataKey?: string;
+};
+
+export type Dkmembershipdisplay = {
+  _id: string;
+  _type: "dkmembershipdisplay";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  membership_count_subtitle?: string;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          title?: string;
+          url?: string;
+          newtab?: boolean;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "fundraiser_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              };
+          _type: "navitem";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
+export type Dkmembershipwidget = {
+  _id: string;
+  _type: "dkmembershipwidget";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  configuration?: {
+    membership_fee_text?: string;
+    country_label?: string;
+    name_label?: string;
+    email_label?: string;
+    address_label?: string;
+    postcode_label?: string;
+    city_label?: string;
+    tin_label?: string;
+    tin_denmark_label?: string;
+    birthday_label?: string;
+    submit_button_text?: string;
+    cpr_suspicious_message?: string;
+    cpr_invalid_message?: string;
+    field_required_message?: string;
+    submitting_message?: string;
+    failed_submission_message?: string;
+  };
 };
 
 export type Donationwidgetblock = {
@@ -910,6 +1264,7 @@ export type Teasersitem = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1039,6 +1394,7 @@ export type Itncoverage = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1308,9 +1664,14 @@ export type Accordion = {
     | ({
         _key: string;
       } & Blocktables)
-    | ({
+    | {
+        header?: string;
+        formurl?: string;
+        sendlabel?: string;
+        emailLabel?: string;
+        _type: "newslettersignup";
         _key: string;
-      } & Newslettersignup)
+      }
     | ({
         _key: string;
       } & Htmlembed)
@@ -1326,6 +1687,15 @@ export type Latex = {
 export type Referralgraph = {
   _type: "referralgraph";
   graphcontext?: Graphcontext;
+  tableText?: Referralstabletext;
+};
+
+export type Referralstabletext = {
+  _type: "referralstabletext";
+  yearColumnHeader?: string;
+  typeColumnHeader?: string;
+  donationSumColumnHeader?: string;
+  donationCountColumnHeader?: string;
 };
 
 export type Resultssection = {
@@ -1391,6 +1761,7 @@ export type Resultsheadline = {
     | "Malaria treatment"
     | "Vaccinations"
     | "Years of food fortification"
+    | "Operating funds"
   >;
 };
 
@@ -1405,7 +1776,8 @@ export type Resultsoutput = {
     | "Vitamin A"
     | "Malaria treatment"
     | "Vaccinations"
-    | "Years of food fortification";
+    | "Years of food fortification"
+    | "Operating funds";
   description?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -1563,8 +1935,6 @@ export type Graphcontext = {
     _key: string;
   }>;
   allow_table?: boolean;
-  table_label?: string;
-  table_close_label?: string;
 };
 
 export type Discountratecomparison = {
@@ -1696,6 +2066,7 @@ export type Giftcardteaser = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1786,6 +2157,7 @@ export type Agreementlistdetailsconfiguration = {
   _type: "agreementlistdetailsconfiguration";
   save_button_text?: string;
   cancel_button_text?: string;
+  membership_label_prefix?: string;
   date_selector_configuration?: {
     _ref: string;
     _type: "reference";
@@ -1802,6 +2174,7 @@ export type Agreementlistdetailsconfiguration = {
   agreement_cancel_lightbox?: {
     title?: string;
     text?: string;
+    text_manual?: string;
     withdrawal_warning_text?: string;
   };
   agreement_cancelled_lightbox?: {
@@ -1892,7 +2265,7 @@ export type Fundraiserchart = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "generic_page";
     };
-    fundraiser_id?: number;
+    fundraiser_id?: string;
     _key: string;
   }>;
   caption_template?: string;
@@ -2237,6 +2610,23 @@ export type Wealthcalculator = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "wealthcalculatorconfiguration";
   };
+  impact_configuration?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "wealthcalculatorimpact";
+  };
+};
+
+export type Wealthcalculatorimpact = {
+  _id: string;
+  _type: "wealthcalculatorimpact";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  header?: string;
+  description_template_string?: string;
+  button_text?: string;
   intervention_configuration?: {
     output_configuration?: {
       _ref: string;
@@ -2337,6 +2727,85 @@ export type Citation = {
 export type Resultsteaser = {
   _type: "resultsteaser";
   title?: string;
+  sum_subtitle?: string;
+  donors_subtitle?: string;
+  see_more_button?: {
+    title?: string;
+    page?:
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "support";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "criteria";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "article_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "articles";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "results";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "vippsagreement";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "donations";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "agreements";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "profile";
+        }
+      | {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "tax";
+        };
+    _type: "navitem";
+  };
 };
 
 export type Quote = {
@@ -2382,6 +2851,24 @@ export type Donationwidget = {
         _type: "reference";
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "avtalegiro";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "quickpay_card";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "dkbank";
       }
   >;
   single_donation_text?: string;
@@ -2437,27 +2924,11 @@ export type Donationwidget = {
     donation_distribution_cause_areas_organization_sum_error_template?: string;
     donation_distribution_cause_areas_organization_negative_error_template?: string;
   };
-  operations_config?: {
-    default_percentage?: number;
-    operations_label_template?: string;
-    enabled_by_default_global?: boolean;
-    enabled_by_default_single?: boolean;
-    excluded_cause_area_ids?: Array<number>;
-  };
-  cause_area_display_config?: {
-    below_line_cause_area_ids?: Array<number>;
-    cause_area_contexts?: Array<{
-      cause_area_id?: number;
-      context_text?: string;
-      _key: string;
-    }>;
-  };
-  ui_labels?: {
-    total_label?: string;
-  };
   pane1_button_text?: string;
+  allow_anonymous_donations?: boolean;
   anon_button_text?: string;
   anon_button_text_tooltip?: string;
+  show_name_field?: boolean;
   name_placeholder?: string;
   name_invalid_error_text?: string;
   email_placeholder?: string;
@@ -2545,10 +3016,13 @@ export type Donationwidget = {
         };
     _type: "navitem";
   };
+  require_privacy_policy_checkbox?: boolean;
+  privacy_policy_required_error_text?: string;
   pane2_button_text?: string;
+  api_generic_error_message?: string;
+  show_referrals?: boolean;
   referrals_title?: string;
   other_referral_input_placeholder?: string;
-  color_scheme?: "light" | "dark";
 };
 
 export type Htmlembed = {
@@ -2559,10 +3033,15 @@ export type Htmlembed = {
 };
 
 export type Newslettersignup = {
+  _id: string;
   _type: "newslettersignup";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
   header?: string;
   formurl?: string;
   sendlabel?: string;
+  emailLabel?: string;
 };
 
 export type Fullvideo = {
@@ -2575,6 +3054,7 @@ export type Fullvideo = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
     };
+    media?: unknown;
     _type: "file";
   };
 };
@@ -2590,6 +3070,24 @@ export type Testimonials = {
   }>;
 };
 
+export type Dkgavebrevtaxwidget = {
+  _type: "dkgavebrevtaxwidget";
+  title?: string;
+  description?: string;
+  income_label?: string;
+  donation_label?: string;
+  default_income?: number;
+  default_donation?: number;
+  result_description_template?: string;
+  button_text?: string;
+  chart_labels?: {
+    maximum_deduction?: string;
+    your_donation?: string;
+    your_tax_benefit?: string;
+  };
+  locale?: string;
+};
+
 export type Taxdeductionwidget = {
   _type: "taxdeductionwidget";
   title?: string;
@@ -2598,6 +3096,16 @@ export type Taxdeductionwidget = {
   minimum_treshold?: number;
   maximum_treshold?: number;
   percentage_reduction?: number;
+  donations_label?: string;
+  tax_deduction_return_description_template?: string;
+  below_minimum_treshold_description_template?: string;
+  button_text?: string;
+  chart_labels?: {
+    maximum_threshold?: string;
+    minimum_threshold?: string;
+    deduction?: string;
+    tax_benefit?: string;
+  };
 };
 
 export type Interventionwidget = {
@@ -2729,6 +3237,126 @@ export type Interventionwidget = {
   };
 };
 
+export type Interventionwidgetoutputconfiguration = {
+  _id: string;
+  _type: "interventionwidgetoutputconfiguration";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  interventions?: Array<
+    {
+      _key: string;
+    } & Intervention
+  >;
+  explanation_label?: string;
+  explanation_text?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  donate_button?: boolean;
+  explanation_links?: Array<
+    | {
+        title?: string;
+        url?: string;
+        newtab?: boolean;
+        _type: "link";
+        _key: string;
+      }
+    | {
+        title?: string;
+        page?:
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "generic_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "support";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "criteria";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "article_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "articles";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "results";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vippsagreement";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "donations";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "agreements";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "profile";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "tax";
+            };
+        _type: "navitem";
+        _key: string;
+      }
+  >;
+};
+
 export type Intervention = {
   _type: "intervention";
   title?: string;
@@ -2851,6 +3479,7 @@ export type Normalimage = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -2876,7 +3505,6 @@ export type Blocktables = {
     _type: "table";
     _key: string;
   }>;
-  columnwidths?: Array<number>;
 };
 
 export type Fullimage = {
@@ -2889,6 +3517,7 @@ export type Fullimage = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -3218,6 +3847,7 @@ export type Splitview = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -3595,9 +4225,14 @@ export type Contentsection = {
         _key: string;
         [internalGroqTypeReferenceTo]?: "contactinfo";
       }
-    | ({
+    | {
+        header?: string;
+        formurl?: string;
+        sendlabel?: string;
+        emailLabel?: string;
+        _type: "newslettersignup";
         _key: string;
-      } & Newslettersignup)
+      }
     | ({
         _key: string;
       } & Wealthcalculator)
@@ -3845,6 +4480,9 @@ export type Contentsection = {
       } & Taxdeductionwidget)
     | ({
         _key: string;
+      } & Dkgavebrevtaxwidget)
+    | ({
+        _key: string;
       } & Giveblock)
     | {
         links?: Array<{
@@ -4001,6 +4639,7 @@ export type Contentsection = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -4152,6 +4791,144 @@ export type Contentsection = {
         _type: "donationwidgetblock";
         _key: string;
       }
+    | {
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+          failed_submission_message?: string;
+        };
+        _type: "dkmembershipwidget";
+        _key: string;
+      }
+    | {
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        _type: "dkmembershipdisplay";
+        _key: string;
+      }
+    | {
+        loading_text?: string;
+        _type: "dkrenewpayment";
+        _key: string;
+      }
+    | ({
+        _key: string;
+      } & Mediacoverageteaser)
+    | ({
+        _key: string;
+      } & Formsparkform)
   >;
   hidden?: boolean;
 };
@@ -4166,6 +4943,7 @@ export type Videoembed = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4295,11 +5073,13 @@ export type Articleheader = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
   cannonicalUrl?: string;
+  noIndex?: boolean;
 };
 
 export type Pageheader = {
@@ -4317,6 +5097,7 @@ export type Pageheader = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -4421,11 +5202,13 @@ export type Pageheader = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
   cannonicalUrl?: string;
+  noIndex?: boolean;
 };
 
 export type Navgroup = {
@@ -4744,11 +5527,13 @@ export type Contributor = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
   name?: string;
+  first_name?: string;
   email?: string;
   phone?: string;
   role?: {
@@ -4786,6 +5571,7 @@ export type Testimonial = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5114,6 +5900,112 @@ export type Donationstabledetailsconfiguration = {
       }>;
       about_org_link_title_format_string?: string;
       about_org_link_url_format_string?: string;
+      givewell_all_grants_fund_header?: string;
+      givewell_all_grants_fund_text?: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+      givewell_all_grants_fund_links?: Array<
+        | {
+            title?: string;
+            url?: string;
+            newtab?: boolean;
+            _type: "link";
+            _key: string;
+          }
+        | {
+            title?: string;
+            page?:
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "generic_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "support";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "criteria";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "article_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "articles";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "results";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "vippsagreement";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "donations";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "agreements";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "profile";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "tax";
+                };
+            _type: "navitem";
+            _key: string;
+          }
+      >;
     };
   };
 };
@@ -5185,6 +6077,7 @@ export type Fundraiser_page = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5196,6 +6089,7 @@ export type Fundraiser_page = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5211,14 +6105,21 @@ export type Fundraiser_page = {
     goal?: number;
     current_amount_text_template?: string;
     goal_amount_text_template?: string;
+    additional_external_contributions?: number;
   };
-  fundraiser_widget_config?: {
-    suggested_amounts?: Array<number>;
+  fundraiser_widget_configuration?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "fundraiserwidget";
   };
+  suggested_amounts?: Array<number>;
   gift_activity_config?: {
     title?: string;
     gift_amount_text_template?: string;
+    anonymous_gift_amount_text_template?: string;
     show_more_text_template?: string;
+    no_donations_text?: string;
   };
   description?: Array<
     | ({
@@ -5236,9 +6137,14 @@ export type Fundraiser_page = {
     | ({
         _key: string;
       } & Fundraiserchart)
-    | ({
+    | {
+        header?: string;
+        formurl?: string;
+        sendlabel?: string;
+        emailLabel?: string;
+        _type: "newslettersignup";
         _key: string;
-      } & Newslettersignup)
+      }
     | ({
         _key: string;
       } & Blocktables)
@@ -5315,9 +6221,14 @@ export type Fundraiser_page = {
           _key: string;
           [internalGroqTypeReferenceTo]?: "contactinfo";
         }
-      | ({
+      | {
+          header?: string;
+          formurl?: string;
+          sendlabel?: string;
+          emailLabel?: string;
+          _type: "newslettersignup";
           _key: string;
-        } & Newslettersignup)
+        }
       | ({
           _key: string;
         } & Wealthcalculator)
@@ -5565,6 +6476,9 @@ export type Fundraiser_page = {
         } & Taxdeductionwidget)
       | ({
           _key: string;
+        } & Dkgavebrevtaxwidget)
+      | ({
+          _key: string;
         } & Giveblock)
       | {
           links?: Array<{
@@ -5721,6 +6635,7 @@ export type Fundraiser_page = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -5872,13 +6787,304 @@ export type Fundraiser_page = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+            failed_submission_message?: string;
+          };
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
+      | {
+          loading_text?: string;
+          _type: "dkrenewpayment";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Mediacoverageteaser)
+      | ({
+          _key: string;
+        } & Formsparkform)
     >;
     hidden?: boolean;
     _type: "contentsection";
     _key: string;
   }>;
-  fundraiser_database_id?: number;
+  fundraiser_database_id?: string;
   slug?: Slug;
+};
+
+export type Fundraiserwidget = {
+  _id: string;
+  _type: "fundraiserwidget";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  payment_methods?: Array<
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "bank";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "vipps";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "quickpay_card";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "dkbank";
+      }
+  >;
+  currency_symbol?: string;
+  header?: string;
+  donation_amount_label?: string;
+  name_label?: string;
+  message_label?: string;
+  show_name_label?: string;
+  email_label?: string;
+  allow_anonymous_donations?: boolean;
+  tax_deduction_enabled?: boolean;
+  tax_deduction?: {
+    minimum_amount?: number;
+    label?: string;
+    tooltip_text?: string;
+    ssn_label?: string;
+    ssn_invalid_error_text?: string;
+    ssn_suspicious_error_text?: string;
+  };
+  newsletter_enabled?: boolean;
+  newsletter?: {
+    label?: string;
+  };
+  privacy_policy?: {
+    text?: string;
+    require_checkbox?: boolean;
+    privacy_policy_url?: {
+      title?: string;
+      page?:
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "generic_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "support";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "criteria";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "article_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "articles";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "results";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "vippsagreement";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "donations";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "agreements";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "profile";
+          }
+        | {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "tax";
+          };
+      _type: "navitem";
+    };
+    required_error_text?: string;
+  };
+  next_button_text?: string;
+  bank_account_details?: {
+    account_number_prefix?: string;
+    account_number?: string;
+    kid_prefix?: string;
+    transfer_delay_text?: string;
+    account_owner_text?: string;
+    bank_transfer_info?: string;
+  };
 };
 
 export type Organization = {
@@ -5919,6 +7125,7 @@ export type Organization = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -5961,6 +7168,7 @@ export type Vippsagreement = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -6065,11 +7273,13 @@ export type Vippsagreement = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -6144,9 +7354,14 @@ export type Vippsagreement = {
           _key: string;
           [internalGroqTypeReferenceTo]?: "contactinfo";
         }
-      | ({
+      | {
+          header?: string;
+          formurl?: string;
+          sendlabel?: string;
+          emailLabel?: string;
+          _type: "newslettersignup";
           _key: string;
-        } & Newslettersignup)
+        }
       | ({
           _key: string;
         } & Wealthcalculator)
@@ -6394,6 +7609,9 @@ export type Vippsagreement = {
         } & Taxdeductionwidget)
       | ({
           _key: string;
+        } & Dkgavebrevtaxwidget)
+      | ({
+          _key: string;
         } & Giveblock)
       | {
           links?: Array<{
@@ -6550,6 +7768,7 @@ export type Vippsagreement = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -6701,6 +7920,144 @@ export type Vippsagreement = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+            failed_submission_message?: string;
+          };
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
+      | {
+          loading_text?: string;
+          _type: "dkrenewpayment";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Mediacoverageteaser)
+      | ({
+          _key: string;
+        } & Formsparkform)
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -6726,6 +8083,7 @@ export type Results = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -6830,11 +8188,13 @@ export type Results = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -6883,6 +8243,22 @@ export type Results = {
     _type: "resultssection";
     _key: string;
   }>;
+  textConfiguration?: Resultstext;
+  outputMappings?: Array<
+    {
+      _key: string;
+    } & Outputmapping
+  >;
+  organizationMappings?: Array<
+    {
+      _key: string;
+    } & Organizationmapping
+  >;
+  referralTypeMappings?: Array<
+    {
+      _key: string;
+    } & Referraltypemapping
+  >;
   sitemap_priority?: number;
   category?: {
     _ref: string;
@@ -6891,6 +8267,48 @@ export type Results = {
     [internalGroqTypeReferenceTo]?: "category";
   };
   slug?: Slug;
+};
+
+export type Outputdonationstableheaders = {
+  _type: "outputdonationstableheaders";
+  period?: string;
+  organization?: string;
+  distribution?: string;
+  sum_donations?: string;
+};
+
+export type Cumulativedonationstableheaders = {
+  _type: "cumulativedonationstableheaders";
+  date?: string;
+  day_of_year?: string;
+  cumulative_sum?: string;
+};
+
+export type Resultstext = {
+  _type: "resultstext";
+  currencySymbol?: string;
+  collectedFromDonorsText?: string;
+  lastUpdatedText?: string;
+  impactEstimateText?: string;
+  andText?: string;
+  readMoreDefaultText?: string;
+  organizationsHeading?: string;
+  organizationsDescription?: string;
+  directDonationsText?: string;
+  smartDistributionText?: string;
+  sparkline?: {
+    smartDistributionText?: string;
+    directDonationsText?: string;
+  };
+  normalizeYAxisText?: string;
+  millionAbbreviation?: string;
+  table_label?: string;
+  table_close_label?: string;
+  table_headers?: {
+    cumulative_donations_table_headers?: Cumulativedonationstableheaders;
+    output_donations_table_headers?: Outputdonationstableheaders;
+  };
+  locale?: "no-NB" | "no-NN" | "sv-SE" | "da-DK";
 };
 
 export type Articles = {
@@ -6909,6 +8327,7 @@ export type Articles = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -7013,11 +8432,13 @@ export type Articles = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   sitemap_priority?: number;
@@ -7059,11 +8480,13 @@ export type Article_page = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "articleheader";
   };
   content?: Array<{
@@ -7138,9 +8561,14 @@ export type Article_page = {
           _key: string;
           [internalGroqTypeReferenceTo]?: "contactinfo";
         }
-      | ({
+      | {
+          header?: string;
+          formurl?: string;
+          sendlabel?: string;
+          emailLabel?: string;
+          _type: "newslettersignup";
           _key: string;
-        } & Newslettersignup)
+        }
       | ({
           _key: string;
         } & Wealthcalculator)
@@ -7388,6 +8816,9 @@ export type Article_page = {
         } & Taxdeductionwidget)
       | ({
           _key: string;
+        } & Dkgavebrevtaxwidget)
+      | ({
+          _key: string;
         } & Giveblock)
       | {
           links?: Array<{
@@ -7544,6 +8975,7 @@ export type Article_page = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -7695,6 +9127,144 @@ export type Article_page = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+            failed_submission_message?: string;
+          };
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
+      | {
+          loading_text?: string;
+          _type: "dkrenewpayment";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Mediacoverageteaser)
+      | ({
+          _key: string;
+        } & Formsparkform)
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -7726,6 +9296,7 @@ export type Criteria = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -7830,11 +9401,13 @@ export type Criteria = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -7909,9 +9482,14 @@ export type Criteria = {
           _key: string;
           [internalGroqTypeReferenceTo]?: "contactinfo";
         }
-      | ({
+      | {
+          header?: string;
+          formurl?: string;
+          sendlabel?: string;
+          emailLabel?: string;
+          _type: "newslettersignup";
           _key: string;
-        } & Newslettersignup)
+        }
       | ({
           _key: string;
         } & Wealthcalculator)
@@ -8159,6 +9737,9 @@ export type Criteria = {
         } & Taxdeductionwidget)
       | ({
           _key: string;
+        } & Dkgavebrevtaxwidget)
+      | ({
+          _key: string;
         } & Giveblock)
       | {
           links?: Array<{
@@ -8315,6 +9896,7 @@ export type Criteria = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -8466,6 +10048,144 @@ export type Criteria = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+            failed_submission_message?: string;
+          };
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
+      | {
+          loading_text?: string;
+          _type: "dkrenewpayment";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Mediacoverageteaser)
+      | ({
+          _key: string;
+        } & Formsparkform)
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -8491,6 +10211,7 @@ export type Support = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -8595,11 +10316,13 @@ export type Support = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   questionandanswergroups?: Array<
@@ -8645,6 +10368,7 @@ export type Generic_page = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -8749,11 +10473,13 @@ export type Generic_page = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
     };
     cannonicalUrl?: string;
+    noIndex?: boolean;
     _type: "pageheader";
   };
   content?: Array<{
@@ -8828,9 +10554,14 @@ export type Generic_page = {
           _key: string;
           [internalGroqTypeReferenceTo]?: "contactinfo";
         }
-      | ({
+      | {
+          header?: string;
+          formurl?: string;
+          sendlabel?: string;
+          emailLabel?: string;
+          _type: "newslettersignup";
           _key: string;
-        } & Newslettersignup)
+        }
       | ({
           _key: string;
         } & Wealthcalculator)
@@ -9078,6 +10809,9 @@ export type Generic_page = {
         } & Taxdeductionwidget)
       | ({
           _key: string;
+        } & Dkgavebrevtaxwidget)
+      | ({
+          _key: string;
         } & Giveblock)
       | {
           links?: Array<{
@@ -9234,6 +10968,7 @@ export type Generic_page = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -9385,6 +11120,144 @@ export type Generic_page = {
           _type: "donationwidgetblock";
           _key: string;
         }
+      | {
+          configuration?: {
+            membership_fee_text?: string;
+            country_label?: string;
+            name_label?: string;
+            email_label?: string;
+            address_label?: string;
+            postcode_label?: string;
+            city_label?: string;
+            tin_label?: string;
+            tin_denmark_label?: string;
+            birthday_label?: string;
+            submit_button_text?: string;
+            cpr_suspicious_message?: string;
+            cpr_invalid_message?: string;
+            field_required_message?: string;
+            submitting_message?: string;
+            failed_submission_message?: string;
+          };
+          _type: "dkmembershipwidget";
+          _key: string;
+        }
+      | {
+          membership_count_subtitle?: string;
+          description?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<
+              | {
+                  title?: string;
+                  url?: string;
+                  newtab?: boolean;
+                  _type: "link";
+                  _key: string;
+                }
+              | {
+                  title?: string;
+                  page?:
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "generic_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "support";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "criteria";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "article_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "articles";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "results";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "vippsagreement";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "donations";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "agreements";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "profile";
+                      }
+                    | {
+                        _ref: string;
+                        _type: "reference";
+                        _weak?: boolean;
+                        [internalGroqTypeReferenceTo]?: "tax";
+                      };
+                  _type: "navitem";
+                  _key: string;
+                }
+            >;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "dkmembershipdisplay";
+          _key: string;
+        }
+      | {
+          loading_text?: string;
+          _type: "dkrenewpayment";
+          _key: string;
+        }
+      | ({
+          _key: string;
+        } & Mediacoverageteaser)
+      | ({
+          _key: string;
+        } & Formsparkform)
     >;
     hidden?: boolean;
     _type: "contentsection";
@@ -9400,12 +11273,6 @@ export type Generic_page = {
   slug?: Slug;
 };
 
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
 export type Category = {
   _id: string;
   _type: "category";
@@ -9416,124 +11283,60 @@ export type Category = {
   description?: string;
 };
 
-export type Interventionwidgetoutputconfiguration = {
-  _id: string;
-  _type: "interventionwidgetoutputconfiguration";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  interventions?: Array<
+export type Table = {
+  _type: "table";
+  rows?: Array<
     {
       _key: string;
-    } & Intervention
+    } & TableRow
   >;
-  explanation_label?: string;
-  explanation_text?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  donate_button?: boolean;
-  explanation_links?: Array<
-    | {
-        title?: string;
-        url?: string;
-        newtab?: boolean;
-        _type: "link";
-        _key: string;
-      }
-    | {
-        title?: string;
-        page?:
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "generic_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "support";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "criteria";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "article_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "articles";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "results";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "vippsagreement";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "fundraiser_page";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "donations";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "agreements";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "profile";
-            }
-          | {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "tax";
-            };
-        _type: "navitem";
-        _key: string;
-      }
-  >;
+};
+
+export type TableRow = {
+  _type: "tableRow";
+  cells?: Array<string>;
+};
+
+export type SanityImagePaletteSwatch = {
+  _type: "sanity.imagePaletteSwatch";
+  background?: string;
+  foreground?: string;
+  population?: number;
+  title?: string;
+};
+
+export type SanityImagePalette = {
+  _type: "sanity.imagePalette";
+  darkMuted?: SanityImagePaletteSwatch;
+  lightVibrant?: SanityImagePaletteSwatch;
+  darkVibrant?: SanityImagePaletteSwatch;
+  vibrant?: SanityImagePaletteSwatch;
+  dominant?: SanityImagePaletteSwatch;
+  lightMuted?: SanityImagePaletteSwatch;
+  muted?: SanityImagePaletteSwatch;
+};
+
+export type SanityImageDimensions = {
+  _type: "sanity.imageDimensions";
+  height?: number;
+  width?: number;
+  aspectRatio?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
 };
 
 export type SanityFileAsset = {
@@ -9556,22 +11359,6 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type SanityImageAsset = {
@@ -9597,13 +11384,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
 export type SanityImageMetadata = {
   _type: "sanity.imageMetadata";
   location?: Geopoint;
@@ -9615,32 +11395,45 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type Table = {
-  _type: "table";
-  rows?: Array<
-    {
-      _key: string;
-    } & TableRow
-  >;
+export type Geopoint = {
+  _type: "geopoint";
+  lat?: number;
+  lng?: number;
+  alt?: number;
 };
 
-export type TableRow = {
-  _type: "tableRow";
-  cells?: Array<string>;
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type AllSanitySchemaTypes =
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | Geopoint
   | Dashboard
   | Site_settings
+  | Dkbank
+  | Quickpay_mobilepay
+  | Quickpay_card
   | Avtalegiro
   | Autogiro
   | Swish
   | Bank
   | Vipps
+  | Formsparkform
+  | Mediacoverageteaser
+  | Dkrenewpayment
+  | Referraltypemapping
+  | Organizationmapping
+  | Outputmapping
+  | Dkmembershipdisplay
+  | Dkmembershipwidget
   | Donationwidgetblock
   | Teasersitem
   | Teasers
@@ -9650,6 +11443,7 @@ export type AllSanitySchemaTypes =
   | Accordion
   | Latex
   | Referralgraph
+  | Referralstabletext
   | Resultssection
   | Resultsheadline
   | Resultsoutput
@@ -9672,6 +11466,7 @@ export type AllSanitySchemaTypes =
   | Contributorlist
   | Wealthcalculatorteaser
   | Wealthcalculator
+  | Wealthcalculatorimpact
   | Wealthcalculatorconfiguration
   | Citation
   | Resultsteaser
@@ -9681,8 +11476,10 @@ export type AllSanitySchemaTypes =
   | Newslettersignup
   | Fullvideo
   | Testimonials
+  | Dkgavebrevtaxwidget
   | Taxdeductionwidget
   | Interventionwidget
+  | Interventionwidgetoutputconfiguration
   | Intervention
   | Columns
   | Column
@@ -9720,9 +11517,13 @@ export type AllSanitySchemaTypes =
   | Donationstableconfiguration
   | Aggregateestimatedimpact
   | Fundraiser_page
+  | Fundraiserwidget
   | Organization
   | Vippsagreement
   | Results
+  | Outputdonationstableheaders
+  | Cumulativedonationstableheaders
+  | Resultstext
   | Articles
   | Giveblock
   | Article_page
@@ -9730,17 +11531,20 @@ export type AllSanitySchemaTypes =
   | Support
   | Contactinfo
   | Generic_page
-  | Slug
   | Category
-  | Interventionwidgetoutputconfiguration
-  | SanityFileAsset
-  | SanityImageCrop
-  | SanityImageHotspot
-  | SanityImageAsset
-  | SanityAssetSourceData
-  | SanityImageMetadata
   | Table
-  | TableRow;
+  | TableRow
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityImageAsset
+  | SanityImageMetadata
+  | Geopoint
+  | Slug
+  | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../_queries.ts
 // Variable: cookieBannerQuery
@@ -9877,7 +11681,7 @@ export type FetchArticlesResult = {
   }>;
 };
 // Variable: fetchArticle
-// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },    donate_label,    accent_color  },  "page": *[_type == "article_page"  && slug.current == $slug][0] {    header {      ...,      seoImage{        asset->      },    },    content[hidden!=true] {  ...,  blocks[] {    _type == 'reference' => @->,    _type == 'testimonials' =>  {      ...,      testimonials[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      },    },    _type == 'organizationslist' =>  {      ...,      organizations[]->{        ...,        "organization_page_slug": organization_page->{          slug {            current          }        },      },    },    _type == 'opendistributionbutton' =>  {      ...,      organization->,    },    _type == 'fullvideo' =>  {      ...,      video{        asset->,      },    },    _type == 'links' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'questionandanswergroup' => {        ...,  answers[] {    ...,    links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}}     },    _type == 'columns' => {      ...,      columns[] {        ...,        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        }      }    },    _type == 'paragraph' => @ {      ...,      content[] {        ...,        markDefs[] {          _type == 'citation' => @ {            ...,            "citations": citations[]->          },          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'splitview' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'splitviewhtml' => {      ...,      paragraph[] {        ...,        markDefs[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'wealthcalculator' => {      ...,      configuration->{        ...,        data_explanation {          _type == 'reference' => @->{            ...,            blocks[] {              _type == 'paragraph' => @ {                ...,                content[] {                  ...,                  markDefs[] {                    _type == 'citation' => @ {                      ...,                      "citations": citations[]->                    },                    _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',                  }                }              },            }          },        },      },      intervention_configuration {        ...,        output_configuration->{          ...,          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,          "locale": *[ _type == "site_settings"][0].main_locale,          explanation_links[] {            _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          },        },        "currency": *[ _type == "site_settings"][0].main_currency,        "locale": *[ _type == "site_settings"][0].main_locale,      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'contributorlist' => {      ...,      role->,      contributors[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      }    },    _type == 'inngress' => {      ...,      sidelinks[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'wealthcalculatorteaser' => {      ...,      button {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'interventionwidget' => {      ...,      output_configuration->{        ...,        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,        "locale": *[ _type == "site_settings"][0].main_locale,        explanation_links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'giftcardteaser' => {      ...,      links[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'normalimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'fullimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'giveblock' => {      ...,      "donate_label_short": *[ _type == "site_settings"][0].donate_label,      "accent_color": *[ _type == "site_settings"][0].accent_color,    },    _type == 'fundraiserchart' => {      ...,      fundraisers[] {        ...,        "page_slug": fundraiser_page->slug.current,      }    },    _type == 'teamintroduction' => {      ...,      contributor->{        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },      },      links {        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },        },    },    _type == 'teasers' => {      ...,      teasers[] {        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'accordion' => {      ...,      blocks[] {        _type == 'paragraph' => @ {          ...,          content[] {            ...,            markDefs[] {              _type == 'citation' => @ {                ...,                "citations": citations[]->              },              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',            }          }        },        _type != 'paragraph' => @,      }    },    _type == 'philantropicteaser' => {      ...,      button {        ...,        link {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      people[]->,    },    _type == 'plausiblerevenuetracker' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'donationwidgetblock' => {      ...,      donationwidget->{        ...,  "locale": *[ _type == "site_settings"][0].main_locale,  methods[] {     _type == 'reference' => @->{      _type == 'bank' => {        ...,        "locale": *[ _type == "site_settings"][0].main_locale,      },      _type == 'vipps' => {        _id,        selector_text,        recurring_title,        recurring_selector_earliest_text,        recurring_selector_choose_date_text,        recurring_selector_date_picker_configuration->,        recurring_button_text,        single_title,        single_button_text,      },      _type == 'swish' => {        ...      },      _type == 'autogiro' => {        ...,        recurring_manual_option_config {          ...,          date_selector_config->        }      },      _type == 'avtalegiro' => {        ...,        date_selector_configuration->      },    },  },  privacy_policy_link {    ...,    "slug": page->slug.current,    "pagetype": page->_type,  }      }    },    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,  }},    "related_articles_label": *[_id=="articles"][0].related_articles_label,    "see_all_articles_label": *[_id=="articles"][0].see_all_articles_label,    "default_give_block": *[_id=="articles"][0].default_give_block,    slug { current },  },  "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {    header,    "slug": slug.current,  }}
+// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },    donate_label,    accent_color  },  "page": *[_type == "article_page"  && slug.current == $slug][0] {    header {      ...,      seoImage{        asset->      },    },    content[hidden!=true] {  ...,  blocks[] {    _type == 'reference' => @->,    _type == 'testimonials' =>  {      ...,      testimonials[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      },    },    _type == 'organizationslist' =>  {      ...,      organizations[]->{        ...,        "organization_page_slug": organization_page->{          slug {            current          }        },      },    },    _type == 'opendistributionbutton' =>  {      ...,      organization->,    },    _type == 'fullvideo' =>  {      ...,      video{        asset->,      },    },    _type == 'links' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'questionandanswergroup' => {        ...,  answers[] {    ...,    links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}}     },    _type == 'columns' => {      ...,      columns[] {        ...,        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        }      }    },    _type == 'paragraph' => @ {      ...,      content[] {        ...,        markDefs[] {          _type == 'citation' => @ {            ...,            "citations": citations[]->          },          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'splitview' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'splitviewhtml' => {      ...,      paragraph[] {        ...,        markDefs[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'wealthcalculator' => {      ...,      configuration->{        ...,        data_explanation {          _type == 'reference' => @->{            ...,            blocks[] {              _type == 'paragraph' => @ {                ...,                content[] {                  ...,                  markDefs[] {                    _type == 'citation' => @ {                      ...,                      "citations": citations[]->                    },                    _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',                  }                }              },            }          },        },      },      impact_configuration->{        ...,        intervention_configuration {          ...,          output_configuration->{            ...,            "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,            "locale": *[ _type == "site_settings"][0].main_locale,            explanation_links[] {              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          "currency": *[ _type == "site_settings"][0].main_currency,          "locale": *[ _type == "site_settings"][0].main_locale,        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'contributorlist' => {      ...,      role->,      contributors[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      }    },    _type == 'inngress' => {      ...,      sidelinks[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'wealthcalculatorteaser' => {      ...,      button {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'interventionwidget' => {      ...,      output_configuration->{        ...,        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,        "locale": *[ _type == "site_settings"][0].main_locale,        explanation_links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'giftcardteaser' => {      ...,      links[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'normalimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'fullimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'giveblock' => {      ...,      "donate_label_short": *[ _type == "site_settings"][0].donate_label,      "accent_color": *[ _type == "site_settings"][0].accent_color,    },    _type == 'fundraiserchart' => {      ...,      fundraisers[] {        ...,        "page_slug": fundraiser_page->slug.current,      }    },    _type == 'teamintroduction' => {      ...,      contributor->{        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },      },      links {        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'teasers' => {      ...,      teasers[] {        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'accordion' => {      ...,      blocks[] {        _type == 'paragraph' => @ {          ...,          content[] {            ...,            markDefs[] {              _type == 'citation' => @ {                ...,                "citations": citations[]->              },              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',            }          }        },        _type != 'paragraph' => @,      }    },    _type == 'philantropicteaser' => {      ...,      button {        ...,        link {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      people[]->,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'plausiblerevenuetracker' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'donationwidgetblock' => {      ...,      donationwidget->{        ...,  "locale": *[ _type == "site_settings"][0].main_locale,  methods[] {     _type == 'reference' => @->{      _type == 'bank' => {        ...,        completed_redirect -> {          "slug": slug.current,        },        "locale": *[ _type == "site_settings"][0].main_locale,      },      _type == 'vipps' => {        _id,        selector_text,        recurring_title,        recurring_selector_earliest_text,        recurring_selector_choose_date_text,        recurring_selector_date_picker_configuration->,        recurring_button_text,        single_title,        single_button_text,      },      _type == 'swish' => {        ...      },      _type == 'autogiro' => {        ...,        recurring_manual_option_config {          ...,          date_selector_config->        }      },      _type == 'avtalegiro' => {        ...,        date_selector_configuration->      },      _type == 'quickpay_card' => {        ...,      },      _type == 'quickpay_mobilepay' => {        ...,      },      _type == 'dkbank' => {        ...,      },    },  },  privacy_policy_link {    ...,    "slug": page->slug.current,    "pagetype": page->_type,  }      }    },    _type == 'mediacoverageteaser' => {      ...,      coverage[] {        ...,        publication_logo {          asset->{            _id,            metadata {              lqip            }          }        },      },      read_more_button {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      },    },    _type == 'resultsteaser' => {      ...,      see_more_button {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'taxdeductionwidget' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'newslettersignup' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,  }},    "related_articles_label": *[_id=="articles"][0].related_articles_label,    "see_all_articles_label": *[_id=="articles"][0].see_all_articles_label,    "default_give_block": *[_id=="articles"][0].default_give_block,    slug { current },  },  "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {    header,    "slug": slug.current,  }}
 export type FetchArticleResult = {
   settings: Array<{
     title: string | null;
@@ -9971,6 +11775,7 @@ export type FetchArticleResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "articleheader";
     } | null;
     content: Array<{
@@ -10014,7 +11819,6 @@ export type FetchArticleResult = {
                     _type: "table";
                     _key: string;
                   }>;
-                  columnwidths?: Array<number>;
                 }
               | {
                   _key: string;
@@ -10036,6 +11840,7 @@ export type FetchArticleResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
                     };
+                    media?: unknown;
                     _type: "file";
                   };
                 }
@@ -10139,11 +11944,12 @@ export type FetchArticleResult = {
                   >;
                 }
               | {
-                  _key: string;
-                  _type: "newslettersignup";
                   header?: string;
                   formurl?: string;
                   sendlabel?: string;
+                  emailLabel?: string;
+                  _type: "newslettersignup";
+                  _key: string;
                 }
               | {
                   _key: string;
@@ -10156,6 +11962,7 @@ export type FetchArticleResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -10385,6 +12192,7 @@ export type FetchArticleResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -10410,7 +12218,6 @@ export type FetchArticleResult = {
               _type: "table";
               _key: string;
             }>;
-            columnwidths?: Array<number>;
           }
         | {
             _key: string;
@@ -10549,6 +12356,7 @@ export type FetchArticleResult = {
                 } | null;
               } | null;
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -10569,6 +12377,156 @@ export type FetchArticleResult = {
             discount_rate_min?: number;
             discount_rate_max?: number;
             _type: "discountratecomparison";
+            _key: string;
+          }
+        | {
+            _key: string;
+            _type: "dkgavebrevtaxwidget";
+            title?: string;
+            description?: string;
+            income_label?: string;
+            donation_label?: string;
+            default_income?: number;
+            default_donation?: number;
+            result_description_template?: string;
+            button_text?: string;
+            chart_labels?: {
+              maximum_deduction?: string;
+              your_donation?: string;
+              your_tax_benefit?: string;
+            };
+            locale?: string;
+          }
+        | {
+            membership_count_subtitle?: string;
+            description?: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }>;
+            _type: "dkmembershipdisplay";
+            _key: string;
+          }
+        | {
+            configuration?: {
+              membership_fee_text?: string;
+              country_label?: string;
+              name_label?: string;
+              email_label?: string;
+              address_label?: string;
+              postcode_label?: string;
+              city_label?: string;
+              tin_label?: string;
+              tin_denmark_label?: string;
+              birthday_label?: string;
+              submit_button_text?: string;
+              cpr_suspicious_message?: string;
+              cpr_invalid_message?: string;
+              field_required_message?: string;
+              submitting_message?: string;
+              failed_submission_message?: string;
+            };
+            _type: "dkmembershipwidget";
+            _key: string;
+          }
+        | {
+            loading_text?: string;
+            _type: "dkrenewpayment";
             _key: string;
           }
         | {
@@ -10831,7 +12789,54 @@ export type FetchArticleResult = {
                     button_text?: string;
                     completed_title?: string;
                     completed_text?: string;
+                    completed_redirect: {
+                      slug: string | null;
+                    } | null;
                     locale: "dk" | "en" | "et" | "no" | "sv" | null;
+                  }
+                | {
+                    _id: string;
+                    _type: "dkbank";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    title?: string;
+                    explanatory_text?: string;
+                    explanatory_text_email_template?: string;
+                    kontonr_title?: string;
+                    kontonr?: string;
+                    kid_title?: string;
+                    button_text?: string;
+                    completed_title?: string;
+                    completed_text?: string;
+                    completed_redirect?: {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    };
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                  }
+                | {
+                    _id: string;
+                    _type: "quickpay_card";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                    single_button_text?: string;
+                  }
+                | {
+                    _id: string;
+                    _type: "quickpay_mobilepay";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                    single_button_text?: string;
                   }
                 | {
                     _id: string;
@@ -10937,27 +12942,11 @@ export type FetchArticleResult = {
                 donation_distribution_cause_areas_organization_sum_error_template?: string;
                 donation_distribution_cause_areas_organization_negative_error_template?: string;
               };
-              operations_config?: {
-                default_percentage?: number;
-                operations_label_template?: string;
-                enabled_by_default_global?: boolean;
-                enabled_by_default_single?: boolean;
-                excluded_cause_area_ids?: Array<number>;
-              };
-              cause_area_display_config?: {
-                below_line_cause_area_ids?: Array<number>;
-                cause_area_contexts?: Array<{
-                  cause_area_id?: number;
-                  context_text?: string;
-                  _key: string;
-                }>;
-              };
-              ui_labels?: {
-                total_label?: string;
-              };
               pane1_button_text?: string;
+              allow_anonymous_donations?: boolean;
               anon_button_text?: string;
               anon_button_text_tooltip?: string;
+              show_name_field?: boolean;
               name_placeholder?: string;
               name_invalid_error_text?: string;
               email_placeholder?: string;
@@ -11060,10 +13049,13 @@ export type FetchArticleResult = {
                   | "vippsagreement"
                   | null;
               } | null;
+              require_privacy_policy_checkbox?: boolean;
+              privacy_policy_required_error_text?: string;
               pane2_button_text?: string;
+              api_generic_error_message?: string;
+              show_referrals?: boolean;
               referrals_title?: string;
               other_referral_input_placeholder?: string;
-              color_scheme?: "dark" | "light";
               locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
             overrides?: {
@@ -11079,6 +13071,63 @@ export type FetchArticleResult = {
             };
             _type: "donationwidgetblock";
             _key: string;
+          }
+        | {
+            _key: string;
+            _type: "formsparkform";
+            form_id?: string;
+            form_name?: string;
+            submit_target?: "_blank" | "_self";
+            submit_button_text?: string;
+            success_message?: string;
+            fields?: Array<{
+              field_name?: string;
+              field_label?: string;
+              field_type?:
+                | "checkbox"
+                | "date"
+                | "email"
+                | "number"
+                | "radio"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | "time"
+                | "url";
+              placeholder?: string;
+              options?: Array<{
+                value?: string;
+                label?: string;
+                _key: string;
+              }>;
+              validation?: {
+                required?: boolean;
+                min_length?: number;
+                max_length?: number;
+                min_value?: number;
+                max_value?: number;
+                pattern?: string;
+                pattern_message?: string;
+              };
+              rows?: number;
+              autocomplete?:
+                | "country"
+                | "current-password"
+                | "email"
+                | "name"
+                | "new-password"
+                | "off"
+                | "on"
+                | "postal-code"
+                | "street-address"
+                | "tel"
+                | "username";
+              _type: "formField";
+              _key: string;
+            }>;
+            honeypot_field?: boolean;
+            custom_css_class?: string;
           }
         | {
             _key: string;
@@ -11133,7 +13182,7 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "generic_page";
               };
-              fundraiser_id?: number;
+              fundraiser_id?: string;
               _key: string;
               page_slug: string | null;
             }> | null;
@@ -11268,6 +13317,7 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -11710,6 +13760,7 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -11845,10 +13896,124 @@ export type FetchArticleResult = {
           }
         | {
             _key: string;
-            _type: "newslettersignup";
+            _type: "mediacoverageteaser";
+            coverage: Array<{
+              publication_logo: {
+                asset: {
+                  _id: string;
+                  metadata: {
+                    lqip: string | null;
+                  } | null;
+                } | null;
+              } | null;
+              links?: Array<{
+                link?: string;
+                link_text?: string;
+                _key: string;
+              }>;
+              _key: string;
+            }> | null;
+            read_more_button: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  };
+              _type: "navitem";
+              slug: string | null;
+              pagetype:
+                | "agreements"
+                | "article_page"
+                | "articles"
+                | "criteria"
+                | "donations"
+                | "fundraiser_page"
+                | "generic_page"
+                | "profile"
+                | "results"
+                | "support"
+                | "tax"
+                | "vippsagreement"
+                | null;
+            } | null;
+          }
+        | {
             header?: string;
             formurl?: string;
             sendlabel?: string;
+            emailLabel?: string;
+            _type: "newslettersignup";
+            _key: string;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -11905,6 +14070,7 @@ export type FetchArticleResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -11987,6 +14153,7 @@ export type FetchArticleResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -12424,11 +14591,13 @@ export type FetchArticleResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
               };
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -12443,6 +14612,7 @@ export type FetchArticleResult = {
             }> | null;
             _type: "philantropicteaser";
             _key: string;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             type?: "agreement" | "donation";
@@ -12589,6 +14759,101 @@ export type FetchArticleResult = {
             _key: string;
             _type: "resultsteaser";
             title?: string;
+            sum_subtitle?: string;
+            donors_subtitle?: string;
+            see_more_button: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  };
+              _type: "navitem";
+              slug: string | null;
+              pagetype:
+                | "agreements"
+                | "article_page"
+                | "articles"
+                | "criteria"
+                | "donations"
+                | "fundraiser_page"
+                | "generic_page"
+                | "profile"
+                | "results"
+                | "support"
+                | "tax"
+                | "vippsagreement"
+                | null;
+            } | null;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -12605,6 +14870,7 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -12934,6 +15200,17 @@ export type FetchArticleResult = {
             minimum_treshold?: number;
             maximum_treshold?: number;
             percentage_reduction?: number;
+            donations_label?: string;
+            tax_deduction_return_description_template?: string;
+            below_minimum_treshold_description_template?: string;
+            button_text?: string;
+            chart_labels?: {
+              maximum_threshold?: string;
+              minimum_threshold?: string;
+              deduction?: string;
+              tax_benefit?: string;
+            };
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -12953,6 +15230,7 @@ export type FetchArticleResult = {
                 } | null;
               } | null;
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -13439,6 +15717,7 @@ export type FetchArticleResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -13700,145 +15979,155 @@ export type FetchArticleResult = {
               income_percentile_label_template_string?: string;
               income_percentile_after_donation_label_template_string?: string;
             } | null;
-            intervention_configuration: {
-              output_configuration: {
-                _id: string;
-                _type: "interventionwidgetoutputconfiguration";
-                _createdAt: string;
-                _updatedAt: string;
-                _rev: string;
-                interventions?: Array<
-                  {
-                    _key: string;
-                  } & Intervention
-                >;
-                explanation_label?: string;
-                explanation_text?: Array<{
-                  children?: Array<{
-                    marks?: Array<string>;
-                    text?: string;
-                    _type: "span";
-                    _key: string;
-                  }>;
-                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                  listItem?: "bullet" | "number";
-                  markDefs?: Array<{
-                    href?: string;
-                    _type: "link";
-                    _key: string;
-                  }>;
-                  level?: number;
-                  _type: "block";
-                  _key: string;
-                }>;
-                donate_button?: boolean;
-                explanation_links: Array<
-                  | {
-                      title?: string;
-                      url?: string;
-                      newtab?: boolean;
+            impact_configuration: {
+              _id: string;
+              _type: "wealthcalculatorimpact";
+              _createdAt: string;
+              _updatedAt: string;
+              _rev: string;
+              header?: string;
+              description_template_string?: string;
+              button_text?: string;
+              intervention_configuration: {
+                output_configuration: {
+                  _id: string;
+                  _type: "interventionwidgetoutputconfiguration";
+                  _createdAt: string;
+                  _updatedAt: string;
+                  _rev: string;
+                  interventions?: Array<
+                    {
+                      _key: string;
+                    } & Intervention
+                  >;
+                  explanation_label?: string;
+                  explanation_text?: Array<{
+                    children?: Array<{
+                      marks?: Array<string>;
+                      text?: string;
+                      _type: "span";
+                      _key: string;
+                    }>;
+                    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                    listItem?: "bullet" | "number";
+                    markDefs?: Array<{
+                      href?: string;
                       _type: "link";
                       _key: string;
-                    }
-                  | {
-                      title?: string;
-                      page?:
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "agreements";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "article_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "articles";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "criteria";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "donations";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "generic_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "profile";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "results";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "support";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "tax";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "vippsagreement";
-                          };
-                      _type: "navitem";
-                      _key: string;
-                      slug: string | null;
-                      pagetype:
-                        | "agreements"
-                        | "article_page"
-                        | "articles"
-                        | "criteria"
-                        | "donations"
-                        | "fundraiser_page"
-                        | "generic_page"
-                        | "profile"
-                        | "results"
-                        | "support"
-                        | "tax"
-                        | "vippsagreement"
-                        | null;
-                    }
-                > | null;
-                donate_label_short: string | null;
+                    }>;
+                    level?: number;
+                    _type: "block";
+                    _key: string;
+                  }>;
+                  donate_button?: boolean;
+                  explanation_links: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                        slug: string | null;
+                        pagetype:
+                          | "agreements"
+                          | "article_page"
+                          | "articles"
+                          | "criteria"
+                          | "donations"
+                          | "fundraiser_page"
+                          | "generic_page"
+                          | "profile"
+                          | "results"
+                          | "support"
+                          | "tax"
+                          | "vippsagreement"
+                          | null;
+                      }
+                  > | null;
+                  donate_label_short: string | null;
+                  locale: "dk" | "en" | "et" | "no" | "sv" | null;
+                } | null;
+                currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
                 locale: "dk" | "en" | "et" | "no" | "sv" | null;
               } | null;
-              currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-              locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
             currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
             locale: "dk" | "en" | "et" | "no" | "sv" | null;
@@ -14084,11 +16373,13 @@ export type FetchArticleResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
       };
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "articleheader";
     } | null;
     slug: string | null;
@@ -14175,6 +16466,7 @@ export type FetchArticlesPageResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -14312,6 +16604,7 @@ export type FetchArticlesPageResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "pageheader";
     } | null;
   } | null;
@@ -14330,11 +16623,13 @@ export type FetchArticlesPageResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
       };
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "articleheader";
     } | null;
     slug: string | null;
@@ -14360,7 +16655,7 @@ export type FetchFundraisersResult = {
   }>;
 };
 // Variable: fetchFundraiser
-// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },    donate_label,    accent_color,  },  "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {    ...,    header_image { asset-> {      _id,      url,    }},    fundraiser_image { asset-> },    fundraiser_organization -> {      name,      logo { asset-> },      widget_button {        cause_area_id,        organization_id,      },      organization_page -> {        slug { current }      }    },    content[hidden!=true] {  ...,  blocks[] {    _type == 'reference' => @->,    _type == 'testimonials' =>  {      ...,      testimonials[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      },    },    _type == 'organizationslist' =>  {      ...,      organizations[]->{        ...,        "organization_page_slug": organization_page->{          slug {            current          }        },      },    },    _type == 'opendistributionbutton' =>  {      ...,      organization->,    },    _type == 'fullvideo' =>  {      ...,      video{        asset->,      },    },    _type == 'links' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'questionandanswergroup' => {        ...,  answers[] {    ...,    links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}}     },    _type == 'columns' => {      ...,      columns[] {        ...,        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        }      }    },    _type == 'paragraph' => @ {      ...,      content[] {        ...,        markDefs[] {          _type == 'citation' => @ {            ...,            "citations": citations[]->          },          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'splitview' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'splitviewhtml' => {      ...,      paragraph[] {        ...,        markDefs[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'wealthcalculator' => {      ...,      configuration->{        ...,        data_explanation {          _type == 'reference' => @->{            ...,            blocks[] {              _type == 'paragraph' => @ {                ...,                content[] {                  ...,                  markDefs[] {                    _type == 'citation' => @ {                      ...,                      "citations": citations[]->                    },                    _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',                  }                }              },            }          },        },      },      intervention_configuration {        ...,        output_configuration->{          ...,          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,          "locale": *[ _type == "site_settings"][0].main_locale,          explanation_links[] {            _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          },        },        "currency": *[ _type == "site_settings"][0].main_currency,        "locale": *[ _type == "site_settings"][0].main_locale,      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'contributorlist' => {      ...,      role->,      contributors[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      }    },    _type == 'inngress' => {      ...,      sidelinks[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'wealthcalculatorteaser' => {      ...,      button {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'interventionwidget' => {      ...,      output_configuration->{        ...,        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,        "locale": *[ _type == "site_settings"][0].main_locale,        explanation_links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'giftcardteaser' => {      ...,      links[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'normalimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'fullimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'giveblock' => {      ...,      "donate_label_short": *[ _type == "site_settings"][0].donate_label,      "accent_color": *[ _type == "site_settings"][0].accent_color,    },    _type == 'fundraiserchart' => {      ...,      fundraisers[] {        ...,        "page_slug": fundraiser_page->slug.current,      }    },    _type == 'teamintroduction' => {      ...,      contributor->{        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },      },      links {        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },        },    },    _type == 'teasers' => {      ...,      teasers[] {        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'accordion' => {      ...,      blocks[] {        _type == 'paragraph' => @ {          ...,          content[] {            ...,            markDefs[] {              _type == 'citation' => @ {                ...,                "citations": citations[]->              },              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',            }          }        },        _type != 'paragraph' => @,      }    },    _type == 'philantropicteaser' => {      ...,      button {        ...,        link {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      people[]->,    },    _type == 'plausiblerevenuetracker' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'donationwidgetblock' => {      ...,      donationwidget->{        ...,  "locale": *[ _type == "site_settings"][0].main_locale,  methods[] {     _type == 'reference' => @->{      _type == 'bank' => {        ...,        "locale": *[ _type == "site_settings"][0].main_locale,      },      _type == 'vipps' => {        _id,        selector_text,        recurring_title,        recurring_selector_earliest_text,        recurring_selector_choose_date_text,        recurring_selector_date_picker_configuration->,        recurring_button_text,        single_title,        single_button_text,      },      _type == 'swish' => {        ...      },      _type == 'autogiro' => {        ...,        recurring_manual_option_config {          ...,          date_selector_config->        }      },      _type == 'avtalegiro' => {        ...,        date_selector_configuration->      },    },  },  privacy_policy_link {    ...,    "slug": page->slug.current,    "pagetype": page->_type,  }      }    },    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,  }},    slug { current },  },}
+// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },    donate_label,    accent_color,    main_locale,  },  "page": *[_type == "fundraiser_page"  && slug.current == $slug][0] {    ...,    header_image {       crop,      hotspot,      asset-> {        _id,        url,        metadata {          lqip        }      }    },    fundraiser_image {       crop,      hotspot,      asset-> {        _id,        url,        metadata {          lqip        }      }    },    fundraiser_organization -> {      name,      logo { asset-> },      widget_button {        cause_area_id,        organization_id,      },      organization_page -> {        slug { current }      }    },    fundraiser_widget_configuration -> {      ...,      payment_methods[] -> {        _type,        selector_text,        single_button_text,        recurring_button_text,        button_text      },      privacy_policy {        ...,        privacy_policy_url {          ...,          "slug": page->slug.current,          "pagetype": page->_type,        }      }    },    suggested_amounts,    content[hidden!=true] {  ...,  blocks[] {    _type == 'reference' => @->,    _type == 'testimonials' =>  {      ...,      testimonials[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      },    },    _type == 'organizationslist' =>  {      ...,      organizations[]->{        ...,        "organization_page_slug": organization_page->{          slug {            current          }        },      },    },    _type == 'opendistributionbutton' =>  {      ...,      organization->,    },    _type == 'fullvideo' =>  {      ...,      video{        asset->,      },    },    _type == 'links' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'questionandanswergroup' => {        ...,  answers[] {    ...,    links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}}     },    _type == 'columns' => {      ...,      columns[] {        ...,        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        }      }    },    _type == 'paragraph' => @ {      ...,      content[] {        ...,        markDefs[] {          _type == 'citation' => @ {            ...,            "citations": citations[]->          },          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'splitview' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'splitviewhtml' => {      ...,      paragraph[] {        ...,        markDefs[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'wealthcalculator' => {      ...,      configuration->{        ...,        data_explanation {          _type == 'reference' => @->{            ...,            blocks[] {              _type == 'paragraph' => @ {                ...,                content[] {                  ...,                  markDefs[] {                    _type == 'citation' => @ {                      ...,                      "citations": citations[]->                    },                    _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',                  }                }              },            }          },        },      },      impact_configuration->{        ...,        intervention_configuration {          ...,          output_configuration->{            ...,            "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,            "locale": *[ _type == "site_settings"][0].main_locale,            explanation_links[] {              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          "currency": *[ _type == "site_settings"][0].main_currency,          "locale": *[ _type == "site_settings"][0].main_locale,        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'contributorlist' => {      ...,      role->,      contributors[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      }    },    _type == 'inngress' => {      ...,      sidelinks[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'wealthcalculatorteaser' => {      ...,      button {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'interventionwidget' => {      ...,      output_configuration->{        ...,        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,        "locale": *[ _type == "site_settings"][0].main_locale,        explanation_links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'giftcardteaser' => {      ...,      links[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'normalimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'fullimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'giveblock' => {      ...,      "donate_label_short": *[ _type == "site_settings"][0].donate_label,      "accent_color": *[ _type == "site_settings"][0].accent_color,    },    _type == 'fundraiserchart' => {      ...,      fundraisers[] {        ...,        "page_slug": fundraiser_page->slug.current,      }    },    _type == 'teamintroduction' => {      ...,      contributor->{        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },      },      links {        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'teasers' => {      ...,      teasers[] {        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'accordion' => {      ...,      blocks[] {        _type == 'paragraph' => @ {          ...,          content[] {            ...,            markDefs[] {              _type == 'citation' => @ {                ...,                "citations": citations[]->              },              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',            }          }        },        _type != 'paragraph' => @,      }    },    _type == 'philantropicteaser' => {      ...,      button {        ...,        link {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      people[]->,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'plausiblerevenuetracker' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'donationwidgetblock' => {      ...,      donationwidget->{        ...,  "locale": *[ _type == "site_settings"][0].main_locale,  methods[] {     _type == 'reference' => @->{      _type == 'bank' => {        ...,        completed_redirect -> {          "slug": slug.current,        },        "locale": *[ _type == "site_settings"][0].main_locale,      },      _type == 'vipps' => {        _id,        selector_text,        recurring_title,        recurring_selector_earliest_text,        recurring_selector_choose_date_text,        recurring_selector_date_picker_configuration->,        recurring_button_text,        single_title,        single_button_text,      },      _type == 'swish' => {        ...      },      _type == 'autogiro' => {        ...,        recurring_manual_option_config {          ...,          date_selector_config->        }      },      _type == 'avtalegiro' => {        ...,        date_selector_configuration->      },      _type == 'quickpay_card' => {        ...,      },      _type == 'quickpay_mobilepay' => {        ...,      },      _type == 'dkbank' => {        ...,      },    },  },  privacy_policy_link {    ...,    "slug": page->slug.current,    "pagetype": page->_type,  }      }    },    _type == 'mediacoverageteaser' => {      ...,      coverage[] {        ...,        publication_logo {          asset->{            _id,            metadata {              lqip            }          }        },      },      read_more_button {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      },    },    _type == 'resultsteaser' => {      ...,      see_more_button {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'taxdeductionwidget' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'newslettersignup' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,  }},    slug { current },  },}
 export type FetchFundraiserResult = {
   settings: Array<{
     title: string | null;
@@ -14420,6 +16715,7 @@ export type FetchFundraiserResult = {
     } | null;
     donate_label: string | null;
     accent_color: string | null;
+    main_locale: "dk" | "en" | "et" | "no" | "sv" | null;
   }>;
   page: {
     _id: string;
@@ -14429,33 +16725,25 @@ export type FetchFundraiserResult = {
     _rev: string;
     title?: string;
     header_image: {
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
       asset: {
         _id: string;
         url: string | null;
+        metadata: {
+          lqip: string | null;
+        } | null;
       } | null;
     } | null;
     fundraiser_image: {
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
       asset: {
         _id: string;
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+        } | null;
       } | null;
     } | null;
     fundraiser_organization: {
@@ -14499,14 +16787,187 @@ export type FetchFundraiserResult = {
       goal?: number;
       current_amount_text_template?: string;
       goal_amount_text_template?: string;
+      additional_external_contributions?: number;
     };
-    fundraiser_widget_config?: {
-      suggested_amounts?: Array<number>;
-    };
+    fundraiser_widget_configuration: {
+      _id: string;
+      _type: "fundraiserwidget";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      title?: string;
+      payment_methods: Array<
+        | {
+            _type: "bank";
+            selector_text: string | null;
+            single_button_text: null;
+            recurring_button_text: null;
+            button_text: string | null;
+          }
+        | {
+            _type: "dkbank";
+            selector_text: string | null;
+            single_button_text: null;
+            recurring_button_text: string | null;
+            button_text: string | null;
+          }
+        | {
+            _type: "quickpay_card";
+            selector_text: string | null;
+            single_button_text: string | null;
+            recurring_button_text: string | null;
+            button_text: null;
+          }
+        | {
+            _type: "quickpay_mobilepay";
+            selector_text: string | null;
+            single_button_text: string | null;
+            recurring_button_text: string | null;
+            button_text: null;
+          }
+        | {
+            _type: "vipps";
+            selector_text: string | null;
+            single_button_text: string | null;
+            recurring_button_text: string | null;
+            button_text: null;
+          }
+      > | null;
+      currency_symbol?: string;
+      header?: string;
+      donation_amount_label?: string;
+      name_label?: string;
+      message_label?: string;
+      show_name_label?: string;
+      email_label?: string;
+      allow_anonymous_donations?: boolean;
+      tax_deduction_enabled?: boolean;
+      tax_deduction?: {
+        minimum_amount?: number;
+        label?: string;
+        tooltip_text?: string;
+        ssn_label?: string;
+        ssn_invalid_error_text?: string;
+        ssn_suspicious_error_text?: string;
+      };
+      newsletter_enabled?: boolean;
+      newsletter?: {
+        label?: string;
+      };
+      privacy_policy: {
+        text?: string;
+        require_checkbox?: boolean;
+        privacy_policy_url: {
+          title?: string;
+          page?:
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "agreements";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "article_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "articles";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "criteria";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "donations";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "fundraiser_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "generic_page";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "profile";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "results";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "support";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "tax";
+              }
+            | {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "vippsagreement";
+              };
+          _type: "navitem";
+          slug: string | null;
+          pagetype:
+            | "agreements"
+            | "article_page"
+            | "articles"
+            | "criteria"
+            | "donations"
+            | "fundraiser_page"
+            | "generic_page"
+            | "profile"
+            | "results"
+            | "support"
+            | "tax"
+            | "vippsagreement"
+            | null;
+        } | null;
+        required_error_text?: string;
+      } | null;
+      next_button_text?: string;
+      bank_account_details?: {
+        account_number_prefix?: string;
+        account_number?: string;
+        kid_prefix?: string;
+        transfer_delay_text?: string;
+        account_owner_text?: string;
+        bank_transfer_info?: string;
+      };
+    } | null;
+    suggested_amounts: Array<number> | null;
     gift_activity_config?: {
       title?: string;
       gift_amount_text_template?: string;
+      anonymous_gift_amount_text_template?: string;
       show_more_text_template?: string;
+      no_donations_text?: string;
     };
     description?: Array<
       | ({
@@ -14523,13 +16984,18 @@ export type FetchFundraiserResult = {
         } & Itncoverage)
       | ({
           _key: string;
-        } & Newslettersignup)
-      | ({
-          _key: string;
         } & Normalimage)
       | ({
           _key: string;
         } & Paragraph)
+      | {
+          header?: string;
+          formurl?: string;
+          sendlabel?: string;
+          emailLabel?: string;
+          _type: "newslettersignup";
+          _key: string;
+        }
     >;
     content: Array<{
       heading?: string;
@@ -14572,7 +17038,6 @@ export type FetchFundraiserResult = {
                     _type: "table";
                     _key: string;
                   }>;
-                  columnwidths?: Array<number>;
                 }
               | {
                   _key: string;
@@ -14594,6 +17059,7 @@ export type FetchFundraiserResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
                     };
+                    media?: unknown;
                     _type: "file";
                   };
                 }
@@ -14697,11 +17163,12 @@ export type FetchFundraiserResult = {
                   >;
                 }
               | {
-                  _key: string;
-                  _type: "newslettersignup";
                   header?: string;
                   formurl?: string;
                   sendlabel?: string;
+                  emailLabel?: string;
+                  _type: "newslettersignup";
+                  _key: string;
                 }
               | {
                   _key: string;
@@ -14714,6 +17181,7 @@ export type FetchFundraiserResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -14943,6 +17411,7 @@ export type FetchFundraiserResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -14968,7 +17437,6 @@ export type FetchFundraiserResult = {
               _type: "table";
               _key: string;
             }>;
-            columnwidths?: Array<number>;
           }
         | {
             _key: string;
@@ -15107,6 +17575,7 @@ export type FetchFundraiserResult = {
                 } | null;
               } | null;
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -15127,6 +17596,156 @@ export type FetchFundraiserResult = {
             discount_rate_min?: number;
             discount_rate_max?: number;
             _type: "discountratecomparison";
+            _key: string;
+          }
+        | {
+            _key: string;
+            _type: "dkgavebrevtaxwidget";
+            title?: string;
+            description?: string;
+            income_label?: string;
+            donation_label?: string;
+            default_income?: number;
+            default_donation?: number;
+            result_description_template?: string;
+            button_text?: string;
+            chart_labels?: {
+              maximum_deduction?: string;
+              your_donation?: string;
+              your_tax_benefit?: string;
+            };
+            locale?: string;
+          }
+        | {
+            membership_count_subtitle?: string;
+            description?: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }>;
+            _type: "dkmembershipdisplay";
+            _key: string;
+          }
+        | {
+            configuration?: {
+              membership_fee_text?: string;
+              country_label?: string;
+              name_label?: string;
+              email_label?: string;
+              address_label?: string;
+              postcode_label?: string;
+              city_label?: string;
+              tin_label?: string;
+              tin_denmark_label?: string;
+              birthday_label?: string;
+              submit_button_text?: string;
+              cpr_suspicious_message?: string;
+              cpr_invalid_message?: string;
+              field_required_message?: string;
+              submitting_message?: string;
+              failed_submission_message?: string;
+            };
+            _type: "dkmembershipwidget";
+            _key: string;
+          }
+        | {
+            loading_text?: string;
+            _type: "dkrenewpayment";
             _key: string;
           }
         | {
@@ -15389,7 +18008,54 @@ export type FetchFundraiserResult = {
                     button_text?: string;
                     completed_title?: string;
                     completed_text?: string;
+                    completed_redirect: {
+                      slug: string | null;
+                    } | null;
                     locale: "dk" | "en" | "et" | "no" | "sv" | null;
+                  }
+                | {
+                    _id: string;
+                    _type: "dkbank";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    title?: string;
+                    explanatory_text?: string;
+                    explanatory_text_email_template?: string;
+                    kontonr_title?: string;
+                    kontonr?: string;
+                    kid_title?: string;
+                    button_text?: string;
+                    completed_title?: string;
+                    completed_text?: string;
+                    completed_redirect?: {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    };
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                  }
+                | {
+                    _id: string;
+                    _type: "quickpay_card";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                    single_button_text?: string;
+                  }
+                | {
+                    _id: string;
+                    _type: "quickpay_mobilepay";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                    single_button_text?: string;
                   }
                 | {
                     _id: string;
@@ -15495,27 +18161,11 @@ export type FetchFundraiserResult = {
                 donation_distribution_cause_areas_organization_sum_error_template?: string;
                 donation_distribution_cause_areas_organization_negative_error_template?: string;
               };
-              operations_config?: {
-                default_percentage?: number;
-                operations_label_template?: string;
-                enabled_by_default_global?: boolean;
-                enabled_by_default_single?: boolean;
-                excluded_cause_area_ids?: Array<number>;
-              };
-              cause_area_display_config?: {
-                below_line_cause_area_ids?: Array<number>;
-                cause_area_contexts?: Array<{
-                  cause_area_id?: number;
-                  context_text?: string;
-                  _key: string;
-                }>;
-              };
-              ui_labels?: {
-                total_label?: string;
-              };
               pane1_button_text?: string;
+              allow_anonymous_donations?: boolean;
               anon_button_text?: string;
               anon_button_text_tooltip?: string;
+              show_name_field?: boolean;
               name_placeholder?: string;
               name_invalid_error_text?: string;
               email_placeholder?: string;
@@ -15618,10 +18268,13 @@ export type FetchFundraiserResult = {
                   | "vippsagreement"
                   | null;
               } | null;
+              require_privacy_policy_checkbox?: boolean;
+              privacy_policy_required_error_text?: string;
               pane2_button_text?: string;
+              api_generic_error_message?: string;
+              show_referrals?: boolean;
               referrals_title?: string;
               other_referral_input_placeholder?: string;
-              color_scheme?: "dark" | "light";
               locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
             overrides?: {
@@ -15637,6 +18290,63 @@ export type FetchFundraiserResult = {
             };
             _type: "donationwidgetblock";
             _key: string;
+          }
+        | {
+            _key: string;
+            _type: "formsparkform";
+            form_id?: string;
+            form_name?: string;
+            submit_target?: "_blank" | "_self";
+            submit_button_text?: string;
+            success_message?: string;
+            fields?: Array<{
+              field_name?: string;
+              field_label?: string;
+              field_type?:
+                | "checkbox"
+                | "date"
+                | "email"
+                | "number"
+                | "radio"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | "time"
+                | "url";
+              placeholder?: string;
+              options?: Array<{
+                value?: string;
+                label?: string;
+                _key: string;
+              }>;
+              validation?: {
+                required?: boolean;
+                min_length?: number;
+                max_length?: number;
+                min_value?: number;
+                max_value?: number;
+                pattern?: string;
+                pattern_message?: string;
+              };
+              rows?: number;
+              autocomplete?:
+                | "country"
+                | "current-password"
+                | "email"
+                | "name"
+                | "new-password"
+                | "off"
+                | "on"
+                | "postal-code"
+                | "street-address"
+                | "tel"
+                | "username";
+              _type: "formField";
+              _key: string;
+            }>;
+            honeypot_field?: boolean;
+            custom_css_class?: string;
           }
         | {
             _key: string;
@@ -15691,7 +18401,7 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "generic_page";
               };
-              fundraiser_id?: number;
+              fundraiser_id?: string;
               _key: string;
               page_slug: string | null;
             }> | null;
@@ -15826,6 +18536,7 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -16268,6 +18979,7 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -16403,10 +19115,124 @@ export type FetchFundraiserResult = {
           }
         | {
             _key: string;
-            _type: "newslettersignup";
+            _type: "mediacoverageteaser";
+            coverage: Array<{
+              publication_logo: {
+                asset: {
+                  _id: string;
+                  metadata: {
+                    lqip: string | null;
+                  } | null;
+                } | null;
+              } | null;
+              links?: Array<{
+                link?: string;
+                link_text?: string;
+                _key: string;
+              }>;
+              _key: string;
+            }> | null;
+            read_more_button: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  };
+              _type: "navitem";
+              slug: string | null;
+              pagetype:
+                | "agreements"
+                | "article_page"
+                | "articles"
+                | "criteria"
+                | "donations"
+                | "fundraiser_page"
+                | "generic_page"
+                | "profile"
+                | "results"
+                | "support"
+                | "tax"
+                | "vippsagreement"
+                | null;
+            } | null;
+          }
+        | {
             header?: string;
             formurl?: string;
             sendlabel?: string;
+            emailLabel?: string;
+            _type: "newslettersignup";
+            _key: string;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -16463,6 +19289,7 @@ export type FetchFundraiserResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -16545,6 +19372,7 @@ export type FetchFundraiserResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -16982,11 +19810,13 @@ export type FetchFundraiserResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
               };
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -17001,6 +19831,7 @@ export type FetchFundraiserResult = {
             }> | null;
             _type: "philantropicteaser";
             _key: string;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             type?: "agreement" | "donation";
@@ -17147,6 +19978,101 @@ export type FetchFundraiserResult = {
             _key: string;
             _type: "resultsteaser";
             title?: string;
+            sum_subtitle?: string;
+            donors_subtitle?: string;
+            see_more_button: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  };
+              _type: "navitem";
+              slug: string | null;
+              pagetype:
+                | "agreements"
+                | "article_page"
+                | "articles"
+                | "criteria"
+                | "donations"
+                | "fundraiser_page"
+                | "generic_page"
+                | "profile"
+                | "results"
+                | "support"
+                | "tax"
+                | "vippsagreement"
+                | null;
+            } | null;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -17163,6 +20089,7 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -17492,6 +20419,17 @@ export type FetchFundraiserResult = {
             minimum_treshold?: number;
             maximum_treshold?: number;
             percentage_reduction?: number;
+            donations_label?: string;
+            tax_deduction_return_description_template?: string;
+            below_minimum_treshold_description_template?: string;
+            button_text?: string;
+            chart_labels?: {
+              maximum_threshold?: string;
+              minimum_threshold?: string;
+              deduction?: string;
+              tax_benefit?: string;
+            };
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -17511,6 +20449,7 @@ export type FetchFundraiserResult = {
                 } | null;
               } | null;
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -17997,6 +20936,7 @@ export type FetchFundraiserResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -18258,145 +21198,155 @@ export type FetchFundraiserResult = {
               income_percentile_label_template_string?: string;
               income_percentile_after_donation_label_template_string?: string;
             } | null;
-            intervention_configuration: {
-              output_configuration: {
-                _id: string;
-                _type: "interventionwidgetoutputconfiguration";
-                _createdAt: string;
-                _updatedAt: string;
-                _rev: string;
-                interventions?: Array<
-                  {
-                    _key: string;
-                  } & Intervention
-                >;
-                explanation_label?: string;
-                explanation_text?: Array<{
-                  children?: Array<{
-                    marks?: Array<string>;
-                    text?: string;
-                    _type: "span";
-                    _key: string;
-                  }>;
-                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                  listItem?: "bullet" | "number";
-                  markDefs?: Array<{
-                    href?: string;
-                    _type: "link";
-                    _key: string;
-                  }>;
-                  level?: number;
-                  _type: "block";
-                  _key: string;
-                }>;
-                donate_button?: boolean;
-                explanation_links: Array<
-                  | {
-                      title?: string;
-                      url?: string;
-                      newtab?: boolean;
+            impact_configuration: {
+              _id: string;
+              _type: "wealthcalculatorimpact";
+              _createdAt: string;
+              _updatedAt: string;
+              _rev: string;
+              header?: string;
+              description_template_string?: string;
+              button_text?: string;
+              intervention_configuration: {
+                output_configuration: {
+                  _id: string;
+                  _type: "interventionwidgetoutputconfiguration";
+                  _createdAt: string;
+                  _updatedAt: string;
+                  _rev: string;
+                  interventions?: Array<
+                    {
+                      _key: string;
+                    } & Intervention
+                  >;
+                  explanation_label?: string;
+                  explanation_text?: Array<{
+                    children?: Array<{
+                      marks?: Array<string>;
+                      text?: string;
+                      _type: "span";
+                      _key: string;
+                    }>;
+                    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                    listItem?: "bullet" | "number";
+                    markDefs?: Array<{
+                      href?: string;
                       _type: "link";
                       _key: string;
-                    }
-                  | {
-                      title?: string;
-                      page?:
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "agreements";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "article_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "articles";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "criteria";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "donations";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "generic_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "profile";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "results";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "support";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "tax";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "vippsagreement";
-                          };
-                      _type: "navitem";
-                      _key: string;
-                      slug: string | null;
-                      pagetype:
-                        | "agreements"
-                        | "article_page"
-                        | "articles"
-                        | "criteria"
-                        | "donations"
-                        | "fundraiser_page"
-                        | "generic_page"
-                        | "profile"
-                        | "results"
-                        | "support"
-                        | "tax"
-                        | "vippsagreement"
-                        | null;
-                    }
-                > | null;
-                donate_label_short: string | null;
+                    }>;
+                    level?: number;
+                    _type: "block";
+                    _key: string;
+                  }>;
+                  donate_button?: boolean;
+                  explanation_links: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                        slug: string | null;
+                        pagetype:
+                          | "agreements"
+                          | "article_page"
+                          | "articles"
+                          | "criteria"
+                          | "donations"
+                          | "fundraiser_page"
+                          | "generic_page"
+                          | "profile"
+                          | "results"
+                          | "support"
+                          | "tax"
+                          | "vippsagreement"
+                          | null;
+                      }
+                  > | null;
+                  donate_label_short: string | null;
+                  locale: "dk" | "en" | "et" | "no" | "sv" | null;
+                } | null;
+                currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
                 locale: "dk" | "en" | "et" | "no" | "sv" | null;
               } | null;
-              currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-              locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
             currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
             locale: "dk" | "en" | "et" | "no" | "sv" | null;
@@ -18620,7 +21570,7 @@ export type FetchFundraiserResult = {
       _type: "contentsection";
       _key: string;
     }> | null;
-    fundraiser_database_id?: number;
+    fundraiser_database_id?: string;
     slug: {
       current: string | null;
     } | null;
@@ -18638,7 +21588,7 @@ export type FetchGenericPagesResult = {
   }>;
 };
 // Variable: fetchGenericPage
-// Query: {  "settings": *[_type == "site_settings"] {    ...,    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  }  },  "page": *[_type == "generic_page" && slug.current == $slug][0] {    ...,    header {      ...,      seoImage{        asset->{          url        },      },      pageHeader {        asset->,      },      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},},      "accent_color": *[_type == "site_settings"][0].accent_color,    },    content[hidden!=true] {  ...,  blocks[] {    _type == 'reference' => @->,    _type == 'testimonials' =>  {      ...,      testimonials[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      },    },    _type == 'organizationslist' =>  {      ...,      organizations[]->{        ...,        "organization_page_slug": organization_page->{          slug {            current          }        },      },    },    _type == 'opendistributionbutton' =>  {      ...,      organization->,    },    _type == 'fullvideo' =>  {      ...,      video{        asset->,      },    },    _type == 'links' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'questionandanswergroup' => {        ...,  answers[] {    ...,    links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}}     },    _type == 'columns' => {      ...,      columns[] {        ...,        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        }      }    },    _type == 'paragraph' => @ {      ...,      content[] {        ...,        markDefs[] {          _type == 'citation' => @ {            ...,            "citations": citations[]->          },          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'splitview' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'splitviewhtml' => {      ...,      paragraph[] {        ...,        markDefs[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'wealthcalculator' => {      ...,      configuration->{        ...,        data_explanation {          _type == 'reference' => @->{            ...,            blocks[] {              _type == 'paragraph' => @ {                ...,                content[] {                  ...,                  markDefs[] {                    _type == 'citation' => @ {                      ...,                      "citations": citations[]->                    },                    _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',                  }                }              },            }          },        },      },      intervention_configuration {        ...,        output_configuration->{          ...,          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,          "locale": *[ _type == "site_settings"][0].main_locale,          explanation_links[] {            _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          },        },        "currency": *[ _type == "site_settings"][0].main_currency,        "locale": *[ _type == "site_settings"][0].main_locale,      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'contributorlist' => {      ...,      role->,      contributors[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      }    },    _type == 'inngress' => {      ...,      sidelinks[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'wealthcalculatorteaser' => {      ...,      button {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'interventionwidget' => {      ...,      output_configuration->{        ...,        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,        "locale": *[ _type == "site_settings"][0].main_locale,        explanation_links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'giftcardteaser' => {      ...,      links[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'normalimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'fullimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'giveblock' => {      ...,      "donate_label_short": *[ _type == "site_settings"][0].donate_label,      "accent_color": *[ _type == "site_settings"][0].accent_color,    },    _type == 'fundraiserchart' => {      ...,      fundraisers[] {        ...,        "page_slug": fundraiser_page->slug.current,      }    },    _type == 'teamintroduction' => {      ...,      contributor->{        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },      },      links {        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },        },    },    _type == 'teasers' => {      ...,      teasers[] {        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'accordion' => {      ...,      blocks[] {        _type == 'paragraph' => @ {          ...,          content[] {            ...,            markDefs[] {              _type == 'citation' => @ {                ...,                "citations": citations[]->              },              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',            }          }        },        _type != 'paragraph' => @,      }    },    _type == 'philantropicteaser' => {      ...,      button {        ...,        link {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      people[]->,    },    _type == 'plausiblerevenuetracker' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'donationwidgetblock' => {      ...,      donationwidget->{        ...,  "locale": *[ _type == "site_settings"][0].main_locale,  methods[] {     _type == 'reference' => @->{      _type == 'bank' => {        ...,        "locale": *[ _type == "site_settings"][0].main_locale,      },      _type == 'vipps' => {        _id,        selector_text,        recurring_title,        recurring_selector_earliest_text,        recurring_selector_choose_date_text,        recurring_selector_date_picker_configuration->,        recurring_button_text,        single_title,        single_button_text,      },      _type == 'swish' => {        ...      },      _type == 'autogiro' => {        ...,        recurring_manual_option_config {          ...,          date_selector_config->        }      },      _type == 'avtalegiro' => {        ...,        date_selector_configuration->      },    },  },  privacy_policy_link {    ...,    "slug": page->slug.current,    "pagetype": page->_type,  }      }    },    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,  }},    slug { current },  }}
+// Query: {  "settings": *[_type == "site_settings"] {    ...,    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  }  },  "page": *[_type == "generic_page" && slug.current == $slug][0] {    ...,    header {      ...,      seoImage{        asset->{          url        },      },      pageHeader {        asset->,      },      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},},      "accent_color": *[_type == "site_settings"][0].accent_color,    },    content[hidden!=true] {  ...,  blocks[] {    _type == 'reference' => @->,    _type == 'testimonials' =>  {      ...,      testimonials[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      },    },    _type == 'organizationslist' =>  {      ...,      organizations[]->{        ...,        "organization_page_slug": organization_page->{          slug {            current          }        },      },    },    _type == 'opendistributionbutton' =>  {      ...,      organization->,    },    _type == 'fullvideo' =>  {      ...,      video{        asset->,      },    },    _type == 'links' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'questionandanswergroup' => {        ...,  answers[] {    ...,    links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}}     },    _type == 'columns' => {      ...,      columns[] {        ...,        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        }      }    },    _type == 'paragraph' => @ {      ...,      content[] {        ...,        markDefs[] {          _type == 'citation' => @ {            ...,            "citations": citations[]->          },          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'splitview' => {      ...,      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    _type == 'splitviewhtml' => {      ...,      paragraph[] {        ...,        markDefs[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',        }      }    },    _type == 'wealthcalculator' => {      ...,      configuration->{        ...,        data_explanation {          _type == 'reference' => @->{            ...,            blocks[] {              _type == 'paragraph' => @ {                ...,                content[] {                  ...,                  markDefs[] {                    _type == 'citation' => @ {                      ...,                      "citations": citations[]->                    },                    _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',                  }                }              },            }          },        },      },      impact_configuration->{        ...,        intervention_configuration {          ...,          output_configuration->{            ...,            "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,            "locale": *[ _type == "site_settings"][0].main_locale,            explanation_links[] {              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          "currency": *[ _type == "site_settings"][0].main_currency,          "locale": *[ _type == "site_settings"][0].main_locale,        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'contributorlist' => {      ...,      role->,      contributors[]->{        ...,        image {          asset->{            _id,            metadata {              lqip            }          }        }      }    },    _type == 'inngress' => {      ...,      sidelinks[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'wealthcalculatorteaser' => {      ...,      button {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'interventionwidget' => {      ...,      output_configuration->{        ...,        "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,        "locale": *[ _type == "site_settings"][0].main_locale,        explanation_links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      "currency": *[ _type == "site_settings"][0].main_currency,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'giftcardteaser' => {      ...,      links[] {        _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},      },    },    _type == 'normalimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'fullimage' => {      ...,      image {        asset -> {          _id,          metadata {            lqip          }        }      },    },    _type == 'giveblock' => {      ...,      "donate_label_short": *[ _type == "site_settings"][0].donate_label,      "accent_color": *[ _type == "site_settings"][0].accent_color,    },    _type == 'fundraiserchart' => {      ...,      fundraisers[] {        ...,        "page_slug": fundraiser_page->slug.current,      }    },    _type == 'teamintroduction' => {      ...,      contributor->{        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },      },      links {        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'teasers' => {      ...,      teasers[] {        ...,        image {          asset -> {            _id,            metadata {              lqip            }          }        },        links[] {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },    },    _type == 'accordion' => {      ...,      blocks[] {        _type == 'paragraph' => @ {          ...,          content[] {            ...,            markDefs[] {              _type == 'citation' => @ {                ...,                "citations": citations[]->              },              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',            }          }        },        _type != 'paragraph' => @,      }    },    _type == 'philantropicteaser' => {      ...,      button {        ...,        link {          _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},        },      },      people[]->,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'plausiblerevenuetracker' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'donationwidgetblock' => {      ...,      donationwidget->{        ...,  "locale": *[ _type == "site_settings"][0].main_locale,  methods[] {     _type == 'reference' => @->{      _type == 'bank' => {        ...,        completed_redirect -> {          "slug": slug.current,        },        "locale": *[ _type == "site_settings"][0].main_locale,      },      _type == 'vipps' => {        _id,        selector_text,        recurring_title,        recurring_selector_earliest_text,        recurring_selector_choose_date_text,        recurring_selector_date_picker_configuration->,        recurring_button_text,        single_title,        single_button_text,      },      _type == 'swish' => {        ...      },      _type == 'autogiro' => {        ...,        recurring_manual_option_config {          ...,          date_selector_config->        }      },      _type == 'avtalegiro' => {        ...,        date_selector_configuration->      },      _type == 'quickpay_card' => {        ...,      },      _type == 'quickpay_mobilepay' => {        ...,      },      _type == 'dkbank' => {        ...,      },    },  },  privacy_policy_link {    ...,    "slug": page->slug.current,    "pagetype": page->_type,  }      }    },    _type == 'mediacoverageteaser' => {      ...,      coverage[] {        ...,        publication_logo {          asset->{            _id,            metadata {              lqip            }          }        },      },      read_more_button {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      },    },    _type == 'resultsteaser' => {      ...,      see_more_button {        ...,        "slug": page->slug.current,        "pagetype": page->_type,      },      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'taxdeductionwidget' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type == 'newslettersignup' => {      ...,      "locale": *[ _type == "site_settings"][0].main_locale,    },    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,  }},    slug { current },  }}
 export type FetchGenericPageResult = {
   settings: Array<{
     _id: string;
@@ -18656,6 +21606,7 @@ export type FetchGenericPageResult = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -18876,6 +21827,7 @@ export type FetchGenericPageResult = {
     footer_newsletter_heading?: string;
     footer_newsletter_form_url?: string;
     footer_newsletter_send_label?: string;
+    footer_email_label?: string;
     cookie_banner_configuration: {
       title?: string;
       description?: string;
@@ -18921,6 +21873,7 @@ export type FetchGenericPageResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -19039,6 +21992,7 @@ export type FetchGenericPageResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "pageheader";
       pageHeader: null;
       accent_color: string | null;
@@ -19084,7 +22038,6 @@ export type FetchGenericPageResult = {
                     _type: "table";
                     _key: string;
                   }>;
-                  columnwidths?: Array<number>;
                 }
               | {
                   _key: string;
@@ -19106,6 +22059,7 @@ export type FetchGenericPageResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
                     };
+                    media?: unknown;
                     _type: "file";
                   };
                 }
@@ -19209,11 +22163,12 @@ export type FetchGenericPageResult = {
                   >;
                 }
               | {
-                  _key: string;
-                  _type: "newslettersignup";
                   header?: string;
                   formurl?: string;
                   sendlabel?: string;
+                  emailLabel?: string;
+                  _type: "newslettersignup";
+                  _key: string;
                 }
               | {
                   _key: string;
@@ -19226,6 +22181,7 @@ export type FetchGenericPageResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -19455,6 +22411,7 @@ export type FetchGenericPageResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -19480,7 +22437,6 @@ export type FetchGenericPageResult = {
               _type: "table";
               _key: string;
             }>;
-            columnwidths?: Array<number>;
           }
         | {
             _key: string;
@@ -19619,6 +22575,7 @@ export type FetchGenericPageResult = {
                 } | null;
               } | null;
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -19639,6 +22596,156 @@ export type FetchGenericPageResult = {
             discount_rate_min?: number;
             discount_rate_max?: number;
             _type: "discountratecomparison";
+            _key: string;
+          }
+        | {
+            _key: string;
+            _type: "dkgavebrevtaxwidget";
+            title?: string;
+            description?: string;
+            income_label?: string;
+            donation_label?: string;
+            default_income?: number;
+            default_donation?: number;
+            result_description_template?: string;
+            button_text?: string;
+            chart_labels?: {
+              maximum_deduction?: string;
+              your_donation?: string;
+              your_tax_benefit?: string;
+            };
+            locale?: string;
+          }
+        | {
+            membership_count_subtitle?: string;
+            description?: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }>;
+            _type: "dkmembershipdisplay";
+            _key: string;
+          }
+        | {
+            configuration?: {
+              membership_fee_text?: string;
+              country_label?: string;
+              name_label?: string;
+              email_label?: string;
+              address_label?: string;
+              postcode_label?: string;
+              city_label?: string;
+              tin_label?: string;
+              tin_denmark_label?: string;
+              birthday_label?: string;
+              submit_button_text?: string;
+              cpr_suspicious_message?: string;
+              cpr_invalid_message?: string;
+              field_required_message?: string;
+              submitting_message?: string;
+              failed_submission_message?: string;
+            };
+            _type: "dkmembershipwidget";
+            _key: string;
+          }
+        | {
+            loading_text?: string;
+            _type: "dkrenewpayment";
             _key: string;
           }
         | {
@@ -19901,7 +23008,54 @@ export type FetchGenericPageResult = {
                     button_text?: string;
                     completed_title?: string;
                     completed_text?: string;
+                    completed_redirect: {
+                      slug: string | null;
+                    } | null;
                     locale: "dk" | "en" | "et" | "no" | "sv" | null;
+                  }
+                | {
+                    _id: string;
+                    _type: "dkbank";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    title?: string;
+                    explanatory_text?: string;
+                    explanatory_text_email_template?: string;
+                    kontonr_title?: string;
+                    kontonr?: string;
+                    kid_title?: string;
+                    button_text?: string;
+                    completed_title?: string;
+                    completed_text?: string;
+                    completed_redirect?: {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    };
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                  }
+                | {
+                    _id: string;
+                    _type: "quickpay_card";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                    single_button_text?: string;
+                  }
+                | {
+                    _id: string;
+                    _type: "quickpay_mobilepay";
+                    _createdAt: string;
+                    _updatedAt: string;
+                    _rev: string;
+                    selector_text?: string;
+                    recurring_button_text?: string;
+                    single_button_text?: string;
                   }
                 | {
                     _id: string;
@@ -20007,27 +23161,11 @@ export type FetchGenericPageResult = {
                 donation_distribution_cause_areas_organization_sum_error_template?: string;
                 donation_distribution_cause_areas_organization_negative_error_template?: string;
               };
-              operations_config?: {
-                default_percentage?: number;
-                operations_label_template?: string;
-                enabled_by_default_global?: boolean;
-                enabled_by_default_single?: boolean;
-                excluded_cause_area_ids?: Array<number>;
-              };
-              cause_area_display_config?: {
-                below_line_cause_area_ids?: Array<number>;
-                cause_area_contexts?: Array<{
-                  cause_area_id?: number;
-                  context_text?: string;
-                  _key: string;
-                }>;
-              };
-              ui_labels?: {
-                total_label?: string;
-              };
               pane1_button_text?: string;
+              allow_anonymous_donations?: boolean;
               anon_button_text?: string;
               anon_button_text_tooltip?: string;
+              show_name_field?: boolean;
               name_placeholder?: string;
               name_invalid_error_text?: string;
               email_placeholder?: string;
@@ -20130,10 +23268,13 @@ export type FetchGenericPageResult = {
                   | "vippsagreement"
                   | null;
               } | null;
+              require_privacy_policy_checkbox?: boolean;
+              privacy_policy_required_error_text?: string;
               pane2_button_text?: string;
+              api_generic_error_message?: string;
+              show_referrals?: boolean;
               referrals_title?: string;
               other_referral_input_placeholder?: string;
-              color_scheme?: "dark" | "light";
               locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
             overrides?: {
@@ -20149,6 +23290,63 @@ export type FetchGenericPageResult = {
             };
             _type: "donationwidgetblock";
             _key: string;
+          }
+        | {
+            _key: string;
+            _type: "formsparkform";
+            form_id?: string;
+            form_name?: string;
+            submit_target?: "_blank" | "_self";
+            submit_button_text?: string;
+            success_message?: string;
+            fields?: Array<{
+              field_name?: string;
+              field_label?: string;
+              field_type?:
+                | "checkbox"
+                | "date"
+                | "email"
+                | "number"
+                | "radio"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | "time"
+                | "url";
+              placeholder?: string;
+              options?: Array<{
+                value?: string;
+                label?: string;
+                _key: string;
+              }>;
+              validation?: {
+                required?: boolean;
+                min_length?: number;
+                max_length?: number;
+                min_value?: number;
+                max_value?: number;
+                pattern?: string;
+                pattern_message?: string;
+              };
+              rows?: number;
+              autocomplete?:
+                | "country"
+                | "current-password"
+                | "email"
+                | "name"
+                | "new-password"
+                | "off"
+                | "on"
+                | "postal-code"
+                | "street-address"
+                | "tel"
+                | "username";
+              _type: "formField";
+              _key: string;
+            }>;
+            honeypot_field?: boolean;
+            custom_css_class?: string;
           }
         | {
             _key: string;
@@ -20203,7 +23401,7 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "generic_page";
               };
-              fundraiser_id?: number;
+              fundraiser_id?: string;
               _key: string;
               page_slug: string | null;
             }> | null;
@@ -20338,6 +23536,7 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -20780,6 +23979,7 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -20915,10 +24115,124 @@ export type FetchGenericPageResult = {
           }
         | {
             _key: string;
-            _type: "newslettersignup";
+            _type: "mediacoverageteaser";
+            coverage: Array<{
+              publication_logo: {
+                asset: {
+                  _id: string;
+                  metadata: {
+                    lqip: string | null;
+                  } | null;
+                } | null;
+              } | null;
+              links?: Array<{
+                link?: string;
+                link_text?: string;
+                _key: string;
+              }>;
+              _key: string;
+            }> | null;
+            read_more_button: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  };
+              _type: "navitem";
+              slug: string | null;
+              pagetype:
+                | "agreements"
+                | "article_page"
+                | "articles"
+                | "criteria"
+                | "donations"
+                | "fundraiser_page"
+                | "generic_page"
+                | "profile"
+                | "results"
+                | "support"
+                | "tax"
+                | "vippsagreement"
+                | null;
+            } | null;
+          }
+        | {
             header?: string;
             formurl?: string;
             sendlabel?: string;
+            emailLabel?: string;
+            _type: "newslettersignup";
+            _key: string;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -20975,6 +24289,7 @@ export type FetchGenericPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -21057,6 +24372,7 @@ export type FetchGenericPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -21494,11 +24810,13 @@ export type FetchGenericPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
               };
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -21513,6 +24831,7 @@ export type FetchGenericPageResult = {
             }> | null;
             _type: "philantropicteaser";
             _key: string;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             type?: "agreement" | "donation";
@@ -21659,6 +24978,101 @@ export type FetchGenericPageResult = {
             _key: string;
             _type: "resultsteaser";
             title?: string;
+            sum_subtitle?: string;
+            donors_subtitle?: string;
+            see_more_button: {
+              title?: string;
+              page?:
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "agreements";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "article_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "articles";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "criteria";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "donations";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "generic_page";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "profile";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "results";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "support";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "tax";
+                  }
+                | {
+                    _ref: string;
+                    _type: "reference";
+                    _weak?: boolean;
+                    [internalGroqTypeReferenceTo]?: "vippsagreement";
+                  };
+              _type: "navitem";
+              slug: string | null;
+              pagetype:
+                | "agreements"
+                | "article_page"
+                | "articles"
+                | "criteria"
+                | "donations"
+                | "fundraiser_page"
+                | "generic_page"
+                | "profile"
+                | "results"
+                | "support"
+                | "tax"
+                | "vippsagreement"
+                | null;
+            } | null;
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -21675,6 +25089,7 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -22004,6 +25419,17 @@ export type FetchGenericPageResult = {
             minimum_treshold?: number;
             maximum_treshold?: number;
             percentage_reduction?: number;
+            donations_label?: string;
+            tax_deduction_return_description_template?: string;
+            below_minimum_treshold_description_template?: string;
+            button_text?: string;
+            chart_labels?: {
+              maximum_threshold?: string;
+              minimum_threshold?: string;
+              deduction?: string;
+              tax_benefit?: string;
+            };
+            locale: "dk" | "en" | "et" | "no" | "sv" | null;
           }
         | {
             _key: string;
@@ -22023,6 +25449,7 @@ export type FetchGenericPageResult = {
                 } | null;
               } | null;
               name?: string;
+              first_name?: string;
               email?: string;
               phone?: string;
               role?: {
@@ -22509,6 +25936,7 @@ export type FetchGenericPageResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -22770,145 +26198,155 @@ export type FetchGenericPageResult = {
               income_percentile_label_template_string?: string;
               income_percentile_after_donation_label_template_string?: string;
             } | null;
-            intervention_configuration: {
-              output_configuration: {
-                _id: string;
-                _type: "interventionwidgetoutputconfiguration";
-                _createdAt: string;
-                _updatedAt: string;
-                _rev: string;
-                interventions?: Array<
-                  {
-                    _key: string;
-                  } & Intervention
-                >;
-                explanation_label?: string;
-                explanation_text?: Array<{
-                  children?: Array<{
-                    marks?: Array<string>;
-                    text?: string;
-                    _type: "span";
-                    _key: string;
-                  }>;
-                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                  listItem?: "bullet" | "number";
-                  markDefs?: Array<{
-                    href?: string;
-                    _type: "link";
-                    _key: string;
-                  }>;
-                  level?: number;
-                  _type: "block";
-                  _key: string;
-                }>;
-                donate_button?: boolean;
-                explanation_links: Array<
-                  | {
-                      title?: string;
-                      url?: string;
-                      newtab?: boolean;
+            impact_configuration: {
+              _id: string;
+              _type: "wealthcalculatorimpact";
+              _createdAt: string;
+              _updatedAt: string;
+              _rev: string;
+              header?: string;
+              description_template_string?: string;
+              button_text?: string;
+              intervention_configuration: {
+                output_configuration: {
+                  _id: string;
+                  _type: "interventionwidgetoutputconfiguration";
+                  _createdAt: string;
+                  _updatedAt: string;
+                  _rev: string;
+                  interventions?: Array<
+                    {
+                      _key: string;
+                    } & Intervention
+                  >;
+                  explanation_label?: string;
+                  explanation_text?: Array<{
+                    children?: Array<{
+                      marks?: Array<string>;
+                      text?: string;
+                      _type: "span";
+                      _key: string;
+                    }>;
+                    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                    listItem?: "bullet" | "number";
+                    markDefs?: Array<{
+                      href?: string;
                       _type: "link";
                       _key: string;
-                    }
-                  | {
-                      title?: string;
-                      page?:
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "agreements";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "article_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "articles";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "criteria";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "donations";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "generic_page";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "profile";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "results";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "support";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "tax";
-                          }
-                        | {
-                            _ref: string;
-                            _type: "reference";
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: "vippsagreement";
-                          };
-                      _type: "navitem";
-                      _key: string;
-                      slug: string | null;
-                      pagetype:
-                        | "agreements"
-                        | "article_page"
-                        | "articles"
-                        | "criteria"
-                        | "donations"
-                        | "fundraiser_page"
-                        | "generic_page"
-                        | "profile"
-                        | "results"
-                        | "support"
-                        | "tax"
-                        | "vippsagreement"
-                        | null;
-                    }
-                > | null;
-                donate_label_short: string | null;
+                    }>;
+                    level?: number;
+                    _type: "block";
+                    _key: string;
+                  }>;
+                  donate_button?: boolean;
+                  explanation_links: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                        slug: string | null;
+                        pagetype:
+                          | "agreements"
+                          | "article_page"
+                          | "articles"
+                          | "criteria"
+                          | "donations"
+                          | "fundraiser_page"
+                          | "generic_page"
+                          | "profile"
+                          | "results"
+                          | "support"
+                          | "tax"
+                          | "vippsagreement"
+                          | null;
+                      }
+                  > | null;
+                  donate_label_short: string | null;
+                  locale: "dk" | "en" | "et" | "no" | "sv" | null;
+                } | null;
+                currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
                 locale: "dk" | "en" | "et" | "no" | "sv" | null;
               } | null;
-              currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
-              locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
             currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
             locale: "dk" | "en" | "et" | "no" | "sv" | null;
@@ -23154,7 +26592,7 @@ export type FetchResultsPageSlugResult = {
   } | null;
 };
 // Variable: fetchResults
-// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  }  },  "page": *[_type == "results"][0] {    "slug": slug.current,    content[] {      ...,      blocks[] {        _type == 'reference' => @->,        _type == 'resultsoutput' => {          ...,          organization_links[] {            ...,            link {              ...,              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          links {            ...,            links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}          },        },        _type != 'resultsoutput' && _type != 'reference' => @,      },    },    header {      ...,      seoImage{        asset->      },      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },  },}
+// Query: {  "settings": *[_type == "site_settings"] {    title,      cookie_banner_configuration {      ...,  privacy_policy_link {    "_key": coalesce(_id,_key,"id_privacy_policy_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  },  general_banner-> {      ...,  link {    "_key": coalesce(_id,_key,"id_general_banner_link"),    _type,    title,    "slug": page->slug.current,    "pagetype": coalesce(page->_type, "generic_page"),  }  }  },  "page": *[_type == "results"][0] {    "slug": slug.current,    content[] {      ...,      blocks[] {        _type == 'reference' => @->,        _type == 'resultsoutput' => {          ...,          organization_links[] {            ...,            link {              ...,              _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},            },          },          links {            ...,            links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}          },        },        _type == 'cumulativedonationsgraph' => {          ...,          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.cumulative_donations_table_headers,          "currency": *[ _type == "site_settings"][0].main_currency,        },        _type == 'referralgraph' => {          ...,          tableText {            yearColumnHeader,            typeColumnHeader,            donationSumColumnHeader,            donationCountColumnHeader          }        },        _type == 'resultsoutput' => {          ...,          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.output_donations_table_headers,        },        _type == 'giveblock' => {          ...,          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,          "accent_color": *[ _type == "site_settings"][0].accent_color,        },        _type != 'reference' => @,      },    },    header {      ...,      seoImage{        asset->      },      links[] {  _type == 'navitem' => @ {  ...,  "slug": page->slug.current,  "pagetype": page->_type,},_type == 'link' => @ {  ...},}    },    textConfiguration,    outputMappings[] {      sanityKey,      dataKey    },    organizationMappings[] {      abbreviation,      fullName    },    referralTypeMappings[] {      apiKey,      displayLabel    },  },}
 export type FetchResultsResult = {
   settings: Array<{
     title: string | null;
@@ -23237,6 +26675,8 @@ export type FetchResultsResult = {
             _key: string;
             _type: "cumulativedonationsgraph";
             graphcontext?: Graphcontext;
+            table_headers: Cumulativedonationstableheaders | null;
+            currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
           }
         | {
             _key: string;
@@ -23249,6 +26689,7 @@ export type FetchResultsResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -23259,6 +26700,8 @@ export type FetchResultsResult = {
             _type: "giveblock";
             heading?: string;
             paragraph?: string;
+            donate_label_short: string | null;
+            accent_color: string | null;
           }
         | {
             _key: string;
@@ -23363,6 +26806,7 @@ export type FetchResultsResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -23495,6 +26939,7 @@ export type FetchResultsResult = {
             _key: string;
             _type: "referralgraph";
             graphcontext?: Graphcontext;
+            tableText?: Referralstabletext;
           }
         | {
             _key: string;
@@ -23510,6 +26955,7 @@ export type FetchResultsResult = {
               | "Vaccinations"
               | "Vitamin A"
               | "Years of food fortification"
+              | "Operating funds"
             >;
           }
         | {
@@ -23524,7 +26970,8 @@ export type FetchResultsResult = {
               | "Malaria treatment"
               | "Vaccinations"
               | "Vitamin A"
-              | "Years of food fortification";
+              | "Years of food fortification"
+              | "Operating funds";
             description?: Array<{
               children?: Array<{
                 marks?: Array<string>;
@@ -23552,7 +26999,7 @@ export type FetchResultsResult = {
               _key: string;
             }>;
             graphcontext?: Graphcontext;
-            organization_links: Array<{
+            organization_links?: Array<{
               abbreviation?:
                 | "agf"
                 | "amf"
@@ -23572,7 +27019,7 @@ export type FetchResultsResult = {
                 | "sight"
                 | "tcf"
                 | "ubi";
-              link: {
+              link?: {
                 title?: string;
                 page?:
                   | {
@@ -23648,130 +27095,11 @@ export type FetchResultsResult = {
                       [internalGroqTypeReferenceTo]?: "vippsagreement";
                     };
                 _type: "navitem";
-                slug: string | null;
-                pagetype:
-                  | "agreements"
-                  | "article_page"
-                  | "articles"
-                  | "criteria"
-                  | "donations"
-                  | "fundraiser_page"
-                  | "generic_page"
-                  | "profile"
-                  | "results"
-                  | "support"
-                  | "tax"
-                  | "vippsagreement"
-                  | null;
-              } | null;
+              };
               _key: string;
-            }> | null;
-            links: {
-              _type: "links";
-              title?: string;
-              links: Array<
-                | {
-                    title?: string;
-                    url?: string;
-                    newtab?: boolean;
-                    _type: "link";
-                    _key: string;
-                  }
-                | {
-                    title?: string;
-                    page?:
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "agreements";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "article_page";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "articles";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "criteria";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "donations";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "generic_page";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "profile";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "results";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "support";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "tax";
-                        }
-                      | {
-                          _ref: string;
-                          _type: "reference";
-                          _weak?: boolean;
-                          [internalGroqTypeReferenceTo]?: "vippsagreement";
-                        };
-                    _type: "navitem";
-                    _key: string;
-                    slug: string | null;
-                    pagetype:
-                      | "agreements"
-                      | "article_page"
-                      | "articles"
-                      | "criteria"
-                      | "donations"
-                      | "fundraiser_page"
-                      | "generic_page"
-                      | "profile"
-                      | "results"
-                      | "support"
-                      | "tax"
-                      | "vippsagreement"
-                      | null;
-                  }
-              > | null;
-            } | null;
+            }>;
+            links?: Links;
+            table_headers: Outputdonationstableheaders | null;
           }
       > | null;
       hidden?: boolean;
@@ -23788,6 +27116,7 @@ export type FetchResultsResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -23925,8 +27254,33 @@ export type FetchResultsResult = {
         } | null;
       } | null;
       cannonicalUrl?: string;
+      noIndex?: boolean;
       _type: "pageheader";
     } | null;
+    textConfiguration: Resultstext | null;
+    outputMappings: Array<{
+      sanityKey:
+        | "Bednets"
+        | "Cash climate fund"
+        | "Cash zakat"
+        | "Cash"
+        | "Deworming"
+        | "Malaria treatment"
+        | "Vaccinations"
+        | "Vitamin A"
+        | "Years of food fortification"
+        | "Operating funds"
+        | null;
+      dataKey: string | null;
+    }> | null;
+    organizationMappings: Array<{
+      abbreviation: string | null;
+      fullName: string | null;
+    }> | null;
+    referralTypeMappings: Array<{
+      apiKey: string | null;
+      displayLabel: string | null;
+    }> | null;
   } | null;
 };
 
@@ -24010,6 +27364,7 @@ export type FetchVippsResult = {
                 _weak?: boolean;
                 [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               };
+              media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
               _type: "image";
@@ -24147,6 +27502,7 @@ export type FetchVippsResult = {
               } | null;
             } | null;
             cannonicalUrl?: string;
+            noIndex?: boolean;
             _type: "pageheader";
           } | null;
           content: Array<{
@@ -24165,6 +27521,12 @@ export type FetchVippsResult = {
               | ({
                   _key: string;
                 } & Columns)
+              | ({
+                  _key: string;
+                } & Dkgavebrevtaxwidget)
+              | ({
+                  _key: string;
+                } & Formsparkform)
               | ({
                   _key: string;
                 } & Fullimage)
@@ -24197,7 +27559,7 @@ export type FetchVippsResult = {
                 } & Links)
               | ({
                   _key: string;
-                } & Newslettersignup)
+                } & Mediacoverageteaser)
               | ({
                   _key: string;
                 } & Normalimage)
@@ -24269,6 +27631,138 @@ export type FetchVippsResult = {
                   discount_rate_min?: number;
                   discount_rate_max?: number;
                   _type: "discountratecomparison";
+                  _key: string;
+                }
+              | {
+                  membership_count_subtitle?: string;
+                  description?: Array<{
+                    children?: Array<{
+                      marks?: Array<string>;
+                      text?: string;
+                      _type: "span";
+                      _key: string;
+                    }>;
+                    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                    listItem?: "bullet" | "number";
+                    markDefs?: Array<
+                      | {
+                          title?: string;
+                          url?: string;
+                          newtab?: boolean;
+                          _type: "link";
+                          _key: string;
+                        }
+                      | {
+                          title?: string;
+                          page?:
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "agreements";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "article_page";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "articles";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "criteria";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "donations";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "generic_page";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "profile";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "results";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "support";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "tax";
+                              }
+                            | {
+                                _ref: string;
+                                _type: "reference";
+                                _weak?: boolean;
+                                [internalGroqTypeReferenceTo]?: "vippsagreement";
+                              };
+                          _type: "navitem";
+                          _key: string;
+                        }
+                    >;
+                    level?: number;
+                    _type: "block";
+                    _key: string;
+                  }>;
+                  _type: "dkmembershipdisplay";
+                  _key: string;
+                }
+              | {
+                  configuration?: {
+                    membership_fee_text?: string;
+                    country_label?: string;
+                    name_label?: string;
+                    email_label?: string;
+                    address_label?: string;
+                    postcode_label?: string;
+                    city_label?: string;
+                    tin_label?: string;
+                    tin_denmark_label?: string;
+                    birthday_label?: string;
+                    submit_button_text?: string;
+                    cpr_suspicious_message?: string;
+                    cpr_invalid_message?: string;
+                    field_required_message?: string;
+                    submitting_message?: string;
+                    failed_submission_message?: string;
+                  };
+                  _type: "dkmembershipwidget";
+                  _key: string;
+                }
+              | {
+                  loading_text?: string;
+                  _type: "dkrenewpayment";
                   _key: string;
                 }
               | {
@@ -24508,6 +28002,7 @@ export type FetchVippsResult = {
                       _weak?: boolean;
                       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                     };
+                    media?: unknown;
                     hotspot?: SanityImageHotspot;
                     crop?: SanityImageCrop;
                     _type: "image";
@@ -24527,6 +28022,14 @@ export type FetchVippsResult = {
                   quotee?: string;
                   quotee_position?: string;
                   _type: "givewellstamp";
+                  _key: string;
+                }
+              | {
+                  header?: string;
+                  formurl?: string;
+                  sendlabel?: string;
+                  emailLabel?: string;
+                  _type: "newslettersignup";
                   _key: string;
                 }
               | {
@@ -24922,6 +28425,7 @@ export type FetchAgreementsPageResult = {
             type?: "date" | "paymentmethod" | "string" | "sum";
             payment_date_format_template?: string;
             payment_date_last_day_of_month_template?: string;
+            payment_date_membership_format_template?: string;
             width?: number;
             hide_on_mobile?: boolean;
             _key: string;
@@ -24951,6 +28455,7 @@ export type FetchAgreementsPageResult = {
             agreement_cancel_lightbox?: {
               title?: string;
               text?: string;
+              text_manual?: string;
               withdrawal_warning_text?: string;
             };
             agreement_cancelled_lightbox?: {
@@ -24988,11 +28493,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "articleheader";
         };
         content?: Array<{
@@ -25011,6 +28518,12 @@ export type FetchAgreementsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -25043,7 +28556,7 @@ export type FetchAgreementsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -25115,6 +28628,138 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -25354,6 +28999,7 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -25373,6 +29019,14 @@ export type FetchAgreementsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -25660,11 +29314,13 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         active_list_configuration: null;
         slug: null;
       }
@@ -25684,6 +29340,7 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -25788,11 +29445,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         sitemap_priority?: number;
@@ -25954,6 +29613,12 @@ export type FetchAgreementsPageResult = {
         button_text?: string;
         completed_title?: string;
         completed_text?: string;
+        completed_redirect?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        };
         active_list_configuration: null;
         slug: null;
       }
@@ -26056,6 +29721,12 @@ export type FetchAgreementsPageResult = {
             } & Columns)
           | ({
               _key: string;
+            } & Dkgavebrevtaxwidget)
+          | ({
+              _key: string;
+            } & Formsparkform)
+          | ({
+              _key: string;
             } & Fullimage)
           | ({
               _key: string;
@@ -26086,7 +29757,7 @@ export type FetchAgreementsPageResult = {
             } & Links)
           | ({
               _key: string;
-            } & Newslettersignup)
+            } & Mediacoverageteaser)
           | ({
               _key: string;
             } & Normalimage)
@@ -26158,6 +29829,138 @@ export type FetchAgreementsPageResult = {
               discount_rate_min?: number;
               discount_rate_max?: number;
               _type: "discountratecomparison";
+              _key: string;
+            }
+          | {
+              membership_count_subtitle?: string;
+              description?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<
+                  | {
+                      title?: string;
+                      url?: string;
+                      newtab?: boolean;
+                      _type: "link";
+                      _key: string;
+                    }
+                  | {
+                      title?: string;
+                      page?:
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "agreements";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "article_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "articles";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "criteria";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "donations";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "generic_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "profile";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "results";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "support";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "tax";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "vippsagreement";
+                          };
+                      _type: "navitem";
+                      _key: string;
+                    }
+                >;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              _type: "dkmembershipdisplay";
+              _key: string;
+            }
+          | {
+              configuration?: {
+                membership_fee_text?: string;
+                country_label?: string;
+                name_label?: string;
+                email_label?: string;
+                address_label?: string;
+                postcode_label?: string;
+                city_label?: string;
+                tin_label?: string;
+                tin_denmark_label?: string;
+                birthday_label?: string;
+                submit_button_text?: string;
+                cpr_suspicious_message?: string;
+                cpr_invalid_message?: string;
+                field_required_message?: string;
+                submitting_message?: string;
+                failed_submission_message?: string;
+              };
+              _type: "dkmembershipwidget";
+              _key: string;
+            }
+          | {
+              loading_text?: string;
+              _type: "dkrenewpayment";
               _key: string;
             }
           | {
@@ -26397,6 +30200,7 @@ export type FetchAgreementsPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -26416,6 +30220,14 @@ export type FetchAgreementsPageResult = {
               quotee?: string;
               quotee_position?: string;
               _type: "givewellstamp";
+              _key: string;
+            }
+          | {
+              header?: string;
+              formurl?: string;
+              sendlabel?: string;
+              emailLabel?: string;
+              _type: "newslettersignup";
               _key: string;
             }
           | {
@@ -26685,11 +30497,13 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         name?: string;
+        first_name?: string;
         email?: string;
         phone?: string;
         role?: {
@@ -26743,6 +30557,7 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -26847,11 +30662,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -26870,6 +30687,12 @@ export type FetchAgreementsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -26902,7 +30725,7 @@ export type FetchAgreementsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -26974,6 +30797,138 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -27213,6 +31168,7 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -27232,6 +31188,14 @@ export type FetchAgreementsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -27590,6 +31554,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -27633,6 +31598,179 @@ export type FetchAgreementsPageResult = {
         _rev: string;
         discount_rate_min?: number;
         discount_rate_max?: number;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkbank";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        title?: string;
+        explanatory_text?: string;
+        explanatory_text_email_template?: string;
+        kontonr_title?: string;
+        kontonr?: string;
+        kid_title?: string;
+        button_text?: string;
+        completed_title?: string;
+        completed_text?: string;
+        completed_redirect?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        };
+        selector_text?: string;
+        recurring_button_text?: string;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipdisplay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+          failed_submission_message?: string;
+        };
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkrenewpayment";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        loading_text?: string;
         active_list_configuration: null;
         slug: null;
       }
@@ -27684,6 +31822,24 @@ export type FetchAgreementsPageResult = {
               _type: "reference";
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "bank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "dkbank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_card";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
             }
           | {
               _ref: string;
@@ -27751,27 +31907,11 @@ export type FetchAgreementsPageResult = {
           donation_distribution_cause_areas_organization_sum_error_template?: string;
           donation_distribution_cause_areas_organization_negative_error_template?: string;
         };
-        operations_config?: {
-          default_percentage?: number;
-          operations_label_template?: string;
-          enabled_by_default_global?: boolean;
-          enabled_by_default_single?: boolean;
-          excluded_cause_area_ids?: Array<number>;
-        };
-        cause_area_display_config?: {
-          below_line_cause_area_ids?: Array<number>;
-          cause_area_contexts?: Array<{
-            cause_area_id?: number;
-            context_text?: string;
-            _key: string;
-          }>;
-        };
-        ui_labels?: {
-          total_label?: string;
-        };
         pane1_button_text?: string;
+        allow_anonymous_donations?: boolean;
         anon_button_text?: string;
         anon_button_text_tooltip?: string;
+        show_name_field?: boolean;
         name_placeholder?: string;
         name_invalid_error_text?: string;
         email_placeholder?: string;
@@ -27859,10 +31999,13 @@ export type FetchAgreementsPageResult = {
               };
           _type: "navitem";
         };
+        require_privacy_policy_checkbox?: boolean;
+        privacy_policy_required_error_text?: string;
         pane2_button_text?: string;
+        api_generic_error_message?: string;
+        show_referrals?: boolean;
         referrals_title?: string;
         other_referral_input_placeholder?: string;
-        color_scheme?: "dark" | "light";
         active_list_configuration: null;
         slug: null;
       }
@@ -28008,6 +32151,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -28019,6 +32163,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -28034,14 +32179,21 @@ export type FetchAgreementsPageResult = {
           goal?: number;
           current_amount_text_template?: string;
           goal_amount_text_template?: string;
+          additional_external_contributions?: number;
         };
-        fundraiser_widget_config?: {
-          suggested_amounts?: Array<number>;
+        fundraiser_widget_configuration?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "fundraiserwidget";
         };
+        suggested_amounts?: Array<number>;
         gift_activity_config?: {
           title?: string;
           gift_amount_text_template?: string;
+          anonymous_gift_amount_text_template?: string;
           show_more_text_template?: string;
+          no_donations_text?: string;
         };
         description?: Array<
           | ({
@@ -28058,13 +32210,18 @@ export type FetchAgreementsPageResult = {
             } & Itncoverage)
           | ({
               _key: string;
-            } & Newslettersignup)
-          | ({
-              _key: string;
             } & Normalimage)
           | ({
               _key: string;
             } & Paragraph)
+          | {
+              header?: string;
+              formurl?: string;
+              sendlabel?: string;
+              emailLabel?: string;
+              _type: "newslettersignup";
+              _key: string;
+            }
         >;
         content?: Array<{
           heading?: string;
@@ -28082,6 +32239,12 @@ export type FetchAgreementsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -28114,7 +32277,7 @@ export type FetchAgreementsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -28186,6 +32349,138 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -28425,6 +32720,7 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -28444,6 +32740,14 @@ export type FetchAgreementsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -28700,11 +33004,165 @@ export type FetchAgreementsPageResult = {
           _type: "contentsection";
           _key: string;
         }>;
-        fundraiser_database_id?: number;
+        fundraiser_database_id?: string;
         slug: {
           current: string | null;
         } | null;
         active_list_configuration: null;
+      }
+    | {
+        _id: string;
+        _type: "fundraiserwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        title?: string;
+        payment_methods?: Array<
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "bank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "dkbank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_card";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vipps";
+            }
+        >;
+        currency_symbol?: string;
+        header?: string;
+        donation_amount_label?: string;
+        name_label?: string;
+        message_label?: string;
+        show_name_label?: string;
+        email_label?: string;
+        allow_anonymous_donations?: boolean;
+        tax_deduction_enabled?: boolean;
+        tax_deduction?: {
+          minimum_amount?: number;
+          label?: string;
+          tooltip_text?: string;
+          ssn_label?: string;
+          ssn_invalid_error_text?: string;
+          ssn_suspicious_error_text?: string;
+        };
+        newsletter_enabled?: boolean;
+        newsletter?: {
+          label?: string;
+        };
+        privacy_policy?: {
+          text?: string;
+          require_checkbox?: boolean;
+          privacy_policy_url?: {
+            title?: string;
+            page?:
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "agreements";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "article_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "articles";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "criteria";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "donations";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "generic_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "profile";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "results";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "support";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "tax";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "vippsagreement";
+                };
+            _type: "navitem";
+          };
+          required_error_text?: string;
+        };
+        next_button_text?: string;
+        bank_account_details?: {
+          account_number_prefix?: string;
+          account_number?: string;
+          kid_prefix?: string;
+          transfer_delay_text?: string;
+          account_owner_text?: string;
+          bank_transfer_info?: string;
+        };
+        active_list_configuration: null;
+        slug: null;
       }
     | {
         _id: string;
@@ -28809,6 +33267,7 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -28913,11 +33372,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -28936,6 +33397,12 @@ export type FetchAgreementsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -28968,7 +33435,7 @@ export type FetchAgreementsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -29040,6 +33507,138 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -29279,6 +33878,7 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -29298,6 +33898,14 @@ export type FetchAgreementsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -29685,6 +34293,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -29929,6 +34538,19 @@ export type FetchAgreementsPageResult = {
       }
     | {
         _id: string;
+        _type: "newslettersignup";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        header?: string;
+        formurl?: string;
+        sendlabel?: string;
+        emailLabel?: string;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "opendistributionbutton";
         _createdAt: string;
         _updatedAt: string;
@@ -29994,6 +34616,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30036,6 +34659,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30140,11 +34764,13 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         active_list_configuration: null;
         slug: null;
       }
@@ -30443,6 +35069,30 @@ export type FetchAgreementsPageResult = {
       }
     | {
         _id: string;
+        _type: "quickpay_card";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        selector_text?: string;
+        recurring_button_text?: string;
+        single_button_text?: string;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "quickpay_mobilepay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        selector_text?: string;
+        recurring_button_text?: string;
+        single_button_text?: string;
+        active_list_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "results";
         _createdAt: string;
         _updatedAt: string;
@@ -30457,6 +35107,7 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -30561,11 +35212,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -30614,6 +35267,22 @@ export type FetchAgreementsPageResult = {
           _type: "resultssection";
           _key: string;
         }>;
+        textConfiguration?: Resultstext;
+        outputMappings?: Array<
+          {
+            _key: string;
+          } & Outputmapping
+        >;
+        organizationMappings?: Array<
+          {
+            _key: string;
+          } & Organizationmapping
+        >;
+        referralTypeMappings?: Array<
+          {
+            _key: string;
+          } & Referraltypemapping
+        >;
         sitemap_priority?: number;
         category?: {
           _ref: string;
@@ -30751,6 +35420,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -30950,6 +35620,7 @@ export type FetchAgreementsPageResult = {
         footer_newsletter_heading?: string;
         footer_newsletter_form_url?: string;
         footer_newsletter_send_label?: string;
+        footer_email_label?: string;
         cookie_banner_configuration?: {
           title?: string;
           description?: string;
@@ -31055,6 +35726,7 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -31159,11 +35831,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         questionandanswergroups?: Array<
@@ -31268,6 +35942,7 @@ export type FetchAgreementsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -31356,6 +36031,7 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -31460,11 +36136,13 @@ export type FetchAgreementsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -31483,6 +36161,12 @@ export type FetchAgreementsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -31515,7 +36199,7 @@ export type FetchAgreementsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -31587,6 +36271,138 @@ export type FetchAgreementsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -31826,6 +36642,7 @@ export type FetchAgreementsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -31845,6 +36662,14 @@ export type FetchAgreementsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -32152,6 +36977,26 @@ export type FetchAgreementsPageResult = {
         active_list_configuration: null;
         slug: null;
       }
+    | {
+        _id: string;
+        _type: "wealthcalculatorimpact";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        header?: string;
+        description_template_string?: string;
+        button_text?: string;
+        intervention_configuration?: {
+          output_configuration?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "interventionwidgetoutputconfiguration";
+          };
+        };
+        active_list_configuration: null;
+        slug: null;
+      }
     | null;
 };
 
@@ -32233,11 +37078,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "articleheader";
         };
         content?: Array<{
@@ -32256,6 +37103,12 @@ export type FetchDonationsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -32288,7 +37141,7 @@ export type FetchDonationsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -32360,6 +37213,138 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -32599,6 +37584,7 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -32618,6 +37604,14 @@ export type FetchDonationsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -32908,11 +37902,13 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -32935,6 +37931,7 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -33039,11 +38036,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         sitemap_priority?: number;
@@ -33214,6 +38213,12 @@ export type FetchDonationsPageResult = {
         button_text?: string;
         completed_title?: string;
         completed_text?: string;
+        completed_redirect?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        };
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -33328,6 +38333,12 @@ export type FetchDonationsPageResult = {
             } & Columns)
           | ({
               _key: string;
+            } & Dkgavebrevtaxwidget)
+          | ({
+              _key: string;
+            } & Formsparkform)
+          | ({
+              _key: string;
             } & Fullimage)
           | ({
               _key: string;
@@ -33358,7 +38369,7 @@ export type FetchDonationsPageResult = {
             } & Links)
           | ({
               _key: string;
-            } & Newslettersignup)
+            } & Mediacoverageteaser)
           | ({
               _key: string;
             } & Normalimage)
@@ -33430,6 +38441,138 @@ export type FetchDonationsPageResult = {
               discount_rate_min?: number;
               discount_rate_max?: number;
               _type: "discountratecomparison";
+              _key: string;
+            }
+          | {
+              membership_count_subtitle?: string;
+              description?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<
+                  | {
+                      title?: string;
+                      url?: string;
+                      newtab?: boolean;
+                      _type: "link";
+                      _key: string;
+                    }
+                  | {
+                      title?: string;
+                      page?:
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "agreements";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "article_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "articles";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "criteria";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "donations";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "generic_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "profile";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "results";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "support";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "tax";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "vippsagreement";
+                          };
+                      _type: "navitem";
+                      _key: string;
+                    }
+                >;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              _type: "dkmembershipdisplay";
+              _key: string;
+            }
+          | {
+              configuration?: {
+                membership_fee_text?: string;
+                country_label?: string;
+                name_label?: string;
+                email_label?: string;
+                address_label?: string;
+                postcode_label?: string;
+                city_label?: string;
+                tin_label?: string;
+                tin_denmark_label?: string;
+                birthday_label?: string;
+                submit_button_text?: string;
+                cpr_suspicious_message?: string;
+                cpr_invalid_message?: string;
+                field_required_message?: string;
+                submitting_message?: string;
+                failed_submission_message?: string;
+              };
+              _type: "dkmembershipwidget";
+              _key: string;
+            }
+          | {
+              loading_text?: string;
+              _type: "dkrenewpayment";
               _key: string;
             }
           | {
@@ -33669,6 +38812,7 @@ export type FetchDonationsPageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -33688,6 +38832,14 @@ export type FetchDonationsPageResult = {
               quotee?: string;
               quotee_position?: string;
               _type: "givewellstamp";
+              _key: string;
+            }
+          | {
+              header?: string;
+              formurl?: string;
+              sendlabel?: string;
+              emailLabel?: string;
+              _type: "newslettersignup";
               _key: string;
             }
           | {
@@ -33960,11 +39112,13 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         name?: string;
+        first_name?: string;
         email?: string;
         phone?: string;
         role?: {
@@ -34024,6 +39178,7 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -34128,11 +39283,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -34151,6 +39308,12 @@ export type FetchDonationsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -34183,7 +39346,7 @@ export type FetchDonationsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -34255,6 +39418,138 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -34494,6 +39789,7 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -34513,6 +39809,14 @@ export type FetchDonationsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -34874,6 +40178,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -34923,6 +40228,191 @@ export type FetchDonationsPageResult = {
         _rev: string;
         discount_rate_min?: number;
         discount_rate_max?: number;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkbank";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        title?: string;
+        explanatory_text?: string;
+        explanatory_text_email_template?: string;
+        kontonr_title?: string;
+        kontonr?: string;
+        kid_title?: string;
+        button_text?: string;
+        completed_title?: string;
+        completed_text?: string;
+        completed_redirect?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        };
+        selector_text?: string;
+        recurring_button_text?: string;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipdisplay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+          failed_submission_message?: string;
+        };
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkrenewpayment";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        loading_text?: string;
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -35088,6 +40578,112 @@ export type FetchDonationsPageResult = {
               }>;
               about_org_link_title_format_string?: string;
               about_org_link_url_format_string?: string;
+              givewell_all_grants_fund_header?: string;
+              givewell_all_grants_fund_text?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              givewell_all_grants_fund_links?: Array<
+                | {
+                    title?: string;
+                    url?: string;
+                    newtab?: boolean;
+                    _type: "link";
+                    _key: string;
+                  }
+                | {
+                    title?: string;
+                    page?:
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "agreements";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "article_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "articles";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "criteria";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "donations";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "generic_page";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "profile";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "results";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "support";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "tax";
+                        }
+                      | {
+                          _ref: string;
+                          _type: "reference";
+                          _weak?: boolean;
+                          [internalGroqTypeReferenceTo]?: "vippsagreement";
+                        };
+                    _type: "navitem";
+                    _key: string;
+                  }
+              >;
               currency: "DKK" | "EUR" | "NOK" | "SEK" | "USD" | null;
               locale: "dk" | "en" | "et" | "no" | "sv" | null;
             } | null;
@@ -35123,6 +40719,24 @@ export type FetchDonationsPageResult = {
               _type: "reference";
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "bank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "dkbank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_card";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
             }
           | {
               _ref: string;
@@ -35190,27 +40804,11 @@ export type FetchDonationsPageResult = {
           donation_distribution_cause_areas_organization_sum_error_template?: string;
           donation_distribution_cause_areas_organization_negative_error_template?: string;
         };
-        operations_config?: {
-          default_percentage?: number;
-          operations_label_template?: string;
-          enabled_by_default_global?: boolean;
-          enabled_by_default_single?: boolean;
-          excluded_cause_area_ids?: Array<number>;
-        };
-        cause_area_display_config?: {
-          below_line_cause_area_ids?: Array<number>;
-          cause_area_contexts?: Array<{
-            cause_area_id?: number;
-            context_text?: string;
-            _key: string;
-          }>;
-        };
-        ui_labels?: {
-          total_label?: string;
-        };
         pane1_button_text?: string;
+        allow_anonymous_donations?: boolean;
         anon_button_text?: string;
         anon_button_text_tooltip?: string;
+        show_name_field?: boolean;
         name_placeholder?: string;
         name_invalid_error_text?: string;
         email_placeholder?: string;
@@ -35298,10 +40896,13 @@ export type FetchDonationsPageResult = {
               };
           _type: "navitem";
         };
+        require_privacy_policy_checkbox?: boolean;
+        privacy_policy_required_error_text?: string;
         pane2_button_text?: string;
+        api_generic_error_message?: string;
+        show_referrals?: boolean;
         referrals_title?: string;
         other_referral_input_placeholder?: string;
-        color_scheme?: "dark" | "light";
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -35453,6 +41054,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -35464,6 +41066,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -35479,14 +41082,21 @@ export type FetchDonationsPageResult = {
           goal?: number;
           current_amount_text_template?: string;
           goal_amount_text_template?: string;
+          additional_external_contributions?: number;
         };
-        fundraiser_widget_config?: {
-          suggested_amounts?: Array<number>;
+        fundraiser_widget_configuration?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "fundraiserwidget";
         };
+        suggested_amounts?: Array<number>;
         gift_activity_config?: {
           title?: string;
           gift_amount_text_template?: string;
+          anonymous_gift_amount_text_template?: string;
           show_more_text_template?: string;
+          no_donations_text?: string;
         };
         description?: Array<
           | ({
@@ -35503,13 +41113,18 @@ export type FetchDonationsPageResult = {
             } & Itncoverage)
           | ({
               _key: string;
-            } & Newslettersignup)
-          | ({
-              _key: string;
             } & Normalimage)
           | ({
               _key: string;
             } & Paragraph)
+          | {
+              header?: string;
+              formurl?: string;
+              sendlabel?: string;
+              emailLabel?: string;
+              _type: "newslettersignup";
+              _key: string;
+            }
         >;
         content?: Array<{
           heading?: string;
@@ -35527,6 +41142,12 @@ export type FetchDonationsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -35559,7 +41180,7 @@ export type FetchDonationsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -35631,6 +41252,138 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -35870,6 +41623,7 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -35889,6 +41643,14 @@ export type FetchDonationsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -36145,7 +41907,7 @@ export type FetchDonationsPageResult = {
           _type: "contentsection";
           _key: string;
         }>;
-        fundraiser_database_id?: number;
+        fundraiser_database_id?: string;
         slug: {
           current: string | null;
         } | null;
@@ -36153,6 +41915,163 @@ export type FetchDonationsPageResult = {
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
         donations_details_configuration: null;
+      }
+    | {
+        _id: string;
+        _type: "fundraiserwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        title?: string;
+        payment_methods?: Array<
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "bank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "dkbank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_card";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vipps";
+            }
+        >;
+        currency_symbol?: string;
+        header?: string;
+        donation_amount_label?: string;
+        name_label?: string;
+        message_label?: string;
+        show_name_label?: string;
+        email_label?: string;
+        allow_anonymous_donations?: boolean;
+        tax_deduction_enabled?: boolean;
+        tax_deduction?: {
+          minimum_amount?: number;
+          label?: string;
+          tooltip_text?: string;
+          ssn_label?: string;
+          ssn_invalid_error_text?: string;
+          ssn_suspicious_error_text?: string;
+        };
+        newsletter_enabled?: boolean;
+        newsletter?: {
+          label?: string;
+        };
+        privacy_policy?: {
+          text?: string;
+          require_checkbox?: boolean;
+          privacy_policy_url?: {
+            title?: string;
+            page?:
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "agreements";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "article_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "articles";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "criteria";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "donations";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "generic_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "profile";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "results";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "support";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "tax";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "vippsagreement";
+                };
+            _type: "navitem";
+          };
+          required_error_text?: string;
+        };
+        next_button_text?: string;
+        bank_account_details?: {
+          account_number_prefix?: string;
+          account_number?: string;
+          kid_prefix?: string;
+          transfer_delay_text?: string;
+          account_owner_text?: string;
+          bank_transfer_info?: string;
+        };
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
       }
     | {
         _id: string;
@@ -36260,6 +42179,7 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -36364,11 +42284,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -36387,6 +42309,12 @@ export type FetchDonationsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -36419,7 +42347,7 @@ export type FetchDonationsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -36491,6 +42419,138 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -36730,6 +42790,7 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -36749,6 +42810,14 @@ export type FetchDonationsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -37139,6 +43208,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -37398,6 +43468,22 @@ export type FetchDonationsPageResult = {
       }
     | {
         _id: string;
+        _type: "newslettersignup";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        header?: string;
+        formurl?: string;
+        sendlabel?: string;
+        emailLabel?: string;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "opendistributionbutton";
         _createdAt: string;
         _updatedAt: string;
@@ -37466,6 +43552,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -37511,6 +43598,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -37615,11 +43703,13 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         aggregate_estimated_impact: null;
         desktop_donations_table_configuration: null;
         mobile_donations_table_configuration: null;
@@ -37933,6 +44023,36 @@ export type FetchDonationsPageResult = {
       }
     | {
         _id: string;
+        _type: "quickpay_card";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        selector_text?: string;
+        recurring_button_text?: string;
+        single_button_text?: string;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "quickpay_mobilepay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        selector_text?: string;
+        recurring_button_text?: string;
+        single_button_text?: string;
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "results";
         _createdAt: string;
         _updatedAt: string;
@@ -37947,6 +44067,7 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38051,11 +44172,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -38104,6 +44227,22 @@ export type FetchDonationsPageResult = {
           _type: "resultssection";
           _key: string;
         }>;
+        textConfiguration?: Resultstext;
+        outputMappings?: Array<
+          {
+            _key: string;
+          } & Outputmapping
+        >;
+        organizationMappings?: Array<
+          {
+            _key: string;
+          } & Organizationmapping
+        >;
+        referralTypeMappings?: Array<
+          {
+            _key: string;
+          } & Referraltypemapping
+        >;
         sitemap_priority?: number;
         category?: {
           _ref: string;
@@ -38256,6 +44395,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -38455,6 +44595,7 @@ export type FetchDonationsPageResult = {
         footer_newsletter_heading?: string;
         footer_newsletter_form_url?: string;
         footer_newsletter_send_label?: string;
+        footer_email_label?: string;
         cookie_banner_configuration?: {
           title?: string;
           description?: string;
@@ -38563,6 +44704,7 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38667,11 +44809,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         questionandanswergroups?: Array<
@@ -38788,6 +44932,7 @@ export type FetchDonationsPageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -38885,6 +45030,7 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -38989,11 +45135,13 @@ export type FetchDonationsPageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -39012,6 +45160,12 @@ export type FetchDonationsPageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -39044,7 +45198,7 @@ export type FetchDonationsPageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -39116,6 +45270,138 @@ export type FetchDonationsPageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -39355,6 +45641,7 @@ export type FetchDonationsPageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -39374,6 +45661,14 @@ export type FetchDonationsPageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -39687,6 +45982,29 @@ export type FetchDonationsPageResult = {
         donations_details_configuration: null;
         slug: null;
       }
+    | {
+        _id: string;
+        _type: "wealthcalculatorimpact";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        header?: string;
+        description_template_string?: string;
+        button_text?: string;
+        intervention_configuration?: {
+          output_configuration?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "interventionwidgetoutputconfiguration";
+          };
+        };
+        aggregate_estimated_impact: null;
+        desktop_donations_table_configuration: null;
+        mobile_donations_table_configuration: null;
+        donations_details_configuration: null;
+        slug: null;
+      }
     | null;
 };
 
@@ -39758,11 +46076,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "articleheader";
         };
         content?: Array<{
@@ -39781,6 +46101,12 @@ export type FetchProfilePageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -39813,7 +46139,7 @@ export type FetchProfilePageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -39885,6 +46211,138 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -40124,6 +46582,7 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -40143,6 +46602,14 @@ export type FetchProfilePageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -40429,11 +46896,13 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         slug: null;
       }
     | {
@@ -40452,6 +46921,7 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -40556,11 +47026,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         sitemap_priority?: number;
@@ -40719,6 +47191,12 @@ export type FetchProfilePageResult = {
         button_text?: string;
         completed_title?: string;
         completed_text?: string;
+        completed_redirect?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        };
         slug: null;
       }
     | {
@@ -40817,6 +47295,12 @@ export type FetchProfilePageResult = {
             } & Columns)
           | ({
               _key: string;
+            } & Dkgavebrevtaxwidget)
+          | ({
+              _key: string;
+            } & Formsparkform)
+          | ({
+              _key: string;
             } & Fullimage)
           | ({
               _key: string;
@@ -40847,7 +47331,7 @@ export type FetchProfilePageResult = {
             } & Links)
           | ({
               _key: string;
-            } & Newslettersignup)
+            } & Mediacoverageteaser)
           | ({
               _key: string;
             } & Normalimage)
@@ -40919,6 +47403,138 @@ export type FetchProfilePageResult = {
               discount_rate_min?: number;
               discount_rate_max?: number;
               _type: "discountratecomparison";
+              _key: string;
+            }
+          | {
+              membership_count_subtitle?: string;
+              description?: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<
+                  | {
+                      title?: string;
+                      url?: string;
+                      newtab?: boolean;
+                      _type: "link";
+                      _key: string;
+                    }
+                  | {
+                      title?: string;
+                      page?:
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "agreements";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "article_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "articles";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "criteria";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "donations";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "generic_page";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "profile";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "results";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "support";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "tax";
+                          }
+                        | {
+                            _ref: string;
+                            _type: "reference";
+                            _weak?: boolean;
+                            [internalGroqTypeReferenceTo]?: "vippsagreement";
+                          };
+                      _type: "navitem";
+                      _key: string;
+                    }
+                >;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }>;
+              _type: "dkmembershipdisplay";
+              _key: string;
+            }
+          | {
+              configuration?: {
+                membership_fee_text?: string;
+                country_label?: string;
+                name_label?: string;
+                email_label?: string;
+                address_label?: string;
+                postcode_label?: string;
+                city_label?: string;
+                tin_label?: string;
+                tin_denmark_label?: string;
+                birthday_label?: string;
+                submit_button_text?: string;
+                cpr_suspicious_message?: string;
+                cpr_invalid_message?: string;
+                field_required_message?: string;
+                submitting_message?: string;
+                failed_submission_message?: string;
+              };
+              _type: "dkmembershipwidget";
+              _key: string;
+            }
+          | {
+              loading_text?: string;
+              _type: "dkrenewpayment";
               _key: string;
             }
           | {
@@ -41158,6 +47774,7 @@ export type FetchProfilePageResult = {
                   _weak?: boolean;
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
+                media?: unknown;
                 hotspot?: SanityImageHotspot;
                 crop?: SanityImageCrop;
                 _type: "image";
@@ -41177,6 +47794,14 @@ export type FetchProfilePageResult = {
               quotee?: string;
               quotee_position?: string;
               _type: "givewellstamp";
+              _key: string;
+            }
+          | {
+              header?: string;
+              formurl?: string;
+              sendlabel?: string;
+              emailLabel?: string;
+              _type: "newslettersignup";
               _key: string;
             }
           | {
@@ -41445,11 +48070,13 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         name?: string;
+        first_name?: string;
         email?: string;
         phone?: string;
         role?: {
@@ -41501,6 +48128,7 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -41605,11 +48233,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -41628,6 +48258,12 @@ export type FetchProfilePageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -41660,7 +48296,7 @@ export type FetchProfilePageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -41732,6 +48368,138 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -41971,6 +48739,7 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -41990,6 +48759,14 @@ export type FetchProfilePageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -42347,6 +49124,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -42388,6 +49166,175 @@ export type FetchProfilePageResult = {
         _rev: string;
         discount_rate_min?: number;
         discount_rate_max?: number;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkbank";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        title?: string;
+        explanatory_text?: string;
+        explanatory_text_email_template?: string;
+        kontonr_title?: string;
+        kontonr?: string;
+        kid_title?: string;
+        button_text?: string;
+        completed_title?: string;
+        completed_text?: string;
+        completed_redirect?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "generic_page";
+        };
+        selector_text?: string;
+        recurring_button_text?: string;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipdisplay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        membership_count_subtitle?: string;
+        description?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                title?: string;
+                url?: string;
+                newtab?: boolean;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                title?: string;
+                page?:
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "agreements";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "article_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "articles";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "criteria";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "donations";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "generic_page";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "profile";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "results";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "support";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "tax";
+                    }
+                  | {
+                      _ref: string;
+                      _type: "reference";
+                      _weak?: boolean;
+                      [internalGroqTypeReferenceTo]?: "vippsagreement";
+                    };
+                _type: "navitem";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkmembershipwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        configuration?: {
+          membership_fee_text?: string;
+          country_label?: string;
+          name_label?: string;
+          email_label?: string;
+          address_label?: string;
+          postcode_label?: string;
+          city_label?: string;
+          tin_label?: string;
+          tin_denmark_label?: string;
+          birthday_label?: string;
+          submit_button_text?: string;
+          cpr_suspicious_message?: string;
+          cpr_invalid_message?: string;
+          field_required_message?: string;
+          submitting_message?: string;
+          failed_submission_message?: string;
+        };
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "dkrenewpayment";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        loading_text?: string;
         slug: null;
       }
     | {
@@ -42437,6 +49384,24 @@ export type FetchProfilePageResult = {
               _type: "reference";
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "bank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "dkbank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_card";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
             }
           | {
               _ref: string;
@@ -42504,27 +49469,11 @@ export type FetchProfilePageResult = {
           donation_distribution_cause_areas_organization_sum_error_template?: string;
           donation_distribution_cause_areas_organization_negative_error_template?: string;
         };
-        operations_config?: {
-          default_percentage?: number;
-          operations_label_template?: string;
-          enabled_by_default_global?: boolean;
-          enabled_by_default_single?: boolean;
-          excluded_cause_area_ids?: Array<number>;
-        };
-        cause_area_display_config?: {
-          below_line_cause_area_ids?: Array<number>;
-          cause_area_contexts?: Array<{
-            cause_area_id?: number;
-            context_text?: string;
-            _key: string;
-          }>;
-        };
-        ui_labels?: {
-          total_label?: string;
-        };
         pane1_button_text?: string;
+        allow_anonymous_donations?: boolean;
         anon_button_text?: string;
         anon_button_text_tooltip?: string;
+        show_name_field?: boolean;
         name_placeholder?: string;
         name_invalid_error_text?: string;
         email_placeholder?: string;
@@ -42612,10 +49561,13 @@ export type FetchProfilePageResult = {
               };
           _type: "navitem";
         };
+        require_privacy_policy_checkbox?: boolean;
+        privacy_policy_required_error_text?: string;
         pane2_button_text?: string;
+        api_generic_error_message?: string;
+        show_referrals?: boolean;
         referrals_title?: string;
         other_referral_input_placeholder?: string;
-        color_scheme?: "dark" | "light";
         slug: null;
       }
     | {
@@ -42759,6 +49711,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -42770,6 +49723,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -42785,14 +49739,21 @@ export type FetchProfilePageResult = {
           goal?: number;
           current_amount_text_template?: string;
           goal_amount_text_template?: string;
+          additional_external_contributions?: number;
         };
-        fundraiser_widget_config?: {
-          suggested_amounts?: Array<number>;
+        fundraiser_widget_configuration?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "fundraiserwidget";
         };
+        suggested_amounts?: Array<number>;
         gift_activity_config?: {
           title?: string;
           gift_amount_text_template?: string;
+          anonymous_gift_amount_text_template?: string;
           show_more_text_template?: string;
+          no_donations_text?: string;
         };
         description?: Array<
           | ({
@@ -42809,13 +49770,18 @@ export type FetchProfilePageResult = {
             } & Itncoverage)
           | ({
               _key: string;
-            } & Newslettersignup)
-          | ({
-              _key: string;
             } & Normalimage)
           | ({
               _key: string;
             } & Paragraph)
+          | {
+              header?: string;
+              formurl?: string;
+              sendlabel?: string;
+              emailLabel?: string;
+              _type: "newslettersignup";
+              _key: string;
+            }
         >;
         content?: Array<{
           heading?: string;
@@ -42833,6 +49799,12 @@ export type FetchProfilePageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -42865,7 +49837,7 @@ export type FetchProfilePageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -42937,6 +49909,138 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -43176,6 +50280,7 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -43195,6 +50300,14 @@ export type FetchProfilePageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -43451,10 +50564,163 @@ export type FetchProfilePageResult = {
           _type: "contentsection";
           _key: string;
         }>;
-        fundraiser_database_id?: number;
+        fundraiser_database_id?: string;
         slug: {
           current: string | null;
         } | null;
+      }
+    | {
+        _id: string;
+        _type: "fundraiserwidget";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        title?: string;
+        payment_methods?: Array<
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "bank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "dkbank";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_card";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "quickpay_mobilepay";
+            }
+          | {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "vipps";
+            }
+        >;
+        currency_symbol?: string;
+        header?: string;
+        donation_amount_label?: string;
+        name_label?: string;
+        message_label?: string;
+        show_name_label?: string;
+        email_label?: string;
+        allow_anonymous_donations?: boolean;
+        tax_deduction_enabled?: boolean;
+        tax_deduction?: {
+          minimum_amount?: number;
+          label?: string;
+          tooltip_text?: string;
+          ssn_label?: string;
+          ssn_invalid_error_text?: string;
+          ssn_suspicious_error_text?: string;
+        };
+        newsletter_enabled?: boolean;
+        newsletter?: {
+          label?: string;
+        };
+        privacy_policy?: {
+          text?: string;
+          require_checkbox?: boolean;
+          privacy_policy_url?: {
+            title?: string;
+            page?:
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "agreements";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "article_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "articles";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "criteria";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "donations";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "generic_page";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "profile";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "results";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "support";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "tax";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "vippsagreement";
+                };
+            _type: "navitem";
+          };
+          required_error_text?: string;
+        };
+        next_button_text?: string;
+        bank_account_details?: {
+          account_number_prefix?: string;
+          account_number?: string;
+          kid_prefix?: string;
+          transfer_delay_text?: string;
+          account_owner_text?: string;
+          bank_transfer_info?: string;
+        };
+        slug: null;
       }
     | {
         _id: string;
@@ -43558,6 +50824,7 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -43662,11 +50929,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -43685,6 +50954,12 @@ export type FetchProfilePageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -43717,7 +50992,7 @@ export type FetchProfilePageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -43789,6 +51064,138 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -44028,6 +51435,7 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -44047,6 +51455,14 @@ export type FetchProfilePageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -44433,6 +51849,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -44672,6 +52089,18 @@ export type FetchProfilePageResult = {
       }
     | {
         _id: string;
+        _type: "newslettersignup";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        header?: string;
+        formurl?: string;
+        sendlabel?: string;
+        emailLabel?: string;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "opendistributionbutton";
         _createdAt: string;
         _updatedAt: string;
@@ -44736,6 +52165,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -44777,6 +52207,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -44881,11 +52312,13 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
         };
         cannonicalUrl?: string;
+        noIndex?: boolean;
         slug: null;
       }
     | {
@@ -45179,6 +52612,28 @@ export type FetchProfilePageResult = {
       }
     | {
         _id: string;
+        _type: "quickpay_card";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        selector_text?: string;
+        recurring_button_text?: string;
+        single_button_text?: string;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "quickpay_mobilepay";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        selector_text?: string;
+        recurring_button_text?: string;
+        single_button_text?: string;
+        slug: null;
+      }
+    | {
+        _id: string;
         _type: "results";
         _createdAt: string;
         _updatedAt: string;
@@ -45193,6 +52648,7 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -45297,11 +52753,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -45350,6 +52808,22 @@ export type FetchProfilePageResult = {
           _type: "resultssection";
           _key: string;
         }>;
+        textConfiguration?: Resultstext;
+        outputMappings?: Array<
+          {
+            _key: string;
+          } & Outputmapping
+        >;
+        organizationMappings?: Array<
+          {
+            _key: string;
+          } & Organizationmapping
+        >;
+        referralTypeMappings?: Array<
+          {
+            _key: string;
+          } & Referraltypemapping
+        >;
         sitemap_priority?: number;
         category?: {
           _ref: string;
@@ -45482,6 +52956,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -45681,6 +53156,7 @@ export type FetchProfilePageResult = {
         footer_newsletter_heading?: string;
         footer_newsletter_form_url?: string;
         footer_newsletter_send_label?: string;
+        footer_email_label?: string;
         cookie_banner_configuration?: {
           title?: string;
           description?: string;
@@ -45785,6 +53261,7 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -45889,11 +53366,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         questionandanswergroups?: Array<
@@ -45994,6 +53473,7 @@ export type FetchProfilePageResult = {
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -46079,6 +53559,7 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
@@ -46183,11 +53664,13 @@ export type FetchProfilePageResult = {
               _weak?: boolean;
               [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
             };
+            media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             _type: "image";
           };
           cannonicalUrl?: string;
+          noIndex?: boolean;
           _type: "pageheader";
         };
         content?: Array<{
@@ -46206,6 +53689,12 @@ export type FetchProfilePageResult = {
             | ({
                 _key: string;
               } & Columns)
+            | ({
+                _key: string;
+              } & Dkgavebrevtaxwidget)
+            | ({
+                _key: string;
+              } & Formsparkform)
             | ({
                 _key: string;
               } & Fullimage)
@@ -46238,7 +53727,7 @@ export type FetchProfilePageResult = {
               } & Links)
             | ({
                 _key: string;
-              } & Newslettersignup)
+              } & Mediacoverageteaser)
             | ({
                 _key: string;
               } & Normalimage)
@@ -46310,6 +53799,138 @@ export type FetchProfilePageResult = {
                 discount_rate_min?: number;
                 discount_rate_max?: number;
                 _type: "discountratecomparison";
+                _key: string;
+              }
+            | {
+                membership_count_subtitle?: string;
+                description?: Array<{
+                  children?: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }>;
+                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs?: Array<
+                    | {
+                        title?: string;
+                        url?: string;
+                        newtab?: boolean;
+                        _type: "link";
+                        _key: string;
+                      }
+                    | {
+                        title?: string;
+                        page?:
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "agreements";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "article_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "articles";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "criteria";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "donations";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "fundraiser_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "generic_page";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "profile";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "results";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "support";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "tax";
+                            }
+                          | {
+                              _ref: string;
+                              _type: "reference";
+                              _weak?: boolean;
+                              [internalGroqTypeReferenceTo]?: "vippsagreement";
+                            };
+                        _type: "navitem";
+                        _key: string;
+                      }
+                  >;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }>;
+                _type: "dkmembershipdisplay";
+                _key: string;
+              }
+            | {
+                configuration?: {
+                  membership_fee_text?: string;
+                  country_label?: string;
+                  name_label?: string;
+                  email_label?: string;
+                  address_label?: string;
+                  postcode_label?: string;
+                  city_label?: string;
+                  tin_label?: string;
+                  tin_denmark_label?: string;
+                  birthday_label?: string;
+                  submit_button_text?: string;
+                  cpr_suspicious_message?: string;
+                  cpr_invalid_message?: string;
+                  field_required_message?: string;
+                  submitting_message?: string;
+                  failed_submission_message?: string;
+                };
+                _type: "dkmembershipwidget";
+                _key: string;
+              }
+            | {
+                loading_text?: string;
+                _type: "dkrenewpayment";
                 _key: string;
               }
             | {
@@ -46549,6 +54170,7 @@ export type FetchProfilePageResult = {
                     _weak?: boolean;
                     [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                   };
+                  media?: unknown;
                   hotspot?: SanityImageHotspot;
                   crop?: SanityImageCrop;
                   _type: "image";
@@ -46568,6 +54190,14 @@ export type FetchProfilePageResult = {
                 quotee?: string;
                 quotee_position?: string;
                 _type: "givewellstamp";
+                _key: string;
+              }
+            | {
+                header?: string;
+                formurl?: string;
+                sendlabel?: string;
+                emailLabel?: string;
+                _type: "newslettersignup";
                 _key: string;
               }
             | {
@@ -46871,6 +54501,25 @@ export type FetchProfilePageResult = {
         donation_percentage?: number;
         income_percentile_label_template_string?: string;
         income_percentile_after_donation_label_template_string?: string;
+        slug: null;
+      }
+    | {
+        _id: string;
+        _type: "wealthcalculatorimpact";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        header?: string;
+        description_template_string?: string;
+        button_text?: string;
+        intervention_configuration?: {
+          output_configuration?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "interventionwidgetoutputconfiguration";
+          };
+        };
         slug: null;
       }
     | null;
@@ -47128,7 +54777,7 @@ export type RobotsQueryResult = string | null;
 
 // Source: ../pages/sitemap.xml.page.tsx
 // Variable: siteMapQuery
-// Query: {  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path('drafts.**'))]{        _updatedAt,        "slug": slug.current,        sitemap_priority,        "type": _type,        _id,    }}
+// Query: {  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page", "vippsagreement", "results"] && !(_id in path('drafts.**')) && header.noIndex != true]{        _updatedAt,        "slug": slug.current,        sitemap_priority,        "type": _type,        _id,    }}
 export type SiteMapQueryResult = {
   pages: Array<
     | {
@@ -47152,6 +54801,20 @@ export type SiteMapQueryResult = {
         type: "generic_page";
         _id: string;
       }
+    | {
+        _updatedAt: string;
+        slug: string | null;
+        sitemap_priority: number | null;
+        type: "results";
+        _id: string;
+      }
+    | {
+        _updatedAt: string;
+        slug: string | null;
+        sitemap_priority: number | null;
+        type: "vippsagreement";
+        _id: string;
+      }
   >;
 };
 
@@ -47163,16 +54826,16 @@ declare module "@sanity/client" {
     '\n  *[_type == "site_settings"][0].general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n': GeneralBannerQueryResult;
     '{\n  "settings": *[_type == "site_settings"] {\n    title,\n    not_found_title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  }\n}': Fetch404PageResult;
     '\n{\n  "pages": *[_type == "article_page"] {\n    slug { current }\n  }\n}\n': FetchArticlesResult;
-    "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n,\n    donate_label,\n    accent_color\n  },\n  \"page\": *[_type == \"article_page\"  && slug.current == $slug][0] {\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n    },\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      intervention_configuration {\n        ...,\n        output_configuration->{\n          ...,\n          \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n          explanation_links[] {\n            \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          },\n        },\n        \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },  \n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    \"related_articles_label\": *[_id==\"articles\"][0].related_articles_label,\n    \"see_all_articles_label\": *[_id==\"articles\"][0].see_all_articles_label,\n    \"default_give_block\": *[_id==\"articles\"][0].default_give_block,\n    slug { current },\n  },\n  \"relatedArticles\": *[_type == \"article_page\" && slug.current != $slug] | order(header.published desc) [0..3] {\n    header,\n    \"slug\": slug.current,\n  }\n}\n": FetchArticleResult;
+    "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n,\n    donate_label,\n    accent_color\n  },\n  \"page\": *[_type == \"article_page\"  && slug.current == $slug][0] {\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n    },\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      impact_configuration->{\n        ...,\n        intervention_configuration {\n          ...,\n          output_configuration->{\n            ...,\n            \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n            \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n            explanation_links[] {\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n            },\n          },\n          \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        completed_redirect -> {\n          \"slug\": slug.current,\n        },\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n      _type == 'quickpay_card' => {\n        ...,\n      },\n      _type == 'quickpay_mobilepay' => {\n        ...,\n      },\n      _type == 'dkbank' => {\n        ...,\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type == 'mediacoverageteaser' => {\n      ...,\n      coverage[] {\n        ...,\n        publication_logo {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      read_more_button {\n        ...,\n        \"slug\": page->slug.current,\n        \"pagetype\": page->_type,\n      },\n    },\n    _type == 'resultsteaser' => {\n      ...,\n      see_more_button {\n        ...,\n        \"slug\": page->slug.current,\n        \"pagetype\": page->_type,\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'taxdeductionwidget' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'newslettersignup' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    \"related_articles_label\": *[_id==\"articles\"][0].related_articles_label,\n    \"see_all_articles_label\": *[_id==\"articles\"][0].see_all_articles_label,\n    \"default_give_block\": *[_id==\"articles\"][0].default_give_block,\n    slug { current },\n  },\n  \"relatedArticles\": *[_type == \"article_page\" && slug.current != $slug] | order(header.published desc) [0..3] {\n    header,\n    \"slug\": slug.current,\n  }\n}\n": FetchArticleResult;
     '\n{\n  "page": *[_type == "articles"] {\n    "slug": slug.current,\n  }[0]\n}\n': FetchArticlesPageSlugResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "page": *[_type == "articles"][0] {\n    "slug": slug.current,\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n      links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n    },\n  },\n  "articles": *[_type == "article_page" && hidden != true] | order(header.published desc) {\n    header,\n    "slug": slug.current,\n    "preview": array::join(content[_type == "contentsection"][0].blocks[_type=="paragraph"][0].content[0..3].children[0...5].text, " "),\n  }\n}\n': FetchArticlesPageResult;
     '\n{\n  "settings": *[_type == "site_settings"][0] {\n    fundraiser_page_slug\n  }\n}\n': FetchFundraisersSlugResult;
     '\n{\n  "pages": *[_type == "fundraiser_page"] {\n    slug { current }\n  }\n}\n': FetchFundraisersResult;
-    "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n,\n    donate_label,\n    accent_color,\n  },\n  \"page\": *[_type == \"fundraiser_page\"  && slug.current == $slug][0] {\n    ...,\n    header_image { asset-> {\n      _id,\n      url,\n    }},\n    fundraiser_image { asset-> },\n    fundraiser_organization -> {\n      name,\n      logo { asset-> },\n      widget_button {\n        cause_area_id,\n        organization_id,\n      },\n      organization_page -> {\n        slug { current }\n      }\n    },\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      intervention_configuration {\n        ...,\n        output_configuration->{\n          ...,\n          \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n          explanation_links[] {\n            \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          },\n        },\n        \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },  \n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    slug { current },\n  },\n}\n": FetchFundraiserResult;
+    "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n,\n    donate_label,\n    accent_color,\n    main_locale,\n  },\n  \"page\": *[_type == \"fundraiser_page\"  && slug.current == $slug][0] {\n    ...,\n    header_image { \n      crop,\n      hotspot,\n      asset-> {\n        _id,\n        url,\n        metadata {\n          lqip\n        }\n      }\n    },\n    fundraiser_image { \n      crop,\n      hotspot,\n      asset-> {\n        _id,\n        url,\n        metadata {\n          lqip\n        }\n      }\n    },\n    fundraiser_organization -> {\n      name,\n      logo { asset-> },\n      widget_button {\n        cause_area_id,\n        organization_id,\n      },\n      organization_page -> {\n        slug { current }\n      }\n    },\n    fundraiser_widget_configuration -> {\n      ...,\n      payment_methods[] -> {\n        _type,\n        selector_text,\n        single_button_text,\n        recurring_button_text,\n        button_text\n      },\n      privacy_policy {\n        ...,\n        privacy_policy_url {\n          ...,\n          \"slug\": page->slug.current,\n          \"pagetype\": page->_type,\n        }\n      }\n    },\n    suggested_amounts,\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      impact_configuration->{\n        ...,\n        intervention_configuration {\n          ...,\n          output_configuration->{\n            ...,\n            \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n            \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n            explanation_links[] {\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n            },\n          },\n          \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        completed_redirect -> {\n          \"slug\": slug.current,\n        },\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n      _type == 'quickpay_card' => {\n        ...,\n      },\n      _type == 'quickpay_mobilepay' => {\n        ...,\n      },\n      _type == 'dkbank' => {\n        ...,\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type == 'mediacoverageteaser' => {\n      ...,\n      coverage[] {\n        ...,\n        publication_logo {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      read_more_button {\n        ...,\n        \"slug\": page->slug.current,\n        \"pagetype\": page->_type,\n      },\n    },\n    _type == 'resultsteaser' => {\n      ...,\n      see_more_button {\n        ...,\n        \"slug\": page->slug.current,\n        \"pagetype\": page->_type,\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'taxdeductionwidget' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'newslettersignup' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    slug { current },\n  },\n}\n": FetchFundraiserResult;
     '\n{\n  "pages": *[_type == "generic_page"] {\n    slug { current }\n  }\n}\n': FetchGenericPagesResult;
-    "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    ...,\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n\n  },\n  \"page\": *[_type == \"generic_page\" && slug.current == $slug][0] {\n    ...,\n    header {\n      ...,\n      seoImage{\n        asset->{\n          url\n        },\n      },\n      pageHeader {\n        asset->,\n      },\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n},\n      \"accent_color\": *[_type == \"site_settings\"][0].accent_color,\n    },\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      intervention_configuration {\n        ...,\n        output_configuration->{\n          ...,\n          \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n          explanation_links[] {\n            \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          },\n        },\n        \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },  \n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    slug { current },\n  }\n}\n": FetchGenericPageResult;
+    "\n{\n  \"settings\": *[_type == \"site_settings\"] {\n    ...,\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    \"_key\": coalesce(_id,_key,\"id_privacy_policy_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    \"_key\": coalesce(_id,_key,\"id_general_banner_link\"),\n    _type,\n    title,\n    \"slug\": page->slug.current,\n    \"pagetype\": coalesce(page->_type, \"generic_page\"),\n  }\n\n  }\n\n  },\n  \"page\": *[_type == \"generic_page\" && slug.current == $slug][0] {\n    ...,\n    header {\n      ...,\n      seoImage{\n        asset->{\n          url\n        },\n      },\n      pageHeader {\n        asset->,\n      },\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n},\n      \"accent_color\": *[_type == \"site_settings\"][0].accent_color,\n    },\n    content[hidden!=true] {\n  ...,\n  blocks[] {\n    _type == 'reference' => @->,\n    _type == 'testimonials' =>  {\n      ...,\n      testimonials[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      },\n    },\n    _type == 'organizationslist' =>  {\n      ...,\n      organizations[]->{\n        ...,\n        \"organization_page_slug\": organization_page->{\n          slug {\n            current\n          }\n        },\n      },\n    },\n    _type == 'opendistributionbutton' =>  {\n      ...,\n      organization->,\n    },\n    _type == 'fullvideo' =>  {\n      ...,\n      video{\n        asset->,\n      },\n    },\n    _type == 'links' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'questionandanswergroup' => {\n      \n  ...,\n  answers[] {\n    ...,\n    links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n} \n    },\n    _type == 'columns' => {\n      ...,\n      columns[] {\n        ...,\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        }\n      }\n    },\n    _type == 'paragraph' => @ {\n      ...,\n      content[] {\n        ...,\n        markDefs[] {\n          _type == 'citation' => @ {\n            ...,\n            \"citations\": citations[]->\n          },\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'splitview' => {\n      ...,\n      links[] {\n  \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n}\n    },\n    _type == 'splitviewhtml' => {\n      ...,\n      paragraph[] {\n        ...,\n        markDefs[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n        }\n      }\n    },\n    _type == 'wealthcalculator' => {\n      ...,\n      configuration->{\n        ...,\n        data_explanation {\n          _type == 'reference' => @->{\n            ...,\n            blocks[] {\n              _type == 'paragraph' => @ {\n                ...,\n                content[] {\n                  ...,\n                  markDefs[] {\n                    _type == 'citation' => @ {\n                      ...,\n                      \"citations\": citations[]->\n                    },\n                    \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n                    _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n                  }\n                }\n              },\n            }\n          },\n        },\n      },\n      impact_configuration->{\n        ...,\n        intervention_configuration {\n          ...,\n          output_configuration->{\n            ...,\n            \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n            \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n            explanation_links[] {\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n            },\n          },\n          \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n          \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'contributorlist' => {\n      ...,\n      role->,\n      contributors[]->{\n        ...,\n        image {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        }\n      }\n    },\n    _type == 'inngress' => {\n      ...,\n      sidelinks[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'wealthcalculatorteaser' => {\n      ...,\n      button {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'interventionwidget' => {\n      ...,\n      output_configuration->{\n        ...,\n        \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label_short,\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n        explanation_links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      \"currency\": *[ _type == \"site_settings\"][0].main_currency,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'giftcardteaser' => {\n      ...,\n      links[] {\n        \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n      },\n    },\n    _type == 'normalimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'fullimage' => {\n      ...,\n      image {\n        asset -> {\n          _id,\n          metadata {\n            lqip\n          }\n        }\n      },\n    },\n    _type == 'giveblock' => {\n      ...,\n      \"donate_label_short\": *[ _type == \"site_settings\"][0].donate_label,\n      \"accent_color\": *[ _type == \"site_settings\"][0].accent_color,\n    },\n    _type == 'fundraiserchart' => {\n      ...,\n      fundraisers[] {\n        ...,\n        \"page_slug\": fundraiser_page->slug.current,\n      }\n    },\n    _type == 'teamintroduction' => {\n      ...,\n      contributor->{\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      links {\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'teasers' => {\n      ...,\n      teasers[] {\n        ...,\n        image {\n          asset -> {\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n        links[] {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n    },\n    _type == 'accordion' => {\n      ...,\n      blocks[] {\n        _type == 'paragraph' => @ {\n          ...,\n          content[] {\n            ...,\n            markDefs[] {\n              _type == 'citation' => @ {\n                ...,\n                \"citations\": citations[]->\n              },\n              \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n              _type != 'citation' => @ && _type != 'link' && _type != 'navitem',\n            }\n          }\n        },\n        _type != 'paragraph' => @,\n      }\n    },\n    _type == 'philantropicteaser' => {\n      ...,\n      button {\n        ...,\n        link {\n          \n_type == 'navitem' => @ {\n  ...,\n  \"slug\": page->slug.current,\n  \"pagetype\": page->_type,\n},\n_type == 'link' => @ {\n  ...\n},\n\n        },\n      },\n      people[]->,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'plausiblerevenuetracker' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'donationwidgetblock' => {\n      ...,\n      donationwidget->{\n        \n...,\n  \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n  methods[] { \n    _type == 'reference' => @->{\n      _type == 'bank' => {\n        ...,\n        completed_redirect -> {\n          \"slug\": slug.current,\n        },\n        \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n      },\n      _type == 'vipps' => {\n        _id,\n        selector_text,\n        recurring_title,\n        recurring_selector_earliest_text,\n        recurring_selector_choose_date_text,\n        recurring_selector_date_picker_configuration->,\n        recurring_button_text,\n        single_title,\n        single_button_text,\n      },\n      _type == 'swish' => {\n        ...\n      },\n      _type == 'autogiro' => {\n        ...,\n        recurring_manual_option_config {\n          ...,\n          date_selector_config->\n        }\n      },\n      _type == 'avtalegiro' => {\n        ...,\n        date_selector_configuration->\n      },\n      _type == 'quickpay_card' => {\n        ...,\n      },\n      _type == 'quickpay_mobilepay' => {\n        ...,\n      },\n      _type == 'dkbank' => {\n        ...,\n      },\n    },\n  },\n  privacy_policy_link {\n    ...,\n    \"slug\": page->slug.current,\n    \"pagetype\": page->_type,\n  }\n\n      }\n    },\n    _type == 'mediacoverageteaser' => {\n      ...,\n      coverage[] {\n        ...,\n        publication_logo {\n          asset->{\n            _id,\n            metadata {\n              lqip\n            }\n          }\n        },\n      },\n      read_more_button {\n        ...,\n        \"slug\": page->slug.current,\n        \"pagetype\": page->_type,\n      },\n    },\n    _type == 'resultsteaser' => {\n      ...,\n      see_more_button {\n        ...,\n        \"slug\": page->slug.current,\n        \"pagetype\": page->_type,\n      },\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'taxdeductionwidget' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type == 'newslettersignup' => {\n      ...,\n      \"locale\": *[ _type == \"site_settings\"][0].main_locale,\n    },\n    _type != 'splitviewhtml' && _type != 'teamintroduction' && _type!= 'fullimage' && _type != 'normalimage' && _type != 'teasers' && _type != 'giveblock' && _type != 'links' && _type != 'questionandanswergroup' && _type != 'reference' && _type != 'testimonials' && _type != 'organizationslist' && _type != 'opendistributionbutton' && _type != 'fullvideo' && _type!= 'paragraph' && _type != 'splitview' && _type != 'contributorlist' && _type != 'inngress' && _type != 'wealthcalculator' && _type != 'giftcardteaser' && _type != 'columns' && _type != 'interventionwidget' && _type != 'wealthcalculatorteaser' && _type != 'accordion' && _type != 'plausiblerevenuetracker' && _type != 'philantropicteaser' && _type != 'fundraiserchart' && _type != 'mediacoverageteaser' && _type != 'resultsteaser' &&_type != 'taxdeductionwidget' && _type != 'donationwidgetblock' => @,\n  }\n},\n\n    slug { current },\n  }\n}\n": FetchGenericPageResult;
     '\n{\n  "page": *[_type == "results"] {\n    "slug": slug.current,\n  }[0]\n}\n': FetchResultsPageSlugResult;
-    '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "page": *[_type == "results"][0] {\n    "slug": slug.current,\n    content[] {\n      ...,\n      blocks[] {\n        _type == \'reference\' => @->,\n        _type == \'resultsoutput\' => {\n          ...,\n          organization_links[] {\n            ...,\n            link {\n              ...,\n              \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n            },\n          },\n          links {\n            ...,\n            links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n          },\n        },\n        _type != \'resultsoutput\' && _type != \'reference\' => @,\n      },\n    },\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n      links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n    },\n  },\n}\n': FetchResultsResult;
+    '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "page": *[_type == "results"][0] {\n    "slug": slug.current,\n    content[] {\n      ...,\n      blocks[] {\n        _type == \'reference\' => @->,\n        _type == \'resultsoutput\' => {\n          ...,\n          organization_links[] {\n            ...,\n            link {\n              ...,\n              \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n            },\n          },\n          links {\n            ...,\n            links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n          },\n        },\n        _type == \'cumulativedonationsgraph\' => {\n          ...,\n          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.cumulative_donations_table_headers,\n          "currency": *[ _type == "site_settings"][0].main_currency,\n        },\n        _type == \'referralgraph\' => {\n          ...,\n          tableText {\n            yearColumnHeader,\n            typeColumnHeader,\n            donationSumColumnHeader,\n            donationCountColumnHeader\n          }\n        },\n        _type == \'resultsoutput\' => {\n          ...,\n          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.output_donations_table_headers,\n        },\n        _type == \'giveblock\' => {\n          ...,\n          "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,\n          "accent_color": *[ _type == "site_settings"][0].accent_color,\n        },\n        _type != \'reference\' => @,\n      },\n    },\n    header {\n      ...,\n      seoImage{\n        asset->\n      },\n      links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n    },\n    textConfiguration,\n    outputMappings[] {\n      sanityKey,\n      dataKey\n    },\n    organizationMappings[] {\n      abbreviation,\n      fullName\n    },\n    referralTypeMappings[] {\n      apiKey,\n      displayLabel\n    },\n  },\n}\n': FetchResultsResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "vipps": *[_id == "vipps"] {\n    agreement_page->{\n      slug {\n        current\n      },\n      header {\n        ...,\n        seoImage{\n          asset->\n        },\n        links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n      },\n      content,\n    }\n  }\n}\n': FetchVippsResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n    \n  cookie_banner_configuration {\n    \n  ...,\n  privacy_policy_link {\n    "_key": coalesce(_id,_key,"id_privacy_policy_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  },\n  general_banner-> {\n    \n  ...,\n  link {\n    "_key": coalesce(_id,_key,"id_general_banner_link"),\n    _type,\n    title,\n    "slug": page->slug.current,\n    "pagetype": coalesce(page->_type, "generic_page"),\n  }\n\n  }\n\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    },\n  },\n  "page": *[_id == "agreements"][0] {\n    ...,\n    active_list_configuration {\n      ...,\n      details_configuration {\n        ...,\n        date_selector_configuration->{\n          ...,\n        }\n      }\n    },\n    slug {\n      current\n    }\n  }\n}\n': FetchAgreementsPageResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    main_currency,\n    main_locale,\n    title,\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    }\n  },\n  "page": *[_id == "donations"][0] {\n    ...,\n    aggregate_estimated_impact->{\n      ...,\n      "currency": *[ _type == "site_settings"][0].main_currency,\n      "locale": *[ _type == "site_settings"][0].main_locale,\n    },\n    desktop_donations_table_configuration,\n    mobile_donations_table_configuration,\n    donations_details_configuration {\n      ...,\n      impact_items_configuration {\n        ...,\n        "currency": *[ _type == "site_settings"][0].main_currency,\n        "locale": *[ _type == "site_settings"][0].main_locale,\n        impact_item_configuration {\n          ...,\n          "currency": *[ _type == "site_settings"][0].main_currency,\n          "locale": *[ _type == "site_settings"][0].main_locale,\n        }\n      }\n    },\n    slug {\n      current\n    }\n  },\n}\n': FetchDonationsPageResult;
@@ -47180,6 +54843,6 @@ declare module "@sanity/client" {
     '\n{\n  "settings": *[_type == "site_settings"] {\n    main_currency,\n    title,\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    },\n  },\n  "page": *[_type == "tax"][0] {\n    ...,\n    title,\n    features[] {\n      ...,\n      _type == "abouttaxdeductions" => {\n        ...,\n        links {\n          ...,\n          links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n        }\n      },\n      _type == "taxstatements" => {\n        ...,\n        aggregate_estimated_impact -> {\n          ...,\n          "currency": *[ _type == "site_settings"][0].main_currency,\n          "locale": *[ _type == "site_settings"][0].main_locale,\n        }\n      },\n    },\n    slug {\n      current\n    },\n  },\n}\n': FetchTaxPageResult;
     '\n{\n  "settings": *[_type == "site_settings"] {\n    title,\n  },\n  "dashboard": *[_id == "dashboard"] {\n    dashboard_slug {\n      current\n    },\n  },\n  "vipps": *[_id == "vipps"] {\n    anonymous_page->{\n      slug {\n        current\n      },\n      header {\n        ...,\n        seoImage{\n          asset->\n        },\n        links[] {\n  \n_type == \'navitem\' => @ {\n  ...,\n  "slug": page->slug.current,\n  "pagetype": page->_type,\n},\n_type == \'link\' => @ {\n  ...\n},\n\n}\n      },\n      content,\n    }\n  }\n}\n': FetchVippsAnonymousPageResult;
     '*[_id == "dashboard"][0].dashboard_slug.current': RobotsQueryResult;
-    '{\n  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page"] && !(_id in path(\'drafts.**\'))]{\n        _updatedAt,\n        "slug": slug.current,\n        sitemap_priority,\n        "type": _type,\n        _id,\n    }\n}\n': SiteMapQueryResult;
+    '{\n  "pages": *[_type in ["about_us", "articles", "generic_page", "article_page", "vippsagreement", "results"] && !(_id in path(\'drafts.**\')) && header.noIndex != true]{\n        _updatedAt,\n        "slug": slug.current,\n        sitemap_priority,\n        "type": _type,\n        _id,\n    }\n}\n': SiteMapQueryResult;
   }
 }

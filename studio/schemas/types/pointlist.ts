@@ -1,23 +1,24 @@
+import { defineType, defineField } from "sanity";
 import { List } from "react-feather";
 import { PointlistPreview } from "../../components/pointlistPeview";
 
-export default {
+export default defineType({
   name: "pointlist",
   type: "document",
   title: "Pointlist",
   icon: List,
   fields: [
-    {
+    defineField({
       name: "numbered",
       type: "boolean",
       title: "Numbered",
-    },
-    {
+    }),
+    defineField({
       title: "Numbering options",
       type: "object",
       name: "options",
       fields: [
-        {
+        defineField({
           name: "layout",
           type: "string",
           title: "Layout",
@@ -26,16 +27,16 @@ export default {
             layout: "radio",
           },
           initialValue: "left",
-        },
+        }),
       ],
       hidden: ({ parent }: any) => !parent.numbered,
-    },
-    {
+    }),
+    defineField({
       name: "points",
       type: "array",
       title: "Points",
       of: [{ type: "pointlistpoint" }],
-    },
+    }),
   ],
   preview: {
     select: {
@@ -46,4 +47,4 @@ export default {
   components: {
     preview: PointlistPreview,
   },
-} as const;
+});
