@@ -9,7 +9,7 @@ import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { PrefilledDistribution, WidgetPane, WidgetPaneProps } from "./WidgetPane/WidgetPane";
 import { token } from "../../../token";
-import { useQuery } from "@sanity/react-loader";
+import { useLiveQuery } from "@sanity/preview-kit";
 import React from "react";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../../middleware.page";
@@ -175,11 +175,7 @@ export const Layout = withStaticProps(
 );
 
 const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>> = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    {},
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query);
 
   if (result) {
     props.data.result = result;
@@ -191,11 +187,7 @@ const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>>
 const PreviewWidgetPane: React.FC<
   Awaited<ReturnType<typeof Widget.getStaticProps>> & WidgetPaneProps
 > = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    {},
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query);
 
   if (result) {
     props.data.result = result;

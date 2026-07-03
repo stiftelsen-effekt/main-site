@@ -10,7 +10,7 @@ import { ProfilePage } from "../dashboard/ProfilePage";
 import { TaxPage, getTaxPageSubPaths } from "../dashboard/TaxPage";
 import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
-import { useQuery } from "@sanity/react-loader";
+import { useLiveQuery } from "@sanity/preview-kit";
 import { ConsentState } from "../../middleware.page";
 import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
 
@@ -71,11 +71,7 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
 };
 
 const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    { ...props.data.queryParams },
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
   if (result) {
     props.data.result = result;
@@ -85,11 +81,7 @@ const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps
 };
 
 const PreviewArticlesPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    { ...props.data.queryParams },
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
   if (result) {
     props.data.result = result;
@@ -99,11 +91,7 @@ const PreviewArticlesPage: React.FC<InferGetStaticPropsType<typeof getStaticProp
 };
 
 const PreviewArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    { ...props.data.queryParams },
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
   if (result) {
     props.data.result = result;
@@ -113,11 +101,7 @@ const PreviewArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps
 };
 
 const PreviewResultsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    { ...props.data.queryParams },
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
   if (result) {
     props.data.result = result;
@@ -127,11 +111,7 @@ const PreviewResultsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps
 };
 
 const PreviewFundraiserPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const { data: result } = useQuery(
-    props.data.query,
-    { ...props.data.queryParams },
-    { initial: { data: props.data.result, sourceMap: undefined } },
-  );
+  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
   if (result) {
     props.data.result = result;
