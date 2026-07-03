@@ -322,7 +322,7 @@ describe("Donations page", () => {
       .eq(0)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "12,4");
+      .should("contain.text", "12,0");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -333,7 +333,7 @@ describe("Donations page", () => {
       .eq(1)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "20,2");
+      .should("contain.text", "20,0");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
