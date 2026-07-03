@@ -66,10 +66,9 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   orgAbriv: string;
   orgName: string;
   sumToOrg: number;
-  // The portion of `sumToOrg` routed via a GiveWell grant (smart distribution)
+  // Portion of `sumToOrg` routed via a GiveWell grant, and the outputs it bought
+  // using the grant's own cost-per-output
   smartDistributionSum?: number;
-  // Outputs bought by that grant portion, derived directly from the grant's own
-  // cost-per-output rather than the generic evaluation estimate
   smartDistributionOutput?: number;
   donationTimestamp: Date;
   precision: number;
@@ -137,9 +136,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
    * This will be the most recent relevant evaluation to calculate the impact
    */
   const relevantEvaluation = data?.evaluations[0];
-  // The grant (smart distribution) portion uses outputs derived directly from
-  // the grant's own cost-per-output; the remaining direct portion still uses the
-  // most relevant evaluation estimate.
+  // Grant portion uses grant-derived outputs; the direct portion uses the evaluation.
   const grantOutput = smartDistributionOutput ?? 0;
   const directSum = sumToOrg - (smartDistributionSum ?? 0);
   const resolvedImpact: {

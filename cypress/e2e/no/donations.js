@@ -92,10 +92,8 @@ describe("Donations page", () => {
 
     cy.fixture(`evaluations/evaluations.json`)
       .then((evaluations) => {
-        // NB: match any language/currency casing. The app requests language=no
-        // (lowercase), so a hardcoded language=NO here would never match and every
-        // evaluation request would silently fall through to the live impact API,
-        // making the impact assertions non-deterministic.
+        // Match any language/currency casing: the app sends language=no, so a
+        // hardcoded language=NO would miss and hit the live API instead.
         cy.intercept(
           "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=*&language=*&donation_year=*&donation_month=*",
           (req) => {
@@ -115,10 +113,8 @@ describe("Donations page", () => {
 
     cy.fixture("grants")
       .then((grants) => {
-        // Match every max_impact_fund_grants request. The aggregate impact table
-        // requests grants without donation_year/month params, so a stricter glob
-        // (e.g. requiring a trailing "&*") would let that request fall through to
-        // the live API and make the test non-deterministic.
+        // Match every grants request; the aggregate table fetches without
+        // donation_year/month params, which a stricter glob would miss.
         cy.intercept("GET", "https://impact.gieffektivt.no/api/max_impact_fund_grants*", {
           statusCode: 200,
           body: grants,
@@ -204,11 +200,9 @@ describe("Donations page", () => {
       .first()
       .should("contain.text", "dollar mottatt");
 
-    // The grants fixture is dated before the GiveWell-fund donations, so the money
-    // routed via the fund is smart-distributed and its outputs are derived from the
-    // grant's own cost-per-output. These values (18 malaria treatments and 16
-    // vaccinations) only come out right when the grant cost is used; deriving them
-    // from the generic evaluations instead yields 17 and 12.
+    // The grant fixture predates the GiveWell-fund donations, so the fund portion
+    // is smart-distributed using the grant's cost-per-output. These values only
+    // hold with the grant-based fix (evaluations alone would give 17 and 12).
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .eq(1)
       .should("contain.text", "18");

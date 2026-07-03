@@ -21,10 +21,9 @@ type DistributionEntry = {
   org: string;
   orgName: string;
   sum: number;
-  // The portion of `sum` that was routed via a GiveWell grant (smart distribution)
+  // Portion of `sum` routed via a GiveWell grant, and the outputs it bought
+  // using the grant's own cost-per-output
   smartDistributionSum?: number;
-  // Outputs purchased by that grant portion, derived directly from the grant's
-  // own cost-per-output rather than the generic evaluation estimate
   smartDistributionOutput?: number;
 };
 
@@ -94,7 +93,6 @@ const DonationImpactGlobalHealth: React.FC<{
       const org = allotment.charity.abbreviation;
       const orgName = allotment.charity.charity_name ?? allotment.charity.abbreviation;
       const sum = Math.round((allotment.sum_in_cents / grantTotal) * giveWellDist.sum);
-      // Outputs bought by this grant portion, using the grant's own cost-per-output
       const output =
         allotment.converted_cost_per_output > 0 ? sum / allotment.converted_cost_per_output : 0;
       const orgIndex = spreadDistribution.findIndex((d) => d.org === org);
