@@ -9,12 +9,17 @@ export type OrganizationsAggregatedSums = {
     sum: number;
     custom_sum: number;
     smart_distribution_sum: number;
+    // Outputs purchased by the smart distribution (grant) portion, derived
+    // directly from the grant's own cost-per-output rather than the generic
+    // evaluation estimate
+    smart_distribution_outputs: number;
     periods: {
       // Period (year-month) sums
       [key: string]: {
         sum: number;
         custom_sum: number;
         smart_distribution_sum: number;
+        smart_distribution_outputs: number;
       };
     };
   };
@@ -105,6 +110,9 @@ export const aggregateOrgSumByYearAndMonth = (
                     allotmentShare,
                 },
                 true,
+                // Use the grant's own cost-per-output so the outputs reflect the
+                // actual grant rather than the generic cost-effectiveness estimate
+                allotment.converted_cost_per_output,
               );
             });
           }
@@ -146,6 +154,10 @@ const addToAggregated = (
   month: number,
   org: { name: string; percentageShare: number },
   smartdistribution: boolean,
+  // The grant's own cost-per-output, only provided for smart distribution
+  // (money routed via a GiveWell grant). Used to derive the outputs directly
+  // from the grant instead of the generic evaluation estimate.
+  grantCostPerOutput?: number,
 ) => {
   const key = `${year}-${month}`;
   // First check if the organization is already in the aggregated sums
@@ -156,6 +168,7 @@ const addToAggregated = (
       sum: 0,
       custom_sum: 0,
       smart_distribution_sum: 0,
+      smart_distribution_outputs: 0,
       periods: {},
     };
   }
@@ -168,32 +181,35 @@ const addToAggregated = (
       sum: 0,
       custom_sum: 0,
       smart_distribution_sum: 0,
+      smart_distribution_outputs: 0,
     };
   }
+
+  const amount = Math.round((org.percentageShare / 100) * parseFloat(donation.sum));
+
   // Add to the total sum of the organization, regardless of period
-  aggregated[org.name].sum += Math.round((org.percentageShare / 100) * parseFloat(donation.sum));
+  aggregated[org.name].sum += amount;
   // Add to the sum of the organization for the period
-  aggregated[org.name].periods[key].sum += Math.round(
-    (org.percentageShare / 100) * parseFloat(donation.sum),
-  );
+  aggregated[org.name].periods[key].sum += amount;
   if (smartdistribution) {
     // Add to the smart distribution sum of the organization, regardless of period
-    aggregated[org.name].smart_distribution_sum += Math.round(
-      (org.percentageShare / 100) * parseFloat(donation.sum),
-    );
+    aggregated[org.name].smart_distribution_sum += amount;
     // Add to the smart distribution sum of the organization for the period
-    aggregated[org.name].periods[key].smart_distribution_sum += Math.round(
-      (org.percentageShare / 100) * parseFloat(donation.sum),
-    );
+    aggregated[org.name].periods[key].smart_distribution_sum += amount;
+
+    // Derive the outputs purchased directly from the grant's cost-per-output.
+    // This reflects what the grant actually bought, rather than re-deriving it
+    // from the generic (and often stale) cost-effectiveness evaluation.
+    if (grantCostPerOutput && grantCostPerOutput > 0) {
+      const outputs = amount / grantCostPerOutput;
+      aggregated[org.name].smart_distribution_outputs += outputs;
+      aggregated[org.name].periods[key].smart_distribution_outputs += outputs;
+    }
   } else {
     // Add to the custom distribution sum of the organization, regardless of period
-    aggregated[org.name].custom_sum += Math.round(
-      (org.percentageShare / 100) * parseFloat(donation.sum),
-    );
+    aggregated[org.name].custom_sum += amount;
     // Add to the custom distribution sum of the organization for the period
-    aggregated[org.name].periods[key].custom_sum += Math.round(
-      (org.percentageShare / 100) * parseFloat(donation.sum),
-    );
+    aggregated[org.name].periods[key].custom_sum += amount;
   }
 
   return aggregated;
@@ -266,58 +282,62 @@ export const aggregateImpact = (
     Object.keys(aggregatedorganizations[orgkey].periods).forEach((period) => {
       const year = period.split("-")[0];
       const month = period.split("-")[1];
+      const periodData = aggregatedorganizations[orgkey].periods[period];
 
-      // Find the evaluation that matches the year and month
-      const evaluation = getRelevantEvaluation(filteredEvaluations, year, month);
+      // Smart distribution (money routed via a GiveWell grant) uses the outputs
+      // derived directly from the grant's own cost-per-output. This reflects
+      // what the grant actually purchased instead of re-deriving it from the
+      // generic cost-effectiveness evaluation.
+      impact[outputtype].outputs += periodData.smart_distribution_outputs;
 
-      if (evaluation) {
-        // Add the output to the total output
-        // Equal to the sum of the organization for the period,
-        // divided by cost of the intervention given by the most relevant evaluation for the given period
-        impact[outputtype].outputs +=
-          aggregatedorganizations[orgkey].periods[period].sum /
-          evaluation.converted_cost_per_output;
-
-        // Add the constituents to the output
-        // E.g. if the output is deworming treatments, and we've added 1000 treatments
-        // to the total output from a donation to "Deworming Charity",
-        // we add the kr amount to the constituent "Deworming Charity"
-        // Depending on wether the donation amount for the period came from a fund (e.g. GiveWell
-        // Top Charities Fund) or directly to the organization, we add the amount to the fund
-        // constituent or the direct constituent (or both)
-
-        const fundconstituentlabel = textTemplates.org_grant_template_string.replace(
-          "{{org}}",
-          orgkey,
-        );
-        //`${orgkey} via fond`;
-        const customconstituentlabel = textTemplates.org_direct_template_string.replace(
-          "{{org}}",
-          orgkey,
-        );
-        //`${orgkey} direkte fordelt`;
-
-        // The amount for the period and organization that was routed via a fund is above 0
-        // e.g. aggregatedorganizations["Deworming Charity"].periods["2021-1"].smart_distribution_sum is above 0
-        if (aggregatedorganizations[orgkey].periods[period].smart_distribution_sum > 0) {
-          if (!(fundconstituentlabel in impact[outputtype].constituents)) {
-            impact[outputtype].constituents[fundconstituentlabel] = 0;
-          }
-          impact[outputtype].constituents[fundconstituentlabel] +=
-            aggregatedorganizations[orgkey].periods[period].smart_distribution_sum;
+      // Custom / direct donations to the organization still use the most
+      // relevant evaluation estimate, since there is no grant to attribute them to.
+      if (periodData.custom_sum > 0) {
+        // Find the evaluation that matches the year and month
+        const evaluation = getRelevantEvaluation(filteredEvaluations, year, month);
+        if (evaluation) {
+          impact[outputtype].outputs +=
+            periodData.custom_sum / evaluation.converted_cost_per_output;
+        } else {
+          console.error("NO EVALUATION FOUND FOR", orgkey, period);
         }
+      }
 
-        // The amount for the period and organization that was custom distributed is above 0
-        // e.g. aggregatedorganizations["Deworming Charity"].periods["2021-1"].custom_distribution_sum is above 0
-        if (aggregatedorganizations[orgkey].periods[period].custom_sum > 0) {
-          if (!(customconstituentlabel in impact[outputtype].constituents)) {
-            impact[outputtype].constituents[customconstituentlabel] = 0;
-          }
-          impact[outputtype].constituents[customconstituentlabel] +=
-            aggregatedorganizations[orgkey].periods[period].custom_sum;
+      // Add the constituents to the output
+      // E.g. if the output is deworming treatments, and we've added 1000 treatments
+      // to the total output from a donation to "Deworming Charity",
+      // we add the kr amount to the constituent "Deworming Charity"
+      // Depending on wether the donation amount for the period came from a fund (e.g. GiveWell
+      // Top Charities Fund) or directly to the organization, we add the amount to the fund
+      // constituent or the direct constituent (or both)
+
+      const fundconstituentlabel = textTemplates.org_grant_template_string.replace(
+        "{{org}}",
+        orgkey,
+      );
+      //`${orgkey} via fond`;
+      const customconstituentlabel = textTemplates.org_direct_template_string.replace(
+        "{{org}}",
+        orgkey,
+      );
+      //`${orgkey} direkte fordelt`;
+
+      // The amount for the period and organization that was routed via a fund is above 0
+      // e.g. aggregatedorganizations["Deworming Charity"].periods["2021-1"].smart_distribution_sum is above 0
+      if (periodData.smart_distribution_sum > 0) {
+        if (!(fundconstituentlabel in impact[outputtype].constituents)) {
+          impact[outputtype].constituents[fundconstituentlabel] = 0;
         }
-      } else {
-        console.error("NO EVALUATION FOUND FOR", orgkey, period);
+        impact[outputtype].constituents[fundconstituentlabel] += periodData.smart_distribution_sum;
+      }
+
+      // The amount for the period and organization that was custom distributed is above 0
+      // e.g. aggregatedorganizations["Deworming Charity"].periods["2021-1"].custom_distribution_sum is above 0
+      if (periodData.custom_sum > 0) {
+        if (!(customconstituentlabel in impact[outputtype].constituents)) {
+          impact[outputtype].constituents[customconstituentlabel] = 0;
+        }
+        impact[outputtype].constituents[customconstituentlabel] += periodData.custom_sum;
       }
     });
   });
