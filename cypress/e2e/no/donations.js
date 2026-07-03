@@ -92,8 +92,12 @@ describe("Donations page", () => {
 
     cy.fixture(`evaluations/evaluations.json`)
       .then((evaluations) => {
+        // NB: match any language/currency casing. The app requests language=no
+        // (lowercase), so a hardcoded language=NO here would never match and every
+        // evaluation request would silently fall through to the live impact API,
+        // making the impact assertions non-deterministic.
         cy.intercept(
-          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=NOK&language=NO&donation_year=*&donation_month=*",
+          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=*&language=*&donation_year=*&donation_month=*",
           (req) => {
             const [, abbriv, year, month] = req.url.match(
               /.*abbreviation=(.*)\&currency.*year=(\d{4}).*month=(\d{1,2})/,
@@ -318,7 +322,7 @@ describe("Donations page", () => {
       .eq(0)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "12,0");
+      .should("contain.text", "12,4");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -329,7 +333,7 @@ describe("Donations page", () => {
       .eq(1)
       .find("[data-cy=donation-impact-list-item-output]")
       .first()
-      .should("contain.text", "20,0");
+      .should("contain.text", "20,2");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
