@@ -111,14 +111,14 @@ describe("Donations page", () => {
 
     cy.fixture("grants")
       .then((grants) => {
-        cy.intercept(
-          "GET",
-          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
-          {
-            statusCode: 200,
-            body: grants,
-          },
-        ).as("getGrants");
+        // Match every max_impact_fund_grants request. The aggregate impact table
+        // requests grants without donation_year/month params, so a stricter glob
+        // (e.g. requiring a trailing "&*") would let that request fall through to
+        // the live API and make the test non-deterministic.
+        cy.intercept("GET", "https://impact.gieffektivt.no/api/max_impact_fund_grants*", {
+          statusCode: 200,
+          body: grants,
+        }).as("getGrants");
       })
       .as("grantsFixture");
 
@@ -192,13 +192,13 @@ describe("Donations page", () => {
   it("Should display a donation aggregate impact table", () => {
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]", {
       timeout: 15000,
-    }).should("have.length", 6);
+    }).should("have.length", 5);
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "118");
+      .should("contain.text", "1 049");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "A-vitamintilskudd");
+      .should("contain.text", "dollar mottatt");
 
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
@@ -220,7 +220,7 @@ describe("Donations page", () => {
 
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]", {
       timeout: 15000,
-    }).should("have.length", 5);
+    }).should("have.length", 3);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108\u00A0574 kr");
   });
