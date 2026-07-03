@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Menu, X } from "react-feather";
 import AnimateHeight from "react-animate-height";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { WidgetContext } from "../../../main/layout/layout";
 import { EffektButton, EffektButtonVariant } from "../EffektButton/EffektButton";
 import { ResponsiveImage } from "../../responsiveimage";
@@ -16,7 +16,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
-import { useLiveQuery } from "@sanity/preview-kit";
+import { useQuery } from "@sanity/react-loader";
 
 export type NavLink = {
   _type: "navitem";
@@ -388,7 +388,11 @@ const AnimatedMenuIcon = ({ isOpen }: { isOpen: boolean }) => {
 export const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticProps>>> = (
   props,
 ) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query);
+  const { data: result } = useQuery(
+    props.data.query,
+    {},
+    { initial: { data: props.data.result, sourceMap: undefined } },
+  );
 
   if (result) {
     props.data.result = result;

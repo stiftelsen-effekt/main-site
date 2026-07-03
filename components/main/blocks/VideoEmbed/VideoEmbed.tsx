@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import elements from "./VideoEmbed.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import YouTube from "react-youtube";
 

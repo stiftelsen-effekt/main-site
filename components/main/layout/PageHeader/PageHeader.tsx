@@ -2,7 +2,7 @@ import React from "react";
 import style from "./PageHeader.module.scss";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links, LinkType } from "../../blocks/Links/Links";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { OpenWidgetButton } from "../../../shared/components/OpenWidgetButton/OpenWidgetButton";
 

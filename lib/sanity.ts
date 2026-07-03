@@ -1,5 +1,5 @@
 // lib/sanity.js
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 // import { createPreviewSubscriptionHook, createCurrentUserHook } from "next-sanity";
 import { projectConfig } from "./config";
 

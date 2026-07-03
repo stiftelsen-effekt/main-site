@@ -1,4 +1,4 @@
-import { SanityAsset } from "@sanity/image-url/lib/types/types";
+import { SanityAsset } from "@sanity/image-url";
 
 export enum META_OWNER {
   EFFEKT = 1,

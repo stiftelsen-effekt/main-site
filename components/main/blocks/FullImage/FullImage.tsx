@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./FullImage.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 
 export interface FullImage {

@@ -3,3 +3,5 @@ node_modules
 studio/.sanity
 out
 coverage
+package-lock.json
+studio/package-lock.json
