@@ -200,9 +200,21 @@ describe("Donations page", () => {
       .first()
       .should("contain.text", "dollar mottatt");
 
+    // The grants fixture is dated before the GiveWell-fund donations, so the money
+    // routed via the fund is smart-distributed and its outputs are derived from the
+    // grant's own cost-per-output. These values (18 malaria treatments and 16
+    // vaccinations) only come out right when the grant cost is used; deriving them
+    // from the generic evaluations instead yields 17 and 12.
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
+      .eq(1)
+      .should("contain.text", "18");
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
+      .eq(1)
+      .should("contain.text", "malariabehandlinger");
+
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "12");
+      .should("contain.text", "16");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
       .should("contain.text", "vaksinasjoner");
