@@ -1,9 +1,4 @@
 {
-  "build": {
-    "env": {
-      "NEXT_ENABLE_ADAPTER": "0"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
