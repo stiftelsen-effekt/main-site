@@ -31,7 +31,7 @@ export const Contributor: React.FC<
   if (locale === "no") {
     contactString = "Ta kontakt med";
   } else if (locale === "dk") {
-    contactString = "Tag kontakt med";
+    contactString = "Tag kontakt";
   } else if (locale === "sv") {
     contactString = "Ta kontakt med";
   } else {
