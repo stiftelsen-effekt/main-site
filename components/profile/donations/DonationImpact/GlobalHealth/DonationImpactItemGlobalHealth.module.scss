@@ -39,8 +39,10 @@
   }
 
   span.impactDetailsSingleLine {
+    display: inline-block;
+    padding-left: 20px;
     font-size: 22px;
-    margin-bottom: 4px;
+    line-height: 1.2;
 
     &.expandable {
       user-select: none;
@@ -100,6 +102,10 @@
 .singleLineOverview {
   td {
     vertical-align: middle;
+  }
+
+  td:first-child .impactOutput {
+    margin: 0.5rem 0;
   }
 }
 
