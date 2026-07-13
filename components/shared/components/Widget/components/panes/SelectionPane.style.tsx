@@ -28,7 +28,7 @@ export const CauseAreaButton = styled.button`
     color: var(--secondary);
 
     > div {
-      filter: invert(1);
+      filter: var(--primary-filter-inverse, invert(1));
     }
 
     &::after {
@@ -53,7 +53,7 @@ export const CauseAreaIcon = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   border: none;
-  filter: invert(0);
+  filter: var(--primary-filter, invert(0));
 }`;
 
 export const CauseAreaButtonsDividerLine = styled.div`

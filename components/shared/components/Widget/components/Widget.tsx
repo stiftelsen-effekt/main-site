@@ -134,6 +134,7 @@ const DK_DEMO_CAUSE_AREAS: CauseArea[] = [
 export const widgetContentQuery = groq`
   ...,
   "locale": *[ _type == "site_settings"][0].main_locale,
+  "accentColor": *[ _type == "site_settings"][0].accent_color,
   methods[] { 
     _type == 'reference' => @->{
       _type == 'bank' => {
@@ -248,7 +249,20 @@ export const Widget = withStaticProps(
     };
   },
 )(({ data, inline = false, prefilled, defaultPaymentType }) => {
-  const widget = applyWidgetDefaults(data.result);
+  let widget = applyWidgetDefaults(data.result);
+  if (widget.locale === "dk") {
+    // TEMP DEMO — remove before merging. cause_area_selection_title etc. aren't in the
+    // DK Sanity dataset yet, so hardcode the Danish copy for the preview.
+    widget = {
+      ...widget,
+      cause_area_display_config: {
+        ...widget.cause_area_display_config,
+        cause_area_selection_title: "Hvilket formål vil du gøre en forskel for?",
+        recommendation_button_text: "Vores anbefaling",
+        multiple_cause_areas_button_text: "Vælg flere formål",
+      },
+    };
+  }
   const methods = widget.methods;
 
   if (!methods) {
@@ -302,9 +316,7 @@ export const Widget = withStaticProps(
     );
     // TEMP DEMO — remove before merging. See DK_DEMO_CAUSE_AREAS above.
     if (widget.locale === "dk") {
-      dispatch(
-        fetchCauseAreasAction.done({ params: undefined, result: DK_DEMO_CAUSE_AREAS }),
-      );
+      dispatch(fetchCauseAreasAction.done({ params: undefined, result: DK_DEMO_CAUSE_AREAS }));
     } else {
       dispatch(fetchCauseAreasAction.started(undefined));
     }
@@ -396,7 +408,10 @@ export const Widget = withStaticProps(
               false
             )}
             {!isSingleCauseArea ? (
-              <SelectionPane causeAreaDisplayConfig={widget.cause_area_display_config} />
+              <SelectionPane
+                causeAreaDisplayConfig={widget.cause_area_display_config}
+                accentColor={widget.accentColor}
+              />
             ) : (
               false
             )}

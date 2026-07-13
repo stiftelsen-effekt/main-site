@@ -14,6 +14,9 @@ export const DEFAULT_OPERATIONS_CONFIG: Required<OperationsConfig> = {
 };
 
 export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig> = {
+  cause_area_selection_title: "Which cause do you want to make a difference in?",
+  recommendation_button_text: "Our recommendation",
+  multiple_cause_areas_button_text: "Choose multiple causes",
   below_line_cause_area_ids: [4, 5], // Operations and Admin
   cause_area_contexts: [
     {

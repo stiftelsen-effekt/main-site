@@ -15,12 +15,16 @@
   --primary: #fafafa;
   --secondary: black;
   --primary-hover: #aaa;
+  --primary-filter: invert(1);
+  --primary-filter-inverse: brightness(0);
 }
 
 .dark {
   --primary: black;
   --secondary: #fafafa;
   --primary-hover: #aaa;
+  --primary-filter: brightness(0);
+  --primary-filter-inverse: invert(1);
 }
 
 .widgetPaneOpen {

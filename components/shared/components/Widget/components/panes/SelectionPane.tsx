@@ -24,9 +24,15 @@ import { CauseAreaDisplayConfig } from "../../types/WidgetProps";
  */
 interface SelectionPaneProps {
   causeAreaDisplayConfig?: CauseAreaDisplayConfig;
+  accentColor?: string;
 }
 
-export const SelectionPane: React.FC<SelectionPaneProps> = ({ causeAreaDisplayConfig }) => {
+const DEFAULT_ACCENT_COLOR = "#981f49";
+
+export const SelectionPane: React.FC<SelectionPaneProps> = ({
+  causeAreaDisplayConfig,
+  accentColor,
+}) => {
   const dispatch = useDispatch<any>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const { operationsPercentageByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
@@ -75,16 +81,20 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({ causeAreaDisplayCo
     <Pane>
       <PaneContainer>
         <div>
-          <PaneTitle>Inom vilket ändamål vill du göra skillnad?</PaneTitle>
+          <PaneTitle>{causeAreaDisplayConfig?.cause_area_selection_title}</PaneTitle>
 
           <ButtonsWrapper>
             <CauseAreaButton
               key="default"
               onClick={() => onSelectArea(-1)}
-              style={{ background: "#981f49", color: "white", border: "1px solid #981f49" }}
+              style={{
+                background: accentColor || DEFAULT_ACCENT_COLOR,
+                color: "white",
+                border: `1px solid ${accentColor || DEFAULT_ACCENT_COLOR}`,
+              }}
               data-cy="cause-area-recommendation"
             >
-              Vår rekommendation
+              {causeAreaDisplayConfig?.recommendation_button_text}
             </CauseAreaButton>
           </ButtonsWrapper>
 
@@ -112,7 +122,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({ causeAreaDisplayCo
               data-cy="cause-area-multiple"
             >
               <MultipleCauseAreaIcon />
-              Välj flera ändamål
+              {causeAreaDisplayConfig?.multiple_cause_areas_button_text}
             </CauseAreaButton>
           </ButtonsWrapper>
 

@@ -33,6 +33,7 @@ export type PaymentMethodReference = {
 
 export type WidgetProps = {
   locale: "no" | "sv" | "en" | "dk";
+  accentColor?: string;
   color_scheme: "light" | "dark";
   operations_config?: OperationsConfig;
   cause_area_display_config?: CauseAreaDisplayConfig;
@@ -259,6 +260,9 @@ export type OperationsConfig = {
 };
 
 export type CauseAreaDisplayConfig = {
+  cause_area_selection_title?: string;
+  recommendation_button_text?: string;
+  multiple_cause_areas_button_text?: string;
   below_line_cause_area_ids?: number[];
   cause_area_contexts?: Array<{
     cause_area_id: number;

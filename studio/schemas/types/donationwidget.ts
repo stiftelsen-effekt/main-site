@@ -363,6 +363,27 @@ export default defineType({
       group: "pane1",
       fields: [
         {
+          name: "cause_area_selection_title",
+          title: "Cause area selection title",
+          type: "string",
+          description: "Title shown above the cause area selection buttons",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "recommendation_button_text",
+          title: "Recommendation button text",
+          type: "string",
+          description: "Text for the button that selects the recommended (smart) distribution",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "multiple_cause_areas_button_text",
+          title: "Multiple cause areas button text",
+          type: "string",
+          description: "Text for the button that lets the donor pick multiple cause areas",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
           name: "below_line_cause_area_ids",
           title: "Below-the-line cause area IDs",
           type: "array",
