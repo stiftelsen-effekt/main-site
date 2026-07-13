@@ -16,6 +16,7 @@ import {
   useTaxUnits,
 } from "../../_queries";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
@@ -42,14 +43,18 @@ import { ConsentState } from "../../middleware.page";
 
 /**
  * Temporary hard-coded donation data used to preview all impact-reporting permutations
- * on the donor profile. This is enabled ONLY on Vercel preview deployments, so it never
- * affects production or local development. When enabled, the real donations/distributions
- * from the API are ignored in favour of the test data below.
+ * on the donor profile. This is enabled ONLY on Vercel preview deployments AND only when
+ * the `?impactpreview` query parameter is present, so normal preview traffic (including
+ * the e2e tests, which rely on the real logged-in donations) and production/local
+ * development are unaffected. When enabled, the real donations/distributions from the API
+ * are ignored in favour of the test data below.
+ *
+ * To view it, open the donations page on a preview deployment with `?impactpreview=1`.
  *
  * NOTE: This is intentionally scaffolding for design review and should be removed before
  * this feature is merged to production.
  */
-const USE_TEST_DATA = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+const IS_PREVIEW_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
 
 const TEST_TIMESTAMP = "2026-06-15T00:00:00.000Z";
 
@@ -256,6 +261,10 @@ export const DonationsPage = withStaticProps(
   },
 )(({ data, navbarData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const router = useRouter();
+  // Preview-only impact-reporting scaffolding, opt-in via `?impactpreview` so e2e and
+  // normal preview traffic keep using the real logged-in donations.
+  const USE_TEST_DATA = IS_PREVIEW_ENV && router.query.impactpreview !== undefined;
   const settings = data.result.settings[0];
 
   if (!data.result.dashboard || !data.result.dashboard[0]) {
