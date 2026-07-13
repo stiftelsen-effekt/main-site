@@ -38,6 +38,28 @@
     width: 100%;
   }
 
+  span.impactDetailsSingleLine {
+    font-size: 22px;
+    margin-bottom: 4px;
+
+    &.expandable {
+      user-select: none;
+      cursor: pointer;
+
+      &::after {
+        content: "↓";
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        transition: all 200ms;
+      }
+
+      &.expanded::after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
   .impactContext {
     display: flex;
     flex-direction: column;
@@ -72,6 +94,12 @@
         }
       }
     }
+  }
+}
+
+.singleLineOverview {
+  td {
+    vertical-align: middle;
   }
 }
 

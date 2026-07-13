@@ -38,6 +38,26 @@ export default defineType({
           type: "string",
         }),
         defineField({
+          name: "operations_section_title",
+          title: "Operations section title",
+          type: "string",
+          description:
+            "Title for the separate operations section shown when a donation has more than one cause area",
+        }),
+        defineField({
+          name: "operations_text",
+          title: "Operations text",
+          type: "array",
+          of: [{ type: "block" }],
+          description: "Portable text shown when expanding an operations item",
+        }),
+        defineField({
+          name: "operations_links",
+          title: "Operations links",
+          type: "array",
+          of: [{ type: "link" }, { type: "navitem" }],
+        }),
+        defineField({
           name: "impact_item_configuration",
           title: "Impact item configuration",
           type: "object",
