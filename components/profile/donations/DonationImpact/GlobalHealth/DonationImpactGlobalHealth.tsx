@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from "react";
 import useSWR from "swr";
+import { PortableText } from "@portabletext/react";
 import { Donation, GiveWellGrant } from "../../../../../models";
-import { thousandize } from "../../../../../util/formatting";
 import style from "./DonationImpactGlobalHealth.module.scss";
+import { LinkType, Links } from "../../../../main/blocks/Links/Links";
+import { NavLink } from "../../../../shared/components/Navbar/Navbar";
 import {
   DonationImpactGlobalHealthItem,
   ImpactItemConfiguration,
@@ -14,6 +16,9 @@ export type DonationImpactItemsConfiguration = {
   currency: string;
   locale: string;
   operations_label: string;
+  operations_section_title?: string;
+  operations_text?: any[];
+  operations_links?: (LinkType | NavLink)[];
   impact_item_configuration: ImpactItemConfiguration;
 };
 
@@ -26,6 +31,54 @@ type DistributionEntry = {
   smartDistributionSum?: number;
   smartDistributionOutput?: number;
 };
+
+/**
+ * Renders the expandable content for an operations item. Returns null when there is
+ * no configured text or links, so the caller can omit the expand arrow entirely.
+ */
+export const renderOperationsContent = (configuration: DonationImpactItemsConfiguration) => {
+  const text = configuration.operations_text;
+  const links = configuration.operations_links;
+  const hasText = Boolean(text && text.length > 0);
+  const hasLinks = Boolean(links && links.length > 0);
+  if (!hasText && !hasLinks) return null;
+  return (
+    <>
+      {hasText && <PortableText value={text} />}
+      {hasLinks && links && <Links links={links} />}
+    </>
+  );
+};
+
+/**
+ * Standalone operations section rendered with its own title when a donation spans
+ * multiple cause areas (see DonationImpact cause area grouping).
+ */
+export const DonationImpactOperations: React.FC<{
+  donation: Donation;
+  sum: number;
+  timestamp: Date;
+  configuration: DonationImpactItemsConfiguration;
+}> = ({ donation, sum, timestamp, configuration }) => (
+  <div className={style.container} key={`${donation.id}-operations`}>
+    <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
+      <tbody>
+        <DonationImpactGlobalHealthItem
+          orgAbriv="Drift"
+          orgName={configuration.operations_label}
+          sumToOrg={sum}
+          donationTimestamp={timestamp}
+          precision={0}
+          signalRequiredPrecision={() => {}}
+          configuration={configuration.impact_item_configuration}
+          isOperations
+          singleLineLabelOverride={configuration.operations_label}
+          expandedContentOverride={renderOperationsContent(configuration)}
+        />
+      </tbody>
+    </table>
+  </div>
+);
 
 const DonationImpactGlobalHealth: React.FC<{
   donation: Donation;
@@ -136,12 +189,20 @@ const DonationImpactGlobalHealth: React.FC<{
                 />
               )}
               {dist.org === "Drift" && (
-                <tr>
-                  <td className={style.impact} colSpan={100}>
-                    <span>{configuration.operations_label}</span>
-                    <strong>{`${thousandize(Math.round(dist.sum))} kr`}</strong>
-                  </td>
-                </tr>
+                <DonationImpactGlobalHealthItem
+                  orgAbriv="Drift"
+                  orgName={configuration.operations_label}
+                  sumToOrg={dist.sum}
+                  donationTimestamp={timestamp}
+                  precision={requiredPrecision}
+                  signalRequiredPrecision={(precision) => {
+                    if (precision > requiredPrecision) updatePrecision(precision);
+                  }}
+                  configuration={configuration.impact_item_configuration}
+                  isOperations
+                  singleLineLabelOverride={configuration.operations_label}
+                  expandedContentOverride={renderOperationsContent(configuration)}
+                />
               )}
             </React.Fragment>
           ))}
