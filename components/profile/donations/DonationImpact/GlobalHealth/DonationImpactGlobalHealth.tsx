@@ -72,7 +72,6 @@ export const DonationImpactOperations: React.FC<{
           signalRequiredPrecision={() => {}}
           configuration={configuration.impact_item_configuration}
           isOperations
-          singleLineLabelOverride={configuration.operations_label}
           expandedContentOverride={renderOperationsContent(configuration)}
         />
       </tbody>
@@ -200,7 +199,6 @@ const DonationImpactGlobalHealth: React.FC<{
                   }}
                   configuration={configuration.impact_item_configuration}
                   isOperations
-                  singleLineLabelOverride={configuration.operations_label}
                   expandedContentOverride={renderOperationsContent(configuration)}
                 />
               )}
