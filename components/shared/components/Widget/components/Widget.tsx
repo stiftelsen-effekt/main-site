@@ -261,6 +261,10 @@ export const Widget = withStaticProps(
         recommendation_button_text: "Vores anbefaling",
         multiple_cause_areas_button_text: "Vælg flere formål",
       },
+      operations_config: {
+        ...widget.operations_config!,
+        operations_label_template: "{percentage}% til drift",
+      },
       smart_distribution_context: {
         ...widget.smart_distribution_context,
         smart_distribution_title: "Smart fordeling",
