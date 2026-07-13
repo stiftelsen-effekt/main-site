@@ -250,6 +250,14 @@ export default defineType({
           description: "Only used if there is only one cause area",
         }),
         defineField({
+          name: "smart_distribution_title",
+          title: "Smart distribution title",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+          description:
+            "Title shown above the smart distribution option, e.g. in the multi cause-area amount pane and the donation summary. Only used if there is more than one cause area",
+        }),
+        defineField({
           name: "smart_distribution_label_text",
           title: "Smart distribution label text",
           type: "string",
@@ -434,6 +442,14 @@ export default defineType({
           title: "Total label",
           type: "string",
           description: "Label shown for total amount",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "operations_summary_label",
+          title: "Operations summary label",
+          type: "string",
+          description:
+            "Label for the operations/tip line item in the donation summary (donor pane)",
           validation: (Rule: any) => Rule.required(),
         },
       ],

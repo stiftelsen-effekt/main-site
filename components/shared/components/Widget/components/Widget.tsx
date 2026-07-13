@@ -261,6 +261,15 @@ export const Widget = withStaticProps(
         recommendation_button_text: "Vores anbefaling",
         multiple_cause_areas_button_text: "Vælg flere formål",
       },
+      smart_distribution_context: {
+        ...widget.smart_distribution_context,
+        smart_distribution_title: "Smart fordeling",
+      },
+      ui_labels: {
+        ...widget.ui_labels,
+        total_label: widget.ui_labels?.total_label ?? "Sum",
+        operations_summary_label: "Drift",
+      },
     };
   }
   const methods = widget.methods;
@@ -455,6 +464,14 @@ export const Widget = withStaticProps(
                 allow_anonymous_donations: widget.allow_anonymous_donations,
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
                 privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
+              }}
+              summaryText={{
+                single_donation_text: widget.single_donation_text,
+                monthly_donation_text: widget.monthly_donation_text,
+                smart_distribution_title:
+                  widget.smart_distribution_context.smart_distribution_title,
+                operations_summary_label: widget.ui_labels?.operations_summary_label ?? "",
+                total_label: widget.ui_labels?.total_label ?? "",
               }}
               paymentMethods={availablePaymentMethods}
             />

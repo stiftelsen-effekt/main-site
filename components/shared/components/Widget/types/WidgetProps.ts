@@ -191,6 +191,7 @@ type AutogiroRecurringManualOptionConfig = {
 export type SmartDistributionContext = {
   smart_distribution_radiobutton_text: string;
   custom_distribution_radiobutton_text: string;
+  smart_distribution_title: string;
   smart_distribution_label_text: string;
   smart_distribution_description: any[];
   smart_distribution_description_links: (LinkType | NavLink)[];
@@ -272,4 +273,5 @@ export type CauseAreaDisplayConfig = {
 
 export type UILabels = {
   total_label: string;
+  operations_summary_label: string;
 };

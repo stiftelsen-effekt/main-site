@@ -10,7 +10,15 @@ import {
 } from "./DonationSummary.style";
 import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
 
-export const DonationSummary: React.FC = () => {
+export interface DonationSummaryText {
+  single_donation_text: string;
+  monthly_donation_text: string;
+  smart_distribution_title: string;
+  operations_summary_label: string;
+  total_label: string;
+}
+
+export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text }) => {
   const donation = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
 
@@ -41,7 +49,7 @@ export const DonationSummary: React.FC = () => {
     if (selectedCauseAreaId === -1 && smartDistributionTotal > 0) {
       summaryItems.push({
         id: -1,
-        name: "Smart distribution",
+        name: text.smart_distribution_title,
         amount: smartDistributionTotal,
         orgs: [],
       });
@@ -63,8 +71,6 @@ export const DonationSummary: React.FC = () => {
       operationsConfig?.excludedCauseAreaIds || [],
       smartDistributionTotal,
     );
-
-    console.log(breakdown);
 
     // Build summary items from breakdown
     causeAreas.forEach((area) => {
@@ -99,7 +105,7 @@ export const DonationSummary: React.FC = () => {
     if (breakdown.operationsAmount > 0) {
       summaryItems.push({
         id: 4,
-        name: "Drift",
+        name: text.operations_summary_label,
         amount: breakdown.operationsAmount,
         orgs: [],
       });
@@ -118,6 +124,8 @@ export const DonationSummary: React.FC = () => {
     globalOperationsEnabled,
     smartDistributionTotal,
     globalOperationsPercentage,
+    text.smart_distribution_title,
+    text.operations_summary_label,
   ]);
 
   if (sum === 0) {
@@ -127,7 +135,7 @@ export const DonationSummary: React.FC = () => {
   return (
     <DonationSummaryWrapper data-cy="donation-summary">
       <DonationSummaryHeader data-cy="donation-type">
-        {recurring ? "Månadsgivande" : "Enkelt givande"} donation
+        {recurring ? text.monthly_donation_text : text.single_donation_text}
       </DonationSummaryHeader>
       <SummmaryOrganizationsList cellSpacing={0}>
         <tbody>
@@ -180,7 +188,7 @@ export const DonationSummary: React.FC = () => {
       <TotalTable>
         <tbody>
           <tr>
-            <td data-cy="summary-total-label">Sum</td>
+            <td data-cy="summary-total-label">{text.total_label}</td>
             <td data-cy="summary-total-amount">{sum.toLocaleString("no-NB")} kr</td>
           </tr>
         </tbody>

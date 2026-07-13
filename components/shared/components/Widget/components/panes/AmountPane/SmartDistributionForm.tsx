@@ -109,7 +109,7 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
       <div>
         <CauseAreaTitle>
           <MultipleCauseAreaIcon />
-          Smart fördeling
+          {smartDistributionContext.smart_distribution_title}
         </CauseAreaTitle>
         <CauseAreaContext>{getCauseAreaContext(-1, causeAreaDisplayConfig)}</CauseAreaContext>
       </div>

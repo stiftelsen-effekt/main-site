@@ -29,6 +29,7 @@ export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig>
 
 export const DEFAULT_UI_LABELS: Required<UILabels> = {
   total_label: "Total",
+  operations_summary_label: "Operations",
 };
 
 /**

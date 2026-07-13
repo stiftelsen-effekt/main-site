@@ -27,7 +27,7 @@ import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
 import { LayoutActionTypes } from "../../../store/layout/types";
 import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
-import { DonationSummary } from "../../shared/DonationSummary/DonationSummary";
+import { DonationSummary, DonationSummaryText } from "../../shared/DonationSummary/DonationSummary";
 import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
 import {
   PaymentButton,
@@ -44,8 +44,9 @@ const capitalizeNames = (string: string) => {
 export const DonorPane: React.FC<{
   locale: "en" | "no" | "sv" | "et" | "dk";
   text: WidgetPane2Props;
+  summaryText: DonationSummaryText;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ locale, text, paymentMethods }) => {
+}> = ({ locale, text, summaryText, paymentMethods }) => {
   const dispatch =
     useDispatch<
       Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload> | LayoutActionTypes>
@@ -205,7 +206,7 @@ export const DonorPane: React.FC<{
       <DonorForm autoComplete="on">
         <PaneContainer>
           <div>
-            <DonationSummary />
+            <DonationSummary text={summaryText} />
 
             {text.allow_anonymous_donations && (
               <div style={{ marginBottom: "20px" }}>

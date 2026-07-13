@@ -15,16 +15,20 @@
   --primary: #fafafa;
   --secondary: black;
   --primary-hover: #aaa;
-  --primary-filter: invert(1);
-  --primary-filter-inverse: brightness(0);
+  /* Cause-area icons are full-bleed illustrations, not flat single-tone
+     glyphs, so brightness()-based dimming (used elsewhere for --primary-filter)
+     just paints them as solid squares. invert() keeps their detail visible
+     on both backgrounds. */
+  --cause-area-icon-filter: invert(1);
+  --cause-area-icon-filter-hover: invert(0);
 }
 
 .dark {
   --primary: black;
   --secondary: #fafafa;
   --primary-hover: #aaa;
-  --primary-filter: brightness(0);
-  --primary-filter-inverse: invert(1);
+  --cause-area-icon-filter: invert(0);
+  --cause-area-icon-filter-hover: invert(1);
 }
 
 .widgetPaneOpen {
