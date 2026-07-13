@@ -83,7 +83,7 @@ const DonationImpactAnimalWelfare: React.FC<{
               )}
               {dist.org === "Drift" && (
                 <DonationImpactItemAnimalWelfare
-                  orgAbriv="Drift"
+                  orgAbriv={configuration.operations_label}
                   sumToOrg={dist.sum}
                   donationTimestamp={timestamp}
                   precision={requiredPrecision}
@@ -91,7 +91,6 @@ const DonationImpactAnimalWelfare: React.FC<{
                     if (precision > requiredPrecision) updatePrecision(precision);
                   }}
                   configuration={configuration.impact_item_configuration}
-                  singleLineLabelOverride={configuration.operations_label}
                   expandedContentOverride={renderOperationsContent(configuration)}
                 />
               )}
