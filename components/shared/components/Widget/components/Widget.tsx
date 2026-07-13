@@ -5,12 +5,17 @@ import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { fetchCauseAreasAction } from "../store/layout/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
-import { setOperationsConfig } from "../store/donation/actions";
+import {
+  setOperationsConfig,
+  setCauseAreaSelection,
+  setOperationsPercentageModeByCauseArea,
+} from "../store/donation/actions";
 import { State } from "../store/state";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
 import { SelectionPane } from "./panes/SelectionPane";
 import { AmountPane } from "./panes/AmountPane/index";
+import { SingleCauseAreaPane } from "./panes/SingleCauseAreaPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
@@ -35,6 +40,96 @@ import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { RecurringDonation } from "../types/Enums";
 import { applyWidgetDefaults, DEFAULT_OPERATIONS_CONFIG } from "../utils/widgetDefaults";
+import { CauseArea } from "../types/CauseArea";
+
+/**
+ * TEMP DEMO DATA — remove before merging.
+ * DK's cause-area data isn't set up in the API/Sanity yet, so this hardcodes
+ * a 4-cause-area lineup (Global Health, Animal Welfare, Operations, Other) to
+ * demo the multi cause-area widget flow on the DK Vercel preview.
+ */
+const DK_DEMO_CAUSE_AREAS: CauseArea[] = [
+  {
+    id: 1,
+    name: "Global helse",
+    widgetDisplayName: "Global helse",
+    shortDescription: "De mest effektive tiltakene innen global helse.",
+    longDescription: "De mest effektive tiltakene innen global helse.",
+    informationUrl: "",
+    isActive: true,
+    ordering: 1,
+    organizations: [
+      {
+        id: 101,
+        causeAreaId: 1,
+        standardShare: 100,
+        name: "Global helse-fond",
+        isActive: true,
+        ordering: 1,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Dyrevelferd",
+    widgetDisplayName: "Dyrevelferd",
+    shortDescription: "De mest effektive tiltakene innen dyrevelferd.",
+    longDescription: "De mest effektive tiltakene innen dyrevelferd.",
+    informationUrl: "",
+    isActive: true,
+    ordering: 2,
+    organizations: [
+      {
+        id: 102,
+        causeAreaId: 2,
+        standardShare: 100,
+        name: "Dyrevelferd-fond",
+        isActive: true,
+        ordering: 1,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Drift",
+    widgetDisplayName: "Drift",
+    shortDescription: "Støtt driften av organisasjonen.",
+    longDescription: "Støtt driften av organisasjonen.",
+    informationUrl: "",
+    isActive: true,
+    ordering: 3,
+    organizations: [
+      {
+        id: 104,
+        causeAreaId: 4,
+        standardShare: 100,
+        name: "Drift",
+        isActive: true,
+        ordering: 1,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Annet",
+    widgetDisplayName: "Annet",
+    shortDescription: "Andre effektive tiltak.",
+    longDescription: "Andre effektive tiltak.",
+    informationUrl: "",
+    isActive: true,
+    ordering: 4,
+    organizations: [
+      {
+        id: 105,
+        causeAreaId: 5,
+        standardShare: 100,
+        name: "Annet-fond",
+        isActive: true,
+        ordering: 1,
+      },
+    ],
+  },
+];
 
 export const widgetContentQuery = groq`
   ...,
@@ -169,6 +264,20 @@ export const Widget = withStaticProps(
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
 
+  // Platforms with a single (active) cause area keep the pre-rewrite widget UX:
+  // no cause-area selection step and no operations/tip. See SingleCauseAreaPane.
+  const activeCauseAreas = causeAreas?.filter((ca) => ca.isActive) ?? [];
+  const isSingleCauseArea = !!causeAreas && activeCauseAreas.length === 1;
+  const singleCauseAreaId = isSingleCauseArea ? activeCauseAreas[0].id : undefined;
+
+  useEffect(() => {
+    if (singleCauseAreaId === undefined) return;
+    // There is nothing to select, so pin the selection to the one cause area and
+    // make sure operations/tip stays off (it may be auto-enabled by config).
+    dispatch(setCauseAreaSelection("single", singleCauseAreaId));
+    dispatch(setOperationsPercentageModeByCauseArea(singleCauseAreaId, false));
+  }, [dispatch, singleCauseAreaId]);
+
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef, inline);
   // const { scrollPosition } = useWidgetScrollObserver(widgetRef);
   const widgetHeight = useElementHeight(widgetRef);
@@ -191,9 +300,16 @@ export const Widget = withStaticProps(
           DEFAULT_OPERATIONS_CONFIG.excluded_cause_area_ids,
       }),
     );
-    dispatch(fetchCauseAreasAction.started(undefined));
+    // TEMP DEMO — remove before merging. See DK_DEMO_CAUSE_AREAS above.
+    if (widget.locale === "dk") {
+      dispatch(
+        fetchCauseAreasAction.done({ params: undefined, result: DK_DEMO_CAUSE_AREAS }),
+      );
+    } else {
+      dispatch(fetchCauseAreasAction.started(undefined));
+    }
     dispatch(fetchReferralsAction.started(undefined));
-  }, [dispatch]);
+  }, [dispatch, widget.locale]);
 
   usePrefilledDistribution({
     inline,
@@ -264,23 +380,44 @@ export const Widget = withStaticProps(
             const text = taxInfoText[widget.locale];
             return text ? <TaxInfoBox>{text}</TaxInfoBox> : null;
           })()}*/}
-          <ProgressBar inline={inline} />
+          <ProgressBar inline={inline} numberOfPanes={isSingleCauseArea ? 3 : 4} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
-            <SelectionPane causeAreaDisplayConfig={widget.cause_area_display_config} />
-            <AmountPane
-              nextButtonText={widget.pane1_button_text}
-              smartDistContext={widget.smart_distribution_context}
-              text={{
-                single_donation_text: widget.single_donation_text,
-                monthly_donation_text: widget.monthly_donation_text,
-              }}
-              enableRecurring={availableRecurringOptions.recurring}
-              enableSingle={availableRecurringOptions.single}
-              amountContext={widget.amount_context}
-              operationsConfig={widget.operations_config}
-              causeAreaDisplayConfig={widget.cause_area_display_config}
-              uiLabels={widget.ui_labels}
-            />
+            {isSingleCauseArea ? (
+              <SingleCauseAreaPane
+                nextButtonText={widget.pane1_button_text}
+                enableRecurring={availableRecurringOptions.recurring}
+                enableSingle={availableRecurringOptions.single}
+                singleDonationText={widget.single_donation_text}
+                monthlyDonationText={widget.monthly_donation_text}
+                amountContext={widget.amount_context}
+                smartDistributionContext={widget.smart_distribution_context}
+              />
+            ) : (
+              false
+            )}
+            {!isSingleCauseArea ? (
+              <SelectionPane causeAreaDisplayConfig={widget.cause_area_display_config} />
+            ) : (
+              false
+            )}
+            {!isSingleCauseArea ? (
+              <AmountPane
+                nextButtonText={widget.pane1_button_text}
+                smartDistContext={widget.smart_distribution_context}
+                text={{
+                  single_donation_text: widget.single_donation_text,
+                  monthly_donation_text: widget.monthly_donation_text,
+                }}
+                enableRecurring={availableRecurringOptions.recurring}
+                enableSingle={availableRecurringOptions.single}
+                amountContext={widget.amount_context}
+                operationsConfig={widget.operations_config}
+                causeAreaDisplayConfig={widget.cause_area_display_config}
+                uiLabels={widget.ui_labels}
+              />
+            ) : (
+              false
+            )}
             <DonorPane
               locale={widget.locale}
               text={{

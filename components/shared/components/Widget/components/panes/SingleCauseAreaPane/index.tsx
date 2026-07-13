@@ -1,0 +1,313 @@
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NumericFormat } from "react-number-format";
+import { usePlausible } from "next-plausible";
+import { PortableText } from "@portabletext/react";
+import AnimateHeight from "react-animate-height";
+import { Dispatch } from "@reduxjs/toolkit";
+
+import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
+import {
+  ActionBar,
+  InfoParagraph,
+  ShareContainer,
+  ShareInputContainer,
+  ShareLink,
+  ShareSelectionSpacer,
+  ShareSelectionWrapper,
+  SharesSelectorContainer,
+  SumButtonsWrapper,
+  SumWrapper,
+} from "./SingleCauseAreaPane.style";
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
+import { ToolTip } from "../../shared/ToolTip/ToolTip";
+import { Spinner } from "../../../../Spinner/Spinner";
+import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
+import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
+import { State } from "../../../store/state";
+import { RecurringDonation, ShareType } from "../../../types/Enums";
+import {
+  setRecurring,
+  setSum,
+  setCauseAreaAmount,
+  setOrgAmount,
+  setCauseAreaDistributionType,
+} from "../../../store/donation/actions";
+import { nextPane } from "../../../store/layout/actions";
+import { DonationActionTypes } from "../../../store/donation/types";
+import { LayoutActionTypes } from "../../../store/layout/types";
+import { thousandize } from "../../../../../../../util/formatting";
+import { useAmountCalculation } from "../AmountPane/useAmountCalculation";
+import { AmountContext, SmartDistributionContext } from "../../../types/WidgetProps";
+
+interface SingleCauseAreaPaneProps {
+  nextButtonText: string;
+  enableRecurring: boolean;
+  enableSingle: boolean;
+  singleDonationText: string;
+  monthlyDonationText: string;
+  amountContext: AmountContext;
+  smartDistributionContext: SmartDistributionContext;
+}
+
+/**
+ * Amount pane used when a platform has a single (active) cause area, e.g. Norway.
+ *
+ * It reproduces the pre-rewrite ("main") widget experience — recurring toggle,
+ * suggested sums, a smart/custom distribution selector with an explanatory
+ * description — using main's markup and styling, but is driven by the rewritten
+ * donation state. The one thing carried over from the new widget is that custom
+ * organization distribution is entered as direct kroner amounts rather than
+ * percentages. Operations/tip is intentionally omitted to match the old widget.
+ */
+export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
+  nextButtonText,
+  enableRecurring,
+  enableSingle,
+  singleDonationText,
+  monthlyDonationText,
+  amountContext,
+  smartDistributionContext,
+}) => {
+  const dispatch = useDispatch<Dispatch<DonationActionTypes | LayoutActionTypes>>();
+  const plausible = usePlausible();
+
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas);
+  const {
+    recurring,
+    causeAreaAmounts = {},
+    orgAmounts = {},
+    causeAreaDistributionType = {},
+  } = useSelector((state: State) => state.donation);
+
+  const activeCauseAreas = causeAreas?.filter((ca) => ca.isActive) ?? [];
+  const causeArea = activeCauseAreas[0];
+
+  const { totalAmount } = useAmountCalculation("single", causeArea?.id ?? null, causeAreas ?? []);
+
+  const currentAmount = causeArea ? causeAreaAmounts[causeArea.id] || 0 : 0;
+  const [inputValue, setInputValue] = React.useState(currentAmount);
+  React.useEffect(() => {
+    setInputValue(currentAmount);
+  }, [currentAmount]);
+
+  if (!causeAreas) {
+    return (
+      <Pane>
+        <PaneContainer>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <Spinner />
+          </div>
+        </PaneContainer>
+      </Pane>
+    );
+  }
+
+  if (!causeArea) {
+    return (
+      <Pane>
+        <PaneContainer>
+          <div>Missing cause area</div>
+        </PaneContainer>
+      </Pane>
+    );
+  }
+
+  const activeOrganizations = causeArea.organizations
+    .filter((org) => org.isActive)
+    .sort((a, b) => a.ordering - b.ordering);
+  const hasMultipleOrgs = activeOrganizations.length > 1;
+  const distributionType = causeAreaDistributionType[causeArea.id] ?? ShareType.STANDARD;
+  const isCustom = hasMultipleOrgs && distributionType === ShareType.CUSTOM;
+
+  const suggestedSums = recurring
+    ? amountContext.preset_amounts_recurring
+    : amountContext.preset_amounts_single;
+
+  const setAmount = (amount: number) => {
+    setInputValue(amount);
+    dispatch(setCauseAreaAmount(causeArea.id, amount));
+    // With a single organization the cause area amount is the organization amount.
+    if (activeOrganizations.length <= 1 && activeOrganizations[0]) {
+      dispatch(setOrgAmount(activeOrganizations[0].id, amount));
+    }
+  };
+
+  const handleDistributionChange = (value: ShareType) => {
+    dispatch(setCauseAreaDistributionType(causeArea.id, value));
+
+    // When switching to custom, seed the per-organization amounts from the
+    // standard split so the user has a sensible starting point.
+    if (value === ShareType.CUSTOM) {
+      const hasSetOrgAmounts = activeOrganizations.some((org) => (orgAmounts[org.id] || 0) > 0);
+      if (!hasSetOrgAmounts) {
+        const causeAreaAmount = causeAreaAmounts[causeArea.id] || 0;
+        for (const org of causeArea.organizations) {
+          if (!org.standardShare) continue;
+          const orgShare = Math.round((org.standardShare / 100) * causeAreaAmount);
+          dispatch(setOrgAmount(org.id, orgShare));
+        }
+      }
+    }
+  };
+
+  const amountInput = (
+    <>
+      <SumButtonsWrapper>
+        {suggestedSums.map((suggested) => (
+          <div key={suggested.amount}>
+            <EffektButton
+              variant={EffektButtonVariant.SECONDARY}
+              selected={inputValue === suggested.amount}
+              onClick={() => {
+                plausible("SelectSuggestedSum", { props: { sum: suggested.amount } });
+                setAmount(suggested.amount);
+              }}
+              noMinWidth={true}
+              data-cy={`suggested-sum-${causeArea.id}-${suggested.amount}`}
+            >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
+            {suggested.subtext && <i>{suggested.subtext}</i>}
+          </div>
+        ))}
+      </SumButtonsWrapper>
+      <SumWrapper>
+        <label>{amountContext.custom_amount_text}</label>
+        <span>
+          <NumericFormat
+            name={`sum-${causeArea.id}`}
+            thousandSeparator=" "
+            allowNegative={false}
+            decimalScale={0}
+            type="tel"
+            placeholder="0"
+            value={inputValue > 0 ? inputValue : ""}
+            autoComplete="off"
+            data-cy={`donation-sum-input-${causeArea.id}`}
+            onValueChange={(values) => setAmount(values.floatValue ?? 0)}
+          />
+        </span>
+      </SumWrapper>
+    </>
+  );
+
+  return (
+    <Pane>
+      <PaneContainer>
+        <div>
+          <PaneTitle>
+            <wbr />
+          </PaneTitle>
+
+          <RadioButtonGroup
+            options={[
+              {
+                title: singleDonationText,
+                value: RecurringDonation.NON_RECURRING,
+                data_cy: "radio-single",
+                disabled: !enableSingle,
+              },
+              {
+                title: monthlyDonationText,
+                value: RecurringDonation.RECURRING,
+                data_cy: "radio-recurring",
+                disabled: !enableRecurring,
+              },
+            ]}
+            selected={recurring}
+            onSelect={(value) => dispatch(setRecurring(value as RecurringDonation))}
+          />
+
+          {/* In custom (kroner) mode the per-organization inputs are the source
+              of truth, so the standalone total input is collapsed away. */}
+          <AnimateHeight height={isCustom ? 0 : "auto"} animateOpacity duration={300}>
+            {amountInput}
+          </AnimateHeight>
+
+          {hasMultipleOrgs && (
+            <ShareSelectionSpacer>
+              <RadioButtonGroup
+                options={[
+                  {
+                    title: smartDistributionContext.smart_distribution_radiobutton_text,
+                    value: ShareType.STANDARD,
+                    data_cy: "radio-smart-share",
+                  },
+                  {
+                    title: smartDistributionContext.custom_distribution_radiobutton_text,
+                    value: ShareType.CUSTOM,
+                    data_cy: "radio-custom-share",
+                  },
+                ]}
+                selected={distributionType}
+                onSelect={(value) => handleDistributionChange(value as ShareType)}
+              />
+
+              {distributionType === ShareType.STANDARD &&
+                smartDistributionContext.smart_distribution_description && (
+                  <InfoParagraph>
+                    <PortableText value={smartDistributionContext.smart_distribution_description} />
+                  </InfoParagraph>
+                )}
+
+              {distributionType === ShareType.CUSTOM && (
+                <SharesSelectorContainer>
+                  <ShareSelectionWrapper>
+                    <ShareContainer>
+                      {activeOrganizations.map((org) => (
+                        <ShareInputContainer key={org.id}>
+                          <div>
+                            <ShareLink href={org.informationUrl} target="_blank">
+                              <label htmlFor={`org-${org.id}`}>
+                                {org.widgetDisplayName || org.name}
+                              </label>
+                            </ShareLink>
+                            {org.widgetContext && <ToolTip text={org.widgetContext} />}
+                          </div>
+                          <NumericFormat
+                            id={`org-${org.id}`}
+                            type="tel"
+                            placeholder="0"
+                            value={orgAmounts[org.id] || ""}
+                            step={1}
+                            decimalScale={0}
+                            allowNegative={false}
+                            thousandSeparator=" "
+                            autoComplete="off"
+                            data-cy={`org-${org.id}`}
+                            onValueChange={(values) =>
+                              dispatch(setOrgAmount(org.id, values.floatValue ?? 0))
+                            }
+                          />
+                        </ShareInputContainer>
+                      ))}
+                    </ShareContainer>
+                  </ShareSelectionWrapper>
+                </SharesSelectorContainer>
+              )}
+            </ShareSelectionSpacer>
+          )}
+        </div>
+
+        <ActionBar>
+          <NextButton
+            disabled={totalAmount <= 0}
+            onClick={() => {
+              dispatch(setSum(totalAmount));
+              dispatch(nextPane());
+            }}
+            data-cy="next-button"
+          >
+            {nextButtonText}
+          </NextButton>
+        </ActionBar>
+      </PaneContainer>
+    </Pane>
+  );
+};
