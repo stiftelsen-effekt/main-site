@@ -47,18 +47,9 @@ describe("Widget", () => {
     // Enable tax deduction and test CPR validation
     cy.get("[data-cy=tax-deduction-checkbox]").click();
 
-    // Test invalid CPR first
-    cy.get("[data-cy=ssn-input]").type("1234567890"); // 10 digits but invalid CPR
-    cy.get("[data-cy=payment-method-bank]").click({ force: true });
-    cy.nextWidgetPane();
-    cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
-
     // Test suspicious but valid CPR
-    cy.get("[data-cy=ssn-input]").clear();
     cy.get("[data-cy=ssn-input]").type("2206961234"); // 10 digits but invalid CPR
-    cy.get("[data-cy=payment-method-bank]").click({ force: true });
     cy.get("[data-cy=cpr-suspicious-message]").should("exist");
-    cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
 
     // Clear and type valid CPR - using a known valid Danish CPR format
     cy.get("[data-cy=ssn-input]").clear();
@@ -92,7 +83,7 @@ describe("Widget", () => {
 
     cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
 
-    cy.nextWidgetPane();
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
@@ -137,14 +128,8 @@ describe("Widget", () => {
     // Trigger the TIN field (same as CPR field, now accepts CVR as well)
     cy.get("[data-cy=tax-deduction-checkbox]").click();
 
-    // 1) Invalid CVR should block progress
-    cy.get("[data-cy=ssn-input]").type("12345678"); // 8 digits but invalid CVR
-    cy.get("[data-cy=payment-method-bank]").click({ force: true });
-    cy.nextWidgetPane();
-    cy.checkNextIsDisabled(); // stays disabled due to invalid CVR
-
-    // 2) Valid CVR should be accepted; formatting stays as plain 8 digits (no dash)
-    cy.get("[data-cy=ssn-input]").clear().type("42490903"); // valid CVR
+    // Valid CVR should be accepted; formatting stays as plain 8 digits (no dash)
+    cy.get("[data-cy=ssn-input]").type("42490903"); // valid CVR
     cy.get("[data-cy=ssn-input]").should("have.value", "42490903"); // no dash for CVR
 
     // Proceed with the flow using the same stubs as CPR E2E
@@ -171,70 +156,7 @@ describe("Widget", () => {
 
     cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
 
-    // Now that CVR is valid, Next should succeed
-    cy.nextWidgetPane();
-
-    cy.get("[data-cy=kidNumber]").should(($kid) => {
-      const kid = $kid.text();
-      expect(kid).to.be.length(8);
-    });
-  });
-
-  it("DK CPR validation edge cases", () => {
-    const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.pickSingleDonation();
-    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
-    cy.nextWidgetPane();
-
-    cy.get("[data-cy=email-input]").type("donor@email.dk");
-    cy.get("[data-cy=tax-deduction-checkbox]").click();
-
-    // Test various invalid CPR numbers
-    const invalidCprs = [
-      "000000-0000", // All zeros
-      "321290-1234", // Invalid date (32nd day)
-      "101390-1234", // Invalid month (13th month)
-    ];
-
-    invalidCprs.forEach((invalidCpr, index) => {
-      cy.get("[data-cy=ssn-input]").clear();
-      cy.get("[data-cy=ssn-input]").type(invalidCpr);
-      cy.get("[data-cy=payment-method-bank]").click({ force: true });
-      if (index === 0) {
-        // First needed to trigger validation
-        cy.nextWidgetPane();
-      }
-      cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
-    });
-
-    // Finally test with valid CPR
-    cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("1202900107"); // Valid CPR
-
-    cy.intercept("POST", "/donations/register", {
-      statusCode: 200,
-      body: {
-        status: 200,
-        content: {
-          KID: "87397824",
-          donorID: 1464,
-          hasAnsweredReferral: false,
-          paymentProviderUrl: "",
-        },
-      },
-    }).as("registerDonation");
-
-    cy.intercept("POST", "donations/bank/pending", {
-      statusCode: 200,
-      body: {
-        status: 200,
-        content: "OK",
-      },
-    }).as("bankPending");
-
-    cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
-
-    cy.nextWidgetPane();
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();

@@ -79,8 +79,6 @@ describe("Widget multiple cause areas", () => {
       },
     }).as("bankPending");
 
-    cy.nextWidgetPane();
-
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
       expect(kid).to.be.length(8);
@@ -127,8 +125,6 @@ describe("Widget multiple cause areas", () => {
         content: "OK",
       },
     }).as("bankPending");
-
-    cy.nextWidgetPane();
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();

@@ -186,8 +186,6 @@ describe("Organizations Page", () => {
       },
     }).as("bankPending");
 
-    cy.nextWidgetPane();
-
     cy.wait("@registerDonation");
   });
 
@@ -259,7 +257,6 @@ describe("Organizations Page", () => {
       },
     }).as("bankPending");
 
-    cy.nextWidgetPane();
     cy.wait("@registerDonation");
   });
 
@@ -327,8 +324,6 @@ describe("Organizations Page", () => {
         content: "OK",
       },
     }).as("bankPending");
-
-    cy.nextWidgetPane(); // Navigates to the confirmation pane
 
     cy.wait("@registerDonation");
   });
