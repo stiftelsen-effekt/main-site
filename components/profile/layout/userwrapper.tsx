@@ -30,6 +30,10 @@ export const UserWrapper: React.FC<{
         login_hint: loginHint ? loginHint : undefined,
         prompt: prompt ? prompt : undefined,
       },
+      appState:
+        typeof window !== "undefined"
+          ? { returnTo: window.location.pathname + window.location.search }
+          : undefined,
     });
 
   if (error)
