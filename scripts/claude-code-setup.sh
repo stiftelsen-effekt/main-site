@@ -16,4 +16,12 @@ if [ ! -d node_modules ]; then
   npm install --no-audit --no-fund || true
 fi
 
+# Playwright for visual verification of UI changes (not a project dependency;
+# browser binaries are cached in the cloud environment). Requires the Playwright
+# CDN domains on the environment's network allowlist — see CLAUDE.md.
+if [ ! -d node_modules/@playwright/test ]; then
+  npm install --no-save --no-audit --no-fund @playwright/test || true
+fi
+npx playwright install --with-deps chromium || npx playwright install chromium || true
+
 exit 0
