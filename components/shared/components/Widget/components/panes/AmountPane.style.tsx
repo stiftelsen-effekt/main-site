@@ -175,18 +175,22 @@ export const SumWrapper = styled.div`
 export const SumButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 10px;
 
   div {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    flex-shrink: 0;
 
     button {
       margin: 0;
       border-radius: 10px;
       font-size: 28px;
+      white-space: nowrap;
 
       &::before {
         font-size: 16px;
@@ -223,6 +227,8 @@ export const OperationsPercentageInputWrapper = styled.div`
 
   input {
     width: 34px;
+    background: var(--secondary);
+    color: var(--primary);
     border: 1px solid var(--primary);
     border-radius: 5px;
     padding: 5px;

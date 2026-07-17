@@ -90,7 +90,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
               style={{
                 background: accentColor || DEFAULT_ACCENT_COLOR,
                 color: "white",
-                border: `1px solid ${accentColor || DEFAULT_ACCENT_COLOR}`,
+                border: "1px solid var(--primary)",
               }}
               data-cy="cause-area-recommendation"
             >
