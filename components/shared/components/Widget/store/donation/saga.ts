@@ -182,8 +182,6 @@ export function* registerBankPending(): SagaIterator<void> {
   }
 }
 
-const OPERATIONS_CAUSE_AREA_ID = 4;
-
 export function* registerDonation(
   action: Action<RegisterDonationActionPayload>,
 ): SagaIterator<void> {
@@ -212,6 +210,8 @@ export function* registerDonation(
       operationsConfig,
     } = donation;
 
+    const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId ?? 4;
+
     // Use the centralized calculation function to get the breakdown
     const breakdown = calculateDonationBreakdown(
       causeAreaAmounts,
@@ -225,7 +225,7 @@ export function* registerDonation(
       globalOperationsEnabled,
       globalOperationsPercentage,
       operationsConfig?.excludedCauseAreaIds ?? [],
-      operationsConfig?.operationsCauseAreaId ?? 4,
+      OPERATIONS_CAUSE_AREA_ID,
       smartDistributionTotal,
     );
 

@@ -88,7 +88,7 @@ describe("Organizations Page", () => {
     cy.get("[data-cy=org-12]").type("50");
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
 
     cy.nextWidgetPane();
 
@@ -134,7 +134,7 @@ describe("Organizations Page", () => {
     cy.pickSingleDonation();
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -207,7 +207,7 @@ describe("Organizations Page", () => {
     cy.get("[data-cy=org-12]").type("50");
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -275,7 +275,7 @@ describe("Organizations Page", () => {
     cy.get("[data-cy=radio-smart-share]").click({ force: true });
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();

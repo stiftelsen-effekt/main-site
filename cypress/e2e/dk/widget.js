@@ -35,7 +35,7 @@ describe("Widget", () => {
   it("End-2-End DK donation with CPR validation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     // In DK locale, there should be no name field (show_name_field: false)
@@ -103,7 +103,7 @@ describe("Widget", () => {
   it("DK CPR formatting test (TIN formatter: dash only at 10 digits)", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
@@ -129,7 +129,7 @@ describe("Widget", () => {
   it("DK CVR validation & formatting (accept 8-digit CVR; no dash at any point)", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
@@ -183,7 +183,7 @@ describe("Widget", () => {
   it("DK CPR validation edge cases", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");

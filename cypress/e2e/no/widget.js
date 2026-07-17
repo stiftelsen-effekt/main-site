@@ -37,7 +37,7 @@ describe("Widget", () => {
   it("End-2-End single bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -88,7 +88,7 @@ describe("Widget", () => {
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -124,7 +124,7 @@ describe("Widget", () => {
   it("End-2-End single vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -154,7 +154,7 @@ describe("Widget", () => {
   it("End-2-End recurring vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -193,7 +193,7 @@ describe("Widget", () => {
   it("End-2-End shared donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.get("[data-cy=radio-custom-share]").first().click({ force: true });
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
@@ -239,15 +239,15 @@ describe("Widget", () => {
   it("End-2-End for all input fields", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.prevWidgetPane();
-    cy.get("[data-cy=donation-sum-input]").clear();
-    cy.get("[data-cy=donation-sum-input]").type(0);
+    cy.get("[data-cy^=donation-sum-input]").clear();
+    cy.get("[data-cy^=donation-sum-input]").type(0);
     cy.nextWidgetPane();
     cy.checkNextIsDisabled();
-    cy.get("[data-cy=donation-sum-input]").type(1);
+    cy.get("[data-cy^=donation-sum-input]").type(1);
     cy.nextWidgetPane();
 
     cy.wait(500);
@@ -432,7 +432,7 @@ describe("Widget", () => {
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);
