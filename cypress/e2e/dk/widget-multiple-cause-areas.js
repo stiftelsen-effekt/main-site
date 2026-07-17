@@ -58,6 +58,8 @@ describe("Widget multiple cause areas", () => {
     cy.get("[data-cy=email-input]").type("donor@email.dk");
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
+    cy.wait(500);
+
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
       body: {
@@ -97,6 +99,8 @@ describe("Widget multiple cause areas", () => {
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
+
+    cy.wait(500);
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body.amount).to.eq(1000);

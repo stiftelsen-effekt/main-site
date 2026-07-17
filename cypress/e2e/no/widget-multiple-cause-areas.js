@@ -54,6 +54,8 @@ describe("Widget multiple cause areas", () => {
     cy.pickAnonymous();
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
+    cy.wait(500);
+
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
       body: {
@@ -95,6 +97,8 @@ describe("Widget multiple cause areas", () => {
     cy.pickAnonymous();
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
+    cy.wait(500);
+
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
       body: {
@@ -135,6 +139,8 @@ describe("Widget multiple cause areas", () => {
     cy.pickAnonymous();
 
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
+
+    cy.wait(500);
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body.amount).to.eq(1000);
