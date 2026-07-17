@@ -52,9 +52,6 @@ describe("Widget multiple cause areas", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=payment-method-bank]").click({ force: true });
-
-    cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -76,6 +73,10 @@ describe("Widget multiple cause areas", () => {
         content: "OK",
       },
     }).as("bankPending");
+
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
+
+    cy.wait("@registerDonation");
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
@@ -95,9 +96,6 @@ describe("Widget multiple cause areas", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=payment-method-bank]").click({ force: true });
-
-    cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -120,6 +118,10 @@ describe("Widget multiple cause areas", () => {
       },
     }).as("bankPending");
 
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
+
+    cy.wait("@registerDonation");
+
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
       expect(kid).to.be.length(8);
@@ -137,10 +139,6 @@ describe("Widget multiple cause areas", () => {
 
     cy.nextWidgetPane();
     cy.pickAnonymous();
-
-    cy.get("[data-cy=payment-method-bank]").click({ force: true });
-
-    cy.wait(500);
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body.amount).to.eq(1000);
@@ -169,6 +167,10 @@ describe("Widget multiple cause areas", () => {
         content: "OK",
       },
     }).as("bankPending");
+
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
+
+    cy.wait("@registerDonation");
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
