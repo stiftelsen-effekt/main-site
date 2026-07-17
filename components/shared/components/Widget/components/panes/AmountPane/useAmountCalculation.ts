@@ -4,8 +4,6 @@ import { State } from "../../../store/state";
 import { ShareType } from "../../../types/Enums";
 import { CauseArea } from "../../../types/CauseArea";
 
-const OPERATIONS_CAUSE_AREA_ID = 4;
-
 export const useAmountCalculation = (
   selectionType: string,
   selectedCauseAreaId: number | null,
@@ -17,7 +15,10 @@ export const useAmountCalculation = (
     causeAreaDistributionType = {},
     operationsPercentageByCauseArea = {},
     globalOperationsEnabled = false,
+    operationsConfig,
   } = useSelector((state: State) => state.donation);
+
+  const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId ?? 4;
 
   // Calculate the sum of all donations EXCLUDING the operations cut
   const sumOfOtherCauseAreas = useMemo(() => {
@@ -53,6 +54,7 @@ export const useAmountCalculation = (
     causeAreas,
     selectionType,
     selectedCauseAreaId,
+    OPERATIONS_CAUSE_AREA_ID,
   ]);
 
   // Calculate total amount
@@ -112,6 +114,7 @@ export const useAmountCalculation = (
     causeAreas,
     causeAreaDistributionType,
     globalOperationsEnabled,
+    OPERATIONS_CAUSE_AREA_ID,
   ]);
 
   return {

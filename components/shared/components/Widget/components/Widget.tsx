@@ -355,7 +355,10 @@ export const Widget = withStaticProps(
       }),
     );
     // TEMP DEMO — remove before merging. See DK_DEMO_CAUSE_AREAS above.
-    if (widget.locale === "dk") {
+    // Skipped under Cypress so e2e specs can mock /causeareas/all themselves
+    // instead of always getting the demo data regardless of their fixture.
+    const isCypress = typeof window !== "undefined" && !!(window as any).Cypress;
+    if (widget.locale === "dk" && !isCypress) {
       dispatch(fetchCauseAreasAction.done({ params: undefined, result: DK_DEMO_CAUSE_AREAS }));
     } else {
       dispatch(fetchCauseAreasAction.started(undefined));
