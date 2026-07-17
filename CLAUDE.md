@@ -20,6 +20,17 @@ Environment: copy `.env.example` to `.env.local`. The defaults point at a test S
 - **Content**: fetched from Sanity with GROQ queries (`_queries.ts` and colocated query files). The Sanity studio lives in `studio/` as a separate npm project.
 - **Reusable components** live in `components/`, mostly under `components/main/blocks/` for CMS-driven content blocks.
 
+## Verifying UI changes (Claude Code cloud sessions)
+
+Cloud sessions have `@playwright/test` and Chromium available (installed by `scripts/claude-code-setup.sh`). When a change affects anything user-visible:
+
+1. Start the dev server (`npm run dev`) and wait until the affected page compiles.
+2. Write a small throwaway Playwright script that opens the affected pages against `http://localhost:3000` and saves full-page screenshots (desktop 1440px and mobile 390px widths) to `screenshots/` at the repo root.
+3. Commit the screenshots to the branch and embed them in the PR description using raw URLs: `https://raw.githubusercontent.com/stiftelsen-effekt/main-site/<branch>/screenshots/<file>.png`.
+4. Keep screenshots small (PNG, only the affected pages) — reviewers may ask to drop the `screenshots/` commit before merge.
+
+If Playwright or Chromium is missing, the environment's network allowlist probably lacks the Playwright CDN domains (`cdn.playwright.dev`, `playwright.azureedge.net`, `playwright.download.prss.microsoft.com`); say so in the PR instead of skipping verification silently.
+
 ## Conventions
 
 - Prettier is the source of truth for formatting; don't hand-format.
