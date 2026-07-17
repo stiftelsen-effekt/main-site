@@ -41,7 +41,7 @@ describe("Widget", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -92,7 +92,7 @@ describe("Widget", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=avtalegiro-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-avtalegiro]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -128,7 +128,7 @@ describe("Widget", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=vipps-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-vipps]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -158,7 +158,7 @@ describe("Widget", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=vipps-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-vipps]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -205,7 +205,7 @@ describe("Widget", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -257,7 +257,7 @@ describe("Widget", () => {
     cy.get("[data-cy=tax-deduction-checkbox]").click();
     cy.get("[data-cy=ssn-input]").type("916741057"); // Check 9 digit organization number
     cy.get("[data-cy=newsletter-checkbox]").click();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -438,7 +438,7 @@ describe("Widget", () => {
     cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);
     cy.get("[data-cy=email-input]").should("have.value", mockDonor.email);
 
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", (req) => {

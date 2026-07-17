@@ -49,14 +49,14 @@ describe("Widget", () => {
 
     // Test invalid CPR first
     cy.get("[data-cy=ssn-input]").type("1234567890"); // 10 digits but invalid CPR
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
     cy.nextWidgetPane();
     cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
 
     // Test suspicious but valid CPR
     cy.get("[data-cy=ssn-input]").clear();
     cy.get("[data-cy=ssn-input]").type("2206961234"); // 10 digits but invalid CPR
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
     cy.get("[data-cy=cpr-suspicious-message]").should("exist");
     cy.checkNextIsDisabled(); // Should be disabled due to invalid CPR
 
@@ -139,7 +139,7 @@ describe("Widget", () => {
 
     // 1) Invalid CVR should block progress
     cy.get("[data-cy=ssn-input]").type("12345678"); // 8 digits but invalid CVR
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
     cy.nextWidgetPane();
     cy.checkNextIsDisabled(); // stays disabled due to invalid CVR
 
@@ -199,7 +199,7 @@ describe("Widget", () => {
     invalidCprs.forEach((invalidCpr, index) => {
       cy.get("[data-cy=ssn-input]").clear();
       cy.get("[data-cy=ssn-input]").type(invalidCpr);
-      cy.get("[data-cy=bank-method]").click({ force: true });
+      cy.get("[data-cy=payment-method-bank]").click({ force: true });
       if (index === 0) {
         // First needed to trigger validation
         cy.nextWidgetPane();

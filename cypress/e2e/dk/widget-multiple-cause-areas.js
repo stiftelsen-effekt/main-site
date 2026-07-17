@@ -52,9 +52,11 @@ describe("Widget multiple cause areas", () => {
     cy.get('[data-cy="global-cut-checkbox"]').check({ force: true });
     cy.get('[data-cy="global-percentage-cut-input"]').should("exist");
 
+    cy.nextWidgetPane();
+
     cy.get("[data-cy=name-input]").should("not.exist");
     cy.get("[data-cy=email-input]").type("donor@email.dk");
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -96,7 +98,7 @@ describe("Widget multiple cause areas", () => {
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body.amount).to.eq(1000);

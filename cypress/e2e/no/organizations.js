@@ -138,7 +138,7 @@ describe("Organizations Page", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body).to.have.property("distributionCauseAreas");
@@ -211,7 +211,7 @@ describe("Organizations Page", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body).to.have.property("distributionCauseAreas");
@@ -279,7 +279,7 @@ describe("Organizations Page", () => {
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body).to.have.property("distributionCauseAreas");
