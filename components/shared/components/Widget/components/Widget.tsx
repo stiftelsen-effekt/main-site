@@ -337,6 +337,9 @@ export const Widget = withStaticProps(
     // Set operations config first so it's available when cause areas are loaded
     dispatch(
       setOperationsConfig({
+        operationsCauseAreaId:
+          widget.operations_config?.operations_cause_area_id ??
+          DEFAULT_OPERATIONS_CONFIG.operations_cause_area_id,
         defaultPercentage:
           widget.operations_config?.default_percentage ??
           DEFAULT_OPERATIONS_CONFIG.default_percentage,

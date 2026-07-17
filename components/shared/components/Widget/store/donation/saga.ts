@@ -38,6 +38,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
       donation.operationsConfig.excludedCauseAreaIds,
+      donation.operationsConfig.operationsCauseAreaId ?? 4,
       donation.smartDistributionTotal,
     );
 
@@ -106,6 +107,7 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
       donation.operationsConfig.excludedCauseAreaIds,
+      donation.operationsConfig.operationsCauseAreaId ?? 4,
       donation.smartDistributionTotal,
     );
 
@@ -159,6 +161,7 @@ export function* registerBankPending(): SagaIterator<void> {
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
       donation.operationsConfig.excludedCauseAreaIds,
+      donation.operationsConfig.operationsCauseAreaId ?? 4,
       donation.smartDistributionTotal,
     );
 
@@ -222,6 +225,7 @@ export function* registerDonation(
       globalOperationsEnabled,
       globalOperationsPercentage,
       operationsConfig?.excludedCauseAreaIds ?? [],
+      operationsConfig?.operationsCauseAreaId ?? 4,
       smartDistributionTotal,
     );
 

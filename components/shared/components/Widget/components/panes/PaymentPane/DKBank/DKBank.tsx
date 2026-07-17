@@ -36,6 +36,7 @@ export const DKBankPane: React.FC<{
     donation.globalOperationsEnabled ?? false,
     donation.globalOperationsPercentage ?? donation.operationsConfig?.defaultPercentage ?? 10,
     donation.operationsConfig?.excludedCauseAreaIds ?? [],
+    donation.operationsConfig?.operationsCauseAreaId ?? 4,
     donation.smartDistributionTotal,
   ).totalAmount;
 

@@ -229,6 +229,7 @@ interface SetOperationsPercentageByCauseArea {
 interface SetOperationsConfig {
   type: typeof SET_OPERATIONS_CONFIG;
   payload: {
+    operationsCauseAreaId: number;
     defaultPercentage: number;
     enabledByDefaultGlobal: boolean;
     enabledByDefaultSingle: boolean;

@@ -280,6 +280,7 @@ export function setOperationsPercentageByCauseArea(
  * Set the operations configuration from widget props.
  */
 export function setOperationsConfig(config: {
+  operationsCauseAreaId: number;
   defaultPercentage: number;
   enabledByDefaultGlobal: boolean;
   enabledByDefaultSingle: boolean;

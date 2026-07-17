@@ -24,6 +24,7 @@ export function calculateDonationBreakdown(
   globalOperationsEnabled: boolean,
   globalOperationsPercentage: number,
   ignoredCauseAreas: number[], // Ignored cause areas for multiple selection
+  operationsCauseAreaId: number = 4,
   smartDistributionTotal?: number,
 ): DonationBreakdown {
   const result: DonationBreakdown = {
@@ -107,7 +108,7 @@ export function calculateDonationBreakdown(
     if (selectionType === "single" && area.id !== selectedCauseAreaId) {
       return;
     }
-    if (selectionType === "multiple" && (area.id === 5 || area.id === 4)) {
+    if (selectionType === "multiple" && (area.id === 5 || area.id === operationsCauseAreaId)) {
       return;
     }
 

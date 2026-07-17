@@ -15,15 +15,18 @@ import { setCauseAreaAmount } from "../../../store/donation/actions";
 import { usePlausible } from "next-plausible";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
+import { CauseArea } from "../../../types/CauseArea";
 import { CauseAreaDisplayConfig } from "../../../types/WidgetProps";
 
 interface OperationsCauseAreaFormProps {
+  causeArea: CauseArea;
   suggestedSums: Array<{ amount: number; subtext?: string }>;
   causeAreaAmounts: Record<number, number>;
   causeAreaDisplayConfig: CauseAreaDisplayConfig;
 }
 
 export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = ({
+  causeArea,
   suggestedSums,
   causeAreaAmounts,
   causeAreaDisplayConfig,
@@ -35,10 +38,12 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
     <FormWrapper>
       <div>
         <CauseAreaTitle>
-          {getCauseAreaIconById(4)}
-          Drift
+          {getCauseAreaIconById(causeArea.id)}
+          {causeArea.widgetDisplayName || causeArea.name}
         </CauseAreaTitle>
-        <CauseAreaContext>{getCauseAreaContext(4, causeAreaDisplayConfig)}</CauseAreaContext>
+        <CauseAreaContext>
+          {getCauseAreaContext(causeArea.id, causeAreaDisplayConfig)}
+        </CauseAreaContext>
       </div>
       <div>
         <TotalSumWrapper>
@@ -47,10 +52,10 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
               <div key={suggested.amount}>
                 <EffektButton
                   variant={EffektButtonVariant.SECONDARY}
-                  selected={causeAreaAmounts[4] === suggested.amount}
+                  selected={causeAreaAmounts[causeArea.id] === suggested.amount}
                   onClick={() => {
                     plausible("SelectSuggestedSum", { props: { sum: suggested.amount } });
-                    dispatch(setCauseAreaAmount(4, suggested.amount));
+                    dispatch(setCauseAreaAmount(causeArea.id, suggested.amount));
                   }}
                   noMinWidth={true}
                 >{`${suggested.amount ? thousandize(suggested.amount) : "-"} kr`}</EffektButton>
@@ -65,12 +70,12 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
                 type="tel"
                 placeholder="0"
                 thousandSeparator=" "
-                value={causeAreaAmounts[4] > 0 ? causeAreaAmounts[4] : ""}
+                value={causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""}
                 autoComplete="off"
                 data-cy="donation-sum-input-operations"
                 onValueChange={(values) => {
                   const v = values.floatValue === undefined ? 0 : values.floatValue;
-                  dispatch(setCauseAreaAmount(4, v));
+                  dispatch(setCauseAreaAmount(causeArea.id, v));
                 }}
                 allowNegative={false}
                 decimalScale={0}

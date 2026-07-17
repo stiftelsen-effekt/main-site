@@ -68,6 +68,7 @@ export const DonorPane: React.FC<{
     donation.globalOperationsEnabled ?? false,
     donation.globalOperationsPercentage ?? donation.operationsConfig?.defaultPercentage ?? 10,
     donation.operationsConfig?.excludedCauseAreaIds ?? [],
+    donation.operationsConfig?.operationsCauseAreaId ?? 4,
     donation.smartDistributionTotal,
   );
   const totalSumIncludingTip = breakdown.totalAmount;

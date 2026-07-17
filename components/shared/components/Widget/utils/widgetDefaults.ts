@@ -6,6 +6,7 @@ import {
 } from "../types/WidgetProps";
 
 export const DEFAULT_OPERATIONS_CONFIG: Required<OperationsConfig> = {
+  operations_cause_area_id: 4,
   default_percentage: 5,
   operations_label_template: "{percentage}% to operations",
   enabled_by_default_global: false,

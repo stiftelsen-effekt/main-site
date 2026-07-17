@@ -153,8 +153,9 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             {/* For single cause area */}
             {selectionType === "single" && selectedCA && (
               <>
-                {selectedCA.id === 4 ? (
+                {selectedCA.id === (operationsConfig?.operations_cause_area_id ?? 4) ? (
                   <OperationsCauseAreaForm
+                    causeArea={selectedCA}
                     suggestedSums={suggestedSums}
                     causeAreaAmounts={causeAreaAmounts}
                     causeAreaDisplayConfig={causeAreaDisplayConfig}

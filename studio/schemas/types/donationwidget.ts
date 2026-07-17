@@ -330,6 +330,14 @@ export default defineType({
       group: "operations",
       fields: [
         {
+          name: "operations_cause_area_id",
+          title: "Operations cause area ID",
+          type: "number",
+          description:
+            "The cause area ID that represents this organization's own operations/overhead (e.g. the 'Drift' cause area). Donations to this cause area never get an additional operations tip added on top of themselves, no matter what's set in Excluded cause area IDs below.",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
           name: "default_percentage",
           title: "Default operations percentage",
           type: "number",

@@ -253,6 +253,7 @@ export type WidgetPane3ReferralsProps = {
 };
 
 export type OperationsConfig = {
+  operations_cause_area_id: number;
   default_percentage: number;
   operations_label_template: string;
   enabled_by_default_global?: boolean;

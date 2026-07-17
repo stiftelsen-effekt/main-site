@@ -69,6 +69,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       globalOperationsEnabled,
       globalOperationsPercentage,
       operationsConfig?.excludedCauseAreaIds || [],
+      operationsConfig?.operationsCauseAreaId ?? 4,
       smartDistributionTotal,
     );
 
@@ -104,7 +105,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
     // Add operations if present
     if (breakdown.operationsAmount > 0) {
       summaryItems.push({
-        id: 4,
+        id: operationsConfig?.operationsCauseAreaId ?? 4,
         name: text.operations_summary_label,
         amount: breakdown.operationsAmount,
         orgs: [],
