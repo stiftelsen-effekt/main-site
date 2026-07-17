@@ -12,6 +12,12 @@ if [ ! -f .env.local ]; then
   cp .env.example .env.local
 fi
 
+# Skip the Cypress binary download: download.cypress.io is not on the sandbox
+# network allowlist, and the failing/hanging download otherwise aborts npm
+# install (leaving node_modules empty) or burns the whole hook timeout.
+# Cypress e2e runs are not part of the cloud workflow anyway.
+export CYPRESS_INSTALL_BINARY=0
+
 if [ ! -d node_modules ]; then
   npm install --no-audit --no-fund || true
 fi
