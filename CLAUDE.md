@@ -25,7 +25,7 @@ Environment: copy `.env.example` to `.env.local`. The defaults point at a test S
 Cloud sessions have `@playwright/test` and Chromium available (installed by `scripts/claude-code-setup.sh`). When a change affects anything user-visible:
 
 1. Start the dev server (`npm run dev`) and wait until the affected page compiles.
-2. Write a small throwaway Playwright script that opens the affected pages against `http://localhost:3000` and saves full-page screenshots (desktop 1440px and mobile 390px widths) to `screenshots/` at the repo root.
+2. Write a small throwaway Playwright script that opens the affected pages against `http://localhost:3000` and saves screenshots (desktop 1440×900 and mobile 390×844 viewports) to `screenshots/` at the repo root. Prefer viewport screenshots; if a full-page capture is genuinely needed, clip it to at most ~4000px tall — very tall images fail to upload and are unreadable in PRs anyway.
 3. Commit the screenshots to the branch and embed them in the PR description using raw URLs: `https://raw.githubusercontent.com/stiftelsen-effekt/main-site/<branch>/screenshots/<file>.png`.
 4. Keep screenshots small (PNG, only the affected pages) — reviewers may ask to drop the `screenshots/` commit before merge.
 
@@ -34,5 +34,6 @@ If Playwright or Chromium is missing, the environment's network allowlist probab
 ## Conventions
 
 - Prettier is the source of truth for formatting; don't hand-format.
+- A fresh `npm install` can leave incidental `package-lock.json` churn (peer-dependency resolution entries). Don't commit lockfile changes unless you intentionally changed dependencies.
 - Styles are CSS/SCSS modules colocated with components.
 - Run `npm run typecheck` and `npm test` before considering a change done.
