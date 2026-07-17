@@ -78,7 +78,11 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       // Initialize operations config if available
       operationsPercentageModeByCauseArea: config
         ? areas.reduce((acc, area) => {
-            const isExcluded = config.excludedCauseAreaIds.includes(area.id);
+            // Cause area 4 is the Operations cause area itself (see
+            // OperationsCauseAreaForm) — tipping operations out of a
+            // donation that's already going to operations doesn't make
+            // sense, so it's always excluded regardless of Sanity config.
+            const isExcluded = area.id === 4 || config.excludedCauseAreaIds.includes(area.id);
             acc[area.id] = !isExcluded && config.enabledByDefaultSingle;
             return acc;
           }, {} as Record<number, boolean>)
