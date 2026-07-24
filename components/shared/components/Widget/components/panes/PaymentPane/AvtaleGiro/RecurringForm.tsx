@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Donation } from "../../../../store/state";
 import { API_URL } from "../../../../config/api";
 import { draftAvtaleGiroAction } from "../../../../store/donation/actions";
@@ -7,6 +7,7 @@ import { SubmitButton } from "../../../shared/Buttons/NavigationButtons";
 import { usePlausible } from "next-plausible";
 import { Dispatch } from "@reduxjs/toolkit";
 import { Action } from "typescript-fsa";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 export const RecurringBankDonationForm: React.FC<{
   donation: Donation;
@@ -14,6 +15,25 @@ export const RecurringBankDonationForm: React.FC<{
 }> = ({ donation, buttonText }) => {
   const dispatch = useDispatch<Dispatch<Action<undefined>>>();
   const plausible = usePlausible();
+
+  const causeAreas = useSelector((state: any) => state.layout.causeAreas) || [];
+
+  const breakdown = calculateDonationBreakdown(
+    donation.causeAreaAmounts ?? {},
+    donation.orgAmounts ?? {},
+    donation.causeAreaDistributionType ?? {},
+    donation.operationsPercentageModeByCauseArea ?? {},
+    donation.operationsPercentageByCauseArea ?? {},
+    causeAreas,
+    donation.selectionType ?? "single",
+    donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.globalOperationsPercentage ?? 0,
+    donation.operationsConfig?.excludedCauseAreaIds ?? [],
+    donation.operationsConfig?.operationsCauseAreaId,
+    donation.smartDistributionTotal,
+  );
+  const totalSumIncludingTip = breakdown.totalAmount;
 
   const onSubmit = (e: React.MouseEvent<Element, MouseEvent>) => {
     plausible("DraftAvtalegiro");
@@ -38,7 +58,9 @@ export const RecurringBankDonationForm: React.FC<{
           type="hidden"
           name="amountLimit"
           id="amountLimit"
-          value={donation.sum && donation.sum > 20000 ? donation.sum : 20000}
+          value={
+            totalSumIncludingTip && totalSumIncludingTip > 20000 ? totalSumIncludingTip : 20000
+          }
         />
         <input
           type="hidden"

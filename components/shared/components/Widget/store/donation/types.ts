@@ -17,8 +17,24 @@ export const SET_PAYMENT_PROVIDER_URL = "SET_PAYMENT_PROVIDER_URL";
 export const SELECT_CUSTOM_SHARE = "SELECT_CUSTOM_SHARE";
 export const SET_SHARE_TYPE = "SET_SHARE_TYPE";
 export const SET_VIPPS_AGREEMENT = "SET_VIPPS_AGREEMENT";
+export const SET_CAUSE_AREA_SELECTION = "SET_CAUSE_AREA_SELECTION";
+export const SET_CAUSE_AREA_AMOUNT = "SET_CAUSE_AREA_AMOUNT";
+export const SET_CAUSE_AREA_DISTRIBUTION_TYPE = "SET_CAUSE_AREA_DISTRIBUTION_TYPE";
+export const SET_ORG_AMOUNT = "SET_ORG_AMOUNT";
+export const SET_SMART_DISTRIBUTION_TOTAL = "SET_SMART_DISTRIBUTION_TOTAL";
+export const SET_GLOBAL_OPERATIONS_ENABLED = "SET_GLOBAL_OPERATIONS_ENABLED";
+export const SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE = "SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE";
+export const SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA =
+  "SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA";
+export const SET_GLOBAL_OPERATIONS_PERCENTAGE = "SET_GLOBAL_OPERATIONS_PERCENTAGE";
+export const SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA = "SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA";
+export const SET_OPERATIONS_CONFIG = "SET_OPERATIONS_CONFIG";
 export const SET_API_ERROR = "SET_API_ERROR";
 export const CLEAR_API_ERROR = "CLEAR_API_ERROR";
+export const SET_PREFILLED_SHARES = "SET_PREFILLED_SHARES";
+export const SET_SHOW_ALL_ORGANIZATIONS = "SET_SHOW_ALL_ORGANIZATIONS";
+export const SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT =
+  "SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -125,16 +141,137 @@ interface SetVippsAgreement {
     vippsAgreement: VippsAgreement;
   };
 }
+interface SetCauseAreaSelection {
+  type: typeof SET_CAUSE_AREA_SELECTION;
+  payload: {
+    /** 'single' = one cause area, 'multiple' = all cause areas */
+    selectionType: "single" | "multiple";
+    /** when selectionType is 'single', the selected cause area ID */
+    causeAreaId?: number;
+  };
+}
+interface SetCauseAreaAmount {
+  type: typeof SET_CAUSE_AREA_AMOUNT;
+  payload: {
+    /** cause area ID for which amount is set */
+    causeAreaId: number;
+    /** amount in NOK */
+    amount: number;
+  };
+}
+interface SetCauseAreaDistributionType {
+  type: typeof SET_CAUSE_AREA_DISTRIBUTION_TYPE;
+  payload: {
+    /** cause area ID for which distribution type is set */
+    causeAreaId: number;
+    /** distribution type */
+    distributionType: ShareType;
+  };
+}
+interface SetOrgAmount {
+  type: typeof SET_ORG_AMOUNT;
+  payload: {
+    /** organization ID for which amount is set */
+    orgId: number;
+    /** amount in NOK */
+    amount: number;
+  };
+}
+
+interface SetSmartDistributionTotal {
+  type: typeof SET_SMART_DISTRIBUTION_TOTAL;
+  payload: {
+    /** total amount in NOK for smart distribution */
+    smartDistributionTotal: number;
+  };
+}
+
+interface SetGlobalOperationsEnabled {
+  type: typeof SET_GLOBAL_OPERATIONS_ENABLED;
+  payload: {
+    /** whether global operations cut is enabled (for multiple cause areas) */
+    enabled: boolean;
+  };
+}
+
+interface SetGlobalOperationsPercentageMode {
+  type: typeof SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE;
+  payload: {
+    /** whether to use percentage mode (true) or custom amount mode (false) */
+    isPercentageMode: boolean;
+  };
+}
+
+interface SetOperationsPercentageModeByCauseArea {
+  type: typeof SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA;
+  payload: {
+    /** cause area ID */
+    causeAreaId: number;
+    /** whether to use percentage mode (true) or custom amount mode (false) */
+    isPercentageMode: boolean;
+  };
+}
+
+interface SetGlobalOperationsPercentage {
+  type: typeof SET_GLOBAL_OPERATIONS_PERCENTAGE;
+  payload: {
+    /** percentage value (0-100) */
+    percentage: number;
+  };
+}
+
+interface SetOperationsPercentageByCauseArea {
+  type: typeof SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA;
+  payload: {
+    /** cause area ID */
+    causeAreaId: number;
+    /** percentage value (0-100) */
+    percentage: number;
+  };
+}
+
+interface SetOperationsConfig {
+  type: typeof SET_OPERATIONS_CONFIG;
+  payload: {
+    operationsCauseAreaId?: number;
+    defaultPercentage: number;
+    enabledByDefaultGlobal: boolean;
+    enabledByDefaultSingle: boolean;
+    excludedCauseAreaIds: number[];
+  };
+}
 
 interface SetApiError {
   type: typeof SET_API_ERROR;
   payload: {
-    message: string;
+    message: string | null;
   };
 }
 
 interface ClearApiError {
   type: typeof CLEAR_API_ERROR;
+}
+
+interface SetPrefilledShares {
+  type: typeof SET_PREFILLED_SHARES;
+  payload: {
+    /** organization percentage shares (0-100) keyed by organization ID, or null to clear */
+    shares: Record<number, number> | null;
+  };
+}
+
+interface SetShowAllOrganizations {
+  type: typeof SET_SHOW_ALL_ORGANIZATIONS;
+  payload: {
+    show: boolean;
+  };
+}
+
+interface SetHasManuallyEditedPrefilledOrgAmount {
+  type: typeof SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT;
+  payload: {
+    edited: boolean;
+  };
 }
 
 export type DonationActionTypes =
@@ -152,5 +289,19 @@ export type DonationActionTypes =
   | SelectCustomShare
   | SetShareType
   | SetVippsAgreement
+  | SetCauseAreaSelection
+  | SetCauseAreaAmount
+  | SetCauseAreaDistributionType
+  | SetOrgAmount
+  | SetSmartDistributionTotal
+  | SetGlobalOperationsEnabled
+  | SetGlobalOperationsPercentageMode
+  | SetOperationsPercentageModeByCauseArea
+  | SetGlobalOperationsPercentage
+  | SetOperationsPercentageByCauseArea
+  | SetOperationsConfig
   | SetApiError
-  | ClearApiError;
+  | ClearApiError
+  | SetPrefilledShares
+  | SetShowAllOrganizations
+  | SetHasManuallyEditedPrefilledOrgAmount;
