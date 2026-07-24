@@ -846,27 +846,10 @@ const createCumulativePlot = ({
               ) => {
                 const svg = d3.select(context.ownerSVGElement);
                 // Plot wires custom data into these selections; keep d3 styling untyped here.
-                const path = svg.selectAll("[aria-label=line] path") as d3.Selection<
-                  any,
-                  any,
-                  any,
-                  any
-                >;
-                const endLabels = svg.selectAll("g.year-end-label text") as d3.Selection<
-                  any,
-                  any,
-                  any,
-                  any
-                >;
-                const endLinks = svg.selectAll("g.year-end-link path") as d3.Selection<
-                  any,
-                  any,
-                  any,
-                  any
-                >;
-                const endLinkCurrent = svg.selectAll(
-                  "g.year-end-link-current path",
-                ) as d3.Selection<any, any, any, any>;
+                const path: any = svg.selectAll("[aria-label=line] path");
+                const endLabels: any = svg.selectAll("g.year-end-label text");
+                const endLinks: any = svg.selectAll("g.year-end-link path");
+                const endLinkCurrent: any = svg.selectAll("g.year-end-link-current path");
                 if (index.length && values.z) {
                   const z = values.z[index[0]];
                   const zNum = Number(z);
