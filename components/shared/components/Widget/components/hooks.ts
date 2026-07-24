@@ -25,6 +25,15 @@ interface UsePrefilledDistributionProps {
   prefilledDistribution: PrefilledDistribution | null;
 }
 
+export const usePrefilledCauseAreaIds = () => {
+  const [widgetContext] = useContext(WidgetContext);
+
+  return useMemo(
+    () => new Set(widgetContext.prefilled?.map((area) => area.causeAreaId) ?? []),
+    [widgetContext.prefilled],
+  );
+};
+
 /**
  * Hook to handle prefilled distribution data for the widget
  */
@@ -194,7 +203,12 @@ const handlePrefilledCauseArea = (
   prefilledCauseArea: PrefilledDistribution[number],
   causeAreaAmount: number,
 ): Record<number, number> => {
-  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
+  dispatch(
+    setCauseAreaDistributionType(
+      causeArea.id,
+      causeArea.organizations.length <= 1 ? ShareType.STANDARD : ShareType.CUSTOM,
+    ),
+  );
 
   const shareByOrgId: Record<number, number> = {};
   prefilledCauseArea.organizations.forEach((org) => {
