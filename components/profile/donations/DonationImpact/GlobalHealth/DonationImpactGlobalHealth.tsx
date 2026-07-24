@@ -17,7 +17,15 @@ export type DonationImpactItemsConfiguration = {
   impact_item_configuration: ImpactItemConfiguration;
 };
 
-type DistributionEntry = { org: string; orgName: string; sum: number };
+type DistributionEntry = {
+  org: string;
+  orgName: string;
+  sum: number;
+  // Portion of `sum` routed via a GiveWell grant, and the outputs it bought
+  // using the grant's own cost-per-output
+  smartDistributionSum?: number;
+  smartDistributionOutput?: number;
+};
 
 const DonationImpactGlobalHealth: React.FC<{
   donation: Donation;
@@ -85,11 +93,23 @@ const DonationImpactGlobalHealth: React.FC<{
       const org = allotment.charity.abbreviation;
       const orgName = allotment.charity.charity_name ?? allotment.charity.abbreviation;
       const sum = Math.round((allotment.sum_in_cents / grantTotal) * giveWellDist.sum);
+      const output =
+        allotment.converted_cost_per_output > 0 ? sum / allotment.converted_cost_per_output : 0;
       const orgIndex = spreadDistribution.findIndex((d) => d.org === org);
       if (orgIndex !== -1) {
         spreadDistribution[orgIndex].sum += sum;
+        spreadDistribution[orgIndex].smartDistributionSum =
+          (spreadDistribution[orgIndex].smartDistributionSum ?? 0) + sum;
+        spreadDistribution[orgIndex].smartDistributionOutput =
+          (spreadDistribution[orgIndex].smartDistributionOutput ?? 0) + output;
       } else {
-        spreadDistribution.push({ org, orgName, sum });
+        spreadDistribution.push({
+          org,
+          orgName,
+          sum,
+          smartDistributionSum: sum,
+          smartDistributionOutput: output,
+        });
       }
     });
   }
@@ -105,6 +125,8 @@ const DonationImpactGlobalHealth: React.FC<{
                   orgAbriv={dist.org}
                   orgName={dist.orgName ?? dist.org}
                   sumToOrg={dist.sum}
+                  smartDistributionSum={dist.smartDistributionSum}
+                  smartDistributionOutput={dist.smartDistributionOutput}
                   donationTimestamp={timestamp}
                   precision={requiredPrecision}
                   signalRequiredPrecision={(precision) => {

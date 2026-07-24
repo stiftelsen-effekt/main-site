@@ -207,7 +207,6 @@ const fetchResults = groq`
           organization_links[] {
             ...,
             link {
-              ...,
               ${linksSelectorQuery}
             },
           },
@@ -215,6 +214,7 @@ const fetchResults = groq`
             ...,
             ${linksContentQuery}
           },
+          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.output_donations_table_headers,
         },
         _type == 'cumulativedonationsgraph' => {
           ...,
@@ -230,16 +230,12 @@ const fetchResults = groq`
             donationCountColumnHeader
           }
         },
-        _type == 'resultsoutput' => {
-          ...,
-          "table_headers": *[_type == "results"][0].textConfiguration.table_headers.output_donations_table_headers,
-        },
         _type == 'giveblock' => {
           ...,
           "donate_label_short": *[ _type == "site_settings"][0].donate_label_short,
           "accent_color": *[ _type == "site_settings"][0].accent_color,
         },
-        _type != 'reference' => @,
+        _type != 'reference' && _type != 'resultsoutput' && _type != 'cumulativedonationsgraph' && _type != 'referralgraph' && _type != 'giveblock' => @,
       },
     },
     header {
