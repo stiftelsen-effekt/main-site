@@ -1,16 +1,15 @@
 // Shared setup for Swedish widget tests
 export const setupWidgetTest = () => {
-  cy.fixture("cause_areas")
-    .then((causeAreas) => {
-      cy.intercept("GET", "/causeareas/all", {
-        statusCode: 200,
-        body: {
-          status: 200,
-          content: causeAreas,
-        },
-      });
-    })
-    .as("getCauseAreas");
+  // Note the .as() belongs on the intercept, not the fixture, so it can be cy.wait()ed on
+  cy.fixture("cause_areas").then((causeAreas) => {
+    cy.intercept("GET", "/causeareas/all", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: causeAreas,
+      },
+    }).as("getCauseAreas");
+  });
 
   cy.fixture("referrals").then((referrals) => {
     cy.intercept("GET", "/referrals/types", {
@@ -28,8 +27,14 @@ export const setupWidgetTest = () => {
       "x-vercel-skip-toolbar": "1",
     },
   });
-  cy.wait(500);
-  cy.get("[data-cy=gi-button]").click();
+
+  // Clicking before React has hydrated silently does nothing, which surfaces much later
+  // as a confusing "widget pane has display: none" failure deep inside a test. Wait for
+  // the cause areas to have loaded (client-side only) before interacting, then assert the
+  // widget actually opened so a lost click fails right here instead.
+  cy.wait("@getCauseAreas");
+  cy.get("[data-cy=gi-button]").should("be.visible").click();
+  cy.get("[data-cy=widget-pane]").should("be.visible");
 };
 
 // Common intercepts for donation registration
