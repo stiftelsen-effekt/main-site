@@ -89,7 +89,11 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
               onClick={() => onSelectArea(-1)}
               style={{
                 background: accentColor || DEFAULT_ACCENT_COLOR,
-                color: "white",
+                // Falling back to the outline color (var(--primary)) can mean a
+                // light background depending on the widget's color scheme, so
+                // match it with the theme's contrasting text color instead of
+                // assuming white text works
+                color: accentColor ? "white" : "var(--secondary)",
                 border: "1px solid var(--primary)",
               }}
               data-cy="cause-area-recommendation"
@@ -104,7 +108,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
             {causeAreas
               .filter((ca) => {
                 const belowLineIds = causeAreaDisplayConfig?.below_line_cause_area_ids || [4, 5];
-                return !belowLineIds.includes(ca.id) && ca.id !== 6; // Exclude below-line and "other" cause areas
+                return !belowLineIds.includes(ca.id); // Exclude below-line cause areas (e.g. operations, "andet")
               })
               .map((ca) => (
                 <CauseAreaButton
@@ -132,7 +136,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
             {causeAreas
               .filter((ca) => {
                 const belowLineIds = causeAreaDisplayConfig?.below_line_cause_area_ids || [4, 5];
-                return belowLineIds.includes(ca.id) || ca.id === 6; // Include below-line and "other" cause areas
+                return belowLineIds.includes(ca.id); // Include below-line cause areas (e.g. operations, "andet")
               })
               .map((ca) => (
                 <CauseAreaButton

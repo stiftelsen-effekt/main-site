@@ -65,10 +65,11 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
   const hasSingleOrg = causeArea.organizations.length <= 1;
-  // "Andet" (other) - matches the special-casing of this cause area id in
-  // SelectionPane.tsx. Donors here shouldn't be offered a smart/custom
-  // distribution choice; the amount is always split via standard shares.
-  const isOtherCauseArea = causeArea.id === 6;
+  // "Andet"/"Annet" (other) - id 5, per DK_DEMO_CAUSE_AREAS in Widget.tsx and
+  // the below-line/excluded-cause-area defaults in widgetDefaults.ts. Donors
+  // here shouldn't be offered a smart/custom distribution choice; the amount
+  // is always split via standard shares.
+  const isOtherCauseArea = causeArea.id === 5;
   const hideDistributionToggle = hasSingleOrg || isOtherCauseArea;
 
   // Operations logic - now per cause area
