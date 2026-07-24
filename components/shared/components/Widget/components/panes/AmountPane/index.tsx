@@ -124,6 +124,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             {selectionType === "multiple" && selectedCauseAreaId !== -1 && (
               <>
                 {causeAreas
+                  .filter((ca) => ca.isActive)
                   .filter(
                     (ca) => !causeAreaDisplayConfig?.below_line_cause_area_ids?.includes(ca.id),
                   )
