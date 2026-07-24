@@ -2,76 +2,244 @@
   width: 100%;
   aspect-ratio: 16/11;
   position: relative;
+  /* Let y-axis labels overflow the content column (same as cumulative plot) */
+  overflow: visible;
 
   .graph {
-    position: relative;
-    width: 100%;
-    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+
+    :global(svg) {
+      overflow: visible;
+    }
+  }
+
+  .innerGraph {
+    width: 100%;
+    height: 100%;
   }
 }
 
+.swipeHint {
+  font-size: 0.75rem;
+  min-height: 1em;
+}
+
 .controls {
+  --controls-track: rgba(0, 0, 0, 0.14);
+  --year-row-height: 1.25rem;
+  --controls-row-height: 2rem;
+  --track-inset: 0.3rem;
+  --track-space: 0.85rem;
+  position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-  min-height: 2rem;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.85rem;
+  margin-bottom: 0.35rem;
+  min-height: calc(var(--controls-row-height) + var(--track-space));
+  padding-bottom: var(--track-space);
+  overflow: visible;
+
+  /* Continuous track under years + chart type controls */
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--track-inset);
+    height: 1px;
+    background: var(--controls-track);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
-.yearControls {
+.yearRail {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+  /* Visible so edge handles can sit slightly outside the column */
+  overflow: visible;
+  padding: 0;
+  min-height: var(--controls-row-height);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.yearRailDragging {
+  cursor: grabbing;
+
+  /* Keep motion while dragging so gap-snaps ease instead of jumping */
+  .yearRailRange,
+  .yearRailHandle {
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .yearRailHandle {
+    cursor: grabbing;
+  }
+
+  .yearRailHandleGrip {
+    opacity: 0.95;
+  }
+}
+
+.yearRailRange {
+  position: absolute;
+  /* Sit on the shared controls track below the aligned control row */
+  bottom: calc(-1 * var(--track-space) + var(--track-inset));
+  height: 1.5px;
+  background: var(--primary);
+  /* left/right are set inline — only the moving edge changes, so the far side stays put */
+  transition: left 320ms cubic-bezier(0.22, 1, 0.36, 1), right 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Vertical grip marks, centered with year labels / scope text */
+.yearRailHandle {
+  appearance: none;
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  width: 1.1rem;
+  height: var(--year-row-height);
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  transition: left 320ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Invisible grab area */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -0.35rem -0.4rem;
+  }
+
+  &:hover {
+    .yearRailHandleGrip {
+      opacity: 0.9;
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    .yearRailHandleGrip {
+      opacity: 1;
+      box-shadow: 0 0 0 2px var(--secondary, #fafafa), 0 0 0 3px rgba(0, 0, 0, 0.28);
+    }
+  }
+}
+
+.yearRailHandleGlyph {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  font-size: 0.8rem;
+  justify-content: center;
+  pointer-events: none;
 }
 
-.yearRange {
-  color: var(--primary);
-  opacity: 0.7;
-  white-space: nowrap;
+.yearRailHandleGrip {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 5px;
+  height: 0.85em;
+  opacity: 0.48;
+  transition: opacity 160ms ease;
+
+  span {
+    display: block;
+    width: 1px;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 1px;
+  }
 }
 
-.yearButton {
+.yearRailYear {
   appearance: none;
+  position: relative;
+  z-index: 2;
   background: none;
   border: none;
   padding: 0;
   margin: 0;
+  height: var(--year-row-height);
+  display: inline-flex;
+  align-items: center;
   font: inherit;
   font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
   color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
+  opacity: 0.28;
   cursor: pointer;
+  flex: 0 0 auto;
+  transition: opacity 200ms ease;
 
-  &:disabled {
-    opacity: 0.35;
-    cursor: default;
-    text-decoration: none;
+  &:hover {
+    opacity: 0.55;
   }
 
   &:focus-visible {
     outline: 1px solid var(--primary);
     outline-offset: 2px;
+    opacity: 0.7;
+  }
+}
+
+.yearRailYearActive {
+  opacity: 1;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    opacity: 1;
   }
 }
 
 .rightControls {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
   margin-left: auto;
+  flex-shrink: 0;
+  min-height: var(--controls-row-height);
+  position: relative;
+  z-index: 1;
 }
 
 .chartTypeToggle {
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.15);
+  background: var(--secondary, #fafafa);
 }
 
 .chartTypeButton {
@@ -109,8 +277,10 @@
 
 .barScopeToggle {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
   font-size: 0.8rem;
+  height: var(--year-row-height);
 }
 
 .barScopeButton {
@@ -121,6 +291,7 @@
   margin: 0;
   font: inherit;
   font-size: 0.8rem;
+  line-height: 1;
   color: var(--primary);
   cursor: pointer;
   opacity: 0.45;
@@ -143,22 +314,58 @@
   }
 }
 
+/* Mobile-only chrome — hidden on desktop so desktop controls stay unchanged. */
+.mobileChartMeta,
+.mobileChartMetaRight,
+.mobileBarScope {
+  display: none;
+}
+
 @media screen and (max-width: 1180px) {
   .graphContainer {
-    aspect-ratio: 1/1;
+    /* Shorter than 1/1 so less empty air under the plot on phones */
+    aspect-ratio: 5 / 4;
+    /* Same bleed + horizontal scroll as Results Output / org sparklines */
+    width: calc(100% + 10vw);
+    margin-left: -5vw;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
 
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
+  .mobileChartMeta {
+    /* Same tokens as .controls so .barScopeToggle height resolves on mobile */
+    --year-row-height: 1.25rem;
+    --mobile-scope-row-height: var(--year-row-height);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
   }
 
-  .rightControls {
-    flex-direction: row;
+  .swipeHint {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    /* Match the chart-type button row height so the hint sits inline with it */
+    min-height: 2rem;
+    display: flex;
     align-items: center;
+  }
+
+  .mobileChartMetaRight {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* chart toggle + scope labels share a right edge */
+    gap: 0.55rem;
+    flex-shrink: 0;
+  }
+
+  .mobileBarScope {
+    display: flex;
     justify-content: flex-end;
-    gap: 1rem;
-    width: 100%;
-    margin-left: 0;
+    align-items: center;
+    /* Reserve height even when cumulative (no scope toggle) to avoid layout shift */
+    min-height: var(--mobile-scope-row-height);
   }
 }
