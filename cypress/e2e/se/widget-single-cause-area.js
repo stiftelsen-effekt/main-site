@@ -125,9 +125,10 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
     // Check donation type is recurring
     cy.get("[data-cy=donation-type]").should("contain.text", "Bli månadsgivare");
 
-    // Check that both cause area and operations are shown
+    // Check that both cause area and operations are shown. The cut line is labelled from
+    // ui_labels.operations_summary_label, not the operations cause area's own name.
     cy.get("[data-cy=summary-cause-area-1-amount]").should("exist");
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Stöd Ge Effektivt");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("exist");
 
     // Check total includes both amounts

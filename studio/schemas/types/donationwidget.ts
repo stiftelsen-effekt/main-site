@@ -1,4 +1,8 @@
 import { defineType, defineField } from "sanity";
+import {
+  CauseAreaMultiSelectInput,
+  CauseAreaSelectInput,
+} from "../../components/causeAreaSelectInput";
 
 export default defineType({
   name: "donationwidget",
@@ -279,6 +283,13 @@ export default defineType({
           validation: (Rule) => Rule.required(),
           description: "Only used if there is more than one cause area",
         }),
+        defineField({
+          name: "show_all_organizations_text",
+          title: "Show all organizations text",
+          type: "string",
+          description:
+            'Label for the link that reveals the remaining organizations when the donor arrives with a prefilled distribution (e.g. "Vis alle"). Only used if there is only one cause area',
+        }),
       ],
     }),
     defineField({
@@ -331,11 +342,11 @@ export default defineType({
       fields: [
         {
           name: "operations_cause_area_id",
-          title: "Operations cause area ID",
+          title: "Operations cause area",
           type: "number",
           description:
-            "The cause area ID that represents this organization's own operations/overhead (e.g. the 'Drift' cause area). Donations to this cause area never get an additional operations tip added on top of themselves, no matter what's set in Excluded cause area IDs below.",
-          validation: (Rule: any) => Rule.required(),
+            "The cause area that represents this organization's own operations/overhead (e.g. the 'Drift' cause area). Donations to this cause area never get an additional operations tip added on top of themselves, no matter what's set in Excluded cause areas below. Leave unset on platforms that have no separate operations cause area.",
+          components: { input: CauseAreaSelectInput },
         },
         {
           name: "default_percentage",
@@ -365,10 +376,11 @@ export default defineType({
         },
         {
           name: "excluded_cause_area_ids",
-          title: "Excluded cause area IDs",
+          title: "Excluded cause areas",
           type: "array",
-          description: "Cause area IDs that should not have operations cut option",
+          description: "Cause areas that should not offer the operations cut option",
           of: [{ type: "number" }],
+          components: { input: CauseAreaMultiSelectInput },
         },
         {
           name: "x_factor_info",
@@ -422,10 +434,11 @@ export default defineType({
         },
         {
           name: "below_line_cause_area_ids",
-          title: "Below-the-line cause area IDs",
+          title: "Below-the-line cause areas",
           type: "array",
-          description: "Cause area IDs that should be displayed below the divider line",
+          description: "Cause areas that should be displayed below the divider line",
           of: [{ type: "number" }],
+          components: { input: CauseAreaMultiSelectInput },
         },
         {
           name: "cause_area_contexts",
@@ -438,9 +451,11 @@ export default defineType({
               fields: [
                 {
                   name: "cause_area_id",
-                  title: "Cause area ID",
+                  title: "Cause area",
                   type: "number",
                   validation: (Rule: any) => Rule.required(),
+                  options: { includeSmartDistribution: true },
+                  components: { input: CauseAreaSelectInput },
                 },
                 {
                   name: "context_text",
@@ -601,6 +616,14 @@ export default defineType({
       rows: 3,
       group: "pane2",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "tax_deduction_ssn_suspicious_message",
+      title: "Tax deduction ssn suspicious message",
+      type: "string",
+      group: "pane2",
+      description:
+        "Shown when the entered personal ID is technically valid but looks like it may be a typo (currently only used for Danish CPR numbers). Leave empty to show no message.",
     }),
     // Newsletter selector text pane 2
     defineField({

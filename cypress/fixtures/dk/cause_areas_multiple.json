@@ -12,6 +12,20 @@
     "standardPercentageShare": 60,
     "organizations": [
       {
+        "id": 100,
+        "name": "Smart fordeling",
+        "widgetDisplayName": "Smart fordeling",
+        "widgetContext": null,
+        "abbreviation": "SF",
+        "shortDescription": "Din donation fordeles efter Giv Effektivts anbefalinger.",
+        "longDescription": "Smart fordeling",
+        "standardShare": 100,
+        "informationUrl": "https://giveffektivt.dk/anbefalinger",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 1
+      },
+      {
         "id": 101,
         "name": "Malaria Consortium",
         "widgetDisplayName": "Malaria Consortium",
@@ -19,10 +33,10 @@
         "abbreviation": "MC",
         "shortDescription": "Malaria Consortium",
         "longDescription": "Malaria Consortium",
-        "standardShare": 100,
+        "standardShare": 0,
         "informationUrl": "https://giveffektivt.dk/malaria-consortium",
         "isActive": true,
-        "ordering": 1,
+        "ordering": 2,
         "causeAreaId": 1
       }
     ]
@@ -40,6 +54,20 @@
     "standardPercentageShare": 40,
     "organizations": [
       {
+        "id": 200,
+        "name": "Smart fordeling",
+        "widgetDisplayName": "Smart fordeling",
+        "widgetContext": null,
+        "abbreviation": "SF",
+        "shortDescription": "Din donation fordeles efter Giv Effektivts anbefalinger.",
+        "longDescription": "Smart fordeling",
+        "standardShare": 100,
+        "informationUrl": "https://giveffektivt.dk/anbefalinger",
+        "isActive": true,
+        "ordering": 1,
+        "causeAreaId": 2
+      },
+      {
         "id": 102,
         "name": "The Humane League",
         "widgetDisplayName": "The Humane League",
@@ -47,10 +75,10 @@
         "abbreviation": "THL",
         "shortDescription": "The Humane League",
         "longDescription": "The Humane League",
-        "standardShare": 100,
+        "standardShare": 0,
         "informationUrl": "https://giveffektivt.dk/the-humane-league",
         "isActive": true,
-        "ordering": 1,
+        "ordering": 2,
         "causeAreaId": 2
       }
     ]

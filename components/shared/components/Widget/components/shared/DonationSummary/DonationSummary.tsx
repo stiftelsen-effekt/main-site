@@ -69,7 +69,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       globalOperationsEnabled,
       globalOperationsPercentage,
       operationsConfig?.excludedCauseAreaIds || [],
-      operationsConfig?.operationsCauseAreaId ?? 4,
+      operationsConfig?.operationsCauseAreaId,
       smartDistributionTotal,
     );
 
@@ -102,10 +102,11 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       });
     });
 
-    // Add operations if present
-    if (breakdown.operationsAmount > 0) {
+    // Add operations if present. Requires a configured operations cause area - the cut is
+    // reported as a separate line for it, so there is nothing to attribute it to otherwise.
+    if (breakdown.operationsAmount > 0 && operationsConfig?.operationsCauseAreaId !== undefined) {
       summaryItems.push({
-        id: operationsConfig?.operationsCauseAreaId ?? 4,
+        id: operationsConfig.operationsCauseAreaId,
         name: text.operations_summary_label,
         amount: breakdown.operationsAmount,
         orgs: [],

@@ -71,7 +71,7 @@ export const DonorPane: React.FC<{
     donation.globalOperationsEnabled ?? false,
     donation.globalOperationsPercentage ?? donation.operationsConfig?.defaultPercentage ?? 10,
     donation.operationsConfig?.excludedCauseAreaIds ?? [],
-    donation.operationsConfig?.operationsCauseAreaId ?? 4,
+    donation.operationsConfig?.operationsCauseAreaId,
     donation.smartDistributionTotal,
   );
   const totalSumIncludingTip = breakdown.totalAmount;
@@ -342,9 +342,9 @@ export const DonorPane: React.FC<{
                       {errors.ssn && (
                         <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
                       )}
-                      {cprSuspicious && (
+                      {cprSuspicious && text.tax_deduction_ssn_suspicious_message && (
                         <InfoMessageWrapper data-cy="cpr-suspicious-message">
-                          Kontroller venligst at det er korrekt.
+                          {text.tax_deduction_ssn_suspicious_message}
                         </InfoMessageWrapper>
                       )}
                     </InputFieldWrapper>

@@ -24,7 +24,9 @@ export function calculateDonationBreakdown(
   globalOperationsEnabled: boolean,
   globalOperationsPercentage: number,
   ignoredCauseAreas: number[], // Ignored cause areas for multiple selection
-  operationsCauseAreaId: number = 4,
+  // Undefined on platforms that have no dedicated operations cause area (e.g. where
+  // operations is an organization inside a regular cause area instead)
+  operationsCauseAreaId: number | undefined,
   smartDistributionTotal?: number,
 ): DonationBreakdown {
   const result: DonationBreakdown = {
@@ -108,7 +110,12 @@ export function calculateDonationBreakdown(
     if (selectionType === "single" && area.id !== selectedCauseAreaId) {
       return;
     }
-    if (selectionType === "multiple" && (area.id === 5 || area.id === operationsCauseAreaId)) {
+    // In multiple mode, cause areas the platform excludes from the shared pot (and the
+    // operations cause area itself) are entered separately rather than as part of the split.
+    if (
+      selectionType === "multiple" &&
+      (ignoredCauseAreas.includes(area.id) || area.id === operationsCauseAreaId)
+    ) {
       return;
     }
 

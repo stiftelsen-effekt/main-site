@@ -41,7 +41,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
       donation.operationsConfig.excludedCauseAreaIds,
-      donation.operationsConfig.operationsCauseAreaId ?? 4,
+      donation.operationsConfig.operationsCauseAreaId,
       donation.smartDistributionTotal,
     );
 
@@ -110,7 +110,7 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
       donation.operationsConfig.excludedCauseAreaIds,
-      donation.operationsConfig.operationsCauseAreaId ?? 4,
+      donation.operationsConfig.operationsCauseAreaId,
       donation.smartDistributionTotal,
     );
 
@@ -164,7 +164,7 @@ export function* registerBankPending(): SagaIterator<void> {
       donation.globalOperationsEnabled,
       donation.globalOperationsPercentage || 0,
       donation.operationsConfig.excludedCauseAreaIds,
-      donation.operationsConfig.operationsCauseAreaId ?? 4,
+      donation.operationsConfig.operationsCauseAreaId,
       donation.smartDistributionTotal,
     );
 
@@ -213,7 +213,7 @@ export function* registerDonation(
       operationsConfig,
     } = donation;
 
-    const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId ?? 4;
+    const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId;
 
     // Use the centralized calculation function to get the breakdown
     const breakdown = calculateDonationBreakdown(
@@ -299,7 +299,7 @@ export function* registerDonation(
           calculateOrganizationSharesWithinCauseArea(operationsOrgAmounts);
 
         distributionPayload.push({
-          id: OPERATIONS_CAUSE_AREA_ID,
+          id: operationsCauseArea.id,
           name: operationsCauseArea.name,
           standardSplit: true,
           percentageShare: operationsPercentage.toFixed(8),

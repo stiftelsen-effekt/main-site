@@ -195,6 +195,7 @@ export type SmartDistributionContext = {
   smart_distribution_label_text: string;
   smart_distribution_description: any[];
   smart_distribution_description_links: (LinkType | NavLink)[];
+  show_all_organizations_text?: string;
 };
 
 type PresetAmount = {
@@ -237,6 +238,7 @@ export type WidgetPane2Props = {
   tax_deduction_ssn_placeholder: string;
   tax_deduction_ssn_invalid_error_text: string;
   tax_deduction_tooltip_text: string;
+  tax_deduction_ssn_suspicious_message?: string;
   newsletter_selector_text: string;
   require_privacy_policy_checkbox?: boolean;
   privacy_policy_required_error_text: string;
@@ -258,7 +260,7 @@ export type InfoBoxConfig = {
 };
 
 export type OperationsConfig = {
-  operations_cause_area_id: number;
+  operations_cause_area_id?: number;
   default_percentage: number;
   operations_label_template: string;
   enabled_by_default_global?: boolean;

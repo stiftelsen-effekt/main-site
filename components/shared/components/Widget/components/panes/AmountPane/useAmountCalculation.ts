@@ -18,7 +18,7 @@ export const useAmountCalculation = (
     operationsConfig,
   } = useSelector((state: State) => state.donation);
 
-  const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId ?? 4;
+  const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId;
 
   // Calculate the sum of all donations EXCLUDING the operations cut
   const sumOfOtherCauseAreas = useMemo(() => {

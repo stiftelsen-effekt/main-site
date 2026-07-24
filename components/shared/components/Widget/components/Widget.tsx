@@ -159,33 +159,7 @@ export const Widget = withStaticProps(
     };
   },
 )(({ data, inline = false, prefilled, defaultPaymentType }) => {
-  let widget = applyWidgetDefaults(data.result);
-  if (widget.locale === "dk") {
-    // TEMP DEMO — remove before merging. cause_area_selection_title etc. aren't in the
-    // DK Sanity dataset yet, so hardcode the Danish copy for the preview.
-    widget = {
-      ...widget,
-      cause_area_display_config: {
-        ...widget.cause_area_display_config,
-        cause_area_selection_title: "Hvilket formål vil du gøre en forskel for?",
-        recommendation_button_text: "Vores anbefaling",
-        multiple_cause_areas_button_text: "Vælg flere formål",
-      },
-      operations_config: {
-        ...widget.operations_config!,
-        operations_label_template: "{percentage}% til drift",
-      },
-      smart_distribution_context: {
-        ...widget.smart_distribution_context,
-        smart_distribution_title: "Smart fordeling",
-      },
-      ui_labels: {
-        ...widget.ui_labels,
-        total_label: widget.ui_labels?.total_label ?? "Sum",
-        operations_summary_label: "Drift",
-      },
-    };
-  }
+  const widget = applyWidgetDefaults(data.result);
   const methods = widget.methods;
 
   if (!methods) {
@@ -367,6 +341,7 @@ export const Widget = withStaticProps(
                 tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
                 tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
                 tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
+                tax_deduction_ssn_suspicious_message: widget.tax_deduction_ssn_suspicious_message,
                 newsletter_selector_text: widget.newsletter_selector_text,
                 privacy_policy_text: widget.privacy_policy_text,
                 privacy_policy_link: widget.privacy_policy_link,

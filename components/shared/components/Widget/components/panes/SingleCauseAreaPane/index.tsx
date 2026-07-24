@@ -330,7 +330,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                         onClick={() => dispatch(setShowAllOrganizations(true))}
                         data-cy="show-all-organizations-button"
                       >
-                        Vis alle ↓
+                        {smartDistributionContext.show_all_organizations_text} ↓
                       </ShowAllOrganizationsLink>
                     )}
                   </ShareSelectionWrapper>

@@ -34,8 +34,10 @@ describe("Widget", () => {
 
   it("End-2-End DK donation with CPR validation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.pickSingleDonation();
-    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
+    // DK is configured with several cause areas, so pick one before entering an amount
+    cy.get("[data-cy=cause-area-1]").click();
+    cy.get('[data-cy="single-donation-radio"]').click({ force: true });
+    cy.get("[data-cy=donation-sum-input-1]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     // In DK locale, there should be no name field (show_name_field: false)
@@ -85,8 +87,6 @@ describe("Widget", () => {
 
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
-    cy.nextWidgetPane();
-
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
       expect(kid).to.be.length(8);
@@ -95,8 +95,10 @@ describe("Widget", () => {
 
   it("DK CPR formatting test (TIN formatter: dash only at 10 digits)", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.pickSingleDonation();
-    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
+    // DK is configured with several cause areas, so pick one before entering an amount
+    cy.get("[data-cy=cause-area-1]").click();
+    cy.get('[data-cy="single-donation-radio"]').click({ force: true });
+    cy.get("[data-cy=donation-sum-input-1]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
@@ -121,8 +123,10 @@ describe("Widget", () => {
 
   it("DK CVR validation & formatting (accept 8-digit CVR; no dash at any point)", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.pickSingleDonation();
-    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
+    // DK is configured with several cause areas, so pick one before entering an amount
+    cy.get("[data-cy=cause-area-1]").click();
+    cy.get('[data-cy="single-donation-radio"]').click({ force: true });
+    cy.get("[data-cy=donation-sum-input-1]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
@@ -159,8 +163,6 @@ describe("Widget", () => {
     cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
 
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
-
-    cy.nextWidgetPane();
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();

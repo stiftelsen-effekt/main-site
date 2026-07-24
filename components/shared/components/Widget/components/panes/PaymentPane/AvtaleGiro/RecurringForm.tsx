@@ -30,7 +30,7 @@ export const RecurringBankDonationForm: React.FC<{
     donation.globalOperationsEnabled ?? false,
     donation.globalOperationsPercentage ?? 0,
     donation.operationsConfig?.excludedCauseAreaIds ?? [],
-    donation.operationsConfig?.operationsCauseAreaId ?? 4,
+    donation.operationsConfig?.operationsCauseAreaId,
     donation.smartDistributionTotal,
   );
   const totalSumIncludingTip = breakdown.totalAmount;

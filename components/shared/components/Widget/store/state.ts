@@ -66,7 +66,7 @@ export interface Donation extends DonationInput {
   operationsPercentageByCauseArea?: Record<number, number>;
   /** Widget configuration for operations */
   operationsConfig?: {
-    operationsCauseAreaId: number;
+    operationsCauseAreaId?: number;
     defaultPercentage: number;
     enabledByDefaultGlobal: boolean;
     enabledByDefaultSingle: boolean;
