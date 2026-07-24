@@ -25,6 +25,15 @@ interface UsePrefilledDistributionProps {
   prefilledDistribution: PrefilledDistribution | null;
 }
 
+export const usePrefilledCauseAreaIds = () => {
+  const [widgetContext] = useContext(WidgetContext);
+
+  return useMemo(
+    () => new Set(widgetContext.prefilled?.map((area) => area.causeAreaId) ?? []),
+    [widgetContext.prefilled],
+  );
+};
+
 /**
  * Hook to handle prefilled distribution data for the widget
  */
