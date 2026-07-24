@@ -90,6 +90,63 @@ function getAtPath(doc: any, path: string) {
   return path.split(".").reduce((node, key) => (node == null ? node : node[key]), doc);
 }
 
+const block = (text: string) => ({
+  _key: "xfactorinfo0",
+  _type: "block",
+  style: "normal",
+  markDefs: [],
+  children: [{ _key: "xfactorinfo0s", _type: "span", marks: [], text }],
+});
+
+/**
+ * Per-locale operations info box ("X-faktor"), which explains how much extra the
+ * organization raises per krone spent on operations. The link is a navitem pointing at an
+ * internal page, resolved by slug so we don't hardcode a document ID.
+ */
+const X_FACTOR_INFO: Partial<
+  Record<LocaleKey, { label_text: string; body: string; linkTitle: string; pageSlug: string }>
+> = {
+  dk: {
+    label_text: "Hvad er X-faktor?",
+    body:
+      "Din støtte til Giv Effektivts arbejde bidrager til vores drift og sikrer ca. 7x mere " +
+      "i donationer til vores anbefalede velgørenhedsformål.",
+    linkTitle: "Læs om X-faktor",
+    pageSlug: "x-faktor",
+  },
+};
+
+async function resolveXFactorInfo(locale: LocaleKey) {
+  const config = X_FACTOR_INFO[locale];
+  if (!config) return null;
+
+  const page = await client.fetch<{ _id: string } | null>(
+    `*[defined(slug.current) && slug.current == $slug][0]{_id}`,
+    { slug: config.pageSlug },
+  );
+
+  if (!page?._id) {
+    console.warn(
+      `  ! no page with slug "${config.pageSlug}" in this dataset - ` +
+        `writing the X-faktor info box without a link`,
+    );
+  }
+
+  return {
+    label_text: config.label_text,
+    description: [block(config.body)],
+    ...(page?._id
+      ? {
+          link: {
+            _type: "navitem",
+            title: config.linkTitle,
+            page: { _type: "reference", _ref: page._id },
+          },
+        }
+      : {}),
+  };
+}
+
 async function run() {
   const siteSettings = await client.fetch<{ main_locale?: string } | null>(
     `*[_type == "site_settings"][0]{main_locale}`,
@@ -114,10 +171,17 @@ async function run() {
     }) ===`,
   );
 
+  const content: Record<string, unknown> = { ...CONTENT[locale] };
+
+  const xFactorInfo = await resolveXFactorInfo(locale);
+  if (xFactorInfo) {
+    content["operations_config.x_factor_info"] = xFactorInfo;
+  }
+
   const setPatch: Record<string, unknown> = {};
   const skipped: string[] = [];
 
-  for (const [path, value] of Object.entries(CONTENT[locale])) {
+  for (const [path, value] of Object.entries(content)) {
     const existing = getAtPath(widget, path);
     const forced = FORCE_OVERWRITE[locale].includes(path);
     const isEmpty =

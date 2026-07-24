@@ -39,13 +39,16 @@ describe("Swedish Widget - Operations Cut Functionality", () => {
     it("Should allow changing the cut percentage", () => {
       setCauseAreaAmount(1, 1000);
 
-      cy.get("[data-cy=percentage-cut-input-1]").clear().type("20");
+      // Select the existing value and type over it, the way a donor would
+      cy.get("[data-cy=percentage-cut-input-1]").type("{selectall}20");
       cy.get("[data-cy=percentage-cut-input-1]").should("have.value", "20");
     });
 
     it("Should send the correct operations split when submitting with the default cut", () => {
       setCauseAreaAmount(1, 1000);
 
+      // Autogiro is recurring-only, so switch before going to the donor pane
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       cy.get("[data-cy=next-button]").click();
       fillDonorInfo();
       setupDonationIntercepts();
@@ -64,6 +67,8 @@ describe("Swedish Widget - Operations Cut Functionality", () => {
     it("Should send no operations cause area when the cut is disabled", () => {
       setCauseAreaAmount(1, 1000, false);
 
+      // Autogiro is recurring-only, so switch before going to the donor pane
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       cy.get("[data-cy=next-button]").click();
       fillDonorInfo();
       setupDonationIntercepts();
@@ -105,6 +110,8 @@ describe("Swedish Widget - Operations Cut Functionality", () => {
       setCauseAreaAmount(2, 400);
       setGlobalCut(true);
 
+      // Autogiro is recurring-only, so switch before going to the donor pane
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       cy.get("[data-cy=next-button]").click();
       fillDonorInfo();
       setupDonationIntercepts();

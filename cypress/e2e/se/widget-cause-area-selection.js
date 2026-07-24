@@ -74,10 +74,7 @@ describe("Swedish Widget - Cause Area Selection", () => {
     // Smart distribution should appear as a single entry, not individual cause area breakdowns
     // This is important because the distribution percentages could change over time
     cy.get("[data-cy=summary-smart-distribution]").should("exist");
-    cy.get("[data-cy=summary-smart-distribution-name]").should(
-      "contain.text",
-      "Smart distribution",
-    );
+    cy.get("[data-cy=summary-smart-distribution-name]").should("contain.text", "Smart fördelning");
     cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
       const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
       expect(text).to.match(/1000kr/i); // Should contain 1000kr (case insensitive)

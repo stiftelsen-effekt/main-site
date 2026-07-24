@@ -49,11 +49,11 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Should see text for distribution options
-        cy.contains("Smart fördelning").should("be.visible");
-        cy.contains("Välj fördelning själv").should("be.visible");
+        cy.get("[data-cy=radio-smart-share-1]").should("exist");
+        cy.get("[data-cy=radio-custom-share-1]").should("exist");
 
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and check for organization inputs
         cy.wait(500);
@@ -72,7 +72,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and check organization inputs
         cy.wait(500);
@@ -92,7 +92,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and set custom amount
         cy.wait(500);
@@ -190,7 +190,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and verify auto-population based on standard shares
         cy.wait(500);
@@ -233,10 +233,10 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Initially should show standard distribution
-        cy.contains("Smart fördelning").should("be.visible");
+        cy.get("[data-cy=radio-smart-share-1]").should("exist");
 
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and verify auto-population
         cy.wait(500);

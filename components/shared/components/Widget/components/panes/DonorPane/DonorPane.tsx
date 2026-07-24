@@ -132,7 +132,13 @@ export const DonorPane: React.FC<{
   const handlePayment = async (methodId: string) => {
     // trigger() runs and populates validation for every registered field -
     // handlePayment fires directly from a button click rather than a form
-    // submit, so react-hook-form never validates on its own otherwise
+    // submit, so react-hook-form never validates on its own otherwise.
+    //
+    // This is the only thing gating submission. The payment controls are deliberately
+    // never disabled based on `errors`: because we validate via trigger() rather than
+    // handleSubmit(), react-hook-form never marks the form as submitted and so never
+    // re-validates on change - a donor who submitted with a bad email once would be
+    // left with permanently disabled payment buttons even after fixing it.
     const isValid = await trigger();
     if (!isValid) return;
 
@@ -445,7 +451,6 @@ export const DonorPane: React.FC<{
                   options={paymentMethods.map((method) => ({
                     title: method.selector_text,
                     value: paymentMethodMap[method._id],
-                    disabled: Object.keys(errors).length > 0,
                     data_cy: `payment-method-${method._id}`,
                   }))}
                   selected={
@@ -459,7 +464,7 @@ export const DonorPane: React.FC<{
                 <ActionBar data-cy="next-button-div">
                   <NextButton
                     type="button"
-                    disabled={!selectedPaymentMethodId || Object.keys(errors).length > 0}
+                    disabled={!selectedPaymentMethodId}
                     onClick={(e) => {
                       e.preventDefault();
                       if (selectedPaymentMethodId) handlePayment(selectedPaymentMethodId);
@@ -479,7 +484,6 @@ export const DonorPane: React.FC<{
                       e.preventDefault();
                       handlePayment(method._id);
                     }}
-                    disabled={Object.keys(errors).length > 0}
                     data-cy={`payment-method-${method._id}`}
                   >
                     {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}

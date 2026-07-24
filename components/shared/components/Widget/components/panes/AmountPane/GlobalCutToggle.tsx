@@ -90,12 +90,12 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ operationsConf
               autoComplete="off"
               data-cy={`global-percentage-cut-input`}
               onValueChange={handlePercentageChange}
+              // Matches the per-cause-area cut input: editing a percentage that isn't
+              // being applied would be misleading
+              disabled={!globalOperationsEnabled}
             />
           </span>
-          <span>
-            {operationsConfig?.operations_label_template?.replace("{percentage}", "") ||
-              "% to operations"}
-          </span>
+          <span>{operationsConfig?.operations_label_template?.replace("{percentage}", "")}</span>
         </OperationsPercentageInputWrapper>
       </div>
     </div>

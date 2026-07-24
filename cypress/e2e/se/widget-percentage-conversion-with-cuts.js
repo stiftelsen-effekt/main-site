@@ -96,7 +96,7 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
       cy.get("body").then(($body) => {
         if ($body.find('input[type="radio"]').length > 1) {
           // Switch to custom distribution
-          cy.contains("Välj fördelning själv").click();
+          cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
           cy.wait(500);
           // Set custom amounts that sum to 1000
@@ -128,14 +128,14 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
             expect(globalHealth.standardSplit).to.be.false;
             expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(90, 0.01);
 
-            // Organizations should have proportional cuts
-            // Org 12: 600 * 0.90 = 540, 540/1000 = 54%
+            // Organization shares are percentages *within* their cause area, and the cut
+            // scales every organization equally, so the entered 600/400 split is preserved:
+            // 540/900 = 60% and 360/900 = 40%.
             const org12 = globalHealth.organizations.find((org) => org.id === 12);
-            expect(parseFloat(org12.percentageShare)).to.be.closeTo(54, 0.01);
+            expect(parseFloat(org12.percentageShare)).to.be.closeTo(60, 0.01);
 
-            // Org 15: 400 * 0.90 = 360, 360/1000 = 36%
             const org15 = globalHealth.organizations.find((org) => org.id === 15);
-            expect(parseFloat(org15.percentageShare)).to.be.closeTo(36, 0.01);
+            expect(parseFloat(org15.percentageShare)).to.be.closeTo(40, 0.01);
 
             // Operations: 10%
             const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
@@ -199,9 +199,7 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
         const radioButtons = $body.find('[data-cy^="cause-area-form-2"] input[type="radio"]');
         if (radioButtons.length > 1) {
           // Find and click custom distribution for Animal Welfare
-          cy.get('[data-cy^="cause-area-form-2"]').within(() => {
-            cy.contains("Välj fördelning själv").click();
-          });
+          cy.get("[data-cy=radio-custom-share-2]").click({ force: true });
 
           cy.wait(500);
           // Set custom amounts

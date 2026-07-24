@@ -1,4 +1,4 @@
-import { setupWidgetTest, setCauseAreaAmount } from "./support/widget-setup.js";
+import { setupWidgetTest, setCauseAreaAmount, setGlobalCut } from "./support/widget-setup.js";
 
 describe("Swedish Widget - State Persistence", () => {
   beforeEach(() => {
@@ -53,9 +53,11 @@ describe("Swedish Widget - State Persistence", () => {
 
     // Navigate to donor pane
     cy.get("[data-cy=next-button]").click();
+    cy.wait(500);
 
     // Go back to cause selection
     cy.get("[data-cy=back-button]").click();
+    cy.wait(500);
 
     // Check that all state is preserved
     cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
@@ -90,7 +92,7 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and set custom organization amount
         cy.wait(500);
@@ -106,7 +108,7 @@ describe("Swedish Widget - State Persistence", () => {
             cy.get("[data-cy=cause-area-1]").click();
 
             // Custom distribution and amount should be preserved
-            cy.contains("Välj fördelning själv").parent().find("input").should("be.checked");
+            cy.get("[data-cy=radio-custom-share-1]").should("be.checked");
             cy.get(`[data-cy=org-${orgId}]`).should("have.value", "600");
           });
       } else {
@@ -178,7 +180,10 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get('[data-cy="recurring-donation-radio"]').should("be.checked");
   });
 
-  it("Should reset state only when smart distribution is selected", () => {
+  // Switching selection deliberately never discards what the donor already typed (see
+  // SET_CAUSE_AREA_SELECTION in the donation reducer). Smart distribution keeps its own
+  // separate total, so entering it starts empty without wiping the per-cause-area amounts.
+  it("Should keep per-cause-area amounts when switching via smart distribution", () => {
     // Set up some state
     cy.get("[data-cy=cause-area-multiple]").click();
     setCauseAreaAmount(1, 300, true);
@@ -189,16 +194,15 @@ describe("Swedish Widget - State Persistence", () => {
     cy.wait(500);
     cy.get("[data-cy=cause-area-recommendation]").click();
 
-    // Should reset to smart distribution mode
+    // Smart distribution has its own total, which starts empty
     cy.get("[data-cy=donation-sum-input-overall]").should("have.value", "");
 
-    // Go back to multiple - previous state should be cleared
+    // Go back to multiple - the previously entered amounts are still there
     cy.get("[data-cy=back-button]").click();
     cy.wait(500);
     cy.get("[data-cy=cause-area-multiple]").click();
 
-    // Should start fresh
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "");
-    cy.get("[data-cy=donation-sum-input-2]").should("have.value", "");
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
+    cy.get("[data-cy=donation-sum-input-2]").should("have.value", "200");
   });
 });

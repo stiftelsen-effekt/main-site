@@ -257,6 +257,8 @@ export type WidgetPane3ReferralsProps = {
 export type InfoBoxConfig = {
   label_text: string;
   description?: any[];
+  /** Optional internal page link, configured in Sanity as a navigation item */
+  link?: NavLink;
 };
 
 export type OperationsConfig = {

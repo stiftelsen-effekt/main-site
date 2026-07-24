@@ -90,7 +90,7 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
           <InfoAccordion
             labelText={operationsConfig.x_factor_info.label_text}
             description={operationsConfig.x_factor_info.description}
-            link={{ href: "https://giveffektivt.dk/x-faktor", text: "X-faktor" }}
+            link={operationsConfig.x_factor_info.link}
           />
         )}
       </div>

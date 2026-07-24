@@ -70,7 +70,7 @@ describe("Swedish Widget - Multiple Cause Areas Registration", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Välj fördelning själv").click();
+        cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
 
         // Wait for animation and set custom amounts
         cy.wait(500);

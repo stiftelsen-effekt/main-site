@@ -401,6 +401,13 @@ export default defineType({
               type: "array",
               of: [{ type: "block" }],
             },
+            {
+              name: "link",
+              title: "Read more link",
+              type: "navitem",
+              description:
+                'Optional link shown at the bottom of the expanded info box, e.g. to the "X-faktor" page',
+            },
           ],
         },
       ],
@@ -491,6 +498,12 @@ export default defineType({
               title: "Description",
               type: "array",
               of: [{ type: "block" }],
+            },
+            {
+              name: "link",
+              title: "Read more link",
+              type: "navitem",
+              description: "Optional link shown at the bottom of the expanded info box",
             },
           ],
         },

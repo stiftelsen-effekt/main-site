@@ -49,7 +49,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
     if (selectedCauseAreaId === -1 && smartDistributionTotal > 0) {
       summaryItems.push({
         id: -1,
-        name: text.smart_distribution_title || "Smart distribution",
+        name: text.smart_distribution_title,
         amount: smartDistributionTotal,
         orgs: [],
       });

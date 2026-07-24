@@ -246,10 +246,12 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                 {
                   title: smartDistributionContext.smart_distribution_radiobutton_text,
                   value: ShareType.STANDARD,
+                  data_cy: `radio-smart-share-${causeArea.id}`,
                 },
                 {
                   title: smartDistributionContext.custom_distribution_radiobutton_text,
                   value: ShareType.CUSTOM,
+                  data_cy: `radio-custom-share-${causeArea.id}`,
                   content: (
                     <InputList>
                       {causeArea.organizations
@@ -342,8 +344,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                 />
               </span>
               <span>
-                {operationsConfig?.operations_label_template?.replace("{percentage}", "") ||
-                  "% to operations"}
+                {operationsConfig?.operations_label_template?.replace("{percentage}", "")}
               </span>
             </OperationsPercentageInputWrapper>
           </div>
@@ -354,6 +355,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
         <InfoAccordion
           labelText={causeAreaDisplayConfig.other_cause_area_info.label_text}
           description={causeAreaDisplayConfig.other_cause_area_info.description}
+          link={causeAreaDisplayConfig.other_cause_area_info.link}
         />
       )}
     </FormWrapper>

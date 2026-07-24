@@ -17,22 +17,25 @@ describe("Swedish Widget - Payment Flow", () => {
       cy.get("[data-cy=next-button]").click();
     });
 
+    // Donor info isn't validated up-front - the payment buttons stay clickable and
+    // validation runs on submit, so an invalid form simply doesn't register a donation.
     it("Should validate required donor information", () => {
-      // All payment buttons should be disabled initially
-      cy.get("[data-cy^=payment-method-]").first().should("be.disabled");
+      setupDonationIntercepts();
 
       // Fill invalid email
       cy.get("[data-cy=name-input]").type("Test Person");
       cy.get("[data-cy=email-input]").type("invalid-email");
 
-      // Payment buttons should still be disabled
-      cy.get("[data-cy^=payment-method-]").first().should("be.disabled");
+      // Submitting with an invalid email must not register anything
+      cy.get("[data-cy=payment-method-bank]").click();
+      cy.wait(500);
+      cy.get("@registerDonation.all").should("have.length", 0);
+      cy.get("[data-cy=email-input]").should("be.visible");
 
-      // Fix email
+      // Fix the email and submit again - now it goes through
       cy.get("[data-cy=email-input]").clear().type("test@example.com");
-
-      // Payment buttons should now be enabled
-      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
+      cy.get("[data-cy=payment-method-bank]").click();
+      cy.wait("@registerDonation");
     });
 
     it("Should handle anonymous donation", () => {
@@ -48,6 +51,7 @@ describe("Swedish Widget - Payment Flow", () => {
     });
 
     it("Should validate Swedish tax deduction information", () => {
+      setupDonationIntercepts();
       fillDonorInfo();
 
       // Enable tax deduction
@@ -56,13 +60,17 @@ describe("Swedish Widget - Payment Flow", () => {
       // Should show SSN input
       cy.get("[data-cy=ssn-input]").should("be.visible");
 
-      // Invalid SSN should disable payment
+      // An invalid SSN must block registration
       cy.get("[data-cy=ssn-input]").type("invalid-ssn");
-      cy.get("[data-cy^=payment-method-]").first().should("be.disabled");
+      cy.get("[data-cy=payment-method-bank]").click();
+      cy.wait(500);
+      cy.get("@registerDonation.all").should("have.length", 0);
 
-      // Valid Swedish SSN should enable payment
-      cy.get("[data-cy=ssn-input]").clear().type("19900101-1234");
-      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
+      // A valid Swedish SSN lets it through. Personnummer are checksum-validated, so this
+      // has to be a genuinely valid number - "19900101-1234" fails the check digit.
+      cy.get("[data-cy=ssn-input]").clear().type("19900101-0017");
+      cy.get("[data-cy=payment-method-bank]").click();
+      cy.wait("@registerDonation");
     });
 
     it("Should handle newsletter signup", () => {
@@ -101,11 +109,6 @@ describe("Swedish Widget - Payment Flow", () => {
     });
 
     it("Should complete recurring autogiro donation", () => {
-      // Navigate back
-      cy.get("[data-cy=back-button]").click();
-      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
-      cy.get("[data-cy=next-button]").click();
-
       cy.get("[data-cy=payment-method-autogiro]").click();
 
       cy.wait(["@draftAutoGiroPaymentDate", "@registerDonation"]);
@@ -116,17 +119,12 @@ describe("Swedish Widget - Payment Flow", () => {
     });
 
     it("Should handle autogiro date selection", () => {
-      // Navigate back
-      cy.get("[data-cy=back-button]").click();
-      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
-      cy.get("[data-cy=next-button]").click();
-
       cy.get("[data-cy=payment-method-autogiro]").click();
 
       cy.wait(["@draftAutoGiroPaymentDate", "@registerDonation"]);
 
-      // Select autogiro setup option
-      cy.get("[data-cy=autogiro-radio-manual-autogiro-setup]").click();
+      // Select autogiro setup option (the radio input itself is visually hidden)
+      cy.get("[data-cy=autogiro-radio-manual-autogiro-setup]").click({ force: true });
 
       // Should show date selector
       cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("be.visible");

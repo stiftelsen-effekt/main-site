@@ -116,6 +116,28 @@ export const widgetContentQuery = groq`
     ...,
     "slug": page->slug.current,
     "pagetype": page->_type,
+  },
+  operations_config {
+    ...,
+    x_factor_info {
+      ...,
+      link {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      }
+    }
+  },
+  cause_area_display_config {
+    ...,
+    other_cause_area_info {
+      ...,
+      link {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      }
+    }
   }
 `;
 

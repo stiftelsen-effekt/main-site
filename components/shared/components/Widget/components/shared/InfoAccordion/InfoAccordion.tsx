@@ -4,11 +4,13 @@ import { ChevronDown } from "react-feather";
 import { PortableText } from "next-sanity";
 import Link from "next/link";
 import { ExplenationAccordion } from "../../panes/AmountPane.style";
+import { NavLink } from "../../../../Navbar/Navbar";
 
 interface InfoAccordionProps {
   labelText: string;
   description?: any[];
-  link?: { href: string; text: string };
+  /** Internal page link, configured in Sanity as a navigation item */
+  link?: NavLink;
 }
 
 /**
@@ -33,13 +35,13 @@ export const InfoAccordion: React.FC<InfoAccordionProps> = ({ labelText, descrip
       <AnimateHeight height={open ? "auto" : 0}>
         <div>
           {description && <PortableText value={description} />}
-          {link && (
+          {link?.slug && (
             <Link
-              href={link.href}
+              href={`/${link.slug}`}
               target="_blank"
               style={{ borderBottom: "1px solid var(--primary)" }}
             >
-              {link.text} ↗
+              {link.title} ↗
             </Link>
           )}
         </div>
