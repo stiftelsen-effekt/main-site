@@ -240,7 +240,7 @@ interface SetOperationsConfig {
 interface SetApiError {
   type: typeof SET_API_ERROR;
   payload: {
-    message: string;
+    message: string | null;
   };
 }
 

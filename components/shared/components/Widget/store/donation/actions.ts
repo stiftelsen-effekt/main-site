@@ -326,7 +326,7 @@ export const registerBankPendingAction = actionCreator.async<undefined, undefine
   "REGISTER_BANK_PENDING",
 );
 
-export function setApiError(message: string): DonationActionTypes {
+export function setApiError(message: string | null): DonationActionTypes {
   return {
     type: SET_API_ERROR,
     payload: {

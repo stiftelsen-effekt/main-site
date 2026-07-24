@@ -175,7 +175,7 @@ export const SumWrapper = styled.div`
 export const SumButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
@@ -184,13 +184,17 @@ export const SumButtonsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    flex-shrink: 0;
+    flex: 1 1 0;
+    min-width: 0;
 
     button {
       margin: 0;
       border-radius: 10px;
       font-size: 28px;
       white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &::before {
         font-size: 16px;

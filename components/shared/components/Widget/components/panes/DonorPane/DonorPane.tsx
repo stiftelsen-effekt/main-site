@@ -99,9 +99,12 @@ export const DonorPane: React.FC<{
   const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
 
   // If registration fails, clear the loading state so the button shows its
-  // label again instead of being stuck showing a spinner indefinitely
+  // label again instead of being stuck showing a spinner indefinitely.
+  // apiError can be null (rather than just absent/undefined) to signal a
+  // generic error message, so check for that explicitly rather than
+  // truthiness - a falsy-but-set apiError must still trigger the reset.
   React.useEffect(() => {
-    if (donation.apiError) {
+    if (typeof donation.apiError !== "undefined") {
       setLoadingMethod(null);
     }
   }, [donation.apiError]);

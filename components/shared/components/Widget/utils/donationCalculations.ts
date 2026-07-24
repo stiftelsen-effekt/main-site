@@ -205,6 +205,10 @@ export function calculateDonationBreakdown(
 export interface OrganizationSharePayload {
   id: number;
   percentageShare: string;
+  // The organization's actual kroner amount, sent alongside percentageShare
+  // so the backend can migrate to amount-based (rather than percentage-based)
+  // distribution in the future without breaking existing consumers.
+  amount: number;
 }
 
 /**
@@ -232,6 +236,7 @@ export function calculateOrganizationSharesWithinCauseArea(
   const otherShares = others.map((org) => ({
     id: org.id,
     percentageShare: ((org.amount / areaTotal) * 100).toFixed(8),
+    amount: Math.round(org.amount),
   }));
 
   const sumOfOthers = otherShares.reduce(
@@ -239,5 +244,12 @@ export function calculateOrganizationSharesWithinCauseArea(
     0,
   );
 
-  return [...otherShares, { id: largest.id, percentageShare: (100 - sumOfOthers).toString() }];
+  return [
+    ...otherShares,
+    {
+      id: largest.id,
+      percentageShare: (100 - sumOfOthers).toString(),
+      amount: Math.round(largest.amount),
+    },
+  ];
 }

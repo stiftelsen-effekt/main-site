@@ -237,7 +237,8 @@ export function* registerDonation(
       standardSplit: boolean;
       name: string;
       percentageShare: string;
-      organizations: { id: number; percentageShare: string }[];
+      amount: number;
+      organizations: { id: number; percentageShare: string; amount: number }[];
     }[] = [];
 
     // Build the distribution payload from the breakdown
@@ -271,6 +272,7 @@ export function* registerDonation(
           name: area.name,
           standardSplit: isStandardSplit,
           percentageShare: areaPercentage.toFixed(8),
+          amount: Math.round(areaAmount),
           organizations: areaOrgPayloads,
         });
       }
@@ -301,6 +303,7 @@ export function* registerDonation(
           name: operationsCauseArea.name,
           standardSplit: true,
           percentageShare: operationsPercentage.toFixed(8),
+          amount: Math.round(breakdown.operationsAmount),
           organizations: operationsOrgPayloads,
         });
       }
@@ -318,6 +321,9 @@ export function* registerDonation(
     };
 
     // --- Make API call ---
+    // A signal timeout ensures a slow/hanging connection fails (and resets
+    // the payment button's loading state) instead of leaving the donor
+    // staring at a spinner indefinitely
     const request = yield call(fetch, `${API_URL}/donations/register`, {
       method: "POST",
       headers: {
@@ -325,6 +331,7 @@ export function* registerDonation(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      signal: AbortSignal.timeout(20000),
     });
 
     const result: IServerResponse<RegisterDonationResponse> = yield call(
@@ -389,8 +396,15 @@ export function* registerDonation(
     }
   } catch (ex) {
     console.error("Error registering donation:", ex);
-    // Handle network errors and other exceptions
-    const errorMessage = ex instanceof Error ? ex.message : "Something went wrong";
+    // Handle network errors and other exceptions. A signal timeout throws a
+    // DOMException whose message isn't donor-friendly, so fall back to the
+    // notification's own generic message for that case.
+    const isTimeout = ex instanceof DOMException && ex.name === "TimeoutError";
+    const errorMessage = isTimeout
+      ? null
+      : ex instanceof Error
+      ? ex.message
+      : "Something went wrong";
     yield put(setApiError(errorMessage));
     yield put(setLoading(false));
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));

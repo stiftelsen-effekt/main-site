@@ -51,7 +51,16 @@ describe("calculateOrganizationSharesWithinCauseArea", () => {
 
   it("handles a single organization", () => {
     const shares = calculateOrganizationSharesWithinCauseArea([{ id: 1, amount: 42 }]);
-    expect(shares).toEqual([{ id: 1, percentageShare: "100" }]);
+    expect(shares).toEqual([{ id: 1, percentageShare: "100", amount: 42 }]);
+  });
+
+  it("includes the rounded kroner amount alongside the percentage share", () => {
+    const shares = calculateOrganizationSharesWithinCauseArea([
+      { id: 1, amount: 25.4 },
+      { id: 2, amount: 74.6 },
+    ]);
+    expect(shares.find((s) => s.id === 1)?.amount).toBe(25);
+    expect(shares.find((s) => s.id === 2)?.amount).toBe(75);
   });
 
   it("returns an empty array when there are no positive amounts", () => {
