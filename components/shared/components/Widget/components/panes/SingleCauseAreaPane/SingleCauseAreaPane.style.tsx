@@ -128,6 +128,17 @@ export const ShareContainer = styled.div`
   align-items: flex-end;
 `;
 
+export const ShowAllOrganizationsLink = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 15px;
+  font-size: 16px;
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
 export const ShareLink = styled.a`
   border: none !important;
 

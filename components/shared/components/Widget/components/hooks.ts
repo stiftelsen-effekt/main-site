@@ -2,11 +2,11 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "r
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import {
-  setCauseAreaPercentageShare,
-  setShares,
   setSum,
   setRecurring,
   setCauseAreaDistributionType,
+  setOrgAmount,
+  setPrefilledOrgId,
 } from "../store/donation/actions";
 import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
@@ -35,6 +35,7 @@ export const usePrefilledDistribution = ({
 }: UsePrefilledDistributionProps) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const [widgetContext] = useContext(WidgetContext);
+  const causeAreaAmounts = useSelector((state: State) => state.donation.causeAreaAmounts ?? {});
   // Add a ref to track if we've already applied the prefilled distribution
   const hasAppliedPrefill = useRef(false);
 
@@ -70,7 +71,8 @@ export const usePrefilledDistribution = ({
       );
 
       if (prefilledCauseArea) {
-        handlePrefilledCauseArea(dispatch, causeArea, prefilledCauseArea);
+        const causeAreaAmount = causeAreaAmounts[causeArea.id] || 0;
+        handlePrefilledCauseArea(dispatch, causeArea, prefilledCauseArea, causeAreaAmount);
       } else {
         resetCauseArea(dispatch, causeArea);
       }
@@ -78,6 +80,10 @@ export const usePrefilledDistribution = ({
 
     // Mark that we've applied the prefill
     hasAppliedPrefill.current = true;
+    // Deliberately excludes causeAreaAmounts - this effect should only re-run when the
+    // prefill itself changes, not on every amount keystroke (the amount is only read to
+    // seed the prefilled organization once).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inline, widgetContext.prefilled, causeAreas, prefilledDistribution, dispatch]);
 
   // Reset the ref if prefilled data changes
@@ -164,35 +170,29 @@ const handlePrefilledCauseArea = (
   dispatch: any,
   causeArea: CauseArea,
   prefilledCauseArea: PrefilledDistribution[number],
+  causeAreaAmount: number,
 ) => {
-  dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
   dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
 
-  const newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
-    const prefilledOrg = prefilledCauseArea.organizations.find(
-      (prefOrg) => prefOrg.organizationId === organization.id,
-    );
-    return {
-      ...organization,
-      percentageShare: prefilledOrg ? prefilledOrg.share.toString() : "0",
-      prefilledPercentageShare: prefilledOrg ? prefilledOrg.share.toString() : undefined,
-    };
-  });
+  // Only one organization is ever prefilled from an external entry point (e.g. the
+  // organizations list) - it gets the full cause area amount, everything else is reset to 0.
+  const prefilledOrgId = prefilledCauseArea.organizations[0]?.organizationId ?? null;
+  dispatch(setPrefilledOrgId(prefilledOrgId));
 
-  dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
+  causeArea.organizations.forEach((organization) => {
+    dispatch(
+      setOrgAmount(organization.id, organization.id === prefilledOrgId ? causeAreaAmount : 0),
+    );
+  });
 };
 
 const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
-  dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
   dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.STANDARD));
+  dispatch(setPrefilledOrgId(null));
 
-  const resetOrganizations = causeArea.organizations.map((organization) => ({
-    ...organization,
-    percentageShare: "0",
-    prefilledPercentageShare: undefined,
-  }));
-
-  dispatch(setShares(causeArea.id, resetOrganizations));
+  causeArea.organizations.forEach((organization) => {
+    dispatch(setOrgAmount(organization.id, 0));
+  });
 };
 
 const parseDistributionQueryParam = (distribution: string): PrefilledDistribution => {

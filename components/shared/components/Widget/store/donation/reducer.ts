@@ -28,6 +28,9 @@ import {
   SET_OPERATIONS_CONFIG,
   SET_API_ERROR,
   CLEAR_API_ERROR,
+  SET_PREFILLED_ORG_ID,
+  SET_SHOW_ALL_ORGANIZATIONS,
+  SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -172,6 +175,35 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         orgAmounts: newOrgAmounts,
+      };
+      break;
+    }
+    case SET_PREFILLED_ORG_ID: {
+      const { orgId } = (action as any).payload;
+
+      state = {
+        ...state,
+        prefilledOrgId: orgId,
+        showAllOrganizations: false,
+        hasManuallyEditedPrefilledOrgAmount: false,
+      };
+      break;
+    }
+    case SET_SHOW_ALL_ORGANIZATIONS: {
+      const { show } = (action as any).payload;
+
+      state = {
+        ...state,
+        showAllOrganizations: show,
+      };
+      break;
+    }
+    case SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT: {
+      const { edited } = (action as any).payload;
+
+      state = {
+        ...state,
+        hasManuallyEditedPrefilledOrgAmount: edited,
       };
       break;
     }

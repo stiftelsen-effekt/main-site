@@ -28,6 +28,9 @@ import {
   SET_OPERATIONS_CONFIG,
   SET_API_ERROR,
   CLEAR_API_ERROR,
+  SET_PREFILLED_ORG_ID,
+  SET_SHOW_ALL_ORGANIZATIONS,
+  SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -338,5 +341,36 @@ export function setApiError(message: string | null): DonationActionTypes {
 export function clearApiError(): DonationActionTypes {
   return {
     type: CLEAR_API_ERROR,
+  };
+}
+
+/**
+ * Mark an organization as prefilled from an external entry point (e.g. the
+ * organizations list), or clear the prefill with null.
+ */
+export function setPrefilledOrgId(orgId: number | null): DonationActionTypes {
+  return {
+    type: SET_PREFILLED_ORG_ID,
+    payload: { orgId },
+  };
+}
+
+/**
+ * Set whether the donor has revealed the full organization list beyond the prefilled one.
+ */
+export function setShowAllOrganizations(show: boolean): DonationActionTypes {
+  return {
+    type: SET_SHOW_ALL_ORGANIZATIONS,
+    payload: { show },
+  };
+}
+
+/**
+ * Set whether the donor has manually edited the prefilled organization's amount.
+ */
+export function setHasManuallyEditedPrefilledOrgAmount(edited: boolean): DonationActionTypes {
+  return {
+    type: SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
+    payload: { edited },
   };
 }

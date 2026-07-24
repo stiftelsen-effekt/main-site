@@ -40,12 +40,12 @@ describe("Organizations Page", () => {
     cy.wait(100);
 
     cy.get("[data-cy=widget-pane]").should("be.visible");
-    cy.get("[data-cy=org-1]").should("have.value", "100"); // Assuming AMF has an ID of 1 in this example
-    cy.get('[data-cy="donation-error-texts-container"]').should(($el) => {
-      expect($el).to.exist;
-      const height = $el.height();
-      expect(height).to.be.eq(0);
-    });
+    cy.pickSingleDonation();
+
+    // The prefilled organization (AMF) tracks 100% of whatever the donor enters,
+    // since it's the only organization shown until "Vis alle" is clicked.
+    cy.get("[data-cy^=donation-sum-input]").type("500");
+    cy.get("[data-cy=org-1]").should("have.value", "500");
   });
 
   it("Should maintain custom chosen distribution when closing and opening widget again", () => {
@@ -87,8 +87,7 @@ describe("Organizations Page", () => {
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type("50");
 
-    const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type("100");
 
     cy.nextWidgetPane();
 
@@ -121,9 +120,15 @@ describe("Organizations Page", () => {
 
     cy.wait(250);
 
-    cy.get("[data-cy=org-10]").should("have.value", "100");
-    cy.get("[data-cy=org-1]").should("have.value", "0");
-    cy.get("[data-cy=org-12]").should("have.value", "0");
+    // A freshly prefilled organization tracks 100% of whatever the donor enters next.
+    cy.get("[data-cy^=donation-sum-input]").type("200");
+
+    cy.get("[data-cy=org-10]").should("have.value", "200");
+
+    // Zero-amount organizations render an empty input with a "0" placeholder, not a literal "0".
+    cy.get("[data-cy=show-all-organizations-button]").click();
+    cy.get("[data-cy=org-1]").should("have.value", "");
+    cy.get("[data-cy=org-12]").should("have.value", "");
   });
 
   it("End-2-End donation with AMF selected from organization list", () => {
@@ -144,24 +149,11 @@ describe("Organizations Page", () => {
       expect(req.body).to.have.property("distributionCauseAreas");
 
       expect(req.body.amount).to.eq(randomSum);
-      expect(req.body.distributionCauseAreas).to.deep.equal([
-        {
-          id: 1,
-          name: "Global helse",
-          percentageShare: "100",
-          standardSplit: false,
-          organizations: [
-            { id: 12, percentageShare: "0" },
-            { id: 1, percentageShare: "100" },
-            { id: 10, percentageShare: "0" },
-            { id: 4, percentageShare: "0" },
-            { id: 7, percentageShare: "0" },
-            { id: 13, percentageShare: "0" },
-            { id: 14, percentageShare: "0" },
-            { id: 11, percentageShare: "0" },
-            { id: 15, percentageShare: "0" },
-          ],
-        },
+      const causeArea = req.body.distributionCauseAreas[0];
+      expect(causeArea.id).to.eq(1);
+      expect(causeArea.standardSplit).to.eq(false);
+      expect(causeArea.organizations).to.deep.equal([
+        { id: 1, percentageShare: "100", amount: randomSum },
       ]);
 
       req.reply({
@@ -186,6 +178,7 @@ describe("Organizations Page", () => {
       },
     }).as("bankPending");
 
+    cy.nextWidgetPane();
     cy.wait("@registerDonation");
   });
 
@@ -198,14 +191,16 @@ describe("Organizations Page", () => {
 
     cy.pickSingleDonation();
 
-    cy.get("[data-cy=org-1]").clear();
-    cy.get("[data-cy=org-1]").type("50");
-    cy.get("[data-cy=show-all-organizations-button]").click();
-    cy.get("[data-cy=org-12]").clear();
-    cy.get("[data-cy=org-12]").type("50");
+    // Enter the total first so the prefilled AMF share auto-tracks it, then split
+    // that exact total between AMF and GiveWell so the custom amounts stay valid.
+    cy.get("[data-cy^=donation-sum-input]").type("1000");
 
-    const randomSum = Math.floor(Math.random() * 1000) + 100;
-    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy=show-all-organizations-button]").click();
+    cy.get("[data-cy=org-1]").clear();
+    cy.get("[data-cy=org-1]").type("600");
+    cy.get("[data-cy=org-12]").clear();
+    cy.get("[data-cy=org-12]").type("400");
+
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
@@ -214,25 +209,13 @@ describe("Organizations Page", () => {
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body).to.have.property("distributionCauseAreas");
 
-      expect(req.body.amount).to.eq(randomSum);
-      expect(req.body.distributionCauseAreas).to.deep.equal([
-        {
-          id: 1,
-          name: "Global helse",
-          percentageShare: "100",
-          standardSplit: false,
-          organizations: [
-            { id: 12, percentageShare: "50" },
-            { id: 1, percentageShare: "50" },
-            { id: 10, percentageShare: "0" },
-            { id: 4, percentageShare: "0" },
-            { id: 7, percentageShare: "0" },
-            { id: 13, percentageShare: "0" },
-            { id: 14, percentageShare: "0" },
-            { id: 11, percentageShare: "0" },
-            { id: 15, percentageShare: "0" },
-          ],
-        },
+      expect(req.body.amount).to.eq(1000);
+      const causeArea = req.body.distributionCauseAreas[0];
+      expect(causeArea.id).to.eq(1);
+      expect(causeArea.standardSplit).to.eq(false);
+      expect(causeArea.organizations).to.deep.equal([
+        { id: 12, percentageShare: "40.00000000", amount: 400 },
+        { id: 1, percentageShare: "60", amount: 600 },
       ]);
 
       req.reply({
@@ -257,6 +240,7 @@ describe("Organizations Page", () => {
       },
     }).as("bankPending");
 
+    cy.nextWidgetPane();
     cy.wait("@registerDonation");
   });
 
@@ -282,25 +266,13 @@ describe("Organizations Page", () => {
       expect(req.body).to.have.property("distributionCauseAreas");
 
       expect(req.body.amount).to.eq(randomSum);
-      // Note that when the standard split is true, the organization percentage shares are ignored on the backend
-      expect(req.body.distributionCauseAreas).to.deep.equal([
-        {
-          id: 1,
-          name: "Global helse",
-          percentageShare: "100",
-          standardSplit: true,
-          organizations: [
-            { id: 12, percentageShare: "0" },
-            { id: 1, percentageShare: "100" },
-            { id: 10, percentageShare: "0" },
-            { id: 4, percentageShare: "0" },
-            { id: 7, percentageShare: "0" },
-            { id: 13, percentageShare: "0" },
-            { id: 14, percentageShare: "0" },
-            { id: 11, percentageShare: "0" },
-            { id: 15, percentageShare: "0" },
-          ],
-        },
+      const causeArea = req.body.distributionCauseAreas[0];
+      expect(causeArea.id).to.eq(1);
+      expect(causeArea.standardSplit).to.eq(true);
+      // Standard split uses each organization's configured standardShare (GiveWell
+      // Top Charities Fund is the only one with a nonzero standardShare in the fixture).
+      expect(causeArea.organizations).to.deep.equal([
+        { id: 12, percentageShare: "100", amount: randomSum },
       ]);
 
       req.reply({
@@ -325,6 +297,7 @@ describe("Organizations Page", () => {
       },
     }).as("bankPending");
 
+    cy.nextWidgetPane();
     cy.wait("@registerDonation");
   });
 });

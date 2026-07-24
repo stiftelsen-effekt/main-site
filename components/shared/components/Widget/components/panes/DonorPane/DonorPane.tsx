@@ -446,7 +446,7 @@ export const DonorPane: React.FC<{
                     title: method.selector_text,
                     value: paymentMethodMap[method._id],
                     disabled: Object.keys(errors).length > 0,
-                    data_cy: `payment-method-${(method as any)._type || "unknown"}`,
+                    data_cy: `payment-method-${method._id}`,
                   }))}
                   selected={
                     selectedPaymentMethodId ? paymentMethodMap[selectedPaymentMethodId] : undefined
@@ -458,8 +458,10 @@ export const DonorPane: React.FC<{
                 />
                 <ActionBar data-cy="next-button-div">
                   <NextButton
+                    type="button"
                     disabled={!selectedPaymentMethodId || Object.keys(errors).length > 0}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       if (selectedPaymentMethodId) handlePayment(selectedPaymentMethodId);
                     }}
                     data-cy="next-button"
@@ -478,7 +480,7 @@ export const DonorPane: React.FC<{
                       handlePayment(method._id);
                     }}
                     disabled={Object.keys(errors).length > 0}
-                    data-cy={`payment-method-${(method as any)._type || "unknown"}`}
+                    data-cy={`payment-method-${method._id}`}
                   >
                     {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
                   </PaymentButton>

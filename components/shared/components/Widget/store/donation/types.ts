@@ -31,6 +31,10 @@ export const SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA = "SET_OPERATIONS_PERCENTAG
 export const SET_OPERATIONS_CONFIG = "SET_OPERATIONS_CONFIG";
 export const SET_API_ERROR = "SET_API_ERROR";
 export const CLEAR_API_ERROR = "CLEAR_API_ERROR";
+export const SET_PREFILLED_ORG_ID = "SET_PREFILLED_ORG_ID";
+export const SET_SHOW_ALL_ORGANIZATIONS = "SET_SHOW_ALL_ORGANIZATIONS";
+export const SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT =
+  "SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -248,6 +252,28 @@ interface ClearApiError {
   type: typeof CLEAR_API_ERROR;
 }
 
+interface SetPrefilledOrgId {
+  type: typeof SET_PREFILLED_ORG_ID;
+  payload: {
+    /** organization ID prefilled from an external entry point (e.g. the organizations list), or null to clear */
+    orgId: number | null;
+  };
+}
+
+interface SetShowAllOrganizations {
+  type: typeof SET_SHOW_ALL_ORGANIZATIONS;
+  payload: {
+    show: boolean;
+  };
+}
+
+interface SetHasManuallyEditedPrefilledOrgAmount {
+  type: typeof SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT;
+  payload: {
+    edited: boolean;
+  };
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -275,4 +301,7 @@ export type DonationActionTypes =
   | SetOperationsPercentageByCauseArea
   | SetOperationsConfig
   | SetApiError
-  | ClearApiError;
+  | ClearApiError
+  | SetPrefilledOrgId
+  | SetShowAllOrganizations
+  | SetHasManuallyEditedPrefilledOrgAmount;
