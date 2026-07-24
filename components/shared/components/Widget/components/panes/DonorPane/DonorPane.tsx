@@ -35,6 +35,7 @@ import {
 } from "../../shared/DonationSummary/DonationSummary.style";
 import { paymentMethodConfigurations } from "../../../config/methods";
 import { useSsnValidation } from "./useSsnValidation";
+import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 
 // Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
@@ -46,7 +47,8 @@ export const DonorPane: React.FC<{
   text: WidgetPane2Props;
   summaryText: DonationSummaryText;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-}> = ({ locale, text, summaryText, paymentMethods }) => {
+  isSingleCauseArea?: boolean;
+}> = ({ locale, text, summaryText, paymentMethods, isSingleCauseArea = false }) => {
   const dispatch =
     useDispatch<
       Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload> | LayoutActionTypes>
@@ -218,7 +220,7 @@ export const DonorPane: React.FC<{
       <DonorForm autoComplete="on">
         <PaneContainer>
           <div>
-            <DonationSummary text={summaryText} />
+            {!isSingleCauseArea && <DonationSummary text={summaryText} />}
 
             {text.allow_anonymous_donations && (
               <div style={{ marginBottom: "20px" }}>
@@ -421,21 +423,37 @@ export const DonorPane: React.FC<{
               </CheckBoxGroupWrapper>
             </AnimateHeight>
 
-            <PaymentButtonsWrapper style={{ marginTop: "20px" }}>
-              {paymentMethods.map((method) => (
-                <PaymentButton
-                  key={method._id}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePayment(method._id);
-                  }}
-                  disabled={Object.keys(errors).length > 0}
-                  data-cy={`payment-method-${(method as any)._type || "unknown"}`}
-                >
-                  {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
-                </PaymentButton>
-              ))}
-            </PaymentButtonsWrapper>
+            {isSingleCauseArea ? (
+              <RadioButtonGroup
+                options={paymentMethods.map((method) => ({
+                  title: method.selector_text,
+                  value: paymentMethodMap[method._id],
+                  disabled: Object.keys(errors).length > 0,
+                  data_cy: `payment-method-${(method as any)._type || "unknown"}`,
+                }))}
+                selected={loadingMethod ? paymentMethodMap[loadingMethod] : undefined}
+                onSelect={(value) => {
+                  const method = paymentMethods.find((m) => paymentMethodMap[m._id] === value);
+                  if (method) handlePayment(method._id);
+                }}
+              />
+            ) : (
+              <PaymentButtonsWrapper style={{ marginTop: "20px" }}>
+                {paymentMethods.map((method) => (
+                  <PaymentButton
+                    key={method._id}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePayment(method._id);
+                    }}
+                    disabled={Object.keys(errors).length > 0}
+                    data-cy={`payment-method-${(method as any)._type || "unknown"}`}
+                  >
+                    {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
+                  </PaymentButton>
+                ))}
+              </PaymentButtonsWrapper>
+            )}
           </div>
         </PaneContainer>
       </DonorForm>

@@ -58,6 +58,9 @@ const DK_DEMO_CAUSE_AREAS: CauseArea[] = [
     informationUrl: "",
     isActive: true,
     ordering: 1,
+    // Used by the smart/recommended ("-1") distribution mode - without this,
+    // smart distribution silently produces no cause area/organization amounts
+    standardPercentageShare: 60,
     organizations: [
       {
         id: 101,
@@ -86,6 +89,7 @@ const DK_DEMO_CAUSE_AREAS: CauseArea[] = [
     informationUrl: "",
     isActive: true,
     ordering: 2,
+    standardPercentageShare: 35,
     organizations: [
       {
         id: 102,
@@ -114,6 +118,7 @@ const DK_DEMO_CAUSE_AREAS: CauseArea[] = [
     informationUrl: "",
     isActive: true,
     ordering: 3,
+    standardPercentageShare: 5,
     organizations: [
       {
         id: 104,
@@ -508,6 +513,7 @@ export const Widget = withStaticProps(
                 total_label: widget.ui_labels?.total_label ?? "",
               }}
               paymentMethods={availablePaymentMethods}
+              isSingleCauseArea={isSingleCauseArea}
             />
             <PaymentPane
               referrals={{
