@@ -201,3 +201,43 @@ export function calculateDonationBreakdown(
 
   return result;
 }
+
+export interface OrganizationSharePayload {
+  id: number;
+  percentageShare: string;
+}
+
+/**
+ * Converts organization amounts within a single cause area into percentage
+ * shares of that cause area (not of the overall donation). The organization
+ * with the largest amount is placed last and absorbs the rounding remainder,
+ * so the returned shares are guaranteed to sum to exactly 100 - even once
+ * re-parsed as floats - which the backend requires within a cause area.
+ */
+export function calculateOrganizationSharesWithinCauseArea(
+  organizationAmounts: { id: number; amount: number }[],
+): OrganizationSharePayload[] {
+  const areaTotal = organizationAmounts.reduce((sum, org) => sum + org.amount, 0);
+
+  if (areaTotal <= 0) return [];
+
+  const largestIndex = organizationAmounts.reduce(
+    (maxIndex, org, index) =>
+      org.amount > organizationAmounts[maxIndex].amount ? index : maxIndex,
+    0,
+  );
+  const largest = organizationAmounts[largestIndex];
+  const others = organizationAmounts.filter((_, index) => index !== largestIndex);
+
+  const otherShares = others.map((org) => ({
+    id: org.id,
+    percentageShare: ((org.amount / areaTotal) * 100).toFixed(8),
+  }));
+
+  const sumOfOthers = otherShares.reduce(
+    (sum, share) => sum + parseFloat(share.percentageShare),
+    0,
+  );
+
+  return [...otherShares, { id: largest.id, percentageShare: (100 - sumOfOthers).toString() }];
+}
