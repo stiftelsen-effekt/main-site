@@ -92,8 +92,10 @@ describe("Donations page", () => {
 
     cy.fixture(`evaluations/evaluations.json`)
       .then((evaluations) => {
+        // Match any language/currency casing: the app sends language=no, so a
+        // hardcoded language=NO would miss and hit the live API instead.
         cy.intercept(
-          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=NOK&language=NO&donation_year=*&donation_month=*",
+          "https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=*&currency=*&language=*&donation_year=*&donation_month=*",
           (req) => {
             const [, abbriv, year, month] = req.url.match(
               /.*abbreviation=(.*)\&currency.*year=(\d{4}).*month=(\d{1,2})/,
@@ -111,14 +113,12 @@ describe("Donations page", () => {
 
     cy.fixture("grants")
       .then((grants) => {
-        cy.intercept(
-          "GET",
-          "https://impact.gieffektivt.no/api/max_impact_fund_grants?currency=NOK&language=NO&*",
-          {
-            statusCode: 200,
-            body: grants,
-          },
-        ).as("getGrants");
+        // Match every grants request; the aggregate table fetches without
+        // donation_year/month params, which a stricter glob would miss.
+        cy.intercept("GET", "https://impact.gieffektivt.no/api/max_impact_fund_grants*", {
+          statusCode: 200,
+          body: grants,
+        }).as("getGrants");
       })
       .as("grantsFixture");
 
@@ -192,17 +192,27 @@ describe("Donations page", () => {
   it("Should display a donation aggregate impact table", () => {
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]", {
       timeout: 15000,
-    }).should("have.length", 6);
+    }).should("have.length", 5);
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "118");
+      .should("contain.text", "1 049");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .first()
-      .should("contain.text", "A-vitamintilskudd");
+      .should("contain.text", "dollar mottatt");
+
+    // The grant fixture predates the GiveWell-fund donations, so the fund portion
+    // is smart-distributed using the grant's cost-per-output. These values only
+    // hold with the grant-based fix (evaluations alone would give 17 and 12).
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
+      .eq(1)
+      .should("contain.text", "18");
+    cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
+      .eq(1)
+      .should("contain.text", "malariabehandlinger");
 
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
-      .should("contain.text", "12");
+      .should("contain.text", "16");
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]")
       .last()
       .should("contain.text", "vaksinasjoner");
@@ -220,7 +230,7 @@ describe("Donations page", () => {
 
     cy.get("[data-cy=donation-aggregate-impact-distribution-row]", {
       timeout: 15000,
-    }).should("have.length", 5);
+    }).should("have.length", 3);
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "I 2021");
     cy.get("[data-cy=aggregated-donation-totals]").should("contain.text", "108\u00A0574 kr");
   });
