@@ -17,9 +17,9 @@ import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
-import { Pane, PaneContainer } from "../Panes.style";
+import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
-import { CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
+import { ActionBar, CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
 import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -28,6 +28,7 @@ import { Action } from "typescript-fsa";
 import { LayoutActionTypes } from "../../../store/layout/types";
 import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
 import { DonationSummary, DonationSummaryText } from "../../shared/DonationSummary/DonationSummary";
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
 import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
 import {
   PaymentButton,
@@ -100,6 +101,10 @@ export const DonorPane: React.FC<{
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
   const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
+  // For the single-cause-area flow, payment method selection is a distinct
+  // step from submission (matches the pre-rewrite behavior) - the radio
+  // just records a choice, and a separate Next button submits it.
+  const [selectedPaymentMethodId, setSelectedPaymentMethodId] = React.useState<string | null>(null);
 
   // If registration fails, clear the loading state so the button shows its
   // label again instead of being stuck showing a spinner indefinitely.
@@ -225,7 +230,13 @@ export const DonorPane: React.FC<{
       <DonorForm autoComplete="on">
         <PaneContainer>
           <div>
-            {!isSingleCauseArea && <DonationSummary text={summaryText} />}
+            {isSingleCauseArea ? (
+              <PaneTitle>
+                <wbr />
+              </PaneTitle>
+            ) : (
+              <DonationSummary text={summaryText} />
+            )}
 
             {text.allow_anonymous_donations && (
               <div style={{ marginBottom: "20px" }}>
@@ -429,19 +440,34 @@ export const DonorPane: React.FC<{
             </AnimateHeight>
 
             {isSingleCauseArea ? (
-              <RadioButtonGroup
-                options={paymentMethods.map((method) => ({
-                  title: method.selector_text,
-                  value: paymentMethodMap[method._id],
-                  disabled: Object.keys(errors).length > 0,
-                  data_cy: `payment-method-${(method as any)._type || "unknown"}`,
-                }))}
-                selected={loadingMethod ? paymentMethodMap[loadingMethod] : undefined}
-                onSelect={(value) => {
-                  const method = paymentMethods.find((m) => paymentMethodMap[m._id] === value);
-                  if (method) handlePayment(method._id);
-                }}
-              />
+              <>
+                <RadioButtonGroup
+                  options={paymentMethods.map((method) => ({
+                    title: method.selector_text,
+                    value: paymentMethodMap[method._id],
+                    disabled: Object.keys(errors).length > 0,
+                    data_cy: `payment-method-${(method as any)._type || "unknown"}`,
+                  }))}
+                  selected={
+                    selectedPaymentMethodId ? paymentMethodMap[selectedPaymentMethodId] : undefined
+                  }
+                  onSelect={(value) => {
+                    const method = paymentMethods.find((m) => paymentMethodMap[m._id] === value);
+                    if (method) setSelectedPaymentMethodId(method._id);
+                  }}
+                />
+                <ActionBar data-cy="next-button-div">
+                  <NextButton
+                    disabled={!selectedPaymentMethodId || Object.keys(errors).length > 0}
+                    onClick={() => {
+                      if (selectedPaymentMethodId) handlePayment(selectedPaymentMethodId);
+                    }}
+                    data-cy="next-button"
+                  >
+                    {loadingMethod ? <StyledSpinner /> : text.pane2_button_text}
+                  </NextButton>
+                </ActionBar>
+              </>
             ) : (
               <PaymentButtonsWrapper style={{ marginTop: "20px" }}>
                 {paymentMethods.map((method) => (
