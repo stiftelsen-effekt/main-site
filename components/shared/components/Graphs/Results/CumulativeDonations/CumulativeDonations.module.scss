@@ -13,6 +13,130 @@
   }
 }
 
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  min-height: 2rem;
+}
+
+.yearControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+
+.yearRange {
+  color: var(--primary);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.yearButton {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+.rightControls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.chartTypeToggle {
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.chartTypeButton {
+  appearance: none;
+  background: transparent;
+  border: none;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--primary);
+  opacity: 0.45;
+
+  &:not(:last-child) {
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  &[aria-pressed="true"] {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--primary);
+    outline-offset: -1px;
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.barScopeToggle {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.barScopeButton {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--primary);
+  cursor: pointer;
+  opacity: 0.45;
+
+  &[aria-pressed="true"] {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .graphContainer {
     aspect-ratio: 16/11;
@@ -22,5 +146,19 @@
 @media screen and (max-width: 1180px) {
   .graphContainer {
     aspect-ratio: 1/1;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rightControls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    width: 100%;
+    margin-left: 0;
   }
 }
