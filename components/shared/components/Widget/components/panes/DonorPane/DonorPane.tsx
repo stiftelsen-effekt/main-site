@@ -78,6 +78,7 @@ export const DonorPane: React.FC<{
   const {
     register,
     watch,
+    trigger,
     formState: { errors },
     clearErrors,
   } = useForm({
@@ -123,8 +124,12 @@ export const DonorPane: React.FC<{
     return mapped;
   };
 
-  const handlePayment = (methodId: string) => {
-    if (Object.keys(errors).length > 0) return;
+  const handlePayment = async (methodId: string) => {
+    // trigger() runs and populates validation for every registered field -
+    // handlePayment fires directly from a button click rather than a form
+    // submit, so react-hook-form never validates on its own otherwise
+    const isValid = await trigger();
+    if (!isValid) return;
 
     setLoadingMethod(methodId);
     const paymentMethod = mapPaymentMethod(methodId);
