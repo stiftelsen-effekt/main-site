@@ -2,13 +2,13 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "r
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import {
-  setCauseAreaPercentageShare,
-  setShareType,
-  setShares,
   setSum,
   setRecurring,
+  setCauseAreaDistributionType,
+  setOrgAmount,
+  setPrefilledShares,
 } from "../store/donation/actions";
-import { RecurringDonation } from "../types/Enums";
+import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { CauseArea } from "../types/CauseArea";
@@ -35,6 +35,7 @@ export const usePrefilledDistribution = ({
 }: UsePrefilledDistributionProps) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const [widgetContext] = useContext(WidgetContext);
+  const causeAreaAmounts = useSelector((state: State) => state.donation.causeAreaAmounts ?? {});
   // Add a ref to track if we've already applied the prefilled distribution
   const hasAppliedPrefill = useRef(false);
 
@@ -64,20 +65,42 @@ export const usePrefilledDistribution = ({
       return;
     }
 
+    // Accumulate shares across every cause area into one flat org-keyed map (org IDs are
+    // unique across cause areas) rather than dispatching setPrefilledShares per cause area,
+    // which would otherwise have each cause area's dispatch clobber the previous one's.
+    const combinedShares: Record<number, number> = {};
+    let hasAnyPrefilledShares = false;
+
     causeAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
         (prefilledArea) => prefilledArea.causeAreaId === causeArea.id,
       );
 
       if (prefilledCauseArea) {
-        handlePrefilledCauseArea(dispatch, causeArea, prefilledCauseArea);
+        const causeAreaAmount = causeAreaAmounts[causeArea.id] || 0;
+        const sharesByOrgId = handlePrefilledCauseArea(
+          dispatch,
+          causeArea,
+          prefilledCauseArea,
+          causeAreaAmount,
+        );
+        if (Object.keys(sharesByOrgId).length > 0) {
+          hasAnyPrefilledShares = true;
+          Object.assign(combinedShares, sharesByOrgId);
+        }
       } else {
         resetCauseArea(dispatch, causeArea);
       }
     });
 
+    dispatch(setPrefilledShares(hasAnyPrefilledShares ? combinedShares : null));
+
     // Mark that we've applied the prefill
     hasAppliedPrefill.current = true;
+    // Deliberately excludes causeAreaAmounts - this effect should only re-run when the
+    // prefill itself changes, not on every amount keystroke (the amount is only read to
+    // seed the prefilled organization once).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inline, widgetContext.prefilled, causeAreas, prefilledDistribution, dispatch]);
 
   // Reset the ref if prefilled data changes
@@ -160,39 +183,38 @@ export const useQueryParamsPrefill = ({
 
 // Helper functions
 
+// Applies a prefilled cause area's organization shares (0-100 each, e.g. from the
+// organizations list - one org at 100% - or a CMS-configured distribution link with
+// several) as kr amounts of whatever the cause area's amount currently is, and returns
+// the applied shares (org ID -> percentage) so the caller can track them for auto-updating
+// as the amount changes later.
 const handlePrefilledCauseArea = (
   dispatch: any,
   causeArea: CauseArea,
   prefilledCauseArea: PrefilledDistribution[number],
-) => {
-  dispatch(setCauseAreaPercentageShare(causeArea.id, prefilledCauseArea.share.toString()));
-  dispatch(setShareType(causeArea.id, false));
+  causeAreaAmount: number,
+): Record<number, number> => {
+  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
 
-  const newCauseAreaOrganizations = causeArea.organizations.map((organization) => {
-    const prefilledOrg = prefilledCauseArea.organizations.find(
-      (prefOrg) => prefOrg.organizationId === organization.id,
-    );
-    return {
-      ...organization,
-      percentageShare: prefilledOrg ? prefilledOrg.share.toString() : "0",
-      prefilledPercentageShare: prefilledOrg ? prefilledOrg.share.toString() : undefined,
-    };
+  const shareByOrgId: Record<number, number> = {};
+  prefilledCauseArea.organizations.forEach((org) => {
+    if (org.share > 0) shareByOrgId[org.organizationId] = org.share;
   });
 
-  dispatch(setShares(causeArea.id, newCauseAreaOrganizations));
+  causeArea.organizations.forEach((organization) => {
+    const share = shareByOrgId[organization.id] ?? 0;
+    dispatch(setOrgAmount(organization.id, Math.round((share / 100) * causeAreaAmount)));
+  });
+
+  return shareByOrgId;
 };
 
 const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
-  dispatch(setCauseAreaPercentageShare(causeArea.id, "0"));
-  dispatch(setShareType(causeArea.id, true));
+  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.STANDARD));
 
-  const resetOrganizations = causeArea.organizations.map((organization) => ({
-    ...organization,
-    percentageShare: "0",
-    prefilledPercentageShare: undefined,
-  }));
-
-  dispatch(setShares(causeArea.id, resetOrganizations));
+  causeArea.organizations.forEach((organization) => {
+    dispatch(setOrgAmount(organization.id, 0));
+  });
 };
 
 const parseDistributionQueryParam = (distribution: string): PrefilledDistribution => {

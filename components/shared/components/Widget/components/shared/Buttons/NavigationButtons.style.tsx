@@ -38,12 +38,12 @@ export const StyledSpinner = styled(Spinner)`
   top: -8px;
   left: -12px;
   transform-origin: center center;
-  mix-blend-mode: difference;
 
   &::after {
     width: 70px;
     height: 70px;
     border-width: 10px;
+    border-color: currentColor transparent currentColor transparent;
   }
 
   @media only screen and (max-width: 768px) {

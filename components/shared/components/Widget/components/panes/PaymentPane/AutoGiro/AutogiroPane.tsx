@@ -17,6 +17,7 @@ import { API_URL } from "../../../../config/api";
 import { DateTime } from "luxon";
 import { usePlausible } from "next-plausible";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 enum AutoGiroOptions {
   MANUAL_TRANSACTION,
@@ -30,6 +31,7 @@ export const AutogiroPane: React.FC<{
   config: AutoGiroPaymentMethod;
 }> = ({ referrals, config }) => {
   const donation = useSelector((state: State) => state.donation);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const plausible = usePlausible();
 
   const [selectedAutogiroSetup, setSelectedAutogiroSetup] = React.useState<
@@ -51,12 +53,29 @@ export const AutogiroPane: React.FC<{
     });
   }, [manualAutogiroSetupDate]);
 
+  const breakdown = calculateDonationBreakdown(
+    donation.causeAreaAmounts ?? {},
+    donation.orgAmounts ?? {},
+    donation.causeAreaDistributionType ?? {},
+    donation.operationsPercentageModeByCauseArea ?? {},
+    donation.operationsPercentageByCauseArea ?? {},
+    causeAreas,
+    donation.selectionType ?? "single",
+    donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.globalOperationsPercentage ?? 0,
+    donation.operationsConfig?.excludedCauseAreaIds ?? [],
+    donation.operationsConfig?.operationsCauseAreaId,
+    donation.smartDistributionTotal,
+  );
+  const totalSumIncludingTip = breakdown.totalAmount;
+
   const manualTransactionContent = (
     <>
       <RoundedBorder>
         <TextWrapper>
           <span>{config.manual_recurring_option_config.sum_label}</span>
-          <span data-cy="autogiro-manual-sum">{thousandize(donation.sum || 0)} kr</span>
+          <span data-cy="autogiro-manual-sum">{thousandize(totalSumIncludingTip || 0)} kr</span>
         </TextWrapper>
       </RoundedBorder>
       <span>{config.manual_recurring_option_config.payer_numberexplanatory_text}</span>
@@ -64,11 +83,11 @@ export const AutogiroPane: React.FC<{
       <EffektButton
         onClick={() => {
           setHasSubmitted(true);
-          if (donation.sum) {
+          if (totalSumIncludingTip) {
             plausible("StartedAgreement", {
               revenue: {
                 currency: "SEK",
-                amount: donation.sum,
+                amount: totalSumIncludingTip,
               },
               props: {
                 method: "Autogiro",
@@ -136,11 +155,11 @@ export const AutogiroPane: React.FC<{
       <EffektButton
         onClick={() => {
           setHasSubmitted(true);
-          if (donation.sum) {
+          if (totalSumIncludingTip) {
             plausible("StartedAgreement", {
               revenue: {
                 currency: "SEK",
-                amount: donation.sum,
+                amount: totalSumIncludingTip,
               },
               props: {
                 method: "Autogiro",

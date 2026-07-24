@@ -155,11 +155,32 @@ button {
   width: 576px;
   transform-origin: top left;
   overflow-y: auto;
+  /* Always reserve the scrollbar's space, so panes that grow tall enough to
+     overflow (e.g. expanding a custom organization distribution) don't shift
+     sideways the moment it appears. */
+  scrollbar-gutter: stable;
+  /* Firefox equivalent of the ::-webkit-scrollbar rules below. --primary-hover is
+     a mid grey inside the widget pane, so it reads against both colour schemes. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-hover) transparent;
 }
 
 .widget::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 0.5rem;
+  background-color: transparent;
+}
+
+.widget::-webkit-scrollbar-thumb {
+  background-color: var(--primary-hover);
+  border-radius: 10px;
+}
+
+.widget::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary);
+}
+
+.widget::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .carousel-wrapper {
