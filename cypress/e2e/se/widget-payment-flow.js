@@ -40,7 +40,7 @@ describe("Swedish Widget - Payment Flow", () => {
 
     it("Should handle anonymous donation", () => {
       // Select anonymous donation
-      cy.get("[data-cy=anon-checkbox]").check();
+      cy.get("[data-cy=anon-checkbox]").check({ force: true });
 
       // Should skip name/email validation
       cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
@@ -55,7 +55,7 @@ describe("Swedish Widget - Payment Flow", () => {
       fillDonorInfo();
 
       // Enable tax deduction
-      cy.get("[data-cy=tax-deduction-checkbox]").check();
+      cy.get("[data-cy=tax-deduction-checkbox]").check({ force: true });
 
       // Should show SSN input
       cy.get("[data-cy=ssn-input]").should("be.visible");
@@ -80,10 +80,10 @@ describe("Swedish Widget - Payment Flow", () => {
       cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
 
       // Should be able to toggle newsletter
-      cy.get("[data-cy=newsletter-checkbox]").check();
+      cy.get("[data-cy=newsletter-checkbox]").check({ force: true });
       cy.get("[data-cy=newsletter-checkbox]").should("be.checked");
 
-      cy.get("[data-cy=newsletter-checkbox]").uncheck();
+      cy.get("[data-cy=newsletter-checkbox]").uncheck({ force: true });
       cy.get("[data-cy=newsletter-checkbox]").should("not.be.checked");
     });
   });

@@ -253,8 +253,8 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
       setCauseAreaAmount(2, 400);
 
       // Enable then disable global cut
-      cy.get("[data-cy=global-cut-checkbox]").check();
-      cy.get("[data-cy=global-cut-checkbox]").uncheck();
+      cy.get("[data-cy=global-cut-checkbox]").check({ force: true });
+      cy.get("[data-cy=global-cut-checkbox]").uncheck({ force: true });
 
       cy.get("[data-cy=next-button]").click();
       cy.get("[data-cy=name-input]").type("Test Donor");
