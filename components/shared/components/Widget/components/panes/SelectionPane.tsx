@@ -27,7 +27,7 @@ interface SelectionPaneProps {
   accentColor?: string;
 }
 
-const DEFAULT_ACCENT_COLOR = "#981f49";
+const DEFAULT_ACCENT_COLOR = "var(--primary)";
 
 export const SelectionPane: React.FC<SelectionPaneProps> = ({
   causeAreaDisplayConfig,

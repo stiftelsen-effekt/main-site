@@ -252,6 +252,11 @@ export type WidgetPane3ReferralsProps = {
   other_referral_input_placeholder: string;
 };
 
+export type InfoBoxConfig = {
+  label_text: string;
+  description?: any[];
+};
+
 export type OperationsConfig = {
   operations_cause_area_id: number;
   default_percentage: number;
@@ -259,6 +264,7 @@ export type OperationsConfig = {
   enabled_by_default_global?: boolean;
   enabled_by_default_single?: boolean;
   excluded_cause_area_ids?: number[];
+  x_factor_info?: InfoBoxConfig;
 };
 
 export type CauseAreaDisplayConfig = {
@@ -270,6 +276,7 @@ export type CauseAreaDisplayConfig = {
     cause_area_id: number;
     context_text: string;
   }>;
+  other_cause_area_info?: InfoBoxConfig;
 };
 
 export type UILabels = {

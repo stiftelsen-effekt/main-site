@@ -35,6 +35,7 @@ import {
   CauseAreaDisplayConfig,
   SmartDistributionContext,
 } from "../../../types/WidgetProps";
+import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
 
 interface CauseAreaFormProps {
   causeArea: CauseArea;
@@ -64,6 +65,11 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
   const hasSingleOrg = causeArea.organizations.length <= 1;
+  // "Andet" (other) - matches the special-casing of this cause area id in
+  // SelectionPane.tsx. Donors here shouldn't be offered a smart/custom
+  // distribution choice; the amount is always split via standard shares.
+  const isOtherCauseArea = causeArea.id === 6;
+  const hideDistributionToggle = hasSingleOrg || isOtherCauseArea;
 
   // Operations logic - now per cause area
   const currentCauseAreaAmount = causeAreaAmounts[causeArea.id] || 0;
@@ -140,7 +146,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
         )}
       </div>
       <div>
-        {hasSingleOrg ? (
+        {hideDistributionToggle ? (
           <TotalSumWrapper>
             {isSingleSelection && (
               <SumButtonsWrapper>
@@ -334,6 +340,13 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
             </OperationsPercentageInputWrapper>
           </div>
         </div>
+      )}
+
+      {isOtherCauseArea && causeAreaDisplayConfig?.other_cause_area_info?.label_text && (
+        <InfoAccordion
+          labelText={causeAreaDisplayConfig.other_cause_area_info.label_text}
+          description={causeAreaDisplayConfig.other_cause_area_info.description}
+        />
       )}
     </FormWrapper>
   );

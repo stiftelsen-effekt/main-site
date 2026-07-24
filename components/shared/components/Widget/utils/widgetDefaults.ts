@@ -12,6 +12,8 @@ export const DEFAULT_OPERATIONS_CONFIG: Required<OperationsConfig> = {
   enabled_by_default_global: false,
   enabled_by_default_single: true,
   excluded_cause_area_ids: [5], // Admin cause area
+  // Empty label_text hides the info box until a label/description is configured
+  x_factor_info: { label_text: "", description: [] },
 };
 
 export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig> = {
@@ -26,6 +28,8 @@ export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig>
         "For every dollar donated to operations, we expect to raise at least 10 dollars for our cause areas.",
     },
   ],
+  // Empty label_text hides the info box until a label/description is configured
+  other_cause_area_info: { label_text: "", description: [] },
 };
 
 export const DEFAULT_UI_LABELS: Required<UILabels> = {

@@ -98,6 +98,14 @@ export const DonorPane: React.FC<{
   const isAnonymous = watch("isAnonymous");
   const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
 
+  // If registration fails, clear the loading state so the button shows its
+  // label again instead of being stuck showing a spinner indefinitely
+  React.useEffect(() => {
+    if (donation.apiError) {
+      setLoadingMethod(null);
+    }
+  }, [donation.apiError]);
+
   // Locale-aware SSN/CPR validation (handles NO, SE and DK CPR/CVR incl. suspicious CPR warning)
   const { validateSsn, handleSsnChange, cprSuspicious } = useSsnValidation({
     locale,

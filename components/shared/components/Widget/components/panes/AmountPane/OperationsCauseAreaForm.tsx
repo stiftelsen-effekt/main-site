@@ -16,13 +16,15 @@ import { usePlausible } from "next-plausible";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
 import { CauseArea } from "../../../types/CauseArea";
-import { CauseAreaDisplayConfig } from "../../../types/WidgetProps";
+import { CauseAreaDisplayConfig, OperationsConfig } from "../../../types/WidgetProps";
+import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
 
 interface OperationsCauseAreaFormProps {
   causeArea: CauseArea;
   suggestedSums: Array<{ amount: number; subtext?: string }>;
   causeAreaAmounts: Record<number, number>;
   causeAreaDisplayConfig: CauseAreaDisplayConfig;
+  operationsConfig?: OperationsConfig;
 }
 
 export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = ({
@@ -30,6 +32,7 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
   suggestedSums,
   causeAreaAmounts,
   causeAreaDisplayConfig,
+  operationsConfig,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
@@ -83,6 +86,13 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
             </span>
           </SumWrapper>
         </TotalSumWrapper>
+        {operationsConfig?.x_factor_info?.label_text && (
+          <InfoAccordion
+            labelText={operationsConfig.x_factor_info.label_text}
+            description={operationsConfig.x_factor_info.description}
+            link={{ href: "https://giveffektivt.dk/x-faktor", text: "X-faktor" }}
+          />
+        )}
       </div>
     </FormWrapper>
   );

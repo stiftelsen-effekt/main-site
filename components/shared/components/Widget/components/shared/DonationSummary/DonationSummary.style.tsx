@@ -91,8 +91,4 @@ export const PaymentButton = styled.button`
     background-color: var(--secondary);
     color: var(--primary);
   }
-
-  & > div {
-    filter: invert(1);
-  }
 `;

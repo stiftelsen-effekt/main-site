@@ -370,6 +370,27 @@ export default defineType({
           description: "Cause area IDs that should not have operations cut option",
           of: [{ type: "number" }],
         },
+        {
+          name: "x_factor_info",
+          title: "X-faktor info box",
+          type: "object",
+          description:
+            "Expandable info box explaining the organization's 'X-faktor', shown under the operations/drift cause area",
+          fields: [
+            {
+              name: "label_text",
+              title: "Label text",
+              type: "string",
+              description: "The clickable label that expands the info box",
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "array",
+              of: [{ type: "block" }],
+            },
+          ],
+        },
       ],
     },
     {
@@ -434,6 +455,27 @@ export default defineType({
                   subtitle: "context_text",
                 },
               },
+            },
+          ],
+        },
+        {
+          name: "other_cause_area_info",
+          title: '"Andet" info box',
+          type: "object",
+          description:
+            'Expandable info box shown under the "Andet" (other) cause area, explaining who this option is intended for',
+          fields: [
+            {
+              name: "label_text",
+              title: "Label text",
+              type: "string",
+              description: "The clickable label that expands the info box",
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "array",
+              of: [{ type: "block" }],
             },
           ],
         },
