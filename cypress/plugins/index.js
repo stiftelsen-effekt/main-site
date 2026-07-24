@@ -1,5 +1,6 @@
 const path = require("path");
 const dotenvPlugin = require("cypress-dotenv");
+const failFastPlugin = require("cypress-fail-fast/plugin");
 
 /// <reference types="cypress" />
 // ***********************************************************
@@ -24,5 +25,6 @@ module.exports = (on, config) => {
   config = dotenvPlugin(config, {
     path: path.join(__dirname, "../../.env.local"),
   });
+  failFastPlugin(on, config);
   return config;
 };

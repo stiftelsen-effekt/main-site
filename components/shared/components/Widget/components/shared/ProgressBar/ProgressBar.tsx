@@ -13,11 +13,14 @@ import {
 import { Dispatch } from "@reduxjs/toolkit";
 import { LayoutActionTypes } from "../../../store/layout/types";
 
-export const ProgressBar: React.FC<{ inline?: boolean }> = ({ inline }) => {
-  const numberOfPanes = 3;
+export const ProgressBar: React.FC<{ inline?: boolean; numberOfPanes?: number }> = ({
+  inline,
+  numberOfPanes = 4,
+}) => {
   const dispatch = useDispatch<Dispatch<LayoutActionTypes>>();
   const paneNumber = useSelector((state: State) => state.layout.paneNumber);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const hideBackButton = paneNumber === 0 || paneNumber >= numberOfPanes - 1;
 
   const points = [];
   for (let i = 0; i < numberOfPanes; i++) {
@@ -28,8 +31,8 @@ export const ProgressBar: React.FC<{ inline?: boolean }> = ({ inline }) => {
     <HeaderContainer>
       <ActionButton
         data-cy="back-button"
-        disabled={paneNumber === 0}
-        active={(paneNumber === 0).toString()}
+        disabled={hideBackButton}
+        active={hideBackButton.toString()}
         onClick={(e) => {
           dispatch(prevPane());
           e.currentTarget.blur();

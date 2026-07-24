@@ -35,9 +35,12 @@ export const RelatedArticles: React.FC<{
       <div className={styles.articles}>
         {relatedArticles && (
           <ul className={styles.list}>
-            {relatedArticles.map((article, i) => (
-              <ArticlePreview key={article.slug} header={article.header} slug={article.slug} />
-            ))}
+            {relatedArticles
+              // Sanity can return incomplete article docs (null header/slug) that break prerender.
+              .filter((article) => article?.slug && article?.header?.title)
+              .map((article) => (
+                <ArticlePreview key={article.slug} header={article.header} slug={article.slug} />
+              ))}
           </ul>
         )}
       </div>
