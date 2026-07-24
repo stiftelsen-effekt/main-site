@@ -16,14 +16,35 @@ import {
   setApiError,
   clearApiError,
 } from "./actions";
-import { error } from "console";
+import { CauseArea } from "../../types/CauseArea";
+import {
+  calculateDonationBreakdown,
+  calculateOrganizationSharesWithinCauseArea,
+} from "../../utils/donationCalculations";
 
 export function* draftVippsAgreement(): SagaIterator<void> {
   try {
     yield put(setLoading(true));
 
-    const KID: number = yield select((state: State) => state.donation.kid);
-    const amount: number = yield select((state: State) => state.donation.sum);
+    const donation = yield select((state: State) => state.donation);
+    const causeAreas = yield select((state: State) => state.layout.causeAreas) || [];
+
+    const breakdown = calculateDonationBreakdown(
+      donation.causeAreaAmounts,
+      donation.orgAmounts,
+      donation.causeAreaDistributionType,
+      donation.operationsPercentageModeByCauseArea || {},
+      donation.operationsPercentageByCauseArea || {},
+      causeAreas,
+      donation.selectionType || "multiple",
+      donation.selectedCauseAreaId,
+      donation.globalOperationsEnabled,
+      donation.globalOperationsPercentage || 0,
+      donation.operationsConfig.excludedCauseAreaIds,
+      donation.operationsConfig.operationsCauseAreaId,
+      donation.smartDistributionTotal,
+    );
+
     const initialCharge: boolean = yield select(
       (state: State) => state.donation.vippsAgreement?.initialCharge,
     );
@@ -31,8 +52,8 @@ export function* draftVippsAgreement(): SagaIterator<void> {
       (state: State) => state.donation.vippsAgreement?.monthlyChargeDay,
     );
     const data = {
-      KID,
-      amount,
+      KID: donation.kid,
+      sum: breakdown.totalAmount,
       initialCharge,
       monthlyChargeDay,
     };
@@ -72,14 +93,30 @@ export function* draftVippsAgreement(): SagaIterator<void> {
 export function* draftAvtaleGiro(): SagaIterator<void> {
   try {
     yield put(setLoading(true));
-
-    const KID: number = yield select((state: State) => state.donation.kid);
-    const amount: number = yield select((state: State) => state.donation.sum);
     const dueDay: Date = yield select((state: State) => state.donation.dueDay);
 
+    const donation = yield select((state: State) => state.donation);
+    const causeAreas = yield select((state: State) => state.layout.causeAreas) || [];
+
+    const breakdown = calculateDonationBreakdown(
+      donation.causeAreaAmounts,
+      donation.orgAmounts,
+      donation.causeAreaDistributionType,
+      donation.operationsPercentageModeByCauseArea || {},
+      donation.operationsPercentageByCauseArea || {},
+      causeAreas,
+      donation.selectionType || "multiple",
+      donation.selectedCauseAreaId,
+      donation.globalOperationsEnabled,
+      donation.globalOperationsPercentage || 0,
+      donation.operationsConfig.excludedCauseAreaIds,
+      donation.operationsConfig.operationsCauseAreaId,
+      donation.smartDistributionTotal,
+    );
+
     const data = {
-      KID,
-      amount,
+      KID: donation.kid,
+      sum: breakdown.totalAmount,
       dueDay,
     };
 
@@ -112,8 +149,24 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
 
 export function* registerBankPending(): SagaIterator<void> {
   try {
-    const KID: number = yield select((state: State) => state.donation.kid);
-    const sum: number = yield select((state: State) => state.donation.sum);
+    const donation = yield select((state: State) => state.donation);
+    const causeAreas = yield select((state: State) => state.layout.causeAreas) || [];
+
+    const breakdown = calculateDonationBreakdown(
+      donation.causeAreaAmounts,
+      donation.orgAmounts,
+      donation.causeAreaDistributionType,
+      donation.operationsPercentageModeByCauseArea || {},
+      donation.operationsPercentageByCauseArea || {},
+      causeAreas,
+      donation.selectionType || "multiple",
+      donation.selectedCauseAreaId,
+      donation.globalOperationsEnabled,
+      donation.globalOperationsPercentage || 0,
+      donation.operationsConfig.excludedCauseAreaIds,
+      donation.operationsConfig.operationsCauseAreaId,
+      donation.smartDistributionTotal,
+    );
 
     const request: Response = yield call(fetch, `${API_URL}/donations/bank/pending`, {
       method: "POST",
@@ -121,7 +174,7 @@ export function* registerBankPending(): SagaIterator<void> {
         Accept: "application/x-www-form-urlencoded",
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: `data={"KID":"${KID}", "sum":${sum}}`,
+      body: `data={"KID":"${donation.kid}", "sum":${breakdown.totalAmount}}`,
     });
 
     const result: IServerResponse<never> = yield call(request.json.bind(request));
@@ -138,25 +191,139 @@ export function* registerDonation(
   yield put(setLoading(true));
   yield put(clearApiError()); // Clear any existing API errors
   try {
+    // --- Select necessary state parts ---
     const donation: Donation = yield select((state: State) => state.donation);
+    const allCauseAreas: CauseArea[] = yield select((state: State) => state.layout.causeAreas) ||
+      [];
 
-    const data: RegisterDonationObject = {
-      distributionCauseAreas: donation.distributionCauseAreas
-        .filter((c) => parseFloat(c.percentageShare) > 0)
-        .map((c) => ({
-          ...c,
-          // Removes any potential prefilled data from the submitted data
-          organizations: c.organizations.map((o) => ({
-            id: o.id,
-            percentageShare: o.percentageShare,
-          })),
-        })),
-      donor: donation.donor,
-      method: donation.method || PaymentMethod.BANK,
-      amount: donation.sum || 0,
-      recurring: donation.recurring,
+    const {
+      selectionType,
+      causeAreaAmounts = {},
+      orgAmounts = {},
+      causeAreaDistributionType = {},
+      selectedCauseAreaId,
+      recurring,
+      donor,
+      method,
+      smartDistributionTotal,
+      operationsPercentageModeByCauseArea = {},
+      operationsPercentageByCauseArea = {},
+      globalOperationsEnabled = false,
+      globalOperationsPercentage = 0,
+      operationsConfig,
+    } = donation;
+
+    const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId;
+
+    // Use the centralized calculation function to get the breakdown
+    const breakdown = calculateDonationBreakdown(
+      causeAreaAmounts,
+      orgAmounts,
+      causeAreaDistributionType,
+      operationsPercentageModeByCauseArea,
+      operationsPercentageByCauseArea,
+      allCauseAreas,
+      selectionType || "multiple",
+      selectedCauseAreaId,
+      globalOperationsEnabled,
+      globalOperationsPercentage,
+      operationsConfig?.excludedCauseAreaIds ?? [],
+      OPERATIONS_CAUSE_AREA_ID,
+      smartDistributionTotal,
+    );
+
+    let distributionPayload: {
+      id: number;
+      standardSplit: boolean;
+      name: string;
+      percentageShare: string;
+      amount: number;
+      organizations: { id: number; percentageShare: string; amount: number }[];
+    }[] = [];
+
+    // Build the distribution payload from the breakdown
+    allCauseAreas.forEach((area) => {
+      const orgAmountsForArea = area.organizations
+        .map((org) => ({ id: org.id, amount: breakdown.organizationAmounts[org.id] || 0 }))
+        .filter((org) => org.amount > 0);
+
+      // Only add areas that have organizations with amounts
+      if (orgAmountsForArea.length > 0 && breakdown.totalAmount > 0) {
+        const areaAmount = orgAmountsForArea.reduce((sum, org) => sum + org.amount, 0);
+        // Cause area's percentage is of the overall donation, but each
+        // organization's percentage share must be of this cause area
+        const areaPercentage = (areaAmount / breakdown.totalAmount) * 100;
+        const areaOrgPayloads = calculateOrganizationSharesWithinCauseArea(orgAmountsForArea);
+
+        // Determine the standardSplit flag
+        let isStandardSplit = causeAreaDistributionType[area.id] === ShareType.STANDARD;
+
+        // For smart distribution, all areas use standard split
+        if (selectedCauseAreaId === -1) {
+          isStandardSplit = true;
+        }
+        // For operations area, it should be true if operations amount is present
+        else if (area.id === OPERATIONS_CAUSE_AREA_ID && breakdown.operationsAmount > 0) {
+          isStandardSplit = true;
+        }
+
+        distributionPayload.push({
+          id: area.id,
+          name: area.name,
+          standardSplit: isStandardSplit,
+          percentageShare: areaPercentage.toFixed(8),
+          amount: Math.round(areaAmount),
+          organizations: areaOrgPayloads,
+        });
+      }
+    });
+
+    // Add operations cause area if there's an operations amount
+    if (breakdown.operationsAmount > 0) {
+      const operationsCauseArea = allCauseAreas.find((ca) => ca.id === OPERATIONS_CAUSE_AREA_ID);
+      if (
+        operationsCauseArea &&
+        !distributionPayload.some((p) => p.id === OPERATIONS_CAUSE_AREA_ID)
+      ) {
+        const operationsPercentage = (breakdown.operationsAmount / breakdown.totalAmount) * 100;
+
+        // Calculate organization amounts for the operations cause area, then
+        // scale them to percentages of this cause area (not of the total)
+        const operationsOrgAmounts = operationsCauseArea.organizations
+          .filter((org) => org.standardShare && org.standardShare > 0)
+          .map((org) => ({
+            id: org.id,
+            amount: (org.standardShare! / 100) * breakdown.operationsAmount,
+          }));
+        const operationsOrgPayloads =
+          calculateOrganizationSharesWithinCauseArea(operationsOrgAmounts);
+
+        distributionPayload.push({
+          id: operationsCauseArea.id,
+          name: operationsCauseArea.name,
+          standardSplit: true,
+          percentageShare: operationsPercentage.toFixed(8),
+          amount: Math.round(breakdown.operationsAmount),
+          organizations: operationsOrgPayloads,
+        });
+      }
+    }
+
+    // --- Prepare final data object for API ---
+    const data: RegisterDonationObject & {
+      distributionCauseAreas: any;
+    } = {
+      distributionCauseAreas: distributionPayload,
+      donor: donor,
+      method: method || PaymentMethod.BANK,
+      amount: breakdown.totalAmount,
+      recurring: recurring,
     };
 
+    // --- Make API call ---
+    // A signal timeout ensures a slow/hanging connection fails (and resets
+    // the payment button's loading state) instead of leaving the donor
+    // staring at a spinner indefinitely
     const request = yield call(fetch, `${API_URL}/donations/register`, {
       method: "POST",
       headers: {
@@ -164,6 +331,7 @@ export function* registerDonation(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      signal: AbortSignal.timeout(20000),
     });
 
     const result: IServerResponse<RegisterDonationResponse> = yield call(
@@ -192,6 +360,7 @@ export function* registerDonation(
       return;
     }
 
+    // --- Handle API response and subsequent actions ---
     yield put(
       setAnsweredReferral(
         data.donor?.email === ANONYMOUS_DONOR.email
@@ -211,10 +380,7 @@ export function* registerDonation(
       }),
     );
 
-    if (
-      donation.method === PaymentMethod.BANK &&
-      donation.recurring === RecurringDonation.NON_RECURRING
-    ) {
+    if (method === PaymentMethod.BANK && recurring === RecurringDonation.NON_RECURRING) {
       yield put(registerBankPendingAction.started(undefined));
     }
 
@@ -229,8 +395,16 @@ export function* registerDonation(
       yield put(nextPane());
     }
   } catch (ex) {
-    // Handle network errors and other exceptions
-    const errorMessage = ex instanceof Error ? ex.message : "Something went wrong";
+    console.error("Error registering donation:", ex);
+    // Handle network errors and other exceptions. A signal timeout throws a
+    // DOMException whose message isn't donor-friendly, so fall back to the
+    // notification's own generic message for that case.
+    const isTimeout = ex instanceof DOMException && ex.name === "TimeoutError";
+    const errorMessage = isTimeout
+      ? null
+      : ex instanceof Error
+      ? ex.message
+      : "Something went wrong";
     yield put(setApiError(errorMessage));
     yield put(setLoading(false));
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));

@@ -31,7 +31,14 @@ export type PaymentMethodReference = {
   selector_text?: string;
 };
 
-export type WidgetProps = { locale: "no" | "sv" | "en" | "dk" } & WidgetPane1Props &
+export type WidgetProps = {
+  locale: "no" | "sv" | "en" | "dk";
+  accentColor?: string;
+  color_scheme: "light" | "dark";
+  operations_config?: OperationsConfig;
+  cause_area_display_config?: CauseAreaDisplayConfig;
+  ui_labels?: UILabels;
+} & WidgetPane1Props &
   WidgetPane2Props &
   WidgetPane3ReferralsProps & {
     methods?: Array<
@@ -184,9 +191,11 @@ type AutogiroRecurringManualOptionConfig = {
 export type SmartDistributionContext = {
   smart_distribution_radiobutton_text: string;
   custom_distribution_radiobutton_text: string;
+  smart_distribution_title: string;
   smart_distribution_label_text: string;
   smart_distribution_description: any[];
   smart_distribution_description_links: (LinkType | NavLink)[];
+  show_all_organizations_text?: string;
 };
 
 type PresetAmount = {
@@ -229,6 +238,7 @@ export type WidgetPane2Props = {
   tax_deduction_ssn_placeholder: string;
   tax_deduction_ssn_invalid_error_text: string;
   tax_deduction_tooltip_text: string;
+  tax_deduction_ssn_suspicious_message?: string;
   newsletter_selector_text: string;
   require_privacy_policy_checkbox?: boolean;
   privacy_policy_required_error_text: string;
@@ -242,4 +252,38 @@ export type WidgetPane3ReferralsProps = {
   show_referrals?: boolean;
   referrals_title: string;
   other_referral_input_placeholder: string;
+};
+
+export type InfoBoxConfig = {
+  label_text: string;
+  description?: any[];
+  /** Optional internal page link, configured in Sanity as a navigation item */
+  link?: NavLink;
+};
+
+export type OperationsConfig = {
+  operations_cause_area_id?: number;
+  default_percentage: number;
+  operations_label_template: string;
+  enabled_by_default_global?: boolean;
+  enabled_by_default_single?: boolean;
+  excluded_cause_area_ids?: number[];
+  x_factor_info?: InfoBoxConfig;
+};
+
+export type CauseAreaDisplayConfig = {
+  cause_area_selection_title?: string;
+  recommendation_button_text?: string;
+  multiple_cause_areas_button_text?: string;
+  below_line_cause_area_ids?: number[];
+  cause_area_contexts?: Array<{
+    cause_area_id: number;
+    context_text: string;
+  }>;
+  other_cause_area_info?: InfoBoxConfig;
+};
+
+export type UILabels = {
+  total_label: string;
+  operations_summary_label: string;
 };

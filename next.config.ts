@@ -12,6 +12,11 @@ const STUDIO_REWRITE = {
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
+  // html-react-parser pulls in the ESM-only domhandler, which html-dom-parser
+  // loads via require(). Transpiling these packages forces Next to bundle them
+  // instead of leaving them as external runtime requires (which throws
+  // ERR_REQUIRE_ESM on the server/Vercel).
+  transpilePackages: ["html-react-parser", "html-dom-parser", "domhandler"],
   rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [

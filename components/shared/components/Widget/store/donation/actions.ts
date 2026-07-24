@@ -15,8 +15,22 @@ import {
   SET_DUE_DAY,
   SET_VIPPS_AGREEMENT,
   SET_CAUSE_AREA_PERCENTAGE_SHARE,
+  SET_ORG_AMOUNT,
+  SET_CAUSE_AREA_AMOUNT,
+  SET_CAUSE_AREA_DISTRIBUTION_TYPE,
+  SET_CAUSE_AREA_SELECTION,
+  SET_SMART_DISTRIBUTION_TOTAL,
+  SET_GLOBAL_OPERATIONS_ENABLED,
+  SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
+  SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
+  SET_GLOBAL_OPERATIONS_PERCENTAGE,
+  SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
+  SET_OPERATIONS_CONFIG,
   SET_API_ERROR,
   CLEAR_API_ERROR,
+  SET_PREFILLED_SHARES,
+  SET_SHOW_ALL_ORGANIZATIONS,
+  SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -146,22 +160,138 @@ export function setCauseAreaPercentageShare(
   };
 }
 
-export function setShareType(causeAreaId: number, standardSplit: boolean): DonationActionTypes {
-  return {
-    type: SET_SHARE_TYPE,
-    payload: {
-      causeAreaId,
-      standardSplit,
-    },
-  };
-}
-
 export function setVippsAgreement(vippsAgreement: VippsAgreement): DonationActionTypes {
   return {
     type: SET_VIPPS_AGREEMENT,
     payload: {
       vippsAgreement,
     },
+  };
+}
+/**
+ * Select whether donating to a single cause area or multiple cause areas.
+ */
+export function setCauseAreaSelection(
+  selectionType: "single" | "multiple",
+  causeAreaId?: number,
+): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_SELECTION,
+    payload: { selectionType, causeAreaId },
+  };
+}
+/**
+ * Set the entered amount for a specific cause area (in NOK).
+ */
+export function setCauseAreaAmount(causeAreaId: number, amount: number): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_AMOUNT,
+    payload: { causeAreaId, amount },
+  };
+}
+
+/**
+ * Set the entered distribution type for a specific cause area.
+ */
+export function setCauseAreaDistributionType(
+  causeAreaId: number,
+  distributionType: ShareType,
+): DonationActionTypes {
+  return {
+    type: SET_CAUSE_AREA_DISTRIBUTION_TYPE,
+    payload: { causeAreaId, distributionType },
+  };
+}
+/**
+ * Set the entered amount for a specific organization (in NOK) when custom-splitting a single cause area.
+ */
+export function setOrgAmount(orgId: number, amount: number): DonationActionTypes {
+  return {
+    type: SET_ORG_AMOUNT,
+    payload: { orgId, amount },
+  };
+}
+
+/**
+ * Set the total amount for smart distribution (in NOK).
+ */
+export function setSmartDistributionTotal(smartDistributionTotal: number): DonationActionTypes {
+  return {
+    type: SET_SMART_DISTRIBUTION_TOTAL,
+    payload: { smartDistributionTotal },
+  };
+}
+
+/**
+ * Set whether global operations cut is enabled for multiple cause areas.
+ * This is separate from individual cause area operations amounts.
+ */
+export function setGlobalOperationsEnabled(enabled: boolean): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_ENABLED,
+    payload: { enabled },
+  };
+}
+
+/**
+ * Set whether global operations cut is in percentage mode or custom amount mode.
+ */
+export function setGlobalOperationsPercentageMode(isPercentageMode: boolean): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_PERCENTAGE_MODE,
+    payload: { isPercentageMode },
+  };
+}
+
+/**
+ * Set whether to use percentage mode or custom amount mode for operations cut for a cause area.
+ */
+export function setOperationsPercentageModeByCauseArea(
+  causeAreaId: number,
+  isPercentageMode: boolean,
+): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_PERCENTAGE_MODE_BY_CAUSE_AREA,
+    payload: { causeAreaId, isPercentageMode },
+  };
+}
+
+/**
+ * Set the global operations percentage value.
+ */
+export function setGlobalOperationsPercentage(percentage: number): DonationActionTypes {
+  return {
+    type: SET_GLOBAL_OPERATIONS_PERCENTAGE,
+    payload: { percentage },
+  };
+}
+
+/**
+ * Set the operations percentage value for a specific cause area.
+ */
+export function setOperationsPercentageByCauseArea(
+  causeAreaId: number,
+  percentage: number,
+): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA,
+    payload: { causeAreaId, percentage },
+  };
+}
+
+/**
+ * Set the operations configuration from widget props.
+ */
+export function setOperationsConfig(config: {
+  operationsCauseAreaId?: number;
+  defaultPercentage: number;
+  enabledByDefaultGlobal: boolean;
+  enabledByDefaultSingle: boolean;
+  excludedCauseAreaIds: number[];
+}): DonationActionTypes {
+  return {
+    type: SET_OPERATIONS_CONFIG,
+    payload: config,
   };
 }
 
@@ -199,7 +329,7 @@ export const registerBankPendingAction = actionCreator.async<undefined, undefine
   "REGISTER_BANK_PENDING",
 );
 
-export function setApiError(message: string): DonationActionTypes {
+export function setApiError(message: string | null): DonationActionTypes {
   return {
     type: SET_API_ERROR,
     payload: {
@@ -211,5 +341,36 @@ export function setApiError(message: string): DonationActionTypes {
 export function clearApiError(): DonationActionTypes {
   return {
     type: CLEAR_API_ERROR,
+  };
+}
+
+/**
+ * Set organization percentage shares (0-100) prefilled from an external entry point
+ * (e.g. the organizations list, or a CMS-configured distribution link), or clear with null.
+ */
+export function setPrefilledShares(shares: Record<number, number> | null): DonationActionTypes {
+  return {
+    type: SET_PREFILLED_SHARES,
+    payload: { shares },
+  };
+}
+
+/**
+ * Set whether the donor has revealed the full organization list beyond the prefilled one.
+ */
+export function setShowAllOrganizations(show: boolean): DonationActionTypes {
+  return {
+    type: SET_SHOW_ALL_ORGANIZATIONS,
+    payload: { show },
+  };
+}
+
+/**
+ * Set whether the donor has manually edited the prefilled organization's amount.
+ */
+export function setHasManuallyEditedPrefilledOrgAmount(edited: boolean): DonationActionTypes {
+  return {
+    type: SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
+    payload: { edited },
   };
 }
