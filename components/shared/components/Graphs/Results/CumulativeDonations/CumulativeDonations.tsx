@@ -48,6 +48,25 @@ type CumulativeBinnedDonation = {
 type YearlyTotal = { year: number; full: number; ytd: number };
 
 const CUMULATIVE_DEFAULT_YEARS = 8;
+const FOCUS_STROKE = "black";
+const DIMMED_STROKE = "#ccc";
+
+const DEFAULT_LABELS = {
+  cumulativeChart: "Kumulativ",
+  yearlyChart: "Per år",
+  ytd: "Hittil i år",
+  fullYear: "Hele året",
+  chartTypeGroup: "Diagramtype",
+  barScopeGroup: "Årsvisning",
+  yearRailGroup: "Velg årstall",
+} as const;
+
+const resolveLabels = (textConfig?: CumulativeDonationsTextConfig) => ({
+  cumulativeChartLabel: textConfig?.cumulativeChartLabel || DEFAULT_LABELS.cumulativeChart,
+  yearlyChartLabel: textConfig?.yearlyChartLabel || DEFAULT_LABELS.yearlyChart,
+  ytdLabel: textConfig?.ytdLabel || DEFAULT_LABELS.ytd,
+  fullYearLabel: textConfig?.fullYearLabel || DEFAULT_LABELS.fullYear,
+});
 
 /** Match Results Output graph label sizing (`getRemInPixels() * 0.8`). */
 const plotLabelFontSize = () => getRemInPixels() * 0.8;
@@ -64,8 +83,9 @@ const plotHorizontalMargins = (isMobile: boolean, mode: ChartMode = "cumulative"
 /** Zero-line that spans the full SVG width on mobile (including side margins). */
 const zeroLineMark = (isMobile: boolean) =>
   Plot.ruleY([0], {
-    stroke: "black",
+    stroke: FOCUS_STROKE,
     strokeWidth: 1,
+    // Plot's custom render hooks are loosely typed against generated SVG.
     ...(isMobile
       ? {
           render: (_index: number[], scales: any, _values: any, dimensions: any) => {
@@ -77,7 +97,7 @@ const zeroLineMark = (isMobile: boolean) =>
             line.setAttribute("x2", String(dimensions.width));
             line.setAttribute("y1", String(y));
             line.setAttribute("y2", String(y));
-            line.setAttribute("stroke", "black");
+            line.setAttribute("stroke", FOCUS_STROKE);
             line.setAttribute("stroke-width", "1");
             g.appendChild(line);
             return g;
@@ -102,33 +122,29 @@ export const CumulativeDonations: React.FC<{
   const isMobileLayout = useIsMobile();
 
   const resizeGraph = useCallback(() => {
-    if (graphContainerRef.current) {
-      setSize({
-        width: graphContainerRef.current.clientWidth,
-        height: graphContainerRef.current.clientHeight,
-      });
-    }
+    const el = graphContainerRef.current;
+    if (!el) return;
+    setSize({
+      width: el.clientWidth,
+      height: el.clientHeight,
+    });
   }, []);
-  const debouncedResizeGraph = useDebouncedCallback(() => resizeGraph(), 1000, { trailing: true });
+  const debouncedResizeGraph = useDebouncedCallback(resizeGraph, 1000, { trailing: true });
 
   useEffect(() => {
-    if (graphContainerRef.current) {
-      setSize({
-        width: graphContainerRef.current.clientWidth,
-        height: graphContainerRef.current.clientHeight,
-      });
-      const resizeObserver = new ResizeObserver((entries) => {
-        const newWidth = entries[0].contentRect.width;
-        if (newWidth !== size.width) {
-          debouncedResizeGraph();
-        }
-      });
+    const el = graphContainerRef.current;
+    if (!el) return;
 
-      resizeGraph();
-      resizeObserver.observe(graphContainerRef.current);
-      return () => resizeObserver.disconnect();
-    }
-  }, [graphContainerRef.current]);
+    resizeGraph();
+    const resizeObserver = new ResizeObserver(() => {
+      debouncedResizeGraph();
+    });
+    resizeObserver.observe(el);
+    return () => {
+      resizeObserver.disconnect();
+      debouncedResizeGraph.cancel();
+    };
+  }, [resizeGraph, debouncedResizeGraph]);
 
   const transformedDonations = useMemo(() => transformDonations(dailyDonations), [dailyDonations]);
   const cumulativebinneddonations = useMemo(
@@ -287,8 +303,7 @@ export const CumulativeDonations: React.FC<{
             textConfig,
           });
 
-    innerGraphRef.current.innerHTML = "";
-    innerGraphRef.current.appendChild(plot);
+    innerGraphRef.current.replaceChildren(plot);
   }, [
     chartMode,
     barScope,
@@ -312,13 +327,11 @@ export const CumulativeDonations: React.FC<{
     }
   }, [requiredWidth, chartMode, visibleYearlyTotals.length]);
 
-  const cumulativeChartLabel = textConfig?.cumulativeChartLabel || "Kumulativ";
-  const yearlyChartLabel = textConfig?.yearlyChartLabel || "Per år";
-  const ytdLabel = textConfig?.ytdLabel || "Hittil i år";
-  const fullYearLabel = textConfig?.fullYearLabel || "Hele året";
+  const { cumulativeChartLabel, yearlyChartLabel, ytdLabel, fullYearLabel } =
+    resolveLabels(textConfig);
 
   const chartTypeToggle = (
-    <div className={styles.chartTypeToggle} role="group" aria-label="Diagramtype">
+    <div className={styles.chartTypeToggle} role="group" aria-label={DEFAULT_LABELS.chartTypeGroup}>
       <button
         type="button"
         className={styles.chartTypeButton}
@@ -344,7 +357,7 @@ export const CumulativeDonations: React.FC<{
 
   const barScopeToggle =
     chartMode === "yearly" ? (
-      <div className={styles.barScopeToggle} role="group" aria-label="Årsvisning">
+      <div className={styles.barScopeToggle} role="group" aria-label={DEFAULT_LABELS.barScopeGroup}>
         <button
           type="button"
           className={styles.barScopeButton}
@@ -656,7 +669,7 @@ const YearRail: React.FC<{
       ref={railRef}
       className={`${styles.yearRail}${draggingSide ? ` ${styles.yearRailDragging}` : ""}`}
       role="group"
-      aria-label="Velg årstall"
+      aria-label={DEFAULT_LABELS.yearRailGroup}
     >
       {years.map((year) => {
         const active = year >= startYear && year <= endYear;
@@ -684,9 +697,14 @@ const YearRail: React.FC<{
 
       <button
         type="button"
-        className={`${styles.yearRailHandle} ${styles.yearRailHandleStart}`}
+        role="slider"
+        className={styles.yearRailHandle}
         style={{ left: range.start }}
         aria-label={`Dra for å velge startår, nå ${startYear}`}
+        aria-valuemin={years[0]}
+        aria-valuemax={endYear}
+        aria-valuenow={startYear}
+        aria-valuetext={String(startYear)}
         title="Dra startår"
         onPointerDown={onHandlePointerDown("start")}
         onPointerMove={onHandlePointerMove}
@@ -718,9 +736,14 @@ const YearRail: React.FC<{
       </button>
       <button
         type="button"
-        className={`${styles.yearRailHandle} ${styles.yearRailHandleEnd}`}
+        role="slider"
+        className={styles.yearRailHandle}
         style={{ left: range.end }}
         aria-label={`Dra for å velge sluttår, nå ${endYear}`}
+        aria-valuemin={startYear}
+        aria-valuemax={years[years.length - 1]}
+        aria-valuenow={endYear}
+        aria-valuetext={String(endYear)}
         title="Dra sluttår"
         onPointerDown={onHandlePointerDown("end")}
         onPointerMove={onHandlePointerMove}
@@ -770,7 +793,6 @@ const createCumulativePlot = ({
   // Highlight the latest year in the visible range (not always the calendar year),
   // so dragging the upper year handle keeps one end label and a black "focus" series.
   const focusYear = data.length ? data[data.length - 1].year : new Date().getFullYear();
-  const dimmed = "#ccc";
   const labelFontSize = plotLabelFontSize();
 
   return Plot.plot({
@@ -807,12 +829,14 @@ const createCumulativePlot = ({
         x: "doy",
         y: "cumulativeSum",
         z: "year",
-        stroke: (d: CumulativeBinnedDonation) => (d.year === focusYear ? "black" : dimmed),
+        stroke: (d: CumulativeBinnedDonation) =>
+          d.year === focusYear ? FOCUS_STROKE : DIMMED_STROKE,
         strokeWidth: 1,
         tip: isMobile
           ? undefined
           : {
               format: { y: false, x: false, z: false },
+              // Tip is used only for hover highlighting; Plot/d3 index callbacks stay loosely typed.
               render: (
                 index: number[],
                 _scales: any,
@@ -821,17 +845,35 @@ const createCumulativePlot = ({
                 context: any,
               ) => {
                 const svg = d3.select(context.ownerSVGElement);
-                const path = svg.selectAll("[aria-label=line] path");
-                const endLabels = svg.selectAll("g.year-end-label text");
-                const endLinks = svg.selectAll("g.year-end-link path");
-                const endLinkCurrent = svg.selectAll("g.year-end-link-current path");
+                // Plot wires custom data into these selections; keep d3 styling untyped here.
+                const path = svg.selectAll("[aria-label=line] path") as d3.Selection<
+                  any,
+                  any,
+                  any,
+                  any
+                >;
+                const endLabels = svg.selectAll("g.year-end-label text") as d3.Selection<
+                  any,
+                  any,
+                  any,
+                  any
+                >;
+                const endLinks = svg.selectAll("g.year-end-link path") as d3.Selection<
+                  any,
+                  any,
+                  any,
+                  any
+                >;
+                const endLinkCurrent = svg.selectAll(
+                  "g.year-end-link-current path",
+                ) as d3.Selection<any, any, any, any>;
                 if (index.length && values.z) {
                   const z = values.z[index[0]];
                   const zNum = Number(z);
                   path
-                    .style("stroke", dimmed)
+                    .style("stroke", DIMMED_STROKE)
                     .filter((i: any) => values.z[i[0]] === z)
-                    .style("stroke", "black")
+                    .style("stroke", FOCUS_STROKE)
                     .raise();
                   // Hide that year's end label + leader line so the hover label can take its place.
                   endLabels.style("opacity", function (this: SVGTextElement) {
@@ -871,7 +913,7 @@ const createCumulativePlot = ({
       Plot.dot(yearlyMaxes, {
         y: "cumulativeSum",
         x: "doy",
-        fill: "black",
+        fill: FOCUS_STROKE,
         r: 2,
       }),
       Plot.dot(
@@ -879,7 +921,7 @@ const createCumulativePlot = ({
         Plot.selectLast({
           y: "cumulativeSum",
           x: "doy",
-          fill: "black",
+          fill: FOCUS_STROKE,
           r: 2,
         }),
       ),
@@ -923,7 +965,7 @@ const createCumulativePlot = ({
           x: "doy",
           text: (d) => formatEndLabel(d, size.width, textConfig),
           textAnchor: "start",
-          fill: "black",
+          fill: FOCUS_STROKE,
           stroke: "#fafafa",
           strokeWidth: 5,
           dx: 14,
@@ -938,7 +980,7 @@ const createCumulativePlot = ({
           Plot.pointerX({
             x: "doy",
             z: "year",
-            stroke: "black",
+            stroke: FOCUS_STROKE,
             strokeWidth: 0.5,
           }),
         ),
@@ -948,7 +990,7 @@ const createCumulativePlot = ({
             x: "doy",
             y: "cumulativeSum",
             z: "year",
-            fill: "black",
+            fill: FOCUS_STROKE,
             r: 3,
             px: "doy",
             maxRadius: 20,
@@ -965,7 +1007,7 @@ const createCumulativePlot = ({
             maxRadius: 20,
             text: (d: CumulativeBinnedDonation) => formatEndLabel(d, size.width, textConfig),
             textAnchor: "start",
-            fill: "black",
+            fill: FOCUS_STROKE,
             stroke: "#fafafa",
             strokeWidth: 5,
             dx: 14,
@@ -1024,7 +1066,7 @@ const createYearlyBarPlot = ({
       nice: true,
       tickFormat: (t) => (t === 0 ? "" : formatMillionTick(t, textConfig)),
       // Match Outputs / mobile layout: no y-axis ticks/labels on mobile.
-      ...(isMobile ? { axis: null as const, ticks: 0 } : { tickSpacing: 80, tickSize: 0 }),
+      ...(isMobile ? { axis: null, ticks: 0 } : { tickSpacing: 80, tickSize: 0 }),
       domain: [0, Math.max(...values.map((d) => d.value), 0) * 1.12],
     },
     marks: [
@@ -1308,10 +1350,8 @@ const computeYearlyTableContents = (
   barScope: BarScope,
   textConfig?: CumulativeDonationsTextConfig,
 ) => {
-  const valueHeader =
-    barScope === "ytd"
-      ? textConfig?.ytdLabel || "Hittil i år"
-      : textConfig?.fullYearLabel || "Hele året";
+  const labels = resolveLabels(textConfig);
+  const valueHeader = barScope === "ytd" ? labels.ytdLabel : labels.fullYearLabel;
 
   return {
     rows: [

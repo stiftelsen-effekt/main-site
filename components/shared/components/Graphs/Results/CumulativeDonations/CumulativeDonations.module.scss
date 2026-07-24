@@ -308,20 +308,15 @@
   }
 }
 
-@media only screen and (max-width: 1520px) and (min-width: 1181px) {
-  .graphContainer {
-    aspect-ratio: 16/11;
-  }
-}
-
-/* Mobile-only chrome — hidden on desktop so desktop controls stay unchanged. */
+/* Mobile-only chrome — hidden on desktop so desktop controls stay unchanged.
+   Breakpoint matches useIsMobile (`window.innerWidth < 1180`). */
 .mobileChartMeta,
 .mobileChartMetaRight,
 .mobileBarScope {
   display: none;
 }
 
-@media screen and (max-width: 1180px) {
+@media screen and (max-width: 1179px) {
   .graphContainer {
     /* Shorter than 1/1 so less empty air under the plot on phones */
     aspect-ratio: 5 / 4;
