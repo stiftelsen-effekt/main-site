@@ -97,7 +97,7 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
 
   return (
     <>
-      {blocks.map((block: any) => {
+      {blocks.filter(Boolean).map((block: any) => {
         switch (block._type) {
           case "paragraph":
             return (
@@ -298,6 +298,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               />
             );
           case "contributorlist":
+            // Incomplete Sanity refs can leave role null and crash prerender via blocks.map.
+            if (!block.role?.title) return null;
             return (
               <>
                 <Contributors
