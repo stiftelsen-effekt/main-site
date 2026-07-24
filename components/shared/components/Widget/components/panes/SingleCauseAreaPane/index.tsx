@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
 import { PortableText } from "@portabletext/react";
-import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
@@ -90,6 +89,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
   React.useEffect(() => {
     setInputValue(currentAmount);
   }, [currentAmount]);
+  const [showErrors, setShowErrors] = React.useState(false);
 
   if (!causeAreas) {
     return (
@@ -125,7 +125,6 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
     .sort((a, b) => a.ordering - b.ordering);
   const hasMultipleOrgs = activeOrganizations.length > 1;
   const distributionType = causeAreaDistributionType[causeArea.id] ?? ShareType.STANDARD;
-  const isCustom = hasMultipleOrgs && distributionType === ShareType.CUSTOM;
 
   const suggestedSums = recurring
     ? amountContext.preset_amounts_recurring
@@ -224,11 +223,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
             onSelect={(value) => dispatch(setRecurring(value as RecurringDonation))}
           />
 
-          {/* In custom (kroner) mode the per-organization inputs are the source
-              of truth, so the standalone total input is collapsed away. */}
-          <AnimateHeight height={isCustom ? 0 : "auto"} animateOpacity duration={300}>
-            {amountInput}
-          </AnimateHeight>
+          {amountInput}
 
           {hasMultipleOrgs && (
             <ShareSelectionSpacer>
@@ -297,8 +292,15 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
 
         <ActionBar>
           <NextButton
-            disabled={totalAmount <= 0}
+            // Matches the pre-rewrite behavior: don't dim the button just
+            // because no amount has been entered yet - only after the donor
+            // has actually tried to proceed with an invalid amount
+            disabled={showErrors && totalAmount <= 0}
             onClick={() => {
+              if (totalAmount <= 0) {
+                setShowErrors(true);
+                return;
+              }
               dispatch(setSum(totalAmount));
               dispatch(nextPane());
             }}
