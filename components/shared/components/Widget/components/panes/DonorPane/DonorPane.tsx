@@ -1,37 +1,44 @@
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
-import React, { useContext, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { DonorContext } from "../../../../../../profile/layout/donorProvider";
-import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
 import {
-  registerDonationAction,
-  RegisterDonationActionPayload,
   selectPaymentMethod,
   submitDonorInfo,
+  registerDonationAction,
+  RegisterDonationActionPayload,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
-import { PaymentMethod, RecurringDonation } from "../../../types/Enums";
-import { PaymentMethodNudge, WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
-import { NextButton } from "../../shared/Buttons/NavigationButtons";
+import { PaymentMethod } from "../../../types/Enums";
+import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { ErrorField } from "../../shared/Error/ErrorField";
 import { ToolTip } from "../../shared/ToolTip/ToolTip";
 import { CheckBoxWrapper, HiddenCheckBox, InputFieldWrapper } from "../Forms.style";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import { CustomCheckBox } from "./CustomCheckBox";
 import { ActionBar, CheckBoxGroupWrapper, DonorForm, InfoMessageWrapper } from "./DonorPane.style";
+import { getEstimatedLtv } from "../../../../../../../util/ltv";
 import AnimateHeight from "react-animate-height";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../store/donation/types";
 import { Action } from "typescript-fsa";
+import { LayoutActionTypes } from "../../../store/layout/types";
+import { calculateDonationBreakdown } from "../../../utils/donationCalculations";
+import { DonationSummary, DonationSummaryText } from "../../shared/DonationSummary/DonationSummary";
+import { NextButton } from "../../shared/Buttons/NavigationButtons";
+import { StyledSpinner } from "../../shared/Buttons/NavigationButtons.style";
+import {
+  PaymentButton,
+  PaymentButtonsWrapper,
+} from "../../shared/DonationSummary/DonationSummary.style";
 import { paymentMethodConfigurations } from "../../../config/methods";
-import { usePaymentNudge } from "./usePaymentNudge";
 import { useSsnValidation } from "./useSsnValidation";
-import { trackDonationSubmission } from "./trackDonationSubmission";
-import { PaymentNudgeDisplay } from "./PaymentNudgeDisplay";
+import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 
+// Capitalizes each first letter of all first, middle and last names
 const capitalizeNames = (string: string) => {
   return string.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase());
 };
@@ -39,23 +46,41 @@ const capitalizeNames = (string: string) => {
 export const DonorPane: React.FC<{
   locale: "en" | "no" | "sv" | "et" | "dk";
   text: WidgetPane2Props;
+  summaryText: DonationSummaryText;
   paymentMethods: NonNullable<WidgetProps["methods"]>;
-  nudges?: PaymentMethodNudge[];
-}> = ({ locale, text, paymentMethods, nudges }) => {
+  isSingleCauseArea?: boolean;
+}> = ({ locale, text, summaryText, paymentMethods, isSingleCauseArea = false }) => {
   const dispatch =
-    useDispatch<Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload>>>();
+    useDispatch<
+      Dispatch<DonationActionTypes | Action<RegisterDonationActionPayload> | LayoutActionTypes>
+    >();
   const donor = useSelector((state: State) => state.donation.donor);
   const donation = useSelector((state: State) => state.donation);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const { donor: initialDonor } = useContext(DonorContext);
-  const paymentOptionsRef = useRef<HTMLDivElement>(null);
-  const plausible = usePlausible();
+
+  const breakdown = calculateDonationBreakdown(
+    donation.causeAreaAmounts ?? {},
+    donation.orgAmounts ?? {},
+    donation.causeAreaDistributionType ?? {},
+    donation.operationsPercentageModeByCauseArea ?? {},
+    donation.operationsPercentageByCauseArea ?? {},
+    causeAreas,
+    donation.selectionType ?? "single",
+    donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.globalOperationsPercentage ?? donation.operationsConfig?.defaultPercentage ?? 10,
+    donation.operationsConfig?.excludedCauseAreaIds ?? [],
+    donation.operationsConfig?.operationsCauseAreaId,
+    donation.smartDistributionTotal,
+  );
+  const totalSumIncludingTip = breakdown.totalAmount;
 
   const {
     register,
     watch,
-    control,
+    trigger,
     formState: { errors },
-    handleSubmit,
     clearErrors,
   } = useForm({
     defaultValues: {
@@ -70,77 +95,154 @@ export const DonorPane: React.FC<{
     },
   });
 
+  const plausible = usePlausible();
+
   const taxDeductionChecked = watch("taxDeduction");
   const newsletterChecked = watch("newsletter");
   const isAnonymous = watch("isAnonymous");
-  const selectedPaymentMethod = watch("method");
+  const [loadingMethod, setLoadingMethod] = React.useState<string | null>(null);
+  // For the single-cause-area flow, payment method selection is a distinct
+  // step from submission (matches the pre-rewrite behavior) - the radio
+  // just records a choice, and a separate Next button submits it.
+  const [selectedPaymentMethodId, setSelectedPaymentMethodId] = React.useState<string | null>(null);
 
+  // If registration fails, clear the loading state so the button shows its
+  // label again instead of being stuck showing a spinner indefinitely.
+  // apiError can be null (rather than just absent/undefined) to signal a
+  // generic error message, so check for that explicitly rather than
+  // truthiness - a falsy-but-set apiError must still trigger the reset.
+  React.useEffect(() => {
+    if (typeof donation.apiError !== "undefined") {
+      setLoadingMethod(null);
+    }
+  }, [donation.apiError]);
+
+  // Locale-aware SSN/CPR validation (handles NO, SE and DK CPR/CVR incl. suspicious CPR warning)
   const { validateSsn, handleSsnChange, cprSuspicious } = useSsnValidation({
     locale,
     taxDeductionChecked,
   });
 
-  const { activeNudge, nudgeMessageText, nudgeArrowLeft } = usePaymentNudge({
-    nudges,
-    selectedPaymentMethod,
-    paymentMethods,
-    donationSum: donation.sum,
-    isRecurring: donation.recurring === RecurringDonation.RECURRING,
-    paymentOptionsRef,
-    locale,
-  });
+  const mapPaymentMethod = (method: string): PaymentMethod => {
+    const mapped = paymentMethodMap[method];
+    if (!mapped) throw new Error(`Unknown payment method: ${method}`);
+    return mapped;
+  };
 
-  const paneSubmitted = handleSubmit((data) => {
-    trackDonationSubmission({
-      isAnonymous,
-      isRecurring: !!donation.recurring,
-      method: data.method,
-      sum: donation.sum,
-      taxDeduction: data.taxDeduction,
-      newsletter: data.newsletter,
-      plausible,
-    });
+  const handlePayment = async (methodId: string) => {
+    // trigger() runs and populates validation for every registered field -
+    // handlePayment fires directly from a button click rather than a form
+    // submit, so react-hook-form never validates on its own otherwise.
+    //
+    // This is the only thing gating submission. The payment controls are deliberately
+    // never disabled based on `errors`: because we validate via trigger() rather than
+    // handleSubmit(), react-hook-form never marks the form as submitted and so never
+    // re-validates on change - a donor who submitted with a bad email once would be
+    // left with permanently disabled payment buttons even after fixing it.
+    const isValid = await trigger();
+    if (!isValid) return;
+
+    setLoadingMethod(methodId);
+    const paymentMethod = mapPaymentMethod(methodId);
+
+    // Get current form data
+    const formData = watch();
+
+    // Submit donor info and payment method
+    if (!formData.isAnonymous) {
+      plausible("SubmitDonorPane", {
+        props: {
+          donorType: formData.isAnonymous ? 0 : 1,
+          taxDeduction: formData.taxDeduction,
+          newsletter: formData.newsletter,
+          method: paymentMethod,
+        },
+      });
+
+      if (donation.recurring) {
+        if (paymentMethod === PaymentMethod.VIPPS) plausible("SelectVippsRecurring");
+        if (paymentMethod === PaymentMethod.AVTALEGIRO) plausible("SelectAvtaleGiro");
+        if (paymentMethod === PaymentMethod.AUTOGIRO) plausible("SelectAutoGiro");
+
+        if (totalSumIncludingTip) {
+          if (
+            // @ts-ignore
+            typeof window !== "undefined" &&
+            // @ts-ignore
+            typeof window.fbq !== "undefined" &&
+            // @ts-ignore
+            window.fbq != null
+          ) {
+            getEstimatedLtv({ method: paymentMethod, sum: totalSumIncludingTip }).then((ltv) => {
+              // @ts-ignore
+              window.fbq("track", "Lead", {
+                value: ltv,
+                currency: "NOK",
+              });
+            });
+          }
+        }
+      }
+      if (!donation.recurring) {
+        if (paymentMethod === PaymentMethod.VIPPS) plausible("SelectSingleVippsPayment");
+        if (paymentMethod === PaymentMethod.SWISH) {
+          plausible("SelectSwishSingle");
+        }
+        if (paymentMethod === PaymentMethod.BANK) {
+          plausible("SelectBankSingle");
+        }
+        // Facebook pixel tracking for Leads
+        if (typeof window !== "undefined") {
+          // @ts-ignore
+          if (window.fbq != null) {
+            // @ts-ignore
+            window.fbq("track", "Lead", {
+              value: totalSumIncludingTip,
+              currency: "NOK",
+            });
+          }
+        }
+      }
+    }
 
     dispatch(
       submitDonorInfo(
-        isAnonymous
+        formData.isAnonymous
           ? ANONYMOUS_DONOR
           : {
-              name: text.show_name_field ? capitalizeNames(data.name.trim()) : "",
-              email: data.email.trim().toLowerCase(),
-              taxDeduction: data.taxDeduction,
-              ssn: data.taxDeduction ? data.ssn.toString().trim() : "",
-              newsletter: data.newsletter,
+              name: text.show_name_field ? capitalizeNames(formData.name.trim()) : "",
+              email: formData.email.trim().toLowerCase(),
+              taxDeduction: formData.taxDeduction,
+              ssn: formData.taxDeduction ? formData.ssn.toString().trim() : "",
+              newsletter: formData.newsletter,
             },
       ),
     );
 
-    dispatch(selectPaymentMethod(data.method || PaymentMethod.BANK));
+    dispatch(selectPaymentMethod(paymentMethod));
 
-    if (isAnonymous || donation.errors.length === 0) {
-      const configuration = paymentMethodConfigurations.find(
-        (config) =>
-          config.id ===
-          paymentMethods.find((method) => paymentMethodMap[method._id] === data.method)?._id,
-      );
-      dispatch(
-        registerDonationAction.started({
-          openExternalPaymentOnRegisterSuccess: configuration?.openExternalPaymentOnRegisterSuccess,
-        }),
-      );
-    } else {
-      alert("Donation invalid");
-    }
-  });
+    // For external payment providers (e.g. Quickpay/MobilePay/DK bank), the saga will open the
+    // provider URL directly on a successful registration.
+    const configuration = paymentMethodConfigurations.find((config) => config.id === methodId);
+    dispatch(
+      registerDonationAction.started({
+        openExternalPaymentOnRegisterSuccess: configuration?.openExternalPaymentOnRegisterSuccess,
+      }),
+    );
+  };
 
   return (
     <Pane>
-      <DonorForm onSubmit={paneSubmitted} autoComplete="on">
+      <DonorForm autoComplete="on">
         <PaneContainer>
           <div>
-            <PaneTitle>
-              <wbr />
-            </PaneTitle>
+            {isSingleCauseArea ? (
+              <PaneTitle>
+                <wbr />
+              </PaneTitle>
+            ) : (
+              <DonationSummary text={summaryText} />
+            )}
 
             {text.allow_anonymous_donations && (
               <div style={{ marginBottom: "20px" }}>
@@ -246,9 +348,9 @@ export const DonorPane: React.FC<{
                       {errors.ssn && (
                         <ErrorField text={text.tax_deduction_ssn_invalid_error_text} />
                       )}
-                      {cprSuspicious && (
+                      {cprSuspicious && text.tax_deduction_ssn_suspicious_message && (
                         <InfoMessageWrapper data-cy="cpr-suspicious-message">
-                          Kontroller venligst at det er korrekt.
+                          {text.tax_deduction_ssn_suspicious_message}
                         </InfoMessageWrapper>
                       )}
                     </InputFieldWrapper>
@@ -343,43 +445,53 @@ export const DonorPane: React.FC<{
               </CheckBoxGroupWrapper>
             </AnimateHeight>
 
-            <Controller
-              control={control}
-              name="method"
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => (
-                <div ref={paymentOptionsRef}>
-                  <RadioButtonGroup
-                    options={paymentMethods.map((method) => ({
-                      title: method.selector_text,
-                      value: paymentMethodMap[method._id],
-                      data_cy: `${method._id}-method`,
-                      data_id: method._id,
-                    }))}
-                    selected={field.value}
-                    onSelect={(option) => {
-                      field.onChange(option);
+            {isSingleCauseArea ? (
+              <>
+                <RadioButtonGroup
+                  options={paymentMethods.map((method) => ({
+                    title: method.selector_text,
+                    value: paymentMethodMap[method._id],
+                    data_cy: `payment-method-${method._id}`,
+                  }))}
+                  selected={
+                    selectedPaymentMethodId ? paymentMethodMap[selectedPaymentMethodId] : undefined
+                  }
+                  onSelect={(value) => {
+                    const method = paymentMethods.find((m) => paymentMethodMap[m._id] === value);
+                    if (method) setSelectedPaymentMethodId(method._id);
+                  }}
+                />
+                <ActionBar data-cy="next-button-div">
+                  <NextButton
+                    type="button"
+                    disabled={!selectedPaymentMethodId}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (selectedPaymentMethodId) handlePayment(selectedPaymentMethodId);
                     }}
-                  />
-                </div>
-              )}
-            />
-            <PaymentNudgeDisplay
-              isVisible={!!activeNudge}
-              message={nudgeMessageText}
-              arrowLeft={nudgeArrowLeft}
-            />
+                    data-cy="next-button"
+                  >
+                    {loadingMethod ? <StyledSpinner /> : text.pane2_button_text}
+                  </NextButton>
+                </ActionBar>
+              </>
+            ) : (
+              <PaymentButtonsWrapper style={{ marginTop: "20px" }}>
+                {paymentMethods.map((method) => (
+                  <PaymentButton
+                    key={method._id}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePayment(method._id);
+                    }}
+                    data-cy={`payment-method-${method._id}`}
+                  >
+                    {loadingMethod === method._id ? <StyledSpinner /> : method.selector_text}
+                  </PaymentButton>
+                ))}
+              </PaymentButtonsWrapper>
+            )}
           </div>
-          <ActionBar data-cy="next-button-div">
-            <NextButton
-              disabled={!selectedPaymentMethod || Object.keys(errors).length > 0}
-              type="submit"
-            >
-              {text.pane2_button_text}
-            </NextButton>
-          </ActionBar>
         </PaneContainer>
       </DonorForm>
     </Pane>

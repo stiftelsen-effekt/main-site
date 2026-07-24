@@ -11,6 +11,7 @@ import { PaymentInformation } from "../Bank/PaymentInformation";
 import { InfoText } from "../PaymentPane.style";
 import { ANONYMOUS_DONOR } from "../../../../config/anonymous-donor";
 import { CompleteButton, CompleteButtonWrapper } from "../Bank/BankPane.style";
+import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
 
 export const DKBankPane: React.FC<{
   config: DkBankPaymentMethod;
@@ -18,7 +19,26 @@ export const DKBankPane: React.FC<{
 }> = ({ config, referrals }) => {
   const plausible = usePlausible();
   const donation = useSelector((state: State) => state.donation);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
   const { paymentProviderURL, recurring } = donation;
+
+  // The rewritten widget tracks per-cause-area/organization amounts rather than a single sum,
+  // so derive the total from the donation breakdown for analytics.
+  const totalAmount = calculateDonationBreakdown(
+    donation.causeAreaAmounts ?? {},
+    donation.orgAmounts ?? {},
+    donation.causeAreaDistributionType ?? {},
+    donation.operationsPercentageModeByCauseArea ?? {},
+    donation.operationsPercentageByCauseArea ?? {},
+    causeAreas,
+    donation.selectionType ?? "single",
+    donation.selectedCauseAreaId ?? 1,
+    donation.globalOperationsEnabled ?? false,
+    donation.globalOperationsPercentage ?? donation.operationsConfig?.defaultPercentage ?? 10,
+    donation.operationsConfig?.excludedCauseAreaIds ?? [],
+    donation.operationsConfig?.operationsCauseAreaId,
+    donation.smartDistributionTotal,
+  ).totalAmount;
 
   const [hasCompletedTransaction, setHasCompletedTransaction] = useState(false);
   let currency = "NOK";
@@ -29,11 +49,11 @@ export const DKBankPane: React.FC<{
   }
 
   useEffect(() => {
-    if (hasCompletedTransaction && donation.sum && donation.kid) {
+    if (hasCompletedTransaction && totalAmount && donation.kid) {
       plausible("StartedAgreement", {
         revenue: {
           currency: currency,
-          amount: donation.sum,
+          amount: totalAmount,
         },
         props: {
           method: "dkbank",

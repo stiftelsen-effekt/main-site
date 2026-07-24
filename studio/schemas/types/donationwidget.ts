@@ -1,4 +1,8 @@
 import { defineType, defineField } from "sanity";
+import {
+  CauseAreaMultiSelectInput,
+  CauseAreaSelectInput,
+} from "../../components/causeAreaSelectInput";
 
 export default defineType({
   name: "donationwidget",
@@ -16,6 +20,10 @@ export default defineType({
     {
       name: "referrals",
       title: "Referrals",
+    },
+    {
+      name: "operations",
+      title: "Operations Configuration",
     },
     {
       name: "nudges",
@@ -246,6 +254,14 @@ export default defineType({
           description: "Only used if there is only one cause area",
         }),
         defineField({
+          name: "smart_distribution_title",
+          title: "Smart distribution title",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+          description:
+            "Title shown above the smart distribution option, e.g. in the multi cause-area amount pane and the donation summary. Only used if there is more than one cause area",
+        }),
+        defineField({
           name: "smart_distribution_label_text",
           title: "Smart distribution label text",
           type: "string",
@@ -266,6 +282,13 @@ export default defineType({
           of: [{ type: "link" }],
           validation: (Rule) => Rule.required(),
           description: "Only used if there is more than one cause area",
+        }),
+        defineField({
+          name: "show_all_organizations_text",
+          title: "Show all organizations text",
+          type: "string",
+          description:
+            'Label for the link that reveals the remaining organizations when the donor arrives with a prefilled distribution (e.g. "Vis alle"). Only used if there is only one cause area',
         }),
       ],
     }),
@@ -311,6 +334,204 @@ export default defineType({
         }),
       ],
     }),
+    {
+      name: "operations_config",
+      title: "Operations configuration",
+      type: "object",
+      group: "operations",
+      fields: [
+        {
+          name: "operations_cause_area_id",
+          title: "Operations cause area",
+          type: "number",
+          description:
+            "The cause area that represents this organization's own operations/overhead (e.g. the 'Drift' cause area). Donations to this cause area never get an additional operations tip added on top of themselves, no matter what's set in Excluded cause areas below. Leave unset on platforms that have no separate operations cause area.",
+          components: { input: CauseAreaSelectInput },
+        },
+        {
+          name: "default_percentage",
+          title: "Default operations percentage",
+          type: "number",
+          description: "Default percentage for operations cut (0-100)",
+          validation: (Rule: any) => Rule.required().min(0).max(100),
+        },
+        {
+          name: "operations_label_template",
+          title: "Operations label template",
+          type: "string",
+          description: "Use {percentage} where the percentage value should appear",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "enabled_by_default_global",
+          title: "Operations enabled by default (global)",
+          type: "boolean",
+          description: "Whether operations cut is enabled by default for multiple cause areas",
+        },
+        {
+          name: "enabled_by_default_single",
+          title: "Operations enabled by default (single cause area)",
+          type: "boolean",
+          description: "Whether operations cut is enabled by default for single cause areas",
+        },
+        {
+          name: "excluded_cause_area_ids",
+          title: "Excluded cause areas",
+          type: "array",
+          description: "Cause areas that should not offer the operations cut option",
+          of: [{ type: "number" }],
+          components: { input: CauseAreaMultiSelectInput },
+        },
+        {
+          name: "x_factor_info",
+          title: "X-faktor info box",
+          type: "object",
+          description:
+            "Expandable info box explaining the organization's 'X-faktor', shown under the operations/drift cause area",
+          fields: [
+            {
+              name: "label_text",
+              title: "Label text",
+              type: "string",
+              description: "The clickable label that expands the info box",
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "array",
+              of: [{ type: "block" }],
+            },
+            {
+              name: "link",
+              title: "Read more link",
+              type: "navitem",
+              description:
+                'Optional link shown at the bottom of the expanded info box, e.g. to the "X-faktor" page',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "cause_area_display_config",
+      title: "Cause area display configuration",
+      type: "object",
+      group: "pane1",
+      fields: [
+        {
+          name: "cause_area_selection_title",
+          title: "Cause area selection title",
+          type: "string",
+          description: "Title shown above the cause area selection buttons",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "recommendation_button_text",
+          title: "Recommendation button text",
+          type: "string",
+          description: "Text for the button that selects the recommended (smart) distribution",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "multiple_cause_areas_button_text",
+          title: "Multiple cause areas button text",
+          type: "string",
+          description: "Text for the button that lets the donor pick multiple cause areas",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "below_line_cause_area_ids",
+          title: "Below-the-line cause areas",
+          type: "array",
+          description: "Cause areas that should be displayed below the divider line",
+          of: [{ type: "number" }],
+          components: { input: CauseAreaMultiSelectInput },
+        },
+        {
+          name: "cause_area_contexts",
+          title: "Cause area context texts",
+          type: "array",
+          description: "Context text displayed under specific cause areas",
+          of: [
+            {
+              type: "object",
+              fields: [
+                {
+                  name: "cause_area_id",
+                  title: "Cause area",
+                  type: "number",
+                  validation: (Rule: any) => Rule.required(),
+                  options: { includeSmartDistribution: true },
+                  components: { input: CauseAreaSelectInput },
+                },
+                {
+                  name: "context_text",
+                  title: "Context text",
+                  type: "string",
+                  validation: (Rule: any) => Rule.required(),
+                },
+              ],
+              preview: {
+                select: {
+                  title: "cause_area_id",
+                  subtitle: "context_text",
+                },
+              },
+            },
+          ],
+        },
+        {
+          name: "other_cause_area_info",
+          title: '"Andet" info box',
+          type: "object",
+          description:
+            'Expandable info box shown under the "Andet" (other) cause area, explaining who this option is intended for',
+          fields: [
+            {
+              name: "label_text",
+              title: "Label text",
+              type: "string",
+              description: "The clickable label that expands the info box",
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "array",
+              of: [{ type: "block" }],
+            },
+            {
+              name: "link",
+              title: "Read more link",
+              type: "navitem",
+              description: "Optional link shown at the bottom of the expanded info box",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "ui_labels",
+      title: "UI Labels",
+      type: "object",
+      group: "pane1",
+      fields: [
+        {
+          name: "total_label",
+          title: "Total label",
+          type: "string",
+          description: "Label shown for total amount",
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: "operations_summary_label",
+          title: "Operations summary label",
+          type: "string",
+          description:
+            "Label for the operations/tip line item in the donation summary (donor pane)",
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
     //Button text
     defineField({
       name: "pane1_button_text",
@@ -409,6 +630,14 @@ export default defineType({
       group: "pane2",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "tax_deduction_ssn_suspicious_message",
+      title: "Tax deduction ssn suspicious message",
+      type: "string",
+      group: "pane2",
+      description:
+        "Shown when the entered personal ID is technically valid but looks like it may be a typo (currently only used for Danish CPR numbers). Leave empty to show no message.",
+    }),
     // Newsletter selector text pane 2
     defineField({
       name: "newsletter_selector_text",
@@ -490,6 +719,17 @@ export default defineType({
       description: "Placeholder in the free text input field for other referrals",
       group: "referrals",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "color_scheme",
+      title: "Color scheme",
+      type: "string",
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+        ],
+      },
     }),
   ],
   preview: {
