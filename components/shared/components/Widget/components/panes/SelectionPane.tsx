@@ -107,6 +107,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 
           <ButtonsWrapper>
             {causeAreas
+              .filter((ca) => ca.isActive)
               .filter((ca) => {
                 const belowLineIds = causeAreaDisplayConfig?.below_line_cause_area_ids || [4, 5];
                 return !belowLineIds.includes(ca.id); // Exclude below-line cause areas (e.g. operations, "andet")
@@ -135,6 +136,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 
           <ButtonsWrapper>
             {causeAreas
+              .filter((ca) => ca.isActive)
               .filter((ca) => {
                 const belowLineIds = causeAreaDisplayConfig?.below_line_cause_area_ids || [4, 5];
                 return belowLineIds.includes(ca.id); // Include below-line cause areas (e.g. operations, "andet")
