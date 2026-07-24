@@ -70,8 +70,11 @@ export const fillDonorInfo = (name = "Test Person", email = "test@example.com") 
   cy.get("[data-cy=email-input]").type(email);
 };
 
-// Helper to set cause area amount with optional cut
-export const setCauseAreaAmount = (causeAreaId, amount, enableCut = false) => {
+// Helper to set cause area amount with optional cut. `enableCut` is tri-state:
+// leave it undefined to not touch the cut checkbox at all, or pass true/false to
+// actively check/uncheck it - it can default to checked (Sanity's
+// enabled_by_default_single/global config), so "false" must still actively uncheck it.
+export const setCauseAreaAmount = (causeAreaId, amount, enableCut) => {
   // Use operations input for cause area 4, otherwise use regular pattern
   const selector =
     causeAreaId === 4
@@ -80,20 +83,24 @@ export const setCauseAreaAmount = (causeAreaId, amount, enableCut = false) => {
 
   cy.get(selector).type(amount.toString());
 
-  if (enableCut) {
-    // Check if we're in multiple cause areas mode (global cut) or single cause area mode
-    cy.get("body").then(($body) => {
-      if ($body.find("[data-cy=global-cut-checkbox]").length > 0) {
-        // Multiple cause areas mode - use global cut toggle
-        cy.get("[data-cy=global-cut-checkbox]").check({ force: true });
-      } else {
-        // Single cause area mode - use specific cut checkbox
-        const cutSelector =
-          causeAreaId === 4 ? "[data-cy=cut-checkbox]" : `[data-cy=cut-checkbox-${causeAreaId}]`;
-        cy.get(cutSelector).check({ force: true });
-      }
+  if (enableCut === undefined) return;
+
+  cy.get("body").then(($body) => {
+    const cutSelector =
+      $body.find("[data-cy=global-cut-checkbox]").length > 0
+        ? "[data-cy=global-cut-checkbox]"
+        : causeAreaId === 4
+        ? "[data-cy=cut-checkbox]"
+        : `[data-cy=cut-checkbox-${causeAreaId}]`;
+
+    if ($body.find(cutSelector).length === 0) return;
+
+    cy.get(cutSelector).then(($checkbox) => {
+      const isChecked = $checkbox.is(":checked");
+      if (enableCut && !isChecked) cy.wrap($checkbox).check({ force: true });
+      if (!enableCut && isChecked) cy.wrap($checkbox).uncheck({ force: true });
     });
-  }
+  });
 };
 
 // Helper specifically for multiple cause areas global cut toggle

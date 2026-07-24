@@ -49,11 +49,11 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Should see text for distribution options
-        cy.contains("Låt Ge Effektivt valja organisasjoner").should("be.visible");
-        cy.contains("Velj organisasjoner selv").should("be.visible");
+        cy.contains("Smart fördelning").should("be.visible");
+        cy.contains("Välj fördelning själv").should("be.visible");
 
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and check for organization inputs
         cy.wait(500);
@@ -72,7 +72,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and check organization inputs
         cy.wait(500);
@@ -92,7 +92,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and set custom amount
         cy.wait(500);
@@ -189,7 +189,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and verify auto-population based on standard shares
         cy.wait(500);
@@ -232,10 +232,10 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Initially should show standard distribution
-        cy.contains("Låt Ge Effektivt valja organisasjoner").should("be.visible");
+        cy.contains("Smart fördelning").should("be.visible");
 
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and verify auto-population
         cy.wait(500);

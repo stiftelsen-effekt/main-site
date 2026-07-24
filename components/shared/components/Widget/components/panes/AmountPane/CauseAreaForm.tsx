@@ -102,7 +102,14 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     dispatch(setOperationsPercentageModeByCauseArea(causeArea.id, checked));
   };
 
-  const handlePercentageChange = (values: { floatValue: number | undefined }) => {
+  const handlePercentageChange = (
+    values: { floatValue: number | undefined },
+    sourceInfo: { source: string },
+  ) => {
+    // react-number-format also fires this when `value` changes because the default
+    // percentage prop mounts/updates, not just on real keystrokes - only a genuine
+    // user edit should record an operations percentage for this cause area.
+    if (sourceInfo.source !== "event") return;
     const v = values.floatValue === undefined ? 0 : values.floatValue;
     // Limit percentage to 0-100
     const limitedPercentage = Math.min(Math.max(v, 0), 100);

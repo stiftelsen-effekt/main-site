@@ -69,7 +69,7 @@ describe("Swedish Widget - Cause Area Selection", () => {
     cy.get("[data-cy=donation-summary]").should("exist");
 
     // Check donation type (should be single by default)
-    cy.get("[data-cy=donation-type]").should("contain.text", "Enkelt givande");
+    cy.get("[data-cy=donation-type]").should("contain.text", "Ge en engångsgåva");
 
     // Smart distribution should appear as a single entry, not individual cause area breakdowns
     // This is important because the distribution percentages could change over time

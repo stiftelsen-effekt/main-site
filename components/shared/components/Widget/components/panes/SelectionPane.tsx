@@ -35,7 +35,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
-  const { operationsPercentageByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
+  const { operationsPercentageModeByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
     (state: State) => state.donation,
   );
 
@@ -44,14 +44,15 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 
     // Handle operations amount synchronization
     if (selectionType === "multiple") {
-      // When switching to multiple cause areas
-      // Check if any single cause area has operations percentage set
-      const hasAnyOperationsAmount = Object.values(operationsPercentageByCauseArea).some(
-        (amount: any) => amount > 0,
+      // When switching to multiple cause areas, initialize the global toggle based on
+      // whether any single cause area actually has the operations cut enabled - not
+      // just whether it has a stored percentage, which defaults to a nonzero value
+      // for every cause area regardless of whether the cut is enabled.
+      const hasAnyOperationsEnabled = Object.values(operationsPercentageModeByCauseArea).some(
+        (enabled) => enabled,
       );
 
-      // Initialize global operations enabled state based on whether any cause area has operations
-      dispatch(setGlobalOperationsEnabled(hasAnyOperationsAmount));
+      dispatch(setGlobalOperationsEnabled(hasAnyOperationsEnabled));
     }
 
     dispatch(setCauseAreaSelection(selectionType, id));

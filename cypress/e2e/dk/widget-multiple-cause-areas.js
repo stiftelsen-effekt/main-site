@@ -56,6 +56,7 @@ describe("Widget multiple cause areas", () => {
 
     cy.get("[data-cy=name-input]").should("not.exist");
     cy.get("[data-cy=email-input]").type("donor@email.dk");
+    cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -99,6 +100,7 @@ describe("Widget multiple cause areas", () => {
     cy.nextWidgetPane();
 
     cy.get("[data-cy=email-input]").type("donor@email.dk");
+    cy.get("[data-cy=privacy-policy-checkbox]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", (req) => {
       expect(req.body.amount).to.eq(1000);

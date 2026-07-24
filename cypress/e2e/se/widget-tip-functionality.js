@@ -20,7 +20,7 @@ describe("Swedish Widget - Cut Functionality", () => {
     it("Should calculate cut correctly when enabled", () => {
       // Set amount first, then enable cut
       cy.get("[data-cy=donation-sum-input-1]").type("1000");
-      cy.get("[data-cy=cut-checkbox-1]").check();
+      cy.get("[data-cy=cut-checkbox-1]").check({ force: true });
 
       // Total should be 1000, with cut breakdown shown (with thousand separator)
       cy.get("[data-cy=donation-sum-input-1]").should("have.value", "1 000");
@@ -34,7 +34,7 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=donation-sum-input-1]").type("500");
 
       // Enable cut
-      cy.get("[data-cy=cut-checkbox-1]").check();
+      cy.get("[data-cy=cut-checkbox-1]").check({ force: true });
       cy.get("[data-cy=cut-checkbox-1]").should("be.checked");
 
       // Change amount - cut should remain checked
@@ -49,7 +49,7 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=donation-sum-input-1]").type("100");
 
       // Enable cut
-      cy.get("[data-cy=cut-checkbox-1]").check();
+      cy.get("[data-cy=cut-checkbox-1]").check({ force: true });
 
       // Click suggested amount
       cy.get("[data-cy=suggested-sum-1-500]").click();
@@ -65,11 +65,11 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=donation-sum-input-1]").type("1000");
 
       // Enable cut
-      cy.get("[data-cy=cut-checkbox-1]").check();
+      cy.get("[data-cy=cut-checkbox-1]").check({ force: true });
       cy.get("[data-cy=cut-checkbox-1]").should("be.checked");
 
       // Disable cut
-      cy.get("[data-cy=cut-checkbox-1]").uncheck();
+      cy.get("[data-cy=cut-checkbox-1]").uncheck({ force: true });
       cy.get("[data-cy=cut-checkbox-1]").should("not.be.checked");
 
       // Full amount should go to cause area
@@ -296,7 +296,7 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=global-cut-checkbox]").should("be.checked");
 
       // EXPLICITLY toggle global operations cut OFF
-      cy.get("[data-cy=global-cut-checkbox]").uncheck();
+      cy.get("[data-cy=global-cut-checkbox]").uncheck({ force: true });
       cy.get("[data-cy=global-cut-checkbox]").should("not.be.checked");
 
       // Go back to first cause area
@@ -323,7 +323,7 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=cause-area-multiple]").click();
 
       // EXPLICITLY toggle global operations cut ON
-      cy.get("[data-cy=global-cut-checkbox]").check();
+      cy.get("[data-cy=global-cut-checkbox]").check({ force: true });
 
       // Check first cause area again
       cy.get("[data-cy=back-button]").click();
@@ -365,7 +365,7 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=cut-checkbox-2]").should("be.checked");
 
       // Now uncheck it
-      cy.get("[data-cy=cut-checkbox-2]").uncheck();
+      cy.get("[data-cy=cut-checkbox-2]").uncheck({ force: true });
       cy.get("[data-cy=donation-sum-input-2]").should("have.value", "300");
 
       // Go back to multiple
@@ -385,7 +385,7 @@ describe("Swedish Widget - Cut Functionality", () => {
       // 1. Set global health (CA1) with cut enabled
       cy.get("[data-cy=cause-area-1]").click();
       cy.get("[data-cy=donation-sum-input-1]").type("100");
-      cy.get("[data-cy=cut-checkbox-1]").check();
+      cy.get("[data-cy=cut-checkbox-1]").check({ force: true });
       cy.get("[data-cy=cut-checkbox-1]").should("be.checked");
 
       // 2. Go back and set animal welfare (CA2) WITHOUT cut
@@ -393,7 +393,10 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.wait(500);
       cy.get("[data-cy=cause-area-2]").click();
       cy.get("[data-cy=donation-sum-input-2]").type("100");
-      // Explicitly ensure cut is NOT checked
+      // Explicitly ensure cut is NOT checked (it can default to checked)
+      cy.get("[data-cy=cut-checkbox-2]").then(($checkbox) => {
+        if ($checkbox.is(":checked")) cy.wrap($checkbox).uncheck({ force: true });
+      });
       cy.get("[data-cy=cut-checkbox-2]").should("not.be.checked");
 
       // 3. Go to multiple cause areas
@@ -421,13 +424,16 @@ describe("Swedish Widget - Cut Functionality", () => {
       // 1. Set up mixed states: CA1 with operations cut, CA2 without
       cy.get("[data-cy=cause-area-1]").click();
       cy.get("[data-cy=donation-sum-input-1]").type("500");
-      cy.get("[data-cy=cut-checkbox-1]").check();
+      cy.get("[data-cy=cut-checkbox-1]").check({ force: true });
 
       cy.get("[data-cy=back-button]").click();
       cy.wait(500);
       cy.get("[data-cy=cause-area-2]").click();
       cy.get("[data-cy=donation-sum-input-2]").type("300");
-      // Leave operations cut unchecked
+      // Leave operations cut unchecked (it can default to checked)
+      cy.get("[data-cy=cut-checkbox-2]").then(($checkbox) => {
+        if ($checkbox.is(":checked")) cy.wrap($checkbox).uncheck({ force: true });
+      });
 
       // 2. Go to multiple cause areas
       cy.get("[data-cy=back-button]").click();
@@ -441,14 +447,15 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.get("[data-cy=next-button]").click();
 
       // 4. Check the donation summary
-      // When global operations cut is enabled in multiple mode:
-      // - CA1: 500 - (40 * 500/800) = 475 kr (after proportional cut)
-      // - CA2: 300 - (40 * 300/800) = 285 kr (after proportional cut)
-      // - Operations: 5% of 800 = 40 kr
+      // When global operations cut is enabled in multiple mode (default operations
+      // percentage is 10%, per the current widget config):
+      // - CA1: 500 - (80 * 500/800) = 450 kr (after proportional cut)
+      // - CA2: 300 - (80 * 300/800) = 270 kr (after proportional cut)
+      // - Operations: 10% of 800 = 80 kr
       // - Total: 800 kr (what the user entered)
-      cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "475 kr");
-      cy.get("[data-cy=summary-cause-area-2-amount]").should("contain.text", "285 kr");
-      cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "40 kr"); // Operations (5% of 800)
+      cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "450 kr");
+      cy.get("[data-cy=summary-cause-area-2-amount]").should("contain.text", "270 kr");
+      cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "80 kr"); // Operations (10% of 800)
       cy.get("[data-cy=summary-total-amount]").should("contain.text", "800 kr");
 
       // 5. Go back and verify local states are preserved
@@ -477,6 +484,13 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.wait(500);
       cy.get("[data-cy=cause-area-2]").click();
       setCauseAreaAmount(2, 300, false);
+
+      // A third cause area is also eligible for the cut (defaults to enabled) -
+      // it must be explicitly disabled too for "no operations cut is enabled" to hold.
+      cy.get("[data-cy=back-button]").click();
+      cy.wait(500);
+      cy.get("[data-cy=cause-area-3]").click();
+      setCauseAreaAmount(3, 100, false);
 
       // Switch to multiple cause areas
       cy.get("[data-cy=back-button]").click();
@@ -516,7 +530,9 @@ describe("Swedish Widget - Cut Functionality", () => {
 
       // Navigate to next pane and back
       cy.get("[data-cy=next-button]").click();
+      cy.wait(500);
       cy.get("[data-cy=back-button]").click();
+      cy.wait(500);
 
       // Global cut state should be preserved
       cy.get("[data-cy=global-cut-checkbox]").should("be.checked");

@@ -5,6 +5,7 @@ import { State } from "../../../store/state";
 import {
   setGlobalOperationsEnabled,
   setGlobalOperationsPercentage,
+  setOperationsPercentageModeByCauseArea,
 } from "../../../store/donation/actions";
 import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
@@ -22,16 +23,32 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ operationsConf
     globalOperationsPercentage = 5,
     operationsConfig: stateConfig,
   } = useSelector((state: State) => state.donation);
+  const causeAreas = useSelector((state: State) => state.layout.causeAreas) ?? [];
 
   // Use config from props if available, otherwise from state
   const config = operationsConfig || stateConfig;
 
-  // Use percentage from Redux state
+  // Explicitly toggling the global cut applies it to every eligible cause area -
+  // otherwise a donor who only meant to turn it off/on globally would still see
+  // individual cause areas retain whatever they defaulted/were set to before.
   const handleGlobalCutToggle = (checked: boolean) => {
     dispatch(setGlobalOperationsEnabled(checked));
+    causeAreas
+      .filter(
+        (area) =>
+          area.id !== stateConfig?.operationsCauseAreaId &&
+          !stateConfig?.excludedCauseAreaIds?.includes(area.id),
+      )
+      .forEach((area) => dispatch(setOperationsPercentageModeByCauseArea(area.id, checked)));
   };
 
-  const handlePercentageChange = (values: { floatValue: number | undefined }) => {
+  const handlePercentageChange = (
+    values: { floatValue: number | undefined },
+    sourceInfo: { source: string },
+  ) => {
+    // react-number-format also fires this when `value` changes because the default
+    // percentage prop mounts/updates, not just on real keystrokes.
+    if (sourceInfo.source !== "event") return;
     const v = values.floatValue === undefined ? 0 : values.floatValue;
     // Limit percentage to 0-100
     const limitedPercentage = Math.min(Math.max(v, 0), 100);

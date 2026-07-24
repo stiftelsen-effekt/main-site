@@ -68,24 +68,24 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
   it("Should display recurring vs single donation options", () => {
     cy.get("[data-cy=cause-area-1]").click();
 
-    // Should show recurring/single options - using text since no data-cy exists
-    cy.get('input[value="0"]').should("exist");
-    cy.get('input[value="1"]').should("exist");
+    // Should show recurring/single options
+    cy.get('[data-cy="single-donation-radio"]').should("exist");
+    cy.get('[data-cy="recurring-donation-radio"]').should("exist");
 
     // Default should be single donation
-    cy.get('input[value="0"]').should("be.checked");
+    cy.get('[data-cy="single-donation-radio"]').should("be.checked");
   });
 
   it("Should switch between recurring and single donation", () => {
     cy.get("[data-cy=cause-area-1]").click();
 
     // Switch to recurring by clicking the radio input
-    cy.get('input[value="1"]').click();
-    cy.get('input[value="1"]').should("be.checked");
+    cy.get('[data-cy="recurring-donation-radio"]').click();
+    cy.get('[data-cy="recurring-donation-radio"]').should("be.checked");
 
     // Switch back to single by clicking the radio input
-    cy.get('input[value="0"]').click();
-    cy.get('input[value="0"]').should("be.checked");
+    cy.get('[data-cy="single-donation-radio"]').click();
+    cy.get('[data-cy="single-donation-radio"]').should("be.checked");
   });
 
   it("Should show correct donation summary for single cause area", () => {
