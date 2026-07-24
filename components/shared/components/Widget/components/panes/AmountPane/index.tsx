@@ -144,7 +144,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                   ))}
                 <GlobalCutToggle operationsConfig={operationsConfig} />
                 <TotalAmountWrapper data-cy="total-amount-wrapper">
-                  <div>{uiLabels?.total_label || "Total"}</div>
+                  <div>{uiLabels?.total_label}</div>
                   <div>{thousandize(totalAmount)} kr</div>
                 </TotalAmountWrapper>
               </>
