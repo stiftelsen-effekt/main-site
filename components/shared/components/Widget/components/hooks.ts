@@ -203,7 +203,12 @@ const handlePrefilledCauseArea = (
   prefilledCauseArea: PrefilledDistribution[number],
   causeAreaAmount: number,
 ): Record<number, number> => {
-  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
+  dispatch(
+    setCauseAreaDistributionType(
+      causeArea.id,
+      causeArea.organizations.length <= 1 ? ShareType.STANDARD : ShareType.CUSTOM,
+    ),
+  );
 
   const shareByOrgId: Record<number, number> = {};
   prefilledCauseArea.organizations.forEach((org) => {
