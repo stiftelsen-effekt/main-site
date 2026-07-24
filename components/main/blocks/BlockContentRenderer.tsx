@@ -302,8 +302,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
               <>
                 <Contributors
                   key={block._key || block._id}
-                  title={block.role.title}
-                  contributors={block.contributors}
+                  title={block.role?.title ?? ""}
+                  contributors={block.contributors ?? []}
                   displayImages={block.displayimages}
                 />
               </>
