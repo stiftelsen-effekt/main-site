@@ -11,7 +11,7 @@ export const Columns: React.FC<Columns> = ({ columns }) => {
 
   return (
     <div className={styles.grid}>
-      {columns.map((column) => (
+      {columns.filter(Boolean).map((column) => (
         <div className={styles.column} key={column._key}>
           <div>
             <h5>{column.title}</h5>

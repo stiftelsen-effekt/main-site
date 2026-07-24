@@ -5,10 +5,17 @@ import { getClient } from "../../../../../lib/sanity.client";
 import { withStaticProps } from "../../../../../util/withStaticProps";
 import { fetchCauseAreasAction } from "../store/layout/actions";
 import { fetchReferralsAction } from "../store/referrals/actions";
+import {
+  setOperationsConfig,
+  setCauseAreaSelection,
+  setOperationsPercentageModeByCauseArea,
+} from "../store/donation/actions";
 import { State } from "../store/state";
 import { WidgetProps } from "../types/WidgetProps";
 import { Carousel } from "./Carousel";
-import { DonationPane } from "./panes/DonationPane/DonationPane";
+import { SelectionPane } from "./panes/SelectionPane";
+import { AmountPane } from "./panes/AmountPane/index";
+import { SingleCauseAreaPane } from "./panes/SingleCauseAreaPane";
 import { DonorPane } from "./panes/DonorPane/DonorPane";
 import { PaymentPane } from "./panes/PaymentPane/PaymentPane";
 import { ProgressBar } from "./shared/ProgressBar/ProgressBar";
@@ -32,12 +39,12 @@ import {
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { RecurringDonation } from "../types/Enums";
-import { Dispatch } from "@reduxjs/toolkit";
-import { Action } from "typescript-fsa";
+import { applyWidgetDefaults, DEFAULT_OPERATIONS_CONFIG } from "../utils/widgetDefaults";
 
 export const widgetContentQuery = groq`
   ...,
   "locale": *[ _type == "site_settings"][0].main_locale,
+  "accentColor": *[ _type == "site_settings"][0].accent_color,
   methods[] { 
     _type == 'reference' => @->{
       _type == 'bank' => {
@@ -109,6 +116,28 @@ export const widgetContentQuery = groq`
     ...,
     "slug": page->slug.current,
     "pagetype": page->_type,
+  },
+  operations_config {
+    ...,
+    x_factor_info {
+      ...,
+      link {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      }
+    }
+  },
+  cause_area_display_config {
+    ...,
+    other_cause_area_info {
+      ...,
+      link {
+        ...,
+        "slug": page->slug.current,
+        "pagetype": page->_type,
+      }
+    }
   }
 `;
 
@@ -152,14 +181,14 @@ export const Widget = withStaticProps(
     };
   },
 )(({ data, inline = false, prefilled, defaultPaymentType }) => {
-  const widget = data.result;
-  const methods = data.result.methods;
+  const widget = applyWidgetDefaults(data.result);
+  const methods = widget.methods;
 
   if (!methods) {
     throw new Error("No payment methods found");
   }
 
-  const dispatch = useDispatch<Dispatch<Action<undefined>>>();
+  const dispatch = useDispatch<any>();
   const widgetRef = useRef<HTMLDivElement>(null);
   const widgetWrapperRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
@@ -168,14 +197,48 @@ export const Widget = withStaticProps(
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
 
+  // Platforms with a single (active) cause area keep the pre-rewrite widget UX:
+  // no cause-area selection step and no operations/tip. See SingleCauseAreaPane.
+  const activeCauseAreas = causeAreas?.filter((ca) => ca.isActive) ?? [];
+  const isSingleCauseArea = !!causeAreas && activeCauseAreas.length === 1;
+  const singleCauseAreaId = isSingleCauseArea ? activeCauseAreas[0].id : undefined;
+
+  useEffect(() => {
+    if (singleCauseAreaId === undefined) return;
+    // There is nothing to select, so pin the selection to the one cause area and
+    // make sure operations/tip stays off (it may be auto-enabled by config).
+    dispatch(setCauseAreaSelection("single", singleCauseAreaId));
+    dispatch(setOperationsPercentageModeByCauseArea(singleCauseAreaId, false));
+  }, [dispatch, singleCauseAreaId]);
+
   const { scaledHeight, scalingFactor } = useWidgetScaleEffect(widgetRef, inline);
-  const { scrollPosition } = useWidgetScrollObserver(widgetRef);
+  // const { scrollPosition } = useWidgetScrollObserver(widgetRef);
   const widgetHeight = useElementHeight(widgetRef);
 
   useEffect(() => {
+    // Set operations config first so it's available when cause areas are loaded
+    dispatch(
+      setOperationsConfig({
+        operationsCauseAreaId:
+          widget.operations_config?.operations_cause_area_id ??
+          DEFAULT_OPERATIONS_CONFIG.operations_cause_area_id,
+        defaultPercentage:
+          widget.operations_config?.default_percentage ??
+          DEFAULT_OPERATIONS_CONFIG.default_percentage,
+        enabledByDefaultGlobal:
+          widget.operations_config?.enabled_by_default_global ??
+          DEFAULT_OPERATIONS_CONFIG.enabled_by_default_global,
+        enabledByDefaultSingle:
+          widget.operations_config?.enabled_by_default_single ??
+          DEFAULT_OPERATIONS_CONFIG.enabled_by_default_single,
+        excludedCauseAreaIds:
+          widget.operations_config?.excluded_cause_area_ids ??
+          DEFAULT_OPERATIONS_CONFIG.excluded_cause_area_ids,
+      }),
+    );
     dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
-  }, [dispatch]);
+  }, [dispatch, widget.locale]);
 
   usePrefilledDistribution({
     inline,
@@ -228,7 +291,7 @@ export const Widget = withStaticProps(
       >
         <WidgetTooltipContext.Provider value={[tooltip, setTooltip]}>
           {tooltip !== null && (
-            <TooltipWrapper top={20 + scrollPosition}>
+            <TooltipWrapper top={20 + 0}>
               <TooltipContent>{tooltip.text}</TooltipContent>
               {tooltip.link && (
                 <TooltipLink href={tooltip.link} target="_blank">
@@ -246,20 +309,47 @@ export const Widget = withStaticProps(
             const text = taxInfoText[widget.locale];
             return text ? <TaxInfoBox>{text}</TaxInfoBox> : null;
           })()}*/}
-          <ProgressBar inline={inline} />
+          <ProgressBar inline={inline} numberOfPanes={isSingleCauseArea ? 3 : 4} />
           <Carousel minHeight={inline ? 0 : scaledHeight - 116}>
-            <DonationPane
-              text={{
-                single_donation_text: widget.single_donation_text,
-                monthly_donation_text: widget.monthly_donation_text,
-                amount_context: widget.amount_context,
-                smart_distribution_context: widget.smart_distribution_context,
-                pane1_button_text: widget.pane1_button_text,
-                donation_input_error_templates: widget.donation_input_error_templates,
-              }}
-              enableRecurring={availableRecurringOptions.recurring}
-              enableSingle={availableRecurringOptions.single}
-            />
+            {isSingleCauseArea ? (
+              <SingleCauseAreaPane
+                nextButtonText={widget.pane1_button_text}
+                enableRecurring={availableRecurringOptions.recurring}
+                enableSingle={availableRecurringOptions.single}
+                singleDonationText={widget.single_donation_text}
+                monthlyDonationText={widget.monthly_donation_text}
+                amountContext={widget.amount_context}
+                smartDistributionContext={widget.smart_distribution_context}
+              />
+            ) : (
+              false
+            )}
+            {!isSingleCauseArea ? (
+              <SelectionPane
+                causeAreaDisplayConfig={widget.cause_area_display_config}
+                accentColor={widget.accentColor}
+              />
+            ) : (
+              false
+            )}
+            {!isSingleCauseArea ? (
+              <AmountPane
+                nextButtonText={widget.pane1_button_text}
+                smartDistContext={widget.smart_distribution_context}
+                text={{
+                  single_donation_text: widget.single_donation_text,
+                  monthly_donation_text: widget.monthly_donation_text,
+                }}
+                enableRecurring={availableRecurringOptions.recurring}
+                enableSingle={availableRecurringOptions.single}
+                amountContext={widget.amount_context}
+                operationsConfig={widget.operations_config}
+                causeAreaDisplayConfig={widget.cause_area_display_config}
+                uiLabels={widget.ui_labels}
+              />
+            ) : (
+              false
+            )}
             <DonorPane
               locale={widget.locale}
               text={{
@@ -273,6 +363,7 @@ export const Widget = withStaticProps(
                 tax_deduction_ssn_placeholder: widget.tax_deduction_ssn_placeholder,
                 tax_deduction_ssn_invalid_error_text: widget.tax_deduction_ssn_invalid_error_text,
                 tax_deduction_tooltip_text: widget.tax_deduction_tooltip_text,
+                tax_deduction_ssn_suspicious_message: widget.tax_deduction_ssn_suspicious_message,
                 newsletter_selector_text: widget.newsletter_selector_text,
                 privacy_policy_text: widget.privacy_policy_text,
                 privacy_policy_link: widget.privacy_policy_link,
@@ -283,8 +374,16 @@ export const Widget = withStaticProps(
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
                 privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
               }}
+              summaryText={{
+                single_donation_text: widget.single_donation_text,
+                monthly_donation_text: widget.monthly_donation_text,
+                smart_distribution_title:
+                  widget.smart_distribution_context.smart_distribution_title,
+                operations_summary_label: widget.ui_labels?.operations_summary_label ?? "",
+                total_label: widget.ui_labels?.total_label ?? "",
+              }}
               paymentMethods={availablePaymentMethods}
-              nudges={widget.nudges}
+              isSingleCauseArea={isSingleCauseArea}
             />
             <PaymentPane
               referrals={{

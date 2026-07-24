@@ -1,0 +1,31 @@
+# Worktrunk (https://github.com/max-sixty/worktrunk) hooks for the main-site repo.
+#
+# Worktrunk is a git-worktree manager. These hooks only fire if you use it —
+# `git worktree add` and normal git workflows are entirely unaffected.
+#
+# The post-create hook below sets up a new worktree for parallel development:
+# copies gitignored .env.local, assigns a random PORT so worktrees don't collide,
+# and installs node modules.
+#
+# Next.js reads PORT from the environment / .env.local, so `npm run dev` in any
+# worktree will bind to that worktree's port.
+
+[post-create]
+# Gitignored local env (Sanity project, API URLs, Auth0, etc.).
+# Strips any existing PORT / NEXT_PUBLIC_SITE_URL, then appends a random port so
+# parallel worktrees don't fight over :3000. Next loads .env.local on boot.
+env = """
+cp -n {{ repo_path }}/.env.local {{ worktree_path }}/.env.local 2>/dev/null || true
+_PORT=$(awk 'BEGIN{srand(); printf "%d", int(rand()*10000)+10000}')
+if [ -f {{ worktree_path }}/.env.local ]; then
+  grep -v -E '^(PORT|NEXT_PUBLIC_SITE_URL)=' {{ worktree_path }}/.env.local > {{ worktree_path }}/.env.local.tmp || true
+  mv {{ worktree_path }}/.env.local.tmp {{ worktree_path }}/.env.local
+fi
+printf '\\nPORT=%s\\nNEXT_PUBLIC_SITE_URL=http://localhost:%s\\n' "$_PORT" "$_PORT" >> {{ worktree_path }}/.env.local
+"""
+
+# Install dependencies. npm uses the local cache, so repeat installs are cheaper
+# than a full download, but each worktree still gets its own node_modules.
+node-modules = "cd {{ worktree_path }} && npm install"
+
+claude-local = "mkdir -p {{ worktree_path }}/.claude && cp -n {{ repo_path }}/.claude/settings.local.json {{ worktree_path }}/.claude/settings.local.json 2>/dev/null || true"

@@ -1,0 +1,129 @@
+// Shared setup for Swedish widget tests
+export const setupWidgetTest = () => {
+  // Note the .as() belongs on the intercept, not the fixture, so it can be cy.wait()ed on
+  cy.fixture("cause_areas").then((causeAreas) => {
+    cy.intercept("GET", "/causeareas/all", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: causeAreas,
+      },
+    }).as("getCauseAreas");
+  });
+
+  cy.fixture("referrals").then((referrals) => {
+    cy.intercept("GET", "/referrals/types", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        content: referrals,
+      },
+    }).as("getReferrals");
+  });
+
+  cy.visit({
+    url: "/",
+    headers: {
+      "x-vercel-skip-toolbar": "1",
+    },
+  });
+
+  // Clicking before React has hydrated silently does nothing, which surfaces much later
+  // as a confusing "widget pane has display: none" failure deep inside a test. Wait for
+  // the cause areas to have loaded (client-side only) before interacting, then assert the
+  // widget actually opened so a lost click fails right here instead.
+  cy.wait("@getCauseAreas");
+  cy.get("[data-cy=gi-button]").should("be.visible").click();
+  cy.get("[data-cy=widget-pane]").should("be.visible");
+};
+
+// Common intercepts for donation registration
+export const setupDonationIntercepts = () => {
+  cy.intercept("POST", "/donations/register", {
+    statusCode: 200,
+    body: {
+      status: 200,
+      content: {
+        KID: "87397824",
+        donorID: 1464,
+        hasAnsweredReferral: false,
+        paymentProviderUrl: "",
+      },
+    },
+  }).as("registerDonation");
+
+  cy.intercept("PUT", "/autogiro/*/drafted/paymentdate", {
+    statusCode: 200,
+    body: {
+      status: 200,
+      content: "OK",
+    },
+  }).as("draftAutoGiroPaymentDate");
+
+  cy.intercept("POST", "donations/bank/pending", {
+    statusCode: 200,
+    body: {
+      status: 200,
+      content: "OK",
+    },
+  }).as("bankPending");
+};
+
+// Helper to fill donor information
+export const fillDonorInfo = (name = "Test Person", email = "test@example.com") => {
+  cy.get("[data-cy=name-input]").type(name);
+  cy.get("[data-cy=email-input]").type(email);
+};
+
+// Helper to set cause area amount with optional cut. `enableCut` is tri-state:
+// leave it undefined to not touch the cut checkbox at all, or pass true/false to
+// actively check/uncheck it - it can default to checked (Sanity's
+// enabled_by_default_single/global config), so "false" must still actively uncheck it.
+export const setCauseAreaAmount = (causeAreaId, amount, enableCut) => {
+  // Use operations input for cause area 4, otherwise use regular pattern
+  const selector =
+    causeAreaId === 4
+      ? "[data-cy=donation-sum-input-operations]"
+      : `[data-cy=donation-sum-input-${causeAreaId}]`;
+
+  cy.get(selector).type(amount.toString());
+
+  if (enableCut === undefined) return;
+
+  cy.get("body").then(($body) => {
+    const cutSelector =
+      $body.find("[data-cy=global-cut-checkbox]").length > 0
+        ? "[data-cy=global-cut-checkbox]"
+        : causeAreaId === 4
+        ? "[data-cy=cut-checkbox]"
+        : `[data-cy=cut-checkbox-${causeAreaId}]`;
+
+    if ($body.find(cutSelector).length === 0) return;
+
+    cy.get(cutSelector).then(($checkbox) => {
+      const isChecked = $checkbox.is(":checked");
+      if (enableCut && !isChecked) cy.wrap($checkbox).check({ force: true });
+      if (!enableCut && isChecked) cy.wrap($checkbox).uncheck({ force: true });
+    });
+  });
+};
+
+// Helper specifically for multiple cause areas global cut toggle
+export const setGlobalCut = (enable = true) => {
+  if (enable) {
+    cy.get("[data-cy=global-cut-checkbox]").check({ force: true });
+  } else {
+    cy.get("[data-cy=global-cut-checkbox]").uncheck({ force: true });
+  }
+};
+
+// Helper to set custom cut amount
+export const setCustomCutAmount = (amount, causeAreaId = null) => {
+  if (causeAreaId) {
+    // Single cause area mode
+    cy.get(`[data-cy=custom-cut-input-${causeAreaId}]`).clear().type(amount.toString());
+  } else {
+    // Multiple cause areas mode
+    cy.get("[data-cy=global-custom-cut-input]").clear().type(amount.toString());
+  }
+};

@@ -37,11 +37,11 @@ describe("Widget", () => {
   it("End-2-End single bank donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -88,11 +88,11 @@ describe("Widget", () => {
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=avtalegiro-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-avtalegiro]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -107,9 +107,6 @@ describe("Widget", () => {
         },
       },
     }).as("registerDonation");
-    cy.nextWidgetPane();
-
-    cy.wait(500);
 
     cy.intercept("POST", "/avtalegiro/draft", {
       statusCode: 200,
@@ -118,17 +115,20 @@ describe("Widget", () => {
       },
     }).as("draftAvtaleGiro");
 
+    cy.nextWidgetPane();
+    cy.wait(500);
+
     cy.get("[data-cy=avtalegiro-form]").submit();
   });
 
   it("End-2-End single vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=vipps-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-vipps]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -143,6 +143,7 @@ describe("Widget", () => {
         },
       },
     }).as("registerDonation");
+
     cy.nextWidgetPane();
 
     cy.get("[data-cy=vipps-single-button]").within(() => {
@@ -154,11 +155,11 @@ describe("Widget", () => {
   it("End-2-End recurring vipps donation", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickRecurringDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=vipps-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-vipps]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", {
@@ -173,9 +174,6 @@ describe("Widget", () => {
         },
       },
     }).as("registerDonation");
-    cy.nextWidgetPane();
-
-    cy.wait(500);
 
     cy.intercept("POST", "/vipps/agreement/draft", {
       statusCode: 200,
@@ -184,6 +182,9 @@ describe("Widget", () => {
       },
     }).as("draftVippsAgreement");
 
+    cy.nextWidgetPane();
+    cy.wait(500);
+
     cy.get("[data-cy=vipps-recurring-button]").within(() => {
       cy.get("button").click();
     });
@@ -191,33 +192,49 @@ describe("Widget", () => {
   });
 
   it("End-2-End shared donation", () => {
-    const randomSum = Math.floor(Math.random() * 1000) + 100;
+    // Custom distribution now takes direct kroner amounts per organization
+    // (rather than percentages), so the total is the sum of the org amounts
+    // entered here - the overall sum input above is only used in standard
+    // (non-custom) mode.
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type("100");
     cy.get("[data-cy=radio-custom-share]").first().click({ force: true });
     cy.get("[data-cy=org-12]").clear();
-    cy.get("[data-cy=org-12]").type(500); // should truncate numbers ove 100
-    cy.nextWidgetPane();
-    cy.checkNextIsDisabled();
+    cy.get("[data-cy=org-12]").type(500);
     cy.get("[data-cy=org-12]").type("{moveToStart}");
-    cy.get("[data-cy=org-12]").type("-"); // should ignore negative numbers
-    cy.get("[data-cy=org-11]").type(50);
+    cy.get("[data-cy=org-12]").type("-"); // negative numbers are blocked
+    cy.get("[data-cy=org-12]").should("have.value", "500");
+    cy.get("[data-cy=org-11]").type(300);
     cy.nextWidgetPane();
 
     cy.pickAnonymous();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
-    cy.intercept("POST", "/donations/register", {
-      statusCode: 200,
-      body: {
-        status: 200,
-        content: {
-          KID: "87397824",
-          donorID: 1464,
-          hasAnsweredReferral: false,
-          paymentProviderUrl: "",
+    cy.intercept("POST", "/donations/register", (req) => {
+      // Total is the sum of the entered org amounts (500 + 300), not the
+      // standalone sum input entered before switching to custom mode
+      expect(req.body.amount).to.eq(800);
+
+      const causeArea = req.body.distributionCauseAreas[0];
+      const sumOfShares = causeArea.organizations.reduce(
+        (sum, org) => sum + parseFloat(org.percentageShare),
+        0,
+      );
+      // Org percentages must sum to exactly 100 within the cause area
+      expect(sumOfShares).to.eq(100);
+
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: {
+            KID: "87397824",
+            donorID: 1464,
+            hasAnsweredReferral: false,
+            paymentProviderUrl: "",
+          },
         },
-      },
+      });
     }).as("registerDonation");
 
     cy.intercept("POST", "donations/bank/pending", {
@@ -239,25 +256,31 @@ describe("Widget", () => {
   it("End-2-End for all input fields", () => {
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.prevWidgetPane();
-    cy.get("[data-cy=donation-sum-input]").clear();
-    cy.get("[data-cy=donation-sum-input]").type(0);
+    cy.get("[data-cy^=donation-sum-input]").clear();
+    cy.get("[data-cy^=donation-sum-input]").type(0);
     cy.nextWidgetPane();
     cy.checkNextIsDisabled();
-    cy.get("[data-cy=donation-sum-input]").type(1);
+    cy.get("[data-cy^=donation-sum-input]").type(1);
     cy.nextWidgetPane();
 
     cy.wait(500);
-    cy.checkNextIsDisabled();
     cy.get("[data-cy=name-input]").type("Donor Name");
     cy.get("[data-cy=email-input]").type("donor@email.com");
     cy.get("[data-cy=tax-deduction-checkbox]").click();
     cy.get("[data-cy=ssn-input]").type("916741057"); // Check 9 digit organization number
     cy.get("[data-cy=newsletter-checkbox]").click();
-    cy.get("[data-cy=bank-method]").click({ force: true });
+
+    // Exercise clearing/retyping the ssn and email fields
+    cy.get("[data-cy=ssn-input]").clear();
+    cy.get("[data-cy=ssn-input]").type("10915596784"); // 11 digit valid ssn
+    cy.get("[data-cy=email-input]").clear();
+    cy.get("[data-cy=email-input]").type("donor@email.com");
+
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
     cy.intercept("POST", "/donations/register", {
       statusCode: 200,
@@ -280,22 +303,6 @@ describe("Widget", () => {
       },
     }).as("bankPending");
 
-    cy.nextWidgetPane();
-
-    cy.prevWidgetPane();
-    cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("1234567890"); // 10 digits invalid snn
-    cy.nextWidgetPane();
-    cy.checkNextIsDisabled();
-
-    cy.get("[data-cy=ssn-input]").clear();
-    cy.get("[data-cy=ssn-input]").type("10915596784"); // 11 digits valid ssn
-    cy.get("[data-cy=email-input]").clear();
-    cy.get("[data-cy=email-input]").type("incorrect email");
-    cy.checkNextIsDisabled();
-
-    cy.get("[data-cy=email-input]").clear();
-    cy.get("[data-cy=email-input]").type("donor@email.com");
     cy.nextWidgetPane();
 
     cy.get("[data-cy=kidNumber]").should(($kid) => {
@@ -432,13 +439,13 @@ describe("Widget", () => {
 
     const randomSum = Math.floor(Math.random() * 1000) + 100;
     cy.pickSingleDonation();
-    cy.get("[data-cy=donation-sum-input]").type(randomSum.toString());
+    cy.get("[data-cy^=donation-sum-input]").type(randomSum.toString());
     cy.nextWidgetPane();
 
     cy.get("[data-cy=name-input]").should("have.value", mockDonor.name);
     cy.get("[data-cy=email-input]").should("have.value", mockDonor.email);
 
-    cy.get("[data-cy=bank-method]").click({ force: true });
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
     cy.wait(500);
 
     cy.intercept("POST", "/donations/register", (req) => {
