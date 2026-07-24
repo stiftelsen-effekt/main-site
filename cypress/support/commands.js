@@ -75,12 +75,10 @@ Cypress.Commands.add("login", (overrides = {}) => {
 const getState = () => cy.window().its("store").invoke("getState");
 
 const nextWidgetPane = () => {
-  cy.get("[data-cy=next-button-div]")
-    .last()
-    .within(() => {
-      cy.get("button").click();
-      cy.wait(250);
-    });
+  // Panes stay mounted once visited, so several [data-cy=next-button]s can
+  // exist at once — .last() is always the currently active pane's.
+  cy.get("[data-cy=next-button]").last().click();
+  cy.wait(250);
 };
 
 const prevWidgetPane = () => {
@@ -89,9 +87,7 @@ const prevWidgetPane = () => {
 };
 
 const checkNextIsDisabled = () => {
-  cy.get("[data-cy=next-button-div]").within(() => {
-    cy.get("button").should("have.css", "opacity", "0.5");
-  });
+  cy.get("[data-cy=next-button]").last().should("have.css", "opacity", "0.5");
 };
 
 const pickRecurringDonation = () => {

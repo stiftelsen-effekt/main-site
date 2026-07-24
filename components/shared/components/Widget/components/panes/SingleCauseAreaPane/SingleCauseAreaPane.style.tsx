@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+/**
+ * Styles ported verbatim from the pre-rewrite ("main") DonationPane /
+ * ShareSelection so the single-cause-area widget matches the old Norway look.
+ * The only change is that the per-organization input renders a "kr" suffix
+ * instead of "%" (and is a little wider) because distribution is now entered
+ * as direct kroner amounts.
+ */
+
 export const SumWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,21 +110,76 @@ export const ShareSelectionSpacer = styled.div`
   margin-top: 40px;
 `;
 
-export const ExtraMessageWrapper = styled.div`
-  display: grid;
-  grid-template-columns: min-content 1fr;
-  gap: 15px;
-  padding: 15px;
-  background: var(--primary);
-  border-radius: 10px;
-  margin-top: 0px;
-  margin-bottom: 40px;
-  color: var(--secondary);
-  font-size: 14px;
-  align-items: center;
+export const SharesSelectorContainer = styled.div`
+  padding-top: 20px;
+`;
 
-  p {
-    margin: 0;
-    line-height: 1.5;
+export const ShareSelectionWrapper = styled.div`
+  display: grid;
+  grid-template-colums: 1fr;
+  grid-gap: 20px;
+  margin-bottom: 40px;
+`;
+
+export const ShareContainer = styled.div`
+  display: grid;
+  grid-auto-rows: 1fr;
+  row-gap: 15px;
+  align-items: flex-end;
+`;
+
+export const ShowAllOrganizationsLink = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 15px;
+  font-size: 16px;
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+export const ShareLink = styled.a`
+  border: none !important;
+
+  &:hover > label {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
+
+export const ShareInputContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  min-width: 0;
+  align-items: flex-end;
+  position: relative;
+
+  label {
+    white-space: normal;
+    font-size: 18px;
+  }
+
+  input {
+    width: 120px;
+    height: 36px;
+    font-size: 22px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--primary);
+    color: var(--primary);
+    margin-left: 8px;
+    text-align: right;
+    padding-right: 32px;
+    transition: border-color 0.2s ease-in-out;
+  }
+
+  &::after {
+    content: "kr";
+    position: absolute;
+    right: 0;
+    font-size: 22px;
+    line-height: 36px;
+    pointer-events: none;
   }
 `;
