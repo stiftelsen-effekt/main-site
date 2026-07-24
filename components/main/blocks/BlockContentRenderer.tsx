@@ -49,6 +49,8 @@ import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
 import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
 import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
 import { FormsparkForm } from "./FormSparkForm/FormSparkForm";
+import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
+import LinkButton from "../../shared/components/EffektButton/LinkButton";
 
 /* Dynamic imports */
 const WealthCalculator = dynamic(() =>
@@ -530,6 +532,8 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           case "formsparkform":
             return <FormsparkForm key={block._key || block._id} formData={block} />;
+          case "button":
+            return <LinkButton key={block._key || block._id} title={block.title} url={block.url} />;
           default:
             return block._type;
         }
