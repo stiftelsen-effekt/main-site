@@ -28,7 +28,7 @@ import {
   SET_OPERATIONS_CONFIG,
   SET_API_ERROR,
   CLEAR_API_ERROR,
-  SET_PREFILLED_ORG_ID,
+  SET_PREFILLED_SHARES,
   SET_SHOW_ALL_ORGANIZATIONS,
   SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
 } from "./types";
@@ -178,12 +178,12 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       };
       break;
     }
-    case SET_PREFILLED_ORG_ID: {
-      const { orgId } = (action as any).payload;
+    case SET_PREFILLED_SHARES: {
+      const { shares } = (action as any).payload;
 
       state = {
         ...state,
-        prefilledOrgId: orgId,
+        prefilledShares: shares,
         showAllOrganizations: false,
         hasManuallyEditedPrefilledOrgAmount: false,
       };

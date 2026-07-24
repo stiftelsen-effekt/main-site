@@ -80,7 +80,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
     causeAreaAmounts = {},
     orgAmounts = {},
     causeAreaDistributionType = {},
-    prefilledOrgId = null,
+    prefilledShares = null,
     showAllOrganizations = false,
     hasManuallyEditedPrefilledOrgAmount = false,
   } = useSelector((state: State) => state.donation);
@@ -97,18 +97,25 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
   }, [currentAmount]);
   const [showErrors, setShowErrors] = React.useState(false);
 
-  // While an organization is prefilled (e.g. arriving from the organizations list) and the
-  // donor hasn't revealed/edited the full org list yet, it keeps tracking 100% of the cause
-  // area amount - so typing a sum afterwards still sends everything to that organization. The
-  // tracked amount is only derived for display; it's committed to orgAmounts (for the actual
-  // payload) once the donor moves on, to avoid a dispatch/re-render race while typing. This state
-  // lives in Redux (not local component state) because panes unmount/remount when navigating.
-  const isTrackingPrefilledOrg = prefilledOrgId !== null && !hasManuallyEditedPrefilledOrgAmount;
-  const displayOrgAmount = (orgId: number) =>
-    isTrackingPrefilledOrg && orgId === prefilledOrgId ? currentAmount : orgAmounts[orgId] || 0;
+  // While one or more organizations are prefilled (e.g. arriving from the organizations list -
+  // one org at 100% - or a CMS-configured distribution link with several) and the donor hasn't
+  // edited any of them yet, each keeps tracking its percentage share of the cause area amount -
+  // so typing a sum afterwards still splits it the same way. The tracked amounts are only
+  // derived for display; they're committed to orgAmounts (for the actual payload) once the
+  // donor moves on, to avoid a dispatch/re-render race while typing. This state lives in Redux
+  // (not local component state) because panes unmount/remount when navigating.
+  const hasPrefilledOrgs = !!prefilledShares && Object.keys(prefilledShares).length > 0;
+  const isTrackingPrefilledShares = hasPrefilledOrgs && !hasManuallyEditedPrefilledOrgAmount;
+  const displayOrgAmount = (orgId: number) => {
+    const share = prefilledShares?.[orgId];
+    if (isTrackingPrefilledShares && share !== undefined) {
+      return Math.round((share / 100) * currentAmount);
+    }
+    return orgAmounts[orgId] || 0;
+  };
   // totalAmount is derived from orgAmounts while in custom mode, which hasn't been synced yet
-  // for a still-tracking prefilled organization - currentAmount is the real intended total then.
-  const effectiveTotalAmount = isTrackingPrefilledOrg ? currentAmount : totalAmount;
+  // for still-tracking prefilled organizations - currentAmount is the real intended total then.
+  const effectiveTotalAmount = isTrackingPrefilledShares ? currentAmount : totalAmount;
 
   if (!causeAreas) {
     return (
@@ -274,8 +281,10 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                 <SharesSelectorContainer>
                   <ShareSelectionWrapper>
                     <ShareContainer>
-                      {(prefilledOrgId !== null && !showAllOrganizations
-                        ? activeOrganizations.filter((org) => org.id === prefilledOrgId)
+                      {(hasPrefilledOrgs && !showAllOrganizations
+                        ? activeOrganizations.filter(
+                            (org) => prefilledShares?.[org.id] !== undefined,
+                          )
                         : activeOrganizations
                       ).map((org) => (
                         <ShareInputContainer key={org.id}>
@@ -303,14 +312,19 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                               // of the auto-tracking prop above, not just on real keystrokes -
                               // only a genuine user edit should freeze the auto-tracked amount.
                               if (sourceInfo.source !== "event") return;
-                              dispatch(setHasManuallyEditedPrefilledOrgAmount(true));
+                              // Only editing one of the actually-tracked (prefilled) organizations
+                              // should freeze tracking - editing an unrelated one (after revealing
+                              // "show all") shouldn't erase the still-tracked prefilled amounts.
+                              if (prefilledShares?.[org.id] !== undefined) {
+                                dispatch(setHasManuallyEditedPrefilledOrgAmount(true));
+                              }
                               dispatch(setOrgAmount(org.id, values.floatValue ?? 0));
                             }}
                           />
                         </ShareInputContainer>
                       ))}
                     </ShareContainer>
-                    {prefilledOrgId !== null && !showAllOrganizations && (
+                    {hasPrefilledOrgs && !showAllOrganizations && (
                       <ShowAllOrganizationsLink
                         type="button"
                         onClick={() => dispatch(setShowAllOrganizations(true))}
@@ -337,8 +351,10 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                 setShowErrors(true);
                 return;
               }
-              if (isTrackingPrefilledOrg && prefilledOrgId !== null) {
-                dispatch(setOrgAmount(prefilledOrgId, currentAmount));
+              if (isTrackingPrefilledShares && prefilledShares) {
+                Object.entries(prefilledShares).forEach(([orgId, share]) => {
+                  dispatch(setOrgAmount(Number(orgId), Math.round((share / 100) * currentAmount)));
+                });
               }
               dispatch(setSum(effectiveTotalAmount));
               dispatch(nextPane());

@@ -128,8 +128,8 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
   });
 
   it("Should show correct donation summary on donor pane", () => {
-    // Set amounts for multiple cause areas
-    setCauseAreaAmount(1, 500);
+    // Set amounts for multiple cause areas (operations cut can default to on)
+    setCauseAreaAmount(1, 500, false);
     setCauseAreaAmount(2, 300);
     setCauseAreaAmount(3, 200);
 
@@ -141,7 +141,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("[data-cy=donation-summary]").should("exist");
 
     // Check donation type (should be single donation by default)
-    cy.get("[data-cy=donation-type]").should("contain.text", "Enkelt givande");
+    cy.get("[data-cy=donation-type]").should("contain.text", "Ge en engångsgåva");
 
     // Check cause area amounts in summary
     cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "500 kr");
@@ -167,10 +167,10 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("[data-cy=name-input]").should("be.visible");
 
     // Check donation type is recurring
-    cy.get("[data-cy=donation-type]").should("contain.text", "Månadsgivande");
+    cy.get("[data-cy=donation-type]").should("contain.text", "Bli månadsgivare");
 
     // Check that operations/cut amount is shown
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Stöd Ge Effektivt");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("exist");
 
     // Check that cause area amounts are shown (excluding tips)
@@ -183,7 +183,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
   });
 
   it("Should show correct summary with custom organization distribution", () => {
-    setCauseAreaAmount(1, 1000);
+    setCauseAreaAmount(1, 1000, false); // operations cut can default to on
 
     // Check if custom distribution is available for cause area 1
     cy.get("body").then(($body) => {

@@ -40,125 +40,6 @@ import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
 import { RecurringDonation } from "../types/Enums";
 import { applyWidgetDefaults, DEFAULT_OPERATIONS_CONFIG } from "../utils/widgetDefaults";
-import { CauseArea } from "../types/CauseArea";
-
-/**
- * TEMP DEMO DATA — remove before merging.
- * DK's cause-area data isn't set up in the API/Sanity yet, so this hardcodes
- * a 4-cause-area lineup (Global Health, Animal Welfare, Operations, Other) to
- * demo the multi cause-area widget flow on the DK Vercel preview.
- */
-const DK_DEMO_CAUSE_AREAS: CauseArea[] = [
-  {
-    id: 1,
-    name: "Global helse",
-    widgetDisplayName: "Global helse",
-    shortDescription: "De mest effektive tiltakene innen global helse.",
-    longDescription: "De mest effektive tiltakene innen global helse.",
-    informationUrl: "",
-    isActive: true,
-    ordering: 1,
-    // Used by the smart/recommended ("-1") distribution mode - without this,
-    // smart distribution silently produces no cause area/organization amounts
-    standardPercentageShare: 60,
-    organizations: [
-      {
-        id: 101,
-        causeAreaId: 1,
-        standardShare: 60,
-        name: "Malaria Consortium",
-        isActive: true,
-        ordering: 1,
-      },
-      {
-        id: 111,
-        causeAreaId: 1,
-        standardShare: 40,
-        name: "Mod Malaria Fonden",
-        isActive: true,
-        ordering: 2,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Dyrevelferd",
-    widgetDisplayName: "Dyrevelferd",
-    shortDescription: "De mest effektive tiltakene innen dyrevelferd.",
-    longDescription: "De mest effektive tiltakene innen dyrevelferd.",
-    informationUrl: "",
-    isActive: true,
-    ordering: 2,
-    standardPercentageShare: 35,
-    organizations: [
-      {
-        id: 102,
-        causeAreaId: 2,
-        standardShare: 60,
-        name: "The Humane League",
-        isActive: true,
-        ordering: 1,
-      },
-      {
-        id: 112,
-        causeAreaId: 2,
-        standardShare: 40,
-        name: "Dyrevelferd Fonden",
-        isActive: true,
-        ordering: 2,
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Drift",
-    widgetDisplayName: "Drift",
-    shortDescription: "Støtt driften av organisasjonen.",
-    longDescription: "Støtt driften av organisasjonen.",
-    informationUrl: "",
-    isActive: true,
-    ordering: 3,
-    standardPercentageShare: 5,
-    organizations: [
-      {
-        id: 104,
-        causeAreaId: 4,
-        standardShare: 100,
-        name: "Drift",
-        isActive: true,
-        ordering: 1,
-      },
-    ],
-  },
-  {
-    id: 5,
-    name: "Annet",
-    widgetDisplayName: "Annet",
-    shortDescription: "Andre effektive tiltak.",
-    longDescription: "Andre effektive tiltak.",
-    informationUrl: "",
-    isActive: true,
-    ordering: 4,
-    organizations: [
-      {
-        id: 105,
-        causeAreaId: 5,
-        standardShare: 60,
-        name: "Annet-fond",
-        isActive: true,
-        ordering: 1,
-      },
-      {
-        id: 115,
-        causeAreaId: 5,
-        standardShare: 40,
-        name: "Andet Formål Fonden",
-        isActive: true,
-        ordering: 2,
-      },
-    ],
-  },
-];
 
 export const widgetContentQuery = groq`
   ...,
@@ -359,15 +240,7 @@ export const Widget = withStaticProps(
           DEFAULT_OPERATIONS_CONFIG.excluded_cause_area_ids,
       }),
     );
-    // TEMP DEMO — remove before merging. See DK_DEMO_CAUSE_AREAS above.
-    // Skipped under Cypress so e2e specs can mock /causeareas/all themselves
-    // instead of always getting the demo data regardless of their fixture.
-    const isCypress = typeof window !== "undefined" && !!(window as any).Cypress;
-    if (widget.locale === "dk" && !isCypress) {
-      dispatch(fetchCauseAreasAction.done({ params: undefined, result: DK_DEMO_CAUSE_AREAS }));
-    } else {
-      dispatch(fetchCauseAreasAction.started(undefined));
-    }
+    dispatch(fetchCauseAreasAction.started(undefined));
     dispatch(fetchReferralsAction.started(undefined));
   }, [dispatch, widget.locale]);
 

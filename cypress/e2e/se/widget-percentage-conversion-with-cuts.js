@@ -23,15 +23,12 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
   });
 
   describe("Single Cause Area with Cut", () => {
-    it("Should calculate correct percentages with 5% cut for single cause area", () => {
+    it("Should calculate correct percentages with the default cut for single cause area", () => {
       // Select Global Health directly
       cy.get("[data-cy=cause-area-1]").click();
 
-      // Enter 1000 kr
+      // Enter 1000 kr - the cut defaults to enabled, at the configured percentage
       cy.get("[data-cy=donation-sum-input-1]").type("1000");
-
-      // Enable 5% cut
-      cy.get("[data-cy=cut-checkbox-1]").click();
 
       // Go to donor pane
       cy.get("[data-cy=next-button]").click();
@@ -48,30 +45,29 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
         // Total should be 1000 (user input)
         expect(body.amount).to.equal(1000);
 
-        // Should have 2 cause areas: Global Health (95%) and Operations (5%)
+        // Should have 2 cause areas: Global Health (90%) and Operations (10%)
         expect(body.distributionCauseAreas).to.have.length(2);
 
-        // Global Health: 950/1000 = 95%
+        // Global Health: 900/1000 = 90%
         const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
-        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(95, 0.01);
+        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(90, 0.01);
 
-        // Operations: 50/1000 = 5%
+        // Operations: 100/1000 = 10%
         const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
-        expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+        expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
       });
     });
 
     it("Should handle navigation between cause areas with different cut settings", () => {
-      // First: Global Health with cut
+      // First: Global Health with cut (enabled by default)
       cy.get("[data-cy=cause-area-1]").click();
       cy.get("[data-cy=donation-sum-input-1]").type("500");
-      cy.get("[data-cy=cut-checkbox-1]").click();
 
-      // Go back and select Animal Welfare without cut
+      // Go back and select Animal Welfare, explicitly disabling its cut (also enabled by default)
       cy.get("[data-cy=back-button]").click();
       cy.get("[data-cy=cause-area-2]").click();
       cy.get("[data-cy=donation-sum-input-2]").type("500");
-      // Don't enable cut
+      cy.get("[data-cy=cut-checkbox-2]").uncheck({ force: true });
 
       // Submit
       cy.get("[data-cy=next-button]").click();
@@ -100,15 +96,14 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
       cy.get("body").then(($body) => {
         if ($body.find('input[type="radio"]').length > 1) {
           // Switch to custom distribution
-          cy.contains("Velj organisasjoner selv").click();
+          cy.contains("Välj fördelning själv").click();
 
           cy.wait(500);
           // Set custom amounts that sum to 1000
           cy.get("[data-cy=org-12]").clear().type("600");
           cy.get("[data-cy=org-15]").clear().type("400");
 
-          // Enable 5% cut
-          cy.get("[data-cy=cut-checkbox-1]").check();
+          // Cut is enabled by default at the configured percentage
           cy.get("[data-cy=cut-checkbox-1]").should("be.checked");
 
           cy.get("[data-cy=next-button]").click();
@@ -131,20 +126,20 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
             // Global Health with custom distribution
             const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
             expect(globalHealth.standardSplit).to.be.false;
-            expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(95, 0.01);
+            expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(90, 0.01);
 
             // Organizations should have proportional cuts
-            // Org 12: 600 * 0.95 = 570, 570/1000 = 57%
+            // Org 12: 600 * 0.90 = 540, 540/1000 = 54%
             const org12 = globalHealth.organizations.find((org) => org.id === 12);
-            expect(parseFloat(org12.percentageShare)).to.be.closeTo(57, 0.01);
+            expect(parseFloat(org12.percentageShare)).to.be.closeTo(54, 0.01);
 
-            // Org 15: 400 * 0.95 = 380, 380/1000 = 38%
+            // Org 15: 400 * 0.90 = 360, 360/1000 = 36%
             const org15 = globalHealth.organizations.find((org) => org.id === 15);
-            expect(parseFloat(org15.percentageShare)).to.be.closeTo(38, 0.01);
+            expect(parseFloat(org15.percentageShare)).to.be.closeTo(36, 0.01);
 
-            // Operations: 5%
+            // Operations: 10%
             const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
-            expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+            expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
           });
         }
       });
@@ -152,16 +147,13 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
   });
 
   describe("Multiple Cause Areas with Global Cut", () => {
-    it("Should calculate correct percentages with global 5% cut", () => {
+    it("Should calculate correct percentages with the default global cut", () => {
       cy.get("[data-cy=cause-area-multiple]").click();
 
-      // Set amounts for different cause areas (total 1000)
+      // Set amounts for different cause areas (total 1000) - global cut defaults to enabled
       setCauseAreaAmount(1, 500); // Global Health
       setCauseAreaAmount(2, 300); // Animal Welfare
       setCauseAreaAmount(3, 200); // Climate
-
-      // Enable global cut
-      cy.get("[data-cy=global-cut-checkbox]").check();
 
       // Submit
       cy.get("[data-cy=next-button]").click();
@@ -178,21 +170,21 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
         // Should have 4 cause areas (3 selected + operations)
         expect(body.distributionCauseAreas).to.have.length(4);
 
-        // Global Health: 500 - (50 * 500/1000) = 475, 475/1000 = 47.5%
+        // Global Health: 500 - (100 * 500/1000) = 450, 450/1000 = 45%
         const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
-        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(47.5, 0.01);
+        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(45, 0.01);
 
-        // Animal Welfare: 300 - (50 * 300/1000) = 285, 285/1000 = 28.5%
+        // Animal Welfare: 300 - (100 * 300/1000) = 270, 270/1000 = 27%
         const animalWelfare = body.distributionCauseAreas.find((ca) => ca.id === 2);
-        expect(parseFloat(animalWelfare.percentageShare)).to.be.closeTo(28.5, 0.01);
+        expect(parseFloat(animalWelfare.percentageShare)).to.be.closeTo(27, 0.01);
 
-        // Climate: 200 - (50 * 200/1000) = 190, 190/1000 = 19%
+        // Climate: 200 - (100 * 200/1000) = 180, 180/1000 = 18%
         const climate = body.distributionCauseAreas.find((ca) => ca.id === 3);
-        expect(parseFloat(climate.percentageShare)).to.be.closeTo(19, 0.01);
+        expect(parseFloat(climate.percentageShare)).to.be.closeTo(18, 0.01);
 
-        // Operations: 50/1000 = 5%
+        // Operations: 100/1000 = 10%
         const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
-        expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+        expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
       });
     });
 
@@ -208,7 +200,7 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
         if (radioButtons.length > 1) {
           // Find and click custom distribution for Animal Welfare
           cy.get('[data-cy^="cause-area-form-2"]').within(() => {
-            cy.contains("Velj organisasjoner selv").click();
+            cy.contains("Välj fördelning själv").click();
           });
 
           cy.wait(500);
@@ -216,8 +208,7 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
           cy.get("[data-cy=org-21]").clear().type("400");
           cy.get("[data-cy=org-22]").clear().type("200");
 
-          // Enable global cut
-          cy.get("[data-cy=global-cut-toggle]").click();
+          // Global cut is enabled by default
 
           cy.get("[data-cy=next-button]").click();
           cy.get("[data-cy=name-input]").type("Test Donor");
@@ -230,28 +221,28 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
             // Total: 400 + 600 = 1000
             expect(body.amount).to.equal(1000);
 
-            // Global Health (standard): 400 - (50 * 400/1000) = 380, 380/1000 = 38%
+            // Global Health (standard): 400 - (100 * 400/1000) = 360, 360/1000 = 36%
             const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
             expect(globalHealth.standardSplit).to.be.true;
-            expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(38, 0.01);
+            expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(36, 0.01);
 
-            // Animal Welfare (custom): 600 - (50 * 600/1000) = 570, 570/1000 = 57%
+            // Animal Welfare (custom): 600 - (100 * 600/1000) = 540, 540/1000 = 54%
             const animalWelfare = body.distributionCauseAreas.find((ca) => ca.id === 2);
             expect(animalWelfare.standardSplit).to.be.false;
-            expect(parseFloat(animalWelfare.percentageShare)).to.be.closeTo(57, 0.01);
+            expect(parseFloat(animalWelfare.percentageShare)).to.be.closeTo(54, 0.01);
 
             // Check individual org percentages for Animal Welfare
-            // Org 21: 400 * (570/600) / 1000 = 38%
+            // Org 21: 400 * (540/600) / 1000 = 36%
             const org21 = animalWelfare.organizations.find((org) => org.id === 21);
-            expect(parseFloat(org21.percentageShare)).to.be.closeTo(38, 0.01);
+            expect(parseFloat(org21.percentageShare)).to.be.closeTo(36, 0.01);
 
-            // Org 22: 200 * (570/600) / 1000 = 19%
+            // Org 22: 200 * (540/600) / 1000 = 18%
             const org22 = animalWelfare.organizations.find((org) => org.id === 22);
-            expect(parseFloat(org22.percentageShare)).to.be.closeTo(19, 0.01);
+            expect(parseFloat(org22.percentageShare)).to.be.closeTo(18, 0.01);
 
-            // Operations: 5%
+            // Operations: 10%
             const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
-            expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+            expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
           });
         }
       });
@@ -303,7 +294,7 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
       setCauseAreaAmount(1, 1000);
       setCauseAreaAmount(2, 0); // Zero amount
 
-      cy.get("[data-cy=global-cut-toggle]").click();
+      // Global cut is enabled by default
 
       cy.get("[data-cy=next-button]").click();
       cy.get("[data-cy=name-input]").type("Test Donor");
@@ -318,13 +309,13 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
         // Should have 2 cause areas (Global Health + Operations)
         expect(body.distributionCauseAreas).to.have.length(2);
 
-        // Global Health: 950/1000 = 95%
+        // Global Health: 900/1000 = 90%
         const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
-        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(95, 0.01);
+        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(90, 0.01);
 
-        // Operations: 50/1000 = 5%
+        // Operations: 100/1000 = 10%
         const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
-        expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+        expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
 
         // Animal Welfare should not be included
         const animalWelfare = body.distributionCauseAreas.find((ca) => ca.id === 2);
@@ -333,10 +324,9 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
     });
 
     it("Should handle switching between single and multiple modes", () => {
-      // Start with single cause area with cut
+      // Start with single cause area with cut (enabled by default)
       cy.get("[data-cy=cause-area-1]").click();
       cy.get("[data-cy=donation-sum-input-1]").type("500");
-      cy.get("[data-cy=cut-checkbox-1]").click();
 
       // Switch to multiple mode
       cy.get("[data-cy=back-button]").click();
@@ -372,9 +362,8 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
     it("Should handle very small amounts with cuts", () => {
       cy.get("[data-cy=cause-area-1]").click();
 
-      // 20 kr - 5% cut = 1 kr to operations
+      // 20 kr - 10% cut (enabled by default) = 2 kr to operations
       cy.get("[data-cy=donation-sum-input-1]").type("20");
-      cy.get("[data-cy=cut-checkbox-1]").click();
 
       cy.get("[data-cy=next-button]").click();
       cy.get("[data-cy=name-input]").type("Test Donor");
@@ -386,13 +375,13 @@ describe("Swedish Widget - Percentage Conversion with Cuts", () => {
 
         expect(body.amount).to.equal(20);
 
-        // Global Health: 19/20 = 95%
+        // Global Health: 18/20 = 90%
         const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
-        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(95, 0.01);
+        expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(90, 0.01);
 
-        // Operations: 1/20 = 5%
+        // Operations: 2/20 = 10%
         const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
-        expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+        expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
       });
     });
   });

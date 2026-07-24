@@ -28,7 +28,7 @@ import {
   SET_OPERATIONS_CONFIG,
   SET_API_ERROR,
   CLEAR_API_ERROR,
-  SET_PREFILLED_ORG_ID,
+  SET_PREFILLED_SHARES,
   SET_SHOW_ALL_ORGANIZATIONS,
   SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
 } from "./types";
@@ -345,13 +345,13 @@ export function clearApiError(): DonationActionTypes {
 }
 
 /**
- * Mark an organization as prefilled from an external entry point (e.g. the
- * organizations list), or clear the prefill with null.
+ * Set organization percentage shares (0-100) prefilled from an external entry point
+ * (e.g. the organizations list, or a CMS-configured distribution link), or clear with null.
  */
-export function setPrefilledOrgId(orgId: number | null): DonationActionTypes {
+export function setPrefilledShares(shares: Record<number, number> | null): DonationActionTypes {
   return {
-    type: SET_PREFILLED_ORG_ID,
-    payload: { orgId },
+    type: SET_PREFILLED_SHARES,
+    payload: { shares },
   };
 }
 

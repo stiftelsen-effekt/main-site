@@ -80,17 +80,17 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
     cy.get("[data-cy=cause-area-1]").click();
 
     // Switch to recurring by clicking the radio input
-    cy.get('[data-cy="recurring-donation-radio"]').click();
+    cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
     cy.get('[data-cy="recurring-donation-radio"]').should("be.checked");
 
     // Switch back to single by clicking the radio input
-    cy.get('[data-cy="single-donation-radio"]').click();
+    cy.get('[data-cy="single-donation-radio"]').click({ force: true });
     cy.get('[data-cy="single-donation-radio"]').should("be.checked");
   });
 
   it("Should show correct donation summary for single cause area", () => {
     cy.get("[data-cy=cause-area-1]").click();
-    setCauseAreaAmount(1, 750);
+    setCauseAreaAmount(1, 750, false); // operations cut can default to on
 
     // Go to donor pane
     cy.get("[data-cy=next-button]").click();
@@ -100,7 +100,7 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
     cy.get("[data-cy=donation-summary]").should("exist");
 
     // Check donation type (should be single donation by default)
-    cy.get("[data-cy=donation-type]").should("contain.text", "Enkelt givande");
+    cy.get("[data-cy=donation-type]").should("contain.text", "Ge en engångsgåva");
 
     // Check cause area amount in summary
     cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "750 kr");
@@ -123,11 +123,11 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
     cy.get("[data-cy=name-input]").should("be.visible");
 
     // Check donation type is recurring
-    cy.get("[data-cy=donation-type]").should("contain.text", "Månadsgivande");
+    cy.get("[data-cy=donation-type]").should("contain.text", "Bli månadsgivare");
 
     // Check that both cause area and operations are shown
     cy.get("[data-cy=summary-cause-area-1-amount]").should("exist");
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Stöd Ge Effektivt");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("exist");
 
     // Check total includes both amounts
@@ -144,7 +144,7 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
 
     // Check that donation summary shows operations
     cy.get("[data-cy=donation-summary]").should("exist");
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Stöd Ge Effektivt");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "150 kr");
     cy.get("[data-cy=summary-total-amount]").should("contain.text", "150 kr");
   });

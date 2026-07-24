@@ -6,7 +6,7 @@ import {
   setRecurring,
   setCauseAreaDistributionType,
   setOrgAmount,
-  setPrefilledOrgId,
+  setPrefilledShares,
 } from "../store/donation/actions";
 import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
@@ -65,6 +65,12 @@ export const usePrefilledDistribution = ({
       return;
     }
 
+    // Accumulate shares across every cause area into one flat org-keyed map (org IDs are
+    // unique across cause areas) rather than dispatching setPrefilledShares per cause area,
+    // which would otherwise have each cause area's dispatch clobber the previous one's.
+    const combinedShares: Record<number, number> = {};
+    let hasAnyPrefilledShares = false;
+
     causeAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
         (prefilledArea) => prefilledArea.causeAreaId === causeArea.id,
@@ -72,11 +78,22 @@ export const usePrefilledDistribution = ({
 
       if (prefilledCauseArea) {
         const causeAreaAmount = causeAreaAmounts[causeArea.id] || 0;
-        handlePrefilledCauseArea(dispatch, causeArea, prefilledCauseArea, causeAreaAmount);
+        const sharesByOrgId = handlePrefilledCauseArea(
+          dispatch,
+          causeArea,
+          prefilledCauseArea,
+          causeAreaAmount,
+        );
+        if (Object.keys(sharesByOrgId).length > 0) {
+          hasAnyPrefilledShares = true;
+          Object.assign(combinedShares, sharesByOrgId);
+        }
       } else {
         resetCauseArea(dispatch, causeArea);
       }
     });
+
+    dispatch(setPrefilledShares(hasAnyPrefilledShares ? combinedShares : null));
 
     // Mark that we've applied the prefill
     hasAppliedPrefill.current = true;
@@ -166,29 +183,34 @@ export const useQueryParamsPrefill = ({
 
 // Helper functions
 
+// Applies a prefilled cause area's organization shares (0-100 each, e.g. from the
+// organizations list - one org at 100% - or a CMS-configured distribution link with
+// several) as kr amounts of whatever the cause area's amount currently is, and returns
+// the applied shares (org ID -> percentage) so the caller can track them for auto-updating
+// as the amount changes later.
 const handlePrefilledCauseArea = (
   dispatch: any,
   causeArea: CauseArea,
   prefilledCauseArea: PrefilledDistribution[number],
   causeAreaAmount: number,
-) => {
+): Record<number, number> => {
   dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
 
-  // Only one organization is ever prefilled from an external entry point (e.g. the
-  // organizations list) - it gets the full cause area amount, everything else is reset to 0.
-  const prefilledOrgId = prefilledCauseArea.organizations[0]?.organizationId ?? null;
-  dispatch(setPrefilledOrgId(prefilledOrgId));
+  const shareByOrgId: Record<number, number> = {};
+  prefilledCauseArea.organizations.forEach((org) => {
+    if (org.share > 0) shareByOrgId[org.organizationId] = org.share;
+  });
 
   causeArea.organizations.forEach((organization) => {
-    dispatch(
-      setOrgAmount(organization.id, organization.id === prefilledOrgId ? causeAreaAmount : 0),
-    );
+    const share = shareByOrgId[organization.id] ?? 0;
+    dispatch(setOrgAmount(organization.id, Math.round((share / 100) * causeAreaAmount)));
   });
+
+  return shareByOrgId;
 };
 
 const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
   dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.STANDARD));
-  dispatch(setPrefilledOrgId(null));
 
   causeArea.organizations.forEach((organization) => {
     dispatch(setOrgAmount(organization.id, 0));

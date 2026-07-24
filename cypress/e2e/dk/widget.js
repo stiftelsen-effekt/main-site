@@ -160,6 +160,8 @@ describe("Widget", () => {
 
     cy.get("[data-cy=payment-method-bank]").click({ force: true });
 
+    cy.nextWidgetPane();
+
     cy.get("[data-cy=kidNumber]").should(($kid) => {
       const kid = $kid.text();
       expect(kid).to.be.length(8);

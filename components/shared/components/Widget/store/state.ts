@@ -45,8 +45,9 @@ export interface Donation extends DonationInput {
   causeAreaDistributionType?: Record<number, ShareType>;
   /** UI-entered amounts per organization (NOK), keyed by organization ID */
   orgAmounts?: Record<number, number>;
-  /** Organization ID prefilled from an external entry point (e.g. the organizations list) */
-  prefilledOrgId?: number | null;
+  /** Organization percentage shares (0-100) prefilled from an external entry point (e.g.
+   * the organizations list, or a CMS-configured distribution link), keyed by organization ID */
+  prefilledShares?: Record<number, number> | null;
   /** Whether the donor has revealed the full organization list beyond the prefilled one */
   showAllOrganizations?: boolean;
   /** Whether the donor has manually edited the prefilled organization's amount (stops it auto-tracking the cause area total) */

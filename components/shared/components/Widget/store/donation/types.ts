@@ -31,7 +31,7 @@ export const SET_OPERATIONS_PERCENTAGE_BY_CAUSE_AREA = "SET_OPERATIONS_PERCENTAG
 export const SET_OPERATIONS_CONFIG = "SET_OPERATIONS_CONFIG";
 export const SET_API_ERROR = "SET_API_ERROR";
 export const CLEAR_API_ERROR = "CLEAR_API_ERROR";
-export const SET_PREFILLED_ORG_ID = "SET_PREFILLED_ORG_ID";
+export const SET_PREFILLED_SHARES = "SET_PREFILLED_SHARES";
 export const SET_SHOW_ALL_ORGANIZATIONS = "SET_SHOW_ALL_ORGANIZATIONS";
 export const SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT =
   "SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT";
@@ -252,11 +252,11 @@ interface ClearApiError {
   type: typeof CLEAR_API_ERROR;
 }
 
-interface SetPrefilledOrgId {
-  type: typeof SET_PREFILLED_ORG_ID;
+interface SetPrefilledShares {
+  type: typeof SET_PREFILLED_SHARES;
   payload: {
-    /** organization ID prefilled from an external entry point (e.g. the organizations list), or null to clear */
-    orgId: number | null;
+    /** organization percentage shares (0-100) keyed by organization ID, or null to clear */
+    shares: Record<number, number> | null;
   };
 }
 
@@ -302,6 +302,6 @@ export type DonationActionTypes =
   | SetOperationsConfig
   | SetApiError
   | ClearApiError
-  | SetPrefilledOrgId
+  | SetPrefilledShares
   | SetShowAllOrganizations
   | SetHasManuallyEditedPrefilledOrgAmount;

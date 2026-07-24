@@ -19,20 +19,20 @@ describe("Swedish Widget - Payment Flow", () => {
 
     it("Should validate required donor information", () => {
       // All payment buttons should be disabled initially
-      cy.get("[data-cy=payment-method-autogiro]").should("be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("be.disabled");
 
       // Fill invalid email
       cy.get("[data-cy=name-input]").type("Test Person");
       cy.get("[data-cy=email-input]").type("invalid-email");
 
       // Payment buttons should still be disabled
-      cy.get("[data-cy=payment-method-autogiro]").should("be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("be.disabled");
 
       // Fix email
       cy.get("[data-cy=email-input]").clear().type("test@example.com");
 
       // Payment buttons should now be enabled
-      cy.get("[data-cy=payment-method-autogiro]").should("not.be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
     });
 
     it("Should handle anonymous donation", () => {
@@ -40,7 +40,7 @@ describe("Swedish Widget - Payment Flow", () => {
       cy.get("[data-cy=anon-checkbox]").check();
 
       // Should skip name/email validation
-      cy.get("[data-cy=payment-method-autogiro]").should("not.be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
 
       // Name and email should be hidden/disabled
       cy.get("[data-cy=name-input]").should("not.be.visible");
@@ -58,18 +58,18 @@ describe("Swedish Widget - Payment Flow", () => {
 
       // Invalid SSN should disable payment
       cy.get("[data-cy=ssn-input]").type("invalid-ssn");
-      cy.get("[data-cy=payment-method-autogiro]").should("be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("be.disabled");
 
       // Valid Swedish SSN should enable payment
       cy.get("[data-cy=ssn-input]").clear().type("19900101-1234");
-      cy.get("[data-cy=payment-method-autogiro]").should("not.be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
     });
 
     it("Should handle newsletter signup", () => {
       fillDonorInfo();
 
       // Newsletter should be optional
-      cy.get("[data-cy=payment-method-autogiro]").should("not.be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
 
       // Should be able to toggle newsletter
       cy.get("[data-cy=newsletter-checkbox]").check();
@@ -82,7 +82,9 @@ describe("Swedish Widget - Payment Flow", () => {
 
   describe("Autogiro Payment Flow", () => {
     beforeEach(() => {
+      // Autogiro is a recurring-only payment method
       cy.get("[data-cy=cause-area-1]").click();
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       setCauseAreaAmount(1, 500, true); // With tip
       cy.get("[data-cy=next-button]").click();
       fillDonorInfo();
@@ -101,7 +103,7 @@ describe("Swedish Widget - Payment Flow", () => {
     it("Should complete recurring autogiro donation", () => {
       // Navigate back
       cy.get("[data-cy=back-button]").click();
-      cy.get('input[value="1"]').click();
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       cy.get("[data-cy=next-button]").click();
 
       cy.get("[data-cy=payment-method-autogiro]").click();
@@ -116,7 +118,7 @@ describe("Swedish Widget - Payment Flow", () => {
     it("Should handle autogiro date selection", () => {
       // Navigate back
       cy.get("[data-cy=back-button]").click();
-      cy.get('input[value="1"]').click();
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       cy.get("[data-cy=next-button]").click();
 
       cy.get("[data-cy=payment-method-autogiro]").click();
@@ -148,10 +150,7 @@ describe("Swedish Widget - Payment Flow", () => {
     });
 
     it("Should show available payment methods", () => {
-      // Check that Swedish payment methods are available
-      cy.get("[data-cy=payment-method-autogiro]").should("be.visible");
-
-      // May also have bank transfer and other methods
+      // At least one payment method should be available for a one-time donation
       cy.get("[data-cy^=payment-method-]").should("have.length.at.least", 1);
     });
 
@@ -179,7 +178,7 @@ describe("Swedish Widget - Payment Flow", () => {
       setCauseAreaAmount(3, 200, true); // Climate with tip
 
       // Switch to recurring
-      cy.get('input[value="1"]').click();
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
 
       // Check total is displayed
       cy.get("[data-cy=total-amount-wrapper]").should("exist"); // Complex calculation with tips
@@ -198,6 +197,7 @@ describe("Swedish Widget - Payment Flow", () => {
 
     it("Should preserve donation details in confirmation", () => {
       cy.get("[data-cy=cause-area-1]").click();
+      cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
       setCauseAreaAmount(1, 1000, true);
 
       cy.get("[data-cy=next-button]").click();
@@ -233,7 +233,7 @@ describe("Swedish Widget - Payment Flow", () => {
         },
       }).as("registerDonationError");
 
-      cy.get("[data-cy=payment-method-autogiro]").click();
+      cy.get("[data-cy^=payment-method-]").first().click();
 
       // Should show error message
       cy.contains("Invalid donation data").should("be.visible");
@@ -244,10 +244,10 @@ describe("Swedish Widget - Payment Flow", () => {
         forceNetworkError: true,
       }).as("networkError");
 
-      cy.get("[data-cy=payment-method-autogiro]").click();
+      cy.get("[data-cy^=payment-method-]").first().click();
 
       // Should show appropriate error handling
-      cy.get("[data-cy=payment-method-autogiro]").should("not.be.disabled");
+      cy.get("[data-cy^=payment-method-]").first().should("not.be.disabled");
     });
   });
 });

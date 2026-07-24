@@ -9,7 +9,8 @@ describe("Swedish Widget - State Persistence", () => {
     // Select Global hälsa (ID 1)
     cy.get("[data-cy=cause-area-1]").click();
 
-    // Set amount for Global hälsa
+    // Set amount for Global hälsa (cut defaults to enabled, entered amount is the total - not
+    // added on top of it)
     setCauseAreaAmount(1, 500, true);
 
     // Go back to selection
@@ -29,9 +30,9 @@ describe("Swedish Widget - State Persistence", () => {
     // Return to Global hälsa - state should be preserved
     cy.get("[data-cy=cause-area-1]").click();
 
-    // Check that Global hälsa amount and tip are preserved
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "525"); // 500 + 5% tip = 525 total
-    cy.get("[data-cy=tip-checkbox-1]").should("be.checked");
+    // Check that Global hälsa amount and cut are preserved
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "500");
+    cy.get("[data-cy=cut-checkbox-1]").should("be.checked");
 
     // Go back and check Djurvälfärd state is also preserved
     cy.get("[data-cy=back-button]").click();
@@ -41,13 +42,14 @@ describe("Swedish Widget - State Persistence", () => {
   });
 
   it("Should maintain state across full navigation flow", () => {
-    // Set up complex state with multiple cause areas
+    // Set up complex state with multiple cause areas - in multiple-cause-area mode there's
+    // one shared global cut toggle, not a separate one per cause area
     cy.get("[data-cy=cause-area-multiple]").click();
 
-    // Set amounts and tips for multiple areas
-    setCauseAreaAmount(1, 300, true);
-    setCauseAreaAmount(2, 200); // No tip
-    setCauseAreaAmount(3, 150, true);
+    setCauseAreaAmount(1, 300);
+    setCauseAreaAmount(2, 200);
+    setCauseAreaAmount(3, 150);
+    setGlobalCut(true);
 
     // Navigate to donor pane
     cy.get("[data-cy=next-button]").click();
@@ -56,14 +58,10 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("[data-cy=back-button]").click();
 
     // Check that all state is preserved
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "315"); // 300 + 5% tip
-    cy.get("[data-cy=tip-checkbox-1]").should("be.checked");
-
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
     cy.get("[data-cy=donation-sum-input-2]").should("have.value", "200");
-    cy.get("[data-cy=tip-checkbox-2]").should("not.be.checked");
-
-    cy.get("[data-cy=donation-sum-input-3]").should("have.value", "158"); // 150 + ~5% tip
-    cy.get("[data-cy=tip-checkbox-3]").should("be.checked");
+    cy.get("[data-cy=donation-sum-input-3]").should("have.value", "150");
+    cy.get("[data-cy=global-cut-checkbox]").should("be.checked");
 
     // Switch to single cause area and back
     cy.get("[data-cy=back-button]").click();
@@ -71,8 +69,7 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("[data-cy=cause-area-1]").click();
 
     // Should show the amount from multiple selection
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "315");
-    cy.get("[data-cy=tip-checkbox-1]").should("be.checked");
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
 
     // Go back to multiple and verify everything is still there
     cy.get("[data-cy=back-button]").click();
@@ -80,9 +77,9 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("[data-cy=cause-area-multiple]").click();
 
     // All amounts should still be preserved
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "315");
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
     cy.get("[data-cy=donation-sum-input-2]").should("have.value", "200");
-    cy.get("[data-cy=donation-sum-input-3]").should("have.value", "158");
+    cy.get("[data-cy=donation-sum-input-3]").should("have.value", "150");
   });
 
   it("Should preserve organization distribution settings", () => {
@@ -93,7 +90,7 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and set custom organization amount
         cy.wait(500);
@@ -109,7 +106,7 @@ describe("Swedish Widget - State Persistence", () => {
             cy.get("[data-cy=cause-area-1]").click();
 
             // Custom distribution and amount should be preserved
-            cy.contains("Velj organisasjoner selv").parent().find("input").should("be.checked");
+            cy.contains("Välj fördelning själv").parent().find("input").should("be.checked");
             cy.get(`[data-cy=org-${orgId}]`).should("have.value", "600");
           });
       } else {
@@ -131,7 +128,7 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("[data-cy=cause-area-1]").click();
 
     // Switch to recurring donation
-    cy.get('input[value="1"]').click();
+    cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
     setCauseAreaAmount(1, 500);
 
     // Navigate away and back
@@ -140,7 +137,7 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("[data-cy=cause-area-1]").click();
 
     // Should still be set to recurring
-    cy.get('input[value="1"]').should("be.checked");
+    cy.get('[data-cy="recurring-donation-radio"]').should("be.checked");
     cy.get("[data-cy=donation-sum-input-1]").should("have.value", "500");
   });
 
@@ -148,7 +145,7 @@ describe("Swedish Widget - State Persistence", () => {
     // Start with single cause area
     cy.get("[data-cy=cause-area-1]").click();
     setCauseAreaAmount(1, 400, true);
-    cy.get('input[value="1"]').click(); // Set to recurring
+    cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
 
     // Go to multiple cause areas
     cy.get("[data-cy=back-button]").click();
@@ -156,9 +153,9 @@ describe("Swedish Widget - State Persistence", () => {
     cy.get("[data-cy=cause-area-multiple]").click();
 
     // Should inherit settings from single selection
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "420"); // 400 + tip
-    cy.get("[data-cy=tip-checkbox-1]").should("be.checked");
-    cy.get('input[value="1"]').should("be.checked"); // Recurring
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "400");
+    cy.get("[data-cy=global-cut-checkbox]").should("be.checked");
+    cy.get('[data-cy="recurring-donation-radio"]').should("be.checked");
 
     // Add more cause areas
     setCauseAreaAmount(2, 250);
@@ -175,10 +172,10 @@ describe("Swedish Widget - State Persistence", () => {
     cy.wait(500);
     cy.get("[data-cy=cause-area-multiple]").click();
 
-    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "420");
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "400");
     cy.get("[data-cy=donation-sum-input-2]").should("have.value", "250");
-    cy.get("[data-cy=donation-sum-input-3]").should("have.value", "158"); // 150 + tip
-    cy.get('input[value="1"]').should("be.checked");
+    cy.get("[data-cy=donation-sum-input-3]").should("have.value", "150");
+    cy.get('[data-cy="recurring-donation-radio"]').should("be.checked");
   });
 
   it("Should reset state only when smart distribution is selected", () => {

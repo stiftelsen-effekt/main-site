@@ -93,7 +93,7 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
   it("Should not show operations amounts in UI summary when switching to smart distribution", () => {
     // Start with single cause area and enable tip
     cy.get("[data-cy=cause-area-1]").click();
-    setCauseAreaAmount(1, 100, true); // 100 kr with 5% tip = 95 kr + 5 kr operations
+    setCauseAreaAmount(1, 100, true); // 100 kr with 10% tip = 90 kr + 10 kr operations
 
     // Go back and select smart distribution instead
     cy.get("[data-cy=back-button]").click();
@@ -125,7 +125,7 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
   it("Should not show operations amounts from single cause area when switching to smart distribution", () => {
     // Start with single cause area and enable tip
     cy.get("[data-cy=cause-area-1]").click();
-    setCauseAreaAmount(1, 500, true); // 500 kr with 5% tip = 475 kr + 25 kr operations
+    setCauseAreaAmount(1, 500, true); // 500 kr with 10% tip = 450 kr + 50 kr operations
 
     // Go back and select smart distribution instead
     cy.get("[data-cy=back-button]").click();

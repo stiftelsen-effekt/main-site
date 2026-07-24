@@ -27,7 +27,7 @@ describe("Swedish Widget - Basic Registration Data", () => {
   it("Should send correct distribution for single cause area without tip", () => {
     // Select Global hälsa and set 100 kr
     cy.get("[data-cy=cause-area-1]").click();
-    setCauseAreaAmount(1, 100);
+    setCauseAreaAmount(1, 100, false); // operations cut can default to on
 
     // Go to donor pane and fill information
     cy.get("[data-cy=next-button]").click();
@@ -84,22 +84,23 @@ describe("Swedish Widget - Basic Registration Data", () => {
     cy.wait("@registerDonation").then((interception) => {
       const { body } = interception.request;
 
-      // Total should still be 100 kr (95 kr to cause area + 5 kr to operations)
+      // Total should still be 100 kr (90 kr to cause area + 10 kr to operations,
+      // per the widget's current 10% default operations percentage)
       expect(body.amount).to.equal(100);
 
       // Should have both Global hälsa and Operations
       expect(body.distributionCauseAreas).to.have.length(2);
 
-      // Check Global hälsa - should be 95% (95/100)
+      // Check Global hälsa - should be 90% (90/100)
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(95, 0.01);
+      expect(parseFloat(globalHealth.percentageShare)).to.be.closeTo(90, 0.01);
 
-      // Check Operations - should be 5% (5/100)
+      // Check Operations - should be 10% (10/100)
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
       expect(operations.name).to.include("Stöd");
-      expect(parseFloat(operations.percentageShare)).to.be.closeTo(5, 0.01);
+      expect(parseFloat(operations.percentageShare)).to.be.closeTo(10, 0.01);
 
       // Total percentages should sum to 100%
       const totalPercentage = body.distributionCauseAreas.reduce(

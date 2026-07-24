@@ -28,8 +28,8 @@ describe("Swedish Widget - Multiple Cause Areas Registration", () => {
     // Select multiple cause areas
     cy.get("[data-cy=cause-area-multiple]").click();
 
-    // Set amounts for different cause areas
-    setCauseAreaAmount(1, 300); // Global hälsa
+    // Set amounts for different cause areas (operations cut can default to on)
+    setCauseAreaAmount(1, 300, false); // Global hälsa
     setCauseAreaAmount(2, 200); // Djurvälfärd
     setCauseAreaAmount(3, 100); // Klimat
 
@@ -64,13 +64,13 @@ describe("Swedish Widget - Multiple Cause Areas Registration", () => {
 
   it("Should handle custom organization distribution correctly", () => {
     cy.get("[data-cy=cause-area-multiple]").click();
-    setCauseAreaAmount(1, 1000);
+    setCauseAreaAmount(1, 1000, false); // operations cut can default to on
 
     // Check if custom distribution is available for cause area 1
     cy.get("body").then(($body) => {
       if ($body.find('input[type="radio"]').length > 1) {
         // Switch to custom distribution
-        cy.contains("Velj organisasjoner selv").click();
+        cy.contains("Välj fördelning själv").click();
 
         // Wait for animation and set custom amounts
         cy.wait(500);
