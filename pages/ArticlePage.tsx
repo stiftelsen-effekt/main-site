@@ -149,7 +149,7 @@ const fetchArticle = groq`
     "default_give_block": *[_id=="articles"][0].default_give_block,
     slug { current },
   },
-  "relatedArticles": *[_type == "article_page" && slug.current != $slug] | order(header.published desc) [0..3] {
+  "relatedArticles": *[_type == "article_page" && slug.current != $slug && defined(header.title) && defined(slug.current)] | order(header.published desc) [0..3] {
     header,
     "slug": slug.current,
   }
