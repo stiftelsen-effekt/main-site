@@ -49,7 +49,6 @@ import { DKMembershipDisplay } from "./DKMembershipDisplay/DKMemberShipDisplay";
 import { DKRenewPayment } from "./DKRenewPayment/DKRenewPayment";
 import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
 import { FormsparkForm } from "./FormSparkForm/FormSparkForm";
-import { EffektButton } from "../../shared/components/EffektButton/EffektButton";
 import LinkButton from "../../shared/components/EffektButton/LinkButton";
 
 /* Dynamic imports */
