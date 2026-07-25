@@ -33,6 +33,7 @@ import {
   useDefaultPaymentMethodEffect,
   usePrefilledDistribution,
   usePrefilledSum,
+  usePrefilledCauseAreaIds,
   useQueryParamsPrefill,
   useWidgetScaleEffect,
 } from "./hooks";
@@ -193,15 +194,17 @@ export const Widget = withStaticProps(
   const widgetWrapperRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
+  const prefilledCauseAreaIds = usePrefilledCauseAreaIds();
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
 
   // Platforms with a single (active) cause area keep the pre-rewrite widget UX:
   // no cause-area selection step and no operations/tip. See SingleCauseAreaPane.
-  const activeCauseAreas = causeAreas?.filter((ca) => ca.isActive) ?? [];
-  const isSingleCauseArea = !!causeAreas && activeCauseAreas.length === 1;
-  const singleCauseAreaId = isSingleCauseArea ? activeCauseAreas[0].id : undefined;
+  const visibleCauseAreas =
+    causeAreas?.filter((ca) => ca.isActive || prefilledCauseAreaIds.has(ca.id)) ?? [];
+  const isSingleCauseArea = !!causeAreas && visibleCauseAreas.length === 1;
+  const singleCauseAreaId = isSingleCauseArea ? visibleCauseAreas[0].id : undefined;
 
   useEffect(() => {
     if (singleCauseAreaId === undefined) return;
