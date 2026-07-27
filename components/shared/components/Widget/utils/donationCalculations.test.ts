@@ -1,4 +1,65 @@
-import { calculateOrganizationSharesWithinCauseArea } from "./donationCalculations";
+import {
+  calculateOrganizationSharesWithinCauseArea,
+  distributeSharesWithRemainder,
+} from "./donationCalculations";
+
+describe("distributeSharesWithRemainder", () => {
+  const sumOfShares = (shares: { percentageShare: string }[]) =>
+    shares.reduce((sum, share) => sum + parseFloat(share.percentageShare), 0);
+
+  // Rounding each share independently to 8 decimals (as the widget used to do
+  // for cause areas, before they went through this same remainder-absorbing
+  // helper organization shares already used) can drift below or above 100 -
+  // which is exactly what caused a production incident: the backend rejected
+  // a donation with "Cause area share must sum to 100, but was 100.00000001".
+  const naiveIndependentRounding = (amounts: { amount: number }[]) => {
+    const total = amounts.reduce((sum, item) => sum + item.amount, 0);
+    return amounts.map((item) => ((item.amount / total) * 100).toFixed(8));
+  };
+
+  it("sums to exactly 100 for splits where naive independent rounding drifts below 100", () => {
+    const causeAreas = [
+      { id: 1, amount: 1 },
+      { id: 2, amount: 1 },
+      { id: 3, amount: 1 },
+    ];
+
+    const naiveSum = naiveIndependentRounding(causeAreas).reduce(
+      (sum, share) => sum + parseFloat(share),
+      0,
+    );
+    expect(naiveSum).not.toBe(100); // demonstrates the bug this replaces
+
+    expect(sumOfShares(distributeSharesWithRemainder(causeAreas))).toBe(100);
+  });
+
+  it("sums to exactly 100 for splits where naive independent rounding drifts above 100", () => {
+    const causeAreas = Array.from({ length: 6 }, (_, i) => ({ id: i, amount: 1 }));
+
+    const naiveSum = naiveIndependentRounding(causeAreas).reduce(
+      (sum, share) => sum + parseFloat(share),
+      0,
+    );
+    expect(naiveSum).not.toBe(100); // demonstrates the bug this replaces
+
+    expect(sumOfShares(distributeSharesWithRemainder(causeAreas))).toBe(100);
+  });
+
+  it("preserves fields other than amount on each item", () => {
+    const shares = distributeSharesWithRemainder([
+      { id: 1, amount: 40, name: "Area A" },
+      { id: 2, amount: 60, name: "Area B" },
+    ]);
+
+    expect(shares.find((s) => s.id === 1)?.name).toBe("Area A");
+    expect(shares.find((s) => s.id === 2)?.name).toBe("Area B");
+  });
+
+  it("returns an empty array when the total is zero or negative", () => {
+    expect(distributeSharesWithRemainder([])).toEqual([]);
+    expect(distributeSharesWithRemainder([{ id: 1, amount: 0 }])).toEqual([]);
+  });
+});
 
 describe("calculateOrganizationSharesWithinCauseArea", () => {
   const sumOfShares = (shares: { percentageShare: string }[]) =>
