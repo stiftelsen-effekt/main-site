@@ -53,7 +53,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
     );
     const data = {
       KID: donation.kid,
-      sum: breakdown.totalAmount,
+      amount: breakdown.totalAmount,
       initialCharge,
       monthlyChargeDay,
     };
@@ -116,7 +116,7 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
 
     const data = {
       KID: donation.kid,
-      sum: breakdown.totalAmount,
+      amount: breakdown.totalAmount,
       dueDay,
     };
 
