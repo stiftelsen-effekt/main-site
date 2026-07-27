@@ -122,7 +122,12 @@ describe("Widget", () => {
     cy.nextWidgetPane();
     cy.wait(500);
 
-    cy.get("[data-cy=avtalegiro-form]").submit();
+    // The form's own native submit goes straight to the external
+    // avtalegiro.no page (its action is that URL), bypassing the button's
+    // onClick handler that actually dispatches the draftAvtaleGiro saga and
+    // calls /avtalegiro/draft - so the button itself must be clicked, not
+    // the form submitted directly, to exercise that request.
+    cy.get("[data-cy=avtalegiro-form] button").click({ force: true });
 
     cy.wait("@draftAvtaleGiro");
   });
