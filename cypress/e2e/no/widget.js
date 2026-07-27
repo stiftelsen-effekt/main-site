@@ -108,17 +108,23 @@ describe("Widget", () => {
       },
     }).as("registerDonation");
 
-    cy.intercept("POST", "/avtalegiro/draft", {
-      statusCode: 200,
-      body: {
-        status: 200,
-      },
+    cy.intercept("POST", "/avtalegiro/draft", (req) => {
+      expect(req.body.amount).to.equal(randomSum);
+      expect(req.body.sum).to.be.undefined;
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+        },
+      });
     }).as("draftAvtaleGiro");
 
     cy.nextWidgetPane();
     cy.wait(500);
 
     cy.get("[data-cy=avtalegiro-form]").submit();
+
+    cy.wait("@draftAvtaleGiro");
   });
 
   it("End-2-End single vipps donation", () => {
@@ -175,11 +181,15 @@ describe("Widget", () => {
       },
     }).as("registerDonation");
 
-    cy.intercept("POST", "/vipps/agreement/draft", {
-      statusCode: 200,
-      body: {
-        status: 200,
-      },
+    cy.intercept("POST", "/vipps/agreement/draft", (req) => {
+      expect(req.body.amount).to.equal(randomSum);
+      expect(req.body.sum).to.be.undefined;
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+        },
+      });
     }).as("draftVippsAgreement");
 
     cy.nextWidgetPane();
@@ -188,7 +198,7 @@ describe("Widget", () => {
     cy.get("[data-cy=vipps-recurring-button]").within(() => {
       cy.get("button").click();
     });
-    cy.wait(500);
+    cy.wait("@draftVippsAgreement");
   });
 
   it("End-2-End shared donation", () => {
