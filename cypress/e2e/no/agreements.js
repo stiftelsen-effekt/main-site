@@ -553,10 +553,9 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=distribution-input]:visible")
-      .each(($input) => cy.wrap($input).clear().type("0"))
       .first()
       .clear()
-      .type("1300");
+      .type("1230");
 
     cy.get("[data-cy=generic-list-table]")
       .first()
