@@ -440,6 +440,12 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.wait(500);
       cy.get("[data-cy=cause-area-multiple]").click();
 
+      // Assert the amounts survived the mode switch before relying on the
+      // summary math below, so a state-loss regression is reported here rather
+      // than as a confusing "summary row missing" further down.
+      cy.get("[data-cy=donation-sum-input-1]").should("have.value", "500");
+      cy.get("[data-cy=donation-sum-input-2]").should("have.value", "300");
+
       // Global should be checked
       cy.get("[data-cy=global-cut-checkbox]").should("be.checked");
 

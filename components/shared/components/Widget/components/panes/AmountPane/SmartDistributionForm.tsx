@@ -74,11 +74,17 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
     });
   };
 
-  const handleTotalAmountChange = (values: {
-    floatValue: number | undefined;
-    formattedValue: string;
-    value: string;
-  }) => {
+  const handleTotalAmountChange = (
+    values: {
+      floatValue: number | undefined;
+      formattedValue: string;
+      value: string;
+    },
+    sourceInfo: { source: string },
+  ) => {
+    // react-number-format also fires this on mount/reformat, not just on real
+    // keystrokes - only a genuine user edit should overwrite the stored total.
+    if (sourceInfo.source !== "event") return;
     const v = values.floatValue === undefined ? 0 : values.floatValue;
     dispatch(setSmartDistributionTotal(v));
 
