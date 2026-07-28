@@ -177,9 +177,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
                   }
                 >
                   {(!item.orgs || item.orgs.length === 0) &&
-                    `${item.amount !== Math.round(item.amount) ? "~" : ""} ${Math.round(
-                      item.amount,
-                    ).toLocaleString("no-NB")} kr`}
+                    `${item.amount.toLocaleString("no-NB")} kr`}
                 </td>
               </tr>
               {item.orgs &&
@@ -189,8 +187,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
                       {org.name}
                     </td>
                     <td data-cy={`summary-org-${org.id}-amount`}>
-                      {org.amount !== Math.round(org.amount) ? "~" : null}{" "}
-                      {Math.round(org.amount).toLocaleString("no-NB")} kr
+                      {org.amount.toLocaleString("no-NB")} kr
                     </td>
                   </tr>
                 ))}

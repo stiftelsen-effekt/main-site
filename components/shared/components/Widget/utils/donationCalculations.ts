@@ -229,12 +229,105 @@ export function calculateDonationBreakdown(
     }
   });
 
-  // Calculate total
-  result.totalAmount =
+  const totalAmount = Math.round(
     Object.values(result.causeAreaAmounts).reduce((sum, amount) => sum + amount, 0) +
-    result.operationsAmount;
+      result.operationsAmount,
+  );
+  const hasOperationsCut =
+    (selectionType === "multiple" && globalOperationsEnabled) ||
+    (selectionType === "single" &&
+      selectedCauseAreaId !== null &&
+      selectedCauseAreaId !== undefined &&
+      operationsPercentageModeByCauseArea[selectedCauseAreaId]);
+  const exactCauseAreaAmounts = { ...result.causeAreaAmounts };
+  const roundedCauseAreaAmounts: Record<number, number> = {};
+
+  Object.entries(exactCauseAreaAmounts).forEach(([id, amount]) => {
+    const areaId = Number(id);
+    const area = causeAreas.find((candidate) => candidate.id === areaId);
+    const isCustom = causeAreaDistributionType[areaId] === ShareType.CUSTOM;
+    roundedCauseAreaAmounts[areaId] = isCustom
+      ? (area?.organizations || []).reduce(
+          (sum, org) => sum + Math.round(result.organizationAmounts[org.id] || 0),
+          0,
+        )
+      : Math.round(amount);
+  });
+
+  let roundedDistributedAmount = Object.values(roundedCauseAreaAmounts).reduce(
+    (sum, amount) => sum + amount,
+    0,
+  );
+  const largestCauseAreaId = Object.keys(roundedCauseAreaAmounts)
+    .map(Number)
+    .sort(
+      (left, right) =>
+        roundedCauseAreaAmounts[right] - roundedCauseAreaAmounts[left] || left - right,
+    )[0];
+
+  if (largestCauseAreaId !== undefined) {
+    if (roundedDistributedAmount > totalAmount) {
+      roundedCauseAreaAmounts[largestCauseAreaId] -= roundedDistributedAmount - totalAmount;
+      roundedDistributedAmount = totalAmount;
+    } else if (!hasOperationsCut && roundedDistributedAmount < totalAmount) {
+      roundedCauseAreaAmounts[largestCauseAreaId] += totalAmount - roundedDistributedAmount;
+      roundedDistributedAmount = totalAmount;
+    }
+  }
+
+  result.causeAreaAmounts = roundedCauseAreaAmounts;
+  result.operationsAmount = hasOperationsCut ? totalAmount - roundedDistributedAmount : 0;
+  result.totalAmount = totalAmount;
+
+  causeAreas.forEach((area) => {
+    const areaAmount = result.causeAreaAmounts[area.id];
+    if (areaAmount === undefined) return;
+
+    const exactOrganizationAmounts = area.organizations
+      .map((org) => ({ id: org.id, amount: result.organizationAmounts[org.id] || 0 }))
+      .filter((org) => org.amount > 0);
+    const roundedOrganizationAmounts = roundAmountsToTotal(exactOrganizationAmounts, areaAmount);
+
+    area.organizations.forEach((org) => {
+      delete result.organizationAmounts[org.id];
+    });
+    roundedOrganizationAmounts.forEach(({ id, amount }) => {
+      result.organizationAmounts[id] = amount;
+    });
+  });
 
   return result;
+}
+
+function roundAmountsToTotal<T extends { id: number; amount: number }>(
+  amounts: T[],
+  targetTotal: number,
+): T[] {
+  if (amounts.length === 0 || targetTotal <= 0) return [];
+
+  const rounded = amounts.map((item) => ({ ...item, amount: Math.floor(item.amount) }));
+  let remainder = targetTotal - rounded.reduce((sum, item) => sum + item.amount, 0);
+  const incrementOrder = amounts
+    .map((item, index) => ({ index, fraction: item.amount - Math.floor(item.amount), id: item.id }))
+    .sort((left, right) => right.fraction - left.fraction || left.id - right.id);
+
+  for (let index = 0; remainder > 0; index++, remainder--) {
+    rounded[incrementOrder[index % incrementOrder.length].index].amount += 1;
+  }
+
+  const decrementOrder = rounded
+    .map((item, index) => ({ index, amount: item.amount, id: item.id }))
+    .sort((left, right) => right.amount - left.amount || left.id - right.id);
+
+  for (let index = 0; remainder < 0; index++) {
+    const item = rounded[decrementOrder[index % decrementOrder.length].index];
+    if (item.amount > 0) {
+      item.amount -= 1;
+      remainder += 1;
+    }
+  }
+
+  return rounded.filter((item) => item.amount > 0);
 }
 
 export interface OrganizationSharePayload {
@@ -269,7 +362,7 @@ export function distributeSharesWithRemainder<T extends { id: number; amount: nu
 
   const otherShares = others.map((item) => ({
     ...item,
-    percentageShare: ((item.amount / total) * 100).toFixed(8),
+    percentageShare: parseFloat(((item.amount / total) * 100).toFixed(8)).toString(),
   }));
 
   const sumOfOthers = otherShares.reduce(
@@ -287,9 +380,14 @@ export function distributeSharesWithRemainder<T extends { id: number; amount: nu
 export function calculateOrganizationSharesWithinCauseArea(
   organizationAmounts: { id: number; amount: number }[],
 ): OrganizationSharePayload[] {
-  return distributeSharesWithRemainder(organizationAmounts).map((share) => ({
+  const totalAmount = Math.round(
+    organizationAmounts.reduce((sum, organization) => sum + organization.amount, 0),
+  );
+  const roundedAmounts = roundAmountsToTotal(organizationAmounts, totalAmount);
+
+  return distributeSharesWithRemainder(roundedAmounts).map((share) => ({
     id: share.id,
     percentageShare: share.percentageShare,
-    amount: Math.round(share.amount),
+    amount: share.amount,
   }));
 }

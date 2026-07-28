@@ -214,7 +214,7 @@ describe("Organizations Page", () => {
       expect(causeArea.id).to.eq(1);
       expect(causeArea.standardSplit).to.eq(false);
       expect(causeArea.organizations).to.deep.equal([
-        { id: 12, percentageShare: "40.00000000", amount: 400 },
+        { id: 12, percentageShare: "40", amount: 400 },
         { id: 1, percentageShare: "60", amount: 600 },
       ]);
 
