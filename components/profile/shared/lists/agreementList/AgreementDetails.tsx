@@ -32,6 +32,13 @@ import {
 } from "./multipleCauseAreasDetails/AgreementMultipleCauseAreasDetails";
 import { DatePickerInputConfiguration } from "../../../../shared/components/DatePicker/DatePickerInput";
 import { AgreementTypes } from "./AgreementList";
+import {
+  getStandardOrganizationId,
+  getStandardOrganizationIds,
+  hydrateDistributionAmounts,
+  prepareDistributionForSave,
+  setStandardCauseAreaAmount,
+} from "../../distributionAmounts";
 
 export type AgreementDetailsConfiguration = {
   save_button_text: string;
@@ -85,18 +92,18 @@ export const AgreementDetails: React.FC<{
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
   // Parse and stringify to make a deep copy of the object
-  const [distribution, setDistribution] = useState<Distribution>(
-    JSON.parse(JSON.stringify(inputDistribution)),
+  const [distribution, setDistribution] = useState<Distribution>(() =>
+    hydrateDistributionAmounts(inputDistribution, inputSum),
   );
-  const [lastSavedDistribution, setLastSavedDistribution] = useState<Distribution>(
-    JSON.parse(JSON.stringify(inputDistribution)),
+  const [lastSavedDistribution, setLastSavedDistribution] = useState<Distribution>(() =>
+    hydrateDistributionAmounts(inputDistribution, inputSum),
   );
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum);
 
   useEffect(() => {
-    setLastSavedDistribution(JSON.parse(JSON.stringify(inputDistribution)));
-  }, [inputDistribution]);
+    setLastSavedDistribution(hydrateDistributionAmounts(inputDistribution, inputSum));
+  }, [inputDistribution, inputSum]);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [loadingChanges, setLoadingChanges] = useState(false);
@@ -122,7 +129,7 @@ export const AgreementDetails: React.FC<{
       );
 
       if (missingCauseAreas.length > 0) {
-        const newDistribution = JSON.parse(JSON.stringify(inputDistribution));
+        const newDistribution = hydrateDistributionAmounts(inputDistribution, inputSum);
         missingCauseAreas.forEach((id) => {
           const systemCauseArea = systemCauseAreas.find((causeArea) => causeArea.id === id);
           if (systemCauseArea) {
@@ -131,10 +138,12 @@ export const AgreementDetails: React.FC<{
               name: systemCauseArea.name,
               standardSplit: true,
               percentageShare: "0",
+              amount: 0,
               organizations: systemCauseArea.organizations.map((org) => {
                 return {
                   id: org.id,
                   percentageShare: org.standardShare?.toString() || "0",
+                  amount: 0,
                 };
               }),
             });
@@ -143,13 +152,34 @@ export const AgreementDetails: React.FC<{
         setDistribution(newDistribution);
       }
     }
-  }, [systemCauseAreas, inputDistribution]);
+  }, [systemCauseAreas, inputDistribution, inputSum]);
+
+  const changeSum = (nextSum: number) => {
+    setDistribution((current) => {
+      const causeArea = current.causeAreas[0];
+      const systemCauseArea = systemCauseAreas?.find((system) => system.id === causeArea.id);
+      const standardOrganizationId = systemCauseArea
+        ? getStandardOrganizationId(systemCauseArea)
+        : undefined;
+      if (standardOrganizationId === undefined) return current;
+      return {
+        ...current,
+        causeAreas: [setStandardCauseAreaAmount(causeArea, nextSum, standardOrganizationId)],
+      };
+    });
+    setSum(nextSum);
+  };
 
   const save = async () => {
     const token = await getAccessTokenSilently();
     const distributionChanged =
       JSON.stringify(distribution) !== JSON.stringify(lastSavedDistribution);
-    const sumChanged = sum !== inputSum;
+    const agreementSum =
+      systemCauseAreas &&
+      (systemCauseAreas.length > 1 || !distribution.causeAreas[0]?.standardSplit)
+        ? distribution.causeAreas.reduce((total, causeArea) => total + (causeArea.amount ?? 0), 0)
+        : sum;
+    const sumChanged = agreementSum !== inputSum;
     const dayChanged = day !== inputDate;
 
     if (!distributionChanged && !dayChanged && !sumChanged) {
@@ -159,21 +189,33 @@ export const AgreementDetails: React.FC<{
 
     if (!user) throw new Error("User is not logged in");
 
+    let distributionPayload: Distribution;
+    try {
+      distributionPayload = prepareDistributionForSave(
+        distribution,
+        agreementSum,
+        getStandardOrganizationIds(systemCauseAreas ?? []),
+      );
+    } catch {
+      failureToast(configuration.toasts_configuration.failure_text);
+      return;
+    }
+
     setLoadingChanges(true);
 
     if (type == "Vipps") {
       let result = null;
 
-      if (distributionChanged) {
-        result = await updateVippsAgreementDistribution(endpoint, distribution, token);
+      if (sumChanged) {
+        result = await updateVippsAgreementPrice(endpoint, agreementSum, token);
       }
 
       if (dayChanged) {
         result = await updateVippsAgreementDay(endpoint, day, token);
       }
 
-      if (sumChanged) {
-        result = await updateVippsAgreementPrice(endpoint, sum, token);
+      if (distributionChanged || sumChanged) {
+        result = await updateVippsAgreementDistribution(endpoint, distributionPayload, token);
       }
 
       if (result != null) {
@@ -188,16 +230,16 @@ export const AgreementDetails: React.FC<{
     } else if (type == "AvtaleGiro") {
       let result = null;
 
-      if (distributionChanged) {
-        result = await updateAvtalegiroAgreementDistribution(endpoint, distribution, token);
+      if (sumChanged) {
+        result = await updateAvtaleagreementAmount(endpoint, agreementSum * 100, token);
       }
 
       if (dayChanged) {
         result = await updateAvtaleagreementPaymentDay(endpoint, day, token);
       }
 
-      if (sumChanged) {
-        result = await updateAvtaleagreementAmount(endpoint, sum * 100, token);
+      if (distributionChanged || sumChanged) {
+        result = await updateAvtalegiroAgreementDistribution(endpoint, distributionPayload, token);
       }
 
       if (result !== null) {
@@ -212,9 +254,9 @@ export const AgreementDetails: React.FC<{
     } else if (type == "AutoGiro") {
       let result = await updateAutoGiroAgreement(
         endpoint,
-        distributionChanged ? distribution : null,
+        distributionChanged || sumChanged ? distributionPayload : null,
         dayChanged ? day : null,
-        sumChanged ? sum : null,
+        sumChanged ? agreementSum : null,
         token,
       );
 
@@ -302,11 +344,12 @@ export const AgreementDetails: React.FC<{
         {systemCauseAreas.length === 1 && (
           <AgreementSingleCauseAreaDetails
             distribution={distribution}
+            savedDistribution={lastSavedDistribution}
             setDistribution={setDistribution}
             day={day}
             setDay={setDay}
             sum={sum}
-            setSum={setSum}
+            setSum={changeSum}
             taxUnits={taxUnits}
             dateSelectorConfig={configuration.date_selector_configuration}
           ></AgreementSingleCauseAreaDetails>
@@ -316,11 +359,10 @@ export const AgreementDetails: React.FC<{
           <AgreementMultipleCauseAreaDetails
             systemCauseAreas={systemCauseAreas}
             distribution={distribution}
+            savedDistribution={lastSavedDistribution}
             setDistribution={setDistribution}
             day={day}
             setDay={setDay}
-            sum={sum}
-            setSum={setSum}
             taxUnits={taxUnits}
             configuration={configuration.distribution_configuration}
             dateSelectorConfig={configuration.date_selector_configuration}

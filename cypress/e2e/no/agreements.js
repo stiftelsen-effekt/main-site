@@ -218,7 +218,7 @@ describe("Agreements page", () => {
       .should("contain.value", "30");
   });
 
-  it("Should show warning with distribution not summing to 100", () => {
+  it("Should calculate the cause area amount from organization amounts", () => {
     // Expand the first agreement
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -241,8 +241,9 @@ describe("Agreements page", () => {
       .first()
       .find("tbody")
       .first()
-      .find("[data-cy=distribution-warning]")
-      .should("be.visible");
+      .find("[data-cy=cause-area-input]")
+      .first()
+      .should("contain.text", "110 kr");
   });
 
   // TODO: https://github.com/stiftelsen-effekt/main-site/issues/899
@@ -537,7 +538,7 @@ describe("Agreements page", () => {
     cy.get("[data-cy=generic-list-table]").first().find("tbody").should("contain.text", "Den 13.");
   });
 
-  it("Should be possible to change the agreement sum", () => {
+  it("Should update the agreement sum from the distribution amounts", () => {
     // Expand the first agreement
     cy.get("[data-cy=generic-list-table]")
       .first()
@@ -547,14 +548,22 @@ describe("Agreements page", () => {
       .first()
       .click();
 
-    // Change the agreement amount
+    cy.get("[data-cy=generic-list-table]")
+      .first()
+      .find("tbody")
+      .first()
+      .find("[data-cy=distribution-input]")
+      .each(($input) => cy.wrap($input).clear().type("0"))
+      .first()
+      .clear()
+      .type("1300");
+
     cy.get("[data-cy=generic-list-table]")
       .first()
       .find("tbody")
       .first()
       .find("[data-cy=agreement-list-amount-input]")
-      .clear()
-      .type("1300");
+      .should("contain.text", "1 300 kr");
 
     /**
      * Mock returned agreements on mutate

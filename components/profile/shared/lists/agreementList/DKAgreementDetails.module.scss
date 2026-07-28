@@ -70,6 +70,17 @@
   display: grid;
   grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
   column-gap: 3rem;
+
+  & > .values {
+    flex-direction: column;
+    align-items: stretch;
+    row-gap: 1.5rem;
+
+    & > div {
+      width: 100%;
+      min-width: 0;
+    }
+  }
 }
 
 .causeAreas {
@@ -128,7 +139,8 @@
 }
 
 .amountInput,
-.percentageInput {
+.percentageInput,
+.calculatedAmount {
   background: var(--secondary);
   color: var(--primary);
   font-family: "ESKlarheitGrotesk";
@@ -138,6 +150,10 @@
   border: 1px solid var(--primary);
   padding: 0.5rem 1.2rem;
   width: 100%;
+}
+
+.calculatedAmount {
+  display: block;
 }
 
 @media only screen and (max-width: 1180px) {

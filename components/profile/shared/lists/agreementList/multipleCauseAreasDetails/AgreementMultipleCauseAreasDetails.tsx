@@ -12,6 +12,13 @@ import { useState } from "react";
 
 import style from "./AgreementMultipleCauseAreaDetails.module.scss";
 import { CauseArea } from "../../../../../shared/components/Widget/types/CauseArea";
+import {
+  getStandardOrganizationId,
+  isAllocationVisible,
+  orderDistributionCauseAreas,
+  setCauseAreaStandardSplit,
+  setStandardCauseAreaAmount,
+} from "../../../distributionAmounts";
 
 export type AgreementMultipleCauseAreaDetailsConfiguration = {
   smart_distribution_label: string;
@@ -20,22 +27,20 @@ export type AgreementMultipleCauseAreaDetailsConfiguration = {
 export const AgreementMultipleCauseAreaDetails: React.FC<{
   systemCauseAreas: CauseArea[];
   distribution: Distribution;
+  savedDistribution: Distribution;
   setDistribution: (dist: Distribution) => void;
   day: number;
   setDay: (day: number) => void;
-  sum: number;
-  setSum: (sum: number) => void;
   taxUnits: TaxUnit[];
   configuration: AgreementMultipleCauseAreaDetailsConfiguration;
   dateSelectorConfig: DatePickerInputConfiguration;
 }> = ({
   systemCauseAreas,
   distribution,
+  savedDistribution,
   setDistribution,
   day,
   setDay,
-  sum,
-  setSum,
   taxUnits,
   configuration,
   dateSelectorConfig,
@@ -43,6 +48,19 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
   const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
 
   const currentTaxUnit = taxUnits.find((unit) => unit.id === distribution.taxUnitId);
+  const distributionAmount = distribution.causeAreas.reduce(
+    (total, causeArea) => total + (causeArea.amount ?? 0),
+    0,
+  );
+  const visibleCauseAreas = orderDistributionCauseAreas(
+    distribution.causeAreas,
+    systemCauseAreas,
+  ).filter((causeArea) => {
+    const systemCauseArea = systemCauseAreas.find((current) => current.id === causeArea.id);
+    const savedAmount =
+      savedDistribution.causeAreas.find((saved) => saved.id === causeArea.id)?.amount ?? 0;
+    return isAllocationVisible(systemCauseArea ? systemCauseArea.isActive : false, savedAmount);
+  });
 
   return (
     <>
@@ -56,13 +74,9 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
             />
           </div>
           <div className={style.valuesAmountContainer}>
-            <input
-              type="text"
-              value={formatSum(sum.toString())}
-              onChange={(e) => setSum(parseSum(e.currentTarget.value))}
-              data-cy="agreement-list-amount-input"
-            />
-            <span>kr</span>
+            <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
+              {formatSum(distributionAmount.toString())} kr
+            </output>
           </div>
           <div className={style.valuesTaxUnitSelectorContainer}>
             <TaxUnitSelector
@@ -73,9 +87,13 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
           </div>
         </div>
         <div className={style.causeAreas}>
-          {distribution.causeAreas.map((causeArea, index) => {
+          {visibleCauseAreas.map((causeArea, index) => {
+            const systemCauseArea = systemCauseAreas.find((current) => current.id === causeArea.id);
             const causeAreaHasMultipleOrganizations =
-              (systemCauseAreas.find((c) => c.id === causeArea.id)?.organizations.length || 0) > 1;
+              (systemCauseArea?.organizations.length || 0) > 1;
+            const standardOrganizationId = systemCauseArea
+              ? getStandardOrganizationId(systemCauseArea)
+              : undefined;
             return (
               <div key={`dist-${causeArea.id}`}>
                 <div className={style.distributionCauseAreaInputHeader}>
@@ -88,13 +106,11 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
                         onChange={(active) =>
                           setDistribution({
                             ...distribution,
-                            causeAreas: distribution.causeAreas.map((c) => {
-                              if (causeArea && c.id === causeArea.id) {
-                                return { ...c, standardSplit: active };
-                              } else {
-                                return { ...c };
-                              }
-                            }),
+                            causeAreas: distribution.causeAreas.map((current) =>
+                              current.id === causeArea.id
+                                ? setCauseAreaStandardSplit(current, active)
+                                : { ...current },
+                            ),
                           })
                         }
                       />
@@ -102,26 +118,34 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
                   )}
                 </div>
                 <div className={style.distributionCauseAreaInputPercentageShare}>
-                  <input
-                    type="text"
-                    value={Math.round(parseFloat(causeArea.percentageShare)).toString() || 0}
-                    onChange={(e) => {
-                      const percentageShare = parseFloat(e.target.value) || 0;
-                      const causeAreas = [...distribution.causeAreas];
-                      const index = causeAreas.findIndex((c) => c.id === causeArea?.id);
-                      if (index === -1) {
-                        return;
-                      } else {
-                        causeAreas[index] = {
-                          ...causeAreas[index],
-                          percentageShare: percentageShare.toFixed(0),
-                        };
-                      }
-                      setDistribution({ ...distribution, causeAreas });
-                    }}
-                    data-cy="cause-area-input"
-                  />
-                  <span>%</span>
+                  {causeArea.standardSplit ? (
+                    <>
+                      <input
+                        type="text"
+                        value={causeArea.amount ?? 0}
+                        onChange={(e) => {
+                          const amount = Math.max(0, parseInt(e.target.value, 10) || 0);
+                          const causeAreas = [...distribution.causeAreas];
+                          const index = causeAreas.findIndex(
+                            (current) => current.id === causeArea.id,
+                          );
+                          if (index === -1 || standardOrganizationId === undefined) return;
+                          causeAreas[index] = setStandardCauseAreaAmount(
+                            causeAreas[index],
+                            amount,
+                            standardOrganizationId,
+                          );
+                          setDistribution({ ...distribution, causeAreas });
+                        }}
+                        data-cy="cause-area-input"
+                      />
+                      <span>kr</span>
+                    </>
+                  ) : (
+                    <output className={style.calculatedAmount} data-cy="cause-area-input">
+                      {formatSum((causeArea.amount ?? 0).toString())} kr
+                    </output>
+                  )}
                 </div>
                 <AnimateHeight
                   key={index}
@@ -131,6 +155,9 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
                   <div className={style.distributionCauseAreaInputContainer}>
                     <DistributionController
                       causeArea={causeArea}
+                      savedCauseArea={savedDistribution.causeAreas.find(
+                        (saved) => saved.id === causeArea.id,
+                      )}
                       onChange={(causeArea) => {
                         const causeAreas = [...distribution.causeAreas];
                         const index = causeAreas.findIndex((c) => c.id === causeArea.id);
@@ -171,11 +198,4 @@ const formatSum = (sum: string) => {
   const parts = sum.split(".");
   const formatted = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return parts.length === 2 ? formatted + "." + parts[1] : formatted;
-};
-
-/**
- * Strip thin seperator from sum and return a number.
- */
-const parseSum = (sum: string) => {
-  return parseFloat(sum.replace(/ /g, "")) || 0;
 };

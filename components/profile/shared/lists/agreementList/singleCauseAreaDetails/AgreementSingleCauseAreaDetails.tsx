@@ -11,9 +11,11 @@ import style from "./AgreementSingleCauseAreaDetails.module.scss";
 import { Distribution, TaxUnit } from "../../../../../../models";
 import { DistributionController } from "../../../DistributionCauseAreaInput/Distribution";
 import { useState } from "react";
+import { setCauseAreaStandardSplit } from "../../../distributionAmounts";
 
 export const AgreementSingleCauseAreaDetails: React.FC<{
   distribution: Distribution;
+  savedDistribution: Distribution;
   setDistribution: (dist: Distribution) => void;
   day: number;
   setDay: (day: number) => void;
@@ -23,6 +25,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
   dateSelectorConfig: DatePickerInputConfiguration;
 }> = ({
   distribution,
+  savedDistribution,
   setDistribution,
   day,
   setDay,
@@ -34,6 +37,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
   const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
 
   const currentTaxUnit = taxUnits.find((unit) => unit.id === distribution.taxUnitId);
+  const causeArea = distribution.causeAreas[0];
 
   return (
     <>
@@ -46,13 +50,21 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
           />
         </div>
         <div className={style.valuesAmountContainer}>
-          <input
-            type="text"
-            value={formatSum(sum.toString())}
-            onChange={(e) => setSum(parseSum(e.currentTarget.value))}
-            data-cy="agreement-list-amount-input"
-          />
-          <span>kr</span>
+          {causeArea.standardSplit ? (
+            <>
+              <input
+                type="text"
+                value={formatSum(sum.toString())}
+                onChange={(e) => setSum(parseSum(e.currentTarget.value))}
+                data-cy="agreement-list-amount-input"
+              />
+              <span>kr</span>
+            </>
+          ) : (
+            <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
+              {formatSum((causeArea.amount ?? 0).toString())} kr
+            </output>
+          )}
         </div>
         <div className={style.valuesTaxUnitSelectorContainer}>
           <TaxUnitSelector
@@ -64,13 +76,12 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
         <div className={style.valuesSmartDistributionToggle}>
           <span>Smart fordeling</span>
           <Toggle
-            active={distribution.causeAreas[0].standardSplit}
-            onChange={(active) =>
-              setDistribution({
-                ...distribution,
-                causeAreas: [{ ...distribution.causeAreas[0], standardSplit: active }],
-              })
-            }
+            active={causeArea.standardSplit}
+            onChange={(active) => {
+              const nextCauseArea = setCauseAreaStandardSplit(causeArea, active);
+              setDistribution({ ...distribution, causeAreas: [nextCauseArea] });
+              setSum(nextCauseArea.amount ?? 0);
+            }}
           />
         </div>
       </div>
@@ -83,6 +94,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
         >
           <DistributionController
             causeArea={causeArea}
+            savedCauseArea={savedDistribution.causeAreas.find((saved) => saved.id === causeArea.id)}
             onChange={(causeArea) => {
               const causeAreas = [...distribution.causeAreas];
               causeAreas[index] = causeArea;
@@ -120,5 +132,5 @@ const formatSum = (sum: string) => {
  * Strip thin seperator from sum and return a number.
  */
 const parseSum = (sum: string) => {
-  return parseFloat(sum.replace(/ /g, "")) || 0;
+  return parseInt(sum.replace(/ /g, ""), 10) || 0;
 };

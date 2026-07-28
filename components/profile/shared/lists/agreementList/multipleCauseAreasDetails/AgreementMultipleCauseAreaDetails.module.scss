@@ -45,7 +45,9 @@
     }
   }
 
-  input {
+  input,
+  .calculatedAmount {
+    display: block;
     background: var(--secondary);
     color: var(--primary);
     font-family: "ESKlarheitGrotesk";
@@ -88,7 +90,8 @@
     flex-direction: row;
     align-items: center;
 
-    input {
+    input,
+    .calculatedAmount {
       background: var(--secondary);
       color: var(--primary);
       font-family: "ESKlarheitGrotesk";
@@ -98,6 +101,10 @@
       border: 1px solid var(--primary);
       padding: 0.5rem 1.2rem;
       width: 100%;
+    }
+
+    .calculatedAmount {
+      display: block;
     }
 
     span {
