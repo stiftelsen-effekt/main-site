@@ -61,9 +61,12 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
               <span>kr</span>
             </>
           ) : (
-            <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
-              {formatSum((causeArea.amount ?? 0).toString())} kr
-            </output>
+            <>
+              <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
+                {formatSum((causeArea.amount ?? 0).toString())}
+              </output>
+              <span>kr</span>
+            </>
           )}
         </div>
         <div className={style.valuesTaxUnitSelectorContainer}>
@@ -74,7 +77,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
           />
         </div>
         <div className={style.valuesSmartDistributionToggle}>
-          <span>Smart fordeling</span>
+          <span className="caption">Smart fordeling</span>
           <Toggle
             active={causeArea.standardSplit}
             onChange={(active) => {

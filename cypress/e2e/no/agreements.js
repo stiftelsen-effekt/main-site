@@ -243,7 +243,7 @@ describe("Agreements page", () => {
       .first()
       .find("[data-cy=cause-area-input]")
       .first()
-      .should("contain.text", "110 kr");
+      .should("contain.text", "110");
   });
 
   // TODO: https://github.com/stiftelsen-effekt/main-site/issues/899
@@ -563,7 +563,7 @@ describe("Agreements page", () => {
       .find("tbody")
       .first()
       .find("[data-cy=agreement-list-amount-input]")
-      .should("contain.text", "1 300 kr");
+      .should("contain.text", "1 300");
 
     /**
      * Mock returned agreements on mutate

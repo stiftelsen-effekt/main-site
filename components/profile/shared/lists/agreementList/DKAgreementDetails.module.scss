@@ -67,44 +67,32 @@
 }
 
 .multiLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
-  column-gap: 3rem;
-
-  & > .values {
-    flex-direction: column;
-    align-items: stretch;
-    row-gap: 1.5rem;
-
-    & > div {
-      width: 100%;
-      min-width: 0;
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
 }
 
 .causeAreas {
-  & > div {
-    margin-top: 1.5rem;
-  }
-
-  & > div:first-child {
-    margin-top: 0;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 2rem;
 }
 
 .distributionCauseAreaInputHeader {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 
   & > div {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
+    width: 100%;
+    min-height: 26px;
   }
 }
 
@@ -141,6 +129,7 @@
 .amountInput,
 .percentageInput,
 .calculatedAmount {
+  display: block;
   background: var(--secondary);
   color: var(--primary);
   font-family: "ESKlarheitGrotesk";
@@ -152,11 +141,7 @@
   width: 100%;
 }
 
-.calculatedAmount {
-  display: block;
-}
-
-@media only screen and (max-width: 1180px) {
+@media only screen and (max-width: 720px) {
   .values {
     flex-direction: column;
     align-items: stretch;
@@ -173,11 +158,6 @@
 
   .valuesSmartDistributionToggle {
     justify-content: space-between;
-  }
-
-  .multiLayout {
-    grid-template-columns: 1fr;
-    row-gap: 2rem;
   }
 
   .actions {

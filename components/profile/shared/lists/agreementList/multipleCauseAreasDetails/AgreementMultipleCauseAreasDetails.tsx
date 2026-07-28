@@ -75,8 +75,9 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
           </div>
           <div className={style.valuesAmountContainer}>
             <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
-              {formatSum(distributionAmount.toString())} kr
+              {formatSum(distributionAmount.toString())}
             </output>
+            <span>kr</span>
           </div>
           <div className={style.valuesTaxUnitSelectorContainer}>
             <TaxUnitSelector
@@ -98,24 +99,26 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
               <div key={`dist-${causeArea.id}`}>
                 <div className={style.distributionCauseAreaInputHeader}>
                   <span>{causeArea.name}</span>
-                  {causeAreaHasMultipleOrganizations && (
-                    <div className={style.valuesSmartDistributionToggle}>
-                      <span>{configuration.smart_distribution_label}</span>
-                      <Toggle
-                        active={causeArea.standardSplit}
-                        onChange={(active) =>
-                          setDistribution({
-                            ...distribution,
-                            causeAreas: distribution.causeAreas.map((current) =>
-                              current.id === causeArea.id
-                                ? setCauseAreaStandardSplit(current, active)
-                                : { ...current },
-                            ),
-                          })
-                        }
-                      />
-                    </div>
-                  )}
+                  <div className={style.valuesSmartDistributionToggle}>
+                    {causeAreaHasMultipleOrganizations && (
+                      <>
+                        <span className="caption">{configuration.smart_distribution_label}</span>
+                        <Toggle
+                          active={causeArea.standardSplit}
+                          onChange={(active) =>
+                            setDistribution({
+                              ...distribution,
+                              causeAreas: distribution.causeAreas.map((current) =>
+                                current.id === causeArea.id
+                                  ? setCauseAreaStandardSplit(current, active)
+                                  : { ...current },
+                              ),
+                            })
+                          }
+                        />
+                      </>
+                    )}
+                  </div>
                 </div>
                 <div className={style.distributionCauseAreaInputPercentageShare}>
                   {causeArea.standardSplit ? (
@@ -142,9 +145,12 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
                       <span>kr</span>
                     </>
                   ) : (
-                    <output className={style.calculatedAmount} data-cy="cause-area-input">
-                      {formatSum((causeArea.amount ?? 0).toString())} kr
-                    </output>
+                    <>
+                      <output className={style.calculatedAmount} data-cy="cause-area-input">
+                        {formatSum((causeArea.amount ?? 0).toString())}
+                      </output>
+                      <span>kr</span>
+                    </>
                   )}
                 </div>
                 <AnimateHeight

@@ -1,47 +1,31 @@
 .wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 3rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
 }
 
 .values {
   display: flex;
-  flex-direction: column;
-  row-gap: 1.5em;
+  flex-direction: row;
+  column-gap: 1.5rem;
   font-size: 1rem;
 
   & > div {
     position: relative;
     display: inline-flex;
     flex-direction: row;
+    flex: 1 1 0;
+    min-width: 0;
     align-items: center;
 
-    &.valuesDatePickerContainer {
+    &.valuesDatePickerContainer > div,
+    &.valuesTaxUnitSelectorContainer > div {
       width: 100%;
-
-      & > div {
-        width: 100%;
-      }
     }
 
-    &.valuesAmountContainer {
-      input {
-        width: 100%;
-      }
-
-      /* Currency label positioned to the right in the field */
-      span {
-        position: absolute;
-        right: 1.2rem;
-      }
-    }
-
-    &.valuesTaxUnitSelectorContainer {
-      width: 100%;
-
-      & > div {
-        width: 100%;
-      }
+    &.valuesAmountContainer span {
+      position: absolute;
+      right: 1.2rem;
     }
   }
 
@@ -61,26 +45,25 @@
 }
 
 .causeAreas {
-  & > div {
-    margin-top: 1.5rem;
-  }
-
-  & div:first-child {
-    margin-top: 0;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 2rem;
 
   .distributionCauseAreaInputHeader {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
     margin-bottom: 1rem;
 
     & > div {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
+      width: 100%;
+      min-height: 26px;
     }
   }
 
@@ -92,6 +75,7 @@
 
     input,
     .calculatedAmount {
+      display: block;
       background: var(--secondary);
       color: var(--primary);
       font-family: "ESKlarheitGrotesk";
@@ -101,10 +85,6 @@
       border: 1px solid var(--primary);
       padding: 0.5rem 1.2rem;
       width: 100%;
-    }
-
-    .calculatedAmount {
-      display: block;
     }
 
     span {
@@ -118,44 +98,14 @@
   }
 }
 
-@media only screen and (max-width: 1180px) {
-  .wrapper {
-    grid-template-columns: 1fr;
-    column-gap: 0;
-    row-gap: 2rem;
+@media only screen and (max-width: 720px) {
+  .values {
+    flex-direction: column;
+    row-gap: 1.5rem;
 
-    .values {
-      flex-direction: column;
-      row-gap: 1.5em;
-      font-size: 1rem;
-
-      input {
-        width: 100%;
-      }
-
-      & > div {
-        &.valuesDatePickerContainer {
-          width: 100%;
-
-          & > div {
-            width: 100%;
-          }
-        }
-
-        &.valuesAmountContainer {
-          input {
-            width: 100%;
-          }
-        }
-
-        &.valuesTaxUnitSelectorContainer {
-          width: 100%;
-
-          & > div {
-            width: 100%;
-          }
-        }
-      }
+    & > div {
+      width: 100%;
+      flex: initial;
     }
   }
 }
