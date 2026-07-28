@@ -29,6 +29,16 @@ import { DKAgreementMembershipLine } from "./DKAgreementMembershipLine";
 import { distributionTargetsMembershipFee, getDKMembershipDisplay } from "./dkMembershipDisplay";
 import { getUserId } from "../../../../../lib/user";
 import { cancelDKAgreement, updateDKAgreement } from "./_queries";
+import {
+  getStandardOrganizationId,
+  getStandardOrganizationIds,
+  hydrateDistributionAmounts,
+  isAllocationVisible,
+  orderDistributionCauseAreas,
+  prepareDistributionForSave,
+  setCauseAreaStandardSplit,
+  setStandardCauseAreaAmount,
+} from "../../distributionAmounts";
 
 import style from "./DKAgreementDetails.module.scss";
 
@@ -56,11 +66,11 @@ export const DKAgreementDetails: React.FC<{
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
 
-  const [distribution, setDistribution] = useState<Distribution | null>(
-    cloneDistribution(inputDistribution),
+  const [distribution, setDistribution] = useState<Distribution | null>(() =>
+    inputDistribution ? hydrateDistributionAmounts(inputDistribution, inputSum) : null,
   );
-  const [lastSavedDistribution, setLastSavedDistribution] = useState<Distribution | null>(
-    cloneDistribution(inputDistribution),
+  const [lastSavedDistribution, setLastSavedDistribution] = useState<Distribution | null>(() =>
+    inputDistribution ? hydrateDistributionAmounts(inputDistribution, inputSum) : null,
   );
   const [day, setDay] = useState(inputDate);
   const [sum, setSum] = useState(inputSum);
@@ -75,9 +85,12 @@ export const DKAgreementDetails: React.FC<{
   } = useCauseAreas(getAccessTokenSilently);
 
   useEffect(() => {
-    setDistribution(cloneDistribution(inputDistribution));
-    setLastSavedDistribution(cloneDistribution(inputDistribution));
-  }, [inputDistribution]);
+    const hydrated = inputDistribution
+      ? hydrateDistributionAmounts(inputDistribution, inputSum)
+      : null;
+    setDistribution(hydrated);
+    setLastSavedDistribution(hydrated);
+  }, [inputDistribution, inputSum]);
 
   useEffect(() => {
     setDay(inputDate);
@@ -135,7 +148,13 @@ export const DKAgreementDetails: React.FC<{
     const token = await getAccessTokenSilently();
     const distributionChanged =
       JSON.stringify(distribution) !== JSON.stringify(lastSavedDistribution);
-    const sumChanged = sum !== inputSum;
+    const agreementSum =
+      systemCauseAreas &&
+      distribution &&
+      (systemCauseAreas.length > 1 || !distribution.causeAreas[0]?.standardSplit)
+        ? distribution.causeAreas.reduce((total, causeArea) => total + (causeArea.amount ?? 0), 0)
+        : sum;
+    const sumChanged = agreementSum !== inputSum;
     const dayChanged = canEditDate && day !== inputDate;
 
     if (!distributionChanged && !sumChanged && !dayChanged) {
@@ -143,14 +162,28 @@ export const DKAgreementDetails: React.FC<{
       return;
     }
 
+    let distributionPayload: Distribution | null = null;
+    if (distribution) {
+      try {
+        distributionPayload = prepareDistributionForSave(
+          distribution,
+          agreementSum,
+          getStandardOrganizationIds(systemCauseAreas ?? []),
+        );
+      } catch {
+        failureToast(configuration.toasts_configuration.failure_text);
+        return;
+      }
+    }
+
     setLoadingChanges(true);
 
     const result = await updateDKAgreement(
       getUserId(user),
       agreementId,
-      distributionChanged ? distribution : null,
+      distributionChanged || sumChanged ? distributionPayload : null,
       dayChanged ? day : null,
-      sumChanged ? sum : null,
+      sumChanged ? agreementSum : null,
       token,
     );
 
@@ -163,6 +196,23 @@ export const DKAgreementDetails: React.FC<{
     }
 
     setLoadingChanges(false);
+  };
+
+  const changeSum = (nextSum: number) => {
+    setDistribution((current) => {
+      if (!current) return current;
+      const causeArea = current.causeAreas[0];
+      const systemCauseArea = systemCauseAreas?.find((system) => system.id === causeArea.id);
+      const standardOrganizationId = systemCauseArea
+        ? getStandardOrganizationId(systemCauseArea)
+        : undefined;
+      if (standardOrganizationId === undefined) return current;
+      return {
+        ...current,
+        causeAreas: [setStandardCauseAreaAmount(causeArea, nextSum, standardOrganizationId)],
+      };
+    });
+    setSum(nextSum);
   };
 
   const cancel = async () => {
@@ -248,6 +298,24 @@ export const DKAgreementDetails: React.FC<{
   }
 
   const isSingleCauseArea = systemCauseAreas.length === 1;
+  const singleCauseArea = distribution.causeAreas[0];
+  const distributionAmount = distribution.causeAreas.reduce(
+    (total, causeArea) => total + (causeArea.amount ?? 0),
+    0,
+  );
+  const visibleCauseAreas = orderDistributionCauseAreas(
+    distribution.causeAreas,
+    systemCauseAreas,
+  ).filter((causeArea) => {
+    const systemCauseArea = systemCauseAreas.find((current) => current.id === causeArea.id);
+    const savedAmount =
+      lastSavedDistribution?.causeAreas.find((saved) => saved.id === causeArea.id)?.amount ?? 0;
+    return isAllocationVisible(
+      systemCauseArea ? systemCauseArea.isActive : false,
+      savedAmount,
+      systemCauseArea?.standardPercentageShare,
+    );
+  });
 
   return (
     <div className={style.wrapper} data-cy="agreement-list-details">
@@ -268,14 +336,25 @@ export const DKAgreementDetails: React.FC<{
             )}
 
             <div className={style.valuesAmountContainer}>
-              <input
-                className={style.amountInput}
-                type="text"
-                value={formatSum(sum.toString())}
-                onChange={(e) => setSum(parseSum(e.currentTarget.value))}
-                data-cy="agreement-list-amount-input"
-              />
-              <span>kr</span>
+              {singleCauseArea.standardSplit ? (
+                <>
+                  <input
+                    className={style.amountInput}
+                    type="text"
+                    value={formatSum(sum.toString())}
+                    onChange={(e) => changeSum(parseSum(e.currentTarget.value))}
+                    data-cy="agreement-list-amount-input"
+                  />
+                  <span>kr</span>
+                </>
+              ) : (
+                <>
+                  <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
+                    {formatSum((singleCauseArea.amount ?? 0).toString())}
+                  </output>
+                  <span>kr</span>
+                </>
+              )}
             </div>
 
             <div className={style.valuesTaxUnitSelectorContainer}>
@@ -291,29 +370,28 @@ export const DKAgreementDetails: React.FC<{
             </div>
 
             <div className={style.valuesSmartDistributionToggle}>
-              <span>
+              <span className="caption">
                 {configuration.distribution_configuration?.smart_distribution_label ||
                   "Smart fordeling"}
               </span>
               <Toggle
-                active={distribution.causeAreas[0].standardSplit}
-                onChange={(active) =>
-                  setDistribution({
-                    ...distribution,
-                    causeAreas: [{ ...distribution.causeAreas[0], standardSplit: active }],
-                  })
-                }
+                active={singleCauseArea.standardSplit}
+                onChange={(active) => {
+                  const nextCauseArea = setCauseAreaStandardSplit(singleCauseArea, active);
+                  setDistribution({ ...distribution, causeAreas: [nextCauseArea] });
+                  setSum(nextCauseArea.amount ?? 0);
+                }}
               />
             </div>
           </div>
 
-          <AnimateHeight
-            height={!distribution.causeAreas[0].standardSplit ? "auto" : 0}
-            animateOpacity={true}
-          >
+          <AnimateHeight height={!singleCauseArea.standardSplit ? "auto" : 0} animateOpacity={true}>
             <div className={style.singleCauseAreaDistribution}>
               <DistributionController
-                causeArea={distribution.causeAreas[0]}
+                causeArea={singleCauseArea}
+                savedCauseArea={lastSavedDistribution?.causeAreas.find(
+                  (saved) => saved.id === singleCauseArea.id,
+                )}
                 onChange={(causeArea) =>
                   setDistribution({
                     ...distribution,
@@ -338,13 +416,9 @@ export const DKAgreementDetails: React.FC<{
             )}
 
             <div className={style.valuesAmountContainer}>
-              <input
-                className={style.amountInput}
-                type="text"
-                value={formatSum(sum.toString())}
-                onChange={(e) => setSum(parseSum(e.currentTarget.value))}
-                data-cy="agreement-list-amount-input"
-              />
+              <output className={style.calculatedAmount} data-cy="agreement-list-amount-input">
+                {formatSum(distributionAmount.toString())}
+              </output>
               <span>kr</span>
             </div>
 
@@ -362,57 +436,77 @@ export const DKAgreementDetails: React.FC<{
           </div>
 
           <div className={style.causeAreas}>
-            {distribution.causeAreas.map((causeArea) => {
+            {visibleCauseAreas.map((causeArea) => {
               const systemCauseArea = systemCauseAreas.find((item) => item.id === causeArea.id);
               const causeAreaHasMultipleOrganizations =
                 (systemCauseArea?.organizations.length || 0) > 1;
+              const standardOrganizationId = systemCauseArea
+                ? getStandardOrganizationId(systemCauseArea)
+                : undefined;
 
               return (
                 <div key={`dist-${causeArea.id}`}>
                   <div className={style.distributionCauseAreaInputHeader}>
                     <span>{causeArea.name}</span>
-                    {causeAreaHasMultipleOrganizations && (
-                      <div className={style.valuesSmartDistributionToggle}>
-                        <span>
-                          {configuration.distribution_configuration?.smart_distribution_label ||
-                            "Smart fordeling"}
-                        </span>
-                        <Toggle
-                          active={causeArea.standardSplit}
-                          onChange={(active) =>
-                            setDistribution({
-                              ...distribution,
-                              causeAreas: distribution.causeAreas.map((current) =>
-                                current.id === causeArea.id
-                                  ? { ...current, standardSplit: active }
-                                  : { ...current },
-                              ),
-                            })
-                          }
-                        />
-                      </div>
-                    )}
+                    <div className={style.valuesSmartDistributionToggle}>
+                      {causeAreaHasMultipleOrganizations && (
+                        <>
+                          <span className="caption">
+                            {configuration.distribution_configuration?.smart_distribution_label ||
+                              "Smart fordeling"}
+                          </span>
+                          <Toggle
+                            active={causeArea.standardSplit}
+                            onChange={(active) =>
+                              setDistribution({
+                                ...distribution,
+                                causeAreas: distribution.causeAreas.map((current) =>
+                                  current.id === causeArea.id
+                                    ? setCauseAreaStandardSplit(current, active)
+                                    : { ...current },
+                                ),
+                              })
+                            }
+                          />
+                        </>
+                      )}
+                    </div>
                   </div>
 
                   <div className={style.distributionCauseAreaInputPercentageShare}>
-                    <input
-                      className={style.percentageInput}
-                      type="text"
-                      value={Math.round(parseFloat(causeArea.percentageShare)).toString() || "0"}
-                      onChange={(e) => {
-                        const percentageShare = parseFloat(e.target.value) || 0;
-                        setDistribution({
-                          ...distribution,
-                          causeAreas: distribution.causeAreas.map((current) =>
-                            current.id === causeArea.id
-                              ? { ...current, percentageShare: percentageShare.toFixed(0) }
-                              : { ...current },
-                          ),
-                        });
-                      }}
-                      data-cy="cause-area-input"
-                    />
-                    <span>%</span>
+                    {causeArea.standardSplit ? (
+                      <>
+                        <input
+                          className={style.percentageInput}
+                          type="text"
+                          value={causeArea.amount ?? 0}
+                          onChange={(e) => {
+                            const amount = Math.max(0, parseInt(e.target.value, 10) || 0);
+                            setDistribution({
+                              ...distribution,
+                              causeAreas: distribution.causeAreas.map((current) =>
+                                current.id === causeArea.id && standardOrganizationId !== undefined
+                                  ? setStandardCauseAreaAmount(
+                                      current,
+                                      amount,
+                                      standardOrganizationId,
+                                    )
+                                  : { ...current },
+                              ),
+                            });
+                          }}
+                          data-cy="cause-area-input"
+                        />
+                        <span>kr</span>
+                      </>
+                    ) : (
+                      <>
+                        <output className={style.calculatedAmount} data-cy="cause-area-input">
+                          {formatSum((causeArea.amount ?? 0).toString())}
+                        </output>
+                        <span>kr</span>
+                      </>
+                    )}
                   </div>
 
                   <AnimateHeight
@@ -422,6 +516,9 @@ export const DKAgreementDetails: React.FC<{
                     <div className={style.distributionCauseAreaInputContainer}>
                       <DistributionController
                         causeArea={causeArea}
+                        savedCauseArea={lastSavedDistribution?.causeAreas.find(
+                          (saved) => saved.id === causeArea.id,
+                        )}
                         onChange={(nextCauseArea) =>
                           setDistribution({
                             ...distribution,
@@ -508,10 +605,12 @@ const addMissingCauseAreas = (distribution: Distribution, systemCauseAreas: Caus
       name: causeArea.name,
       standardSplit: true,
       percentageShare: "0",
+      amount: 0,
       organizations: causeArea.organizations.map((organization) => ({
         id: organization.id,
         name: organization.name,
         percentageShare: organization.standardShare?.toString() || "0",
+        amount: 0,
       })),
     });
   });
@@ -532,7 +631,7 @@ const formatSum = (sum: string) => {
   return parts.length === 2 ? formatted + "." + parts[1] : formatted;
 };
 
-const parseSum = (sum: string) => parseFloat(sum.replace(/ /g, "")) || 0;
+const parseSum = (sum: string) => parseInt(sum.replace(/ /g, ""), 10) || 0;
 
 const successToast = (text: string) =>
   toast.success(text, { icon: <Check size={24} color={"black"} /> });

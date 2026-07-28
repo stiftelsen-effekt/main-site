@@ -3,20 +3,16 @@ import { DistributionCauseArea } from "../../../../models";
 import style from "./Distribution.module.scss";
 import { useCauseAreas } from "../../../../_queries";
 import { useAuth0 } from "@auth0/auth0-react";
-import AnimateHeight from "react-animate-height";
+import { isAllocationVisible } from "../distributionAmounts";
 
 export const DistributionController: React.FC<{
   causeArea: DistributionCauseArea;
+  savedCauseArea?: DistributionCauseArea;
   onChange: (causeArea: DistributionCauseArea) => void;
-}> = ({ causeArea, onChange }) => {
+}> = ({ causeArea, savedCauseArea = causeArea, onChange }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   const { data: causeAreas, loading: causeArasLoading } = useCauseAreas(getAccessTokenSilently);
-
-  const sum = causeArea.organizations?.reduce(
-    (acc, curr) => acc + parseFloat(curr.percentageShare),
-    0,
-  );
 
   if (causeArasLoading) return <div>Loading cause areas...</div>;
 
@@ -31,10 +27,12 @@ export const DistributionController: React.FC<{
     <div className={style.wrapper}>
       <div className={style.grid}>
         {currentCauseAreaOrgs
-          .filter(
-            (org) =>
-              org.isActive ||
-              parseFloat(causeArea.organizations.find((o) => org.id)?.percentageShare ?? "0") === 0,
+          .filter((org) =>
+            isAllocationVisible(
+              org.isActive,
+              savedCauseArea.organizations.find((organization) => organization.id === org.id)
+                ?.amount,
+            ),
           )
           .map((org) => (
             <div key={org.id} className={style["share-wrapper"]}>
@@ -42,44 +40,43 @@ export const DistributionController: React.FC<{
               <div>
                 <input
                   type="text"
-                  defaultValue={
-                    Math.round(
-                      parseFloat(
-                        causeArea.organizations?.find((o) => o.id === org.id)?.percentageShare ||
-                          "0",
-                      ),
-                    ).toString() || 0
+                  value={
+                    causeArea.organizations?.find((organization) => organization.id === org.id)
+                      ?.amount ?? 0
                   }
                   onChange={(e) => {
-                    const percentageShare = parseFloat(e.target.value) || 0;
+                    const amount = Math.max(0, parseInt(e.target.value, 10) || 0);
                     const organizations = [...causeArea.organizations];
                     const index = organizations.findIndex((o) => o.id === org.id);
                     if (index === -1) {
                       organizations.push({
                         id: org.id,
                         name: org.name,
-                        percentageShare: percentageShare.toFixed(0),
+                        percentageShare: "0",
+                        amount,
                       });
                     } else {
                       organizations[index] = {
                         ...organizations[index],
-                        percentageShare: percentageShare.toFixed(0),
+                        amount,
                       };
                     }
-                    onChange({ ...causeArea, organizations });
+                    onChange({
+                      ...causeArea,
+                      amount: organizations.reduce(
+                        (total, organization) => total + (organization.amount ?? 0),
+                        0,
+                      ),
+                      organizations,
+                    });
                   }}
                   data-cy="distribution-input"
                 />
-                <span>%</span>
+                <span>kr</span>
               </div>
             </div>
           ))}
       </div>
-      <AnimateHeight height={sum !== 100 ? "auto" : 0} animateOpacity={true}>
-        <div className={style["warning-box"]} data-cy="distribution-warning">
-          Fordeling må summere til 100 <span>{sum} / 100</span>
-        </div>
-      </AnimateHeight>
     </div>
   );
 };

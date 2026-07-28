@@ -59,37 +59,10 @@
   }
 }
 
-.warning-box {
-  padding: 0.5em 1.2em;
-  font-size: 0.8em;
-  margin-top: 1.5em;
-  color: var(--secondary);
-  background: var(--primary);
-  border-radius: 0.5em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  span {
-    border-left: 1px solid var(--secondary);
-    display: flex;
-    padding-left: 1em;
-    height: 100%;
-    align-items: center;
-    margin-left: 1em;
-    font-weight: 600;
-  }
-}
-
 @container (max-width: 45em) {
   .grid {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
-  }
-
-  .warning-box {
-    width: 100%;
-    justify-content: space-between;
   }
 
   .share-wrapper {
