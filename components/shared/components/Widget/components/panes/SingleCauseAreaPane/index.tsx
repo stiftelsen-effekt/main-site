@@ -152,6 +152,13 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
     .sort((a, b) => a.ordering - b.ordering);
   const hasMultipleOrgs = activeOrganizations.length > 1;
   const distributionType = causeAreaDistributionType[causeArea.id] ?? ShareType.STANDARD;
+  // Once the donor enters per-organization amounts themselves those are the total (see
+  // effectiveTotalAmount), so the cause area sum above would be a stale, silently ignored
+  // field - hide it, matching CauseAreaForm in the multiple-cause-area widget. Prefilled
+  // distributions are excluded: they're switched to custom for the donor (not by them), and
+  // there the sum is still the primary input that the prefilled shares track a split of.
+  const hideAmountInput =
+    hasMultipleOrgs && distributionType === ShareType.CUSTOM && !hasPrefilledOrgs;
 
   const suggestedSums = recurring
     ? amountContext.preset_amounts_recurring
@@ -250,11 +257,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
             onSelect={(value) => dispatch(setRecurring(value as RecurringDonation))}
           />
 
-          <AnimateHeight
-            height={hasMultipleOrgs && distributionType === ShareType.CUSTOM ? 0 : "auto"}
-            animateOpacity
-            duration={300}
-          >
+          <AnimateHeight height={hideAmountInput ? 0 : "auto"} animateOpacity duration={300}>
             {amountInput}
           </AnimateHeight>
 
