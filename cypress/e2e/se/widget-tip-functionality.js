@@ -440,10 +440,9 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.wait(500);
       cy.get("[data-cy=cause-area-multiple]").click();
 
-      // Switching to multiple mode mounts each cause area's amount input fresh;
-      // react-number-format has silently fired a phantom onValueChange on that
-      // kind of remount before, zeroing the stored amount - assert it survives
-      // the transition itself, not just the final summary math below.
+      // Assert the amounts survived the mode switch before relying on the
+      // summary math below, so a state-loss regression is reported here rather
+      // than as a confusing "summary row missing" further down.
       cy.get("[data-cy=donation-sum-input-1]").should("have.value", "500");
       cy.get("[data-cy=donation-sum-input-2]").should("have.value", "300");
 
