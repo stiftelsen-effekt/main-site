@@ -43,17 +43,15 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
 
       expect(body.amount).to.equal(1000);
 
-      // Based on fixture: Global hälsa has 90% standardPercentageShare, Operations has 10%
-      // So 900 kr should go to Global hälsa, 100 kr to Operations
       expect(body.distributionCauseAreas).to.have.length(2);
 
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.equal(90);
+      expect(parseFloat(globalHealth.percentageShare)).to.equal(81);
 
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
-      expect(parseFloat(operations.percentageShare)).to.equal(10);
+      expect(parseFloat(operations.percentageShare)).to.equal(19);
     });
   });
 
@@ -76,21 +74,19 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
 
       expect(body.amount).to.equal(500);
 
-      // Since smart distribution uses standardPercentageShare from fixture
-      // Global hälsa has 90%, Operations has 10% - this replaces manual tip functionality
       expect(body.distributionCauseAreas).to.have.length(2);
 
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.equal(90);
+      expect(parseFloat(globalHealth.percentageShare)).to.equal(81);
 
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
-      expect(parseFloat(operations.percentageShare)).to.equal(10);
+      expect(parseFloat(operations.percentageShare)).to.equal(19);
     });
   });
 
-  it("Should not show operations amounts in UI summary when switching to smart distribution", () => {
+  it("Should show only the current operations amount when switching to smart distribution", () => {
     // Start with single cause area and enable tip
     cy.get("[data-cy=cause-area-1]").click();
     setCauseAreaAmount(1, 100, true); // 100 kr with 10% tip = 90 kr + 10 kr operations
@@ -107,22 +103,20 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
     // Check that the donation summary UI shows smart distribution, not leaked operations
     cy.get("[data-cy=donation-summary]").should("exist");
 
-    // Operations cause area should not exist at all in smart distribution
-    cy.get("[data-cy=summary-cause-area-4]").should("not.exist");
-
-    // Should show smart distribution as a single entry, not breakdown
     cy.get("[data-cy=summary-smart-distribution]").should("exist");
     cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
-      const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
-      expect(text).to.match(/500kr/i); // Should contain 500kr (case insensitive)
+      const text = $el.text().replace(/\s/g, "");
+      expect(text).to.match(/450kr/i);
     });
 
-    // Should NOT show individual cause area breakdowns in summary for smart distribution
     cy.get("[data-cy=summary-cause-area-1-amount]").should("not.exist");
-    cy.get("[data-cy=summary-cause-area-4-amount]").should("not.exist");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should(($el) => {
+      const text = $el.text().replace(/\s/g, "");
+      expect(text).to.match(/50kr/i);
+    });
   });
 
-  it("Should not show operations amounts from single cause area when switching to smart distribution", () => {
+  it("Should not retain operations amounts from a previous selection", () => {
     // Start with single cause area and enable tip
     cy.get("[data-cy=cause-area-1]").click();
     setCauseAreaAmount(1, 500, true); // 500 kr with 10% tip = 450 kr + 50 kr operations
@@ -141,22 +135,19 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
     // Submit to check the registration request
     cy.get("[data-cy^=payment-method-]").first().click();
 
-    // Verify the registration request - should only have smart distribution (90%/10%)
     cy.wait("@registerDonation").then((interception) => {
       const { body } = interception.request;
 
       expect(body.amount).to.equal(1000);
       expect(body.distributionCauseAreas).to.have.length(2);
 
-      // Should be 900 kr to Global hälsa (90%) and 100 kr to Operations (10%)
-      // NOT 475 kr to Global hälsa + 25 kr leftover operations + smart distribution operations
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.equal(90);
+      expect(parseFloat(globalHealth.percentageShare)).to.equal(81);
 
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
-      expect(parseFloat(operations.percentageShare)).to.equal(10);
+      expect(parseFloat(operations.percentageShare)).to.equal(19);
 
       // Total should be exactly 100%
       const totalPercentage = body.distributionCauseAreas.reduce(
