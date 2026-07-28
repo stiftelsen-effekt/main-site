@@ -4,6 +4,7 @@ import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
 import { PortableText } from "@portabletext/react";
 import { Dispatch } from "@reduxjs/toolkit";
+import AnimateHeight from "react-animate-height";
 
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import {
@@ -249,7 +250,13 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
             onSelect={(value) => dispatch(setRecurring(value as RecurringDonation))}
           />
 
-          {amountInput}
+          <AnimateHeight
+            height={hasMultipleOrgs && distributionType === ShareType.CUSTOM ? 0 : "auto"}
+            animateOpacity
+            duration={300}
+          >
+            {amountInput}
+          </AnimateHeight>
 
           {hasMultipleOrgs && (
             <ShareSelectionSpacer>
