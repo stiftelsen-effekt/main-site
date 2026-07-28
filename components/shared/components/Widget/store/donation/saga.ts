@@ -244,7 +244,14 @@ export function* registerDonation(
     // Build the distribution payload from the breakdown
     allCauseAreas.forEach((area) => {
       const orgAmountsForArea = area.organizations
-        .map((org) => ({ id: org.id, amount: breakdown.organizationAmounts[org.id] || 0 }))
+        .map((org) => ({
+          id: org.id,
+          amount:
+            (breakdown.organizationAmounts[org.id] || 0) +
+            (area.id === OPERATIONS_CAUSE_AREA_ID && org.standardShare
+              ? (org.standardShare / 100) * breakdown.operationsAmount
+              : 0),
+        }))
         .filter((org) => org.amount > 0);
 
       // Only add areas that have organizations with amounts

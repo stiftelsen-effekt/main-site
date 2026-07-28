@@ -1,7 +1,108 @@
 import {
+  calculateDonationBreakdown,
   calculateOrganizationSharesWithinCauseArea,
   distributeSharesWithRemainder,
 } from "./donationCalculations";
+
+describe("calculateDonationBreakdown", () => {
+  const causeAreas = [
+    {
+      id: 1,
+      name: "Area 1",
+      standardPercentageShare: 60,
+      organizations: [{ id: 11, standardShare: 100 }],
+    },
+    {
+      id: 2,
+      name: "Area 2",
+      standardPercentageShare: 40,
+      organizations: [{ id: 22, standardShare: 100 }],
+    },
+    {
+      id: 4,
+      name: "Operations",
+      standardPercentageShare: 0,
+      organizations: [{ id: 44, standardShare: 100 }],
+    },
+  ] as any;
+
+  it("applies an operations percentage to smart distribution", () => {
+    const breakdown = calculateDonationBreakdown(
+      {},
+      {},
+      {},
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      -1,
+      true,
+      5,
+      [],
+      4,
+      1000,
+    );
+
+    expect(breakdown.totalAmount).toBe(1000);
+    expect(breakdown.operationsAmount).toBe(50);
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 570, 2: 380 });
+  });
+
+  it("combines smart distribution, specific areas, and operations", () => {
+    const breakdown = calculateDonationBreakdown(
+      { 1: 500 },
+      {},
+      { 1: 1, 2: 1, 4: 1 } as any,
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+      500,
+    );
+
+    expect(breakdown.totalAmount).toBe(1000);
+    expect(breakdown.operationsAmount).toBe(50);
+    expect(breakdown.causeAreaAmounts[1]).toBe(760);
+    expect(breakdown.causeAreaAmounts[2]).toBe(190);
+  });
+
+  it("uses operations as the integer remainder after rounding custom donations", () => {
+    const customCauseAreas = [
+      { id: 1, name: "Area 1", organizations: [{ id: 11, standardShare: 100 }] },
+      { id: 2, name: "Area 2", organizations: [{ id: 22, standardShare: 100 }] },
+      { id: 3, name: "Area 3", organizations: [{ id: 33, standardShare: 100 }] },
+      causeAreas[2],
+    ] as any;
+    const breakdown = calculateDonationBreakdown(
+      {},
+      { 11: 10, 22: 20, 33: 30 },
+      { 1: 0, 2: 0, 3: 0, 4: 1 } as any,
+      {},
+      {},
+      customCauseAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+    );
+
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 10, 2: 19, 3: 29 });
+    expect(breakdown.organizationAmounts).toEqual({ 11: 10, 22: 19, 33: 29 });
+    expect(breakdown.operationsAmount).toBe(2);
+    expect(breakdown.totalAmount).toBe(60);
+    expect(
+      Object.values(breakdown.causeAreaAmounts).reduce((sum, amount) => sum + amount, 0) +
+        breakdown.operationsAmount,
+    ).toBe(breakdown.totalAmount);
+  });
+});
 
 describe("distributeSharesWithRemainder", () => {
   const sumOfShares = (shares: { percentageShare: string }[]) =>
@@ -73,7 +174,7 @@ describe("calculateOrganizationSharesWithinCauseArea", () => {
       { id: 2, amount: 75 },
     ]);
 
-    expect(shares.find((s) => s.id === 1)?.percentageShare).toBe("25.00000000");
+    expect(shares.find((s) => s.id === 1)?.percentageShare).toBe("25");
     // Org 2 has the largest amount, so it absorbs the rounding remainder
     // (100 - sum of the others) rather than being independently rounded
     expect(shares.find((s) => s.id === 2)?.percentageShare).toBe("75");
@@ -121,7 +222,9 @@ describe("calculateOrganizationSharesWithinCauseArea", () => {
       { id: 2, amount: 74.6 },
     ]);
     expect(shares.find((s) => s.id === 1)?.amount).toBe(25);
+    expect(shares.find((s) => s.id === 1)?.percentageShare).toBe("25");
     expect(shares.find((s) => s.id === 2)?.amount).toBe(75);
+    expect(shares.find((s) => s.id === 2)?.percentageShare).toBe("75");
   });
 
   it("returns an empty array when there are no positive amounts", () => {

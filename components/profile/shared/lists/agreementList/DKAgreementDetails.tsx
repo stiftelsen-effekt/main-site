@@ -26,7 +26,11 @@ import { DKTaxUnitCreateModal } from "../../TaxUnitModal/DKTaxUnitCreateModal";
 import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
 import { AgreementDetailsConfiguration } from "./AgreementDetails";
 import { DKAgreementMembershipLine } from "./DKAgreementMembershipLine";
-import { distributionTargetsMembershipFee, getDKMembershipDisplay } from "./dkMembershipDisplay";
+import {
+  distributionTargetsMembershipFee,
+  getDKMembershipDisplay,
+  MEMBERSHIP_ORGANIZATION_ID,
+} from "./dkMembershipDisplay";
 import { getUserId } from "../../../../../lib/user";
 import { cancelDKAgreement, updateDKAgreement } from "./_queries";
 import {
@@ -596,7 +600,11 @@ const addMissingCauseAreas = (distribution: Distribution, systemCauseAreas: Caus
   const nextDistribution = cloneDistribution(distribution) as Distribution;
   const distributionCauseAreaIds = nextDistribution.causeAreas.map((causeArea) => causeArea.id);
   const missingCauseAreas = systemCauseAreas.filter(
-    (causeArea) => !distributionCauseAreaIds.includes(causeArea.id),
+    (causeArea) =>
+      !distributionCauseAreaIds.includes(causeArea.id) &&
+      !causeArea.organizations.some(
+        (organization) => organization.id === MEMBERSHIP_ORGANIZATION_ID,
+      ),
   );
 
   missingCauseAreas.forEach((causeArea) => {
