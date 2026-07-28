@@ -59,7 +59,11 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
     const systemCauseArea = systemCauseAreas.find((current) => current.id === causeArea.id);
     const savedAmount =
       savedDistribution.causeAreas.find((saved) => saved.id === causeArea.id)?.amount ?? 0;
-    return isAllocationVisible(systemCauseArea ? systemCauseArea.isActive : false, savedAmount);
+    return isAllocationVisible(
+      systemCauseArea ? systemCauseArea.isActive : false,
+      savedAmount,
+      systemCauseArea?.standardPercentageShare,
+    );
   });
 
   return (

@@ -7,8 +7,11 @@ const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
 const isAmount = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value) && value >= 0;
 
-export const isAllocationVisible = (isActive: boolean | undefined, savedAmount?: number) =>
-  isActive !== false || (savedAmount ?? 0) > 0;
+export const isAllocationVisible = (
+  isActive: boolean | undefined,
+  savedAmount?: number,
+  standardPercentageShare?: number,
+) => isActive !== false || (savedAmount ?? 0) > 0 || (standardPercentageShare ?? 0) > 0;
 
 export const orderDistributionCauseAreas = (
   causeAreas: DistributionCauseArea[],

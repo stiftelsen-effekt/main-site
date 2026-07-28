@@ -54,9 +54,10 @@ it("orders distributions using the cause area configuration", () => {
   expect(ordered.map((causeArea) => causeArea.id)).toEqual([3, 1, 2]);
 });
 
-it("only shows inactive allocations while the saved agreement uses them", () => {
+it("only shows inactive allocations when saved or included in the recommended distribution", () => {
   expect(isAllocationVisible(false, 100)).toBe(true);
   expect(isAllocationVisible(false, 0)).toBe(false);
+  expect(isAllocationVisible(false, 0, 100)).toBe(true);
   expect(isAllocationVisible(true, 0)).toBe(true);
 });
 
