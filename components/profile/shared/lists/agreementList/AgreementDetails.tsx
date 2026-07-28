@@ -349,7 +349,8 @@ export const AgreementDetails: React.FC<{
             day={day}
             setDay={setDay}
             sum={sum}
-            setSum={changeSum}
+            setSum={setSum}
+            onSumChange={changeSum}
             taxUnits={taxUnits}
             dateSelectorConfig={configuration.date_selector_configuration}
           ></AgreementSingleCauseAreaDetails>

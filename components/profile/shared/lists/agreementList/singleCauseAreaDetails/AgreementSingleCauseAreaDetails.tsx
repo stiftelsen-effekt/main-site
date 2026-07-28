@@ -21,6 +21,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
   setDay: (day: number) => void;
   sum: number;
   setSum: (sum: number) => void;
+  onSumChange: (sum: number) => void;
   taxUnits: TaxUnit[];
   dateSelectorConfig: DatePickerInputConfiguration;
 }> = ({
@@ -31,6 +32,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
   setDay,
   sum,
   setSum,
+  onSumChange,
   taxUnits,
   dateSelectorConfig,
 }) => {
@@ -55,7 +57,7 @@ export const AgreementSingleCauseAreaDetails: React.FC<{
               <input
                 type="text"
                 value={formatSum(sum.toString())}
-                onChange={(e) => setSum(parseSum(e.currentTarget.value))}
+                onChange={(e) => onSumChange(parseSum(e.currentTarget.value))}
                 data-cy="agreement-list-amount-input"
               />
               <span>kr</span>
