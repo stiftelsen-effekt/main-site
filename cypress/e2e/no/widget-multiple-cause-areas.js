@@ -5,17 +5,15 @@
 // This spec forces a multi-cause-area fixture so that flow keeps working too.
 describe("Widget multiple cause areas", () => {
   beforeEach(() => {
-    cy.fixture("cause_areas_multiple")
-      .then((causeAreas) => {
-        cy.intercept("GET", "/causeareas/all", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: causeAreas,
-          },
-        });
-      })
-      .as("getCauseAreas");
+    cy.fixture("cause_areas_multiple").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/all", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: causeAreas,
+        },
+      }).as("getCauseAreas");
+    });
 
     cy.fixture("referrals").then((referrals) => {
       cy.intercept("GET", "/referrals/types", {
@@ -33,8 +31,9 @@ describe("Widget multiple cause areas", () => {
         "x-vercel-skip-toolbar": "1",
       },
     });
-    cy.wait(500);
-    cy.get("[data-cy=gi-button]").click();
+    cy.wait("@getCauseAreas");
+    cy.get("[data-cy=gi-button]").should("be.visible").click();
+    cy.get("[data-cy=widget-pane]").should("be.visible");
   });
 
   it("Shows the cause area selection pane instead of SingleCauseAreaPane", () => {
