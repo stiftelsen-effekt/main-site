@@ -108,17 +108,36 @@ describe("Widget", () => {
       },
     }).as("registerDonation");
 
-    cy.intercept("POST", "/avtalegiro/draft", {
-      statusCode: 200,
-      body: {
-        status: 200,
-      },
+    cy.intercept("POST", "/avtalegiro/draft", (req) => {
+      expect(req.body.amount).to.equal(randomSum);
+      expect(req.body.sum).to.be.undefined;
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+        },
+      });
     }).as("draftAvtaleGiro");
 
     cy.nextWidgetPane();
     cy.wait(500);
 
-    cy.get("[data-cy=avtalegiro-form]").submit();
+    // The form's own native submit goes straight to the external
+    // avtalegiro.no page (its action is that URL), bypassing the button's
+    // onClick handler that actually dispatches the draftAvtaleGiro saga and
+    // calls /avtalegiro/draft - so the button itself must be clicked, not
+    // the form submitted directly, to exercise that request. But the saga
+    // itself calls the form's native submit() on success, which would send
+    // the browser to that real external page - stub it out so the test only
+    // verifies the request, without actually navigating away.
+    cy.window().then((win) => {
+      cy.stub(win.HTMLFormElement.prototype, "submit").as("formSubmit");
+    });
+
+    cy.get("[data-cy=avtalegiro-form] button").click({ force: true });
+
+    cy.wait("@draftAvtaleGiro");
+    cy.get("@formSubmit").should("have.been.calledOnce");
   });
 
   it("End-2-End single vipps donation", () => {
@@ -175,11 +194,15 @@ describe("Widget", () => {
       },
     }).as("registerDonation");
 
-    cy.intercept("POST", "/vipps/agreement/draft", {
-      statusCode: 200,
-      body: {
-        status: 200,
-      },
+    cy.intercept("POST", "/vipps/agreement/draft", (req) => {
+      expect(req.body.amount).to.equal(randomSum);
+      expect(req.body.sum).to.be.undefined;
+      req.reply({
+        statusCode: 200,
+        body: {
+          status: 200,
+        },
+      });
     }).as("draftVippsAgreement");
 
     cy.nextWidgetPane();
@@ -188,7 +211,7 @@ describe("Widget", () => {
     cy.get("[data-cy=vipps-recurring-button]").within(() => {
       cy.get("button").click();
     });
-    cy.wait(500);
+    cy.wait("@draftVippsAgreement");
   });
 
   it("End-2-End shared donation", () => {

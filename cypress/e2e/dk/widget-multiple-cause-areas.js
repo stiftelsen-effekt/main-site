@@ -106,7 +106,7 @@ describe("Widget multiple cause areas", () => {
       expect(req.body.amount).to.eq(1000);
       expect(req.body.distributionCauseAreas).to.have.length(1);
       expect(req.body.distributionCauseAreas[0].id).to.eq(4);
-      expect(req.body.distributionCauseAreas[0].percentageShare).to.eq("100.00000000");
+      expect(parseFloat(req.body.distributionCauseAreas[0].percentageShare)).to.eq(100);
 
       req.reply({
         statusCode: 200,
