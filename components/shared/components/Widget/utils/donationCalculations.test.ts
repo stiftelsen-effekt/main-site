@@ -1,7 +1,76 @@
 import {
+  calculateDonationBreakdown,
   calculateOrganizationSharesWithinCauseArea,
   distributeSharesWithRemainder,
 } from "./donationCalculations";
+
+describe("calculateDonationBreakdown", () => {
+  const causeAreas = [
+    {
+      id: 1,
+      name: "Area 1",
+      standardPercentageShare: 60,
+      organizations: [{ id: 11, standardShare: 100 }],
+    },
+    {
+      id: 2,
+      name: "Area 2",
+      standardPercentageShare: 40,
+      organizations: [{ id: 22, standardShare: 100 }],
+    },
+    {
+      id: 4,
+      name: "Operations",
+      standardPercentageShare: 0,
+      organizations: [{ id: 44, standardShare: 100 }],
+    },
+  ] as any;
+
+  it("applies an operations percentage to smart distribution", () => {
+    const breakdown = calculateDonationBreakdown(
+      {},
+      {},
+      {},
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      -1,
+      true,
+      5,
+      [],
+      4,
+      1000,
+    );
+
+    expect(breakdown.totalAmount).toBe(1000);
+    expect(breakdown.operationsAmount).toBe(50);
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 570, 2: 380 });
+  });
+
+  it("combines smart distribution, specific areas, and operations", () => {
+    const breakdown = calculateDonationBreakdown(
+      { 1: 500 },
+      {},
+      { 1: 1, 2: 1, 4: 1 } as any,
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+      500,
+    );
+
+    expect(breakdown.totalAmount).toBe(1000);
+    expect(breakdown.operationsAmount).toBe(50);
+    expect(breakdown.causeAreaAmounts[1]).toBe(760);
+    expect(breakdown.causeAreaAmounts[2]).toBe(190);
+  });
+});
 
 describe("distributeSharesWithRemainder", () => {
   const sumOfShares = (shares: { percentageShare: string }[]) =>

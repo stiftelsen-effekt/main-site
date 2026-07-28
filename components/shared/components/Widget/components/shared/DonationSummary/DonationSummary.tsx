@@ -47,12 +47,23 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
 
     // Special handling for smart distribution mode
     if (selectedCauseAreaId === -1 && smartDistributionTotal > 0) {
+      const operationsAmount = globalOperationsEnabled
+        ? Math.round((smartDistributionTotal * globalOperationsPercentage) / 100)
+        : 0;
       summaryItems.push({
         id: -1,
         name: text.smart_distribution_title,
-        amount: smartDistributionTotal,
+        amount: smartDistributionTotal - operationsAmount,
         orgs: [],
       });
+      if (operationsAmount > 0 && operationsConfig?.operationsCauseAreaId !== undefined) {
+        summaryItems.push({
+          id: operationsConfig.operationsCauseAreaId,
+          name: text.operations_summary_label,
+          amount: operationsAmount,
+          orgs: [],
+        });
+      }
       return { summaryItems, sum: smartDistributionTotal };
     }
 
@@ -126,6 +137,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
     globalOperationsEnabled,
     smartDistributionTotal,
     globalOperationsPercentage,
+    operationsConfig,
     text.smart_distribution_title,
     text.operations_summary_label,
   ]);

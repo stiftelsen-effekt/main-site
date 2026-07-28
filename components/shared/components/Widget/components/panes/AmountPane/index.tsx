@@ -125,6 +125,15 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             {/* For multiple cause areas */}
             {selectionType === "multiple" && selectedCauseAreaId !== -1 && (
               <>
+                <SmartDistributionForm
+                  suggestedSums={suggestedSums}
+                  totalAmount={totalAmount}
+                  causeAreas={causeAreas}
+                  causeAreaAmounts={causeAreaAmounts}
+                  causeAreaDistributionType={causeAreaDistributionType}
+                  smartDistributionContext={smartDistContext}
+                  causeAreaDisplayConfig={causeAreaDisplayConfig}
+                />
                 {causeAreas
                   .filter((ca) => ca.isActive || prefilledCauseAreaIds.has(ca.id))
                   .filter(
@@ -186,15 +195,18 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             )}
 
             {selectedCauseAreaId === -1 && (
-              <SmartDistributionForm
-                suggestedSums={suggestedSums}
-                totalAmount={totalAmount}
-                causeAreas={causeAreas}
-                causeAreaAmounts={causeAreaAmounts}
-                causeAreaDistributionType={causeAreaDistributionType}
-                smartDistributionContext={smartDistContext}
-                causeAreaDisplayConfig={causeAreaDisplayConfig}
-              />
+              <>
+                <SmartDistributionForm
+                  suggestedSums={suggestedSums}
+                  totalAmount={totalAmount}
+                  causeAreas={causeAreas}
+                  causeAreaAmounts={causeAreaAmounts}
+                  causeAreaDistributionType={causeAreaDistributionType}
+                  smartDistributionContext={smartDistContext}
+                  causeAreaDisplayConfig={causeAreaDisplayConfig}
+                />
+                <GlobalCutToggle operationsConfig={operationsConfig} />
+              </>
             )}
           </CauseAreasWrapper>
         </div>

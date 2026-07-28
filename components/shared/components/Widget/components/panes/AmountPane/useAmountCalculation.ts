@@ -16,6 +16,7 @@ export const useAmountCalculation = (
     operationsPercentageByCauseArea = {},
     globalOperationsEnabled = false,
     operationsConfig,
+    smartDistributionTotal = 0,
   } = useSelector((state: State) => state.donation);
 
   const OPERATIONS_CAUSE_AREA_ID = operationsConfig?.operationsCauseAreaId;
@@ -87,6 +88,8 @@ export const useAmountCalculation = (
           return acc + (causeAreaAmounts[area.id] || 0);
         }, 0);
 
+      currentTotal += smartDistributionTotal;
+
       // For multiple cause areas, the total is just the sum of amounts entered
       // Operations cut is calculated FROM this total, not added to it
     } else if (selectionType === "single" && selectedCauseAreaId != null) {
@@ -115,6 +118,7 @@ export const useAmountCalculation = (
     causeAreaDistributionType,
     globalOperationsEnabled,
     OPERATIONS_CAUSE_AREA_ID,
+    smartDistributionTotal,
   ]);
 
   return {

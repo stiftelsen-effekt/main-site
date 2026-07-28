@@ -38,12 +38,16 @@ export function calculateDonationBreakdown(
 
   // Handle smart distribution mode
   if (selectedCauseAreaId === -1 && smartDistributionTotal) {
+    const operationsAmount = globalOperationsEnabled
+      ? Math.round((smartDistributionTotal * globalOperationsPercentage) / 100)
+      : 0;
+    const distributedAmount = smartDistributionTotal - operationsAmount;
+
     causeAreas.forEach((area) => {
       if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = (area.standardPercentageShare / 100) * smartDistributionTotal;
+        const areaAmount = (area.standardPercentageShare / 100) * distributedAmount;
         result.causeAreaAmounts[area.id] = areaAmount;
 
-        // Distribute among organizations
         area.organizations.forEach((org) => {
           if (org.standardShare && org.standardShare > 0) {
             const orgAmount = (org.standardShare / 100) * areaAmount;
@@ -52,6 +56,7 @@ export function calculateDonationBreakdown(
         });
       }
     });
+    result.operationsAmount = operationsAmount;
     result.totalAmount = smartDistributionTotal;
     return result;
   }
@@ -65,15 +70,17 @@ export function calculateDonationBreakdown(
       .filter((area) => causeAreaDistributionType[area.id] === ShareType.CUSTOM)
       .map((area) => area.id);
     // For multiple cause areas, calculate based on global percentage
-    multipleTotalDonation = Object.entries(causeAreaAmounts).reduce(
-      (sum, entry) =>
-        sum +
-        (ignoredCauseAreas.includes(parseInt(entry[0])) ||
-        customDistributionAreasIds.includes(parseInt(entry[0]))
-          ? 0
-          : entry[1]),
-      0,
-    );
+    multipleTotalDonation =
+      (smartDistributionTotal || 0) +
+      Object.entries(causeAreaAmounts).reduce(
+        (sum, entry) =>
+          sum +
+          (ignoredCauseAreas.includes(parseInt(entry[0])) ||
+          customDistributionAreasIds.includes(parseInt(entry[0]))
+            ? 0
+            : entry[1]),
+        0,
+      );
     // Add organization amounts for custom distribution
     for (const customCauseAreaId of customDistributionAreasIds) {
       const orgs = causeAreas.find((area) => area.id === customCauseAreaId)?.organizations || [];
@@ -103,6 +110,26 @@ export function calculateDonationBreakdown(
   }
 
   result.operationsAmount = totalOperationsAmount;
+
+  if (selectionType === "multiple" && smartDistributionTotal && smartDistributionTotal > 0) {
+    const reduction =
+      multipleTotalDonation > 0 ? 1 - totalOperationsAmount / multipleTotalDonation : 1;
+    const netSmartDistributionAmount = smartDistributionTotal * reduction;
+
+    causeAreas.forEach((area) => {
+      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
+        const areaAmount = (area.standardPercentageShare / 100) * netSmartDistributionAmount;
+        result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + areaAmount;
+
+        area.organizations.forEach((org) => {
+          if (org.standardShare && org.standardShare > 0) {
+            result.organizationAmounts[org.id] =
+              (result.organizationAmounts[org.id] || 0) + (org.standardShare / 100) * areaAmount;
+          }
+        });
+      }
+    });
+  }
 
   // Process each cause area
   causeAreas.forEach((area) => {
@@ -143,7 +170,7 @@ export function calculateDonationBreakdown(
         netAreaAmount = areaAmount - operationsCut;
       }
 
-      result.causeAreaAmounts[area.id] = netAreaAmount;
+      result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + netAreaAmount;
 
       // Distribute to organizations based on standard shares
       area.organizations.forEach((org) => {
@@ -186,7 +213,8 @@ export function calculateDonationBreakdown(
           }
         }
 
-        result.causeAreaAmounts[area.id] = netTotalOrgAmount;
+        result.causeAreaAmounts[area.id] =
+          (result.causeAreaAmounts[area.id] || 0) + netTotalOrgAmount;
 
         // Apply reduction to each organization
         area.organizations.forEach((org) => {
