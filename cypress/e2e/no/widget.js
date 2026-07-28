@@ -2,17 +2,15 @@ import mockDonor from "../../fixtures/no/donor.json";
 
 describe("Widget", () => {
   beforeEach(() => {
-    cy.fixture("cause_areas")
-      .then((causeAreas) => {
-        cy.intercept("GET", "/causeareas/all", {
-          statusCode: 200,
-          body: {
-            status: 200,
-            content: causeAreas,
-          },
-        });
-      })
-      .as("getCauseAreas");
+    cy.fixture("cause_areas").then((causeAreas) => {
+      cy.intercept("GET", "/causeareas/all", {
+        statusCode: 200,
+        body: {
+          status: 200,
+          content: causeAreas,
+        },
+      }).as("getCauseAreas");
+    });
 
     cy.fixture("referrals").then((referrals) => {
       cy.intercept("GET", "/referrals/types", {
@@ -30,8 +28,9 @@ describe("Widget", () => {
         "x-vercel-skip-toolbar": "1",
       },
     });
-    cy.wait(500);
-    cy.get("[data-cy=gi-button]").click();
+    cy.wait("@getCauseAreas");
+    cy.get("[data-cy=gi-button]").should("be.visible").click();
+    cy.get("[data-cy=widget-pane]").should("be.visible");
   });
 
   it("End-2-End single bank donation", () => {
