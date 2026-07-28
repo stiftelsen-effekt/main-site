@@ -552,7 +552,7 @@ describe("Agreements page", () => {
       .first()
       .find("tbody")
       .first()
-      .find("[data-cy=distribution-input]")
+      .find("[data-cy=distribution-input]:visible")
       .each(($input) => cy.wrap($input).clear().type("0"))
       .first()
       .clear()
