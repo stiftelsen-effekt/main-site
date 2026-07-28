@@ -440,6 +440,13 @@ describe("Swedish Widget - Cut Functionality", () => {
       cy.wait(500);
       cy.get("[data-cy=cause-area-multiple]").click();
 
+      // Switching to multiple mode mounts each cause area's amount input fresh;
+      // react-number-format has silently fired a phantom onValueChange on that
+      // kind of remount before, zeroing the stored amount - assert it survives
+      // the transition itself, not just the final summary math below.
+      cy.get("[data-cy=donation-sum-input-1]").should("have.value", "500");
+      cy.get("[data-cy=donation-sum-input-2]").should("have.value", "300");
+
       // Global should be checked
       cy.get("[data-cy=global-cut-checkbox]").should("be.checked");
 

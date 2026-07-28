@@ -116,7 +116,15 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     dispatch(setOperationsPercentageByCauseArea(causeArea.id, limitedPercentage));
   };
 
-  const handleAmountChange = (values: { floatValue: number | undefined }) => {
+  const handleAmountChange = (
+    values: { floatValue: number | undefined },
+    sourceInfo: { source: string },
+  ) => {
+    // react-number-format also fires this when `value` changes because of a fresh
+    // mount/reformat (e.g. switching from single to multiple cause area mode remounts
+    // this form), not just on real keystrokes - only a genuine user edit should
+    // overwrite the stored amount, or a stale/zero value silently clobbers it.
+    if (sourceInfo.source !== "event") return;
     const v = values.floatValue === undefined ? 0 : values.floatValue;
     setInputValue(v);
 
@@ -276,7 +284,10 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                                 thousandSeparator=" "
                                 autoComplete="off"
                                 data-cy={`org-${org.id}`}
-                                onValueChange={(values) => {
+                                onValueChange={(values, sourceInfo) => {
+                                  // Same react-number-format phantom-onValueChange-on-mount
+                                  // guard as handleAmountChange/handlePercentageChange above.
+                                  if (sourceInfo.source !== "event") return;
                                   const v = values.floatValue === undefined ? 0 : values.floatValue;
                                   dispatch(setOrgAmount(org.id, v));
                                 }}

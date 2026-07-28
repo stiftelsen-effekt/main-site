@@ -76,7 +76,10 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
                 value={causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""}
                 autoComplete="off"
                 data-cy="donation-sum-input-operations"
-                onValueChange={(values) => {
+                onValueChange={(values, sourceInfo) => {
+                  // react-number-format also fires this on mount/reformat, not just on
+                  // real keystrokes - only a genuine user edit should overwrite the amount.
+                  if (sourceInfo.source !== "event") return;
                   const v = values.floatValue === undefined ? 0 : values.floatValue;
                   dispatch(setCauseAreaAmount(causeArea.id, v));
                 }}
