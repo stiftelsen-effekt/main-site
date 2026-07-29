@@ -244,44 +244,20 @@ export function calculateDonationBreakdown(
       selectedCauseAreaId !== null &&
       selectedCauseAreaId !== undefined &&
       operationsPercentageModeByCauseArea[selectedCauseAreaId]);
-  const exactCauseAreaAmounts = { ...result.causeAreaAmounts };
-  const roundedCauseAreaAmounts: Record<number, number> = {};
-
-  Object.entries(exactCauseAreaAmounts).forEach(([id, amount]) => {
-    const areaId = Number(id);
-    const area = causeAreas.find((candidate) => candidate.id === areaId);
-    const isCustom = causeAreaDistributionType[areaId] === ShareType.CUSTOM;
-    roundedCauseAreaAmounts[areaId] = isCustom
-      ? (area?.organizations || []).reduce(
-          (sum, org) => sum + Math.round(result.organizationAmounts[org.id] || 0),
-          0,
-        )
-      : Math.round(amount);
-  });
-
-  let roundedDistributedAmount = Object.values(roundedCauseAreaAmounts).reduce(
-    (sum, amount) => sum + amount,
-    0,
+  const targetDistributedAmount = hasOperationsCut
+    ? Math.max(totalAmount - totalOperationsAmount, 0)
+    : totalAmount;
+  const roundedCauseAreaAmounts = roundAmountsToTotal(
+    Object.entries(result.causeAreaAmounts)
+      .map(([id, amount]) => ({ id: Number(id), amount }))
+      .filter(({ amount }) => amount > 0),
+    targetDistributedAmount,
   );
-  const largestCauseAreaId = Object.keys(roundedCauseAreaAmounts)
-    .map(Number)
-    .sort(
-      (left, right) =>
-        roundedCauseAreaAmounts[right] - roundedCauseAreaAmounts[left] || left - right,
-    )[0];
 
-  if (largestCauseAreaId !== undefined) {
-    if (roundedDistributedAmount > totalAmount) {
-      roundedCauseAreaAmounts[largestCauseAreaId] -= roundedDistributedAmount - totalAmount;
-      roundedDistributedAmount = totalAmount;
-    } else if (!hasOperationsCut && roundedDistributedAmount < totalAmount) {
-      roundedCauseAreaAmounts[largestCauseAreaId] += totalAmount - roundedDistributedAmount;
-      roundedDistributedAmount = totalAmount;
-    }
-  }
-
-  result.causeAreaAmounts = roundedCauseAreaAmounts;
-  result.operationsAmount = hasOperationsCut ? totalAmount - roundedDistributedAmount : 0;
+  result.causeAreaAmounts = Object.fromEntries(
+    roundedCauseAreaAmounts.map(({ id, amount }) => [id, amount]),
+  );
+  result.operationsAmount = hasOperationsCut ? totalAmount - targetDistributedAmount : 0;
   result.totalAmount = totalAmount;
 
   causeAreas.forEach((area) => {
