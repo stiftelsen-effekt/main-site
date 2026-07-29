@@ -114,7 +114,29 @@ describe("calculateDonationBreakdown", () => {
     expect(breakdown.causeAreaAmounts[4]).toBeUndefined();
   });
 
-  it("uses operations as the integer remainder after rounding custom donations", () => {
+  it("preserves a one-krone operations cut when cause area amounts round up", () => {
+    const breakdown = calculateDonationBreakdown(
+      { 1: 10, 2: 10 },
+      {},
+      { 1: 1, 2: 1, 4: 1 } as any,
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+    );
+
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 10, 2: 9 });
+    expect(breakdown.organizationAmounts).toEqual({ 11: 10, 22: 9 });
+    expect(breakdown.operationsAmount).toBe(1);
+    expect(breakdown.totalAmount).toBe(20);
+  });
+
+  it("keeps the configured operations amount after rounding custom donations", () => {
     const customCauseAreas = [
       { id: 1, name: "Area 1", organizations: [{ id: 11, standardShare: 100 }] },
       { id: 2, name: "Area 2", organizations: [{ id: 22, standardShare: 100 }] },
@@ -136,9 +158,9 @@ describe("calculateDonationBreakdown", () => {
       4,
     );
 
-    expect(breakdown.causeAreaAmounts).toEqual({ 1: 10, 2: 19, 3: 29 });
-    expect(breakdown.organizationAmounts).toEqual({ 11: 10, 22: 19, 33: 29 });
-    expect(breakdown.operationsAmount).toBe(2);
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 10, 2: 19, 3: 28 });
+    expect(breakdown.organizationAmounts).toEqual({ 11: 10, 22: 19, 33: 28 });
+    expect(breakdown.operationsAmount).toBe(3);
     expect(breakdown.totalAmount).toBe(60);
     expect(
       Object.values(breakdown.causeAreaAmounts).reduce((sum, amount) => sum + amount, 0) +
