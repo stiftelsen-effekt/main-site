@@ -267,7 +267,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                         .sort((o1, o2) => o1.ordering - o2.ordering)
                         .map((org) => (
                           <OrganizationInputWrapper key={org.id}>
-                            <Link href={org.informationUrl || "#"} target="_blank">
+                            <Link href={org.informationUrl || "#"}>
                               <label htmlFor={`org-${org.id}`}>
                                 {org.widgetDisplayName || org.name}
                               </label>
