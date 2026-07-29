@@ -36,6 +36,7 @@ import {
   SmartDistributionContext,
 } from "../../../types/WidgetProps";
 import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
+import { splitOperationsLabelTemplate } from "../../../utils/operationsLabel";
 
 interface CauseAreaFormProps {
   causeArea: CauseArea;
@@ -86,6 +87,8 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
   // Get percentage from Redux state
   const currentPercentage = operationsPercentageByCauseArea[causeArea.id] ?? defaultPercentage;
+  const { prefix: operationsLabelPrefix, suffix: operationsLabelSuffix } =
+    splitOperationsLabelTemplate(config?.operations_label_template);
 
   // Check if operations are enabled for this cause area
   const isOperationsEnabled = operationsPercentageModeByCauseArea[causeArea.id] ?? false;
@@ -339,6 +342,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
               <CustomCheckBox checked={isOperationsEnabled} label="" />
             </CheckBoxWrapper>
             <OperationsPercentageInputWrapper>
+              {operationsLabelPrefix && <span>{operationsLabelPrefix}</span>}
               <span>
                 <NumericFormat
                   name={`percentage-cut-${causeArea.id}`}
@@ -354,9 +358,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   disabled={!isOperationsEnabled}
                 />
               </span>
-              <span>
-                {operationsConfig?.operations_label_template?.replace("{percentage}", "")}
-              </span>
+              {operationsLabelSuffix && <span>{operationsLabelSuffix}</span>}
             </OperationsPercentageInputWrapper>
           </div>
         </div>

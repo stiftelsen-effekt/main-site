@@ -11,6 +11,7 @@ import { CheckBoxWrapper, HiddenCheckBox } from "../Forms.style";
 import { CustomCheckBox } from "../DonorPane/CustomCheckBox";
 import { OperationsPercentageInputWrapper } from "../AmountPane.style";
 import { OperationsConfig } from "../../../types/WidgetProps";
+import { splitOperationsLabelTemplate } from "../../../utils/operationsLabel";
 
 interface GlobalCutToggleProps {
   operationsConfig?: OperationsConfig;
@@ -27,6 +28,8 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ operationsConf
 
   // Use config from props if available, otherwise from state
   const config = operationsConfig || stateConfig;
+  const { prefix: operationsLabelPrefix, suffix: operationsLabelSuffix } =
+    splitOperationsLabelTemplate(operationsConfig?.operations_label_template);
 
   // Explicitly toggling the global cut applies it to every eligible cause area -
   // otherwise a donor who only meant to turn it off/on globally would still see
@@ -78,6 +81,7 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ operationsConf
           <CustomCheckBox checked={globalOperationsEnabled} label="" />
         </CheckBoxWrapper>
         <OperationsPercentageInputWrapper>
+          {operationsLabelPrefix && <span>{operationsLabelPrefix}</span>}
           <span>
             <NumericFormat
               name={`global-percentage-cut`}
@@ -95,7 +99,7 @@ export const GlobalCutToggle: React.FC<GlobalCutToggleProps> = ({ operationsConf
               disabled={!globalOperationsEnabled}
             />
           </span>
-          <span>{operationsConfig?.operations_label_template?.replace("{percentage}", "")}</span>
+          {operationsLabelSuffix && <span>{operationsLabelSuffix}</span>}
         </OperationsPercentageInputWrapper>
       </div>
     </div>
