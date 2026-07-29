@@ -15,7 +15,7 @@ export const DEFAULT_OPERATIONS_CONFIG: Omit<
   // inside a regular cause area) leave it unset.
   operations_cause_area_id: undefined,
   default_percentage: 5,
-  operations_label_template: "{percentage}% to operations",
+  operations_label_template: "of which {percentage}% to operations",
   enabled_by_default_global: false,
   enabled_by_default_single: true,
   excluded_cause_area_ids: [],

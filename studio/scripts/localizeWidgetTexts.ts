@@ -27,7 +27,8 @@ const CONTENT: Record<LocaleKey, Record<string, unknown>> = {
   no: {
     "ui_labels.total_label": "Sum",
     "ui_labels.operations_summary_label": "Drift",
-    "operations_config.operations_label_template": "{percentage} % til drift",
+    "operations_config.operations_label_template": "hvorav {percentage} % til drift",
+    "smart_distribution_context.smart_distribution_label_text": "Om Smart fordeling",
     // Declares which cause area *is* operations, so it never gets tipped on top of
     // itself. Inert until the platform actually has a cause area with this ID.
     "operations_config.operations_cause_area_id": 4,
@@ -41,7 +42,8 @@ const CONTENT: Record<LocaleKey, Record<string, unknown>> = {
   dk: {
     "ui_labels.total_label": "Sum",
     "ui_labels.operations_summary_label": "Drift",
-    "operations_config.operations_label_template": "{percentage} % til drift",
+    "operations_config.operations_label_template": "heraf {percentage} % til drift",
+    "smart_distribution_context.smart_distribution_label_text": "Om Smart fordeling",
     // Declares which cause area *is* operations, so it never gets tipped on top of
     // itself. Inert until the platform actually has a cause area with this ID.
     "operations_config.operations_cause_area_id": 4,
@@ -57,6 +59,8 @@ const CONTENT: Record<LocaleKey, Record<string, unknown>> = {
   sv: {
     "ui_labels.total_label": "Summa",
     "ui_labels.operations_summary_label": "Drift",
+    "operations_config.operations_label_template": "varav {percentage} % till drift",
+    "smart_distribution_context.smart_distribution_label_text": "Om Smart fördelning",
     "operations_config.operations_cause_area_id": 4,
     "cause_area_display_config.cause_area_selection_title":
       "Vilket ändamål vill du göra skillnad för?",
