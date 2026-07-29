@@ -21,6 +21,7 @@ import {
 import { Lightbox } from "../../../../shared/components/Lightbox/Lightbox";
 import { Toggle } from "../../../../shared/components/Widget/components/shared/Toggle/Toggle";
 import { CauseArea } from "../../../../shared/components/Widget/types/CauseArea";
+import { CauseAreaContext } from "../../../../shared/components/Widget/types/WidgetProps";
 import { DistributionController } from "../../DistributionCauseAreaInput/Distribution";
 import { DKTaxUnitCreateModal } from "../../TaxUnitModal/DKTaxUnitCreateModal";
 import { TaxUnitSelector } from "../../TaxUnitSelector/TaxUnitSelector";
@@ -57,6 +58,7 @@ export const DKAgreementDetails: React.FC<{
   inputDistribution?: Distribution;
   taxUnits: TaxUnit[];
   configuration: AgreementDetailsConfiguration;
+  causeAreaContexts: CauseAreaContext[];
 }> = ({
   agreement,
   agreementId,
@@ -66,6 +68,7 @@ export const DKAgreementDetails: React.FC<{
   inputDistribution,
   taxUnits,
   configuration,
+  causeAreaContexts,
 }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const { mutate } = useSWRConfig();
@@ -442,6 +445,9 @@ export const DKAgreementDetails: React.FC<{
           <div className={style.causeAreas}>
             {visibleCauseAreas.map((causeArea) => {
               const systemCauseArea = systemCauseAreas.find((item) => item.id === causeArea.id);
+              const contextText = causeAreaContexts.find(
+                (context) => context.cause_area_id === causeArea.id,
+              )?.context_text;
               const causeAreaHasMultipleOrganizations =
                 (systemCauseArea?.organizations.length || 0) > 1;
               const standardOrganizationId = systemCauseArea
@@ -452,6 +458,7 @@ export const DKAgreementDetails: React.FC<{
                 <div key={`dist-${causeArea.id}`}>
                   <div className={style.distributionCauseAreaInputHeader}>
                     <span>{causeArea.name}</span>
+                    {contextText && <span className="caption">{contextText}</span>}
                     <div className={style.valuesSmartDistributionToggle}>
                       {causeAreaHasMultipleOrganizations && (
                         <>

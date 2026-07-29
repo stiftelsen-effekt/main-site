@@ -271,15 +271,17 @@ export type OperationsConfig = {
   x_factor_info?: InfoBoxConfig;
 };
 
+export type CauseAreaContext = {
+  cause_area_id: number;
+  context_text: string;
+};
+
 export type CauseAreaDisplayConfig = {
   cause_area_selection_title?: string;
   recommendation_button_text?: string;
   multiple_cause_areas_button_text?: string;
   below_line_cause_area_ids?: number[];
-  cause_area_contexts?: Array<{
-    cause_area_id: number;
-    context_text: string;
-  }>;
+  cause_area_contexts?: CauseAreaContext[];
   other_cause_area_info?: InfoBoxConfig;
 };
 
