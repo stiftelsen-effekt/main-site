@@ -289,7 +289,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                       ).map((org) => (
                         <ShareInputContainer key={org.id}>
                           <div>
-                            <ShareLink href={org.informationUrl} target="_blank">
+                            <ShareLink href={org.informationUrl}>
                               <label htmlFor={`org-${org.id}`}>
                                 {org.widgetDisplayName || org.name}
                               </label>
