@@ -71,6 +71,49 @@ describe("calculateDonationBreakdown", () => {
     expect(breakdown.causeAreaAmounts[2]).toBe(190);
   });
 
+  it("does not distribute smart allocation into the operations cause area", () => {
+    const swedishCauseAreas = [
+      {
+        id: 1,
+        name: "Global health",
+        standardPercentageShare: 90,
+        organizations: [{ id: 11, standardShare: 100 }],
+      },
+      {
+        id: 3,
+        name: "Climate",
+        standardPercentageShare: 0,
+        organizations: [{ id: 33, standardShare: 100 }],
+      },
+      {
+        id: 4,
+        name: "Operations",
+        standardPercentageShare: 10,
+        organizations: [{ id: 44, standardShare: 100 }],
+      },
+    ] as any;
+    const breakdown = calculateDonationBreakdown(
+      { 1: 100, 3: 200 },
+      {},
+      { 1: 1, 3: 1, 4: 1 } as any,
+      {},
+      {},
+      swedishCauseAreas,
+      "multiple",
+      undefined,
+      true,
+      10,
+      [],
+      4,
+      500,
+    );
+
+    expect(breakdown.totalAmount).toBe(800);
+    expect(breakdown.operationsAmount).toBe(80);
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 540, 3: 180 });
+    expect(breakdown.causeAreaAmounts[4]).toBeUndefined();
+  });
+
   it("uses operations as the integer remainder after rounding custom donations", () => {
     const customCauseAreas = [
       { id: 1, name: "Area 1", organizations: [{ id: 11, standardShare: 100 }] },

@@ -8,6 +8,35 @@ export interface DonationBreakdown {
   totalAmount: number;
 }
 
+function addSmartDistribution(
+  result: DonationBreakdown,
+  causeAreas: CauseArea[],
+  amount: number,
+  operationsCauseAreaId: number | undefined,
+) {
+  const areas = causeAreas.filter(
+    (area) =>
+      area.id !== operationsCauseAreaId &&
+      area.standardPercentageShare &&
+      area.standardPercentageShare > 0,
+  );
+  const totalShare = areas.reduce((sum, area) => sum + (area.standardPercentageShare ?? 0), 0);
+
+  if (totalShare <= 0) return;
+
+  areas.forEach((area) => {
+    const areaAmount = ((area.standardPercentageShare ?? 0) / totalShare) * amount;
+    result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + areaAmount;
+
+    area.organizations.forEach((org) => {
+      if (org.standardShare && org.standardShare > 0) {
+        result.organizationAmounts[org.id] =
+          (result.organizationAmounts[org.id] || 0) + (org.standardShare / 100) * areaAmount;
+      }
+    });
+  });
+}
+
 /**
  * Calculates the actual donation amounts after applying operations cuts
  * This is the single source of truth for how donations are distributed
@@ -43,19 +72,7 @@ export function calculateDonationBreakdown(
       : 0;
     const distributedAmount = smartDistributionTotal - operationsAmount;
 
-    causeAreas.forEach((area) => {
-      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = (area.standardPercentageShare / 100) * distributedAmount;
-        result.causeAreaAmounts[area.id] = areaAmount;
-
-        area.organizations.forEach((org) => {
-          if (org.standardShare && org.standardShare > 0) {
-            const orgAmount = (org.standardShare / 100) * areaAmount;
-            result.organizationAmounts[org.id] = orgAmount;
-          }
-        });
-      }
-    });
+    addSmartDistribution(result, causeAreas, distributedAmount, operationsCauseAreaId);
     result.operationsAmount = operationsAmount;
     result.totalAmount = smartDistributionTotal;
     return result;
@@ -116,19 +133,7 @@ export function calculateDonationBreakdown(
       multipleTotalDonation > 0 ? 1 - totalOperationsAmount / multipleTotalDonation : 1;
     const netSmartDistributionAmount = smartDistributionTotal * reduction;
 
-    causeAreas.forEach((area) => {
-      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = (area.standardPercentageShare / 100) * netSmartDistributionAmount;
-        result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + areaAmount;
-
-        area.organizations.forEach((org) => {
-          if (org.standardShare && org.standardShare > 0) {
-            result.organizationAmounts[org.id] =
-              (result.organizationAmounts[org.id] || 0) + (org.standardShare / 100) * areaAmount;
-          }
-        });
-      }
-    });
+    addSmartDistribution(result, causeAreas, netSmartDistributionAmount, operationsCauseAreaId);
   }
 
   // Process each cause area

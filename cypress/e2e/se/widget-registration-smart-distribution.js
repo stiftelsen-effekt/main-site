@@ -47,11 +47,11 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
 
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.equal(81);
+      expect(parseFloat(globalHealth.percentageShare)).to.equal(90);
 
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
-      expect(parseFloat(operations.percentageShare)).to.equal(19);
+      expect(parseFloat(operations.percentageShare)).to.equal(10);
     });
   });
 
@@ -78,11 +78,11 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
 
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.equal(81);
+      expect(parseFloat(globalHealth.percentageShare)).to.equal(90);
 
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
-      expect(parseFloat(operations.percentageShare)).to.equal(19);
+      expect(parseFloat(operations.percentageShare)).to.equal(10);
     });
   });
 
@@ -143,11 +143,11 @@ describe("Swedish Widget - Smart Distribution Registration", () => {
 
       const globalHealth = body.distributionCauseAreas.find((ca) => ca.id === 1);
       expect(globalHealth).to.exist;
-      expect(parseFloat(globalHealth.percentageShare)).to.equal(81);
+      expect(parseFloat(globalHealth.percentageShare)).to.equal(90);
 
       const operations = body.distributionCauseAreas.find((ca) => ca.id === 4);
       expect(operations).to.exist;
-      expect(parseFloat(operations.percentageShare)).to.equal(19);
+      expect(parseFloat(operations.percentageShare)).to.equal(10);
 
       // Total should be exactly 100%
       const totalPercentage = body.distributionCauseAreas.reduce(

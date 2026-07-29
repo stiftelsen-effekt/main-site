@@ -84,9 +84,40 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       smartDistributionTotal,
     );
 
+    const hasCombinedSmartDistribution = selectionType === "multiple" && smartDistributionTotal > 0;
+    const displayedBreakdown = hasCombinedSmartDistribution
+      ? calculateDonationBreakdown(
+          causeAreaAmounts,
+          orgAmounts,
+          causeAreaDistributionType,
+          operationsPercentageModeByCauseArea,
+          operationsPercentageByCauseArea,
+          causeAreas,
+          selectionType,
+          selectedCauseAreaId,
+          globalOperationsEnabled,
+          globalOperationsPercentage,
+          operationsConfig?.excludedCauseAreaIds || [],
+          operationsConfig?.operationsCauseAreaId,
+        )
+      : breakdown;
+
+    if (hasCombinedSmartDistribution) {
+      const directAmount = Object.values(displayedBreakdown.causeAreaAmounts).reduce(
+        (total, amount) => total + amount,
+        0,
+      );
+      summaryItems.push({
+        id: -1,
+        name: text.smart_distribution_title,
+        amount: breakdown.totalAmount - breakdown.operationsAmount - directAmount,
+        orgs: [],
+      });
+    }
+
     // Build summary items from breakdown
     causeAreas.forEach((area) => {
-      const areaAmount = breakdown.causeAreaAmounts[area.id];
+      const areaAmount = displayedBreakdown.causeAreaAmounts[area.id];
       if (!areaAmount || areaAmount <= 0) return;
 
       const orgs: Array<{ id: number; name: string; amount: number }> = [];
@@ -94,7 +125,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       // Add organization breakdown if custom distribution
       if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
         area.organizations.forEach((org) => {
-          const orgAmount = breakdown.organizationAmounts[org.id];
+          const orgAmount = displayedBreakdown.organizationAmounts[org.id];
           if (orgAmount && orgAmount > 0) {
             orgs.push({
               id: org.id,
