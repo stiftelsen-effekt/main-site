@@ -276,12 +276,20 @@ export type CauseAreaContext = {
   context_text: string;
 };
 
+export type CauseAreaRollout = {
+  cause_area_id: number;
+  title: string;
+  text?: any[];
+  links?: LinkType[];
+};
+
 export type CauseAreaDisplayConfig = {
   cause_area_selection_title?: string;
   recommendation_button_text?: string;
   multiple_cause_areas_button_text?: string;
   below_line_cause_area_ids?: number[];
   cause_area_contexts?: CauseAreaContext[];
+  cause_area_rollouts?: CauseAreaRollout[];
   other_cause_area_info?: InfoBoxConfig;
 };
 
