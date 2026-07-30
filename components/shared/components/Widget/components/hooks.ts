@@ -229,7 +229,9 @@ const handlePrefilledCauseArea = (
   dispatch(
     setCauseAreaDistributionType(
       causeArea.id,
-      causeArea.organizations.length <= 1 ? ShareType.STANDARD : ShareType.CUSTOM,
+      causeArea.organizations.length <= 1 || prefilledCauseArea.organizations.length === 0
+        ? ShareType.STANDARD
+        : ShareType.CUSTOM,
     ),
   );
 
