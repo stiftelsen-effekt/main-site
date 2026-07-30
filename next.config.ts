@@ -415,6 +415,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/raadgivning-for-fonde",
+        destination: "/filantropi",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
         source:
           "/artikler/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-g%C3%B8re-en-reel-forskel",
         destination:
