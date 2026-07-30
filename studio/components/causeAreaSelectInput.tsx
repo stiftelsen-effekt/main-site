@@ -152,9 +152,12 @@ export const CauseAreaSelectInput = (props: NumberInputProps) => {
 };
 
 export const OrganizationSelectInput = (props: NumberInputProps) => {
-  const { value, onChange, elementProps, path } = props;
+  const { value, onChange, elementProps, path, schemaType } = props;
   const state = useCauseAreas();
-  const causeAreaId = useFormValue([...path.slice(0, -1), "cause_area_id"]);
+  const causeAreaField =
+    (schemaType.options as { causeAreaField?: string } | undefined)?.causeAreaField ??
+    "cause_area_id";
+  const causeAreaId = useFormValue([...path.slice(0, -1), causeAreaField]);
 
   if (state.status === "loading") {
     return (
