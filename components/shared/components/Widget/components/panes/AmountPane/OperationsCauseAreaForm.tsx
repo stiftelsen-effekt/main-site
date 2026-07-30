@@ -17,7 +17,7 @@ import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/Effe
 import { thousandize } from "../../../../../../../util/formatting";
 import { CauseArea } from "../../../types/CauseArea";
 import { CauseAreaDisplayConfig, OperationsConfig } from "../../../types/WidgetProps";
-import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
+import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
 
 interface OperationsCauseAreaFormProps {
   causeArea: CauseArea;
@@ -89,14 +89,12 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
             </span>
           </SumWrapper>
         </TotalSumWrapper>
-        {operationsConfig?.x_factor_info?.label_text && (
-          <InfoAccordion
-            labelText={operationsConfig.x_factor_info.label_text}
-            description={operationsConfig.x_factor_info.description}
-            link={operationsConfig.x_factor_info.link}
-          />
-        )}
       </div>
+      <CauseAreaRollout
+        causeAreaId={causeArea.id}
+        config={causeAreaDisplayConfig}
+        fallback={operationsConfig?.x_factor_info}
+      />
     </FormWrapper>
   );
 };

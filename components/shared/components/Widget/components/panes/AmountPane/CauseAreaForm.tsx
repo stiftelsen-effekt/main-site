@@ -35,7 +35,7 @@ import {
   CauseAreaDisplayConfig,
   SmartDistributionContext,
 } from "../../../types/WidgetProps";
-import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
+import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
 import { splitOperationsLabelTemplate } from "../../../utils/operationsLabel";
 
 interface CauseAreaFormProps {
@@ -364,13 +364,11 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
         </div>
       )}
 
-      {isOtherCauseArea && causeAreaDisplayConfig?.other_cause_area_info?.label_text && (
-        <InfoAccordion
-          labelText={causeAreaDisplayConfig.other_cause_area_info.label_text}
-          description={causeAreaDisplayConfig.other_cause_area_info.description}
-          link={causeAreaDisplayConfig.other_cause_area_info.link}
-        />
-      )}
+      <CauseAreaRollout
+        causeAreaId={causeArea.id}
+        config={causeAreaDisplayConfig}
+        fallback={isOtherCauseArea ? causeAreaDisplayConfig?.other_cause_area_info : undefined}
+      />
     </FormWrapper>
   );
 };

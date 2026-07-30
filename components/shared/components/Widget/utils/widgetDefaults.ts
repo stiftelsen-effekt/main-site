@@ -31,6 +31,7 @@ export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig>
   // defaulted here - a hardcoded ID would silently point at the wrong cause area.
   below_line_cause_area_ids: [],
   cause_area_contexts: [],
+  cause_area_rollouts: [],
   // Empty label_text hides the info box until a label/description is configured
   other_cause_area_info: { label_text: "", description: [] },
 };

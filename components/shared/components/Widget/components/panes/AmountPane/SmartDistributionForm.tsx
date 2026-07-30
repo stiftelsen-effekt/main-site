@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
@@ -9,7 +9,6 @@ import {
   TotalSumWrapper,
   SumWrapper,
   SumButtonsWrapper,
-  ExplenationAccordion,
 } from "../AmountPane.style";
 import { MultipleCauseAreaIcon } from "../SelectionPane.style";
 import { CauseArea } from "../../../types/CauseArea";
@@ -18,11 +17,8 @@ import { setSmartDistributionTotal } from "../../../store/donation/actions";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
 import { State } from "../../../store/state";
-import AnimateHeight from "react-animate-height";
-import { ChevronDown } from "react-feather";
-import { Links, LinkType } from "../../../../../../main/blocks/Links/Links";
-import { PortableText } from "next-sanity";
 import { CauseAreaDisplayConfig, SmartDistributionContext } from "../../../types/WidgetProps";
+import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -46,8 +42,6 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
-
-  const [explenationOpen, setExplanationOpen] = useState(false);
 
   // Get smart distribution total from Redux state
   const smartDistributionTotal =
@@ -117,25 +111,15 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         </TotalSumWrapper>
       </div>
       <div>
-        {/** Smart distribution current distribution accordion */}
-        <ExplenationAccordion>
-          <div onClick={() => setExplanationOpen(!explenationOpen)}>
-            <span>{smartDistributionContext.smart_distribution_label_text}</span>
-            <ChevronDown
-              size={28}
-              style={{
-                transform: explenationOpen ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform 0.3s ease",
-              }}
-            />
-          </div>
-          <AnimateHeight height={explenationOpen ? "auto" : 0}>
-            <div>
-              <PortableText value={smartDistributionContext.smart_distribution_description} />
-              <Links links={smartDistributionContext.smart_distribution_description_links} />
-            </div>
-          </AnimateHeight>
-        </ExplenationAccordion>
+        <CauseAreaRollout
+          causeAreaId={-1}
+          config={causeAreaDisplayConfig}
+          fallback={{
+            label_text: smartDistributionContext.smart_distribution_label_text,
+            description: smartDistributionContext.smart_distribution_description,
+            links: smartDistributionContext.smart_distribution_description_links,
+          }}
+        />
       </div>
     </FormWrapper>
   );
