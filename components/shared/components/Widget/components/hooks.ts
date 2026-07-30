@@ -5,6 +5,7 @@ import {
   setSum,
   setRecurring,
   setCauseAreaDistributionType,
+  setCauseAreaSelection,
   setOrgAmount,
   setPrefilledShares,
 } from "../store/donation/actions";
@@ -18,6 +19,8 @@ import { useDebouncedCallback } from "use-debounce";
 import { State } from "../store/state";
 import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../store/donation/types";
+import { setPaneNumber } from "../store/layout/actions";
+import { LayoutActionTypes } from "../store/layout/types";
 
 interface UsePrefilledDistributionProps {
   inline: boolean;
@@ -42,7 +45,7 @@ export const usePrefilledDistribution = ({
   causeAreas,
   prefilledDistribution,
 }: UsePrefilledDistributionProps) => {
-  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes | LayoutActionTypes>>();
   const [widgetContext] = useContext(WidgetContext);
   const causeAreaAmounts = useSelector((state: State) => state.donation.causeAreaAmounts ?? {});
   // Add a ref to track if we've already applied the prefilled distribution
@@ -79,6 +82,26 @@ export const usePrefilledDistribution = ({
     // which would otherwise have each cause area's dispatch clobber the previous one's.
     const combinedShares: Record<number, number> = {};
     let hasAnyPrefilledShares = false;
+    const prefilledCauseAreas = causeAreas.filter((causeArea) =>
+      prefilled.some((prefilledArea) => prefilledArea.causeAreaId === causeArea.id),
+    );
+    const visibleCauseAreas = causeAreas.filter(
+      (causeArea) =>
+        causeArea.isActive ||
+        prefilledCauseAreas.some((prefilledArea) => prefilledArea.id === causeArea.id),
+    );
+
+    if (visibleCauseAreas.length > 1 && prefilledCauseAreas.length > 0) {
+      const singlePrefilledCauseArea =
+        prefilledCauseAreas.length === 1 ? prefilledCauseAreas[0] : undefined;
+      dispatch(
+        setCauseAreaSelection(
+          singlePrefilledCauseArea ? "single" : "multiple",
+          singlePrefilledCauseArea?.id,
+        ),
+      );
+      dispatch(setPaneNumber(1));
+    }
 
     causeAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
