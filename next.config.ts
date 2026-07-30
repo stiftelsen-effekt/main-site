@@ -207,7 +207,18 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/anbefalinger",
-        destination: "/topliste",
+        destination: "/global-sundhed-og-fattigdom",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/topliste",
+        destination: "/global-sundhed-og-fattigdom",
         has: [
           {
             type: "host",
@@ -251,7 +262,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/bedste-velgoerenhed",
-        destination: "/topliste",
+        destination: "/global-sundhed-og-fattigdom",
         has: [
           {
             type: "host",
