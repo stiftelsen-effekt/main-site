@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Box, Card, Checkbox, Flex, Select, Spinner, Stack, Text } from "@sanity/ui";
-import { NumberInputProps, ArrayOfPrimitivesInputProps, set, unset } from "sanity";
+import { NumberInputProps, ArrayOfPrimitivesInputProps, set, unset, useFormValue } from "sanity";
 
 /**
  * Inputs for picking cause areas by name instead of typing raw numeric IDs.
@@ -14,10 +14,17 @@ import { NumberInputProps, ArrayOfPrimitivesInputProps, set, unset } from "sanit
  * are never blocked by an API outage.
  */
 
+type Organization = {
+  id: number;
+  name: string;
+  isActive: boolean;
+};
+
 type CauseArea = {
   id: number;
   name: string;
   isActive: boolean;
+  organizations: Organization[];
 };
 
 /** Sentinel used by cause_area_contexts to attach copy to the smart/recommended option. */
@@ -65,6 +72,9 @@ const useCauseAreas = (): FetchState => {
 
 const labelFor = (causeArea: CauseArea) =>
   `${causeArea.name} (ID ${causeArea.id})${causeArea.isActive ? "" : " — inactive"}`;
+
+const organizationLabelFor = (organization: Organization) =>
+  `${organization.name} (ID ${organization.id})${organization.isActive ? "" : " — inactive"}`;
 
 /**
  * Single cause area picker. Use for number fields holding one cause area ID.
@@ -134,6 +144,81 @@ export const CauseAreaSelectInput = (props: NumberInputProps) => {
           <Text size={1}>
             ID {value} is not a cause area on this platform&apos;s API. It may belong to a different
             platform.
+          </Text>
+        </Card>
+      )}
+    </Stack>
+  );
+};
+
+export const OrganizationSelectInput = (props: NumberInputProps) => {
+  const { value, onChange, elementProps, path } = props;
+  const state = useCauseAreas();
+  const causeAreaId = useFormValue([...path.slice(0, -1), "cause_area_id"]);
+
+  if (state.status === "loading") {
+    return (
+      <Flex align="center" gap={2}>
+        <Spinner muted />
+        <Text muted size={1}>
+          Loading organizations…
+        </Text>
+      </Flex>
+    );
+  }
+
+  if (state.status === "error") {
+    return (
+      <Stack space={2}>
+        <Card padding={2} radius={2} tone="caution">
+          <Text size={1}>{state.message}. Enter the organization ID manually.</Text>
+        </Card>
+        {props.renderDefault(props)}
+      </Stack>
+    );
+  }
+
+  const selectedCauseArea = state.causeAreas.find((area) => area.id === causeAreaId);
+  const organizations = selectedCauseArea?.organizations ?? [];
+  const allOrganizations = state.causeAreas.flatMap((area) => area.organizations);
+  const currentOrganization = allOrganizations.find((organization) => organization.id === value);
+  const hasUnavailableValue =
+    typeof value === "number" && !organizations.some((organization) => organization.id === value);
+
+  return (
+    <Stack space={2}>
+      <Select
+        {...elementProps}
+        value={value === undefined || value === null ? "" : String(value)}
+        onChange={(event) => {
+          const raw = event.currentTarget.value;
+          onChange(raw === "" ? unset() : set(Number(raw)));
+        }}
+      >
+        <option value="">Not set</option>
+        {organizations.map((organization) => (
+          <option key={organization.id} value={String(organization.id)}>
+            {organizationLabelFor(organization)}
+          </option>
+        ))}
+        {hasUnavailableValue && (
+          <option value={String(value)}>
+            {currentOrganization
+              ? organizationLabelFor(currentOrganization)
+              : `Unknown organization (ID ${value})`}
+          </option>
+        )}
+      </Select>
+      {!selectedCauseArea && (
+        <Card padding={2} radius={2} tone="caution">
+          <Text size={1}>Select a cause area to load its organizations.</Text>
+        </Card>
+      )}
+      {selectedCauseArea && hasUnavailableValue && (
+        <Card padding={2} radius={2} tone="caution">
+          <Text size={1}>
+            Organization ID {value} is not available in {selectedCauseArea.name}. The saved value
+            has been retained.
           </Text>
         </Card>
       )}
