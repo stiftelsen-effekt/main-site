@@ -41,6 +41,7 @@ import { LayoutActionTypes } from "../../../store/layout/types";
 import { thousandize } from "../../../../../../../util/formatting";
 import { useAmountCalculation } from "../AmountPane/useAmountCalculation";
 import { AmountContext, SmartDistributionContext } from "../../../types/WidgetProps";
+import { useIsMobile } from "../../../../../../../hooks/useIsMobile";
 
 interface SingleCauseAreaPaneProps {
   nextButtonText: string;
@@ -73,6 +74,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
 }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes | LayoutActionTypes>>();
   const plausible = usePlausible();
+  const isMobile = useIsMobile();
 
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const {
@@ -289,7 +291,11 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                       ).map((org) => (
                         <ShareInputContainer key={org.id}>
                           <div>
-                            <ShareLink href={org.informationUrl}>
+                            <ShareLink
+                              href={org.informationUrl}
+                              target={isMobile ? "_blank" : undefined}
+                              rel={isMobile ? "noopener noreferrer" : undefined}
+                            >
                               {org.widgetDisplayName || org.name}
                             </ShareLink>
                             {org.widgetContext && <ToolTip text={org.widgetContext} />}

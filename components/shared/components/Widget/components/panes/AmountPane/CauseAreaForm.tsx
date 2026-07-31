@@ -39,6 +39,7 @@ import {
 } from "../../../types/WidgetProps";
 import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
 import { splitOperationsLabelTemplate } from "../../../utils/operationsLabel";
+import { useIsMobile } from "../../../../../../../hooks/useIsMobile";
 
 interface CauseAreaFormProps {
   causeArea: CauseArea;
@@ -67,6 +68,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
+  const isMobile = useIsMobile();
   const hasSingleOrg = causeArea.organizations.length <= 1;
   // "Andet"/"Annet" (other) - id 5, per DK_DEMO_CAUSE_AREAS in Widget.tsx and
   // the below-line/excluded-cause-area defaults in widgetDefaults.ts. Donors
@@ -301,7 +303,11 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                     <InputList>
                       {visibleOrganizations.map((org) => (
                         <OrganizationInputWrapper key={org.id}>
-                          <Link href={org.informationUrl || "#"}>
+                          <Link
+                            href={org.informationUrl || "#"}
+                            target={isMobile ? "_blank" : undefined}
+                            rel={isMobile ? "noopener noreferrer" : undefined}
+                          >
                             {org.widgetDisplayName || org.name}
                           </Link>
                           <span>
