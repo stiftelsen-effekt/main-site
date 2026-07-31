@@ -6,6 +6,7 @@ import { CauseAreaDisplayConfig, InfoBoxConfig } from "../../../types/WidgetProp
 import { NavLink } from "../../../../Navbar/Navbar";
 import { Links, LinkType } from "../../../../../../main/blocks/Links/Links";
 import { RolloutAccordion } from "../../panes/AmountPane.style";
+import { useIsMobile } from "../../../../../../../hooks/useIsMobile";
 
 interface CauseAreaRolloutProps {
   causeAreaId: number;
@@ -19,6 +20,7 @@ export const CauseAreaRollout: React.FC<CauseAreaRolloutProps> = ({
   fallback,
 }) => {
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
   const rollout = config?.cause_area_rollouts?.find((item) => item.cause_area_id === causeAreaId);
   const title = rollout?.title ?? fallback?.label_text;
   const text = rollout?.text ?? fallback?.description;
@@ -41,7 +43,7 @@ export const CauseAreaRollout: React.FC<CauseAreaRolloutProps> = ({
       <AnimateHeight height={open ? "auto" : 0}>
         <div>
           {text && <PortableText value={text} />}
-          {links && <Links links={links} />}
+          {links && <Links links={links} newtab={isMobile} />}
         </div>
       </AnimateHeight>
     </RolloutAccordion>
