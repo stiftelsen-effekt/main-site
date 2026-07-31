@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { CauseAreaSelectInput } from "../../components/causeAreaSelectInput";
 
 export default defineType({
   name: "donationstabledetailsconfiguration",
@@ -12,20 +13,70 @@ export default defineType({
     }),
     defineField({
       name: "impact_estimate_explanation_title",
-      title: "Impact estimate explanation title",
+      title: "OBSOLETE - Impact estimate explanation title",
       type: "string",
     }),
     defineField({
       name: "impact_estimate_explanation_text",
-      title: "Impact estimate explanation text",
+      title: "OBSOLETE - Impact estimate explanation text",
       type: "array",
       of: [{ type: "block" }],
     }),
     defineField({
       name: "impact_estimate_explanation_links",
-      title: "Impact estimate explanation links",
+      title: "OBSOLETE - Impact estimate explanation links",
       type: "array",
       of: [{ type: "link" }, { type: "navitem" }],
+    }),
+    defineField({
+      name: "cause_area_impact_estimates",
+      title: "Cause-specific impact estimates",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "cause_area_impact_estimate",
+          fields: [
+            defineField({
+              name: "cause_area_id",
+              title: "Cause area",
+              type: "number",
+              components: { input: CauseAreaSelectInput },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "impact_estimate_explanation_title",
+              title: "Impact estimate explanation title",
+              type: "string",
+            }),
+            defineField({
+              name: "impact_estimate_explanation_text",
+              title: "Impact estimate explanation text",
+              type: "array",
+              of: [{ type: "block" }],
+            }),
+            defineField({
+              name: "impact_estimate_explanation_links",
+              title: "Impact estimate explanation links",
+              type: "array",
+              of: [{ type: "link" }, { type: "navitem" }],
+            }),
+          ],
+          preview: {
+            select: { causeAreaId: "cause_area_id" },
+            prepare: ({ causeAreaId }) => ({ title: `Cause area ID ${causeAreaId}` }),
+          },
+        },
+      ],
+      validation: (rule) =>
+        rule.custom((items: Array<{ cause_area_id?: number }> | undefined) => {
+          const causeAreaIds = (items ?? [])
+            .map((item) => item.cause_area_id)
+            .filter((id): id is number => id !== undefined);
+          return new Set(causeAreaIds).size === causeAreaIds.length
+            ? true
+            : "Only one impact estimate can be configured per cause area";
+        }),
     }),
     defineField({
       name: "impact_items_configuration",

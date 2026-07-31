@@ -1,6 +1,7 @@
 import { PortableText } from "@portabletext/react";
 import { Distribution, Donation, TaxUnit } from "../../../../../models";
 import { Organization } from "../../../../shared/components/Widget/types/Organization";
+import { CauseArea } from "../../../../shared/components/Widget/types/CauseArea";
 import { onlyDate, thousandize } from "../../../../../util/formatting";
 import { ErrorMessage } from "../../ErrorMessage/ErrorMessage";
 import { GenericList } from "../GenericList";
@@ -31,6 +32,7 @@ export const DonationList: React.FC<{
   detailsConfiguration?: DonationDetailsConfiguration;
   firstOpen: boolean;
   organizations: Organization[];
+  causeAreas: CauseArea[];
 }> = ({
   donations,
   distributions,
@@ -40,6 +42,7 @@ export const DonationList: React.FC<{
   detailsConfiguration,
   firstOpen,
   organizations,
+  causeAreas,
 }) => {
   let taxDeductionText: ReactNode | undefined = undefined;
 
@@ -111,6 +114,7 @@ export const DonationList: React.FC<{
           timestamp={new Date(donation.timestamp)}
           configuration={detailsConfiguration}
           organizations={organizations}
+          causeAreas={causeAreas}
         />
       ) : (
         <ErrorMessage>Missing donation details configuration in Sanity</ErrorMessage>
