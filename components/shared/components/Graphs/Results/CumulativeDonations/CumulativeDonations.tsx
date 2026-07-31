@@ -52,21 +52,48 @@ const FOCUS_STROKE = "black";
 const DIMMED_STROKE = "#ccc";
 
 const DEFAULT_LABELS = {
-  cumulativeChart: "Kumulativ",
-  yearlyChart: "Per år",
-  ytd: "Hittil i år",
-  fullYear: "Hele året",
-  chartTypeGroup: "Diagramtype",
-  barScopeGroup: "Årsvisning",
-  yearRailGroup: "Velg årstall",
+  no: {
+    cumulativeChart: "Kumulativ",
+    yearlyChart: "Per år",
+    ytd: "Hittil i år",
+    fullYear: "Hele året",
+    chartTypeGroup: "Diagramtype",
+    barScopeGroup: "Årsvisning",
+    yearRailGroup: "Velg årstall",
+  },
+  da: {
+    cumulativeChart: "Kumulativ",
+    yearlyChart: "Per år",
+    ytd: "Hidtil i år",
+    fullYear: "Hele året",
+    chartTypeGroup: "Diagramtype",
+    barScopeGroup: "Årsvisning",
+    yearRailGroup: "Vælg årstal",
+  },
+  sv: {
+    cumulativeChart: "Kumulativ",
+    yearlyChart: "Per år",
+    ytd: "Hittills i år",
+    fullYear: "Hela året",
+    chartTypeGroup: "Diagramtyp",
+    barScopeGroup: "Årsvisning",
+    yearRailGroup: "Välj årtal",
+  },
 } as const;
 
-const resolveLabels = (textConfig?: CumulativeDonationsTextConfig) => ({
-  cumulativeChartLabel: textConfig?.cumulativeChartLabel || DEFAULT_LABELS.cumulativeChart,
-  yearlyChartLabel: textConfig?.yearlyChartLabel || DEFAULT_LABELS.yearlyChart,
-  ytdLabel: textConfig?.ytdLabel || DEFAULT_LABELS.ytd,
-  fullYearLabel: textConfig?.fullYearLabel || DEFAULT_LABELS.fullYear,
-});
+const resolveLabels = (textConfig?: CumulativeDonationsTextConfig) => {
+  const locale = textConfig?.locale?.toLowerCase();
+  const localeKey = locale?.startsWith("sv") ? "sv" : locale?.startsWith("da") ? "da" : "no";
+  const defaults = DEFAULT_LABELS[localeKey];
+
+  return {
+    ...defaults,
+    cumulativeChartLabel: textConfig?.cumulativeChartLabel || defaults.cumulativeChart,
+    yearlyChartLabel: textConfig?.yearlyChartLabel || defaults.yearlyChart,
+    ytdLabel: textConfig?.ytdLabel || defaults.ytd,
+    fullYearLabel: textConfig?.fullYearLabel || defaults.fullYear,
+  };
+};
 
 /** Match Results Output graph label sizing (`getRemInPixels() * 0.8`). */
 const plotLabelFontSize = () => getRemInPixels() * 0.8;
@@ -327,11 +354,18 @@ export const CumulativeDonations: React.FC<{
     }
   }, [requiredWidth, chartMode, visibleYearlyTotals.length]);
 
-  const { cumulativeChartLabel, yearlyChartLabel, ytdLabel, fullYearLabel } =
-    resolveLabels(textConfig);
+  const {
+    cumulativeChartLabel,
+    yearlyChartLabel,
+    ytdLabel,
+    fullYearLabel,
+    chartTypeGroup,
+    barScopeGroup,
+    yearRailGroup,
+  } = resolveLabels(textConfig);
 
   const chartTypeToggle = (
-    <div className={styles.chartTypeToggle} role="group" aria-label={DEFAULT_LABELS.chartTypeGroup}>
+    <div className={styles.chartTypeToggle} role="group" aria-label={chartTypeGroup}>
       <button
         type="button"
         className={styles.chartTypeButton}
@@ -357,7 +391,7 @@ export const CumulativeDonations: React.FC<{
 
   const barScopeToggle =
     chartMode === "yearly" ? (
-      <div className={styles.barScopeToggle} role="group" aria-label={DEFAULT_LABELS.barScopeGroup}>
+      <div className={styles.barScopeToggle} role="group" aria-label={barScopeGroup}>
         <button
           type="button"
           className={styles.barScopeButton}
@@ -414,6 +448,7 @@ export const CumulativeDonations: React.FC<{
               startYear={startYear}
               endYear={endYear}
               onChangeRange={clampYearRange}
+              groupLabel={yearRailGroup}
             />
           )}
 
@@ -436,7 +471,8 @@ const YearRail: React.FC<{
   startYear: number;
   endYear: number;
   onChangeRange: (start: number, end: number) => void;
-}> = ({ years, startYear, endYear, onChangeRange }) => {
+  groupLabel: string;
+}> = ({ years, startYear, endYear, onChangeRange, groupLabel }) => {
   const railRef = useRef<HTMLDivElement>(null);
   const yearRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
   const draggingSideRef = useRef<HandleSide | null>(null);
@@ -669,7 +705,7 @@ const YearRail: React.FC<{
       ref={railRef}
       className={`${styles.yearRail}${draggingSide ? ` ${styles.yearRailDragging}` : ""}`}
       role="group"
-      aria-label={DEFAULT_LABELS.yearRailGroup}
+      aria-label={groupLabel}
     >
       {years.map((year) => {
         const active = year >= startYear && year <= endYear;
