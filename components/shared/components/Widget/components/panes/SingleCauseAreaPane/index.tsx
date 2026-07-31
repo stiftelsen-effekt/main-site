@@ -290,14 +290,13 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                         <ShareInputContainer key={org.id}>
                           <div>
                             <ShareLink href={org.informationUrl}>
-                              <label htmlFor={`org-${org.id}`}>
-                                {org.widgetDisplayName || org.name}
-                              </label>
+                              {org.widgetDisplayName || org.name}
                             </ShareLink>
                             {org.widgetContext && <ToolTip text={org.widgetContext} />}
                           </div>
                           <NumericFormat
                             id={`org-${org.id}`}
+                            aria-label={org.widgetDisplayName || org.name}
                             type="tel"
                             placeholder="0"
                             value={displayOrgAmount(org.id) || ""}
