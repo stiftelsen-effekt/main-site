@@ -302,13 +302,12 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                       {visibleOrganizations.map((org) => (
                         <OrganizationInputWrapper key={org.id}>
                           <Link href={org.informationUrl || "#"}>
-                            <label htmlFor={`org-${org.id}`}>
-                              {org.widgetDisplayName || org.name}
-                            </label>
+                            {org.widgetDisplayName || org.name}
                           </Link>
                           <span>
                             <NumericFormat
                               id={`org-${org.id}`}
+                              aria-label={org.widgetDisplayName || org.name}
                               type="tel"
                               placeholder="0"
                               value={orgAmounts[org.id] || ""}
