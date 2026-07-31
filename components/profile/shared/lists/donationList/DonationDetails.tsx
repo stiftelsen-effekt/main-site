@@ -36,17 +36,18 @@ export const getImpactEstimateConfiguration = (
   const causeAreaConfiguration = configuration.cause_area_impact_estimates?.find(
     (candidate) => candidate.cause_area_id === causeAreaId,
   );
+  const fallbackConfiguration = causeAreaId === 1 ? configuration : undefined;
 
   return {
     impact_estimate_explanation_title:
       causeAreaConfiguration?.impact_estimate_explanation_title ??
-      configuration.impact_estimate_explanation_title,
+      fallbackConfiguration?.impact_estimate_explanation_title,
     impact_estimate_explanation_text:
       causeAreaConfiguration?.impact_estimate_explanation_text ??
-      configuration.impact_estimate_explanation_text,
+      fallbackConfiguration?.impact_estimate_explanation_text,
     impact_estimate_explanation_links:
       causeAreaConfiguration?.impact_estimate_explanation_links ??
-      configuration.impact_estimate_explanation_links,
+      fallbackConfiguration?.impact_estimate_explanation_links,
   };
 };
 
@@ -105,32 +106,36 @@ export const DonationDetails: React.FC<{
               {(impactGroup?.showTitle ?? visibleCauseAreas.length > 1) && (
                 <h5>{causeArea.name}</h5>
               )}
-              <span
-                className={
-                  showImpactEstimateExplanation
-                    ? [style.caption, style.captionopen].join(" ")
-                    : style.caption
-                }
-                onClick={() =>
-                  setExpandedCauseAreaIds((current) =>
-                    current.includes(causeAreaId)
-                      ? current.filter((id) => id !== causeAreaId)
-                      : [...current, causeAreaId],
-                  )
-                }
-              >
-                {impactEstimateConfiguration.impact_estimate_explanation_title}&nbsp;&nbsp;
-              </span>
-              <AnimateHeight duration={500} height={showImpactEstimateExplanation ? "auto" : 0}>
-                <div className={style.impactExplanationContainer}>
-                  <PortableText
-                    value={impactEstimateConfiguration.impact_estimate_explanation_text}
-                  />
-                  <Links
-                    links={impactEstimateConfiguration.impact_estimate_explanation_links ?? []}
-                  ></Links>
-                </div>
-              </AnimateHeight>
+              {impactEstimateConfiguration.impact_estimate_explanation_title && (
+                <>
+                  <span
+                    className={
+                      showImpactEstimateExplanation
+                        ? [style.caption, style.captionopen].join(" ")
+                        : style.caption
+                    }
+                    onClick={() =>
+                      setExpandedCauseAreaIds((current) =>
+                        current.includes(causeAreaId)
+                          ? current.filter((id) => id !== causeAreaId)
+                          : [...current, causeAreaId],
+                      )
+                    }
+                  >
+                    {impactEstimateConfiguration.impact_estimate_explanation_title}&nbsp;&nbsp;
+                  </span>
+                  <AnimateHeight duration={500} height={showImpactEstimateExplanation ? "auto" : 0}>
+                    <div className={style.impactExplanationContainer}>
+                      <PortableText
+                        value={impactEstimateConfiguration.impact_estimate_explanation_text}
+                      />
+                      <Links
+                        links={impactEstimateConfiguration.impact_estimate_explanation_links ?? []}
+                      ></Links>
+                    </div>
+                  </AnimateHeight>
+                </>
+              )}
 
               <DonationImpact
                 donation={causeAreaDonation}

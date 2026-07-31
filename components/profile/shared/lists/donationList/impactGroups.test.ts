@@ -63,6 +63,27 @@ test("shows titles and groups impact when multiple cause areas are present", () 
   ]);
 });
 
+test("combines impact distributed to the same organization", () => {
+  const secondGlobalHealthImpact: DonationImpactEntry = {
+    ...globalHealthImpact,
+    amount: 100,
+    count: 10,
+  };
+  const groups = groupDonationImpactByCauseArea(
+    [globalHealthImpact, secondGlobalHealthImpact],
+    organizations,
+    causeAreas,
+  );
+
+  expect(groups[0].impact).toEqual([
+    {
+      ...globalHealthImpact,
+      amount: 600,
+      count: 79.1,
+    },
+  ]);
+});
+
 test("skips a cause area when the backend sends no impact for it", () => {
   const groups = groupDonationImpactByCauseArea([animalWelfareImpact], organizations, causeAreas);
 

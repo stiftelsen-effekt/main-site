@@ -23,7 +23,28 @@ export const groupDonationImpactByCauseArea = (
       (organization) => organization.name === entry.organization,
     )?.causeAreaId;
     if (causeAreaId === undefined) return;
-    groupedImpact.set(causeAreaId, [...(groupedImpact.get(causeAreaId) ?? []), entry]);
+
+    const causeAreaImpact = groupedImpact.get(causeAreaId) ?? [];
+    const existingImpact = causeAreaImpact.find(
+      (candidate) => candidate.organization === entry.organization,
+    );
+
+    if (existingImpact) {
+      groupedImpact.set(
+        causeAreaId,
+        causeAreaImpact.map((candidate) =>
+          candidate === existingImpact
+            ? {
+                ...candidate,
+                amount: candidate.amount + entry.amount,
+                count: candidate.count + entry.count,
+              }
+            : candidate,
+        ),
+      );
+    } else {
+      groupedImpact.set(causeAreaId, [...causeAreaImpact, entry]);
+    }
   });
 
   const groups = causeAreas
