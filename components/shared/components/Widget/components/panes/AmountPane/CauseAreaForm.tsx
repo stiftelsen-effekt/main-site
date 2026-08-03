@@ -410,11 +410,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
         </div>
       )}
 
-      <CauseAreaRollout
-        causeAreaId={causeArea.id}
-        config={causeAreaDisplayConfig}
-        fallback={isOtherCauseArea ? causeAreaDisplayConfig?.other_cause_area_info : undefined}
-      />
+      <CauseAreaRollout causeAreaId={causeArea.id} config={causeAreaDisplayConfig} />
     </FormWrapper>
   );
 };

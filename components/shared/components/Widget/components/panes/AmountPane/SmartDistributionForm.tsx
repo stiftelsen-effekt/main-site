@@ -111,15 +111,7 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         </TotalSumWrapper>
       </div>
       <div>
-        <CauseAreaRollout
-          causeAreaId={-1}
-          config={causeAreaDisplayConfig}
-          fallback={{
-            label_text: smartDistributionContext.smart_distribution_label_text,
-            description: smartDistributionContext.smart_distribution_description,
-            links: smartDistributionContext.smart_distribution_description_links,
-          }}
-        />
+        <CauseAreaRollout causeAreaId={-1} config={causeAreaDisplayConfig} />
       </div>
     </FormWrapper>
   );
