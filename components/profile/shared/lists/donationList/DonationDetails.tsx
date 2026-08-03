@@ -23,32 +23,10 @@ type CauseAreaImpactEstimateConfiguration = ImpactEstimateExplanationConfigurati
   cause_area_id: number;
 };
 
-export type DonationDetailsConfiguration = ImpactEstimateExplanationConfiguration & {
+export type DonationDetailsConfiguration = {
   impact_estimate_header?: string;
   cause_area_impact_estimates?: CauseAreaImpactEstimateConfiguration[];
   impact_items_configuration: DonationImpactItemsConfiguration;
-};
-
-export const getImpactEstimateConfiguration = (
-  configuration: DonationDetailsConfiguration,
-  causeAreaId: number,
-): ImpactEstimateExplanationConfiguration => {
-  const causeAreaConfiguration = configuration.cause_area_impact_estimates?.find(
-    (candidate) => candidate.cause_area_id === causeAreaId,
-  );
-  const fallbackConfiguration = causeAreaId === 1 ? configuration : undefined;
-
-  return {
-    impact_estimate_explanation_title:
-      causeAreaConfiguration?.impact_estimate_explanation_title ??
-      fallbackConfiguration?.impact_estimate_explanation_title,
-    impact_estimate_explanation_text:
-      causeAreaConfiguration?.impact_estimate_explanation_text ??
-      fallbackConfiguration?.impact_estimate_explanation_text,
-    impact_estimate_explanation_links:
-      causeAreaConfiguration?.impact_estimate_explanation_links ??
-      fallbackConfiguration?.impact_estimate_explanation_links,
-  };
 };
 
 export const DonationDetails: React.FC<{
@@ -95,9 +73,8 @@ export const DonationDetails: React.FC<{
           const causeAreaDonation = hasPrecomputedImpact
             ? { ...donation, impact: impactGroup?.impact }
             : donation;
-          const impactEstimateConfiguration = getImpactEstimateConfiguration(
-            configuration,
-            causeAreaId,
+          const impactEstimateConfiguration = configuration.cause_area_impact_estimates?.find(
+            (candidate) => candidate.cause_area_id === causeAreaId,
           );
           const showImpactEstimateExplanation = expandedCauseAreaIds.includes(causeAreaId);
 
@@ -106,7 +83,7 @@ export const DonationDetails: React.FC<{
               {(impactGroup?.showTitle ?? visibleCauseAreas.length > 1) && (
                 <h5>{causeArea.name}</h5>
               )}
-              {impactEstimateConfiguration.impact_estimate_explanation_title && (
+              {impactEstimateConfiguration?.impact_estimate_explanation_title && (
                 <>
                   <span
                     className={
