@@ -12,23 +12,6 @@ export default defineType({
       type: "string",
     }),
     defineField({
-      name: "impact_estimate_explanation_title",
-      title: "OBSOLETE - Impact estimate explanation title",
-      type: "string",
-    }),
-    defineField({
-      name: "impact_estimate_explanation_text",
-      title: "OBSOLETE - Impact estimate explanation text",
-      type: "array",
-      of: [{ type: "block" }],
-    }),
-    defineField({
-      name: "impact_estimate_explanation_links",
-      title: "OBSOLETE - Impact estimate explanation links",
-      type: "array",
-      of: [{ type: "link" }, { type: "navitem" }],
-    }),
-    defineField({
       name: "cause_area_impact_estimates",
       title: "Cause-specific impact estimates",
       type: "array",
