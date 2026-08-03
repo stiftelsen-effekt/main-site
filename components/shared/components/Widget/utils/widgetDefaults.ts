@@ -19,8 +19,6 @@ export const DEFAULT_OPERATIONS_CONFIG: Omit<
   enabled_by_default_global: false,
   enabled_by_default_single: true,
   excluded_cause_area_ids: [],
-  // Empty label_text hides the info box until a label/description is configured
-  x_factor_info: { label_text: "", description: [] },
 };
 
 export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig> = {
@@ -32,8 +30,6 @@ export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig>
   below_line_cause_area_ids: [],
   cause_area_contexts: [],
   cause_area_rollouts: [],
-  // Empty label_text hides the info box until a label/description is configured
-  other_cause_area_info: { label_text: "", description: [] },
 };
 
 export const DEFAULT_UI_LABELS: Required<UILabels> = {

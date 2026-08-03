@@ -16,7 +16,7 @@ import { usePlausible } from "next-plausible";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
 import { CauseArea } from "../../../types/CauseArea";
-import { CauseAreaDisplayConfig, OperationsConfig } from "../../../types/WidgetProps";
+import { CauseAreaDisplayConfig } from "../../../types/WidgetProps";
 import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
 
 interface OperationsCauseAreaFormProps {
@@ -24,7 +24,6 @@ interface OperationsCauseAreaFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
   causeAreaAmounts: Record<number, number>;
   causeAreaDisplayConfig: CauseAreaDisplayConfig;
-  operationsConfig?: OperationsConfig;
 }
 
 export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = ({
@@ -32,7 +31,6 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
   suggestedSums,
   causeAreaAmounts,
   causeAreaDisplayConfig,
-  operationsConfig,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
@@ -90,11 +88,7 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
           </SumWrapper>
         </TotalSumWrapper>
       </div>
-      <CauseAreaRollout
-        causeAreaId={causeArea.id}
-        config={causeAreaDisplayConfig}
-        fallback={operationsConfig?.x_factor_info}
-      />
+      <CauseAreaRollout causeAreaId={causeArea.id} config={causeAreaDisplayConfig} />
     </FormWrapper>
   );
 };

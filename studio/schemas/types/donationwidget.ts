@@ -262,28 +262,6 @@ export default defineType({
             "Title shown above the smart distribution option, e.g. in the multi cause-area amount pane and the donation summary. Only used if there is more than one cause area",
         }),
         defineField({
-          name: "smart_distribution_label_text",
-          title: "OBSOLETE — Smart distribution label text",
-          type: "string",
-          validation: (Rule) => Rule.required(),
-          description: "Only used if there is more than one cause area",
-        }),
-        defineField({
-          name: "smart_distribution_description",
-          title: "OBSOLETE — Smart distribution description",
-          type: "array",
-          of: [{ type: "block" }],
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "smart_distribution_description_links",
-          title: "OBSOLETE — Smart distribution description links",
-          type: "array",
-          of: [{ type: "link" }],
-          validation: (Rule) => Rule.required(),
-          description: "Only used if there is more than one cause area",
-        }),
-        defineField({
           name: "show_all_organizations_text",
           title: "Show all organizations text",
           type: "string",
@@ -381,34 +359,6 @@ export default defineType({
           description: "Cause areas that should not offer the operations cut option",
           of: [{ type: "number" }],
           components: { input: CauseAreaMultiSelectInput },
-        },
-        {
-          name: "x_factor_info",
-          title: "OBSOLETE — X-faktor info box",
-          type: "object",
-          description:
-            "Expandable info box explaining the organization's 'X-faktor', shown under the operations/drift cause area",
-          fields: [
-            {
-              name: "label_text",
-              title: "Label text",
-              type: "string",
-              description: "The clickable label that expands the info box",
-            },
-            {
-              name: "description",
-              title: "Description",
-              type: "array",
-              of: [{ type: "block" }],
-            },
-            {
-              name: "link",
-              title: "Read more link",
-              type: "navitem",
-              description:
-                'Optional link shown at the bottom of the expanded info box, e.g. to the "X-faktor" page',
-            },
-          ],
         },
       ],
     },
@@ -529,33 +479,6 @@ export default defineType({
                   subtitle: "title",
                 },
               },
-            },
-          ],
-        },
-        {
-          name: "other_cause_area_info",
-          title: 'OBSOLETE — "Andet" info box',
-          type: "object",
-          description:
-            'Expandable info box shown under the "Andet" (other) cause area, explaining who this option is intended for',
-          fields: [
-            {
-              name: "label_text",
-              title: "Label text",
-              type: "string",
-              description: "The clickable label that expands the info box",
-            },
-            {
-              name: "description",
-              title: "Description",
-              type: "array",
-              of: [{ type: "block" }],
-            },
-            {
-              name: "link",
-              title: "Read more link",
-              type: "navitem",
-              description: "Optional link shown at the bottom of the expanded info box",
             },
           ],
         },

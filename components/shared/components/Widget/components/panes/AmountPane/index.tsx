@@ -171,7 +171,6 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                     suggestedSums={suggestedSums}
                     causeAreaAmounts={causeAreaAmounts}
                     causeAreaDisplayConfig={causeAreaDisplayConfig}
-                    operationsConfig={operationsConfig}
                   />
                 ) : (
                   <>
