@@ -17,10 +17,11 @@ import {
   useTaxUnits,
 } from "../../_queries";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
 import { Spinner } from "../../components/shared/components/Spinner/Spinner";
-import { AggregatedDonations, Distribution, Donation, Donor } from "../../models";
+import { AggregatedDonations, Distribution, Donation, Donor, META_OWNER } from "../../models";
 import {
   DonationList,
   DonationsListConfiguration,
@@ -40,6 +41,138 @@ import { Info } from "react-feather";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../middleware.page";
+
+/**
+ * Temporary hard-coded donation data used to preview all impact-reporting permutations
+ * on the donor profile. This is enabled ONLY on Vercel preview deployments AND only when
+ * the `?impactpreview` query parameter is present, so normal preview traffic (including
+ * the e2e tests, which rely on the real logged-in donations) and production/local
+ * development are unaffected. When enabled, the real donations/distributions from the API
+ * are ignored in favour of the test data below.
+ *
+ * To view it, open the donations page on a preview deployment with `?impactpreview=1`.
+ *
+ * NOTE: This is intentionally scaffolding for design review and should be removed before
+ * this feature is merged to production.
+ */
+const IS_PREVIEW_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+
+const TEST_TIMESTAMP = "2026-06-15T00:00:00.000Z";
+
+const buildTestDonation = (kid: string, id: number, sum: string): Donation => ({
+  KID: kid,
+  donor: "Test Donor",
+  donorId: 1,
+  email: "test@example.com",
+  id,
+  paymentMethod: "Bank",
+  sum,
+  timestamp: TEST_TIMESTAMP,
+  transactionCost: "0",
+  metaOwnerId: META_OWNER.EFFEKT,
+});
+
+const TEST_DONATIONS: Donation[] = [
+  // 1. Global health, single org WITH an impact estimate (two lines + arrow)
+  buildTestDonation("9000001", 9000001, "2000"),
+  // 2. Global health fund WITHOUT an estimate: GiveWell All Grants Fund (single line + arrow)
+  buildTestDonation("9000002", 9000002, "3000"),
+  // 3. Global health WITH estimate + operations inline (single cause area)
+  buildTestDonation("9000003", 9000003, "1500"),
+  // 4. Animal welfare, no estimate (single line + arrow)
+  buildTestDonation("9000004", 9000004, "1200"),
+  // 5. Multiple cause areas -> cause area headers + separate operations section
+  buildTestDonation("9000005", 9000005, "5000"),
+];
+
+const TEST_DISTRIBUTIONS: Distribution[] = [
+  {
+    kid: "9000001",
+    donorId: 1,
+    taxUnitId: null,
+    causeAreas: [
+      {
+        id: 1,
+        name: "Global helse",
+        standardSplit: false,
+        percentageShare: "100",
+        organizations: [{ id: 1, name: "Against Malaria Foundation", percentageShare: "100" }],
+      },
+    ],
+  },
+  {
+    kid: "9000002",
+    donorId: 1,
+    taxUnitId: null,
+    causeAreas: [
+      {
+        id: 1,
+        name: "Global helse",
+        standardSplit: false,
+        percentageShare: "100",
+        organizations: [{ id: 12, name: "GiveWell All Grants Fund", percentageShare: "100" }],
+      },
+    ],
+  },
+  {
+    kid: "9000003",
+    donorId: 1,
+    taxUnitId: null,
+    causeAreas: [
+      {
+        id: 1,
+        name: "Global helse",
+        standardSplit: false,
+        percentageShare: "100",
+        organizations: [
+          { id: 1, name: "Against Malaria Foundation", percentageShare: "70" },
+          { id: 99, name: "Drift av Gi Effektivt", percentageShare: "30" },
+        ],
+      },
+    ],
+  },
+  {
+    kid: "9000004",
+    donorId: 1,
+    taxUnitId: null,
+    causeAreas: [
+      {
+        id: 2,
+        name: "Dyrevelferd",
+        standardSplit: false,
+        percentageShare: "100",
+        organizations: [{ id: 20, name: "The Humane League", percentageShare: "100" }],
+      },
+    ],
+  },
+  {
+    kid: "9000005",
+    donorId: 1,
+    taxUnitId: null,
+    causeAreas: [
+      {
+        id: 1,
+        name: "Global helse",
+        standardSplit: false,
+        percentageShare: "60",
+        organizations: [
+          { id: 1, name: "Against Malaria Foundation", percentageShare: "70" },
+          { id: 99, name: "Drift av Gi Effektivt", percentageShare: "30" },
+        ],
+      },
+      {
+        id: 2,
+        name: "Dyrevelferd",
+        standardSplit: false,
+        percentageShare: "40",
+        organizations: [
+          { id: 20, name: "The Humane League", percentageShare: "80" },
+          { id: 99, name: "Drift av Gi Effektivt", percentageShare: "20" },
+        ],
+      },
+    ],
+  },
+];
 
 export async function getDashboardPagePath() {
   const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
@@ -129,6 +262,10 @@ export const DonationsPage = withStaticProps(
   },
 )(({ data, navbarData, filterYear }) => {
   const { getAccessTokenSilently, user } = useAuth0();
+  const router = useRouter();
+  // Preview-only impact-reporting scaffolding, opt-in via `?impactpreview` so e2e and
+  // normal preview traffic keep using the real logged-in donations.
+  const USE_TEST_DATA = IS_PREVIEW_ENV && router.query.impactpreview !== undefined;
   const settings = data.result.settings[0];
 
   if (!data.result.dashboard || !data.result.dashboard[0]) {
@@ -189,10 +326,12 @@ export const DonationsPage = withStaticProps(
 
   const {
     loading: donationsLoading,
-    data: donations,
+    data: fetchedDonations,
     isValidating: donationsIsValidating,
     error: donationsError,
   } = useDonations(user, getAccessTokenSilently);
+
+  const donations = USE_TEST_DATA ? TEST_DONATIONS : fetchedDonations;
 
   const kids = useMemo(() => {
     const kidsSet = new Set<string>();
@@ -200,11 +339,12 @@ export const DonationsPage = withStaticProps(
     return Array.from(kidsSet);
   }, [donations]);
 
-  const shouldFetchDistributions = !donationsLoading && donations !== undefined && kids.length > 0;
+  const shouldFetchDistributions =
+    !USE_TEST_DATA && !donationsLoading && donations !== undefined && kids.length > 0;
 
   const {
     loading: distributionsLoading,
-    data: distributions,
+    data: fetchedDistributions,
     isValidating: distributionsValidating,
     error: distributionsError,
   } = useDistributions(user, getAccessTokenSilently, shouldFetchDistributions, kids);
@@ -229,7 +369,11 @@ export const DonationsPage = withStaticProps(
   const organizationsLoaded = Array.isArray(organizations);
   const causeAreasLoaded = Array.isArray(causeAreas);
   const taxUnitsLoaded = Array.isArray(taxUnits);
-  const resolvedDistributions = shouldFetchDistributions ? distributions : [];
+  const resolvedDistributions = USE_TEST_DATA
+    ? TEST_DISTRIBUTIONS
+    : shouldFetchDistributions
+    ? fetchedDistributions
+    : [];
   const distributionsLoaded = Array.isArray(resolvedDistributions);
   const noDonationData = donationsLoaded && aggregatedDonationsLoaded && donations.length === 0;
 
