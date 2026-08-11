@@ -28,6 +28,58 @@
   max-width: 75%;
 }
 
+.richtext {
+  line-height: 180%;
+  margin-top: 3rem;
+  max-width: 75%;
+}
+
+.form {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.formControls {
+  display: flex;
+  width: 100%;
+}
+
+.formControls input[type="email"] {
+  background: var(--secondary);
+  border: 1px solid var(--primary);
+  border-radius: 2rem 0 0 2rem;
+  color: var(--primary);
+  flex: 1;
+  font: inherit;
+  min-width: 0;
+  padding: 0.85rem 1.25rem;
+}
+
+.formControls button {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 0 2rem 2rem 0;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 0.85rem 1.5rem;
+}
+
+.formControls button:disabled,
+.formControls input:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.formMessage {
+  margin-top: 0.75rem !important;
+}
+
 .splitviewtext button {
   margin-left: 0;
 }
@@ -89,7 +141,19 @@
     padding: 4rem 5vw;
   }
 
-  .splitviewtext p {
+  .splitviewtext p,
+  .richtext {
     max-width: 100%;
+  }
+
+  .formControls {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .formControls input[type="email"],
+  .formControls button {
+    border-radius: 2rem;
   }
 }

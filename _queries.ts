@@ -484,6 +484,13 @@ export const pageContentQuery = `content[hidden!=true] {
     },
     _type == 'splitview' => {
       ...,
+      richText[] {
+        ...,
+        markDefs[] {
+          ${linksSelectorQuery}
+          _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+        }
+      },
       ${linksContentQuery}
     },
     _type == 'splitviewhtml' => {
