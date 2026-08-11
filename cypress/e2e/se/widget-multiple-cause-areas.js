@@ -164,7 +164,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
     cy.get("[data-cy=summary-smart-distribution-amount]").should("contain.text", "450 kr");
     cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "90 kr");
     cy.get("[data-cy=summary-cause-area-3-amount]").should("contain.text", "180 kr");
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Ge Effektivts drift");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "80 kr");
     cy.get("[data-cy=summary-total-amount]").should("contain.text", "800 kr");
   });
@@ -188,7 +188,7 @@ describe("Swedish Widget - Multiple Cause Areas Flow", () => {
 
     // Check that operations/cut amount is shown. The cut line is labelled from
     // ui_labels.operations_summary_label, not the operations cause area's own name.
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Ge Effektivts drift");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("exist");
 
     // Check that cause area amounts are shown (excluding tips)

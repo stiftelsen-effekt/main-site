@@ -128,7 +128,7 @@ describe("Swedish Widget - Single Cause Area Flow", () => {
     // Check that both cause area and operations are shown. The cut line is labelled from
     // ui_labels.operations_summary_label, not the operations cause area's own name.
     cy.get("[data-cy=summary-cause-area-1-amount]").should("exist");
-    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Drift");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", "Ge Effektivts drift");
     cy.get("[data-cy=summary-cause-area-4-amount]").should("exist");
 
     // Check total includes both amounts
