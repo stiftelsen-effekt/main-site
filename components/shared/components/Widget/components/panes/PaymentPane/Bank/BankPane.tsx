@@ -11,6 +11,7 @@ import AnimateHeight from "react-animate-height";
 import { CompleteButton, CompleteButtonWrapper } from "./BankPane.style";
 import { usePlausible } from "next-plausible";
 import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
+import { sendGTMEvent } from "../../../../../../layout/GoogleTagManager";
 
 export const BankPane: React.FC<{
   config: BankPaymentMethod;
@@ -57,6 +58,13 @@ export const BankPane: React.FC<{
           recurring: false,
           kid: donation.kid,
         },
+      });
+
+      // Google tag manager
+      sendGTMEvent({
+        event: "donation_completed",
+        revenue: totalSumIncludingTip,
+        currency: currency,
       });
     }
   }, [hasCompletedTransaction]);

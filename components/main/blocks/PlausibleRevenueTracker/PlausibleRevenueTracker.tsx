@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getEstimatedLtv } from "../../../../util/ltv";
 import { PaymentMethod } from "../../../shared/components/Widget/types/Enums";
+import { sendGTMEvent } from "../../../shared/layout/GoogleTagManager";
 
 // Define our tracking data interface
 interface TrackingData {
@@ -66,6 +67,12 @@ export const PlausibleRevenueTracker: React.FC<{
                   currency: currency,
                 });
               }
+              // Google tag manager
+              sendGTMEvent({
+                event: "donation_completed",
+                revenue: parseFloat(revenue),
+                currency: currency,
+              });
             } else {
               let paymentMethod: PaymentMethod | undefined;
               if (method.toLowerCase() === "avtalegiro") {
