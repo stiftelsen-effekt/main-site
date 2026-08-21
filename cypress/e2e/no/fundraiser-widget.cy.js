@@ -262,11 +262,14 @@ describe("Fundraiser widget - name/message payload variations", () => {
     submitBankDonation();
 
     cy.wait("@registerDonation")
-      .its("request.body.fundraiser")
-      .should((fundraiser) => {
-        expect(fundraiser.message).to.equal("");
-        expect(fundraiser.messageSenderName).to.equal(null);
-        expect(fundraiser.showName).to.equal(false);
+      .its("request.body")
+      .should((body) => {
+        expect(body.amount).to.equal(200);
+        expect(body.distributionCauseAreas[0].amount).to.equal(200);
+        expect(body.distributionCauseAreas[0].organizations[0].amount).to.equal(200);
+        expect(body.fundraiser.message).to.equal("");
+        expect(body.fundraiser.messageSenderName).to.equal(null);
+        expect(body.fundraiser.showName).to.equal(false);
       });
   });
 
