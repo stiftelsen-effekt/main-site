@@ -154,11 +154,15 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
   const distributionType = causeAreaDistributionType[causeArea.id] ?? ShareType.STANDARD;
   // Once the donor enters per-organization amounts themselves those are the total (see
   // effectiveTotalAmount), so the cause area sum above would be a stale, silently ignored
-  // field - hide it, matching CauseAreaForm in the multiple-cause-area widget. Prefilled
-  // distributions are excluded: they're switched to custom for the donor (not by them), and
-  // there the sum is still the primary input that the prefilled shares track a split of.
+  // field - hide it, matching CauseAreaForm in the multiple-cause-area widget. A prefilled
+  // distribution keeps the sum for as long as it's still tracking: custom was picked for the
+  // donor (not by them), so the sum - with its suggested amounts - is their amount entry, and
+  // the prefilled shares just split it. Editing one of those amounts freezes the tracking,
+  // and from then on the sum is stale here too.
   const hideAmountInput =
-    hasMultipleOrgs && distributionType === ShareType.CUSTOM && !hasPrefilledOrgs;
+    hasMultipleOrgs &&
+    distributionType === ShareType.CUSTOM &&
+    (!hasPrefilledOrgs || hasManuallyEditedPrefilledOrgAmount);
 
   const suggestedSums = recurring
     ? amountContext.preset_amounts_recurring
