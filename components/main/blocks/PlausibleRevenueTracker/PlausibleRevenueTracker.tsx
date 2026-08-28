@@ -45,16 +45,37 @@ export const PlausibleRevenueTracker: React.FC<{
           const { revenue, method, recurring, kid } = trackingData;
 
           if (revenue && method && kid) {
+            const amount = parseFloat(revenue);
+
             plausible(type === "donation" ? "CompletedDonation" : "StartedAgreement", {
               revenue: {
                 currency: currency,
-                amount: parseFloat(revenue),
+                amount: amount,
               },
               props: {
                 method: method,
                 recurring: recurring,
                 kid: kid,
               },
+            });
+
+            // Google tag manager
+            // TODO: do we treat recurring and non-recurring differently?
+            // For now, we just send the same event for both.
+            // TODO: this code is duplicated in PlausibleRevenueTracker, BankPane and SwishPane
+            sendGTMEvent({
+              event: "purchase",
+              transaction_id: kid,
+              value: amount,
+              currency: currency,
+              items: [
+                {
+                  item_name: "Donation",
+                  item_id: "donation",
+                  price: amount,
+                  quantity: 1,
+                },
+              ],
             });
 
             if (type === "donation") {
@@ -67,12 +88,6 @@ export const PlausibleRevenueTracker: React.FC<{
                   currency: currency,
                 });
               }
-              // Google tag manager
-              sendGTMEvent({
-                event: "donation_completed",
-                revenue: parseFloat(revenue),
-                currency: currency,
-              });
             } else {
               let paymentMethod: PaymentMethod | undefined;
               if (method.toLowerCase() === "avtalegiro") {

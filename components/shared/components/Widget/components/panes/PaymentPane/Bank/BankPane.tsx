@@ -61,10 +61,20 @@ export const BankPane: React.FC<{
       });
 
       // Google tag manager
+      // TODO: this code is duplicated in PlausibleRevenueTracker, BankPane and SwishPane
       sendGTMEvent({
-        event: "donation_completed",
-        revenue: totalSumIncludingTip,
-        currency: currency,
+        event: "purchase",
+        transaction_id: donation.kid,
+        value: totalSumIncludingTip,
+        currency,
+        items: [
+          {
+            item_name: "Donation",
+            item_id: "donation",
+            price: totalSumIncludingTip,
+            quantity: 1,
+          },
+        ],
       });
     }
   }, [hasCompletedTransaction]);

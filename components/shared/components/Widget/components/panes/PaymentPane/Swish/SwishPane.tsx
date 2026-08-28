@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
 import { usePlausible } from "next-plausible";
 import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
+import { sendGTMEvent } from "../../../../../../layout/GoogleTagManager";
 
 function isStringEnum<T extends string>(x: any, e: T[]): x is T {
   return e.includes(x);
@@ -107,6 +108,22 @@ export const SwishPane = dynamic<{
               recurring: false,
               kid: donation.kid,
             },
+          });
+
+          // TODO: this code is duplicated in PlausibleRevenueTracker, BankPane and SwishPane;
+          sendGTMEvent({
+            event: "purchase",
+            transaction_id: donation.kid,
+            value: totalSumIncludingTip,
+            currency: "SEK",
+            items: [
+              {
+                item_name: "Donation",
+                item_id: "donation",
+                price: totalSumIncludingTip,
+                quantity: 1,
+              },
+            ],
           });
         }
       }, [status]);
