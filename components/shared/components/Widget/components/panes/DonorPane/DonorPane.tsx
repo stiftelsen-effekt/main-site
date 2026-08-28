@@ -10,6 +10,7 @@ import {
   submitDonorInfo,
   registerDonationAction,
   RegisterDonationActionPayload,
+  setReferralCode,
 } from "../../../store/donation/actions";
 import { State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
@@ -80,6 +81,7 @@ export const DonorPane: React.FC<{
     register,
     watch,
     trigger,
+    setValue,
     formState: { errors },
     clearErrors,
   } = useForm({
@@ -92,6 +94,7 @@ export const DonorPane: React.FC<{
       newsletter: donor.newsletter,
       method: donation.method,
       privacyPolicy: false,
+      referralCode: donation.referralCode || "",
     },
   });
 
@@ -122,6 +125,16 @@ export const DonorPane: React.FC<{
     locale,
     taxDeductionChecked,
   });
+
+  // Query-param referral codes are applied after cause areas load, which can be
+  // after this form's first render — keep the input in sync when the store updates.
+  const hasSyncedReferralCode = React.useRef(false);
+  React.useEffect(() => {
+    if (donation.referralCode && !hasSyncedReferralCode.current) {
+      setValue("referralCode", donation.referralCode);
+      hasSyncedReferralCode.current = true;
+    }
+  }, [donation.referralCode, setValue]);
 
   const mapPaymentMethod = (method: string): PaymentMethod => {
     const mapped = paymentMethodMap[method];
@@ -218,6 +231,10 @@ export const DonorPane: React.FC<{
             },
       ),
     );
+
+    if (text.show_referral_code_field) {
+      dispatch(setReferralCode(formData.referralCode));
+    }
 
     dispatch(selectPaymentMethod(paymentMethod));
 
@@ -444,6 +461,18 @@ export const DonorPane: React.FC<{
                 )}
               </CheckBoxGroupWrapper>
             </AnimateHeight>
+
+            {text.show_referral_code_field && (
+              <InputFieldWrapper>
+                <input
+                  data-cy="referral-code-input"
+                  type="text"
+                  autoComplete="off"
+                  placeholder={text.referral_code_placeholder}
+                  {...register("referralCode")}
+                />
+              </InputFieldWrapper>
+            )}
 
             {isSingleCauseArea ? (
               <>
