@@ -20,12 +20,73 @@
   align-items: flex-start;
 }
 
+.splitviewtext > div {
+  width: 100%;
+}
+
 .splitviewtext p {
   font-weight: normal;
   line-height: 180%;
   white-space: pre-wrap;
   margin-top: 3rem;
   max-width: 75%;
+}
+
+.richtext {
+  line-height: 180%;
+  margin-top: 3rem;
+  max-width: 75%;
+}
+
+.form {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 75%;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.formControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.formControls input[type="email"] {
+  background: var(--secondary);
+  border: none;
+  border-bottom: 1px solid var(--primary);
+  border-radius: 0;
+  color: var(--primary);
+  font-family: "ESKlarheitGrotesk";
+  font-size: 24px;
+  outline: none;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.formControls button {
+  background: var(--primary);
+  border: 1px solid var(--secondary);
+  border-radius: 48px;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 0.85rem 1.5rem;
+  width: 100%;
+}
+
+.formControls button:disabled,
+.formControls input:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.formMessage {
+  margin-top: 0.75rem !important;
 }
 
 .splitviewtext button {
@@ -89,7 +150,9 @@
     padding: 4rem 5vw;
   }
 
-  .splitviewtext p {
+  .splitviewtext p,
+  .richtext,
+  .form {
     max-width: 100%;
   }
 }

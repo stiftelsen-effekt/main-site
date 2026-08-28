@@ -13,6 +13,8 @@ export const PageHeader: React.FC<{
   coverPhoto?: SanityImageObject;
   cta_type?: "link" | "navitem" | "open_widget";
   cta_label?: string;
+  cta_cause_area_id?: number;
+  cta_organization_id?: number;
   accent_color?: string;
   links?: (LinkType | NavLink)[];
 }> = ({
@@ -22,6 +24,8 @@ export const PageHeader: React.FC<{
   layout = "default",
   cta_type,
   cta_label,
+  cta_cause_area_id,
+  cta_organization_id,
   accent_color,
   coverPhoto,
 }) => {
@@ -51,6 +55,8 @@ export const PageHeader: React.FC<{
             <OpenWidgetButton
               label={cta_label}
               accent_color={accent_color}
+              causeAreaId={cta_cause_area_id}
+              organizationId={cta_organization_id}
               cy={"hero-cta-open-widget"}
             />
           ) : null}

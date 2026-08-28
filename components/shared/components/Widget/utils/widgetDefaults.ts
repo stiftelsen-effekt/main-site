@@ -15,12 +15,10 @@ export const DEFAULT_OPERATIONS_CONFIG: Omit<
   // inside a regular cause area) leave it unset.
   operations_cause_area_id: undefined,
   default_percentage: 5,
-  operations_label_template: "{percentage}% to operations",
+  operations_label_template: "of which {percentage}% to operations",
   enabled_by_default_global: false,
   enabled_by_default_single: true,
   excluded_cause_area_ids: [],
-  // Empty label_text hides the info box until a label/description is configured
-  x_factor_info: { label_text: "", description: [] },
 };
 
 export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig> = {
@@ -31,8 +29,7 @@ export const DEFAULT_CAUSE_AREA_DISPLAY_CONFIG: Required<CauseAreaDisplayConfig>
   // defaulted here - a hardcoded ID would silently point at the wrong cause area.
   below_line_cause_area_ids: [],
   cause_area_contexts: [],
-  // Empty label_text hides the info box until a label/description is configured
-  other_cause_area_info: { label_text: "", description: [] },
+  cause_area_rollouts: [],
 };
 
 export const DEFAULT_UI_LABELS: Required<UILabels> = {

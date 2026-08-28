@@ -1,6 +1,10 @@
 import { defineType, defineField, Rule } from "sanity";
 import { Sunset } from "react-feather";
 import { Pageheader } from "../../sanity.types";
+import {
+  CauseAreaSelectInput,
+  OrganizationSelectInput,
+} from "../../components/causeAreaSelectInput";
 
 const noTitleTextLayouts = ["coverPhoto", "noheader"];
 
@@ -66,6 +70,30 @@ export default defineType({
       },
       hidden: ({ parent }: { parent: Pageheader }) =>
         parent ? noTitleTextLayouts.indexOf(parent.layout) !== -1 : false,
+    }),
+    defineField({
+      name: "cta_cause_area_id",
+      title: "CTA cause area",
+      type: "number",
+      group: "content",
+      components: { input: CauseAreaSelectInput },
+      hidden: ({ parent }: { parent: Pageheader }) => parent?.cta_type !== "open_widget",
+    }),
+    defineField({
+      name: "cta_organization_id",
+      title: "CTA organization",
+      type: "number",
+      group: "content",
+      options: { causeAreaField: "cta_cause_area_id" } as any,
+      components: { input: OrganizationSelectInput },
+      hidden: ({ parent }: { parent: Pageheader }) => parent?.cta_type !== "open_widget",
+      validation: (rule) =>
+        rule.custom((value, context) =>
+          value !== undefined &&
+          !(context.parent as Pageheader & { cta_cause_area_id?: number }).cta_cause_area_id
+            ? "Select a cause area before selecting an organization"
+            : true,
+        ),
     }),
     defineField({
       name: "layout",

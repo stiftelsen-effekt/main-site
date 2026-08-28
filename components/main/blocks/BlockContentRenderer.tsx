@@ -148,9 +148,11 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 swapped={block.swapped}
                 rowSwapped={block.rowSwapped}
                 paragraph={block.paragraph}
+                richText={block.richText}
                 links={block.links}
                 image={block.image}
                 darktext={block.darktext}
+                form={block.form}
               />
             );
           case "splitviewhtml":

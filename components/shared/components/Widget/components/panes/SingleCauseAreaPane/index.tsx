@@ -2,14 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
-import { PortableText } from "@portabletext/react";
 import { Dispatch } from "@reduxjs/toolkit";
 import AnimateHeight from "react-animate-height";
 
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import {
   ActionBar,
-  InfoParagraph,
   ShareContainer,
   ShareInputContainer,
   ShareLink,
@@ -42,6 +40,7 @@ import { LayoutActionTypes } from "../../../store/layout/types";
 import { thousandize } from "../../../../../../../util/formatting";
 import { useAmountCalculation } from "../AmountPane/useAmountCalculation";
 import { AmountContext, SmartDistributionContext } from "../../../types/WidgetProps";
+import { useIsMobile } from "../../../../../../../hooks/useIsMobile";
 
 interface SingleCauseAreaPaneProps {
   nextButtonText: string;
@@ -74,6 +73,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
 }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes | LayoutActionTypes>>();
   const plausible = usePlausible();
+  const isMobile = useIsMobile();
 
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
   const {
@@ -284,13 +284,6 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                 onSelect={(value) => handleDistributionChange(value as ShareType)}
               />
 
-              {distributionType === ShareType.STANDARD &&
-                smartDistributionContext.smart_distribution_description && (
-                  <InfoParagraph>
-                    <PortableText value={smartDistributionContext.smart_distribution_description} />
-                  </InfoParagraph>
-                )}
-
               {distributionType === ShareType.CUSTOM && (
                 <SharesSelectorContainer>
                   <ShareSelectionWrapper>
@@ -303,15 +296,18 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                       ).map((org) => (
                         <ShareInputContainer key={org.id}>
                           <div>
-                            <ShareLink href={org.informationUrl} target="_blank">
-                              <label htmlFor={`org-${org.id}`}>
-                                {org.widgetDisplayName || org.name}
-                              </label>
+                            <ShareLink
+                              href={org.informationUrl}
+                              target={isMobile ? "_blank" : undefined}
+                              rel={isMobile ? "noopener noreferrer" : undefined}
+                            >
+                              {org.widgetDisplayName || org.name}
                             </ShareLink>
                             {org.widgetContext && <ToolTip text={org.widgetContext} />}
                           </div>
                           <NumericFormat
                             id={`org-${org.id}`}
+                            aria-label={org.widgetDisplayName || org.name}
                             type="tel"
                             placeholder="0"
                             value={displayOrgAmount(org.id) || ""}

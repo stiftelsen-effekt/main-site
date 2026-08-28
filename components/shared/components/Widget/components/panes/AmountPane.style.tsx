@@ -242,7 +242,7 @@ export const OperationsPercentageInputWrapper = styled.div`
   }
 `;
 
-export const ExplenationAccordion = styled.div`
+export const RolloutAccordion = styled.div`
   & > div:first-child {
     padding: 10px 0;
     display: flex;

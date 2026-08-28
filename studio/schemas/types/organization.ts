@@ -1,4 +1,8 @@
 import { defineType, defineField } from "sanity";
+import {
+  CauseAreaSelectInput,
+  OrganizationSelectInput,
+} from "../../components/causeAreaSelectInput";
 
 export default defineType({
   name: "organization",
@@ -83,13 +87,15 @@ export default defineType({
         }),
         defineField({
           name: "cause_area_id",
-          title: "Cause area id",
+          title: "Cause area",
           type: "number",
+          components: { input: CauseAreaSelectInput },
         }),
         defineField({
           name: "organization_id",
-          title: "Organization id",
+          title: "Organization",
           type: "number",
+          components: { input: OrganizationSelectInput },
         }),
       ],
     }),

@@ -262,28 +262,6 @@ export default defineType({
             "Title shown above the smart distribution option, e.g. in the multi cause-area amount pane and the donation summary. Only used if there is more than one cause area",
         }),
         defineField({
-          name: "smart_distribution_label_text",
-          title: "Smart distribution label text",
-          type: "string",
-          validation: (Rule) => Rule.required(),
-          description: "Only used if there is more than one cause area",
-        }),
-        defineField({
-          name: "smart_distribution_description",
-          title: "Smart distribution description",
-          type: "array",
-          of: [{ type: "block" }],
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "smart_distribution_description_links",
-          title: "Smart distribution description links",
-          type: "array",
-          of: [{ type: "link" }],
-          validation: (Rule) => Rule.required(),
-          description: "Only used if there is more than one cause area",
-        }),
-        defineField({
           name: "show_all_organizations_text",
           title: "Show all organizations text",
           type: "string",
@@ -382,34 +360,6 @@ export default defineType({
           of: [{ type: "number" }],
           components: { input: CauseAreaMultiSelectInput },
         },
-        {
-          name: "x_factor_info",
-          title: "X-faktor info box",
-          type: "object",
-          description:
-            "Expandable info box explaining the organization's 'X-faktor', shown under the operations/drift cause area",
-          fields: [
-            {
-              name: "label_text",
-              title: "Label text",
-              type: "string",
-              description: "The clickable label that expands the info box",
-            },
-            {
-              name: "description",
-              title: "Description",
-              type: "array",
-              of: [{ type: "block" }],
-            },
-            {
-              name: "link",
-              title: "Read more link",
-              type: "navitem",
-              description:
-                'Optional link shown at the bottom of the expanded info box, e.g. to the "X-faktor" page',
-            },
-          ],
-        },
       ],
     },
     {
@@ -481,29 +431,54 @@ export default defineType({
           ],
         },
         {
-          name: "other_cause_area_info",
-          title: '"Andet" info box',
-          type: "object",
-          description:
-            'Expandable info box shown under the "Andet" (other) cause area, explaining who this option is intended for',
-          fields: [
+          name: "cause_area_rollouts",
+          title: "Cause area rollouts",
+          type: "array",
+          description: "Expandable information displayed under specific cause areas",
+          of: [
             {
-              name: "label_text",
-              title: "Label text",
-              type: "string",
-              description: "The clickable label that expands the info box",
-            },
-            {
-              name: "description",
-              title: "Description",
-              type: "array",
-              of: [{ type: "block" }],
-            },
-            {
-              name: "link",
-              title: "Read more link",
-              type: "navitem",
-              description: "Optional link shown at the bottom of the expanded info box",
+              type: "object",
+              fields: [
+                {
+                  name: "cause_area_id",
+                  title: "Cause area",
+                  type: "number",
+                  validation: (Rule: any) => Rule.required(),
+                  options: { includeSmartDistribution: true },
+                  components: { input: CauseAreaSelectInput },
+                },
+                {
+                  name: "title",
+                  title: "Title",
+                  type: "string",
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: "text",
+                  title: "Text",
+                  type: "array",
+                  of: [{ type: "block" }],
+                },
+                {
+                  name: "links",
+                  title: "Links",
+                  type: "array",
+                  description: "Optional links shown below the text",
+                  of: [{ type: "link" }],
+                  validation: (Rule: any) =>
+                    Rule.custom((links: Array<{ title?: string }> | undefined) =>
+                      links?.some((link) => !link.title)
+                        ? "Every link must have a link label"
+                        : true,
+                    ),
+                },
+              ],
+              preview: {
+                select: {
+                  title: "cause_area_id",
+                  subtitle: "title",
+                },
+              },
             },
           ],
         },

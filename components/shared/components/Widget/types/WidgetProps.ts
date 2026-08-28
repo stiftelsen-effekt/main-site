@@ -192,9 +192,6 @@ export type SmartDistributionContext = {
   smart_distribution_radiobutton_text: string;
   custom_distribution_radiobutton_text: string;
   smart_distribution_title: string;
-  smart_distribution_label_text: string;
-  smart_distribution_description: any[];
-  smart_distribution_description_links: (LinkType | NavLink)[];
   show_all_organizations_text?: string;
 };
 
@@ -254,13 +251,6 @@ export type WidgetPane3ReferralsProps = {
   other_referral_input_placeholder: string;
 };
 
-export type InfoBoxConfig = {
-  label_text: string;
-  description?: any[];
-  /** Optional internal page link, configured in Sanity as a navigation item */
-  link?: NavLink;
-};
-
 export type OperationsConfig = {
   operations_cause_area_id?: number;
   default_percentage: number;
@@ -268,7 +258,18 @@ export type OperationsConfig = {
   enabled_by_default_global?: boolean;
   enabled_by_default_single?: boolean;
   excluded_cause_area_ids?: number[];
-  x_factor_info?: InfoBoxConfig;
+};
+
+export type CauseAreaContext = {
+  cause_area_id: number;
+  context_text: string;
+};
+
+export type CauseAreaRollout = {
+  cause_area_id: number;
+  title: string;
+  text?: any[];
+  links?: LinkType[];
 };
 
 export type CauseAreaDisplayConfig = {
@@ -276,11 +277,8 @@ export type CauseAreaDisplayConfig = {
   recommendation_button_text?: string;
   multiple_cause_areas_button_text?: string;
   below_line_cause_area_ids?: number[];
-  cause_area_contexts?: Array<{
-    cause_area_id: number;
-    context_text: string;
-  }>;
-  other_cause_area_info?: InfoBoxConfig;
+  cause_area_contexts?: CauseAreaContext[];
+  cause_area_rollouts?: CauseAreaRollout[];
 };
 
 export type UILabels = {

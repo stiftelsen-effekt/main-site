@@ -6,6 +6,7 @@ import { thousandize } from "../../../../../util/formatting";
 import { AgreementDetailsConfiguration } from "./AgreementDetails";
 import { DKAgreementDetails } from "./DKAgreementDetails";
 import { distributionTargetsMembershipFee } from "./dkMembershipDisplay";
+import { CauseAreaContext } from "../../../../shared/components/Widget/types/WidgetProps";
 
 const PAYMENT_METHOD_LABELS: Record<DKPaymentMethod, string> = {
   MobilePay: "MobilePay",
@@ -46,7 +47,8 @@ export const DKAgreementList: React.FC<{
   taxUnits?: TaxUnit[];
   expandable?: boolean;
   configuration: DKAgreementListConfiguration;
-}> = ({ agreements, distributions, taxUnits, expandable, configuration }) => {
+  causeAreaContexts: CauseAreaContext[];
+}> = ({ agreements, distributions, taxUnits, expandable, configuration, causeAreaContexts }) => {
   const columns = configuration.columns.filter(
     (column) => window && !(window.innerWidth < 1180 && column.hide_on_mobile),
   );
@@ -91,6 +93,7 @@ export const DKAgreementList: React.FC<{
             inputSum={row.amount}
             inputDate={row.date}
             configuration={configuration.details_configuration}
+            causeAreaContexts={causeAreaContexts}
           />
         ) : undefined,
       element: row,

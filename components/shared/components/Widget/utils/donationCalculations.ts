@@ -8,6 +8,35 @@ export interface DonationBreakdown {
   totalAmount: number;
 }
 
+function addSmartDistribution(
+  result: DonationBreakdown,
+  causeAreas: CauseArea[],
+  amount: number,
+  operationsCauseAreaId: number | undefined,
+) {
+  const areas = causeAreas.filter(
+    (area) =>
+      area.id !== operationsCauseAreaId &&
+      area.standardPercentageShare &&
+      area.standardPercentageShare > 0,
+  );
+  const totalShare = areas.reduce((sum, area) => sum + (area.standardPercentageShare ?? 0), 0);
+
+  if (totalShare <= 0) return;
+
+  areas.forEach((area) => {
+    const areaAmount = ((area.standardPercentageShare ?? 0) / totalShare) * amount;
+    result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + areaAmount;
+
+    area.organizations.forEach((org) => {
+      if (org.standardShare && org.standardShare > 0) {
+        result.organizationAmounts[org.id] =
+          (result.organizationAmounts[org.id] || 0) + (org.standardShare / 100) * areaAmount;
+      }
+    });
+  });
+}
+
 /**
  * Calculates the actual donation amounts after applying operations cuts
  * This is the single source of truth for how donations are distributed
@@ -43,19 +72,7 @@ export function calculateDonationBreakdown(
       : 0;
     const distributedAmount = smartDistributionTotal - operationsAmount;
 
-    causeAreas.forEach((area) => {
-      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = (area.standardPercentageShare / 100) * distributedAmount;
-        result.causeAreaAmounts[area.id] = areaAmount;
-
-        area.organizations.forEach((org) => {
-          if (org.standardShare && org.standardShare > 0) {
-            const orgAmount = (org.standardShare / 100) * areaAmount;
-            result.organizationAmounts[org.id] = orgAmount;
-          }
-        });
-      }
-    });
+    addSmartDistribution(result, causeAreas, distributedAmount, operationsCauseAreaId);
     result.operationsAmount = operationsAmount;
     result.totalAmount = smartDistributionTotal;
     return result;
@@ -116,19 +133,7 @@ export function calculateDonationBreakdown(
       multipleTotalDonation > 0 ? 1 - totalOperationsAmount / multipleTotalDonation : 1;
     const netSmartDistributionAmount = smartDistributionTotal * reduction;
 
-    causeAreas.forEach((area) => {
-      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = (area.standardPercentageShare / 100) * netSmartDistributionAmount;
-        result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + areaAmount;
-
-        area.organizations.forEach((org) => {
-          if (org.standardShare && org.standardShare > 0) {
-            result.organizationAmounts[org.id] =
-              (result.organizationAmounts[org.id] || 0) + (org.standardShare / 100) * areaAmount;
-          }
-        });
-      }
-    });
+    addSmartDistribution(result, causeAreas, netSmartDistributionAmount, operationsCauseAreaId);
   }
 
   // Process each cause area
@@ -239,44 +244,20 @@ export function calculateDonationBreakdown(
       selectedCauseAreaId !== null &&
       selectedCauseAreaId !== undefined &&
       operationsPercentageModeByCauseArea[selectedCauseAreaId]);
-  const exactCauseAreaAmounts = { ...result.causeAreaAmounts };
-  const roundedCauseAreaAmounts: Record<number, number> = {};
-
-  Object.entries(exactCauseAreaAmounts).forEach(([id, amount]) => {
-    const areaId = Number(id);
-    const area = causeAreas.find((candidate) => candidate.id === areaId);
-    const isCustom = causeAreaDistributionType[areaId] === ShareType.CUSTOM;
-    roundedCauseAreaAmounts[areaId] = isCustom
-      ? (area?.organizations || []).reduce(
-          (sum, org) => sum + Math.round(result.organizationAmounts[org.id] || 0),
-          0,
-        )
-      : Math.round(amount);
-  });
-
-  let roundedDistributedAmount = Object.values(roundedCauseAreaAmounts).reduce(
-    (sum, amount) => sum + amount,
-    0,
+  const targetDistributedAmount = hasOperationsCut
+    ? Math.max(totalAmount - totalOperationsAmount, 0)
+    : totalAmount;
+  const roundedCauseAreaAmounts = roundAmountsToTotal(
+    Object.entries(result.causeAreaAmounts)
+      .map(([id, amount]) => ({ id: Number(id), amount }))
+      .filter(({ amount }) => amount > 0),
+    targetDistributedAmount,
   );
-  const largestCauseAreaId = Object.keys(roundedCauseAreaAmounts)
-    .map(Number)
-    .sort(
-      (left, right) =>
-        roundedCauseAreaAmounts[right] - roundedCauseAreaAmounts[left] || left - right,
-    )[0];
 
-  if (largestCauseAreaId !== undefined) {
-    if (roundedDistributedAmount > totalAmount) {
-      roundedCauseAreaAmounts[largestCauseAreaId] -= roundedDistributedAmount - totalAmount;
-      roundedDistributedAmount = totalAmount;
-    } else if (!hasOperationsCut && roundedDistributedAmount < totalAmount) {
-      roundedCauseAreaAmounts[largestCauseAreaId] += totalAmount - roundedDistributedAmount;
-      roundedDistributedAmount = totalAmount;
-    }
-  }
-
-  result.causeAreaAmounts = roundedCauseAreaAmounts;
-  result.operationsAmount = hasOperationsCut ? totalAmount - roundedDistributedAmount : 0;
+  result.causeAreaAmounts = Object.fromEntries(
+    roundedCauseAreaAmounts.map(({ id, amount }) => [id, amount]),
+  );
+  result.operationsAmount = hasOperationsCut ? totalAmount - targetDistributedAmount : 0;
   result.totalAmount = totalAmount;
 
   causeAreas.forEach((area) => {

@@ -141,8 +141,10 @@ export const ShowAllOrganizationsLink = styled.button`
 
 export const ShareLink = styled.a`
   border: none !important;
+  white-space: normal;
+  font-size: 18px;
 
-  &:hover > label {
+  &:hover {
     cursor: pointer;
     text-decoration: underline;
   }
@@ -154,11 +156,6 @@ export const ShareInputContainer = styled.div`
   min-width: 0;
   align-items: flex-end;
   position: relative;
-
-  label {
-    white-space: normal;
-    font-size: 18px;
-  }
 
   input {
     width: 120px;

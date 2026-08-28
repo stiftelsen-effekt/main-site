@@ -24,6 +24,8 @@ import {
   setCauseAreaDistributionType,
   setOperationsPercentageModeByCauseArea,
   setOperationsPercentageByCauseArea,
+  setShowAllOrganizations,
+  setHasManuallyEditedPrefilledOrgAmount,
 } from "../../../store/donation/actions";
 import { thousandize } from "../../../../../../../util/formatting";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
@@ -35,7 +37,9 @@ import {
   CauseAreaDisplayConfig,
   SmartDistributionContext,
 } from "../../../types/WidgetProps";
-import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
+import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
+import { splitOperationsLabelTemplate } from "../../../utils/operationsLabel";
+import { useIsMobile } from "../../../../../../../hooks/useIsMobile";
 
 interface CauseAreaFormProps {
   causeArea: CauseArea;
@@ -64,6 +68,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
+  const isMobile = useIsMobile();
   const hasSingleOrg = causeArea.organizations.length <= 1;
   // "Andet"/"Annet" (other) - id 5, per DK_DEMO_CAUSE_AREAS in Widget.tsx and
   // the below-line/excluded-cause-area defaults in widgetDefaults.ts. Donors
@@ -78,7 +83,24 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     operationsPercentageModeByCauseArea = {},
     operationsPercentageByCauseArea = {},
     operationsConfig: stateConfig,
+    prefilledShares = null,
+    showAllOrganizations = false,
+    hasManuallyEditedPrefilledOrgAmount = false,
   } = useSelector((state: any) => state.donation);
+  const activeOrganizations = causeArea.organizations
+    .filter((organization) => organization.isActive)
+    .sort((first, second) => first.ordering - second.ordering);
+  const hasPrefilledOrganizations = activeOrganizations.some(
+    (organization) => prefilledShares?.[organization.id] !== undefined,
+  );
+  const isTrackingPrefilledShares =
+    hasPrefilledOrganizations && !hasManuallyEditedPrefilledOrgAmount;
+  const visibleOrganizations =
+    hasPrefilledOrganizations && !showAllOrganizations
+      ? activeOrganizations.filter(
+          (organization) => prefilledShares?.[organization.id] !== undefined,
+        )
+      : activeOrganizations;
 
   // Use config from props if available, otherwise from state
   const config = operationsConfig || stateConfig;
@@ -86,6 +108,8 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
   // Get percentage from Redux state
   const currentPercentage = operationsPercentageByCauseArea[causeArea.id] ?? defaultPercentage;
+  const { prefix: operationsLabelPrefix, suffix: operationsLabelSuffix } =
+    splitOperationsLabelTemplate(config?.operations_label_template);
 
   // Check if operations are enabled for this cause area
   const isOperationsEnabled = operationsPercentageModeByCauseArea[causeArea.id] ?? false;
@@ -116,6 +140,17 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     dispatch(setOperationsPercentageByCauseArea(causeArea.id, limitedPercentage));
   };
 
+  const setTrackedOrganizationAmounts = (amount: number) => {
+    if (!isTrackingPrefilledShares || !prefilledShares) return;
+
+    causeArea.organizations.forEach((organization) => {
+      const share = prefilledShares[organization.id];
+      if (share !== undefined) {
+        dispatch(setOrgAmount(organization.id, Math.round((share / 100) * amount)));
+      }
+    });
+  };
+
   const handleAmountChange = (
     values: { floatValue: number | undefined },
     sourceInfo: { source: string },
@@ -133,6 +168,8 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
     if (hasSingleOrg) {
       dispatch(setOrgAmount(causeArea.organizations[0].id, v));
+    } else {
+      setTrackedOrganizationAmounts(v);
     }
   };
 
@@ -145,6 +182,8 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
     if (hasSingleOrg) {
       dispatch(setOrgAmount(causeArea.organizations[0].id, amount));
+    } else {
+      setTrackedOrganizationAmounts(amount);
     }
   };
 
@@ -262,39 +301,49 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   data_cy: `radio-custom-share-${causeArea.id}`,
                   content: (
                     <InputList>
-                      {causeArea.organizations
-                        .filter((o) => o.isActive)
-                        .sort((o1, o2) => o1.ordering - o2.ordering)
-                        .map((org) => (
-                          <OrganizationInputWrapper key={org.id}>
-                            <Link href={org.informationUrl || "#"} target="_blank">
-                              <label htmlFor={`org-${org.id}`}>
-                                {org.widgetDisplayName || org.name}
-                              </label>
-                            </Link>
-                            <span>
-                              <NumericFormat
-                                id={`org-${org.id}`}
-                                type="tel"
-                                placeholder="0"
-                                value={orgAmounts[org.id] || ""}
-                                step={1}
-                                decimalScale={0}
-                                allowNegative={false}
-                                thousandSeparator=" "
-                                autoComplete="off"
-                                data-cy={`org-${org.id}`}
-                                onValueChange={(values, sourceInfo) => {
-                                  // Same react-number-format phantom-onValueChange-on-mount
-                                  // guard as handleAmountChange/handlePercentageChange above.
-                                  if (sourceInfo.source !== "event") return;
-                                  const v = values.floatValue === undefined ? 0 : values.floatValue;
-                                  dispatch(setOrgAmount(org.id, v));
-                                }}
-                              />
-                            </span>
-                          </OrganizationInputWrapper>
-                        ))}
+                      {visibleOrganizations.map((org) => (
+                        <OrganizationInputWrapper key={org.id}>
+                          <Link
+                            href={org.informationUrl || "#"}
+                            target={isMobile ? "_blank" : undefined}
+                            rel={isMobile ? "noopener noreferrer" : undefined}
+                          >
+                            {org.widgetDisplayName || org.name}
+                          </Link>
+                          <span>
+                            <NumericFormat
+                              id={`org-${org.id}`}
+                              aria-label={org.widgetDisplayName || org.name}
+                              type="tel"
+                              placeholder="0"
+                              value={orgAmounts[org.id] || ""}
+                              step={1}
+                              decimalScale={0}
+                              allowNegative={false}
+                              thousandSeparator=" "
+                              autoComplete="off"
+                              data-cy={`org-${org.id}`}
+                              onValueChange={(values, sourceInfo) => {
+                                if (sourceInfo.source !== "event") return;
+                                const v = values.floatValue === undefined ? 0 : values.floatValue;
+                                if (prefilledShares?.[org.id] !== undefined) {
+                                  dispatch(setHasManuallyEditedPrefilledOrgAmount(true));
+                                }
+                                dispatch(setOrgAmount(org.id, v));
+                              }}
+                            />
+                          </span>
+                        </OrganizationInputWrapper>
+                      ))}
+                      {hasPrefilledOrganizations && !showAllOrganizations && (
+                        <EffektButton
+                          variant={EffektButtonVariant.SECONDARY}
+                          onClick={() => dispatch(setShowAllOrganizations(true))}
+                          data-cy="show-all-organizations-button"
+                        >
+                          {smartDistributionContext.show_all_organizations_text} ↓
+                        </EffektButton>
+                      )}
                     </InputList>
                   ),
                 },
@@ -339,6 +388,7 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
               <CustomCheckBox checked={isOperationsEnabled} label="" />
             </CheckBoxWrapper>
             <OperationsPercentageInputWrapper>
+              {operationsLabelPrefix && <span>{operationsLabelPrefix}</span>}
               <span>
                 <NumericFormat
                   name={`percentage-cut-${causeArea.id}`}
@@ -354,21 +404,13 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
                   disabled={!isOperationsEnabled}
                 />
               </span>
-              <span>
-                {operationsConfig?.operations_label_template?.replace("{percentage}", "")}
-              </span>
+              {operationsLabelSuffix && <span>{operationsLabelSuffix}</span>}
             </OperationsPercentageInputWrapper>
           </div>
         </div>
       )}
 
-      {isOtherCauseArea && causeAreaDisplayConfig?.other_cause_area_info?.label_text && (
-        <InfoAccordion
-          labelText={causeAreaDisplayConfig.other_cause_area_info.label_text}
-          description={causeAreaDisplayConfig.other_cause_area_info.description}
-          link={causeAreaDisplayConfig.other_cause_area_info.link}
-        />
-      )}
+      <CauseAreaRollout causeAreaId={causeArea.id} config={causeAreaDisplayConfig} />
     </FormWrapper>
   );
 };

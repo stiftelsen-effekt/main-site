@@ -56,10 +56,12 @@ export function useRegisterDonation({
             id: organizationInfo.databaseIds.causeAreaId,
             percentageShare: "100",
             standardSplit: false,
+            amount: formData.amount,
             organizations: [
               {
                 id: organizationInfo.databaseIds.organizationId,
                 percentageShare: "100",
+                amount: formData.amount,
               },
             ],
           },
