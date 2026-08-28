@@ -49,7 +49,9 @@ export const WealthCalculatorInput: React.FC<{
   config,
 }) => {
   const calculateButtonRef = useRef<HTMLDivElement>(null);
-  const [adultIncomes, setAdultIncomes] = useState<number[]>([incomeInput || 0]);
+  const [adultIncomes, setAdultIncomes] = useState<number[]>(() =>
+    Array.from({ length: config.adults_input_configuration.options.length }, () => 0),
+  );
 
   const scrollToOutput = useCallback(() => {
     if (calculateButtonRef.current) {
@@ -85,7 +87,11 @@ export const WealthCalculatorInput: React.FC<{
                       incomeIndex === index ? values.floatValue || 0 : income,
                     );
                     setAdultIncomes(nextIncomes);
-                    setIncomeInput(nextIncomes.reduce((total, income) => total + income, 0));
+                    setIncomeInput(
+                      nextIncomes
+                        .slice(0, numberOfAdults)
+                        .reduce((total, income) => total + income, 0),
+                    );
                   }}
                 />
                 {loadingPostTaxIncome && index === numberOfAdults - 1 && (
