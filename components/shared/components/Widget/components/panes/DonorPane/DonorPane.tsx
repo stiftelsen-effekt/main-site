@@ -317,6 +317,17 @@ export const DonorPane: React.FC<{
                 />
                 {errors.email && <ErrorField text={text.email_invalid_error_text} />}
               </InputFieldWrapper>
+              {text.show_referral_code_field && (
+                <InputFieldWrapper>
+                  <input
+                    data-cy="referral-code-input"
+                    type="text"
+                    autoComplete="off"
+                    placeholder={text.referral_code_placeholder}
+                    {...register("referralCode")}
+                  />
+                </InputFieldWrapper>
+              )}
               <CheckBoxGroupWrapper>
                 <div>
                   <CheckBoxWrapper>
@@ -461,18 +472,6 @@ export const DonorPane: React.FC<{
                 )}
               </CheckBoxGroupWrapper>
             </AnimateHeight>
-
-            {text.show_referral_code_field && (
-              <InputFieldWrapper>
-                <input
-                  data-cy="referral-code-input"
-                  type="text"
-                  autoComplete="off"
-                  placeholder={text.referral_code_placeholder}
-                  {...register("referralCode")}
-                />
-              </InputFieldWrapper>
-            )}
 
             {isSingleCauseArea ? (
               <>
