@@ -29,8 +29,8 @@ export type WealthCalculatorInputConfiguration = {
 
 export const WealthCalculatorInput: React.FC<{
   title: string;
-  incomeInput: number | undefined;
-  setIncomeInput: (value: number) => void;
+  incomeInput: number[] | undefined;
+  setIncomeInput: (values: number[]) => void;
   numberOfChildren: number;
   setNumberOfChildren: (value: number) => void;
   numberOfAdults: number;
@@ -87,11 +87,7 @@ export const WealthCalculatorInput: React.FC<{
                       incomeIndex === index ? values.floatValue || 0 : income,
                     );
                     setAdultIncomes(nextIncomes);
-                    setIncomeInput(
-                      nextIncomes
-                        .slice(0, numberOfAdults)
-                        .reduce((total, income) => total + income, 0),
-                    );
+                    setIncomeInput(nextIncomes.slice(0, numberOfAdults));
                   }}
                 />
                 {loadingPostTaxIncome && index === numberOfAdults - 1 && (

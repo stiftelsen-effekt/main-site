@@ -63,8 +63,8 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     chart_label,
   } = configuration;
 
-  const [incomeInput, setIncomeInput] = useState<number | undefined>();
-  const income = incomeInput || 0;
+  const [incomeInputs, setIncomeInputs] = useState<number[] | undefined>();
+  const incomes = incomeInputs || [0];
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [numberOfAdults, setNumberOfParents] = useState(1);
   const [donationPercentage, setDonationPercentage] = useState(default_donation_percentage || 10);
@@ -114,18 +114,26 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       console.error("Unsupported locale", locale);
       return;
     }
-    getEstimatedPostTaxIncome(income / numberOfAdults, periodAdjustment, taxJurisdiction).then(
-      (res) => {
-        setPostTaxIncome(res * numberOfAdults);
+    Promise.all(
+      incomes.map((adultIncome) =>
+        getEstimatedPostTaxIncome(adultIncome, periodAdjustment, taxJurisdiction),
+      ),
+    )
+      .then((postTaxIncomes) => {
+        setPostTaxIncome(postTaxIncomes.reduce((total, adultIncome) => total + adultIncome, 0));
+      })
+      .catch((error) => {
+        console.error("Failed to calculate post-tax income", error);
+      })
+      .finally(() => {
         setLoadingPostTaxIncome(false);
-      },
-    );
+      });
   }, 250);
 
   useEffect(() => {
     setLoadingPostTaxIncome(true);
     calculatePostTaxIncome();
-  }, [incomeInput, numberOfAdults]);
+  }, [incomeInputs, numberOfAdults]);
 
   /**
    * Calculate the equvivalized income. This is the income after tax and adjusted for the number of adults and children
@@ -138,8 +146,8 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       <div className={styles.calculator} data-cy="wealthcalculator-container">
         <WealthCalculatorInput
           title={title}
-          incomeInput={incomeInput}
-          setIncomeInput={setIncomeInput}
+          incomeInput={incomeInputs}
+          setIncomeInput={setIncomeInputs}
           numberOfChildren={numberOfChildren}
           setNumberOfChildren={setNumberOfChildren}
           numberOfAdults={numberOfAdults}
