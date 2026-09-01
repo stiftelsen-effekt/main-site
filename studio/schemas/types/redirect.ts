@@ -1,5 +1,7 @@
 import { CornerUpRight } from "react-feather";
 import { defineField, defineType } from "sanity";
+import { dashboardpages } from "../dashboard/_dashboardPages";
+import { pages } from "../pages/_pages";
 
 export const REDIRECT_HOSTS = [
   { title: "Norway (gieffektivt.no)", value: "gieffektivt.no" },
@@ -27,12 +29,27 @@ export default defineType({
         }),
     }),
     defineField({
+      name: "page",
+      title: "To page",
+      type: "reference",
+      description:
+        "Preferred. Uses the same path rules as nav links, so the redirect stays valid if the page slug changes.",
+      to: [
+        ...pages.map((p) => ({ type: p.name })),
+        ...dashboardpages.map((p) => ({ type: p.name })),
+      ],
+    }),
+    defineField({
       name: "destination",
-      title: "To",
+      title: "To path or URL",
       type: "string",
-      description: "Internal path (starting with /) or a full https:// URL.",
+      description:
+        "Use only when the target is not a CMS page, or is an external URL. Hidden when a page is selected.",
+      hidden: ({ parent }) => Boolean(parent?.page),
       validation: (Rule) =>
-        Rule.required().custom((value, context) => {
+        Rule.custom((value, context) => {
+          const page = (context.parent as { page?: unknown } | undefined)?.page;
+          if (!page && !value) return "Pick a page or enter a path / URL";
           if (!value) return true;
           if (!value.startsWith("/") && !/^https?:\/\//.test(value)) {
             return "Must start with / or be an absolute http(s) URL";
@@ -41,6 +58,18 @@ export default defineType({
           if (source && value === source) return "Destination cannot be the same as the source";
           return true;
         }),
+    }),
+    defineField({
+      name: "query",
+      title: "Query parameters",
+      type: "string",
+      description: "Optional. Kept if the page slug changes. Example: recurring=1",
+    }),
+    defineField({
+      name: "hash",
+      title: "Hash / fragment",
+      type: "string",
+      description: "Optional. Kept if the page slug changes. Example: organizations",
     }),
     defineField({
       name: "hosts",
@@ -78,11 +107,27 @@ export default defineType({
     select: {
       source: "source",
       destination: "destination",
+      pageTitle: "page.header.title",
+      pageName: "page.title",
+      pageSlug: "page.slug.current",
+      query: "query",
+      hash: "hash",
       hosts: "hosts",
       permanent: "permanent",
       enabled: "enabled",
     },
-    prepare({ source, destination, hosts, permanent, enabled }) {
+    prepare({
+      source,
+      destination,
+      pageTitle,
+      pageName,
+      pageSlug,
+      query,
+      hash,
+      hosts,
+      permanent,
+      enabled,
+    }) {
       const countryLabels: Record<string, string> = {
         "gieffektivt.no": "NO",
         "geeffektivt.se": "SE",
@@ -93,8 +138,14 @@ export default defineType({
         : "all countries";
       const status = enabled === false ? "disabled · " : "";
       const kind = permanent === false ? "302" : "301";
+      const targetPath = pageSlug
+        ? `/${String(pageSlug).replace(/^\/+/, "")}`
+        : destination || pageTitle || pageName;
+      const queryPart = query ? (String(query).startsWith("?") ? query : `?${query}`) : "";
+      const hashPart = hash ? (String(hash).startsWith("#") ? hash : `#${hash}`) : "";
+      const target = targetPath ? `${targetPath}${queryPart}${hashPart}` : "Redirect";
       return {
-        title: source && destination ? `${source} → ${destination}` : source || "Redirect",
+        title: source && targetPath ? `${source} → ${target}` : source || "Redirect",
         subtitle: `${status}${kind} · ${scope}`,
       };
     },
