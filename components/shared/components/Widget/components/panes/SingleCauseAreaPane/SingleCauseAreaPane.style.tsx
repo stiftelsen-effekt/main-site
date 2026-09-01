@@ -8,10 +8,15 @@ import styled from "styled-components";
  * as direct kroner amounts.
  */
 
+/** Padding (not margin) so AnimateHeight includes this space in its measurement. */
+export const AmountInputSection = styled.div<{ $padBottom?: boolean }>`
+  padding-top: 75px;
+  padding-bottom: ${({ $padBottom }) => ($padBottom ? "10px" : "0")};
+`;
+
 export const SumWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
   margin-top: 20px;
 
   label {
@@ -59,7 +64,6 @@ export const SumButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 75px;
   align-items: flex-start;
 
   div {
@@ -95,7 +99,7 @@ export const ActionBar = styled.div`
 `;
 
 export const InfoParagraph = styled.div`
-  margin-top: 30px;
+  padding-top: 30px;
   white-space: normal;
   font-size: 18px;
   line-height: 30px;
@@ -107,7 +111,7 @@ export const InfoParagraph = styled.div`
 `;
 
 export const ShareSelectionSpacer = styled.div`
-  margin-top: 40px;
+  padding-top: 40px;
 `;
 
 export const SharesSelectorContainer = styled.div`

@@ -43,7 +43,9 @@ describe("Organizations Page", () => {
     cy.pickSingleDonation();
 
     // The prefilled organization (AMF) tracks 100% of whatever the donor enters,
-    // since it's the only organization shown until "Vis alle" is clicked.
+    // since it's the only organization shown until "Vis alle" is clicked. Custom was picked
+    // for the donor here, so the overall sum stays visible as their amount entry.
+    cy.get("[data-cy^=donation-sum-input]").should("be.visible");
     cy.get("[data-cy^=donation-sum-input]").type("500");
     cy.get("[data-cy=org-1]").should("have.value", "500");
   });
@@ -87,7 +89,9 @@ describe("Organizations Page", () => {
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type("50");
 
-    cy.get("[data-cy^=donation-sum-input]").type("100");
+    // Editing the prefilled amounts makes them the total, so the overall sum - no longer
+    // read - is hidden from here on.
+    cy.get("[data-cy^=donation-sum-input]").should("not.be.visible");
 
     cy.nextWidgetPane();
 

@@ -4,10 +4,12 @@ import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
 import { PortableText } from "@portabletext/react";
 import { Dispatch } from "@reduxjs/toolkit";
+import AnimateHeight from "react-animate-height";
 
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import {
   ActionBar,
+  AmountInputSection,
   InfoParagraph,
   ShareContainer,
   ShareInputContainer,
@@ -153,6 +155,17 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
     .sort((a, b) => a.ordering - b.ordering);
   const hasMultipleOrgs = activeOrganizations.length > 1;
   const distributionType = causeAreaDistributionType[causeArea.id] ?? ShareType.STANDARD;
+  // Once the donor enters per-organization amounts themselves those are the total (see
+  // effectiveTotalAmount), so the cause area sum above would be a stale, silently ignored
+  // field - hide it, matching CauseAreaForm in the multiple-cause-area widget. A prefilled
+  // distribution keeps the sum for as long as it's still tracking: custom was picked for the
+  // donor (not by them), so the sum - with its suggested amounts - is their amount entry, and
+  // the prefilled shares just split it. Editing one of those amounts freezes the tracking,
+  // and from then on the sum is stale here too.
+  const hideAmountInput =
+    hasMultipleOrgs &&
+    distributionType === ShareType.CUSTOM &&
+    (!hasPrefilledOrgs || hasManuallyEditedPrefilledOrgAmount);
 
   const suggestedSums = recurring
     ? amountContext.preset_amounts_recurring
@@ -251,7 +264,9 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
             onSelect={(value) => dispatch(setRecurring(value as RecurringDonation))}
           />
 
-          {amountInput}
+          <AnimateHeight height={hideAmountInput ? 0 : "auto"} animateOpacity duration={300}>
+            <AmountInputSection $padBottom={!hasMultipleOrgs}>{amountInput}</AmountInputSection>
+          </AnimateHeight>
 
           {hasMultipleOrgs && (
             <ShareSelectionSpacer>
@@ -272,14 +287,28 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                 onSelect={(value) => handleDistributionChange(value as ShareType)}
               />
 
-              {distributionType === ShareType.STANDARD &&
-                smartDistributionContext.smart_distribution_description && (
-                  <InfoParagraph>
+              <AnimateHeight
+                height={
+                  distributionType === ShareType.STANDARD &&
+                  smartDistributionContext.smart_distribution_description
+                    ? "auto"
+                    : 0
+                }
+                animateOpacity
+                duration={300}
+              >
+                <InfoParagraph>
+                  {smartDistributionContext.smart_distribution_description && (
                     <PortableText value={smartDistributionContext.smart_distribution_description} />
-                  </InfoParagraph>
-                )}
+                  )}
+                </InfoParagraph>
+              </AnimateHeight>
 
-              {distributionType === ShareType.CUSTOM && (
+              <AnimateHeight
+                height={distributionType === ShareType.CUSTOM ? "auto" : 0}
+                animateOpacity
+                duration={300}
+              >
                 <SharesSelectorContainer>
                   <ShareSelectionWrapper>
                     <ShareContainer>
@@ -340,7 +369,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                     )}
                   </ShareSelectionWrapper>
                 </SharesSelectorContainer>
-              )}
+              </AnimateHeight>
             </ShareSelectionSpacer>
           )}
         </div>

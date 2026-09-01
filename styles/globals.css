@@ -154,10 +154,10 @@ button {
   grid-template-rows: max-content max-content;
   width: 576px;
   transform-origin: top left;
-  overflow-y: auto;
-  /* Always reserve the scrollbar's space, so panes that grow tall enough to
-     overflow (e.g. expanding a custom organization distribution) don't shift
-     sideways the moment it appears. */
+  overflow-y: scroll;
+  /* Always reserve the scrollbar's space. `scroll` (not `auto`) plus a stable
+     gutter keeps the track allocated even on a transformed widget, where
+     overlay scrollbars otherwise appear for a frame and shove the content. */
   scrollbar-gutter: stable;
   /* Firefox equivalent of the ::-webkit-scrollbar rules below. --primary-hover is
      a mid grey inside the widget pane, so it reads against both colour schemes. */
