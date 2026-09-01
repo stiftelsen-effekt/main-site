@@ -99,7 +99,7 @@ export const ActionBar = styled.div`
 `;
 
 export const InfoParagraph = styled.div`
-  margin-top: 30px;
+  padding-top: 30px;
   white-space: normal;
   font-size: 18px;
   line-height: 30px;

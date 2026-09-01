@@ -287,14 +287,28 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                 onSelect={(value) => handleDistributionChange(value as ShareType)}
               />
 
-              {distributionType === ShareType.STANDARD &&
-                smartDistributionContext.smart_distribution_description && (
-                  <InfoParagraph>
+              <AnimateHeight
+                height={
+                  distributionType === ShareType.STANDARD &&
+                  smartDistributionContext.smart_distribution_description
+                    ? "auto"
+                    : 0
+                }
+                animateOpacity
+                duration={300}
+              >
+                <InfoParagraph>
+                  {smartDistributionContext.smart_distribution_description && (
                     <PortableText value={smartDistributionContext.smart_distribution_description} />
-                  </InfoParagraph>
-                )}
+                  )}
+                </InfoParagraph>
+              </AnimateHeight>
 
-              {distributionType === ShareType.CUSTOM && (
+              <AnimateHeight
+                height={distributionType === ShareType.CUSTOM ? "auto" : 0}
+                animateOpacity
+                duration={300}
+              >
                 <SharesSelectorContainer>
                   <ShareSelectionWrapper>
                     <ShareContainer>
@@ -355,7 +369,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                     )}
                   </ShareSelectionWrapper>
                 </SharesSelectorContainer>
-              )}
+              </AnimateHeight>
             </ShareSelectionSpacer>
           )}
         </div>
