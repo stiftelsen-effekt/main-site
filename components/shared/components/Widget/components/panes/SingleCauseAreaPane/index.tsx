@@ -8,6 +8,7 @@ import AnimateHeight from "react-animate-height";
 import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import {
   ActionBar,
+  AmountInputSection,
   ShareContainer,
   ShareInputContainer,
   ShareLink,
@@ -262,7 +263,7 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
           />
 
           <AnimateHeight height={hideAmountInput ? 0 : "auto"} animateOpacity duration={300}>
-            {amountInput}
+            <AmountInputSection $padBottom={!hasMultipleOrgs}>{amountInput}</AmountInputSection>
           </AnimateHeight>
 
           {hasMultipleOrgs && (
