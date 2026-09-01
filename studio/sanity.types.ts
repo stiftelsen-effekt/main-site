@@ -436,6 +436,20 @@ export type Site_settings = {
   not_found_title?: string;
 };
 
+export type Redirect = {
+  _id: string;
+  _type: "redirect";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  source?: string;
+  destination?: string;
+  hosts?: Array<string>;
+  permanent?: boolean;
+  enabled?: boolean;
+  note?: string;
+};
+
 export type Dkbank = {
   _id: string;
   _type: "dkbank";
@@ -11392,6 +11406,7 @@ export type SanityAssetSourceData = {
 export type AllSanitySchemaTypes =
   | Dashboard
   | Site_settings
+  | Redirect
   | Dkbank
   | Quickpay_mobilepay
   | Quickpay_card
