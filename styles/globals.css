@@ -152,7 +152,8 @@ button {
 .widget {
   display: grid;
   grid-template-rows: max-content max-content;
-  width: 576px;
+  /* 576px content + 8px reserved scrollbar, so the gutter does not eat pane width. */
+  width: calc(576px + 8px);
   transform-origin: top left;
   overflow-y: scroll;
   /* Always reserve the scrollbar's space. `scroll` (not `auto`) plus a stable
@@ -166,7 +167,7 @@ button {
 }
 
 .widget::-webkit-scrollbar {
-  width: 0.5rem;
+  width: 8px;
   background-color: transparent;
 }
 

@@ -18,6 +18,12 @@ import { WidgetProps } from "../types/WidgetProps";
 import { paymentMethodConfigurations } from "../config/methods";
 import { useDebouncedCallback } from "use-debounce";
 import { State } from "../store/state";
+
+/** Designed pane content width, before the reserved scrollbar gutter. */
+export const WIDGET_CONTENT_WIDTH = 576;
+/** Must match `.widget::-webkit-scrollbar` so the gutter and thumb agree. */
+export const WIDGET_SCROLLBAR_WIDTH = 8;
+export const WIDGET_FRAME_WIDTH = WIDGET_CONTENT_WIDTH + WIDGET_SCROLLBAR_WIDTH;
 import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../store/donation/types";
 import { setPaneNumber } from "../store/layout/actions";
@@ -372,7 +378,7 @@ export const useWidgetScaleEffect = (
     if (!inline || window.innerWidth < 1180) {
       setScalingFactor(
         (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
-          576,
+          WIDGET_CONTENT_WIDTH,
       );
       setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
       if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {
