@@ -572,6 +572,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/giv-til-dyrene",
+        destination: "/dyrevelfaerd-og-fodevareomstilling",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
         source: "/organisasjoner",
         destination: "/topplista",
         permanent: true,
