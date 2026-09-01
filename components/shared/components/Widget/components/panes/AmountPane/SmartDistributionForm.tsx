@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
+import AnimateHeight from "react-animate-height";
+import { ChevronDown } from "react-feather";
+import { PortableText } from "next-sanity";
 import {
   FormWrapper,
   CauseAreaTitle,
@@ -9,6 +12,7 @@ import {
   TotalSumWrapper,
   SumWrapper,
   SumButtonsWrapper,
+  RolloutAccordion,
 } from "../AmountPane.style";
 import { MultipleCauseAreaIcon } from "../SelectionPane.style";
 import { CauseArea } from "../../../types/CauseArea";
@@ -19,6 +23,7 @@ import { thousandize } from "../../../../../../../util/formatting";
 import { State } from "../../../store/state";
 import { CauseAreaDisplayConfig, SmartDistributionContext } from "../../../types/WidgetProps";
 import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
+import { Links } from "../../../../../../main/blocks/Links/Links";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -42,6 +47,7 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
+  const [explanationOpen, setExplanationOpen] = useState(false);
 
   // Get smart distribution total from Redux state
   const smartDistributionTotal =
@@ -111,6 +117,28 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         </TotalSumWrapper>
       </div>
       <div>
+        {smartDistributionContext.smart_distribution_description && (
+          <RolloutAccordion>
+            <div onClick={() => setExplanationOpen(!explanationOpen)}>
+              <span>{smartDistributionContext.smart_distribution_label_text}</span>
+              <ChevronDown
+                size={28}
+                style={{
+                  transform: explanationOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.3s ease",
+                }}
+              />
+            </div>
+            <AnimateHeight height={explanationOpen ? "auto" : 0}>
+              <div>
+                <PortableText value={smartDistributionContext.smart_distribution_description} />
+                {smartDistributionContext.smart_distribution_description_links && (
+                  <Links links={smartDistributionContext.smart_distribution_description_links} />
+                )}
+              </div>
+            </AnimateHeight>
+          </RolloutAccordion>
+        )}
         <CauseAreaRollout causeAreaId={-1} config={causeAreaDisplayConfig} />
       </div>
     </FormWrapper>

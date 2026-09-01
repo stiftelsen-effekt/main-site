@@ -70,3 +70,39 @@ describe("Swedish Widget - Donor Information & Settings Registration", () => {
     });
   });
 });
+
+describe("Swedish Widget - Referral code from query params", () => {
+  beforeEach(() => {
+    setupWidgetTest({ referral: "match-2026" });
+
+    cy.intercept("POST", "**/donations/register", {
+      statusCode: 200,
+      body: {
+        KID: "test-kid-123",
+        donorID: 12345,
+        hasAnsweredReferral: false,
+        paymentProviderUrl: "https://test-payment.com",
+        swishOrderID: "",
+        swishPaymentRequestToken: "",
+      },
+    }).as("registerDonation");
+
+    cy.intercept("POST", "**/donations/bank/pending", {
+      statusCode: 200,
+      body: {},
+    }).as("bankPending");
+  });
+
+  it("Should include a referral code from the query string in the registration request", () => {
+    cy.get("[data-cy=cause-area-1]").click();
+    setCauseAreaAmount(1, 200);
+    cy.get("[data-cy=next-button]").click();
+    cy.get("[data-cy=name-input]").type("Test Donor");
+    cy.get("[data-cy=email-input]").type("test@example.com");
+    cy.get("[data-cy^=payment-method-]").first().click();
+
+    cy.wait("@registerDonation").then((interception) => {
+      expect(interception.request.body.referralCode).to.equal("match-2026");
+    });
+  });
+});

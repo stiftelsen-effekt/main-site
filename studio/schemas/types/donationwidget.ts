@@ -262,6 +262,26 @@ export default defineType({
             "Title shown above the smart distribution option, e.g. in the multi cause-area amount pane and the donation summary. Only used if there is more than one cause area",
         }),
         defineField({
+          name: "smart_distribution_label_text",
+          title: "Smart distribution label text",
+          type: "string",
+          description:
+            "Accordion label for the smart distribution description. Only used if there is more than one cause area",
+        }),
+        defineField({
+          name: "smart_distribution_description",
+          title: "Smart distribution description",
+          type: "array",
+          of: [{ type: "block" }],
+        }),
+        defineField({
+          name: "smart_distribution_description_links",
+          title: "Smart distribution description links",
+          type: "array",
+          of: [{ type: "link" }],
+          description: "Only used if there is more than one cause area",
+        }),
+        defineField({
           name: "show_all_organizations_text",
           title: "Show all organizations text",
           type: "string",
@@ -574,6 +594,32 @@ export default defineType({
       type: "string",
       group: "pane2",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "show_referral_code_field",
+      title: "Show referral code field",
+      type: "boolean",
+      group: "pane2",
+      initialValue: false,
+      description:
+        "If true, the donor can enter a referral/campaign code on pane 2. Codes from the URL (?referral=) are still sent even when this is off.",
+    }),
+    defineField({
+      name: "referral_code_placeholder",
+      title: "Referral code placeholder",
+      type: "string",
+      group: "pane2",
+      description: "Placeholder shown in the referral code input when the field is visible.",
+      validation: (Rule) =>
+        Rule.custom((value, ctx) => {
+          if (
+            (ctx.parent as { show_referral_code_field?: boolean }).show_referral_code_field &&
+            !value
+          ) {
+            return "Referral code placeholder is required when the referral code field is shown.";
+          }
+          return true;
+        }),
     }),
     // Tax deduction selector text pane 2
     defineField({

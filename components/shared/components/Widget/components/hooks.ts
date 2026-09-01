@@ -8,6 +8,7 @@ import {
   setCauseAreaSelection,
   setOrgAmount,
   setPrefilledShares,
+  setReferralCode,
 } from "../store/donation/actions";
 import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
@@ -146,7 +147,7 @@ export const usePrefilledDistribution = ({
  */
 export const usePrefilledSum = ({ inline }: { inline: boolean }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const [widgetContext] = useContext(WidgetContext);
 
   useEffect(() => {
     if (!inline && widgetContext.prefilledSum !== null) {
@@ -181,7 +182,7 @@ export const useQueryParamsPrefill = ({
       return;
     }
 
-    const { distribution, recurring } = router.query;
+    const { distribution, recurring, referral, referralCode } = router.query;
 
     if (distribution && typeof distribution === "string") {
       const prefilledDistribution = parseDistributionQueryParam(distribution);
@@ -205,6 +206,12 @@ export const useQueryParamsPrefill = ({
         setWidgetContext({ ...widgetContext, open: true });
         hasAppliedQueryParams.current = true;
       }
+    }
+
+    const referralValue = firstQueryValue(referral) ?? firstQueryValue(referralCode);
+    if (referralValue) {
+      dispatch(setReferralCode(referralValue));
+      hasAppliedQueryParams.current = true;
     }
   }, [inline, router.query, causeAreas, dispatch, setWidgetContext, widgetContext]);
 
@@ -254,6 +261,12 @@ const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
   causeArea.organizations.forEach((organization) => {
     dispatch(setOrgAmount(organization.id, 0));
   });
+};
+
+const firstQueryValue = (value: string | string[] | undefined): string | undefined => {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const trimmed = raw?.trim();
+  return trimmed || undefined;
 };
 
 const parseDistributionQueryParam = (distribution: string): PrefilledDistribution => {

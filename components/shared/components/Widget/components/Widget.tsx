@@ -354,6 +354,8 @@ export const Widget = withStaticProps(
                 allow_anonymous_donations: widget.allow_anonymous_donations,
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
                 privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
+                show_referral_code_field: widget.show_referral_code_field,
+                referral_code_placeholder: widget.referral_code_placeholder,
               }}
               summaryText={{
                 single_donation_text: widget.single_donation_text,
