@@ -443,7 +443,14 @@ export type Redirect = {
   _updatedAt: string;
   _rev: string;
   source?: string;
+  page?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+  };
   destination?: string;
+  query?: string;
+  hash?: string;
   hosts?: Array<string>;
   permanent?: boolean;
   enabled?: boolean;

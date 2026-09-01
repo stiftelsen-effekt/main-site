@@ -4,6 +4,7 @@ import elements from "./Links.module.scss";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { useRouterContext } from "../../../../context/RouterContext";
 import LinkButton from "../../../shared/components/EffektButton/LinkButton";
+import { resolveNavitemHref } from "../../../../lib/pageHref";
 
 export type LinkType = {
   _type: "link";
@@ -77,14 +78,10 @@ export const getHref = (
   fundraisersPath: string[],
 ): { href: string; isFundraiser: boolean } => {
   if (link._type === "navitem") {
-    switch (link.pagetype) {
-      case "article_page":
-        return { href: `/${[...articlesPagePath, link.slug].join("/")}`, isFundraiser: false };
-      case "fundraiser_page":
-        return { href: `/${[...fundraisersPath, link.slug].join("/")}`, isFundraiser: true };
-      default:
-        return { href: `/${link.slug}`, isFundraiser: false };
-    }
+    return {
+      href: resolveNavitemHref(link.pagetype, link.slug ?? "", articlesPagePath, fundraisersPath),
+      isFundraiser: link.pagetype === "fundraiser_page",
+    };
   } else {
     return { href: link.url ?? (link as any).href ?? "", isFundraiser: false };
   }
