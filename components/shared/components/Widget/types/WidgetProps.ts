@@ -192,6 +192,9 @@ export type SmartDistributionContext = {
   smart_distribution_radiobutton_text: string;
   custom_distribution_radiobutton_text: string;
   smart_distribution_title: string;
+  smart_distribution_label_text?: string;
+  smart_distribution_description?: any[];
+  smart_distribution_description_links?: (LinkType | NavLink)[];
   show_all_organizations_text?: string;
 };
 

@@ -262,6 +262,26 @@ export default defineType({
             "Title shown above the smart distribution option, e.g. in the multi cause-area amount pane and the donation summary. Only used if there is more than one cause area",
         }),
         defineField({
+          name: "smart_distribution_label_text",
+          title: "Smart distribution label text",
+          type: "string",
+          description:
+            "Accordion label for the smart distribution description. Only used if there is more than one cause area",
+        }),
+        defineField({
+          name: "smart_distribution_description",
+          title: "Smart distribution description",
+          type: "array",
+          of: [{ type: "block" }],
+        }),
+        defineField({
+          name: "smart_distribution_description_links",
+          title: "Smart distribution description links",
+          type: "array",
+          of: [{ type: "link" }],
+          description: "Only used if there is more than one cause area",
+        }),
+        defineField({
           name: "show_all_organizations_text",
           title: "Show all organizations text",
           type: "string",

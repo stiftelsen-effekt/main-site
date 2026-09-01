@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
+import { PortableText } from "@portabletext/react";
 import { Dispatch } from "@reduxjs/toolkit";
 import AnimateHeight from "react-animate-height";
 
@@ -9,6 +10,7 @@ import { Pane, PaneContainer, PaneTitle } from "../Panes.style";
 import {
   ActionBar,
   AmountInputSection,
+  InfoParagraph,
   ShareContainer,
   ShareInputContainer,
   ShareLink,
@@ -284,6 +286,13 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
                 selected={distributionType}
                 onSelect={(value) => handleDistributionChange(value as ShareType)}
               />
+
+              {distributionType === ShareType.STANDARD &&
+                smartDistributionContext.smart_distribution_description && (
+                  <InfoParagraph>
+                    <PortableText value={smartDistributionContext.smart_distribution_description} />
+                  </InfoParagraph>
+                )}
 
               {distributionType === ShareType.CUSTOM && (
                 <SharesSelectorContainer>
