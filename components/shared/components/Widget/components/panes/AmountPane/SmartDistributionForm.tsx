@@ -48,6 +48,11 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
   const [explanationOpen, setExplanationOpen] = useState(false);
+  const hasSmartDistributionRollout = Boolean(
+    causeAreaDisplayConfig?.cause_area_rollouts?.some(
+      (item) => item.cause_area_id === -1 && item.title,
+    ),
+  );
 
   // Get smart distribution total from Redux state
   const smartDistributionTotal =
@@ -117,28 +122,29 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         </TotalSumWrapper>
       </div>
       <div>
-        {smartDistributionContext.smart_distribution_description && (
-          <RolloutAccordion>
-            <div onClick={() => setExplanationOpen(!explanationOpen)}>
-              <span>{smartDistributionContext.smart_distribution_label_text}</span>
-              <ChevronDown
-                size={28}
-                style={{
-                  transform: explanationOpen ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: "transform 0.3s ease",
-                }}
-              />
-            </div>
-            <AnimateHeight height={explanationOpen ? "auto" : 0}>
-              <div>
-                <PortableText value={smartDistributionContext.smart_distribution_description} />
-                {smartDistributionContext.smart_distribution_description_links && (
-                  <Links links={smartDistributionContext.smart_distribution_description_links} />
-                )}
+        {!hasSmartDistributionRollout &&
+          smartDistributionContext.smart_distribution_description && (
+            <RolloutAccordion>
+              <div onClick={() => setExplanationOpen(!explanationOpen)}>
+                <span>{smartDistributionContext.smart_distribution_label_text}</span>
+                <ChevronDown
+                  size={28}
+                  style={{
+                    transform: explanationOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.3s ease",
+                  }}
+                />
               </div>
-            </AnimateHeight>
-          </RolloutAccordion>
-        )}
+              <AnimateHeight height={explanationOpen ? "auto" : 0}>
+                <div>
+                  <PortableText value={smartDistributionContext.smart_distribution_description} />
+                  {smartDistributionContext.smart_distribution_description_links && (
+                    <Links links={smartDistributionContext.smart_distribution_description_links} />
+                  )}
+                </div>
+              </AnimateHeight>
+            </RolloutAccordion>
+          )}
         <CauseAreaRollout causeAreaId={-1} config={causeAreaDisplayConfig} />
       </div>
     </FormWrapper>
