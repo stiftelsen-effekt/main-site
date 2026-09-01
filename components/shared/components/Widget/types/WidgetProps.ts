@@ -234,6 +234,8 @@ export type WidgetPane2Props = {
   name_invalid_error_text: string;
   email_placeholder: string;
   email_invalid_error_text: string;
+  show_referral_code_field?: boolean;
+  referral_code_placeholder?: string;
   tax_deduction_selector_text: string;
   tax_deduction_ssn_placeholder: string;
   tax_deduction_ssn_invalid_error_text: string;

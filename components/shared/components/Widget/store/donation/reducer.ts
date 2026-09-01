@@ -31,6 +31,7 @@ import {
   SET_PREFILLED_SHARES,
   SET_SHOW_ALL_ORGANIZATIONS,
   SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
+  SET_REFERRAL_CODE,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -204,6 +205,16 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         hasManuallyEditedPrefilledOrgAmount: edited,
+      };
+      break;
+    }
+    case SET_REFERRAL_CODE: {
+      const { referralCode } = action.payload;
+      const trimmed = referralCode?.trim();
+
+      state = {
+        ...state,
+        referralCode: trimmed || undefined,
       };
       break;
     }

@@ -16248,6 +16248,20 @@
         },
         "optional": true
       },
+      "show_referral_code_field": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
+      },
+      "referral_code_placeholder": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "tax_deduction_selector_text": {
         "type": "objectAttribute",
         "value": {
