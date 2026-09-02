@@ -166,21 +166,43 @@ button {
   scrollbar-color: var(--primary-hover) transparent;
 }
 
-.widget::-webkit-scrollbar {
+/* Inline (DK) card: scroll on the unscaled wrapper so the track sits outside
+   the bordered 576px box instead of painting over its right edge. */
+.widget-wrapper--inline .widget {
+  width: 576px;
+  overflow: visible;
+  scrollbar-gutter: auto;
+}
+
+@media only screen and (min-width: 1181px) {
+  .widget-wrapper--inline {
+    max-height: 100vh;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-hover) transparent;
+  }
+}
+
+.widget::-webkit-scrollbar,
+.widget-wrapper--inline::-webkit-scrollbar {
   width: 8px;
   background-color: transparent;
 }
 
-.widget::-webkit-scrollbar-thumb {
+.widget::-webkit-scrollbar-thumb,
+.widget-wrapper--inline::-webkit-scrollbar-thumb {
   background-color: var(--primary-hover);
   border-radius: 10px;
 }
 
-.widget::-webkit-scrollbar-thumb:hover {
+.widget::-webkit-scrollbar-thumb:hover,
+.widget-wrapper--inline::-webkit-scrollbar-thumb:hover {
   background-color: var(--primary);
 }
 
-.widget::-webkit-scrollbar-track {
+.widget::-webkit-scrollbar-track,
+.widget-wrapper--inline::-webkit-scrollbar-track {
   background-color: transparent;
 }
 

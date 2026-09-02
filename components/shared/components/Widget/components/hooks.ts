@@ -18,16 +18,19 @@ import { WidgetProps } from "../types/WidgetProps";
 import { paymentMethodConfigurations } from "../config/methods";
 import { useDebouncedCallback } from "use-debounce";
 import { State } from "../store/state";
-
-/** Designed pane content width, before the reserved scrollbar gutter. */
-export const WIDGET_CONTENT_WIDTH = 576;
-/** Must match `.widget::-webkit-scrollbar` so the gutter and thumb agree. */
-export const WIDGET_SCROLLBAR_WIDTH = 8;
-export const WIDGET_FRAME_WIDTH = WIDGET_CONTENT_WIDTH + WIDGET_SCROLLBAR_WIDTH;
 import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../store/donation/types";
 import { setPaneNumber } from "../store/layout/actions";
 import { LayoutActionTypes } from "../store/layout/types";
+
+/** Designed pane content width, before the reserved scrollbar gutter. */
+export const WIDGET_CONTENT_WIDTH = 576;
+/** Must match the CSS scrollbar width so the gutter and thumb agree. */
+export const WIDGET_SCROLLBAR_WIDTH = 8;
+/** Air between the bordered card and the track, so the thumb does not sit on the box. */
+export const WIDGET_SCROLLBAR_GAP = 4;
+export const WIDGET_SCROLLBAR_SLOT = WIDGET_SCROLLBAR_WIDTH + WIDGET_SCROLLBAR_GAP;
+export const WIDGET_FRAME_WIDTH = WIDGET_CONTENT_WIDTH + WIDGET_SCROLLBAR_WIDTH;
 
 interface UsePrefilledDistributionProps {
   inline: boolean;

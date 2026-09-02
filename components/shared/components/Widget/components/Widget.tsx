@@ -36,7 +36,9 @@ import {
   usePrefilledCauseAreaIds,
   useQueryParamsPrefill,
   useWidgetScaleEffect,
+  WIDGET_CONTENT_WIDTH,
   WIDGET_FRAME_WIDTH,
+  WIDGET_SCROLLBAR_SLOT,
 } from "./hooks";
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
@@ -254,11 +256,14 @@ export const Widget = withStaticProps(
 
   return (
     <div
-      className="widget-wrapper"
+      className={`widget-wrapper${inline ? " widget-wrapper--inline" : ""}`}
       ref={widgetWrapperRef}
       style={{
         height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
-        width: scalingFactor * WIDGET_FRAME_WIDTH,
+        width: inline
+          ? scalingFactor * WIDGET_CONTENT_WIDTH +
+            (scalingFactor >= 1 ? WIDGET_SCROLLBAR_SLOT : 0)
+          : scalingFactor * WIDGET_FRAME_WIDTH,
       }}
     >
       <div
