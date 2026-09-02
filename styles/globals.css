@@ -170,7 +170,8 @@ button {
    cannot sit on the bordered box. */
 .widget.widget--inline {
   width: 576px;
-  overflow: visible;
+  overflow-x: clip;
+  overflow-y: visible;
   scrollbar-gutter: auto;
 }
 
@@ -197,7 +198,11 @@ button {
   flex-grow: 1;
   flex-direction: column;
   width: 100%;
-  overflow-x: hidden;
+  min-width: 0;
+  /* `hidden` on one axis forces the other to `auto`, so expanding an accordion
+     created an inner scrollbar and the 576px pane spilled into the track.
+     `clip` hides neighbouring carousel panes without becoming a scrollport. */
+  overflow-x: clip;
   overflow-y: visible;
 }
 
@@ -209,6 +214,7 @@ button {
 
 .pane {
   width: 100%;
+  max-width: 100%;
   display: inline-block;
   vertical-align: top;
   height: 100%;
