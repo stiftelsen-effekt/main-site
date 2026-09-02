@@ -36,6 +36,8 @@ import {
   usePrefilledCauseAreaIds,
   useQueryParamsPrefill,
   useWidgetScaleEffect,
+  WIDGET_CONTENT_WIDTH,
+  WIDGET_FRAME_WIDTH,
 } from "./hooks";
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
@@ -257,11 +259,11 @@ export const Widget = withStaticProps(
       ref={widgetWrapperRef}
       style={{
         height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
-        width: scalingFactor * 576,
+        width: scalingFactor * (inline ? WIDGET_CONTENT_WIDTH : WIDGET_FRAME_WIDTH),
       }}
     >
       <div
-        className="widget"
+        className={`widget${inline ? " widget--inline" : ""}`}
         ref={widgetRef}
         style={{
           transform: `scale(${scalingFactor})`,
