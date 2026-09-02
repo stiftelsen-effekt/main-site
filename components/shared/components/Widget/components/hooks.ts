@@ -25,11 +25,8 @@ import { LayoutActionTypes } from "../store/layout/types";
 
 /** Designed pane content width, before the reserved scrollbar gutter. */
 export const WIDGET_CONTENT_WIDTH = 576;
-/** Must match the CSS scrollbar width so the gutter and thumb agree. */
+/** Must match `.widget::-webkit-scrollbar` so the gutter and thumb agree. */
 export const WIDGET_SCROLLBAR_WIDTH = 8;
-/** Air between the bordered card and the track, so the thumb does not sit on the box. */
-export const WIDGET_SCROLLBAR_GAP = 4;
-export const WIDGET_SCROLLBAR_SLOT = WIDGET_SCROLLBAR_WIDTH + WIDGET_SCROLLBAR_GAP;
 export const WIDGET_FRAME_WIDTH = WIDGET_CONTENT_WIDTH + WIDGET_SCROLLBAR_WIDTH;
 
 interface UsePrefilledDistributionProps {
