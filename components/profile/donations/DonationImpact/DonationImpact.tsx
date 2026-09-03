@@ -7,16 +7,25 @@ import {
   DonationImpactGlobalHealthItem,
   ImpactItemConfiguration,
 } from "./GlobalHealth/DonationImpactItemGlobalHealth";
-import DonationImpactGlobalHealth from "./GlobalHealth/DonationImpactGlobalHealth";
+import DonationImpactGlobalHealth, {
+  DonationImpactOperations,
+} from "./GlobalHealth/DonationImpactGlobalHealth";
 import DonationImpactAnimalWelfare from "./AnimalWelfare/DonationImpactAnimalWelfare";
 import { mapNameToOrgAbbriv } from "../../../../util/mappings";
+import { LinkType } from "../../../main/blocks/Links/Links";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 export type DonationImpactItemsConfiguration = {
   currency: string;
   locale: string;
   operations_label: string;
+  operations_section_title?: string;
+  operations_text?: any[];
+  operations_links?: (LinkType | NavLink)[];
   impact_item_configuration: ImpactItemConfiguration;
 };
+
+const isOperationsOrg = (name: string) => name === "Drift" || mapNameToOrgAbbriv(name) === "Drift";
 
 const DonationImpact: React.FC<{
   donation: Donation;
@@ -71,46 +80,86 @@ const DonationImpact: React.FC<{
     );
   }
 
+  const multipleCauseAreas = distribution.causeAreas.length > 1;
+
+  /**
+   * When a donation spans multiple cause areas, operations (Drift) is pulled out of the
+   * individual cause area sections and shown as its own titled section aggregating the
+   * operations amount across all cause areas (see donation overview design).
+   */
+  const operationsSum = multipleCauseAreas
+    ? distribution.causeAreas.reduce((total, causeArea) => {
+        const causeAreaOperations = causeArea.organizations
+          .filter((org) => isOperationsOrg(org.name as string))
+          .reduce(
+            (sum, org) =>
+              sum +
+              parseFloat(donation.sum) *
+                (parseFloat(org.percentageShare) / 100) *
+                (parseFloat(causeArea.percentageShare) / 100),
+            0,
+          );
+        return total + causeAreaOperations;
+      }, 0)
+    : 0;
+
   return (
     <>
-      {distribution.causeAreas.map((causeArea: DistributionCauseArea) => (
-        <div key={`${donation.id}-causarea${causeArea.id}-impact`}>
-          {distribution.causeAreas.length > 1 && (
-            <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>
-          )}
-          {causeArea.id === 1 && (
-            <DonationImpactGlobalHealth
-              key={`${donation.id}-causarea${causeArea.id}-impact`}
-              donation={donation}
-              distribution={causeArea.organizations.map((org) => ({
-                org: mapNameToOrgAbbriv(org.name as string),
-                orgName: org.name ?? "unknown",
-                sum:
-                  parseFloat(donation.sum) *
-                  (parseFloat(org.percentageShare) / 100) *
-                  (parseFloat(causeArea.percentageShare) / 100),
-              }))}
-              timestamp={timestamp}
-              configuration={configuration}
-            />
-          )}
-          {causeArea.id !== 1 && (
-            <DonationImpactAnimalWelfare
-              key={`${donation.id}-causarea${causeArea.id}-impact`}
-              donation={donation}
-              distribution={causeArea.organizations.map((org) => ({
-                org: org.name as string,
-                sum:
-                  parseFloat(donation.sum) *
-                  (parseFloat(org.percentageShare) / 100) *
-                  (parseFloat(causeArea.percentageShare) / 100),
-              }))}
-              timestamp={timestamp}
-              configuration={configuration}
-            />
-          )}
+      {distribution.causeAreas.map((causeArea: DistributionCauseArea) => {
+        const organizations = multipleCauseAreas
+          ? causeArea.organizations.filter((org) => !isOperationsOrg(org.name as string))
+          : causeArea.organizations;
+
+        return (
+          <div key={`${donation.id}-causarea${causeArea.id}-impact`}>
+            {multipleCauseAreas && <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>}
+            {causeArea.id === 1 && (
+              <DonationImpactGlobalHealth
+                key={`${donation.id}-causarea${causeArea.id}-impact`}
+                donation={donation}
+                distribution={organizations.map((org) => ({
+                  org: mapNameToOrgAbbriv(org.name as string),
+                  orgName: org.name ?? "unknown",
+                  sum:
+                    parseFloat(donation.sum) *
+                    (parseFloat(org.percentageShare) / 100) *
+                    (parseFloat(causeArea.percentageShare) / 100),
+                }))}
+                timestamp={timestamp}
+                configuration={configuration}
+              />
+            )}
+            {causeArea.id !== 1 && (
+              <DonationImpactAnimalWelfare
+                key={`${donation.id}-causarea${causeArea.id}-impact`}
+                donation={donation}
+                distribution={organizations.map((org) => ({
+                  org: org.name as string,
+                  sum:
+                    parseFloat(donation.sum) *
+                    (parseFloat(org.percentageShare) / 100) *
+                    (parseFloat(causeArea.percentageShare) / 100),
+                }))}
+                timestamp={timestamp}
+                configuration={configuration}
+              />
+            )}
+          </div>
+        );
+      })}
+      {multipleCauseAreas && operationsSum > 0 && (
+        <div key={`${donation.id}-operations`}>
+          <h5 className={style.causeAreaHeader}>
+            {configuration.operations_section_title ?? configuration.operations_label}
+          </h5>
+          <DonationImpactOperations
+            donation={donation}
+            sum={operationsSum}
+            timestamp={timestamp}
+            configuration={configuration}
+          />
         </div>
-      ))}
+      )}
     </>
   );
 };

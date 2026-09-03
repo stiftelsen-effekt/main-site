@@ -27,7 +27,9 @@ import { ConsentState } from "../../../middleware.page";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   const path = appState?.returnTo || dashboardPath.join("/");
-  window.history.pushState({}, "", path);
+  // Use the Next.js router so query params in the restored URL (e.g. ?impactpreview)
+  // end up in router.query; history.pushState leaves the router state stale.
+  Router.replace(path);
 };
 
 const routesToBypass = ["/min-side/vipps-anonym"];
