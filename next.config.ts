@@ -206,6 +206,28 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/adfærd",
+        destination: "/adfaerd2026?referral=Adfærd",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/adfaerd",
+        destination: "/adfaerd2026?referral=Adfærd",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: false,
+      },
+      {
         source: "/anbefalinger",
         destination: "/global-sundhed-og-fattigdom",
         has: [
