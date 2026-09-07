@@ -217,7 +217,14 @@ export const useQueryParamsPrefill = ({
     const referralValue = firstQueryValue(referral) ?? firstQueryValue(referralCode);
     if (referralValue) {
       dispatch(setReferralCode(referralValue));
+      storeReferralCode(referralValue);
       hasAppliedQueryParams.current = true;
+    } else {
+      const storedReferralCode = getStoredReferralCode();
+      if (storedReferralCode) {
+        dispatch(setReferralCode(storedReferralCode));
+        hasAppliedQueryParams.current = true;
+      }
     }
   }, [inline, router.query, causeAreas, dispatch, setWidgetContext, widgetContext]);
 
@@ -273,6 +280,24 @@ const firstQueryValue = (value: string | string[] | undefined): string | undefin
   const raw = Array.isArray(value) ? value[0] : value;
   const trimmed = raw?.trim();
   return trimmed || undefined;
+};
+
+const referralCodeStorageKey = "referral-code";
+
+const getStoredReferralCode = (): string | undefined => {
+  try {
+    return firstQueryValue(window.sessionStorage.getItem(referralCodeStorageKey) ?? undefined);
+  } catch {
+    return undefined;
+  }
+};
+
+const storeReferralCode = (referralCode: string) => {
+  try {
+    window.sessionStorage.setItem(referralCodeStorageKey, referralCode);
+  } catch {
+    return;
+  }
 };
 
 const parseDistributionQueryParam = (distribution: string): PrefilledDistribution => {
