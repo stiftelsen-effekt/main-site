@@ -206,7 +206,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/adfærd",
+        source: "/adf%C3%A6rd",
         destination: "/adfaerd2026?referral=Adfærd",
         has: [
           {
