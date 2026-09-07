@@ -6,7 +6,7 @@ import {
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
 import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export type WealthCalculatorInputConfiguration = {
   subtitle_label?: string;
@@ -29,8 +29,8 @@ export type WealthCalculatorInputConfiguration = {
 
 export const WealthCalculatorInput: React.FC<{
   title: string;
-  incomeInput: number | undefined;
-  setIncomeInput: (value: number) => void;
+  incomeInput: number[] | undefined;
+  setIncomeInput: (values: number[]) => void;
   numberOfChildren: number;
   setNumberOfChildren: (value: number) => void;
   numberOfAdults: number;
@@ -49,6 +49,9 @@ export const WealthCalculatorInput: React.FC<{
   config,
 }) => {
   const calculateButtonRef = useRef<HTMLDivElement>(null);
+  const [adultIncomes, setAdultIncomes] = useState<number[]>(() =>
+    Array.from({ length: config.adults_input_configuration.options.length }, () => 0),
+  );
 
   const scrollToOutput = useCallback(() => {
     if (calculateButtonRef.current) {
@@ -66,24 +69,36 @@ export const WealthCalculatorInput: React.FC<{
         <span className={styles.calculator__input__subtitle}>{config.subtitle_label}</span>
 
         <div className={styles.calculator__input__group} data-cy="wealthcalculator-income-input">
-          <div className={styles.calculator__input__group__input__income__wrapper}>
-            <NumericFormat
-              type={"tel"}
-              placeholder={config.income_input_configuration.placeholder}
-              value={incomeInput}
-              className={styles.calculator__input__group__input__text}
-              thousandSeparator={config.income_input_configuration.thousand_separator}
-              onValueChange={(values) => {
-                setIncomeInput(values.floatValue || 0);
-              }}
-            />
-            {loadingPostTaxIncome && (
-              <div className={styles.calculator__input__group__input__income__spinner}>
-                <LoadingButtonSpinner />
+          {Array.from({ length: numberOfAdults }, (_, index) => adultIncomes[index] || 0).map(
+            (adultIncome, index) => (
+              <div className={styles.calculator__input__group__input__income__wrapper} key={index}>
+                <NumericFormat
+                  type={"tel"}
+                  placeholder={
+                    numberOfAdults > 1
+                      ? `${config.income_input_configuration.placeholder} ${index + 1}`
+                      : config.income_input_configuration.placeholder
+                  }
+                  value={adultIncome || ""}
+                  className={styles.calculator__input__group__input__text}
+                  thousandSeparator={config.income_input_configuration.thousand_separator}
+                  onValueChange={(values) => {
+                    const nextIncomes = adultIncomes.map((income, incomeIndex) =>
+                      incomeIndex === index ? values.floatValue || 0 : income,
+                    );
+                    setAdultIncomes(nextIncomes);
+                    setIncomeInput(nextIncomes.slice(0, numberOfAdults));
+                  }}
+                />
+                {loadingPostTaxIncome && index === numberOfAdults - 1 && (
+                  <div className={styles.calculator__input__group__input__income__spinner}>
+                    <LoadingButtonSpinner />
+                  </div>
+                )}
+                <span>{config.income_input_configuration.currency_label}</span>
               </div>
-            )}
-            <span>{config.income_input_configuration.currency_label}</span>
-          </div>
+            ),
+          )}
           <i>{config.income_input_configuration.description}</i>
         </div>
 
