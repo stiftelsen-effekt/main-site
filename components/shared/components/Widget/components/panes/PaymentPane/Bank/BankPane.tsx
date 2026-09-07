@@ -11,6 +11,7 @@ import AnimateHeight from "react-animate-height";
 import { CompleteButton, CompleteButtonWrapper } from "./BankPane.style";
 import { usePlausible } from "next-plausible";
 import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
+import { sendGTMEvent } from "../../../../../../layout/GoogleTagManager";
 
 export const BankPane: React.FC<{
   config: BankPaymentMethod;
@@ -57,6 +58,23 @@ export const BankPane: React.FC<{
           recurring: false,
           kid: donation.kid,
         },
+      });
+
+      // Google tag manager
+      // TODO: this code is duplicated in PlausibleRevenueTracker, BankPane and SwishPane
+      sendGTMEvent({
+        event: "purchase",
+        transaction_id: donation.kid,
+        value: totalSumIncludingTip,
+        currency,
+        items: [
+          {
+            item_name: "Donation",
+            item_id: "donation",
+            price: totalSumIncludingTip,
+            quantity: 1,
+          },
+        ],
       });
     }
   }, [hasCompletedTransaction]);
