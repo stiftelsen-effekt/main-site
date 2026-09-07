@@ -53,7 +53,12 @@ describe("Widget referral code", () => {
     cy.get("[data-cy=widget-pane]").should("be.visible");
   });
 
-  it("sends the referral query param with donation registration", () => {
+  it("preserves the referral query param for the session", () => {
+    cy.visit("/");
+    cy.wait("@getCauseAreas");
+    cy.get("[data-cy=gi-button]").should("be.visible").click();
+    cy.get("[data-cy=widget-pane]").should("be.visible");
+
     cy.pickSingleDonation();
     cy.get("[data-cy^=donation-sum-input]").type("500");
     cy.nextWidgetPane();
