@@ -38,6 +38,30 @@
     width: 100%;
   }
 
+  span.impactDetailsSingleLine {
+    display: inline-block;
+    padding-left: 20px;
+    font-size: 22px;
+    line-height: 1;
+
+    &.expandable {
+      user-select: none;
+      cursor: pointer;
+
+      &::after {
+        content: "↓";
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        transition: all 200ms;
+      }
+
+      &.expanded::after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
   .impactContext {
     display: flex;
     flex-direction: column;
@@ -72,6 +96,17 @@
         }
       }
     }
+  }
+}
+
+.singleLineOverview {
+  td {
+    vertical-align: middle;
+  }
+
+  td:first-child .impactOutput {
+    margin: 0.5rem 0;
+    line-height: 1;
   }
 }
 
