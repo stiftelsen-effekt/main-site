@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./DonationDetails.module.scss";
 import { Distribution, Donation } from "../../../../../models";
 import { Organization } from "../../../../shared/components/Widget/types/Organization";
@@ -6,18 +6,8 @@ import { CauseArea } from "../../../../shared/components/Widget/types/CauseArea"
 import DonationImpact, {
   DonationImpactItemsConfiguration,
 } from "../../../donations/DonationImpact/DonationImpact";
-import { mapNameToOrgAbbriv } from "../../../../../util/mappings";
-import AnimateHeight from "react-animate-height";
-import { LinkType, Links } from "../../../../main/blocks/Links/Links";
-import { PortableText } from "@portabletext/react";
-import { NavLink } from "../../../../shared/components/Navbar/Navbar";
+import { ImpactEstimateExplanationConfiguration } from "../../../donations/DonationsAggregateImpactTable/ImpactEstimateExplanation";
 import { groupDonationImpactByCauseArea } from "./impactGroups";
-
-type ImpactEstimateExplanationConfiguration = {
-  impact_estimate_explanation_title?: string;
-  impact_estimate_explanation_text?: any[];
-  impact_estimate_explanation_links?: (LinkType | NavLink)[];
-};
 
 type CauseAreaImpactEstimateConfiguration = ImpactEstimateExplanationConfiguration & {
   cause_area_id: number;
@@ -37,9 +27,7 @@ export const DonationDetails: React.FC<{
   configuration: DonationDetailsConfiguration;
   organizations: Organization[];
   causeAreas: CauseArea[];
-}> = ({ sum, donation, distribution, timestamp, configuration, organizations, causeAreas }) => {
-  const [expandedCauseAreaIds, setExpandedCauseAreaIds] = useState<number[]>([]);
-
+}> = ({ donation, distribution, timestamp, configuration, organizations, causeAreas }) => {
   if (!distribution && !donation.impact?.length)
     return <span>Ingen distribusjon funnet for donasjon med KID {donation.KID}</span>;
 
@@ -57,7 +45,6 @@ export const DonationDetails: React.FC<{
   return (
     <div className={style.wrapper}>
       <div className={style.impactEstimate}>
-        <strong>{configuration.impact_estimate_header}</strong>
         {visibleCauseAreas.map((causeArea) => {
           const causeAreaId = causeArea.id;
           const causeAreaDistribution =
@@ -73,45 +60,11 @@ export const DonationDetails: React.FC<{
           const causeAreaDonation = hasPrecomputedImpact
             ? { ...donation, impact: impactGroup?.impact }
             : donation;
-          const impactEstimateConfiguration = configuration.cause_area_impact_estimates?.find(
-            (candidate) => candidate.cause_area_id === causeAreaId,
-          );
-          const showImpactEstimateExplanation = expandedCauseAreaIds.includes(causeAreaId);
 
           return (
             <div key={causeAreaId}>
               {(impactGroup?.showTitle ?? visibleCauseAreas.length > 1) && (
                 <h5>{causeArea.name}</h5>
-              )}
-              {impactEstimateConfiguration?.impact_estimate_explanation_title && (
-                <>
-                  <span
-                    className={
-                      showImpactEstimateExplanation
-                        ? [style.caption, style.captionopen].join(" ")
-                        : style.caption
-                    }
-                    onClick={() =>
-                      setExpandedCauseAreaIds((current) =>
-                        current.includes(causeAreaId)
-                          ? current.filter((id) => id !== causeAreaId)
-                          : [...current, causeAreaId],
-                      )
-                    }
-                  >
-                    {impactEstimateConfiguration.impact_estimate_explanation_title}&nbsp;&nbsp;
-                  </span>
-                  <AnimateHeight duration={500} height={showImpactEstimateExplanation ? "auto" : 0}>
-                    <div className={style.impactExplanationContainer}>
-                      <PortableText
-                        value={impactEstimateConfiguration.impact_estimate_explanation_text}
-                      />
-                      <Links
-                        links={impactEstimateConfiguration.impact_estimate_explanation_links ?? []}
-                      ></Links>
-                    </div>
-                  </AnimateHeight>
-                </>
               )}
 
               <DonationImpact

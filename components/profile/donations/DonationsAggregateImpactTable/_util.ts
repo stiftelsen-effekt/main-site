@@ -1,5 +1,5 @@
 import { Distribution, Donation, GiveWellGrant, ImpactEvaluation } from "../../../../models";
-import { mapNameToOrgAbbriv } from "../../../../util/mappings";
+import { GIVEWELL_TOP_CHARITIES_FUND_ID, mapNameToOrgAbbriv } from "../../../../util/mappings";
 import { AggregatedImpactTableConfiguration } from "./DonationsAggregateImpactTable";
 
 export type OrganizationsAggregatedSums = {
@@ -75,7 +75,7 @@ export const aggregateOrgSumByYearAndMonth = (
     if (orgs) {
       orgs.forEach((org) => {
         // If organization is GiveWell top charities fund, distribute the share of the donation to the organizations in the grant
-        if (org.id === 12) {
+        if (org.id === GIVEWELL_TOP_CHARITIES_FUND_ID) {
           // Get first grant before donation date
           const relevantGrant = sortedGrants.find(
             (grant) =>
