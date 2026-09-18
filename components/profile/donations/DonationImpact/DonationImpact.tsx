@@ -2,30 +2,29 @@ import React, { useCallback, useState } from "react";
 import { Distribution, DistributionCauseArea, Donation } from "../../../../models";
 import { Organization } from "../../../shared/components/Widget/types/Organization";
 import style from "./DonationImpact.module.scss";
-import ghStyle from "./GlobalHealth/DonationImpactGlobalHealth.module.scss";
+import { DonationImpactItem } from "./DonationImpactItem";
 import {
-  DonationImpactGlobalHealthItem,
-  ImpactItemConfiguration,
-} from "./GlobalHealth/DonationImpactItemGlobalHealth";
-import DonationImpactGlobalHealth, {
-  DonationImpactOperations,
-} from "./GlobalHealth/DonationImpactGlobalHealth";
-import DonationImpactAnimalWelfare from "./AnimalWelfare/DonationImpactAnimalWelfare";
-import { mapNameToOrgAbbriv } from "../../../../util/mappings";
-import { LinkType } from "../../../main/blocks/Links/Links";
-import { NavLink } from "../../../shared/components/Navbar/Navbar";
+  DonationImpactItemsConfiguration,
+  DonationImpactList,
+  ImpactDistributionEntry,
+} from "./DonationImpactList";
+import { isFundOrganizationId, mapNameToOrgAbbriv } from "../../../../util/mappings";
 
-export type DonationImpactItemsConfiguration = {
-  currency: string;
-  locale: string;
-  operations_label: string;
-  operations_section_title?: string;
-  operations_text?: any[];
-  operations_links?: (LinkType | NavLink)[];
-  impact_item_configuration: ImpactItemConfiguration;
-};
+export type { DonationImpactItemsConfiguration };
 
 const isOperationsOrg = (name: string) => name === "Drift" || mapNameToOrgAbbriv(name) === "Drift";
+
+const toDistributionEntry = (
+  org: { id: number; name?: string; percentageShare: string },
+  donationSum: number,
+  causeAreaShare: number,
+): ImpactDistributionEntry => ({
+  org: mapNameToOrgAbbriv(org.name as string),
+  orgName: org.name ?? "unknown",
+  isFund: isFundOrganizationId(org.id),
+  isOperations: isOperationsOrg(org.name as string),
+  sum: donationSum * (parseFloat(org.percentageShare) / 100) * causeAreaShare,
+});
 
 const DonationImpact: React.FC<{
   donation: Donation;
@@ -44,8 +43,8 @@ const DonationImpact: React.FC<{
 
   if (donation.impact?.length) {
     return (
-      <div className={ghStyle.container}>
-        <table className={ghStyle.wrapper} cellSpacing={0} data-cy="donation-impact-list">
+      <div className={style.container}>
+        <table className={style.wrapper} cellSpacing={0} data-cy="donation-impact-list">
           <tbody>
             {donation.impact.map((entry, i) => {
               const matchedOrg = organizations.find((org) => org.name === entry.organization);
@@ -55,7 +54,7 @@ const DonationImpact: React.FC<{
                 );
               }
               return (
-                <DonationImpactGlobalHealthItem
+                <DonationImpactItem
                   key={`${donation.id}-impact-${i}`}
                   orgAbriv=""
                   orgName={entry.recipient}
@@ -81,6 +80,7 @@ const DonationImpact: React.FC<{
   }
 
   const multipleCauseAreas = distribution.causeAreas.length > 1;
+  const donationSum = parseFloat(donation.sum);
 
   /**
    * When a donation spans multiple cause areas, operations (Drift) is pulled out of the
@@ -89,14 +89,12 @@ const DonationImpact: React.FC<{
    */
   const operationsSum = multipleCauseAreas
     ? distribution.causeAreas.reduce((total, causeArea) => {
+        const causeAreaShare = parseFloat(causeArea.percentageShare) / 100;
         const causeAreaOperations = causeArea.organizations
           .filter((org) => isOperationsOrg(org.name as string))
           .reduce(
             (sum, org) =>
-              sum +
-              parseFloat(donation.sum) *
-                (parseFloat(org.percentageShare) / 100) *
-                (parseFloat(causeArea.percentageShare) / 100),
+              sum + donationSum * (parseFloat(org.percentageShare) / 100) * causeAreaShare,
             0,
           );
         return total + causeAreaOperations;
@@ -106,6 +104,7 @@ const DonationImpact: React.FC<{
   return (
     <>
       {distribution.causeAreas.map((causeArea: DistributionCauseArea) => {
+        const causeAreaShare = parseFloat(causeArea.percentageShare) / 100;
         const organizations = multipleCauseAreas
           ? causeArea.organizations.filter((org) => !isOperationsOrg(org.name as string))
           : causeArea.organizations;
@@ -113,37 +112,14 @@ const DonationImpact: React.FC<{
         return (
           <div key={`${donation.id}-causarea${causeArea.id}-impact`}>
             {multipleCauseAreas && <h5 className={style.causeAreaHeader}>{causeArea.name}</h5>}
-            {causeArea.id === 1 && (
-              <DonationImpactGlobalHealth
-                key={`${donation.id}-causarea${causeArea.id}-impact`}
-                donation={donation}
-                distribution={organizations.map((org) => ({
-                  org: mapNameToOrgAbbriv(org.name as string),
-                  orgName: org.name ?? "unknown",
-                  sum:
-                    parseFloat(donation.sum) *
-                    (parseFloat(org.percentageShare) / 100) *
-                    (parseFloat(causeArea.percentageShare) / 100),
-                }))}
-                timestamp={timestamp}
-                configuration={configuration}
-              />
-            )}
-            {causeArea.id !== 1 && (
-              <DonationImpactAnimalWelfare
-                key={`${donation.id}-causarea${causeArea.id}-impact`}
-                donation={donation}
-                distribution={organizations.map((org) => ({
-                  org: org.name as string,
-                  sum:
-                    parseFloat(donation.sum) *
-                    (parseFloat(org.percentageShare) / 100) *
-                    (parseFloat(causeArea.percentageShare) / 100),
-                }))}
-                timestamp={timestamp}
-                configuration={configuration}
-              />
-            )}
+            <DonationImpactList
+              donation={donation}
+              distribution={organizations.map((org) =>
+                toDistributionEntry(org, donationSum, causeAreaShare),
+              )}
+              timestamp={timestamp}
+              configuration={configuration}
+            />
           </div>
         );
       })}
@@ -152,9 +128,16 @@ const DonationImpact: React.FC<{
           <h5 className={style.causeAreaHeader}>
             {configuration.operations_section_title ?? configuration.operations_label}
           </h5>
-          <DonationImpactOperations
+          <DonationImpactList
             donation={donation}
-            sum={operationsSum}
+            distribution={[
+              {
+                org: "Drift",
+                orgName: configuration.operations_label,
+                isOperations: true,
+                sum: operationsSum,
+              },
+            ]}
             timestamp={timestamp}
             configuration={configuration}
           />

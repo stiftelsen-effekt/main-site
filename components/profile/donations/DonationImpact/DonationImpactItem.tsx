@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import style from "./DonationImpactItemGlobalHealth.module.scss";
-import { thousandize, thousandizeString } from "../../../../../util/formatting";
+import style from "./DonationImpactItem.module.scss";
+import { thousandize, thousandizeString } from "../../../../util/formatting";
 import useSWR from "swr";
-import { ImpactEvaluation } from "../../../../../models";
+import { ImpactEvaluation } from "../../../../models";
 import AnimateHeight from "react-animate-height";
-import { LinkType, Links } from "../../../../main/blocks/Links/Links";
+import { LinkType, Links } from "../../../main/blocks/Links/Links";
 import { PortableText } from "@portabletext/react";
-import { NavLink } from "../../../../shared/components/Navbar/Navbar";
+import { NavLink } from "../../../shared/components/Navbar/Navbar";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -54,6 +54,21 @@ const renderGiveWellAllGrantsFundContent = (configuration: ImpactItemConfigurati
   );
 };
 
+const ExpandableLabel: React.FC<{ text: string }> = ({ text }) => {
+  const trimmed = text.trim();
+  const lastSpace = trimmed.lastIndexOf(" ");
+  if (lastSpace === -1) {
+    return <span className={style.arrowAnchor}>{trimmed}</span>;
+  }
+
+  return (
+    <>
+      {trimmed.slice(0, lastSpace + 1)}
+      <span className={style.arrowAnchor}>{trimmed.slice(lastSpace + 1)}</span>
+    </>
+  );
+};
+
 export type PreComputedImpact = {
   output: number;
   shortDescription: string;
@@ -62,7 +77,7 @@ export type PreComputedImpact = {
   orgUrl: string;
 };
 
-export const DonationImpactGlobalHealthItem: React.FC<{
+export const DonationImpactItem: React.FC<{
   orgAbriv: string;
   orgName: string;
   sumToOrg: number;
@@ -83,6 +98,11 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   isOperations?: boolean;
   singleLineLabelOverride?: string;
   expandedContentOverride?: React.ReactNode;
+  /**
+   * Funds (All Grants Fund, Top Charities Fund) have no per-charity estimate.
+   * Their explanation is shown by default so donors see why the row is a single line.
+   */
+  isFund?: boolean;
 }> = ({
   orgAbriv,
   orgName,
@@ -97,9 +117,11 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   isOperations,
   singleLineLabelOverride,
   expandedContentOverride,
+  isFund,
 }) => {
+  const isFundItem = Boolean(isFund) || orgAbriv === "AGF" || orgAbriv === "GiveWell";
   const { data, error, isValidating } = useSWR<{ evaluations: ImpactEvaluation[] }>(
-    preComputedImpact || isOperations
+    preComputedImpact || isOperations || isFundItem
       ? null
       : `https://impact.gieffektivt.no/api/evaluations?charity_abbreviation=${orgAbriv}&currency=${
           configuration.currency
@@ -115,7 +137,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
       revalidateOnReconnect: false,
     },
   );
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(isFundItem);
   const [requiredPrecision, setRequiredPrecision] = useState(0);
 
   useEffect(() => {
@@ -124,7 +146,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
     }
   }, [precision, requiredPrecision]);
 
-  if (!preComputedImpact && !isOperations) {
+  if (!preComputedImpact && !isOperations && !isFundItem) {
     if (!data || isValidating) {
       return (
         <tr key={`loading`}>
@@ -156,7 +178,9 @@ export const DonationImpactGlobalHealthItem: React.FC<{
     longDescription: string;
     charityName: string;
     orgUrl: string;
-  } | null = preComputedImpact
+  } | null = isFundItem
+    ? null
+    : preComputedImpact
     ? preComputedImpact
     : relevantEvaluation
     ? {
@@ -217,7 +241,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
               ].join(" ")}
               onClick={hasExpandableContent ? () => setShowDetails(!showDetails) : undefined}
             >
-              {singleLineText}
+              {hasExpandableContent ? <ExpandableLabel text={singleLineText} /> : singleLineText}
             </span>
           </td>
         </tr>
@@ -271,9 +295,11 @@ export const DonationImpactGlobalHealthItem: React.FC<{
               )}
               onClick={() => setShowDetails(!showDetails)}
             >
-              {configuration.output_subheading_format_string
-                .replace("{{sum}}", thousandize(Math.round(sumToOrg)))
-                .replace("{{org}}", resolvedImpact.charityName)}
+              <ExpandableLabel
+                text={configuration.output_subheading_format_string
+                  .replace("{{sum}}", thousandize(Math.round(sumToOrg)))
+                  .replace("{{org}}", resolvedImpact.charityName)}
+              />
             </span>
           </div>
         </td>

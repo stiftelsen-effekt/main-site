@@ -32,6 +32,7 @@ import {
   AggregatedImpactTableConfiguration,
   DonationsAggregateImpactTable,
 } from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
+import { ImpactEstimateExplanation } from "../../components/profile/donations/DonationsAggregateImpactTable/ImpactEstimateExplanation";
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
 import { groq } from "next-sanity";
@@ -75,7 +76,7 @@ const buildTestDonation = (kid: string, id: number, sum: string): Donation => ({
 const TEST_DONATIONS: Donation[] = [
   // 1. Global health, single org WITH an impact estimate (two lines + arrow)
   buildTestDonation("9000001", 9000001, "2000"),
-  // 2. Global health fund WITHOUT an estimate: GiveWell All Grants Fund (single line + arrow)
+  // 2. Global health fund WITHOUT an estimate: GiveWell All Grants Fund (id 15)
   buildTestDonation("9000002", 9000002, "3000"),
   // 3. Global health WITH estimate + operations inline (single cause area)
   buildTestDonation("9000003", 9000003, "1500"),
@@ -110,7 +111,7 @@ const TEST_DISTRIBUTIONS: Distribution[] = [
         name: "Global helse",
         standardSplit: false,
         percentageShare: "100",
-        organizations: [{ id: 12, name: "GiveWell All Grants Fund", percentageShare: "100" }],
+        organizations: [{ id: 15, name: "GiveWell All Grants Fund", percentageShare: "100" }],
       },
     ],
   },
@@ -644,6 +645,9 @@ export const DonationsPage = withStaticProps(
           )}
           <DonationsTotals sum={sum} period={periodText} />
         </div>
+        <ImpactEstimateExplanation
+          explanations={page.donations_details_configuration?.cause_area_impact_estimates}
+        />
         {isTotal && isMobile ? (
           <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />
         ) : (

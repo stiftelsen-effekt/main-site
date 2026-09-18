@@ -1,0 +1,53 @@
+.wrapper {
+  max-width: 760px;
+  width: 100%;
+  margin-bottom: 80px;
+}
+
+@media only screen and (max-width: 1520px) and (min-width: 1181px) {
+  .wrapper {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .wrapper {
+    margin-bottom: 30px;
+  }
+}
+
+.caption {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8rem;
+  display: block;
+}
+
+.arrowAnchor {
+  white-space: nowrap;
+}
+
+.caption .arrowAnchor::after {
+  content: "\00a0↓";
+  display: inline-block;
+  transition: transform 200ms;
+  transform: rotate(0deg);
+}
+
+.captionopen .arrowAnchor::after {
+  transform: rotate(180deg);
+}
+
+.container {
+  display: flex;
+  padding-top: 1rem;
+  padding-bottom: 0;
+  padding-left: 2rem;
+  flex-direction: column;
+  border-left: 1px solid var(--primary);
+  margin-top: 1rem;
+}
+
+.container p {
+  margin: 0;
+}
