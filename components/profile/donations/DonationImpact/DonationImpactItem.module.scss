@@ -19,6 +19,10 @@
 }
 
 .overview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   td:first-child {
     text-align: right;
     border-left: 1px solid white;
@@ -48,15 +52,18 @@
       user-select: none;
       cursor: pointer;
 
-      &::after {
-        content: "↓";
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 10px;
-        transition: all 200ms;
+      .arrowAnchor {
+        white-space: nowrap;
+
+        &::after {
+          content: "\00a0↓";
+          display: inline-block;
+          vertical-align: middle;
+          transition: all 200ms;
+        }
       }
 
-      &.expanded::after {
+      &.expanded .arrowAnchor::after {
         transform: rotate(180deg);
       }
     }
@@ -82,18 +89,19 @@
       font-size: 0.9rem;
       line-height: 1.1rem;
 
-      &::after {
-        content: "↓";
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 10px;
-        transition: all 200ms;
+      .arrowAnchor {
+        white-space: nowrap;
+
+        &::after {
+          content: "\00a0↓";
+          display: inline-block;
+          vertical-align: middle;
+          transition: all 200ms;
+        }
       }
 
-      &.expanded {
-        &::after {
-          transform: rotate(180deg);
-        }
+      &.expanded .arrowAnchor::after {
+        transform: rotate(180deg);
       }
     }
   }
