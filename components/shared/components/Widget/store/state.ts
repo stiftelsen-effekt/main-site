@@ -74,6 +74,8 @@ export interface Donation extends DonationInput {
   };
   // Separate API error state
   apiError?: string | null;
+  /** Optional campaign/matching referral code, from the donor pane or ?referral= */
+  referralCode?: string;
 }
 
 export type DonationError = {
@@ -99,6 +101,7 @@ export interface RegisterDonationObject {
   recurring: RecurringDonation;
   amount: number;
   dueDay?: number;
+  referralCode?: string;
 }
 
 export interface DonorInput {

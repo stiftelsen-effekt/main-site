@@ -36,6 +36,8 @@ import {
   usePrefilledCauseAreaIds,
   useQueryParamsPrefill,
   useWidgetScaleEffect,
+  WIDGET_CONTENT_WIDTH,
+  WIDGET_FRAME_WIDTH,
 } from "./hooks";
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
@@ -257,11 +259,11 @@ export const Widget = withStaticProps(
       ref={widgetWrapperRef}
       style={{
         height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
-        width: scalingFactor * 576,
+        width: scalingFactor * (inline ? WIDGET_CONTENT_WIDTH : WIDGET_FRAME_WIDTH),
       }}
     >
       <div
-        className="widget"
+        className={`widget${inline ? " widget--inline" : ""}`}
         ref={widgetRef}
         style={{
           transform: `scale(${scalingFactor})`,
@@ -354,6 +356,8 @@ export const Widget = withStaticProps(
                 allow_anonymous_donations: widget.allow_anonymous_donations,
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
                 privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
+                show_referral_code_field: widget.show_referral_code_field,
+                referral_code_placeholder: widget.referral_code_placeholder,
               }}
               summaryText={{
                 single_donation_text: widget.single_donation_text,

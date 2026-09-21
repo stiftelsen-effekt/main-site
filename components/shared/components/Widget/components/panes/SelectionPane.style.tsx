@@ -16,6 +16,7 @@ export const CauseAreaButton = styled.button`
   border-radius: 10px;
   padding: 10px 20px;
   font-size: 20px;
+  text-align: left;
   cursor: pointer;
   display: flex;
   flex-direction: row;

@@ -1,9 +1,18 @@
+.wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
 .calculator {
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: max-content max-content max-content;
   column-gap: 1rem;
   row-gap: 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .calculator__input {
@@ -119,6 +128,9 @@
   grid-column: 2;
   position: relative;
   font-size: 0.8rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .calculator__impact {

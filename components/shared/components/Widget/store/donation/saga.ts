@@ -206,6 +206,7 @@ export function* registerDonation(
       recurring,
       donor,
       method,
+      referralCode,
       smartDistributionTotal,
       operationsPercentageModeByCauseArea = {},
       operationsPercentageByCauseArea = {},
@@ -327,6 +328,7 @@ export function* registerDonation(
       method: method || PaymentMethod.BANK,
       amount: breakdown.totalAmount,
       recurring: recurring,
+      ...(referralCode ? { referralCode } : {}),
     };
 
     // --- Make API call ---

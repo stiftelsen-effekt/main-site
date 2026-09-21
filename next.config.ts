@@ -206,6 +206,28 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/adf%C3%A6rd",
+        destination: "/adfaerd2026?referral=Adfærd",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/adfaerd",
+        destination: "/adfaerd2026?referral=Adfærd",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: false,
+      },
+      {
         source: "/anbefalinger",
         destination: "/global-sundhed-og-fattigdom",
         has: [
@@ -563,6 +585,17 @@ const nextConfig: NextConfig = {
       {
         source: "/vms25",
         destination: "/indsamling/vms25",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/giv-til-dyrene",
+        destination: "/dyrevelfaerd-og-fodevareomstilling",
         has: [
           {
             type: "host",

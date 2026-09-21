@@ -37,6 +37,7 @@ const CONTENT: Record<LocaleKey, Record<string, unknown>> = {
     "cause_area_display_config.multiple_cause_areas_button_text": "Velg flere formål",
     "smart_distribution_context.smart_distribution_title": "Smart fordeling",
     "smart_distribution_context.show_all_organizations_text": "Vis alle",
+    referral_code_placeholder: "Kampanjekode",
   },
   dk: {
     "ui_labels.total_label": "Sum",
@@ -53,6 +54,7 @@ const CONTENT: Record<LocaleKey, Record<string, unknown>> = {
     "smart_distribution_context.smart_distribution_title": "Smart fordeling",
     "smart_distribution_context.show_all_organizations_text": "Vis alle",
     tax_deduction_ssn_suspicious_message: "Kontroller venligst at det er korrekt.",
+    referral_code_placeholder: "Kampagnekode",
   },
   sv: {
     "ui_labels.total_label": "Summa",
@@ -65,6 +67,7 @@ const CONTENT: Record<LocaleKey, Record<string, unknown>> = {
     "cause_area_display_config.multiple_cause_areas_button_text": "Välj flera ändamål",
     "smart_distribution_context.smart_distribution_title": "Smart fördelning",
     "smart_distribution_context.show_all_organizations_text": "Visa alla",
+    referral_code_placeholder: "Kampanjkod",
     // Replaces the previous mix of English placeholders and typo'd Swedish.
     "cause_area_display_config.cause_area_contexts": [
       {

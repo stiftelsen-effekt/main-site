@@ -221,6 +221,8 @@ describe("Widget", () => {
     cy.pickSingleDonation();
     cy.get("[data-cy^=donation-sum-input]").type("100");
     cy.get("[data-cy=radio-custom-share]").first().click({ force: true });
+    // The smart-distribution overall sum is hidden once custom takes over.
+    cy.get("[data-cy^=donation-sum-input]").should("not.be.visible");
     cy.get("[data-cy=org-12]").clear();
     cy.get("[data-cy=org-12]").type(500);
     cy.get("[data-cy=org-12]").type("{moveToStart}");

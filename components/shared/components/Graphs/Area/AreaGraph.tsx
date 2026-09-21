@@ -169,11 +169,14 @@ export const AreaChart: React.FC<{
       }
 
       /**
-       * Get width from parent element
+       * Size the plot from the parent box. Floor and inset by 1px so a
+       * subpixel-rounded SVG cannot force the page wider — iOS Safari
+       * treats SVG overflow / intrinsic width as min-content, unlike Chrome.
        */
       outputRef.current.innerHTML = "";
-      const width = outputRef.current.parentElement.clientWidth;
-      const height = outputRef.current.parentElement.clientHeight - 1;
+      const parent = outputRef.current.parentElement;
+      const width = Math.max(0, Math.floor(parent.getBoundingClientRect().width) - 1);
+      const height = Math.max(0, Math.floor(parent.getBoundingClientRect().height) - 1);
 
       const size = {
         width: width,
@@ -193,6 +196,9 @@ export const AreaChart: React.FC<{
         size,
       );
 
+      chart.style.overflow = "hidden";
+      chart.style.maxWidth = "100%";
+      chart.style.width = "100%";
       outputRef.current.appendChild(chart);
     }
   }, [outputRef, lineInput, donationPercentage]);
@@ -207,18 +213,20 @@ export const AreaChart: React.FC<{
 
   useEffect(() => {
     if (outputRef.current && outputRef.current.parentElement) {
-      const observer = new ResizeObserver((entries) => {
+      const parent = outputRef.current.parentElement;
+      const observer = new ResizeObserver(() => {
         debouncedDrawGraph();
       });
 
-      observer.observe(outputRef.current.parentElement);
+      observer.observe(parent);
+      return () => observer.disconnect();
     }
   }, [outputRef, debouncedDrawGraph]);
 
   return (
     <>
       {label ? <span className={styles.label}>{label}</span> : null}
-      <div ref={outputRef}></div>
+      <div ref={outputRef} className={styles.chart}></div>
     </>
   );
 };

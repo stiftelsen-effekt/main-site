@@ -8,6 +8,7 @@ import {
   setCauseAreaSelection,
   setOrgAmount,
   setPrefilledShares,
+  setReferralCode,
 } from "../store/donation/actions";
 import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
@@ -21,6 +22,12 @@ import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../store/donation/types";
 import { setPaneNumber } from "../store/layout/actions";
 import { LayoutActionTypes } from "../store/layout/types";
+
+/** Designed pane content width, before the reserved scrollbar gutter. */
+export const WIDGET_CONTENT_WIDTH = 576;
+/** Must match `.widget::-webkit-scrollbar` so the gutter and thumb agree. */
+export const WIDGET_SCROLLBAR_WIDTH = 8;
+export const WIDGET_FRAME_WIDTH = WIDGET_CONTENT_WIDTH + WIDGET_SCROLLBAR_WIDTH;
 
 interface UsePrefilledDistributionProps {
   inline: boolean;
@@ -146,7 +153,7 @@ export const usePrefilledDistribution = ({
  */
 export const usePrefilledSum = ({ inline }: { inline: boolean }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const [widgetContext] = useContext(WidgetContext);
 
   useEffect(() => {
     if (!inline && widgetContext.prefilledSum !== null) {
@@ -181,7 +188,7 @@ export const useQueryParamsPrefill = ({
       return;
     }
 
-    const { distribution, recurring } = router.query;
+    const { distribution, recurring, referral, referralCode } = router.query;
 
     if (distribution && typeof distribution === "string") {
       const prefilledDistribution = parseDistributionQueryParam(distribution);
@@ -203,6 +210,19 @@ export const useQueryParamsPrefill = ({
           setRecurring(isTruthy ? RecurringDonation.RECURRING : RecurringDonation.NON_RECURRING),
         );
         setWidgetContext({ ...widgetContext, open: true });
+        hasAppliedQueryParams.current = true;
+      }
+    }
+
+    const referralValue = firstQueryValue(referral) ?? firstQueryValue(referralCode);
+    if (referralValue) {
+      dispatch(setReferralCode(referralValue));
+      storeReferralCode(referralValue);
+      hasAppliedQueryParams.current = true;
+    } else {
+      const storedReferralCode = getStoredReferralCode();
+      if (storedReferralCode) {
+        dispatch(setReferralCode(storedReferralCode));
         hasAppliedQueryParams.current = true;
       }
     }
@@ -254,6 +274,30 @@ const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
   causeArea.organizations.forEach((organization) => {
     dispatch(setOrgAmount(organization.id, 0));
   });
+};
+
+const firstQueryValue = (value: string | string[] | undefined): string | undefined => {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const trimmed = raw?.trim();
+  return trimmed || undefined;
+};
+
+const referralCodeStorageKey = "referral-code";
+
+const getStoredReferralCode = (): string | undefined => {
+  try {
+    return firstQueryValue(window.sessionStorage.getItem(referralCodeStorageKey) ?? undefined);
+  } catch {
+    return undefined;
+  }
+};
+
+const storeReferralCode = (referralCode: string) => {
+  try {
+    window.sessionStorage.setItem(referralCodeStorageKey, referralCode);
+  } catch {
+    return;
+  }
 };
 
 const parseDistributionQueryParam = (distribution: string): PrefilledDistribution => {
@@ -359,7 +403,7 @@ export const useWidgetScaleEffect = (
     if (!inline || window.innerWidth < 1180) {
       setScalingFactor(
         (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
-          576,
+          WIDGET_CONTENT_WIDTH,
       );
       setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
       if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {

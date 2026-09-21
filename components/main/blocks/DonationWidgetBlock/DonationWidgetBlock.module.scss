@@ -6,7 +6,8 @@
   width: 100%;
   justify-content: center;
 
-  .widget {
+  /* Border the inner 576px pane, not the wrapper that also holds the scrollbar. */
+  :global(.widget) {
     border: 1px solid var(--primary);
     border-radius: 1rem;
   }
@@ -19,6 +20,9 @@
 
     .widget {
       transform: translateX(-5vw);
+    }
+
+    :global(.widget) {
       border: none;
       border-top: 1px solid var(--primary);
       border-bottom: 1px solid var(--primary);
