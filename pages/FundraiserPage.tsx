@@ -224,6 +224,7 @@ export const FundraiserPage = withStaticProps(
             fundraiserId={page.fundraiser_database_id}
             widgetConfig={page.fundraiser_widget_configuration}
             suggestedAmounts={page.suggested_amounts || null}
+            monthlyDonations={page.monthly_donations || null}
             organizationInfo={{
               organization: page.fundraiser_organization,
               textTemplate: page.fundraiser_organization_text_template || "{org}",

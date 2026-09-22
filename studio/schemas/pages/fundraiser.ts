@@ -104,6 +104,43 @@ export default defineType({
         }),
     }),
     defineField({
+      name: "monthly_donations",
+      title: "Monthly donations",
+      type: "object",
+      fields: [
+        defineField({
+          name: "enabled",
+          title: "Enable monthly donations",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({
+          name: "single_donation_text",
+          title: "One-time donation label",
+          type: "string",
+          hidden: ({ parent }) => !parent?.enabled,
+          validation: (Rule) =>
+            Rule.custom((value, context) =>
+              (context.parent as { enabled?: boolean })?.enabled && !value
+                ? "One-time donation label is required when monthly donations are enabled"
+                : true,
+            ),
+        }),
+        defineField({
+          name: "monthly_donation_text",
+          title: "Monthly donation label",
+          type: "string",
+          hidden: ({ parent }) => !parent?.enabled,
+          validation: (Rule) =>
+            Rule.custom((value, context) =>
+              (context.parent as { enabled?: boolean })?.enabled && !value
+                ? "Monthly donation label is required when monthly donations are enabled"
+                : true,
+            ),
+        }),
+      ],
+    }),
+    defineField({
       name: "gift_activity_config",
       title: "Gift activity",
       type: "object",

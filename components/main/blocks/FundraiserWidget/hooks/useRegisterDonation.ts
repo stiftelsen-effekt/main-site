@@ -3,8 +3,11 @@ import { PaymentMethod } from "../../../../shared/components/Widget/types/Enums"
 import { API_URL } from "../../../../shared/components/Widget/config/api";
 import { ANONYMOUS_DONOR } from "../../../../shared/components/Widget/config/anonymous-donor";
 import { FormData } from "./useFundraiserForm";
-import { FetchFundraiserResult } from "../../../../../studio/sanity.types";
 import { paymentMethodMap } from "../../../../shared/components/Widget/components/panes/DonorPane/DonorPane";
+import {
+  getReferralCodeFromLocation,
+  getStoredReferralCode,
+} from "../../../../../util/referralCode";
 
 interface UseRegisterDonationProps {
   fundraiserId: string;
@@ -44,6 +47,7 @@ export function useRegisterDonation({
 
     // Map the payment method ID to PaymentMethod enum using paymentMethodMap
     const method = paymentMethodMap[paymentMethodId] || PaymentMethod.BANK;
+    const referralCode = getReferralCodeFromLocation() ?? getStoredReferralCode();
 
     fetch(`${API_URL}/donations/register`, {
       headers: {
@@ -83,7 +87,8 @@ export function useRegisterDonation({
         },
         method: method,
         amount: formData.amount,
-        recurring: 0,
+        recurring: formData.recurring,
+        ...(referralCode ? { referralCode } : {}),
       }),
       method: "POST",
     })

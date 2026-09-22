@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ReactAnimateHeight from "react-animate-height";
 import styles from "./FundraiserWidget.module.scss";
 import { SanityImageObject } from "@sanity/image-url/lib/types/types";
@@ -13,6 +13,8 @@ import { DonationDetailsPane } from "./panes/DonationDetailsPane";
 import { PaymentMethodPane } from "./panes/PaymentMethodPane";
 import { BankTransferPane } from "./panes/BankTransferPane";
 import { FormattingLocale } from "../../../../util/formatting";
+import { supportsDonationFrequency } from "./paymentMethodAvailability";
+import { RecurringDonation } from "../../../shared/components/Widget/types/Enums";
 
 type WidgetConfig = NonNullable<
   NonNullable<FetchFundraiserResult["page"]>["fundraiser_widget_configuration"]
@@ -21,6 +23,11 @@ type WidgetConfig = NonNullable<
 interface DonationWidgetProps {
   widgetConfig: WidgetConfig | null;
   suggestedAmounts?: number[] | null;
+  monthlyDonations?: {
+    enabled?: boolean;
+    single_donation_text?: string;
+    monthly_donation_text?: string;
+  } | null;
   fundraiserId: string;
   organizationInfo: {
     organizationPageSlug: string;
@@ -38,6 +45,7 @@ interface DonationWidgetProps {
 export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   widgetConfig,
   suggestedAmounts,
+  monthlyDonations,
   fundraiserId,
   organizationInfo,
   locale,
@@ -63,6 +71,22 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
     onSuccess: () => goToNextStep(),
   });
   const [privacyPolicyError, setPrivacyPolicyError] = useState(false);
+  const availablePaymentMethods = useMemo(
+    () =>
+      widgetConfig?.payment_methods?.filter((method) =>
+        supportsDonationFrequency(method._type, formData.recurring),
+      ) || [],
+    [formData.recurring, widgetConfig?.payment_methods],
+  );
+
+  useEffect(() => {
+    if (
+      availablePaymentMethods.length > 0 &&
+      !availablePaymentMethods.some((method) => method._type === formData.paymentMethod)
+    ) {
+      updateField("paymentMethod", availablePaymentMethods[0]._type);
+    }
+  }, [availablePaymentMethods, formData.paymentMethod, updateField]);
 
   const validation = validateWidgetConfig(widgetConfig, organizationInfo.organization);
   if (!validation.valid) {
@@ -70,6 +94,30 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   }
 
   const config = validation.config;
+  const hasMonthlyPaymentMethod = config.payment_methods!.some((method) =>
+    supportsDonationFrequency(method._type, RecurringDonation.RECURRING),
+  );
+  const monthlyDonationConfig = monthlyDonations?.enabled
+    ? {
+        single_donation_text: monthlyDonations.single_donation_text,
+        monthly_donation_text: monthlyDonations.monthly_donation_text,
+      }
+    : undefined;
+
+  if (monthlyDonationConfig && !hasMonthlyPaymentMethod) {
+    return "No configured payment method supports monthly donations in the fundraiser widget";
+  }
+
+  if (
+    monthlyDonationConfig &&
+    (!monthlyDonationConfig.single_donation_text || !monthlyDonationConfig.monthly_donation_text)
+  ) {
+    return "Missing monthly donation labels for fundraiser widget";
+  }
+
+  if (availablePaymentMethods.length === 0) {
+    return "No payment method supports the selected donation frequency";
+  }
 
   const normalizedSuggestedAmounts = Array.isArray(suggestedAmounts)
     ? suggestedAmounts.filter((amount) => typeof amount === "number" && amount > 0)
@@ -134,6 +182,9 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
               message_label: config.message_label!,
               show_name_label: config.show_name_label!,
               next_button_text: config.next_button_text!,
+              monthly_donations: monthlyDonationConfig as
+                | { single_donation_text: string; monthly_donation_text: string }
+                | undefined,
             }}
             locale={locale}
           />
@@ -170,7 +221,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
                 required_error_text: config.privacy_policy!.required_error_text,
                 privacy_policy_url: config.privacy_policy!.privacy_policy_url as NavLink,
               },
-              payment_methods: config.payment_methods!,
+              payment_methods: availablePaymentMethods,
               allow_anonymous_donations: config.allow_anonymous_donations!,
             }}
             privacyPolicyError={privacyPolicyError}
@@ -182,7 +233,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
             className={getPaneClassName(3)}
             visible={isPaneVisible(3)}
             kid={kid}
-            showBankInfo={formData.paymentMethod === "bank"}
+            showBankInfo={formData.paymentMethod === "bank" || formData.paymentMethod === "dkbank"}
             bankDetails={
               config.bank_account_details
                 ? {
