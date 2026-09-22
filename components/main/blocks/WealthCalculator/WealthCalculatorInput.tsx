@@ -62,8 +62,8 @@ export const WealthCalculatorInput: React.FC<{
     }
   }, [calculateButtonRef]);
 
-  // const placeholderIncome = config.income_input_configuration.placeholder || "Income before tax (adult {{count}})";
-  const placeholderIncome = "Årsindkomst før skat (voksen {{count}})";
+  const placeholderIncome =
+    config.income_input_configuration.placeholder || "Income before tax (adult {{count}})";
 
   return (
     <div className={styles.calculator__input}>
