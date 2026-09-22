@@ -207,7 +207,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/adf%C3%A6rd",
-        destination: "/adfaerd2026?referral=Adfærd",
+        destination: "https://giveffektivt.dk/indsamling/adfaerd2026",
         has: [
           {
             type: "host",
@@ -218,7 +218,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/adfaerd",
-        destination: "/adfaerd2026?referral=Adfærd",
+        destination: "https://giveffektivt.dk/indsamling/adfaerd2026",
         has: [
           {
             type: "host",
