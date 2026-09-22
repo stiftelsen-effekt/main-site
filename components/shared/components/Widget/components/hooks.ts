@@ -22,6 +22,11 @@ import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../store/donation/types";
 import { setPaneNumber } from "../store/layout/actions";
 import { LayoutActionTypes } from "../store/layout/types";
+import {
+  getReferralCodeFromQuery,
+  getStoredReferralCode,
+  storeReferralCode,
+} from "../../../../../util/referralCode";
 
 /** Designed pane content width, before the reserved scrollbar gutter. */
 export const WIDGET_CONTENT_WIDTH = 576;
@@ -214,7 +219,7 @@ export const useQueryParamsPrefill = ({
       }
     }
 
-    const referralValue = firstQueryValue(referral) ?? firstQueryValue(referralCode);
+    const referralValue = getReferralCodeFromQuery({ referral, referralCode });
     if (referralValue) {
       dispatch(setReferralCode(referralValue));
       storeReferralCode(referralValue);
@@ -274,30 +279,6 @@ const resetCauseArea = (dispatch: any, causeArea: CauseArea) => {
   causeArea.organizations.forEach((organization) => {
     dispatch(setOrgAmount(organization.id, 0));
   });
-};
-
-const firstQueryValue = (value: string | string[] | undefined): string | undefined => {
-  const raw = Array.isArray(value) ? value[0] : value;
-  const trimmed = raw?.trim();
-  return trimmed || undefined;
-};
-
-const referralCodeStorageKey = "referral-code";
-
-const getStoredReferralCode = (): string | undefined => {
-  try {
-    return firstQueryValue(window.sessionStorage.getItem(referralCodeStorageKey) ?? undefined);
-  } catch {
-    return undefined;
-  }
-};
-
-const storeReferralCode = (referralCode: string) => {
-  try {
-    window.sessionStorage.setItem(referralCodeStorageKey, referralCode);
-  } catch {
-    return;
-  }
 };
 
 const parseDistributionQueryParam = (distribution: string): PrefilledDistribution => {

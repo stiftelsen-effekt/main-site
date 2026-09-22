@@ -16,7 +16,13 @@ import { FormattingLocale } from "../../../../../util/formatting";
 interface PaymentMethodPaneProps {
   formData: Pick<
     FormData,
-    "taxDeduction" | "newsletter" | "email" | "ssn" | "paymentMethod" | "privacyPolicyAccepted"
+    | "taxDeduction"
+    | "newsletter"
+    | "email"
+    | "ssn"
+    | "paymentMethod"
+    | "privacyPolicyAccepted"
+    | "recurring"
   >;
   onChange: (field: keyof FormData, value: any) => void;
   onSubmit: () => void;
@@ -164,17 +170,15 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
       setSsnError(isValid ? null : config.tax_deduction?.ssn_invalid_error_text || null);
     };
     const getButtonText = () => {
-      return formData.paymentMethod === "bank"
-        ? "Gi med bank"
-        : formData.paymentMethod === "vipps"
-        ? "Gi med Vipps"
-        : formData.paymentMethod === "quickpay_card"
-        ? "Giv med kort"
-        : formData.paymentMethod === "quickpay_mobilepay"
-        ? "Giv med MobilePay"
-        : formData.paymentMethod === "dkbank"
-        ? "Giv med bank"
-        : "Gi";
+      const method = config.payment_methods.find(
+        (paymentMethod) => paymentMethod._type === formData.paymentMethod,
+      );
+      const configuredText = formData.recurring
+        ? method?.recurring_button_text
+        : method?.single_button_text || method?.button_text;
+
+      if (configuredText) return configuredText;
+      return method?.selector_text || formData.paymentMethod;
     };
 
     const emailInput = (
