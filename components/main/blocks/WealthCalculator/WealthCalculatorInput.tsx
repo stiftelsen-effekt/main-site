@@ -81,6 +81,9 @@ export const WealthCalculatorInput: React.FC<{
                   value={adultIncome || ""}
                   className={styles.calculator__input__group__input__text}
                   thousandSeparator={config.income_input_configuration.thousand_separator}
+                  decimalSeparator={
+                    config.income_input_configuration.thousand_separator === "." ? "," : "."
+                  }
                   onValueChange={(values) => {
                     const nextIncomes = adultIncomes.map((income, incomeIndex) =>
                       incomeIndex === index ? values.floatValue || 0 : income,
