@@ -12,17 +12,12 @@ import Organisationsnummer from "organisationsnummer";
 import Personnummer from "personnummer";
 import { validateTin, formatTinInput } from "../../../../../util/tin-validation";
 import { FormattingLocale } from "../../../../../util/formatting";
+import { fundraiserSubmitButtonText } from "../fundraiserSubmitButtonText";
 
 interface PaymentMethodPaneProps {
   formData: Pick<
     FormData,
-    | "taxDeduction"
-    | "newsletter"
-    | "email"
-    | "ssn"
-    | "paymentMethod"
-    | "privacyPolicyAccepted"
-    | "recurring"
+    "taxDeduction" | "newsletter" | "email" | "ssn" | "paymentMethod" | "privacyPolicyAccepted"
   >;
   onChange: (field: keyof FormData, value: any) => void;
   onSubmit: () => void;
@@ -169,18 +164,6 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
 
       setSsnError(isValid ? null : config.tax_deduction?.ssn_invalid_error_text || null);
     };
-    const getButtonText = () => {
-      const method = config.payment_methods.find(
-        (paymentMethod) => paymentMethod._type === formData.paymentMethod,
-      );
-      const configuredText = formData.recurring
-        ? method?.recurring_button_text
-        : method?.single_button_text || method?.button_text;
-
-      if (configuredText) return configuredText;
-      return method?.selector_text || formData.paymentMethod;
-    };
-
     const emailInput = (
       <div className={styles["donation-widget__input-group"]}>
         <input
@@ -366,7 +349,11 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             className={styles["donation-widget__button"]}
             data-cy="fundraiser-submit-button"
           >
-            {loading ? <Spinner className={styles["donation-widget__spinner"]} /> : getButtonText()}
+            {loading ? (
+              <Spinner className={styles["donation-widget__spinner"]} />
+            ) : (
+              fundraiserSubmitButtonText(formData.paymentMethod)
+            )}
           </button>
         </form>
       </div>

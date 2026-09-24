@@ -138,7 +138,9 @@ describe("Fundraiser widget - default configuration", () => {
     cy.get("body").find("[data-cy='fundraiser-email-input']").should("not.exist");
 
     cy.get("[data-cy='fundraiser-method-bank']").click({ force: true });
+    cy.get("[data-cy='fundraiser-submit-button']").should("have.text", "Gi med bank");
     cy.get("[data-cy='fundraiser-method-vipps']").click({ force: true });
+    cy.get("[data-cy='fundraiser-submit-button']").should("have.text", "Gi med Vipps");
   });
 
   it("completes a bank donation flow and reveals transfer details", () => {
