@@ -192,6 +192,9 @@
     font-size: 80px;
     line-height: 110%;
     max-width: 700px;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-wrap: balance;
   }
 
   .pageheader h1 {
