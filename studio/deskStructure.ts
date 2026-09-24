@@ -15,6 +15,7 @@ import {
   Settings,
   Tool,
   User,
+  CornerUpRight,
 } from "react-feather";
 
 export const deskStructure = (S) =>
@@ -203,6 +204,14 @@ export const deskStructure = (S) =>
         .schemaType("citation")
         .icon(Bookmark)
         .child(S.documentTypeList("citation").title("Entries")),
+      S.listItem()
+        .title("Redirects")
+        .icon(CornerUpRight)
+        .child(
+          S.documentTypeList("redirect")
+            .title("Redirects")
+            .defaultOrdering([{ field: "source", direction: "asc" }]),
+        ),
       S.listItem()
         .title("Site settings")
         .icon(Settings)
