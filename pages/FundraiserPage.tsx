@@ -1,4 +1,6 @@
 import { groq } from "next-sanity";
+import { useEffect } from "react";
+import { storeFundraiserId } from "../util/fundraiserAttribution";
 import { pageBannersContentQuery, pageContentQuery } from "../_queries";
 import {
   BlockContentRenderer,
@@ -119,6 +121,11 @@ export const FundraiserPage = withStaticProps(
 )(({ data, fundraiserData, navbar, draftMode }) => {
   const { fundraisersPath } = useRouterContext();
   const page = data.result.page;
+  const fundraiserId = page?.fundraiser_database_id;
+
+  useEffect(() => {
+    if (fundraiserId) storeFundraiserId(fundraiserId);
+  }, [fundraiserId]);
 
   if (!page) {
     return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
