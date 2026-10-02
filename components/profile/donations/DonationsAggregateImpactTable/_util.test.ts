@@ -6,6 +6,7 @@ import {
   ImpactEvaluation,
   META_OWNER,
 } from "../../../../models";
+import { GIVEWELL_TOP_CHARITIES_FUND_ID } from "../../../../util/mappings";
 import { aggregateImpact, aggregateOrgSumByYearAndMonth } from "./_util";
 
 /**
@@ -14,8 +15,6 @@ import { aggregateImpact, aggregateOrgSumByYearAndMonth } from "./_util";
  * from the grant's own cost-per-output, while direct/custom donations continue
  * to use the generic evaluation estimate.
  */
-
-const GIVEWELL_TOP_CHARITIES_FUND_ID = 12;
 
 const AMF: ImpactCharity = {
   id: 1,

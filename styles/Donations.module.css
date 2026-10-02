@@ -7,7 +7,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-top: 30px;
-  margin-bottom: 80px;
+  margin-bottom: 24px;
 }
 
 .empty {
@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 70px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   /* Re-arrange divs */

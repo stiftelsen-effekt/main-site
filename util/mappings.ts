@@ -1,3 +1,16 @@
+/** GiveWell Top Charities Fund */
+export const GIVEWELL_TOP_CHARITIES_FUND_ID = 12;
+/** GiveWell All Grants Fund */
+export const GIVEWELL_ALL_GRANTS_FUND_ID = 15;
+
+export const FUND_ORGANIZATION_IDS = new Set([
+  GIVEWELL_TOP_CHARITIES_FUND_ID,
+  GIVEWELL_ALL_GRANTS_FUND_ID,
+]);
+
+export const isFundOrganizationId = (id?: number | null): boolean =>
+  typeof id === "number" && FUND_ORGANIZATION_IDS.has(id);
+
 export const mapNameToOrgAbbriv = (name: string): string => {
   const map = {
     "Against Malaria Foundation": "AMF",
