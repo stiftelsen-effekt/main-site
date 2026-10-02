@@ -6,10 +6,6 @@ interface CustomLinkProps extends React.ComponentProps<typeof Link> {
 }
 
 export const CustomLink = ({ href, ...props }: CustomLinkProps) => {
-  if (href === "/") {
-    return <a href="/" {...props} />;
-  }
-
   let cleanHref;
   // Remove any leading slash for consistency
   if (typeof href === "object" && href.pathname) {
