@@ -49,6 +49,9 @@
   width: calc(((100vw - 100%) / 2) - 3rem - 5vw);
   outline-offset: 0.5rem;
   max-width: 16rem;
+  // Default offset, applied in CSS so it is present on first paint.
+  // reflowCitations only overrides it when citations would overlap.
+  transform: translateY(-1.5rem);
 }
 
 .paragraphwrapper cite > span:focus-within {
