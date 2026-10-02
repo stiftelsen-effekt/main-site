@@ -16,11 +16,7 @@ export interface FormData {
 }
 
 export type PaymentMethodString =
-  | "bank"
-  | "vipps"
-  | "quickpay_card"
-  | "quickpay_mobilepay"
-  | "dkbank";
+  "bank" | "vipps" | "quickpay_card" | "quickpay_mobilepay" | "dkbank";
 
 export function useFundraiserForm(
   paymentMethods: PaymentMethodString[],

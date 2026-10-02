@@ -417,8 +417,8 @@ export function* registerDonation(
     const errorMessage = isTimeout
       ? null
       : ex instanceof Error
-      ? ex.message
-      : "Something went wrong";
+        ? ex.message
+        : "Something went wrong";
     yield put(setApiError(errorMessage));
     yield put(setLoading(false));
     yield put(registerDonationAction.failed({ params: action.payload, error: ex as Error }));

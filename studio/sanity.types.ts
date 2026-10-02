@@ -14195,14 +14195,7 @@ export type FetchArticleResult = {
                               _key: string;
                             }>;
                             style?:
-                              | "blockquote"
-                              | "h1"
-                              | "h2"
-                              | "h3"
-                              | "h4"
-                              | "h5"
-                              | "h6"
-                              | "normal";
+                              "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
                             listItem?: "bullet" | "number";
                             markDefs?: Array<{
                               href?: string;
@@ -15740,14 +15733,7 @@ export type FetchArticleResult = {
                               _key: string;
                             }>;
                             style?:
-                              | "blockquote"
-                              | "h1"
-                              | "h2"
-                              | "h3"
-                              | "h4"
-                              | "h5"
-                              | "h6"
-                              | "normal";
+                              "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
                             listItem?: "bullet" | "number";
                             markDefs: Array<
                               | {
@@ -19393,14 +19379,7 @@ export type FetchFundraiserResult = {
                               _key: string;
                             }>;
                             style?:
-                              | "blockquote"
-                              | "h1"
-                              | "h2"
-                              | "h3"
-                              | "h4"
-                              | "h5"
-                              | "h6"
-                              | "normal";
+                              "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
                             listItem?: "bullet" | "number";
                             markDefs?: Array<{
                               href?: string;
@@ -20938,14 +20917,7 @@ export type FetchFundraiserResult = {
                               _key: string;
                             }>;
                             style?:
-                              | "blockquote"
-                              | "h1"
-                              | "h2"
-                              | "h3"
-                              | "h4"
-                              | "h5"
-                              | "h6"
-                              | "normal";
+                              "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
                             listItem?: "bullet" | "number";
                             markDefs: Array<
                               | {
@@ -24367,14 +24339,7 @@ export type FetchGenericPageResult = {
                               _key: string;
                             }>;
                             style?:
-                              | "blockquote"
-                              | "h1"
-                              | "h2"
-                              | "h3"
-                              | "h4"
-                              | "h5"
-                              | "h6"
-                              | "normal";
+                              "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
                             listItem?: "bullet" | "number";
                             markDefs?: Array<{
                               href?: string;
@@ -25912,14 +25877,7 @@ export type FetchGenericPageResult = {
                               _key: string;
                             }>;
                             style?:
-                              | "blockquote"
-                              | "h1"
-                              | "h2"
-                              | "h3"
-                              | "h4"
-                              | "h5"
-                              | "h6"
-                              | "normal";
+                              "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
                             listItem?: "bullet" | "number";
                             markDefs: Array<
                               | {
@@ -29548,14 +29506,7 @@ export type FetchAgreementsPageResult = {
         _updatedAt: string;
         _rev: string;
         type?:
-          | "article"
-          | "book"
-          | "misc"
-          | "note"
-          | "podcast"
-          | "video"
-          | "website"
-          | "workingpaper";
+          "article" | "book" | "misc" | "note" | "podcast" | "video" | "website" | "workingpaper";
         author?: string;
         title?: string;
         journal?: string;
@@ -38128,14 +38079,7 @@ export type FetchDonationsPageResult = {
         _updatedAt: string;
         _rev: string;
         type?:
-          | "article"
-          | "book"
-          | "misc"
-          | "note"
-          | "podcast"
-          | "video"
-          | "website"
-          | "workingpaper";
+          "article" | "book" | "misc" | "note" | "podcast" | "video" | "website" | "workingpaper";
         author?: string;
         title?: string;
         journal?: string;
@@ -47072,14 +47016,7 @@ export type FetchProfilePageResult = {
         _updatedAt: string;
         _rev: string;
         type?:
-          | "article"
-          | "book"
-          | "misc"
-          | "note"
-          | "podcast"
-          | "video"
-          | "website"
-          | "workingpaper";
+          "article" | "book" | "misc" | "note" | "podcast" | "video" | "website" | "workingpaper";
         author?: string;
         title?: string;
         journal?: string;

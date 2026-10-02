@@ -111,10 +111,10 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     locale === "no"
       ? TaxJurisdiction.NO
       : locale === "sv"
-      ? TaxJurisdiction.SV
-      : locale === "dk"
-      ? TaxJurisdiction.DK
-      : undefined;
+        ? TaxJurisdiction.SV
+        : locale === "dk"
+          ? TaxJurisdiction.DK
+          : undefined;
 
   const sumIncomes = (values: number[]) => values.reduce((total, value) => total + value, 0);
 

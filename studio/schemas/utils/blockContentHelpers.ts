@@ -1,7 +1,7 @@
 import { blocktype } from "../types/blockcontent";
 
 type BlockType = typeof blocktype;
-type AnnotationType = typeof blocktype.marks.annotations[number];
+type AnnotationType = (typeof blocktype.marks.annotations)[number];
 
 /**
  * Creates a filtered version of the blocktype with specified annotations removed

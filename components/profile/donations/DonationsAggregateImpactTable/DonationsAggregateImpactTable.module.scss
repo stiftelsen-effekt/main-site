@@ -57,7 +57,9 @@
 .distribution table.maintable > tbody > tr:nth-child(2n + 1) td {
   transform: translateY(-0.5rem);
   opacity: 0;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
   height: 2rem;
 }
 

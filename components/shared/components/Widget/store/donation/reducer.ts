@@ -75,29 +75,38 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       selectionType: state.selectionType ?? (areas.length > 0 ? "single" : undefined),
       selectedCauseAreaId:
         state.selectedCauseAreaId ?? (areas.length > 0 ? areas[0].id : undefined),
-      causeAreaDistributionType: areas.reduce((acc, area) => {
-        acc[area.id] = ShareType.STANDARD;
-        return acc;
-      }, {} as Record<number, ShareType>),
+      causeAreaDistributionType: areas.reduce(
+        (acc, area) => {
+          acc[area.id] = ShareType.STANDARD;
+          return acc;
+        },
+        {} as Record<number, ShareType>,
+      ),
       // Initialize operations config if available
       operationsPercentageModeByCauseArea: config
-        ? areas.reduce((acc, area) => {
-            // The operations cause area itself never gets a tip added on top
-            // of itself — tipping operations out of a donation that's
-            // already going to operations doesn't make sense — regardless
-            // of what's configured in excludedCauseAreaIds.
-            const isExcluded =
-              area.id === config.operationsCauseAreaId ||
-              config.excludedCauseAreaIds.includes(area.id);
-            acc[area.id] = !isExcluded && config.enabledByDefaultSingle;
-            return acc;
-          }, {} as Record<number, boolean>)
+        ? areas.reduce(
+            (acc, area) => {
+              // The operations cause area itself never gets a tip added on top
+              // of itself — tipping operations out of a donation that's
+              // already going to operations doesn't make sense — regardless
+              // of what's configured in excludedCauseAreaIds.
+              const isExcluded =
+                area.id === config.operationsCauseAreaId ||
+                config.excludedCauseAreaIds.includes(area.id);
+              acc[area.id] = !isExcluded && config.enabledByDefaultSingle;
+              return acc;
+            },
+            {} as Record<number, boolean>,
+          )
         : {},
       operationsPercentageByCauseArea: config
-        ? areas.reduce((acc, area) => {
-            acc[area.id] = config.defaultPercentage;
-            return acc;
-          }, {} as Record<number, number>)
+        ? areas.reduce(
+            (acc, area) => {
+              acc[area.id] = config.defaultPercentage;
+              return acc;
+            },
+            {} as Record<number, number>,
+          )
         : {},
       globalOperationsEnabled: config?.enabledByDefaultGlobal ?? false,
       globalOperationsPercentage: config?.defaultPercentage,

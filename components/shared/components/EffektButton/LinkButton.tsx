@@ -21,10 +21,10 @@ const LinkButton: React.FC<{
         type == "primary"
           ? styles.buttonprimary
           : type == "secondary"
-          ? styles.buttonsecondary
-          : type == "tertiary"
-          ? styles.buttontertiary
-          : styles.buttonprimary
+            ? styles.buttonsecondary
+            : type == "tertiary"
+              ? styles.buttontertiary
+              : styles.buttonprimary
       } ${squared ? styles.button__squared : null}`}
     >
       {`${title}`}

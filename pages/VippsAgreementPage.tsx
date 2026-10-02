@@ -38,7 +38,7 @@ export const VippsAgreementPage = withStaticProps(
       appStaticProps,
       draftMode: draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,

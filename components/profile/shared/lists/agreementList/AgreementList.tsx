@@ -68,41 +68,35 @@ export const AgreementList: React.FC<{
     width: column.width,
   }));
 
-  let vippsType = vipps.map(
-    (entry): AgreementRow => ({
-      ID: entry.ID,
-      status: entry.status,
-      KID: entry.KID,
-      date: entry.monthly_charge_day,
-      amount: entry.amount,
-      type: "Vipps",
-      endpoint: entry.agreement_url_code,
-    }),
-  );
+  let vippsType = vipps.map((entry): AgreementRow => ({
+    ID: entry.ID,
+    status: entry.status,
+    KID: entry.KID,
+    date: entry.monthly_charge_day,
+    amount: entry.amount,
+    type: "Vipps",
+    endpoint: entry.agreement_url_code,
+  }));
 
-  let giroType = avtalegiro.map(
-    (entry: AvtaleGiroAgreement): AgreementRow => ({
-      ID: entry.ID,
-      status: entry.active == 1,
-      KID: entry.KID,
-      date: entry.payment_date,
-      amount: parseFloat(entry.amount),
-      type: "AvtaleGiro",
-      endpoint: entry.KID,
-    }),
-  );
+  let giroType = avtalegiro.map((entry: AvtaleGiroAgreement): AgreementRow => ({
+    ID: entry.ID,
+    status: entry.active == 1,
+    KID: entry.KID,
+    date: entry.payment_date,
+    amount: parseFloat(entry.amount),
+    type: "AvtaleGiro",
+    endpoint: entry.KID,
+  }));
 
-  let autoGiroType = autogiro.map(
-    (entry: AutoGiroAgreement): AgreementRow => ({
-      ID: entry.ID,
-      status: entry.active,
-      KID: entry.KID,
-      date: entry.payment_date,
-      amount: parseFloat(entry.amount),
-      type: "AutoGiro",
-      endpoint: entry.KID,
-    }),
-  );
+  let autoGiroType = autogiro.map((entry: AutoGiroAgreement): AgreementRow => ({
+    ID: entry.ID,
+    status: entry.active,
+    KID: entry.KID,
+    date: entry.payment_date,
+    amount: parseFloat(entry.amount),
+    type: "AutoGiro",
+    endpoint: entry.KID,
+  }));
 
   let rowData: AgreementRow[] = [...vippsType, ...giroType, ...autoGiroType];
 

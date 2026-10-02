@@ -48,7 +48,7 @@ export const VippsAnonymousPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
         result: result,

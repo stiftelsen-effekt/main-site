@@ -74,7 +74,7 @@ export const AgreementsPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {
         result: result,
@@ -154,7 +154,7 @@ const DKAgreementsPageContent: React.FC<{
     error: taxUnitsError,
   } = useTaxUnits(user, getAccessTokenSilently);
   const taxUnitsLoaded = Array.isArray(taxUnits);
-  const resolvedDistributions = shouldFetchDistributions ? distributions ?? [] : [];
+  const resolvedDistributions = shouldFetchDistributions ? (distributions ?? []) : [];
 
   if (!cookieBannerConfig) return null;
 

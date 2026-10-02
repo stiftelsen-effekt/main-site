@@ -158,11 +158,11 @@ export default defineType({
           type != "note"
             ? title
             : noteBlocks
-            ? noteBlocks.children
-                .filter((child: any) => child._type === "span")
-                .map((span: any) => span.text)
-                .join("")
-            : "No content",
+              ? noteBlocks.children
+                  .filter((child: any) => child._type === "span")
+                  .map((span: any) => span.text)
+                  .join("")
+              : "No content",
       };
     },
   },

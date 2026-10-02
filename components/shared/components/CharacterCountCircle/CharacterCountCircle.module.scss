@@ -10,7 +10,9 @@
   position: relative;
   width: 1rem;
   height: 1rem;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,7 +26,9 @@
   stroke: var(--primary);
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
-  transition: stroke-dashoffset 0.3s ease-out, stroke 0.3s ease;
+  transition:
+    stroke-dashoffset 0.3s ease-out,
+    stroke 0.3s ease;
 }
 
 .warning {
