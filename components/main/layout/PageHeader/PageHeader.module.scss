@@ -44,6 +44,9 @@
   max-width: 100%;
   line-height: 110%;
   font-weight: 400;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-wrap: balance;
 }
 
 .pageheader.pageheadermeta.hero div:last-child {
