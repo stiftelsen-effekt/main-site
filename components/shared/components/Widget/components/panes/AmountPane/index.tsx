@@ -33,6 +33,7 @@ import { useAmountCalculation } from "./useAmountCalculation";
 import { thousandize } from "../../../../../../../util/formatting";
 import { RadioButtonGroup } from "../../../../RadioButton/RadioButtonGroup";
 import { LinkType } from "../../../../../../main/blocks/Links/Links";
+import { usePrefilledCauseAreaIds } from "../../hooks";
 
 interface AmountPaneProps {
   nextButtonText: string;
@@ -67,6 +68,7 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
     causeAreaAmounts: storedCauseAreaAmounts = {},
   } = useSelector((state: State) => state.donation);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
+  const prefilledCauseAreaIds = usePrefilledCauseAreaIds();
 
   const {
     sumOfOtherCauseAreas,
@@ -123,8 +125,17 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             {/* For multiple cause areas */}
             {selectionType === "multiple" && selectedCauseAreaId !== -1 && (
               <>
+                <SmartDistributionForm
+                  suggestedSums={suggestedSums}
+                  totalAmount={totalAmount}
+                  causeAreas={causeAreas}
+                  causeAreaAmounts={causeAreaAmounts}
+                  causeAreaDistributionType={causeAreaDistributionType}
+                  smartDistributionContext={smartDistContext}
+                  causeAreaDisplayConfig={causeAreaDisplayConfig}
+                />
                 {causeAreas
-                  .filter((ca) => ca.isActive)
+                  .filter((ca) => ca.isActive || prefilledCauseAreaIds.has(ca.id))
                   .filter(
                     (ca) => !causeAreaDisplayConfig?.below_line_cause_area_ids?.includes(ca.id),
                   )
@@ -160,7 +171,6 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
                     suggestedSums={suggestedSums}
                     causeAreaAmounts={causeAreaAmounts}
                     causeAreaDisplayConfig={causeAreaDisplayConfig}
-                    operationsConfig={operationsConfig}
                   />
                 ) : (
                   <>
@@ -184,15 +194,18 @@ export const AmountPane: React.FC<AmountPaneProps> = ({
             )}
 
             {selectedCauseAreaId === -1 && (
-              <SmartDistributionForm
-                suggestedSums={suggestedSums}
-                totalAmount={totalAmount}
-                causeAreas={causeAreas}
-                causeAreaAmounts={causeAreaAmounts}
-                causeAreaDistributionType={causeAreaDistributionType}
-                smartDistributionContext={smartDistContext}
-                causeAreaDisplayConfig={causeAreaDisplayConfig}
-              />
+              <>
+                <SmartDistributionForm
+                  suggestedSums={suggestedSums}
+                  totalAmount={totalAmount}
+                  causeAreas={causeAreas}
+                  causeAreaAmounts={causeAreaAmounts}
+                  causeAreaDistributionType={causeAreaDistributionType}
+                  smartDistributionContext={smartDistContext}
+                  causeAreaDisplayConfig={causeAreaDisplayConfig}
+                />
+                <GlobalCutToggle operationsConfig={operationsConfig} />
+              </>
             )}
           </CauseAreasWrapper>
         </div>

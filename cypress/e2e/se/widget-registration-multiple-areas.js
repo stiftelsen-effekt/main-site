@@ -62,6 +62,41 @@ describe("Swedish Widget - Multiple Cause Areas Registration", () => {
     });
   });
 
+  it("Should keep cause area shares summing to exactly 100 even for splits with repeating decimals", () => {
+    // Equal cause area amounts split into percentages that don't terminate
+    // cleanly in decimal (33.333...%). Rounding each cause area's share
+    // independently (rather than having one area absorb the remainder, as
+    // organization-within-cause-area shares already do) can drift away from
+    // exactly 100 - e.g. 99.99999999 - which the backend's distribution
+    // check rejects with zero tolerance. This previously caused
+    // "/donations/register" to fail in production with an error like
+    // "Cause area share must sum to 100, but was 100.00000001".
+    cy.get("[data-cy=cause-area-multiple]").click();
+
+    setCauseAreaAmount(1, 100, false);
+    setCauseAreaAmount(2, 100, false);
+    setCauseAreaAmount(3, 100, false);
+
+    cy.get("[data-cy=next-button]").click();
+    cy.get("[data-cy=name-input]").type("Test Donor");
+    cy.get("[data-cy=email-input]").type("test@example.com");
+
+    cy.get("[data-cy^=payment-method-]").first().click();
+
+    cy.wait("@registerDonation").then((interception) => {
+      const { body } = interception.request;
+
+      expect(body.amount).to.equal(300);
+      expect(body.distributionCauseAreas).to.have.length(3);
+
+      const sumOfShares = body.distributionCauseAreas.reduce(
+        (sum, ca) => sum + parseFloat(ca.percentageShare),
+        0,
+      );
+      expect(sumOfShares).to.equal(100);
+    });
+  });
+
   it("Should handle custom organization distribution correctly", () => {
     cy.get("[data-cy=cause-area-multiple]").click();
     setCauseAreaAmount(1, 1000, false); // operations cut can default to on

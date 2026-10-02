@@ -95,10 +95,12 @@ export type DistributionCauseArea = {
   name?: string;
   standardSplit: boolean;
   percentageShare: string;
+  amount?: number;
   organizations: {
     id: number;
     name?: string;
     percentageShare: string;
+    amount?: number;
   }[];
 };
 

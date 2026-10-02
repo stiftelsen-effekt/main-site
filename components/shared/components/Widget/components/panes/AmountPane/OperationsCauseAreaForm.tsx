@@ -16,15 +16,14 @@ import { usePlausible } from "next-plausible";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
 import { CauseArea } from "../../../types/CauseArea";
-import { CauseAreaDisplayConfig, OperationsConfig } from "../../../types/WidgetProps";
-import { InfoAccordion } from "../../shared/InfoAccordion/InfoAccordion";
+import { CauseAreaDisplayConfig } from "../../../types/WidgetProps";
+import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
 
 interface OperationsCauseAreaFormProps {
   causeArea: CauseArea;
   suggestedSums: Array<{ amount: number; subtext?: string }>;
   causeAreaAmounts: Record<number, number>;
   causeAreaDisplayConfig: CauseAreaDisplayConfig;
-  operationsConfig?: OperationsConfig;
 }
 
 export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = ({
@@ -32,7 +31,6 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
   suggestedSums,
   causeAreaAmounts,
   causeAreaDisplayConfig,
-  operationsConfig,
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
@@ -76,7 +74,10 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
                 value={causeAreaAmounts[causeArea.id] > 0 ? causeAreaAmounts[causeArea.id] : ""}
                 autoComplete="off"
                 data-cy="donation-sum-input-operations"
-                onValueChange={(values) => {
+                onValueChange={(values, sourceInfo) => {
+                  // react-number-format also fires this on mount/reformat, not just on
+                  // real keystrokes - only a genuine user edit should overwrite the amount.
+                  if (sourceInfo.source !== "event") return;
                   const v = values.floatValue === undefined ? 0 : values.floatValue;
                   dispatch(setCauseAreaAmount(causeArea.id, v));
                 }}
@@ -86,14 +87,8 @@ export const OperationsCauseAreaForm: React.FC<OperationsCauseAreaFormProps> = (
             </span>
           </SumWrapper>
         </TotalSumWrapper>
-        {operationsConfig?.x_factor_info?.label_text && (
-          <InfoAccordion
-            labelText={operationsConfig.x_factor_info.label_text}
-            description={operationsConfig.x_factor_info.description}
-            link={operationsConfig.x_factor_info.link}
-          />
-        )}
       </div>
+      <CauseAreaRollout causeAreaId={causeArea.id} config={causeAreaDisplayConfig} />
     </FormWrapper>
   );
 };

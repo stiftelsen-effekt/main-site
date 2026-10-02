@@ -33,8 +33,11 @@ import {
   useDefaultPaymentMethodEffect,
   usePrefilledDistribution,
   usePrefilledSum,
+  usePrefilledCauseAreaIds,
   useQueryParamsPrefill,
   useWidgetScaleEffect,
+  WIDGET_CONTENT_WIDTH,
+  WIDGET_FRAME_WIDTH,
 } from "./hooks";
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { PrefilledDistribution } from "../../../../main/layout/WidgetPane/WidgetPane";
@@ -117,28 +120,6 @@ export const widgetContentQuery = groq`
     "slug": page->slug.current,
     "pagetype": page->_type,
   },
-  operations_config {
-    ...,
-    x_factor_info {
-      ...,
-      link {
-        ...,
-        "slug": page->slug.current,
-        "pagetype": page->_type,
-      }
-    }
-  },
-  cause_area_display_config {
-    ...,
-    other_cause_area_info {
-      ...,
-      link {
-        ...,
-        "slug": page->slug.current,
-        "pagetype": page->_type,
-      }
-    }
-  }
 `;
 
 export const widgetQuery = groq`
@@ -193,15 +174,17 @@ export const Widget = withStaticProps(
   const widgetWrapperRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; link?: string } | null>(null);
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
+  const prefilledCauseAreaIds = usePrefilledCauseAreaIds();
 
   const availableRecurringOptions = useAvailableRecurringOptions(methods);
   const availablePaymentMethods = useAvailablePaymentMethods(methods);
 
   // Platforms with a single (active) cause area keep the pre-rewrite widget UX:
   // no cause-area selection step and no operations/tip. See SingleCauseAreaPane.
-  const activeCauseAreas = causeAreas?.filter((ca) => ca.isActive) ?? [];
-  const isSingleCauseArea = !!causeAreas && activeCauseAreas.length === 1;
-  const singleCauseAreaId = isSingleCauseArea ? activeCauseAreas[0].id : undefined;
+  const visibleCauseAreas =
+    causeAreas?.filter((ca) => ca.isActive || prefilledCauseAreaIds.has(ca.id)) ?? [];
+  const isSingleCauseArea = !!causeAreas && visibleCauseAreas.length === 1;
+  const singleCauseAreaId = isSingleCauseArea ? visibleCauseAreas[0].id : undefined;
 
   useEffect(() => {
     if (singleCauseAreaId === undefined) return;
@@ -276,11 +259,11 @@ export const Widget = withStaticProps(
       ref={widgetWrapperRef}
       style={{
         height: inline ? `${widgetHeight * scalingFactor}px` : "auto",
-        width: scalingFactor * 576,
+        width: scalingFactor * (inline ? WIDGET_CONTENT_WIDTH : WIDGET_FRAME_WIDTH),
       }}
     >
       <div
-        className="widget"
+        className={`widget${inline ? " widget--inline" : ""}`}
         ref={widgetRef}
         style={{
           transform: `scale(${scalingFactor})`,
@@ -373,6 +356,8 @@ export const Widget = withStaticProps(
                 allow_anonymous_donations: widget.allow_anonymous_donations,
                 require_privacy_policy_checkbox: widget.require_privacy_policy_checkbox,
                 privacy_policy_required_error_text: widget.privacy_policy_required_error_text,
+                show_referral_code_field: widget.show_referral_code_field,
+                referral_code_placeholder: widget.referral_code_placeholder,
               }}
               summaryText={{
                 single_donation_text: widget.single_donation_text,

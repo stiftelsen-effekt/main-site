@@ -206,8 +206,41 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/adf%C3%A6rd",
+        destination: "/indsamling/adfaerd2026?referral=Adfærd",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: "/adfaerd",
+        destination: "/indsamling/adfaerd2026?referral=Adfærd",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: false,
+      },
+      {
         source: "/anbefalinger",
-        destination: "/topliste",
+        destination: "/global-sundhed-og-fattigdom",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/topliste",
+        destination: "/global-sundhed-og-fattigdom",
         has: [
           {
             type: "host",
@@ -251,7 +284,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/bedste-velgoerenhed",
-        destination: "/topliste",
+        destination: "/global-sundhed-og-fattigdom",
         has: [
           {
             type: "host",
@@ -415,6 +448,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/raadgivning-for-fonde",
+        destination: "/filantropi",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
         source:
           "/artikler/gavmildhed-i-teori-og-praksis-en-kort-guide-til-at-g%C3%B8re-en-reel-forskel",
         destination:
@@ -541,6 +585,17 @@ const nextConfig: NextConfig = {
       {
         source: "/vms25",
         destination: "/indsamling/vms25",
+        has: [
+          {
+            type: "host",
+            value: "giveffektivt.dk",
+          },
+        ],
+        permanent: true,
+      },
+      {
+        source: "/giv-til-dyrene",
+        destination: "/dyrevelfaerd-og-fodevareomstilling",
         has: [
           {
             type: "host",

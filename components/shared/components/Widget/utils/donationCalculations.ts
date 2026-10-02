@@ -8,6 +8,35 @@ export interface DonationBreakdown {
   totalAmount: number;
 }
 
+function addSmartDistribution(
+  result: DonationBreakdown,
+  causeAreas: CauseArea[],
+  amount: number,
+  operationsCauseAreaId: number | undefined,
+) {
+  const areas = causeAreas.filter(
+    (area) =>
+      area.id !== operationsCauseAreaId &&
+      area.standardPercentageShare &&
+      area.standardPercentageShare > 0,
+  );
+  const totalShare = areas.reduce((sum, area) => sum + (area.standardPercentageShare ?? 0), 0);
+
+  if (totalShare <= 0) return;
+
+  areas.forEach((area) => {
+    const areaAmount = ((area.standardPercentageShare ?? 0) / totalShare) * amount;
+    result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + areaAmount;
+
+    area.organizations.forEach((org) => {
+      if (org.standardShare && org.standardShare > 0) {
+        result.organizationAmounts[org.id] =
+          (result.organizationAmounts[org.id] || 0) + (org.standardShare / 100) * areaAmount;
+      }
+    });
+  });
+}
+
 /**
  * Calculates the actual donation amounts after applying operations cuts
  * This is the single source of truth for how donations are distributed
@@ -38,20 +67,13 @@ export function calculateDonationBreakdown(
 
   // Handle smart distribution mode
   if (selectedCauseAreaId === -1 && smartDistributionTotal) {
-    causeAreas.forEach((area) => {
-      if (area.standardPercentageShare && area.standardPercentageShare > 0) {
-        const areaAmount = (area.standardPercentageShare / 100) * smartDistributionTotal;
-        result.causeAreaAmounts[area.id] = areaAmount;
+    const operationsAmount = globalOperationsEnabled
+      ? Math.round((smartDistributionTotal * globalOperationsPercentage) / 100)
+      : 0;
+    const distributedAmount = smartDistributionTotal - operationsAmount;
 
-        // Distribute among organizations
-        area.organizations.forEach((org) => {
-          if (org.standardShare && org.standardShare > 0) {
-            const orgAmount = (org.standardShare / 100) * areaAmount;
-            result.organizationAmounts[org.id] = orgAmount;
-          }
-        });
-      }
-    });
+    addSmartDistribution(result, causeAreas, distributedAmount, operationsCauseAreaId);
+    result.operationsAmount = operationsAmount;
     result.totalAmount = smartDistributionTotal;
     return result;
   }
@@ -65,15 +87,17 @@ export function calculateDonationBreakdown(
       .filter((area) => causeAreaDistributionType[area.id] === ShareType.CUSTOM)
       .map((area) => area.id);
     // For multiple cause areas, calculate based on global percentage
-    multipleTotalDonation = Object.entries(causeAreaAmounts).reduce(
-      (sum, entry) =>
-        sum +
-        (ignoredCauseAreas.includes(parseInt(entry[0])) ||
-        customDistributionAreasIds.includes(parseInt(entry[0]))
-          ? 0
-          : entry[1]),
-      0,
-    );
+    multipleTotalDonation =
+      (smartDistributionTotal || 0) +
+      Object.entries(causeAreaAmounts).reduce(
+        (sum, entry) =>
+          sum +
+          (ignoredCauseAreas.includes(parseInt(entry[0])) ||
+          customDistributionAreasIds.includes(parseInt(entry[0]))
+            ? 0
+            : entry[1]),
+        0,
+      );
     // Add organization amounts for custom distribution
     for (const customCauseAreaId of customDistributionAreasIds) {
       const orgs = causeAreas.find((area) => area.id === customCauseAreaId)?.organizations || [];
@@ -103,6 +127,14 @@ export function calculateDonationBreakdown(
   }
 
   result.operationsAmount = totalOperationsAmount;
+
+  if (selectionType === "multiple" && smartDistributionTotal && smartDistributionTotal > 0) {
+    const reduction =
+      multipleTotalDonation > 0 ? 1 - totalOperationsAmount / multipleTotalDonation : 1;
+    const netSmartDistributionAmount = smartDistributionTotal * reduction;
+
+    addSmartDistribution(result, causeAreas, netSmartDistributionAmount, operationsCauseAreaId);
+  }
 
   // Process each cause area
   causeAreas.forEach((area) => {
@@ -143,7 +175,7 @@ export function calculateDonationBreakdown(
         netAreaAmount = areaAmount - operationsCut;
       }
 
-      result.causeAreaAmounts[area.id] = netAreaAmount;
+      result.causeAreaAmounts[area.id] = (result.causeAreaAmounts[area.id] || 0) + netAreaAmount;
 
       // Distribute to organizations based on standard shares
       area.organizations.forEach((org) => {
@@ -186,7 +218,8 @@ export function calculateDonationBreakdown(
           }
         }
 
-        result.causeAreaAmounts[area.id] = netTotalOrgAmount;
+        result.causeAreaAmounts[area.id] =
+          (result.causeAreaAmounts[area.id] || 0) + netTotalOrgAmount;
 
         // Apply reduction to each organization
         area.organizations.forEach((org) => {
@@ -201,12 +234,81 @@ export function calculateDonationBreakdown(
     }
   });
 
-  // Calculate total
-  result.totalAmount =
+  const totalAmount = Math.round(
     Object.values(result.causeAreaAmounts).reduce((sum, amount) => sum + amount, 0) +
-    result.operationsAmount;
+      result.operationsAmount,
+  );
+  const hasOperationsCut =
+    (selectionType === "multiple" && globalOperationsEnabled) ||
+    (selectionType === "single" &&
+      selectedCauseAreaId !== null &&
+      selectedCauseAreaId !== undefined &&
+      operationsPercentageModeByCauseArea[selectedCauseAreaId]);
+  const targetDistributedAmount = hasOperationsCut
+    ? Math.max(totalAmount - totalOperationsAmount, 0)
+    : totalAmount;
+  const roundedCauseAreaAmounts = roundAmountsToTotal(
+    Object.entries(result.causeAreaAmounts)
+      .map(([id, amount]) => ({ id: Number(id), amount }))
+      .filter(({ amount }) => amount > 0),
+    targetDistributedAmount,
+  );
+
+  result.causeAreaAmounts = Object.fromEntries(
+    roundedCauseAreaAmounts.map(({ id, amount }) => [id, amount]),
+  );
+  result.operationsAmount = hasOperationsCut ? totalAmount - targetDistributedAmount : 0;
+  result.totalAmount = totalAmount;
+
+  causeAreas.forEach((area) => {
+    const areaAmount = result.causeAreaAmounts[area.id];
+    if (areaAmount === undefined) return;
+
+    const exactOrganizationAmounts = area.organizations
+      .map((org) => ({ id: org.id, amount: result.organizationAmounts[org.id] || 0 }))
+      .filter((org) => org.amount > 0);
+    const roundedOrganizationAmounts = roundAmountsToTotal(exactOrganizationAmounts, areaAmount);
+
+    area.organizations.forEach((org) => {
+      delete result.organizationAmounts[org.id];
+    });
+    roundedOrganizationAmounts.forEach(({ id, amount }) => {
+      result.organizationAmounts[id] = amount;
+    });
+  });
 
   return result;
+}
+
+function roundAmountsToTotal<T extends { id: number; amount: number }>(
+  amounts: T[],
+  targetTotal: number,
+): T[] {
+  if (amounts.length === 0 || targetTotal <= 0) return [];
+
+  const rounded = amounts.map((item) => ({ ...item, amount: Math.floor(item.amount) }));
+  let remainder = targetTotal - rounded.reduce((sum, item) => sum + item.amount, 0);
+  const incrementOrder = amounts
+    .map((item, index) => ({ index, fraction: item.amount - Math.floor(item.amount), id: item.id }))
+    .sort((left, right) => right.fraction - left.fraction || left.id - right.id);
+
+  for (let index = 0; remainder > 0; index++, remainder--) {
+    rounded[incrementOrder[index % incrementOrder.length].index].amount += 1;
+  }
+
+  const decrementOrder = rounded
+    .map((item, index) => ({ index, amount: item.amount, id: item.id }))
+    .sort((left, right) => right.amount - left.amount || left.id - right.id);
+
+  for (let index = 0; remainder < 0; index++) {
+    const item = rounded[decrementOrder[index % decrementOrder.length].index];
+    if (item.amount > 0) {
+      item.amount -= 1;
+      remainder += 1;
+    }
+  }
+
+  return rounded.filter((item) => item.amount > 0);
 }
 
 export interface OrganizationSharePayload {
@@ -219,31 +321,29 @@ export interface OrganizationSharePayload {
 }
 
 /**
- * Converts organization amounts within a single cause area into percentage
- * shares of that cause area (not of the overall donation). The organization
- * with the largest amount is placed last and absorbs the rounding remainder,
- * so the returned shares are guaranteed to sum to exactly 100 - even once
- * re-parsed as floats - which the backend requires within a cause area.
+ * Converts a list of amounts into percentage shares of their total. Each
+ * share is independently rounded to 8 decimals except the item with the
+ * largest amount, which absorbs the rounding remainder - so the shares are
+ * guaranteed to sum to exactly 100, even once re-parsed as floats, which the
+ * backend requires for both cause area and organization-level splits.
  */
-export function calculateOrganizationSharesWithinCauseArea(
-  organizationAmounts: { id: number; amount: number }[],
-): OrganizationSharePayload[] {
-  const areaTotal = organizationAmounts.reduce((sum, org) => sum + org.amount, 0);
+export function distributeSharesWithRemainder<T extends { id: number; amount: number }>(
+  amounts: T[],
+): (T & { percentageShare: string })[] {
+  const total = amounts.reduce((sum, item) => sum + item.amount, 0);
 
-  if (areaTotal <= 0) return [];
+  if (total <= 0) return [];
 
-  const largestIndex = organizationAmounts.reduce(
-    (maxIndex, org, index) =>
-      org.amount > organizationAmounts[maxIndex].amount ? index : maxIndex,
+  const largestIndex = amounts.reduce(
+    (maxIndex, item, index) => (item.amount > amounts[maxIndex].amount ? index : maxIndex),
     0,
   );
-  const largest = organizationAmounts[largestIndex];
-  const others = organizationAmounts.filter((_, index) => index !== largestIndex);
+  const largest = amounts[largestIndex];
+  const others = amounts.filter((_, index) => index !== largestIndex);
 
-  const otherShares = others.map((org) => ({
-    id: org.id,
-    percentageShare: ((org.amount / areaTotal) * 100).toFixed(8),
-    amount: Math.round(org.amount),
+  const otherShares = others.map((item) => ({
+    ...item,
+    percentageShare: parseFloat(((item.amount / total) * 100).toFixed(8)).toString(),
   }));
 
   const sumOfOthers = otherShares.reduce(
@@ -251,12 +351,24 @@ export function calculateOrganizationSharesWithinCauseArea(
     0,
   );
 
-  return [
-    ...otherShares,
-    {
-      id: largest.id,
-      percentageShare: (100 - sumOfOthers).toString(),
-      amount: Math.round(largest.amount),
-    },
-  ];
+  return [...otherShares, { ...largest, percentageShare: (100 - sumOfOthers).toString() }];
+}
+
+/**
+ * Converts organization amounts within a single cause area into percentage
+ * shares of that cause area (not of the overall donation).
+ */
+export function calculateOrganizationSharesWithinCauseArea(
+  organizationAmounts: { id: number; amount: number }[],
+): OrganizationSharePayload[] {
+  const totalAmount = Math.round(
+    organizationAmounts.reduce((sum, organization) => sum + organization.amount, 0),
+  );
+  const roundedAmounts = roundAmountsToTotal(organizationAmounts, totalAmount);
+
+  return distributeSharesWithRemainder(roundedAmounts).map((share) => ({
+    id: share.id,
+    percentageShare: share.percentageShare,
+    amount: share.amount,
+  }));
 }

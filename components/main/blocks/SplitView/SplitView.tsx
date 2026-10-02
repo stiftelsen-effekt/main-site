@@ -5,15 +5,20 @@ import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { Links } from "../Links/Links";
+import { PortableText } from "@portabletext/react";
+import { customComponentRenderers } from "../Paragraph/Citation";
+import { SplitViewForm, SplitViewFormConfiguration } from "./SplitViewForm";
 
 export interface SplitView {
   title: string;
   swapped?: boolean;
   rowSwapped?: boolean;
   darktext?: boolean;
-  paragraph: string;
+  paragraph?: string;
+  richText?: any[];
   links: (LinkType | NavLink)[];
   image: SanityImageObject;
+  form?: SplitViewFormConfiguration;
 }
 export const SplitView: React.FC<SplitView> = ({
   title,
@@ -21,8 +26,10 @@ export const SplitView: React.FC<SplitView> = ({
   rowSwapped,
   darktext,
   paragraph,
+  richText,
   links,
   image,
+  form,
 }) => {
   const classes = [styles.splitview];
   if (swapped) classes.push(styles.swapped);
@@ -36,9 +43,16 @@ export const SplitView: React.FC<SplitView> = ({
       <div className={styles.splitviewtext}>
         <div>
           <h4>{title}</h4>
-          <p>{paragraph}</p>
+          {richText?.length ? (
+            <div className={styles.richtext}>
+              <PortableText value={richText} components={customComponentRenderers} />
+            </div>
+          ) : (
+            paragraph && <p>{paragraph}</p>
+          )}
+          {form?.formType && <SplitViewForm form={form} />}
         </div>
-        {links && <Links links={links} />}
+        {links?.length > 0 && <Links links={links} />}
       </div>
       <div className={styles.splitviewimage}>
         {image && <ResponsiveImage image={image} layout="responsive" />}

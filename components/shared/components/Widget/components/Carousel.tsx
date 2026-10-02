@@ -39,16 +39,25 @@ export const Carousel: React.FC<ICarouselProps> = ({ children, minHeight, inline
   const reduxPaneNumber = useSelector((state: State) => state.layout.paneNumber);
   const [renderedPanes, setRenderedPanes] = useState([1]);
   const [temporaryHeight, setTemporaryHeight] = useState<number | null>(null);
-  const renderedPanesRef = useRef(renderedPanes);
-  renderedPanesRef.current = renderedPanes;
   const currentPaneNumberRef = useRef(currentPaneNumber);
   currentPaneNumberRef.current = currentPaneNumber;
 
   const changePaneByOffset = (offset: number) => {
-    const newRenderedPanes = [...renderedPanes];
-    newRenderedPanes[currentPaneNumber + offset] = 1;
-    setRenderedPanes(newRenderedPanes);
-    setCurrentPaneNumber(currentPaneNumber + offset);
+    // Capture where we're coming from/going to now, rather than deriving it from
+    // a ref when the unmount timer below fires - by then another pane change may
+    // have moved it, which is how the pane currently on screen could end up
+    // being the one unmounted, blanking the whole widget.
+    const previousPaneNumber = currentPaneNumber;
+    const nextPaneNumber = currentPaneNumber + offset;
+
+    // Functional updates so a pane change landing within the 200ms unmount
+    // window can't clobber the other's write with a stale copy of the array.
+    setRenderedPanes((current) => {
+      const updated = [...current];
+      updated[nextPaneNumber] = 1;
+      return updated;
+    });
+    setCurrentPaneNumber(nextPaneNumber);
 
     // Smooth scroll carousel wrapper to top
     if (carouselRef.current?.parentElement) {
@@ -68,9 +77,14 @@ export const Carousel: React.FC<ICarouselProps> = ({ children, minHeight, inline
     }, 1);
 
     setTimeout(() => {
-      const newRenderedPanes2 = [...renderedPanesRef.current];
-      newRenderedPanes2[currentPaneNumberRef.current - offset] = 0;
-      setRenderedPanes(newRenderedPanes2);
+      setRenderedPanes((current) => {
+        // If we've navigated back to the pane this transition left, it's on
+        // screen now - unmounting it would blank the widget.
+        if (currentPaneNumberRef.current === previousPaneNumber) return current;
+        const updated = [...current];
+        updated[previousPaneNumber] = 0;
+        return updated;
+      });
       setTemporaryHeight(null);
     }, 200);
   };
@@ -99,7 +113,10 @@ export const Carousel: React.FC<ICarouselProps> = ({ children, minHeight, inline
               .map((child: ReactNode, i: number) => {
                 return (
                   <div className="pane" key={i}>
-                    {renderedPanes[i] === 1 && child}
+                    {/* The pane being displayed is always mounted, whatever the
+                        lazy-mount bookkeeping says - otherwise a mistimed
+                        unmount leaves the donor looking at an empty widget. */}
+                    {(renderedPanes[i] === 1 || i === currentPaneNumber) && child}
                   </div>
                 );
               })}

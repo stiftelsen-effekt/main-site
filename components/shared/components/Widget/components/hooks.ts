@@ -5,8 +5,10 @@ import {
   setSum,
   setRecurring,
   setCauseAreaDistributionType,
+  setCauseAreaSelection,
   setOrgAmount,
   setPrefilledShares,
+  setReferralCode,
 } from "../store/donation/actions";
 import { RecurringDonation, ShareType } from "../types/Enums";
 import { WidgetContext } from "../../../../main/layout/layout";
@@ -18,12 +20,34 @@ import { useDebouncedCallback } from "use-debounce";
 import { State } from "../store/state";
 import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../store/donation/types";
+import { setPaneNumber } from "../store/layout/actions";
+import { LayoutActionTypes } from "../store/layout/types";
+import {
+  getReferralCodeFromQuery,
+  getStoredReferralCode,
+  storeReferralCode,
+} from "../../../../../util/referralCode";
+
+/** Designed pane content width, before the reserved scrollbar gutter. */
+export const WIDGET_CONTENT_WIDTH = 576;
+/** Must match `.widget::-webkit-scrollbar` so the gutter and thumb agree. */
+export const WIDGET_SCROLLBAR_WIDTH = 8;
+export const WIDGET_FRAME_WIDTH = WIDGET_CONTENT_WIDTH + WIDGET_SCROLLBAR_WIDTH;
 
 interface UsePrefilledDistributionProps {
   inline: boolean;
   causeAreas: CauseArea[] | undefined;
   prefilledDistribution: PrefilledDistribution | null;
 }
+
+export const usePrefilledCauseAreaIds = () => {
+  const [widgetContext] = useContext(WidgetContext);
+
+  return useMemo(
+    () => new Set(widgetContext.prefilled?.map((area) => area.causeAreaId) ?? []),
+    [widgetContext.prefilled],
+  );
+};
 
 /**
  * Hook to handle prefilled distribution data for the widget
@@ -33,7 +57,7 @@ export const usePrefilledDistribution = ({
   causeAreas,
   prefilledDistribution,
 }: UsePrefilledDistributionProps) => {
-  const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
+  const dispatch = useDispatch<Dispatch<DonationActionTypes | LayoutActionTypes>>();
   const [widgetContext] = useContext(WidgetContext);
   const causeAreaAmounts = useSelector((state: State) => state.donation.causeAreaAmounts ?? {});
   // Add a ref to track if we've already applied the prefilled distribution
@@ -70,6 +94,26 @@ export const usePrefilledDistribution = ({
     // which would otherwise have each cause area's dispatch clobber the previous one's.
     const combinedShares: Record<number, number> = {};
     let hasAnyPrefilledShares = false;
+    const prefilledCauseAreas = causeAreas.filter((causeArea) =>
+      prefilled.some((prefilledArea) => prefilledArea.causeAreaId === causeArea.id),
+    );
+    const visibleCauseAreas = causeAreas.filter(
+      (causeArea) =>
+        causeArea.isActive ||
+        prefilledCauseAreas.some((prefilledArea) => prefilledArea.id === causeArea.id),
+    );
+
+    if (visibleCauseAreas.length > 1 && prefilledCauseAreas.length > 0) {
+      const singlePrefilledCauseArea =
+        prefilledCauseAreas.length === 1 ? prefilledCauseAreas[0] : undefined;
+      dispatch(
+        setCauseAreaSelection(
+          singlePrefilledCauseArea ? "single" : "multiple",
+          singlePrefilledCauseArea?.id,
+        ),
+      );
+      dispatch(setPaneNumber(1));
+    }
 
     causeAreas.forEach((causeArea) => {
       const prefilledCauseArea = prefilled.find(
@@ -114,7 +158,7 @@ export const usePrefilledDistribution = ({
  */
 export const usePrefilledSum = ({ inline }: { inline: boolean }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
-  const [widgetContext, setWidgetContext] = useContext(WidgetContext);
+  const [widgetContext] = useContext(WidgetContext);
 
   useEffect(() => {
     if (!inline && widgetContext.prefilledSum !== null) {
@@ -149,7 +193,7 @@ export const useQueryParamsPrefill = ({
       return;
     }
 
-    const { distribution, recurring } = router.query;
+    const { distribution, recurring, referral, referralCode } = router.query;
 
     if (distribution && typeof distribution === "string") {
       const prefilledDistribution = parseDistributionQueryParam(distribution);
@@ -174,6 +218,19 @@ export const useQueryParamsPrefill = ({
         hasAppliedQueryParams.current = true;
       }
     }
+
+    const referralValue = getReferralCodeFromQuery({ referral, referralCode });
+    if (referralValue) {
+      dispatch(setReferralCode(referralValue));
+      storeReferralCode(referralValue);
+      hasAppliedQueryParams.current = true;
+    } else {
+      const storedReferralCode = getStoredReferralCode();
+      if (storedReferralCode) {
+        dispatch(setReferralCode(storedReferralCode));
+        hasAppliedQueryParams.current = true;
+      }
+    }
   }, [inline, router.query, causeAreas, dispatch, setWidgetContext, widgetContext]);
 
   useEffect(() => {
@@ -194,7 +251,14 @@ const handlePrefilledCauseArea = (
   prefilledCauseArea: PrefilledDistribution[number],
   causeAreaAmount: number,
 ): Record<number, number> => {
-  dispatch(setCauseAreaDistributionType(causeArea.id, ShareType.CUSTOM));
+  dispatch(
+    setCauseAreaDistributionType(
+      causeArea.id,
+      causeArea.organizations.length <= 1 || prefilledCauseArea.organizations.length === 0
+        ? ShareType.STANDARD
+        : ShareType.CUSTOM,
+    ),
+  );
 
   const shareByOrgId: Record<number, number> = {};
   prefilledCauseArea.organizations.forEach((org) => {
@@ -320,7 +384,7 @@ export const useWidgetScaleEffect = (
     if (!inline || window.innerWidth < 1180) {
       setScalingFactor(
         (window.innerWidth >= 1180 ? Math.min(window.innerWidth * 0.4, 720) : window.innerWidth) /
-          576,
+          WIDGET_CONTENT_WIDTH,
       );
       setScaledHeight(Math.ceil(window.innerHeight / scalingFactor));
       if (window.innerHeight != lastHeight && window.innerWidth == lastWidth) {

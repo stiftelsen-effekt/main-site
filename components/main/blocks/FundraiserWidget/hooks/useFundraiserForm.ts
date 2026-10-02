@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { RecurringDonation } from "../../../../shared/components/Widget/types/Enums";
 
 export interface FormData {
   amount: number | null;
@@ -11,6 +12,7 @@ export interface FormData {
   newsletter: boolean;
   paymentMethod: PaymentMethodString;
   privacyPolicyAccepted: boolean;
+  recurring: RecurringDonation;
 }
 
 export type PaymentMethodString =
@@ -35,6 +37,7 @@ export function useFundraiserForm(
     newsletter: false,
     paymentMethod: paymentMethods[0],
     privacyPolicyAccepted: false,
+    recurring: RecurringDonation.NON_RECURRING,
   });
 
   // Auto-enable tax deduction for amounts >= configured minimum (only if tax deduction is enabled)
@@ -58,9 +61,9 @@ export function useFundraiserForm(
     });
   };
 
-  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
+  const updateField = useCallback(<K extends keyof FormData>(field: K, value: FormData[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
   return {
     formData,

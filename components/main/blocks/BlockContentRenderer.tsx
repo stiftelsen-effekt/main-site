@@ -32,6 +32,7 @@ import { GiftCard } from "./GiftCard/GiftCard";
 import { BlockTables } from "./BlockTable/BlockTables";
 import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
 import { Accordion } from "./Accordion/Accordion";
+import { WealthCalculator } from "./WealthCalculator/WealthCalculator";
 import { PhilantropicTeaser } from "./PhilantropicTeaser/PhilantropicTeaser";
 import { stegaClean } from "@sanity/client/stega";
 import dynamic from "next/dynamic";
@@ -51,9 +52,6 @@ import { MediaCoverageTeaser } from "./MediaCoverageTeaser/MediaCoverageTeaser";
 import { FormsparkForm } from "./FormSparkForm/FormSparkForm";
 
 /* Dynamic imports */
-const WealthCalculator = dynamic(() =>
-  import("./WealthCalculator/WealthCalculator").then((mod) => mod.WealthCalculator),
-);
 const WealthCalculatorTeaser = dynamic(() =>
   import("./WealthCalculatorTeaser/WealthCalculatorTeaser").then(
     (mod) => mod.WealthCalculatorTeaser,
@@ -148,9 +146,11 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 swapped={block.swapped}
                 rowSwapped={block.rowSwapped}
                 paragraph={block.paragraph}
+                richText={block.richText}
                 links={block.links}
                 image={block.image}
                 darktext={block.darktext}
+                form={block.form}
               />
             );
           case "splitviewhtml":

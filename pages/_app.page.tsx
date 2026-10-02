@@ -12,6 +12,7 @@ import { VisualEditing } from "next-sanity/visual-editing";
 import { ConsentState } from "../middleware.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 import { useRouter } from "next/router";
+import { getReferralCodeFromQuery, storeReferralCode } from "../util/referralCode";
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
 const globalWidgetStore = createWidgetStore();
@@ -38,10 +39,17 @@ function MyApp({
   pageProps: { appStaticProps, preview, ...pageProps },
 }: AppProps<GeneralPageProps>) {
   const [tracking, setTracking] = React.useState(false);
+  const router = useRouter();
 
   const routerContextValue = useRef<RouterContextValue | null>(
     appStaticProps?.routerContext || null,
   );
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const referralCode = getReferralCodeFromQuery(router.query);
+    if (referralCode) storeReferralCode(referralCode);
+  }, [router.isReady, router.query]);
 
   // check for plausible_ignore localstorage to disable plausible tracking
   useEffect(() => {

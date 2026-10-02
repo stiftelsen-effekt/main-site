@@ -16,9 +16,10 @@ export type LinkType = {
 export type LinksProps = {
   links: (LinkType | NavLink)[];
   buttons?: boolean;
+  newtab?: boolean;
 };
 
-export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
+export const Links: React.FC<LinksProps> = ({ links, buttons, newtab }) => {
   const { articlesPagePath, fundraisersPath } = useRouterContext();
 
   return (
@@ -35,7 +36,7 @@ export const Links: React.FC<LinksProps> = ({ links, buttons }) => {
                   prefetch={isFundraiser ? false : undefined}
                 />
               ) : (
-                <LinkComponent link={link} />
+                <LinkComponent link={link} newtab={newtab} />
               )}
             </li>
           );
@@ -59,6 +60,7 @@ export const LinkComponent: React.FC<{
       href={href}
       prefetch={isFundraiser ? false : undefined}
       target={openInNewTab ? "_blank" : ""}
+      rel={openInNewTab ? "noopener noreferrer" : undefined}
       onClick={(e) => {
         e.currentTarget.blur();
       }}

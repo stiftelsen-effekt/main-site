@@ -18,6 +18,7 @@ import {
 } from "./SelectionPane.style";
 import { Spinner } from "../../../Spinner/Spinner";
 import { CauseAreaDisplayConfig } from "../../types/WidgetProps";
+import { usePrefilledCauseAreaIds } from "../hooks";
 
 /**
  * First pane: select one-time vs monthly, then choose a cause area or multiple.
@@ -35,6 +36,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const causeAreas = useSelector((state: State) => state.layout.causeAreas);
+  const prefilledCauseAreaIds = usePrefilledCauseAreaIds();
   const { operationsPercentageModeByCauseArea = {}, causeAreaAmounts = {} } = useSelector(
     (state: State) => state.donation,
   );
@@ -107,7 +109,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 
           <ButtonsWrapper>
             {causeAreas
-              .filter((ca) => ca.isActive)
+              .filter((ca) => ca.isActive || prefilledCauseAreaIds.has(ca.id))
               .filter((ca) => {
                 const belowLineIds = causeAreaDisplayConfig?.below_line_cause_area_ids || [4, 5];
                 return !belowLineIds.includes(ca.id); // Exclude below-line cause areas (e.g. operations, "andet")
@@ -136,7 +138,7 @@ export const SelectionPane: React.FC<SelectionPaneProps> = ({
 
           <ButtonsWrapper>
             {causeAreas
-              .filter((ca) => ca.isActive)
+              .filter((ca) => ca.isActive || prefilledCauseAreaIds.has(ca.id))
               .filter((ca) => {
                 const belowLineIds = causeAreaDisplayConfig?.below_line_cause_area_ids || [4, 5];
                 return belowLineIds.includes(ca.id); // Include below-line cause areas (e.g. operations, "andet")

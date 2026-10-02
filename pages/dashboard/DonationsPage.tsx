@@ -11,6 +11,7 @@ import { DonorContext } from "../../components/profile/layout/donorProvider";
 import {
   useAggregatedDonations,
   useAllOrganizations,
+  useCauseAreas,
   useDistributions,
   useDonations,
   useTaxUnits,
@@ -215,6 +216,8 @@ export const DonationsPage = withStaticProps(
     error: organizationsError,
   } = useAllOrganizations(getAccessTokenSilently);
 
+  const { data: causeAreas, loading: causeAreasLoading } = useCauseAreas(getAccessTokenSilently);
+
   const {
     data: taxUnits,
     loading: taxUnitsLoading,
@@ -224,6 +227,7 @@ export const DonationsPage = withStaticProps(
   const donationsLoaded = Array.isArray(donations);
   const aggregatedDonationsLoaded = Array.isArray(aggregatedDonations);
   const organizationsLoaded = Array.isArray(organizations);
+  const causeAreasLoaded = Array.isArray(causeAreas);
   const taxUnitsLoaded = Array.isArray(taxUnits);
   const resolvedDistributions = shouldFetchDistributions ? distributions : [];
   const distributionsLoaded = Array.isArray(resolvedDistributions);
@@ -239,6 +243,7 @@ export const DonationsPage = withStaticProps(
     aggregatedDonationsLoaded &&
     donor &&
     organizationsLoaded &&
+    causeAreasLoaded &&
     taxUnitsLoaded &&
     distributionsLoaded;
   const loading =
@@ -246,6 +251,7 @@ export const DonationsPage = withStaticProps(
     donationsLoading ||
     (shouldFetchDistributions && distributionsLoading) ||
     organizationsloading ||
+    causeAreasLoading ||
     taxUnitsLoading;
 
   if (!dataAvailable || loading)
@@ -295,6 +301,7 @@ export const DonationsPage = withStaticProps(
         detailsConfiguration={page.donations_details_configuration}
         firstOpen={false}
         organizations={organizations}
+        causeAreas={causeAreas}
       />
     ) : (
       <ErrorMessage>
@@ -393,6 +400,7 @@ export const DonationsPage = withStaticProps(
             detailsConfiguration={page.donations_details_configuration}
             firstOpen={false}
             organizations={organizations}
+            causeAreas={causeAreas}
           />
         ) : (
           <ErrorMessage key={year}>
@@ -422,6 +430,7 @@ export const DonationsPage = withStaticProps(
         detailsConfiguration={page.donations_details_configuration}
         firstOpen={false}
         organizations={organizations}
+        causeAreas={causeAreas}
       />
     );
   }
@@ -548,6 +557,9 @@ const fetchDonationsPage = groq`
     mobile_donations_table_configuration,
     donations_details_configuration {
       ...,
+      cause_area_impact_estimates[] {
+        ...,
+      },
       impact_items_configuration {
         ...,
         "currency": *[ _type == "site_settings"][0].main_currency,

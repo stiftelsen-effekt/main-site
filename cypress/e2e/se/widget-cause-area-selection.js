@@ -76,13 +76,16 @@ describe("Swedish Widget - Cause Area Selection", () => {
     cy.get("[data-cy=summary-smart-distribution]").should("exist");
     cy.get("[data-cy=summary-smart-distribution-name]").should("contain.text", "Smart fördelning");
     cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
-      const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
-      expect(text).to.match(/1000kr/i); // Should contain 1000kr (case insensitive)
+      const text = $el.text().replace(/\s/g, "");
+      expect(text).to.match(/900kr/i);
     });
 
-    // Individual cause areas should NOT appear in summary for smart distribution
     cy.get("[data-cy=summary-cause-area-1-name]").should("not.exist");
-    cy.get("[data-cy=summary-cause-area-4-name]").should("not.exist");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("exist");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should(($el) => {
+      const text = $el.text().replace(/\s/g, "");
+      expect(text).to.match(/100kr/i);
+    });
     cy.get("[data-cy=summary-cause-area-2-amount]").should("not.exist");
     cy.get("[data-cy=summary-cause-area-3-amount]").should("not.exist");
 
@@ -144,12 +147,14 @@ describe("Swedish Widget - Cause Area Selection", () => {
     cy.get("[data-cy=donation-summary]").should("exist");
     cy.get("[data-cy=summary-smart-distribution]").should("exist");
     cy.get("[data-cy=summary-smart-distribution-amount]").should(($el) => {
-      const text = $el.text().replace(/\s/g, ""); // Remove all whitespace
-      expect(text).to.match(/500kr/i); // Should contain 500kr (case insensitive)
+      const text = $el.text().replace(/\s/g, "");
+      expect(text).to.match(/450kr/i);
     });
 
-    // Individual cause areas should NOT appear in summary for smart distribution
     cy.get("[data-cy=summary-cause-area-1-amount]").should("not.exist");
-    cy.get("[data-cy=summary-cause-area-4-amount]").should("not.exist");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should(($el) => {
+      const text = $el.text().replace(/\s/g, "");
+      expect(text).to.match(/50kr/i);
+    });
   });
 });

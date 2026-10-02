@@ -1,5 +1,5 @@
 // Shared setup for Swedish widget tests
-export const setupWidgetTest = () => {
+export const setupWidgetTest = (query = {}) => {
   // Note the .as() belongs on the intercept, not the fixture, so it can be cy.wait()ed on
   cy.fixture("cause_areas").then((causeAreas) => {
     cy.intercept("GET", "/causeareas/all", {
@@ -23,6 +23,7 @@ export const setupWidgetTest = () => {
 
   cy.visit({
     url: "/",
+    qs: query,
     headers: {
       "x-vercel-skip-toolbar": "1",
     },

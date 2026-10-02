@@ -1,4 +1,231 @@
-import { calculateOrganizationSharesWithinCauseArea } from "./donationCalculations";
+import {
+  calculateDonationBreakdown,
+  calculateOrganizationSharesWithinCauseArea,
+  distributeSharesWithRemainder,
+} from "./donationCalculations";
+
+describe("calculateDonationBreakdown", () => {
+  const causeAreas = [
+    {
+      id: 1,
+      name: "Area 1",
+      standardPercentageShare: 60,
+      organizations: [{ id: 11, standardShare: 100 }],
+    },
+    {
+      id: 2,
+      name: "Area 2",
+      standardPercentageShare: 40,
+      organizations: [{ id: 22, standardShare: 100 }],
+    },
+    {
+      id: 4,
+      name: "Operations",
+      standardPercentageShare: 0,
+      organizations: [{ id: 44, standardShare: 100 }],
+    },
+  ] as any;
+
+  it("applies an operations percentage to smart distribution", () => {
+    const breakdown = calculateDonationBreakdown(
+      {},
+      {},
+      {},
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      -1,
+      true,
+      5,
+      [],
+      4,
+      1000,
+    );
+
+    expect(breakdown.totalAmount).toBe(1000);
+    expect(breakdown.operationsAmount).toBe(50);
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 570, 2: 380 });
+  });
+
+  it("combines smart distribution, specific areas, and operations", () => {
+    const breakdown = calculateDonationBreakdown(
+      { 1: 500 },
+      {},
+      { 1: 1, 2: 1, 4: 1 } as any,
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+      500,
+    );
+
+    expect(breakdown.totalAmount).toBe(1000);
+    expect(breakdown.operationsAmount).toBe(50);
+    expect(breakdown.causeAreaAmounts[1]).toBe(760);
+    expect(breakdown.causeAreaAmounts[2]).toBe(190);
+  });
+
+  it("does not distribute smart allocation into the operations cause area", () => {
+    const swedishCauseAreas = [
+      {
+        id: 1,
+        name: "Global health",
+        standardPercentageShare: 90,
+        organizations: [{ id: 11, standardShare: 100 }],
+      },
+      {
+        id: 3,
+        name: "Climate",
+        standardPercentageShare: 0,
+        organizations: [{ id: 33, standardShare: 100 }],
+      },
+      {
+        id: 4,
+        name: "Operations",
+        standardPercentageShare: 10,
+        organizations: [{ id: 44, standardShare: 100 }],
+      },
+    ] as any;
+    const breakdown = calculateDonationBreakdown(
+      { 1: 100, 3: 200 },
+      {},
+      { 1: 1, 3: 1, 4: 1 } as any,
+      {},
+      {},
+      swedishCauseAreas,
+      "multiple",
+      undefined,
+      true,
+      10,
+      [],
+      4,
+      500,
+    );
+
+    expect(breakdown.totalAmount).toBe(800);
+    expect(breakdown.operationsAmount).toBe(80);
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 540, 3: 180 });
+    expect(breakdown.causeAreaAmounts[4]).toBeUndefined();
+  });
+
+  it("preserves a one-krone operations cut when cause area amounts round up", () => {
+    const breakdown = calculateDonationBreakdown(
+      { 1: 10, 2: 10 },
+      {},
+      { 1: 1, 2: 1, 4: 1 } as any,
+      {},
+      {},
+      causeAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+    );
+
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 10, 2: 9 });
+    expect(breakdown.organizationAmounts).toEqual({ 11: 10, 22: 9 });
+    expect(breakdown.operationsAmount).toBe(1);
+    expect(breakdown.totalAmount).toBe(20);
+  });
+
+  it("keeps the configured operations amount after rounding custom donations", () => {
+    const customCauseAreas = [
+      { id: 1, name: "Area 1", organizations: [{ id: 11, standardShare: 100 }] },
+      { id: 2, name: "Area 2", organizations: [{ id: 22, standardShare: 100 }] },
+      { id: 3, name: "Area 3", organizations: [{ id: 33, standardShare: 100 }] },
+      causeAreas[2],
+    ] as any;
+    const breakdown = calculateDonationBreakdown(
+      {},
+      { 11: 10, 22: 20, 33: 30 },
+      { 1: 0, 2: 0, 3: 0, 4: 1 } as any,
+      {},
+      {},
+      customCauseAreas,
+      "multiple",
+      undefined,
+      true,
+      5,
+      [],
+      4,
+    );
+
+    expect(breakdown.causeAreaAmounts).toEqual({ 1: 10, 2: 19, 3: 28 });
+    expect(breakdown.organizationAmounts).toEqual({ 11: 10, 22: 19, 33: 28 });
+    expect(breakdown.operationsAmount).toBe(3);
+    expect(breakdown.totalAmount).toBe(60);
+    expect(
+      Object.values(breakdown.causeAreaAmounts).reduce((sum, amount) => sum + amount, 0) +
+        breakdown.operationsAmount,
+    ).toBe(breakdown.totalAmount);
+  });
+});
+
+describe("distributeSharesWithRemainder", () => {
+  const sumOfShares = (shares: { percentageShare: string }[]) =>
+    shares.reduce((sum, share) => sum + parseFloat(share.percentageShare), 0);
+
+  // Rounding each share independently to 8 decimals (as the widget used to do
+  // for cause areas, before they went through this same remainder-absorbing
+  // helper organization shares already used) can drift below or above 100 -
+  // which is exactly what caused a production incident: the backend rejected
+  // a donation with "Cause area share must sum to 100, but was 100.00000001".
+  const naiveIndependentRounding = (amounts: { amount: number }[]) => {
+    const total = amounts.reduce((sum, item) => sum + item.amount, 0);
+    return amounts.map((item) => ((item.amount / total) * 100).toFixed(8));
+  };
+
+  it("sums to exactly 100 for splits where naive independent rounding drifts below 100", () => {
+    const causeAreas = [
+      { id: 1, amount: 1 },
+      { id: 2, amount: 1 },
+      { id: 3, amount: 1 },
+    ];
+
+    const naiveSum = naiveIndependentRounding(causeAreas).reduce(
+      (sum, share) => sum + parseFloat(share),
+      0,
+    );
+    expect(naiveSum).not.toBe(100); // demonstrates the bug this replaces
+
+    expect(sumOfShares(distributeSharesWithRemainder(causeAreas))).toBe(100);
+  });
+
+  it("sums to exactly 100 for splits where naive independent rounding drifts above 100", () => {
+    const causeAreas = Array.from({ length: 6 }, (_, i) => ({ id: i, amount: 1 }));
+
+    const naiveSum = naiveIndependentRounding(causeAreas).reduce(
+      (sum, share) => sum + parseFloat(share),
+      0,
+    );
+    expect(naiveSum).not.toBe(100); // demonstrates the bug this replaces
+
+    expect(sumOfShares(distributeSharesWithRemainder(causeAreas))).toBe(100);
+  });
+
+  it("preserves fields other than amount on each item", () => {
+    const shares = distributeSharesWithRemainder([
+      { id: 1, amount: 40, name: "Area A" },
+      { id: 2, amount: 60, name: "Area B" },
+    ]);
+
+    expect(shares.find((s) => s.id === 1)?.name).toBe("Area A");
+    expect(shares.find((s) => s.id === 2)?.name).toBe("Area B");
+  });
+
+  it("returns an empty array when the total is zero or negative", () => {
+    expect(distributeSharesWithRemainder([])).toEqual([]);
+    expect(distributeSharesWithRemainder([{ id: 1, amount: 0 }])).toEqual([]);
+  });
+});
 
 describe("calculateOrganizationSharesWithinCauseArea", () => {
   const sumOfShares = (shares: { percentageShare: string }[]) =>
@@ -12,7 +239,7 @@ describe("calculateOrganizationSharesWithinCauseArea", () => {
       { id: 2, amount: 75 },
     ]);
 
-    expect(shares.find((s) => s.id === 1)?.percentageShare).toBe("25.00000000");
+    expect(shares.find((s) => s.id === 1)?.percentageShare).toBe("25");
     // Org 2 has the largest amount, so it absorbs the rounding remainder
     // (100 - sum of the others) rather than being independently rounded
     expect(shares.find((s) => s.id === 2)?.percentageShare).toBe("75");
@@ -60,7 +287,9 @@ describe("calculateOrganizationSharesWithinCauseArea", () => {
       { id: 2, amount: 74.6 },
     ]);
     expect(shares.find((s) => s.id === 1)?.amount).toBe(25);
+    expect(shares.find((s) => s.id === 1)?.percentageShare).toBe("25");
     expect(shares.find((s) => s.id === 2)?.amount).toBe(75);
+    expect(shares.find((s) => s.id === 2)?.percentageShare).toBe("75");
   });
 
   it("returns an empty array when there are no positive amounts", () => {

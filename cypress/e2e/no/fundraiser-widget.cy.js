@@ -138,7 +138,9 @@ describe("Fundraiser widget - default configuration", () => {
     cy.get("body").find("[data-cy='fundraiser-email-input']").should("not.exist");
 
     cy.get("[data-cy='fundraiser-method-bank']").click({ force: true });
+    cy.get("[data-cy='fundraiser-submit-button']").should("have.text", "Gi med bank");
     cy.get("[data-cy='fundraiser-method-vipps']").click({ force: true });
+    cy.get("[data-cy='fundraiser-submit-button']").should("have.text", "Gi med Vipps");
   });
 
   it("completes a bank donation flow and reveals transfer details", () => {
@@ -164,7 +166,7 @@ describe("Fundraiser widget - default configuration", () => {
 
     cy.window().then((win) => cy.stub(win, "open").as("windowOpen"));
 
-    cy.get("[data-cy='fundraiser-submit-button']").should("contain", "Gi med bank");
+    cy.get("[data-cy='fundraiser-submit-button']").should("be.visible").and("not.be.disabled");
     cy.get("[data-cy='fundraiser-submit-button']").click({ force: true });
 
     cy.wait("@registerDonation");
@@ -224,7 +226,7 @@ describe("Fundraiser widget variations", () => {
 
     cy.window().then((win) => cy.stub(win, "open").as("windowOpen"));
 
-    cy.get("[data-cy='fundraiser-submit-button']").should("contain", "Gi med Vipps");
+    cy.get("[data-cy='fundraiser-submit-button']").should("be.visible").and("not.be.disabled");
     cy.get("[data-cy='fundraiser-submit-button']").click({ force: true });
 
     cy.wait("@registerVippsDonation");
@@ -262,11 +264,14 @@ describe("Fundraiser widget - name/message payload variations", () => {
     submitBankDonation();
 
     cy.wait("@registerDonation")
-      .its("request.body.fundraiser")
-      .should((fundraiser) => {
-        expect(fundraiser.message).to.equal("");
-        expect(fundraiser.messageSenderName).to.equal(null);
-        expect(fundraiser.showName).to.equal(false);
+      .its("request.body")
+      .should((body) => {
+        expect(body.amount).to.equal(200);
+        expect(body.distributionCauseAreas[0].amount).to.equal(200);
+        expect(body.distributionCauseAreas[0].organizations[0].amount).to.equal(200);
+        expect(body.fundraiser.message).to.equal("");
+        expect(body.fundraiser.messageSenderName).to.equal(null);
+        expect(body.fundraiser.showName).to.equal(false);
       });
   });
 

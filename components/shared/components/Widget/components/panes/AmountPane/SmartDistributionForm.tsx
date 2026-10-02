@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
+import AnimateHeight from "react-animate-height";
+import { ChevronDown } from "react-feather";
+import { PortableText } from "next-sanity";
 import {
   FormWrapper,
   CauseAreaTitle,
@@ -9,24 +12,18 @@ import {
   TotalSumWrapper,
   SumWrapper,
   SumButtonsWrapper,
-  ExplenationAccordion,
+  RolloutAccordion,
 } from "../AmountPane.style";
 import { MultipleCauseAreaIcon } from "../SelectionPane.style";
 import { CauseArea } from "../../../types/CauseArea";
 import { ShareType } from "../../../types/Enums";
-import {
-  setCauseAreaAmount,
-  setCauseAreaDistributionType,
-  setSmartDistributionTotal,
-} from "../../../store/donation/actions";
+import { setSmartDistributionTotal } from "../../../store/donation/actions";
 import { EffektButton, EffektButtonVariant } from "../../../../EffektButton/EffektButton";
 import { thousandize } from "../../../../../../../util/formatting";
 import { State } from "../../../store/state";
-import AnimateHeight from "react-animate-height";
-import { ChevronDown } from "react-feather";
-import { Links, LinkType } from "../../../../../../main/blocks/Links/Links";
-import { PortableText } from "next-sanity";
 import { CauseAreaDisplayConfig, SmartDistributionContext } from "../../../types/WidgetProps";
+import { CauseAreaRollout } from "../../shared/CauseAreaRollout/CauseAreaRollout";
+import { Links } from "../../../../../../main/blocks/Links/Links";
 
 interface SmartDistributionFormProps {
   suggestedSums: Array<{ amount: number; subtext?: string }>;
@@ -50,8 +47,12 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
 }) => {
   const dispatch = useDispatch<any>();
   const plausible = usePlausible();
-
-  const [explenationOpen, setExplanationOpen] = useState(false);
+  const [explanationOpen, setExplanationOpen] = useState(false);
+  const hasSmartDistributionRollout = Boolean(
+    causeAreaDisplayConfig?.cause_area_rollouts?.some(
+      (item) => item.cause_area_id === -1 && item.title,
+    ),
+  );
 
   // Get smart distribution total from Redux state
   const smartDistributionTotal =
@@ -60,48 +61,21 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
   const handleSuggestedSumClick = (suggestedAmount: number) => {
     plausible("SelectSuggestedSum", { props: { sum: suggestedAmount } });
     dispatch(setSmartDistributionTotal(suggestedAmount));
-
-    causeAreas.forEach((ca) => {
-      if (ca.standardPercentageShare && ca.standardPercentageShare > 0) {
-        dispatch(
-          setCauseAreaAmount(
-            ca.id,
-            Math.round((ca.standardPercentageShare / 100) * suggestedAmount),
-          ),
-        );
-        dispatch(setCauseAreaDistributionType(ca.id, ShareType.STANDARD));
-      }
-    });
   };
 
-  const handleTotalAmountChange = (values: {
-    floatValue: number | undefined;
-    formattedValue: string;
-    value: string;
-  }) => {
+  const handleTotalAmountChange = (
+    values: {
+      floatValue: number | undefined;
+      formattedValue: string;
+      value: string;
+    },
+    sourceInfo: { source: string },
+  ) => {
+    // react-number-format also fires this on mount/reformat, not just on real
+    // keystrokes - only a genuine user edit should overwrite the stored total.
+    if (sourceInfo.source !== "event") return;
     const v = values.floatValue === undefined ? 0 : values.floatValue;
     dispatch(setSmartDistributionTotal(v));
-
-    if (v > 0) {
-      let sumForTipCalculation = 0;
-      causeAreas.forEach((ca) => {
-        if (ca.standardPercentageShare && ca.standardPercentageShare > 0) {
-          const amountForCA = Math.round((ca.standardPercentageShare / 100) * v);
-          dispatch(setCauseAreaAmount(ca.id, amountForCA));
-          dispatch(setCauseAreaDistributionType(ca.id, ShareType.STANDARD));
-          if (ca.id !== 4) {
-            sumForTipCalculation += amountForCA;
-          }
-        }
-      });
-    } else {
-      causeAreas.forEach((ca) => {
-        if (ca.standardPercentageShare && ca.standardPercentageShare > 0) {
-          dispatch(setCauseAreaAmount(ca.id, 0));
-          dispatch(setCauseAreaDistributionType(ca.id, ShareType.STANDARD));
-        }
-      });
-    }
   };
 
   return (
@@ -148,25 +122,30 @@ export const SmartDistributionForm: React.FC<SmartDistributionFormProps> = ({
         </TotalSumWrapper>
       </div>
       <div>
-        {/** Smart distribution current distribution accordion */}
-        <ExplenationAccordion>
-          <div onClick={() => setExplanationOpen(!explenationOpen)}>
-            <span>{smartDistributionContext.smart_distribution_label_text}</span>
-            <ChevronDown
-              size={28}
-              style={{
-                transform: explenationOpen ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform 0.3s ease",
-              }}
-            />
-          </div>
-          <AnimateHeight height={explenationOpen ? "auto" : 0}>
-            <div>
-              <PortableText value={smartDistributionContext.smart_distribution_description} />
-              <Links links={smartDistributionContext.smart_distribution_description_links} />
-            </div>
-          </AnimateHeight>
-        </ExplenationAccordion>
+        {!hasSmartDistributionRollout &&
+          smartDistributionContext.smart_distribution_description && (
+            <RolloutAccordion>
+              <div onClick={() => setExplanationOpen(!explanationOpen)}>
+                <span>{smartDistributionContext.smart_distribution_label_text}</span>
+                <ChevronDown
+                  size={28}
+                  style={{
+                    transform: explanationOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.3s ease",
+                  }}
+                />
+              </div>
+              <AnimateHeight height={explanationOpen ? "auto" : 0}>
+                <div>
+                  <PortableText value={smartDistributionContext.smart_distribution_description} />
+                  {smartDistributionContext.smart_distribution_description_links && (
+                    <Links links={smartDistributionContext.smart_distribution_description_links} />
+                  )}
+                </div>
+              </AnimateHeight>
+            </RolloutAccordion>
+          )}
+        <CauseAreaRollout causeAreaId={-1} config={causeAreaDisplayConfig} />
       </div>
     </FormWrapper>
   );

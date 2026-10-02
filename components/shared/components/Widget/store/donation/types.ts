@@ -35,6 +35,7 @@ export const SET_PREFILLED_SHARES = "SET_PREFILLED_SHARES";
 export const SET_SHOW_ALL_ORGANIZATIONS = "SET_SHOW_ALL_ORGANIZATIONS";
 export const SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT =
   "SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT";
+export const SET_REFERRAL_CODE = "SET_REFERRAL_CODE";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -274,6 +275,13 @@ interface SetHasManuallyEditedPrefilledOrgAmount {
   };
 }
 
+interface SetReferralCode {
+  type: typeof SET_REFERRAL_CODE;
+  payload: {
+    referralCode?: string;
+  };
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -304,4 +312,5 @@ export type DonationActionTypes =
   | ClearApiError
   | SetPrefilledShares
   | SetShowAllOrganizations
-  | SetHasManuallyEditedPrefilledOrgAmount;
+  | SetHasManuallyEditedPrefilledOrgAmount
+  | SetReferralCode;

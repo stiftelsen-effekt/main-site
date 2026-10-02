@@ -31,6 +31,7 @@ import {
   SET_PREFILLED_SHARES,
   SET_SHOW_ALL_ORGANIZATIONS,
   SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
+  SET_REFERRAL_CODE,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
@@ -372,5 +373,15 @@ export function setHasManuallyEditedPrefilledOrgAmount(edited: boolean): Donatio
   return {
     type: SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
     payload: { edited },
+  };
+}
+
+/**
+ * Set or clear a campaign/matching referral code (from the donor pane or ?referral=).
+ */
+export function setReferralCode(referralCode?: string): DonationActionTypes {
+  return {
+    type: SET_REFERRAL_CODE,
+    payload: { referralCode },
   };
 }

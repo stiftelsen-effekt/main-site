@@ -12,6 +12,7 @@ import Organisationsnummer from "organisationsnummer";
 import Personnummer from "personnummer";
 import { validateTin, formatTinInput } from "../../../../../util/tin-validation";
 import { FormattingLocale } from "../../../../../util/formatting";
+import { fundraiserSubmitButtonText } from "../fundraiserSubmitButtonText";
 
 interface PaymentMethodPaneProps {
   formData: Pick<
@@ -163,20 +164,6 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
 
       setSsnError(isValid ? null : config.tax_deduction?.ssn_invalid_error_text || null);
     };
-    const getButtonText = () => {
-      return formData.paymentMethod === "bank"
-        ? "Gi med bank"
-        : formData.paymentMethod === "vipps"
-        ? "Gi med Vipps"
-        : formData.paymentMethod === "quickpay_card"
-        ? "Giv med kort"
-        : formData.paymentMethod === "quickpay_mobilepay"
-        ? "Giv med MobilePay"
-        : formData.paymentMethod === "dkbank"
-        ? "Giv med bank"
-        : "Gi";
-    };
-
     const emailInput = (
       <div className={styles["donation-widget__input-group"]}>
         <input
@@ -362,7 +349,11 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             className={styles["donation-widget__button"]}
             data-cy="fundraiser-submit-button"
           >
-            {loading ? <Spinner className={styles["donation-widget__spinner"]} /> : getButtonText()}
+            {loading ? (
+              <Spinner className={styles["donation-widget__spinner"]} />
+            ) : (
+              fundraiserSubmitButtonText(formData.paymentMethod)
+            )}
           </button>
         </form>
       </div>

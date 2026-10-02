@@ -39,6 +39,7 @@ import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../middleware.page";
 import { CookieBannerQueryResult } from "../../studio/sanity.types";
+import { CauseAreaContext } from "../../components/shared/components/Widget/types/WidgetProps";
 
 export async function getAgreementsPagePath() {
   const result = await getClient().fetch<FetchAgreementsPageResult>(fetchAgreementsPage);
@@ -95,6 +96,7 @@ export const AgreementsPage = withStaticProps(
         page={page}
         cookieBannerConfig={cookieBannerConfig}
         settings={data.result.settings[0]}
+        causeAreaContexts={data.result.causeAreaContexts ?? []}
       />
     );
   }
@@ -115,7 +117,8 @@ const DKAgreementsPageContent: React.FC<{
   page: AgreementsPageData | undefined;
   cookieBannerConfig: CookieBannerQueryResult | undefined;
   settings: { title?: string };
-}> = ({ navbarData, page, cookieBannerConfig, settings }) => {
+  causeAreaContexts: CauseAreaContext[];
+}> = ({ navbarData, page, cookieBannerConfig, settings, causeAreaContexts }) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const [selected, setSelected] = useState<AgreementsMenuOptions>(
     AgreementsMenuOptions.ACTIVE_AGREEMENTS,
@@ -253,6 +256,7 @@ const DKAgreementsPageContent: React.FC<{
               taxUnits={taxUnits}
               expandable={true}
               configuration={page?.active_list_configuration}
+              causeAreaContexts={causeAreaContexts}
             />
           ) : null}
 
@@ -263,6 +267,7 @@ const DKAgreementsPageContent: React.FC<{
               taxUnits={taxUnits}
               expandable={false}
               configuration={page?.inactive_list_configuration}
+              causeAreaContexts={causeAreaContexts}
             />
           ) : null}
         </div>
@@ -538,6 +543,7 @@ type FetchAgreementsPageResult = {
   }>;
   dashboard: Array<{ dashboard_slug?: { current?: string } }>;
   page?: AgreementsPageData;
+  causeAreaContexts?: CauseAreaContext[];
 };
 
 const fetchAgreementsPage = groq`
@@ -552,6 +558,7 @@ const fetchAgreementsPage = groq`
       current
     },
   },
+  "causeAreaContexts": *[_type == "donationwidget"][0].cause_area_display_config.cause_area_contexts,
   "page": *[_id == "agreements"][0] {
     ...,
     active_list_configuration {

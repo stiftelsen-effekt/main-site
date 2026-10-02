@@ -42,6 +42,8 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
   const actionRef = useRef<HTMLDivElement>(null);
   useClickOutsideAlerter(actionRef, () => setContextOpen(false));
 
+  const toggleExpanded = () => setExpanded((expanded) => !expanded);
+
   let actions = [];
 
   if (typeof row.contextOptions !== "undefined") {
@@ -76,7 +78,10 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
   if (expandable) {
     actions.push(
       <div
-        onClick={() => setExpanded(!expanded)}
+        onClick={(e: React.MouseEvent) => {
+          e.stopPropagation();
+          toggleExpanded();
+        }}
         data-cy="generic-list-row-expand"
         className={style.actionContainer}
         key={row.id + "-expand"}
@@ -94,9 +99,7 @@ const GenericListRow = <T extends unknown>({ row, expandable }: Props<T>) => {
     <tbody ref={ref}>
       <tr
         key={row.id}
-        onClick={() => {
-          expandable && window.innerWidth > 1180 ? setExpanded(!expanded) : expanded;
-        }}
+        onClick={() => expandable && toggleExpanded()}
         data-cy="generic-list-row-expand"
         className={expandable ? style.expandableRow : ""}
       >

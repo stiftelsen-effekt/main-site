@@ -265,22 +265,20 @@ export default defineType({
           name: "smart_distribution_label_text",
           title: "Smart distribution label text",
           type: "string",
-          validation: (Rule) => Rule.required(),
-          description: "Only used if there is more than one cause area",
+          description:
+            "Accordion label for the smart distribution description. Only used if there is more than one cause area",
         }),
         defineField({
           name: "smart_distribution_description",
           title: "Smart distribution description",
           type: "array",
           of: [{ type: "block" }],
-          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "smart_distribution_description_links",
           title: "Smart distribution description links",
           type: "array",
           of: [{ type: "link" }],
-          validation: (Rule) => Rule.required(),
           description: "Only used if there is more than one cause area",
         }),
         defineField({
@@ -382,34 +380,6 @@ export default defineType({
           of: [{ type: "number" }],
           components: { input: CauseAreaMultiSelectInput },
         },
-        {
-          name: "x_factor_info",
-          title: "X-faktor info box",
-          type: "object",
-          description:
-            "Expandable info box explaining the organization's 'X-faktor', shown under the operations/drift cause area",
-          fields: [
-            {
-              name: "label_text",
-              title: "Label text",
-              type: "string",
-              description: "The clickable label that expands the info box",
-            },
-            {
-              name: "description",
-              title: "Description",
-              type: "array",
-              of: [{ type: "block" }],
-            },
-            {
-              name: "link",
-              title: "Read more link",
-              type: "navitem",
-              description:
-                'Optional link shown at the bottom of the expanded info box, e.g. to the "X-faktor" page',
-            },
-          ],
-        },
       ],
     },
     {
@@ -481,29 +451,54 @@ export default defineType({
           ],
         },
         {
-          name: "other_cause_area_info",
-          title: '"Andet" info box',
-          type: "object",
-          description:
-            'Expandable info box shown under the "Andet" (other) cause area, explaining who this option is intended for',
-          fields: [
+          name: "cause_area_rollouts",
+          title: "Cause area rollouts",
+          type: "array",
+          description: "Expandable information displayed under specific cause areas",
+          of: [
             {
-              name: "label_text",
-              title: "Label text",
-              type: "string",
-              description: "The clickable label that expands the info box",
-            },
-            {
-              name: "description",
-              title: "Description",
-              type: "array",
-              of: [{ type: "block" }],
-            },
-            {
-              name: "link",
-              title: "Read more link",
-              type: "navitem",
-              description: "Optional link shown at the bottom of the expanded info box",
+              type: "object",
+              fields: [
+                {
+                  name: "cause_area_id",
+                  title: "Cause area",
+                  type: "number",
+                  validation: (Rule: any) => Rule.required(),
+                  options: { includeSmartDistribution: true },
+                  components: { input: CauseAreaSelectInput },
+                },
+                {
+                  name: "title",
+                  title: "Title",
+                  type: "string",
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: "text",
+                  title: "Text",
+                  type: "array",
+                  of: [{ type: "block" }],
+                },
+                {
+                  name: "links",
+                  title: "Links",
+                  type: "array",
+                  description: "Optional links shown below the text",
+                  of: [{ type: "link" }],
+                  validation: (Rule: any) =>
+                    Rule.custom((links: Array<{ title?: string }> | undefined) =>
+                      links?.some((link) => !link.title)
+                        ? "Every link must have a link label"
+                        : true,
+                    ),
+                },
+              ],
+              preview: {
+                select: {
+                  title: "cause_area_id",
+                  subtitle: "title",
+                },
+              },
             },
           ],
         },
@@ -599,6 +594,32 @@ export default defineType({
       type: "string",
       group: "pane2",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "show_referral_code_field",
+      title: "Show referral code field",
+      type: "boolean",
+      group: "pane2",
+      initialValue: false,
+      description:
+        "If true, the donor can enter a referral/campaign code on pane 2. Codes from the URL (?referral=) are still sent even when this is off.",
+    }),
+    defineField({
+      name: "referral_code_placeholder",
+      title: "Referral code placeholder",
+      type: "string",
+      group: "pane2",
+      description: "Placeholder shown in the referral code input when the field is visible.",
+      validation: (Rule) =>
+        Rule.custom((value, ctx) => {
+          if (
+            (ctx.parent as { show_referral_code_field?: boolean }).show_referral_code_field &&
+            !value
+          ) {
+            return "Referral code placeholder is required when the referral code field is shown.";
+          }
+          return true;
+        }),
     }),
     // Tax deduction selector text pane 2
     defineField({

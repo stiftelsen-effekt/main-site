@@ -47,12 +47,23 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
 
     // Special handling for smart distribution mode
     if (selectedCauseAreaId === -1 && smartDistributionTotal > 0) {
+      const operationsAmount = globalOperationsEnabled
+        ? Math.round((smartDistributionTotal * globalOperationsPercentage) / 100)
+        : 0;
       summaryItems.push({
         id: -1,
         name: text.smart_distribution_title,
-        amount: smartDistributionTotal,
+        amount: smartDistributionTotal - operationsAmount,
         orgs: [],
       });
+      if (operationsAmount > 0 && operationsConfig?.operationsCauseAreaId !== undefined) {
+        summaryItems.push({
+          id: operationsConfig.operationsCauseAreaId,
+          name: text.operations_summary_label,
+          amount: operationsAmount,
+          orgs: [],
+        });
+      }
       return { summaryItems, sum: smartDistributionTotal };
     }
 
@@ -73,9 +84,40 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       smartDistributionTotal,
     );
 
+    const hasCombinedSmartDistribution = selectionType === "multiple" && smartDistributionTotal > 0;
+    const displayedBreakdown = hasCombinedSmartDistribution
+      ? calculateDonationBreakdown(
+          causeAreaAmounts,
+          orgAmounts,
+          causeAreaDistributionType,
+          operationsPercentageModeByCauseArea,
+          operationsPercentageByCauseArea,
+          causeAreas,
+          selectionType,
+          selectedCauseAreaId,
+          globalOperationsEnabled,
+          globalOperationsPercentage,
+          operationsConfig?.excludedCauseAreaIds || [],
+          operationsConfig?.operationsCauseAreaId,
+        )
+      : breakdown;
+
+    if (hasCombinedSmartDistribution) {
+      const directAmount = Object.values(displayedBreakdown.causeAreaAmounts).reduce(
+        (total, amount) => total + amount,
+        0,
+      );
+      summaryItems.push({
+        id: -1,
+        name: text.smart_distribution_title,
+        amount: breakdown.totalAmount - breakdown.operationsAmount - directAmount,
+        orgs: [],
+      });
+    }
+
     // Build summary items from breakdown
     causeAreas.forEach((area) => {
-      const areaAmount = breakdown.causeAreaAmounts[area.id];
+      const areaAmount = displayedBreakdown.causeAreaAmounts[area.id];
       if (!areaAmount || areaAmount <= 0) return;
 
       const orgs: Array<{ id: number; name: string; amount: number }> = [];
@@ -83,7 +125,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
       // Add organization breakdown if custom distribution
       if (causeAreaDistributionType[area.id] === ShareType.CUSTOM) {
         area.organizations.forEach((org) => {
-          const orgAmount = breakdown.organizationAmounts[org.id];
+          const orgAmount = displayedBreakdown.organizationAmounts[org.id];
           if (orgAmount && orgAmount > 0) {
             orgs.push({
               id: org.id,
@@ -126,6 +168,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
     globalOperationsEnabled,
     smartDistributionTotal,
     globalOperationsPercentage,
+    operationsConfig,
     text.smart_distribution_title,
     text.operations_summary_label,
   ]);
@@ -165,9 +208,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
                   }
                 >
                   {(!item.orgs || item.orgs.length === 0) &&
-                    `${item.amount !== Math.round(item.amount) ? "~" : ""} ${Math.round(
-                      item.amount,
-                    ).toLocaleString("no-NB")} kr`}
+                    `${item.amount.toLocaleString("no-NB")} kr`}
                 </td>
               </tr>
               {item.orgs &&
@@ -177,8 +218,7 @@ export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text 
                       {org.name}
                     </td>
                     <td data-cy={`summary-org-${org.id}-amount`}>
-                      {org.amount !== Math.round(org.amount) ? "~" : null}{" "}
-                      {Math.round(org.amount).toLocaleString("no-NB")} kr
+                      {org.amount.toLocaleString("no-NB")} kr
                     </td>
                   </tr>
                 ))}

@@ -1,4 +1,5 @@
 import { SagaIterator } from "redux-saga";
+import { getStoredFundraiserId } from "../../../../../../util/fundraiserAttribution";
 import { call, put, select } from "redux-saga/effects";
 import { Action } from "typescript-fsa";
 import { ANONYMOUS_DONOR } from "../../config/anonymous-donor";
@@ -20,6 +21,7 @@ import { CauseArea } from "../../types/CauseArea";
 import {
   calculateDonationBreakdown,
   calculateOrganizationSharesWithinCauseArea,
+  distributeSharesWithRemainder,
 } from "../../utils/donationCalculations";
 
 export function* draftVippsAgreement(): SagaIterator<void> {
@@ -53,7 +55,7 @@ export function* draftVippsAgreement(): SagaIterator<void> {
     );
     const data = {
       KID: donation.kid,
-      sum: breakdown.totalAmount,
+      amount: breakdown.totalAmount,
       initialCharge,
       monthlyChargeDay,
     };
@@ -116,7 +118,7 @@ export function* draftAvtaleGiro(): SagaIterator<void> {
 
     const data = {
       KID: donation.kid,
-      sum: breakdown.totalAmount,
+      amount: breakdown.totalAmount,
       dueDay,
     };
 
@@ -205,6 +207,7 @@ export function* registerDonation(
       recurring,
       donor,
       method,
+      referralCode,
       smartDistributionTotal,
       operationsPercentageModeByCauseArea = {},
       operationsPercentageByCauseArea = {},
@@ -232,11 +235,10 @@ export function* registerDonation(
       smartDistributionTotal,
     );
 
-    let distributionPayload: {
+    let causeAreaEntries: {
       id: number;
       standardSplit: boolean;
       name: string;
-      percentageShare: string;
       amount: number;
       organizations: { id: number; percentageShare: string; amount: number }[];
     }[] = [];
@@ -244,15 +246,19 @@ export function* registerDonation(
     // Build the distribution payload from the breakdown
     allCauseAreas.forEach((area) => {
       const orgAmountsForArea = area.organizations
-        .map((org) => ({ id: org.id, amount: breakdown.organizationAmounts[org.id] || 0 }))
+        .map((org) => ({
+          id: org.id,
+          amount:
+            (breakdown.organizationAmounts[org.id] || 0) +
+            (area.id === OPERATIONS_CAUSE_AREA_ID && org.standardShare
+              ? (org.standardShare / 100) * breakdown.operationsAmount
+              : 0),
+        }))
         .filter((org) => org.amount > 0);
 
       // Only add areas that have organizations with amounts
       if (orgAmountsForArea.length > 0 && breakdown.totalAmount > 0) {
         const areaAmount = orgAmountsForArea.reduce((sum, org) => sum + org.amount, 0);
-        // Cause area's percentage is of the overall donation, but each
-        // organization's percentage share must be of this cause area
-        const areaPercentage = (areaAmount / breakdown.totalAmount) * 100;
         const areaOrgPayloads = calculateOrganizationSharesWithinCauseArea(orgAmountsForArea);
 
         // Determine the standardSplit flag
@@ -267,12 +273,11 @@ export function* registerDonation(
           isStandardSplit = true;
         }
 
-        distributionPayload.push({
+        causeAreaEntries.push({
           id: area.id,
           name: area.name,
           standardSplit: isStandardSplit,
-          percentageShare: areaPercentage.toFixed(8),
-          amount: Math.round(areaAmount),
+          amount: areaAmount,
           organizations: areaOrgPayloads,
         });
       }
@@ -281,12 +286,7 @@ export function* registerDonation(
     // Add operations cause area if there's an operations amount
     if (breakdown.operationsAmount > 0) {
       const operationsCauseArea = allCauseAreas.find((ca) => ca.id === OPERATIONS_CAUSE_AREA_ID);
-      if (
-        operationsCauseArea &&
-        !distributionPayload.some((p) => p.id === OPERATIONS_CAUSE_AREA_ID)
-      ) {
-        const operationsPercentage = (breakdown.operationsAmount / breakdown.totalAmount) * 100;
-
+      if (operationsCauseArea && !causeAreaEntries.some((p) => p.id === OPERATIONS_CAUSE_AREA_ID)) {
         // Calculate organization amounts for the operations cause area, then
         // scale them to percentages of this cause area (not of the total)
         const operationsOrgAmounts = operationsCauseArea.organizations
@@ -298,18 +298,30 @@ export function* registerDonation(
         const operationsOrgPayloads =
           calculateOrganizationSharesWithinCauseArea(operationsOrgAmounts);
 
-        distributionPayload.push({
+        causeAreaEntries.push({
           id: operationsCauseArea.id,
           name: operationsCauseArea.name,
           standardSplit: true,
-          percentageShare: operationsPercentage.toFixed(8),
-          amount: Math.round(breakdown.operationsAmount),
+          amount: breakdown.operationsAmount,
           organizations: operationsOrgPayloads,
         });
       }
     }
 
+    // Cause area shares must sum to exactly 100 (the backend enforces this with
+    // zero tolerance), so - like organization shares within a cause area - the
+    // largest cause area absorbs the rounding remainder instead of each area's
+    // share being rounded independently, which can drift by a fraction of a
+    // percent (e.g. 100.00000001) once there are 2+ areas in the split.
+    const distributionPayload = distributeSharesWithRemainder(causeAreaEntries).map(
+      ({ amount, ...rest }) => ({
+        ...rest,
+        amount: Math.round(amount),
+      }),
+    );
+
     // --- Prepare final data object for API ---
+    const fundraiserId: string | undefined = yield call(getStoredFundraiserId);
     const data: RegisterDonationObject & {
       distributionCauseAreas: any;
     } = {
@@ -318,6 +330,8 @@ export function* registerDonation(
       method: method || PaymentMethod.BANK,
       amount: breakdown.totalAmount,
       recurring: recurring,
+      ...(referralCode ? { referralCode } : {}),
+      ...(fundraiserId ? { fundraiser: { id: fundraiserId } } : {}),
     };
 
     // --- Make API call ---

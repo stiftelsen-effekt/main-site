@@ -2890,32 +2890,6 @@ export type Donationwidget = {
   smart_distribution_context?: {
     smart_distribution_radiobutton_text?: string;
     custom_distribution_radiobutton_text?: string;
-    smart_distribution_label_text?: string;
-    smart_distribution_description?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
-    smart_distribution_description_links?: Array<{
-      title?: string;
-      url?: string;
-      newtab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
   };
   donation_input_error_templates?: {
     donation_sum_error_template?: string;
@@ -2933,6 +2907,8 @@ export type Donationwidget = {
   name_invalid_error_text?: string;
   email_placeholder?: string;
   email_invalid_error_text?: string;
+  show_referral_code_field?: boolean;
+  referral_code_placeholder?: string;
   tax_deduction_selector_text?: string;
   tax_deduction_ssn_placeholder?: string;
   tax_deduction_ssn_invalid_error_text?: string;
@@ -6114,6 +6090,11 @@ export type Fundraiser_page = {
     [internalGroqTypeReferenceTo]?: "fundraiserwidget";
   };
   suggested_amounts?: Array<number>;
+  monthly_donations?: {
+    enabled?: boolean;
+    single_donation_text?: string;
+    monthly_donation_text?: string;
+  };
   gift_activity_config?: {
     title?: string;
     gift_amount_text_template?: string;
@@ -12908,32 +12889,6 @@ export type FetchArticleResult = {
               smart_distribution_context?: {
                 smart_distribution_radiobutton_text?: string;
                 custom_distribution_radiobutton_text?: string;
-                smart_distribution_label_text?: string;
-                smart_distribution_description?: Array<{
-                  children?: Array<{
-                    marks?: Array<string>;
-                    text?: string;
-                    _type: "span";
-                    _key: string;
-                  }>;
-                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                  listItem?: "bullet" | "number";
-                  markDefs?: Array<{
-                    href?: string;
-                    _type: "link";
-                    _key: string;
-                  }>;
-                  level?: number;
-                  _type: "block";
-                  _key: string;
-                }>;
-                smart_distribution_description_links?: Array<{
-                  title?: string;
-                  url?: string;
-                  newtab?: boolean;
-                  _type: "link";
-                  _key: string;
-                }>;
               };
               donation_input_error_templates?: {
                 donation_sum_error_template?: string;
@@ -16962,6 +16917,11 @@ export type FetchFundraiserResult = {
       };
     } | null;
     suggested_amounts: Array<number> | null;
+    monthly_donations?: {
+      enabled?: boolean;
+      single_donation_text?: string;
+      monthly_donation_text?: string;
+    };
     gift_activity_config?: {
       title?: string;
       gift_amount_text_template?: string;
@@ -18127,32 +18087,6 @@ export type FetchFundraiserResult = {
               smart_distribution_context?: {
                 smart_distribution_radiobutton_text?: string;
                 custom_distribution_radiobutton_text?: string;
-                smart_distribution_label_text?: string;
-                smart_distribution_description?: Array<{
-                  children?: Array<{
-                    marks?: Array<string>;
-                    text?: string;
-                    _type: "span";
-                    _key: string;
-                  }>;
-                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                  listItem?: "bullet" | "number";
-                  markDefs?: Array<{
-                    href?: string;
-                    _type: "link";
-                    _key: string;
-                  }>;
-                  level?: number;
-                  _type: "block";
-                  _key: string;
-                }>;
-                smart_distribution_description_links?: Array<{
-                  title?: string;
-                  url?: string;
-                  newtab?: boolean;
-                  _type: "link";
-                  _key: string;
-                }>;
               };
               donation_input_error_templates?: {
                 donation_sum_error_template?: string;
@@ -23127,32 +23061,6 @@ export type FetchGenericPageResult = {
               smart_distribution_context?: {
                 smart_distribution_radiobutton_text?: string;
                 custom_distribution_radiobutton_text?: string;
-                smart_distribution_label_text?: string;
-                smart_distribution_description?: Array<{
-                  children?: Array<{
-                    marks?: Array<string>;
-                    text?: string;
-                    _type: "span";
-                    _key: string;
-                  }>;
-                  style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-                  listItem?: "bullet" | "number";
-                  markDefs?: Array<{
-                    href?: string;
-                    _type: "link";
-                    _key: string;
-                  }>;
-                  level?: number;
-                  _type: "block";
-                  _key: string;
-                }>;
-                smart_distribution_description_links?: Array<{
-                  title?: string;
-                  url?: string;
-                  newtab?: boolean;
-                  _type: "link";
-                  _key: string;
-                }>;
               };
               donation_input_error_templates?: {
                 donation_sum_error_template?: string;
@@ -31873,32 +31781,6 @@ export type FetchAgreementsPageResult = {
         smart_distribution_context?: {
           smart_distribution_radiobutton_text?: string;
           custom_distribution_radiobutton_text?: string;
-          smart_distribution_label_text?: string;
-          smart_distribution_description?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          smart_distribution_description_links?: Array<{
-            title?: string;
-            url?: string;
-            newtab?: boolean;
-            _type: "link";
-            _key: string;
-          }>;
         };
         donation_input_error_templates?: {
           donation_sum_error_template?: string;
@@ -40770,32 +40652,6 @@ export type FetchDonationsPageResult = {
         smart_distribution_context?: {
           smart_distribution_radiobutton_text?: string;
           custom_distribution_radiobutton_text?: string;
-          smart_distribution_label_text?: string;
-          smart_distribution_description?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          smart_distribution_description_links?: Array<{
-            title?: string;
-            url?: string;
-            newtab?: boolean;
-            _type: "link";
-            _key: string;
-          }>;
         };
         donation_input_error_templates?: {
           donation_sum_error_template?: string;
@@ -49435,32 +49291,6 @@ export type FetchProfilePageResult = {
         smart_distribution_context?: {
           smart_distribution_radiobutton_text?: string;
           custom_distribution_radiobutton_text?: string;
-          smart_distribution_label_text?: string;
-          smart_distribution_description?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }>;
-          smart_distribution_description_links?: Array<{
-            title?: string;
-            url?: string;
-            newtab?: boolean;
-            _type: "link";
-            _key: string;
-          }>;
         };
         donation_input_error_templates?: {
           donation_sum_error_template?: string;
