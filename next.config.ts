@@ -1,5 +1,6 @@
 import { NextConfig } from "next";
 import { withPlausibleProxy } from "next-plausible";
+import { getPlausibleScriptSrc, PLAUSIBLE_PROXY_PATHS } from "./lib/plausible";
 
 const STUDIO_REWRITE = {
   source: "/studio/:path*",
@@ -17,7 +18,16 @@ const nextConfig: NextConfig = {
   // instead of leaving them as external runtime requires (which throws
   // ERR_REQUIRE_ESM on the server/Vercel). next-sanity imports "next/dynamic"
   // without a file extension, which fails as an external ESM import.
-  transpilePackages: ["html-react-parser", "html-dom-parser", "domhandler", "next-sanity"],
+  // next-plausible reads its proxy paths from `env` values that Next only
+  // inlines into compiled code; loaded as an external module on the server it
+  // never sees them and throws "src is required".
+  transpilePackages: [
+    "html-react-parser",
+    "html-dom-parser",
+    "domhandler",
+    "next-sanity",
+    "next-plausible",
+  ],
   rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
@@ -911,5 +921,5 @@ const nextConfig: NextConfig = {
 };
 
 module.exports = (phase: any, defaultConfig: NextConfig) => {
-  return withPlausibleProxy()(nextConfig);
+  return withPlausibleProxy({ src: getPlausibleScriptSrc(), ...PLAUSIBLE_PROXY_PATHS })(nextConfig);
 };
