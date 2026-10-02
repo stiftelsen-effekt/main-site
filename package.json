@@ -30,12 +30,12 @@
     "@portabletext/react": "^3.2.4",
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.13.0",
-    "@sanity/client": "^7.27.0",
-    "@sanity/image-url": "^1.2.0",
+    "@sanity/client": "^8.9.0",
+    "@sanity/image-url": "^2.1.1",
     "@sanity/preview-kit": "^6.2.0",
     "@sanity/preview-url-secret": "^4.1.5",
     "@sanity/react-loader": "^2.2.2",
-    "@sanity/visual-editing": "^5.7.3",
+    "@sanity/visual-editing": "^6.1.2",
     "@ssfbank/norwegian-id-validators": "^1.0.0",
     "@stdlib/stats-base-dists-truncated-normal": "^0.2.3",
     "@vercel/kv": "^3.0.0",
@@ -48,7 +48,7 @@
     "luxon": "^3.7.2",
     "next": "^16.3.8",
     "next-plausible": "^3.12.5",
-    "next-sanity": "^12.4.5",
+    "next-sanity": "^13.3.4",
     "next-seo": "^5.15.0",
     "organisationsnummer": "^1.2.0",
     "personnummer": "^3.2.1",
@@ -106,6 +106,16 @@
     "*.{js,ts,jsx,tsx,json,md,css,scss,yml}": "prettier --write"
   },
   "overrides": {
-    "@types/react": "^19.3.0"
+    "@types/react": "^19.3.0",
+    "@module-federation/vite": {
+      "@module-federation/dts-plugin": "^2.9.2"
+    },
+    "@vercel/frameworks": {
+      "js-yaml": "^3.15.2",
+      "smol-toml": "^1.9.0"
+    },
+    "typeid-js": {
+      "uuid": "^11.1.1"
+    }
   }
 }

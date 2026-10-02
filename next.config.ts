@@ -15,9 +15,8 @@ const nextConfig: NextConfig = {
   // html-react-parser pulls in the ESM-only domhandler, which html-dom-parser
   // loads via require(). Transpiling these packages forces Next to bundle them
   // instead of leaving them as external runtime requires (which throws
-  // ERR_REQUIRE_ESM on the server/Vercel). next-sanity imports "next/dynamic"
-  // without a file extension, which fails as an external ESM import.
-  transpilePackages: ["html-react-parser", "html-dom-parser", "domhandler", "next-sanity"],
+  // ERR_REQUIRE_ESM on the server/Vercel).
+  transpilePackages: ["html-react-parser", "html-dom-parser", "domhandler"],
   rewrites: async () => [STUDIO_REWRITE],
   images: {
     remotePatterns: [
