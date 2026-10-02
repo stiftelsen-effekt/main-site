@@ -14,7 +14,8 @@ export const DatePickerInput: React.FC<{
   selected?: number;
   onChange: (selected: number) => void;
   configuration?: DatePickerInputConfiguration;
-}> = ({ selected, configuration, onChange }) => {
+  disabled?: boolean;
+}> = ({ selected, configuration, onChange, disabled }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   if (!configuration) return <span>Missing date input config</span>;
@@ -22,7 +23,7 @@ export const DatePickerInput: React.FC<{
   let textValue = getTextValue(selected, configuration);
 
   return (
-    <div className={style["datepicker-input-wrapper"]}>
+    <div className={`${style["datepicker-input-wrapper"]} ${disabled ? style["disabled"] : ""}`}>
       <div
         className={style["datepicker-container"]}
         style={{ display: pickerOpen ? undefined : "none" }}
@@ -40,9 +41,10 @@ export const DatePickerInput: React.FC<{
       </div>
       <input
         readOnly={true}
+        disabled={disabled}
         type={"text"}
         value={textValue}
-        onClick={() => setPickerOpen(true)}
+        onClick={() => !disabled && setPickerOpen(true)}
         data-cy="date-picker-input"
       />
       <Calendar />

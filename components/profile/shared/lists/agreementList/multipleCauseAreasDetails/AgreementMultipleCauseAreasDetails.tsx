@@ -34,6 +34,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
   taxUnits: TaxUnit[];
   configuration: AgreementMultipleCauseAreaDetailsConfiguration;
   dateSelectorConfig: DatePickerInputConfiguration;
+  dateDisabled?: boolean;
 }> = ({
   systemCauseAreas,
   distribution,
@@ -44,6 +45,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
   taxUnits,
   configuration,
   dateSelectorConfig,
+  dateDisabled,
 }) => {
   const [addTaxUnitOpen, setAddTaxUnitOpen] = useState(false);
 
@@ -75,6 +77,7 @@ export const AgreementMultipleCauseAreaDetails: React.FC<{
               selected={day}
               onChange={(date) => setDay(date)}
               configuration={dateSelectorConfig}
+              disabled={dateDisabled}
             />
           </div>
           <div className={style.valuesAmountContainer}>
