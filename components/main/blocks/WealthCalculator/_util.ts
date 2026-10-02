@@ -44,12 +44,37 @@ export const equvivalizeIncome = (
   return equvivalizedIncome;
 };
 
+/**
+ * Client side cache of post tax income estimates, so toggling back and forth between inputs
+ * (e.g. one and two adults) does not refetch estimates we already have.
+ */
+const postTaxIncomeCache = new Map<string, number>();
+
+const getPostTaxIncomeCacheKey = (
+  income: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
+  jurisdiction: TaxJurisdiction,
+) => `${jurisdiction}:${periodAdjustment}:${income}`;
+
+export const getCachedPostTaxIncome = (
+  income: number,
+  periodAdjustment: WealthCalculatorPeriodAdjustment,
+  jurisdiction: TaxJurisdiction,
+): number | undefined => {
+  if (income <= 0) return 0;
+  return postTaxIncomeCache.get(getPostTaxIncomeCacheKey(income, periodAdjustment, jurisdiction));
+};
+
 export const getEstimatedPostTaxIncome = async (
   income: number,
   periodAdjustment: WealthCalculatorPeriodAdjustment,
   jurisdiction: TaxJurisdiction,
 ) => {
-  // Round income to nearest 1000
+  const cached = getCachedPostTaxIncome(income, periodAdjustment, jurisdiction);
+  if (typeof cached !== "undefined") {
+    return cached;
+  }
+
   let tax = 0;
   switch (jurisdiction) {
     case TaxJurisdiction.SV:
@@ -65,7 +90,12 @@ export const getEstimatedPostTaxIncome = async (
       return income;
   }
 
-  return income - tax;
+  const postTaxIncome = income - tax;
+  postTaxIncomeCache.set(
+    getPostTaxIncomeCacheKey(income, periodAdjustment, jurisdiction),
+    postTaxIncome,
+  );
+  return postTaxIncome;
 };
 
 export enum TaxJurisdiction {

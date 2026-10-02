@@ -33,6 +33,7 @@ export default defineType({
               name: "placeholder",
               type: "string",
               title: "Placeholder",
+              description: "Use {{count}} to insert the current adult number (starting with 1).",
               validation: (Rule) => Rule.required(),
             }),
             defineField({

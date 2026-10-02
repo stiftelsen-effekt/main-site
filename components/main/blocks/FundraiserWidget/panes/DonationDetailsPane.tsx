@@ -6,9 +6,11 @@ import { SuggestedAmounts } from "../components/SuggestedAmounts";
 import { FormData } from "../hooks/useFundraiserForm";
 import { getThousandSeparator, getDecimalSeparator } from "../../../../../util/formatting";
 import styles from "../FundraiserWidget.module.scss";
+import { RadioButtonGroup } from "../../../../shared/components/RadioButton/RadioButtonGroup";
+import { RecurringDonation } from "../../../../shared/components/Widget/types/Enums";
 
 interface DonationDetailsPaneProps {
-  formData: Pick<FormData, "amount" | "messageSenderName" | "message" | "showName">;
+  formData: Pick<FormData, "amount" | "messageSenderName" | "message" | "showName" | "recurring">;
   onChange: (field: keyof FormData, value: any) => void;
   onSubmit: () => void;
   config: {
@@ -19,6 +21,10 @@ interface DonationDetailsPaneProps {
     message_label: string;
     show_name_label: string;
     next_button_text: string;
+    monthly_donations?: {
+      single_donation_text: string;
+      monthly_donation_text: string;
+    };
   };
   locale: string;
   className?: string;
@@ -45,6 +51,27 @@ export const DonationDetailsPane = React.forwardRef<HTMLDivElement, DonationDeta
             onSubmit();
           }}
         >
+          {config.monthly_donations && (
+            <div className={styles["donation-widget__frequency-options"]}>
+              <RadioButtonGroup
+                options={[
+                  {
+                    title: config.monthly_donations.single_donation_text,
+                    value: RecurringDonation.NON_RECURRING,
+                    data_cy: "fundraiser-single-donation-radio",
+                  },
+                  {
+                    title: config.monthly_donations.monthly_donation_text,
+                    value: RecurringDonation.RECURRING,
+                    data_cy: "fundraiser-monthly-donation-radio",
+                  },
+                ]}
+                selected={formData.recurring}
+                onSelect={(value) => onChange("recurring", value)}
+              />
+            </div>
+          )}
+
           {config.suggested_amounts.length > 0 && (
             <div className={styles["donation-widget__input-group"]}>
               <SuggestedAmounts

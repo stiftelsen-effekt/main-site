@@ -37,7 +37,7 @@ export const DonationDetails: React.FC<{
     organizations,
     causeAreas,
   );
-  const hasPrecomputedImpact = Boolean(donation.impact?.length && impactGroups.length);
+  const hasPrecomputedImpact = Boolean(donation.impact?.length);
   const visibleCauseAreas = hasPrecomputedImpact
     ? impactGroups.map((group) => group.causeArea)
     : distributionCauseAreas;

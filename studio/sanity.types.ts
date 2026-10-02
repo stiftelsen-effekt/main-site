@@ -6090,6 +6090,11 @@ export type Fundraiser_page = {
     [internalGroqTypeReferenceTo]?: "fundraiserwidget";
   };
   suggested_amounts?: Array<number>;
+  monthly_donations?: {
+    enabled?: boolean;
+    single_donation_text?: string;
+    monthly_donation_text?: string;
+  };
   gift_activity_config?: {
     title?: string;
     gift_amount_text_template?: string;
@@ -16912,6 +16917,11 @@ export type FetchFundraiserResult = {
       };
     } | null;
     suggested_amounts: Array<number> | null;
+    monthly_donations?: {
+      enabled?: boolean;
+      single_donation_text?: string;
+      monthly_donation_text?: string;
+    };
     gift_activity_config?: {
       title?: string;
       gift_amount_text_template?: string;

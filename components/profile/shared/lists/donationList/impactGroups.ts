@@ -26,7 +26,10 @@ export const groupDonationImpactByCauseArea = (
 
     const causeAreaImpact = groupedImpact.get(causeAreaId) ?? [];
     const existingImpact = causeAreaImpact.find(
-      (candidate) => candidate.organization === entry.organization,
+      (candidate) =>
+        candidate.organization === entry.organization &&
+        candidate.unit === entry.unit &&
+        candidate.recipient === entry.recipient,
     );
 
     if (existingImpact) {
