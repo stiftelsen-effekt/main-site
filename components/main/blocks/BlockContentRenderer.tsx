@@ -38,8 +38,7 @@ import { stegaClean } from "@sanity/client/stega";
 import dynamic from "next/dynamic";
 import { PlausibleRevenueTracker } from "./PlausibleRevenueTracker/PlausibleRevenueTracker";
 import { OpenDistributionButton } from "./OpenDistributionButton/OpenDistributionButton";
-import { Fundraiserchart, Opendistributionbutton } from "../../../studio/sanity.types";
-import { FundraiserChart } from "./FundraiserChart/FundraiserChart";
+import { Opendistributionbutton } from "../../../studio/sanity.types";
 import { TeamIntroduction } from "./TeamIntroduction/TeamIntroduction";
 import { ResultsTeaser } from "./ResultsTeaser/ResultsTeaser";
 import { TaxDeductionWidget } from "./TaxDeductionWidget/TaxDeductionWidget";
@@ -435,11 +434,6 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 key={block._key || block._id}
                 {...(block as Opendistributionbutton)}
               />
-            );
-          }
-          case "fundraiserchart": {
-            return (
-              <FundraiserChart key={block._key || block._id} {...(block as Fundraiserchart)} />
             );
           }
           case "giftcardteaser": {
