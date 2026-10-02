@@ -39,6 +39,7 @@ import {
   prepareDistributionForSave,
   setStandardCauseAreaAmount,
 } from "../../distributionAmounts";
+import { useMainLocale } from "../../../../../context/MainLocaleContext";
 
 export type AgreementDetailsConfiguration = {
   save_button_text: string;
@@ -98,7 +99,10 @@ export const AgreementDetails: React.FC<{
   const [lastSavedDistribution, setLastSavedDistribution] = useState<Distribution>(() =>
     hydrateDistributionAmounts(inputDistribution, inputSum),
   );
+  const mainLocale = useMainLocale();
   const [day, setDay] = useState(inputDate);
+  // Changing the payment date of AutoGiro agreements is not supported on the Swedish platform
+  const dateDisabled = type === "AutoGiro" && mainLocale === "sv";
   const [sum, setSum] = useState(inputSum);
 
   useEffect(() => {
@@ -255,7 +259,7 @@ export const AgreementDetails: React.FC<{
       let result = await updateAutoGiroAgreement(
         endpoint,
         distributionChanged || sumChanged ? distributionPayload : null,
-        dayChanged ? day : null,
+        dayChanged && !dateDisabled ? day : null,
         sumChanged ? agreementSum : null,
         token,
       );
@@ -353,6 +357,7 @@ export const AgreementDetails: React.FC<{
             onSumChange={changeSum}
             taxUnits={taxUnits}
             dateSelectorConfig={configuration.date_selector_configuration}
+            dateDisabled={dateDisabled}
           ></AgreementSingleCauseAreaDetails>
         )}
 
@@ -367,6 +372,7 @@ export const AgreementDetails: React.FC<{
             taxUnits={taxUnits}
             configuration={configuration.distribution_configuration}
             dateSelectorConfig={configuration.date_selector_configuration}
+            dateDisabled={dateDisabled}
           ></AgreementMultipleCauseAreaDetails>
         )}
 
