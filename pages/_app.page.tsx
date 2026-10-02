@@ -91,8 +91,6 @@ function MyApp({
     return <Component {...pageProps} />;
   }
 
-  const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
-
   if (pageProps.draftMode) {
     if (!pageProps.token) {
       pageProps.token = process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN || "";
@@ -100,14 +98,7 @@ function MyApp({
 
     return (
       <PreviewProvider token={pageProps.token}>
-        <PlausibleProvider
-          domain={plausibleDomain}
-          trackOutboundLinks={true}
-          taggedEvents={true}
-          revenue={true}
-          trackLocalhost={false}
-          enabled={tracking}
-        >
+        <PlausibleProvider enabled={tracking}>
           <Provider store={globalWidgetStore}>
             <RouterContext.Provider value={routerContextValue.current}>
               {appStaticProps.layout === LayoutType.Default ? (
@@ -130,12 +121,7 @@ function MyApp({
   }
 
   return (
-    <PlausibleProvider
-      domain={plausibleDomain}
-      trackOutboundLinks={true}
-      taggedEvents={true}
-      revenue={true}
-    >
+    <PlausibleProvider>
       <Provider store={globalWidgetStore}>
         <RouterContext.Provider value={routerContextValue.current}>
           {appStaticProps.layout === LayoutType.Default ? (
