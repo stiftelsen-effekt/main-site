@@ -14,13 +14,13 @@ export type ImpactEstimateExplanationConfiguration = {
 export const ImpactEstimateExplanation: React.FC<{
   explanations?: ImpactEstimateExplanationConfiguration[];
 }> = ({ explanations }) => {
-  const visibleExplanations = [
-    ...new Map(
+  const visibleExplanations = Array.from(
+    new Map(
       (explanations ?? [])
         .filter((explanation) => explanation.impact_estimate_explanation_title)
         .map((explanation) => [explanation.impact_estimate_explanation_title, explanation]),
     ).values(),
-  ];
+  );
 
   if (visibleExplanations.length === 0) return null;
 
