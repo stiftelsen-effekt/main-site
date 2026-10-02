@@ -22,7 +22,7 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
   if (req?.query?.locale === "SV") {
     try {
       const result = await fetch(
-        `https://www7.skatteverket.se/portal-wapi/open/skatteberakning/v1/api/skattetabell/2025/beraknaSkatteavdrag`,
+        `https://www7.skatteverket.se/portal-wapi/open/skatteberakning/v1/api/skattetabell/2026/beraknaSkatteavdrag`,
         {
           body: getSVtaxBody(income / 12),
           headers: {
