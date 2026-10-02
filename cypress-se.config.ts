@@ -12,9 +12,9 @@ export default defineConfig({
     baseUrl: "http://localhost:3000",
     fixturesFolder: "cypress/fixtures/se",
     specPattern: "cypress/e2e/se/**/*.{js,jsx,ts,tsx}",
-    env: {
-      FAIL_FAST_ENABLED: true,
-      FAIL_FAST_STRATEGY: "run",
+    expose: {
+      failFastEnabled: true,
+      failFastStrategy: "run",
     },
   },
   viewportHeight: 850,

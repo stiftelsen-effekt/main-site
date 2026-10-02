@@ -29,7 +29,9 @@ describe("Profile page", () => {
   });
 
   it("Should display correct profile information", () => {
-    cy.get("#email").should("have.value", Cypress.env("AUTH_USERNAME"));
+    cy.env(["AUTH_USERNAME"]).then(({ AUTH_USERNAME }) => {
+      cy.get("#email").should("have.value", AUTH_USERNAME);
+    });
   });
 
   it("Should update profile information correctly", () => {
