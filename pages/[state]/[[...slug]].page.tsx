@@ -364,7 +364,9 @@ export async function getStaticPaths() {
     paths: basePaths.flatMap((path) =>
       consentStates.map((state) => ({
         params: {
-          slug: path,
+          // The frontpage slug "/" splits into ["", ""]; empty segments produce a
+          // trailing-slash path ("/accepted/") that breaks Vercel's Next.js adapter
+          slug: path.filter((segment) => segment !== ""),
           state,
         },
       })),
