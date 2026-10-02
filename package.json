@@ -45,7 +45,7 @@
     "katex": "^0.16.47",
     "luxon": "^3.7.2",
     "next": "^16.3.8",
-    "next-plausible": "^3.12.5",
+    "next-plausible": "^4.0.0",
     "next-sanity": "^13.3.4",
     "next-seo": "^7.3.0",
     "organisationsnummer": "^1.2.0",
