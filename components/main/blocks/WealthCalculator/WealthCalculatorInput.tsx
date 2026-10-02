@@ -5,7 +5,6 @@ import {
   EffektButton,
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
-import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 import { useCallback, useRef, useState } from "react";
 
 export type WealthCalculatorInputConfiguration = {
@@ -35,7 +34,6 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfChildren: (value: number) => void;
   numberOfAdults: number;
   setNumberOfParents: (value: number) => void;
-  loadingPostTaxIncome: boolean;
   config: WealthCalculatorInputConfiguration;
 }> = ({
   title,
@@ -45,7 +43,6 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfChildren,
   numberOfAdults,
   setNumberOfParents,
-  loadingPostTaxIncome,
   config,
 }) => {
   const calculateButtonRef = useRef<HTMLDivElement>(null);
@@ -92,16 +89,24 @@ export const WealthCalculatorInput: React.FC<{
                     setIncomeInput(nextIncomes.slice(0, numberOfAdults));
                   }}
                 />
-                {loadingPostTaxIncome && index === numberOfAdults - 1 && (
-                  <div className={styles.calculator__input__group__input__income__spinner}>
-                    <LoadingButtonSpinner />
-                  </div>
-                )}
                 <span>{config.income_input_configuration.currency_label}</span>
               </div>
             ),
           )}
           <i>{config.income_input_configuration.description}</i>
+        </div>
+
+        <div className={styles.calculator__input__group} data-cy="wealthcalculator-adults-input">
+          <EffektDropdown
+            placeholder={config.adults_input_configuration.placeholder || "Adults in household"}
+            options={config.adults_input_configuration.options || []}
+            value={config.adults_input_configuration.options[numberOfAdults - 1]}
+            onChange={(val: string) => {
+              const nextNumberOfAdults = config.adults_input_configuration.options.indexOf(val) + 1;
+              setNumberOfParents(nextNumberOfAdults);
+              setIncomeInput(adultIncomes.slice(0, nextNumberOfAdults));
+            }}
+          ></EffektDropdown>
         </div>
 
         <div className={styles.calculator__input__group} data-cy="wealthcalculator-children-input">
@@ -111,17 +116,6 @@ export const WealthCalculatorInput: React.FC<{
             value={config.children_input_configuration.options[numberOfChildren]}
             onChange={(val: string) =>
               setNumberOfChildren(config.children_input_configuration.options.indexOf(val))
-            }
-          ></EffektDropdown>
-        </div>
-
-        <div className={styles.calculator__input__group} data-cy="wealthcalculator-adults-input">
-          <EffektDropdown
-            placeholder={config.adults_input_configuration.placeholder || "Adults in household"}
-            options={config.adults_input_configuration.options || []}
-            value={config.adults_input_configuration.options[numberOfAdults - 1]}
-            onChange={(val: string) =>
-              setNumberOfParents(config.adults_input_configuration.options.indexOf(val) + 1)
             }
           ></EffektDropdown>
         </div>

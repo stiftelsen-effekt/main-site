@@ -6,6 +6,7 @@ import {
   WealthCalculatorPeriodAdjustment,
 } from "../../../shared/components/Graphs/Area/AreaGraph";
 import { BlockContentRenderer } from "../BlockContentRenderer";
+import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 import { wealthMountainGraphData } from "./data";
 import styles from "./WealthCalculator.module.scss";
 import { WealthCalculatorInput, WealthCalculatorInputConfiguration } from "./WealthCalculatorInput";
@@ -131,7 +132,8 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   }, 250);
 
   useEffect(() => {
-    setLoadingPostTaxIncome(true);
+    // Nothing to estimate yet, so skip the spinner and just reset to zero
+    setLoadingPostTaxIncome(incomes.some((adultIncome) => adultIncome > 0));
     calculatePostTaxIncome();
   }, [incomeInputs, numberOfAdults]);
 
@@ -152,7 +154,6 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           setNumberOfChildren={setNumberOfChildren}
           numberOfAdults={numberOfAdults}
           setNumberOfParents={setNumberOfParents}
-          loadingPostTaxIncome={loadingPostTaxIncome}
           config={calculator_input_configuration}
         ></WealthCalculatorInput>
         <WealthCalculatorSlider
@@ -167,30 +168,46 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
         />
 
         <div className={styles.calculator__output} data-cy="wealthcalculator-graph">
-          <AreaChart
-            data={wealthMountainGraphData}
-            lineInput={equvivalizedIncome || 0}
-            donationPercentage={donationPercentage / 100}
-            wealthPercentile={calculateWealthPercentile(
-              wealthMountainGraphData,
-              equvivalizedIncome || 0,
-              periodAdjustment,
-              pppConversion?.adjustedPPPfactor,
-            )}
-            afterDonationWealthPercentile={calculateWealthPercentile(
-              wealthMountainGraphData,
-              equvivalizedIncome * (1 - donationPercentage / 100),
-              periodAdjustment,
-              pppConversion?.adjustedPPPfactor,
-            )}
-            label={chart_label}
-            afterDonationPercentileLabelTemplateString={
-              income_percentile_after_donation_label_template_string
-            }
-            incomePercentileLabelTemplateString={income_percentile_label_template_string}
-            adjustedPPPConversionFactor={pppConversion?.adjustedPPPfactor}
-            periodAdjustment={periodAdjustment}
-          />
+          {/**
+           * The chart is absolutely positioned so it fills the space defined by the inputs, without
+           * contributing to the grid row heights itself. Otherwise the chart keeps the rows at their
+           * tallest height (e.g. after adding a second adult income input) and leaves a gap when the
+           * inputs shrink again.
+           */}
+          <div className={styles.calculator__output__chart}>
+            <AreaChart
+              data={wealthMountainGraphData}
+              lineInput={equvivalizedIncome || 0}
+              donationPercentage={donationPercentage / 100}
+              wealthPercentile={calculateWealthPercentile(
+                wealthMountainGraphData,
+                equvivalizedIncome || 0,
+                periodAdjustment,
+                pppConversion?.adjustedPPPfactor,
+              )}
+              afterDonationWealthPercentile={calculateWealthPercentile(
+                wealthMountainGraphData,
+                equvivalizedIncome * (1 - donationPercentage / 100),
+                periodAdjustment,
+                pppConversion?.adjustedPPPfactor,
+              )}
+              label={chart_label}
+              afterDonationPercentileLabelTemplateString={
+                income_percentile_after_donation_label_template_string
+              }
+              incomePercentileLabelTemplateString={income_percentile_label_template_string}
+              adjustedPPPConversionFactor={pppConversion?.adjustedPPPfactor}
+              periodAdjustment={periodAdjustment}
+            />
+          </div>
+          {loadingPostTaxIncome && (
+            <div
+              className={styles.calculator__output__spinner}
+              data-cy="wealthcalculator-loading-spinner"
+            >
+              <LoadingButtonSpinner />
+            </div>
+          )}
         </div>
         <div
           className={

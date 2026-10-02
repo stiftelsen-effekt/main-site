@@ -82,17 +82,6 @@
   padding-top: 0.5rem;
 }
 
-.calculator__input__group__input__income__spinner {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  top: 0;
-  right: 1.5rem;
-  padding: 0.5rem 0;
-  font-size: 1.2rem;
-}
-
 .calculator__input__group__percentage_input {
   display: inline;
   background: none;
@@ -131,6 +120,19 @@
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
+}
+
+.calculator__output__chart {
+  position: absolute;
+  inset: 0;
+}
+
+.calculator__output__spinner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.2rem;
+  pointer-events: none;
 }
 
 .calculator__impact {
