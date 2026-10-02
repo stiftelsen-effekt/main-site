@@ -25,8 +25,14 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v1
+      # Cypress 16 requires Node 22/24; install from .nvmrc rather than
+      # relying on whatever Node the runner image ships with.
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
       - name: Run Cypress 🌲
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           config-file: ${{ inputs.config-file }}
           record: true
