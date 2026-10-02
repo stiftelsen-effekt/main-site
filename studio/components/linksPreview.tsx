@@ -15,7 +15,7 @@ export const LinksPreview = (
       <Flex padding={2} align="center">
         <Flex align="center" flex={1} gap={2}>
           <Card border={true} style={{ width: 31, height: 31, flexShrink: 0 }}>
-            <Flex align="center" justify="center" flex={1} height={"fill"} width={"fill"}>
+            <Flex align="center" justify="center" flex={1} height={"fill"}>
               <LinkIcon size={"1rem"} />
             </Flex>
           </Card>
@@ -27,11 +27,11 @@ export const LinksPreview = (
     <Flex padding={2} align="center">
       <Flex align="center" flex={1} gap={2}>
         <Card border={true} style={{ width: 31, height: 31, flexShrink: 0 }}>
-          <Flex align="center" justify="center" flex={1} height={"fill"} width={"fill"}>
+          <Flex align="center" justify="center" flex={1} height={"fill"}>
             <LinkIcon size={"1rem"} />
           </Flex>
         </Card>
-        <Stack rows={links.length} space={3}>
+        <Stack gap={3}>
           {links.map((l) => (
             <Text size={1} key={l._key}>
               <div

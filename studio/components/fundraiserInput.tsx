@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Stack, Card, Text, Spinner, Flex, TextInput, Label } from "@sanity/ui";
-import { SearchIcon } from "@sanity/icons";
+import { SearchIcon } from "@sanity/icons/Search";
 import { PatchEvent, set, unset } from "sanity";
 import { format } from "date-fns";
 
@@ -103,11 +103,11 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
 
     return (
       <div ref={ref}>
-        <Stack space={4}>
+        <Stack gap={4}>
           {/* Search input */}
           <Flex>
             <Box flex={1}>
-              <Stack space={2}>
+              <Stack gap={2}>
                 <Flex>
                   <Box flex={1}>
                     <TextInput
@@ -130,7 +130,7 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
                 <Spinner />
               </Flex>
             ) : (
-              <Stack space={1}>
+              <Stack gap={1}>
                 {filteredFundraisers.length === 0 ? (
                   <Box padding={4} style={{ textAlign: "center" }}>
                     <Text>
@@ -165,7 +165,7 @@ export const FundraiserInput = React.forwardRef<HTMLDivElement, FundraiserInputP
                           </Card>
                         </Box>
 
-                        <Stack space={2} flex={1}>
+                        <Stack gap={2} flex={1}>
                           <Text weight="semibold">{fundraiser.donor.name}</Text>
                           <Text size={1} muted>
                             Registered {formatDate(fundraiser.registered)}

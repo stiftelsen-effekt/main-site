@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../../hooks/useApi";
 import { useSWRConfig } from "swr";
 import AnimateHeight from "react-animate-height";
 import { AlertCircle, Check, Info } from "react-feather";
@@ -152,7 +153,7 @@ export const DKAgreementDetails: React.FC<{
       throw new Error("User is not logged in");
     }
 
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
     const distributionChanged =
       JSON.stringify(distribution) !== JSON.stringify(lastSavedDistribution);
     const agreementSum =
@@ -228,7 +229,7 @@ export const DKAgreementDetails: React.FC<{
     }
 
     setLightboxOpen(false);
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
     const cancelled = await cancelDKAgreement(getUserId(user), agreementId, token);
 
     if (cancelled) {

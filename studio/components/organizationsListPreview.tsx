@@ -21,9 +21,9 @@ export const OrganizationsListPreview = (
       <Box style={{ flexShrink: 0 }}>
         <List size={24} />
       </Box>
-      <Grid columns={organizations.length} gap={3} marginLeft={3}>
+      <Grid gridTemplateColumns={organizations.length} gap={3} marginLeft={3}>
         {organizations.map((organization) => (
-          <Stack rows={2} space={2} key={organization._id}>
+          <Stack gap={2} key={organization._id}>
             <Text textOverflow={"ellipsis"} size={1}>
               {organization.name || "-"}
             </Text>

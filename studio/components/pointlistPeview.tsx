@@ -3,7 +3,6 @@ import { Grid, Stack, Text, Flex, Box, Card } from "@sanity/ui";
 import { List } from "react-feather";
 import { PreviewProps } from "sanity";
 import { Pointlist } from "../sanity.types";
-import { Media } from "sanity/src/core/components/previews/_common/Media";
 // These are react components
 
 export const PointlistPreview = (props: PreviewProps & { points: Pointlist["points"] }) => {
@@ -29,9 +28,9 @@ export const PointlistPreview = (props: PreviewProps & { points: Pointlist["poin
             <List size={"1rem"} />
           </Flex>
         </Card>
-        <Grid columns={npoints + (overflowing > 0 ? 1 : 0)}>
+        <Grid gridTemplateColumns={npoints + (overflowing > 0 ? 1 : 0)}>
           {props.points.slice(0, npoints).map((p) => (
-            <Stack rows={2} space={2} marginRight={2} key={p._key}>
+            <Stack gap={2} marginRight={2} key={p._key}>
               <Text size={1} style={{ whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
                 {p.heading
                   ? p.heading.length > titlelength

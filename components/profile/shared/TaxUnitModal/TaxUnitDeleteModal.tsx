@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../hooks/useApi";
 import { useCallback, useContext, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { AlertCircle, Check } from "react-feather";
@@ -34,7 +35,7 @@ export const TaxUnitDeleteModal: React.FC<{
 
   const deleteUnit = useCallback(async () => {
     setLoading(true);
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
 
     if (!user) {
       return;

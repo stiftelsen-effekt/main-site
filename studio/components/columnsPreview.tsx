@@ -20,9 +20,9 @@ export const ColumnsPreview = (props: PreviewProps & Columns) => {
       <Box style={{ flexShrink: 0 }}>
         <ColumnsIcon size={24} />
       </Box>
-      <Grid columns={columns.length} marginLeft={3}>
+      <Grid gridTemplateColumns={columns.length} marginLeft={3}>
         {columns.map((c) => (
-          <Stack rows={2} space={2} marginRight={2} key={c._key}>
+          <Stack gap={2} marginRight={2} key={c._key}>
             <Text size={1} textOverflow={"ellipsis"}>
               {c.title || "-"}
             </Text>

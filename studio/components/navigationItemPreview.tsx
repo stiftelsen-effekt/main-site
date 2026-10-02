@@ -33,7 +33,7 @@ export const NavigationItemPreview = (props: PreviewProps & { title: string; slu
             <Link size={"1rem"} />
           </Flex>
         </Card>
-        <Stack rows={2} space={2} marginRight={2}>
+        <Stack gap={2} marginRight={2}>
           <Text size={1} style={{ whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
             {title}
           </Text>

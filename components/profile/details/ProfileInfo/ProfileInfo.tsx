@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../hooks/useApi";
 import { useContext, useEffect, useState } from "react";
 import { AlertCircle, Check } from "react-feather";
 import { toast } from "react-toastify";
@@ -37,7 +38,7 @@ export const ProfileInfo: React.FC<{
   if (!donor || !user) return <ErrorMessage />;
 
   const save = async () => {
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
     const result = await saveDonor(donor, user, token);
     if (result === null) {
       failureToast(config.failure_message);

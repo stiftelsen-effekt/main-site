@@ -4,6 +4,7 @@ import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
 import { saveDonor } from "../../_queries";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../hooks/useApi";
 import { AlertCircle, Check } from "react-feather";
 import { toast } from "react-toastify";
 
@@ -35,7 +36,7 @@ export const MissingNameModal: React.FC<{ config: MissingNameModalConfig }> = ({
     setLoading(true);
     if (donor && user) {
       const updatedDonor = { ...donor, name };
-      const token = await getAccessTokenSilently();
+      const token = await getAccessToken(getAccessTokenSilently);
       const result = await saveDonor(updatedDonor, user, token);
       if (result === null) {
         failureToast(config.failure_message);
