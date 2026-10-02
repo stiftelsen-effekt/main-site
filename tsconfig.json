@@ -25,5 +25,5 @@
     "studio/resolveProductionUrl.ts",
     "middleware.page.ts"
   ],
-  "exclude": ["node_modules", "studio"]
+  "exclude": ["node_modules", "studio", "cypress", "cypress-*.config.ts"]
 }

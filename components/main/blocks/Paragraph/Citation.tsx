@@ -214,10 +214,10 @@ export const formatHarvardCitation = ({
 export const getRemInPixels = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 export const reflowCitations = () => {
-  if ((window as any)._citationReflowTimeout) {
-    clearTimeout((window as any)._citationReflowTimeout);
+  if ((window as any)._citationReflowFrame) {
+    cancelAnimationFrame((window as any)._citationReflowFrame);
   }
-  (window as any)._citationReflowTimeout = setTimeout(reflowCitationsExecute, 1000);
+  (window as any)._citationReflowFrame = requestAnimationFrame(reflowCitationsExecute);
 };
 
 const reflowCitationsExecute = () => {
@@ -225,22 +225,51 @@ const reflowCitationsExecute = () => {
   if (window.innerWidth < 1180) return;
 
   let citations = Array.from(document.querySelectorAll<HTMLSpanElement>(".extendedcitation"));
-  // First reset them
+  // First reset them to the default offset from the stylesheet
   citations.forEach((citation) => {
-    (citation as HTMLElement).style.transform = "translateY(-1.5rem)";
+    citation.style.transform = "";
   });
   citations = citations.filter((citation) => citation.offsetParent !== null);
-  for (let i = 0; i < citations.length; i++) {
-    const citation = citations[i] as HTMLElement;
-    if (i > 0) {
-      const prevBottom = citations[i - 1].getBoundingClientRect().bottom;
-      const currentTop = citations[i].getBoundingClientRect().top;
-      if (prevBottom + getRemInPixels() * 1.5 > currentTop) {
-        const offset = prevBottom - currentTop;
-        citation.style.transform = `translateY(calc(${offset}px))`;
-      }
+
+  // Measure everything in one pass, then write, to avoid a forced layout per citation
+  const rects = citations.map((citation) => citation.getBoundingClientRect());
+  const rem = getRemInPixels();
+  const defaultOffset = rem * 1.5;
+  let prevBottom = -Infinity;
+  const transforms = rects.map((rect) => {
+    if (prevBottom + rem * 1.5 > rect.top) {
+      const offset = prevBottom - rect.top;
+      prevBottom = prevBottom + defaultOffset + rect.height;
+      return `translateY(${offset}px)`;
     }
+    prevBottom = rect.bottom;
+    return "";
+  });
+  citations.forEach((citation, i) => {
+    citation.style.transform = transforms[i];
+  });
+};
+
+// One shared observer for all paragraphs, since reflowing is page-wide anyway.
+// reflowCitations is coalesced to at most once per animation frame.
+let layoutObservers = 0;
+let resizeObserver: ResizeObserver | null = null;
+
+export const observeCitationLayout = () => {
+  layoutObservers++;
+  if (!resizeObserver) {
+    resizeObserver = new ResizeObserver(reflowCitations);
+    resizeObserver.observe(document.body);
+    window.addEventListener("resize", reflowCitations);
   }
+  return () => {
+    layoutObservers--;
+    if (layoutObservers === 0 && resizeObserver) {
+      resizeObserver.disconnect();
+      resizeObserver = null;
+      window.removeEventListener("resize", reflowCitations);
+    }
+  };
 };
 
 export const Citation = (props: any) => {
