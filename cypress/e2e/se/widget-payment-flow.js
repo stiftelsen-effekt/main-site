@@ -118,24 +118,21 @@ describe("Swedish Widget - Payment Flow", () => {
       cy.get("[data-cy=autogiro-radio-manual-autogiro-setup]").should("exist");
     });
 
-    it("Should handle autogiro date selection", () => {
+    it("Should use a fixed autogiro payment date of the 27th", () => {
       cy.get("[data-cy=payment-method-autogiro]").click();
 
       cy.wait(["@draftAutoGiroPaymentDate", "@registerDonation"]);
+      cy.get("@draftAutoGiroPaymentDate").its("request.body.paymentDate").should("eq", 27);
 
       // Select autogiro setup option (the radio input itself is visually hidden)
       cy.get("[data-cy=autogiro-radio-manual-autogiro-setup]").click({ force: true });
 
-      // Should show date selector
-      cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("be.visible");
-      cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").click();
-
-      // Select day 10
-      cy.get("[data-cy=date-picker-button-10]").click();
-      cy.wait("@draftAutoGiroPaymentDate");
-
-      // Should update button text
-      cy.get("[data-cy=autogiro-manual-setup-date-selector-button]").should("contain.text", "10");
+      // Should show the fixed date without a date picker
+      cy.get("[data-cy=autogiro-manual-setup-date]").should("be.visible");
+      cy.get("[data-cy=autogiro-manual-setup-date]").should("contain.text", "27");
+      cy.get("[data-cy=autogiro-manual-setup-date-wrapper] [data-cy=date-picker]").should(
+        "not.exist",
+      );
     });
   });
 

@@ -12,9 +12,7 @@ import { PortableText } from "@portabletext/react";
 import { thousandize } from "../../../../../../../../util/formatting";
 import LinkButton from "../../../../../EffektButton/LinkButton";
 import AnimateHeight from "react-animate-height";
-import { DatePicker } from "../../../shared/DatePicker/DatePicker";
 import { API_URL } from "../../../../config/api";
-import { DateTime } from "luxon";
 import { usePlausible } from "next-plausible";
 import { EffektButton } from "../../../../../EffektButton/EffektButton";
 import { calculateDonationBreakdown } from "../../../../utils/donationCalculations";
@@ -24,7 +22,8 @@ enum AutoGiroOptions {
   MANUAL_AUTOGIRO_SETUP,
 }
 
-const DEFAULT_DATE = 27;
+// All new AutoGiro agreements are charged on the 27th of the month
+const AUTOGIRO_PAYMENT_DATE = 27;
 
 export const AutogiroPane: React.FC<{
   referrals: WidgetPane3ReferralsProps;
@@ -37,21 +36,19 @@ export const AutogiroPane: React.FC<{
   const [selectedAutogiroSetup, setSelectedAutogiroSetup] = React.useState<
     AutoGiroOptions | undefined
   >();
-  const [manualAutogiroSetupDate, setManualAutogiroSetupDate] = React.useState<number>();
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
-    let date = manualAutogiroSetupDate ?? DEFAULT_DATE;
     fetch(`${API_URL}/autogiro/${donation.kid}/drafted/paymentdate`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "PUT",
       body: JSON.stringify({
-        paymentDate: date,
+        paymentDate: AUTOGIRO_PAYMENT_DATE,
       }),
     });
-  }, [manualAutogiroSetupDate]);
+  }, [donation.kid]);
 
   const breakdown = calculateDonationBreakdown(
     donation.causeAreaAmounts ?? {},
@@ -108,48 +105,15 @@ export const AutogiroPane: React.FC<{
   const manualAutogiroSetupContent = (
     <>
       <PortableText value={config.recurring_manual_option_config.explanation_text} />
-      <RoundedBorder data-cy="autogiro-manual-setup-date-selector-wrapper">
-        <TextWrapper
-          onClick={() => {
-            if (typeof manualAutogiroSetupDate !== "undefined") {
-              setManualAutogiroSetupDate(undefined);
-            } else {
-              setManualAutogiroSetupDate(DEFAULT_DATE);
-            }
-          }}
-          style={{ cursor: "pointer" }}
-          data-cy="autogiro-manual-setup-date-selector-button"
-        >
+      <RoundedBorder data-cy="autogiro-manual-setup-date-wrapper">
+        <TextWrapper data-cy="autogiro-manual-setup-date">
           <span>
-            {typeof manualAutogiroSetupDate === "undefined"
-              ? config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
-                  "{{date}}",
-                  DEFAULT_DATE.toString(),
-                )
-              : manualAutogiroSetupDate === 0
-                ? config.recurring_manual_option_config.date_selector_config
-                    .payment_date_last_day_of_month_template
-                : config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
-                    "{{date}}",
-                    manualAutogiroSetupDate.toString(),
-                  )}
-          </span>
-          <span
-            style={{
-              transition: "all 200ms",
-              rotate: typeof manualAutogiroSetupDate === "undefined" ? "0deg" : "180deg",
-            }}
-          >
-            ↓
+            {config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
+              "{{date}}",
+              AUTOGIRO_PAYMENT_DATE.toString(),
+            )}
           </span>
         </TextWrapper>
-        <AnimateHeight height={typeof manualAutogiroSetupDate === "undefined" ? 0 : "auto"}>
-          <DatePicker
-            onChange={setManualAutogiroSetupDate}
-            selected={manualAutogiroSetupDate}
-            configuration={config.recurring_manual_option_config.date_selector_config}
-          />
-        </AnimateHeight>
       </RoundedBorder>
 
       <EffektButton
