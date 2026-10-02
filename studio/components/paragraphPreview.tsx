@@ -12,7 +12,7 @@ export const ParagraphPreview = (props: PreviewProps & { heading: string; subtit
         <Type size={24} />
       </Box>
       <Box marginLeft={3}>
-        <Stack rows={1} space={3}>
+        <Stack gap={3}>
           <Text>{heading}</Text>
           <Text size={1} muted textOverflow="ellipsis">
             {subtitle}

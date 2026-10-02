@@ -15,12 +15,12 @@ export const TeasersPreview = (props: PreviewProps & { teasers: Teasers["teasers
 
   return (
     <Flex direction={"row"} align={"center"}>
-      <Grid rows={props.teasers.length} gap={1} flex={1}>
+      <Grid gridTemplateRows={props.teasers.length} gap={1} flex={1}>
         {props.teasers.map((p, i) => (
           <Flex padding={2} align="center">
             <Flex align="center" flex={1} gap={2}>
               {i % 2 === 0 ? Icon : null}
-              <Stack rows={2} space={2} marginRight={2}>
+              <Stack gap={2} marginRight={2}>
                 <Text size={1}>
                   <span
                     style={{
@@ -75,7 +75,7 @@ const getSubtitle = (teaseritem: Teasersitem) => {
 
 const Icon = (
   <Card border={true} style={{ width: 31, height: 31, flexShrink: 0 }}>
-    <Flex align="center" justify="center" flex={1} height={"fill"} width={"fill"}>
+    <Flex align="center" justify="center" flex={1} height={"fill"}>
       <Image size={"1rem"} />
     </Flex>
   </Card>

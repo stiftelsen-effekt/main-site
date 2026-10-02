@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Stack, Card, Text, Button, Select, Label, TextInput, Flex } from "@sanity/ui";
 import { ArrayOfObjectsInputProps, PatchEvent, set, unset } from "sanity";
-import { TrashIcon, AddIcon } from "@sanity/icons";
+import { AddIcon } from "@sanity/icons/Add";
+import { TrashIcon } from "@sanity/icons/Trash";
 
 // Types for our data structures
 type CauseArea = {
@@ -285,13 +286,13 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
 
   return (
     <div>
-      <Stack space={4}>
+      <Stack gap={4}>
         {/* Distribution Overview - Cause Areas and their Organizations */}
 
         {distributions.length === 0 ? (
           <></>
         ) : (
-          <Stack space={3}>
+          <Stack gap={3}>
             {causeAreaTotal !== 100 && distributions.some((d) => d.type === "causeArea") && (
               <Text size={1}>
                 Cause area percentages should sum to 100%. Current total: {causeAreaTotal}%
@@ -300,7 +301,7 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
 
             {causeAreasInDistribution.map((causeAreaItem) => (
               <Card key={causeAreaItem._key} padding={3} radius={2} tone="default" border>
-                <Stack space={3}>
+                <Stack gap={3}>
                   {/* Cause Area Header */}
                   <Card padding={2} radius={2} tone="primary">
                     <Flex align="center">
@@ -311,7 +312,11 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
                       </Box>
 
                       <Flex align="center" gap={2}>
-                        <Label htmlFor={`ca-pct-${causeAreaItem._key}`} style={{ margin: 0 }}>
+                        <Label
+                          as="label"
+                          htmlFor={`ca-pct-${causeAreaItem._key}`}
+                          style={{ margin: 0 }}
+                        >
                           Percentage:
                         </Label>
                         <TextInput
@@ -339,7 +344,7 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
                   </Card>
 
                   {/* Organizations within this Cause Area */}
-                  <Stack space={2}>
+                  <Stack gap={2}>
                     <Text size={1} weight="semibold">
                       Organizations:
                     </Text>
@@ -355,7 +360,11 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
                             </Box>
 
                             <Flex align="center" gap={2}>
-                              <Label htmlFor={`org-pct-${orgItem._key}`} style={{ margin: 0 }}>
+                              <Label
+                                as="label"
+                                htmlFor={`org-pct-${orgItem._key}`}
+                                style={{ margin: 0 }}
+                              >
                                 Percentage:
                               </Label>
                               <TextInput
@@ -394,7 +403,9 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
                   <Card padding={2} radius={2} border tone="default">
                     <Flex align="center">
                       <Box flex={1}>
-                        <Label htmlFor={`add-org-${causeAreaItem.id}`}>Add Organization</Label>
+                        <Label as="label" htmlFor={`add-org-${causeAreaItem.id}`}>
+                          Add Organization
+                        </Label>
                       </Box>
                       <Box flex={1}>
                         <Select
@@ -421,10 +432,12 @@ export const DistributionInput = (props: ArrayOfObjectsInputProps) => {
         {/* Add new cause area */}
         {getAvailableCauseAreas().length > 0 && (
           <Card padding={3} radius={2} tone="default" border>
-            <Stack space={3}>
+            <Stack gap={3}>
               <Flex align="center">
                 <Box flex={1}>
-                  <Label htmlFor="new-cause-area">Add Cause Area</Label>
+                  <Label as="label" htmlFor="new-cause-area">
+                    Add Cause Area
+                  </Label>
                 </Box>
                 <Box flex={1}>
                   <Select id="new-cause-area" onChange={addCauseArea} value="">

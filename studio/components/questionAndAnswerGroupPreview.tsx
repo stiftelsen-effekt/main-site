@@ -9,7 +9,7 @@ export const QuestionAndAnswerGroupPreview = (props: PreviewProps & Questionanda
 
   if (!answers || answers.length === 0) {
     return (
-      <Stack rows={1} space={4}>
+      <Stack gap={4}>
         <Flex direction="row">
           <Text>{title || "-"}</Text>
         </Flex>
@@ -25,12 +25,12 @@ export const QuestionAndAnswerGroupPreview = (props: PreviewProps & Questionanda
   }
 
   return (
-    <Stack rows={firstThreeAnswers.length + 1} space={4} padding={2}>
+    <Stack gap={4} padding={2}>
       <Flex direction="row">
         <Text weight={"semibold"}>{title || "-"}</Text>
       </Flex>
       {firstThreeAnswers.map((answer) => (
-        <Stack rows={2} space={2} key={answer._key}>
+        <Stack gap={2} key={answer._key}>
           <Text size={1} textOverflow={"ellipsis"}>
             {answer.question || "-"}
           </Text>

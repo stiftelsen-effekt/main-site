@@ -43,7 +43,7 @@ const KatexInput = (props: ObjectInputProps) => {
   }, []);
 
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       <TextInput
         value={input}
         onChange={handleChange}
