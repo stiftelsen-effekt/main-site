@@ -5,6 +5,7 @@ import {
   EffektButton,
   EffektButtonVariant,
 } from "../../../shared/components/EffektButton/EffektButton";
+import { LoadingButtonSpinner } from "../../../shared/components/Spinner/LoadingButtonSpinner";
 import { useCallback, useRef, useState } from "react";
 
 export type WealthCalculatorInputConfiguration = {
@@ -34,6 +35,7 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfChildren: (value: number) => void;
   numberOfAdults: number;
   setNumberOfParents: (value: number) => void;
+  loadingPostTaxIncome: boolean;
   config: WealthCalculatorInputConfiguration;
 }> = ({
   title,
@@ -43,6 +45,7 @@ export const WealthCalculatorInput: React.FC<{
   setNumberOfChildren,
   numberOfAdults,
   setNumberOfParents,
+  loadingPostTaxIncome,
   config,
 }) => {
   const calculateButtonRef = useRef<HTMLDivElement>(null);
@@ -126,8 +129,19 @@ export const WealthCalculatorInput: React.FC<{
           )}
           ref={calculateButtonRef}
         >
+          {/* The chart is below the fold on mobile, so show the loading state on the button that scrolls to it */}
           <EffektButton onClick={scrollToOutput} variant={EffektButtonVariant.SECONDARY}>
-            {config.calculate_button_label}
+            <span className={styles.calculator__input__calculate__label}>
+              {config.calculate_button_label}
+              {loadingPostTaxIncome && (
+                <span
+                  className={styles.calculator__input__calculate__spinner}
+                  data-cy="wealthcalculator-calculate-spinner"
+                >
+                  <LoadingButtonSpinner />
+                </span>
+              )}
+            </span>
           </EffektButton>
         </div>
       </div>

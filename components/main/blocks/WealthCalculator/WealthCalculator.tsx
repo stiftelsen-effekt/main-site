@@ -154,6 +154,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
           setNumberOfChildren={setNumberOfChildren}
           numberOfAdults={numberOfAdults}
           setNumberOfParents={setNumberOfParents}
+          loadingPostTaxIncome={loadingPostTaxIncome}
           config={calculator_input_configuration}
         ></WealthCalculatorInput>
         <WealthCalculatorSlider

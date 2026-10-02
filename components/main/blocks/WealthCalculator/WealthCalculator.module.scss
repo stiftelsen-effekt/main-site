@@ -52,6 +52,21 @@
   display: none;
 }
 
+.calculator__input__calculate__label {
+  position: relative;
+}
+
+.calculator__input__calculate__spinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 0.25rem;
+  pointer-events: none;
+}
+
 .calculator__input__group__input__text {
   background: none;
   border: none;
