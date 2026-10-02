@@ -49,7 +49,7 @@
     "next": "^16.3.8",
     "next-plausible": "^3.12.5",
     "next-sanity": "^12.4.5",
-    "next-seo": "^5.15.0",
+    "next-seo": "^7.3.0",
     "organisationsnummer": "^1.2.0",
     "personnummer": "^3.2.1",
     "react": "^19.3.0",
