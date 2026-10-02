@@ -92,16 +92,24 @@ export const WealthCalculatorInput: React.FC<{
                     setIncomeInput(nextIncomes.slice(0, numberOfAdults));
                   }}
                 />
-                {loadingPostTaxIncome && index === numberOfAdults - 1 && (
-                  <div className={styles.calculator__input__group__input__income__spinner}>
-                    <LoadingButtonSpinner />
-                  </div>
-                )}
                 <span>{config.income_input_configuration.currency_label}</span>
               </div>
             ),
           )}
           <i>{config.income_input_configuration.description}</i>
+        </div>
+
+        <div className={styles.calculator__input__group} data-cy="wealthcalculator-adults-input">
+          <EffektDropdown
+            placeholder={config.adults_input_configuration.placeholder || "Adults in household"}
+            options={config.adults_input_configuration.options || []}
+            value={config.adults_input_configuration.options[numberOfAdults - 1]}
+            onChange={(val: string) => {
+              const nextNumberOfAdults = config.adults_input_configuration.options.indexOf(val) + 1;
+              setNumberOfParents(nextNumberOfAdults);
+              setIncomeInput(adultIncomes.slice(0, nextNumberOfAdults));
+            }}
+          ></EffektDropdown>
         </div>
 
         <div className={styles.calculator__input__group} data-cy="wealthcalculator-children-input">
@@ -115,25 +123,25 @@ export const WealthCalculatorInput: React.FC<{
           ></EffektDropdown>
         </div>
 
-        <div className={styles.calculator__input__group} data-cy="wealthcalculator-adults-input">
-          <EffektDropdown
-            placeholder={config.adults_input_configuration.placeholder || "Adults in household"}
-            options={config.adults_input_configuration.options || []}
-            value={config.adults_input_configuration.options[numberOfAdults - 1]}
-            onChange={(val: string) =>
-              setNumberOfParents(config.adults_input_configuration.options.indexOf(val) + 1)
-            }
-          ></EffektDropdown>
-        </div>
-
         <div
           className={[styles.calculator__input__group, styles.calculator__input__group_mobile].join(
             " ",
           )}
           ref={calculateButtonRef}
         >
+          {/* The chart is below the fold on mobile, so show the loading state on the button that scrolls to it */}
           <EffektButton onClick={scrollToOutput} variant={EffektButtonVariant.SECONDARY}>
-            {config.calculate_button_label}
+            <span className={styles.calculator__input__calculate__label}>
+              {config.calculate_button_label}
+              {loadingPostTaxIncome && (
+                <span
+                  className={styles.calculator__input__calculate__spinner}
+                  data-cy="wealthcalculator-calculate-spinner"
+                >
+                  <LoadingButtonSpinner />
+                </span>
+              )}
+            </span>
           </EffektButton>
         </div>
       </div>
