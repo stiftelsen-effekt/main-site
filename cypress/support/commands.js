@@ -7,17 +7,32 @@ Cypress.Commands.add("login", (overrides = {}) => {
     name: "loginAuth0",
   });
 
-  const client_id = Cypress.env("AUTH_CLIENT_ID");
-  const client_secret = Cypress.env("AUTH_CLIENT_SECRET");
-  const audience = Cypress.env("AUTH_AUDIENCE");
+  // Cypress 16 removed Cypress.env(); credentials are read with cy.env(),
+  // which fetches only the requested keys from the Node process.
+  cy.env([
+    "AUTH_DOMAIN",
+    "AUTH_CLIENT_ID",
+    "AUTH_CLIENT_SECRET",
+    "AUTH_AUDIENCE",
+    "AUTH_USERNAME",
+    "AUTH_PASSWORD",
+  ]).then((env) => loginWithCredentials(env));
+});
+
+const loginWithCredentials = ({
+  AUTH_DOMAIN,
+  AUTH_CLIENT_ID: client_id,
+  AUTH_CLIENT_SECRET: client_secret,
+  AUTH_AUDIENCE: audience,
+  AUTH_USERNAME: username,
+  AUTH_PASSWORD: password,
+}) => {
   const scope =
     "openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements";
-  const username = Cypress.env("AUTH_USERNAME");
-  const password = Cypress.env("AUTH_PASSWORD");
 
   const options = {
     method: "POST",
-    url: `https://${Cypress.env("AUTH_DOMAIN")}/oauth/token`,
+    url: `https://${AUTH_DOMAIN}/oauth/token`,
     failOnStatusCode: false,
     body: {
       grant_type: "http://auth0.com/oauth/grant-type/password-realm",
@@ -70,7 +85,7 @@ Cypress.Commands.add("login", (overrides = {}) => {
     cy.setCookie(`auth0.${client_id}.is.authenticated`, "true");
     cy.setCookie(`_legacy_auth0.${client_id}.is.authenticated`, "true");
   });
-});
+};
 
 const getState = () => cy.window().its("store").invoke("getState");
 

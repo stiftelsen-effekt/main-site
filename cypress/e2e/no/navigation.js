@@ -1,3 +1,13 @@
+// The header hides itself by translating above the viewport rather than via
+// display/visibility. Cypress 16's default visibility check (based on
+// Element.checkVisibility()) does not treat off-screen transforms as hidden,
+// so assert on the element's position instead.
+const shouldBeTranslatedOutOfView = (selector) => {
+  cy.get(selector).should(($el) => {
+    expect($el[0].getBoundingClientRect().bottom).to.be.at.most(0);
+  });
+};
+
 describe("Navigation", () => {
   beforeEach(() => {
     cy.fixture("cause_areas").then((causeAreas) => {
@@ -72,7 +82,7 @@ describe("Navigation", () => {
     cy.wait(100);
 
     // Navbar should be hidden
-    cy.get("[data-cy=header-navbar]").should("not.be.visible");
+    shouldBeTranslatedOutOfView("[data-cy=header-navbar]");
 
     cy.scrollTo(0, 0);
     cy.wait(100);
@@ -84,7 +94,7 @@ describe("Navigation", () => {
     cy.wait(100);
 
     // Navbar should be hidden
-    cy.get("[data-cy=header-navbar]").should("not.be.visible");
+    shouldBeTranslatedOutOfView("[data-cy=header-navbar]");
 
     cy.get("[data-cy=navigate-to-top]").click();
     cy.wait(100);
