@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ReactAnimateHeight from "react-animate-height";
 import styles from "./FundraiserWidget.module.scss";
-import { SanityImageObject } from "@sanity/image-url/lib/types/types";
+import type { SanityImageObject } from "@sanity/image-url";
 import { FetchFundraiserResult } from "../../../../studio/sanity.types";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
 import { validateWidgetConfig } from "./validateWidgetConfig";
@@ -183,8 +183,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
               show_name_label: config.show_name_label!,
               next_button_text: config.next_button_text!,
               monthly_donations: monthlyDonationConfig as
-                | { single_donation_text: string; monthly_donation_text: string }
-                | undefined,
+                { single_donation_text: string; monthly_donation_text: string } | undefined,
             }}
             locale={locale}
           />

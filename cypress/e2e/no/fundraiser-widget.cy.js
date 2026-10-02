@@ -17,7 +17,9 @@ const clickUntilVisible = (clickSelector, visibleSelector, attempts = 10) => {
   cy.get(clickSelector).click();
   cy.wait(300);
   cy.get(visibleSelector).then(($el) => {
-    if (!$el.is(":visible")) {
+    // Only retry while the clicked element is still on screen: once the
+    // pane has started transitioning away, clicking again would fail.
+    if (!$el.is(":visible") && Cypress.$(clickSelector).is(":visible")) {
       clickUntilVisible(clickSelector, visibleSelector, attempts - 1);
     }
   });

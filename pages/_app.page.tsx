@@ -8,7 +8,7 @@ import { RouterContext, RouterContextValue, fetchRouterContext } from "../contex
 import { ProfileLayout } from "../components/profile/layout/layout";
 import { Layout } from "../components/main/layout/layout";
 import { Provider } from "react-redux";
-import { VisualEditing } from "next-sanity/visual-editing";
+import { VisualEditing } from "@sanity/visual-editing/next-pages-router";
 import { ConsentState } from "../middleware.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 import { useRouter } from "next/router";
@@ -91,8 +91,6 @@ function MyApp({
     return <Component {...pageProps} />;
   }
 
-  const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "gieffektivt.no"; //TODO: Remove temporary fallback when Vercel setup is done
-
   if (pageProps.draftMode) {
     if (!pageProps.token) {
       pageProps.token = process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN || "";
@@ -100,14 +98,7 @@ function MyApp({
 
     return (
       <PreviewProvider token={pageProps.token}>
-        <PlausibleProvider
-          domain={plausibleDomain}
-          trackOutboundLinks={true}
-          taggedEvents={true}
-          revenue={true}
-          trackLocalhost={false}
-          enabled={tracking}
-        >
+        <PlausibleProvider enabled={tracking}>
           <Provider store={globalWidgetStore}>
             <RouterContext.Provider value={routerContextValue.current}>
               {appStaticProps.layout === LayoutType.Default ? (
@@ -130,12 +121,7 @@ function MyApp({
   }
 
   return (
-    <PlausibleProvider
-      domain={plausibleDomain}
-      trackOutboundLinks={true}
-      taggedEvents={true}
-      revenue={true}
-    >
+    <PlausibleProvider>
       <Provider store={globalWidgetStore}>
         <RouterContext.Provider value={routerContextValue.current}>
           {appStaticProps.layout === LayoutType.Default ? (
