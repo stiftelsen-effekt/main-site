@@ -27,7 +27,7 @@
     "@auth0/auth0-react": "^2.10.0",
     "@babel/preset-typescript": "^7.29.7",
     "@observablehq/plot": "^0.6.17",
-    "@portabletext/react": "^3.2.4",
+    "@portabletext/react": "^8.0.1",
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.13.0",
     "@sanity/client": "^7.27.0",
