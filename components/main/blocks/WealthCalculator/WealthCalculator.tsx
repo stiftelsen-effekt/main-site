@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { useDebouncedCallback } from "use-debounce";
 import {
@@ -14,6 +14,7 @@ import {
   TaxJurisdiction,
   calculateWealthPercentile,
   equvivalizeIncome,
+  getCachedPostTaxIncome,
   getEstimatedPostTaxIncome,
 } from "./_util";
 import { WealthCalculatorSlider, WealthCalculatorSliderConfig } from "./WealthCalculatorSlider";
@@ -70,7 +71,14 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
   const [numberOfAdults, setNumberOfParents] = useState(1);
   const [donationPercentage, setDonationPercentage] = useState(default_donation_percentage || 10);
   const [loadingPostTaxIncome, setLoadingPostTaxIncome] = useState(false);
-  const [postTaxIncome, setPostTaxIncome] = useState<number>(0);
+  /**
+   * The post tax income is stored together with the number of adults it was estimated for. Until a new
+   * estimate is ready we keep equvivalizing with the old number of adults, so the output updates once
+   * instead of jumping to an intermediate value when the number of adults changes.
+   */
+  const [postTaxEstimate, setPostTaxEstimate] = useState({ postTaxIncome: 0, numberOfAdults: 1 });
+  const postTaxIncome = postTaxEstimate.postTaxIncome;
+  const latestEstimateRequest = useRef(0);
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [pppConversion, setPppConversion] = useState<AdjustedPPPFactorResult>({
     adjustedPPPfactor: 7,
@@ -99,19 +107,23 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     }
   }, [setPppConversion]);
 
+  const taxJurisdiction: TaxJurisdiction | undefined =
+    locale === "no"
+      ? TaxJurisdiction.NO
+      : locale === "sv"
+      ? TaxJurisdiction.SV
+      : locale === "dk"
+      ? TaxJurisdiction.DK
+      : undefined;
+
+  const sumIncomes = (values: number[]) => values.reduce((total, value) => total + value, 0);
+
   /**
    * Calculate the post tax income. We use a debounced callback to avoid calculating the post tax income
    * too many times when the user is typing.
    */
-  const calculatePostTaxIncome = useDebouncedCallback(() => {
-    let taxJurisdiction: TaxJurisdiction;
-    if (locale === "no") {
-      taxJurisdiction = TaxJurisdiction.NO;
-    } else if (locale === "sv") {
-      taxJurisdiction = TaxJurisdiction.SV;
-    } else if (locale === "dk") {
-      taxJurisdiction = TaxJurisdiction.DK;
-    } else {
+  const calculatePostTaxIncome = useDebouncedCallback((requestId: number, adults: number) => {
+    if (!taxJurisdiction) {
       console.error("Unsupported locale", locale);
       return;
     }
@@ -121,27 +133,50 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       ),
     )
       .then((postTaxIncomes) => {
-        setPostTaxIncome(postTaxIncomes.reduce((total, adultIncome) => total + adultIncome, 0));
+        // Ignore estimates that have been superseded by a newer input
+        if (requestId !== latestEstimateRequest.current) return;
+        setPostTaxEstimate({ postTaxIncome: sumIncomes(postTaxIncomes), numberOfAdults: adults });
       })
       .catch((error) => {
         console.error("Failed to calculate post-tax income", error);
       })
       .finally(() => {
-        setLoadingPostTaxIncome(false);
+        if (requestId === latestEstimateRequest.current) setLoadingPostTaxIncome(false);
       });
   }, 250);
 
   useEffect(() => {
-    // Nothing to estimate yet, so skip the spinner and just reset to zero
-    setLoadingPostTaxIncome(incomes.some((adultIncome) => adultIncome > 0));
-    calculatePostTaxIncome();
+    const requestId = ++latestEstimateRequest.current;
+
+    // If every adult's estimate is cached (or there is no income yet), update right away
+    const cached = taxJurisdiction
+      ? incomes.map((adultIncome) =>
+          getCachedPostTaxIncome(adultIncome, periodAdjustment, taxJurisdiction),
+        )
+      : [];
+    if (taxJurisdiction && cached.every((value) => typeof value !== "undefined")) {
+      calculatePostTaxIncome.cancel();
+      setPostTaxEstimate({
+        postTaxIncome: sumIncomes(cached as number[]),
+        numberOfAdults,
+      });
+      setLoadingPostTaxIncome(false);
+      return;
+    }
+
+    setLoadingPostTaxIncome(true);
+    calculatePostTaxIncome(requestId, numberOfAdults);
   }, [incomeInputs, numberOfAdults]);
 
   /**
    * Calculate the equvivalized income. This is the income after tax and adjusted for the number of adults and children
    * in the household. We use the OECD modified scale to calculate the equvivalized income.
    */
-  const equvivalizedIncome = equvivalizeIncome(postTaxIncome, numberOfChildren, numberOfAdults);
+  const equvivalizedIncome = equvivalizeIncome(
+    postTaxIncome,
+    numberOfChildren,
+    postTaxEstimate.numberOfAdults,
+  );
 
   return (
     <div className={styles.wrapper}>
