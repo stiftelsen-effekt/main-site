@@ -1325,7 +1325,7 @@ const computeYearlyMaxes = (don: CumulativeBinnedDonation[], height: number) => 
   const yScale = maxCumulativeSum.cumulativeSum;
   const labelHeight = (30 / height) * yScale;
   const labelPadding = 0.5 * labelHeight;
-  const labelYs = (d: typeof yearlyMaxes[number], i: number, items: typeof yearlyMaxes) => {
+  const labelYs = (d: (typeof yearlyMaxes)[number], i: number, items: typeof yearlyMaxes) => {
     if (i === 0) {
       return d.cumulativeSum;
     }

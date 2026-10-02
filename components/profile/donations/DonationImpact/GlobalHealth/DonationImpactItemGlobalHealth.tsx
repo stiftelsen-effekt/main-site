@@ -148,20 +148,20 @@ export const DonationImpactGlobalHealthItem: React.FC<{
   } | null = preComputedImpact
     ? preComputedImpact
     : relevantEvaluation
-    ? {
-        output: grantOutput + directSum / relevantEvaluation.converted_cost_per_output,
-        shortDescription: relevantEvaluation.intervention.short_description,
-        longDescription: relevantEvaluation.intervention.long_description,
-        charityName: relevantEvaluation.charity.charity_name,
-        orgUrl: configuration.about_org_link_url_format_string
-          .replace("{{org}}", relevantEvaluation.charity.charity_name)
-          .replaceAll(" ", "_"),
-      }
-    : null;
+      ? {
+          output: grantOutput + directSum / relevantEvaluation.converted_cost_per_output,
+          shortDescription: relevantEvaluation.intervention.short_description,
+          longDescription: relevantEvaluation.intervention.long_description,
+          charityName: relevantEvaluation.charity.charity_name,
+          orgUrl: configuration.about_org_link_url_format_string
+            .replace("{{org}}", relevantEvaluation.charity.charity_name)
+            .replaceAll(" ", "_"),
+        }
+      : null;
 
   const isGiveWellAllGrantsFund = orgAbriv === "AGF";
   const missingEvaluationHeader = isGiveWellAllGrantsFund
-    ? configuration.givewell_all_grants_fund_header ?? configuration.missing_evaluation_header
+    ? (configuration.givewell_all_grants_fund_header ?? configuration.missing_evaluation_header)
     : configuration.missing_evaluation_header;
 
   if (!resolvedImpact) {

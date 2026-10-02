@@ -86,7 +86,7 @@ export const TaxPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       subpath,
       data: {

@@ -130,8 +130,8 @@ export const SwishPane = dynamic<{
               CANCELLED: config.cancelled.text,
             }[status]
           : showQrCode
-          ? config.prompt.scan_text
-          : config.prompt.redirect_text;
+            ? config.prompt.scan_text
+            : config.prompt.redirect_text;
 
       return (
         <Pane>

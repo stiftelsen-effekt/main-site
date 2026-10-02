@@ -127,12 +127,12 @@ export const AutogiroPane: React.FC<{
                   DEFAULT_DATE.toString(),
                 )
               : manualAutogiroSetupDate === 0
-              ? config.recurring_manual_option_config.date_selector_config
-                  .payment_date_last_day_of_month_template
-              : config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
-                  "{{date}}",
-                  manualAutogiroSetupDate.toString(),
-                )}
+                ? config.recurring_manual_option_config.date_selector_config
+                    .payment_date_last_day_of_month_template
+                : config.recurring_manual_option_config.date_selector_config.payment_date_format_template.replace(
+                    "{{date}}",
+                    manualAutogiroSetupDate.toString(),
+                  )}
           </span>
           <span
             style={{

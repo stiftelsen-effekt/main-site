@@ -171,8 +171,8 @@ export const prepareDistributionForSave = (
               },
             ]
           : causeArea.standardSplit
-          ? hydrateOrganizations(causeArea, amount)
-          : causeArea.organizations;
+            ? hydrateOrganizations(causeArea, amount)
+            : causeArea.organizations;
       const activeOrganizations = organizations.filter(
         (organization) => isAmount(organization.amount) && organization.amount > 0,
       );

@@ -57,10 +57,13 @@ export const fetchRouterContext = async (): Promise<RouterContextValue> => {
     fundraisersPath: getFundraisersPath(),
   };
 
-  cachedRouterContext = (await Promise.all(Object.values(promises))).reduce((acc, value, index) => {
-    const key = Object.keys(promises)[index] as keyof typeof promises;
-    return { ...acc, [key]: value };
-  }, {} as AwaitedPromises<typeof promises>);
+  cachedRouterContext = (await Promise.all(Object.values(promises))).reduce(
+    (acc, value, index) => {
+      const key = Object.keys(promises)[index] as keyof typeof promises;
+      return { ...acc, [key]: value };
+    },
+    {} as AwaitedPromises<typeof promises>,
+  );
 
   return cachedRouterContext;
 };

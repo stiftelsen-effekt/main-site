@@ -53,9 +53,9 @@ export const Lightbox: React.FC<{
             {loading ? (
               <LoadingButtonSpinner />
             ) : onCancel ? (
-              confirmLabel ?? defaultConfirmLabel
+              (confirmLabel ?? defaultConfirmLabel)
             ) : (
-              okLabel ?? "OK"
+              (okLabel ?? "OK")
             )}
           </EffektButton>
           {onCancel && (

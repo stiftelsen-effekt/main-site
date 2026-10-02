@@ -103,76 +103,74 @@ export const Layout = withStaticProps(
       consentState,
     };
   },
-)(
-  ({
-    children,
-    footer,
-    widget,
-    giveButton,
-    general_banner,
-    cookie_banner_configuration,
+)(({
+  children,
+  footer,
+  widget,
+  giveButton,
+  general_banner,
+  cookie_banner_configuration,
+  consentState,
+  showGiveButton,
+  draftMode,
+}) => {
+  const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
+    open: false,
+    prefilled: null,
+    prefilledSum: null,
+  });
+  const widgetContextValue = useMemo<
+    [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
+  >(() => [widgetContext, setWidgetContext], [widgetContext]);
+
+  const [banners, setBanners] = useState<BanerContextType>({
     consentState,
-    showGiveButton,
-    draftMode,
-  }) => {
-    const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
-      open: false,
-      prefilled: null,
-      prefilledSum: null,
-    });
-    const widgetContextValue = useMemo<
-      [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
-    >(() => [widgetContext, setWidgetContext], [widgetContext]);
+    consentExpired: false,
+    privacyPolicyLastMajorChange: undefined,
+    generalBannerDismissed: false,
+  });
 
-    const [banners, setBanners] = useState<BanerContextType>({
-      consentState,
-      consentExpired: false,
-      privacyPolicyLastMajorChange: undefined,
-      generalBannerDismissed: false,
-    });
+  if (widgetContext.open && window.innerWidth < 1180) {
+    document.body.style.overflow = "hidden";
+  } else if (typeof document !== "undefined") {
+    document.body.style.overflow = "hidden";
+  }
 
-    if (widgetContext.open && window.innerWidth < 1180) {
-      document.body.style.overflow = "hidden";
-    } else if (typeof document !== "undefined") {
-      document.body.style.overflow = "hidden";
-    }
-
-    return (
-      <div className={styles.container}>
-        {showGiveButton && (
-          <GiveButton
-            inverted={false}
-            color={giveButton.accent_color}
-            title={giveButton.donate_label_title}
-            onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
-          >
-            {giveButton.donate_label_short}
-          </GiveButton>
-        )}
-        <WidgetContext.Provider value={widgetContextValue}>
-          <BannerContext.Provider value={[banners, setBanners]}>
-            <CookieBannerWrapper cookieBannerConfig={cookie_banner_configuration} />
-            {draftMode ? (
-              <PreviewWidgetPane
-                {...widget}
-                prefilled={widgetContext.prefilled}
-                prefilledSum={widgetContext.prefilledSum}
-              />
-            ) : (
-              <WidgetPane
-                {...widget}
-                prefilled={widgetContext.prefilled}
-                prefilledSum={widgetContext.prefilledSum}
-              />
-            )}
-            <main className={styles.main}>{children}</main>
-          </BannerContext.Provider>
-        </WidgetContext.Provider>
-        {draftMode ? <PreviewFooter {...footer} /> : <Footer {...footer} />}
-      </div>
-    );
-  },
-);
+  return (
+    <div className={styles.container}>
+      {showGiveButton && (
+        <GiveButton
+          inverted={false}
+          color={giveButton.accent_color}
+          title={giveButton.donate_label_title}
+          onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
+        >
+          {giveButton.donate_label_short}
+        </GiveButton>
+      )}
+      <WidgetContext.Provider value={widgetContextValue}>
+        <BannerContext.Provider value={[banners, setBanners]}>
+          <CookieBannerWrapper cookieBannerConfig={cookie_banner_configuration} />
+          {draftMode ? (
+            <PreviewWidgetPane
+              {...widget}
+              prefilled={widgetContext.prefilled}
+              prefilledSum={widgetContext.prefilledSum}
+            />
+          ) : (
+            <WidgetPane
+              {...widget}
+              prefilled={widgetContext.prefilled}
+              prefilledSum={widgetContext.prefilledSum}
+            />
+          )}
+          <main className={styles.main}>{children}</main>
+        </BannerContext.Provider>
+      </WidgetContext.Provider>
+      {draftMode ? <PreviewFooter {...footer} /> : <Footer {...footer} />}
+    </div>
+  );
+});
 
 const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query);

@@ -14,14 +14,14 @@ export const FullPageError: React.FC<{ error?: string; title?: string }> = ({ er
     mainLocale === "dk"
       ? "Noget gik galt"
       : mainLocale === "sv"
-      ? "Något gick fel"
-      : "Noe gikk galt";
+        ? "Något gick fel"
+        : "Noe gikk galt";
   const backButtonLabel =
     mainLocale === "dk"
       ? "Tag mig tilbage til forsiden"
       : mainLocale === "sv"
-      ? "Ta mig tillbaka till startsidan"
-      : "Ta meg tilbake til forsiden";
+        ? "Ta mig tillbaka till startsidan"
+        : "Ta meg tilbake til forsiden";
   const logoutLabel = mainLocale === "dk" ? "Log ud" : mainLocale === "sv" ? "Logga ut" : "Logg ut";
 
   return (

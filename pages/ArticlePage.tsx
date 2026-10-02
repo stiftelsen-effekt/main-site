@@ -59,7 +59,7 @@ export const ArticlePage = withStaticProps(
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       data: {
         result,
         query: fetchArticle,

@@ -198,7 +198,7 @@ export const ReferralSums: React.FC<{
               fill: "white",
             }),
           );
-          config.marks.push(
+          (config.marks.push(
             Plot.axisX({
               textAnchor: "start",
               tickFormat: (t) =>
@@ -216,7 +216,7 @@ export const ReferralSums: React.FC<{
                 label: null,
                 tickSpacing: 50,
               }),
-            );
+            ));
         } else if (config.marks) {
           config.marks.push(Plot.gridX({ strokeOpacity: 1, strokeWidth: 0.5, tickSpacing: 100 }));
           config.marks.push(

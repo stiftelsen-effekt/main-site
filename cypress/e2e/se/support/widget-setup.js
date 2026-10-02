@@ -96,8 +96,8 @@ export const setCauseAreaAmount = (causeAreaId, amount, enableCut) => {
       $body.find("[data-cy=global-cut-checkbox]").length > 0
         ? "[data-cy=global-cut-checkbox]"
         : causeAreaId === 4
-        ? "[data-cy=cut-checkbox]"
-        : `[data-cy=cut-checkbox-${causeAreaId}]`;
+          ? "[data-cy=cut-checkbox]"
+          : `[data-cy=cut-checkbox-${causeAreaId}]`;
 
     if ($body.find(cutSelector).length === 0) return;
 

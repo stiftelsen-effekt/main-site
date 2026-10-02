@@ -117,7 +117,7 @@ export const DonationsPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       filterYear,
       navbarData: await Navbar.getStaticProps({ dashboard: true, draftMode }),
       data: {

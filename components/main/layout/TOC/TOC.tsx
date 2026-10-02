@@ -98,14 +98,14 @@ export const TOC: React.FC<{ items: { title: string; _key: string }[] }> = ({ it
       scrollPosition < articleStart
         ? "absolute"
         : scrollPosition > articleEnd - window.innerHeight
-        ? "absolute"
-        : "fixed";
+          ? "absolute"
+          : "fixed";
     const top =
       scrollPosition < articleStart
         ? `calc(${articleStart}px + ${margin}px)`
         : scrollPosition > articleEnd - window.innerHeight
-        ? `calc(${articleEnd}px - ${window.innerHeight}px + ${margin}px)`
-        : `${margin}px`;
+          ? `calc(${articleEnd}px - ${window.innerHeight}px + ${margin}px)`
+          : `${margin}px`;
     return { position, top };
   }, [isClient, scrollPosition, articleStart, articleEnd, margin]);
 

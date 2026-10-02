@@ -111,7 +111,7 @@ export const ResultsPage = withStaticProps(
       appStaticProps,
       draftMode,
       preview: draftMode,
-      token: draftMode ? token ?? null : null,
+      token: draftMode ? (token ?? null) : null,
       navbar: await Navbar.getStaticProps({ dashboard: false, draftMode }),
       data: {
         result,

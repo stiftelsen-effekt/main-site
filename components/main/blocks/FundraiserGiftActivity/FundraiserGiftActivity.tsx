@@ -40,12 +40,15 @@ export const FundraiserGiftActivity: React.FC<{
   /* Use AnimateHeight component to expand 5 more at a time */
   /* Divy the donations into arrays with 5 elements each */
   /* Use map to render each array of donations */
-  const divviedDonations = donations.reduce((acc, donation, i) => {
-    const index = Math.floor(i / 5);
-    acc[index] = acc[index] || [];
-    acc[index].push(donation);
-    return acc;
-  }, [] as { amount: number; name: string | null; message: string | null }[][]);
+  const divviedDonations = donations.reduce(
+    (acc, donation, i) => {
+      const index = Math.floor(i / 5);
+      acc[index] = acc[index] || [];
+      acc[index].push(donation);
+      return acc;
+    },
+    [] as { amount: number; name: string | null; message: string | null }[][],
+  );
 
   const getHeaderText = (name: string | null, amount: number) => {
     const template = name ? gift_amount_text_template : anonymous_gift_amount_text_template;
