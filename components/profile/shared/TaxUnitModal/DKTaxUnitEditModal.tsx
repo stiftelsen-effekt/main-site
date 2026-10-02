@@ -1,4 +1,5 @@
 import { useAuth0, User } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../hooks/useApi";
 import { useCallback, useState } from "react";
 import { TaxUnit } from "../../../../models";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
@@ -40,7 +41,7 @@ export const DKTaxUnitEditModal: React.FC<{
 
   const create = useCallback(async () => {
     setLoading(true);
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
 
     if (!user) {
       return;

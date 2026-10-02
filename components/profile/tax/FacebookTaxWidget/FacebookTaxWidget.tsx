@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { Check } from "react-feather";
 import { TaxUnit } from "../../../../models";
 import { useAuth0, User } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../hooks/useApi";
 import { registerFacebookDonation } from "../../_queries";
 import { TaxUnitSelector } from "../../shared/TaxUnitSelector/TaxUnitSelector";
 import { TaxUnitCreateModal } from "../../shared/TaxUnitModal/TaxUnitCreateModal";
@@ -65,7 +66,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
   const paneSubmitted = () => {
     if (!taxUnit) return;
     setLoadingAnimation(true);
-    getAccessTokenSilently()
+    getAccessToken(getAccessTokenSilently)
       .then((accessToken) => {
         registerFacebookDonation(
           {

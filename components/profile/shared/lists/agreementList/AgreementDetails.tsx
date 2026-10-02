@@ -14,6 +14,7 @@ import {
   updateVippsAgreementPrice,
 } from "./_queries";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../../hooks/useApi";
 import { useSWRConfig } from "swr";
 import { AlertCircle, Check, Info } from "react-feather";
 import style from "./AgreementDetails.module.scss";
@@ -175,7 +176,7 @@ export const AgreementDetails: React.FC<{
   };
 
   const save = async () => {
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
     const distributionChanged =
       JSON.stringify(distribution) !== JSON.stringify(lastSavedDistribution);
     const agreementSum =
@@ -283,7 +284,7 @@ export const AgreementDetails: React.FC<{
     if (!user) throw new Error("User is not logged in");
 
     setLightboxOpen(false);
-    const token = await getAccessTokenSilently();
+    const token = await getAccessToken(getAccessTokenSilently);
     if (type === "Vipps") {
       const cancelled = await cancelVippsAgreement(endpoint, token);
       if (cancelled) {

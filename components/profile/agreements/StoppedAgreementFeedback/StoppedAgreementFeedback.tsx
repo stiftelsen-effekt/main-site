@@ -11,6 +11,7 @@ import {
   deleteStoppedAgreementFeedback,
 } from "../../shared/lists/agreementList/_queries";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../../../hooks/useApi";
 import { toast } from "react-toastify";
 import { AlertCircle } from "react-feather";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
@@ -89,7 +90,7 @@ export const StoppedAgreementFeedback = ({
     const operation = operationQueue.current[0];
 
     try {
-      const token = await getAccessTokenSilently();
+      const token = await getAccessToken(getAccessTokenSilently);
 
       if (operation.type === "add") {
         const insertedId = await addStoppedAgreementFeedback(

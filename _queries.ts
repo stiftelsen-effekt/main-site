@@ -1,6 +1,6 @@
 import { User } from "@auth0/auth0-react";
 import useSWR from "swr";
-import { apiResult, getAccessTokenSilently } from "./hooks/useApi";
+import { apiResult, getAccessToken, getAccessTokenSilently } from "./hooks/useApi";
 import { TaxUnit } from "./models";
 import { getUserId } from "./lib/user";
 import { CauseArea } from "./components/shared/components/Widget/types/CauseArea";
@@ -29,7 +29,7 @@ const fetcher = async (
   const headers: Record<string, string> = {};
 
   if (fetchToken) {
-    const token = await fetchToken();
+    const token = await getAccessToken(fetchToken);
     headers.Authorization = `Bearer ${token}`;
   }
 
