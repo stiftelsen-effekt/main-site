@@ -79,6 +79,7 @@
     "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/styled-components": "^5.1.36",
+    "babel-plugin-react-compiler": "^1.0.0",
     "cross-env": "^10.1.0",
     "csv-parse": "^7.0.3",
     "cypress": "^16.1.1",

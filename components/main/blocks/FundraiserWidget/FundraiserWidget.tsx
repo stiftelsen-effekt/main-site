@@ -183,8 +183,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
               show_name_label: config.show_name_label!,
               next_button_text: config.next_button_text!,
               monthly_donations: monthlyDonationConfig as
-                | { single_donation_text: string; monthly_donation_text: string }
-                | undefined,
+                { single_donation_text: string; monthly_donation_text: string } | undefined,
             }}
             locale={locale}
           />

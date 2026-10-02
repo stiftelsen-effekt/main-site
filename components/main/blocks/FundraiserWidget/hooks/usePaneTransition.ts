@@ -10,6 +10,11 @@ interface TransitionState {
 }
 
 export function usePaneTransition(totalPanes: number) {
+  // Opted out of the React Compiler: it memoizes the `paneRefs` array literal
+  // below, hook calls included, so the four useRef calls are skipped after the
+  // first render and React throws "Should have a queue" (minified error #311),
+  // crashing every fundraiser page.
+  "use no memo";
   const [step, setStep] = useState<number>(0);
   const [paneTransition, setPaneTransition] = useState<TransitionState>({
     activePane: 0,

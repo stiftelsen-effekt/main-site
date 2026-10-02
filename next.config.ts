@@ -12,6 +12,11 @@ const STUDIO_REWRITE = {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Automatic memoization via the React Compiler (babel-plugin-react-compiler).
+  // Components the compiler cannot prove safe (see the react-hooks/* lint
+  // errors) are skipped rather than compiled. Opt a component out with the
+  // "use no memo" directive if it misbehaves.
+  reactCompiler: true,
   productionBrowserSourceMaps: true,
   // html-react-parser pulls in the ESM-only domhandler, which html-dom-parser
   // loads via require(). Transpiling these packages forces Next to bundle them
