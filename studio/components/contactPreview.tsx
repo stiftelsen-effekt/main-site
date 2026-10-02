@@ -8,7 +8,7 @@ export const ContactPreview = (props: PreviewProps & Contactinfo) => {
   const { phone, email } = props;
 
   return (
-    <Grid columns={2} rows={1} padding={1}>
+    <Grid gridTemplateColumns={2} gridTemplateRows={1} padding={1}>
       <Flex direction={"row"} align={"center"} padding={2} gap={2}>
         <Phone size={25} />
         <Text>{phone ? phone : "-"}</Text>

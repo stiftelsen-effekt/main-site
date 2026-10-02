@@ -103,7 +103,7 @@ export const CauseAreaSelectInput = (props: NumberInputProps) => {
 
   if (state.status === "error") {
     return (
-      <Stack space={2}>
+      <Stack gap={2}>
         <Card padding={2} radius={2} tone="caution">
           <Text size={1}>{state.message}. Enter the cause area ID manually.</Text>
         </Card>
@@ -117,7 +117,7 @@ export const CauseAreaSelectInput = (props: NumberInputProps) => {
     typeof value === "number" && value !== SMART_DISTRIBUTION_ID && !knownIds.includes(value);
 
   return (
-    <Stack space={2}>
+    <Stack gap={2}>
       <Select
         {...elementProps}
         value={value === undefined || value === null ? "" : String(value)}
@@ -172,7 +172,7 @@ export const OrganizationSelectInput = (props: NumberInputProps) => {
 
   if (state.status === "error") {
     return (
-      <Stack space={2}>
+      <Stack gap={2}>
         <Card padding={2} radius={2} tone="caution">
           <Text size={1}>{state.message}. Enter the organization ID manually.</Text>
         </Card>
@@ -189,7 +189,7 @@ export const OrganizationSelectInput = (props: NumberInputProps) => {
     typeof value === "number" && !organizations.some((organization) => organization.id === value);
 
   return (
-    <Stack space={2}>
+    <Stack gap={2}>
       <Select
         {...elementProps}
         value={value === undefined || value === null ? "" : String(value)}
@@ -251,7 +251,7 @@ export const CauseAreaMultiSelectInput = (props: ArrayOfPrimitivesInputProps<num
 
   if (state.status === "error") {
     return (
-      <Stack space={2}>
+      <Stack gap={2}>
         <Card padding={2} radius={2} tone="caution">
           <Text size={1}>{state.message}. Enter cause area IDs manually.</Text>
         </Card>
@@ -275,7 +275,7 @@ export const CauseAreaMultiSelectInput = (props: ArrayOfPrimitivesInputProps<num
   const unknownSelected = (value ?? []).filter((id) => !knownIds.includes(id));
 
   return (
-    <Stack space={2}>
+    <Stack gap={2}>
       {state.causeAreas.map((area) => (
         <Flex key={area.id} align="center" gap={2}>
           <Checkbox

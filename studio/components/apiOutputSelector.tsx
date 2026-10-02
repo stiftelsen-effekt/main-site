@@ -69,17 +69,17 @@ export default function ApiOutputSelector(props: ApiOutputSelectorProps) {
   };
 
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       {error && (
         <Card padding={2} radius={1} tone="critical">
           <Text size={1}>Error: {error}</Text>
         </Card>
       )}
 
-      <Stack space={2}>
+      <Stack gap={2}>
         {loading && (
           <Card padding={2} radius={1}>
-            <Stack space={2}>
+            <Stack gap={2}>
               <Spinner />
               <Text size={1}>Loading outputs from API...</Text>
             </Stack>

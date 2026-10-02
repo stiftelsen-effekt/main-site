@@ -43,7 +43,7 @@ export const ContentSectionPreview = (
             />
           </div>
         )}
-        <Stack space={1}>
+        <Stack gap={1}>
           {hasHeader ? (
             <Stack marginBottom={props.heading ? 3 : 0}>
               {props.nodivider ? null : (
