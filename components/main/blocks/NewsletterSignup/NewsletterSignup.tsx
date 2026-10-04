@@ -92,7 +92,6 @@ export const NewsletterSignup: React.FC<{
       <form
         className={`${styles.category} ${styles.newsletter}`}
         onSubmit={handleDKSubmit}
-        noValidate
       >
         <fieldset>
           <label className={styles.newsletter_label} htmlFor="dk-email">
@@ -106,6 +105,8 @@ export const NewsletterSignup: React.FC<{
               onChange={(e) => setEmail(e.target.value)}
               placeholder={emailLabel || "EMAIL"}
               id="dk-email"
+              name="email"
+              required
               disabled={loading}
             />
             <button data-cy="newsletter-submit" type="submit" disabled={loading}>
