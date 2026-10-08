@@ -1,5 +1,4 @@
 import { SagaIterator } from "redux-saga";
-import { getStoredFundraiserId } from "../../../../../../util/fundraiserAttribution";
 import { call, put, select } from "redux-saga/effects";
 import { Action } from "typescript-fsa";
 import { ANONYMOUS_DONOR } from "../../config/anonymous-donor";
@@ -321,7 +320,6 @@ export function* registerDonation(
     );
 
     // --- Prepare final data object for API ---
-    const fundraiserId: string | undefined = yield call(getStoredFundraiserId);
     const data: RegisterDonationObject & {
       distributionCauseAreas: any;
     } = {
@@ -331,7 +329,6 @@ export function* registerDonation(
       amount: breakdown.totalAmount,
       recurring: recurring,
       ...(referralCode ? { referralCode } : {}),
-      ...(fundraiserId ? { fundraiser: { id: fundraiserId } } : {}),
     };
 
     // --- Make API call ---
