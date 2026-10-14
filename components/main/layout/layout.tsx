@@ -14,6 +14,10 @@ import React from "react";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../../middleware.page";
 import CookieBannerWrapper from "../../shared/layout/CookieBanner/CookieBannerWrapper";
+import {
+  useExternalDonationWidget,
+  getExternalDonationUrls,
+} from "../../../util/externalDonationWidget";
 
 export type WidgetContextType = {
   open: boolean;
@@ -114,14 +118,21 @@ export const Layout = withStaticProps(
   showGiveButton,
   draftMode,
 }) => {
-  const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
+  const [widgetContext, setInternalWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
     prefilledSum: null,
   });
+  const externalDonationUrls = getExternalDonationUrls(widget.data.result.external_donation_widget);
+  const usesExternalWidget = externalDonationUrls !== null;
+  const setWidgetContext = useExternalDonationWidget(
+    externalDonationUrls,
+    widgetContext,
+    setInternalWidgetContext,
+  );
   const widgetContextValue = useMemo<
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
-  >(() => [widgetContext, setWidgetContext], [widgetContext]);
+  >(() => [widgetContext, setWidgetContext], [widgetContext, setWidgetContext]);
 
   const [banners, setBanners] = useState<BanerContextType>({
     consentState,
@@ -151,7 +162,7 @@ export const Layout = withStaticProps(
       <WidgetContext.Provider value={widgetContextValue}>
         <BannerContext.Provider value={[banners, setBanners]}>
           <CookieBannerWrapper cookieBannerConfig={cookie_banner_configuration} />
-          {draftMode ? (
+          {usesExternalWidget ? null : draftMode ? (
             <PreviewWidgetPane
               {...widget}
               prefilled={widgetContext.prefilled}

@@ -13,6 +13,7 @@ export default defineConfig({
     baseUrl: "http://localhost:3000",
     fixturesFolder: "cypress/fixtures/dk",
     specPattern: "cypress/e2e/dk/**/*.{js,jsx,ts,tsx}",
+    excludeSpecPattern: "cypress/e2e/dk/support/**",
   },
   viewportHeight: 850,
   viewportWidth: 1280,

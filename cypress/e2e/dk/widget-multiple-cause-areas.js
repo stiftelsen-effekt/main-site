@@ -1,8 +1,16 @@
-// DK's real cause-area data (cause_areas.json) has only one active cause
-// area, which routes the widget straight into SingleCauseAreaPane (see
-// widget.js). That leaves the SelectionPane + multi-cause-area AmountPane
-// flow untested even though it's shared, non-locale-specific widget code.
-// This spec forces a multi-cause-area fixture so that flow keeps working too.
+// Forces a multi-cause-area fixture (cause_areas_multiple) to cover the
+// SelectionPane + multi-cause-area AmountPane flow with operations tipping.
+import {
+  setupWidgetTest,
+  setCauseAreaAmount,
+  setGlobalCut,
+  goToDonorPane,
+  OPERATIONS_SUMMARY_LABEL,
+  SINGLE_DONATION_TEXT,
+  MONTHLY_DONATION_TEXT,
+  SMART_DISTRIBUTION_TITLE,
+} from "./support/widget-setup.js";
+
 describe("Widget multiple cause areas", () => {
   beforeEach(() => {
     cy.fixture("cause_areas_multiple")
@@ -138,5 +146,138 @@ describe("Widget multiple cause areas", () => {
       const kid = $kid.text();
       expect(kid).to.be.length(8);
     });
+  });
+});
+
+// Amount entry, organization distribution and summary for the multiple cause areas pane.
+// In cause_areas_multiple.json, Global sundhed (1) has orgs 100 (standardShare 100) and
+// 101, Dyrevelfærd (2) has orgs 200 (standardShare 100) and 102, and Drift (4) is the
+// operations cause area.
+describe("Widget multiple cause areas - amounts, distribution and summary", () => {
+  beforeEach(() => {
+    setupWidgetTest({ fixture: "cause_areas_multiple" });
+    cy.get("[data-cy=cause-area-multiple]").click();
+  });
+
+  it("Shows an input per cause area plus smart distribution, but not operations", () => {
+    cy.get("[data-cy=donation-sum-input-overall]").should("be.visible");
+    cy.get("[data-cy=donation-sum-input-1]").should("be.visible");
+    cy.get("[data-cy=donation-sum-input-2]").should("be.visible");
+    // Operations is a below-the-line cause area and is only added via the global cut
+    cy.get("[data-cy=donation-sum-input-4]").should("not.exist");
+    cy.get("[data-cy=donation-sum-input-operations]").should("not.exist");
+    cy.get("[data-cy=global-cut-checkbox]").should("exist");
+    // Per-cause-area cut toggles only exist when a single cause area is selected
+    cy.get("[data-cy=cut-checkbox-1]").should("not.exist");
+    cy.get("[data-cy=cut-checkbox-2]").should("not.exist");
+  });
+
+  it("Sums the amounts for each cause area", () => {
+    setCauseAreaAmount(1, 300);
+    setCauseAreaAmount(2, 200);
+
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
+    cy.get("[data-cy=donation-sum-input-2]").should("have.value", "200");
+    cy.get("[data-cy=total-amount-wrapper]").should("contain.text", "500 kr");
+  });
+
+  it("Requires at least one amount to proceed", () => {
+    cy.get("[data-cy=next-button]").last().should("be.disabled");
+
+    setCauseAreaAmount(1, 100);
+    cy.get("[data-cy=next-button]").last().should("not.be.disabled");
+
+    cy.get("[data-cy=donation-sum-input-1]").clear();
+    cy.get("[data-cy=next-button]").last().should("be.disabled");
+  });
+
+  it("Auto-populates organization amounts from standard shares when switching to custom distribution", () => {
+    setCauseAreaAmount(1, 500);
+
+    cy.get("[data-cy=radio-smart-share-1]").should("exist");
+    cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
+
+    cy.get("[data-cy=org-100]").should("have.value", "500");
+    cy.get("[data-cy=org-101]").should("have.value", "");
+    cy.get("[data-cy=next-button]").last().should("not.be.disabled");
+  });
+
+  it("Shows custom organization amounts in the summary", () => {
+    setCauseAreaAmount(1, 500);
+    setGlobalCut(false);
+
+    cy.get("[data-cy=radio-custom-share-1]").click({ force: true });
+    cy.get("[data-cy=org-100]").should("have.value", "500");
+    cy.get("[data-cy=org-101]").type("300");
+    cy.get("[data-cy=org-101]").should("have.value", "300");
+
+    goToDonorPane();
+
+    cy.get("[data-cy=summary-org-100-amount]").should("contain.text", "500 kr");
+    cy.get("[data-cy=summary-org-101-amount]").should("contain.text", "300 kr");
+    cy.get("[data-cy=summary-total-amount]").should("contain.text", "800 kr");
+  });
+
+  it("Preserves amounts when navigating to the donor pane and back", () => {
+    setCauseAreaAmount(1, 300);
+    setCauseAreaAmount(2, 200);
+
+    goToDonorPane();
+    cy.get("[data-cy=back-button]").click();
+
+    cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
+    cy.get("[data-cy=donation-sum-input-2]").should("have.value", "200");
+    cy.get("[data-cy=total-amount-wrapper]").should("contain.text", "500 kr");
+  });
+
+  it("Shows each cause area in the donation summary", () => {
+    setCauseAreaAmount(1, 500);
+    setCauseAreaAmount(2, 300);
+    setGlobalCut(false);
+
+    goToDonorPane();
+
+    cy.get("[data-cy=donation-type]").should("contain.text", SINGLE_DONATION_TEXT);
+    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "500 kr");
+    cy.get("[data-cy=summary-cause-area-2-amount]").should("contain.text", "300 kr");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should("not.exist");
+    cy.get("[data-cy=summary-total-amount]").should("contain.text", "800 kr");
+  });
+
+  it("Keeps smart distribution, direct cause areas and operations separate in the summary", () => {
+    cy.get("[data-cy=donation-sum-input-overall]").type("500");
+    setCauseAreaAmount(1, 100);
+    setCauseAreaAmount(2, 200);
+    setGlobalCut(true, 10);
+
+    goToDonorPane();
+
+    // 800 kr total, 10% (80 kr) to operations taken proportionally from every part
+    cy.get("[data-cy=summary-smart-distribution-name]").should(
+      "contain.text",
+      SMART_DISTRIBUTION_TITLE,
+    );
+    cy.get("[data-cy=summary-smart-distribution-amount]").should("contain.text", "450 kr");
+    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "90 kr");
+    cy.get("[data-cy=summary-cause-area-2-amount]").should("contain.text", "180 kr");
+    cy.get("[data-cy=summary-cause-area-4-name]").should("contain.text", OPERATIONS_SUMMARY_LABEL);
+    cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "80 kr");
+    cy.get("[data-cy=summary-total-amount]").should("contain.text", "800 kr");
+  });
+
+  it("Shows the operations cut for a recurring donation with the global cut", () => {
+    setCauseAreaAmount(1, 400);
+    setCauseAreaAmount(2, 600);
+    setGlobalCut(true, 10);
+    cy.get('[data-cy="recurring-donation-radio"]').click({ force: true });
+    cy.get("[data-cy=next-button]").last().should("not.be.disabled");
+
+    goToDonorPane();
+
+    cy.get("[data-cy=donation-type]").should("contain.text", MONTHLY_DONATION_TEXT);
+    cy.get("[data-cy=summary-cause-area-1-amount]").should("contain.text", "360 kr");
+    cy.get("[data-cy=summary-cause-area-2-amount]").should("contain.text", "540 kr");
+    cy.get("[data-cy=summary-cause-area-4-amount]").should("contain.text", "100 kr");
+    cy.get("[data-cy=summary-total-amount]").should("contain.text", "1 000 kr");
   });
 });

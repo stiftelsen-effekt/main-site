@@ -31,8 +31,16 @@ export type PaymentMethodReference = {
   selector_text?: string;
 };
 
+export type ExternalDonationWidgetConfig = {
+  url?: string;
+  recurring_url?: string;
+  single_url?: string;
+};
+
 export type WidgetProps = {
   locale: "no" | "sv" | "en" | "dk";
+  donate_label?: string;
+  external_donation_widget?: ExternalDonationWidgetConfig | null;
   accentColor?: string;
   color_scheme: "light" | "dark";
   operations_config?: OperationsConfig;

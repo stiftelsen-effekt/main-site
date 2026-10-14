@@ -3,6 +3,7 @@ import {
   CauseAreaMultiSelectInput,
   CauseAreaSelectInput,
 } from "../../components/causeAreaSelectInput";
+import { mainLocaleConditionalField } from "../../components/mainLocaleConditionalField";
 
 export default defineType({
   name: "donationwidget",
@@ -31,6 +32,36 @@ export default defineType({
     },
   ],
   fields: [
+    defineField({
+      name: "external_donation_widget",
+      title: "External donation widget",
+      type: "object",
+      description:
+        "If a URL is set, donation buttons send donors to this externally hosted widget (e.g. from the CRM) instead of opening the built-in donation widget. Prefilled distributions and sums are not carried over.",
+      components: { field: mainLocaleConditionalField(["sv"]) },
+      fields: [
+        defineField({
+          name: "url",
+          title: "URL",
+          type: "url",
+          description: "Used by all donation buttons",
+        }),
+        defineField({
+          name: "recurring_url",
+          title: "Recurring URL",
+          type: "url",
+          description:
+            "Used for links with ?recurring=true and widget blocks defaulting to recurring. Falls back to the URL above.",
+        }),
+        defineField({
+          name: "single_url",
+          title: "Single donation URL",
+          type: "url",
+          description:
+            "Used for links with ?recurring=false and widget blocks defaulting to single donations. Falls back to the URL above.",
+        }),
+      ],
+    }),
     defineField({
       name: "methods",
       type: "array",

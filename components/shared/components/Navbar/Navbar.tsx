@@ -42,6 +42,7 @@ export type NavBarQueryResult = {
     donate_label: string;
     accent_color: string;
     main_currency: string;
+    hide_dashboard_button?: boolean;
   };
   dashboard: {
     main_navigation: MainNavbarItem[];
@@ -80,6 +81,7 @@ const query = groq`
     donate_label,
     accent_color,
     main_currency,
+    hide_dashboard_button,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -143,6 +145,8 @@ export const Navbar = withStaticProps(
   const logo = data.result.settings.logo;
 
   const dashboardLogo = data.result.dashboard.dashboard_logo;
+
+  const showDashboardButton = !settingsData.hide_dashboard_button;
 
   const labels = {
     dashboard: dashboardData.dashboard_label,
@@ -316,14 +320,16 @@ export const Navbar = withStaticProps(
                 {labels.logout}
               </EffektButton>
             ) : (
-              <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
-                <EffektButton
-                  variant={EffektButtonVariant.SECONDARY}
-                  onClick={() => setExpanded(false)}
-                >
-                  {labels.dashboard}
-                </EffektButton>
-              </CustomLink>
+              showDashboardButton && (
+                <CustomLink href={dashboardPath.join("/")} tabIndex={-1}>
+                  <EffektButton
+                    variant={EffektButtonVariant.SECONDARY}
+                    onClick={() => setExpanded(false)}
+                  >
+                    {labels.dashboard}
+                  </EffektButton>
+                </CustomLink>
+              )
             )}
             <EffektButton
               cy="send-donation-button"

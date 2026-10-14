@@ -13,8 +13,6 @@
     "lint": "eslint .",
     "cypress:no": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-no.config.ts",
     "cypress:no:headless": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress run --config-file cypress-no.config.ts",
-    "cypress:se": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-se.config.ts",
-    "cypress:se:headless": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress run --config-file cypress-se.config.ts -q",
     "cypress:dk": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-dk.config.ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
