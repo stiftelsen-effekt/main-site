@@ -24,10 +24,9 @@ import { Widget } from "../../shared/components/Widget/components/Widget";
 import { getClient } from "../../../lib/sanity.client";
 import { token } from "../../../token";
 import { ConsentState } from "../../../middleware.page";
-import { stegaClean } from "@sanity/client/stega";
 import {
   useExternalDonationWidget,
-  usesExternalDonationWidget,
+  getExternalDonationUrls,
 } from "../../../util/externalDonationWidget";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
@@ -94,10 +93,12 @@ export const ProfileLayout = withStaticProps(
     prefilled: null,
     prefilledSum: null,
   });
-  const locale = stegaClean(widgetData.data.result.locale);
-  const usesExternalWidget = usesExternalDonationWidget(locale);
+  const externalDonationUrls = getExternalDonationUrls(
+    widgetData.data.result.external_donation_widget,
+  );
+  const usesExternalWidget = externalDonationUrls !== null;
   const setWidgetContext = useExternalDonationWidget(
-    locale,
+    externalDonationUrls,
     widgetContext,
     setInternalWidgetContext,
   );

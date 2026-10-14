@@ -1,31 +1,31 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
+import { stegaClean } from "@sanity/client/stega";
 import type { WidgetContextType } from "../components/main/layout/layout";
+import type { ExternalDonationWidgetConfig } from "../components/shared/components/Widget/types/WidgetProps";
 
 /**
- * Some sites use a donation widget hosted by their CRM instead of the one built into this site.
- * For those sites, every donation button sends the donor to the external widget instead of
- * opening the built-in widget pane. Prefilled distributions and sums are not carried over.
+ * Sites can configure an externally hosted donation widget (e.g. one provided by their CRM) in
+ * site settings. For those sites, every donation button sends the donor to the external widget
+ * instead of opening the built-in widget pane. Prefilled distributions and sums are not carried over.
  */
-type ExternalDonationUrls = {
+export type ExternalDonationUrls = {
   default: string;
   recurring: string;
   single: string;
 };
 
-const EXTERNAL_DONATION_URLS: Partial<Record<string, ExternalDonationUrls>> = {
-  sv: {
-    default: "https://ge.geeffektivt.se/_/donation/donationconfiguration",
-    recurring: "https://ge.geeffektivt.se/_/donation/donationconfiguration?interval=recurringlock",
-    single: "https://ge.geeffektivt.se/_/donation/donationconfiguration?interval=onetimelock",
-  },
+export const getExternalDonationUrls = (
+  config: ExternalDonationWidgetConfig | null | undefined,
+): ExternalDonationUrls | null => {
+  const url = stegaClean(config?.url);
+  if (!url) return null;
+  return {
+    default: url,
+    recurring: stegaClean(config?.recurring_url) || url,
+    single: stegaClean(config?.single_url) || url,
+  };
 };
-
-export const getExternalDonationUrls = (locale: string | null | undefined) =>
-  locale ? (EXTERNAL_DONATION_URLS[locale] ?? null) : null;
-
-export const usesExternalDonationWidget = (locale: string | null | undefined) =>
-  getExternalDonationUrls(locale) !== null;
 
 const parseRecurringQueryParam = (recurring: string | string[] | undefined) => {
   if (recurring === undefined) return undefined;
@@ -41,12 +41,11 @@ const parseRecurringQueryParam = (recurring: string | string[] | undefined) => {
  * query params, which otherwise open the built-in widget on page load.
  */
 export const useExternalDonationWidget = (
-  locale: string | null | undefined,
+  urls: ExternalDonationUrls | null,
   widgetContext: WidgetContextType,
   setWidgetContext: Dispatch<SetStateAction<WidgetContextType>>,
 ): Dispatch<SetStateAction<WidgetContextType>> => {
   const router = useRouter();
-  const urls = getExternalDonationUrls(locale);
 
   useEffect(() => {
     if (!urls || !router.isReady) return;

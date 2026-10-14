@@ -47,6 +47,7 @@ import { applyWidgetDefaults, DEFAULT_OPERATIONS_CONFIG } from "../utils/widgetD
 export const widgetContentQuery = groq`
   ...,
   "locale": *[ _type == "site_settings"][0].main_locale,
+  "donate_label": *[ _type == "site_settings"][0].donate_label,
   "accentColor": *[ _type == "site_settings"][0].accent_color,
   methods[] { 
     _type == 'reference' => @->{

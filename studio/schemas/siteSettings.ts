@@ -103,6 +103,12 @@ export default defineType({
       },
     }),
     defineField({
+      name: "hide_dashboard_button",
+      title: "Hide dashboard button",
+      type: "boolean",
+      description: "Hide the donor dashboard (e.g. Min side) button from the main menu",
+    }),
+    defineField({
       title: "Footer columns",
       name: "footer_columns",
       description: "Select links for the footer columns",

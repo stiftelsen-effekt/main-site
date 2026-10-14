@@ -17,7 +17,6 @@ import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
 import { useLiveQuery } from "@sanity/preview-kit";
-import { usesExternalDonationWidget } from "../../../../util/externalDonationWidget";
 
 export type NavLink = {
   _type: "navitem";
@@ -43,7 +42,7 @@ export type NavBarQueryResult = {
     donate_label: string;
     accent_color: string;
     main_currency: string;
-    main_locale: string;
+    hide_dashboard_button?: boolean;
   };
   dashboard: {
     main_navigation: MainNavbarItem[];
@@ -82,7 +81,7 @@ const query = groq`
     donate_label,
     accent_color,
     main_currency,
-    main_locale,
+    hide_dashboard_button,
     main_navigation[] {
       _type == 'navgroup' => {
         _type,
@@ -147,8 +146,7 @@ export const Navbar = withStaticProps(
 
   const dashboardLogo = data.result.dashboard.dashboard_logo;
 
-  // Sites using an external donation widget have the donor dashboard (Min sida) disabled for now
-  const showDashboardButton = !usesExternalDonationWidget(stegaClean(settingsData.main_locale));
+  const showDashboardButton = !settingsData.hide_dashboard_button;
 
   const labels = {
     dashboard: dashboardData.dashboard_label,

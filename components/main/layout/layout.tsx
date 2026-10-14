@@ -16,7 +16,7 @@ import { ConsentState } from "../../../middleware.page";
 import CookieBannerWrapper from "../../shared/layout/CookieBanner/CookieBannerWrapper";
 import {
   useExternalDonationWidget,
-  usesExternalDonationWidget,
+  getExternalDonationUrls,
 } from "../../../util/externalDonationWidget";
 
 export type WidgetContextType = {
@@ -123,10 +123,10 @@ export const Layout = withStaticProps(
     prefilled: null,
     prefilledSum: null,
   });
-  const locale = stegaClean(widget.data.result.locale);
-  const usesExternalWidget = usesExternalDonationWidget(locale);
+  const externalDonationUrls = getExternalDonationUrls(widget.data.result.external_donation_widget);
+  const usesExternalWidget = externalDonationUrls !== null;
   const setWidgetContext = useExternalDonationWidget(
-    locale,
+    externalDonationUrls,
     widgetContext,
     setInternalWidgetContext,
   );
