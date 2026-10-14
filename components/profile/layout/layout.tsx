@@ -24,6 +24,11 @@ import { Widget } from "../../shared/components/Widget/components/Widget";
 import { getClient } from "../../../lib/sanity.client";
 import { token } from "../../../token";
 import { ConsentState } from "../../../middleware.page";
+import { stegaClean } from "@sanity/client/stega";
+import {
+  useExternalDonationWidget,
+  usesExternalDonationWidget,
+} from "../../../util/externalDonationWidget";
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   const path = appState?.returnTo || dashboardPath.join("/");
@@ -84,14 +89,21 @@ export const ProfileLayout = withStaticProps(
 )(({ children, footerData, widgetData, profileData, consentState, draftMode }) => {
   const { dashboardPath } = useRouterContext();
 
-  const [widgetContext, setWidgetContext] = useState<WidgetContextType>({
+  const [widgetContext, setInternalWidgetContext] = useState<WidgetContextType>({
     open: false,
     prefilled: null,
     prefilledSum: null,
   });
+  const locale = stegaClean(widgetData.data.result.locale);
+  const usesExternalWidget = usesExternalDonationWidget(locale);
+  const setWidgetContext = useExternalDonationWidget(
+    locale,
+    widgetContext,
+    setInternalWidgetContext,
+  );
   const widgetContextValue = useMemo<
     [WidgetContextType, Dispatch<SetStateAction<WidgetContextType>>]
-  >(() => [widgetContext, setWidgetContext], [widgetContext]);
+  >(() => [widgetContext, setWidgetContext], [widgetContext, setWidgetContext]);
 
   const [banners, setBanners] = useState<BanerContextType>({
     consentState,
@@ -154,12 +166,14 @@ export const ProfileLayout = withStaticProps(
                   />
                   <WidgetContext.Provider value={widgetContextValue}>
                     <BannerContext.Provider value={[banners, setBanners]}>
-                      <WidgetPane
-                        darkMode={true}
-                        {...widgetData}
-                        prefilled={widgetContext.prefilled}
-                        prefilledSum={widgetContext.prefilledSum}
-                      />
+                      {!usesExternalWidget && (
+                        <WidgetPane
+                          darkMode={true}
+                          {...widgetData}
+                          prefilled={widgetContext.prefilled}
+                          prefilledSum={widgetContext.prefilledSum}
+                        />
+                      )}
                       <main className={styles.main}>{children}</main>
                       {profileData.missing_name_modal_config && (
                         <MissingNameModal config={profileData.missing_name_modal_config} />

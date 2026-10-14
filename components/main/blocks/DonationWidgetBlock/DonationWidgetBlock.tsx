@@ -4,6 +4,9 @@ import { WidgetProps } from "../../../shared/components/Widget/types/WidgetProps
 import { PrefilledDistribution, WidgetPaneProps } from "../../layout/WidgetPane/WidgetPane";
 import { Paragraph } from "../Paragraph/Paragraph";
 import styles from "./DonationWidgetBlock.module.scss";
+import { stegaClean } from "@sanity/client/stega";
+import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
+import { getExternalDonationUrls } from "../../../../util/externalDonationWidget";
 
 export const DonationWidgetBlock: React.FC<{
   widgetConfiguration: WidgetProps;
@@ -20,6 +23,24 @@ export const DonationWidgetBlock: React.FC<{
     if (overrides.default_donation_type === "single") {
       defaultPaymentType = RecurringDonation.NON_RECURRING;
     }
+  }
+
+  const externalDonationUrls = getExternalDonationUrls(stegaClean(widgetConfiguration.locale));
+  if (externalDonationUrls) {
+    const href =
+      overrides?.default_donation_type === "recurring"
+        ? externalDonationUrls.recurring
+        : overrides?.default_donation_type === "single"
+          ? externalDonationUrls.single
+          : externalDonationUrls.default;
+    return (
+      <div className={styles.wrapper}>
+        <EffektButton onClick={() => (window.location.href = href)}>Ge en gåva</EffektButton>
+        {content && content.length > 0 && (
+          <Paragraph title={""} tocKey="" blocks={content}></Paragraph>
+        )}
+      </div>
+    );
   }
 
   return (
