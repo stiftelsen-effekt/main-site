@@ -35,15 +35,15 @@ Authentification is handled with [Auth0](https://auth0.com), and the API used fo
 
 ## Getting started ⚡
 
-To get started, install the packages using npm.
+To get started, install the packages using pnpm (run `corepack enable` once to get the pinned version).
 
-`npm install`
+`pnpm install`
 
 Copy the `.env.example` file to `.env.local`.
 
 To start the development server run
 
-`npm run dev`
+`pnpm run dev`
 
 Navigating to `localhost:3000/` in your browser should yield something like this
 
@@ -144,7 +144,7 @@ In this example page, we use the publicly available main layout for the page. We
 
 The content managment panel is not strictly needed to run the main site. However, if you wish to use the sanity studio to change cms content, using the dataset configured in your `.env.local`, install dependencies in the `/studio` directory and run
 
-`npm run sanity`
+`pnpm run sanity`
 
 > To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
 
@@ -154,15 +154,15 @@ This will make sanity studio available at `localhost:3333/`. It should look some
 
 If you wish to edit documents with JSON in VSCode, you may run:
 
-`npm run sanity:edit {documentId}`
+`pnpm run sanity:edit {documentId}`
 
 > To edit draft documents, use the `drafts.` prefix with your document id.
 
 The dataset will default to the `SANITY_STUDIO_API_DATASET` variable configured in the `.env.local` file, but you can override this by passing it as the second argument, for example:
 
-`npm run sanity:edit drafts.75407a6f-ff17-401d-bc37-50e866ada48e dev-se`
+`pnpm run sanity:edit drafts.75407a6f-ff17-401d-bc37-50e866ada48e dev-se`
 
-You can also list pages using the `npm run sanity:list:pages` command.
+You can also list pages using the `pnpm run sanity:list:pages` command.
 
 ## Profile page 🧑‍🤝‍🧑
 
@@ -209,8 +209,8 @@ Currently, we have two types of tests. Unit tests and end-to-end tests.
 
 ### Unit tests
 
-Unit tests are located in the `__tests__` folder. We use [Jest](https://jestjs.io/) as our test runner. To run the tests, run `npm run test`.
+Unit tests are located in the `__tests__` folder. We use [Jest](https://jestjs.io/) as our test runner. To run the tests, run `pnpm run test`.
 
 ### E2E
 
-Tests can be found in the `cypress` folder. We utilize [Cypress](https://www.cypress.io/) for end-to-end testing. To execute the tests, initiate the development server by running `npm run dev` with either the Norwegian or Swedish production Sanity datasets specified in `.env.local`. After that, run either `npm run cypress:se` or `npm run cypress:no` to execute the tests for the corresponding domain.
+Tests can be found in the `cypress` folder. We utilize [Cypress](https://www.cypress.io/) for end-to-end testing. To execute the tests, initiate the development server by running `pnpm run dev` with either the Norwegian or Swedish production Sanity datasets specified in `.env.local`. After that, run either `pnpm run cypress:se` or `pnpm run cypress:no` to execute the tests for the corresponding domain.

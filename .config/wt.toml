@@ -7,7 +7,7 @@
 # copies gitignored .env.local, assigns a random PORT so worktrees don't collide,
 # and installs node modules.
 #
-# Next.js reads PORT from the environment / .env.local, so `npm run dev` in any
+# Next.js reads PORT from the environment / .env.local, so `pnpm run dev` in any
 # worktree will bind to that worktree's port.
 
 [post-create]
@@ -24,8 +24,8 @@ fi
 printf '\\nPORT=%s\\nNEXT_PUBLIC_SITE_URL=http://localhost:%s\\n' "$_PORT" "$_PORT" >> {{ worktree_path }}/.env.local
 """
 
-# Install dependencies. npm uses the local cache, so repeat installs are cheaper
-# than a full download, but each worktree still gets its own node_modules.
-node-modules = "cd {{ worktree_path }} && npm install"
+# Install dependencies. pnpm links packages from its shared store, so extra worktrees
+# take up little disk space and install quickly.
+node-modules = "cd {{ worktree_path }} && pnpm install"
 
 claude-local = "mkdir -p {{ worktree_path }}/.claude && cp -n {{ repo_path }}/.claude/settings.local.json {{ worktree_path }}/.claude/settings.local.json 2>/dev/null || true"
