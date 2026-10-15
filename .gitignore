@@ -49,7 +49,8 @@ cypress.env.json
 /studio/.sanity
 .env*.local
 
-# Claude Code
-.claude/
+# Claude Code (shared settings are tracked, everything else stays local)
+.claude/*
+!.claude/settings.json
 
 .beads
