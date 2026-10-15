@@ -19,6 +19,10 @@
 }
 
 .overview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   td:first-child {
     text-align: right;
     border-left: 1px solid white;
@@ -36,6 +40,33 @@
 
   td:last-child {
     width: 100%;
+  }
+
+  span.impactDetailsSingleLine {
+    display: inline-block;
+    padding-left: 20px;
+    font-size: 22px;
+    line-height: 1;
+
+    &.expandable {
+      user-select: none;
+      cursor: pointer;
+
+      .arrowAnchor {
+        white-space: nowrap;
+
+        &::after {
+          content: "\00a0↓";
+          display: inline-block;
+          vertical-align: middle;
+          transition: all 200ms;
+        }
+      }
+
+      &.expanded .arrowAnchor::after {
+        transform: rotate(180deg);
+      }
+    }
   }
 
   .impactContext {
@@ -58,20 +89,32 @@
       font-size: 0.9rem;
       line-height: 1.1rem;
 
-      &::after {
-        content: "↓";
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 10px;
-        transition: all 200ms;
-      }
+      .arrowAnchor {
+        white-space: nowrap;
 
-      &.expanded {
         &::after {
-          transform: rotate(180deg);
+          content: "\00a0↓";
+          display: inline-block;
+          vertical-align: middle;
+          transition: all 200ms;
         }
       }
+
+      &.expanded .arrowAnchor::after {
+        transform: rotate(180deg);
+      }
     }
+  }
+}
+
+.singleLineOverview {
+  td {
+    vertical-align: middle;
+  }
+
+  td:first-child .impactOutput {
+    margin: 0.5rem 0;
+    line-height: 1;
   }
 }
 
