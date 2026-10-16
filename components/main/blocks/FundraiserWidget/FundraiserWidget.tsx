@@ -74,9 +74,9 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
   const availablePaymentMethods = useMemo(
     () =>
       widgetConfig?.payment_methods?.filter((method) =>
-        supportsDonationFrequency(method._type, formData.recurring),
+        supportsDonationFrequency(method._type, formData.recurring, locale),
       ) || [],
-    [formData.recurring, widgetConfig?.payment_methods],
+    [formData.recurring, widgetConfig?.payment_methods, locale],
   );
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
 
   const config = validation.config;
   const hasMonthlyPaymentMethod = config.payment_methods!.some((method) =>
-    supportsDonationFrequency(method._type, RecurringDonation.RECURRING),
+    supportsDonationFrequency(method._type, RecurringDonation.RECURRING, locale),
   );
   const monthlyDonationConfig = monthlyDonations?.enabled
     ? {
