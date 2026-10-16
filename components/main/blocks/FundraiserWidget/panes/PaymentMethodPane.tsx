@@ -382,7 +382,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             {loading ? (
               <Spinner className={styles["donation-widget__spinner"]} />
             ) : (
-              fundraiserSubmitButtonText(formData.paymentMethod)
+              fundraiserSubmitButtonText(formData.paymentMethod, formData.recurring)
             )}
           </button>
         </form>
