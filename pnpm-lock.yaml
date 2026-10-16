@@ -87,6 +87,9 @@ importers:
       next-seo:
         specifier: ^7.3.0
         version: 7.3.0(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@22.20.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.105.1))(react@19.3.0)
+      norwegian-workdays:
+        specifier: github:stiftelsen-effekt/norwegian-workdays#v1.1.0
+        version: https://codeload.github.com/stiftelsen-effekt/norwegian-workdays/tar.gz/f1d4ad8529ce383bc7876c528a0f557c1a445417
       organisationsnummer:
         specifier: ^1.2.0
         version: 1.2.0
@@ -6755,6 +6758,10 @@ packages:
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
+
+  norwegian-workdays@https://codeload.github.com/stiftelsen-effekt/norwegian-workdays/tar.gz/f1d4ad8529ce383bc7876c528a0f557c1a445417:
+    resolution: {gitHosted: true, integrity: sha512-1nKMJgF8u7wfevcBj9DRFUSQCMirayHWvnBJoQswc1DmHhsUXk45hdLCNNqjH1KtVeJFkowH8dHV/sftD1EZgA==, tarball: https://codeload.github.com/stiftelsen-effekt/norwegian-workdays/tar.gz/f1d4ad8529ce383bc7876c528a0f557c1a445417}
+    version: 1.1.0
 
   npm-run-path@4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
@@ -16019,6 +16026,8 @@ snapshots:
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
+
+  norwegian-workdays@https://codeload.github.com/stiftelsen-effekt/norwegian-workdays/tar.gz/f1d4ad8529ce383bc7876c528a0f557c1a445417: {}
 
   npm-run-path@4.0.1:
     dependencies:
