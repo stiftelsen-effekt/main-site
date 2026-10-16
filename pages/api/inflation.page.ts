@@ -7,7 +7,7 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
 
   const cacheKey = `inflation-${date.toFormat("yyyy-MM")}-${req?.query?.locale}`;
 
-  const cachedInflation = await kv.get(cacheKey);
+  const cachedInflation = await readCache(cacheKey);
   if (cachedInflation) {
     return res
       .setHeader("Cache-Control", "public, max-age=86400")
@@ -18,7 +18,7 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
   if (req?.query?.locale === "SV") {
     try {
       const inflation = await getSwedishInflation2017(date);
-      await kv.set(cacheKey, inflation);
+      await writeCache(cacheKey, inflation);
       return res.setHeader("Cache-Control", "public, max-age=86400").status(200).json(inflation);
     } catch (error) {
       return res.status(500).json({ error: (error as any).message });
@@ -26,7 +26,7 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
   } else if (req?.query?.locale === "NO") {
     try {
       const inflation = await getNorwegianInflation2017(date);
-      await kv.set(cacheKey, inflation);
+      await writeCache(cacheKey, inflation);
       return res.setHeader("Cache-Control", "public, max-age=86400").status(200).json(inflation);
     } catch (error) {
       return res.status(500).json({ error: (error as any).message });
@@ -34,7 +34,7 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
   } else if (req?.query?.locale === "DK") {
     try {
       const inflation = await getDanishInflation2017(date);
-      await kv.set(cacheKey, inflation);
+      await writeCache(cacheKey, inflation);
       return res.setHeader("Cache-Control", "public, max-age=86400").status(200).json(inflation);
     } catch (error) {
       return res.status(500).json({ error: (error as any).message });
@@ -42,6 +42,25 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
   }
   return res.status(400).json({ error: "Invalid locale" });
 }
+
+// The KV cache only saves calls to the statistics APIs, so a missing or failing cache
+// (for example in local development without KV credentials) must not break the route.
+const readCache = async (key: string) => {
+  try {
+    return await kv.get(key);
+  } catch (error) {
+    console.warn("Inflation cache unavailable, reading from the source", error);
+    return null;
+  }
+};
+
+const writeCache = async (key: string, value: unknown) => {
+  try {
+    await kv.set(key, value);
+  } catch (error) {
+    console.warn("Inflation cache unavailable, value not cached", error);
+  }
+};
 
 const getNorwegianInflation2017 = async (date: DateTime) => {
   let attempts = 0;
