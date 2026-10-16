@@ -49,6 +49,7 @@
     "next-plausible": "^4.0.0",
     "next-sanity": "^13.3.4",
     "next-seo": "^7.3.0",
+    "norwegian-workdays": "github:stiftelsen-effekt/norwegian-workdays#v1.1.0",
     "organisationsnummer": "^1.2.0",
     "personnummer": "^3.3.1",
     "react": "^19.3.1",

@@ -14,6 +14,8 @@ import { validateTin, formatTinInput } from "../../../../../util/tin-validation"
 import { FormattingLocale } from "../../../../../util/formatting";
 import { fundraiserSubmitButtonText } from "../fundraiserSubmitButtonText";
 import { RecurringDonation } from "../../../../shared/components/Widget/types/Enums";
+import { formatDateText } from "../../../../shared/components/Widget/components/panes/PaymentPane/AvtaleGiro/AvtaleGiroDatePicker/avtalegirodates";
+import { getFirstAvtaleGiroCharge } from "../avtaleGiroFirstCharge";
 
 interface PaymentMethodPaneProps {
   formData: Pick<
@@ -175,6 +177,11 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
     const isMonthly = formData.recurring === RecurringDonation.RECURRING;
     const emailRequired =
       locale === "da-DK" || formData.taxDeduction || formData.newsletter || isMonthly;
+    // Monthly bank donations are AvtaleGiro, which can't charge straight away
+    const avtaleGiroFirstCharge =
+      isMonthly && formData.paymentMethod === "bank" && locale === "no-NB"
+        ? getFirstAvtaleGiroCharge()
+        : null;
     const emailInput = (
       <div className={styles["donation-widget__input-group"]}>
         <input
@@ -355,6 +362,17 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
               onSelect={(method) => onChange("paymentMethod", method)}
             />
           </div>
+
+          {avtaleGiroFirstCharge && (
+            <p
+              className={styles["donation-widget__first-charge"]}
+              data-cy="fundraiser-avtalegiro-first-charge"
+            >
+              {`Første trekk blir rundt ${formatDateText(
+                avtaleGiroFirstCharge.firstChargeDate,
+              )}, deretter den ${avtaleGiroFirstCharge.dueDay}. hver måned.`}
+            </p>
+          )}
 
           <button
             type="submit"

@@ -7,6 +7,7 @@ import {
   AVTALEGIRO_FORM_URL,
   AVTALEGIRO_MIN_AMOUNT_LIMIT,
 } from "../../../../shared/components/Widget/config/avtalegiro";
+import { getFirstAvtaleGiroCharge } from "../avtaleGiroFirstCharge";
 import { ANONYMOUS_DONOR } from "../../../../shared/components/Widget/config/anonymous-donor";
 import { FormData } from "./useFundraiserForm";
 import { paymentMethodMap } from "../../../../shared/components/Widget/components/panes/DonorPane/DonorPane";
@@ -40,8 +41,9 @@ const postJson = (path: string, body: unknown) =>
     method: "POST",
   }).then((res) => res.json());
 
-// The fundraiser widget has no charge day picker, so agreements are charged on today's
-// day of the month, capped at the 28th so every month has the day
+// The fundraiser widget has no charge day picker. Vipps charges the first donation straight
+// away, so later charges are on today's day of the month, capped at the 28th so every month
+// has the day
 const todayAsChargeDay = () => Math.min(new Date().getDate(), 28);
 
 const draftVippsAgreement = async (kid: string, amount: number) => {
@@ -59,7 +61,7 @@ const draftAvtaleGiro = async (kid: string, amount: number) => {
   const data = await postJson("/avtalegiro/draft", {
     KID: kid,
     amount,
-    dueDay: todayAsChargeDay(),
+    dueDay: getFirstAvtaleGiroCharge().dueDay,
   });
   if (data.status !== 200) throw new Error("Drafting AvtaleGiro failed");
 
