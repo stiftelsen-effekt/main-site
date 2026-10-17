@@ -40,6 +40,8 @@
   border: none;
   border-bottom: 1px solid var(--primary);
   background: var(--secondary);
+  /* The browser default text colour is black, which is invisible in an inverted section */
+  color: var(--primary);
   position: relative;
   width: 170px;
   text-align: right;
