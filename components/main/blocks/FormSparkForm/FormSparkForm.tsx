@@ -11,6 +11,8 @@ import {
 import { RadioButton } from "../../../shared/components/RadioButton/RadioButton";
 import { EffektCheckbox } from "../../../shared/components/EffektCheckbox/EffektCheckbox";
 
+import { redirectUrlFor, wasSubmitted } from "./formsparkRedirect";
+
 // Type definitions for form state
 type FormState = Record<string, string | boolean>;
 
@@ -34,6 +36,19 @@ export const FormsparkForm: React.FC<{ formData: Formsparkform }> = ({ formData 
     });
     setFormState(initialState);
   }, [formData.fields]);
+
+  const [redirectUrl, setRedirectUrl] = useState<string>();
+  const [submitted, setSubmitted] = useState(false);
+
+  // Formspark shows its own thank-you page unless the form sends _redirect, so send the
+  // visitor back to this page and show the success message there.
+  // It runs in an effect because the page URL is only known in the browser.
+  React.useEffect(() => {
+    const formId = formData.form_id;
+    if (!formId) return;
+    setSubmitted(wasSubmitted(window.location.href, formId));
+    setRedirectUrl(redirectUrlFor(window.location.href, formId));
+  }, [formData.form_id]);
 
   const handleInputChange = (fieldName: string, value: string | boolean) => {
     setFormState((prev) => ({
@@ -179,47 +194,55 @@ export const FormsparkForm: React.FC<{ formData: Formsparkform }> = ({ formData 
           />
         </>
       )}
-      <div className={styles.wrapper}>
-        <form
-          action={`https://submit-form.com/${formData.form_id}`}
-          method="POST"
-          target={formData.submit_target || "_self"}
-          className={styles.form}
-        >
-          {formData.fields.map((field, index) => {
-            const fieldName = field.field_name || "";
-            return (
-              <div key={index} className={styles.fieldWrapper}>
-                {field.field_type !== "checkbox" && (
-                  <label htmlFor={fieldName} id={`${fieldName}-label`}>
-                    {field.field_label}
-                  </label>
-                )}
+      <div className={styles.wrapper} id={`form-${formData.form_id}`}>
+        {submitted && formData.success_message ? (
+          <p className={styles.success} role="status">
+            {formData.success_message}
+          </p>
+        ) : (
+          <form
+            action={`https://submit-form.com/${formData.form_id}`}
+            method="POST"
+            target={formData.submit_target || "_self"}
+            className={styles.form}
+          >
+            {redirectUrl && <input type="hidden" name="_redirect" value={redirectUrl} />}
 
-                {renderField(field)}
-              </div>
-            );
-          })}
+            {formData.fields.map((field, index) => {
+              const fieldName = field.field_name || "";
+              return (
+                <div key={index} className={styles.fieldWrapper}>
+                  {field.field_type !== "checkbox" && (
+                    <label htmlFor={fieldName} id={`${fieldName}-label`}>
+                      {field.field_label}
+                    </label>
+                  )}
 
-          {formData.turnstile_site_key && (
-            <div className="cf-turnstile" data-sitekey={formData.turnstile_site_key} />
-          )}
+                  {renderField(field)}
+                </div>
+              );
+            })}
 
-          {/* Honeypot field for spam protection */}
-          {formData.honeypot_field && (
-            <input
-              type="text"
-              name="_gotcha"
-              style={{ display: "none" }}
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          )}
+            {formData.turnstile_site_key && (
+              <div className="cf-turnstile" data-sitekey={formData.turnstile_site_key} />
+            )}
 
-          <EffektButton variant={EffektButtonVariant.PRIMARY} type="submit">
-            {formData.submit_button_text || "Submit"}
-          </EffektButton>
-        </form>
+            {/* Honeypot field for spam protection */}
+            {formData.honeypot_field && (
+              <input
+                type="text"
+                name="_gotcha"
+                style={{ display: "none" }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            )}
+
+            <EffektButton variant={EffektButtonVariant.PRIMARY} type="submit">
+              {formData.submit_button_text || "Submit"}
+            </EffektButton>
+          </form>
+        )}
       </div>
     </>
   );
