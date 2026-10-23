@@ -4,7 +4,7 @@ import type { SanityImageObject } from "@sanity/image-url";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import { LinkType, Links } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
-import { PortableText } from "next-sanity";
+import { PortableText } from "@portabletext/react";
 import { customComponentRenderers } from "../Paragraph/Citation";
 
 export interface TeasersItemProps {

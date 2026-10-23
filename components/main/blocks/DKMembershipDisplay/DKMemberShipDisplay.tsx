@@ -1,7 +1,7 @@
 import styles from "./DKMemberShipDisplay.module.scss";
 import { Dkmembershipdisplay } from "../../../../studio/sanity.types";
 import { useEffect, useState } from "react";
-import { PortableText } from "next-sanity";
+import { PortableText } from "@portabletext/react";
 import { customComponentRenderers } from "../Paragraph/Citation";
 
 export const DKMembershipDisplay: React.FC<

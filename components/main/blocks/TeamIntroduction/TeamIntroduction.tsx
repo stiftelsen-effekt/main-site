@@ -2,7 +2,7 @@ import type { SanityImageObject } from "@sanity/image-url";
 import { Contributor, Links as SanityLinks } from "../../../../studio/sanity.types";
 import { ResponsiveImage } from "../../../shared/responsiveimage";
 import styles from "./TeamIntroduction.module.scss";
-import { PortableText } from "next-sanity";
+import { PortableText } from "@portabletext/react";
 import { customComponentRenderers } from "../Paragraph/Citation";
 import { Links, LinkType } from "../Links/Links";
 import { NavLink } from "../../../shared/components/Navbar/Navbar";
