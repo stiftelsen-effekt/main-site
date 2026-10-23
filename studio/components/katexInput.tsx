@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TextInput, Card, Stack } from "@sanity/ui";
 import katex from "katex";
+import "katex/dist/katex.min.css";
 import { ObjectInputProps, set, unset } from "sanity";
 
 const KatexInput = (props: ObjectInputProps) => {
@@ -27,20 +28,6 @@ const KatexInput = (props: ObjectInputProps) => {
       }),
     );
   };
-
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      if (document.head.contains(link)) {
-        document.head.removeChild(link);
-      }
-    };
-  }, []);
 
   return (
     <Stack gap={3}>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useClickOutsideAlerter } from "../../../../hooks/useClickOutsideAlerter";
 import { LinkComponent } from "../Links/Links";
 import elements from "./Paragraph.module.scss";
+import "katex/dist/katex.min.css";
 
 export const formatHarvardCitation = ({
   type,
@@ -359,20 +360,28 @@ export const Citation = (props: any) => {
   );
 };
 
-const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
+// Renders in the browser only when the build-time HTML from renderLatexInData is missing,
+// which happens for live draft previews. katex is loaded lazily so it stays out of page bundles.
+const useClientKatex = (latex: string | undefined, enabled: boolean) => {
+  const [html, setHtml] = useState<string>();
   useEffect(() => {
-    if (document.getElementById("katex-styles-link")) return;
+    if (!enabled || latex === undefined) return;
+    import("katex").then((katex) => {
+      try {
+        setHtml(katex.default.renderToString(latex, { throwOnError: false }));
+      } catch (e: any) {
+        setHtml(`<span style="color: red;">${e.message}</span>`);
+      }
+    });
+  }, [latex, enabled]);
+  return html;
+};
 
-    const link = document.createElement("link");
-    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.id = "katex-styles-link";
-    document.head.appendChild(link);
-  }, []);
+const Latex: React.FC<{ value: { latex?: string; html?: string } }> = ({ value }) => {
+  const clientHtml = useClientKatex(value.latex, value.html === undefined);
   return (
     <span
-      dangerouslySetInnerHTML={{ __html: value.renderedHtml }}
+      dangerouslySetInnerHTML={{ __html: value.html ?? clientHtml ?? "" }}
       style={{
         padding: "3rem",
         textAlign: "center",
@@ -383,40 +392,20 @@ const Latex: React.FC<{ value: { renderedHtml: string } }> = ({ value }) => {
   );
 };
 
-const RenderLatex: React.FC<any> = ({ text }) => {
-  const [renderedHtml, setRenderedHtml] = useState("");
+const RenderedMath: React.FC<{ value: { html: string } }> = ({ value }) => (
+  <span
+    dangerouslySetInnerHTML={{ __html: value.html }}
+    style={{
+      display: "inline-block",
+      fontSize: "1rem",
+    }}
+  ></span>
+);
 
-  useEffect(() => {
-    if (document.getElementById("katex-styles-link")) return;
-
-    const link = document.createElement("link");
-    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.id = "katex-styles-link";
-    document.head.appendChild(link);
-  }, []);
-
-  useEffect(() => {
-    import("katex").then((katex) => {
-      try {
-        setRenderedHtml(katex.default.renderToString(text, { throwOnError: false }));
-      } catch (e: any) {
-        setRenderedHtml(`<span style="color: red;">${e.message}</span>`);
-      }
-    });
-  }, [text]);
-  // Debug props
-  return (
-    <span
-      dangerouslySetInnerHTML={{ __html: renderedHtml }}
-      style={{
-        display: "inline-block",
-        fontSize: "1rem",
-      }}
-    ></span>
-  );
-};
+// Fallback for math spans that renderLatexInData has not replaced, e.g. in live draft previews
+const RenderLatex: React.FC<any> = ({ text }) => (
+  <RenderedMath value={{ html: useClientKatex(text, true) ?? "" }} />
+);
 
 export const customComponentRenderers = {
   block: {
@@ -432,5 +421,6 @@ export const customComponentRenderers = {
   },
   types: {
     latex: Latex,
+    renderedMath: RenderedMath,
   },
 };
