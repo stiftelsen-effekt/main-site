@@ -396,9 +396,7 @@ export const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticP
 ) => {
   const [result] = useLiveQuery(props.data.result, props.data.query);
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <Navbar {...(props as any)} />;
+  return <Navbar {...(props as any)} data={data} />;
 };

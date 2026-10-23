@@ -201,7 +201,17 @@ export const AreaChart: React.FC<{
       chart.style.width = "100%";
       outputRef.current.appendChild(chart);
     }
-  }, [outputRef, lineInput, donationPercentage]);
+  }, [
+    data,
+    lineInput,
+    wealthPercentile,
+    afterDonationWealthPercentile,
+    donationPercentage,
+    incomePercentileLabelTemplateString,
+    afterDonationPercentileLabelTemplateString,
+    adjustedPPPConversionFactor,
+    periodAdjustment,
+  ]);
 
   const debouncedDrawGraph = useDebouncedCallback(drawGraph, 100, {
     trailing: true,
@@ -209,7 +219,7 @@ export const AreaChart: React.FC<{
 
   useEffect(() => {
     drawGraph();
-  }, [outputRef, lineInput, donationPercentage]);
+  }, [drawGraph]);
 
   useEffect(() => {
     if (outputRef.current && outputRef.current.parentElement) {
