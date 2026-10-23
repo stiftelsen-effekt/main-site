@@ -64,7 +64,7 @@ export const DKTaxUnitEditModal: React.FC<{
       setLoading(false);
       setError("");
     }
-  }, [name, ssn, user]);
+  }, [name, ssn, user, getAccessTokenSilently, initial, onSuccess, onFailure]);
 
   if (loadingUnits) {
     return <Spinner />;

@@ -1,28 +1,34 @@
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
-const debounce = (fn: (...args: any[]) => void, delay: number) => {
+const debounce = (fn: () => void, delay: number) => {
   let timeoutId: NodeJS.Timeout;
 
-  return (...args: any[]) => {
+  const debounced = () => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn(...args), delay);
+    timeoutId = setTimeout(fn, delay);
   };
+  debounced.cancel = () => clearTimeout(timeoutId);
+
+  return debounced;
 };
 
+const getSnapshot = () => window.innerWidth < 1180;
+// Default to mobile on the server and during hydration
+const getServerSnapshot = () => true;
+
 export const useIsMobile = (delay = 250) => {
-  const [isMobile, setIsMobile] = useState(true); // Default to mobile
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const handleResize = debounce(onChange, delay);
 
-  useEffect(() => {
-    const handleResize = debounce(() => {
-      setIsMobile(window.innerWidth < 1180);
-    }, delay);
+      window.addEventListener("resize", handleResize);
+      return () => {
+        handleResize.cancel();
+        window.removeEventListener("resize", handleResize);
+      };
+    },
+    [delay],
+  );
 
-    // Set initial value
-    setIsMobile(window.innerWidth < 1180);
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [delay]);
-
-  return isMobile;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };

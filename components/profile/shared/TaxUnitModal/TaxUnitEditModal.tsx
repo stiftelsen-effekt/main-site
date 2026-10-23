@@ -70,7 +70,7 @@ const TaxUnitEditModalStandard: React.FC<{
       setLoading(false);
       setError("");
     }
-  }, [name, ssn, user]);
+  }, [name, ssn, user, getAccessTokenSilently, initial, onSuccess, onFailure, failureToast]);
 
   if (loadingUnits) {
     return <Spinner />;

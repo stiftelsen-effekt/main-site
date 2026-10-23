@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { GoogleAnalytics } from "../GoogleAnalytics";
 import { GoogleTagManager } from "../GoogleTagManager";
 import styles from "./CookieBanner.module.scss";
@@ -9,25 +9,15 @@ import { setCookie } from "cookies-next/client";
 import { BannerContext } from "../../../main/layout/layout";
 import { MetaPixel } from "../MetaPixel";
 import { CookieBannerQueryResult } from "../../../../studio/sanity.types";
+import { useTrackingEnabled } from "../../../../hooks/useTrackingEnabled";
 
 export const CookieBanner: React.FC<{
   configuration: CookieBannerQueryResult;
 }> = ({ configuration }) => {
   const [bannerContext, setBannerContext] = useContext(BannerContext);
-  const [tracking, setTracking] = useState(false);
-  const bannerRef = useRef<HTMLDivElement | null>(null);
-
   // check for plausible_ignore localstorage to disable plausible tracking
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ignore = localStorage.getItem("plausible_ignore");
-      if (ignore === "true") {
-        setTracking(false);
-      } else {
-        setTracking(true);
-      }
-    }
-  }, []);
+  const tracking = useTrackingEnabled();
+  const bannerRef = useRef<HTMLDivElement | null>(null);
 
   // Expose the banner height as a CSS variable so layout elements (e.g. the mobile menu)
   // can reserve space and avoid being covered by the fixed banner.

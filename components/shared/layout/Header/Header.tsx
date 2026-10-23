@@ -1,10 +1,36 @@
-import { useRouter } from "next/router";
-import React, { ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./Header.module.scss";
 import { GeneralBanner } from "../GeneralBanner/GeneralBanner";
 import { GeneralBannerQueryResult } from "../../../../studio/sanity.types";
 import { BannerContext } from "../../../main/layout/layout";
+
+// Notify at most every 250ms while scrolling, matching the debounced scroll handler below
+const subscribeToScroll = (onChange: () => void) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const handleScroll = () => {
+    if (timeoutId !== undefined) return;
+    timeoutId = setTimeout(() => {
+      timeoutId = undefined;
+      onChange();
+    }, 250);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => {
+    clearTimeout(timeoutId);
+    window.removeEventListener("scroll", handleScroll);
+  };
+};
+const getIsScrolled = () => window.scrollY > 0;
+const getServerIsScrolled = () => false;
 
 export const MainHeader: React.FC<{
   children: ReactNode | ReactNode[];
@@ -12,19 +38,12 @@ export const MainHeader: React.FC<{
   generalBannerConfig?: GeneralBannerQueryResult;
   alwaysShrink?: boolean;
 }> = ({ children, hideOnScroll, generalBannerConfig, alwaysShrink }) => {
-  const router = useRouter();
   const [bannerContext] = useContext(BannerContext);
 
-  const [navbarShrinked, setNavbarShrinked] = useState(alwaysShrink ?? false);
+  const isScrolled = useSyncExternalStore(subscribeToScroll, getIsScrolled, getServerIsScrolled);
+  const navbarShrinked = alwaysShrink || isScrolled;
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
-
-  const navBarCheck = useCallback(() => {
-    if (typeof window !== "undefined" && !alwaysShrink) {
-      if (window.scrollY > 0) setNavbarShrinked(true);
-      else setNavbarShrinked(false);
-    }
-  }, [setNavbarShrinked, alwaysShrink]);
 
   const navBarVisibleCheck = useCallback(() => {
     if (typeof window !== "undefined") {
@@ -38,14 +57,12 @@ export const MainHeader: React.FC<{
 
   const debounced = useDebouncedCallback(
     () => {
-      navBarCheck();
       if (hideOnScroll) navBarVisibleCheck();
       setLastScrollPosition(window.scrollY);
     },
     250,
     { maxWait: 250 },
   );
-  useEffect(navBarCheck, [router.query.sluq, navBarCheck]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

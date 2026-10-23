@@ -111,7 +111,7 @@ export const DonationImpactGlobalHealthItem: React.FC<{
     if (precision < requiredPrecision) {
       signalRequiredPrecision(requiredPrecision);
     }
-  }, [precision, requiredPrecision]);
+  }, [precision, requiredPrecision, signalRequiredPrecision]);
 
   if (!preComputedImpact) {
     if (!data || isValidating) {

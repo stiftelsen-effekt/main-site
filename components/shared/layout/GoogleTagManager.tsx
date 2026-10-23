@@ -16,13 +16,15 @@ let currDataLayerName: string | undefined = undefined;
 export function GoogleTagManager(props: GTMParams) {
   const { gtmId, dataLayerName = "dataLayer", auth, preview, dataLayer } = props;
 
-  if (currDataLayerName === undefined) {
-    currDataLayerName = dataLayerName;
-  }
-
   const gtmLayer = dataLayerName !== "dataLayer" ? `$l=${dataLayerName}` : "";
   const gtmAuth = auth ? `&gtm_auth=${auth}` : "";
   const gtmPreview = preview ? `&gtm_preview=${preview}&gtm_cookies_win=x` : "";
+
+  useEffect(() => {
+    if (currDataLayerName === undefined) {
+      currDataLayerName = dataLayerName;
+    }
+  }, [dataLayerName]);
 
   useEffect(() => {
     // performance.mark is being used as a feature use signal. While it is traditionally used for performance

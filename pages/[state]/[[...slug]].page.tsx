@@ -74,51 +74,41 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
 const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <GenericPage {...(props as any)} />;
+  return <GenericPage {...(props as any)} data={data} />;
 };
 
 const PreviewArticlesPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <ArticlesPage {...(props as any)} />;
+  return <ArticlesPage {...(props as any)} data={data} />;
 };
 
 const PreviewArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <ArticlePage {...(props as any)} />;
+  return <ArticlePage {...(props as any)} data={data} />;
 };
 
 const PreviewResultsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <ResultsPage {...(props as any)} />;
+  return <ResultsPage {...(props as any)} data={data} />;
 };
 
 const PreviewFundraiserPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <FundraiserPage {...(props as any)} />;
+  return <FundraiserPage {...(props as any)} data={data} />;
 };
 
 function compareArrays<T>(a: T[], b: T[]) {

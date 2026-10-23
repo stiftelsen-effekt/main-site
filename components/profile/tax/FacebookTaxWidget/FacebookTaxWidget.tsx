@@ -43,7 +43,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
 
   useEffect(() => {
     trigger();
-  }, []);
+  }, [trigger]);
 
   useEffect(() => {
     if (taxUnit === null)
@@ -52,7 +52,7 @@ export const FacebookTaxWidget: React.FC<{ email: string }> = ({ email }) => {
           ? filteredData.sort((a, b) => (a.ssn.length > b.ssn.length ? -1 : 1))[0]
           : null,
       );
-  }, [filteredData]);
+  }, [filteredData, taxUnit]);
 
   useEffect(() => {
     errors.paymentID ? setPaymentIDError(true) : setPaymentIDError(false);
