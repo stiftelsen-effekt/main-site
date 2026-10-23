@@ -2,11 +2,13 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import PlausibleProvider from "next-plausible";
+import dynamic from "next/dynamic";
 
 // import { usePreviewSubscription } from "../lib/sanity";
 import { RouterContext, RouterContextValue, fetchRouterContext } from "../context/RouterContext";
-import { ProfileLayout } from "../components/profile/layout/layout";
+import { getProfileLayoutStaticProps } from "../components/profile/layout/layoutStaticProps";
 import { Layout } from "../components/main/layout/layout";
+import { FullPageSpinner } from "../components/shared/layout/FullPageSpinner/FullPageSpinner";
 import { Provider } from "react-redux";
 import { VisualEditing } from "@sanity/visual-editing/next-pages-router";
 import { ConsentState } from "../proxy.page";
@@ -16,6 +18,13 @@ import { getReferralCodeFromQuery, storeReferralCode } from "../util/referralCod
 import { useTrackingEnabled } from "../hooks/useTrackingEnabled";
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
+// The Min side layout (with Auth0) is only loaded on dashboard pages. It is still server-rendered,
+// and Next loads its chunk before hydrating. On client-side navigation the placeholder matches
+// what the layout itself shows while it checks the login.
+const ProfileLayout = dynamic(
+  () => import("../components/profile/layout/layout").then((m) => m.ProfileLayout),
+  { loading: () => <FullPageSpinner /> },
+);
 const globalWidgetStore = createWidgetStore();
 
 export enum LayoutType {
@@ -152,7 +161,7 @@ export async function getAppStaticProps({
         }
       : {
           layout: LayoutType.Profile as const,
-          layoutProps: await ProfileLayout.getStaticProps({ draftMode, consentState }),
+          layoutProps: await getProfileLayoutStaticProps({ draftMode, consentState }),
         }),
   };
   return appStaticProps;

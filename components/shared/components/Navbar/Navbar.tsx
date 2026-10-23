@@ -12,7 +12,7 @@ import { useRouterContext } from "../../../../context/RouterContext";
 import { withStaticProps } from "../../../../util/withStaticProps";
 import { groq } from "next-sanity";
 import { getClient } from "../../../../lib/sanity.client";
-import { useAuth0 } from "@auth0/auth0-react";
+import { NavbarAuthContext } from "./NavbarAuthContext";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
@@ -160,7 +160,7 @@ export const Navbar = withStaticProps(
 
   const { dashboardPath } = useRouterContext();
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
-  const { user, logout } = useAuth0();
+  const { loggedIn, logout } = useContext(NavbarAuthContext);
 
   const [expandMenu, setExpandMenu] = useState<boolean>(false);
   const [expandedSubmenu, setExpandedSubmenu] = useState<{ [key: string]: boolean }>(
@@ -309,12 +309,10 @@ export const Navbar = withStaticProps(
             ),
           )}
           <li className={styles.buttonsWrapper}>
-            {user ? (
+            {loggedIn ? (
               <EffektButton
                 variant={EffektButtonVariant.SECONDARY}
-                onClick={() =>
-                  logout({ logoutParams: { returnTo: process.env.NEXT_PUBLIC_SITE_URL } })
-                }
+                onClick={logout}
                 extraMargin={true}
               >
                 {labels.logout}
@@ -336,7 +334,7 @@ export const Navbar = withStaticProps(
               extraMargin={true}
               onClick={() => setWidgetContext({ open: true, prefilled: null, prefilledSum: null })}
               variant={
-                giveButton.accent_color && !user
+                giveButton.accent_color && !loggedIn
                   ? EffektButtonVariant.ACCENT
                   : EffektButtonVariant.PRIMARY
               }

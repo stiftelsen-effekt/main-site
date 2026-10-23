@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { DonorContext } from "../../../../../../profile/layout/donorProvider";
+import { DonorContext } from "../../../../../../profile/layout/donorContext";
 import { ANONYMOUS_DONOR } from "../../../config/anonymous-donor";
 import {
   selectPaymentMethod,

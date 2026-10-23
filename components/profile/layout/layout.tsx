@@ -6,6 +6,7 @@ import Router, { useRouter } from "next/router";
 import { UserWrapper } from "./userwrapper";
 import { DonorProvider } from "./donorProvider";
 import { ActivityProvider } from "./activityProvider";
+import { NavbarAuthProvider } from "./NavbarAuthProvider";
 import { ToastContainer } from "react-toastify";
 import { SWRConfig } from "swr";
 import {
@@ -18,12 +19,9 @@ import { WidgetPane } from "../../main/layout/WidgetPane/WidgetPane";
 import { useRouterContext } from "../../../context/RouterContext";
 import { MainLocaleContext } from "../../../context/MainLocaleContext";
 import { PreviewBlock } from "../../main/layout/PreviewBlock/PreviewBlock";
-import { MissingNameModal, MissingNameModalConfig } from "./MissingNameModal/MissingNameModal";
+import { MissingNameModal } from "./MissingNameModal/MissingNameModal";
 import { withStaticProps } from "../../../util/withStaticProps";
-import { Widget } from "../../shared/components/Widget/components/Widget";
-import { getClient } from "../../../lib/sanity.client";
-import { token } from "../../../token";
-import { ConsentState } from "../../../proxy.page";
+import { getProfileLayoutStaticProps } from "./layoutStaticProps";
 import {
   useExternalDonationWidget,
   getExternalDonationUrls,
@@ -42,50 +40,14 @@ const useShouldAuthenticate = (): boolean => {
   return shouldBypass;
 };
 
-type QueryResult = {
-  data: {
-    site_title: string;
-    main_locale: string | null;
-    login_error_configuration: {
-      login_abort_label: string;
-      login_button_label: string;
-    };
-    general_banner?: any;
-    missing_name_modal_config?: MissingNameModalConfig;
-  };
-};
-
-export const profileQuery = `
-  {
-    "data": {
-      "site_title": *[_type == "site_settings"][0].title,
-      "main_locale": *[_type == "site_settings"][0].main_locale,
-      "general_banner": *[_type == "site_settings"][0].general_banner->,
-      "login_error_configuration": *[_id == "dashboard"][0].login_error_configuration,
-      "missing_name_modal_config": *[_id == "dashboard"][0].missing_name_modal_configuration
-    }
-  }
-`;
-
-export const ProfileLayout = withStaticProps(
-  async ({
-    draftMode = false,
-    consentState,
-  }: {
-    draftMode: boolean;
-    consentState: ConsentState;
-  }) => {
-    const result = await getClient(draftMode ? token : undefined).fetch<QueryResult>(profileQuery);
-
-    return {
-      footerData: await Footer.getStaticProps({ draftMode }),
-      widgetData: await Widget.getStaticProps({ draftMode }),
-      profileData: result.data,
-      consentState,
-      draftMode,
-    };
-  },
-)(({ children, footerData, widgetData, profileData, consentState, draftMode }) => {
+export const ProfileLayout = withStaticProps(getProfileLayoutStaticProps)(({
+  children,
+  footerData,
+  widgetData,
+  profileData,
+  consentState,
+  draftMode,
+}) => {
   const { dashboardPath } = useRouterContext();
 
   const [widgetContext, setInternalWidgetContext] = useState<WidgetContextType>({
@@ -171,7 +133,9 @@ export const ProfileLayout = withStaticProps(
                           prefilledSum={widgetContext.prefilledSum}
                         />
                       )}
-                      <main className={styles.main}>{children}</main>
+                      <main className={styles.main}>
+                        <NavbarAuthProvider>{children}</NavbarAuthProvider>
+                      </main>
                       {profileData.missing_name_modal_config && (
                         <MissingNameModal config={profileData.missing_name_modal_config} />
                       )}

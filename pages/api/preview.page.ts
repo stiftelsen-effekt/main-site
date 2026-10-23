@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getDonationsPagePath } from "../dashboard/DonationsPage";
+import { getDonationsPagePath } from "../dashboard/paths";
 
 export default async function preview(req: NextApiRequest, res: NextApiResponse) {
   if (!req?.query?.secret) {

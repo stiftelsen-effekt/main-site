@@ -38,56 +38,8 @@ import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Info } from "react-feather";
 import { token } from "../../token";
-import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../proxy.page";
-
-export async function getDashboardPagePath() {
-  const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
-
-  const dashboardSlug = stegaClean(result?.dashboard?.[0]?.dashboard_slug?.current);
-
-  if (!dashboardSlug) throw new Error("Dashboard slug not found");
-
-  return dashboardSlug.split("/");
-}
-
-export async function getDonationsPagePath() {
-  let result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);
-
-  const dashboardPath = await getDashboardPagePath();
-
-  const donationsSlug = result.page?.slug?.current;
-
-  if (!donationsSlug) return null;
-
-  return [
-    ...dashboardPath.map((component) => stegaClean(component)),
-    ...donationsSlug.split("/").map((component) => stegaClean(component)),
-  ];
-}
-
-export async function getDonationsPageSubpaths() {
-  const donationsPagePath = await getDonationsPagePath();
-
-  if (!donationsPagePath) return [];
-
-  const years = getYearPaths();
-
-  return years.map((year) => [
-    ...donationsPagePath.map((component) => stegaClean(component)),
-    stegaClean(year),
-  ]);
-}
-
-const getYearPaths = () => {
-  const currentYear = new Date().getFullYear();
-  const yearPaths = [];
-  for (let year = 2016; year <= currentYear + 1; year++) {
-    yearPaths.push(year.toString());
-  }
-
-  return yearPaths;
-};
+import { getDonationsPagePath } from "./paths";
 
 export const DonationsPage = withStaticProps(
   async ({
