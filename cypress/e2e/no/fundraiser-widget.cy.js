@@ -357,3 +357,22 @@ describe("Fundraiser widget - name/message payload variations", () => {
       });
   });
 });
+
+describe("Fundraiser header layout", () => {
+  it("keeps the cover image clear of the always-shrunk navbar at every breakpoint", () => {
+    visitFundraiser(SLUGS.default);
+    // The header is position: fixed; on fundraiser pages the cover starts right below the
+    // spacer, so the header must never extend past it.
+    [390, 1180, 1181, 1470, 1520, 1521, 1710, 1920].forEach((width) => {
+      cy.viewport(width, 900);
+      cy.scrollTo("top");
+      cy.get("[data-cy=header-spacer]").then(($spacer) => {
+        cy.get("[data-cy=header]").should(($header) => {
+          const headerBottom = $header[0].getBoundingClientRect().bottom;
+          const spacerBottom = $spacer[0].getBoundingClientRect().bottom;
+          expect(headerBottom, `header bottom at ${width}px`).to.be.at.most(spacerBottom + 0.5);
+        });
+      });
+    });
+  });
+});
