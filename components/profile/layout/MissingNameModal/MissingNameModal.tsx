@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { DonorContext } from "../donorProvider";
 import { Lightbox } from "../../../shared/components/Lightbox/Lightbox";
 import { EffektTextInput } from "../../../shared/components/EffektTextInput/EffektTextInput";
@@ -24,13 +24,8 @@ export const MissingNameModal: React.FC<{ config: MissingNameModalConfig }> = ({
   const { user, getAccessTokenSilently } = useAuth0();
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (donor && !donor.name) {
-      setOpen(true);
-    }
-  }, [donor]);
+  const [dismissed, setDismissed] = useState(false);
+  const open = Boolean(donor && !donor.name) && !dismissed;
 
   const saveName = async () => {
     setLoading(true);
@@ -43,7 +38,7 @@ export const MissingNameModal: React.FC<{ config: MissingNameModalConfig }> = ({
       } else {
         successToast(config.success_message);
         setDonor(updatedDonor);
-        setOpen(false);
+        setDismissed(true);
       }
     } else {
       failureToast(config.failure_message);
@@ -59,7 +54,7 @@ export const MissingNameModal: React.FC<{ config: MissingNameModalConfig }> = ({
       valid={name.length > 0}
       loading={loading}
       cancelLabel={config.cancel_label}
-      onCancel={() => setOpen(false)}
+      onCancel={() => setDismissed(true)}
     >
       <div className={styles.container}>
         <h5>{config.title}</h5>

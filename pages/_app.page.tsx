@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import React, { Suspense, lazy, useEffect, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import PlausibleProvider from "next-plausible";
 
 // import { usePreviewSubscription } from "../lib/sanity";
@@ -13,6 +13,7 @@ import { ConsentState } from "../proxy.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 import { useRouter } from "next/router";
 import { getReferralCodeFromQuery, storeReferralCode } from "../util/referralCode";
+import { useTrackingEnabled } from "../hooks/useTrackingEnabled";
 
 const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"));
 const globalWidgetStore = createWidgetStore();
@@ -38,11 +39,13 @@ function MyApp({
   Component,
   pageProps: { appStaticProps, preview, ...pageProps },
 }: AppProps<GeneralPageProps>) {
-  const [tracking, setTracking] = React.useState(false);
+  // check for plausible_ignore localstorage to disable plausible tracking
+  const tracking = useTrackingEnabled();
   const router = useRouter();
 
-  const routerContextValue = useRef<RouterContextValue | null>(
-    appStaticProps?.routerContext || null,
+  // Keep the router context from the first page load for the lifetime of the app
+  const [routerContextValue] = useState<RouterContextValue | null>(
+    () => appStaticProps?.routerContext || null,
   );
 
   useEffect(() => {
@@ -50,18 +53,6 @@ function MyApp({
     const referralCode = getReferralCodeFromQuery(router.query);
     if (referralCode) storeReferralCode(referralCode);
   }, [router.isReady, router.query]);
-
-  // check for plausible_ignore localstorage to disable plausible tracking
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ignore = localStorage.getItem("plausible_ignore");
-      if (ignore === "true") {
-        setTracking(false);
-      } else {
-        setTracking(true);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
@@ -100,7 +91,7 @@ function MyApp({
       <PreviewProvider token={pageProps.token}>
         <PlausibleProvider enabled={tracking}>
           <Provider store={globalWidgetStore}>
-            <RouterContext.Provider value={routerContextValue.current}>
+            <RouterContext.Provider value={routerContextValue}>
               {appStaticProps.layout === LayoutType.Default ? (
                 <Layout {...appStaticProps.layoutProps}>
                   <Component {...pageProps} />
@@ -123,7 +114,7 @@ function MyApp({
   return (
     <PlausibleProvider>
       <Provider store={globalWidgetStore}>
-        <RouterContext.Provider value={routerContextValue.current}>
+        <RouterContext.Provider value={routerContextValue}>
           {appStaticProps.layout === LayoutType.Default ? (
             <Layout {...appStaticProps.layoutProps}>
               <Component {...pageProps} />

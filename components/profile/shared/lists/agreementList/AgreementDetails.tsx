@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Distribution, TaxUnit } from "../../../../../models";
 import { toast } from "react-toastify";
 import {
@@ -106,10 +106,6 @@ export const AgreementDetails: React.FC<{
   const dateDisabled = type === "AutoGiro" && mainLocale === "sv";
   const [sum, setSum] = useState(inputSum);
 
-  useEffect(() => {
-    setLastSavedDistribution(hydrateDistributionAmounts(inputDistribution, inputSum));
-  }, [inputDistribution, inputSum]);
-
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [loadingChanges, setLoadingChanges] = useState(false);
 
@@ -120,7 +116,25 @@ export const AgreementDetails: React.FC<{
     isValidating: causeAreasIsValidating,
   } = useCauseAreas(getAccessTokenSilently);
 
-  useEffect(() => {
+  // Sync local state when the agreement props or system cause areas change, by adjusting
+  // state during render (https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes).
+  // systemCauseAreas starts as undefined so that already-loaded cause areas are applied on mount.
+  const [prevInputs, setPrevInputs] = useState<{
+    systemCauseAreas: typeof systemCauseAreas;
+    inputDistribution: Distribution;
+    inputSum: number;
+  }>({ systemCauseAreas: undefined, inputDistribution, inputSum });
+  if (
+    prevInputs.systemCauseAreas !== systemCauseAreas ||
+    prevInputs.inputDistribution !== inputDistribution ||
+    prevInputs.inputSum !== inputSum
+  ) {
+    setPrevInputs({ systemCauseAreas, inputDistribution, inputSum });
+
+    if (prevInputs.inputDistribution !== inputDistribution || prevInputs.inputSum !== inputSum) {
+      setLastSavedDistribution(hydrateDistributionAmounts(inputDistribution, inputSum));
+    }
+
     // Check if the distribution has all the system cause areas
     // If not, add them
     if (systemCauseAreas && inputDistribution && inputDistribution.causeAreas) {
@@ -157,7 +171,7 @@ export const AgreementDetails: React.FC<{
         setDistribution(newDistribution);
       }
     }
-  }, [systemCauseAreas, inputDistribution, inputSum]);
+  }
 
   const changeSum = (nextSum: number) => {
     setDistribution((current) => {

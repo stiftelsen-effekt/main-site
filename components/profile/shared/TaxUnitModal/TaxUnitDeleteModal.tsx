@@ -60,7 +60,16 @@ export const TaxUnitDeleteModal: React.FC<{
       setLoading(false);
       setError("");
     }
-  }, [getAccessTokenSilently, user, taxUnit, selectedTaxUnit, transferDonations]);
+  }, [
+    getAccessTokenSilently,
+    user,
+    taxUnit,
+    selectedTaxUnit,
+    transferDonations,
+    onSuccess,
+    onFailure,
+    failureToast,
+  ]);
 
   return (
     <Lightbox open={open} onConfirm={deleteUnit} onCancel={onClose} loading={loading}>

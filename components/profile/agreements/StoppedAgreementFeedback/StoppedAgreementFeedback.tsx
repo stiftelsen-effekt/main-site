@@ -52,35 +52,6 @@ export const StoppedAgreementFeedback = ({
   const operationQueue = useRef<QueuedOperation[]>([]);
   const processingQueue = useRef<boolean>(false);
 
-  const addToQueue = (operation: QueuedOperation) => {
-    operationQueue.current.push(operation);
-    processQueue();
-  };
-
-  const debouncedSetOtherComment = useDebouncedCallback(
-    (val: string, feedbackId: number, existingBackendId?: string) => {
-      if (val === "" || val === undefined || val === null) {
-        if (existingBackendId) {
-          addToQueue({
-            feedbackTypeId: feedbackId,
-            type: "delete",
-            timestamp: Date.now(),
-            backendId: existingBackendId,
-          });
-        }
-      } else {
-        addToQueue({
-          feedbackTypeId: feedbackId,
-          type: "add",
-          otherComement: val,
-          timestamp: Date.now(),
-        });
-      }
-    },
-    750,
-    { trailing: true },
-  );
-
   const processQueue = async () => {
     if (processingQueue.current || operationQueue.current.length === 0) {
       return;
@@ -188,6 +159,33 @@ export const StoppedAgreementFeedback = ({
     }
   };
 
+  const addToQueue = (operation: Omit<QueuedOperation, "timestamp">) => {
+    operationQueue.current.push({ ...operation, timestamp: Date.now() });
+    processQueue();
+  };
+
+  const debouncedSetOtherComment = useDebouncedCallback(
+    (val: string, feedbackId: number, existingBackendId?: string) => {
+      if (val === "" || val === undefined || val === null) {
+        if (existingBackendId) {
+          addToQueue({
+            feedbackTypeId: feedbackId,
+            type: "delete",
+            backendId: existingBackendId,
+          });
+        }
+      } else {
+        addToQueue({
+          feedbackTypeId: feedbackId,
+          type: "add",
+          otherComement: val,
+        });
+      }
+    },
+    750,
+    { trailing: true },
+  );
+
   const handleFeedbackToggle = (feedbackTypeId: number) => {
     const existingSelection = selectedFeedback.find((f) => f.feedbackTypeId === feedbackTypeId);
 
@@ -197,7 +195,6 @@ export const StoppedAgreementFeedback = ({
         feedbackTypeId,
         type: "delete",
         backendId: existingSelection.backendId ?? undefined,
-        timestamp: Date.now(),
       });
 
       // Optimistically update UI
@@ -207,7 +204,6 @@ export const StoppedAgreementFeedback = ({
       addToQueue({
         feedbackTypeId,
         type: "add",
-        timestamp: Date.now(),
       });
 
       // Optimistically update UI

@@ -130,7 +130,10 @@ const DKAgreementsPageContent: React.FC<{
     error: dkAgreementsError,
   } = useDKAgreements(user, getAccessTokenSilently);
   const dkAgreementsLoaded = Array.isArray(dkAgreements);
-  const resolvedAgreements = dkAgreementsLoaded ? dkAgreements : [];
+  const resolvedAgreements = useMemo(
+    () => (dkAgreementsLoaded ? dkAgreements : []),
+    [dkAgreementsLoaded, dkAgreements],
+  );
   const activeAgreementKids = useMemo(
     () => Array.from(new Set(resolvedAgreements.map((agreement: DKAgreement) => agreement.kid))),
     [resolvedAgreements],

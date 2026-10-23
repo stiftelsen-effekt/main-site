@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccessToken } from "../../../../hooks/useApi";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AlertCircle, Check } from "react-feather";
 import { toast } from "react-toastify";
 import { Donor } from "../../../../models";
@@ -27,13 +27,9 @@ export const ProfileInfo: React.FC<{
   const { getAccessTokenSilently, user } = useAuth0();
 
   const { donor: initialDonor, setDonor: setGlobalDonor } = useContext(DonorContext);
-  const [donor, setDonor] = useState<Donor | null>(initialDonor);
-
-  useEffect(() => {
-    if (!donor && initialDonor) {
-      setDonor(initialDonor);
-    }
-  }, [donor, initialDonor]);
+  const [editedDonor, setDonor] = useState<Donor | null>(initialDonor);
+  // Fall back to the donor from context until it has loaded and been edited locally
+  const donor = editedDonor ?? initialDonor;
 
   if (!donor || !user) return <ErrorMessage />;
 

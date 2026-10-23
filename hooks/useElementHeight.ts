@@ -56,23 +56,24 @@ export const useMultipleElementHeights = <T extends HTMLElement>(
 
     // Immediately measure heights once on mount
     const measureInitialHeights = () => {
-      const newHeights = [...heights];
-      let hasChanges = false;
-
-      elementRefs.forEach((ref, index) => {
+      const measured = elementRefs.map((ref) => {
         const element = ref.current;
-        if (!element) return;
-
-        const height = Math.round(element.getBoundingClientRect().height);
-        if (height > 0 && newHeights[index] !== height) {
-          newHeights[index] = height;
-          hasChanges = true;
-        }
+        return element ? Math.round(element.getBoundingClientRect().height) : 0;
       });
 
-      if (hasChanges) {
-        setHeights(newHeights);
-      }
+      setHeights((prevHeights) => {
+        const newHeights = [...prevHeights];
+        let hasChanges = false;
+
+        measured.forEach((height, index) => {
+          if (height > 0 && newHeights[index] !== height) {
+            newHeights[index] = height;
+            hasChanges = true;
+          }
+        });
+
+        return hasChanges ? newHeights : prevHeights;
+      });
     };
 
     // Initial measurement - do it immediately
@@ -110,21 +111,18 @@ export const useMultipleElementHeights = <T extends HTMLElement>(
     };
   }, [elementRefs]); // Only re-run if the refs array changes
 
-  // Handle array length changes
-  useEffect(() => {
-    if (heights.length !== elementRefs.length) {
-      setHeights((prev) => {
-        const newHeights = new Array(elementRefs.length).fill(0);
-        // Preserve existing height values when possible
-        prev.forEach((height, i) => {
-          if (i < elementRefs.length) {
-            newHeights[i] = height;
-          }
-        });
-        return newHeights;
-      });
-    }
-  }, [elementRefs.length, heights.length]);
+  // Handle array length changes by adjusting state during render
+  // (https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes)
+  if (heights.length !== elementRefs.length) {
+    const newHeights = new Array(elementRefs.length).fill(0);
+    // Preserve existing height values when possible
+    heights.forEach((height, i) => {
+      if (i < elementRefs.length) {
+        newHeights[i] = height;
+      }
+    });
+    setHeights(newHeights);
+  }
 
   return heights;
 };

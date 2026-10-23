@@ -172,8 +172,9 @@ export const DonationsPage = withStaticProps(
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", debouncedMobileCheck);
+      return () => window.removeEventListener("resize", debouncedMobileCheck);
     }
-  }, []);
+  }, [debouncedMobileCheck]);
 
   const { donor } = useContext(DonorContext);
 

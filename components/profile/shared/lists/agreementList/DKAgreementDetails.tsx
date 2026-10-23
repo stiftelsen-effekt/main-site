@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccessToken } from "../../../../../hooks/useApi";
 import { useSWRConfig } from "swr";
@@ -92,32 +92,36 @@ export const DKAgreementDetails: React.FC<{
     loading: causeAreasLoading,
   } = useCauseAreas(getAccessTokenSilently);
 
-  useEffect(() => {
-    const hydrated = inputDistribution
-      ? hydrateDistributionAmounts(inputDistribution, inputSum)
-      : null;
-    setDistribution(hydrated);
-    setLastSavedDistribution(hydrated);
-  }, [inputDistribution, inputSum]);
-
-  useEffect(() => {
-    setDay(inputDate);
-  }, [inputDate]);
-
-  useEffect(() => {
-    setSum(inputSum);
-  }, [inputSum]);
-
-  useEffect(() => {
-    if (!systemCauseAreas || !distribution) {
-      return;
+  // Reset local state when the agreement props change, by adjusting state during render
+  // (https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes)
+  const [prevInputs, setPrevInputs] = useState({ inputDistribution, inputSum, inputDate });
+  if (
+    prevInputs.inputDistribution !== inputDistribution ||
+    prevInputs.inputSum !== inputSum ||
+    prevInputs.inputDate !== inputDate
+  ) {
+    setPrevInputs({ inputDistribution, inputSum, inputDate });
+    if (prevInputs.inputDistribution !== inputDistribution || prevInputs.inputSum !== inputSum) {
+      const hydrated = inputDistribution
+        ? hydrateDistributionAmounts(inputDistribution, inputSum)
+        : null;
+      setDistribution(hydrated);
+      setLastSavedDistribution(hydrated);
     }
-
-    const nextDistribution = addMissingCauseAreas(distribution, systemCauseAreas);
-    if (JSON.stringify(nextDistribution) !== JSON.stringify(distribution)) {
-      setDistribution(nextDistribution);
+    if (prevInputs.inputDate !== inputDate) {
+      setDay(inputDate);
     }
-  }, [systemCauseAreas, distribution]);
+    if (prevInputs.inputSum !== inputSum) {
+      setSum(inputSum);
+    }
+  } else if (
+    // Add any system cause areas missing from the distribution
+    systemCauseAreas &&
+    distribution &&
+    getMissingCauseAreas(distribution, systemCauseAreas).length > 0
+  ) {
+    setDistribution(addMissingCauseAreas(distribution, systemCauseAreas));
+  }
 
   const currentTaxUnit = useMemo(
     () => taxUnits.find((unit) => unit.id === distribution?.taxUnitId) ?? null,
@@ -604,16 +608,20 @@ export const DKAgreementDetails: React.FC<{
 const cloneDistribution = (distribution?: Distribution | null) =>
   distribution ? JSON.parse(JSON.stringify(distribution)) : null;
 
-const addMissingCauseAreas = (distribution: Distribution, systemCauseAreas: CauseArea[]) => {
-  const nextDistribution = cloneDistribution(distribution) as Distribution;
-  const distributionCauseAreaIds = nextDistribution.causeAreas.map((causeArea) => causeArea.id);
-  const missingCauseAreas = systemCauseAreas.filter(
+const getMissingCauseAreas = (distribution: Distribution, systemCauseAreas: CauseArea[]) => {
+  const distributionCauseAreaIds = distribution.causeAreas.map((causeArea) => causeArea.id);
+  return systemCauseAreas.filter(
     (causeArea) =>
       !distributionCauseAreaIds.includes(causeArea.id) &&
       !causeArea.organizations.some(
         (organization) => organization.id === MEMBERSHIP_ORGANIZATION_ID,
       ),
   );
+};
+
+const addMissingCauseAreas = (distribution: Distribution, systemCauseAreas: CauseArea[]) => {
+  const nextDistribution = cloneDistribution(distribution) as Distribution;
+  const missingCauseAreas = getMissingCauseAreas(nextDistribution, systemCauseAreas);
 
   missingCauseAreas.forEach((causeArea) => {
     nextDistribution.causeAreas.push({
