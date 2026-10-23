@@ -1,10 +1,20 @@
-import * as Plot from "@observablehq/plot";
+import type * as PlotModule from "@observablehq/plot";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getRemInPixels } from "../../../../main/blocks/Paragraph/Citation";
 import { useDebouncedCallback } from "use-debounce";
 import styles from "./AreaGraph.module.scss";
 
+/**
+ * Plot (and the d3 modules it pulls in) is only needed to draw the chart,
+ * which happens client-side after mount. Load it on first draw so it stays
+ * out of the JS every page loads. The server HTML is the same empty container
+ * either way, and once loaded, redraws are synchronous apart from a microtask.
+ */
+let plotModule: Promise<typeof PlotModule> | undefined;
+const loadPlot = () => (plotModule ??= import("@observablehq/plot"));
+
 const drawChart = (
+  Plot: typeof PlotModule,
   data: { x: number; y: number }[],
   lineInput: number,
   lineInputWealthPercentage: number,
@@ -161,8 +171,14 @@ export const AreaChart: React.FC<{
   periodAdjustment,
 }) => {
   const outputRef = useRef<HTMLDivElement>(null);
+  const drawRequest = useRef(0);
 
-  const drawGraph = useCallback(() => {
+  const drawGraph = useCallback(async () => {
+    const request = ++drawRequest.current;
+    const Plot = await loadPlot();
+    // Skip if a newer draw was requested while Plot was loading
+    if (request !== drawRequest.current) return;
+
     if (outputRef.current) {
       if (!outputRef.current.parentElement) {
         return;
@@ -184,6 +200,7 @@ export const AreaChart: React.FC<{
       };
 
       const chart = drawChart(
+        Plot,
         data,
         lineInput,
         wealthPercentile,
