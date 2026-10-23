@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
-import { PortableText } from "next-sanity";
+import { PortableText } from "@portabletext/react";
 import { CauseAreaDisplayConfig } from "../../../types/WidgetProps";
 import { Links } from "../../../../../../main/blocks/Links/Links";
 import { RolloutAccordion } from "../../panes/AmountPane.style";

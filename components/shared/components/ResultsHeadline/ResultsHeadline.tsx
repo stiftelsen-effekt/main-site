@@ -1,5 +1,4 @@
-import { DateTime } from "luxon";
-import { thousandize } from "../../../../util/formatting";
+import { dateTimeNumeric, thousandize } from "../../../../util/formatting";
 import styles from "./ResultsHeadline.module.scss";
 
 export type ResultsHadlineNumbers = {
@@ -29,9 +28,7 @@ export const ResultsHeadline = ({
   }[];
   textConfig?: ResultsHeadlineTextConfig;
 }) => {
-  const formattedLastUpdated = DateTime.fromISO(headlineNumbers.lastUpdated).toFormat(
-    "dd.MM.yyyy HH:mm",
-  );
+  const formattedLastUpdated = dateTimeNumeric(headlineNumbers.lastUpdated);
 
   const currencySymbol = textConfig?.currencySymbol || "kr";
   const collectedFromDonorsText =

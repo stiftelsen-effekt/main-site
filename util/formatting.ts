@@ -1,15 +1,31 @@
-import { DateTime } from "luxon";
+/**
+ * Parses an ISO 8601 string the way luxon's DateTime.fromISO does for the
+ * formats we get from the API: date-only and offset-less values are local
+ * time, values with Z or an offset are converted to local time. Kept free of
+ * luxon so it does not end up in the client bundle.
+ */
+const parseISOLocal = (isoDate: string): Date =>
+  new Date(/^\d{4}-\d{2}-\d{2}$/.test(isoDate) ? `${isoDate}T00:00` : isoDate);
 
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+/** Same output as luxon's toFormat for an invalid date */
+const INVALID_DATE = "Invalid DateTime";
+
+/** Formats an ISO date as "dd.MM" in local time */
 export const onlyDate = (date: string) => {
-  return DateTime.fromISO(date).toFormat("dd.MM");
+  const d = parseISOLocal(date);
+  if (isNaN(d.getTime())) return INVALID_DATE;
+  return `${pad2(d.getDate())}.${pad2(d.getMonth() + 1)}`;
 };
 
-export const shortDate = (isoDate: string): string => {
-  return DateTime.fromISO(isoDate).toFormat("dd.MM yyyy");
-};
-
-export const longDate = (isoDate: string): string => {
-  return DateTime.fromISO(isoDate).toFormat("dd.MM yyyy hh:mm");
+/** Formats an ISO date as "dd.MM.yyyy HH:mm" in local time */
+export const dateTimeNumeric = (isoDate: string) => {
+  const d = parseISOLocal(isoDate);
+  if (isNaN(d.getTime())) return INVALID_DATE;
+  return `${pad2(d.getDate())}.${pad2(d.getMonth() + 1)}.${d.getFullYear()} ${pad2(
+    d.getHours(),
+  )}:${pad2(d.getMinutes())}`;
 };
 
 export const thousandize = (number: number | null, locale: string = "no-NB") => {

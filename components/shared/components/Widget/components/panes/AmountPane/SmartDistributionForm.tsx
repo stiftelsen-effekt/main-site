@@ -4,7 +4,7 @@ import { NumericFormat } from "react-number-format";
 import { usePlausible } from "next-plausible";
 import AnimateHeight from "react-animate-height";
 import { ChevronDown } from "react-feather";
-import { PortableText } from "next-sanity";
+import { PortableText } from "@portabletext/react";
 import {
   FormWrapper,
   CauseAreaTitle,

@@ -14,7 +14,6 @@ import { useDebouncedCallback } from "use-debounce";
 import { GraphContext, GraphContextData } from "../../Shared/GraphContext/GraphContext";
 import { getRemInPixels } from "../../../../../main/blocks/Paragraph/Citation";
 import * as d3 from "d3";
-import { DateTime } from "luxon";
 import { BarChart2, TrendingUp } from "react-feather";
 import { Cumulativedonationstableheaders } from "../../../../../../studio/sanity.types";
 import { thousandize } from "../../../../../../util/formatting";
@@ -1192,7 +1191,7 @@ const formatMillionTick = (t: number, textConfig?: CumulativeDonationsTextConfig
 
 /** YTD end date in the platform locale, e.g. "24. juli" (nb) / "Jul 24" (en). */
 const formatYtdPeriodLabel = (locale: string) =>
-  DateTime.now().setLocale(locale).toLocaleString({ day: "numeric", month: "short" });
+  new Intl.DateTimeFormat(locale, { day: "numeric", month: "short" }).format(new Date());
 
 /** Default bar label: millions with one decimal, e.g. "14,5 mill". */
 const formatBarLabel = (
@@ -1273,9 +1272,8 @@ const binDonations = (don: TransformedDonation[]) =>
 
       if (gap > 1) {
         for (let i = 1; i < gap; i++) {
-          const date = DateTime.fromJSDate(el.date)
-            .minus({ days: gap - i })
-            .toJSDate();
+          const date = new Date(el.date);
+          date.setDate(date.getDate() - (gap - i));
           acc.push({
             date: date,
             doy: currentDoy - gap + i,

@@ -4,7 +4,7 @@ import {
   InterventionWidgetOutput,
   InterventionWidgetOutputConfiguration,
 } from "./InterventionWidgetOutput";
-import { PortableText } from "next-sanity";
+import { PortableText } from "@portabletext/react";
 import { customComponentRenderers } from "../Paragraph/Citation";
 
 export interface InterventionWidgetProps {
