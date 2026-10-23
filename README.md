@@ -146,6 +146,8 @@ The content managment panel is not strictly needed to run the main site. However
 
 `pnpm run sanity`
 
+When the site is built, the `prebuild` script also builds the studio to `public/studio`. Only `SANITY_STUDIO_*` variables reach the studio bundle, so `studio/sanity.cli.ts` maps a few of the site's variables (such as `NEXT_PUBLIC_SITE_URL` and `VERCEL_ENV`) to their `SANITY_STUDIO_*` names when those are not set.
+
 > To use the CMS you need a sanity CMS managment user. Enquire in the tech slack channel to be added as a user.
 
 This will make sanity studio available at `localhost:3333/`. It should look something like this
