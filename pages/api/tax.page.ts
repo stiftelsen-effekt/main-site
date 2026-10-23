@@ -1,4 +1,4 @@
-import { kv } from "@vercel/kv";
+import { getKv } from "../../lib/kv";
 import { DateTime } from "luxon";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -14,7 +14,7 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
   const year = DateTime.now().year.toString();
 
   const cacheKey = `tax-${req.query.locale}-${income}-${year}`;
-  const cachedTax = await kv.get(cacheKey);
+  const cachedTax = await getKv().get(cacheKey);
   if (cachedTax !== null) {
     return res.status(200).json(cachedTax);
   }
@@ -34,7 +34,7 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
       const data = await result.json();
 
       const estimatedTax = data.skatteavdrag * 12;
-      await kv.set(cacheKey, estimatedTax);
+      await getKv().set(cacheKey, estimatedTax);
       return res.status(200).json(estimatedTax);
     } catch (error) {
       return res.status(500).json({ error: (error as any).message });
@@ -53,7 +53,7 @@ export default async function tax(req: NextApiRequest, res: NextApiResponse) {
       );
       const data = await result.json();
       const estimatedTax = data.beregningsresultat.beregnetSkatt.beregnetSkatt;
-      await kv.set(cacheKey, estimatedTax);
+      await getKv().set(cacheKey, estimatedTax);
       return res.status(200).json(estimatedTax);
     } catch (error) {
       return res.status(500).json({ error: (error as any).message });

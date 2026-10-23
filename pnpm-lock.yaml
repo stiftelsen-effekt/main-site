@@ -48,9 +48,9 @@ importers:
       '@stdlib/stats-base-dists-truncated-normal':
         specifier: ^0.2.3
         version: 0.2.3(supports-color@8.1.1)
-      '@vercel/kv':
-        specifier: ^3.0.0
-        version: 3.0.0
+      '@upstash/redis':
+        specifier: ^1.39.0
+        version: 1.39.0
       cookies-next:
         specifier: ^6.1.1
         version: 6.1.1(next@16.4.2(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@22.20.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1))(react@19.3.1)
@@ -4021,11 +4021,6 @@ packages:
 
   '@vercel/frameworks@3.21.1':
     resolution: {integrity: sha512-N8ciri8NSz4vlc8Dqfa9cr1rn2RRbmG3T8Q+8/QM/4af4d1UbSdBG8cBBo7jQSQfNobjURRGL/miGBe+dS2wOQ==}
-
-  '@vercel/kv@3.0.0':
-    resolution: {integrity: sha512-pKT8fRnfyYk2MgvyB6fn6ipJPCdfZwiKDdw7vB+HL50rjboEBHDVBEcnwfkEpVSp2AjNtoaOUH7zG+bVC/rvSg==}
-    engines: {node: '>=14.6'}
-    deprecated: 'Vercel KV is deprecated. If you had an existing KV store, it should have moved to Upstash Redis which you will see under Vercel Integrations. For new projects, install a Redis integration from Vercel Marketplace: https://vercel.com/marketplace?category=storage&search=redis'
 
   '@vercel/stega@1.1.0':
     resolution: {integrity: sha512-DFOm3Gk78nKDkppQEG5aj8Wj8R8hPKu/xrz4Rtp0AfiaNbZNCoJbxn7VI6iMxqhGeLdUDy/8mTuTWMz/izAtPA==}
@@ -12828,10 +12823,6 @@ snapshots:
       '@iarna/toml': 2.2.3
       '@vercel/error-utils': 2.0.3
       js-yaml: 3.15.2
-
-  '@vercel/kv@3.0.0':
-    dependencies:
-      '@upstash/redis': 1.39.0
 
   '@vercel/stega@1.1.0': {}
 

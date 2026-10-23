@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { NextApiRequest, NextApiResponse } from "next";
-import { kv } from "@vercel/kv";
+import { getKv } from "../../lib/kv";
 
 export default async function inflation(req: NextApiRequest, res: NextApiResponse) {
   let date = DateTime.local();
@@ -47,7 +47,7 @@ export default async function inflation(req: NextApiRequest, res: NextApiRespons
 // (for example in local development without KV credentials) must not break the route.
 const readCache = async (key: string) => {
   try {
-    return await kv.get(key);
+    return await getKv().get(key);
   } catch (error) {
     console.warn("Inflation cache unavailable, reading from the source", error);
     return null;
@@ -56,7 +56,7 @@ const readCache = async (key: string) => {
 
 const writeCache = async (key: string, value: unknown) => {
   try {
-    await kv.set(key, value);
+    await getKv().set(key, value);
   } catch (error) {
     console.warn("Inflation cache unavailable, value not cached", error);
   }
