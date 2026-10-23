@@ -687,11 +687,6 @@ const nextConfig: NextConfig = {
         source: "/tpost/npn2ntbo11-vi-m-snakke-om-administrasjonskostnader",
         destination: "/artikler/vi-ma-snakke-om-administrasjonskostnader",
         permanent: true,
-      }, //
-      {
-        source: "/tpost/npn2ntbo11-vi-m-snakke-om-administrasjonskostnader",
-        destination: "/artikler/vi-ma-snakke-om-administrasjonskostnader",
-        permanent: true,
       },
       {
         source: "/tpost/ptdkrf7g8z-gi-effektivt",
