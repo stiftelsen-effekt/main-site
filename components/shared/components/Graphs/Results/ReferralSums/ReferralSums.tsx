@@ -121,13 +121,10 @@ export const ReferralSums: React.FC<{
   useEffect(() => {
     if (graphRef.current) {
       setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
-      window.addEventListener("resize", () => {
-        if (graphRef.current) {
-          debouncedResizeGraph();
-        }
-      });
     }
-  }, [graphRef]);
+    window.addEventListener("resize", debouncedResizeGraph);
+    return () => window.removeEventListener("resize", debouncedResizeGraph);
+  }, [debouncedResizeGraph]);
 
   const drawGraph = useCallback(
     (graphData: ReferralGraphData[]) => {
@@ -235,7 +232,7 @@ export const ReferralSums: React.FC<{
         graphRef.current.appendChild(plot);
       }
     },
-    [graphRef, size],
+    [graphRef, size, textConfig?.millionAbbreviation, textConfig?.referralTypeMappings],
   );
 
   useEffect(() => {

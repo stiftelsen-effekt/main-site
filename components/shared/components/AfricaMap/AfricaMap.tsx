@@ -16,41 +16,48 @@ export const AfricaMap: React.FC<{
     [],
   );
 
-  const computeHoveredCountry = (e: any, country: string) => {
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-
-    // Set x and y relative to the parents parent position
-    const x =
-      mouseX -
-      ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().left +
-      getRemInPixels();
-    const y =
-      mouseY -
-      ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().top +
-      getRemInPixels() * 3;
-
-    setHoveredCountry({ name: country, x, y });
-  };
-
   useEffect(() => {
+    const computeHoveredCountry = (e: any, country: string) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      // Set x and y relative to the parents parent position
+      const x =
+        mouseX -
+        ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().left +
+        getRemInPixels();
+      const y =
+        mouseY -
+        ((e.currentTarget.parentElement as any).parentElement as any).getBoundingClientRect().top +
+        getRemInPixels() * 3;
+
+      setHoveredCountry({ name: country, x, y });
+    };
+
     const map = mapRef.current;
+    const cleanups: (() => void)[] = [];
     if (map) {
       // Select all children of root g element
       const countries = Array.from(map.querySelectorAll("svg > g > *"));
       countries.forEach((country) => {
         if (highlightedCountries.includes(country.id)) {
           country.setAttribute("fill", t.url());
-          country.addEventListener("mousemove", (e) =>
-            computeHoveredCountry(e, getCountryName(country.id, locale)),
-          );
-          country.addEventListener("mouseleave", () => setHoveredCountry(null));
+          const onMouseMove = (e: Event) =>
+            computeHoveredCountry(e, getCountryName(country.id, locale));
+          const onMouseLeave = () => setHoveredCountry(null);
+          country.addEventListener("mousemove", onMouseMove);
+          country.addEventListener("mouseleave", onMouseLeave);
+          cleanups.push(() => {
+            country.removeEventListener("mousemove", onMouseMove);
+            country.removeEventListener("mouseleave", onMouseLeave);
+          });
         } else {
           country.removeAttribute("fill");
         }
       });
     }
-  }, [highlightedCountries, mapRef, locale]);
+    return () => cleanups.forEach((cleanup) => cleanup());
+  }, [highlightedCountries, locale, t, setHoveredCountry]);
 
   useEffect(() => {
     const map = mapRef.current;

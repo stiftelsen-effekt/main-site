@@ -68,7 +68,7 @@ export const Outputs: React.FC<{
 
   const tableContents = useMemo(
     () => computeTableContents(transformedMonthlyDonationsPerOutput, output, tableHeaders),
-    [transformedMonthlyDonationsPerOutput, output],
+    [transformedMonthlyDonationsPerOutput, output, tableHeaders],
   );
 
   const maxOutputsInYear = useMemo(() => {
@@ -80,7 +80,7 @@ export const Outputs: React.FC<{
         .reduce((acc, el) => acc + el.numberOfOutputs, 0),
     );
     return Math.max(...yearlyMaxes);
-  }, [transformedMonthlyDonationsPerOutput]);
+  }, [transformedMonthlyDonationsPerOutput, startYear]);
 
   const resizeGraph = useCallback(() => {
     if (innerGraph.current && graphRef.current) {
@@ -93,13 +93,10 @@ export const Outputs: React.FC<{
   useEffect(() => {
     if (graphRef.current) {
       setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
-      window.addEventListener("resize", () => {
-        if (graphRef.current) {
-          debouncedResizeGraph();
-        }
-      });
     }
-  }, [graphRef]);
+    window.addEventListener("resize", debouncedResizeGraph);
+    return () => window.removeEventListener("resize", debouncedResizeGraph);
+  }, [debouncedResizeGraph]);
 
   const drawGraph = useCallback(
     (data: TransformedMonthlyDonationsPerOutput) => {
@@ -354,7 +351,17 @@ export const Outputs: React.FC<{
         legendRef.current.appendChild(legend);
       }
     },
-    [graphRef, legendRef, innerGraph, size],
+    [
+      graphRef,
+      legendRef,
+      innerGraph,
+      size,
+      startYear,
+      graphAnnotations,
+      maxOutputsInYear,
+      output,
+      locale,
+    ],
   );
 
   useEffect(() => {

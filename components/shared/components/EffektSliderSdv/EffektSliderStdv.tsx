@@ -28,7 +28,7 @@ export const EffektSliderStdv: React.FC<{
     if (graphRef.current) {
       drawGraph(graphRef.current, min, max, value);
     }
-  }, [graphRef, value]);
+  }, [min, max, value]);
 
   /** Position of middle handle */
   const scaledValue = Math.min((value.mean - min) / (max - min), 1);
@@ -45,18 +45,14 @@ export const EffektSliderStdv: React.FC<{
     }
   };
 
-  useEffect(() => {
-    debouncedSizingUpdate();
-  }, [sliderRef]);
-
   const debouncedSizingUpdate = useDebouncedCallback(() => updateSizing(), 100, {
     maxWait: 100,
   });
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", debouncedSizingUpdate);
-    }
-  }, []);
+    debouncedSizingUpdate();
+    window.addEventListener("resize", debouncedSizingUpdate);
+    return () => window.removeEventListener("resize", debouncedSizingUpdate);
+  }, [debouncedSizingUpdate]);
 
   return (
     <div

@@ -142,10 +142,13 @@ export const CumulativeDonations: React.FC<{
   const graphContainerRef = useRef<HTMLDivElement>(null);
   const innerGraphRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const [requiredWidth, setRequiredWidth] = useState<number | null>(null);
   const [chartMode, setChartMode] = useState<ChartMode>("yearly");
   const [barScope, setBarScope] = useState<BarScope>("full");
-  const [yearRange, setYearRange] = useState<{ start: number; end: number } | null>(null);
+  // A year window picked on the rail, tied to the year list it was picked from.
+  const [yearSelection, setYearSelection] = useState<{
+    yearsKey: string;
+    range: { start: number; end: number };
+  } | null>(null);
   const isMobileLayout = useIsMobile();
 
   const resizeGraph = useCallback(() => {
@@ -204,23 +207,16 @@ export const CumulativeDonations: React.FC<{
     [buildDefaultRange, defaultYearCount],
   );
 
-  // When donation years first arrive (or change), seed the selection before paint.
+  // Until the user picks a window (or when donation years change), use the mode's default.
   const availableYearsKey = availableYears.join(",");
-  useLayoutEffect(() => {
-    setYearRange(buildDefaultRange(defaultYearCount));
-    // chartMode changes are handled synchronously in selectChartMode to avoid a flash.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [availableYearsKey]);
+  const yearRange =
+    yearSelection?.yearsKey === availableYearsKey ? yearSelection.range : defaultRange;
 
-  const selectChartMode = useCallback(
-    (mode: ChartMode) => {
-      const count = mode === "cumulative" ? CUMULATIVE_DEFAULT_YEARS : availableYears.length;
-      // Batch with mode change so the first paint already uses the mode's default window.
-      setChartMode(mode);
-      setYearRange(buildDefaultRange(count));
-    },
-    [availableYears.length, buildDefaultRange],
-  );
+  const selectChartMode = useCallback((mode: ChartMode) => {
+    // Switching mode resets to that mode's default window in the same render, avoiding a flash.
+    setChartMode(mode);
+    setYearSelection(null);
+  }, []);
 
   // Mobile: bars always show the full history (swipe); cumulative is a fixed last-N window.
   const effectiveRange = useMemo(() => {
@@ -256,12 +252,15 @@ export const CumulativeDonations: React.FC<{
         endIndex = swap;
       }
 
-      setYearRange({
-        start: availableYears[startIndex],
-        end: availableYears[endIndex],
+      setYearSelection({
+        yearsKey: availableYearsKey,
+        range: {
+          start: availableYears[startIndex],
+          end: availableYears[endIndex],
+        },
       });
     },
-    [availableYears],
+    [availableYears, availableYearsKey],
   );
 
   const visibleCumulativeDonations = useMemo(
@@ -298,20 +297,17 @@ export const CumulativeDonations: React.FC<{
     textConfig,
   ]);
 
+  // Same as Results Output bars: give each year enough width, scroll when it won't fit.
+  // Only measured once the container has a size, so this never runs on the server.
+  const hasSize = size.width > 0 && size.height > 0;
+  const yearsRequiredWidth =
+    hasSize && chartMode === "yearly" ? visibleYearlyTotals.length * getRemInPixels() * 3 : 0;
+  const requiredWidth = yearsRequiredWidth > size.width ? yearsRequiredWidth : null;
+
   const drawGraph = useCallback(() => {
-    if (!innerGraphRef.current || size.width === 0 || size.height === 0) return;
+    if (!innerGraphRef.current || !hasSize) return;
 
-    // Same as Results Output bars: give each year enough width, scroll when it won't fit.
-    const requiredWidthPerYear = getRemInPixels() * 3;
-    const yearsRequiredWidth = visibleYearlyTotals.length * requiredWidthPerYear;
-    const plotWidth =
-      chartMode === "yearly" ? Math.max(size.width, yearsRequiredWidth) : size.width;
-
-    if (chartMode === "yearly" && yearsRequiredWidth > size.width) {
-      setRequiredWidth(yearsRequiredWidth);
-    } else {
-      setRequiredWidth(null);
-    }
+    const plotWidth = requiredWidth ?? size.width;
 
     const plot =
       chartMode === "cumulative"
@@ -332,6 +328,8 @@ export const CumulativeDonations: React.FC<{
 
     innerGraphRef.current.replaceChildren(plot);
   }, [
+    hasSize,
+    requiredWidth,
     chartMode,
     barScope,
     visibleCumulativeDonations,
@@ -465,6 +463,56 @@ export const CumulativeDonations: React.FC<{
 };
 
 type HandleSide = "start" | "end";
+type RailRange = { start: number; end: number };
+
+const getRailGap = (rail: HTMLElement | null) => {
+  if (!rail) return 0;
+  return Number.parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 0;
+};
+
+/** Local X of the gap before `yearIndex` (or after last year when yearIndex === years.length). */
+const getGapOffsetLeft = (
+  rail: HTMLElement | null,
+  yearEls: Map<number, HTMLButtonElement>,
+  years: number[],
+  yearIndex: number,
+) => {
+  const gap = getRailGap(rail);
+  if (yearIndex <= 0) {
+    const first = yearEls.get(years[0]);
+    // Sit in the leading gap — may be slightly outside the content column.
+    if (!first) return -gap / 2;
+    return first.offsetLeft - gap / 2;
+  }
+  if (yearIndex >= years.length) {
+    const last = yearEls.get(years[years.length - 1]);
+    if (!last) return 0;
+    return last.offsetLeft + last.offsetWidth + gap / 2;
+  }
+  const left = yearEls.get(years[yearIndex - 1]);
+  const right = yearEls.get(years[yearIndex]);
+  if (!left || !right) return 0;
+  return (left.offsetLeft + left.offsetWidth + right.offsetLeft) / 2;
+};
+
+/** Gap offsets around the selected years, or null when the selection isn't in `years`. */
+const measureRailRange = (
+  rail: HTMLElement | null,
+  yearEls: Map<number, HTMLButtonElement>,
+  years: number[],
+  startIndex: number,
+  endIndex: number,
+): RailRange | null => {
+  if (startIndex < 0 || endIndex < 0) return null;
+  return {
+    start: getGapOffsetLeft(rail, yearEls, years, startIndex),
+    end: getGapOffsetLeft(rail, yearEls, years, endIndex + 1),
+  };
+};
+
+/** State updater that keeps the previous object when nothing moved, skipping a re-render. */
+const keepIfUnchanged = (next: RailRange) => (prev: RailRange) =>
+  prev.start === next.start && prev.end === next.end ? prev : next;
 
 const YearRail: React.FC<{
   years: number[];
@@ -478,7 +526,7 @@ const YearRail: React.FC<{
   const draggingSideRef = useRef<HandleSide | null>(null);
   // Gap offsets from the rail's left edge. Using start/end (not width) so only the
   // moving edge transitions — animating translateX+width makes the far edge drift.
-  const [range, setRange] = useState({ start: 0, end: 0 });
+  const [range, setRange] = useState<RailRange>({ start: 0, end: 0 });
   const [draggingSide, setDraggingSide] = useState<HandleSide | null>(null);
 
   const startIndex = years.indexOf(startYear);
@@ -486,39 +534,10 @@ const YearRail: React.FC<{
 
   const getYearEl = useCallback((year: number) => yearRefs.current.get(year) ?? null, []);
 
-  const getRailGap = useCallback(() => {
-    const rail = railRef.current;
-    if (!rail) return 0;
-    return Number.parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 0;
-  }, []);
-
-  /** Local X of the gap before `yearIndex` (or after last year when yearIndex === years.length). */
-  const getGapOffsetLeft = useCallback(
-    (yearIndex: number) => {
-      const gap = getRailGap();
-      if (yearIndex <= 0) {
-        const first = getYearEl(years[0]);
-        // Sit in the leading gap — may be slightly outside the content column.
-        if (!first) return -gap / 2;
-        return first.offsetLeft - gap / 2;
-      }
-      if (yearIndex >= years.length) {
-        const last = getYearEl(years[years.length - 1]);
-        if (!last) return 0;
-        return last.offsetLeft + last.offsetWidth + gap / 2;
-      }
-      const left = getYearEl(years[yearIndex - 1]);
-      const right = getYearEl(years[yearIndex]);
-      if (!left || !right) return 0;
-      return (left.offsetLeft + left.offsetWidth + right.offsetLeft) / 2;
-    },
-    [years, getYearEl, getRailGap],
-  );
-
   /** Viewport X of the same gap — used for pointer snapping while dragging. */
   const getGapClientX = useCallback(
     (yearIndex: number) => {
-      const gap = getRailGap();
+      const gap = getRailGap(railRef.current);
       if (yearIndex <= 0) {
         const first = getYearEl(years[0]);
         if (!first) return 0;
@@ -536,20 +555,21 @@ const YearRail: React.FC<{
       const rightRect = right.getBoundingClientRect();
       return (leftRect.right + rightRect.left) / 2;
     },
-    [years, getYearEl, getRailGap],
+    [years, getYearEl],
   );
 
   const setRangeToIndices = useCallback(
     (nextStartIndex: number, nextEndIndex: number) => {
-      if (nextStartIndex < 0 || nextEndIndex < 0) return;
-      const start = getGapOffsetLeft(nextStartIndex);
-      const end = getGapOffsetLeft(nextEndIndex + 1);
-      setRange((prev) => {
-        if (prev.start === start && prev.end === end) return prev;
-        return { start, end };
-      });
+      const next = measureRailRange(
+        railRef.current,
+        yearRefs.current,
+        years,
+        nextStartIndex,
+        nextEndIndex,
+      );
+      if (next) setRange(keepIfUnchanged(next));
     },
-    [getGapOffsetLeft],
+    [years],
   );
 
   const measureRange = useCallback(() => {
@@ -560,7 +580,8 @@ const YearRail: React.FC<{
 
   // Initial placement before paint (and when the year list itself changes).
   useLayoutEffect(() => {
-    measureRange();
+    const next = measureRailRange(railRef.current, yearRefs.current, years, startIndex, endIndex);
+    if (next) setRange(keepIfUnchanged(next));
     // Do not depend on selection — updating `left` before paint kills CSS transitions.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearsKey]);
@@ -568,8 +589,9 @@ const YearRail: React.FC<{
   // When selection changes without an optimistic range update (e.g. year click),
   // move handles after paint so the transition has a "from" frame.
   useEffect(() => {
-    measureRange();
-  }, [startIndex, endIndex, measureRange]);
+    const next = measureRailRange(railRef.current, yearRefs.current, years, startIndex, endIndex);
+    if (next) setRange(keepIfUnchanged(next));
+  }, [years, startIndex, endIndex]);
 
   useEffect(() => {
     const rail = railRef.current;
@@ -631,15 +653,14 @@ const YearRail: React.FC<{
     ],
   );
 
-  const onHandlePointerDown =
-    (side: HandleSide) => (event: ReactPointerEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      event.stopPropagation();
-      event.currentTarget.setPointerCapture(event.pointerId);
-      draggingSideRef.current = side;
-      setDraggingSide(side);
-      snapHandleToNearestGap(side, event.clientX);
-    };
+  const onHandlePointerDown = (side: HandleSide, event: ReactPointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    draggingSideRef.current = side;
+    setDraggingSide(side);
+    snapHandleToNearestGap(side, event.clientX);
+  };
 
   const onHandlePointerMove = (event: ReactPointerEvent<HTMLButtonElement>) => {
     const side = draggingSideRef.current;
@@ -742,7 +763,7 @@ const YearRail: React.FC<{
         aria-valuenow={startYear}
         aria-valuetext={String(startYear)}
         title="Dra startår"
-        onPointerDown={onHandlePointerDown("start")}
+        onPointerDown={(event) => onHandlePointerDown("start", event)}
         onPointerMove={onHandlePointerMove}
         onPointerUp={onHandlePointerUp}
         onPointerCancel={onHandlePointerUp}
@@ -781,7 +802,7 @@ const YearRail: React.FC<{
         aria-valuenow={endYear}
         aria-valuetext={String(endYear)}
         title="Dra sluttår"
-        onPointerDown={onHandlePointerDown("end")}
+        onPointerDown={(event) => onHandlePointerDown("end", event)}
         onPointerMove={onHandlePointerMove}
         onPointerUp={onHandlePointerUp}
         onPointerCancel={onHandlePointerUp}

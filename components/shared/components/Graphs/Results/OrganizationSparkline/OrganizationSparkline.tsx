@@ -20,7 +20,6 @@ export const OrganizationSparkline: React.FC<{
   const graphRef = useRef<HTMLDivElement>(null);
   const innerGraph = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const [requiredWidth, setRequiredWidth] = useState<null | number>(null);
   const [startYearIndex, setStartYearIndex] = useState(0);
   const isMobile = useIsMobile();
 
@@ -35,13 +34,10 @@ export const OrganizationSparkline: React.FC<{
   useEffect(() => {
     if (graphRef.current) {
       setSize({ width: graphRef.current.clientWidth, height: graphRef.current.clientHeight });
-      window.addEventListener("resize", () => {
-        if (graphRef.current) {
-          debouncedResizeGraph();
-        }
-      });
     }
-  }, [graphRef]);
+    window.addEventListener("resize", debouncedResizeGraph);
+    return () => window.removeEventListener("resize", debouncedResizeGraph);
+  }, [debouncedResizeGraph]);
 
   const currentYear = useMemo(() => new Date().getFullYear(), []);
 
@@ -50,7 +46,7 @@ export const OrganizationSparkline: React.FC<{
       period: new Date(startYear + i, 0, 1),
       y: 0,
     }));
-  }, [currentYear]);
+  }, [currentYear, startYear]);
 
   // Calculate visible years for desktop
   const yearsPerPage = useMemo(() => {
@@ -59,12 +55,15 @@ export const OrganizationSparkline: React.FC<{
     return Math.floor(size.width / requiredWidthPerYear);
   }, [isMobile, size.width, allYears.length]);
 
-  // Set initial view to most recent years and handle resize cases
-  useEffect(() => {
+  // Set initial view to most recent years and handle resize cases: whenever the paging
+  // changes, jump to the most recent years if the view no longer reaches them.
+  const [prevPaging, setPrevPaging] = useState({ yearsPerPage, yearCount: allYears.length });
+  if (prevPaging.yearsPerPage !== yearsPerPage || prevPaging.yearCount !== allYears.length) {
+    setPrevPaging({ yearsPerPage, yearCount: allYears.length });
     if (startYearIndex + yearsPerPage < allYears.length) {
       setStartYearIndex(Math.max(0, allYears.length - yearsPerPage));
     }
-  }, [yearsPerPage, allYears.length]);
+  }
 
   const visibleYears = useMemo(() => {
     if (isMobile) return allYears;
@@ -82,6 +81,12 @@ export const OrganizationSparkline: React.FC<{
     setStartYearIndex((prev) => Math.min(prev + 1, allYears.length - yearsPerPage));
   }, [allYears.length, yearsPerPage]);
 
+  // On mobile all years are shown; give each enough width and scroll when they won't fit.
+  // Only measured once the container has a size, so this never runs on the server.
+  const yearsRequiredWidth =
+    isMobile && size.width > 0 ? allYears.length * getRemInPixels() * 3 : 0;
+  const requiredWidth = yearsRequiredWidth > size.width ? yearsRequiredWidth : null;
+
   const drawGraph = useCallback(
     (data: TransformedMonthlyDonationsPerOutput) => {
       if (graphRef.current && innerGraph.current) {
@@ -93,15 +98,6 @@ export const OrganizationSparkline: React.FC<{
         if (years.length > 0) {
           const lastYear = years[years.length - 1].period.getFullYear();
           thresholds.push(new Date(lastYear + 1, 0, 1));
-        }
-
-        const requiredWidthPerYear = getRemInPixels() * 3;
-        const requiredWidth = years.length * requiredWidthPerYear;
-
-        if (isMobile && requiredWidth > size.width) {
-          setRequiredWidth(requiredWidth);
-        } else {
-          setRequiredWidth(null);
         }
 
         // Filter data to only include data for visible years
@@ -116,7 +112,7 @@ export const OrganizationSparkline: React.FC<{
           : data;
 
         let plotConfig: Plot.PlotOptions = {
-          width: !isMobile ? size.width : requiredWidth > size.width ? requiredWidth : size.width,
+          width: requiredWidth ?? size.width,
           height: size.height,
           color: {
             domain: ["direct", "smartDistribution"],
@@ -268,8 +264,8 @@ export const OrganizationSparkline: React.FC<{
       allYears,
       isMobile,
       currentYear,
-      startYearIndex,
-      yearsPerPage,
+      requiredWidth,
+      locale,
     ],
   );
 
@@ -380,7 +376,7 @@ export const OrganizationSparklineLegend: React.FC<{
       legendRef.current.innerHTML = "";
       legendRef.current.appendChild(legend);
     }
-  }, [legendRef]);
+  }, [textConfig?.directDonationsText, textConfig?.smartDistributionText]);
 
   return (
     <div className={styles.legendWrapper}>
