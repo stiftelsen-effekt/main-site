@@ -1,20 +1,15 @@
 import { createClient, SanityClient } from "@sanity/client";
-import { projectConfig } from "./config";
+import { getClientConfig } from "./config";
+
+// Server-only: client bundles get ./sanity.client.browser.ts instead, through the
+// "browser" field in package.json, so @sanity/client stays out of the JS that
+// ordinary visitors load. The live preview client is created in PreviewProvider.
 
 const cachedFetch: Map<string, any> = new Map();
 const ACTIVATE_CACHE = process.env.CI === "1";
 
 export function getClient(previewToken?: string): SanityClient {
-  const client = createClient({
-    ...projectConfig,
-    useCdn: !previewToken,
-    perspective: previewToken ? "previewDrafts" : "published",
-    stega: {
-      enabled: previewToken ? true : false,
-      studioUrl: "http://localhost:3333",
-    },
-    token: previewToken,
-  });
+  const client = createClient(getClientConfig(previewToken));
 
   // Wrap the fetch method to add caching functionality
   const originalFetch = client.fetch.bind(client);

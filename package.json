@@ -1,6 +1,9 @@
 {
   "name": "main-site",
   "private": true,
+  "browser": {
+    "./lib/sanity.client.ts": "./lib/sanity.client.browser.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "prebuild": "echo 'Building Sanity to public/studio' && npm i --prefix studio && npm run build --prefix studio -- ../public/studio -y && echo 'Done'",

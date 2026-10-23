@@ -1,7 +1,7 @@
 import React from "react";
 import { SanityImage } from "sanity-image";
 import type { SanityAsset, SanityImageObject } from "@sanity/image-url";
-import { getClient } from "../../lib/sanity.client";
+import { projectConfig } from "../../lib/config";
 
 export const ResponsiveImage: React.FC<{
   image: SanityImageObject;
@@ -26,10 +26,7 @@ export const ResponsiveImage: React.FC<{
     return null;
   }
 
-  // Get the project ID and dataset from the Sanity client
-  const sanityClient = getClient();
-  const projectId = sanityClient.config().projectId;
-  const dataset = sanityClient.config().dataset;
+  const { projectId, dataset } = projectConfig;
 
   // Extract LQIP for preview
   const preview = (image as any).asset?.metadata?.lqip;

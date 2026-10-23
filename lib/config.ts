@@ -12,3 +12,16 @@ export const projectConfig: ClientConfig = {
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
   apiVersion: "2024-05-05",
 };
+
+export function getClientConfig(previewToken?: string): ClientConfig {
+  return {
+    ...projectConfig,
+    useCdn: !previewToken,
+    perspective: previewToken ? "previewDrafts" : "published",
+    stega: {
+      enabled: previewToken ? true : false,
+      studioUrl: "http://localhost:3333",
+    },
+    token: previewToken,
+  };
+}
