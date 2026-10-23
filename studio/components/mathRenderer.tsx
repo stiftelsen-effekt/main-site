@@ -1,30 +1,10 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { Eye } from "react-feather";
 import katex from "katex";
+import "katex/dist/katex.min.css";
 
 export const MathRenderer = (props) => {
   const [showPreview, setShowPreview] = useState(false);
-
-  useEffect(() => {
-    /** Check if  css is already loaded */
-    if (
-      document.querySelector(
-        "link[href='https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css']",
-      )
-    ) {
-      return;
-    }
-
-    const link = document.createElement("link");
-    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
 
   if (!props || !props.children) {
     return null;

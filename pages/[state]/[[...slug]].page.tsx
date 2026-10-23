@@ -13,6 +13,7 @@ import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "@sanity/preview-kit";
 import { ConsentState } from "../../middleware.page";
 import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
+import { renderLatexInData } from "../../components/main/blocks/Paragraph/renderLatex";
 
 enum PageType {
   GenericPage = "generic",
@@ -189,6 +190,19 @@ const inferPageTypeFromPath = async (path: string[]) => {
 };
 
 export const getStaticProps = async (
+  ctx: GetStaticPropsContext<{
+    slug: string[];
+    state: ConsentState;
+  }>,
+) => {
+  const result = await getPageStaticProps(ctx);
+  // Render LaTeX on the server, so neither katex nor stale Studio-rendered HTML reaches the client
+  return (
+    result && "props" in result ? { ...result, props: renderLatexInData(result.props) } : result
+  ) as typeof result;
+};
+
+const getPageStaticProps = async (
   ctx: GetStaticPropsContext<{
     slug: string[];
     state: ConsentState;

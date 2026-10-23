@@ -1,32 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
 import { Box } from "@sanity/ui";
 import { PreviewProps } from "sanity";
 import { Latex } from "../sanity.types";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
 export const KatexPreview = (props: PreviewProps & Latex) => {
-  const { renderedHtml } = props;
+  const { latex } = props;
 
-  useEffect(() => {
-    /** Check if  css is already loaded */
-    if (
-      document.querySelector(
-        "link[href='https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css']",
-      )
-    ) {
-      return;
+  // Render from the source, since stored renderedHtml from older KaTeX versions
+  // uses class names that the current CSS no longer styles
+  const html = useMemo(() => {
+    if (!latex) return null;
+    try {
+      return katex.renderToString(latex, { throwOnError: false });
+    } catch (e) {
+      return null;
     }
+  }, [latex]);
 
-    const link = document.createElement("link");
-    link.href = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  if (!renderedHtml) return <span>Invalid LaTeX expression</span>;
-  return <Box padding={1} dangerouslySetInnerHTML={{ __html: renderedHtml }} />;
+  if (!html) return <span>Invalid LaTeX expression</span>;
+  return <Box padding={1} dangerouslySetInnerHTML={{ __html: html }} />;
 };
