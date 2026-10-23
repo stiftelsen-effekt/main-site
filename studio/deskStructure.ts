@@ -16,8 +16,9 @@ import {
   Tool,
   User,
 } from "react-feather";
+import { StructureResolver } from "sanity/structure";
 
-export const deskStructure = (S) =>
+export const deskStructure: StructureResolver = (S) =>
   S.list()
     .title("Site")
     .items([

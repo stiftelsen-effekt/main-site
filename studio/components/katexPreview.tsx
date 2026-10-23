@@ -5,7 +5,7 @@ import { Latex } from "../sanity.types";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 
-export const KatexPreview = (props: PreviewProps & Latex) => {
+export const KatexPreview = (props: PreviewProps & Partial<Latex>) => {
   const { latex } = props;
 
   // Render from the source, since stored renderedHtml from older KaTeX versions

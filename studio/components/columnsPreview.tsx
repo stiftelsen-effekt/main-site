@@ -5,7 +5,7 @@ import { PreviewProps } from "sanity";
 import { Columns } from "../sanity.types";
 // These are react components
 
-export const ColumnsPreview = (props: PreviewProps & Columns) => {
+export const ColumnsPreview = (props: PreviewProps & Partial<Columns>) => {
   const { columns } = props;
 
   if (!columns)

@@ -1,4 +1,4 @@
-import { defineType, defineField, SanityDocument } from "sanity";
+import { defineType, defineField } from "sanity";
 import { FundraiserInput } from "../../components/fundraiserInput";
 
 export default defineType({
@@ -218,7 +218,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       options: {
-        source: (doc: SanityDocument & { title: string }) => doc.title,
+        source: "title",
       },
       validation: (Rule) => Rule.required(),
     }),

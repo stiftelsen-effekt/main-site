@@ -1,10 +1,14 @@
 import { Box, Flex, Grid, Stack, Text } from "@sanity/ui";
 import React from "react";
 import { List } from "react-feather";
-import { Organization, Organizationslist } from "../sanity.types";
+import { PreviewProps } from "sanity";
+import { Organization } from "../sanity.types";
+
+/** Shape produced by the organizationslist schema's preview.prepare */
+export type OrganizationsListPreviewItem = Partial<Pick<Organization, "_id" | "name" | "oneliner">>;
 
 export const OrganizationsListPreview = (
-  props: Omit<Organizationslist, "organizations"> & { organizations: Organization[] },
+  props: PreviewProps & { organizations?: OrganizationsListPreviewItem[] },
 ) => {
   const { organizations } = props;
 

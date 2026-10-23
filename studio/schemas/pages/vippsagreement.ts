@@ -27,7 +27,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "vippsagreement",
+      initialValue: { current: "vippsagreement" },
       validation: (Rule) => Rule.required(),
     }),
   ],

@@ -5,15 +5,17 @@ import { Card, Flex, Stack, Text } from "@sanity/ui";
 import { Clock, Link, Eye } from "react-feather";
 import { fetchPageViews } from "./pageviews";
 
-export const GenericPagePreview = (props: PreviewProps & { title: string; slug: string }) => {
-  const { title, slug } = props;
+type GenericPagePreviewProps = PreviewProps & { title?: string; slug?: string };
+
+export const GenericPagePreview = (props: PreviewProps) => {
+  const { title, slug } = props as GenericPagePreviewProps;
 
   const [loading, setLoading] = useState(true);
   const [pageViews, setPageViews] = useState<null | number>(null);
 
   useEffect(() => {
     setLoading(true);
-    fetchPageViews([slug])
+    fetchPageViews([slug ?? ""])
       .then((views) => {
         setPageViews(views);
       })
@@ -23,7 +25,7 @@ export const GenericPagePreview = (props: PreviewProps & { title: string; slug: 
       .finally(() => {
         setLoading(false);
       });
-  }, [props.slug, setLoading]);
+  }, [slug, setLoading]);
 
   return (
     <Flex padding={2} align="center">

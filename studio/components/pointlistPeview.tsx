@@ -5,7 +5,7 @@ import { PreviewProps } from "sanity";
 import { Pointlist } from "../sanity.types";
 // These are react components
 
-export const PointlistPreview = (props: PreviewProps & { points: Pointlist["points"] }) => {
+export const PointlistPreview = (props: PreviewProps & { points?: Pointlist["points"] }) => {
   if (!props.points)
     return (
       <Text>

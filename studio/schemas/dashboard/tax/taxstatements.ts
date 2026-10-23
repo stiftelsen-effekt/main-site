@@ -23,7 +23,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "annual-statements",
+      initialValue: { current: "annual-statements" },
       description: "Relative to tax page",
       validation: (Rule) => Rule.required().custom(isShallowSlug),
     }),

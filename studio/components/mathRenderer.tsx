@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { Eye } from "react-feather";
 import katex from "katex";
+import { BlockDecoratorProps } from "sanity";
 import "katex/dist/katex.min.css";
 
-export const MathRenderer = (props) => {
+export const MathRenderer = (props: BlockDecoratorProps) => {
   const [showPreview, setShowPreview] = useState(false);
 
   if (!props || !props.children) {
@@ -17,7 +18,7 @@ export const MathRenderer = (props) => {
     try {
       return katex.renderToString(text, { throwOnError: false });
     } catch (e) {
-      return `<span class="katex-error">${e.message}</span>`;
+      return `<span class="katex-error">${(e as Error).message}</span>`;
     }
   }, [text]);
 

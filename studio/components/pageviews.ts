@@ -1,5 +1,5 @@
 const cacheWithLocalStorage = {
-  set: (key, data, expireInMinutes = 60) => {
+  set: (key: string, data: unknown, expireInMinutes = 60) => {
     localStorage.setItem(
       key,
       JSON.stringify({
@@ -10,7 +10,7 @@ const cacheWithLocalStorage = {
     );
   },
 
-  get: (key) => {
+  get: (key: string) => {
     const item = localStorage.getItem(key);
     if (!item) return null;
 
@@ -23,10 +23,13 @@ const cacheWithLocalStorage = {
     return data;
   },
 
-  createKey: (url, slugs) => `cache:${url}:${slugs.sort().join(",")}`,
+  createKey: (url: string, slugs: string[]) => `cache:${url}:${slugs.sort().join(",")}`,
 };
 
-async function fetchWithCache(url, { slugs = [], expireInMinutes = 60 } = {}) {
+async function fetchWithCache(
+  url: string,
+  { slugs = [], expireInMinutes = 60 }: { slugs?: string[]; expireInMinutes?: number } = {},
+) {
   const cache = await caches.open("plausible-api-cache");
   const cacheKey = cacheWithLocalStorage.createKey(url, slugs);
 
@@ -60,20 +63,20 @@ async function fetchWithCache(url, { slugs = [], expireInMinutes = 60 } = {}) {
   }
 }
 
-function createCacheKey(slugs) {
+function createCacheKey(slugs: string[]) {
   return `views-${slugs.sort().join(",")}`;
 }
 
-async function getCachedData(cache, key) {
+async function getCachedData(cache: Cache, key: string) {
   const response = await cache.match(key);
   return response ? response.json() : null;
 }
 
-function isExpired(timestamp, expireInMinutes) {
+function isExpired(timestamp: number, expireInMinutes: number) {
   return Date.now() - timestamp > expireInMinutes * 60 * 1000;
 }
 
-function getRequestOptions(slugs: string[], site: string, token: string) {
+function getRequestOptions(slugs: string[], site: string | undefined, token: string | undefined) {
   return {
     method: "POST",
     headers: {

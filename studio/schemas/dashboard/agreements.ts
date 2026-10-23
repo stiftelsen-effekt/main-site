@@ -35,7 +35,6 @@ export default defineType({
           name: "single_pending_agreement_text",
           title: "Single Pending Agreement Text",
           type: "string",
-          rows: 3,
           validation: (Rule) => Rule.required(),
         }),
         defineField({
@@ -44,7 +43,6 @@ export default defineType({
           type: "string",
           description:
             "Use {{count}} to insert the number of pending agreements, e.g. 'You have {{count}} pending agreements'",
-          rows: 3,
           validation: (Rule) => Rule.required(),
         }),
       ],
@@ -64,7 +62,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "agreements",
+      initialValue: { current: "agreements" },
       description: "Relative to dashboard",
       validation: (Rule) => Rule.required().custom(isShallowSlug),
     }),

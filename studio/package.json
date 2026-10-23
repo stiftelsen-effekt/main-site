@@ -9,6 +9,7 @@
   "scripts": {
     "start": "sanity dev",
     "build": "sanity build",
+    "typecheck": "tsc --noEmit",
     "installtable": "sanity install table",
     "edit": "export EDITOR=\"code -w\" && node scripts/editDocument.js",
     "list:pages": "node scripts/listPages.js",
@@ -34,5 +35,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/stiftelsen-effekt/main-site.git"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }

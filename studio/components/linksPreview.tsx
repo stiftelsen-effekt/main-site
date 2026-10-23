@@ -6,7 +6,8 @@ import { Link, Links, Navitem } from "../sanity.types";
 // These are react components
 
 export const LinksPreview = (
-  props: PreviewProps & Omit<Links, "links"> & { links: ((Link | Navitem) & { _key: string })[] },
+  props: PreviewProps &
+    Partial<Omit<Links, "links" | "title">> & { links?: ((Link | Navitem) & { _key: string })[] },
 ) => {
   const { links } = props;
 

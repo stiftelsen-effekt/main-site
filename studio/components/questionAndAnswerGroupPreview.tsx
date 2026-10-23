@@ -4,8 +4,10 @@ import { PreviewProps, useFormValue } from "sanity";
 import { Questionandanswergroup } from "../sanity.types";
 // These are react components
 
-export const QuestionAndAnswerGroupPreview = (props: PreviewProps & Questionandanswergroup) => {
-  const { title, answers } = props;
+type QuestionAndAnswerGroupPreviewProps = PreviewProps & Partial<Questionandanswergroup>;
+
+export const QuestionAndAnswerGroupPreview = (props: PreviewProps) => {
+  const { title, answers } = props as QuestionAndAnswerGroupPreviewProps;
 
   if (!answers || answers.length === 0) {
     return (

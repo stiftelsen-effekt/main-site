@@ -56,7 +56,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "donations",
+      initialValue: { current: "donations" },
       description: "Relative to dashboard",
       validation: (Rule) => Rule.required().custom(isShallowSlug),
     }),

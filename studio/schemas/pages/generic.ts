@@ -34,7 +34,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       options: {
-        source: (doc: { header: { title: string } }, options: any) => doc.header.title,
+        source: "header.title",
       },
       validation: (Rule) => Rule.required(),
     }),

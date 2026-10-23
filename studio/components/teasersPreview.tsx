@@ -5,7 +5,7 @@ import { PreviewProps } from "sanity";
 import { Teasers, Teasersitem } from "../sanity.types";
 // These are react components
 
-export const TeasersPreview = (props: PreviewProps & { teasers: Teasers["teasers"] }) => {
+export const TeasersPreview = (props: PreviewProps & { teasers?: Teasers["teasers"] }) => {
   if (!props.teasers)
     return (
       <Text>
@@ -62,7 +62,7 @@ const getSubtitle = (teaseritem: Teasersitem) => {
     // PortableText, string together the text
     const text = teaseritem.paragraph.reduce((acc, block) => {
       if (block._type === "block") {
-        return acc + block.children.map((child) => child.text).join("");
+        return acc + (block.children ?? []).map((child) => child.text).join("");
       }
       return acc;
     }, "");

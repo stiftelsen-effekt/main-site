@@ -17,7 +17,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "vipps-anonymous",
+      initialValue: { current: "vipps-anonymous" },
       description: "Relative to dashboard",
       validation: (Rule) =>
         Rule.required()

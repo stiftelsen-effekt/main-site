@@ -1,5 +1,4 @@
 import { Bookmark } from "react-feather";
-import { CitationRenderer } from "../../components/citationRenderer";
 import { defineType, defineField } from "sanity";
 
 export default defineType({
@@ -7,7 +6,6 @@ export default defineType({
   type: "document",
   title: "citation",
   icon: Bookmark,
-  component: CitationRenderer,
   fields: [
     defineField({
       type: "string",
@@ -137,9 +135,6 @@ export default defineType({
       hidden: ({ parent }) => typeof parent.type === "undefined" || parent.type !== "note",
     }),
   ],
-  options: {
-    modal: "dialog",
-  },
   preview: {
     select: {
       title: "title",

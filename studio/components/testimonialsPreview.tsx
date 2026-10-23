@@ -5,7 +5,8 @@ import { PreviewProps } from "sanity";
 import { Testimonial, Testimonials } from "../sanity.types";
 
 export const TestimonialsPreview = (
-  props: PreviewProps & Omit<Testimonials, "testimonials"> & { testimonials: Testimonial[] },
+  props: PreviewProps &
+    Partial<Omit<Testimonials, "testimonials">> & { testimonials?: Testimonial[] },
 ) => {
   const { testimonials } = props;
 

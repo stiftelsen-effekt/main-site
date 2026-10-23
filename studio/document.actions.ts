@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DocumentActionComponent, DocumentActionProps, DocumentActionsContext } from "sanity";
 
-const sensitiveFields = {
+const sensitiveFields: Record<string, string[]> = {
   bank: ["kontonr"],
   autogiro: ["account_number"],
 };
@@ -25,6 +25,10 @@ export const documentActions: (
       const [dialogOpen, setDialogOpen] = useState(false);
       const publishAction = publish(props);
 
+      if (!publishAction) {
+        return null;
+      }
+
       let sensitiveFieldsChanged = false;
       let changedFields: string[] = [];
 
@@ -45,7 +49,7 @@ export const documentActions: (
           if (sensitiveFieldsChanged) {
             setDialogOpen(true);
           } else {
-            publishAction.onHandle();
+            publishAction.onHandle?.();
           }
         },
         dialog: dialogOpen && {
@@ -61,11 +65,11 @@ export const documentActions: (
             const notificationSent = await sendSecurityEmail(
               props,
               changedFields,
-              `${currentUser.name} (${currentUser.email})`,
+              `${currentUser?.name} (${currentUser?.email})`,
             );
 
             if (notificationSent) {
-              publishAction.onHandle();
+              publishAction.onHandle?.();
             } else {
               alert("Failed to send security email");
             }

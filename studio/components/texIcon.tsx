@@ -1,6 +1,6 @@
 import React from "react";
 
-export const TexIcon = (props) => {
+export const TexIcon = () => {
   return (
     <span style={{ width: "1rem", height: "1rem", display: "inline-block", verticalAlign: "sub" }}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">

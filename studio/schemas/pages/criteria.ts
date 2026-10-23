@@ -27,7 +27,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "criteria",
+      initialValue: { current: "criteria" },
       validation: (Rule) => Rule.required(),
     }),
   ],
