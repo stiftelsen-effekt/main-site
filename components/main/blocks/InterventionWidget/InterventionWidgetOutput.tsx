@@ -100,7 +100,7 @@ export const InterventionWidgetOutput: React.FC<{
           console.error(err);
         });
     }
-  }, [interventions]);
+  }, [interventions, currency, configuration.locale, currentDate]);
 
   if (typeof interventions === "undefined" || interventions.length === 0) {
     return <span>No internventions</span>;

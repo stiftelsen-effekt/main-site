@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import styles from "./BlockTablesContent.module.scss";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -38,34 +38,31 @@ export const BlockTablesContent: React.FC<{
     }
   }, 1000);
 
-  const onScroll = useCallback(() => {
-    if (contentsRef.current) {
-      contentsRef.current.removeEventListener("scroll", onScroll);
-      setHasScrolled(true);
-    }
-  }, [contentsRef]);
-
   // Check for scroll on mount
   useEffect(() => {
     debouncedCheckForScroll();
-  }, []);
+  }, [debouncedCheckForScroll]);
 
-  // Check for scroll on resize
+  // Check for scroll on resize, and mark the table as scrolled on the first scroll
   useEffect(() => {
-    if (!contentsRef.current) return;
+    const contentsElement = contentsRef.current;
+    if (!contentsElement) return;
+    const onScroll = () => setHasScrolled(true);
     window.addEventListener("resize", debouncedCheckForScroll);
-    contentsRef.current.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("resize", debouncedCheckForScroll);
-  }, [contentsRef]);
+    contentsElement.addEventListener("scroll", onScroll, { once: true });
+    return () => {
+      window.removeEventListener("resize", debouncedCheckForScroll);
+      contentsElement.removeEventListener("scroll", onScroll);
+    };
+  }, [debouncedCheckForScroll]);
 
   useEffect(() => {
-    if (hasScrolled) {
-      var timeoutId = setTimeout(() => {
-        if (scrollButtonTouchStart === -1) setScrollButtonDisplayed(false);
-      }, 500);
-    }
+    if (!hasScrolled) return;
+    const timeoutId = setTimeout(() => {
+      if (scrollButtonTouchStart === -1) setScrollButtonDisplayed(false);
+    }, 500);
     return () => clearTimeout(timeoutId);
-  }, [hasScrolled]);
+  }, [hasScrolled, scrollButtonTouchStart]);
 
   if (!contents) return null;
 

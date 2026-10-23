@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./DKGavebrevTaxWidget.module.scss";
 import { DKGavebrevTaxBarChart } from "./DKGavebrevTaxBarChart";
 import {
@@ -40,50 +40,16 @@ export const DKGavebrevTaxWidget: React.FC<{
   locale,
 }) => {
   const plausible = usePlausible();
-  const [income, setIncome] = useState(defaultIncome.toString());
-  const [donation, setDonation] = useState(defaultDonation.toString());
-  const [lastValidIncome, setLastValidIncome] = useState(defaultIncome);
-  const [lastValidDonation, setLastValidDonation] = useState(defaultDonation);
+  const [income, setIncome] = useState(() => formatAmountInput(defaultIncome.toString(), locale));
+  const [donation, setDonation] = useState(() =>
+    formatAmountInput(defaultDonation.toString(), locale),
+  );
+  const lastValidIncome = parseAmountInput(income);
+  const lastValidDonation = parseAmountInput(donation);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const isMobile = useIsMobile();
 
   const suggestedPercentages = [0.01, 0.05, 0.1];
-
-  // Handle income input changes with formatting
-  useEffect(() => {
-    if (income === "") {
-      setLastValidIncome(0);
-      return;
-    }
-
-    const incomeNumber = Number(income.replace(/\D/g, ""));
-    if (!isNaN(incomeNumber)) {
-      setLastValidIncome(incomeNumber);
-
-      const formattedIncome = thousandize(incomeNumber, locale);
-      if (formattedIncome !== income) {
-        setIncome(formattedIncome);
-      }
-    }
-  }, [income, locale]);
-
-  // Handle donation input changes with formatting
-  useEffect(() => {
-    if (donation === "") {
-      setLastValidDonation(0);
-      return;
-    }
-
-    const donationNumber = Number(donation.replace(/\D/g, ""));
-    if (!isNaN(donationNumber)) {
-      setLastValidDonation(donationNumber);
-
-      const formattedDonation = thousandize(donationNumber, locale);
-      if (formattedDonation !== donation) {
-        setDonation(formattedDonation);
-      }
-    }
-  }, [donation, locale]);
 
   // Hardcoded calculations per task requirements
   // Maximum deduction: income * 0.92 * 0.15
@@ -133,7 +99,7 @@ export const DKGavebrevTaxWidget: React.FC<{
                 type={"tel"}
                 placeholder="0"
                 onChange={(val) => {
-                  setIncome(val);
+                  setIncome(formatAmountInput(val, locale));
                 }}
                 denomination={"kr"}
                 variant="underlined"
@@ -177,7 +143,7 @@ export const DKGavebrevTaxWidget: React.FC<{
                 type={"tel"}
                 placeholder="0"
                 onChange={(val) => {
-                  setDonation(val);
+                  setDonation(formatAmountInput(val, locale));
                 }}
                 denomination={"kr"}
                 variant="underlined"
@@ -230,3 +196,10 @@ export const DKGavebrevTaxWidget: React.FC<{
     </div>
   );
 };
+
+/** The amount typed into an input, ignoring the thousand separators. An empty input is 0. */
+const parseAmountInput = (value: string): number => Number(value.replace(/\D/g, ""));
+
+/** Formats what the user typed with thousand separators, keeping an empty input empty. */
+const formatAmountInput = (value: string, locale: string): string =>
+  value === "" ? "" : thousandize(parseAmountInput(value), locale);

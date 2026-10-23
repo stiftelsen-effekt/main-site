@@ -1,6 +1,6 @@
 import styles from "./FullVideo.module.scss";
 import type { SanityAsset } from "@sanity/image-url";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Play } from "react-feather";
 
 export const FullVideo: React.FC<{ video: SanityAsset; alt: string }> = ({ video, alt }) => {
@@ -54,17 +54,19 @@ const VideoProgress: React.FC<{ videoPlayerRef: any; playing: boolean }> = ({
   playing,
 }) => {
   const [progress, setProgress] = useState(0);
-  const [currentFrame, setCurrentFrame] = useState(0);
 
+  // Update the progress every frame while playing. When stopped, update it once more, so it
+  // shows where the video stopped (or the start again after the video ended).
   useEffect(() => {
-    if (playing) setCurrentFrame(requestAnimationFrame(updateProgress));
-    else cancelAnimationFrame(currentFrame);
-  }, [playing, setCurrentFrame]);
-
-  const updateProgress = useCallback(() => {
-    setProgress(videoPlayerRef.current?.currentTime / videoPlayerRef.current?.duration);
-    requestAnimationFrame(updateProgress);
-  }, [setProgress, videoPlayerRef]);
+    let frame: number;
+    const updateProgress = () => {
+      const video = videoPlayerRef.current;
+      if (video?.duration) setProgress(video.currentTime / video.duration);
+      if (playing) frame = requestAnimationFrame(updateProgress);
+    };
+    frame = requestAnimationFrame(updateProgress);
+    return () => cancelAnimationFrame(frame);
+  }, [playing, videoPlayerRef]);
 
   return <div className={styles.videoProgressBar} style={{ width: `${progress * 100}%` }}></div>;
 };

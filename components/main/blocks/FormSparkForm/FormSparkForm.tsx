@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 import Head from "next/head";
 import Script from "next/script";
 
@@ -21,34 +21,41 @@ const hasOptions = (field: any): field is { options: Array<{ value: string; labe
   return field.options && Array.isArray(field.options);
 };
 
+// Initial state for the controlled inputs
+const getInitialFormState = (fields: Formsparkform["fields"]): FormState => {
+  const initialState: FormState = {};
+  fields?.forEach((field) => {
+    if (field.field_type === "checkbox") {
+      initialState[field.field_name || ""] = false;
+    } else {
+      initialState[field.field_name || ""] = "";
+    }
+  });
+  return initialState;
+};
+
+// There is no event for URL changes to subscribe to; the URL is read again on every render
+const subscribeToNothing = () => () => {};
+const getPageUrl = () => window.location.href;
+const getServerPageUrl = () => null;
+
 export const FormsparkForm: React.FC<{ formData: Formsparkform }> = ({ formData }) => {
-  const [formState, setFormState] = useState<FormState>({});
+  const [formState, setFormState] = useState<FormState>(() => getInitialFormState(formData.fields));
 
-  // Initialize form state for controlled inputs
-  React.useEffect(() => {
-    const initialState: FormState = {};
-    formData.fields?.forEach((field) => {
-      if (field.field_type === "checkbox") {
-        initialState[field.field_name || ""] = false;
-      } else {
-        initialState[field.field_name || ""] = "";
-      }
-    });
-    setFormState(initialState);
-  }, [formData.fields]);
-
-  const [redirectUrl, setRedirectUrl] = useState<string>();
-  const [submitted, setSubmitted] = useState(false);
+  // Reset the controlled inputs when the fields change
+  const [prevFields, setPrevFields] = useState(formData.fields);
+  if (formData.fields !== prevFields) {
+    setPrevFields(formData.fields);
+    setFormState(getInitialFormState(formData.fields));
+  }
 
   // Formspark shows its own thank-you page unless the form sends _redirect, so send the
   // visitor back to this page and show the success message there.
-  // It runs in an effect because the page URL is only known in the browser.
-  React.useEffect(() => {
-    const formId = formData.form_id;
-    if (!formId) return;
-    setSubmitted(wasSubmitted(window.location.href, formId));
-    setRedirectUrl(redirectUrlFor(window.location.href, formId));
-  }, [formData.form_id]);
+  // The page URL is only known in the browser, so nothing is rendered for it on the server.
+  const pageUrl = useSyncExternalStore(subscribeToNothing, getPageUrl, getServerPageUrl);
+  const formId = formData.form_id;
+  const submitted = !!pageUrl && !!formId && wasSubmitted(pageUrl, formId);
+  const redirectUrl = pageUrl && formId ? redirectUrlFor(pageUrl, formId) : undefined;
 
   const handleInputChange = (fieldName: string, value: string | boolean) => {
     setFormState((prev) => ({

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface BarChartProps {
   value: number;
@@ -58,6 +58,18 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
     return () => resizeObserver.disconnect();
   }, []);
 
+  const currentValue = Math.min(value, maximumThreshold);
+
+  // Measure the label widths whenever their text changes, so the labels can be clamped to the
+  // chart. Measuring happens after commit, as refs must not be read during render.
+  const [maxLabelWidth, setMaxLabelWidth] = useState(0);
+  useLayoutEffect(() => {
+    if (!labelRef.current || !sublabelRef.current) return;
+    const labelWidth = labelRef.current.getBBox().width;
+    const sublabelWidth = sublabelRef.current.getBBox().width;
+    setMaxLabelWidth(Math.max(labelWidth, sublabelWidth));
+  }, [dimensions.width, currentValue, labels?.currentValueLabel, locale]);
+
   const padding: Padding = { left: 0, right: 10, top: 50, bottom: 0 };
   const chartWidth = dimensions.width - padding.left - padding.right;
   const barHeight = 40;
@@ -66,17 +78,11 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
 
   // Calculate label positions with smooth alignment transition
   const getLabelPositions = (): LabelPosition => {
-    if (!labelRef.current || !sublabelRef.current || !dimensions.width) {
+    if (!dimensions.width) {
       return { translateX: 0, alignmentOffset: 0 };
     }
 
-    const currentValue = Math.min(value, maximumThreshold);
     const basePosition = scale(currentValue);
-
-    // Get widths of both labels
-    const labelWidth = labelRef.current.getBBox().width;
-    const sublabelWidth = sublabelRef.current.getBBox().width;
-    const maxLabelWidth = Math.max(labelWidth, sublabelWidth);
 
     // Calculate if we need to clamp
     const maxPosition = dimensions.width - padding.right;
@@ -98,7 +104,6 @@ export const HorizontalTaxDeductionBarChart: React.FC<BarChartProps> = ({
   };
 
   const labelPosition = getLabelPositions();
-  const currentValue = Math.min(value, maximumThreshold);
 
   return (
     <div

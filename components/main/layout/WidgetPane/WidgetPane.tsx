@@ -30,25 +30,27 @@ export const WidgetPane: React.FC<WidgetPaneProps> = ({ darkMode, ...widgetProps
   // Then reset on render
   // This is to prevent jancky initial page load where the pane flies over the screen
   const [paneStyle, setPaneStyle] = useState<any>({ transition: "none" });
-  const [widgetOpenClass, setWidgetOpenClass] = useState<string | "">("");
-  useEffect(() => setPaneStyle({ display: "block" }), []);
+  const [paneSlidIn, setPaneSlidIn] = useState(false);
 
+  // Show the pane right away when opened, and slide it in once it is displayed.
+  // When closed, slide it out right away, and hide it once it has slid out.
   useEffect(() => {
-    let timeoutId: any;
     if (widgetContext.open) {
-      setPaneStyle({ display: "block" });
-      timeoutId = setTimeout(() => {
-        setWidgetOpenClass(styles.widgetPaneOpen);
+      const timeoutId = setTimeout(() => {
+        setPaneStyle({ display: "block" });
+        setPaneSlidIn(true);
       }, 20);
-    } else {
-      setWidgetOpenClass("");
-      timeoutId = setTimeout(() => {
-        setPaneStyle({ display: "none" });
-      }, 200);
+      return () => clearTimeout(timeoutId);
     }
-
+    const timeoutId = setTimeout(() => {
+      setPaneStyle({ display: "none" });
+      setPaneSlidIn(false);
+    }, 200);
     return () => clearTimeout(timeoutId);
-  }, [widgetContext]);
+  }, [widgetContext.open]);
+
+  const style = widgetContext.open ? { display: "block" } : paneStyle;
+  const widgetOpenClass = widgetContext.open && paneSlidIn ? styles.widgetPaneOpen : "";
 
   const useDarkmode = darkMode || widgetProps.data.result.color_scheme === "light";
 
@@ -56,7 +58,7 @@ export const WidgetPane: React.FC<WidgetPaneProps> = ({ darkMode, ...widgetProps
     <aside
       data-cy="widget-pane"
       className={`${styles.widgetPane} ${widgetOpenClass} ${useDarkmode ? styles.dark : ""}`}
-      style={paneStyle}
+      style={style}
     >
       <div className={styles.widgetPaneHeader}></div>
       <div className={styles.widgetPaneContent}>

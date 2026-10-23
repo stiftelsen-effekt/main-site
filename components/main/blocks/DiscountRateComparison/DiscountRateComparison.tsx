@@ -14,7 +14,7 @@ export const DiscountRateComparison: React.FC<{ min: number; max: number }> = ({
     if (workerRef.current) {
       workerRef.current.postMessage({ min, max, discountRate });
     }
-  }, [discountRate]);
+  }, [discountRate, min, max]);
 
   const drawGraph = useCallback(
     (data: { intervention: string; runningAverage: number }[]) => {
@@ -90,7 +90,7 @@ export const DiscountRateComparison: React.FC<{ min: number; max: number }> = ({
       }
     }
     () => workerRef.current?.terminate();
-  }, [discountRate, workerRef, drawGraph, graphRef]);
+  }, [discountRate, workerRef, drawGraph, graphRef, debouncedStartSimulation]);
 
   return (
     <div className={styles.wrapper}>
