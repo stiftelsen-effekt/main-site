@@ -10,7 +10,7 @@ import {
   DateTextWrapper,
   DateText,
 } from "../../Vipps/VippsDatePicker/VippsDatePicker.style";
-import { getNextChargeDate, isIrregularChargeDay } from "./avtalegirodates";
+import { isIrregularChargeDay } from "./avtalegirodates";
 import { DatePickerInputConfiguration } from "../../../../../../DatePicker/DatePickerInput";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DonationActionTypes } from "../../../../../store/donation/types";
@@ -24,12 +24,10 @@ export const AvtaleGiroDatePicker: React.FC<{ configuration: DatePickerInputConf
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const dueDay = useSelector((state: State) => state.donation.dueDay);
   const [selectedDueDay, setSelectedDueDay] = useState<number>(dueDay);
-  const [nextChargeDate, setNextChargeDate] = useState<Date>();
 
   useEffect(() => {
-    setNextChargeDate(getNextChargeDate(selectedDueDay));
     dispatch(setDueDay(selectedDueDay));
-  }, [selectedDueDay]);
+  }, [selectedDueDay, dispatch]);
 
   return (
     <Wrapper>

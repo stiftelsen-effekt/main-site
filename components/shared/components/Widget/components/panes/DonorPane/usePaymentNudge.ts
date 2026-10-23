@@ -149,7 +149,7 @@ export function usePaymentNudge({
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [activeNudge?.to_method?._id, paymentMethods, selectedPaymentMethodId]);
+  }, [activeNudge?.to_method?._id, paymentMethods, selectedPaymentMethodId, paymentOptionsRef]);
 
   return {
     activeNudge,

@@ -28,7 +28,7 @@ export const AvtaleGiroPane: React.FC<{
     if (chooseChargeDay === 0) {
       dispatch(setDueDay(getEarliestPossibleChargeDate()));
     }
-  }, [chooseChargeDay]);
+  }, [chooseChargeDay, dispatch]);
 
   return (
     <Pane>

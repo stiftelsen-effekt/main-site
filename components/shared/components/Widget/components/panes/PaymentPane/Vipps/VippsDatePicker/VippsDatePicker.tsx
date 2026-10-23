@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setVippsAgreement } from "../../../../../store/donation/actions";
 import { State } from "../../../../../store/state";
@@ -21,11 +21,13 @@ export const VippsDatePicker: React.FC<{ config: DatePickerInputConfiguration }>
   const [selectedChargeDay, setSelectedChargeDay] = useState<number>(
     vippsAgreement.monthlyChargeDay,
   );
-  const [nextChargeDate, setNextChargeDate] = useState<Date>();
   const [initialCharge, setinitialCharge] = useState<boolean>(true);
+  const nextChargeDate = useMemo(
+    () => getNextChargeDate(selectedChargeDay, initialCharge),
+    [selectedChargeDay, initialCharge],
+  );
 
   useEffect(() => {
-    setNextChargeDate(getNextChargeDate(selectedChargeDay, initialCharge));
     dispatch(
       setVippsAgreement({
         ...vippsAgreement,

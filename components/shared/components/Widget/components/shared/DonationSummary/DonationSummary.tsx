@@ -20,7 +20,8 @@ export interface DonationSummaryText {
 
 export const DonationSummary: React.FC<{ text: DonationSummaryText }> = ({ text }) => {
   const donation = useSelector((state: State) => state.donation);
-  const causeAreas = useSelector((state: State) => state.layout.causeAreas) || [];
+  const layoutCauseAreas = useSelector((state: State) => state.layout.causeAreas);
+  const causeAreas = React.useMemo(() => layoutCauseAreas || [], [layoutCauseAreas]);
 
   const {
     selectionType,

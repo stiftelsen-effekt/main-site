@@ -95,10 +95,8 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
   const { totalAmount } = useAmountCalculation("single", causeArea?.id ?? null, causeAreas ?? []);
 
   const currentAmount = causeArea ? causeAreaAmounts[causeArea.id] || 0 : 0;
-  const [inputValue, setInputValue] = React.useState(currentAmount);
-  React.useEffect(() => {
-    setInputValue(currentAmount);
-  }, [currentAmount]);
+  // setAmount stores the entered amount verbatim in Redux, so the input reads it from there.
+  const inputValue = currentAmount;
   const [showErrors, setShowErrors] = React.useState(false);
 
   // While one or more organizations are prefilled (e.g. arriving from the organizations list -
@@ -172,7 +170,6 @@ export const SingleCauseAreaPane: React.FC<SingleCauseAreaPaneProps> = ({
     : amountContext.preset_amounts_single;
 
   const setAmount = (amount: number) => {
-    setInputValue(amount);
     dispatch(setCauseAreaAmount(causeArea.id, amount));
     // With a single organization the cause area amount is the organization amount.
     if (activeOrganizations.length <= 1 && activeOrganizations[0]) {
