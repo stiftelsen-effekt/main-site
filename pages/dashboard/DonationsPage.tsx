@@ -39,7 +39,7 @@ import { InfoBox } from "../../components/shared/components/Infobox/Infobox";
 import { Info } from "react-feather";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../proxy.page";
 
 export async function getDashboardPagePath() {
   const result = await getClient().fetch<FetchDonationsPageResult>(fetchDonationsPage);

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ConsentState } from "../../../middleware.page";
+import { ConsentState } from "../../../proxy.page";
 import { getClient } from "../../../lib/sanity.client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

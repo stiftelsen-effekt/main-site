@@ -14,7 +14,7 @@ import { GeneralPageProps, LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../proxy.page";
 
 export async function getVippsAnonymousPagePath() {
   const result = await getClient().fetch<FetchVippsAnonymousPageResult>(fetchVippsAnonymousPage);

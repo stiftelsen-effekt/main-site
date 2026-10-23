@@ -11,7 +11,7 @@ import { TaxPage, getTaxPageSubPaths } from "../dashboard/TaxPage";
 import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "@sanity/preview-kit";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../proxy.page";
 import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
 import { renderLatexInData } from "../../components/main/blocks/Paragraph/renderLatex";
 
