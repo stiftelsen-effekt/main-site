@@ -1,5 +1,12 @@
 import { defineType, defineField } from "sanity";
 import { FundraiserInput } from "../../components/fundraiserInput";
+import {
+  checkImageResolution,
+  FUNDRAISER_HEADER_MIN_WIDTH,
+  FUNDRAISER_HEADER_RECOMMENDED_WIDTH,
+  FUNDRAISER_IMAGE_MIN_SIZE,
+  FUNDRAISER_IMAGE_RECOMMENDED_SIZE,
+} from "../../validators/imageResolution";
 
 export default defineType({
   title: "Fundraiser",
@@ -19,7 +26,15 @@ export default defineType({
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => [
+        Rule.required(),
+        Rule.custom((value) =>
+          checkImageResolution(value, {
+            minWidth: FUNDRAISER_HEADER_MIN_WIDTH,
+            recommended: FUNDRAISER_HEADER_RECOMMENDED_WIDTH,
+          }),
+        ).warning(),
+      ],
     }),
     defineField({
       name: "fundraiser_image",
@@ -28,7 +43,16 @@ export default defineType({
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => [
+        Rule.required(),
+        Rule.custom((value) =>
+          checkImageResolution(value, {
+            minWidth: FUNDRAISER_IMAGE_MIN_SIZE,
+            minHeight: FUNDRAISER_IMAGE_MIN_SIZE,
+            recommended: FUNDRAISER_IMAGE_RECOMMENDED_SIZE,
+          }),
+        ).warning(),
+      ],
     }),
     defineField({
       name: "fundraiser_organization",
