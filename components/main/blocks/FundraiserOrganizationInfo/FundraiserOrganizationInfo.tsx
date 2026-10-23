@@ -33,8 +33,8 @@ export const FundraiserOrganizationInfo: React.FC<{
         <ResponsiveImage
           image={logo}
           alt={name}
-          /* Will never be larger than 200px */
-          sizes="(max-width: 200px) 100vw, 200px"
+          /* 6rem wide, hidden on mobile */
+          sizes="(min-width: 1521px) 120px, 96px"
           layout="responsive"
         />
       </div>

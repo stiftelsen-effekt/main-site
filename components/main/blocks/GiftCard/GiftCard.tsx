@@ -18,7 +18,11 @@ export const GiftCard: React.FC<{
   return (
     <div className={styles.giftcard}>
       <div className={styles.giftcardimage}>
-        <ResponsiveImage image={image} layout={"responsive"} />
+        <ResponsiveImage
+          image={image}
+          layout={"responsive"}
+          sizes="(min-width: 1920px) 857px, (min-width: 1181px) 45vw, 90vw"
+        />
       </div>
       <div className={styles.giftcardtext}>
         <div>

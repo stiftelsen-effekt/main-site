@@ -59,7 +59,12 @@ export const ITNCoverage: React.FC<{
                 zIndex: i === current ? 1 : 0,
               }}
             >
-              <ResponsiveImage image={image} key={i} layout="fill" />
+              <ResponsiveImage
+                image={image}
+                key={i}
+                layout="fill"
+                sizes="(min-width: 1521px) 760px, (min-width: 1181px) 640px, (min-width: 845px) 760px, 90vw"
+              />
             </div>
           ))}
           <i className={styles.explenation}>{mapExplenation}</i>

@@ -14,8 +14,27 @@ export type ContributorType = {
   additional?: string;
 };
 
+/*
+ * Column width of the auto-fill grid in Contributors: minmax(240px, 1fr) with a 40px gap above
+ * 1180px, minmax(160px, 1fr) with a 20px gap below, in a 90vw (max 1714px) section. One entry per
+ * column count; thresholds are rounded up so the wider column is assumed at each boundary.
+ */
+const CONTRIBUTORS_LIST_SIZES = [
+  "(min-width: 1920px) 253px",
+  "(min-width: 1823px) calc(15vw - 33px)",
+  "(min-width: 1512px) calc(18vw - 32px)",
+  "(min-width: 1200px) calc(22.5vw - 30px)",
+  "(min-width: 1181px) calc(30vw - 26px)",
+  "(min-width: 1178px) calc(15vw - 16px)",
+  "(min-width: 978px) calc(18vw - 16px)",
+  "(min-width: 778px) calc(22.5vw - 15px)",
+  "(min-width: 578px) calc(30vw - 13px)",
+  "(min-width: 378px) calc(45vw - 10px)",
+  "90vw",
+].join(", ");
+
 export const Contributor: React.FC<
-  ContributorType & { contactLink?: boolean; locale?: string }
+  ContributorType & { contactLink?: boolean; locale?: string; sizes?: string }
 > = ({
   image,
   displayImage = true,
@@ -26,6 +45,7 @@ export const Contributor: React.FC<
   additional,
   contactLink = false,
   locale = "no", // Default locale
+  sizes = CONTRIBUTORS_LIST_SIZES,
 }) => {
   let contactString = "";
   if (locale === "no") {
@@ -42,7 +62,7 @@ export const Contributor: React.FC<
     <div className={styles.contributor}>
       {image != null && displayImage && (
         <div className={styles.contributor__image}>
-          <ResponsiveImage layout="cover" image={image} sizes="90vw 240px 160px" />
+          <ResponsiveImage layout="cover" image={image} coverAspectRatio={24 / 31} sizes={sizes} />
         </div>
       )}
       <span className={styles.contributor__title}>{name}</span>

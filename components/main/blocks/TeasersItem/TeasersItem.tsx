@@ -37,7 +37,9 @@ export const TeasersItem: React.FC<TeasersItemProps> = ({
         <ResponsiveImage
           image={image}
           layout={"cover"}
-          sizes="(min-width: 1521px) 700px, (min-width: 1181px) 550px, 90vw"
+          coverAspectRatio={4 / 5}
+          /* The text's min-content width keeps the column at ~350px on narrow phones */
+          sizes="(min-width: 1920px) 697px, (min-width: 1521px) calc(45vw - 160px), (min-width: 1181px) calc(45vw - 128px), (max-width: 390px) 352px, 90vw"
         />
       </div>
       <div className={elements.teasertext}>
