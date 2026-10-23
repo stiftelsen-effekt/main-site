@@ -80,10 +80,11 @@ export const MainHeader: React.FC<{
   if (showGeneralBanner) wrapperClasses.push(styles.hasGeneralBanner);
   const spacerClasses = [styles.spacer];
   if (showGeneralBanner) spacerClasses.push(styles.hasGeneralBanner);
+  if (alwaysShrink) spacerClasses.push(styles.alwaysShrink);
 
   return (
     <div className={wrapperClasses.join(" ")}>
-      <div aria-hidden="true" className={spacerClasses.join(" ")} />
+      <div aria-hidden="true" data-cy="header-spacer" className={spacerClasses.join(" ")} />
       <div data-cy="header" className={containerClasses.join(" ")}>
         <div className={headerStackClasses.join(" ")}>
           {showGeneralBanner && generalBannerConfig && (

@@ -1,6 +1,10 @@
 .wrapper {
   width: 100%;
   --header-navbar-height: 80px;
+  /* Rendered height of the shrunk navbar. Pages that always show it shrunk (fundraisers) start
+     their content right below the spacer, so it must reserve exactly this much. Covered by
+     cypress/e2e/no/fundraiser-widget.cy.js */
+  --header-shrunk-navbar-height: 115px;
   --header-general-banner-height: 56px;
   --header-active-general-banner-height: 0px;
 }
@@ -22,6 +26,14 @@
 
 .spacer.hasGeneralBanner {
   height: calc(var(--header-navbar-height) + var(--header-general-banner-height));
+}
+
+.spacer.alwaysShrink {
+  height: var(--header-shrunk-navbar-height);
+}
+
+.spacer.alwaysShrink.hasGeneralBanner {
+  height: calc(var(--header-shrunk-navbar-height) + var(--header-general-banner-height));
 }
 
 .headerStack {
@@ -52,6 +64,7 @@
 
   .wrapper {
     --header-navbar-height: 72px;
+    --header-shrunk-navbar-height: 72px;
     --header-general-banner-height: 54px;
   }
 
@@ -63,6 +76,7 @@
 @media only screen and (max-width: 1520px) and (min-width: 1181px) {
   .wrapper {
     --header-navbar-height: 90px;
+    --header-shrunk-navbar-height: 96.4px;
   }
 }
 
