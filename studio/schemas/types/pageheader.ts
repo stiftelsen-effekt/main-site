@@ -6,7 +6,7 @@ import {
   OrganizationSelectInput,
 } from "../../components/causeAreaSelectInput";
 
-const noTitleTextLayouts = ["coverPhoto", "noheader"];
+const noTitleTextLayouts: Array<Pageheader["layout"]> = ["coverPhoto", "noheader"];
 
 export default defineType({
   name: "pageheader",
@@ -121,7 +121,7 @@ export default defineType({
       group: "seo",
       /* Validate give a warning if no title, as it defaults to the page title */
       validation: (rule) =>
-        rule.custom((field: string | null, context) => {
+        rule.custom((field, context) => {
           const parent = context.parent as Pageheader;
           if ((!parent.title || parent.title.length === 0) && (!field || field.length === 0)) {
             return "SEO title is required if the page header has no title";

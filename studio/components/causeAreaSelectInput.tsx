@@ -255,6 +255,7 @@ export const CauseAreaMultiSelectInput = (props: ArrayOfPrimitivesInputProps<num
         <Card padding={2} radius={2} tone="caution">
           <Text size={1}>{state.message}. Enter cause area IDs manually.</Text>
         </Card>
+        {/* @ts-expect-error Upstream: InputProps only accepts ArrayOfPrimitivesInputProps<string | number | boolean>, and the contravariant callbacks make ArrayOfPrimitivesInputProps<number> unassignable */}
         {props.renderDefault(props)}
       </Stack>
     );

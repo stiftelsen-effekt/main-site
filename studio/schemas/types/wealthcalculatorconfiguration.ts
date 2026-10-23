@@ -68,7 +68,7 @@ export default defineType({
                 Rule.custom((value, context) => {
                   // Must be one of the options
                   const parent = context.parent as { options?: string[] };
-                  if (parent.options && parent.options.includes(value)) {
+                  if (value !== undefined && parent.options && parent.options.includes(value)) {
                     return true;
                   } else {
                     return "Must be one of the options";
@@ -96,7 +96,7 @@ export default defineType({
                 Rule.custom((value, context) => {
                   // Must be one of the options
                   const parent = context.parent as { options?: string[] };
-                  if (parent.options && parent.options.includes(value)) {
+                  if (value !== undefined && parent.options && parent.options.includes(value)) {
                     return true;
                   } else {
                     return "Must be one of the options";

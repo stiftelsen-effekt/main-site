@@ -4,20 +4,20 @@ import { Card, Flex, Stack, Text } from "@sanity/ui";
 import { Clock, Eye, List } from "react-feather";
 import { fetchPageViews } from "./pageviews";
 
-export const NavigationGroupPreview = (
-  props: PreviewProps & {
-    title: string;
-    item1slug: string;
-    item2slug: string;
-    item3slug: string;
-    item4slug: string;
-    item5slug: string;
-    item6slug: string;
-    item7slug: string;
-    item8slug: string;
-    item9slug: string;
-  },
-) => {
+type NavigationGroupPreviewProps = PreviewProps & {
+  title?: string;
+  item1slug?: string;
+  item2slug?: string;
+  item3slug?: string;
+  item4slug?: string;
+  item5slug?: string;
+  item6slug?: string;
+  item7slug?: string;
+  item8slug?: string;
+  item9slug?: string;
+};
+
+export const NavigationGroupPreview = (props: PreviewProps) => {
   const {
     title,
     item1slug,
@@ -29,7 +29,7 @@ export const NavigationGroupPreview = (
     item7slug,
     item8slug,
     item9slug,
-  } = props;
+  } = props as NavigationGroupPreviewProps;
 
   const slugs = [
     item1slug,
@@ -52,7 +52,7 @@ export const NavigationGroupPreview = (
     const loadPageViews = async () => {
       try {
         setLoading(true);
-        const views = await fetchPageViews(slugs.filter(Boolean));
+        const views = await fetchPageViews(slugs.filter((slug): slug is string => Boolean(slug)));
         if (isMounted) {
           setPageViews(views);
         }

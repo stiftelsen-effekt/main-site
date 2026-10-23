@@ -54,7 +54,7 @@ export default defineType({
       seoTitle: "header.seoTitle",
       slug: "slug.current",
     },
-    prepare: (selection: { title: string; seoTitle; slug: string }) => {
+    prepare: (selection: { title: string; seoTitle: string; slug: string }) => {
       return {
         title: selection.title || selection.seoTitle || undefined,
         slug: `artikler/${selection.slug}`,

@@ -5,15 +5,17 @@ import { Card, Flex, Stack, Text } from "@sanity/ui";
 import { Clock, Link, Eye } from "react-feather";
 import { fetchPageViews } from "./pageviews";
 
-export const NavigationItemPreview = (props: PreviewProps & { title: string; slug: string }) => {
-  const { title, slug } = props;
+type NavigationItemPreviewProps = PreviewProps & { title?: string; slug?: string };
+
+export const NavigationItemPreview = (props: PreviewProps) => {
+  const { title, slug } = props as NavigationItemPreviewProps;
 
   const [loading, setLoading] = useState(true);
   const [pageViews, setPageViews] = useState<null | number>(null);
 
   useEffect(() => {
     setLoading(true);
-    fetchPageViews([slug])
+    fetchPageViews([slug ?? ""])
       .then((views) => {
         setPageViews(views);
       })

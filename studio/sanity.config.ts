@@ -15,10 +15,17 @@ const siteUrl =
       ? "https://" + process.env.SANITY_STUDIO_VERCEL_URL
       : "http://localhost:3000";
 
+const requireEnv = (value: string | undefined, name: string): string => {
+  if (!value) {
+    throw new Error(`Missing required environment variable ${name}`);
+  }
+  return value;
+};
+
 export default defineConfig({
   title: process.env.SANITY_STUDIO_TITLE,
-  projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
-  dataset: process.env.SANITY_STUDIO_API_DATASET,
+  projectId: requireEnv(process.env.SANITY_STUDIO_API_PROJECT_ID, "SANITY_STUDIO_API_PROJECT_ID"),
+  dataset: requireEnv(process.env.SANITY_STUDIO_API_DATASET, "SANITY_STUDIO_API_DATASET"),
   document: {
     productionUrl: async (prev, context) => {
       const { dataset, document } = context;
@@ -28,11 +35,11 @@ export default defineConfig({
       });
 
       if (document._type === "generic_page") {
-        if (!document.slug) {
+        const slug = (document as Generic_page).slug?.current;
+
+        if (!slug) {
           return;
         }
-
-        const slug = (document as Generic_page).slug.current;
 
         const query = `*[_type == "generic_page" && slug.current == $slug]`;
         const params = { slug };
@@ -58,7 +65,7 @@ export default defineConfig({
         const articlesOverviewPage = `*[_id == "articles"]`;
 
         const [articlesOverview] = await client.fetch(articlesOverviewPage);
-        const articlesSlug = (articlesOverview as Articles).slug.current;
+        const articlesSlug = (articlesOverview as Articles).slug?.current;
 
         if (result && articlesSlug) {
           return `${siteUrl}/studio/presentation?preview=/${articlesSlug}/${trimmedSlug}`;
@@ -68,8 +75,10 @@ export default defineConfig({
         const query = `*[_type == "results" && _id == "results"]`;
         const [result] = await client.fetch(query);
 
-        if (result && (result as Results).slug?.current) {
-          const trimmedSlug = (result as Results).slug.current.replace(/^\/+/, "");
+        const resultsSlug = (result as Results | undefined)?.slug?.current;
+
+        if (resultsSlug) {
+          const trimmedSlug = resultsSlug.replace(/^\/+/, "");
           return `${siteUrl}/studio/presentation?preview=/${trimmedSlug}`;
         }
       }

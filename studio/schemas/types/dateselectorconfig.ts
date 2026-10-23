@@ -23,7 +23,7 @@ export default defineType({
       title: "Payment date last day of month template",
       type: "string",
       description: "E.g. 'Last day of the month'",
-      hidden: ({ document }) => !document.payment_last_date_of_month_option,
+      hidden: ({ document }) => !document?.payment_last_date_of_month_option,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -31,7 +31,7 @@ export default defineType({
       title: "Last day of month label",
       type: "string",
       description: "E.g. 'Last day of the month'",
-      hidden: ({ document }) => !document.payment_last_date_of_month_option,
+      hidden: ({ document }) => !document?.payment_last_date_of_month_option,
       validation: (Rule) => Rule.required(),
     }),
   ],

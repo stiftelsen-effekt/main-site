@@ -4,7 +4,7 @@ import { Mail, Phone } from "react-feather";
 import { PreviewProps } from "sanity";
 import { Contactinfo } from "../sanity.types";
 
-export const ContactPreview = (props: PreviewProps & Contactinfo) => {
+export const ContactPreview = (props: PreviewProps & Pick<Contactinfo, "phone" | "email">) => {
   const { phone, email } = props;
 
   return (

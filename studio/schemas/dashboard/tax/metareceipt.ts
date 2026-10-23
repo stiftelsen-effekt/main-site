@@ -27,7 +27,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "facebook-instagram",
+      initialValue: { current: "facebook-instagram" },
       description: "Relative to tax page",
       validation: (Rule) => Rule.required().custom(isShallowSlug),
     }),

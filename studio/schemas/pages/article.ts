@@ -35,7 +35,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       options: {
-        source: (doc: { header: { title: string } }, options: any) => doc.header.title,
+        source: "header.title",
       },
       validation: (Rule) => Rule.required(),
     }),
@@ -46,7 +46,7 @@ export default defineType({
       seoTitle: "header.seoTitle",
       slug: "slug.current",
     },
-    prepare: (selection: { title: string; seoTitle; slug: string }) => {
+    prepare: (selection: { title: string; seoTitle: string; slug: string }) => {
       return {
         title: selection.title || selection.seoTitle || undefined,
         slug: `artikler/${selection.slug}`,

@@ -1,6 +1,9 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, PreviewValue } from "sanity";
 import { List } from "react-feather";
-import { OrganizationsListPreview } from "../../components/organizationsListPreview";
+import {
+  OrganizationsListPreview,
+  OrganizationsListPreviewItem,
+} from "../../components/organizationsListPreview";
 
 export default defineType({
   name: "organizationslist",
@@ -50,7 +53,7 @@ export default defineType({
       organization3oneliner: string;
       organization4oneliner: string;
       organization5oneliner: string;
-    }) => {
+    }): PreviewValue & { organizations: OrganizationsListPreviewItem[] } => {
       const names = [
         organization1name,
         organization2name,

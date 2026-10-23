@@ -37,7 +37,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       readOnly: false,
-      initialValue: "support",
+      initialValue: { current: "support" },
       validation: (Rule) => Rule.required(),
     }),
   ],

@@ -102,7 +102,7 @@ export default defineType({
       name: "dashboard_slug",
       title: "Dashboard slug",
       type: "slug",
-      initialValue: "my-pages",
+      initialValue: { current: "my-pages" },
       description:
         "Entry point for dashboard. Please note that this must be an allowed redirect URI in Auth0.",
       validation: (Rule) => Rule.required().custom(isShallowSlug),
