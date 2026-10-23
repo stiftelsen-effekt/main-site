@@ -38,23 +38,16 @@ Cypress.Commands.add("login", () => {
           );
 
           cy.location("pathname").should("include", "/min-side");
-          cy.window().should((win) => {
-            expect(Object.keys(win.localStorage).some(isAuth0TokenKey)).to.equal(true);
+          cy.getCookies().should((cookies) => {
+            expect(cookies.some(isAuthenticatedCookie)).to.equal(true);
           });
         },
         {
           cacheAcrossSpecs: true,
           validate() {
-            // Re-run the login if the cached access token is missing or about to expire
-            cy.getAllLocalStorage().then((storage) => {
-              const expiries = Object.values(storage).flatMap((items) =>
-                Object.entries(items)
-                  .filter(([key]) => isAuth0TokenKey(key))
-                  .map(([, value]) => JSON.parse(value).expiresAt),
-              );
-              expect(expiries.some((expiresAt) => expiresAt > Date.now() / 1000 + 60)).to.equal(
-                true,
-              );
+            // Re-run the login if the cached session cookie is gone or expired
+            cy.getCookies().should((cookies) => {
+              expect(cookies.some(isAuthenticatedCookie)).to.equal(true);
             });
           },
         },
@@ -65,7 +58,7 @@ Cypress.Commands.add("login", () => {
   cy.ignorePlausibleTracking();
 });
 
-const isAuth0TokenKey = (key) => key.startsWith("@@auth0spajs@@::") && !key.endsWith("::@@user@@");
+const isAuthenticatedCookie = (cookie) => /^auth0\..+\.is\.authenticated$/.test(cookie.name);
 
 const getState = () => cy.window().its("store").invoke("getState");
 
