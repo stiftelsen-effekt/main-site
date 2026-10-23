@@ -15,7 +15,7 @@ import { ProfilePage as ProfilePageData } from "../dashboard/ProfilePage";
 import { TaxPage as TaxPageData } from "../dashboard/TaxPage";
 import { VippsAnonymousPage as VippsAnonymousPageData } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
-import { useLiveQuery } from "@sanity/preview-kit";
+import { LiveQuery } from "../../components/shared/LiveQuery";
 import { ConsentState } from "../../proxy.page";
 import { FundraiserPage, getFundraiserPagePaths } from "../FundraiserPage";
 import { renderLatexInData } from "../../components/main/blocks/Paragraph/renderLatex";
@@ -71,7 +71,7 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
     preloadDashboardPage[props.pageType as PageType]?.();
   }, [props.pageType]);
 
-  if (props.appStaticProps?.layoutProps?.draftMode || true) {
+  if (props.draftMode) {
     switch (props.pageType as PageType) {
       case PageType.GenericPage:
         return <PreviewGenericPage {...(props as any)} />;
@@ -113,43 +113,43 @@ const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
 };
 
 const PreviewGenericPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <GenericPage {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>
+      {(data) => <GenericPage {...(props as any)} data={data} />}
+    </LiveQuery>
+  );
 };
 
 const PreviewArticlesPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <ArticlesPage {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>
+      {(data) => <ArticlesPage {...(props as any)} data={data} />}
+    </LiveQuery>
+  );
 };
 
 const PreviewArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <ArticlePage {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>
+      {(data) => <ArticlePage {...(props as any)} data={data} />}
+    </LiveQuery>
+  );
 };
 
 const PreviewResultsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <ResultsPage {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>
+      {(data) => <ResultsPage {...(props as any)} data={data} />}
+    </LiveQuery>
+  );
 };
 
 const PreviewFundraiserPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query, { ...props.data.queryParams });
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <FundraiserPage {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>
+      {(data) => <FundraiserPage {...(props as any)} data={data} />}
+    </LiveQuery>
+  );
 };
 
 function compareArrays<T>(a: T[], b: T[]) {

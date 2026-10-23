@@ -16,7 +16,7 @@ import { NavbarAuthContext } from "./NavbarAuthContext";
 import { token } from "../../../../token";
 import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
-import { useLiveQuery } from "@sanity/preview-kit";
+import { LiveQuery } from "../../LiveQuery";
 
 export type NavLink = {
   _type: "navitem";
@@ -392,9 +392,7 @@ const AnimatedMenuIcon = ({ isOpen }: { isOpen: boolean }) => {
 export const PreviewNavbar: React.FC<Awaited<ReturnType<typeof Navbar.getStaticProps>>> = (
   props,
 ) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query);
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <Navbar {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>{(data) => <Navbar {...(props as any)} data={data} />}</LiveQuery>
+  );
 };

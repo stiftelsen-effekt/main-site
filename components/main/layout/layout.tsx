@@ -9,7 +9,7 @@ import { GiveButton } from "./GiveButton/GiveButton";
 import { PreviewBlock } from "./PreviewBlock/PreviewBlock";
 import { PrefilledDistribution, WidgetPane, WidgetPaneProps } from "./WidgetPane/WidgetPane";
 import { token } from "../../../token";
-import { useLiveQuery } from "@sanity/preview-kit";
+import { LiveQuery } from "../../shared/LiveQuery";
 import React from "react";
 import { stegaClean } from "@sanity/client/stega";
 import { ConsentState } from "../../../proxy.page";
@@ -184,19 +184,17 @@ export const Layout = withStaticProps(
 });
 
 const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>> = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query);
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <Footer {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>{(data) => <Footer {...(props as any)} data={data} />}</LiveQuery>
+  );
 };
 
 const PreviewWidgetPane: React.FC<
   Awaited<ReturnType<typeof Widget.getStaticProps>> & WidgetPaneProps
 > = (props) => {
-  const [result] = useLiveQuery(props.data.result, props.data.query);
-
-  const data = result ? { ...props.data, result } : props.data;
-
-  return <WidgetPane {...(props as any)} data={data} />;
+  return (
+    <LiveQuery data={props.data}>
+      {(data) => <WidgetPane {...(props as any)} data={data} />}
+    </LiveQuery>
+  );
 };

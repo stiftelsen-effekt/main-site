@@ -10,7 +10,6 @@ import { getProfileLayoutStaticProps } from "../components/profile/layout/layout
 import { Layout } from "../components/main/layout/layout";
 import { FullPageSpinner } from "../components/shared/layout/FullPageSpinner/FullPageSpinner";
 import { Provider } from "react-redux";
-import { VisualEditing } from "@sanity/visual-editing/next-pages-router";
 import { ConsentState } from "../proxy.page";
 import { createWidgetStore } from "../components/shared/components/Widget/components/WidgetWithStore";
 import { useRouter } from "next/router";
@@ -24,6 +23,10 @@ const PreviewProvider = lazy(() => import("../components/shared/PreviewProvider"
 const ProfileLayout = dynamic(
   () => import("../components/profile/layout/layout").then((m) => m.ProfileLayout),
   { loading: () => <FullPageSpinner /> },
+);
+const VisualEditing = dynamic(
+  () => import("@sanity/visual-editing/next-pages-router").then((mod) => mod.VisualEditing),
+  { ssr: false },
 );
 const globalWidgetStore = createWidgetStore();
 
