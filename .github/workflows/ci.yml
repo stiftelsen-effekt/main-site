@@ -1,35 +1,193 @@
 name: ci
-# https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+# Runs for every Vercel deployment of this repo, in any of the three Vercel projects.
+#
+# Preview (and other non-production) deployments: e2e against the deployment
+# URL, as before.
+#
+# Production deployments (from main), only when the repository variable
+# VERCEL_STAGED_PROMOTION is 'true':
+#
+#   resolve ─┬─ checks ─┬─ promote
+#            └─ e2e ────┘
+#
+# The deployment is staged (the project has "Auto-assign Custom Production
+# Domains" turned off), so e2e runs against the unpromoted deployment URL.
+# promote then assigns the production domains with `vercel promote`.
+# ge-effektivt (SE) has no Cypress suite: it is promoted after checks only.
+#
+# If anything fails or is skipped, nothing is promoted, and the domains stay
+# on the current production deployment.
 on: [deployment_status]
 permissions: {}
 jobs:
-  e2e-no:
-    # only runs this job on successful deploy to main-site
-    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'main-site')
+  resolve:
+    name: Resolve deployment
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    permissions: {}
+    outputs:
+      project: ${{ steps.map.outputs.project }}
+      production: ${{ steps.map.outputs.production }}
+      e2e: ${{ steps.map.outputs.e2e }}
+      e2e-config: ${{ steps.map.outputs.e2e-config }}
+      e2e-group: ${{ steps.map.outputs.e2e-group }}
+      staged-promotion: ${{ steps.map.outputs.staged-promotion }}
+    steps:
+      - name: Map the deployment to a Vercel project
+        id: map
+        env:
+          # Vercel sets this to "<Environment> – <project>" (with an en dash),
+          # e.g. "Production – main-site", "Preview – giv-effektivt".
+          ENVIRONMENT: ${{ github.event.deployment_status.environment }}
+          STAGED_PROMOTION: ${{ vars.VERCEL_STAGED_PROMOTION }}
+        run: |
+          project="${ENVIRONMENT##* – }"
+          case "$project" in
+            main-site)     e2e=true;  config=cypress-no.config.ts; group="GiEffektivt e2e tests" ;;
+            giv-effektivt) e2e=true;  config=cypress-dk.config.ts; group="GivEffektivt e2e tests" ;;
+            # SE has no Cypress suite. Production deployments are promoted after checks only.
+            ge-effektivt)  e2e=false; config="";                   group="" ;;
+            *) echo "::notice::Unknown Vercel environment '$ENVIRONMENT', nothing to do"; project=""; e2e=false; config=""; group="" ;;
+          esac
+          if [ -n "$project" ] && [ "$ENVIRONMENT" = "Production – $project" ]; then
+            production=true
+          else
+            production=false
+          fi
+          if [ "$STAGED_PROMOTION" = "true" ]; then staged=true; else staged=false; fi
+          {
+            echo "project=$project"
+            echo "production=$production"
+            echo "e2e=$e2e"
+            echo "e2e-config=$config"
+            echo "e2e-group=$group"
+            echo "staged-promotion=$staged"
+          } >> "$GITHUB_OUTPUT"
+          echo "project=$project production=$production e2e=$e2e staged-promotion=$staged"
+
+  checks:
+    name: Typecheck and test
+    needs: resolve
+    # Only for production deployments that will be promoted. PRs already run checks.yml.
+    if: needs.resolve.outputs.production == 'true' && needs.resolve.outputs.staged-promotion == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      # The pnpm version comes from packageManager in package.json.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          # Cypress runs in e2e.yml; this job doesn't need its binary.
+          CYPRESS_INSTALL_BINARY: "0"
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+
+  e2e:
+    needs: resolve
+    if: needs.resolve.outputs.e2e == 'true'
     permissions:
       contents: read
     uses: $/.github/workflows/e2e.yml
     with:
-      group: "GiEffektivt e2e tests"
+      group: ${{ needs.resolve.outputs.e2e-group }}
       base-url: ${{ github.event.deployment_status.target_url }}
-      config-file: "cypress-no.config.ts"
+      config-file: ${{ needs.resolve.outputs.e2e-config }}
     secrets:
       CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
       CYPRESS_AUTH_USERNAME: ${{ secrets.CYPRESS_AUTH_USERNAME }}
       CYPRESS_AUTH_PASSWORD: ${{ secrets.CYPRESS_AUTH_PASSWORD }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  e2e-dk:
-    # only runs this job on successful deploy to giv-effektivt
-    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'giv-effektivt')
+
+  promote:
+    name: Promote to production
+    needs: [resolve, checks, e2e]
+    # Requires checks to succeed. e2e must succeed too, except for SE, where
+    # resolve says there's no suite and e2e is skipped. A failed or cancelled
+    # e2e run always blocks promotion.
+    if: >-
+      !cancelled()
+      && needs.resolve.outputs.production == 'true'
+      && needs.resolve.outputs.staged-promotion == 'true'
+      && needs.checks.result == 'success'
+      && (needs.e2e.result == 'success'
+          || (needs.resolve.outputs.e2e == 'false' && needs.e2e.result == 'skipped'))
+    runs-on: ubuntu-latest
     permissions:
-      contents: read
-    uses: $/.github/workflows/e2e.yml
-    with:
-      group: "GivEffektivt e2e tests"
-      base-url: ${{ github.event.deployment_status.target_url }}
-      config-file: "cypress-dk.config.ts"
-    secrets:
-      CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
-      CYPRESS_AUTH_USERNAME: ${{ secrets.CYPRESS_AUTH_USERNAME }}
-      CYPRESS_AUTH_PASSWORD: ${{ secrets.CYPRESS_AUTH_PASSWORD }}
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      contents: read # to read the head of main
+    # Promotions to one project run one at a time and are never cancelled
+    # halfway. If several are waiting, GitHub keeps only the newest pending one.
+    # The head-of-main check below covers the remaining case: an older run that
+    # reaches this job after a newer one has already been promoted.
+    concurrency:
+      group: vercel-promote-${{ needs.resolve.outputs.project }}
+      cancel-in-progress: false
+    env:
+      PROJECT: ${{ needs.resolve.outputs.project }}
+      DEPLOYMENT_URL: ${{ github.event.deployment_status.target_url }}
+      DEPLOYMENT_SHA: ${{ github.event.deployment.sha }}
+      VERCEL_SCOPE: effective-altruism-norway
+    steps:
+      - name: Check the deployment is still the head of main
+        id: head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+          if [ "$head_sha" != "$DEPLOYMENT_SHA" ]; then
+            echo "::notice::Not promoting ${DEPLOYMENT_SHA}: main is now at ${head_sha}, whose deployment will be promoted instead"
+            echo "promote=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "promote=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Check the deployment with the Vercel API
+        id: vercel
+        if: steps.head.outputs.promote == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          host="${DEPLOYMENT_URL#https://}"
+          host="${host%%/*}"
+          deployment="$(curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            "https://api.vercel.com/v13/deployments/${host}?slug=${VERCEL_SCOPE}")"
+          name="$(jq -r .name <<<"$deployment")"
+          target="$(jq -r .target <<<"$deployment")"
+          state="$(jq -r .readyState <<<"$deployment")"
+          substate="$(jq -r '.readySubstate // empty' <<<"$deployment")"
+          sha="$(jq -r '.meta.githubCommitSha // empty' <<<"$deployment")"
+          echo "name=$name target=$target readyState=$state readySubstate=$substate sha=$sha"
+          if [ "$name" != "$PROJECT" ] || [ "$target" != "production" ] \
+            || [ "$state" != "READY" ] || [ "$sha" != "$DEPLOYMENT_SHA" ]; then
+            echo "::error::Deployment ${host} isn't a ready production deployment of ${PROJECT} at ${DEPLOYMENT_SHA}"
+            exit 1
+          fi
+          if [ "$substate" != "STAGED" ]; then
+            # PROMOTED means Vercel already assigned the domains, e.g. because
+            # auto-assign is still on in this project.
+            echo "::notice::Deployment ${host} is ${substate:-not staged}, nothing to promote"
+            echo "promote=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "promote=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Promote
+        if: steps.vercel.outputs.promote == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx --yes vercel@63.1.2 promote "$DEPLOYMENT_URL" \
+            --yes --non-interactive --timeout=5m \
+            --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
+          echo "::notice::Promoted ${DEPLOYMENT_URL} (${DEPLOYMENT_SHA}) to production for ${PROJECT}"
