@@ -16,17 +16,6 @@ import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
 import { ConsentState } from "../../proxy.page";
 
-export async function getProfilePagePath() {
-  const result = await getClient().fetch<FetchProfilePageResult>(fetchProfilePage);
-
-  const dashboardSlug = result?.dashboard?.[0]?.dashboard_slug?.current;
-  const slug = result?.page?.slug?.current;
-
-  if (!dashboardSlug || !slug) return null;
-
-  return [dashboardSlug, slug];
-}
-
 export const ProfilePage = withStaticProps(
   async ({
     draftMode = false,

@@ -1,14 +1,12 @@
 import { useAuth0, User } from "@auth0/auth0-react";
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
 import { Donor } from "../../../models";
 import { useDonor } from "../../../_queries";
 import { FullPageError } from "../../shared/layout/FullPageError/FullPageError";
 import { FullPageSpinner } from "../../shared/layout/FullPageSpinner/FullPageSpinner";
+import { DonorContext } from "./donorContext";
 
-export const DonorContext = createContext<{
-  donor: Donor | null;
-  setDonor: React.Dispatch<React.SetStateAction<Donor | null>>;
-}>({ donor: null, setDonor: () => {} });
+export { DonorContext };
 
 export const DonorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { getAccessTokenSilently, user } = useAuth0();

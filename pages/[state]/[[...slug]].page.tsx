@@ -4,11 +4,16 @@ import { ArticlePage, getArticlePaths } from "../ArticlePage";
 import { GenericPage, getGenericPagePaths } from "../GenericPage";
 import { ArticlesPage } from "../ArticlesPage";
 import { VippsAgreementPage } from "../VippsAgreementPage";
-import { DonationsPage, getDonationsPageSubpaths } from "../dashboard/DonationsPage";
-import { AgreementsPage } from "../dashboard/AgreementsPage";
-import { ProfilePage } from "../dashboard/ProfilePage";
-import { TaxPage, getTaxPageSubPaths } from "../dashboard/TaxPage";
-import { VippsAnonymousPage } from "../dashboard/VippsAnonymousPage";
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { FullPageSpinner } from "../../components/shared/layout/FullPageSpinner/FullPageSpinner";
+import { getDonationsPageSubpaths, getTaxPageSubPaths } from "../dashboard/paths";
+// Only referenced from getStaticProps, so Next strips these imports from the client bundle
+import { DonationsPage as DonationsPageData } from "../dashboard/DonationsPage";
+import { AgreementsPage as AgreementsPageData } from "../dashboard/AgreementsPage";
+import { ProfilePage as ProfilePageData } from "../dashboard/ProfilePage";
+import { TaxPage as TaxPageData } from "../dashboard/TaxPage";
+import { VippsAnonymousPage as VippsAnonymousPageData } from "../dashboard/VippsAnonymousPage";
 import { ResultsPage } from "../ResultsPage";
 import { useLiveQuery } from "@sanity/preview-kit";
 import { ConsentState } from "../../proxy.page";
@@ -29,7 +34,43 @@ enum PageType {
   TaxPage = "tax",
 }
 
+// Min side pages are split out so ordinary content pages don't load them (or Auth0). They are
+// still server-rendered, and Next loads the chunks of rendered ones before hydrating. The
+// placeholder matches what the profile layout shows while it checks the login.
+const dashboardPageLoading = () => <FullPageSpinner />;
+const DonationsPage = dynamic(
+  () => import("../dashboard/DonationsPage").then((m) => m.DonationsPage),
+  { loading: dashboardPageLoading },
+);
+const AgreementsPage = dynamic(
+  () => import("../dashboard/AgreementsPage").then((m) => m.AgreementsPage),
+  { loading: dashboardPageLoading },
+);
+const ProfilePage = dynamic(() => import("../dashboard/ProfilePage").then((m) => m.ProfilePage), {
+  loading: dashboardPageLoading,
+});
+const TaxPage = dynamic(() => import("../dashboard/TaxPage").then((m) => m.TaxPage), {
+  loading: dashboardPageLoading,
+});
+const VippsAnonymousPage = dynamic(
+  () => import("../dashboard/VippsAnonymousPage").then((m) => m.VippsAnonymousPage),
+  { loading: dashboardPageLoading },
+);
+
+// Min side pages only render once the login check passes, so start loading their code early
+const preloadDashboardPage: Partial<Record<PageType, () => Promise<unknown>>> = {
+  [PageType.DonationsPage]: () => import("../dashboard/DonationsPage"),
+  [PageType.AgreementsPage]: () => import("../dashboard/AgreementsPage"),
+  [PageType.ProfilePage]: () => import("../dashboard/ProfilePage"),
+  [PageType.TaxPage]: () => import("../dashboard/TaxPage"),
+  [PageType.VippsAnonymousPage]: () => import("../dashboard/VippsAnonymousPage"),
+};
+
 const Page: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
+  useEffect(() => {
+    preloadDashboardPage[props.pageType as PageType]?.();
+  }, [props.pageType]);
+
   if (props.appStaticProps?.layoutProps?.draftMode || true) {
     switch (props.pageType as PageType) {
       case PageType.GenericPage:
@@ -288,7 +329,7 @@ const getPageStaticProps = async (
       } as const;
     }
     case PageType.VippsAnonymousPage: {
-      const props = await VippsAnonymousPage.getStaticProps({ draftMode, consentState });
+      const props = await VippsAnonymousPageData.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
@@ -299,7 +340,7 @@ const getPageStaticProps = async (
       } as const;
     }
     case PageType.DonationsPage: {
-      const props = await DonationsPage.getStaticProps({ draftMode, consentState, path });
+      const props = await DonationsPageData.getStaticProps({ draftMode, consentState, path });
       return {
         props: {
           ...props,
@@ -310,7 +351,11 @@ const getPageStaticProps = async (
       } as const;
     }
     case PageType.AgreementsPage: {
-      const props = await AgreementsPage.getStaticProps({ draftMode, consentState, slug: path });
+      const props = await AgreementsPageData.getStaticProps({
+        draftMode,
+        consentState,
+        slug: path,
+      });
       return {
         props: {
           ...props,
@@ -321,7 +366,7 @@ const getPageStaticProps = async (
       } as const;
     }
     case PageType.ProfilePage: {
-      const props = await ProfilePage.getStaticProps({ draftMode, consentState });
+      const props = await ProfilePageData.getStaticProps({ draftMode, consentState });
       return {
         props: {
           ...props,
@@ -332,7 +377,7 @@ const getPageStaticProps = async (
       } as const;
     }
     case PageType.TaxPage: {
-      const props = await TaxPage.getStaticProps({ draftMode, path, consentState });
+      const props = await TaxPageData.getStaticProps({ draftMode, path, consentState });
       return {
         props: {
           ...props,
