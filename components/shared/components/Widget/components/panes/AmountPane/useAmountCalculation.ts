@@ -13,8 +13,6 @@ export const useAmountCalculation = (
     causeAreaAmounts = {},
     orgAmounts = {},
     causeAreaDistributionType = {},
-    operationsPercentageByCauseArea = {},
-    globalOperationsEnabled = false,
     operationsConfig,
     smartDistributionTotal = 0,
   } = useSelector((state: State) => state.donation);
@@ -111,12 +109,10 @@ export const useAmountCalculation = (
   }, [
     causeAreaAmounts,
     orgAmounts,
-    operationsPercentageByCauseArea,
     selectionType,
     selectedCauseAreaId,
     causeAreas,
     causeAreaDistributionType,
-    globalOperationsEnabled,
     OPERATIONS_CAUSE_AREA_ID,
     smartDistributionTotal,
   ]);

@@ -114,13 +114,9 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
   // Check if operations are enabled for this cause area
   const isOperationsEnabled = operationsPercentageModeByCauseArea[causeArea.id] ?? false;
 
-  // Internal state for input handling - always shows the full amount the user entered
-  const [inputValue, setInputValue] = React.useState(currentCauseAreaAmount);
-
-  // Sync input value with stored amount when it changes externally
-  React.useEffect(() => {
-    setInputValue(currentCauseAreaAmount);
-  }, [currentCauseAreaAmount]);
+  // The input always shows the full amount the user entered, which is stored verbatim
+  // in Redux - so it's read straight from there rather than mirrored in local state.
+  const inputValue = currentCauseAreaAmount;
 
   const handleCutToggle = (checked: boolean) => {
     dispatch(setOperationsPercentageModeByCauseArea(causeArea.id, checked));
@@ -161,7 +157,6 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
     // overwrite the stored amount, or a stale/zero value silently clobbers it.
     if (sourceInfo.source !== "event") return;
     const v = values.floatValue === undefined ? 0 : values.floatValue;
-    setInputValue(v);
 
     // Always store the full amount entered by the user
     dispatch(setCauseAreaAmount(causeArea.id, v));
@@ -175,7 +170,6 @@ export const CauseAreaForm: React.FC<CauseAreaFormProps> = ({
 
   const handleSuggestedSumClick = (amount: number) => {
     plausible("SelectSuggestedSum", { props: { sum: amount } });
-    setInputValue(amount);
 
     // Always store the full amount
     dispatch(setCauseAreaAmount(causeArea.id, amount));

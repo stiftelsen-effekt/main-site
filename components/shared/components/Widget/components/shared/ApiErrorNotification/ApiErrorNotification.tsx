@@ -19,17 +19,22 @@ export const ApiErrorNotification: React.FC<{ genericErrorMessage?: string }> = 
 }) => {
   const dispatch = useDispatch<Dispatch<DonationActionTypes>>();
   const apiError = useSelector((state: State) => state.donation.apiError);
-  const [isVisible, setIsVisible] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(typeof apiError !== "undefined");
+  // Kept in state (not derived) so the last message stays on screen during the exit animation
+  const [message, setMessage] = useState<string | null>(apiError ?? null);
 
-  useEffect(() => {
+  // Show/hide whenever apiError changes, adjusting state during render rather than in an
+  // effect: https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  const [prevApiError, setPrevApiError] = useState(apiError);
+  if (apiError !== prevApiError) {
+    setPrevApiError(apiError);
     if (typeof apiError !== "undefined") {
       setMessage(apiError);
       setIsVisible(true);
     } else {
       setIsVisible(false);
     }
-  }, [apiError]);
+  }
 
   const handleClose = () => {
     setIsVisible(false);

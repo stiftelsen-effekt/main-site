@@ -40,7 +40,11 @@ export const Carousel: React.FC<ICarouselProps> = ({ children, minHeight, inline
   const [renderedPanes, setRenderedPanes] = useState([1]);
   const [temporaryHeight, setTemporaryHeight] = useState<number | null>(null);
   const currentPaneNumberRef = useRef(currentPaneNumber);
-  currentPaneNumberRef.current = currentPaneNumber;
+  // Keep the ref in sync after commit (not during render) - it's only read by the
+  // unmount timer in changePaneByOffset, which fires 200ms later.
+  useEffect(() => {
+    currentPaneNumberRef.current = currentPaneNumber;
+  }, [currentPaneNumber]);
 
   const changePaneByOffset = (offset: number) => {
     // Capture where we're coming from/going to now, rather than deriving it from
