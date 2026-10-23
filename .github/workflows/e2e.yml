@@ -46,9 +46,6 @@ jobs:
         env:
           CYPRESS_BASE_URL: ${{ inputs.base-url }}
           CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
-          CYPRESS_AUTH_CLIENT_ID: ${{ secrets.CYPRESS_AUTH_CLIENT_ID }}
-          CYPRESS_AUTH_CLIENT_SECRET: ${{ secrets.CYPRESS_AUTH_CLIENT_SECRET }}
-          CYPRESS_AUTH_AUDIENCE: ${{ secrets.CYPRESS_AUTH_AUDIENCE }}
           CYPRESS_AUTH_USERNAME: ${{ secrets.CYPRESS_AUTH_USERNAME }}
           CYPRESS_AUTH_PASSWORD: ${{ secrets.CYPRESS_AUTH_PASSWORD }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

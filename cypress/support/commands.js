@@ -1,91 +1,64 @@
 import "cypress-localstorage-commands";
 
-Cypress.Commands.add("login", (overrides = {}) => {
-  cy.clearLocalStorage();
-  cy.ignorePlausibleTracking();
+Cypress.Commands.add("login", () => {
   Cypress.log({
     name: "loginAuth0",
   });
 
   // Cypress 16 removed Cypress.env(); credentials are read with cy.env(),
   // which fetches only the requested keys from the Node process.
-  cy.env([
-    "AUTH_DOMAIN",
-    "AUTH_CLIENT_ID",
-    "AUTH_CLIENT_SECRET",
-    "AUTH_AUDIENCE",
-    "AUTH_USERNAME",
-    "AUTH_PASSWORD",
-  ]).then((env) => loginWithCredentials(env));
+  cy.env(["AUTH_DOMAIN", "AUTH_USERNAME", "AUTH_PASSWORD"]).then(
+    ({ AUTH_DOMAIN, AUTH_USERNAME, AUTH_PASSWORD }) => {
+      // Log in through Auth0 Universal Login once per Cypress process (i.e. once
+      // per CI container); later specs restore the cached session instead.
+      cy.session(
+        AUTH_USERNAME,
+        () => {
+          cy.visit({
+            url: "/min-side/",
+            headers: {
+              "x-vercel-skip-toolbar": "1",
+            },
+          });
+
+          cy.origin(
+            `https://${AUTH_DOMAIN}`,
+            { args: { username: AUTH_USERNAME, password: AUTH_PASSWORD } },
+            ({ username, password }) => {
+              // Click before typing: the login form re-renders while typing, which
+              // otherwise sends the password keystrokes to the username field.
+              cy.get("input#username").click().type(username);
+              cy.get("input#username").should("have.value", username);
+              cy.get("input#password").click().type(password, { log: false });
+              cy.get("input#password").should(($input) => {
+                expect($input.val().length, "password length").to.equal(password.length);
+              });
+              cy.get("button[type=submit][name=action][value=default]").click();
+            },
+          );
+
+          cy.location("pathname").should("include", "/min-side");
+          cy.getCookies().should((cookies) => {
+            expect(cookies.some(isAuthenticatedCookie)).to.equal(true);
+          });
+        },
+        {
+          cacheAcrossSpecs: true,
+          validate() {
+            // Re-run the login if the cached session cookie is gone or expired
+            cy.getCookies().should((cookies) => {
+              expect(cookies.some(isAuthenticatedCookie)).to.equal(true);
+            });
+          },
+        },
+      );
+    },
+  );
+
+  cy.ignorePlausibleTracking();
 });
 
-const loginWithCredentials = ({
-  AUTH_DOMAIN,
-  AUTH_CLIENT_ID: client_id,
-  AUTH_CLIENT_SECRET: client_secret,
-  AUTH_AUDIENCE: audience,
-  AUTH_USERNAME: username,
-  AUTH_PASSWORD: password,
-}) => {
-  const scope =
-    "openid profile email read:donations read:profile write:profile read:distributions read:agreements write:agreements";
-
-  const options = {
-    method: "POST",
-    url: `https://${AUTH_DOMAIN}/oauth/token`,
-    failOnStatusCode: false,
-    body: {
-      grant_type: "http://auth0.com/oauth/grant-type/password-realm",
-      username,
-      password,
-      audience,
-      scope,
-      client_id,
-      client_secret,
-      realm: "Username-Password-Authentication",
-    },
-  };
-
-  cy.request(options).then(({ body }) => {
-    const [header, payload, signature] = body.id_token.split(".");
-    const idTokenPayload = JSON.parse(Buffer.from(payload, "base64").toString("ascii"));
-    const oauthTokenScope = "openid profile email";
-
-    cy.window().then((win) => {
-      win.localStorage.setItem(
-        `@@auth0spajs@@::${client_id}::${audience}::${oauthTokenScope}`,
-        JSON.stringify({
-          body: {
-            access_token: body.access_token,
-            scope: oauthTokenScope,
-            expires_in: body.expires_in,
-            token_type: body.token_type,
-            audience,
-            oauthTokenScope,
-            client_id,
-          },
-          expiresAt: Math.floor(Date.now() / 1000) + body.expires_in,
-        }),
-      );
-
-      win.localStorage.setItem(
-        `@@auth0spajs@@::${client_id}::@@user@@`,
-        JSON.stringify({
-          id_token: body.id_token,
-          decodedToken: {
-            encoded: { header, payload, signature },
-            header: JSON.parse(Buffer.from(header, "base64").toString("ascii")),
-            claims: { __raw: body.id_token, ...idTokenPayload },
-            user: idTokenPayload,
-          },
-        }),
-      );
-    });
-
-    cy.setCookie(`auth0.${client_id}.is.authenticated`, "true");
-    cy.setCookie(`_legacy_auth0.${client_id}.is.authenticated`, "true");
-  });
-};
+const isAuthenticatedCookie = (cookie) => /^auth0\..+\.is\.authenticated$/.test(cookie.name);
 
 const getState = () => cy.window().its("store").invoke("getState");
 

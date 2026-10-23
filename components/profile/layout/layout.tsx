@@ -116,12 +116,8 @@ export const ProfileLayout = withStaticProps(
   const bypassAuth = useShouldAuthenticate();
 
   let cacheLocation: CacheLocation = "memory";
-  if (typeof window !== "undefined") {
-    if (window.location.hostname === "localhost") {
-      cacheLocation = "localstorage";
-    } else if ((window as any).Cypress) {
-      cacheLocation = "localstorage";
-    }
+  if (typeof window !== "undefined" && window.location.hostname === "localhost") {
+    cacheLocation = "localstorage";
   }
 
   const onRedirectCallback = useMemo(() => createRedirectCallback(dashboardPath), [dashboardPath]);
