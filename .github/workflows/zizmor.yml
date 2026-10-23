@@ -1,0 +1,53 @@
+name: zizmor
+# Static analysis of GitHub Actions workflows: https://docs.zizmor.sh
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".github/dependabot.yml"
+      - ".github/zizmor.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - ".github/dependabot.yml"
+      - ".github/zizmor.yml"
+permissions: {}
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  # Fails the check when zizmor reports anything, with inline annotations on the PR.
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+        with:
+          version: "1.31.1"
+          advanced-security: false
+          annotations: true
+  # Uploads the same results as SARIF to the repository's code scanning alerts.
+  # Kept as a separate job so that only it gets security-events: write.
+  sarif:
+    name: zizmor (code scanning)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+        with:
+          version: "1.31.1"
