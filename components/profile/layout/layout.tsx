@@ -23,7 +23,7 @@ import { withStaticProps } from "../../../util/withStaticProps";
 import { Widget } from "../../shared/components/Widget/components/Widget";
 import { getClient } from "../../../lib/sanity.client";
 import { token } from "../../../token";
-import { ConsentState } from "../../../middleware.page";
+import { ConsentState } from "../../../proxy.page";
 import {
   useExternalDonationWidget,
   getExternalDonationUrls,

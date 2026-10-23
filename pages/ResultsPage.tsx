@@ -15,7 +15,7 @@ import { MonthlyDonationsPerOutputResult } from "../components/shared/components
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { ResultsHadlineNumbers } from "../components/shared/components/ResultsHeadline/ResultsHeadline";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../proxy.page";
 import { FetchResultsResult } from "../studio/sanity.types";
 
 const fetchResultsPageSlug = groq`

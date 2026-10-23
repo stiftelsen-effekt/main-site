@@ -14,7 +14,7 @@ import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { stegaClean } from "@sanity/client/stega";
 import { FetchFundraiserResult } from "../studio/sanity.types";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../proxy.page";
 import { FundraiserHeader } from "../components/main/layout/FundraiserHeader/FundraiserHeader";
 import styles from "../styles/Fundraisers.module.css";
 import { FundraiserProgressBar } from "../components/main/blocks/FundraiserProgressBar/FundraiserProgressBar";

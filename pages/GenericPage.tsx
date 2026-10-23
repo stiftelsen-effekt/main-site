@@ -11,7 +11,7 @@ import { GeneralPageProps, getAppStaticProps } from "./_app.page";
 import { token } from "../token";
 import { useLiveQuery } from "@sanity/preview-kit";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../middleware.page";
+import { ConsentState } from "../proxy.page";
 
 export const getGenericPagePaths = async () => {
   const data = await getClient().fetch<{ pages: Array<{ slug: { current: string } }> }>(

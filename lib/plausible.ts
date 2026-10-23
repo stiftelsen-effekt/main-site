@@ -35,7 +35,7 @@ export const getPlausibleScriptSrc = (
   return src;
 };
 
-// Keep v3's proxy paths: middleware.page.ts skips /js/ and /proxy/, and this
+// Keep v3's proxy paths: proxy.page.ts skips /js/ and /proxy/, and this
 // keeps the event endpoint out of our own pages/api namespace.
 export const PLAUSIBLE_PROXY_PATHS = {
   scriptPath: "/js/script.js",

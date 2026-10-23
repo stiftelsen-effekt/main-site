@@ -12,7 +12,7 @@ import { token } from "../../../token";
 import { useLiveQuery } from "@sanity/preview-kit";
 import React from "react";
 import { stegaClean } from "@sanity/client/stega";
-import { ConsentState } from "../../../middleware.page";
+import { ConsentState } from "../../../proxy.page";
 import CookieBannerWrapper from "../../shared/layout/CookieBanner/CookieBannerWrapper";
 import {
   useExternalDonationWidget,

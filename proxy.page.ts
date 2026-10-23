@@ -1,11 +1,11 @@
-// middleware.ts
+// proxy.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export type ConsentState = "accepted" | "rejected" | "undecided";
 
-export function middleware(request: NextRequest) {
-  // Skip middleware for special paths
+export function proxy(request: NextRequest) {
+  // Skip the proxy for special paths
   if (
     request.nextUrl.pathname.startsWith("/_next") ||
     request.nextUrl.pathname.startsWith("/api") ||

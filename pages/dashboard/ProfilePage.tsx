@@ -14,7 +14,7 @@ import { withStaticProps } from "../../util/withStaticProps";
 import { LayoutType, getAppStaticProps } from "../_app.page";
 import { Navbar } from "../../components/shared/components/Navbar/Navbar";
 import { token } from "../../token";
-import { ConsentState } from "../../middleware.page";
+import { ConsentState } from "../../proxy.page";
 
 export async function getProfilePagePath() {
   const result = await getClient().fetch<FetchProfilePageResult>(fetchProfilePage);
