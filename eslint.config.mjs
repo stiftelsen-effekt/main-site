@@ -1,7 +1,7 @@
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 import prettier from "eslint-config-prettier";
 
-export default [
+const config = [
   { ignores: ["studio/", "public/studio/"] },
   ...nextCoreWebVitals,
   prettier,
@@ -18,3 +18,5 @@ export default [
     },
   },
 ];
+
+export default config;

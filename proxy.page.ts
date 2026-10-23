@@ -34,10 +34,6 @@ export function proxy(request: NextRequest) {
 
   const response = NextResponse.rewrite(url);
 
-  // Add ETag based on the cookie consent state
-  // This way, the cache will only be invalidated when the consent state changes
-  response.headers.set("ETag", `"consent-${consentState}"`);
-
   // Allow caching but require revalidation
   response.headers.set("Cache-Control", "private, must-revalidate");
 

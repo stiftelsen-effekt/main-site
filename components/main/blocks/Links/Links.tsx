@@ -54,9 +54,12 @@ export const LinkComponent: React.FC<{
   const { articlesPagePath, fundraisersPath } = useRouterContext();
   const { href, isFundraiser } = getHref(link, articlesPagePath, fundraisersPath);
   const openInNewTab = (link._type === "link" && link.newtab) || newtab;
+  // next/link runs every href through the router, which rewrites repeated slashes
+  // (breaking e.g. web.archive.org URLs). External URLs don't need client routing.
+  const LinkElement = isAbsoluteUrl(href) ? "a" : Link;
 
   return (
-    <Link
+    <LinkElement
       href={href}
       prefetch={isFundraiser ? false : undefined}
       target={openInNewTab ? "_blank" : ""}
@@ -67,9 +70,11 @@ export const LinkComponent: React.FC<{
       style={style}
     >
       {link.title ? `→ ${link.title}` : `${children}${openInNewTab ? " ↗" : ""}`}
-    </Link>
+    </LinkElement>
   );
 };
+
+const isAbsoluteUrl = (href: string) => /^[a-z][a-z0-9+.-]*:/i.test(href);
 
 export const getHref = (
   link: NavLink | LinkType,

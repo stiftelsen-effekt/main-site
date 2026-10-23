@@ -19,8 +19,6 @@ const failFastPlugin = require("cypress-fail-fast/plugin");
 /**
  * @type {Cypress.PluginConfig}
  */
-// eslint-disable-next-line no-unused-vars
-
 module.exports = (on, config) => {
   config = dotenvPlugin(config, {
     path: path.join(__dirname, "../../.env.local"),
