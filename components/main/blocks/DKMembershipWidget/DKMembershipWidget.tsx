@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent, ReactNode } from "react";
+import React, { useState, ChangeEvent, FormEvent, ReactNode } from "react";
 import styles from "./DKMembershipWidget.module.scss";
 import { validateCpr, formatCprInput, CprValidationResult } from "../../../../util/tin-validation";
 import { EffektButton } from "../../../shared/components/EffektButton/EffektButton";
@@ -18,6 +18,8 @@ interface MembershipFormData {
   tin: string; // Tax Identification Number (CPR for Denmark)
   birthday: string; // YYYY-MM-DD, only if country is not Denmark
 }
+
+const isDenmark = (country: string) => /^(denmark|danmark)$/i.test(country.trim());
 
 const API_ENDPOINT = `${process.env.NEXT_PUBLIC_EFFEKT_API}/api/membership`;
 
@@ -71,18 +73,21 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
     );
   };
 
-  const isDenmarkSelected = /^(denmark|danmark)$/i.test(formData.country.trim());
+  const isDenmarkSelected = isDenmark(formData.country);
   const showBirthdayField = !isDenmarkSelected;
 
-  useEffect(() => {
+  const handleCountryChange = (country: string) => {
     // Clear TIN and Birthday if country changes to/from Denmark
-    if (isDenmarkSelected) {
-      setFormData((prev) => ({ ...prev, birthday: "" }));
+    const nextIsDenmark = isDenmark(country);
+    if (nextIsDenmark === isDenmarkSelected) {
+      setFormData((prev) => ({ ...prev, country }));
+    } else if (nextIsDenmark) {
+      setFormData((prev) => ({ ...prev, country, birthday: "" }));
     } else {
-      setFormData((prev) => ({ ...prev, tin: "" }));
+      setFormData((prev) => ({ ...prev, country, tin: "" }));
       setCprValidation(null);
     }
-  }, [isDenmarkSelected]);
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -128,9 +133,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
       address: formData.address.trim(),
       postcode: formData.postcode.trim(),
       city: formData.city.trim(),
-      country: /^(denmark|danmark)$/i.test(formData.country.trim())
-        ? "Denmark"
-        : formData.country.trim(),
+      country: isDenmark(formData.country) ? "Denmark" : formData.country.trim(),
       tin: formData.tin.trim(),
       birthday: formData.birthday.trim(),
     };
@@ -197,7 +200,7 @@ export const DKMembershipWidget: React.FC<{ config?: ConfigurationType }> = ({ c
         <div className={styles.formGroup}>
           <MembershipCountrySelector
             country={formData.country}
-            onChange={(country) => setFormData((prev) => ({ ...prev, country: country }))}
+            onChange={handleCountryChange}
             countryLabel={mergedTexts.country_label}
             data-cy="country-selector"
           />

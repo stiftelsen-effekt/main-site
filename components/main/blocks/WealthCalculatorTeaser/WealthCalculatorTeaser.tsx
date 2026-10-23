@@ -64,7 +64,7 @@ export const WealthCalculatorTeaser: React.FC<{
     } else {
       console.error("Unsupported locale", locale);
     }
-  }, [setPppConversion]);
+  }, [locale]);
 
   if (!pppConversion) {
     return null;

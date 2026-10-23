@@ -105,7 +105,7 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
     } else {
       console.error("Unsupported locale", locale);
     }
-  }, [setPppConversion]);
+  }, [locale]);
 
   const taxJurisdiction: TaxJurisdiction | undefined =
     locale === "no"
@@ -145,28 +145,42 @@ export const WealthCalculator: React.FC<WealthCalculatorProps> = ({
       });
   }, 250);
 
-  useEffect(() => {
-    const requestId = ++latestEstimateRequest.current;
-
-    // If every adult's estimate is cached (or there is no income yet), update right away
+  /**
+   * When the inputs change, show the estimate right away if every adult's estimate is cached (or there
+   * is no income yet). Otherwise show the loading spinner until the estimate below is ready.
+   */
+  const [estimateInputs, setEstimateInputs] = useState({
+    incomeInputs,
+    numberOfAdults,
+    cached: true,
+  });
+  if (
+    estimateInputs.incomeInputs !== incomeInputs ||
+    estimateInputs.numberOfAdults !== numberOfAdults
+  ) {
     const cached = taxJurisdiction
       ? incomes.map((adultIncome) =>
           getCachedPostTaxIncome(adultIncome, periodAdjustment, taxJurisdiction),
         )
       : [];
-    if (taxJurisdiction && cached.every((value) => typeof value !== "undefined")) {
-      calculatePostTaxIncome.cancel();
-      setPostTaxEstimate({
-        postTaxIncome: sumIncomes(cached as number[]),
-        numberOfAdults,
-      });
+    const allCached = !!taxJurisdiction && cached.every((value) => typeof value !== "undefined");
+    setEstimateInputs({ incomeInputs, numberOfAdults, cached: allCached });
+    if (allCached) {
+      setPostTaxEstimate({ postTaxIncome: sumIncomes(cached as number[]), numberOfAdults });
       setLoadingPostTaxIncome(false);
+    } else {
+      setLoadingPostTaxIncome(true);
+    }
+  }
+
+  useEffect(() => {
+    const requestId = ++latestEstimateRequest.current;
+    if (estimateInputs.cached) {
+      calculatePostTaxIncome.cancel();
       return;
     }
-
-    setLoadingPostTaxIncome(true);
-    calculatePostTaxIncome(requestId, numberOfAdults);
-  }, [incomeInputs, numberOfAdults]);
+    calculatePostTaxIncome(requestId, estimateInputs.numberOfAdults);
+  }, [estimateInputs, calculatePostTaxIncome]);
 
   /**
    * Calculate the equvivalized income. This is the income after tax and adjusted for the number of adults and children

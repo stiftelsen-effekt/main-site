@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { RecurringDonation } from "../../../../shared/components/Widget/types/Enums";
 
 export interface FormData {
@@ -36,17 +36,6 @@ export function useFundraiserForm(
     recurring: RecurringDonation.NON_RECURRING,
   });
 
-  // Auto-enable tax deduction for amounts >= configured minimum (only if tax deduction is enabled)
-  useEffect(() => {
-    if (typeof taxDeductionMinAmount === "number") {
-      if (formData.amount && formData.amount >= taxDeductionMinAmount) {
-        setFormData((prev) => ({ ...prev, taxDeduction: true }));
-      } else {
-        setFormData((prev) => ({ ...prev, taxDeduction: false }));
-      }
-    }
-  }, [formData.amount, taxDeductionMinAmount]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -57,9 +46,23 @@ export function useFundraiserForm(
     });
   };
 
-  const updateField = useCallback(<K extends keyof FormData>(field: K, value: FormData[K]) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  }, []);
+  const updateField = useCallback(
+    <K extends keyof FormData>(field: K, value: FormData[K]) => {
+      setFormData((prev) => {
+        const next = { ...prev, [field]: value };
+        // Auto-enable tax deduction for amounts >= configured minimum (only if tax deduction is enabled)
+        if (
+          field === "amount" &&
+          value !== prev.amount &&
+          typeof taxDeductionMinAmount === "number"
+        ) {
+          next.taxDeduction = !!next.amount && next.amount >= taxDeductionMinAmount;
+        }
+        return next;
+      });
+    },
+    [taxDeductionMinAmount],
+  );
 
   return {
     formData,

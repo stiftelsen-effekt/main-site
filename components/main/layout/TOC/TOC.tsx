@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState, useMemo } from "react";
+import { CSSProperties, useEffect, useState, useMemo, useSyncExternalStore } from "react";
 import styles from "./TOC.module.scss";
 
 // Function to get 1rem value from the browser and memoize it
@@ -42,38 +42,47 @@ const useElementPositions = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const tocBoundaries = document.querySelectorAll("[data-toc-id]");
-    const elements = Array.from(tocBoundaries);
-    const boundaryPositions = elements.map(
-      (el, i) =>
-        (i === 0 ? el.getBoundingClientRect().bottom : el.getBoundingClientRect().top) +
-        window.scrollY,
-    );
+    const measurePositions = () => {
+      const tocBoundaries = document.querySelectorAll("[data-toc-id]");
+      const elements = Array.from(tocBoundaries);
+      const boundaryPositions = elements.map(
+        (el, i) =>
+          (i === 0 ? el.getBoundingClientRect().bottom : el.getBoundingClientRect().top) +
+          window.scrollY,
+      );
 
-    const tocHeaders = document.querySelectorAll("[data-toc-key]");
-    const headers = Array.from(tocHeaders);
-    const headerPositions = headers.reduce((acc, el) => {
-      const key = el.getAttribute("data-toc-key");
-      const top = el.getBoundingClientRect().top + window.scrollY;
-      return { ...acc, [key as string]: top };
-    }, {});
+      const tocHeaders = document.querySelectorAll("[data-toc-key]");
+      const headers = Array.from(tocHeaders);
+      const headerPositions = headers.reduce((acc, el) => {
+        const key = el.getAttribute("data-toc-key");
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        return { ...acc, [key as string]: top };
+      }, {});
 
-    setPositions({
-      articleStart: boundaryPositions[0],
-      articleEnd: boundaryPositions[1],
-      headerPositions,
-    });
+      setPositions({
+        articleStart: boundaryPositions[0],
+        articleEnd: boundaryPositions[1],
+        headerPositions,
+      });
+    };
+
+    // The observer measures once when it starts, and again whenever the page height changes,
+    // for example when images above a header have loaded
+    const resizeObserver = new ResizeObserver(measurePositions);
+    resizeObserver.observe(document.body);
+    return () => resizeObserver.disconnect();
   }, []);
 
   return positions;
 };
 
-export const TOC: React.FC<{ items: { title: string; _key: string }[] }> = ({ items }) => {
-  const [isClient, setIsClient] = useState(false);
+// True on the client and false on the server, so the first client render matches the server
+const subscribeToNothing = () => () => {};
+const getIsClient = () => true;
+const getIsServer = () => false;
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+export const TOC: React.FC<{ items: { title: string; _key: string }[] }> = ({ items }) => {
+  const isClient = useSyncExternalStore(subscribeToNothing, getIsClient, getIsServer);
 
   const remValue = useRemValue();
   const scrollPosition = useScrollPosition();

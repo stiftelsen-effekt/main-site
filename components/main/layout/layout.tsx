@@ -186,11 +186,9 @@ export const Layout = withStaticProps(
 const PreviewFooter: React.FC<Awaited<ReturnType<typeof Footer.getStaticProps>>> = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query);
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <Footer {...(props as any)} />;
+  return <Footer {...(props as any)} data={data} />;
 };
 
 const PreviewWidgetPane: React.FC<
@@ -198,9 +196,7 @@ const PreviewWidgetPane: React.FC<
 > = (props) => {
   const [result] = useLiveQuery(props.data.result, props.data.query);
 
-  if (result) {
-    props.data.result = result;
-  }
+  const data = result ? { ...props.data, result } : props.data;
 
-  return <WidgetPane {...(props as any)} />;
+  return <WidgetPane {...(props as any)} data={data} />;
 };

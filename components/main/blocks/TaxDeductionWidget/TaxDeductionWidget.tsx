@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styles from "./TaxDeductionWidget.module.scss";
 import { TaxDeductionBarChart } from "./TaxDeductionBarChart";
 import {
@@ -45,27 +45,12 @@ export const TaxDeductionWidget: React.FC<{
   locale,
 }) => {
   const plausible = usePlausible();
-  const [sum, setSum] = React.useState(suggestedSums.slice(-2)[0].toString());
-  const [lastValidSum, setLastValidSum] = useState(suggestedSums.slice(-2)[0]);
+  const [sum, setSum] = React.useState(() =>
+    formatAmountInput(suggestedSums.slice(-2)[0].toString(), locale),
+  );
+  const lastValidSum = parseAmountInput(sum);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    if (sum === "") {
-      setLastValidSum(0);
-      return;
-    }
-
-    const sumNumber = Number(sum.replace(/\D/g, ""));
-    if (!isNaN(sumNumber)) {
-      setLastValidSum(sumNumber);
-
-      const formattedSum = thousandize(sumNumber, locale);
-      if (formattedSum !== sum) {
-        setSum(formattedSum);
-      }
-    }
-  }, [sum]);
 
   const taxBenefit =
     lastValidSum >= minimumTreshold
@@ -141,7 +126,7 @@ export const TaxDeductionWidget: React.FC<{
                 type={"tel"}
                 placeholder="0"
                 onChange={(val) => {
-                  setSum(val);
+                  setSum(formatAmountInput(val, locale));
                 }}
                 denomination={"kr"}
                 variant="underlined"
@@ -209,3 +194,10 @@ export const TaxDeductionWidget: React.FC<{
     </div>
   );
 };
+
+/** The amount typed into an input, ignoring the thousand separators. An empty input is 0. */
+const parseAmountInput = (value: string): number => Number(value.replace(/\D/g, ""));
+
+/** Formats what the user typed with thousand separators, keeping an empty input empty. */
+const formatAmountInput = (value: string, locale: string): string =>
+  value === "" ? "" : thousandize(parseAmountInput(value), locale);

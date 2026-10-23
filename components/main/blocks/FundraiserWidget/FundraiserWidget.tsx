@@ -64,6 +64,12 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
     goToNextStep,
     goToPreviousStep,
   } = usePaneTransition(4);
+  const [
+    organizationInfoPaneRef,
+    donationDetailsPaneRef,
+    paymentMethodPaneRef,
+    bankTransferPaneRef,
+  ] = paneRefs;
   const { loading, kid, registerDonation } = useRegisterDonation({
     fundraiserId,
     organizationInfo,
@@ -154,7 +160,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
       >
         <div className={styles["donation-widget__inner"]}>
           <OrganizationInfoPane
-            ref={paneRefs[0]}
+            ref={organizationInfoPaneRef}
             className={getPaneClassName(0)}
             visible={isPaneVisible(0)}
             organizationInfo={{
@@ -168,7 +174,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
           />
 
           <DonationDetailsPane
-            ref={paneRefs[1]}
+            ref={donationDetailsPaneRef}
             className={getPaneClassName(1)}
             visible={isPaneVisible(1)}
             formData={formData}
@@ -189,7 +195,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
           />
 
           <PaymentMethodPane
-            ref={paneRefs[2]}
+            ref={paymentMethodPaneRef}
             className={getPaneClassName(2)}
             visible={isPaneVisible(2)}
             formData={formData}
@@ -228,7 +234,7 @@ export const FundraiserWidget: React.FC<DonationWidgetProps> = ({
           />
 
           <BankTransferPane
-            ref={paneRefs[3]}
+            ref={bankTransferPaneRef}
             className={getPaneClassName(3)}
             visible={isPaneVisible(3)}
             kid={kid}

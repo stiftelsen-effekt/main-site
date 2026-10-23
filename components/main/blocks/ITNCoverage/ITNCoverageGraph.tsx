@@ -30,25 +30,21 @@ export const ITNCoverageGraph: React.FC<{ year: number }> = ({ year }) => {
     return null;
   };
 
-  const resizeGraph = useCallback(() => {
+  // Store the new size on resize, which redraws the graph through the effect below
+  const debouncedResizeGraph = useDebouncedCallback(() => {
     if (container.current) {
       container.current.innerHTML = "";
-      setSize({ width: container.current!.clientWidth, height: container.current!.clientHeight });
-      drawGraph();
+      setSize({ width: container.current.clientWidth, height: container.current.clientHeight });
     }
-  }, [container]);
-  const debouncedResizeGraph = useDebouncedCallback(() => resizeGraph(), 1000);
+  }, 1000);
 
   useEffect(() => {
     if (container.current) {
       setSize({ width: container.current.clientWidth, height: container.current.clientHeight });
-      window.addEventListener("resize", () => {
-        if (container.current) {
-          debouncedResizeGraph();
-        }
-      });
+      window.addEventListener("resize", debouncedResizeGraph);
+      return () => window.removeEventListener("resize", debouncedResizeGraph);
     }
-  }, [container]);
+  }, [container, debouncedResizeGraph]);
 
   const drawGraph = useCallback(() => {
     if (container.current) {
