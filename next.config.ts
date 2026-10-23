@@ -1,6 +1,7 @@
 import { NextConfig } from "next";
 import { withPlausibleProxy } from "next-plausible";
 import { getPlausibleScriptSrc, PLAUSIBLE_PROXY_PATHS } from "./lib/plausible";
+import { getSanityRedirects } from "./lib/sanityRedirects";
 
 const STUDIO_REWRITE = {
   source: "/studio/:path*",
@@ -81,7 +82,11 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
+    const sanityRedirects = await getSanityRedirects();
     return [
+      // CMS-managed redirects are evaluated first so they can override legacy rules.
+      // Add new country-scoped redirects in Sanity (Redirects) rather than here.
+      ...sanityRedirects,
       {
         source: "/faq",
         has: [
