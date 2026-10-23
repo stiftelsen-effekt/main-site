@@ -28,7 +28,11 @@ export const VideoEmbed: React.FC<{ id: string; thumbnail: SanityImageObject }> 
             }
           }}
         >
-          <ResponsiveImage image={thumbnail} layout={"fill"} />
+          <ResponsiveImage
+            image={thumbnail}
+            layout={"fill"}
+            sizes="(min-width: 1920px) 1714px, 90vw"
+          />
         </div>
       )}
       <YouTube

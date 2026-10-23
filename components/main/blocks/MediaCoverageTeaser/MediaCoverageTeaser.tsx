@@ -32,7 +32,11 @@ export const MediaCoverageTeaser: React.FC<{
             <div key={index} className={styles.coverageItem}>
               <div className={styles.logo}>
                 {item.publication_logo && (
-                  <ResponsiveImage image={item.publication_logo} layout="fill" />
+                  <ResponsiveImage
+                    image={item.publication_logo}
+                    layout="fill"
+                    sizes="(min-width: 1920px) 399px, (min-width: 1024px) calc(22.5vw - 24px), calc(45vw - 16px)"
+                  />
                 )}
               </div>
               <div className={styles.details}>

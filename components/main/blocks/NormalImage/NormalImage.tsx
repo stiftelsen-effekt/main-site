@@ -16,7 +16,12 @@ export const NormalImage: React.FC<NormalImage> = ({ alt, image, caption, graysc
 
   return (
     <div className={classNames.join(" ")}>
-      <ResponsiveImage image={image} alt={alt} layout={"responsive"} />
+      <ResponsiveImage
+        image={image}
+        alt={alt}
+        layout={"responsive"}
+        sizes="(min-width: 1521px) 760px, (min-width: 1181px) 640px, (min-width: 845px) 760px, 90vw"
+      />
       <span className="caption">{caption}</span>
     </div>
   );

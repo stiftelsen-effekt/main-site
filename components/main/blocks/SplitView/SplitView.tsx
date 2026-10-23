@@ -55,7 +55,16 @@ export const SplitView: React.FC<SplitView> = ({
         {links?.length > 0 && <Links links={links} />}
       </div>
       <div className={styles.splitviewimage}>
-        {image && <ResponsiveImage image={image} layout="responsive" />}
+        {image && (
+          <ResponsiveImage
+            image={image}
+            layout="responsive"
+            /* With dark text the block bleeds into the page padding on mobile */
+            sizes={`(min-width: 1920px) 686px, (min-width: 1181px) 36vw, ${
+              darktext ? "100vw" : "90vw"
+            }`}
+          />
+        )}
       </div>
     </div>
   );

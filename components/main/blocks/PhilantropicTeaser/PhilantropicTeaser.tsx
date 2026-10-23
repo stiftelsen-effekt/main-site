@@ -6,6 +6,10 @@ import styles from "./PhilantropicTeaser.module.scss";
 import LinkButton from "../../../shared/components/EffektButton/LinkButton";
 import { useRouterContext } from "../../../../context/RouterContext";
 
+/* Two columns inside the right half of a two-column grid; one column of two on mobile */
+const PEOPLE_SIZES =
+  "(min-width: 1920px) 354px, (min-width: 1521px) calc(22.5vw - 75px), (min-width: 1181px) calc(22.5vw - 60px), calc(45vw - 8px)";
+
 export const PhilantropicTeaser: React.FC<{
   title: string;
   description: any[];
@@ -48,7 +52,13 @@ export const PhilantropicTeaser: React.FC<{
       </div>
       <div className={styles.people}>
         {people.map((person) => (
-          <Contributor {...person} key={person._id} locale={locale} contactLink />
+          <Contributor
+            {...person}
+            key={person._id}
+            locale={locale}
+            sizes={PEOPLE_SIZES}
+            contactLink
+          />
         ))}
       </div>
     </div>

@@ -18,6 +18,9 @@ import { stegaClean } from "@sanity/client/stega";
 import { CustomLink } from "../CustomLink/CustomLink";
 import { LiveQuery } from "../../LiveQuery";
 
+/* .logoWrapper is 250px wide on large screens, .logoWrapperImage 160px below that */
+const LOGO_SIZES = "(min-width: 1521px) 250px, 160px";
+
 export type NavLink = {
   _type: "navitem";
   _key: string;
@@ -226,6 +229,7 @@ export const Navbar = withStaticProps(
                 <ResponsiveImage
                   image={dashboardLogo}
                   onClick={() => setExpanded(false)}
+                  sizes={LOGO_SIZES}
                   priority
                 />
               </CustomLink>
@@ -243,7 +247,12 @@ export const Navbar = withStaticProps(
                   display: "inline-block",
                 }}
               >
-                <ResponsiveImage image={logo} onClick={() => setExpanded(false)} priority />
+                <ResponsiveImage
+                  image={logo}
+                  onClick={() => setExpanded(false)}
+                  sizes={LOGO_SIZES}
+                  priority
+                />
               </CustomLink>
             </div>
           )}

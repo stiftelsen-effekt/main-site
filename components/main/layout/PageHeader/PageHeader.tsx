@@ -44,7 +44,12 @@ export const PageHeader: React.FC<{
       <div data-cy="header-container">
         {layout !== "coverPhoto" && title && <h1>{title}</h1>}
         {layout === "coverPhoto" && coverPhoto && (
-          <ResponsiveImage image={coverPhoto} alt={title} layout={"responsive"} sizes="100vw" />
+          <ResponsiveImage
+            image={coverPhoto}
+            alt={title}
+            layout={"responsive"}
+            sizes="(min-width: 1920px) 1714px, 90vw"
+          />
         )}
       </div>
       {hasmetacontent ? (
