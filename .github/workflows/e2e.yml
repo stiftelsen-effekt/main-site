@@ -11,9 +11,21 @@ on:
       base-url:
         required: true
         type: string
+    secrets:
+      CYPRESS_AUTH_DOMAIN:
+        required: true
+      CYPRESS_AUTH_USERNAME:
+        required: true
+      CYPRESS_AUTH_PASSWORD:
+        required: true
+      CYPRESS_RECORD_KEY:
+        required: true
+permissions: {}
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes
@@ -24,19 +36,21 @@ jobs:
         containers: [1, 2, 3, 4, 5, 6]
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v1
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
       # Cypress 16 requires Node 22/24; install from .nvmrc rather than
       # relying on whatever Node the runner image ships with.
       # The Cypress action installs dependencies with pnpm when it finds pnpm-lock.yaml.
       # The pnpm version comes from packageManager in package.json.
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .nvmrc
       - name: Run Cypress 🌲
-        uses: cypress-io/github-action@v7
+        uses: cypress-io/github-action@c541a95ea92d9239347a2355f2e895cd4b3f8060 # v7.4.6
         with:
           config-file: ${{ inputs.config-file }}
           record: true
