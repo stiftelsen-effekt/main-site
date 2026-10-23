@@ -10,7 +10,7 @@
     "sanity:list:pages": "dotenv run -f .env.local -- npm run list:pages --prefix studio",
     "deploy-dk-dataset": "node scripts/deploy-dk-dataset.js",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . --pass-on-unpruned-suppressions",
     "cypress:no": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-no.config.ts",
     "cypress:no:headless": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress run --config-file cypress-no.config.ts",
     "cypress:dk": "cross-env CYPRESS_PATH=node_modules/.bin/cypress cypress open --config-file cypress-dk.config.ts",

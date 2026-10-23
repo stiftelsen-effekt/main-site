@@ -213,6 +213,18 @@ Currently, we have two types of tests. Unit tests and end-to-end tests.
 
 Unit tests are located in the `__tests__` folder. We use [Jest](https://jestjs.io/) as our test runner. To run the tests, run `pnpm run test`.
 
+### Lint, typecheck and CI
+
+The `checks` workflow runs `pnpm typecheck`, `pnpm test` and `pnpm lint` on every pull request and on pushes to `main`.
+
+Lint errors that existed before the workflow was added are recorded in `eslint-suppressions.json` ([ESLint bulk suppressions](https://eslint.org/docs/latest/use/suppressions)), so CI only fails on new errors. When you fix suppressed errors, remove the stale entries with:
+
+```sh
+pnpm exec eslint . --prune-suppressions
+```
+
+`pnpm lint` passes with `--pass-on-unpruned-suppressions`, so stale entries don't fail CI, but please prune them anyway. Don't add new suppressions to get around a lint error.
+
 ### E2E
 
 Tests can be found in the `cypress` folder. We utilize [Cypress](https://www.cypress.io/) for end-to-end testing. To execute the tests, initiate the development server by running `pnpm run dev` with either the Norwegian or Swedish production Sanity datasets specified in `.env.local`. After that, run either `pnpm run cypress:se` or `pnpm run cypress:no` to execute the tests for the corresponding domain.
