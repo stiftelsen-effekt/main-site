@@ -187,7 +187,9 @@ const inferPageTypeFromPath = async (path: string[]) => {
   const isArticlesPage = compareArrays(path.slice(0, articlesPagePath.length), articlesPagePath);
   if (isArticlesPage) return PageType.ArticlesPage;
 
-  const isResultsPage = compareArrays(path.slice(0, resultsPagePath.length), resultsPagePath);
+  const isResultsPage = resultsPagePath
+    ? compareArrays(path.slice(0, resultsPagePath.length), resultsPagePath)
+    : false;
   if (isResultsPage) return PageType.ResultsPage;
 
   const isDashboard = dashboardPath

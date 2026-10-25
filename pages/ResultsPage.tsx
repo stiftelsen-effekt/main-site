@@ -26,8 +26,11 @@ const fetchResultsPageSlug = groq`
 }
 `;
 
+// Sites without a results page in Sanity (e.g. geeffektivt.se) get null, so no results page is
+// built and the results API isn't called.
 export const getResultsPagePath = async () => {
-  const { page } = await getClient().fetch<{ page: { slug: string } }>(fetchResultsPageSlug);
+  const { page } = await getClient().fetch<{ page: { slug: string } | null }>(fetchResultsPageSlug);
+  if (!page?.slug) return null;
   return stegaClean(page.slug).split("/");
 };
 
