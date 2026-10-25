@@ -3,8 +3,10 @@ import { ConsentState } from "../../../proxy.page";
 import { getClient } from "../../../lib/sanity.client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Check for secret to confirm this is a valid request
-  if (req.query.secret !== process.env.REVALIDATE_TOKEN) {
+  // Check for secret to confirm this is a valid request. Reject everything if the token isn't
+  // configured, otherwise a request without a secret would match the missing token.
+  const token = process.env.REVALIDATE_TOKEN;
+  if (!token || req.query.secret !== token) {
     return res.status(401).json({ message: "Invalid token" });
   }
 
