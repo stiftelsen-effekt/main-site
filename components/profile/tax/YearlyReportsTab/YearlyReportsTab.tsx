@@ -102,63 +102,7 @@ export const YearlyReportsTab: React.FC<{
       <h4 className={styles.header}>Dine årsoppgaver</h4>
 
       {reportsData.map((report: TaxYearlyReport) => {
-        const sumEanWithoutDeduction = report.sumDonationsWithoutTaxUnit.channels
-          .filter((c) => c.channel === "EAN Giverportal")
-          .reduce((acc: number, missing) => {
-            if (missing.channel === "EAN Giverportal") {
-              return acc + missing.sumDonations;
-            }
-            return acc;
-          }, 0);
-
-        const sumEanWithDeduction = report.units
-          .map((u) => u.channels.find((c) => c.channel === "EAN Giverportal"))
-          .reduce((acc: number, channel) => {
-            if (channel) {
-              return acc + channel?.sumDonations || 0;
-            }
-            return acc;
-          }, 0);
-
-        const sumEanDonations = sumEanWithDeduction + sumEanWithoutDeduction;
-
-        const eanDistribution: Distribution = {
-          kid: "EAN Giverportal",
-          taxUnitId: null,
-          donorId: parseInt(donor.id),
-          causeAreas: [
-            {
-              id: -1,
-              percentageShare: "100",
-              standardSplit: true,
-              organizations: [
-                {
-                  id: 1,
-                  name: "GiveWell",
-                  percentageShare: "100",
-                },
-              ],
-            },
-          ],
-        };
-        distributionsMap.set("EAN Giverportal", eanDistribution);
-
-        const fakeEanDonation = {
-          id: Number.MAX_SAFE_INTEGER,
-          KID: "EAN Giverportal",
-          sum: sumEanDonations.toString(),
-          timestamp: new Date(2022, 6, 1).toISOString(),
-          donor: donor.name,
-          donorId: parseInt(donor.id),
-          email: donor.email,
-          paymentMethod: "Bank",
-          transactionCost: "0",
-          metaOwnerId: 3,
-        };
-
-        const mergedDonations = [...donations, fakeEanDonation];
-
-        const filteredDonations = mergedDonations.filter(
+        const filteredDonations = donations.filter(
           (donation: Donation) => new Date(donation.timestamp).getFullYear() === report.year,
         );
 
