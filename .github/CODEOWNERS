@@ -2,11 +2,15 @@
 # A PR needs an approval from an owner of every file it touches.
 
 # Everything not listed below: payments, Min side, API routes, lib, util,
-# Sanity studio, dependencies, CI and config.
+# Studio config and plugins, dependencies, CI and config.
 *  @fellmirr
 
-# Display components and styling. Elise can approve these after checking the
-# Vercel preview.
+# Display components, styling, and the Sanity schemas and queries that new
+# blocks need. Elise can approve these after checking the Vercel preview.
+/_queries.ts                     @EliseAndresen @fellmirr
+/studio/schemas/                 @EliseAndresen @fellmirr
+/studio/components/              @EliseAndresen @fellmirr
+/studio/validators/              @EliseAndresen @fellmirr
 /components/main/blocks/         @EliseAndresen @fellmirr
 /components/main/layout/         @EliseAndresen @fellmirr
 /components/shared/components/   @EliseAndresen @fellmirr
