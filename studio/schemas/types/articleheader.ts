@@ -17,12 +17,14 @@ export default defineType({
       name: "title",
       type: "string",
       title: "Title",
+      validation: (Rule) => Rule.max(80).warning("Titles should not exceed 80 characters."),
     }),
     defineField({
       name: "inngress",
       title: "Inngress",
       type: "text",
       rows: 3,
+      validation: (Rule) => Rule.max(200).warning("The ingress should not exceed 200 characters."),
     }),
     defineField({
       name: "published",
