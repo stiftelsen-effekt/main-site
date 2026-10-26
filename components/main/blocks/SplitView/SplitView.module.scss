@@ -150,6 +150,12 @@
     padding: 4rem 5vw;
   }
 
+  /* Without the dark background, side padding only pushes the text in from the image edges */
+  .splitview:not(.darktext) .splitviewtext {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .splitviewtext p,
   .richtext,
   .form {
