@@ -1,0 +1,44 @@
+# The last matching pattern wins, so later lines override earlier ones.
+# A PR needs an approval from an owner of every file it touches.
+
+# Everything not listed below: payments, Min side, API routes, lib, util,
+# Sanity studio, dependencies, CI and config.
+*  @fellmirr
+
+# Display components and styling. Elise can approve these after checking the
+# Vercel preview.
+/components/main/blocks/         @EliseAndresen @fellmirr
+/components/main/layout/         @EliseAndresen @fellmirr
+/components/shared/components/   @EliseAndresen @fellmirr
+/components/shared/layout/       @EliseAndresen @fellmirr
+/styles/                         @EliseAndresen @fellmirr
+
+# Exceptions inside those folders: donations and payments, forms that send
+# personal data, raw HTML, tracking and consent, and Min side styling.
+/components/shared/components/Widget/            @fellmirr
+/components/main/blocks/DonationWidgetBlock/     @fellmirr
+/components/main/blocks/FundraiserWidget/        @fellmirr
+/components/main/blocks/DKMembershipDisplay/     @fellmirr
+/components/main/blocks/DKMembershipWidget/      @fellmirr
+/components/main/blocks/DKRenewPayment/          @fellmirr
+/components/main/blocks/DKGavebrevTaxWidget/     @fellmirr
+/components/main/blocks/TaxDeductionWidget/      @fellmirr
+/components/main/blocks/PlausibleRevenueTracker/ @fellmirr
+/components/main/blocks/FormSparkForm/           @fellmirr
+/components/main/blocks/NewsletterSignup/        @fellmirr
+/components/main/blocks/SplitView/SplitViewForm.tsx @fellmirr
+/components/main/blocks/HTMLEmbed/               @fellmirr
+/components/main/blocks/SplitViewHtml/           @fellmirr
+/components/main/layout/layout.tsx               @fellmirr
+/components/main/layout/PreviewBlock/            @fellmirr
+/components/main/layout/WidgetPane/              @fellmirr
+/components/shared/layout/Layout/                @fellmirr
+/components/shared/layout/CookieBanner/          @fellmirr
+/components/shared/layout/GoogleAnalytics.tsx    @fellmirr
+/components/shared/layout/GoogleTagManager.tsx   @fellmirr
+/components/shared/layout/HotJar.tsx             @fellmirr
+/components/shared/layout/MetaPixel.tsx          @fellmirr
+/styles/Agreements.module.css                    @fellmirr
+/styles/Donations.module.css                     @fellmirr
+/styles/Profile.module.css                       @fellmirr
+/styles/Tax.module.css                           @fellmirr
