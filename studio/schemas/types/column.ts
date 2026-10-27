@@ -1,5 +1,6 @@
 import { Type } from "react-feather";
 import { defineType, defineField } from "sanity";
+import { BlockTypePresets } from "../utils/blockContentHelpers";
 
 export default defineType({
   name: "column",
@@ -13,10 +14,17 @@ export default defineType({
       title: "Title",
     }),
     defineField({
+      name: "richText",
+      type: "array",
+      title: "Rich text",
+      of: [BlockTypePresets.withoutCitations],
+    }),
+    defineField({
       name: "paragraph",
       type: "text",
       rows: 5,
-      title: "Paragraph",
+      title: "LEGACY paragraph",
+      description: "Existing content is retained and displayed until rich text is added.",
     }),
     defineField({
       name: "links",

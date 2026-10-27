@@ -463,6 +463,13 @@ export const pageContentQuery = `content[hidden!=true] {
       ...,
       columns[] {
         ...,
+        richText[] {
+          ...,
+          markDefs[] {
+            ${linksSelectorQuery}
+            _type != 'citation' => @ && _type != 'link' && _type != 'navitem',
+          }
+        },
         links[] {
           ${linksSelectorQuery}
         }
