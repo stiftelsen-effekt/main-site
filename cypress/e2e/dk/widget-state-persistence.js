@@ -5,6 +5,7 @@ import {
   setGlobalCut,
   goToDonorPane,
   backToSelection,
+  fillDonorInfo,
 } from "./support/widget-setup.js";
 
 // Switching selection deliberately never discards what the donor already typed (see
@@ -55,6 +56,18 @@ describe("DK Widget - State Persistence", () => {
     cy.get("[data-cy=cause-area-multiple]").click();
     cy.get("[data-cy=donation-sum-input-1]").should("have.value", "300");
     cy.get("[data-cy=donation-sum-input-2]").should("have.value", "200");
+  });
+
+  it("Should keep the donor information when going back from the donor pane", () => {
+    cy.get("[data-cy=cause-area-1]").click();
+    setCauseAreaAmount(1, 500);
+    goToDonorPane();
+    fillDonorInfo();
+
+    cy.get("[data-cy=back-button]").click();
+    goToDonorPane();
+    cy.get("[data-cy=email-input]").should("have.value", "donor@email.dk");
+    cy.get("[data-cy=privacy-policy-checkbox]").should("be.checked");
   });
 
   it("Should preserve custom organization distribution", () => {

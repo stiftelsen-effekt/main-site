@@ -1,7 +1,7 @@
 import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { OrganizationShare } from "../../types/Temp";
-import { VippsAgreement } from "../state";
+import { DonorFormDraft, VippsAgreement } from "../state";
 
 export const SELECT_PAYMENT_METHOD = "SELECT_PAYMENT_METHOD";
 export const SELECT_TAX_DEDUCTION = "SELECT_TAX_DEDUCTION";
@@ -36,6 +36,7 @@ export const SET_SHOW_ALL_ORGANIZATIONS = "SET_SHOW_ALL_ORGANIZATIONS";
 export const SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT =
   "SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT";
 export const SET_REFERRAL_CODE = "SET_REFERRAL_CODE";
+export const SET_DONOR_FORM_DRAFT = "SET_DONOR_FORM_DRAFT";
 
 interface SelectPaymentMethod {
   type: typeof SELECT_PAYMENT_METHOD;
@@ -282,6 +283,13 @@ interface SetReferralCode {
   };
 }
 
+interface SetDonorFormDraft {
+  type: typeof SET_DONOR_FORM_DRAFT;
+  payload: {
+    draft: DonorFormDraft;
+  };
+}
+
 export type DonationActionTypes =
   | SelectPaymentMethod
   | SelectTaxDeduction
@@ -313,4 +321,5 @@ export type DonationActionTypes =
   | SetPrefilledShares
   | SetShowAllOrganizations
   | SetHasManuallyEditedPrefilledOrgAmount
-  | SetReferralCode;
+  | SetReferralCode
+  | SetDonorFormDraft;
