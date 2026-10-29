@@ -167,6 +167,11 @@ button {
      a mid grey inside the widget pane, so it reads against both colour schemes. */
   scrollbar-width: thin;
   scrollbar-color: var(--primary-hover) transparent;
+  /* On phones the widget is laid out 576px wide and scaled down to the screen, so iOS
+     Safari sees a block wider than the viewport and still enlarges its text with the
+     100% value set on html. `none` turns that off inside the widget. */
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 /* Inline (DK) card: no internal scrollbar. The page scrolls, so the track
