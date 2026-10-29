@@ -1,0 +1,61 @@
+.giftcards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  align-items: stretch;
+  gap: 3rem 2rem;
+  width: 100%;
+}
+
+.giftcarditem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.giftcarditemimage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.giftcarditemtext {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.giftcarditemtext h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+}
+
+.giftcarditemprice {
+  margin: 0 0 1.5rem 0;
+}
+
+.giftcarditem ul {
+  list-style: none;
+  padding-left: 0;
+  width: 100%;
+  margin-top: auto;
+}
+
+.giftcarditem ul li {
+  padding: 0;
+}
+
+.giftcarditem button,
+.giftcarditem a {
+  width: 100%;
+}
+
+@media only screen and (max-width: 1180px) {
+  .giftcards {
+    grid-template-columns: 1fr;
+  }
+}

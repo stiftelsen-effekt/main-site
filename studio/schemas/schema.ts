@@ -58,6 +58,8 @@ import autogiro from "./types/paymentmethods/autogiro";
 import splitviewhtml from "./types/splitviewhtml";
 import category from "./types/category";
 import giftcardteaser from "./types/giftcardteaser";
+import giftcards from "./types/giftcards";
+import giftcarditem from "./types/giftcarditem";
 import avtalegiro from "./types/paymentmethods/avtalegiro";
 import agreementlistconfiguration from "./types/lists/agreements/agreementlistconfiguration";
 import agreementlistdetailsconfiguration from "./types/lists/agreements/agreementlistdetailsconfiguration";
@@ -180,6 +182,8 @@ export const types = [
   taxdeduction,
   taxstatements,
   giftcardteaser,
+  giftcards,
+  giftcarditem,
   dateselectorconfig,
   discountratecomparison,
   graphcontext,
