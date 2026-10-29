@@ -20,7 +20,9 @@ export const ProgressBar: React.FC<{ inline?: boolean; numberOfPanes?: number }>
   const dispatch = useDispatch<Dispatch<LayoutActionTypes>>();
   const paneNumber = useSelector((state: State) => state.layout.paneNumber);
   const [widgetContext, setWidgetContext] = useContext(WidgetContext);
-  const hideBackButton = paneNumber === 0 || paneNumber >= numberOfPanes - 1;
+  // The payment pane keeps its back button so donors can correct a mistake. Going back after
+  // a bank donation is registered only leaves an unused KID behind.
+  const hideBackButton = paneNumber === 0;
 
   const points = [];
   for (let i = 0; i < numberOfPanes; i++) {

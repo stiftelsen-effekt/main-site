@@ -6,6 +6,7 @@ import {
   goToDonorPane,
   backToSelection,
   fillDonorInfo,
+  setupDonationIntercepts,
 } from "./support/widget-setup.js";
 
 // Switching selection deliberately never discards what the donor already typed (see
@@ -66,6 +67,22 @@ describe("DK Widget - State Persistence", () => {
 
     cy.get("[data-cy=back-button]").click();
     goToDonorPane();
+    cy.get("[data-cy=email-input]").should("have.value", "donor@email.dk");
+    cy.get("[data-cy=privacy-policy-checkbox]").should("be.checked");
+  });
+
+  it("Should let the donor go back from the payment pane and keep the donor information", () => {
+    setupDonationIntercepts();
+    cy.get("[data-cy=cause-area-1]").click();
+    setCauseAreaAmount(1, 500);
+    goToDonorPane();
+    fillDonorInfo();
+
+    cy.get("[data-cy=payment-method-bank]").click({ force: true });
+    cy.wait(["@registerDonation", "@bankPending"]);
+    cy.get("[data-cy=kidNumber]").should("be.visible");
+
+    cy.get("[data-cy=back-button]").should("not.be.disabled").click();
     cy.get("[data-cy=email-input]").should("have.value", "donor@email.dk");
     cy.get("[data-cy=privacy-policy-checkbox]").should("be.checked");
   });
