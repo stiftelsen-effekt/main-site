@@ -32,6 +32,7 @@ import {
   SET_SHOW_ALL_ORGANIZATIONS,
   SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
   SET_REFERRAL_CODE,
+  SET_DONOR_FORM_DRAFT,
 } from "./types";
 import { Reducer } from "@reduxjs/toolkit";
 
@@ -224,6 +225,13 @@ export const donationReducer: Reducer<Donation, DonationActionTypes> = (
       state = {
         ...state,
         referralCode: trimmed || undefined,
+      };
+      break;
+    }
+    case SET_DONOR_FORM_DRAFT: {
+      state = {
+        ...state,
+        donorFormDraft: action.payload.draft,
       };
       break;
     }

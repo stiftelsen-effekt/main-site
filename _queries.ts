@@ -224,21 +224,6 @@ export const useDKAgreements = (user: User | undefined, fetchToken: getAccessTok
   };
 };
 
-export const useAnonymousVippsAgreement = (agreementUrlCode: string) => {
-  const { data, error, isValidating } = useSWR(
-    `/vipps/agreement/anonymous/${agreementUrlCode}`,
-    (url) => fetcher(url),
-  );
-  const loading = isPending(data, error);
-
-  return {
-    loading,
-    isValidating,
-    data,
-    error,
-  };
-};
-
 export const useAgreementFeedbackTypes = () => {
   const { data, error, isValidating } = useSWR<
     {

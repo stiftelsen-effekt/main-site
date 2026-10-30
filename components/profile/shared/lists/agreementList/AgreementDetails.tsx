@@ -226,15 +226,20 @@ export const AgreementDetails: React.FC<{
       let result = null;
 
       if (sumChanged) {
-        result = await updateVippsAgreementPrice(endpoint, agreementSum, token);
+        result = await updateVippsAgreementPrice(getUserId(user), agreementId, agreementSum, token);
       }
 
       if (dayChanged) {
-        result = await updateVippsAgreementDay(endpoint, day, token);
+        result = await updateVippsAgreementDay(getUserId(user), agreementId, day, token);
       }
 
       if (distributionChanged || sumChanged) {
-        result = await updateVippsAgreementDistribution(endpoint, distributionPayload, token);
+        result = await updateVippsAgreementDistribution(
+          getUserId(user),
+          agreementId,
+          distributionPayload,
+          token,
+        );
       }
 
       if (result != null) {
@@ -300,7 +305,7 @@ export const AgreementDetails: React.FC<{
     setLightboxOpen(false);
     const token = await getAccessToken(getAccessTokenSilently);
     if (type === "Vipps") {
-      const cancelled = await cancelVippsAgreement(endpoint, token);
+      const cancelled = await cancelVippsAgreement(getUserId(user), agreementId, token);
       if (cancelled) {
         successToast(configuration.toasts_configuration.success_text);
         agreementCancelled(type, agreementId, agreementKid);
