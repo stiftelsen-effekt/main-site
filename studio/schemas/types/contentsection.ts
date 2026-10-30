@@ -86,6 +86,7 @@ export default defineType({
         { type: "organizationslist" },
         { type: "opendistributionbutton" },
         { type: "giftcardteaser" },
+        { type: "giftcards" },
         { type: "teamintroduction" },
         { type: "discountratecomparison" },
         { type: "itncoverage" },

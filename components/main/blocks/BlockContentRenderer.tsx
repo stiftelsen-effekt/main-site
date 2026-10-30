@@ -29,6 +29,7 @@ import { GiveWellStamp } from "./GiveWellStamp/GiveWellStamp";
 import { OrganizationsList } from "./OrganizationsList/OrganizationsList";
 import { SplitViewHtml } from "./SplitViewHtml/SplitViewHtml";
 import { GiftCard } from "./GiftCard/GiftCard";
+import { GiftCards } from "./GiftCards/GiftCards";
 import { BlockTables } from "./BlockTable/BlockTables";
 import { WealthCalculatorPeriodAdjustment } from "../../shared/components/Graphs/Area/AreaGraph";
 import { Accordion } from "./Accordion/Accordion";
@@ -444,6 +445,16 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
                 description={block.description}
                 image={block.image}
                 links={block.links}
+              />
+            );
+          }
+          case "giftcards": {
+            return (
+              <GiftCards
+                key={block._key || block._id}
+                giftcards={(block as any).giftcards}
+                locale={(block as any).locale}
+                currency={(block as any).currency}
               />
             );
           }
