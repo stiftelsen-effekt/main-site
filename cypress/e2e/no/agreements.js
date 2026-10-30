@@ -268,7 +268,7 @@ describe("Agreements page", () => {
       .type("35");
 
     cy.fixture("agreement_distribution_error").then((distributionError) => {
-      cy.intercept("PUT", "/vipps/agreement/*/distribution", {
+      cy.intercept("PUT", "/donors/*/recurring/vipps/*/distribution", {
         statusCode: 400,
         body: distributionError,
       });
@@ -277,12 +277,12 @@ describe("Agreements page", () => {
     /**
      * Stub methods that are not relevant to the update
      */
-    cy.intercept("PUT", "/vipps/agreement/*/chargeDay", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/chargeday", {
       statusCode: 200,
       body: true,
     });
 
-    cy.intercept("PUT", "/vipps/agreement/*/price", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/price", {
       statusCode: 200,
     });
 
@@ -326,7 +326,7 @@ describe("Agreements page", () => {
       .type("20");
 
     const newKid = "000027123123";
-    cy.intercept("PUT", "/vipps/agreement/*/distribution", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/distribution", {
       statusCode: 200,
       body: { KID: newKid },
     }).as("saveDistribution");
@@ -334,12 +334,12 @@ describe("Agreements page", () => {
     /**
      * Stub methods that are not relevant to the update
      */
-    cy.intercept("PUT", "/vipps/agreement/*/chargeDay", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/chargeday", {
       statusCode: 200,
       body: true,
     });
 
-    cy.intercept("PUT", "/vipps/agreement/*/price", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/price", {
       statusCode: 200,
     });
 
@@ -364,7 +364,6 @@ describe("Agreements page", () => {
               force_charge_date: null,
               paused_until_date: null,
               amount: 100,
-              agreement_url_code: "1ijd9n1f0asd",
             },
           ],
         },
@@ -501,14 +500,13 @@ describe("Agreements page", () => {
               force_charge_date: null,
               paused_until_date: null,
               amount: 100,
-              agreement_url_code: "1ijd9n1f0asd",
             },
           ],
         },
       }).as("getVipps");
     });
 
-    cy.intercept("PUT", "/vipps/agreement/*/distribution", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/distribution", {
       statusCode: 200,
       body: { KID: "95231965" },
     });
@@ -516,12 +514,12 @@ describe("Agreements page", () => {
     /**
      * Stub methods that are not relevant to the update
      */
-    cy.intercept("PUT", "/vipps/agreement/*/chargeDay", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/chargeday", {
       statusCode: 200,
       body: true,
     });
 
-    cy.intercept("PUT", "/vipps/agreement/*/price", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/price", {
       statusCode: 200,
     });
 
@@ -585,14 +583,13 @@ describe("Agreements page", () => {
               force_charge_date: null,
               paused_until_date: null,
               amount: 1300,
-              agreement_url_code: "1ijd9n1f0asd",
             },
           ],
         },
       }).as("getVipps");
     });
 
-    cy.intercept("PUT", "/vipps/agreement/*/distribution", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/distribution", {
       statusCode: 200,
       body: { KID: "95231965" },
     }).as("saveDistributionStub");
@@ -600,12 +597,12 @@ describe("Agreements page", () => {
     /**
      * Stub methods that are not relevant to the update
      */
-    cy.intercept("PUT", "/vipps/agreement/*/chargeDay", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/chargeday", {
       statusCode: 200,
       body: true,
     }).as("changeChargeDayStub");
 
-    cy.intercept("PUT", "/vipps/agreement/*/price", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/price", {
       statusCode: 200,
     }).as("changePriceStub");
 
@@ -656,7 +653,6 @@ describe("Agreements page", () => {
               force_charge_date: null,
               paused_until_date: null,
               amount: 100,
-              agreement_url_code: "1ijd9n1f0asd",
             },
           ],
         },
@@ -666,7 +662,7 @@ describe("Agreements page", () => {
     /**
      * Stub methods that are not relevant to the update
      */
-    cy.intercept("PUT", "/vipps/agreement/*/cancel", {
+    cy.intercept("PUT", "/donors/*/recurring/vipps/*/cancel", {
       statusCode: 200,
       body: true,
     });
