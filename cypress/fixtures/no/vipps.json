@@ -9,8 +9,7 @@
     "monthly_charge_day": 10,
     "force_charge_date": null,
     "paused_until_date": null,
-    "amount": 100,
-    "agreement_url_code": "1ijd9n1f0asd"
+    "amount": 100
   },
   {
     "ID": "agr_AwyNSFs",
@@ -22,8 +21,7 @@
     "monthly_charge_day": 11,
     "force_charge_date": null,
     "paused_until_date": null,
-    "amount": 400,
-    "agreement_url_code": "asfj18fn190"
+    "amount": 400
   },
   {
     "ID": "agr_qucArF2",
@@ -35,7 +33,6 @@
     "monthly_charge_day": 20,
     "force_charge_date": null,
     "paused_until_date": null,
-    "amount": 100,
-    "agreement_url_code": "asfijo1j89nf"
+    "amount": 100
   }
 ]

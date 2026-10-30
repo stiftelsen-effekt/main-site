@@ -1,11 +1,8 @@
-import { DateTime } from "luxon";
 import { groq } from "next-sanity";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import "react-toastify/dist/ReactToastify.css";
-import { linksContentQuery, useAnonymousVippsAgreement } from "../../_queries";
+import { linksContentQuery } from "../../_queries";
 import { PageContent } from "../../components/profile/layout/PageContent/PageContent";
-import { AnonymousVippsAgreement } from "../../components/profile/vipps/AnonymousVippsAgreement";
 import { MainHeader } from "../../components/shared/layout/Header/Header";
 import { getClient } from "../../lib/sanity.client";
 import styles from "../../styles/Agreements.module.css";
@@ -46,20 +43,11 @@ export const VippsAnonymousPage = withStaticProps(
     } satisfies GeneralPageProps;
   },
 )(({ data, navbarData, draftMode }) => {
-  const dashboard = data.result.dashboard[0];
-  const router = useRouter();
-  const agreementCode = router.query["agreement-code"] as string;
   const page = data.result.vipps?.[0].anonymous_page;
 
   if (!page) {
     return <div>404{draftMode ? " - Attempting to load preview" : null}</div>;
   }
-
-  const { loading, data: agreementData, error } = useAnonymousVippsAgreement(agreementCode);
-
-  const distribution = agreementData?.distribution;
-  const agreement = agreementData?.agreement;
-  const status = agreement?.status;
 
   return (
     <>
@@ -75,65 +63,12 @@ export const VippsAnonymousPage = withStaticProps(
 
       <PageContent>
         <h3 className={styles.header}>Anonym Vipps-avtale</h3>
-        <div className={styles.gridContainer}>
-          <div className={styles.infoGridCell}>
-            {agreement && !loading && (
-              <>
-                <div className={styles.infoSection}>
-                  <p>
-                    <strong>Sum:</strong> {agreement.amount} kr
-                  </p>
-                  <p>
-                    <strong>Status:</strong>
-                    {"  "}
-                    {status === "ACTIVE" ? "Aktiv" : status === "STOPPED" ? "Avsluttet" : "Inaktiv"}
-                  </p>
-                </div>
-                <div className={styles.infoSection}>
-                  <p>
-                    <strong>Opprettet:</strong>
-                    {"  "}
-                    {DateTime.fromJSDate(new Date(agreement.timestamp_created)).toFormat(
-                      "dd.MM.yyyy",
-                    )}
-                  </p>
-                  <p>
-                    <strong>Trekkdag:</strong> Den {agreement.monthly_charge_day}. hver måned
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
-          <div className={styles.editGridCell}>
-            {/* TODO: Add proper loading and error messages */}
-            {loading && <div>Loading...</div>}
-            {error && <div>Error</div>}
-            {status === "ACTIVE" && (
-              <>
-                <AnonymousVippsAgreement
-                  endpoint={agreementCode}
-                  inputDistribution={distribution}
-                  inputSum={agreement.amount}
-                  inputDate={agreement.monthly_charge_day}
-                />
-              </>
-            )}
-            {status === "STOPPED" && (
-              <>
-                <h5 className={styles.cellTitle}>Avtalen er avsluttet</h5>
-                <p>Avtalen er avsluttet og vil ikke trekkes lenger.</p>
-              </>
-            )}
-            {status !== "STOPPED" && status !== "ACTIVE" && (
-              <>
-                <h5 className={styles.cellTitle}>Avtalen er ikke aktiv</h5>
-                <p>
-                  Årsaken til dette kan være at avtalen ikke er aktivert enda, eller at det er noe
-                  feil med avtalen.
-                </p>
-              </>
-            )}
-          </div>
+        <div className={styles.infoSection}>
+          <p>Du kan stoppe avtalen din når som helst under betalingsavtaler i Vipps-appen.</p>
+          <p>
+            Ønsker du å endre beløp, trekkdag eller fordeling, kan du kontakte oss på{" "}
+            <a href="mailto:donasjon@gieffektivt.no">donasjon@gieffektivt.no</a>, så hjelper vi deg.
+          </p>
         </div>
       </PageContent>
     </>

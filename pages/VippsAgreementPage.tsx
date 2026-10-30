@@ -57,12 +57,6 @@ export const VippsAgreementPage = withStaticProps(
 
   const header = page.header;
 
-  let email;
-  if (typeof window !== "undefined") {
-    let urlParams = new URLSearchParams(window.location.search);
-    email = urlParams.get("email");
-  }
-
   return (
     <>
       <SEO
@@ -86,8 +80,8 @@ export const VippsAgreementPage = withStaticProps(
           {header.inngress}
         </p>
         <p style={{ maxWidth: 740, width: "100%", textAlign: "center" }}>
-          Registrer en bruker med eposten knyttet til din avtale, {email}.<br /> Har du alt
-          registrert en bruker kan du logge inn.
+          Registrer en bruker med eposten knyttet til din avtale.
+          <br /> Har du alt registrert en bruker kan du logge inn.
         </p>
         <div style={{ marginTop: 20 }}>
           <LinkButton
