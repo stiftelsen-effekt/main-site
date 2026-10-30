@@ -76,6 +76,9 @@ export interface Donation extends DonationInput {
   apiError?: string | null;
   /** Optional campaign/matching referral code, from the donor pane or ?referral= */
   referralCode?: string;
+  /** What the donor last entered in the donor pane, kept so it survives the pane unmounting.
+   * Never sent to the API, the registration only reads `donor`. */
+  donorFormDraft?: DonorFormDraft;
 }
 
 export type DonationError = {
@@ -126,6 +129,18 @@ export interface Referrals {
 
 export interface DonorFormValues extends DonorInput {
   privacyPolicy: boolean;
+}
+
+export interface DonorFormDraft {
+  isAnonymous: boolean;
+  name: string;
+  email: string;
+  ssn: string;
+  taxDeduction: boolean;
+  newsletter: boolean;
+  method: PaymentMethod;
+  privacyPolicy: boolean;
+  referralCode: string;
 }
 
 export interface Share {

@@ -32,10 +32,11 @@ import {
   SET_SHOW_ALL_ORGANIZATIONS,
   SET_HAS_MANUALLY_EDITED_PREFILLED_ORG_AMOUNT,
   SET_REFERRAL_CODE,
+  SET_DONOR_FORM_DRAFT,
 } from "./types";
 import { PaymentMethod, RecurringDonation, ShareType } from "../../types/Enums";
 import { DraftAgreementResponse, OrganizationShare } from "../../types/Temp";
-import { VippsAgreement } from "../state";
+import { DonorFormDraft, VippsAgreement } from "../state";
 import { DistributionCauseAreaOrganization } from "../../types/DistributionCauseAreaOrganization";
 
 const actionCreator = actionCreatorFactory();
@@ -383,5 +384,12 @@ export function setReferralCode(referralCode?: string): DonationActionTypes {
   return {
     type: SET_REFERRAL_CODE,
     payload: { referralCode },
+  };
+}
+
+export function setDonorFormDraft(draft: DonorFormDraft): DonationActionTypes {
+  return {
+    type: SET_DONOR_FORM_DRAFT,
+    payload: { draft },
   };
 }
