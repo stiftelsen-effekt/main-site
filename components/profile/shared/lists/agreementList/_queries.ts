@@ -1,15 +1,19 @@
 import { Distribution } from "../../../../../models";
 import { AgreementTypes } from "./AgreementList";
 
+const vippsAgreementUrl = (api: string, donorId: number, agreementId: string, action: string) =>
+  `${api}/donors/${donorId}/recurring/vipps/${encodeURIComponent(agreementId)}/${action}`;
+
 export const updateVippsAgreementDistribution = async (
-  urlCode: string,
+  donorId: number,
+  agreementId: string,
   distribution: Distribution,
   token: string,
 ) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/distribution`, {
+    const response = await fetch(vippsAgreementUrl(api, donorId, agreementId, "distribution"), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -32,119 +36,20 @@ export const updateVippsAgreementDistribution = async (
   }
 };
 
-export const updateVippsAgreementPrice = async (urlCode: string, sum: number, token: string) => {
-  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
-
-  try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/price`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        price: sum * 100,
-      }),
-    });
-
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
-  } catch (e) {
-    return null;
-  }
-};
-
-export const updateVippsAgreementDay = async (urlCode: string, day: number, token: string) => {
-  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
-
-  try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/chargeDay`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        chargeDay: day,
-      }),
-    });
-
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
-  } catch (e) {
-    return null;
-  }
-};
-
-export const cancelVippsAgreement = async (urlCode: string, token: string) => {
-  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
-
-  try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/cancel`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: "same-origin",
-    });
-
-    const result = await response.json();
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
-  } catch (e) {
-    return null;
-  }
-};
-
-export const updateAnonymousVippsAgreementDistribution = async (
-  urlCode: string,
-  distribution: Distribution,
+export const updateVippsAgreementPrice = async (
+  donorId: number,
+  agreementId: string,
+  sum: number,
+  token: string,
 ) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/distribution`, {
+    const response = await fetch(vippsAgreementUrl(api, donorId, agreementId, "price"), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        distribution: distribution,
-      }),
-    });
-
-    if (response.status !== 200) {
-      return null;
-    } else {
-      return true;
-    }
-  } catch (e) {
-    return null;
-  }
-};
-
-export const updateAnonymousVippsAgreementPrice = async (urlCode: string, sum: number) => {
-  const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
-
-  try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/price`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "same-origin",
       body: JSON.stringify({
@@ -162,14 +67,20 @@ export const updateAnonymousVippsAgreementPrice = async (urlCode: string, sum: n
   }
 };
 
-export const updateAnonymousVippsAgreementDay = async (urlCode: string, day: number) => {
+export const updateVippsAgreementDay = async (
+  donorId: number,
+  agreementId: string,
+  day: number,
+  token: string,
+) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/chargeDay`, {
+    const response = await fetch(vippsAgreementUrl(api, donorId, agreementId, "chargeday"), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "same-origin",
       body: JSON.stringify({
@@ -177,6 +88,7 @@ export const updateAnonymousVippsAgreementDay = async (urlCode: string, day: num
       }),
     });
 
+    const result = await response.json();
     if (response.status !== 200) {
       return null;
     } else {
@@ -187,18 +99,20 @@ export const updateAnonymousVippsAgreementDay = async (urlCode: string, day: num
   }
 };
 
-export const cancelAnonymousVippsAgreement = async (urlCode: string) => {
+export const cancelVippsAgreement = async (donorId: number, agreementId: string, token: string) => {
   const api = process.env.NEXT_PUBLIC_EFFEKT_API || "http://localhost:5050";
 
   try {
-    const response = await fetch(`${api}/vipps/agreement/${urlCode}/cancel`, {
+    const response = await fetch(vippsAgreementUrl(api, donorId, agreementId, "cancel"), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "same-origin",
     });
 
+    const result = await response.json();
     if (response.status !== 200) {
       return null;
     } else {

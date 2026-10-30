@@ -236,6 +236,12 @@
     margin-bottom: 2rem;
   }
 
+  &__first-charge {
+    margin-top: -1rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+  }
+
   &__payment-option {
     display: flex;
     align-items: center;

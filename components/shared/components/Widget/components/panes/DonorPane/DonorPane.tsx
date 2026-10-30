@@ -11,8 +11,9 @@ import {
   registerDonationAction,
   RegisterDonationActionPayload,
   setReferralCode,
+  setDonorFormDraft,
 } from "../../../store/donation/actions";
-import { State } from "../../../store/state";
+import { DonorFormDraft, State } from "../../../store/state";
 import { PaymentMethod } from "../../../types/Enums";
 import { WidgetPane2Props, WidgetProps } from "../../../types/WidgetProps";
 import { ErrorField } from "../../shared/Error/ErrorField";
@@ -82,10 +83,13 @@ export const DonorPane: React.FC<{
     watch,
     trigger,
     setValue,
+    getValues,
     formState: { errors },
     clearErrors,
-  } = useForm({
-    defaultValues: {
+  } = useForm<DonorFormDraft>({
+    // The carousel unmounts this pane when the donor navigates away, so start from what
+    // they entered last time instead of the empty form
+    defaultValues: donation.donorFormDraft ?? {
       isAnonymous: donor?.email === ANONYMOUS_DONOR.email,
       name: donor.name === ANONYMOUS_DONOR.name ? "" : initialDonor?.name || donor.name || "",
       email: donor.email === ANONYMOUS_DONOR.email ? "" : initialDonor?.email || donor.email || "",
@@ -97,6 +101,12 @@ export const DonorPane: React.FC<{
       referralCode: donation.referralCode || "",
     },
   });
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(setDonorFormDraft(getValues()));
+    };
+  }, [dispatch, getValues]);
 
   const plausible = usePlausible();
 
@@ -128,7 +138,8 @@ export const DonorPane: React.FC<{
 
   // Query-param referral codes are applied after cause areas load, which can be
   // after this form's first render — keep the input in sync when the store updates.
-  const hasSyncedReferralCode = React.useRef(false);
+  // A restored draft already holds the donor's own referral code, so do not overwrite it
+  const hasSyncedReferralCode = React.useRef(donation.donorFormDraft !== undefined);
   React.useEffect(() => {
     if (donation.referralCode && !hasSyncedReferralCode.current) {
       setValue("referralCode", donation.referralCode);

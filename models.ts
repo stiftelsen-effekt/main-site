@@ -65,7 +65,6 @@ export type VippsAgreement = {
   force_charge_date: boolean;
   paused_until_date: string;
   amount: number;
-  agreement_url_code: string;
 };
 
 export type DKPaymentMethod = "MobilePay" | "Credit card" | "Bank transfer";
