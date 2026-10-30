@@ -449,7 +449,14 @@ export const SectionBlockContentRenderer: React.FC<{ blocks: any }> = ({ blocks 
             );
           }
           case "giftcards": {
-            return <GiftCards key={block._key || block._id} giftcards={(block as any).giftcards} />;
+            return (
+              <GiftCards
+                key={block._key || block._id}
+                giftcards={(block as any).giftcards}
+                locale={(block as any).locale}
+                currency={(block as any).currency}
+              />
+            );
           }
           case "philantropicteaser": {
             return (
