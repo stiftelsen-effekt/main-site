@@ -36,9 +36,10 @@ body {
   font-weight: 300;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  /* Stop iOS Safari from enlarging text in blocks that open on tap */
+  /* Stop iOS Safari from enlarging text in blocks that open on tap. Only the
+     -webkit- form: with the unprefixed one next to it, Lightning CSS drops the
+     -webkit- line for our targets. iOS Safari reads only the -webkit- form. */
   -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
   background: var(--secondary);
   font-size: 20px;
   line-height: 32px;
@@ -167,11 +168,6 @@ button {
      a mid grey inside the widget pane, so it reads against both colour schemes. */
   scrollbar-width: thin;
   scrollbar-color: var(--primary-hover) transparent;
-  /* On phones the widget is laid out 576px wide and scaled down to the screen, so iOS
-     Safari sees a block wider than the viewport and still enlarges its text with the
-     100% value set on html. `none` turns that off inside the widget. */
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
 }
 
 /* Inline (DK) card: no internal scrollbar. The page scrolls, so the track
