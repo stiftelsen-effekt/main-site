@@ -13,7 +13,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "incremental": true,
+    // studio/sanity.types.ts augments @sanity/client; resolve it to the app's copy, not the
+    // studio's own install, which the app typecheck can't see
+    "paths": { "@sanity/client": ["./node_modules/@sanity/client"] }
   },
   "include": [
     "next-env.d.ts",
