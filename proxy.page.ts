@@ -15,8 +15,7 @@ export function proxy(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/sitemap.xml") ||
     request.nextUrl.pathname.startsWith("/js/") ||
     request.nextUrl.pathname.startsWith("/images/") ||
-    request.nextUrl.pathname.startsWith("/proxy/") ||
-    request.nextUrl.pathname.startsWith("/giftcards-test")
+    request.nextUrl.pathname.startsWith("/proxy/")
   ) {
     return NextResponse.next();
   }
