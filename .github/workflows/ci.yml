@@ -11,7 +11,9 @@ jobs:
     uses: $/.github/workflows/e2e.yml
     with:
       group: "GiEffektivt e2e tests"
-      base-url: ${{ github.event.deployment_status.target_url }}
+      # The production Min Side Auth0 app only allows exact callbacks, so production
+      # deployments are tested on the custom domain instead of their *.vercel.app URL
+      base-url: ${{ startsWith(github.event.deployment_status.environment, 'Production') && 'https://gieffektivt.no' || github.event.deployment_status.target_url }}
       config-file: "cypress-no.config.ts"
     secrets:
       CYPRESS_AUTH_DOMAIN: ${{ secrets.CYPRESS_AUTH_DOMAIN }}
