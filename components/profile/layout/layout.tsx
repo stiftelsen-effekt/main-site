@@ -29,9 +29,7 @@ import {
 
 const createRedirectCallback = (dashboardPath: string[]) => (appState: any) => {
   const path = appState?.returnTo || dashboardPath.join("/");
-  // Use the Next.js router so query params in the restored URL (e.g. ?impactpreview)
-  // end up in router.query; history.pushState leaves the router state stale.
-  Router.replace(path);
+  window.history.pushState({}, "", path);
 };
 
 const routesToBypass = ["/min-side/vipps-anonym"];
