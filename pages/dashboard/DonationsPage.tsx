@@ -31,6 +31,7 @@ import {
   AggregatedImpactTableConfiguration,
   DonationsAggregateImpactTable,
 } from "../../components/profile/donations/DonationsAggregateImpactTable/DonationsAggregateImpactTable";
+import { ImpactEstimateExplanation } from "../../components/profile/donations/DonationsAggregateImpactTable/ImpactEstimateExplanation";
 import DonationsTotals from "../../components/profile/donations/DonationsTotal/DonationsTotal";
 import { DonationsYearlyGraph } from "../../components/profile/donations/DonationsYearlyChart/DonationsYearlyChart";
 import { groq } from "next-sanity";
@@ -453,6 +454,9 @@ export const DonationsPage = withStaticProps(
           )}
           <DonationsTotals sum={sum} period={periodText} />
         </div>
+        <ImpactEstimateExplanation
+          explanations={page.donations_details_configuration?.cause_area_impact_estimates}
+        />
         {isTotal && isMobile ? (
           <DonationsYearlyGraph data={getYearlySum(aggregatedDonations, years)} />
         ) : (
