@@ -13,11 +13,20 @@ import Personnummer from "personnummer";
 import { validateTin, formatTinInput } from "../../../../../util/tin-validation";
 import { FormattingLocale } from "../../../../../util/formatting";
 import { fundraiserSubmitButtonText } from "../fundraiserSubmitButtonText";
+import { RecurringDonation } from "../../../../shared/components/Widget/types/Enums";
+import { formatDateText } from "../../../../shared/components/Widget/components/panes/PaymentPane/AvtaleGiro/AvtaleGiroDatePicker/avtalegirodates";
+import { getFirstAvtaleGiroCharge } from "../avtaleGiroFirstCharge";
 
 interface PaymentMethodPaneProps {
   formData: Pick<
     FormData,
-    "taxDeduction" | "newsletter" | "email" | "ssn" | "paymentMethod" | "privacyPolicyAccepted"
+    | "taxDeduction"
+    | "newsletter"
+    | "email"
+    | "ssn"
+    | "paymentMethod"
+    | "privacyPolicyAccepted"
+    | "recurring"
   >;
   onChange: (field: keyof FormData, value: any) => void;
   onSubmit: () => void;
@@ -164,6 +173,15 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
 
       setSsnError(isValid ? null : config.tax_deduction?.ssn_invalid_error_text || null);
     };
+    // Monthly donors need an email so they can manage their agreement on min side
+    const isMonthly = formData.recurring === RecurringDonation.RECURRING;
+    const emailRequired =
+      locale === "da-DK" || formData.taxDeduction || formData.newsletter || isMonthly;
+    // Monthly bank donations are AvtaleGiro, which can't charge straight away
+    const avtaleGiroFirstCharge =
+      isMonthly && formData.paymentMethod === "bank" && locale === "no-NB"
+        ? getFirstAvtaleGiroCharge()
+        : null;
     const emailInput = (
       <div className={styles["donation-widget__input-group"]}>
         <input
@@ -172,7 +190,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
           type="email"
           value={formData.email}
           onChange={(e) => onChange("email", e.target.value)}
-          required={locale === "da-DK" || formData.taxDeduction || formData.newsletter}
+          required={emailRequired}
           placeholder={config.email_label}
           data-cy="fundraiser-email-input"
         />
@@ -211,7 +229,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             onSubmit();
           }}
         >
-          {!config.allow_anonymous_donations && emailInput}
+          {(!config.allow_anonymous_donations || isMonthly) && emailInput}
 
           {config.tax_deduction && (
             <div className={styles["donation-widget__checkbox-group"]}>
@@ -247,6 +265,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
 
           {(formData.taxDeduction || formData.newsletter) &&
             config.allow_anonymous_donations &&
+            !isMonthly &&
             emailInput}
           {formData.taxDeduction && config.tax_deduction && (
             <div className={styles["donation-widget__input-group"]}>
@@ -344,6 +363,17 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             />
           </div>
 
+          {avtaleGiroFirstCharge && (
+            <p
+              className={styles["donation-widget__first-charge"]}
+              data-cy="fundraiser-avtalegiro-first-charge"
+            >
+              {`Første trekk blir rundt ${formatDateText(
+                avtaleGiroFirstCharge.firstChargeDate,
+              )}, deretter den ${avtaleGiroFirstCharge.dueDay}. hver måned.`}
+            </p>
+          )}
+
           <button
             type="submit"
             className={styles["donation-widget__button"]}
@@ -352,7 +382,7 @@ export const PaymentMethodPane = React.forwardRef<HTMLDivElement, PaymentMethodP
             {loading ? (
               <Spinner className={styles["donation-widget__spinner"]} />
             ) : (
-              fundraiserSubmitButtonText(formData.paymentMethod)
+              fundraiserSubmitButtonText(formData.paymentMethod, formData.recurring)
             )}
           </button>
         </form>

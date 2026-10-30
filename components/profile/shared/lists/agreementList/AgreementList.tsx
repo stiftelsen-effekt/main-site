@@ -75,7 +75,7 @@ export const AgreementList: React.FC<{
     date: entry.monthly_charge_day,
     amount: entry.amount,
     type: "Vipps",
-    endpoint: entry.agreement_url_code,
+    endpoint: entry.ID.toString(),
   }));
 
   let giroType = avtalegiro.map((entry: AvtaleGiroAgreement): AgreementRow => ({
