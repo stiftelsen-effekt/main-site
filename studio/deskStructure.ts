@@ -8,6 +8,7 @@ import {
   DollarSign,
   File,
   Filter,
+  Heart,
   Lock,
   Paperclip,
   Phone,
@@ -108,6 +109,7 @@ export const deskStructure: StructureResolver = (S) =>
         .title("Results")
         .icon(BarChart)
         .child(S.document().schemaType("results").documentId("results").views([S.view.form()])),
+      S.documentTypeListItem("organization").title("Organizations").icon(Heart),
       S.divider(),
       S.listItem()
         .title("Dashboard")
